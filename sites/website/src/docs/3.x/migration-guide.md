@@ -143,14 +143,16 @@ when an element uses `template: declarativeTemplate()`.
 | `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
 | `TemplateElement.config(callbacks)` | `declarativeTemplate(callbacks)` for per-element callbacks and `enableHydration(options)` for global hydration callbacks |
 | `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
-| `AttributeMap` / `ObserverMap` public exports | `attributeMap()` / `observerMap()` helpers and config types |
+| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
+
+Existing imports from `@microsoft/fast-element/declarative.js` remain valid for
+declarative templates. New code that only needs the schema-driven map extensions
+should prefer their dedicated subpaths:
 
 ```ts
-import {
-    attributeMap,
-    declarativeTemplate,
-    observerMap,
-} from "@microsoft/fast-element/declarative.js";
+import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration();
@@ -162,6 +164,19 @@ MyElement.define(
     },
     [attributeMap(), observerMap()],
 );
+```
+
+`FASTElementDefinition.schema` is optional. Declarative templates assign it
+automatically during template resolution. Non-declarative users can provide a
+manual schema on the definition, or pass one directly to `observerMap({ schema
+})`.
+
+```ts
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+const schema = new Schema("my-element");
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
 ```
 
 ### `debug.js` requires explicit enablement

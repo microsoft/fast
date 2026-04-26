@@ -1,14 +1,14 @@
+import { getDefinitionSchemaTransforms } from "../components/definition-schema-transforms.js";
 import type {
     FASTElementDefinition,
     FASTElementTemplateResolver,
     TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
+import { Schema } from "../components/schema.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
-import { getDefinitionSchemaTransforms } from "./definition-options.js";
 import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
-import { Schema } from "./schema.js";
 import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
 import { transformInnerHTML } from "./utilities.js";
@@ -199,6 +199,7 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         definition.lifecycleCallbacks?.templateWillUpdate?.(name);
 
         const schema = new Schema(name);
+        definition.schema = schema;
         const innerHTML = transformInnerHTML(this.innerHTML);
         const parser = new TemplateParser();
         const { strings, values } = parser.parse(innerHTML, schema);

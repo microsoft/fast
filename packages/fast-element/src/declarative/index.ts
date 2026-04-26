@@ -10,8 +10,18 @@ export type {
 } from "./observer-map.js";
 export { observerMap } from "./observer-map.js";
 export {
+    type AccessCachedPath,
+    type CachedPath,
+    type CachedPathCommon,
     type CachedPathMap,
+    type ChildrenMap,
+    type DefaultCachedPath,
+    type EventCachedPath,
     type JSONSchema,
+    type JSONSchemaCommon,
+    type JSONSchemaDefinition,
+    type RegisterPathConfig,
+    type RepeatCachedPath,
     Schema,
     schemaRegistry,
 } from "./schema.js";

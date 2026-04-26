@@ -1,6 +1,11 @@
 # Schema and Observer Map Architecture
 
-This document provides a technical explainer for how the `Schema` and `ObserverMap` classes work together to describe data objects and automatically observe them in FAST HTML templates using the f-template system.
+This document provides a technical explainer for how the `Schema` and
+`ObserverMap` classes work together to describe data objects and automatically
+observe them in FAST elements. Declarative `<f-template>` markup creates schemas
+automatically, but the schema and observer map implementation are factored into
+shared components and extension subpaths so they can also be used without
+declarative templating.
 
 ## Table of Contents
 
@@ -22,9 +27,10 @@ The Schema and Observer Map architecture enables automatic observation of comple
 
 ### Key Components
 
-- **Schema Class**: Generates JSON schemas that describe the structure and binding paths of data objects based on template analysis
+- **Schema Class**: Generates JSON schemas that describe the structure and binding paths of data objects based on template analysis or manually registered paths
 - **Observer Map Class**: Uses the schema information to automatically define observable properties and create proxies for nested object observation
 - **f-template Integration**: Template processing automatically populates schemas and configures observer maps during template compilation
+- **Extension Subpaths**: `@microsoft/fast-element/extensions/observer-map.js` and `@microsoft/fast-element/extensions/attribute-map.js` expose the map helpers independently from declarative templating
 
 ### Supported Data Types
 
@@ -58,7 +64,7 @@ The `Schema` class is responsible for building JSON Schema definitions that map 
 ```typescript
 constructor(name: string)
 ```
-Creates a new schema instance for a specific custom element name and initializes an instance-level `schemaMap`. The instance also registers itself in the module-level `schemaRegistry` for cross-element `$ref` resolution.
+Creates a new schema instance for a specific custom element name and initializes an instance-level `schemaMap`. The instance also registers itself in the module-level `schemaRegistry` for cross-element `$ref` resolution. `FASTElementDefinition.schema` is optional; declarative templates assign it after parsing, while manual schema users can pass one in the element definition or directly to `observerMap({ schema })`.
 
 #### addPath
 ```typescript
@@ -142,9 +148,9 @@ When a root property transitions from `undefined` to a defined value, the observ
 2. Creates proxies using the `assignObservables` utility function
 3. Establishes deep observation of nested properties based on the schema of that root property
 
-## Integration with f-template
+## Integration with f-template and manual schemas
 
-The Schema and Observer Map classes integrate seamlessly with the f-template system:
+The Schema and Observer Map classes integrate seamlessly with the f-template system, but they are not tied to it:
 
 ### Template Processing Flow
 
@@ -156,10 +162,12 @@ The Schema and Observer Map classes integrate seamlessly with the f-template sys
 ### Configuration
 
 Observer Map functionality is enabled through the `observerMap()` definition
-extension:
+extension. Prefer the extension subpath for new imports; the declarative
+entrypoint continues to re-export `observerMap()` for existing declarative code:
 
 ```typescript
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 MyElement.define(
   {
@@ -173,6 +181,48 @@ MyElement.define(
 When the `properties` key is omitted, all root properties discovered in the
 template are observed. Add a `properties` object to opt into selective
 observation behavior.
+
+For non-declarative/manual schema use, pass the schema in the observer map
+configuration:
+
+```typescript
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-custom-element");
+schema.addPath({
+  rootPropertyName: "user",
+  pathConfig: {
+    type: "default",
+    parentContext: null,
+    currentContext: null,
+    path: "user.name",
+  },
+  childrenMap: null,
+});
+
+MyElement.define(
+  {
+    name: "my-custom-element",
+  },
+  [observerMap({ schema })]
+);
+```
+
+You can also attach a manual schema to the FAST element definition. This is the
+path used automatically by `declarativeTemplate()` after it parses a template:
+
+```typescript
+MyElement.define(
+  {
+    name: "my-custom-element",
+    schema,
+  },
+  [observerMap()]
+);
+```
 
 ## Initial Path Processing Flow
 
@@ -410,7 +460,7 @@ The schema system tracks binding contexts using special metadata:
 You can inspect generated schemas using the module-level `schemaRegistry` import:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element/declarative.js";
+import { schemaRegistry } from "@microsoft/fast-element";
 
 // Get all schemas for an element:
 const elementSchemas = schemaRegistry.get('my-element');
@@ -426,8 +476,7 @@ To verify that observer mapping ran, inspect the generated schema and the
 observable accessors on the element prototype:
 
 ```typescript
-import { Observable } from "@microsoft/fast-element";
-import { schemaRegistry } from "@microsoft/fast-element/declarative.js";
+import { Observable, schemaRegistry } from "@microsoft/fast-element";
 
 const schemas = schemaRegistry.get("my-element");
 const accessors = Observable.getAccessors(MyElement.prototype).map(a => a.name);

@@ -102,10 +102,17 @@ FAST Element also publishes a declarative HTML runtime from
 `@microsoft/fast-element/declarative.js`. This entrypoint exports the
 functional APIs for declarative templates: `declarativeTemplate()`,
 `attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
-`schemaRegistry`, and related configuration types. It is pure at import time;
-declarative APIs lazily install only declarative debug messages. Hydration is
-separate and remains opt-in through `enableHydration()` from
-`@microsoft/fast-element/hydration.js`.
+`schemaRegistry`, and related configuration types. Existing declarative imports
+remain supported.
+
+The schema-driven map extensions are also available from their own subpaths:
+`@microsoft/fast-element/extensions/attribute-map.js` and
+`@microsoft/fast-element/extensions/observer-map.js`. Prefer these subpaths when
+you only need the maps, when you are not using declarative templates, or when
+you want the smallest tree-shaken extension import. The declarative runtime is
+pure at import time; declarative APIs lazily install only declarative debug
+messages. Hydration is separate and remains opt-in through `enableHydration()`
+from `@microsoft/fast-element/hydration.js`.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
@@ -128,11 +135,9 @@ before `define()` resolves. Consumers should not import or define the
 Declarative schema behavior is enabled with define extensions:
 
 ```ts
-import {
-    attributeMap,
-    declarativeTemplate,
-    observerMap,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 MyElement.define(
     {
@@ -145,8 +150,12 @@ MyElement.define(
 
 `attributeMap()` creates `@attr`-style accessors for leaf bindings, and
 `observerMap()` creates deep observable accessors for discovered root
-properties. When both extensions are present, attribute mapping runs before
-observer mapping.
+properties. Declarative templates assign `definition.schema` during template
+resolution so these extensions always have schema data when used with
+`declarativeTemplate()`. For non-declarative/manual schema use, pass a `Schema`
+on the element definition; `observerMap()` can also receive
+`observerMap({ schema })` directly. When both extensions are present, attribute
+mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See

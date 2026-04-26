@@ -2,8 +2,10 @@
 
 This document is intended for contributors who want to understand the internal
 architecture of the declarative runtime in
-`@microsoft/fast-element/declarative.js`. It covers the feature's purpose, core
-concepts, data flow, and its integration with the rest of
+`@microsoft/fast-element/declarative.js` and the schema-driven map extensions in
+`@microsoft/fast-element/extensions/attribute-map.js` and
+`@microsoft/fast-element/extensions/observer-map.js`. It covers the feature's
+purpose, core concepts, data flow, and its integration with the rest of
 `@microsoft/fast-element`.
 
 ## Table of Contents
@@ -94,12 +96,19 @@ declarative runtime's debug messages; hydration support is installed only by
 
 ### `Schema` — JSON schema builder
 
-Built during template parsing, one `Schema` instance per `<f-template>`. It records every binding path discovered in the template and constructs a JSON Schema-compatible data structure. This schema:
+Built during declarative template parsing, one `Schema` instance per
+`<f-template>`. Non-declarative callers can also create and attach a `Schema`
+manually. It records every binding path discovered in the template or supplied
+by code and constructs a JSON Schema-compatible data structure. This schema:
 
 - Describes the shape of each root property referenced in the template.
 - Tracks repeat context chains (parent/child array relationships).
 - Uses an instance-level `schemaMap` for its own property schemas.
 - Registers itself in the module-level `schemaRegistry` (keyed by custom element name) for cross-element `$ref` resolution.
+
+`FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
+automatically after parsing; manual schema users can pass `schema` in the
+definition object.
 
 ### `ObserverMap` — automatic observable setup
 
@@ -109,12 +118,18 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via the `observerMap()` definition extension. Calling `observerMap()`
-without arguments observes all root properties discovered in the template.
+Enabled via the `observerMap()` definition extension. Prefer importing the
+extension from `@microsoft/fast-element/extensions/observer-map.js`; the
+declarative entrypoint continues to re-export it for existing declarative
+imports. Calling `observerMap()` without arguments observes all root properties
+discovered in the template or supplied schema.
 
 #### Path-level observation control
 
-The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
+The `ObserverMapConfig` interface accepts an optional `schema` for
+non-declarative/manual schema use and an optional `properties` key that maps
+root property names to a recursive path tree controlling observation
+granularity:
 
 ```typescript
 MyElement.define(
@@ -148,6 +163,29 @@ When `properties` is omitted, all root properties are observed. When
 `properties` is present but empty (`{ properties: {} }`), no root properties
 are observed.
 
+For non-declarative elements, pass a schema directly to `observerMap()`:
+
+```typescript
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-element");
+schema.addPath({
+    rootPropertyName: "user",
+    pathConfig: {
+        type: "default",
+        parentContext: null,
+        currentContext: null,
+        path: "user.name",
+    },
+    childrenMap: null,
+});
+
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
+
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
 2. `true`/`false` booleans apply to the entire subtree.
@@ -164,10 +202,14 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via the `attributeMap()` definition extension. Calling
-`attributeMap()` without arguments uses the default `"camelCase"` strategy. To
-preserve binding keys exactly as written, pass
-`attributeMap({ "attribute-name-strategy": "none" })`.
+Enabled via the `attributeMap()` definition extension. Prefer importing the
+extension from `@microsoft/fast-element/extensions/attribute-map.js`; the
+declarative entrypoint continues to re-export it for existing declarative
+imports. Calling `attributeMap()` without arguments uses the default
+`"camelCase"` strategy. To preserve binding keys exactly as written, pass
+`attributeMap({ "attribute-name-strategy": "none" })`. Outside declarative
+templates, `attributeMap()` uses the optional `schema` on the FAST element
+definition.
 
 ### Syntax constants (`syntax.ts`)
 
@@ -192,18 +234,24 @@ All delimiters used by the parser are defined in a single `Syntax` interface and
 packages/fast-element/
 ├── src/
 │   ├── declarative.ts         # Public declarative entrypoint
+│   ├── components/
+│   │   ├── schema.ts          # Shared Schema class + schemaRegistry
+│   │   └── definition-schema-transforms.ts # Definition-scoped schema transform storage
+│   ├── extensions/
+│   │   ├── attribute-map.ts   # attributeMap() subpath implementation
+│   │   └── observer-map.ts    # observerMap() subpath implementation
 │   └── declarative/
 │       ├── index.ts           # Declarative barrel export
 │       ├── interfaces.ts      # Message enum (error codes)
 │       ├── debug.ts           # Human-readable declarative debug messages
-│       ├── definition-options.ts # Definition-scoped schema transform storage
+│       ├── definition-options.ts # Compatibility re-export for schema transform storage
 │       ├── template.ts        # declarativeTemplate(), internal <f-template> publisher, lifecycle orchestration
 │       ├── template-bridge.ts # Registry/name bridge between definitions and publishers
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
-│       ├── schema.ts          # Schema class — JSON schema builder + schemaRegistry
-│       ├── observer-map.ts    # observerMap() extension + ObserverMap implementation details
-│       ├── attribute-map.ts   # attributeMap() extension + AttributeMap implementation details
-│       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
+│       ├── schema.ts          # Compatibility re-export for Schema
+│       ├── observer-map.ts    # Compatibility re-export for observerMap()
+│       ├── attribute-map.ts   # Compatibility re-export for attributeMap()
+│       ├── utilities.ts       # Declarative parsing helpers
 │       └── syntax.ts          # Syntax delimiter constants
 ├── scripts/
 │   └── declarative/           # Fixture build + webui integration scripts
@@ -218,13 +266,13 @@ implementations. Map helpers attach schema transforms to the definition only
 when the consumer passes them as define extensions.
 
 ```
-template.ts ──imports──▶ definition-options.ts (schema transform reads)
-template.ts ──imports──▶ schema.ts (Schema)
-attribute-map.ts ──imports──▶ definition-options.ts (register attribute-map transform)
-observer-map.ts ──imports──▶ definition-options.ts (register observer-map transform)
-observer-map.ts ──imports──▶ schema.ts (Schema types)
-attribute-map.ts ──imports──▶ schema.ts (Schema types)
-utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element $ref resolution)
+declarative/template.ts ──imports──▶ components/definition-schema-transforms.ts (schema transform reads)
+declarative/template.ts ──imports──▶ components/schema.ts (Schema)
+extensions/attribute-map.ts ──imports──▶ components/definition-schema-transforms.ts (register attribute-map transform)
+extensions/observer-map.ts ──imports──▶ components/definition-schema-transforms.ts (register observer-map transform)
+extensions/observer-map.ts ──imports──▶ components/schema.ts (Schema types)
+extensions/attribute-map.ts ──imports──▶ components/schema.ts (Schema types)
+declarative/utilities.ts ──imports──▶ components/schema.ts (schemaRegistry for cross-element $ref resolution)
 ```
 
 Schema transforms run in deterministic order. `attributeMap()` runs before
@@ -236,40 +284,52 @@ Schema transforms run in deterministic order. `attributeMap()` runs before
 
 ```typescript
 import {
-    attributeMap,
     declarativeTemplate,
-    observerMap,
     TemplateParser,
     Schema,
     schemaRegistry,
-    type AttributeMapConfig,
     type CachedPathMap,
     type FASTElementExtension,
     type JSONSchema,
-    type ObserverMapConfig,
-    type ObserverMapPathEntry,
-    type ObserverMapPathNode,
     type ResolvedStringsAndValues,
     type TemplateLifecycleCallbacks,
 } from "@microsoft/fast-element/declarative.js";
+
+import {
+    attributeMap,
+    type AttributeMapConfig,
+} from "@microsoft/fast-element/extensions/attribute-map.js";
+import {
+    observerMap,
+    type ObserverMapConfig,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
+} from "@microsoft/fast-element/extensions/observer-map.js";
 ```
+
+`@microsoft/fast-element/declarative.js` still re-exports `attributeMap()`,
+`observerMap()`, and their configuration types for existing declarative imports.
+The extension subpaths are preferred when a consumer only needs the maps or is
+using manually supplied schemas.
 
 Primary exports intended for application code:
 
 | Export | Purpose |
 |---|---|
 | `declarativeTemplate()` | Template resolver for `FASTElement.define()`; auto-defines the internal `<f-template>` publisher and waits for the matching template. |
-| `attributeMap()` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing. |
-| `observerMap()` | Define extension that defines observable root properties and proxy-based deep change tracking from the parsed schema. |
+| `attributeMap()` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
+| `observerMap()` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
 | `TemplateParser` | Standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `Schema` | JSON schema builder that records binding paths discovered during template parsing. Each instance owns its own schema map and registers itself in the `schemaRegistry` for cross-element `$ref` resolution. |
 | `schemaRegistry` | Module-level `Map<string, Map<string, JSONSchema>>` that indexes schemas by custom element name. Used for cross-element lookups (e.g. nested component `$ref` resolution). |
 
 The implementation element class (`<f-template>`), `TemplateElement.config()`,
-`TemplateElement.options()`, `ElementOptions*`, `HydrationLifecycleCallbacks`,
-and the `AttributeMap` / `ObserverMap` implementation classes are not exported
-from the public declarative entrypoint. Use `declarativeTemplate()`,
-`attributeMap()`, `observerMap()`, and `enableHydration()` instead.
+`TemplateElement.options()`, `ElementOptions*`, and
+`HydrationLifecycleCallbacks` are not exported from the public declarative
+entrypoint. Use `declarativeTemplate()`, `attributeMap()`, `observerMap()`, and
+`enableHydration()` instead. The `AttributeMap` and `ObserverMap` implementation
+classes are available from their extension subpaths for advanced scenarios, but
+application code should normally use the extension factories.
 
 Additionally, the following types are exported:
 
@@ -277,12 +337,12 @@ Additionally, the following types are exported:
 |---|---|---|
 | `FASTElementExtension` | `fast-definitions.ts` | Definition extension callback signature used by `attributeMap()` and `observerMap()`. |
 | `TemplateLifecycleCallbacks` | `fast-definitions.ts` | Per-element lifecycle callbacks accepted by `declarativeTemplate()`. |
-| `ObserverMapConfig` | `observer-map.ts` | Configuration object for `observerMap()`; accepts optional `properties` key. |
+| `ObserverMapConfig` | `extensions/observer-map.ts` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
 | `ObserverMapPathEntry` | `observer-map.ts` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
 | `ObserverMapPathNode` | `observer-map.ts` | Object node with optional `$observe` and child property overrides. |
-| `AttributeMapConfig` | `attribute-map.ts` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
-| `JSONSchema` | `schema.ts` | JSON Schema interface used by `Schema` for property structure. |
-| `CachedPathMap` | `schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
+| `AttributeMapConfig` | `extensions/attribute-map.ts` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
+| `JSONSchema` | `components/schema.ts` | JSON Schema interface used by `Schema` for property structure. |
+| `CachedPathMap` | `components/schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
 
 ---
 
@@ -518,11 +578,12 @@ When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.de
 
 ### AttributeMap and leaf bindings
 
-When `attributeMap()` is enabled, it registers a definition schema transform.
-After parsing, the transform constructs an `AttributeMap` implementation and
-calls `defineProperties()`. It iterates `Schema.getRootProperties()` and skips
-any property whose schema entry contains `properties`, `type`, or `anyOf` —
-keeping only plain leaf bindings. For each leaf:
+When `attributeMap()` is enabled with a declarative template, it registers a
+definition schema transform. With a manually supplied definition schema, it runs
+immediately. The extension constructs an `AttributeMap` implementation and calls
+`defineProperties()`. It iterates `Schema.getRootProperties()` and skips any
+property whose schema entry contains `properties`, `type`, or `anyOf` — keeping
+only plain leaf bindings. For each leaf:
 
 1. The schema key is used as the **JS property name**.
 2. The **HTML attribute name** depends on the `attribute-name-strategy`:
@@ -608,7 +669,8 @@ tagged templates produce.
 |---|---|
 | `FASTElement` | Base class for user components; the internal `<f-template>` publisher is a native `HTMLElement` |
 | `FASTElementDefinition.register()` / template resolvers | Deferred element registration — element waits for its template |
-| `FASTElementExtension` | Extension callback mechanism used by `attributeMap()` and `observerMap()` to attach schema transforms before template resolution |
+| `FASTElementDefinition.schema` | Optional schema used by schema-driven extensions; assigned automatically by `declarativeTemplate()` and available for manual schemas |
+| `FASTElementExtension` | Extension callback mechanism used by `attributeMap()` and `observerMap()` to attach schema transforms before template resolution or consume manually supplied schemas |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
 | `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
 | `Observable.defineProperty()` | Defines observable root properties on element prototypes (ObserverMap) |

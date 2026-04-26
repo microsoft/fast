@@ -34,6 +34,12 @@ debug messages when they create templates. Hydratable `ViewTemplate` support is
 installed only when `enableHydration()` is called from
 `@microsoft/fast-element/hydration.js`.
 
+`observerMap()` and `attributeMap()` remain available from the declarative
+entrypoint for existing declarative imports. New code should prefer the
+extension subpaths, `@microsoft/fast-element/extensions/observer-map.js` and
+`@microsoft/fast-element/extensions/attribute-map.js`, especially when using
+the maps without declarative templates.
+
 Example:
 ```html
 <my-custom-element greeting="Hello world">
@@ -129,8 +135,15 @@ so callbacks for different elements may interleave.
 ## `observerMap`
 
 When the `observerMap()` extension is applied to an element definition,
-`@microsoft/fast-element/declarative.js` automatically sets up deep reactive
-observation for root properties discovered in the template.
+it automatically sets up deep reactive observation for root properties
+discovered in the template. Declarative templates assign `definition.schema`
+during template resolution, so `observerMap()` has schema data automatically.
+For non-declarative/manual schemas, import from the extension subpath and pass
+`observerMap({ schema })`.
+
+```typescript
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
 
@@ -181,12 +194,42 @@ When `properties` is omitted, all root properties are observed. When
 `properties` is present but empty (`{ properties: {} }`), no root properties
 are observed.
 
+Manual schema example:
+
+```typescript
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-element");
+schema.addPath({
+    rootPropertyName: "user",
+    pathConfig: {
+        type: "default",
+        parentContext: null,
+        currentContext: null,
+        path: "user.name",
+    },
+    childrenMap: null,
+});
+
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
+
 ## `attributeMap`
 
 When the `attributeMap()` extension is applied to an element definition,
-`@microsoft/fast-element/declarative.js` automatically creates reactive `@attr`
-properties for every **leaf binding** in the template — simple expressions like
-`{{foo}}` or `id="{{fooBar}}"` that have no nested properties.
+it automatically creates reactive `@attr` properties for every **leaf binding**
+in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that
+have no nested properties. Declarative templates provide the schema
+automatically. For non-declarative/manual schemas, place the optional `schema`
+on the FAST element definition and import `attributeMap()` from its extension
+subpath.
+
+```typescript
+import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+```
 
 By default, the binding key is treated as a camelCase property name and the HTML
 attribute name is derived by converting it to kebab-case. Properties already

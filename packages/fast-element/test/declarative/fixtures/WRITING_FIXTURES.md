@@ -226,7 +226,8 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 MyElement.define(
     {

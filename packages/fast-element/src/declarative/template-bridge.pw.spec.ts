@@ -205,7 +205,9 @@ test.describe("declarativeTemplate", () => {
                     Object.entries(output.inputs).reduce((outputTotal, [input, data]) => {
                         if (
                             input.endsWith("src/declarative/attribute-map.ts") ||
-                            input.endsWith("src/declarative/observer-map.ts")
+                            input.endsWith("src/declarative/observer-map.ts") ||
+                            input.endsWith("src/extensions/attribute-map.ts") ||
+                            input.endsWith("src/extensions/observer-map.ts")
                         ) {
                             return outputTotal + data.bytesInOutput;
                         }
@@ -289,6 +291,9 @@ test.describe("declarativeTemplate", () => {
                 labelText: element.shadowRoot?.querySelector(".label")?.textContent ?? "",
                 nestedText:
                     element.shadowRoot?.querySelector(".nested")?.textContent ?? "",
+                schemaRootProperties: Array.from(
+                    definition.schema?.getRootProperties() ?? [],
+                ),
                 templateElementDefined: customElements.get("f-template") !== undefined,
             };
         });
@@ -298,6 +303,9 @@ test.describe("declarativeTemplate", () => {
         expect(result.hasLabelAccessor).toBe(true);
         expect(result.labelText).toBe("hello");
         expect(result.nestedText).toBe("after");
+        expect(result.schemaRootProperties).toEqual(
+            expect.arrayContaining(["label", "data"]),
+        );
     });
 
     test("uses a native <f-template> publisher instead of a FASTElement", async ({

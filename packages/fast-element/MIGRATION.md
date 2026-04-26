@@ -99,7 +99,7 @@ removed `@microsoft/fast-html` package.
 | `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines FAST's internal `<f-template>` publisher in the target registry |
 | `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | Per-element callbacks via `declarativeTemplate(callbacks)` and global callbacks via `enableHydration(options)` |
 | `TemplateElement.options(...)`, `ElementOptions`, `ElementOptionsDictionary` | Define extensions: `attributeMap(...)` and `observerMap(...)` passed as the second argument to `define()` |
-| `AttributeMap` / `ObserverMap` exports from `declarative.js` | `attributeMap()` / `observerMap()` extension helpers and their config types |
+| `AttributeMap` / `ObserverMap` exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
 ### Migration steps
 
@@ -124,7 +124,9 @@ removed `@microsoft/fast-html` package.
 2. Replace `TemplateElement.options()` with definition extensions:
 
    ```typescript
-   import { attributeMap, declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+   import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+   import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
    MyElement.define(
        {
@@ -134,6 +136,13 @@ removed `@microsoft/fast-html` package.
        [attributeMap(), observerMap()],
    );
    ```
+
+   Existing `attributeMap()` and `observerMap()` imports from
+   `@microsoft/fast-element/declarative.js` remain valid for declarative
+   templates. Prefer the extension subpaths when only the schema-driven maps are
+   needed or when using manually supplied schemas. `FASTElementDefinition.schema`
+   is optional; `declarativeTemplate()` assigns it automatically, and
+   `observerMap()` can take a manual schema with `observerMap({ schema })`.
 
 3. Replace `TemplateElement.config()` with `declarativeTemplate(callbacks)` for
    per-element callbacks and `enableHydration(options)` for global hydration

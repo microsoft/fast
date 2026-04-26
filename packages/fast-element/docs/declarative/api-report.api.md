@@ -5,6 +5,12 @@
 ```ts
 
 // @public
+export interface AccessCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "access";
+}
+
+// @public
 export function attributeMap(config?: AttributeMapConfig): FASTElementExtension;
 
 // @public
@@ -12,31 +18,83 @@ export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
 
-// @public (undocumented)
+// @public
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
+
+// @public
+export interface CachedPathCommon {
+    // (undocumented)
+    currentContext: string | null;
+    // (undocumented)
+    parentContext: string | null;
+    // (undocumented)
+    path: string;
+}
+
+// @public
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
+
+// @public
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
 
 // Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
 //
 // @public
 export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 
+// @public
+export interface DefaultCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "default";
+}
+
+// @public
+export interface EventCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "event";
+}
+
 // Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point declarative.d.ts
 //
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
-// Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point declarative.d.ts
-//
-// @public (undocumented)
+// @public
 export interface JSONSchema extends JSONSchemaCommon {
-    // Warning: (ae-forgotten-export) The symbol "JSONSchemaDefinition" needs to be exported by the entry point declarative.d.ts
-    //
     // (undocumented)
     $defs?: Record<string, JSONSchemaDefinition>;
     // (undocumented)
     $id: string;
     // (undocumented)
     $schema: string;
+}
+
+// @public
+export interface JSONSchemaCommon {
+    $observe?: boolean;
+    // (undocumented)
+    $ref?: string;
+    // (undocumented)
+    anyOf?: Array<any>;
+    // (undocumented)
+    items?: any;
+    // (undocumented)
+    properties?: any;
+    // (undocumented)
+    type?: string;
+}
+
+// @public
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
 }
 
 // @public
@@ -47,6 +105,7 @@ export interface ObserverMapConfig {
     properties?: {
         [rootProperty: string]: ObserverMapPathEntry;
     };
+    schema?: Schema;
 }
 
 // @public
@@ -61,6 +120,22 @@ export interface ObserverMapPathNode {
 }
 
 // @public
+export interface RegisterPathConfig {
+    // (undocumented)
+    childrenMap: ChildrenMap | null;
+    // (undocumented)
+    pathConfig: CachedPath;
+    // (undocumented)
+    rootPropertyName: string;
+}
+
+// @public
+export interface RepeatCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "repeat";
+}
+
+// @public
 export interface ResolvedStringsAndValues {
     // (undocumented)
     strings: Array<string>;
@@ -71,7 +146,6 @@ export interface ResolvedStringsAndValues {
 // @public
 export class Schema {
     constructor(name: string);
-    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point declarative.d.ts
     addPath(config: RegisterPathConfig): void;
     getRootProperties(): IterableIterator<string>;
     getSchema(rootPropertyName: string): JSONSchema | null;
