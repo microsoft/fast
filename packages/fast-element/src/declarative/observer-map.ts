@@ -1,5 +1,6 @@
 import { setDefinitionSchemaTransform } from "../components/definition-schema-transforms.js";
 import {
+    type FASTElementDefinition,
     type FASTElementExtension,
     hasFASTElementTemplateResolver,
 } from "../components/fast-definitions.js";
@@ -80,6 +81,14 @@ export interface ObserverMapConfig {
 const observerMapSchemaTransformKey = "observer-map";
 const observerMapSchemaTransformPriority = 1;
 
+function defineObserverMap(
+    definition: FASTElementDefinition,
+    schema: Schema,
+    config: ObserverMapConfig,
+): void {
+    new ObserverMap(definition.type.prototype, schema, config).defineProperties();
+}
+
 /**
  * Creates a FAST element extension that enables schema-driven observer mapping
  * for the resolved definition. When called without arguments, observes every
@@ -90,13 +99,14 @@ const observerMapSchemaTransformPriority = 1;
 export function observerMap(config: ObserverMapConfig = {}): FASTElementExtension {
     return definition => {
         const schema = config.schema ?? definition.schema;
+        const hasTemplateResolver = hasFASTElementTemplateResolver(definition);
 
-        if (schema) {
-            new ObserverMap(definition.type.prototype, schema, config).defineProperties();
+        if (schema && !hasTemplateResolver) {
+            defineObserverMap(definition, schema, config);
             return;
         }
 
-        if (!hasFASTElementTemplateResolver(definition)) {
+        if (!hasTemplateResolver) {
             throw new Error(
                 "observerMap requires a schema. Pass observerMap({ schema }), provide a schema on the FASTElement definition, or use declarativeTemplate().",
             );
@@ -106,11 +116,7 @@ export function observerMap(config: ObserverMapConfig = {}): FASTElementExtensio
             definition,
             observerMapSchemaTransformKey,
             ({ definition, schema }) => {
-                new ObserverMap(
-                    definition.type.prototype,
-                    schema,
-                    config,
-                ).defineProperties();
+                defineObserverMap(definition, config.schema ?? schema, config);
             },
             observerMapSchemaTransformPriority,
         );

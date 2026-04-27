@@ -465,12 +465,14 @@ function assignProxyToItemsInObject(
                 if (!observedArraysMap.has(proxiedData)) {
                     observedArraysMap.set(
                         proxiedData,
-                        assignObservablesToArray(
-                            proxiedData,
-                            definition as JSONSchemaDefinition,
-                            rootSchema,
-                            target,
-                            rootProperty,
+                        assignSubscribeToObservableArray(proxiedData, () =>
+                            assignObservablesToArray(
+                                proxiedData,
+                                definition as JSONSchemaDefinition,
+                                rootSchema,
+                                target,
+                                rootProperty,
+                            ),
                         ),
                     );
                 }

@@ -66,6 +66,11 @@ const subpathExports = [
         export: "enableHydration",
     },
     {
+        name: "declarativeTemplate",
+        importPath: "@microsoft/fast-element/declarative.js",
+        export: "declarativeTemplate",
+    },
+    {
         name: "ArrayObserver",
         importPath: "@microsoft/fast-element/array-observer.js",
         export: "ArrayObserver",

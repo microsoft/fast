@@ -78,6 +78,69 @@ test.describe("extension subpaths", () => {
         expect(result.replacedOriginal).toBe(true);
     });
 
+    test("observerMap observes items spliced into nested $defs arrays", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver } = await import("/main.js");
+            // @ts-expect-error: Client module.
+            const { Schema, observerMap } = await import("/extension-subpaths-main.js");
+
+            ArrayObserver.enable();
+
+            class ManualElement {
+                public someData: any;
+            }
+
+            const schema = new Schema("manual-defs-array");
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "repeat",
+                    path: "someData.items",
+                    currentContext: "item",
+                    parentContext: null,
+                },
+                childrenMap: null,
+            });
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "default",
+                    path: "item.name",
+                    currentContext: "item",
+                    parentContext: null,
+                },
+                childrenMap: null,
+            });
+
+            observerMap({ schema })({ type: ManualElement } as any);
+
+            const instance = new ManualElement();
+            instance.someData = {
+                items: [{ name: "first" }],
+            };
+
+            instance.someData.items.push({ name: "second" });
+            await new Promise(resolve =>
+                requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            );
+
+            return {
+                hasObservableName:
+                    typeof Object.getOwnPropertyDescriptor(
+                        instance.someData.items[1],
+                        "name",
+                    )?.get === "function",
+            };
+        });
+
+        expect(result.hasObservableName).toBe(true);
+    });
+
     test("observerMap reports missing schemas for non-declarative definitions", async ({
         page,
     }) => {

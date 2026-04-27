@@ -328,7 +328,9 @@ test.describe("declarativeTemplate", () => {
         );
     });
 
-    test("preserves and augments an explicit schema", async ({ page }) => {
+    test("preserves and augments an explicit schema before applying maps", async ({
+        page,
+    }) => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
@@ -340,33 +342,73 @@ test.describe("declarativeTemplate", () => {
                 declarativeTemplate,
                 uniqueElementName,
             } = await import("/declarative-main.js");
+            // @ts-expect-error: Client module.
+            const { attributeMap, observerMap } = await import(
+                "/extension-subpaths-main.js"
+            );
 
             const elementName = uniqueElementName();
             const schema = new Schema(elementName);
 
             document.body.insertAdjacentHTML(
                 "beforeend",
-                `<f-template name="${elementName}"><template><span>{{label}}</span></template></f-template>`,
+                `<f-template name="${elementName}"><template><span class="label">{{label}}</span><span class="nested">{{data.value}}</span></template></f-template>`,
             );
 
-            class TestElement extends FASTElement {}
+            class TestElement extends FASTElement {
+                public data = {
+                    value: "before",
+                };
 
-            await TestElement.define({
-                name: elementName,
-                schema,
-                template: declarativeTemplate(),
-            });
+                public updateValue() {
+                    this.data.value = "after";
+                }
+            }
+
+            await TestElement.define(
+                {
+                    name: elementName,
+                    schema,
+                    template: declarativeTemplate(),
+                },
+                [observerMap(), attributeMap()],
+            );
 
             const definition = FASTElementDefinition.getByType(TestElement) as any;
+            const element = document.createElement(elementName) as any;
+
+            document.body.appendChild(element);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            element.setAttribute("label", "hello");
+            element.updateValue();
+
+            await new Promise(resolve =>
+                requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            );
+
+            const labelDescriptor = Object.getOwnPropertyDescriptor(
+                Object.getPrototypeOf(element),
+                "label",
+            );
 
             return {
+                hasLabelAccessor: typeof labelDescriptor?.get === "function",
+                labelText: element.shadowRoot?.querySelector(".label")?.textContent ?? "",
+                nestedText:
+                    element.shadowRoot?.querySelector(".nested")?.textContent ?? "",
                 sameSchema: definition.schema === schema,
                 schemaRootProperties: Array.from(schema.getRootProperties()),
             };
         });
 
+        expect(result.hasLabelAccessor).toBe(true);
+        expect(result.labelText).toBe("hello");
+        expect(result.nestedText).toBe("after");
         expect(result.sameSchema).toBe(true);
-        expect(result.schemaRootProperties).toEqual(expect.arrayContaining(["label"]));
+        expect(result.schemaRootProperties).toEqual(
+            expect.arrayContaining(["label", "data"]),
+        );
     });
 
     test("uses a native <f-template> publisher instead of a FASTElement", async ({
