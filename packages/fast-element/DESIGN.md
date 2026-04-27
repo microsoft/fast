@@ -42,14 +42,18 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
-| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, `AttributeMap` |
+| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`; `@microsoft/fast-element/schema.js` → `Schema` |
+| Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → map helpers usable with declarative or manually supplied schemas |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel (the `FAST` object, the `Updates` queue, and the `Observable` system) is module-scoped — imported from `@microsoft/fast-element` rather than stored on `globalThis`.
+The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
+
+The root entrypoint exports the FAST Element implementation APIs. Focused package
+path exports remain available when a consumer wants a narrower entrypoint.
 
 ---
 
@@ -266,9 +270,19 @@ See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
 
 **Files**: `src/styles/css.ts`, `src/styles/element-styles.ts`, `src/styles/css-directive.ts`
 
-**Subpath export**: `@microsoft/fast-element/styles.js`
+**Exported from**: `@microsoft/fast-element`
 
-The `css` tag, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are imported from the `@microsoft/fast-element/styles.js` subpath rather than the main barrel. The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
+The `css` tag, `ElementStyles`, `CSSDirective`, `cssDirective`,
+`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and
+`StyleTarget` are imported from `@microsoft/fast-element`. The `css` tag
+(analogous to `html`) builds `ElementStyles` objects. During
+`ElementController.connect()`, styles are applied to the element's shadow root
+either via `adoptedStylesheets` (preferred) or an appended `<style>` node,
+depending on platform support. `CSSDirective`s can contribute additional static
+CSS during template composition, but runtime CSS bindings and style-attached
+`HostBehavior`s are not supported. Arbitrary runtime style toggling is handled
+through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles`
+itself is a static container.
 
 ---
 
@@ -320,30 +334,40 @@ See `docs/di/api-report.api.md` for the full public API surface.
 
 ### Declarative HTML
 
-**Files**: `src/declarative.ts`, `src/declarative/*`
+**Files**: `src/declarative/index.ts`, `src/declarative/*`
 
 FAST Element also owns the declarative HTML runtime that previously lived in a
-separate package. The dedicated `@microsoft/fast-element/declarative.js`
-entrypoint exports `TemplateElement`, `TemplateParser`, `Schema`,
-`schemaRegistry`, `ObserverMap`, `AttributeMap`, and the related config types.
+separate package. `@microsoft/fast-element` exports the declarative runtime API:
+`declarativeTemplate()`, `TemplateParser`, `Schema`, `schemaRegistry`, and
+related parser/schema types. Map helpers are also exported from the root so they
+can be used with declarative templates or manually supplied schemas. The
+`<f-template>` element is an internal native `HTMLElement` publisher that
+`declarativeTemplate()` defines in the target registry; it is not part of the
+public API.
 
 The declarative runtime intentionally reuses the same FAST Element primitives as
 the imperative `html` API:
 
-- `TemplateElement` attaches parsed `ViewTemplate` instances through
-  `FASTElementDefinition.register()` rather than introducing a second
-  registration pipeline.
+- The internal `<f-template>` publisher parses HTML and returns concrete
+  `ViewTemplate` instances through the registry-aware declarative template
+  bridge.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
-- `ObserverMap` and `AttributeMap` layer on top of the core observable and
-  attribute-definition systems.
+- `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
+  exported from `@microsoft/fast-element/attribute-map.js` and
+  `@microsoft/fast-element/observer-map.js`. With `declarativeTemplate()` they
+  register schema transforms on the element definition, and those transforms run
+  after parsing in deterministic order (`attributeMap()` before
+  `observerMap()`). Outside declarative templates, `attributeMap()` uses
+  `definition.schema`, while `observerMap()` can use either `definition.schema`
+  or `observerMap({ schema })`.
 
-The `src/declarative.ts` entrypoint is pure at module evaluation time. The
-declarative runtime installs its debug messages and hydratable `ViewTemplate`
-hooks lazily from `TemplateParser.createTemplate()`, keeping the root
-`@microsoft/fast-element` barrel free of declarative side effects and
-utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
-for the detailed architecture.
+The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
+declarative API lazily installs declarative debug messages only. Hydration hooks
+and hydratable `ViewTemplate` support are installed exclusively by
+`enableHydration()` from `@microsoft/fast-element/hydration.js`. See
+[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+architecture.
 
 ---
 
@@ -505,7 +529,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 src/
 ├── interfaces.ts          # Core types: Callable, Constructable, Message codes
 ├── platform.ts            # FAST module-scoped singleton, TypeRegistry
-├── declarative.ts         # Pure declarative entrypoint
+├── declarative/           # Pure declarative entrypoint and map helpers
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
 ├── metadata.ts            # Reflect-based metadata helpers
@@ -543,18 +567,24 @@ src/
 ├── components/
 │   ├── fast-element.ts    # FASTElement, @customElement
 │   ├── element-controller.ts  # ElementController, Stages
-│   ├── fast-definitions.ts    # FASTElementDefinition
+│   ├── fast-definitions.ts    # FASTElementDefinition, optional definition schema
+│   ├── schema.ts              # Schema class and schemaRegistry
+│   ├── definition-schema-transforms.ts # Definition-scoped schema transform storage
 │   └── attributes.ts          # AttributeDefinition, @attr, converters
+├── extensions/
+│   ├── observer-map.ts    # observerMap() extension and proxy-backed observation helpers
+│   └── attribute-map.ts   # attributeMap() extension and automatic @attr helpers
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
 ├── context.ts             # Context, FASTContext, Context protocol
 ├── declarative/
-│   ├── template.ts        # TemplateElement, options, lifecycle callbacks
+│   ├── template.ts        # declarativeTemplate() and internal f-template publisher
 │   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
-│   ├── schema.ts          # Binding schema builder + schemaRegistry
-│   ├── observer-map.ts    # Proxy-backed deep observation helpers
-│   ├── attribute-map.ts   # Automatic @attr registration helpers
-│   ├── utilities.ts       # Declarative parsing and proxy utilities
+│   ├── schema.ts          # Compatibility re-export for Schema
+│   ├── definition-options.ts # Compatibility re-export for schema transforms
+│   ├── observer-map.ts    # Internal observer-map extension alias (not a package export)
+│   ├── attribute-map.ts   # Internal attribute-map extension alias (not a package export)
+│   ├── utilities.ts       # Declarative parsing utilities
 │   └── syntax.ts          # Declarative syntax constants
 ├── state/
 │   ├── state.ts           # state() helper (beta)

@@ -1,5 +1,8 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { enableDebug } from "@microsoft/fast-element/debug.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+
+enableDebug();
 
 class TestElementNoTemplate extends FASTElement {}
 FASTElement.define(TestElementNoTemplate, {

@@ -15,12 +15,12 @@ navigationOptions:
 
 ## AttributeDefinition class
 
-An implementation of [Accessor](../fast-element.accessor/) that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
 
 **Signature:**
 
 ```typescript
-export declare class AttributeDefinition implements Accessor 
+export declare class AttributeDefinition implements Accessor
 ```
 **Implements:** [Accessor](../fast-element.accessor/)
 

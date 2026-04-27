@@ -20,7 +20,7 @@ The options used to configure subtree observation.
 **Signature:**
 
 ```typescript
-export interface SubtreeDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> 
+export interface SubtreeDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList">
 ```
 **Extends:** [NodeBehaviorOptions](../fast-element.nodebehavioroptions/)<!-- -->&lt;T&gt;, Omit&lt;MutationObserverInit, "subtree" \| "childList"&gt;
 

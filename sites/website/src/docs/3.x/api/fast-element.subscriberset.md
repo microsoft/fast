@@ -20,7 +20,7 @@ An implementation of [Notifier](../fast-element.notifier/) that efficiently keep
 **Signature:**
 
 ```typescript
-export declare class SubscriberSet implements Notifier 
+export declare class SubscriberSet implements Notifier
 ```
 **Implements:** [Notifier](../fast-element.notifier/)
 
