@@ -29,74 +29,9 @@ const subpathExports = [
     },
     { name: "attr", importPath: "@microsoft/fast-element/attr.js", export: "attr" },
     {
-        name: "AttributeConfiguration",
-        importPath: "@microsoft/fast-element/attr.js",
-        export: "AttributeConfiguration",
-    },
-    {
-        name: "AttributeDefinition",
-        importPath: "@microsoft/fast-element/attr.js",
-        export: "AttributeDefinition",
-    },
-    {
-        name: "booleanConverter",
-        importPath: "@microsoft/fast-element/attr.js",
-        export: "booleanConverter",
-    },
-    {
-        name: "nullableBooleanConverter",
-        importPath: "@microsoft/fast-element/attr.js",
-        export: "nullableBooleanConverter",
-    },
-    {
-        name: "nullableNumberConverter",
-        importPath: "@microsoft/fast-element/attr.js",
-        export: "nullableNumberConverter",
-    },
-    {
-        name: "Binding",
-        importPath: "@microsoft/fast-element/binding.js",
-        export: "Binding",
-    },
-    {
-        name: "normalizeBinding",
-        importPath: "@microsoft/fast-element/binding.js",
-        export: "normalizeBinding",
-    },
-    {
-        name: "oneTime",
-        importPath: "@microsoft/fast-element/binding.js",
-        export: "oneTime",
-    },
-    {
-        name: "oneWay",
-        importPath: "@microsoft/fast-element/binding.js",
-        export: "oneWay",
-    },
-    {
-        name: "listener",
-        importPath: "@microsoft/fast-element/binding.js",
-        export: "listener",
-    },
-    {
         name: "children",
         importPath: "@microsoft/fast-element/children.js",
         export: "children",
-    },
-    {
-        name: "ChildrenDirective",
-        importPath: "@microsoft/fast-element/children.js",
-        export: "ChildrenDirective",
-    },
-    {
-        name: "elements",
-        importPath: "@microsoft/fast-element/node-observation.js",
-        export: "elements",
-    },
-    {
-        name: "NodeObservationDirective",
-        importPath: "@microsoft/fast-element/node-observation.js",
-        export: "NodeObservationDirective",
     },
     {
         name: "ref",
@@ -104,19 +39,9 @@ const subpathExports = [
         export: "ref",
     },
     {
-        name: "RefDirective",
-        importPath: "@microsoft/fast-element/ref.js",
-        export: "RefDirective",
-    },
-    {
         name: "slotted",
         importPath: "@microsoft/fast-element/slotted.js",
         export: "slotted",
-    },
-    {
-        name: "SlottedDirective",
-        importPath: "@microsoft/fast-element/slotted.js",
-        export: "SlottedDirective",
     },
     {
         name: "volatile",
@@ -130,135 +55,20 @@ const subpathExports = [
     },
     { name: "html", importPath: "@microsoft/fast-element/html.js", export: "html" },
     {
-        name: "ViewTemplate",
-        importPath: "@microsoft/fast-element/html.js",
-        export: "ViewTemplate",
-    },
-    {
         name: "repeat",
         importPath: "@microsoft/fast-element/repeat.js",
         export: "repeat",
     },
-    {
-        name: "RepeatBehavior",
-        importPath: "@microsoft/fast-element/repeat.js",
-        export: "RepeatBehavior",
-    },
-    {
-        name: "RepeatDirective",
-        importPath: "@microsoft/fast-element/repeat.js",
-        export: "RepeatDirective",
-    },
     { name: "css", importPath: "@microsoft/fast-element/css.js", export: "css" },
-    {
-        name: "ArrayObserver",
-        importPath: "@microsoft/fast-element/array-observer.js",
-        export: "ArrayObserver",
-    },
-    {
-        name: "DOM",
-        importPath: "@microsoft/fast-element/dom.js",
-        export: "DOM",
-    },
-    {
-        name: "DOMAspect",
-        importPath: "@microsoft/fast-element/dom.js",
-        export: "DOMAspect",
-    },
     {
         name: "enableHydration",
         importPath: "@microsoft/fast-element/hydration.js",
         export: "enableHydration",
     },
     {
-        name: "HydrationTracker",
-        importPath: "@microsoft/fast-element/hydration.js",
-        export: "HydrationTracker",
-    },
-    {
-        name: "isHydratable",
-        importPath: "@microsoft/fast-element/hydration.js",
-        export: "isHydratable",
-    },
-    {
-        name: "HydrationBindingError",
-        importPath: "@microsoft/fast-element/hydration.js",
-        export: "HydrationBindingError",
-    },
-    {
-        name: "render",
-        importPath: "@microsoft/fast-element/render.js",
-        export: "render",
-    },
-    {
-        name: "RenderBehavior",
-        importPath: "@microsoft/fast-element/render.js",
-        export: "RenderBehavior",
-    },
-    {
-        name: "RenderDirective",
-        importPath: "@microsoft/fast-element/render.js",
-        export: "RenderDirective",
-    },
-    {
-        name: "Schema",
-        importPath: "@microsoft/fast-element/schema.js",
-        export: "Schema",
-    },
-    {
-        name: "schemaRegistry",
-        importPath: "@microsoft/fast-element/schema.js",
-        export: "schemaRegistry",
-    },
-    {
-        name: "Compiler",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "Compiler",
-    },
-    {
-        name: "HTMLBindingDirective",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "HTMLBindingDirective",
-    },
-    {
-        name: "HTMLDirective",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "HTMLDirective",
-    },
-    {
-        name: "htmlDirective",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "htmlDirective",
-    },
-    {
-        name: "StatelessAttachedAttributeDirective",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "StatelessAttachedAttributeDirective",
-    },
-    {
-        name: "Markup",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "Markup",
-    },
-    {
-        name: "Parser",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "Parser",
-    },
-    {
-        name: "InlineTemplateDirective",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "InlineTemplateDirective",
-    },
-    {
-        name: "HTMLView",
-        importPath: "@microsoft/fast-element/templating.js",
-        export: "HTMLView",
-    },
-    {
-        name: "declarativeTemplate",
-        importPath: "@microsoft/fast-element/declarative.js",
-        export: "declarativeTemplate",
+        name: "ArrayObserver",
+        importPath: "@microsoft/fast-element/array-observer.js",
+        export: "ArrayObserver",
     },
     {
         name: "observerMap",
