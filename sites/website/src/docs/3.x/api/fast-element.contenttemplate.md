@@ -20,7 +20,7 @@ A simple template that can create ContentView instances.
 **Signature:**
 
 ```typescript
-export interface ContentTemplate 
+export interface ContentTemplate
 ```
 
 ## Methods

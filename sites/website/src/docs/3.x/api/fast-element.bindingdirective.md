@@ -20,7 +20,7 @@ The directive from which a binding originates.
 **Signature:**
 
 ```typescript
-export interface BindingDirective 
+export interface BindingDirective
 ```
 
 ## Properties

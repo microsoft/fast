@@ -48,7 +48,7 @@ callbacks
 
 </td><td>
 
-TemplateLifecycleCallbacks
+[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
 
 
 </td><td>
@@ -61,4 +61,4 @@ _(Optional)_ Optional per-element lifecycle callbacks.
 
 **Returns:**
 
-FASTElementTemplateResolver
+[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)

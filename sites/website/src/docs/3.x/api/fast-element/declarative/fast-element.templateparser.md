@@ -24,7 +24,7 @@ The parsing pipeline is fully synchronous — no promises are allocated during t
 **Signature:**
 
 ```typescript
-export declare class TemplateParser 
+export declare class TemplateParser
 ```
 
 ## Methods

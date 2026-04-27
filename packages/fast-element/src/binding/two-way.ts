@@ -46,6 +46,7 @@ let twoWaySettings: TwoWaySettings = {
 
 /**
  * Enables configuring two-way binding settings.
+ * @public
  */
 export const TwoWaySettings = Object.freeze({
     /**

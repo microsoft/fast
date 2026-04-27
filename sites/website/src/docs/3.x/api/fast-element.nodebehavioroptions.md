@@ -20,7 +20,7 @@ Options for configuring node observation behavior.
 **Signature:**
 
 ```typescript
-export interface NodeBehaviorOptions<T = any> 
+export interface NodeBehaviorOptions<T = any>
 ```
 
 ## Properties
