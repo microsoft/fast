@@ -1,9 +1,9 @@
-import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    observerMap,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { Observable, observable } from "@microsoft/fast-element/observable.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -473,8 +473,7 @@ ObserverMapSimpleArrayTestElement.define(
     [observerMap()],
 );
 
-// Enable ObserverMap via definition-scoped extensions for this test
-TemplateElement.config({
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

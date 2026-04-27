@@ -20,7 +20,7 @@ Represents metadata configuration for a custom element.
 **Signature:**
 
 ```typescript
-export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties
@@ -58,7 +58,7 @@ Description
 
 </td><td>
 
-([AttributeConfiguration](../fast-element.attributeconfiguration/) \| string)\[\]
+(AttributeConfiguration \| string)\[\]
 
 
 </td><td>
@@ -153,6 +153,27 @@ _(Optional)_ The registry to register this component in by default.
 </td></tr>
 <tr><td>
 
+[schema?](../fast-element.partialfastelementdefinition.schema/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Schema
+
+
+</td><td>
+
+_(Optional)_ The optional schema associated with the custom element definition. Declarative templates assign this automatically during template resolution. Non-declarative callers can provide one for schema-driven extensions.
+
+
+</td></tr>
+<tr><td>
+
 [shadowOptions?](../fast-element.partialfastelementdefinition.shadowoptions/)
 
 
@@ -205,7 +226,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
+ElementViewTemplate&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
 
 
 </td><td>

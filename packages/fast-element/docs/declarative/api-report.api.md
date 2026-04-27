@@ -5,59 +5,59 @@
 ```ts
 
 // @public
-export class AttributeMap {
-    // Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point declarative.d.ts
-    constructor(classPrototype: any, schema: Schema, definition?: FASTElementDefinition, config?: AttributeMapConfig);
+export interface AccessCachedPath extends CachedPathCommon {
     // (undocumented)
-    defineProperties(): void;
+    type: "access";
 }
 
 // @public
-export function attributeMap(option?: AttributeMapConfig): FASTElementExtension;
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
 
 // @public
-export interface AttributeMapConfig {
-    "attribute-name-strategy"?: "none" | "camelCase";
+export interface CachedPathCommon {
+    // (undocumented)
+    currentContext: string | null;
+    // (undocumented)
+    parentContext: string | null;
+    // (undocumented)
+    path: string;
 }
 
-// @public (undocumented)
+// @public
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
-// Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
-// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
+// @public
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
+
+// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point index.d.ts
 //
 // @public
 export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 
 // @public
-export interface ElementOptions {
+export interface DefaultCachedPath extends CachedPathCommon {
     // (undocumented)
-    attributeMap?: AttributeMapConfig;
-    // (undocumented)
-    observerMap?: ObserverMapConfig;
+    type: "default";
 }
 
 // @public
-export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
+export interface EventCachedPath extends CachedPathCommon {
     // (undocumented)
-    [key: string]: ElementOptionsType;
+    type: "event";
 }
 
+// Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point index.d.ts
+//
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
-// @public @deprecated
-export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
-}
-
-// Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point declarative.d.ts
-//
-// @public (undocumented)
+// @public
 export interface JSONSchema extends JSONSchemaCommon {
-    // Warning: (ae-forgotten-export) The symbol "JSONSchemaDefinition" needs to be exported by the entry point declarative.d.ts
-    //
     // (undocumented)
     $defs?: Record<string, JSONSchemaDefinition>;
     // (undocumented)
@@ -67,31 +67,42 @@ export interface JSONSchema extends JSONSchemaCommon {
 }
 
 // @public
-export class ObserverMap {
-    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
-
-// @public
-export function observerMap(option?: ObserverMapConfig): FASTElementExtension;
-
-// @public
-export interface ObserverMapConfig {
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-}
-
-// @public
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-// @public
-export interface ObserverMapPathNode {
-    // (undocumented)
+export interface JSONSchemaCommon {
     $observe?: boolean;
     // (undocumented)
-    [propertyName: string]: ObserverMapPathEntry | undefined;
+    $ref?: string;
+    // (undocumented)
+    anyOf?: Array<any>;
+    // (undocumented)
+    items?: any;
+    // (undocumented)
+    properties?: any;
+    // (undocumented)
+    type?: string;
+}
+
+// @public
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
+}
+
+// @public
+export interface RegisterPathConfig {
+    // (undocumented)
+    childrenMap: ChildrenMap | null;
+    // (undocumented)
+    pathConfig: CachedPath;
+    // (undocumented)
+    rootPropertyName: string;
+}
+
+// @public
+export interface RepeatCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "repeat";
 }
 
 // @public
@@ -105,7 +116,6 @@ export interface ResolvedStringsAndValues {
 // @public
 export class Schema {
     constructor(name: string);
-    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point declarative.d.ts
     addPath(config: RegisterPathConfig): void;
     getRootProperties(): IterableIterator<string>;
     getSchema(rootPropertyName: string): JSONSchema | null;
@@ -114,32 +124,19 @@ export class Schema {
 // @public
 export const schemaRegistry: CachedPathMap;
 
-// Warning: (ae-forgotten-export) The symbol "FASTElement" needs to be exported by the entry point declarative.d.ts
-// Warning: (ae-forgotten-export) The symbol "TemplatePublisher" needs to be exported by the entry point declarative.d.ts
-//
 // @public
-export class TemplateElement extends FASTElement implements TemplatePublisher {
-    constructor();
-    // @deprecated
-    static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
-    // (undocumented)
-    connectedCallback(): void;
-    // (undocumented)
-    disconnectedCallback(): void;
-    static elementOptions: ElementOptionsDictionary;
-    name?: string;
-    // (undocumented)
-    nameChanged(previousName: string | undefined, nextName: string | undefined): void;
-    static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
-    // Warning: (ae-forgotten-export) The symbol "ElementViewTemplate" needs to be exported by the entry point declarative.d.ts
-    //
-    // @internal
-    publishTemplate(definition: FASTElementDefinition): ElementViewTemplate;
+export interface TemplateLifecycleCallbacks {
+    elementDidDefine?(name: string): void;
+    elementDidHydrate?(source: HTMLElement): void;
+    elementDidRegister?(name: string): void;
+    elementWillHydrate?(source: HTMLElement): void;
+    templateDidUpdate?(name: string): void;
+    templateWillUpdate?(name: string): void;
 }
 
 // @public
 export class TemplateParser {
-    // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point declarative.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point index.d.ts
     createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
     parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }

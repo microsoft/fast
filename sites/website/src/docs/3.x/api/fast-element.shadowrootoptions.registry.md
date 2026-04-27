@@ -16,7 +16,7 @@ navigationOptions:
 ## ShadowRootOptions.registry property
 
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
+>
 
 A registry that provides the custom elements visible from within this shadow root.
 
