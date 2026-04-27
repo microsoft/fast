@@ -1,0 +1,17 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+    "extends": "../../api-extractor.json",
+    "mainEntryPointFilePath": "./dist/dts/declarative/attribute-map.d.ts",
+    "dtsRollup": {
+        "enabled": false
+    },
+    "apiReport": {
+        "enabled": true,
+        "reportFolder": "<projectFolder>/docs/attribute-map",
+        "reportFileName": "api-report"
+    },
+    "docModel": {
+        "enabled": true,
+        "apiJsonFilePath": "<projectFolder>/dist/attribute-map/attribute-map.api.json"
+    }
+}

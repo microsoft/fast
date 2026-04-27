@@ -76,14 +76,46 @@ enableDebug();
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
+## Core Helper Subpaths
+
+The root `@microsoft/fast-element` entrypoint keeps the element base class,
+kernel, controller, and definition APIs such as `FASTElement`, `FAST`,
+`ElementController`, `FASTElementDefinition`, and related controller/definition
+types. Optional feature groups are available from dedicated subpaths:
+
+| API | Import path |
+|---|---|
+| `Updates` | `@microsoft/fast-element/updates.js` |
+| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
+| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element/attr.js` |
+| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element/binding.js` |
+| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element/dom.js` |
+| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element/schema.js` |
+| `css` | `@microsoft/fast-element/css.js` |
+| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element/html.js` |
+| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element/templating.js` |
+| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element/render.js` |
+| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
+| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
+| `volatile` | `@microsoft/fast-element/volatile.js` |
+| `children` | `@microsoft/fast-element/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
+| `ref` | `@microsoft/fast-element/ref.js` |
+| `slotted` | `@microsoft/fast-element/slotted.js` |
+| `when` | `@microsoft/fast-element/when.js` |
+| `repeat` | `@microsoft/fast-element/repeat.js` |
+
 ## Dynamic Style Application
 
-Style APIs (`css`, `ElementStyles`, `CSSDirective`, `cssDirective`,
-`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`,
-`StyleTarget`) are imported from `@microsoft/fast-element/styles.js`:
+Import `css`, `CSSTemplateTag`, and `CSSValue` from
+`@microsoft/fast-element/css.js`. Other style APIs (`ElementStyles`,
+`CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`,
+`HostController`, `StyleStrategy`, `StyleTarget`) are imported from
+`@microsoft/fast-element/styles.js`:
 
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+import { css } from "@microsoft/fast-element/css.js";
+import { ElementStyles } from "@microsoft/fast-element/styles.js";
 ```
 
 When runtime state or external signals need to add or remove styles, create the
@@ -99,12 +131,20 @@ controller when styles need to change.
 ## Declarative HTML
 
 FAST Element also publishes a declarative HTML runtime from
-`@microsoft/fast-element/declarative.js`. This entrypoint exports
-`declarativeTemplate()`, `TemplateElement`, `TemplateParser`, `Schema`,
-`ObserverMap`, and `AttributeMap`. The entrypoint stays pure at import time and
-installs the hydratable `ViewTemplate` behavior lazily when declarative APIs
-actually create a template, without adding those side effects to the root
-`@microsoft/fast-element` import.
+`@microsoft/fast-element/declarative.js`. This entrypoint exports the
+functional APIs for declarative templates: `declarativeTemplate()`,
+`attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
+`schemaRegistry`, and related configuration types. Existing declarative imports
+remain supported.
+
+The schema-driven map extensions are also available from their own subpaths:
+`@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`. Prefer these subpaths when
+you only need the maps, when you are not using declarative templates, or when
+you want the smallest tree-shaken extension import. The declarative runtime is
+pure at import time; declarative APIs lazily install only declarative debug
+messages. Hydration is separate and remains opt-in through `enableHydration()`
+from `@microsoft/fast-element/hydration.js`.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
@@ -118,14 +158,40 @@ MyElement.define({
 });
 ```
 
-`declarativeTemplate()` automatically defines `<f-template>` in the relevant
-registry, resolves the matching `<f-template name="my-element">`, and keeps the
-definition template concrete before `define()` resolves. `TemplateElement`
-remains available for lifecycle configuration and per-element options such as
-`TemplateElement.config()` and `TemplateElement.options()`.
+`declarativeTemplate()` automatically defines FAST's internal native
+`<f-template>` publisher in the relevant registry, resolves the matching
+`<f-template name="my-element">`, and keeps the definition template concrete
+before `define()` resolves. Consumers should not import or define the
+`<f-template>` implementation directly.
+
+Declarative schema behavior is enabled with define extensions:
+
+```ts
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap(), observerMap()],
+);
+```
+
+`attributeMap()` creates `@attr`-style accessors for leaf bindings, and
+`observerMap()` creates deep observable accessors for discovered root
+properties. Declarative templates assign `definition.schema` during template
+resolution so these extensions always have schema data when used with
+`declarativeTemplate()`. For non-declarative/manual schema use, import `Schema`
+from `@microsoft/fast-element/schema.js` and pass it on the element definition;
+`observerMap()` can also receive
+`observerMap({ schema })` directly. When both extensions are present, attribute
+mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
-`@microsoft/fast-element/declarative/utilities.js`. See
+`@microsoft/fast-element/declarative-utilities.js`. See
 [`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
 details and the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)

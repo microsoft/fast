@@ -1,6 +1,6 @@
 const path = require("node:path");
 const { createInterface } = require("node:readline");
-const { exec } = require("node:child_process");
+const { execFile } = require("node:child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
@@ -11,16 +11,81 @@ const majorVersion = process.argv[2] || "3";
 const currentVersion = `${majorVersion}x`;
 const versionDir = `${majorVersion}.x`;
 const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
+const apiDocumenterCommand = path.join(
+    projectRoot,
+    "node_modules",
+    ".bin",
+    process.platform === "win32" ? "api-documenter.cmd" : "api-documenter",
+);
 
 const packages = [
     {
         main: "fast-element",
-        exports: ["context", "declarative", "di"],
+        exports: [
+            "context",
+            "declarative",
+            "declarative-utilities",
+            "di",
+            "hydration",
+            "binding",
+            "two-way",
+            "signal",
+            "schema",
+            "dom",
+            "updates",
+            "observable",
+            "attr",
+            "volatile",
+            "css",
+            "html",
+            "templating",
+            "render",
+            "array-observer",
+            "children",
+            "node-observation",
+            "ref",
+            "slotted",
+            "when",
+            "repeat",
+            "attribute-map",
+            "observer-map",
+        ],
     },
 ];
 
+function normalizePackageExport(pkgExport) {
+    if (typeof pkgExport === "string") {
+        return {
+            docsFolder: pkgExport,
+            publicPath: `${pkgExport}.js`,
+            apiJsonPath: `${pkgExport}/${pkgExport}.api.json`,
+        };
+    }
+
+    return pkgExport;
+}
+
 function yamlString(value) {
     return JSON.stringify(value);
+}
+
+function runAPIDocumenter(inputDir, outputDir) {
+    return new Promise((resolve, reject) => {
+        execFile(
+            apiDocumenterCommand,
+            ["markdown", "-i", inputDir, "-o", outputDir],
+            (err, stdout, stderr) => {
+                console.log(stdout);
+                console.error(stderr);
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve();
+            },
+        );
+    });
 }
 
 async function safeCopy(source, dest) {
@@ -49,21 +114,31 @@ async function safeWrite(dest, content) {
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
-            path.resolve(
+            path.join(
                 getPackageJsonDir(`@microsoft/${pkg.main}`),
-                `./dist/${pkg.main}.api.json`,
+                "dist",
+                `${pkg.main}.api.json`,
             ),
-            `${tempAPIDir}/${pkg.main}.api.json`,
+            path.join(tempAPIDir, `${pkg.main}.api.json`),
         );
 
         if (Array.isArray(pkg.exports)) {
             for (const pkgExport of pkg.exports) {
+                const normalizedExport = normalizePackageExport(pkgExport);
+                const apiJsonFileName = path.basename(normalizedExport.apiJsonPath);
+
                 await safeCopy(
-                    path.resolve(
+                    path.join(
                         getPackageJsonDir(`@microsoft/${pkg.main}`),
-                        `./dist/${pkgExport}/${pkgExport}.api.json`,
+                        "dist",
+                        normalizedExport.apiJsonPath,
                     ),
-                    `${tempAPIDir}/${pkg.main}/${pkgExport}/${pkgExport}.api.json`,
+                    path.join(
+                        tempAPIDir,
+                        pkg.main,
+                        normalizedExport.docsFolder,
+                        apiJsonFileName,
+                    ),
                 );
             }
         }
@@ -148,6 +223,8 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                         : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`);
                 }
 
+                line = line.replace(/[ \t]+$/u, "");
+
                 if (!skip) {
                     output.push(line);
                 }
@@ -212,36 +289,14 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 async function buildAPIMarkdown() {
     await copyAPI();
 
-    await new Promise((resolve, reject) =>
-        exec(
-            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
-            (err, stdout, stderr) => {
-                console.log(stdout);
-                console.error(stderr);
-                if (err) {
-                    return reject(err);
-                }
-
-                return resolve();
-            },
-        ),
-    );
+    await runAPIDocumenter(tempAPIDir, markdownAPIDir);
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
-            await new Promise((resolve, reject) =>
-                exec(
-                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
-                    (err, stdout, stderr) => {
-                        console.log(stdout);
-                        console.error(stderr);
-                        if (err) {
-                            return reject(err);
-                        }
-
-                        return resolve();
-                    },
-                ),
+            const normalizedExport = normalizePackageExport(pkgExport);
+            await runAPIDocumenter(
+                path.join(tempAPIDir, pkg.main, normalizedExport.docsFolder),
+                path.join(markdownAPIDir, pkg.main, normalizedExport.docsFolder),
             );
         }
     }
@@ -252,14 +307,19 @@ async function buildAPIMarkdown() {
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
-            const exportDir = `${markdownAPIDir}/${pkg.main}/${pkgExport}`;
+            const normalizedExport = normalizePackageExport(pkgExport);
+            const exportDir = path.join(
+                markdownAPIDir,
+                pkg.main,
+                normalizedExport.docsFolder,
+            );
             const exportDocFiles = await fs.readdir(exportDir);
 
             convertDocFiles(
                 exportDir,
                 exportDocFiles,
                 `@microsoft/${pkg.main}`,
-                `${pkgExport}.js`,
+                normalizedExport.publicPath,
             );
         }
     }

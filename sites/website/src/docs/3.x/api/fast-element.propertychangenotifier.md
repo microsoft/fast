@@ -20,7 +20,7 @@ An implementation of Notifier that allows subscribers to be notified of individu
 **Signature:**
 
 ```typescript
-export declare class PropertyChangeNotifier implements Notifier 
+export declare class PropertyChangeNotifier implements Notifier
 ```
 **Implements:** [Notifier](../fast-element.notifier/)
 

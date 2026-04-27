@@ -20,7 +20,7 @@ Used to configure a dependency injection interface key.
 **Signature:**
 
 ```typescript
-export interface InterfaceConfiguration 
+export interface InterfaceConfiguration
 ```
 
 ## Properties
@@ -80,7 +80,7 @@ boolean
 
 </td><td>
 
-_(Optional)_ When true, the dependency will be re-resolved when FASTElement connection changes. If the resolved value changes due to connection change, a  will be emitted for the property, with the previous and next values provided to any subscriber.
+_(Optional)_ When true, the dependency will be re-resolved when FASTElement connection changes. If the resolved value changes due to connection change, an observable notification will be emitted for the property, with the previous and next values provided to any subscriber.
 
 
 </td></tr>

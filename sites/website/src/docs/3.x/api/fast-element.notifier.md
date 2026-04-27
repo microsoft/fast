@@ -20,7 +20,7 @@ Provides change notifications for an observed subject.
 **Signature:**
 
 ```typescript
-export interface Notifier 
+export interface Notifier
 ```
 
 ## Properties

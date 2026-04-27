@@ -1,23 +1,22 @@
-export type { FASTElementExtension } from "../components/fast-definitions.js";
-export type { AttributeMapConfig } from "./attribute-map.js";
-export { AttributeMap, attributeMap } from "./attribute-map.js";
 export type {
-    ObserverMapConfig,
-    ObserverMapPathEntry,
-    ObserverMapPathNode,
-} from "./observer-map.js";
-export { ObserverMap, observerMap } from "./observer-map.js";
+    FASTElementExtension,
+    TemplateLifecycleCallbacks,
+} from "../components/fast-definitions.js";
 export {
+    type AccessCachedPath,
+    type CachedPath,
+    type CachedPathCommon,
     type CachedPathMap,
+    type ChildrenMap,
+    type DefaultCachedPath,
+    type EventCachedPath,
     type JSONSchema,
+    type JSONSchemaCommon,
+    type JSONSchemaDefinition,
+    type RegisterPathConfig,
+    type RepeatCachedPath,
     Schema,
     schemaRegistry,
-} from "./schema.js";
-export {
-    declarativeTemplate,
-    type ElementOptions,
-    type ElementOptionsDictionary,
-    type HydrationLifecycleCallbacks,
-    TemplateElement,
-} from "./template.js";
+} from "../components/schema.js";
+export { declarativeTemplate } from "./template.js";
 export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";
