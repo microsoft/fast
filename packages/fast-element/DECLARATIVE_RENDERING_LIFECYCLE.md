@@ -10,7 +10,7 @@ core runtime and its declarative entrypoint:
 
 - **`@microsoft/fast-element`**: Provides the core `FASTElement` base class and
   element definition system.
-- **`@microsoft/fast-element`**: Provides the `f-template`
+- **`@microsoft/fast-element/declarative.js`**: Provides the `f-template`
   custom element that processes HTML templates and attaches them to FAST
   elements as a `ViewTemplate` in lieu of an `html` template created during
   `FASTElement.define()`. The preferred path uses `declarativeTemplate()` so

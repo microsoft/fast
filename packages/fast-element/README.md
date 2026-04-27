@@ -62,12 +62,12 @@ importing `@microsoft/fast-element`.
 
 ## Debug entrypoint
 
-`@microsoft/fast-element` exports `enableDebug()` instead of
-configuring FAST at import time. The development root export and debug rollup
-bundle still enable debug behavior automatically.
+`@microsoft/fast-element/debug.js` exports `enableDebug()` instead of configuring
+FAST at import time. The development root export and debug rollup bundle still
+enable debug behavior automatically.
 
 ```ts
-import { enableDebug } from "@microsoft/fast-element";
+import { enableDebug } from "@microsoft/fast-element/debug.js";
 
 enableDebug();
 ```
@@ -80,8 +80,9 @@ Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.
 
 The root `@microsoft/fast-element` entrypoint exports the FAST Element
 implementation APIs, including the element base class, kernel, controller,
-definition APIs, template APIs, binding helpers, directives, styles, hydration,
-schema helpers, and declarative helpers.
+definition APIs, template APIs, binding helpers, directives, styles, and schema
+helpers. Declarative, hydration, context, and dependency injection APIs are
+available from their focused path exports.
 
 Focused package path exports remain available for consumers that want to import
 a narrower entrypoint directly. The website's
@@ -112,13 +113,13 @@ controller when styles need to change.
 ## Declarative HTML
 
 FAST Element publishes its declarative HTML runtime from
-`@microsoft/fast-element`. This entrypoint exports the functional APIs for
-declarative templates: `declarativeTemplate()`, `attributeMap()`,
-`observerMap()`, `TemplateParser`, `Schema`, `schemaRegistry`, and related
-configuration types. The declarative runtime is pure at import time;
-declarative APIs lazily install only declarative debug messages. Hydration is
-separate and remains opt-in through `enableHydration()` from
-`@microsoft/fast-element`.
+`@microsoft/fast-element/declarative.js`. This entrypoint exports the
+functional APIs for declarative templates: `declarativeTemplate()`,
+`TemplateParser`, and related configuration types. `attributeMap()` and
+`observerMap()` are available from their own focused path exports. The
+declarative runtime is pure at import time; declarative APIs lazily install only
+declarative debug messages. Hydration is separate and remains opt-in through
+`enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";

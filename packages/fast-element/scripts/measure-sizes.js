@@ -9,8 +9,20 @@ const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const rootImportPath = "@microsoft/fast-element";
 const fastElementImportPath = "@microsoft/fast-element/fast-element.js";
+const updatesImportPath = "@microsoft/fast-element/updates.js";
+const observableImportPath = "@microsoft/fast-element/observable.js";
+const attrImportPath = "@microsoft/fast-element/attr.js";
+const childrenImportPath = "@microsoft/fast-element/children.js";
+const refImportPath = "@microsoft/fast-element/ref.js";
+const slottedImportPath = "@microsoft/fast-element/slotted.js";
+const volatileImportPath = "@microsoft/fast-element/volatile.js";
+const whenImportPath = "@microsoft/fast-element/when.js";
+const htmlImportPath = "@microsoft/fast-element/html.js";
+const repeatImportPath = "@microsoft/fast-element/repeat.js";
+const cssImportPath = "@microsoft/fast-element/css.js";
 const declarativeImportPath = "@microsoft/fast-element/declarative.js";
 const hydrationImportPath = "@microsoft/fast-element/hydration.js";
+const arrayObserverImportPath = "@microsoft/fast-element/array-observer.js";
 const observerMapImportPath = "@microsoft/fast-element/observer-map.js";
 const attributeMapImportPath = "@microsoft/fast-element/attribute-map.js";
 
@@ -20,42 +32,63 @@ const measuredExports = [
     {
         name: "Updates",
         export: "Updates",
+        importPath: updatesImportPath,
     },
     {
         name: "Observable",
         export: "Observable",
+        importPath: observableImportPath,
     },
     {
         name: "observable",
         export: "observable",
+        importPath: observableImportPath,
     },
-    { name: "attr", export: "attr" },
+    {
+        name: "attr",
+        export: "attr",
+        importPath: attrImportPath,
+    },
     {
         name: "children",
         export: "children",
+        importPath: childrenImportPath,
     },
     {
         name: "ref",
         export: "ref",
+        importPath: refImportPath,
     },
     {
         name: "slotted",
         export: "slotted",
+        importPath: slottedImportPath,
     },
     {
         name: "volatile",
         export: "volatile",
+        importPath: volatileImportPath,
     },
     {
         name: "when",
         export: "when",
+        importPath: whenImportPath,
     },
-    { name: "html", export: "html" },
+    {
+        name: "html",
+        export: "html",
+        importPath: htmlImportPath,
+    },
     {
         name: "repeat",
         export: "repeat",
+        importPath: repeatImportPath,
     },
-    { name: "css", export: "css" },
+    {
+        name: "css",
+        export: "css",
+        importPath: cssImportPath,
+    },
     {
         name: "enableHydration",
         export: "enableHydration",
@@ -69,6 +102,7 @@ const measuredExports = [
     {
         name: "ArrayObserver",
         export: "ArrayObserver",
+        importPath: arrayObserverImportPath,
     },
     {
         name: "observerMap",
