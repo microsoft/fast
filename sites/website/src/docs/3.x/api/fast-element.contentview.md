@@ -20,7 +20,7 @@ A simple View that can be interpolated into HTML content.
 **Signature:**
 
 ```typescript
-export interface ContentView 
+export interface ContentView
 ```
 
 ## Properties

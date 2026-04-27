@@ -43,6 +43,10 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     ): ElementView<TSource, TParent>;
 }
 
+/**
+ * A template capable of hydrating an element view from existing DOM nodes.
+ * @beta
+ */
 export interface HydratableElementViewTemplate<TSource = any, TParent = any>
     extends ElementViewTemplate<TSource, TParent> {
     hydrate(
@@ -76,6 +80,10 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     inline(): CaptureType;
 }
 
+/**
+ * A template capable of hydrating a synthetic view from existing DOM nodes.
+ * @beta
+ */
 export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any>
     extends SyntheticViewTemplate {
     hydrate(firstChild: Node, lastChild: Node): SyntheticView<TSource, TParent>;

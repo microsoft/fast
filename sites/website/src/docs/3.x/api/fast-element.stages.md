@@ -20,7 +20,7 @@ The various lifecycle stages of an ElementController.
 **Signature:**
 
 ```typescript
-export declare const enum Stages 
+export declare const enum Stages
 ```
 
 ## Enumeration Members

@@ -15,12 +15,14 @@ navigationOptions:
 
 ## JSONSchema interface
 
+A JSON schema describing a root property.
+
 **Signature:**
 
 ```typescript
-export interface JSONSchema extends JSONSchemaCommon 
+export interface JSONSchema extends JSONSchemaCommon
 ```
-**Extends:** JSONSchemaCommon
+**Extends:** [JSONSchemaCommon](../fast-element.jsonschemacommon/)
 
 ## Properties
 
@@ -55,7 +57,7 @@ Description
 
 </td><td>
 
-Record&lt;string, JSONSchemaDefinition&gt;
+Record&lt;string, [JSONSchemaDefinition](../fast-element.jsonschemadefinition/)<!-- -->&gt;
 
 
 </td><td>

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { refPropertyName, Schema } from "./schema.js";
+import { refPropertyName, Schema } from "../components/schema.js";
 
 test.describe("Schema", async () => {
     test("should instantiate with a custom element name without throwing", async () => {

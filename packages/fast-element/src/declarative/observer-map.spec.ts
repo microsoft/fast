@@ -1,6 +1,12 @@
 import { expect, test } from "@playwright/test";
+import {
+    defsPropertyName,
+    type JSONSchema,
+    Schema,
+    schemaRegistry,
+} from "../components/schema.js";
+import { Observable } from "../observation/observable.js";
 import { ObserverMap } from "./observer-map.js";
-import { defsPropertyName, type JSONSchema, Schema, schemaRegistry } from "./schema.js";
 
 const testElementName = "test-class";
 
@@ -45,6 +51,49 @@ test.describe("ObserverMap", async () => {
 
         expect(instance.someData).not.toBe(nextValue);
         expect(instance.someData.$isProxy).toBeTruthy();
+    });
+
+    test("assigns observables to items spliced into nested arrays resolved through $defs", async () => {
+        const schemaMap = schemaRegistry.get(testElementName) as Map<string, JSONSchema>;
+        schemaMap.set("someData", {
+            $schema: "https://json-schema.org/draft/2019-09/schema",
+            $id: `https://fast.design/schemas/${testElementName}/someData.json`,
+            type: "object",
+            properties: {
+                items: {
+                    type: "array",
+                    items: {
+                        $ref: "#/$defs/Item",
+                    },
+                },
+            },
+            [defsPropertyName]: {
+                Item: {
+                    $fast_context: "items",
+                    $fast_parent_contexts: ["someData"],
+                    type: "object",
+                    properties: {
+                        name: { type: "string" },
+                    },
+                },
+            },
+        });
+
+        observerMap.defineProperties();
+
+        const instance = new TestClass();
+        instance.someData = {
+            items: [{ name: "first" }],
+        };
+
+        const secondItem = { name: "second" };
+        instance.someData.items.push(secondItem);
+
+        expect(
+            Observable.getAccessors(instance.someData.items[1]).some(
+                accessor => accessor.name === "name",
+            ),
+        ).toBe(true);
     });
 
     test.describe("properties config", () => {

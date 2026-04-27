@@ -24,7 +24,7 @@ The aspectType (set by HTMLDirective.assignAspect during template processing) de
 **Signature:**
 
 ```typescript
-export declare class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective 
+export declare class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective
 ```
 **Implements:** [HTMLDirective](../fast-element.htmldirective/)<!-- -->, [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [ViewBehavior](../fast-element.viewbehavior/)<!-- -->, [Aspected](../fast-element.aspected/)<!-- -->, [BindingDirective](../fast-element.bindingdirective/)
 
@@ -150,7 +150,7 @@ The unique id of the factory.
 
 </td><td>
 
-[DOMPolicy](../fast-element.dompolicy/)
+DOMPolicy
 
 
 </td><td>

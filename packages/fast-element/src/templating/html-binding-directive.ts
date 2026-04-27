@@ -16,8 +16,8 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
-import { Markup } from "./markup.js";
 import { HydrationStage } from "./hydration-view.js";
+import { Markup } from "./markup.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -70,6 +70,10 @@ export interface ContentTemplate {
     create(): ContentView;
 }
 
+/**
+ * A template capable of hydrating content from existing DOM nodes.
+ * @beta
+ */
 export interface HydratableContentTemplate extends ContentTemplate {
     /**
      * Hydrates a content view from first/last nodes.

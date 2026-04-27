@@ -16,12 +16,14 @@ keywords:
 
 # CSS Templates
 
-The `@microsoft/fast-element/styles.js` module offers a named export `css` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create CSS snippets which will become your web components CSS. These styles are [adoptedStylesheets](https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptedStyleSheets) and associated with the `ShadowRoot`, they therefore do not affect styling in the rest of the document. To share styles between a document and web components, we suggest using [CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
+The `@microsoft/fast-element` module offers a named export `css` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create CSS snippets which will become your web components CSS. These styles are [adoptedStylesheets](https://developer.mozilla.org/en-US/docs/Web/API/Document/adoptedStyleSheets) and associated with the `ShadowRoot`, they therefore do not affect styling in the rest of the document. To share styles between a document and web components, we suggest using [CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/--*).
 
 **Example:**
 ```ts
-import { FASTElement, attr, html } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element/styles.js";
+import { FASTElement } from '@microsoft/fast-element';
+import { attr } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 const template = html`
   <span>${x => x.greeting.toUpperCase()}</span>

@@ -20,7 +20,7 @@ Represents metadata configuration for an HTMLDirective.
 **Signature:**
 
 ```typescript
-export interface PartialHTMLDirectiveDefinition 
+export interface PartialHTMLDirectiveDefinition
 ```
 
 ## Properties
