@@ -20,7 +20,7 @@ Observes an expression for changes.
 **Signature:**
 
 ```typescript
-export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any> 
+export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
 ```
 
 ## Methods

@@ -10,7 +10,7 @@ This document focuses on declarative-runtime implementation details:
 template structure, prerendered markup requirements, lifecycle callbacks,
 binding configuration, syntax, and integration testing.
 
-For package installation, importing `TemplateElement`, basic registration, and
+For package installation, using `declarativeTemplate()`, extension setup, and
 the package-level hydration overview, see the
 [FAST Element README](./README.md#declarative-html) and
 [Prerendered Content Optimization](./README.md#prerendered-content-optimization).
@@ -29,9 +29,16 @@ the relevant registry and waits for the matching declarative template when it is
 already present or inserted later.
 
 The `@microsoft/fast-element/declarative.js` entrypoint itself remains
-side-effect free at import time. The hydratable `ViewTemplate` runtime is
-installed lazily when `TemplateParser`, `TemplateElement`, or
-`declarativeTemplate()` first create a declarative template.
+side-effect free at import time. Declarative APIs lazily install declarative
+debug messages when they create templates. Hydratable `ViewTemplate` support is
+installed only when `enableHydration()` is called from
+`@microsoft/fast-element/hydration.js`.
+
+`observerMap()` and `attributeMap()` remain available from the declarative
+entrypoint for existing declarative imports. New code should prefer the
+extension subpaths, `@microsoft/fast-element/observer-map.js` and
+`@microsoft/fast-element/attribute-map.js`, especially when using
+the maps without declarative templates.
 
 Example:
 ```html
@@ -59,158 +66,84 @@ format and initial-state application details, see
 
 ## Lifecycle Callbacks
 
-FAST Element's declarative entrypoint provides lifecycle callbacks that allow
-you to hook into various stages of template processing and element hydration.
-These callbacks are useful for tracking the rendering lifecycle, gathering
-analytics, or coordinating complex initialization sequences.
+FAST Element's declarative APIs provide lifecycle callbacks that allow you to
+hook into template processing and hydration. The callbacks are split by scope:
 
-### Available Callbacks
+| Scope | API | Callbacks |
+|---|---|---|
+| Per element | `declarativeTemplate(callbacks)` | `elementDidRegister`, `templateWillUpdate`, `templateDidUpdate`, `elementDidDefine`, `elementWillHydrate`, `elementDidHydrate` |
+| Global hydration | `enableHydration(options)` | `hydrationStarted`, `hydrationComplete` |
 
-**Template Lifecycle Callbacks:**
-- `elementDidRegister(name: string)` - Called after the JavaScript class definition has been registered
-- `templateWillUpdate(name: string)` - Called before the template has been evaluated and assigned
-- `templateDidUpdate(name: string)` - Called after the template has been assigned to the definition
-- `elementDidDefine(name: string)` - Called after the custom element has been defined
-
-**Hydration Lifecycle Callbacks:**
-- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
-- `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
-- `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
-- `hydrationComplete()` - Called after all prerendered elements have completed hydration
-
-Hydration callbacks are tracked at the element level by `ElementController` — `hydrationComplete` fires only after every prerendered element has finished binding.
-
-### Configuring Callbacks
-
-Configure lifecycle callbacks using `TemplateElement.config()`:
+Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
+you want prerendered Declarative Shadow DOM to be reused:
 
 ```typescript
-import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-// You can configure all callbacks at once
-const callbacks: HydrationLifecycleCallbacks = {
-    elementDidRegister(name: string) {
-        console.log(`Element registered: ${name}`);
-    },
-    templateWillUpdate(name: string) {
-        console.log(`Template updating: ${name}`);
-    },
-    templateDidUpdate(name: string) {
-        console.log(`Template updated: ${name}`);
-    },
-    elementDidDefine(name: string) {
-        console.log(`Element defined: ${name}`);
-    },
-    elementWillHydrate(source: HTMLElement) {
-        console.log(`Element will hydrate: ${source.localName}`);
-    },
-    elementDidHydrate(source: HTMLElement) {
-        console.log(`Element hydrated: ${source.localName}`);
-    },
-    hydrationComplete() {
-        console.log('All elements hydrated');
-    }
-};
-
-TemplateElement.config(callbacks);
-
-// Or configure only the callbacks you need
-TemplateElement.config({
-    elementDidHydrate(source: HTMLElement) {
-        console.log(`${source.localName} is ready`);
-    },
-    hydrationComplete() {
-        console.log('Page is interactive');
-    }
-});
-```
-
-### Lifecycle Order
-
-The lifecycle callbacks occur in the following general sequence:
-
-1. **Registration Phase**: `elementDidRegister` is called when the element class is registered
-2. **Template Phase**: `templateWillUpdate` → (template processing) → `templateDidUpdate` → `elementDidDefine`
-3. **Hydration Phase**: `hydrationStarted` → `elementWillHydrate` → (hydration) → `elementDidHydrate`
-4. **Completion**: `hydrationComplete` is called after all prerendered elements finish hydrating
-
-**Note:** Template processing is asynchronous and happens independently for each element. The template and hydration phases can be interleaved when multiple elements are being processed simultaneously.
-
-### Use Cases
-
-**Performance Monitoring:**
-```typescript
-TemplateElement.config({
-    elementWillHydrate(source: HTMLElement) {
-        performance.mark(`${source.localName}-hydration-start`);
-    },
-    elementDidHydrate(source: HTMLElement) {
-        performance.mark(`${source.localName}-hydration-end`);
-        performance.measure(
-            `${source.localName}-hydration`,
-            `${source.localName}-hydration-start`,
-            `${source.localName}-hydration-end`
-        );
-    },
-    hydrationComplete() {
-        const entries = performance.getEntriesByType('measure');
-        console.log('Hydration metrics:', entries);
-    }
-});
-```
-
-**Loading State Management:**
-```typescript
-TemplateElement.config({
+enableHydration({
     hydrationStarted() {
-        document.body.classList.add('hydrating');
+        console.log("Hydration started");
     },
     hydrationComplete() {
-        document.body.classList.remove('hydrating');
-        document.body.classList.add('hydrated');
-    }
+        console.log("All elements hydrated");
+    },
 });
 ```
 
-**Debugging and Development:**
+Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
+
 ```typescript
-if (process.env.NODE_ENV === 'development') {
-    const events: Array<{callback: string; name?: string; timestamp: number}> = [];
-    
-    TemplateElement.config({
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
         elementDidRegister(name) {
-            events.push({ callback: 'elementDidRegister', name, timestamp: Date.now() });
+            console.log(`Element registered: ${name}`);
         },
         templateWillUpdate(name) {
-            events.push({ callback: 'templateWillUpdate', name, timestamp: Date.now() });
+            console.log(`Template updating: ${name}`);
         },
         templateDidUpdate(name) {
-            events.push({ callback: 'templateDidUpdate', name, timestamp: Date.now() });
+            console.log(`Template updated: ${name}`);
         },
         elementDidDefine(name) {
-            events.push({ callback: 'elementDidDefine', name, timestamp: Date.now() });
+            console.log(`Element defined: ${name}`);
         },
         elementWillHydrate(source) {
-            events.push({ callback: 'elementWillHydrate', name: source.localName, timestamp: Date.now() });
+            console.log(`Element will hydrate: ${source.localName}`);
         },
         elementDidHydrate(source) {
-            events.push({ callback: 'elementDidHydrate', name: source.localName, timestamp: Date.now() });
+            console.log(`Element hydrated: ${source.localName}`);
         },
-        hydrationComplete() {
-            events.push({ callback: 'hydrationComplete', timestamp: Date.now() });
-            console.table(events);
-        }
-    });
-}
+    }),
+});
 ```
+
+The lifecycle callbacks occur in this general sequence:
+
+1. `elementDidRegister(name)`
+2. `templateWillUpdate(name)` → template processing → `templateDidUpdate(name)`
+3. `elementDidDefine(name)`
+4. If `enableHydration()` was called and the element has prerendered content:
+   `hydrationStarted()` → `elementWillHydrate(source)` → hydration →
+   `elementDidHydrate(source)` → `hydrationComplete()`
+
+Template processing is asynchronous and happens independently for each element,
+so callbacks for different elements may interleave.
 
 ## `observerMap`
 
 When the `observerMap()` extension is applied to an element definition,
-`@microsoft/fast-element/declarative.js` automatically sets up deep reactive
-observation for all root properties discovered in the template.
-`TemplateElement.options()` remains available as a compatibility fallback via
-`observerMap: {}`.
+it automatically sets up deep reactive observation for root properties
+discovered in the template. Declarative templates assign `definition.schema`
+during template resolution, so `observerMap()` has schema data automatically.
+For non-declarative/manual schemas, import from the extension subpath and pass
+`observerMap({ schema })`.
+
+```typescript
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
 
@@ -245,7 +178,7 @@ Each path entry can be:
 Use `$observe: false` on a node to skip it by default, then re-include specific children:
 
 ```typescript
-observerMap: {
+observerMap({
     properties: {
         analytics: {
             charts: {
@@ -254,26 +187,54 @@ observerMap: {
             },
         },
     },
-}
+});
 ```
 
 When `properties` is omitted, all root properties are observed. When
 `properties` is present but empty (`{ properties: {} }`), no root properties
 are observed.
 
+Manual schema example:
+
+```typescript
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-element");
+schema.addPath({
+    rootPropertyName: "user",
+    pathConfig: {
+        type: "default",
+        parentContext: null,
+        currentContext: null,
+        path: "user.name",
+    },
+    childrenMap: null,
+});
+
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
+
 ## `attributeMap`
 
 When the `attributeMap()` extension is applied to an element definition,
-`@microsoft/fast-element/declarative.js` automatically creates reactive `@attr`
-properties for every **leaf binding** in the template — simple expressions
-like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. The
-default behavior uses the `"none"` attribute name strategy.
-`TemplateElement.options()` remains available as a compatibility fallback via
-`attributeMap: {}`.
+it automatically creates reactive `@attr` properties for every **leaf binding**
+in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that
+have no nested properties. Declarative templates provide the schema
+automatically. For non-declarative/manual schemas, place the optional `schema`
+on the FAST element definition and import `attributeMap()` from its extension
+subpath.
 
-By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
+```typescript
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+```
 
-Properties already decorated with `@attr` or `@observable` on the class are left untouched.
+By default, the binding key is treated as a camelCase property name and the HTML
+attribute name is derived by converting it to kebab-case. Properties already
+decorated with `@attr` or `@observable` on the class are left untouched.
 
 ```typescript
 MyElement.define(
@@ -291,21 +252,26 @@ With the template:
 <f-template name="my-element">
     <template>
         <p>{{greeting}}</p>
-        <p>{{first-name}}</p>
+        <p>{{firstName}}</p>
     </template>
 </f-template>
 ```
 
-This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
+This registers `greeting` (attribute `greeting`, property `greeting`) and
+`firstName` (attribute `first-name`, property `firstName`) as `@attr`
+properties on the element prototype, enabling `setAttribute("first-name",
+"Jane")` to trigger a template re-render automatically.
 
 ### `attribute-name-strategy`
 
-The `attribute-name-strategy` configuration option controls how template binding keys map to HTML attribute names. This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+The `attribute-name-strategy` configuration option controls how template binding
+keys map to HTML attribute names. This matches the build-time
+`--attribute-name-strategy` option in `@microsoft/fast-build`.
 
 | Strategy | Behaviour | Example |
 |---|---|---|
-| `"none"` (default) | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
-| `"camelCase"` | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"camelCase"` (default) | Binding key is the camelCase property; attribute name is derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"none"` | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
 
 ```typescript
 MyElement.define(
@@ -315,24 +281,14 @@ MyElement.define(
     },
     [
         attributeMap({
-            "attribute-name-strategy": "camelCase",
+            "attribute-name-strategy": "none",
         }),
     ],
 );
 ```
 
-With the template:
-
-```html
-<f-template name="my-element">
-    <template>
-        <p>{{greeting}}</p>
-        <p>{{firstName}}</p>
-    </template>
-</f-template>
-```
-
-This registers `greeting` (attribute `greeting`, property `greeting`) and `firstName` (attribute `first-name`, property `firstName`) as `@attr` properties. `setAttribute("first-name", "Jane")` triggers a re-render, and the property is accessible as `element.firstName`.
+When using the `"none"` strategy, property names may contain dashes and must be
+accessed via bracket notation (e.g. `element["foo-bar"]`).
 
 ## Syntax
 
@@ -354,7 +310,7 @@ Browser-only bindings:
 
 ### Event binding
 
-Event bindings must include the `()` as well as being preceeded by `@` in keeping with `@microsoft/fast-element` tagged template `html` syntax.
+Event bindings must include the `()` as well as being preceeded by `@` in keeping with the `@microsoft/fast-element/html.js` tagged template syntax.
 
 ```html
 <button @click="{handleClick()}"></button>

@@ -39,8 +39,9 @@ enableHydration();
 Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
 imports as part of the migration. The older
 `install-hydratable-view-templates.js` helper remains available for advanced
-use cases, but `@microsoft/fast-element/declarative.js` now installs hydration
-support lazily when declarative APIs create a template.
+use cases, but the preferred API is `enableHydration()`.
+`@microsoft/fast-element/declarative.js` no longer installs hydration
+automatically.
 
 ### `needsHydrationAttribute` and `deferHydrationAttribute` removed
 
@@ -122,13 +123,85 @@ import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 // After
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 ```
 
-Keep importing core FAST Element APIs from `@microsoft/fast-element`. The
-dedicated declarative entrypoint owns the declarative runtime and installs
-hydration support lazily when declarative templates are created.
+Keep importing root FAST Element APIs such as `FASTElement`, `FAST`,
+`ElementController`, and definition/controller types from
+`@microsoft/fast-element`. Import moved helpers from their dedicated subpaths:
+
+| API | Import path |
+|---|---|
+| `Updates` | `@microsoft/fast-element/updates.js` |
+| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
+| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element/attr.js` |
+| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element/binding.js` |
+| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element/dom.js` |
+| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element/schema.js` |
+| `css` | `@microsoft/fast-element/css.js` |
+| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element/html.js` |
+| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element/templating.js` |
+| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element/render.js` |
+| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
+| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
+| `volatile` | `@microsoft/fast-element/volatile.js` |
+| `children` | `@microsoft/fast-element/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
+| `ref` | `@microsoft/fast-element/ref.js` |
+| `slotted` | `@microsoft/fast-element/slotted.js` |
+| `when` | `@microsoft/fast-element/when.js` |
+| `repeat` | `@microsoft/fast-element/repeat.js` |
+
+The dedicated declarative entrypoint owns declarative template parsing.
+Hydration is opt-in via `enableHydration()` from
+`@microsoft/fast-element/hydration.js`.
+
+### Declarative `TemplateElement` API removed
+
+The `<f-template>` implementation is now internal and is defined automatically
+when an element uses `template: declarativeTemplate()`.
+
+| Removed | Replacement |
+|---|---|
+| `TemplateElement` public export | `declarativeTemplate()` |
+| `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
+| `TemplateElement.config(callbacks)` | `declarativeTemplate(callbacks)` for per-element callbacks and `enableHydration(options)` for global hydration callbacks |
+| `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions from dedicated extension subpaths |
+| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types from dedicated extension subpaths |
+
+Import `declarativeTemplate()` from `@microsoft/fast-element/declarative.js`.
+Import schema-driven map extensions from their dedicated subpaths:
+
+```ts
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap(), observerMap()],
+);
+```
+
+`FASTElementDefinition.schema` is optional. Declarative templates assign it
+automatically during template resolution. Non-declarative users can provide a
+manual schema on the definition, or pass one directly to `observerMap({ schema
+})`.
+
+```ts
+import { Schema } from "@microsoft/fast-element/schema.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+
+const schema = new Schema("my-element");
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
 
 ### `debug.js` requires explicit enablement
 
@@ -245,41 +318,34 @@ The `FASTGlobal` interface type has been removed. Code that referenced this type
 
 The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import kernel services directly from their respective modules.
 
-### `css` and style APIs moved to `@microsoft/fast-element/styles.js`
+### `css` moved to `@microsoft/fast-element/css.js`
 
-`css`, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are no longer exported from the main `@microsoft/fast-element` barrel.
+`css`, `CSSTemplateTag`, and `CSSValue` are imported from `@microsoft/fast-element/css.js`. Other style APIs (`ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget`) are imported from `@microsoft/fast-element/styles.js`.
 
-2.x Example:
+Update imports to:
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/css.js";
+import { ElementStyles } from "@microsoft/fast-element/styles.js";
 ```
 
-3.x Example:
+### `ArrayObserver` moved to `@microsoft/fast-element/array-observer.js`
+
+`ArrayObserver` is imported from `@microsoft/fast-element/array-observer.js`. Other array helpers such as `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` remain available from `@microsoft/fast-element/arrays.js`.
+
+Update imports to:
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
-```
-
-### Array observation moved to `@microsoft/fast-element/arrays.js`
-
-`ArrayObserver`, `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` are now imported from `@microsoft/fast-element/arrays.js`.
-
-2.x Example:
-```ts
-import { ArrayObserver } from "@microsoft/fast-element";
-```
-
-3.x Example:
-```ts
-import { ArrayObserver } from "@microsoft/fast-element/arrays.js";
+import { ArrayObserver } from "@microsoft/fast-element/array-observer.js";
 ```
 
 ### `deferHydrationAttribute` moved to `@microsoft/fast-element/hydration.js`
 
 `deferHydrationAttribute` is no longer available from the main barrel. Import it from the hydration subpath.
 
+2.x imported `deferHydrationAttribute` from the root package.
+
 2.x Example:
 ```ts
-import { deferHydrationAttribute } from "@microsoft/fast-element";
+const attribute = "defer-hydration";
 ```
 
 3.x Example:
@@ -314,7 +380,7 @@ The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBindin
 | `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
 | `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
 | `enableHydration()` | `fast-element/hydration.js` | Enables hydration support for FAST elements |
-| `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
+| `HydrationTracker` | `fast-element/hydration.js` | Standalone hydration lifecycle tracker class |
 | `HydrationOptions` | `fast-element/hydration.js` | Type for hydration configuration options |
-| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — DSD detection for custom directives |
-| `ViewController.isHydrated` | `fast-element` | `Promise<boolean>` — hydration status for custom directives |
+| `ViewController.isPrerendered` | `fast-element/templating.js` | `Promise<boolean>` — DSD detection for custom directives |
+| `ViewController.isHydrated` | `fast-element/templating.js` | `Promise<boolean>` — hydration status for custom directives |
