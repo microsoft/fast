@@ -73,7 +73,7 @@ test("renders element", async ({ fastPage }) => {
 | `src/fixtures/assertions.ts` | Custom Playwright assertion `toHaveCustomState` |
 | `src/ssr/render.ts` | SSR rendering helpers: `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
 | `src/ssr/assets.ts` | Asset resolution helpers: `readAsset`, `resolveAssetUrl` |
-| `src/ssr/entry-client.ts` | Empty SSR client placeholder; consumers enable hydration and load component definition modules in their own entry client |
+| `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Express + Vite dev server — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — calls `startServer()` |
 | `playwright.config.ts` | Shared Playwright configuration (browsers, web server, test matching) |

@@ -217,6 +217,7 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts");
 |-----------|----------|
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `readAsset`, `resolveAssetUrl`, `renderFixture`, `renderTemplate` |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer`, `app` |
+| `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/ssr/render.js` | `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
 | `@microsoft/fast-test-harness/ssr/assets.js` | `readAsset`, `resolveAssetUrl` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
