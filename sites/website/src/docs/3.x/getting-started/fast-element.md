@@ -23,8 +23,7 @@ Attributes are defined using the `@attr` decorator.
 
 **Example:**
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
+import { attr, FASTElement } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   @attr
@@ -47,8 +46,7 @@ An `@attr` can take a configuration with the following options:
 
 Example with a custom attribute name and boolean mode:
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
+import { attr, FASTElement } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   @attr({
@@ -91,8 +89,7 @@ Here's how it works:
 **Example: An Attribute in Reflect Mode with Custom Conversion**
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr, type ValueConverter } from '@microsoft/fast-element';
+import { attr, FASTElement, type ValueConverter } from '@microsoft/fast-element';
 
 const numberConverter: ValueConverter = {
   toView(value: any): string {
@@ -130,8 +127,7 @@ Properties with only a getter, that function as a computed property over other o
 :::
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { observable } from '@microsoft/fast-element';
+import { FASTElement, observable } from '@microsoft/fast-element';
 
 export class MyComponent extends FASTElement {
   @observable
@@ -150,8 +146,7 @@ A common use case for `@observable` is with slotted elements.
 **Example: Track changes to elements being added/removed to a slot**
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { observable } from '@microsoft/fast-element';
+import { FASTElement, observable } from '@microsoft/fast-element';
 
 class MyComponent extends FASTElement {
   @observable
@@ -319,8 +314,7 @@ All Web Components support a series of lifecycle events that you can tap into to
 **Example: Tapping into the Custom Element Lifecycle**
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
+import { attr, FASTElement } from '@microsoft/fast-element';
 
 export class NameTag extends FASTElement {
   @attr

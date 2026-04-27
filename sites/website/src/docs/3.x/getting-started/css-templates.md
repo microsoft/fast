@@ -20,10 +20,7 @@ The `@microsoft/fast-element` module offers a named export `css` which is a [tag
 
 **Example:**
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element";
+import { attr, css, FASTElement, html } from '@microsoft/fast-element';
 
 const template = html`
   <span>${x => x.greeting.toUpperCase()}</span>

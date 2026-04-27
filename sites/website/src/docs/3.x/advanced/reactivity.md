@@ -83,8 +83,7 @@ Notice that the `fullName` property does not need any special code, since it's c
 Here's how you would do that with a decorator:
 
 ```ts
-import { volatile } from '@microsoft/fast-element';
-import { observable } from '@microsoft/fast-element';
+import { observable, volatile } from '@microsoft/fast-element';
 
 export class MyClass {
   @observable someBoolean = false;

@@ -66,9 +66,7 @@ const template = html<MyProgress>`
 
 **Example:**
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element";
+import { attr, css, FASTElement } from '@microsoft/fast-element';
 
 class MyComponent extends FASTElement {
   private dynamicCSS = css`

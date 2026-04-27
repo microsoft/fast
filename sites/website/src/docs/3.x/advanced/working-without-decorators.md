@@ -17,9 +17,7 @@ Most of our documented examples include the use of TypeScript decorators. Howeve
 When defining your component, you may pass in attributes in the same configuration object as the name, template, and styles:
 
 ```javascript
-import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element";
+import { css, FASTElement, html } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   // component logic
@@ -40,9 +38,7 @@ MyElement.define({
 This accepts the same configuration options as the `@attr` so for example to bind a property name that is different from an attribute name:
 
 ```javascript
-import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element";
+import { css, FASTElement, html } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   constructor() {
@@ -75,9 +71,7 @@ In the above example we are setting the `currentCount` in the constructor and no
 If you need to add a converter to your attribute:
 
 ```javascript
-import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element";
+import { css, FASTElement, html } from '@microsoft/fast-element';
 
 const converter = {
   toView: (value) => {

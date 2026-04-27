@@ -33,9 +33,7 @@ When working with the `html` template, bindings allow more complex behavior than
 
 **Example:**
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element';
+import { attr, FASTElement, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <h3>${x => x.greeting.toUpperCase()}</h3>
