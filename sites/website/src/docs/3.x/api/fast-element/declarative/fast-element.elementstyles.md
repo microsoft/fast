@@ -20,7 +20,7 @@ Represents styles that can be applied to a custom element.
 **Signature:**
 
 ```typescript
-export declare class ElementStyles 
+export declare class ElementStyles
 ```
 
 ## Constructors

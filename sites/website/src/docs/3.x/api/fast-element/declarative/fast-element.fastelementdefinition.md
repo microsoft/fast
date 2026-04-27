@@ -20,7 +20,7 @@ Defines metadata for a FASTElement.
 **Signature:**
 
 ```typescript
-export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties

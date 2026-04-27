@@ -20,7 +20,7 @@ An implementation of `Accessor` that supports reactivity, change callbacks, attr
 **Signature:**
 
 ```typescript
-export declare class AttributeDefinition implements Accessor 
+export declare class AttributeDefinition implements Accessor
 ```
 **Implements:** [Accessor](../fast-element.accessor/)
 

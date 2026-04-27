@@ -20,7 +20,7 @@ Represents an object that can contribute behavior to a view.
 **Signature:**
 
 ```typescript
-export interface ViewBehavior<TSource = any, TParent = any> 
+export interface ViewBehavior<TSource = any, TParent = any>
 ```
 
 ## Methods

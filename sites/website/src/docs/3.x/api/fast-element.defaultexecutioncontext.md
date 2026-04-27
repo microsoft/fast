@@ -20,7 +20,7 @@ The default execution context for template views.
 **Signature:**
 
 ```typescript
-export declare class DefaultExecutionContext<TParent> implements ExecutionContext<TParent> 
+export declare class DefaultExecutionContext<TParent> implements ExecutionContext<TParent>
 ```
 **Implements:** [ExecutionContext](../fast-element.executioncontext/)<!-- -->&lt;TParent&gt;
 

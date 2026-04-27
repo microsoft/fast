@@ -20,7 +20,7 @@ A security policy that FAST can use to interact with the DOM.
 **Signature:**
 
 ```typescript
-export interface DOMPolicy 
+export interface DOMPolicy
 ```
 
 ## Methods

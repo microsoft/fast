@@ -20,7 +20,7 @@ Represents metadata configuration for a custom element.
 **Signature:**
 
 ```typescript
-export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties
