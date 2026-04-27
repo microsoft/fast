@@ -34,7 +34,26 @@ Description
 
 </td><td>
 
-An implementation of [Accessor](../fast-element.accessor/) that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeMap](../fast-element.attributemap/)
+
+
+</td><td>
+
+AttributeMap provides functionality for detecting simple (leaf) properties in a generated JSON schema and defining them as attr properties on a class prototype.
+
+A property is a candidate for attr when its schema entry has no nested `properties`<!-- -->, no `type`<!-- -->, and no `anyOf` — for example, a plain `foo` binding.
+
+When `attribute-name-strategy` is `"camelCase"` (the default), the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. property `fooBar` → attribute `foo-bar`<!-- -->). This matches the build-time `attribute-name-strategy` option in `@microsoft/fast-build`<!-- -->.
+
+When `attribute-name-strategy` is `"none"`<!-- -->, the binding key is used as both the attribute name and property name — no normalization is applied.
+
+Properties already decorated with `attr` or `observable` on the class are left untouched.
 
 
 </td></tr>
@@ -46,6 +65,21 @@ An implementation of [Accessor](../fast-element.accessor/) that supports reactiv
 </td><td>
 
 The runtime behavior for child node observation.
+
+
+</td></tr>
+<tr><td>
+
+[ContextEvent](../fast-element.contextevent/)
+
+
+</td><td>
+
+An event fired by a context requester to signal it desires a named context.
+
+A provider should inspect the `context` property of the event to determine if it has a value that can satisfy the request, calling the `callback` with the requested value if so.
+
+If the requested context event contains a truthy `multiple` value, then a provider can call the callback multiple times if the value is changed, if this is the case the provider should pass a `dispose` method to the callback which requesters can invoke to indicate they no longer wish to receive these updates.
 
 
 </td></tr>
@@ -125,7 +159,7 @@ The standard View implementation, which also implements ElementView and Syntheti
 
 </td><td>
 
-Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
+Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level `TemplateLifecycleCallbacks`<!-- -->.
 
 
 </td></tr>
@@ -137,6 +171,17 @@ Tracks prerendered elements through the hydration lifecycle and fires global cal
 </td><td>
 
 Inlines a template into another template.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMap](../fast-element.observermap/)
+
+
+</td><td>
+
+ObserverMap provides functionality for caching binding paths, extracting root properties, and defining observable properties on class prototypes
 
 
 </td></tr>
@@ -208,6 +253,28 @@ A directive that configures list rendering.
 </td></tr>
 <tr><td>
 
+[ResolverBuilder](../fast-element.resolverbuilder/)
+
+
+</td><td>
+
+A utility class used that constructs and registers resolvers for a dependency injection container. Supports a standard set of object lifetimes.
+
+
+</td></tr>
+<tr><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+A constructed JSON schema from a template
+
+
+</td></tr>
+<tr><td>
+
 [SlottedDirective](../fast-element.slotteddirective/)
 
 
@@ -251,6 +318,21 @@ which are kept in ascending index order of. The tuple represents that at the \|i
 </td><td>
 
 An implementation of [Notifier](../fast-element.notifier/) that efficiently keeps track of subscribers interested in a specific change notification on an observable subject.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateParser](../fast-element.templateparser/)
+
+
+</td><td>
+
+Converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes.
+
+This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->.
+
+The parsing pipeline is fully synchronous — no promises are allocated during template resolution.
 
 
 </td></tr>
@@ -356,6 +438,39 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[all(key, searchAncestors)](../fast-element.all/)
+
+
+</td><td>
+
+A decorator and DI resolver that will resolve an array of all dependencies registered with the specified key.
+
+
+</td></tr>
+<tr><td>
+
+[assignObservables(schema, rootSchema, data, target, rootProperty)](../fast-element.assignobservables/)
+
+
+</td><td>
+
+Assign observables to data
+
+
+</td></tr>
+<tr><td>
+
+[assignProxy(schema, rootSchema, target, rootProperty, object)](../fast-element.assignproxy/)
+
+
+</td><td>
+
+Assign a proxy to an object
+
+
+</td></tr>
+<tr><td>
+
 [attr(config)](../fast-element.attr/)
 
 
@@ -378,12 +493,80 @@ Decorator: Specifies an HTML attribute.
 </td></tr>
 <tr><td>
 
+[attributeMap(config)](../fast-element.attributemap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables schema-driven attribute mapping for the resolved definition. When called without arguments, uses the default attribute-mapping behavior. The extension uses `definition.schema` immediately for manual schemas, or the schema generated/augmented by `declarativeTemplate()`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[bindingResolver(previousString, rootPropertyName, path, parentContext, type, schema, currentContext, level)](../fast-element.bindingresolver/)
+
+
+</td><td>
+
+Creates a binding resolver and records the binding path in the schema.
+
+
+</td></tr>
+<tr><td>
+
 [children(propertyOrOptions)](../fast-element.children/)
 
 
 </td><td>
 
 A directive that observes the `childNodes` of an element and updates a property whenever they change.
+
+
+</td></tr>
+<tr><td>
+
+[composedContains(reference, test)](../fast-element.composedcontains/)
+
+
+</td><td>
+
+Determines if the reference element contains the test element in a "composed" DOM tree that ignores shadow DOM boundaries.
+
+Returns true of the test element is a descendent of the reference, or exists in a shadow DOM that is a logical descendent of the reference. Otherwise returns false.
+
+
+</td></tr>
+<tr><td>
+
+[composedParent(element)](../fast-element.composedparent/)
+
+
+</td><td>
+
+Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries. When the parent of a node is a shadow-root, it will return the host element of the shadow root. Otherwise it will return the parent node or null if no parent node exists.
+
+
+</td></tr>
+<tr><td>
+
+[computedState(initialize, name)](../fast-element.computedstate/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a ComputedState.
+
+
+</td></tr>
+<tr><td>
+
+[cssDirective()](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Decorator: Defines a CSSDirective.
 
 
 </td></tr>
@@ -400,12 +583,56 @@ Decorator: Defines a platform custom element based on `FASTElement`<!-- -->.
 </td></tr>
 <tr><td>
 
+[declarativeTemplate(callbacks)](../fast-element.declarativetemplate/)
+
+
+</td><td>
+
+Returns a declarative template resolver that waits for the matching `<f-template>` element and resolves it into a concrete `ViewTemplate`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[deepEqual(obj1, obj2)](../fast-element.deepequal/)
+
+
+</td><td>
+
+Deeply compares two objects for equality.
+
+
+</td></tr>
+<tr><td>
+
+[deepMerge(target, source)](../fast-element.deepmerge/)
+
+
+</td><td>
+
+Deeply merges the source object into the target object.
+
+
+</td></tr>
+<tr><td>
+
 [elements(selector)](../fast-element.elements/)
 
 
 </td><td>
 
 Creates a function that can be used to filter a Node array, selecting only elements.
+
+
+</td></tr>
+<tr><td>
+
+[enableDebug()](../fast-element.enabledebug/)
+
+
+</td><td>
+
+Enables human-readable FAST debug messages.
 
 
 </td></tr>
@@ -422,12 +649,133 @@ Enables hydration support for prerendered FAST elements.
 </td></tr>
 <tr><td>
 
+[expressionResolver(rootPropertyName, expression, parentContext, level, schema)](../fast-element.expressionresolver/)
+
+
+</td><td>
+
+Creates a resolver for a chained expression and records its paths in the schema.
+
+
+</td></tr>
+<tr><td>
+
+[extractPathsFromChainedExpression(chainedExpression)](../fast-element.extractpathsfromchainedexpression/)
+
+
+</td><td>
+
+Extracts all paths from a ChainedExpression, including nested expressions
+
+
+</td></tr>
+<tr><td>
+
+[findDef(schema)](../fast-element.finddef/)
+
+
+</td><td>
+
+Find a definition This may exist as a $ref at the root or as a $ref in any anyOf or not at all if the Observer Map has not been enabled on a child component
+
+
+</td></tr>
+<tr><td>
+
+[getBooleanBinding(rootPropertyName, expression, parentContext, level, schema)](../fast-element.getbooleanbinding/)
+
+
+</td><td>
+
+Resolves boolean logic used for f-when and boolean attributes
+
+
+</td></tr>
+<tr><td>
+
+[getChildrenMap(previousString)](../fast-element.getchildrenmap/)
+
+
+</td><td>
+
+Get details of bindings to the attributes of child custom elements
+
+
+</td></tr>
+<tr><td>
+
+[getExpressionChain(value)](../fast-element.getexpressionchain/)
+
+
+</td><td>
+
+Gets the expression chain as a configuration object
+
+
+</td></tr>
+<tr><td>
+
+[getIndexOfNextMatchingTag(openingTagStartSlice, openingTag, closingTag, openingTagStartIndex)](../fast-element.getindexofnextmatchingtag/)
+
+
+</td><td>
+
+Get the index of the next matching tag
+
+
+</td></tr>
+<tr><td>
+
+[getNextBehavior(innerHTML, offset)](../fast-element.getnextbehavior/)
+
+
+</td><td>
+
+Get the next behavior
+
+
+</td></tr>
+<tr><td>
+
+[getRootPropertyName(rootPropertyName, path, context, type)](../fast-element.getrootpropertyname/)
+
+
+</td><td>
+
+Get the root property name
+
+
+</td></tr>
+<tr><td>
+
 [htmlDirective(options)](../fast-element.htmldirective/)
 
 
 </td><td>
 
 Decorator: Defines an HTMLDirective.
+
+
+</td></tr>
+<tr><td>
+
+[ignore(target, property, descriptor)](../fast-element.ignore/)
+
+
+</td><td>
+
+A decorator that tells the container not to try to inject a dependency.
+
+
+</td></tr>
+<tr><td>
+
+[inject(dependencies)](../fast-element.inject/)
+
+
+</td><td>
+
+A decorator that specifies what to inject into its target.
 
 
 </td></tr>
@@ -477,12 +825,67 @@ Decorator: Defines an HTMLDirective.
 </td></tr>
 <tr><td>
 
+[isPlainObject(value)](../fast-element.isplainobject/)
+
+
+</td><td>
+
+Checks if a value is a plain object (not an array, null, or other type).
+
+
+</td></tr>
+<tr><td>
+
+[lazy(key)](../fast-element.lazy/)
+
+
+</td><td>
+
+A decorator that lazily injects a dependency depending on whether the `Key` is present at the time of function call.
+
+
+</td></tr>
+<tr><td>
+
+[lengthOf(array)](../fast-element.lengthof/)
+
+
+</td><td>
+
+Enables observing the length of an array.
+
+
+</td></tr>
+<tr><td>
+
 [listener(expression, options)](../fast-element.listener/)
 
 
 </td><td>
 
 Creates an event listener binding.
+
+
+</td></tr>
+<tr><td>
+
+[newInstanceForScope(key)](../fast-element.newinstanceforscope/)
+
+
+</td><td>
+
+A decorator that indicates that a new instance should be injected scoped to the container that requested the instance.
+
+
+</td></tr>
+<tr><td>
+
+[newInstanceOf(key)](../fast-element.newinstanceof/)
+
+
+</td><td>
+
+A decorator that indicates that a new instance should be injected.
 
 
 </td></tr>
@@ -510,6 +913,17 @@ Decorator: Defines an observable property on the target.
 </td></tr>
 <tr><td>
 
+[observerMap(config)](../fast-element.observermap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables schema-driven observer mapping for the resolved definition. When called without arguments, observes every discovered root property. The extension uses `config.schema`<!-- -->, `definition.schema`<!-- -->, or the schema generated by `declarativeTemplate()`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [oneTime(expression, policy)](../fast-element.onetime/)
 
 
@@ -527,6 +941,65 @@ Creates a one time binding
 </td><td>
 
 Creates an standard binding.
+
+
+</td></tr>
+<tr><td>
+
+[optional(key)](../fast-element.optional/)
+
+
+</td><td>
+
+A decorator that allows you to optionally inject a dependency depending on whether the \[\[`Key`<!-- -->\]\] is present, for example:
+
+
+</td></tr>
+<tr><td>
+
+[ownedState(value, options)](../fast-element.ownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a reactive state that has its value associated with a specific owner.
+
+
+</td></tr>
+<tr><td>
+
+[parseEventArgs(argsString)](../fast-element.parseeventargs/)
+
+
+</td><td>
+
+Parses the arguments string of an event handler binding into an array of typed argument descriptors. Unrecognised tokens are returned as `"binding"` type with their raw string preserved.
+
+Special arguments: - `$e` — resolves to the DOM event object - `$c` — resolves to the full execution context object
+
+Any other token is treated as a binding path and resolved against the current data source.
+
+
+</td></tr>
+<tr><td>
+
+[pathResolver(path, contextPath, level, rootSchema)](../fast-element.pathresolver/)
+
+
+</td><td>
+
+Create a function to resolve a value from an object using a path with dot syntax. e.g. "foo.bar"
+
+
+</td></tr>
+<tr><td>
+
+[reactive(object, deep)](../fast-element.reactive/)
+
+
+</td><td>
+
+**_(BETA)_** Converts a plain object to a reactive, observable object.
 
 
 </td></tr>
@@ -565,6 +1038,49 @@ A directive that enables list rendering.
 </td></tr>
 <tr><td>
 
+[signal(expression, options, policy)](../fast-element.signal/)
+
+
+</td><td>
+
+Creates a signal binding configuration with the supplied options.
+
+
+</td></tr>
+<tr><td>
+
+[singleton()](../fast-element.singleton/)
+
+
+</td><td>
+
+Registers the decorated class as a singleton dependency; the class will only be created once. Each consecutive time the dependency is resolved, the same instance will be returned.
+
+
+</td></tr>
+<tr><td>
+
+[singleton(options)](../fast-element.singleton_1/)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[singleton(target)](../fast-element.singleton_2/)
+
+
+</td><td>
+
+Registers the `target` class as a singleton dependency; the class will only be created once. Each consecutive time the dependency is resolved, the same instance will be returned.
+
+
+</td></tr>
+<tr><td>
+
 [slotted(propertyOrOptions)](../fast-element.slotted/)
 
 
@@ -576,12 +1092,89 @@ A directive that observes the `assignedNodes()` of a slot and updates a property
 </td></tr>
 <tr><td>
 
+[sortedCount(array)](../fast-element.sortedcount/)
+
+
+</td><td>
+
+Enables observing the sorted property of an array.
+
+
+</td></tr>
+<tr><td>
+
+[state(value, options)](../fast-element.state/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a reactive state value.
+
+
+</td></tr>
+<tr><td>
+
+[transformInnerHTML(innerHTML, index)](../fast-element.transforminnerhtml/)
+
+
+</td><td>
+
+This is the transform utility for rationalizing declarative HTML syntax with bindings in the ViewTemplate
+
+
+</td></tr>
+<tr><td>
+
+[transient()](../fast-element.transient/)
+
+
+</td><td>
+
+Registers the decorated class as a transient dependency; each time the dependency is resolved a new instance will be created.
+
+
+</td></tr>
+<tr><td>
+
+[transient(target)](../fast-element.transient_1/)
+
+
+</td><td>
+
+Registers the `target` class as a transient dependency; each time the dependency is resolved a new instance will be created.
+
+
+</td></tr>
+<tr><td>
+
+[twoWay(expression, optionsOrChangeEvent, policy, isBindingVolatile)](../fast-element.twoway/)
+
+
+</td><td>
+
+Creates a default binding.
+
+
+</td></tr>
+<tr><td>
+
 [volatile(target, name, descriptor)](../fast-element.volatile/)
 
 
 </td><td>
 
 Decorator: Marks a property getter as having volatile observable dependencies.
+
+
+</td></tr>
+<tr><td>
+
+[watch(object, subscriber)](../fast-element.watch/)
+
+
+</td><td>
+
+**_(BETA)_** Deeply subscribes to changes in existing observable objects.
 
 
 </td></tr>
@@ -613,12 +1206,34 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AccessCachedPath](../fast-element.accesscachedpath/)
+
+
+</td><td>
+
+A path discovered from an access expression.
+
+
+</td></tr>
+<tr><td>
+
 [Accessor](../fast-element.accessor/)
 
 
 </td><td>
 
 Represents a getter/setter property accessor on an object.
+
+
+</td></tr>
+<tr><td>
+
+[ArrayObserver](../fast-element.arrayobserver/)
+
+
+</td><td>
+
+An observer for arrays.
 
 
 </td></tr>
@@ -635,12 +1250,78 @@ Represents something that applies to a specific aspect of the DOM.
 </td></tr>
 <tr><td>
 
+[AttributeDataBindingBehaviorConfig](../fast-element.attributedatabindingbehaviorconfig/)
+
+
+</td><td>
+
+Attribute binding behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeDirectiveBindingBehaviorConfig](../fast-element.attributedirectivebindingbehaviorconfig/)
+
+
+</td><td>
+
+Attribute directive binding behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeMapConfig](../fast-element.attributemapconfig/)
+
+
+</td><td>
+
+Configuration object for the attributeMap extension. Omitting all fields uses the default attribute-mapping behavior.
+
+
+</td></tr>
+<tr><td>
+
+[BaseDataBindingBehaviorConfig](../fast-element.basedatabindingbehaviorconfig/)
+
+
+</td><td>
+
+Base data binding behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
+[BehaviorConfig](../fast-element.behaviorconfig/)
+
+
+</td><td>
+
+Base behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
 [BindingDirective](../fast-element.bindingdirective/)
 
 
 </td><td>
 
 The directive from which a binding originates.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathCommon](../fast-element.cachedpathcommon/)
+
+
+</td><td>
+
+Common metadata for paths cached while parsing a template.
 
 
 </td></tr>
@@ -657,12 +1338,67 @@ A marker interface used to capture types when interpolating Directive helpers in
 </td></tr>
 <tr><td>
 
+[ChainedExpression](../fast-element.chainedexpression/)
+
+
+</td><td>
+
+Declarative chained expression descriptor.
+
+
+</td></tr>
+<tr><td>
+
 [ChildListDirectiveOptions](../fast-element.childlistdirectiveoptions/)
 
 
 </td><td>
 
 The options used to configure child list observation.
+
+
+</td></tr>
+<tr><td>
+
+[ChildrenMap](../fast-element.childrenmap/)
+
+
+</td><td>
+
+Describes a child custom element binding referenced by a schema path.
+
+
+</td></tr>
+<tr><td>
+
+[Container](../fast-element.container/)
+
+
+</td><td>
+
+Implemented by dependency injection containers.
+
+
+</td></tr>
+<tr><td>
+
+[ContainerConfiguration](../fast-element.containerconfiguration/)
+
+
+</td><td>
+
+Configuration for a dependency injection container.
+
+
+</td></tr>
+<tr><td>
+
+[ContentDataBindingBehaviorConfig](../fast-element.contentdatabindingbehaviorconfig/)
+
+
+</td><td>
+
+Content binding behavior configuration.
 
 
 </td></tr>
@@ -690,6 +1426,50 @@ A simple View that can be interpolated into HTML content.
 </td></tr>
 <tr><td>
 
+[CSSDirective](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Directive for use in CSS templates.
+
+
+</td></tr>
+<tr><td>
+
+[CSSDirectiveDefinition](../fast-element.cssdirectivedefinition/)
+
+
+</td><td>
+
+Defines metadata for a CSSDirective.
+
+
+</td></tr>
+<tr><td>
+
+[DeclarativeExpression](../fast-element.declarativeexpression/)
+
+
+</td><td>
+
+Declarative expression descriptor.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCachedPath](../fast-element.defaultcachedpath/)
+
+
+</td><td>
+
+A path discovered from a default binding.
+
+
+</td></tr>
+<tr><td>
+
 [Disposable](../fast-element.disposable/)
 
 
@@ -701,12 +1481,12 @@ Provides a mechanism for releasing resources.
 </td></tr>
 <tr><td>
 
-[DOMPolicy](../fast-element.dompolicy/)
+[DOMContainer](../fast-element.domcontainer/)
 
 
 </td><td>
 
-A security policy that FAST can use to interact with the DOM.
+A Container that is associated with a specific Node in the DOM.
 
 
 </td></tr>
@@ -740,6 +1520,17 @@ A View representing DOM nodes specifically for rendering the view of a custom el
 </td><td>
 
 A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[EventCachedPath](../fast-element.eventcachedpath/)
+
+
+</td><td>
+
+A path discovered from an event binding.
 
 
 </td></tr>
@@ -784,6 +1575,17 @@ Enables evaluation of and subscription to a binding.
 </td><td>
 
 Observes an expression for changes.
+
+
+</td></tr>
+<tr><td>
+
+[Factory](../fast-element.factory/)
+
+
+</td><td>
+
+Used by the default Resolver to create instances of objects when needed.
 
 
 </td></tr>
@@ -876,6 +1678,61 @@ Options for configuring global hydration lifecycle events.
 </td></tr>
 <tr><td>
 
+[InterfaceConfiguration](../fast-element.interfaceconfiguration/)
+
+
+</td><td>
+
+Used to configure a dependency injection interface key.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchema](../fast-element.jsonschema/)
+
+
+</td><td>
+
+A JSON schema describing a root property.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaCommon](../fast-element.jsonschemacommon/)
+
+
+</td><td>
+
+Common properties shared by schema nodes.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaDefinition](../fast-element.jsonschemadefinition/)
+
+
+</td><td>
+
+A reusable JSON schema definition.
+
+
+</td></tr>
+<tr><td>
+
+[LengthObserver](../fast-element.lengthobserver/)
+
+
+</td><td>
+
+Observes array lengths.
+
+
+</td></tr>
+<tr><td>
+
 [NodeBehaviorOptions](../fast-element.nodebehavioroptions/)
 
 
@@ -909,6 +1766,43 @@ A record of observable property access.
 </td></tr>
 <tr><td>
 
+[ObserverMapConfig](../fast-element.observermapconfig/)
+
+
+</td><td>
+
+Configuration object for the observerMap extension. `schema` enables non-declarative/manual schema use. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathNode](../fast-element.observermappathnode/)
+
+
+</td><td>
+
+A node object in the observer-map path tree.
+
+`$observe` controls whether this node itself is observed. When omitted the value is inherited from the nearest ancestor that explicitly sets `$observe`<!-- -->. At the root level the default is `true`<!-- -->.
+
+Child property overrides are keyed by property name.
+
+
+</td></tr>
+<tr><td>
+
+[ParsedEventArg](../fast-element.parsedeventarg/)
+
+
+</td><td>
+
+A parsed event handler argument descriptor.
+
+
+</td></tr>
+<tr><td>
+
 [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
 
 
@@ -931,12 +1825,89 @@ Represents metadata configuration for an HTMLDirective.
 </td></tr>
 <tr><td>
 
+[RegisterPathConfig](../fast-element.registerpathconfig/)
+
+
+</td><td>
+
+Configuration for registering a path with a schema.
+
+
+</td></tr>
+<tr><td>
+
+[Registration](../fast-element.registration/)
+
+
+</td><td>
+
+Implemented by objects that wish to register dependencies in the container by creating resolvers.
+
+
+</td></tr>
+<tr><td>
+
+[Registry](../fast-element.registry/)
+
+
+</td><td>
+
+Implemented by objects that which to register dependencies in a container.
+
+
+</td></tr>
+<tr><td>
+
+[RepeatCachedPath](../fast-element.repeatcachedpath/)
+
+
+</td><td>
+
+A path discovered from a repeat directive.
+
+
+</td></tr>
+<tr><td>
+
 [RepeatOptions](../fast-element.repeatoptions/)
 
 
 </td><td>
 
 Options for configuring repeat behavior.
+
+
+</td></tr>
+<tr><td>
+
+[ResolvedStringsAndValues](../fast-element.resolvedstringsandvalues/)
+
+
+</td><td>
+
+The return type for [TemplateParser.parse()](../fast-element.templateparser.parse/)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[Resolver](../fast-element.resolver/)
+
+
+</td><td>
+
+Internally, the DI system maps "keys" to "resolvers". A resolver controls how a dependency is resolved. Resolvers for transient, singleton, etc. are provided out of the box, but you can also implement Resolver yourself and supply custom logic for resolution.
+
+
+</td></tr>
+<tr><td>
+
+[ServiceLocator](../fast-element.servicelocator/)
+
+
+</td><td>
+
+Implemented by objects capable of resolving services and other dependencies.
 
 
 </td></tr>
@@ -959,6 +1930,28 @@ Shadow root initialization options.
 </td><td>
 
 The options used to configure slotted node observation.
+
+
+</td></tr>
+<tr><td>
+
+[SortObserver](../fast-element.sortobserver/)
+
+
+</td><td>
+
+Observes array sort.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategy](../fast-element.splicestrategy/)
+
+
+</td><td>
+
+An approach to tracking changes in an array.
 
 
 </td></tr>
@@ -1030,12 +2023,34 @@ A template capable of rendering views not specifically connected to custom eleme
 </td></tr>
 <tr><td>
 
+[TemplateDirectiveBehaviorConfig](../fast-element.templatedirectivebehaviorconfig/)
+
+
+</td><td>
+
+Template directive behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
 [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
 
 
 </td><td>
 
 Lifecycle callbacks for template events.
+
+
+</td></tr>
+<tr><td>
+
+[TwoWaySettings](../fast-element.twowaysettings/)
+
+
+</td><td>
+
+The settings required to enable two-way binding.
 
 
 </td></tr>
@@ -1096,6 +2111,17 @@ A factory that can create a [ViewBehavior](../fast-element.viewbehavior/) associ
 </td></tr>
 <tr><td>
 
+[ViewBehaviorOrchestrator](../fast-element.viewbehaviororchestrator/)
+
+
+</td><td>
+
+Bridges between ViewBehaviors and HostBehaviors, enabling a host to control ViewBehaviors.
+
+
+</td></tr>
+<tr><td>
+
 [ViewController](../fast-element.viewcontroller/)
 
 
@@ -1122,6 +2148,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ArrayObserver](../fast-element.arrayobserver/)
+
+
+</td><td>
+
+An observer for arrays.
+
+
+</td></tr>
+<tr><td>
+
 [AttributeConfiguration](../fast-element.attributeconfiguration/)
 
 
@@ -1144,12 +2181,122 @@ A [ValueConverter](../fast-element.valueconverter/) that converts to and from `b
 </td></tr>
 <tr><td>
 
+[ComparisonOperator](../fast-element.comparisonoperator/)
+
+
+</td><td>
+
+Comparison operator tokens.
+
+
+</td></tr>
+<tr><td>
+
 [Compiler](../fast-element.compiler/)
 
 
 </td><td>
 
 Common APIs related to compilation.
+
+
+</td></tr>
+<tr><td>
+
+[Container](../fast-element.container/)
+
+
+</td><td>
+
+The key that resolves the dependency injection Container itself.
+
+
+</td></tr>
+<tr><td>
+
+[ContainerConfiguration](../fast-element.containerconfiguration/)
+
+
+</td><td>
+
+Configuration for a dependency injection container.
+
+
+</td></tr>
+<tr><td>
+
+[Context](../fast-element.context/)
+
+
+</td><td>
+
+Enables using: [W3C Community Context protocol.](https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md)
+
+
+</td></tr>
+<tr><td>
+
+[contextPrefixDot](../fast-element.contextprefixdot/)
+
+
+</td><td>
+
+Prefix used for execution context paths.
+
+
+</td></tr>
+<tr><td>
+
+[css](../fast-element.css/)
+
+
+</td><td>
+
+Transforms a template literal string into styles.
+
+
+</td></tr>
+<tr><td>
+
+[CSSDirective](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Instructs the css engine to provide styles during CSS template composition.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultResolver](../fast-element.defaultresolver/)
+
+
+</td><td>
+
+A set of default resolvers useful in configuring a container.
+
+
+</td></tr>
+<tr><td>
+
+[deferHydrationAttribute](../fast-element.deferhydrationattribute/)
+
+
+</td><td>
+
+**_(BETA)_** The attribute used to defer hydration of an element. Retained for intersection observer viewport hydration rendering.
+
+
+</td></tr>
+<tr><td>
+
+[DI](../fast-element.di/)
+
+
+</td><td>
+
+The gateway to dependency injection APIs.
 
 
 </td></tr>
@@ -1177,6 +2324,28 @@ The type of HTML aspect to target.
 </td></tr>
 <tr><td>
 
+[DOMContainer](../fast-element.domcontainer/)
+
+
+</td><td>
+
+The key that resolves a DOMContainer itself.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A helper for creating DOM policies.
+
+
+</td></tr>
+<tr><td>
+
 [emptyArray](../fast-element.emptyarray/)
 
 
@@ -1188,12 +2357,34 @@ A readonly, empty array.
 </td></tr>
 <tr><td>
 
+[eventArgAccessor](../fast-element.eventargaccessor/)
+
+
+</td><td>
+
+Event argument accessor for declarative event bindings.
+
+
+</td></tr>
+<tr><td>
+
 [ExecutionContext](../fast-element.executioncontext/)
 
 
 </td><td>
 
 Provides additional contextual information available to behaviors and expressions.
+
+
+</td></tr>
+<tr><td>
+
+[executionContextAccessor](../fast-element.executioncontextaccessor/)
+
+
+</td><td>
+
+Execution context accessor for declarative event bindings.
 
 
 </td></tr>
@@ -1243,6 +2434,17 @@ Instructs the template engine to apply behavior to a node.
 </td></tr>
 <tr><td>
 
+[LogicalOperator](../fast-element.logicaloperator/)
+
+
+</td><td>
+
+Logical operator tokens.
+
+
+</td></tr>
+<tr><td>
+
 [Markup](../fast-element.markup/)
 
 
@@ -1287,12 +2489,67 @@ Common Observable APIs.
 </td></tr>
 <tr><td>
 
+[Operator](../fast-element.operator/)
+
+
+</td><td>
+
+Declarative expression operator tokens.
+
+
+</td></tr>
+<tr><td>
+
 [Parser](../fast-element.parser/)
 
 
 </td><td>
 
 Common APIs related to content parsing.
+
+
+</td></tr>
+<tr><td>
+
+[Registration](../fast-element.registration/)
+
+
+</td><td>
+
+You can use the resulting Registration of any of the factory methods to register with the container.
+
+
+</td></tr>
+<tr><td>
+
+[schemaRegistry](../fast-element.schemaregistry/)
+
+
+</td><td>
+
+Module-level registry that maps custom element names to their schema maps. Used for cross-element `$ref` resolution (e.g. nested element schemas). Each Schema instance registers itself here on construction.
+
+
+</td></tr>
+<tr><td>
+
+[ServiceLocator](../fast-element.servicelocator/)
+
+
+</td><td>
+
+The key that resolves the ServiceLocator itself.
+
+
+</td></tr>
+<tr><td>
+
+[Signal](../fast-element.signal/)
+
+
+</td><td>
+
+The gateway to signal APIs.
 
 
 </td></tr>
@@ -1309,12 +2566,56 @@ Describes how the source's lifetime relates to its controller's lifetime.
 </td></tr>
 <tr><td>
 
+[SpliceStrategy](../fast-element.splicestrategy/)
+
+
+</td><td>
+
+Functionality related to tracking changes in arrays.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategySupport](../fast-element.splicestrategysupport/)
+
+
+</td><td>
+
+Indicates what level of feature support the splice strategy provides.
+
+
+</td></tr>
+<tr><td>
+
+[TwoWaySettings](../fast-element.twowaysettings/)
+
+
+</td><td>
+
+Enables configuring two-way binding settings.
+
+
+</td></tr>
+<tr><td>
+
 [Updates](../fast-element.updates/)
 
 
 </td><td>
 
 The default UpdateQueue.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehaviorOrchestrator](../fast-element.viewbehaviororchestrator/)
+
+
+</td><td>
+
+Bridges between ViewBehaviors and HostBehaviors, enabling a host to control ViewBehaviors.
 
 
 </td></tr>
@@ -1346,6 +2647,17 @@ Used to add behavior factories when constructing templates.
 </td></tr>
 <tr><td>
 
+[AsyncRegistrationLocator](../fast-element.asyncregistrationlocator/)
+
+
+</td><td>
+
+A function capable of asynchronously locating a resolver for a key.
+
+
+</td></tr>
+<tr><td>
+
 [AttributeConfiguration](../fast-element.attributeconfiguration/)
 
 
@@ -1357,12 +2669,56 @@ Metadata used to configure a custom attribute's behavior.
 </td></tr>
 <tr><td>
 
+[AttributeDirective](../fast-element.attributedirective/)
+
+
+</td><td>
+
+Declarative attribute directive names.
+
+
+</td></tr>
+<tr><td>
+
 [AttributeMode](../fast-element.attributemode/)
 
 
 </td><td>
 
 The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
+[BehaviorType](../fast-element.behaviortype/)
+
+
+</td><td>
+
+Declarative behavior type.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPath](../fast-element.cachedpath/)
+
+
+</td><td>
+
+A path discovered while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathMap](../fast-element.cachedpathmap/)
+
+
+</td><td>
+
+A map from element names and root properties to JSON schemas.
 
 
 </td></tr>
@@ -1401,6 +2757,17 @@ Represents a constructable class with a prototype.
 </td></tr>
 <tr><td>
 
+[ComparisonOperator](../fast-element.comparisonoperator/)
+
+
+</td><td>
+
+Comparison operator token.
+
+
+</td></tr>
+<tr><td>
+
 [CompilationStrategy](../fast-element.compilationstrategy/)
 
 
@@ -1434,6 +2801,50 @@ Represents styles that can be composed into the ShadowDOM of a custom element.
 </td></tr>
 <tr><td>
 
+[ComputedBuilder](../fast-element.computedbuilder/)
+
+
+</td><td>
+
+**_(BETA)_** Provides computed state capabilities.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedInitializer](../fast-element.computedinitializer/)
+
+
+</td><td>
+
+**_(BETA)_** A callback that initializes the computation.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedSetupCallback](../fast-element.computedsetupcallback/)
+
+
+</td><td>
+
+**_(BETA)_** A callback that enables computation setup.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedState](../fast-element.computedstate/)
+
+
+</td><td>
+
+**_(BETA)_** State whose value is computed from other dependencies.
+
+
+</td></tr>
+<tr><td>
+
 [Constructable](../fast-element.constructable/)
 
 
@@ -1451,6 +2862,94 @@ Represents a type which can be constructed with the new operator.
 </td><td>
 
 A type that instantiates a StyleStrategy.
+
+
+</td></tr>
+<tr><td>
+
+[Context](../fast-element.context/)
+
+
+</td><td>
+
+A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
+
+
+</td></tr>
+<tr><td>
+
+[ContextCallback](../fast-element.contextcallback/)
+
+
+</td><td>
+
+A callback which is provided by a context requester and is called with the value satisfying the request. This callback can be called multiple times by context providers as the requested value is changed.
+
+
+</td></tr>
+<tr><td>
+
+[ContextDecorator](../fast-element.contextdecorator/)
+
+
+</td><td>
+
+A constant key that can be used to represent a Context dependency. The key can be used for context or DI but also doubles as a decorator for resolving the associated dependency.
+
+
+</td></tr>
+<tr><td>
+
+[ContextType](../fast-element.contexttype/)
+
+
+</td><td>
+
+A helper type which can extract a Context value type from a Context type
+
+
+</td></tr>
+<tr><td>
+
+[CSSTemplateTag](../fast-element.csstemplatetag/)
+
+
+</td><td>
+
+Transforms a template literal string into styles.
+
+
+</td></tr>
+<tr><td>
+
+[CSSValue](../fast-element.cssvalue/)
+
+
+</td><td>
+
+Represents the types of values that can be interpolated into a template.
+
+
+</td></tr>
+<tr><td>
+
+[DataBindingBehaviorConfig](../fast-element.databindingbehaviorconfig/)
+
+
+</td><td>
+
+Declarative data binding behavior configuration.
+
+
+</td></tr>
+<tr><td>
+
+[DataBindingBindingType](../fast-element.databindingbindingtype/)
+
+
+</td><td>
+
+Declarative data binding marker type.
 
 
 </td></tr>
@@ -1478,12 +2977,67 @@ The type of HTML aspect to target.
 </td></tr>
 <tr><td>
 
+[DOMAspectGuards](../fast-element.domaspectguards/)
+
+
+</td><td>
+
+Aspect-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMElementGuards](../fast-element.domelementguards/)
+
+
+</td><td>
+
+Element-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMGuards](../fast-element.domguards/)
+
+
+</td><td>
+
+Guard configuration for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicyOptions](../fast-element.dompolicyoptions/)
+
+
+</td><td>
+
+Options for creating a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
 [DOMSink](../fast-element.domsink/)
 
 
 </td><td>
 
 A function used to send values to a DOM sink.
+
+
+</td></tr>
+<tr><td>
+
+[DOMSinkGuards](../fast-element.domsinkguards/)
+
+
+</td><td>
+
+A specific DOM sink guard for a node aspect.
 
 
 </td></tr>
@@ -1500,12 +3054,45 @@ Elements filter function type.
 </td></tr>
 <tr><td>
 
+[EventArgType](../fast-element.eventargtype/)
+
+
+</td><td>
+
+The type of a parsed event handler argument.
+
+
+</td></tr>
+<tr><td>
+
 [Expression](../fast-element.expression/)
 
 
 </td><td>
 
 The signature of an arrow function capable of being evaluated against source data and within an execution context.
+
+
+</td></tr>
+<tr><td>
+
+[FASTContext](../fast-element.fastcontext/)
+
+
+</td><td>
+
+A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes. The FASTContext can also be used as a decorator to declare context dependencies or as a key for DI.
+
+
+</td></tr>
+<tr><td>
+
+[FASTContextRequestStrategy](../fast-element.fastcontextrequeststrategy/)
+
+
+</td><td>
+
+A strategy that controls how all Context.request API calls are handled.
 
 
 </td></tr>
@@ -1544,12 +3131,201 @@ Transforms a template literal string into a ViewTemplate.
 </td></tr>
 <tr><td>
 
+[Injectable](../fast-element.injectable/)
+
+
+</td><td>
+
+A class that declares constructor injected dependencies through a static "inject" field array of keys.
+
+
+</td></tr>
+<tr><td>
+
+[Key](../fast-element.key/)
+
+
+</td><td>
+
+A key that is used to register dependencies with a dependency injection container.
+
+
+</td></tr>
+<tr><td>
+
+[LogicalOperator](../fast-element.logicaloperator/)
+
+
+</td><td>
+
+Logical operator token.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathEntry](../fast-element.observermappathentry/)
+
+
+</td><td>
+
+A node in the observer-map path tree.
+
+- `true` → observe this path and all descendants (unless overridden by children). - `false` → do NOT observe this path or its descendants (unless overridden by children). - `ObserverMapPathNode` → configure child paths individually; the node itself is observed if `$observe` is true (default when parent is observed).
+
+
+</td></tr>
+<tr><td>
+
+[Operator](../fast-element.operator/)
+
+
+</td><td>
+
+Declarative expression operator token.
+
+
+</td></tr>
+<tr><td>
+
+[OwnedState](../fast-element.ownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** A read/write stateful value associated with an owner.
+
+
+</td></tr>
+<tr><td>
+
+[ParentLocator](../fast-element.parentlocator/)
+
+
+</td><td>
+
+A function capable of locating the parent container based on a container's owner.
+
+
+</td></tr>
+<tr><td>
+
+[PathType](../fast-element.pathtype/)
+
+
+</td><td>
+
+Declarative schema path type.
+
+
+</td></tr>
+<tr><td>
+
+[ReadonlyOwnedState](../fast-element.readonlyownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** A readonly stateful value associated with an object owner.
+
+
+</td></tr>
+<tr><td>
+
+[ReadonlyState](../fast-element.readonlystate/)
+
+
+</td><td>
+
+**_(BETA)_** A readonly stateful value.
+
+
+</td></tr>
+<tr><td>
+
+[RegisterSelf](../fast-element.registerself/)
+
+
+</td><td>
+
+Represents an object that can register itself.
+
+
+</td></tr>
+<tr><td>
+
+[ResolveCallback](../fast-element.resolvecallback/)
+
+
+</td><td>
+
+Represents a custom callback for resolving a request from the container. The handler is the container that is invoking the callback. The requestor is the original container that made the request. The handler and the requestor may not be the same if the request has bubbled up to a parent container in the DI hierarchy. The resolver is the instance of the resolver that stores the callback. This is provided in case the callback needs a place or key against which to store state across resolutions.
+
+
+</td></tr>
+<tr><td>
+
+[Resolved](../fast-element.resolved/)
+
+
+</td><td>
+
+Represents something resolved from a service locator.
+
+
+</td></tr>
+<tr><td>
+
 [SourceLifetime](../fast-element.sourcelifetime/)
 
 
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategySupport](../fast-element.splicestrategysupport/)
+
+
+</td><td>
+
+The available values for SpliceStrategySupport.
+
+
+</td></tr>
+<tr><td>
+
+[State](../fast-element.state/)
+
+
+</td><td>
+
+**_(BETA)_** A read/write stateful value.
+
+
+</td></tr>
+<tr><td>
+
+[StateOptions](../fast-element.stateoptions/)
+
+
+</td><td>
+
+**_(BETA)_** Options for creating state.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateDirective](../fast-element.templatedirective/)
+
+
+</td><td>
+
+Declarative template directive names.
 
 
 </td></tr>
@@ -1566,12 +3342,45 @@ Represents the types of values that can be interpolated into a template.
 </td></tr>
 <tr><td>
 
+[Transformer\_2](../fast-element.transformer_2/)
+
+
+</td><td>
+
+Transforms an object after it is created but before it is returned to the requestor.
+
+
+</td></tr>
+<tr><td>
+
 [TrustedTypesPolicy](../fast-element.trustedtypespolicy/)
 
 
 </td><td>
 
 A policy for use with the standard trustedTypes platform API.
+
+
+</td></tr>
+<tr><td>
+
+[TwoWayBindingOptions](../fast-element.twowaybindingoptions/)
+
+
+</td><td>
+
+The twoWay binding options.
+
+
+</td></tr>
+<tr><td>
+
+[UnknownContext](../fast-element.unknowncontext/)
+
+
+</td><td>
+
+An unknown context type.
 
 
 </td></tr>

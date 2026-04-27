@@ -20,7 +20,7 @@ Provides a mechanism for releasing resources.
 **Signature:**
 
 ```typescript
-export interface Disposable 
+export interface Disposable
 ```
 
 ## Methods

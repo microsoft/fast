@@ -19,7 +19,7 @@ navigationOptions:
 **Signature:**
 
 ```typescript
-export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> 
+export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent>
 ```
 **Extends:** [ElementView](../fast-element.elementview/)<!-- -->, [SyntheticView](../fast-element.syntheticview/)<!-- -->, DefaultExecutionContext&lt;TParent&gt;
 

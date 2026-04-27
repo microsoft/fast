@@ -15,12 +15,12 @@ navigationOptions:
 
 ## HydrationTracker class
 
-Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
+Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level `TemplateLifecycleCallbacks`<!-- -->.
 
 **Signature:**
 
 ```typescript
-export declare class HydrationTracker 
+export declare class HydrationTracker
 ```
 
 ## Constructors

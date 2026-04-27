@@ -1,6 +1,6 @@
 const path = require("node:path");
 const { createInterface } = require("node:readline");
-const { exec } = require("node:child_process");
+const { execFile } = require("node:child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
@@ -11,6 +11,12 @@ const majorVersion = process.argv[2] || "3";
 const currentVersion = `${majorVersion}x`;
 const versionDir = `${majorVersion}.x`;
 const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
+const apiDocumenterCommand = path.join(
+    projectRoot,
+    "node_modules",
+    ".bin",
+    process.platform === "win32" ? "api-documenter.cmd" : "api-documenter",
+);
 
 const packages = [
     {
@@ -19,8 +25,94 @@ const packages = [
     },
 ];
 
+const exportPathDescriptions = {
+    ".": "Root implementation export for FAST Element APIs.",
+    "./debug.js": "Debug message helpers.",
+    "./fast-element.js": "FASTElement and the customElement decorator.",
+    "./declarative.js": "Declarative template APIs.",
+    "./declarative-utilities.js": "Declarative parser and observer-map utilities.",
+    "./attribute-map.js": "Schema-driven attribute map extension.",
+    "./observer-map.js": "Schema-driven observer map extension.",
+    "./hydration.js": "Opt-in hydration APIs.",
+    "./binding.js": "Binding directives and binding helpers.",
+    "./two-way.js": "Two-way binding helper.",
+    "./signal.js": "Signal binding helper.",
+    "./render.js": "Render directive APIs.",
+    "./utilities.js": "DOM utility helpers.",
+    "./state.js": "State and watch helpers.",
+    "./context.js": "Context protocol APIs.",
+    "./di.js": "Dependency injection APIs.",
+    "./dom.js": "DOM abstraction and DOM aspect APIs.",
+    "./dom-policy.js": "Trusted Types DOM policy helpers.",
+    "./updates.js": "DOM update queue APIs.",
+    "./arrays.js": "Array observation helpers.",
+    "./array-observer.js": "ArrayObserver.",
+    "./schema.js": "Schema and schema registry APIs.",
+    "./observable.js": "Observable and observable decorator APIs.",
+    "./volatile.js": "Volatile observable decorator.",
+    "./attr.js": "Attribute decorator and attribute definition APIs.",
+    "./css.js": "CSS template tag APIs.",
+    "./html.js": "HTML template tag APIs.",
+    "./templating.js": "Advanced templating APIs.",
+    "./children.js": "children directive.",
+    "./node-observation.js": "Node observation directive APIs.",
+    "./ref.js": "ref directive.",
+    "./slotted.js": "slotted directive.",
+    "./when.js": "when directive.",
+    "./repeat.js": "repeat directive.",
+    "./styles.js": "Element style APIs.",
+    "./package.json": "Package metadata.",
+};
+
+function normalizePackageExport(pkgExport) {
+    if (typeof pkgExport === "string") {
+        return {
+            docsFolder: pkgExport,
+            publicPath: `${pkgExport}.js`,
+            apiJsonPath: `${pkgExport}/${pkgExport}.api.json`,
+        };
+    }
+
+    return pkgExport;
+}
+
 function yamlString(value) {
     return JSON.stringify(value);
+}
+
+function publicExportPath(pkgName, exportPath) {
+    return exportPath === "." ? pkgName : `${pkgName}/${exportPath.slice(2)}`;
+}
+
+function exportTarget(exportConfig, key) {
+    if (typeof exportConfig === "string") {
+        return key === "default" ? exportConfig : "";
+    }
+
+    return exportConfig[key] ?? "";
+}
+
+function codeOrNA(value) {
+    return value ? `\`${value}\`` : "n/a";
+}
+
+function runAPIDocumenter(inputDir, outputDir) {
+    return new Promise((resolve, reject) => {
+        execFile(
+            apiDocumenterCommand,
+            ["markdown", "-i", inputDir, "-o", outputDir],
+            (err, stdout, stderr) => {
+                console.log(stdout);
+                console.error(stderr);
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                resolve();
+            },
+        );
+    });
 }
 
 async function safeCopy(source, dest) {
@@ -49,21 +141,31 @@ async function safeWrite(dest, content) {
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
-            path.resolve(
+            path.join(
                 getPackageJsonDir(`@microsoft/${pkg.main}`),
-                `./dist/${pkg.main}.api.json`,
+                "dist",
+                `${pkg.main}.api.json`,
             ),
-            `${tempAPIDir}/${pkg.main}.api.json`,
+            path.join(tempAPIDir, `${pkg.main}.api.json`),
         );
 
         if (Array.isArray(pkg.exports)) {
             for (const pkgExport of pkg.exports) {
+                const normalizedExport = normalizePackageExport(pkgExport);
+                const apiJsonFileName = path.basename(normalizedExport.apiJsonPath);
+
                 await safeCopy(
-                    path.resolve(
+                    path.join(
                         getPackageJsonDir(`@microsoft/${pkg.main}`),
-                        `./dist/${pkgExport}/${pkgExport}.api.json`,
+                        "dist",
+                        normalizedExport.apiJsonPath,
                     ),
-                    `${tempAPIDir}/${pkg.main}/${pkgExport}/${pkgExport}.api.json`,
+                    path.join(
+                        tempAPIDir,
+                        pkg.main,
+                        normalizedExport.docsFolder,
+                        apiJsonFileName,
+                    ),
                 );
             }
         }
@@ -148,6 +250,8 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                         : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`);
                 }
 
+                line = line.replace(/[ \t]+$/u, "");
+
                 if (!skip) {
                     output.push(line);
                 }
@@ -212,36 +316,14 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 async function buildAPIMarkdown() {
     await copyAPI();
 
-    await new Promise((resolve, reject) =>
-        exec(
-            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
-            (err, stdout, stderr) => {
-                console.log(stdout);
-                console.error(stderr);
-                if (err) {
-                    return reject(err);
-                }
-
-                return resolve();
-            },
-        ),
-    );
+    await runAPIDocumenter(tempAPIDir, markdownAPIDir);
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
-            await new Promise((resolve, reject) =>
-                exec(
-                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
-                    (err, stdout, stderr) => {
-                        console.log(stdout);
-                        console.error(stderr);
-                        if (err) {
-                            return reject(err);
-                        }
-
-                        return resolve();
-                    },
-                ),
+            const normalizedExport = normalizePackageExport(pkgExport);
+            await runAPIDocumenter(
+                path.join(tempAPIDir, pkg.main, normalizedExport.docsFolder),
+                path.join(markdownAPIDir, pkg.main, normalizedExport.docsFolder),
             );
         }
     }
@@ -252,14 +334,19 @@ async function buildAPIMarkdown() {
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
-            const exportDir = `${markdownAPIDir}/${pkg.main}/${pkgExport}`;
+            const normalizedExport = normalizePackageExport(pkgExport);
+            const exportDir = path.join(
+                markdownAPIDir,
+                pkg.main,
+                normalizedExport.docsFolder,
+            );
             const exportDocFiles = await fs.readdir(exportDir);
 
             convertDocFiles(
                 exportDir,
                 exportDocFiles,
                 `@microsoft/${pkg.main}`,
-                `${pkgExport}.js`,
+                normalizedExport.publicPath,
             );
         }
     }
@@ -309,8 +396,69 @@ async function buildSizesPage() {
     console.log("Export sizes page generated.");
 }
 
+async function buildPathExportsPage() {
+    const packageDir = getPackageJsonDir("@microsoft/fast-element");
+    const packageJson = JSON.parse(
+        fs.readFileSync(path.join(packageDir, "package.json"), "utf-8"),
+    );
+    const rows = Object.entries(packageJson.exports).map(([exportPath, exportConfig]) => {
+        return {
+            importPath: publicExportPath(packageJson.name, exportPath),
+            provides: exportPathDescriptions[exportPath] ?? "Package path export.",
+            types: exportTarget(exportConfig, "types"),
+            runtime:
+                exportTarget(exportConfig, "default") ||
+                exportTarget(exportConfig, "production") ||
+                exportTarget(exportConfig, "development"),
+        };
+    });
+
+    const lines = [
+        "---",
+        "id: path-exports",
+        "title: Path Exports",
+        `layout: ${currentVersion}`,
+        "eleventyNavigation:",
+        `  key: path-exports${currentVersion}`,
+        `  parent: advanced${currentVersion}`,
+        "  title: Path Exports",
+        "navigationOptions:",
+        `  activeKey: path-exports${currentVersion}`,
+        "description: Package path exports for @microsoft/fast-element.",
+        "keywords:",
+        "  - exports",
+        "  - path exports",
+        "  - package exports",
+        "---",
+        "",
+        "# Path Exports",
+        "",
+        "`@microsoft/fast-element` exposes its implementation APIs from the root export. Path exports are also available when you want to import a focused entrypoint directly.",
+        "",
+        "This table is generated from the `exports` field in `@microsoft/fast-element/package.json`.",
+        "",
+        "| Import path | Provides | Runtime target | Types |",
+        "|---|---|---|---|",
+    ];
+
+    for (const row of rows) {
+        lines.push(
+            `| \`${row.importPath}\` | ${row.provides} | ${codeOrNA(row.runtime)} | ${codeOrNA(row.types)} |`,
+        );
+    }
+
+    lines.push("");
+
+    const dest = path.resolve(
+        projectRoot,
+        `src/docs/${versionDir}/advanced/path-exports.md`,
+    );
+    await safeWrite(dest, lines.join("\n"));
+    console.log("Path exports page generated.");
+}
+
 async function main() {
-    await Promise.all([buildAPIMarkdown(), buildSizesPage()]);
+    await Promise.all([buildAPIMarkdown(), buildSizesPage(), buildPathExportsPage()]);
 }
 
 main();

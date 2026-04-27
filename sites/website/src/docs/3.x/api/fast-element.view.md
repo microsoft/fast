@@ -20,7 +20,7 @@ Represents a collection of DOM nodes which can be bound to a data source.
 **Signature:**
 
 ```typescript
-export interface View<TSource = any, TParent = any> extends Disposable 
+export interface View<TSource = any, TParent = any> extends Disposable
 ```
 **Extends:** [Disposable](../fast-element.disposable/)
 

@@ -20,7 +20,7 @@ Represents something that applies to a specific aspect of the DOM.
 **Signature:**
 
 ```typescript
-export interface Aspected 
+export interface Aspected
 ```
 
 ## Properties

@@ -19,7 +19,7 @@ navigationOptions:
 **Signature:**
 
 ```typescript
-export declare class HydrationBindingError extends Error 
+export declare class HydrationBindingError extends Error
 ```
 **Extends:** Error
 

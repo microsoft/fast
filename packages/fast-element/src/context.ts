@@ -198,9 +198,9 @@ export const Context = Object.freeze({
 
     /**
      * Enables an event target to provide a context value.
-     * @param target The target to provide the context value for.
-     * @param context The context to provide the value for.
-     * @param value The value to provide for the context.
+     * @param target - The target to provide the context value for.
+     * @param context - The context to provide the value for.
+     * @param value - The value to provide for the context.
      */
     provide<T extends UnknownContext>(
         target: EventTarget,
@@ -245,9 +245,9 @@ export const Context = Object.freeze({
     /**
      * Defines a getter-only property on the target that will return the context
      * value for the target.
-     * @param target The target to define the property on.
-     * @param propertyName The name of the property to define.
-     * @param context The context that will be used to retrieve the property value.
+     * @param target - The target to define the property on.
+     * @param propertyName - The name of the property to define.
+     * @param context - The context that will be used to retrieve the property value.
      * @remarks
      * Uses the default request strategy to locate the context and will return the
      * initialValue if the context isn't handled.

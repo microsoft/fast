@@ -274,13 +274,15 @@ When a page is server-side rendered (SSR) with Declarative Shadow DOM, the HTML 
 
 ### Enabling Hydration
 
-Hydration is an opt-in, tree-shakeable feature. Importing `install-hydratable-view-templates.ts` patches `ViewTemplate.prototype` with:
+Hydration is an opt-in feature. Calling `enableHydration()` patches
+`ViewTemplate.prototype` with:
 1. A `Hydratable` symbol — marks the template as hydration-capable (checked via `isHydratable()`).
 2. A `hydrate(firstChild, lastChild, hostBindingTarget?)` method — creates a `HydrationView` instead of an `HTMLView`.
 
 ```typescript
-// This import enables hydration for all ViewTemplate instances
-import "@microsoft/fast-element/install-hydratable-view-templates";
+import { enableHydration } from "@microsoft/fast-element";
+
+enableHydration();
 ```
 
 ### Hydration Marker Format

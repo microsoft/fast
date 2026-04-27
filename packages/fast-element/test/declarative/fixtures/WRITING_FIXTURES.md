@@ -162,16 +162,16 @@ The component definition file registers custom elements and configures the templ
 
 1. Define element classes extending `FASTElement`.
 2. Call `define()` on the element class with `template: declarativeTemplate()`.
-3. Use `TemplateElement.config()` or `TemplateElement.options()` only when the
-   fixture needs lifecycle callbacks or compatibility fallback options —
-   `declarativeTemplate()` registers `<f-template>` automatically.
+3. Use `declarativeTemplate(callbacks)` for per-element lifecycle callbacks,
+   `enableHydration()` for hydration callbacks, and define extensions such as
+   `attributeMap()` / `observerMap()` for schema behavior.
+   `declarativeTemplate()` registers FAST's internal `<f-template>` publisher
+   automatically.
 
 ### Import paths
 
 > **Important:** All imports in `main.ts` must use package names (for example
-> `@microsoft/fast-element`,
-> `@microsoft/fast-element/declarative.js`, or
-> `@microsoft/fast-element/declarative/utilities.js`), **not** relative paths.
+> `@microsoft/fast-element`), **not** relative paths.
 > Relative imports will break the WebUI integration tests because fixtures are
 > copied to a different directory structure during the integration build. The
 > same applies to any other paths referenced in `main.ts`.
@@ -179,8 +179,12 @@ The component definition file registers custom elements and configures the templ
 ### Basic pattern
 
 ```typescript
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import {
+    FASTElement,
+    attr,
+    declarativeTemplate,
+    observable,
+} from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {
     @attr
@@ -224,7 +228,7 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element";
 
 MyElement.define(
     {

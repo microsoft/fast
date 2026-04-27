@@ -10,7 +10,7 @@ core runtime and its declarative entrypoint:
 
 - **`@microsoft/fast-element`**: Provides the core `FASTElement` base class and
   element definition system.
-- **`@microsoft/fast-element/declarative.js`**: Provides the `f-template`
+- **`@microsoft/fast-element`**: Provides the `f-template`
   custom element that processes HTML templates and attaches them to FAST
   elements as a `ViewTemplate` in lieu of an `html` template created during
   `FASTElement.define()`. The preferred path uses `declarativeTemplate()` so
@@ -62,7 +62,7 @@ Key characteristics of this phase:
 
 ### Phase 2: Declarative Template Bridge
 
-`declarativeTemplate()` from `@microsoft/fast-element/declarative.js`
+`declarativeTemplate()` from `@microsoft/fast-element`
 automatically ensures that `f-template` is defined in the same registry as the
 FAST element being composed.
 
@@ -203,8 +203,8 @@ Hydration must be explicitly opted into by calling `enableHydration()`. Per-elem
 callbacks are passed directly to `declarativeTemplate()`:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 // Global hydration events
 enableHydration({
@@ -246,8 +246,8 @@ MyComponent.define({
 
 **Performance Monitoring:**
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 enableHydration({
     hydrationComplete() {
