@@ -63,6 +63,8 @@ export class HydrationTracker {
                         this.options.hydrationComplete?.();
                     } catch {
                         // A lifecycle callback must never prevent post-hydration cleanup.
+                    } finally {
+                        this.started = false;
                     }
                 }
             }, 0);

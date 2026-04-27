@@ -183,7 +183,9 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         ensureDeclarativeRuntime();
 
         const name = definition.name;
-        const templates = this.getElementsByTagName("template");
+        const templates = Array.from(this.children).filter(
+            (child): child is HTMLTemplateElement => child.tagName === "TEMPLATE",
+        );
 
         if (templates.length > 1) {
             throw FAST.error(Message.moreThanOneTemplateProvided, {

@@ -159,9 +159,10 @@ Core FAST Element helpers are available from the root package export:
    );
    ```
 
-   `attributeMap()` and `observerMap()` are imported from
-   `@microsoft/fast-element` for declarative templates, manually supplied
-   schemas, or both. `FASTElementDefinition.schema` is optional;
+   `attributeMap()` is imported from
+   `@microsoft/fast-element/attribute-map.js` and `observerMap()` from
+   `@microsoft/fast-element/observer-map.js` for declarative templates,
+   manually supplied schemas, or both. `FASTElementDefinition.schema` is optional;
    `declarativeTemplate()` assigns it automatically, and `observerMap()` can
    take a manual schema with `observerMap({ schema })`.
 
@@ -176,7 +177,7 @@ Core FAST Element helpers are available from the root package export:
 
 | Before | After |
 |---|---|
-| `import "@microsoft/fast-element";` | `import { enableDebug } from "@microsoft/fast-element"; enableDebug();` |
+| `import "@microsoft/fast-element";` | `import { enableDebug } from "@microsoft/fast-element/debug.js"; enableDebug();` |
 
 ### Migration steps
 
@@ -221,10 +222,9 @@ data source.
 |---|---|
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
 
-The `install-hydratable-view-templates.js` side-effect import is still
-available for advanced scenarios, but the preferred API is
-`enableHydration()` from `@microsoft/fast-element/hydration.js`. The
-declarative entrypoint no longer installs hydration automatically.
+Use `enableHydration()` from `@microsoft/fast-element/hydration.js` when SSR
+content should hydrate. The declarative entrypoint no longer installs hydration
+automatically.
 
 ### Changed behavior
 

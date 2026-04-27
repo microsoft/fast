@@ -164,6 +164,29 @@ test.describe("extension subpaths", () => {
         expect(message).toContain("observerMap requires a schema");
     });
 
+    test("attributeMap reports missing schemas for non-declarative definitions", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const message = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { attributeMap } = await import("/extension-subpaths-main.js");
+
+            class ManualElement {}
+
+            try {
+                attributeMap()({ type: ManualElement } as any);
+            } catch (error) {
+                return (error as Error).message;
+            }
+
+            return "";
+        });
+
+        expect(message).toContain("attributeMap requires a schema");
+    });
+
     test("map entrypoints do not bundle declarative template runtime", async () => {
         const result = await build({
             stdin: {

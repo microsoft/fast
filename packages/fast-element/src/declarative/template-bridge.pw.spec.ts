@@ -454,6 +454,47 @@ test.describe("declarativeTemplate", () => {
         expect(result.hasFastDefinition).toBe(false);
     });
 
+    test("allows nested templates inside the authored template", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><section><template id="nested"><span>nested</span></template><span class="label">{{label}}</span></section></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {
+                public label = "outer";
+            }
+
+            await TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            });
+
+            const element = document.createElement(elementName);
+            document.body.appendChild(element);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                hasNestedTemplate:
+                    element.shadowRoot?.querySelector("#nested") instanceof
+                    HTMLTemplateElement,
+                labelText: element.shadowRoot?.querySelector(".label")?.textContent ?? "",
+            };
+        });
+
+        expect(result.hasNestedTemplate).toBe(true);
+        expect(result.labelText).toBe("outer");
+    });
+
     test("waits for definition-first markup inserted later", async ({ page }) => {
         await page.goto("/");
 

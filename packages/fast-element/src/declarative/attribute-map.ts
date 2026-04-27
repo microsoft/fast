@@ -72,9 +72,17 @@ function defineAttributeMap(
  */
 export function attributeMap(config: AttributeMapConfig = {}): FASTElementExtension {
     return definition => {
-        if (definition.schema && !hasFASTElementTemplateResolver(definition)) {
+        const hasTemplateResolver = hasFASTElementTemplateResolver(definition);
+
+        if (definition.schema && !hasTemplateResolver) {
             defineAttributeMap(definition, definition.schema, config);
             return;
+        }
+
+        if (!hasTemplateResolver) {
+            throw new Error(
+                "attributeMap requires a schema. Provide one via FASTElement definition or use declarativeTemplate().",
+            );
         }
 
         setDefinitionSchemaTransform(

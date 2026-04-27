@@ -166,7 +166,7 @@ from `@microsoft/fast-element` and pass it on the element definition;
 mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
-`@microsoft/fast-element`. See
+`@microsoft/fast-element/declarative-utilities.js`. See
 [`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
 details and the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)
