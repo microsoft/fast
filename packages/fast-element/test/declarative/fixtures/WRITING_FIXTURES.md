@@ -171,9 +171,7 @@ The component definition file registers custom elements and configures the templ
 ### Import paths
 
 > **Important:** All imports in `main.ts` must use package names (for example
-> `@microsoft/fast-element`,
-> `@microsoft/fast-element/declarative.js`, or
-> `@microsoft/fast-element/declarative-utilities.js`), **not** relative paths.
+> `@microsoft/fast-element`), **not** relative paths.
 > Relative imports will break the WebUI integration tests because fixtures are
 > copied to a different directory structure during the integration build. The
 > same applies to any other paths referenced in `main.ts`.
@@ -181,10 +179,12 @@ The component definition file registers custom elements and configures the templ
 ### Basic pattern
 
 ```typescript
-import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { observable } from "@microsoft/fast-element/observable.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import {
+    FASTElement,
+    attr,
+    declarativeTemplate,
+    observable,
+} from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {
     @attr
@@ -228,8 +228,7 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element";
 
 MyElement.define(
     {

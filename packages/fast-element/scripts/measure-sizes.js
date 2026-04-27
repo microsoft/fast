@@ -11,78 +11,64 @@ const rootImportPath = "@microsoft/fast-element";
 
 const namedExports = ["FASTElement"];
 
-const subpathExports = [
+const measuredExports = [
     {
         name: "Updates",
-        importPath: "@microsoft/fast-element/updates.js",
         export: "Updates",
     },
     {
         name: "Observable",
-        importPath: "@microsoft/fast-element/observable.js",
         export: "Observable",
     },
     {
         name: "observable",
-        importPath: "@microsoft/fast-element/observable.js",
         export: "observable",
     },
-    { name: "attr", importPath: "@microsoft/fast-element/attr.js", export: "attr" },
+    { name: "attr", export: "attr" },
     {
         name: "children",
-        importPath: "@microsoft/fast-element/children.js",
         export: "children",
     },
     {
         name: "ref",
-        importPath: "@microsoft/fast-element/ref.js",
         export: "ref",
     },
     {
         name: "slotted",
-        importPath: "@microsoft/fast-element/slotted.js",
         export: "slotted",
     },
     {
         name: "volatile",
-        importPath: "@microsoft/fast-element/volatile.js",
         export: "volatile",
     },
     {
         name: "when",
-        importPath: "@microsoft/fast-element/when.js",
         export: "when",
     },
-    { name: "html", importPath: "@microsoft/fast-element/html.js", export: "html" },
+    { name: "html", export: "html" },
     {
         name: "repeat",
-        importPath: "@microsoft/fast-element/repeat.js",
         export: "repeat",
     },
-    { name: "css", importPath: "@microsoft/fast-element/css.js", export: "css" },
+    { name: "css", export: "css" },
     {
         name: "enableHydration",
-        importPath: "@microsoft/fast-element/hydration.js",
         export: "enableHydration",
     },
     {
         name: "declarativeTemplate",
-        importPath: "@microsoft/fast-element/declarative.js",
         export: "declarativeTemplate",
     },
     {
         name: "ArrayObserver",
-        importPath: "@microsoft/fast-element/array-observer.js",
         export: "ArrayObserver",
     },
     {
         name: "observerMap",
-        importPath: "@microsoft/fast-element/observer-map.js",
         export: "observerMap",
     },
     {
         name: "attributeMap",
-        importPath: "@microsoft/fast-element/attribute-map.js",
         export: "attributeMap",
     },
 ];
@@ -150,14 +136,14 @@ async function main() {
     );
     results.push(...exportResults);
 
-    // Measure subpath exports in parallel
-    const subpathResults = await Promise.all(
-        subpathExports.map(async ({ name, importPath, export: exportName }) => {
-            const sizes = await measureExport(exportName, importPath);
-            return { name: formatExportLabel(name, importPath), ...sizes };
+    // Measure each root export in parallel
+    const measuredResults = await Promise.all(
+        measuredExports.map(async ({ name, export: exportName }) => {
+            const sizes = await measureExport(exportName);
+            return { name: formatExportLabel(name, rootImportPath), ...sizes };
         }),
     );
-    results.push(...subpathResults);
+    results.push(...measuredResults);
 
     // Generate markdown table
     const lines = [

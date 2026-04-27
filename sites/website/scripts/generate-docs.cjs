@@ -21,37 +21,48 @@ const apiDocumenterCommand = path.join(
 const packages = [
     {
         main: "fast-element",
-        exports: [
-            "context",
-            "declarative",
-            "declarative-utilities",
-            "di",
-            "hydration",
-            "binding",
-            "two-way",
-            "signal",
-            "schema",
-            "dom",
-            "updates",
-            "observable",
-            "attr",
-            "volatile",
-            "css",
-            "html",
-            "templating",
-            "render",
-            "array-observer",
-            "children",
-            "node-observation",
-            "ref",
-            "slotted",
-            "when",
-            "repeat",
-            "attribute-map",
-            "observer-map",
-        ],
+        exports: ["context", "declarative", "di"],
     },
 ];
+
+const exportPathDescriptions = {
+    ".": "Root implementation export for FAST Element APIs.",
+    "./debug.js": "Debug message helpers.",
+    "./fast-element.js": "FASTElement and the customElement decorator.",
+    "./declarative.js": "Declarative template APIs.",
+    "./declarative-utilities.js": "Declarative parser and observer-map utilities.",
+    "./attribute-map.js": "Schema-driven attribute map extension.",
+    "./observer-map.js": "Schema-driven observer map extension.",
+    "./hydration.js": "Opt-in hydration APIs.",
+    "./binding.js": "Binding directives and binding helpers.",
+    "./two-way.js": "Two-way binding helper.",
+    "./signal.js": "Signal binding helper.",
+    "./render.js": "Render directive APIs.",
+    "./utilities.js": "DOM utility helpers.",
+    "./state.js": "State and watch helpers.",
+    "./context.js": "Context protocol APIs.",
+    "./di.js": "Dependency injection APIs.",
+    "./dom.js": "DOM abstraction and DOM aspect APIs.",
+    "./dom-policy.js": "Trusted Types DOM policy helpers.",
+    "./updates.js": "DOM update queue APIs.",
+    "./arrays.js": "Array observation helpers.",
+    "./array-observer.js": "ArrayObserver.",
+    "./schema.js": "Schema and schema registry APIs.",
+    "./observable.js": "Observable and observable decorator APIs.",
+    "./volatile.js": "Volatile observable decorator.",
+    "./attr.js": "Attribute decorator and attribute definition APIs.",
+    "./css.js": "CSS template tag APIs.",
+    "./html.js": "HTML template tag APIs.",
+    "./templating.js": "Advanced templating APIs.",
+    "./children.js": "children directive.",
+    "./node-observation.js": "Node observation directive APIs.",
+    "./ref.js": "ref directive.",
+    "./slotted.js": "slotted directive.",
+    "./when.js": "when directive.",
+    "./repeat.js": "repeat directive.",
+    "./styles.js": "Element style APIs.",
+    "./package.json": "Package metadata.",
+};
 
 function normalizePackageExport(pkgExport) {
     if (typeof pkgExport === "string") {
@@ -67,6 +78,22 @@ function normalizePackageExport(pkgExport) {
 
 function yamlString(value) {
     return JSON.stringify(value);
+}
+
+function publicExportPath(pkgName, exportPath) {
+    return exportPath === "." ? pkgName : `${pkgName}/${exportPath.slice(2)}`;
+}
+
+function exportTarget(exportConfig, key) {
+    if (typeof exportConfig === "string") {
+        return key === "default" ? exportConfig : "";
+    }
+
+    return exportConfig[key] ?? "";
+}
+
+function codeOrNA(value) {
+    return value ? `\`${value}\`` : "n/a";
 }
 
 function runAPIDocumenter(inputDir, outputDir) {
@@ -369,8 +396,69 @@ async function buildSizesPage() {
     console.log("Export sizes page generated.");
 }
 
+async function buildPathExportsPage() {
+    const packageDir = getPackageJsonDir("@microsoft/fast-element");
+    const packageJson = JSON.parse(
+        fs.readFileSync(path.join(packageDir, "package.json"), "utf-8"),
+    );
+    const rows = Object.entries(packageJson.exports).map(([exportPath, exportConfig]) => {
+        return {
+            importPath: publicExportPath(packageJson.name, exportPath),
+            provides: exportPathDescriptions[exportPath] ?? "Package path export.",
+            types: exportTarget(exportConfig, "types"),
+            runtime:
+                exportTarget(exportConfig, "default") ||
+                exportTarget(exportConfig, "production") ||
+                exportTarget(exportConfig, "development"),
+        };
+    });
+
+    const lines = [
+        "---",
+        "id: path-exports",
+        "title: Path Exports",
+        `layout: ${currentVersion}`,
+        "eleventyNavigation:",
+        `  key: path-exports${currentVersion}`,
+        `  parent: advanced${currentVersion}`,
+        "  title: Path Exports",
+        "navigationOptions:",
+        `  activeKey: path-exports${currentVersion}`,
+        "description: Package path exports for @microsoft/fast-element.",
+        "keywords:",
+        "  - exports",
+        "  - path exports",
+        "  - package exports",
+        "---",
+        "",
+        "# Path Exports",
+        "",
+        "`@microsoft/fast-element` exposes its implementation APIs from the root export. Path exports are also available when you want to import a focused entrypoint directly.",
+        "",
+        "This table is generated from the `exports` field in `@microsoft/fast-element/package.json`.",
+        "",
+        "| Import path | Provides | Runtime target | Types |",
+        "|---|---|---|---|",
+    ];
+
+    for (const row of rows) {
+        lines.push(
+            `| \`${row.importPath}\` | ${row.provides} | ${codeOrNA(row.runtime)} | ${codeOrNA(row.types)} |`,
+        );
+    }
+
+    lines.push("");
+
+    const dest = path.resolve(
+        projectRoot,
+        `src/docs/${versionDir}/advanced/path-exports.md`,
+    );
+    await safeWrite(dest, lines.join("\n"));
+    console.log("Path exports page generated.");
+}
+
 async function main() {
-    await Promise.all([buildAPIMarkdown(), buildSizesPage()]);
+    await Promise.all([buildAPIMarkdown(), buildSizesPage(), buildPathExportsPage()]);
 }
 
 main();

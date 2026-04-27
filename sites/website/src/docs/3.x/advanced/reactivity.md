@@ -46,7 +46,7 @@ When `@attr` and `@observable` decorated properties are accessed during template
 **Example: Manual Observer Implementation**
 
 ```ts
-import { Observable } from '@microsoft/fast-element/observable.js';
+import { Observable } from '@microsoft/fast-element';
 
 export class Person {
   private _firstName: string;
@@ -83,8 +83,8 @@ Notice that the `fullName` property does not need any special code, since it's c
 Here's how you would do that with a decorator:
 
 ```ts
-import { volatile } from '@microsoft/fast-element/volatile.js';
-import { observable } from '@microsoft/fast-element/observable.js';
+import { volatile } from '@microsoft/fast-element';
+import { observable } from '@microsoft/fast-element';
 
 export class MyClass {
   @observable someBoolean = false;
@@ -101,7 +101,7 @@ export class MyClass {
 Here's how you would do it without a decorator:
 
 ```ts
-import { Observable, observable } from '@microsoft/fast-element/observable.js';
+import { Observable, observable } from '@microsoft/fast-element';
 
 export class MyClass {
   @observable someBoolean = false;
@@ -122,7 +122,7 @@ On the class where the `@attr` or `@observable` is defined, you can optionally i
 **Example: Property Change Callbacks**
 
 ```ts
-import { observable } from '@microsoft/fast-element/observable.js';
+import { observable } from '@microsoft/fast-element';
 
 export class Person {
   @observable name: string;
@@ -140,7 +140,7 @@ Decorated properties can be subscribed to, to receive notification of changes in
 **Example: Subscribing to an Observable**
 
 ```ts
-import { Observable } from '@microsoft/fast-element/observable.js';
+import { Observable } from '@microsoft/fast-element';
 
 const person = new Person();
 const notifier = Observable.getNotifier(person);
@@ -192,7 +192,7 @@ In addition to watching properties and arrays, you can also watch volatile prope
 **Example: Subscribing to a Volatile Property**
 
 ```ts
-import { ExecutionContext, Observable } from '@microsoft/fast-element/observable.js';
+import { ExecutionContext, Observable } from '@microsoft/fast-element';
 
 const myObject = new MyClass();
 const handler = {
@@ -214,7 +214,7 @@ To inspect which observable objects and properties were accessed from a `Binding
 
 **Example: Getting observation records**
 ```ts
-import { ExecutionContext, Observable } from '@microsoft/fast-element/observable.js';
+import { ExecutionContext, Observable } from '@microsoft/fast-element';
 
 const binding = (x: MyClass) => x.someBoolean ? x.valueA : x.valueB;
 const bindingObserver = Observable.binding(binding);

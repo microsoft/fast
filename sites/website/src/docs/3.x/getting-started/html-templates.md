@@ -16,11 +16,11 @@ keywords:
 
 # HTML Templates
 
-The `@microsoft/fast-element/html.js` module offers a named export `html` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create HTML snippets which will become your web components shadow DOM.
+The `@microsoft/fast-element` module offers a named export `html` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create HTML snippets which will become your web components shadow DOM.
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element/html.js";
+import { html } from "@microsoft/fast-element";
 
 export const template = html`
   <template>Hello world</template>
@@ -34,8 +34,8 @@ When working with the `html` template, bindings allow more complex behavior than
 **Example:**
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
-import { html } from '@microsoft/fast-element/html.js';
+import { attr } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <h3>${x => x.greeting.toUpperCase()}</h3>
@@ -89,7 +89,7 @@ Boolean bindings use the `?` symbol, use these for Boolean attributes.
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element/html.js";
+import { html } from "@microsoft/fast-element";
 
 export const template = html`
   <button
@@ -106,7 +106,7 @@ Events bindings use the `@` symbol. All Element events are available see the [MD
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element/html.js";
+import { html } from "@microsoft/fast-element";
 
 export const template = html`
   <button
@@ -127,7 +127,7 @@ Property bindings use the `:` symbol.
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element/html.js";
+import { html } from "@microsoft/fast-element";
 
 export const template = html`
   <input
@@ -143,7 +143,7 @@ Some complex use cases include binding to a custom property, updating that prope
 Your templates can be typed to the data model that they are rendering over. In TypeScript, we provide the type as part of the tag: `html<NameTag>`.
 
 ```ts
-import { html } from '@microsoft/fast-element/html.js';
+import { html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <div>${x => x.greeting}</div>

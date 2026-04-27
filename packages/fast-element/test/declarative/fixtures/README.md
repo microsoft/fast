@@ -35,7 +35,7 @@ asserting. The standard pattern is:
 1. **In `main.ts`**, call `enableHydration()` before elements connect:
 
     ```ts
-    import { enableHydration } from "@microsoft/fast-element/hydration.js";
+    import { enableHydration } from "@microsoft/fast-element";
 
     enableHydration({
         hydrationComplete() {

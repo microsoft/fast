@@ -24,6 +24,7 @@ import {
 
 /**
  * The return type for {@link TemplateParser.parse}.
+ * @public
  */
 export interface ResolvedStringsAndValues {
     strings: Array<string>;
@@ -76,6 +77,7 @@ class StringsAccumulator {
  *
  * The parsing pipeline is fully synchronous — no promises are allocated
  * during template resolution.
+ * @public
  */
 export class TemplateParser {
     /**
@@ -299,7 +301,7 @@ export class TemplateParser {
     }
 
     /**
-     * Resolve an event binding (the "@" aspect).
+     * Resolve an event binding (the "\@" aspect).
      * @returns An object with the event binding function and the updated rootPropertyName.
      */
     private resolveEventBinding(

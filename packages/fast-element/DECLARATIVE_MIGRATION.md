@@ -116,11 +116,11 @@ Configuration types have moved from `template.ts` to their owning modules. If yo
 | `import type { AttributeMapConfig } from "./template.js"` | `import type { AttributeMapConfig } from "./attribute-map.js"` |
 
 Public declarative imports now come from
-`@microsoft/fast-element/declarative.js` rather than
+`@microsoft/fast-element` rather than
 `@microsoft/fast-html`. Existing declarative imports for `attributeMap()` and
 `observerMap()` remain valid. New code that only needs the map extensions should
-prefer `@microsoft/fast-element/attribute-map.js` and
-`@microsoft/fast-element/observer-map.js`.
+prefer `@microsoft/fast-element` and
+`@microsoft/fast-element`.
 
 ### Schema changes
 
@@ -130,7 +130,7 @@ prefer `@microsoft/fast-element/attribute-map.js` and
 
 | Before | After |
 |---|---|
-| `Schema.jsonSchemaMap.get('my-element')` | `import { schemaRegistry } from "@microsoft/fast-element/declarative.js"; schemaRegistry.get('my-element')` |
+| `Schema.jsonSchemaMap.get('my-element')` | `import { schemaRegistry } from "@microsoft/fast-element"; schemaRegistry.get('my-element')` |
 
 ### Public exports
 
@@ -173,19 +173,19 @@ implementation is internal and is defined automatically by `declarativeTemplate(
 | `ElementOptions` / `ElementOptionsDictionary` | No replacement |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
-Hydration is also no longer installed by `@microsoft/fast-element/declarative.js`.
-Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before FAST
+Hydration is also no longer installed by `@microsoft/fast-element`.
+Call `enableHydration()` from `@microsoft/fast-element` before FAST
 elements connect when prerendered Declarative Shadow DOM should be reused.
 
-## Extension subpaths and optional definition schema
+## Schema-driven maps and optional definition schema
 
 `attributeMap()` and `observerMap()` are now schema-driven extensions that are
-factored away from declarative templating. Prefer importing them from their
-dedicated subpaths for tree-shaken or non-declarative use:
+factored away from declarative templating. Import them from
+`@microsoft/fast-element` for declarative or non-declarative use:
 
 ```ts
-import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 ```
 
 `FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
@@ -195,8 +195,8 @@ directly in configuration:
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {}
 

@@ -62,12 +62,12 @@ importing `@microsoft/fast-element`.
 
 ## Debug entrypoint
 
-`@microsoft/fast-element/debug.js` exports `enableDebug()` instead of
+`@microsoft/fast-element` exports `enableDebug()` instead of
 configuring FAST at import time. The development root export and debug rollup
 bundle still enable debug behavior automatically.
 
 ```ts
-import { enableDebug } from "@microsoft/fast-element/debug.js";
+import { enableDebug } from "@microsoft/fast-element";
 
 enableDebug();
 ```
@@ -76,46 +76,27 @@ enableDebug();
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
-## Core Helper Subpaths
+## Root Imports and Path Exports
 
-The root `@microsoft/fast-element` entrypoint keeps the element base class,
-kernel, controller, and definition APIs such as `FASTElement`, `FAST`,
-`ElementController`, `FASTElementDefinition`, and related controller/definition
-types. Optional feature groups are available from dedicated subpaths:
+The root `@microsoft/fast-element` entrypoint exports the FAST Element
+implementation APIs, including the element base class, kernel, controller,
+definition APIs, template APIs, binding helpers, directives, styles, hydration,
+schema helpers, and declarative helpers.
 
-| API | Import path |
-|---|---|
-| `Updates` | `@microsoft/fast-element/updates.js` |
-| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
-| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element/attr.js` |
-| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element/binding.js` |
-| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element/dom.js` |
-| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element/schema.js` |
-| `css` | `@microsoft/fast-element/css.js` |
-| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element/html.js` |
-| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element/templating.js` |
-| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element/render.js` |
-| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
-| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
-| `volatile` | `@microsoft/fast-element/volatile.js` |
-| `children` | `@microsoft/fast-element/children.js` |
-| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
-| `ref` | `@microsoft/fast-element/ref.js` |
-| `slotted` | `@microsoft/fast-element/slotted.js` |
-| `when` | `@microsoft/fast-element/when.js` |
-| `repeat` | `@microsoft/fast-element/repeat.js` |
+Focused package path exports remain available for consumers that want to import
+a narrower entrypoint directly. The website's
+[Path Exports](https://www.fast.design/docs/3.x/advanced/path-exports/) page is
+generated from `package.json` and lists each supported path.
 
 ## Dynamic Style Application
 
-Import `css`, `CSSTemplateTag`, and `CSSValue` from
-`@microsoft/fast-element/css.js`. Other style APIs (`ElementStyles`,
-`CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`,
-`HostController`, `StyleStrategy`, `StyleTarget`) are imported from
-`@microsoft/fast-element/styles.js`:
+Import `css`, `CSSTemplateTag`, `CSSValue`, and style APIs such as
+`ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`,
+`HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` from
+`@microsoft/fast-element`:
 
 ```ts
-import { css } from "@microsoft/fast-element/css.js";
-import { ElementStyles } from "@microsoft/fast-element/styles.js";
+import { ElementStyles, css } from "@microsoft/fast-element";
 ```
 
 When runtime state or external signals need to add or remove styles, create the
@@ -130,25 +111,18 @@ controller when styles need to change.
 
 ## Declarative HTML
 
-FAST Element also publishes a declarative HTML runtime from
-`@microsoft/fast-element/declarative.js`. This entrypoint exports the
-functional APIs for declarative templates: `declarativeTemplate()`,
-`attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
-`schemaRegistry`, and related configuration types. Existing declarative imports
-remain supported.
-
-The schema-driven map extensions are also available from their own subpaths:
-`@microsoft/fast-element/attribute-map.js` and
-`@microsoft/fast-element/observer-map.js`. Prefer these subpaths when
-you only need the maps, when you are not using declarative templates, or when
-you want the smallest tree-shaken extension import. The declarative runtime is
-pure at import time; declarative APIs lazily install only declarative debug
-messages. Hydration is separate and remains opt-in through `enableHydration()`
-from `@microsoft/fast-element/hydration.js`.
+FAST Element publishes its declarative HTML runtime from
+`@microsoft/fast-element`. This entrypoint exports the functional APIs for
+declarative templates: `declarativeTemplate()`, `attributeMap()`,
+`observerMap()`, `TemplateParser`, `Schema`, `schemaRegistry`, and related
+configuration types. The declarative runtime is pure at import time;
+declarative APIs lazily install only declarative debug messages. Hydration is
+separate and remains opt-in through `enableHydration()` from
+`@microsoft/fast-element`.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {}
 
@@ -167,9 +141,9 @@ before `define()` resolves. Consumers should not import or define the
 Declarative schema behavior is enabled with define extensions:
 
 ```ts
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
+import { attributeMap } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 MyElement.define(
     {
@@ -185,13 +159,13 @@ MyElement.define(
 properties. Declarative templates assign `definition.schema` during template
 resolution so these extensions always have schema data when used with
 `declarativeTemplate()`. For non-declarative/manual schema use, import `Schema`
-from `@microsoft/fast-element/schema.js` and pass it on the element definition;
+from `@microsoft/fast-element` and pass it on the element definition;
 `observerMap()` can also receive
 `observerMap({ schema })` directly. When both extensions are present, attribute
 mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
-`@microsoft/fast-element/declarative-utilities.js`. See
+`@microsoft/fast-element`. See
 [`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
 details and the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)
@@ -201,10 +175,10 @@ object and `$c` for the execution context.
 
 ## Prerendered Content Optimization
 
-Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
+Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element` before any FAST elements connect to activate the hydration path:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element";
 
 enableHydration({
     hydrationComplete() {
@@ -230,7 +204,7 @@ This enables several optimizations:
 Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 MyComponent.define({
     name: "my-component",

@@ -30,6 +30,11 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
+    "./fast-element.js": {
+      "types": "./dist/dts/components/fast-element.d.ts",
+      "test": "./src/components/fast-element.ts",
+      "default": "./dist/esm/components/fast-element.js"
+    },
     "./declarative.js": {
       "types": "./dist/dts/declarative/index.d.ts",
       "test": "./src/declarative/index.ts",

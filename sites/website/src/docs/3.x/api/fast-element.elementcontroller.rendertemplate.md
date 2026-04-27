@@ -48,7 +48,7 @@ template
 
 </td><td>
 
-ElementViewTemplate \| null \| undefined
+[ElementViewTemplate](../fast-element.elementviewtemplate/) \| null \| undefined
 
 
 </td><td>

@@ -42,21 +42,18 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
-| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`, `Schema` |
-| Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → tree-shakeable map helpers usable with declarative or manually supplied schemas |
+| Declarative HTML runtime | `@microsoft/fast-element` → `declarativeTemplate()`, `TemplateParser`, `Schema` |
+| Schema-driven extensions | `@microsoft/fast-element` → map helpers usable with declarative or manually supplied schemas |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element/updates.js`, and `Observable` from `@microsoft/fast-element/observable.js`.
+The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
 
-The root entrypoint intentionally stays small: it keeps `FASTElement`, `FAST`,
-`ElementController`, `FASTElementDefinition`, and related controller/definition
-types. Optional feature groups use dedicated subpaths, such as `attr.js`,
-`binding.js`, `dom.js`, `schema.js`, `html.js`, `templating.js`, `render.js`,
-`hydration.js`, and the directive subpaths.
+The root entrypoint exports the FAST Element implementation APIs. Focused package
+path exports remain available when a consumer wants a narrower entrypoint.
 
 ---
 
@@ -94,10 +91,10 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
 - Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
 - On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
-- Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
+- Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
-- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
+- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
@@ -273,9 +270,19 @@ See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
 
 **Files**: `src/styles/css.ts`, `src/styles/element-styles.ts`, `src/styles/css-directive.ts`
 
-**Subpath exports**: `@microsoft/fast-element/css.js` and `@microsoft/fast-element/styles.js`
+**Exported from**: `@microsoft/fast-element`
 
-The `css` tag is imported from `@microsoft/fast-element/css.js`. `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are imported from `@microsoft/fast-element/styles.js` rather than the main barrel. The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
+The `css` tag, `ElementStyles`, `CSSDirective`, `cssDirective`,
+`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and
+`StyleTarget` are imported from `@microsoft/fast-element`. The `css` tag
+(analogous to `html`) builds `ElementStyles` objects. During
+`ElementController.connect()`, styles are applied to the element's shadow root
+either via `adoptedStylesheets` (preferred) or an appended `<style>` node,
+depending on platform support. `CSSDirective`s can contribute additional static
+CSS during template composition, but runtime CSS bindings and style-attached
+`HostBehavior`s are not supported. Arbitrary runtime style toggling is handled
+through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles`
+itself is a static container.
 
 ---
 
@@ -330,15 +337,13 @@ See `docs/di/api-report.api.md` for the full public API surface.
 **Files**: `src/declarative/index.ts`, `src/declarative/*`
 
 FAST Element also owns the declarative HTML runtime that previously lived in a
-separate package. The dedicated `@microsoft/fast-element/declarative.js`
-entrypoint exports the declarative runtime API: `declarativeTemplate()`,
-`TemplateParser`, `Schema`, `schemaRegistry`, and related parser/schema types.
-Import map helpers from `@microsoft/fast-element/attribute-map.js`
-and `@microsoft/fast-element/observer-map.js`. These subpaths keep
-the schema-driven map extensions factored away from declarative templating so
-they can also be used with manually supplied schemas. The `<f-template>` element
-is an internal native `HTMLElement` publisher that `declarativeTemplate()`
-defines in the target registry; it is not part of the public API.
+separate package. `@microsoft/fast-element` exports the declarative runtime API:
+`declarativeTemplate()`, `TemplateParser`, `Schema`, `schemaRegistry`, and
+related parser/schema types. Map helpers are also exported from the root so they
+can be used with declarative templates or manually supplied schemas. The
+`<f-template>` element is an internal native `HTMLElement` publisher that
+`declarativeTemplate()` defines in the target registry; it is not part of the
+public API.
 
 The declarative runtime intentionally reuses the same FAST Element primitives as
 the imperative `html` API:
@@ -349,7 +354,7 @@ the imperative `html` API:
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
-  exported from dedicated extension subpaths. With `declarativeTemplate()` they
+  exported from `@microsoft/fast-element`. With `declarativeTemplate()` they
   register schema transforms on the element definition, and those transforms run
   after parsing in deterministic order (`attributeMap()` before
   `observerMap()`). Outside declarative templates, `attributeMap()` uses
@@ -359,7 +364,7 @@ the imperative `html` API:
 The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
-`enableHydration()` from `@microsoft/fast-element/hydration.js`. See
+`enableHydration()` from `@microsoft/fast-element`. See
 [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
 architecture.
 
@@ -523,7 +528,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 src/
 ├── interfaces.ts          # Core types: Callable, Constructable, Message codes
 ├── platform.ts            # FAST module-scoped singleton, TypeRegistry
-├── declarative.ts         # Pure declarative entrypoint
+├── declarative/           # Pure declarative entrypoint and map helpers
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
 ├── metadata.ts            # Reflect-based metadata helpers

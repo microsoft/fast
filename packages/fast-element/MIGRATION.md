@@ -45,50 +45,44 @@ removed `@microsoft/fast-html` package.
 
 | Before | After |
 |---|---|
-| `@microsoft/fast-html` | `@microsoft/fast-element/declarative.js` |
-| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative-utilities.js` |
+| `@microsoft/fast-html` | `@microsoft/fast-element` |
+| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element` |
 
-Core FAST Element helpers now use dedicated subpaths:
+Core FAST Element helpers are available from the root package export:
 
 | API | Import path |
 |---|---|
-| `Updates` | `@microsoft/fast-element/updates.js` |
-| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
-| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element/attr.js` |
-| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element/binding.js` |
-| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element/dom.js` |
-| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element/schema.js` |
-| `css` | `@microsoft/fast-element/css.js` |
-| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element/html.js` |
-| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element/templating.js` |
-| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element/render.js` |
-| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
-| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
-| `volatile` | `@microsoft/fast-element/volatile.js` |
-| `children` | `@microsoft/fast-element/children.js` |
-| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
-| `ref` | `@microsoft/fast-element/ref.js` |
-| `slotted` | `@microsoft/fast-element/slotted.js` |
-| `when` | `@microsoft/fast-element/when.js` |
-| `repeat` | `@microsoft/fast-element/repeat.js` |
+| `Updates` | `@microsoft/fast-element` |
+| `Observable`, `observable` | `@microsoft/fast-element` |
+| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element` |
+| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element` |
+| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element` |
+| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element` |
+| `css` | `@microsoft/fast-element` |
+| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element` |
+| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
+| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
+| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element` |
+| `ArrayObserver` | `@microsoft/fast-element` |
+| `volatile` | `@microsoft/fast-element` |
+| `children` | `@microsoft/fast-element` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element` |
+| `ref` | `@microsoft/fast-element` |
+| `slotted` | `@microsoft/fast-element` |
+| `when` | `@microsoft/fast-element` |
+| `repeat` | `@microsoft/fast-element` |
 
 ### Migration steps
 
 1. Update declarative runtime imports to
-   `@microsoft/fast-element/declarative.js`.
+   `@microsoft/fast-element`.
 2. Update declarative utility imports such as `deepMerge` to
-   `@microsoft/fast-element/declarative-utilities.js`.
-3. Keep importing root FAST Element APIs such as `FASTElement`, `FAST`,
-   `ElementController`, and definition/controller types from
-   `@microsoft/fast-element`, and import moved helpers from their dedicated
-   subpaths (for example `attr` from `@microsoft/fast-element/attr.js`,
-   `Schema` from `@microsoft/fast-element/schema.js`, and `observable` from
-   `@microsoft/fast-element/observable.js`).
-4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-    APIs; the declarative entrypoint owns the declarative runtime but does not
-    install hydration. Call `enableHydration()` from
-    `@microsoft/fast-element/hydration.js` when prerendered content should be
-    hydrated.
+   `@microsoft/fast-element`.
+3. Keep importing FAST Element APIs such as `FASTElement`, `FAST`,
+   `ElementController`, definition/controller types, `attr`, `Schema`, and
+   `observable` from `@microsoft/fast-element`.
+4. Call `enableHydration()` from `@microsoft/fast-element` when prerendered
+   content should be hydrated.
 
 ## `TemplateOptions` removal (v3)
 
@@ -135,13 +129,13 @@ Core FAST Element helpers now use dedicated subpaths:
 
    ```typescript
    // Before
-   import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+   import { TemplateElement } from "@microsoft/fast-element";
    TemplateElement.define({ name: "f-template" });
 
    MyElement.define({ name: "my-element" });
 
    // After
-   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+   import { declarativeTemplate } from "@microsoft/fast-element";
 
    MyElement.define({
        name: "my-element",
@@ -152,9 +146,9 @@ Core FAST Element helpers now use dedicated subpaths:
 2. Replace `TemplateElement.options()` with definition extensions:
 
    ```typescript
-   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-   import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
-   import { observerMap } from "@microsoft/fast-element/observer-map.js";
+   import { declarativeTemplate } from "@microsoft/fast-element";
+   import { attributeMap } from "@microsoft/fast-element";
+   import { observerMap } from "@microsoft/fast-element";
 
    MyElement.define(
        {
@@ -165,12 +159,11 @@ Core FAST Element helpers now use dedicated subpaths:
    );
    ```
 
-   Existing `attributeMap()` and `observerMap()` imports from
-   `@microsoft/fast-element/declarative.js` remain valid for declarative
-   templates. Prefer the extension subpaths when only the schema-driven maps are
-   needed or when using manually supplied schemas. `FASTElementDefinition.schema`
-   is optional; `declarativeTemplate()` assigns it automatically, and
-   `observerMap()` can take a manual schema with `observerMap({ schema })`.
+   `attributeMap()` and `observerMap()` are imported from
+   `@microsoft/fast-element` for declarative templates, manually supplied
+   schemas, or both. `FASTElementDefinition.schema` is optional;
+   `declarativeTemplate()` assigns it automatically, and `observerMap()` can
+   take a manual schema with `observerMap({ schema })`.
 
 3. Replace `TemplateElement.config()` with `declarativeTemplate(callbacks)` for
    per-element callbacks and `enableHydration(options)` for global hydration
@@ -183,7 +176,7 @@ Core FAST Element helpers now use dedicated subpaths:
 
 | Before | After |
 |---|---|
-| `import "@microsoft/fast-element/debug.js";` | `import { enableDebug } from "@microsoft/fast-element/debug.js"; enableDebug();` |
+| `import "@microsoft/fast-element";` | `import { enableDebug } from "@microsoft/fast-element"; enableDebug();` |
 
 ### Migration steps
 
@@ -230,7 +223,7 @@ data source.
 
 The `install-hydratable-view-templates.js` side-effect import is still
 available for advanced scenarios, but the preferred API is
-`enableHydration()` from `@microsoft/fast-element/hydration.js`. The
+`enableHydration()` from `@microsoft/fast-element`. The
 declarative entrypoint no longer installs hydration automatically.
 
 ### Changed behavior

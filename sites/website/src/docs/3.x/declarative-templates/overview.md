@@ -47,8 +47,8 @@ A declarative FAST component requires three pieces: a JavaScript class, an `<f-t
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { attr } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 class HelloWorld extends FASTElement {
     @attr greeting: string = "Hello";
@@ -102,8 +102,8 @@ The same component can be expressed either way. Here is a side-by-side compariso
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { html } from "@microsoft/fast-element/html.js";
+import { attr } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 
 const template = html<NameTag>`
     <h3>${x => x.greeting}</h3>
@@ -120,8 +120,8 @@ NameTag.define({ name: "name-tag", template });
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { attr } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 class NameTag extends FASTElement {
     @attr greeting: string = "Hello";

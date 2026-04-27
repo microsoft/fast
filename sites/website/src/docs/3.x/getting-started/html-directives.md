@@ -30,9 +30,9 @@ Sometimes you need a direct reference to a single DOM node from your template. T
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
-import { html } from '@microsoft/fast-element/html.js';
-import { ref } from '@microsoft/fast-element/ref.js';
+import { attr } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element';
+import { ref } from '@microsoft/fast-element';
 
 const template = html<MP4Player>`
   <video ${ref('video')}>
@@ -70,8 +70,8 @@ Sometimes you may want references to all nodes that are assigned to a particular
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { slotted } from '@microsoft/fast-element/slotted.js';
+import { html } from '@microsoft/fast-element';
+import { slotted } from '@microsoft/fast-element';
 
 const template = html<MyElement>`
   <div>
@@ -107,9 +107,9 @@ Besides using `ref` to reference a single DOM node, you can use `children` to ge
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { children } from '@microsoft/fast-element/children.js';
-import { repeat } from '@microsoft/fast-element/repeat.js';
+import { html } from '@microsoft/fast-element';
+import { children } from '@microsoft/fast-element';
+import { repeat } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <ul ${children('listItems')}>
@@ -176,9 +176,9 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { when } from '@microsoft/fast-element/when.js';
-import { observable } from '@microsoft/fast-element/observable.js';
+import { html } from '@microsoft/fast-element';
+import { when } from '@microsoft/fast-element';
+import { observable } from '@microsoft/fast-element';
 
 const template = html<MyApp>`
   <h1>My App</h1>
@@ -243,9 +243,9 @@ To render a list of data, use the `repeat` directive, providing the list to rend
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { repeat } from '@microsoft/fast-element/repeat.js';
-import { observable } from '@microsoft/fast-element/observable.js';
+import { html } from '@microsoft/fast-element';
+import { repeat } from '@microsoft/fast-element';
+import { observable } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <h1>Friends</h1>

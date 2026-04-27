@@ -24,7 +24,7 @@ Attributes are defined using the `@attr` decorator.
 **Example:**
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
+import { attr } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   @attr
@@ -48,7 +48,7 @@ An `@attr` can take a configuration with the following options:
 Example with a custom attribute name and boolean mode:
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
+import { attr } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
   @attr({
@@ -92,7 +92,7 @@ Here's how it works:
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr, type ValueConverter } from '@microsoft/fast-element/attr.js';
+import { attr, type ValueConverter } from '@microsoft/fast-element';
 
 const numberConverter: ValueConverter = {
   toView(value: any): string {
@@ -131,7 +131,7 @@ Properties with only a getter, that function as a computed property over other o
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { observable } from '@microsoft/fast-element/observable.js';
+import { observable } from '@microsoft/fast-element';
 
 export class MyComponent extends FASTElement {
   @observable
@@ -151,7 +151,7 @@ A common use case for `@observable` is with slotted elements.
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { observable } from '@microsoft/fast-element/observable.js';
+import { observable } from '@microsoft/fast-element';
 
 class MyComponent extends FASTElement {
   @observable
@@ -174,7 +174,7 @@ When `@attr` and `@observable` decorated properties are accessed during template
 **Example: Manual Observer Implementation**
 
 ```ts
-import { Observable } from '@microsoft/fast-element/observable.js';
+import { Observable } from '@microsoft/fast-element';
 
 export class Person {
   private _name: string;
@@ -251,9 +251,9 @@ A typical configuration will at least include `name`, `template`, and `styles`.
 **Example:**
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { html } from "@microsoft/fast-element/html.js";
-import { css } from "@microsoft/fast-element/css.js";
+import { attr } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 
 const template = html`<span>Hello ${x => x.name}!</span>`
 
@@ -323,7 +323,7 @@ All Web Components support a series of lifecycle events that you can tap into to
 
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
+import { attr } from '@microsoft/fast-element';
 
 export class NameTag extends FASTElement {
   @attr

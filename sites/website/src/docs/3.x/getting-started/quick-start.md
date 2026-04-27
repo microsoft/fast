@@ -28,9 +28,9 @@ A web component created using FAST is comprised of 3 parts, the HTML template, t
 To start, let's create a simple web component that combines all the necessary parts:
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { html } from "@microsoft/fast-element/html.js";
-import { css } from "@microsoft/fast-element/css.js";
+import { attr } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 
 /**
  * Create an HTML template using the html tag template literal,

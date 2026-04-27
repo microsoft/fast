@@ -67,8 +67,8 @@ const template = html<MyProgress>`
 **Example:**
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
-import { css } from "@microsoft/fast-element/css.js";
+import { attr } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 class MyComponent extends FASTElement {
   private dynamicCSS = css`
@@ -102,7 +102,7 @@ For external signals such as [matchMedia()](https://developer.mozilla.org/en-US/
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element/css.js";
+import { css } from "@microsoft/fast-element";
 
 const darkStyles = css`
   :host {

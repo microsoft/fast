@@ -28,17 +28,15 @@ The host custom element should be defined with
 the relevant registry and waits for the matching declarative template when it is
 already present or inserted later.
 
-The `@microsoft/fast-element/declarative.js` entrypoint itself remains
+The `@microsoft/fast-element` entrypoint itself remains
 side-effect free at import time. Declarative APIs lazily install declarative
 debug messages when they create templates. Hydratable `ViewTemplate` support is
 installed only when `enableHydration()` is called from
-`@microsoft/fast-element/hydration.js`.
+`@microsoft/fast-element`.
 
-`observerMap()` and `attributeMap()` remain available from the declarative
-entrypoint for existing declarative imports. New code should prefer the
-extension subpaths, `@microsoft/fast-element/observer-map.js` and
-`@microsoft/fast-element/attribute-map.js`, especially when using
-the maps without declarative templates.
+`observerMap()` and `attributeMap()` are available from
+`@microsoft/fast-element`, including when using the maps without declarative
+templates.
 
 Example:
 ```html
@@ -78,7 +76,7 @@ Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
 you want prerendered Declarative Shadow DOM to be reused:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element";
 
 enableHydration({
     hydrationStarted() {
@@ -93,7 +91,7 @@ enableHydration({
 Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 MyComponent.define({
     name: "my-component",
@@ -138,11 +136,11 @@ When the `observerMap()` extension is applied to an element definition,
 it automatically sets up deep reactive observation for root properties
 discovered in the template. Declarative templates assign `definition.schema`
 during template resolution, so `observerMap()` has schema data automatically.
-For non-declarative/manual schemas, import from the extension subpath and pass
-`observerMap({ schema })`.
+For non-declarative/manual schemas, import from `@microsoft/fast-element` and
+pass `observerMap({ schema })`.
 
 ```typescript
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { observerMap } from "@microsoft/fast-element";
 ```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
@@ -198,8 +196,8 @@ Manual schema example:
 
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {}
 
@@ -225,11 +223,11 @@ it automatically creates reactive `@attr` properties for every **leaf binding**
 in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that
 have no nested properties. Declarative templates provide the schema
 automatically. For non-declarative/manual schemas, place the optional `schema`
-on the FAST element definition and import `attributeMap()` from its extension
-subpath.
+on the FAST element definition and import `attributeMap()` from
+`@microsoft/fast-element`.
 
 ```typescript
-import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { attributeMap } from "@microsoft/fast-element";
 ```
 
 By default, the binding key is treated as a camelCase property name and the HTML
@@ -310,7 +308,7 @@ Browser-only bindings:
 
 ### Event binding
 
-Event bindings must include the `()` as well as being preceeded by `@` in keeping with the `@microsoft/fast-element/html.js` tagged template syntax.
+Event bindings must include the `()` as well as being preceeded by `@` in keeping with the `@microsoft/fast-element` tagged template syntax.
 
 ```html
 <button @click="{handleClick()}"></button>

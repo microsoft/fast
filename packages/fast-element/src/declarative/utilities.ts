@@ -29,41 +29,79 @@ export {
     isPlainObject,
 } from "./observer-map-utilities.js";
 
-type BehaviorType = "dataBinding" | "templateDirective";
+/**
+ * Declarative behavior type.
+ * @public
+ */
+export type BehaviorType = "dataBinding" | "templateDirective";
 
-type TemplateDirective = "when" | "repeat";
-
+/**
+ * Declarative attribute directive names.
+ * @public
+ */
 export type AttributeDirective = "children" | "slotted" | "ref";
 
-type DataBindingBindingType = "client" | "default" | "unescaped";
+/**
+ * Declarative data binding marker type.
+ * @public
+ */
+export type DataBindingBindingType = "client" | "default" | "unescaped";
 
-interface BehaviorConfig {
+/**
+ * Base behavior configuration.
+ * @public
+ */
+export interface BehaviorConfig {
     type: BehaviorType;
 }
 
+/**
+ * Declarative schema path type.
+ * @public
+ */
 export type PathType = "access" | "default" | "event" | "repeat";
 
+/**
+ * Content binding behavior configuration.
+ * @public
+ */
 export interface ContentDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
     subtype: "content";
 }
 
+/**
+ * Attribute binding behavior configuration.
+ * @public
+ */
 export interface AttributeDataBindingBehaviorConfig
     extends BaseDataBindingBehaviorConfig {
     subtype: "attribute";
     aspect: "@" | ":" | "?" | null;
 }
 
+/**
+ * Attribute directive binding behavior configuration.
+ * @public
+ */
 export interface AttributeDirectiveBindingBehaviorConfig
     extends BaseDataBindingBehaviorConfig {
     subtype: "attributeDirective";
     name: AttributeDirective;
 }
 
+/**
+ * Declarative data binding behavior configuration.
+ * @public
+ */
 export type DataBindingBehaviorConfig =
     | ContentDataBindingBehaviorConfig
     | AttributeDataBindingBehaviorConfig
     | AttributeDirectiveBindingBehaviorConfig;
 
+/**
+ * Base data binding behavior configuration.
+ * @public
+ */
 export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     type: "dataBinding";
     bindingType: DataBindingBindingType;
@@ -73,6 +111,16 @@ export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     closingEndIndex: number;
 }
 
+/**
+ * Declarative template directive names.
+ * @public
+ */
+export type TemplateDirective = "when" | "repeat";
+
+/**
+ * Template directive behavior configuration.
+ * @public
+ */
 export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     type: "templateDirective";
     name: TemplateDirective;
@@ -83,22 +131,32 @@ export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     closingTagEndIndex: number;
 }
 
+/**
+ * Map between child component attribute references and custom element names.
+ * @public
+ */
 export interface ChildrenMap {
     customElementName: string;
     attributeName: string;
 }
 
+/**
+ * Prefix used for execution context paths.
+ * @public
+ */
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
 export { eventArgAccessor, executionContextAccessor };
 
 /**
  * The type of a parsed event handler argument.
+ * @public
  */
 export type EventArgType = "event" | "context" | "binding";
 
 /**
  * A parsed event handler argument descriptor.
+ * @public
  */
 export interface ParsedEventArg {
     type: EventArgType;
@@ -121,6 +179,7 @@ export interface ParsedEventArg {
  * @param argsString - The raw arguments string from between the parentheses,
  *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
  * @returns An array of {@link ParsedEventArg} descriptors.
+ * @public
  */
 export function parseEventArgs(argsString: string): ParsedEventArg[] {
     if (argsString.trim() === "") return [];
@@ -146,14 +205,26 @@ const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
-const LogicalOperator = {
+/**
+ * Logical operator tokens.
+ * @public
+ */
+export const LogicalOperator = {
     AND: "&&",
     OR: "||",
-};
+} as const;
 
-type LogicalOperator = (typeof LogicalOperator)[keyof typeof LogicalOperator];
+/**
+ * Logical operator token.
+ * @public
+ */
+export type LogicalOperator = (typeof LogicalOperator)[keyof typeof LogicalOperator];
 
-const ComparisonOperator = {
+/**
+ * Comparison operator tokens.
+ * @public
+ */
+export const ComparisonOperator = {
     ACCESS: "access",
     EQUALS: "==",
     GREATER_THAN: ">",
@@ -164,14 +235,27 @@ const ComparisonOperator = {
     NOT_EQUALS: "!=",
 } as const;
 
-type ComparisonOperator = (typeof ComparisonOperator)[keyof typeof ComparisonOperator];
+/**
+ * Comparison operator token.
+ * @public
+ */
+export type ComparisonOperator =
+    (typeof ComparisonOperator)[keyof typeof ComparisonOperator];
 
-const Operator = {
+/**
+ * Declarative expression operator tokens.
+ * @public
+ */
+export const Operator = {
     ...LogicalOperator,
     ...ComparisonOperator,
 } as const;
 
-type Operator = (typeof Operator)[keyof typeof Operator];
+/**
+ * Declarative expression operator token.
+ * @public
+ */
+export type Operator = (typeof Operator)[keyof typeof Operator];
 
 /**
  * Get the index of the next matching tag
@@ -180,6 +264,7 @@ type Operator = (typeof Operator)[keyof typeof Operator];
  * @param closingTag - The closing tag
  * @param openingTagStartIndex - The opening tag start index derived from the innerHTML
  * @returns index
+ * @public
  */
 export function getIndexOfNextMatchingTag(
     openingTagStartSlice: string,
@@ -444,7 +529,9 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
 /**
  * Get the next behavior
  * @param innerHTML - The innerHTML string to evaluate
+ * @param offset - The current offset in the original string.
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
+ * @public
  */
 export function getNextBehavior(
     innerHTML: string,
@@ -546,8 +633,11 @@ type AccessibleObject = { [key: string]: AccessibleObject };
  * Create a function to resolve a value from an object using a path with dot syntax.
  * e.g. "foo.bar"
  * @param path - The dot syntax path to an objects property.
- * @param self - Where the first item in the path path refers to the item itself (used by repeat).
+ * @param contextPath - The current repeat context path.
+ * @param level - The current repeat nesting level.
+ * @param rootSchema - The root schema for resolving context paths.
  * @returns A function to access the value from a given path.
+ * @public
  */
 export function pathResolver(
     path: string,
@@ -630,6 +720,19 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
     };
 }
 
+/**
+ * Creates a binding resolver and records the binding path in the schema.
+ * @param previousString - The previous literal string before the binding.
+ * @param rootPropertyName - The current root property name.
+ * @param path - The binding path to resolve.
+ * @param parentContext - The parent repeat context.
+ * @param type - The schema path type.
+ * @param schema - The schema to record paths in.
+ * @param currentContext - The current repeat context.
+ * @param level - The current repeat nesting level.
+ * @returns A function that resolves the binding path.
+ * @public
+ */
 export function bindingResolver(
     previousString: string | null,
     rootPropertyName: string | null,
@@ -673,6 +776,16 @@ export function bindingResolver(
     );
 }
 
+/**
+ * Creates a resolver for a chained expression and records its paths in the schema.
+ * @param rootPropertyName - The current root property name.
+ * @param expression - The expression to resolve.
+ * @param parentContext - The parent repeat context.
+ * @param level - The current repeat nesting level.
+ * @param schema - The schema to record paths in.
+ * @returns A function that resolves the expression.
+ * @public
+ */
 export function expressionResolver(
     rootPropertyName: string | null,
     expression: ChainedExpression,
@@ -713,13 +826,14 @@ export function expressionResolver(
  * Extracts all paths from a ChainedExpression, including nested expressions
  * @param chainedExpression - The chained expression to extract paths from
  * @returns A Set containing all unique paths found in the expression chain
+ * @public
  */
 export function extractPathsFromChainedExpression(
     chainedExpression: ChainedExpression,
 ): Set<string> {
     const paths = new Set<string>();
 
-    function processExpression(expr: Expression) {
+    function processExpression(expr: DeclarativeExpression) {
         // Check left operand (only add if it's not a literal value)
         if (typeof expr.left === "string" && !expr.leftIsValue) {
             paths.add(expr.left);
@@ -765,7 +879,11 @@ function isOperandValue(operand: string): {
     }
 }
 
-interface Expression {
+/**
+ * Declarative expression descriptor.
+ * @public
+ */
+export interface DeclarativeExpression {
     operator: Operator;
     left: string;
     leftIsValue: boolean | null;
@@ -773,9 +891,13 @@ interface Expression {
     rightIsValue: boolean | null;
 }
 
+/**
+ * Declarative chained expression descriptor.
+ * @public
+ */
 export interface ChainedExpression {
     operator?: LogicalOperator;
-    expression: Expression;
+    expression: DeclarativeExpression;
     next?: ChainedExpression;
 }
 
@@ -816,6 +938,7 @@ function evaluatePartsInExpressionChain(
  * Gets the expression chain as a configuration object
  * @param value - The binding string value
  * @returns - A configuration object containing information about the expression
+ * @public
  */
 export function getExpressionChain(value: string): ChainedExpression | void {
     // Decode HTML entities in the expression value first
@@ -860,7 +983,7 @@ export function getExpressionChain(value: string): ChainedExpression | void {
  * @param value - The binding string value to parse (e.g., "!condition", "foo == bar", "property")
  * @returns An Expression object containing the operator, operands, and whether operands are literal values
  */
-function getExpression(value: string): Expression {
+function getExpression(value: string): DeclarativeExpression {
     if (value[0] === Operator.NOT) {
         const left = value.slice(1);
         const operandValue = isOperandValue(left);
@@ -930,7 +1053,7 @@ function resolveExpression(
     c: any,
     level: number,
     contextPath: string | null,
-    expression: Expression,
+    expression: DeclarativeExpression,
     rootSchema: JSONSchema,
 ): any {
     const { operator, left, right, rightIsValue } = expression;
@@ -1039,8 +1162,9 @@ function resolveChainedExpression(
 /**
  * This is the transform utility for rationalizing declarative HTML syntax
  * with bindings in the ViewTemplate
- * @param innerHTML The innerHTML to transform
- * @param index The index to start the current slice of HTML to evaluate
+ * @param innerHTML - The innerHTML to transform.
+ * @param index - The index to start the current slice of HTML to evaluate.
+ * @public
  */
 export function transformInnerHTML(innerHTML: string, index = 0): string {
     const sliceToEvaluate = innerHTML.slice(index);
@@ -1091,10 +1215,13 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 /**
  * Resolves boolean logic
  * used for f-when and boolean attributes
- * @param self - Where the first item in the path path refers to the item itself (used by repeat).
- * @param chainedExpression - The chained expression which includes the expression and the next expression
- * if there is another in the chain
+ * @param rootPropertyName - The current root property name.
+ * @param expression - The chained expression to resolve.
+ * @param parentContext - The parent repeat context.
+ * @param level - The current repeat nesting level.
+ * @param schema - The schema to record paths in.
  * @returns - A binding that resolves the chained expression logic
+ * @public
  */
 export function getBooleanBinding(
     rootPropertyName: string | null,
@@ -1120,6 +1247,7 @@ export function getBooleanBinding(
  * @param context - The context created by a repeat
  * @param type - The type of path binding
  * @returns
+ * @public
  */
 export function getRootPropertyName(
     rootPropertyName: string | null,
@@ -1136,6 +1264,7 @@ export function getRootPropertyName(
  * Get details of bindings to the attributes of child custom elements
  * @param previousString - The previous string before the binding
  * @returns null, or a custom element name and attribute name
+ * @public
  */
 export function getChildrenMap(previousString: string | null): ChildrenMap | null {
     if (

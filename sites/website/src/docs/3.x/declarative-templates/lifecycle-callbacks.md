@@ -22,7 +22,7 @@ Lifecycle callbacks are split between two APIs based on their scope:
 Hydration is **opt-in**. Import and call `enableHydration()` before any FAST elements connect:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element";
 
 enableHydration({
     hydrationStarted() {
@@ -41,7 +41,7 @@ Without calling `enableHydration()`, prerendered content is discarded and elemen
 Pass lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 MyComponent.define({
     name: "my-component",
@@ -95,8 +95,8 @@ Steps 5–9 only fire when `enableHydration()` has been called and the element h
 ### Performance Monitoring
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element";
 
 enableHydration({
     hydrationStarted() {

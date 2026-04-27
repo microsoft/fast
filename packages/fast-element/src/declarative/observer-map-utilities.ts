@@ -205,6 +205,7 @@ function getDefFromRef(defName: string): string {
  * if the Observer Map has not been enabled on a child component
  * @param schema - The JSON schema to find the ref in
  * @returns The definition or null
+ * @public
  */
 export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | null {
     const defStartingString = "#/$defs";
@@ -262,6 +263,7 @@ function assignSubscribeToObservableArray(
  * @param target - The target custom element
  * @param rootProperty - The root property
  * @returns
+ * @public
  */
 export function assignObservables(
     schema: JSONSchema | JSONSchemaDefinition,
@@ -529,6 +531,7 @@ function notifyObservables(targetObject: any) {
  * @param rootProperty - The root property
  * @param object - The object to assign the proxy to
  * @returns Proxy object
+ * @public
  */
 export function assignProxy(
     schema: JSONSchema | JSONSchemaDefinition,
@@ -661,6 +664,7 @@ function getComparableKeys(object: any): string[] {
  * @param obj1 - First object to compare
  * @param obj2 - Second object to compare
  * @returns True if the objects are deeply equal, false otherwise
+ * @public
  */
 export function deepEqual(obj1: any, obj2: any): boolean {
     if (Object.is(obj1, obj2)) {
@@ -718,6 +722,7 @@ export function deepEqual(obj1: any, obj2: any): boolean {
  *
  * @param value - The value to check
  * @returns True if the value is a plain object, false otherwise
+ * @public
  */
 export function isPlainObject(value: any): value is Record<string, any> {
     return !!value && typeof value === "object" && !Array.isArray(value);
@@ -729,6 +734,7 @@ export function isPlainObject(value: any): value is Record<string, any> {
  * @param target - The target object to merge into
  * @param source - The source object to merge from
  * @returns boolean indicating whether changes were made
+ * @public
  */
 export function deepMerge(target: any, source: any): boolean {
     const hasOwn = Object.prototype.hasOwnProperty;

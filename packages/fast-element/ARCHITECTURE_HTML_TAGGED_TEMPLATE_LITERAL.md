@@ -1,6 +1,6 @@
 # `html` tagged template literal
 
-The `html` export from `@microsoft/fast-element/html.js` is used to create the template logic for the custom element.
+The `html` export from `@microsoft/fast-element` is used to create the template logic for the custom element.
 
 ## Pre-processing the `html` tagged template literal contents
 

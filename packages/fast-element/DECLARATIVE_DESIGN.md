@@ -1,12 +1,9 @@
 # Declarative HTML Design
 
 This document is intended for contributors who want to understand the internal
-architecture of the declarative runtime in
-`@microsoft/fast-element/declarative.js` and the schema-driven map extensions in
-`@microsoft/fast-element/attribute-map.js` and
-`@microsoft/fast-element/observer-map.js`. It covers the feature's
-purpose, core concepts, data flow, and its integration with the rest of
-`@microsoft/fast-element`.
+architecture of the declarative runtime and schema-driven map extensions in
+`@microsoft/fast-element`. It covers the feature's purpose, core concepts, data
+flow, and its integration with the rest of `@microsoft/fast-element`.
 
 ## Table of Contents
 
@@ -29,7 +26,7 @@ purpose, core concepts, data flow, and its integration with the rest of
 
 ## Overview
 
-`@microsoft/fast-element/declarative.js` lets you write FAST Web Component
+`@microsoft/fast-element` lets you write FAST Web Component
 templates as plain HTML rather than JavaScript `html` tagged template literals.
 The browser-side JS bundle defines FAST's internal native `<f-template>`
 publisher on demand. It parses declarative template markup at runtime and
@@ -58,7 +55,7 @@ registry-aware declarative template bridge.
 |---|---|
 | **Server-agnostic rendering** | Templates are plain HTML strings with no dependency on Node.js or any specific SSR framework. |
 | **Progressive enhancement** | Components can be server-rendered and then hydrated client-side without a full re-render. |
-| **FAST parity** | The declarative syntax maps 1-to-1 to FAST Element directive helpers (`repeat`, `when`, `slotted`, `children`, `ref`) from their flat `@microsoft/fast-element/*` subpaths. |
+| **FAST parity** | The declarative syntax maps 1-to-1 to FAST Element directive helpers (`repeat`, `when`, `slotted`, `children`, `ref`) exported from `@microsoft/fast-element`. |
 | **Minimal authoring overhead** | Component authors write HTML, not tagged template strings, while retaining full reactive capabilities. |
 
 ---
@@ -118,10 +115,9 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via the `observerMap()` definition extension. Import the extension from
-`@microsoft/fast-element/observer-map.js`; the declarative entrypoint
-does not re-export it. Calling `observerMap()` without arguments observes all
-root properties discovered in the template or supplied schema.
+Enabled via the `observerMap()` definition extension exported from
+`@microsoft/fast-element`. Calling `observerMap()` without arguments observes
+all root properties discovered in the template or supplied schema.
 
 #### Path-level observation control
 
@@ -166,8 +162,8 @@ For non-declarative elements, pass a schema directly to `observerMap()`:
 
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {}
 
@@ -202,9 +198,8 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via the `attributeMap()` definition extension. Import the extension from
-`@microsoft/fast-element/attribute-map.js`; the declarative entrypoint
-does not re-export it. Calling `attributeMap()` without arguments uses the
+Enabled via the `attributeMap()` definition extension exported from
+`@microsoft/fast-element`. Calling `attributeMap()` without arguments uses the
 default `"camelCase"` strategy. To preserve binding keys exactly as written,
 pass `attributeMap({ "attribute-name-strategy": "none" })`. Outside declarative
 templates, `attributeMap()` uses the optional `schema` on the FAST element
@@ -242,8 +237,8 @@ packages/fast-element/
 │       ├── template.ts        # declarativeTemplate(), internal <f-template> publisher, lifecycle orchestration
 │       ├── template-bridge.ts # Registry/name bridge between definitions and publishers
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
-│       ├── observer-map.ts    # observerMap() subpath implementation
-│       ├── attribute-map.ts   # attributeMap() subpath implementation
+│       ├── observer-map.ts    # observerMap() implementation
+│       ├── attribute-map.ts   # attributeMap() implementation
 │       ├── observer-map-utilities.ts # Shared observer-map helpers
 │       ├── utilities.ts       # Declarative parsing helpers
 │       └── syntax.ts          # Syntax delimiter constants
@@ -287,25 +282,20 @@ import {
     type JSONSchema,
     type ResolvedStringsAndValues,
     type TemplateLifecycleCallbacks,
-} from "@microsoft/fast-element/declarative.js";
-
-import {
     attributeMap,
     type AttributeMapConfig,
-} from "@microsoft/fast-element/attribute-map.js";
-import {
     observerMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
-} from "@microsoft/fast-element/observer-map.js";
+} from "@microsoft/fast-element";
 ```
 
-The declarative entrypoint does not re-export the map helpers or their
-configuration types. Use the extension subpaths whether the maps are paired with
-declarative templates or manually supplied schemas.
+The root entrypoint exports the declarative template helpers, map helpers, and
+their configuration types. Focused path exports are also available for direct
+entrypoint imports.
 
-Primary exports from `@microsoft/fast-element/declarative.js` intended for
+Primary exports from `@microsoft/fast-element` intended for
 application code:
 
 | Export | Purpose |
@@ -317,21 +307,20 @@ application code:
 
 Primary map extension exports:
 
-| Export | Public subpath | Purpose |
+| Export | Import path | Purpose |
 |---|---|---|
-| `attributeMap()` | `@microsoft/fast-element/attribute-map.js` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
-| `observerMap()` | `@microsoft/fast-element/observer-map.js` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
+| `attributeMap()` | `@microsoft/fast-element` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
+| `observerMap()` | `@microsoft/fast-element` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
 
 The implementation element class (`<f-template>`), `TemplateElement.config()`,
 `TemplateElement.options()`, `ElementOptions*`, and
 `HydrationLifecycleCallbacks` are not exported from the public declarative
-entrypoint. Use `declarativeTemplate()`, extension subpath `attributeMap()` and
-`observerMap()`, and `enableHydration()` instead. The `AttributeMap` and
-`ObserverMap` implementation classes are available from their extension subpaths
-for advanced scenarios, but application code should normally use the extension
-factories.
+entrypoint. Use `declarativeTemplate()`, `attributeMap()`, `observerMap()`, and
+`enableHydration()` instead. The `AttributeMap` and `ObserverMap` implementation
+classes are available for advanced scenarios, but application code should
+normally use the extension factories.
 
-Additionally, `@microsoft/fast-element/declarative.js` exports these types:
+Additionally, `@microsoft/fast-element` exports these types:
 
 | Type | Source Module | Purpose |
 |---|---|---|
@@ -340,14 +329,14 @@ Additionally, `@microsoft/fast-element/declarative.js` exports these types:
 | `JSONSchema` | `components/schema.ts` | JSON Schema interface used by `Schema` for property structure. |
 | `CachedPathMap` | `components/schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
 
-The extension subpaths export their own configuration types:
+The root entrypoint exports the map configuration types:
 
-| Type | Public subpath | Purpose |
+| Type | Import path | Purpose |
 |---|---|---|
-| `ObserverMapConfig` | `@microsoft/fast-element/observer-map.js` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
-| `ObserverMapPathEntry` | `@microsoft/fast-element/observer-map.js` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
-| `ObserverMapPathNode` | `@microsoft/fast-element/observer-map.js` | Object node with optional `$observe` and child property overrides. |
-| `AttributeMapConfig` | `@microsoft/fast-element/attribute-map.js` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
+| `ObserverMapConfig` | `@microsoft/fast-element` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
+| `ObserverMapPathEntry` | `@microsoft/fast-element` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
+| `ObserverMapPathNode` | `@microsoft/fast-element` | Object node with optional `$observe` and child property overrides. |
+| `AttributeMapConfig` | `@microsoft/fast-element` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
 
 ---
 

@@ -18,8 +18,8 @@ When defining your component, you may pass in attributes in the same configurati
 
 ```javascript
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { css } from "@microsoft/fast-element/css.js";
+import { html } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 export class MyElement extends FASTElement {
   // component logic
@@ -41,8 +41,8 @@ This accepts the same configuration options as the `@attr` so for example to bin
 
 ```javascript
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { css } from "@microsoft/fast-element/css.js";
+import { html } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 export class MyElement extends FASTElement {
   constructor() {
@@ -76,8 +76,8 @@ If you need to add a converter to your attribute:
 
 ```javascript
 import { FASTElement } from '@microsoft/fast-element';
-import { html } from '@microsoft/fast-element/html.js';
-import { css } from "@microsoft/fast-element/css.js";
+import { html } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 const converter = {
   toView: (value) => {

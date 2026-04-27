@@ -58,7 +58,7 @@ Description
 
 </td><td>
 
-Record&lt;string, AttributeDefinition&gt;
+Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
 
 
 </td><td>
@@ -79,7 +79,7 @@ A map enabling lookup of property by associated attribute name.
 
 </td><td>
 
-ReadonlyArray&lt;AttributeDefinition&gt;
+ReadonlyArray&lt;[AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
 
 
 </td><td>
@@ -251,7 +251,7 @@ The name of the custom element.
 
 </td><td>
 
-Record&lt;string, AttributeDefinition&gt;
+Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
 
 
 </td><td>
@@ -312,7 +312,7 @@ The registry to register this component in by default.
 
 </td><td>
 
-Schema
+[Schema](../fast-element.schema/)
 
 
 </td><td>
@@ -371,7 +371,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-ElementViewTemplate&lt;InstanceType&lt;TType&gt;&gt;
+[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt;
 
 
 </td><td>

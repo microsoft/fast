@@ -3,9 +3,8 @@
 This document provides a technical explainer for how the `Schema` and
 `ObserverMap` classes work together to describe data objects and automatically
 observe them in FAST elements. Declarative `<f-template>` markup creates schemas
-automatically, but the schema and observer map implementation are factored into
-shared components and extension subpaths so they can also be used without
-declarative templating.
+automatically, but the schema and observer map implementation are factored so
+they can also be used without declarative templating.
 
 ## Table of Contents
 
@@ -30,7 +29,7 @@ The Schema and Observer Map architecture enables automatic observation of comple
 - **Schema Class**: Generates JSON schemas that describe the structure and binding paths of data objects based on template analysis or manually registered paths
 - **Observer Map Class**: Uses the schema information to automatically define observable properties and create proxies for nested object observation
 - **f-template Integration**: Template processing automatically populates schemas and configures observer maps during template compilation
-- **Extension Subpaths**: `@microsoft/fast-element/observer-map.js` and `@microsoft/fast-element/attribute-map.js` expose the map helpers independently from declarative templating
+- **Map helpers**: `@microsoft/fast-element` exposes the map helpers independently from declarative templating
 
 ### Supported Data Types
 
@@ -162,12 +161,11 @@ The Schema and Observer Map classes integrate seamlessly with the f-template sys
 ### Configuration
 
 Observer Map functionality is enabled through the `observerMap()` definition
-extension. Prefer the extension subpath for new imports; the declarative
-entrypoint continues to re-export `observerMap()` for existing declarative code:
+extension exported from `@microsoft/fast-element`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 MyElement.define(
   {
@@ -187,8 +185,8 @@ configuration:
 
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {}
 
@@ -461,7 +459,7 @@ The schema system tracks binding contexts using special metadata:
 You can inspect generated schemas using the module-level `schemaRegistry` import:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element/schema.js";
+import { schemaRegistry } from "@microsoft/fast-element";
 
 // Get all schemas for an element:
 const elementSchemas = schemaRegistry.get('my-element');
@@ -477,8 +475,8 @@ To verify that observer mapping ran, inspect the generated schema and the
 observable accessors on the element prototype:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element/schema.js";
-import { Observable } from "@microsoft/fast-element/observable.js";
+import { schemaRegistry } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 
 const schemas = schemaRegistry.get("my-element");
 const accessors = Observable.getAccessors(MyElement.prototype).map(a => a.name);
