@@ -16,7 +16,7 @@ navigationOptions:
 ## DOMContainer.handleContextRequests() method
 
 > This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
+>
 
 Instructs this particular Container to handle W3C Community Context requests that propagate to its associated DOM node.
 

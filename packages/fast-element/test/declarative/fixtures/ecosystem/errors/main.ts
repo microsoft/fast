@@ -1,5 +1,5 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 
 class TestElementNoTemplate extends FASTElement {}
 FASTElement.define(TestElementNoTemplate, {

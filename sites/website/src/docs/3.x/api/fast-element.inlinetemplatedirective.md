@@ -20,7 +20,7 @@ Inlines a template into another template.
 **Signature:**
 
 ```typescript
-export declare class InlineTemplateDirective implements HTMLDirective 
+export declare class InlineTemplateDirective implements HTMLDirective
 ```
 **Implements:** [HTMLDirective](../fast-element.htmldirective/)
 

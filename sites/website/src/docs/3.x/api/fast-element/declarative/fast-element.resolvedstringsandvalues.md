@@ -20,7 +20,7 @@ The return type for [TemplateParser.parse()](../fast-element.templateparser.pars
 **Signature:**
 
 ```typescript
-export interface ResolvedStringsAndValues 
+export interface ResolvedStringsAndValues
 ```
 
 ## Properties

@@ -20,7 +20,7 @@ A base class for node observation.
 **Signature:**
 
 ```typescript
-export declare abstract class NodeObservationDirective<T extends NodeBehaviorOptions> extends StatelessAttachedAttributeDirective<T> 
+export declare abstract class NodeObservationDirective<T extends NodeBehaviorOptions> extends StatelessAttachedAttributeDirective<T>
 ```
 **Extends:** [StatelessAttachedAttributeDirective](../fast-element.statelessattachedattributedirective/)<!-- -->&lt;T&gt;
 
