@@ -66,7 +66,7 @@ import {
     InitialStateService,
     type IInitialStateService,
 } from "./initial-state.js";
-import { inject } from '@microsoft/fast-element/di.js';
+import { inject } from "@microsoft/fast-element/di.js";
 
 export class MyComponent extends FASTElement {
     @inject(initialStateFactory) initialStateService!: InitialStateService;

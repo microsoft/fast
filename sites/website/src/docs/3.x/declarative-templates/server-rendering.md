@@ -74,7 +74,7 @@ The end-to-end flow from server to interactive page follows these steps:
 2. **Browser loads HTML** — The browser parses the page. Declarative Shadow DOM `<template>` elements are automatically expanded into shadow roots.
 3. **JavaScript loads** — Component classes are defined with `template: declarativeTemplate()`, which waits for matching `<f-template>` elements and resolves the template.
 4. **Template resolution** — `declarativeTemplate()` coordinates with the `<f-template>` elements to parse the declarative markup and supply the compiled template to each element definition.
-5. **Hydration** — FAST detects the pre-rendered shadow DOM, maps existing DOM nodes to binding slots using hydration markers, and re-establishes reactive observations.
+5. **Hydration** — If `enableHydration()` was called before FAST elements connect, FAST detects the pre-rendered shadow DOM, maps existing DOM nodes to binding slots using hydration markers, and re-establishes reactive observations. Without `enableHydration()`, the element renders client-side instead.
 6. **Interactive** — The page is fully interactive. Property changes trigger targeted DOM updates.
 
 :::tip
@@ -223,7 +223,7 @@ fast build --attribute-name-strategy=none --templates="./components/**/*.html"
 ```
 
 :::important
-The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, configure the client with `attributeMap({ "attribute-name-strategy": "none" })`.
+The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, import `attributeMap` from `@microsoft/fast-element/attribute-map.js` and configure the client with `attributeMap({ "attribute-name-strategy": "none" })`. Existing declarative imports remain supported.
 :::
 
 ## Writing Components for SSR

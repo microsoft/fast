@@ -20,7 +20,7 @@ A work queue used to synchronize writes to the DOM.
 **Signature:**
 
 ```typescript
-export interface UpdateQueue 
+export interface UpdateQueue
 ```
 
 ## Methods

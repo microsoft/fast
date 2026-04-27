@@ -20,7 +20,7 @@ The runtime behavior for child node observation.
 **Signature:**
 
 ```typescript
-export declare class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> 
+export declare class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions>
 ```
 **Extends:** [NodeObservationDirective](../fast-element.nodeobservationdirective/)<!-- -->&lt;[ChildrenDirectiveOptions](../fast-element.childrendirectiveoptions/)<!-- -->&gt;
 

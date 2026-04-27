@@ -22,3 +22,4 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 ```typescript
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 ```
+**References:** [FASTElementDefinition](../fast-element.fastelementdefinition/)

@@ -73,7 +73,7 @@ test("renders element", async ({ fastPage }) => {
 | `src/fixtures/assertions.ts` | Custom Playwright assertion `toHaveCustomState` |
 | `src/ssr/render.ts` | SSR rendering helpers: `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
 | `src/ssr/assets.ts` | Asset resolution helpers: `readAsset`, `resolveAssetUrl` |
-| `src/ssr/entry-client.ts` | SSR hydration entry point — defines `<f-template>` for the browser |
+| `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Express + Vite dev server — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — calls `startServer()` |
 | `playwright.config.ts` | Shared Playwright configuration (browsers, web server, test matching) |
@@ -174,7 +174,7 @@ The harness does **not** contain the SSR entry files itself — they live in the
 | `test/index.html` | Consumer | CSR entry page — loads the component registration script |
 | `test/ssr.html` | Consumer | SSR template with comment placeholders (`<!--fixture-->`, `<!--templates-->`, etc.) |
 | `test/src/entry-server.ts` | Consumer | Exports a `render(queryObj)` function that returns `{ template, fixture, preloadLinks }` |
-| `test/src/entry-client.ts` | Consumer | Registers components for DSD hydration in the browser |
+| `test/src/entry-client.ts` | Consumer | Calls `enableHydration()` when SSR content should hydrate and registers components in the browser |
 | `test/vite.config.ts` | Consumer | Vite configuration (can import the shared one from this package) |
 
 The `startServer(cwd, root, configFile)` function accepts overrides for each path:

@@ -20,7 +20,7 @@ Options for configuring repeat behavior.
 **Signature:**
 
 ```typescript
-export interface RepeatOptions 
+export interface RepeatOptions
 ```
 
 ## Properties
