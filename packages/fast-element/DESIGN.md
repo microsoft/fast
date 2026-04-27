@@ -43,7 +43,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
 | Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`, `Schema` |
-| Schema-driven extensions | `@microsoft/fast-element/extensions/attribute-map.js` and `@microsoft/fast-element/extensions/observer-map.js` → tree-shakeable map helpers usable with declarative or manually supplied schemas |
+| Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → tree-shakeable map helpers usable with declarative or manually supplied schemas |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
@@ -333,8 +333,8 @@ FAST Element also owns the declarative HTML runtime that previously lived in a
 separate package. The dedicated `@microsoft/fast-element/declarative.js`
 entrypoint exports the declarative runtime API: `declarativeTemplate()`,
 `TemplateParser`, `Schema`, `schemaRegistry`, and related parser/schema types.
-Import map helpers from `@microsoft/fast-element/extensions/attribute-map.js`
-and `@microsoft/fast-element/extensions/observer-map.js`. These subpaths keep
+Import map helpers from `@microsoft/fast-element/attribute-map.js`
+and `@microsoft/fast-element/observer-map.js`. These subpaths keep
 the schema-driven map extensions factored away from declarative templating so
 they can also be used with manually supplied schemas. The `<f-template>` element
 is an internal native `HTMLElement` publisher that `declarativeTemplate()`

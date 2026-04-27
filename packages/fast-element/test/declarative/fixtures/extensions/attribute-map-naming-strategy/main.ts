@@ -1,6 +1,6 @@
 import { FASTElement } from "@microsoft/fast-element";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
 
 class NamingStrategyTestElement extends FASTElement {}
 

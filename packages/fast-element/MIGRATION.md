@@ -46,7 +46,7 @@ removed `@microsoft/fast-html` package.
 | Before | After |
 |---|---|
 | `@microsoft/fast-html` | `@microsoft/fast-element/declarative.js` |
-| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative/utilities.js` |
+| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative-utilities.js` |
 
 Core FAST Element helpers now use dedicated subpaths:
 
@@ -65,19 +65,19 @@ Core FAST Element helpers now use dedicated subpaths:
 | `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
 | `volatile` | `@microsoft/fast-element/volatile.js` |
-| `children` | `@microsoft/fast-element/directives/children.js` |
-| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/directives/node-observation.js` |
-| `ref` | `@microsoft/fast-element/directives/ref.js` |
-| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
-| `when` | `@microsoft/fast-element/directives/when.js` |
-| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+| `children` | `@microsoft/fast-element/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
+| `ref` | `@microsoft/fast-element/ref.js` |
+| `slotted` | `@microsoft/fast-element/slotted.js` |
+| `when` | `@microsoft/fast-element/when.js` |
+| `repeat` | `@microsoft/fast-element/repeat.js` |
 
 ### Migration steps
 
 1. Update declarative runtime imports to
    `@microsoft/fast-element/declarative.js`.
 2. Update declarative utility imports such as `deepMerge` to
-   `@microsoft/fast-element/declarative/utilities.js`.
+   `@microsoft/fast-element/declarative-utilities.js`.
 3. Keep importing root FAST Element APIs such as `FASTElement`, `FAST`,
    `ElementController`, and definition/controller types from
    `@microsoft/fast-element`, and import moved helpers from their dedicated
@@ -153,8 +153,8 @@ Core FAST Element helpers now use dedicated subpaths:
 
    ```typescript
    import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-   import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-   import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+   import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+   import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
    MyElement.define(
        {

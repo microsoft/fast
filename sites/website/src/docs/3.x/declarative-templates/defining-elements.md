@@ -128,8 +128,8 @@ The `observerMap()` and `attributeMap()` functions are define extensions — the
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 
@@ -154,7 +154,7 @@ Pass `observerMap()` with no arguments to observe every root property found in t
 
 ```ts
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 UserProfile.define(
     {
@@ -236,7 +236,7 @@ For components that do not use `declarativeTemplate()`, create or obtain a `Sche
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class UserProfile extends FASTElement {}
 
@@ -265,7 +265,7 @@ The `attributeMap` option automatically creates reactive `@attr` properties for 
 
 ```ts
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 
 GreetingCard.define(
     {
@@ -327,8 +327,8 @@ Both extensions can be used together for a fully declarative component:
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class ProductCard extends FASTElement {}
 

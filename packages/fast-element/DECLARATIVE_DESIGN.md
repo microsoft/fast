@@ -3,8 +3,8 @@
 This document is intended for contributors who want to understand the internal
 architecture of the declarative runtime in
 `@microsoft/fast-element/declarative.js` and the schema-driven map extensions in
-`@microsoft/fast-element/extensions/attribute-map.js` and
-`@microsoft/fast-element/extensions/observer-map.js`. It covers the feature's
+`@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`. It covers the feature's
 purpose, core concepts, data flow, and its integration with the rest of
 `@microsoft/fast-element`.
 
@@ -58,7 +58,7 @@ registry-aware declarative template bridge.
 |---|---|
 | **Server-agnostic rendering** | Templates are plain HTML strings with no dependency on Node.js or any specific SSR framework. |
 | **Progressive enhancement** | Components can be server-rendered and then hydrated client-side without a full re-render. |
-| **FAST parity** | The declarative syntax maps 1-to-1 to FAST Element directive helpers (`repeat`, `when`, `slotted`, `children`, `ref`) from their `@microsoft/fast-element/directives/*` subpaths. |
+| **FAST parity** | The declarative syntax maps 1-to-1 to FAST Element directive helpers (`repeat`, `when`, `slotted`, `children`, `ref`) from their flat `@microsoft/fast-element/*` subpaths. |
 | **Minimal authoring overhead** | Component authors write HTML, not tagged template strings, while retaining full reactive capabilities. |
 
 ---
@@ -119,7 +119,7 @@ An optional layer that uses the `Schema` to automatically:
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
 Enabled via the `observerMap()` definition extension. Import the extension from
-`@microsoft/fast-element/extensions/observer-map.js`; the declarative entrypoint
+`@microsoft/fast-element/observer-map.js`; the declarative entrypoint
 does not re-export it. Calling `observerMap()` without arguments observes all
 root properties discovered in the template or supplied schema.
 
@@ -167,7 +167,7 @@ For non-declarative elements, pass a schema directly to `observerMap()`:
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 
@@ -203,7 +203,7 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
 Enabled via the `attributeMap()` definition extension. Import the extension from
-`@microsoft/fast-element/extensions/attribute-map.js`; the declarative entrypoint
+`@microsoft/fast-element/attribute-map.js`; the declarative entrypoint
 does not re-export it. Calling `attributeMap()` without arguments uses the
 default `"camelCase"` strategy. To preserve binding keys exactly as written,
 pass `attributeMap({ "attribute-name-strategy": "none" })`. Outside declarative
@@ -297,13 +297,13 @@ import {
 import {
     attributeMap,
     type AttributeMapConfig,
-} from "@microsoft/fast-element/extensions/attribute-map.js";
+} from "@microsoft/fast-element/attribute-map.js";
 import {
     observerMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
-} from "@microsoft/fast-element/extensions/observer-map.js";
+} from "@microsoft/fast-element/observer-map.js";
 ```
 
 The declarative entrypoint does not re-export the map helpers or their
@@ -324,8 +324,8 @@ Primary map extension exports:
 
 | Export | Public subpath | Purpose |
 |---|---|---|
-| `attributeMap()` | `@microsoft/fast-element/extensions/attribute-map.js` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
-| `observerMap()` | `@microsoft/fast-element/extensions/observer-map.js` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
+| `attributeMap()` | `@microsoft/fast-element/attribute-map.js` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
+| `observerMap()` | `@microsoft/fast-element/observer-map.js` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
 
 The implementation element class (`<f-template>`), `TemplateElement.config()`,
 `TemplateElement.options()`, `ElementOptions*`, and
@@ -349,10 +349,10 @@ The extension subpaths export their own configuration types:
 
 | Type | Public subpath | Purpose |
 |---|---|---|
-| `ObserverMapConfig` | `@microsoft/fast-element/extensions/observer-map.js` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
-| `ObserverMapPathEntry` | `@microsoft/fast-element/extensions/observer-map.js` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
-| `ObserverMapPathNode` | `@microsoft/fast-element/extensions/observer-map.js` | Object node with optional `$observe` and child property overrides. |
-| `AttributeMapConfig` | `@microsoft/fast-element/extensions/attribute-map.js` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
+| `ObserverMapConfig` | `@microsoft/fast-element/observer-map.js` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
+| `ObserverMapPathEntry` | `@microsoft/fast-element/observer-map.js` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
+| `ObserverMapPathNode` | `@microsoft/fast-element/observer-map.js` | Object node with optional `$observe` and child property overrides. |
+| `AttributeMapConfig` | `@microsoft/fast-element/attribute-map.js` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
 
 ---
 

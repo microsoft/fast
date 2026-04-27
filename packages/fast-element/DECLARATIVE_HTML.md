@@ -36,8 +36,8 @@ installed only when `enableHydration()` is called from
 
 `observerMap()` and `attributeMap()` remain available from the declarative
 entrypoint for existing declarative imports. New code should prefer the
-extension subpaths, `@microsoft/fast-element/extensions/observer-map.js` and
-`@microsoft/fast-element/extensions/attribute-map.js`, especially when using
+extension subpaths, `@microsoft/fast-element/observer-map.js` and
+`@microsoft/fast-element/attribute-map.js`, especially when using
 the maps without declarative templates.
 
 Example:
@@ -142,7 +142,7 @@ For non-declarative/manual schemas, import from the extension subpath and pass
 `observerMap({ schema })`.
 
 ```typescript
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 ```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
@@ -199,7 +199,7 @@ Manual schema example:
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 
@@ -229,7 +229,7 @@ on the FAST element definition and import `attributeMap()` from its extension
 subpath.
 
 ```typescript
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 ```
 
 By default, the binding key is treated as a camelCase property name and the HTML

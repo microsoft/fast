@@ -30,7 +30,7 @@ The Schema and Observer Map architecture enables automatic observation of comple
 - **Schema Class**: Generates JSON schemas that describe the structure and binding paths of data objects based on template analysis or manually registered paths
 - **Observer Map Class**: Uses the schema information to automatically define observable properties and create proxies for nested object observation
 - **f-template Integration**: Template processing automatically populates schemas and configures observer maps during template compilation
-- **Extension Subpaths**: `@microsoft/fast-element/extensions/observer-map.js` and `@microsoft/fast-element/extensions/attribute-map.js` expose the map helpers independently from declarative templating
+- **Extension Subpaths**: `@microsoft/fast-element/observer-map.js` and `@microsoft/fast-element/attribute-map.js` expose the map helpers independently from declarative templating
 
 ### Supported Data Types
 
@@ -167,7 +167,7 @@ entrypoint continues to re-export `observerMap()` for existing declarative code:
 
 ```typescript
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
   {
@@ -188,7 +188,7 @@ configuration:
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 

@@ -1,7 +1,7 @@
 import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class TestElement extends FASTElement {
     public object: any = {

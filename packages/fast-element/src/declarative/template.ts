@@ -198,7 +198,7 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         definition.lifecycleCallbacks?.elementDidRegister?.(name);
         definition.lifecycleCallbacks?.templateWillUpdate?.(name);
 
-        const schema = new Schema(name);
+        const schema = definition.schema ?? new Schema(name);
         definition.schema = schema;
         const innerHTML = transformInnerHTML(this.innerHTML);
         const parser = new TemplateParser();

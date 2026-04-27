@@ -119,8 +119,8 @@ Public declarative imports now come from
 `@microsoft/fast-element/declarative.js` rather than
 `@microsoft/fast-html`. Existing declarative imports for `attributeMap()` and
 `observerMap()` remain valid. New code that only needs the map extensions should
-prefer `@microsoft/fast-element/extensions/attribute-map.js` and
-`@microsoft/fast-element/extensions/observer-map.js`.
+prefer `@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`.
 
 ### Schema changes
 
@@ -184,8 +184,8 @@ factored away from declarative templating. Prefer importing them from their
 dedicated subpaths for tree-shaken or non-declarative use:
 
 ```ts
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 ```
 
 `FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
@@ -196,7 +196,7 @@ directly in configuration:
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 

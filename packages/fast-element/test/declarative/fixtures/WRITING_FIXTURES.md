@@ -173,7 +173,7 @@ The component definition file registers custom elements and configures the templ
 > **Important:** All imports in `main.ts` must use package names (for example
 > `@microsoft/fast-element`,
 > `@microsoft/fast-element/declarative.js`, or
-> `@microsoft/fast-element/declarative/utilities.js`), **not** relative paths.
+> `@microsoft/fast-element/declarative-utilities.js`), **not** relative paths.
 > Relative imports will break the WebUI integration tests because fixtures are
 > copied to a different directory structure during the integration build. The
 > same applies to any other paths referenced in `main.ts`.
@@ -229,7 +229,7 @@ definition-scoped `observerMap()` extension:
 
 ```typescript
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
     {

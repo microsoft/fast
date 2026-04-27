@@ -80,42 +80,42 @@ const subpathExports = [
     },
     {
         name: "children",
-        importPath: "@microsoft/fast-element/directives/children.js",
+        importPath: "@microsoft/fast-element/children.js",
         export: "children",
     },
     {
         name: "ChildrenDirective",
-        importPath: "@microsoft/fast-element/directives/children.js",
+        importPath: "@microsoft/fast-element/children.js",
         export: "ChildrenDirective",
     },
     {
         name: "elements",
-        importPath: "@microsoft/fast-element/directives/node-observation.js",
+        importPath: "@microsoft/fast-element/node-observation.js",
         export: "elements",
     },
     {
         name: "NodeObservationDirective",
-        importPath: "@microsoft/fast-element/directives/node-observation.js",
+        importPath: "@microsoft/fast-element/node-observation.js",
         export: "NodeObservationDirective",
     },
     {
         name: "ref",
-        importPath: "@microsoft/fast-element/directives/ref.js",
+        importPath: "@microsoft/fast-element/ref.js",
         export: "ref",
     },
     {
         name: "RefDirective",
-        importPath: "@microsoft/fast-element/directives/ref.js",
+        importPath: "@microsoft/fast-element/ref.js",
         export: "RefDirective",
     },
     {
         name: "slotted",
-        importPath: "@microsoft/fast-element/directives/slotted.js",
+        importPath: "@microsoft/fast-element/slotted.js",
         export: "slotted",
     },
     {
         name: "SlottedDirective",
-        importPath: "@microsoft/fast-element/directives/slotted.js",
+        importPath: "@microsoft/fast-element/slotted.js",
         export: "SlottedDirective",
     },
     {
@@ -125,7 +125,7 @@ const subpathExports = [
     },
     {
         name: "when",
-        importPath: "@microsoft/fast-element/directives/when.js",
+        importPath: "@microsoft/fast-element/when.js",
         export: "when",
     },
     { name: "html", importPath: "@microsoft/fast-element/html.js", export: "html" },
@@ -136,17 +136,17 @@ const subpathExports = [
     },
     {
         name: "repeat",
-        importPath: "@microsoft/fast-element/directives/repeat.js",
+        importPath: "@microsoft/fast-element/repeat.js",
         export: "repeat",
     },
     {
         name: "RepeatBehavior",
-        importPath: "@microsoft/fast-element/directives/repeat.js",
+        importPath: "@microsoft/fast-element/repeat.js",
         export: "RepeatBehavior",
     },
     {
         name: "RepeatDirective",
-        importPath: "@microsoft/fast-element/directives/repeat.js",
+        importPath: "@microsoft/fast-element/repeat.js",
         export: "RepeatDirective",
     },
     { name: "css", importPath: "@microsoft/fast-element/css.js", export: "css" },
@@ -262,12 +262,12 @@ const subpathExports = [
     },
     {
         name: "observerMap",
-        importPath: "@microsoft/fast-element/extensions/observer-map.js",
+        importPath: "@microsoft/fast-element/observer-map.js",
         export: "observerMap",
     },
     {
         name: "attributeMap",
-        importPath: "@microsoft/fast-element/extensions/attribute-map.js",
+        importPath: "@microsoft/fast-element/attribute-map.js",
         export: "attributeMap",
     },
 ];

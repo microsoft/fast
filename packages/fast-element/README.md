@@ -98,12 +98,12 @@ types. Optional feature groups are available from dedicated subpaths:
 | `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
 | `volatile` | `@microsoft/fast-element/volatile.js` |
-| `children` | `@microsoft/fast-element/directives/children.js` |
-| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/directives/node-observation.js` |
-| `ref` | `@microsoft/fast-element/directives/ref.js` |
-| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
-| `when` | `@microsoft/fast-element/directives/when.js` |
-| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+| `children` | `@microsoft/fast-element/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
+| `ref` | `@microsoft/fast-element/ref.js` |
+| `slotted` | `@microsoft/fast-element/slotted.js` |
+| `when` | `@microsoft/fast-element/when.js` |
+| `repeat` | `@microsoft/fast-element/repeat.js` |
 
 ## Dynamic Style Application
 
@@ -138,8 +138,8 @@ functional APIs for declarative templates: `declarativeTemplate()`,
 remain supported.
 
 The schema-driven map extensions are also available from their own subpaths:
-`@microsoft/fast-element/extensions/attribute-map.js` and
-`@microsoft/fast-element/extensions/observer-map.js`. Prefer these subpaths when
+`@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`. Prefer these subpaths when
 you only need the maps, when you are not using declarative templates, or when
 you want the smallest tree-shaken extension import. The declarative runtime is
 pure at import time; declarative APIs lazily install only declarative debug
@@ -168,8 +168,8 @@ Declarative schema behavior is enabled with define extensions:
 
 ```ts
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
     {
@@ -191,7 +191,7 @@ from `@microsoft/fast-element/schema.js` and pass it on the element definition;
 mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
-`@microsoft/fast-element/declarative/utilities.js`. See
+`@microsoft/fast-element/declarative-utilities.js`. See
 [`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
 details and the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)

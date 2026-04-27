@@ -1,6 +1,6 @@
 import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class SelectiveObsElement extends FASTElement {
     public user = {

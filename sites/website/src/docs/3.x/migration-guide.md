@@ -124,7 +124,7 @@ import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 // After
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
+import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 ```
 
 Keep importing root FAST Element APIs such as `FASTElement`, `FAST`,
@@ -146,12 +146,12 @@ Keep importing root FAST Element APIs such as `FASTElement`, `FAST`,
 | `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
 | `volatile` | `@microsoft/fast-element/volatile.js` |
-| `children` | `@microsoft/fast-element/directives/children.js` |
-| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/directives/node-observation.js` |
-| `ref` | `@microsoft/fast-element/directives/ref.js` |
-| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
-| `when` | `@microsoft/fast-element/directives/when.js` |
-| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+| `children` | `@microsoft/fast-element/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/node-observation.js` |
+| `ref` | `@microsoft/fast-element/ref.js` |
+| `slotted` | `@microsoft/fast-element/slotted.js` |
+| `when` | `@microsoft/fast-element/when.js` |
+| `repeat` | `@microsoft/fast-element/repeat.js` |
 
 The dedicated declarative entrypoint owns declarative template parsing.
 Hydration is opt-in via `enableHydration()` from
@@ -174,8 +174,8 @@ Import `declarativeTemplate()` from `@microsoft/fast-element/declarative.js`.
 Import schema-driven map extensions from their dedicated subpaths:
 
 ```ts
-import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
@@ -197,7 +197,7 @@ manual schema on the definition, or pass one directly to `observerMap({ schema
 
 ```ts
 import { Schema } from "@microsoft/fast-element/schema.js";
-import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 const schema = new Schema("my-element");
 MyElement.define({ name: "my-element" }, [observerMap({ schema })]);

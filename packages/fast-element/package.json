@@ -35,17 +35,17 @@
       "test": "./src/declarative.ts",
       "default": "./dist/esm/declarative.js"
     },
-    "./declarative/utilities.js": {
+    "./declarative-utilities.js": {
       "types": "./dist/dts/declarative/utilities.d.ts",
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
-    "./extensions/attribute-map.js": {
+    "./attribute-map.js": {
       "types": "./dist/dts/extensions/attribute-map.d.ts",
       "test": "./src/extensions/attribute-map.ts",
       "default": "./dist/esm/extensions/attribute-map.js"
     },
-    "./extensions/observer-map.js": {
+    "./observer-map.js": {
       "types": "./dist/dts/extensions/observer-map.d.ts",
       "test": "./src/extensions/observer-map.ts",
       "default": "./dist/esm/extensions/observer-map.js"
@@ -60,12 +60,14 @@
       "test": "./src/binding.ts",
       "default": "./dist/esm/binding.js"
     },
-    "./binding/two-way.js": {
+    "./two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
+      "test": "./src/binding/two-way.ts",
       "default": "./dist/esm/binding/two-way.js"
     },
-    "./binding/signal.js": {
+    "./signal.js": {
       "types": "./dist/dts/binding/signal.d.ts",
+      "test": "./src/binding/signal.ts",
       "default": "./dist/esm/binding/signal.js"
     },
     "./render.js": {
@@ -148,32 +150,32 @@
       "test": "./src/templating.ts",
       "default": "./dist/esm/templating.js"
     },
-    "./directives/children.js": {
+    "./children.js": {
       "types": "./dist/dts/directives/children.d.ts",
       "test": "./src/directives/children.ts",
       "default": "./dist/esm/directives/children.js"
     },
-    "./directives/node-observation.js": {
+    "./node-observation.js": {
       "types": "./dist/dts/directives/node-observation.d.ts",
       "test": "./src/directives/node-observation.ts",
       "default": "./dist/esm/directives/node-observation.js"
     },
-    "./directives/ref.js": {
+    "./ref.js": {
       "types": "./dist/dts/directives/ref.d.ts",
       "test": "./src/directives/ref.ts",
       "default": "./dist/esm/directives/ref.js"
     },
-    "./directives/slotted.js": {
+    "./slotted.js": {
       "types": "./dist/dts/directives/slotted.d.ts",
       "test": "./src/directives/slotted.ts",
       "default": "./dist/esm/directives/slotted.js"
     },
-    "./directives/when.js": {
+    "./when.js": {
       "types": "./dist/dts/directives/when.d.ts",
       "test": "./src/directives/when.ts",
       "default": "./dist/esm/directives/when.js"
     },
-    "./directives/repeat.js": {
+    "./repeat.js": {
       "types": "./dist/dts/directives/repeat.d.ts",
       "test": "./src/directives/repeat.ts",
       "default": "./dist/esm/directives/repeat.js"

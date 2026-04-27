@@ -223,7 +223,7 @@ fast build --attribute-name-strategy=none --templates="./components/**/*.html"
 ```
 
 :::important
-The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, import `attributeMap` from `@microsoft/fast-element/extensions/attribute-map.js` and configure the client with `attributeMap({ "attribute-name-strategy": "none" })`. Existing declarative imports remain supported.
+The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, import `attributeMap` from `@microsoft/fast-element/attribute-map.js` and configure the client with `attributeMap({ "attribute-name-strategy": "none" })`. Existing declarative imports remain supported.
 :::
 
 ## Writing Components for SSR

@@ -329,6 +329,47 @@ test.describe("declarativeTemplate", () => {
         );
     });
 
+    test("preserves and augments an explicit schema", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                Schema,
+                declarativeTemplate,
+                uniqueElementName,
+            } = await import("/declarative-main.js");
+
+            const elementName = uniqueElementName();
+            const schema = new Schema(elementName);
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><span>{{label}}</span></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {}
+
+            await TestElement.define({
+                name: elementName,
+                schema,
+                template: declarativeTemplate(),
+            });
+
+            const definition = FASTElementDefinition.getByType(TestElement) as any;
+
+            return {
+                sameSchema: definition.schema === schema,
+                schemaRootProperties: Array.from(schema.getRootProperties()),
+            };
+        });
+
+        expect(result.sameSchema).toBe(true);
+        expect(result.schemaRootProperties).toEqual(expect.arrayContaining(["label"]));
+    });
+
     test("uses a native <f-template> publisher instead of a FASTElement", async ({
         page,
     }) => {

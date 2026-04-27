@@ -1,7 +1,7 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { when } from "@microsoft/fast-element/directives/when.js";
 import { html } from "@microsoft/fast-element/html.js";
 import { observable } from "@microsoft/fast-element/observable.js";
+import { when } from "@microsoft/fast-element/when.js";
 export class BenchElement extends FASTElement {
     @observable show = true;
 }

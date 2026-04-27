@@ -1,6 +1,6 @@
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { repeat } from "@microsoft/fast-element/directives/repeat.js";
 import { html } from "@microsoft/fast-element/html.js";
+import { repeat } from "@microsoft/fast-element/repeat.js";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
 import type { TodoApp } from "./todo-app.js";
 import type { Todo } from "./todo-list.js";
 import "./todo-form.js";

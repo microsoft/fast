@@ -18,7 +18,7 @@ import { type Constructable, isFunction } from "../interfaces.js";
 Sub-entry-points expose focused APIs through the `exports` map:
 
 ```ts
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
 import { reactive } from "@microsoft/fast-element/state.js";
 import { composedParent } from "@microsoft/fast-element/utilities.js";
 ```
@@ -67,8 +67,8 @@ Templates use the `html` tagged template literal typed to the element class:
 
 ```ts
 import { html } from "@microsoft/fast-element/html.js";
-import { repeat } from "@microsoft/fast-element/directives/repeat.js";
-import { when } from "@microsoft/fast-element/directives/when.js";
+import { repeat } from "@microsoft/fast-element/repeat.js";
+import { when } from "@microsoft/fast-element/when.js";
 import type { MyElement } from "./my-element.js";
 
 export const template = html<MyElement>`
@@ -97,7 +97,7 @@ export const template = html<MyElement>`
 Two-way bindings require a sub-entry-point import:
 
 ```ts
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
 ```
 
 ### Partial HTML

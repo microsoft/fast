@@ -6,145 +6,155 @@ import { Extractor, ExtractorConfig } from "@microsoft/api-extractor";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function apiExtractorConfig(name) {
+    return path.resolve(__dirname, `../api-extractor.${name}.json`);
+}
+
 export const exportPaths = [
     {
         path: "./context.js",
         docsFolder: "context",
-        configPath: path.resolve(__dirname, "../api-extractor.context.json"),
+        configPath: apiExtractorConfig("context"),
     },
     {
         path: "./declarative.js",
         docsFolder: "declarative",
-        configPath: path.resolve(__dirname, "../api-extractor.declarative.json"),
+        configPath: apiExtractorConfig("declarative"),
+    },
+    {
+        path: "./declarative-utilities.js",
+        docsFolder: "declarative-utilities",
+        configPath: apiExtractorConfig("declarative-utilities"),
     },
     {
         path: "./di.js",
         docsFolder: "di",
-        configPath: path.resolve(__dirname, "../api-extractor.di.json"),
+        configPath: apiExtractorConfig("di"),
     },
     {
-        path: "./extensions/attribute-map.js",
-        docsFolder: "extensions/attribute-map",
-        configPath: path.resolve(
-            __dirname,
-            "../api-extractor.extensions.attribute-map.json",
-        ),
+        path: "./attribute-map.js",
+        docsFolder: "attribute-map",
+        configPath: apiExtractorConfig("attribute-map"),
     },
     {
-        path: "./extensions/observer-map.js",
-        docsFolder: "extensions/observer-map",
-        configPath: path.resolve(
-            __dirname,
-            "../api-extractor.extensions.observer-map.json",
-        ),
+        path: "./observer-map.js",
+        docsFolder: "observer-map",
+        configPath: apiExtractorConfig("observer-map"),
     },
     {
         path: "./hydration.js",
         docsFolder: "hydration",
-        configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
+        configPath: apiExtractorConfig("hydration"),
     },
     {
         path: "./binding.js",
         docsFolder: "binding",
-        configPath: path.resolve(__dirname, "../api-extractor.binding.json"),
+        configPath: apiExtractorConfig("binding"),
+    },
+    {
+        path: "./two-way.js",
+        docsFolder: "two-way",
+        configPath: apiExtractorConfig("two-way"),
+    },
+    {
+        path: "./signal.js",
+        docsFolder: "signal",
+        configPath: apiExtractorConfig("signal"),
     },
     {
         path: "./schema.js",
         docsFolder: "schema",
-        configPath: path.resolve(__dirname, "../api-extractor.schema.json"),
+        configPath: apiExtractorConfig("schema"),
     },
     {
         path: "./dom.js",
         docsFolder: "dom",
-        configPath: path.resolve(__dirname, "../api-extractor.dom.json"),
+        configPath: apiExtractorConfig("dom"),
     },
     {
         path: "./updates.js",
         docsFolder: "updates",
-        configPath: path.resolve(__dirname, "../api-extractor.updates.json"),
+        configPath: apiExtractorConfig("updates"),
     },
     {
         path: "./styles.js",
         docsFolder: "styles",
-        configPath: path.resolve(__dirname, "../api-extractor.styles.json"),
+        configPath: apiExtractorConfig("styles"),
     },
     {
         path: "./arrays.js",
         docsFolder: "arrays",
-        configPath: path.resolve(__dirname, "../api-extractor.arrays.json"),
+        configPath: apiExtractorConfig("arrays"),
     },
     {
         path: "./array-observer.js",
         docsFolder: "array-observer",
-        configPath: path.resolve(__dirname, "../api-extractor.array-observer.json"),
+        configPath: apiExtractorConfig("array-observer"),
     },
     {
         path: "./observable.js",
         docsFolder: "observable",
-        configPath: path.resolve(__dirname, "../api-extractor.observable.json"),
+        configPath: apiExtractorConfig("observable"),
     },
     {
         path: "./volatile.js",
         docsFolder: "volatile",
-        configPath: path.resolve(__dirname, "../api-extractor.volatile.json"),
+        configPath: apiExtractorConfig("volatile"),
     },
     {
         path: "./attr.js",
         docsFolder: "attr",
-        configPath: path.resolve(__dirname, "../api-extractor.attr.json"),
+        configPath: apiExtractorConfig("attr"),
     },
     {
         path: "./css.js",
         docsFolder: "css",
-        configPath: path.resolve(__dirname, "../api-extractor.css.json"),
+        configPath: apiExtractorConfig("css"),
     },
     {
         path: "./html.js",
         docsFolder: "html",
-        configPath: path.resolve(__dirname, "../api-extractor.html.json"),
+        configPath: apiExtractorConfig("html"),
     },
     {
         path: "./templating.js",
         docsFolder: "templating",
-        configPath: path.resolve(__dirname, "../api-extractor.templating.json"),
+        configPath: apiExtractorConfig("templating"),
     },
     {
         path: "./render.js",
         docsFolder: "render",
-        configPath: path.resolve(__dirname, "../api-extractor.render.json"),
+        configPath: apiExtractorConfig("render"),
     },
     {
-        path: "./directives/children.js",
-        docsFolder: "directives/children",
-        configPath: path.resolve(__dirname, "../api-extractor.directives.children.json"),
+        path: "./children.js",
+        docsFolder: "children",
+        configPath: apiExtractorConfig("children"),
     },
     {
-        path: "./directives/node-observation.js",
-        docsFolder: "directives/node-observation",
-        configPath: path.resolve(
-            __dirname,
-            "../api-extractor.directives.node-observation.json",
-        ),
+        path: "./node-observation.js",
+        docsFolder: "node-observation",
+        configPath: apiExtractorConfig("node-observation"),
     },
     {
-        path: "./directives/ref.js",
-        docsFolder: "directives/ref",
-        configPath: path.resolve(__dirname, "../api-extractor.directives.ref.json"),
+        path: "./ref.js",
+        docsFolder: "ref",
+        configPath: apiExtractorConfig("ref"),
     },
     {
-        path: "./directives/slotted.js",
-        docsFolder: "directives/slotted",
-        configPath: path.resolve(__dirname, "../api-extractor.directives.slotted.json"),
+        path: "./slotted.js",
+        docsFolder: "slotted",
+        configPath: apiExtractorConfig("slotted"),
     },
     {
-        path: "./directives/when.js",
-        docsFolder: "directives/when",
-        configPath: path.resolve(__dirname, "../api-extractor.directives.when.json"),
+        path: "./when.js",
+        docsFolder: "when",
+        configPath: apiExtractorConfig("when"),
     },
     {
-        path: "./directives/repeat.js",
-        docsFolder: "directives/repeat",
-        configPath: path.resolve(__dirname, "../api-extractor.directives.repeat.json"),
+        path: "./repeat.js",
+        docsFolder: "repeat",
+        configPath: apiExtractorConfig("repeat"),
     },
 ];
 
