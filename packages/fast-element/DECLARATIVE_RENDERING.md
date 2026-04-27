@@ -22,7 +22,7 @@ Add a Dependency Injection service in your bundle to access properties in your s
 
 Simple example (`initial-state.ts`):
 ```typescript
-import { DI } from "@microsoft/fast-element";
+import { DI } from "@microsoft/fast-element/di.js";
 
 interface InitialState {
     text: string;
@@ -60,15 +60,13 @@ Include the DI service to your component.
 
 Example:
 ```typescript
-import { FASTElement } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element";
-import { Observable } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable } from "@microsoft/fast-element";
 import {
     initialStateFactory,
     InitialStateService,
     type IInitialStateService,
 } from "./initial-state.js";
-import { inject } from '@microsoft/fast-element';
+import { inject } from "@microsoft/fast-element/di.js";
 
 export class MyComponent extends FASTElement {
     @inject(initialStateFactory) initialStateService!: InitialStateService;

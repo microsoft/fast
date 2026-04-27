@@ -62,7 +62,7 @@ Key characteristics of this phase:
 
 ### Phase 2: Declarative Template Bridge
 
-`declarativeTemplate()` from `@microsoft/fast-element`
+`declarativeTemplate()` from `@microsoft/fast-element/declarative.js`
 automatically ensures that `f-template` is defined in the same registry as the
 FAST element being composed.
 
@@ -203,8 +203,8 @@ Hydration must be explicitly opted into by calling `enableHydration()`. Per-elem
 callbacks are passed directly to `declarativeTemplate()`:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element";
-import { declarativeTemplate } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 // Global hydration events
 enableHydration({
@@ -246,8 +246,8 @@ MyComponent.define({
 
 **Performance Monitoring:**
 ```typescript
-import { enableHydration } from "@microsoft/fast-element";
-import { declarativeTemplate } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration({
     hydrationComplete() {

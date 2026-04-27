@@ -1,5 +1,5 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 

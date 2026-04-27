@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { html } from "@microsoft/fast-element/html.js";
 import { ref } from "@microsoft/fast-element/ref.js";
 import { slotted } from "@microsoft/fast-element/slotted.js";

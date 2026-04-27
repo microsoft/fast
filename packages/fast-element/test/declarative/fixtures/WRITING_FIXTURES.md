@@ -182,9 +182,9 @@ The component definition file registers custom elements and configures the templ
 import {
     FASTElement,
     attr,
-    declarativeTemplate,
     observable,
 } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {
     @attr
@@ -228,7 +228,8 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
     {

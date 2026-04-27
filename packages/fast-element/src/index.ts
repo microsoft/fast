@@ -28,12 +28,6 @@ export {
     ElementController,
     Stages,
 } from "./components/element-controller.js";
-// Hydration
-export {
-    deferHydrationAttribute,
-    enableHydration,
-    type HydrationOptions,
-} from "./components/enable-hydration.js";
 export type {
     FASTElementExtension,
     FASTElementTemplateResolver,
@@ -47,71 +41,7 @@ export {
     type TemplateLifecycleCallbacks,
 } from "./components/fast-definitions.js";
 export { customElement, FASTElement } from "./components/fast-element.js";
-export { HydrationMarkup, isHydratable } from "./components/hydration.js";
-export { HydrationTracker } from "./components/hydration-tracker.js";
-export * from "./context.js";
 export { enableDebug } from "./debug.js";
-// Declarative
-export {
-    AttributeMap,
-    type AttributeMapConfig,
-    attributeMap,
-} from "./declarative/attribute-map.js";
-export {
-    ObserverMap,
-    type ObserverMapConfig,
-    type ObserverMapPathEntry,
-    type ObserverMapPathNode,
-    observerMap,
-} from "./declarative/observer-map.js";
-export { declarativeTemplate } from "./declarative/template.js";
-export {
-    type ResolvedStringsAndValues,
-    TemplateParser,
-} from "./declarative/template-parser.js";
-export {
-    type AttributeDataBindingBehaviorConfig,
-    type AttributeDirective,
-    type AttributeDirectiveBindingBehaviorConfig,
-    assignObservables,
-    assignProxy,
-    type BaseDataBindingBehaviorConfig,
-    type BehaviorConfig,
-    type BehaviorType,
-    bindingResolver,
-    type ChainedExpression,
-    ComparisonOperator,
-    type ContentDataBindingBehaviorConfig,
-    contextPrefixDot,
-    type DataBindingBehaviorConfig,
-    type DataBindingBindingType,
-    type DeclarativeExpression,
-    deepEqual,
-    deepMerge,
-    type EventArgType,
-    eventArgAccessor,
-    executionContextAccessor,
-    expressionResolver,
-    extractPathsFromChainedExpression,
-    findDef,
-    getBooleanBinding,
-    getChildrenMap,
-    getExpressionChain,
-    getIndexOfNextMatchingTag,
-    getNextBehavior,
-    getRootPropertyName,
-    isPlainObject,
-    LogicalOperator,
-    Operator,
-    type ParsedEventArg,
-    type PathType,
-    parseEventArgs,
-    pathResolver,
-    type TemplateDirective,
-    type TemplateDirectiveBehaviorConfig,
-    transformInnerHTML,
-} from "./declarative/utilities.js";
-export * from "./di/di.js";
 // Directives
 export {
     type ChildListDirectiveOptions,
@@ -242,8 +172,6 @@ export {
     type ViewBehaviorTargets,
     type ViewController,
 } from "./templating/html-directive.js";
-export type { HydratableView } from "./templating/hydration-view.js";
-export { HydrationBindingError } from "./templating/hydration-view.js";
 export { Markup, Parser } from "./templating/markup.js";
 export { RenderBehavior, RenderDirective, render } from "./templating/render.js";
 export {
@@ -258,6 +186,7 @@ export {
     ViewTemplate,
 } from "./templating/template.js";
 export {
+    DefaultExecutionContext,
     type ElementView,
     HTMLView,
     type SyntheticView,

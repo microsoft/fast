@@ -122,7 +122,7 @@ separate and remains opt-in through `enableHydration()` from
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { declarativeTemplate } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {}
 
@@ -141,9 +141,9 @@ before `define()` resolves. Consumers should not import or define the
 Declarative schema behavior is enabled with define extensions:
 
 ```ts
-import { declarativeTemplate } from "@microsoft/fast-element";
-import { attributeMap } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
     {
@@ -175,10 +175,10 @@ object and `$c` for the execution context.
 
 ## Prerendered Content Optimization
 
-Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element` before any FAST elements connect to activate the hydration path:
+Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration({
     hydrationComplete() {
@@ -204,7 +204,7 @@ This enables several optimizations:
 Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 MyComponent.define({
     name: "my-component",
@@ -238,8 +238,7 @@ Custom directives can also await `controller.isPrerendered` and `controller.isHy
 `FASTElement.define()` accepts an optional second argument — an array of extension callbacks that are invoked with the resolved element definition before the element is registered with the platform. This enables a plugin pattern where reusable behaviors can hook into element registration.
 
 ```typescript
-import { FASTElement } from "@microsoft/fast-element";
-import type { FASTElementExtension } from "@microsoft/fast-element";
+import { FASTElement, type FASTElementExtension } from "@microsoft/fast-element";
 
 function logger(): FASTElementExtension {
     return definition => {

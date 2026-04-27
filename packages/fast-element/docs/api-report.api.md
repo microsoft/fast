@@ -21,9 +21,6 @@ export interface Accessor {
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 // @public
-export const all: (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject>;
-
-// @public
 export interface ArrayObserver extends SubscriberSet {
     addSort(sort: Sort): void;
     addSplice(splice: Splice): void;
@@ -49,15 +46,6 @@ export interface Aspected {
 }
 
 // @public
-export function assignObservables(schema: JSONSchema | JSONSchemaDefinition, rootSchema: JSONSchema, data: any, target: any, rootProperty: string): typeof Proxy;
-
-// @public
-export function assignProxy(schema: JSONSchema | JSONSchemaDefinition, rootSchema: JSONSchema, target: any, rootProperty: string, object: any): typeof Proxy;
-
-// @public
-export type AsyncRegistrationLocator = (key: Key) => Promise<Registration | null>;
-
-// @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
 
 // @public
@@ -77,14 +65,6 @@ export const AttributeConfiguration: Readonly<{
 }>;
 
 // @public
-export interface AttributeDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
-    // (undocumented)
-    aspect: "@" | ":" | "?" | null;
-    // (undocumented)
-    subtype: "attribute";
-}
-
-// @public
 export class AttributeDefinition implements Accessor {
     constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
     readonly attribute: string;
@@ -101,61 +81,7 @@ export class AttributeDefinition implements Accessor {
 }
 
 // @public
-export type AttributeDirective = "children" | "slotted" | "ref";
-
-// @public
-export interface AttributeDirectiveBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
-    // (undocumented)
-    name: AttributeDirective;
-    // (undocumented)
-    subtype: "attributeDirective";
-}
-
-// @public
-export class AttributeMap {
-    constructor(classPrototype: any, schema: Schema, definition?: any, config?: AttributeMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
-
-// @public
-export function attributeMap(config?: AttributeMapConfig): FASTElementExtension;
-
-// @public
-export interface AttributeMapConfig {
-    "attribute-name-strategy"?: "none" | "camelCase";
-}
-
-// Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
-
-// @public
-export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
-    // (undocumented)
-    bindingType: DataBindingBindingType;
-    // (undocumented)
-    closingEndIndex: number;
-    // (undocumented)
-    closingStartIndex: number;
-    // (undocumented)
-    openingEndIndex: number;
-    // (undocumented)
-    openingStartIndex: number;
-    // (undocumented)
-    type: "dataBinding";
-}
-
-// @public
-export interface BehaviorConfig {
-    // (undocumented)
-    type: BehaviorType;
-}
-
-// @public
-export type BehaviorType = "dataBinding" | "templateDirective";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
@@ -178,9 +104,6 @@ export interface BindingDirective {
     readonly dataBinding: Binding;
     readonly targetAspect?: string;
 }
-
-// @public
-export function bindingResolver(previousString: string | null, rootPropertyName: string | null, path: string, parentContext: string | null, type: PathType, schema: Schema, currentContext: string | null, level: number): (accessibleObject: any, context: any) => any;
 
 // @public
 export const booleanConverter: ValueConverter;
@@ -208,16 +131,6 @@ export type Callable = typeof Function.prototype.call | {
 
 // @public
 export interface CaptureType {
-}
-
-// @public
-export interface ChainedExpression {
-    // (undocumented)
-    expression: DeclarativeExpression;
-    // (undocumented)
-    next?: ChainedExpression;
-    // (undocumented)
-    operator?: LogicalOperator;
 }
 
 // @public
@@ -250,21 +163,6 @@ export interface ChildrenMap {
 export type Class<T, C = {}> = C & Constructable<T> & {
     readonly prototype: T;
 };
-
-// @public
-export const ComparisonOperator: {
-    readonly ACCESS: "access";
-    readonly EQUALS: "==";
-    readonly GREATER_THAN: ">";
-    readonly GREATER_THAN_OR_EQUALS: ">=";
-    readonly LESS_THAN: "<";
-    readonly LESS_THAN_OR_EQUALS: "<=";
-    readonly NOT: "!";
-    readonly NOT_EQUALS: "!=";
-};
-
-// @public
-export type ComparisonOperator = (typeof ComparisonOperator)[keyof typeof ComparisonOperator];
 
 // @public
 export type CompilationStrategy = (
@@ -324,80 +222,6 @@ export type ConstructibleStyleStrategy = {
 };
 
 // @public
-export interface Container extends ServiceLocator {
-    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    getFactory<T extends Constructable>(key: T): Factory<T>;
-    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    register(...params: any[]): Container;
-    registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
-    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
-    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-}
-
-// @public
-export const Container: ContextDecorator<Container>;
-
-// @public
-export interface ContainerConfiguration {
-    asyncRegistrationLocator: AsyncRegistrationLocator;
-    defaultResolver(key: Key, handler: Container): Resolver;
-    parentLocator: ParentLocator;
-    responsibleForOwnerRequests: boolean;
-}
-
-// @public
-export const ContainerConfiguration: Readonly<{
-    default: Readonly<ContainerConfiguration>;
-}>;
-
-// Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class ContainerImpl implements DOMContainer {
-    constructor(owner: any, config: ContainerConfiguration);
-    // (undocumented)
-    protected config: ContainerConfiguration;
-    // (undocumented)
-    createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    // (undocumented)
-    get depth(): number;
-    // (undocumented)
-    get<K extends Key>(key: K): Resolved<K>;
-    // (undocumented)
-    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    // (undocumented)
-    getAsync<K extends Key>(key: K): Promise<Resolved<K>>;
-    // (undocumented)
-    getFactory<K extends Constructable>(Type: K): Factory<K>;
-    // (undocumented)
-    getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    // (undocumented)
-    handleContextRequests(enable: boolean): void;
-    // (undocumented)
-    has<K extends Key>(key: K, searchAncestors?: boolean): boolean;
-    // (undocumented)
-    protected owner: any;
-    // (undocumented)
-    get parent(): ContainerImpl | null;
-    // (undocumented)
-    register(...params: any[]): Container;
-    // (undocumented)
-    registerFactory<K extends Constructable>(key: K, factory: Factory<K>): void;
-    // (undocumented)
-    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
-    // (undocumented)
-    registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
-    // (undocumented)
-    get responsibleForOwnerRequests(): boolean;
-}
-
-// @public
-export interface ContentDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
-    // (undocumented)
-    subtype: "content";
-}
-
-// @public
 export interface ContentTemplate {
     create(): ContentView;
 }
@@ -411,51 +235,6 @@ export interface ContentView {
     remove(): void;
     unbind(): void;
 }
-
-// @public
-export type Context<T> = {
-    readonly name: string;
-    readonly initialValue?: T;
-};
-
-// @public
-export const Context: Readonly<{
-    eventType: "context-request";
-    for<T = unknown>(name: string): FASTContext<T>;
-    create<T_1 = unknown>(name: string, initialValue?: T_1 | undefined): FASTContext<T_1>;
-    setDefaultRequestStrategy(strategy: FASTContextRequestStrategy): void;
-    get<T_2 extends UnknownContext>(target: EventTarget, context: T_2): ContextType<T_2>;
-    request<T_3 extends UnknownContext>(target: EventTarget, context: T_3, callback: ContextCallback<ContextType<T_3>>, multiple?: boolean): void;
-    dispatch<T_4 extends UnknownContext>(target: EventTarget, context: T_4, callback: ContextCallback<ContextType<T_4>>, multiple?: boolean): void;
-    provide<T_5 extends UnknownContext>(target: EventTarget, context: T_5, value: ContextType<T_5>): void;
-    handle<T_6 extends UnknownContext>(target: EventTarget, callback: (event: ContextEvent<T_6>) => void, context?: T_6 | undefined): void;
-    defineProperty<T_7 extends UnknownContext>(target: Constructable<EventTarget> | EventTarget, propertyName: string, context: T_7): void;
-}>;
-
-// @public
-export type ContextCallback<ValueType> = (value: ValueType, dispose?: () => void) => void;
-
-// Warning: (ae-forgotten-export) The symbol "ParameterDecorator_2" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type ContextDecorator<T = any> = Readonly<Context<T>> & PropertyDecorator & ParameterDecorator_2;
-
-// @public
-export class ContextEvent<T extends UnknownContext> extends Event {
-    constructor(context: T, callback: ContextCallback<ContextType<T>>, multiple?: boolean | undefined);
-    // (undocumented)
-    readonly callback: ContextCallback<ContextType<T>>;
-    // (undocumented)
-    readonly context: T;
-    // (undocumented)
-    readonly multiple?: boolean | undefined;
-}
-
-// @public
-export const contextPrefixDot: string;
-
-// @public
-export type ContextType<T extends UnknownContext> = T extends Context<infer Y> ? Y : never;
 
 // @public
 export const css: CSSTemplateTag;
@@ -492,36 +271,7 @@ export type CSSValue = ComposableStyles | CSSDirective;
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
-export type DataBindingBehaviorConfig = ContentDataBindingBehaviorConfig | AttributeDataBindingBehaviorConfig | AttributeDirectiveBindingBehaviorConfig;
-
-// @public
-export type DataBindingBindingType = "client" | "default" | "unescaped";
-
-// @public
-export interface DeclarativeExpression {
-    // (undocumented)
-    left: string;
-    // (undocumented)
-    leftIsValue: boolean | null;
-    // (undocumented)
-    operator: Operator;
-    // (undocumented)
-    right: string | boolean | number | null;
-    // (undocumented)
-    rightIsValue: boolean | null;
-}
-
-// @public
-export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
-
-// @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
-
-// @public
-export function deepEqual(obj1: any, obj2: any): boolean;
-
-// @public
-export function deepMerge(target: any, source: any): boolean;
 
 // @public
 export interface DefaultCachedPath extends CachedPathCommon {
@@ -530,29 +280,20 @@ export interface DefaultCachedPath extends CachedPathCommon {
 }
 
 // @public
-export const DefaultResolver: Readonly<{
-    none(key: Key): Resolver;
-    singleton(key: Key): Resolver;
-    transient(key: Key): Resolver;
-}>;
-
-// @beta
-export const deferHydrationAttribute = "defer-hydration";
-
-// @public
-export const DI: Readonly<{
-    installAsContextRequestStrategy(fallback?: () => DOMContainer): void;
-    createContainer(config?: Partial<ContainerConfiguration>): Container;
-    findResponsibleContainer(target: EventTarget, fallback?: () => DOMContainer): DOMContainer;
-    findParentContainer(target: EventTarget, fallback?: () => DOMContainer): DOMContainer;
-    getOrCreateDOMContainer(target?: EventTarget, config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): DOMContainer;
-    getDependencies(Type: Constructable | Injectable): Key[];
-    defineProperty(target: {}, propertyName: string, key: Key, respectConnection?: boolean): void;
-    createContext: typeof createContext;
-    inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
-    transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-    singleton<T_1 extends Constructable>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
-}>;
+export class DefaultExecutionContext<TParent> implements ExecutionContext<TParent> {
+    get event(): Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+    index: number;
+    get isEven(): boolean;
+    get isFirst(): boolean;
+    get isInMiddle(): boolean;
+    get isLast(): boolean;
+    get isOdd(): boolean;
+    length: number;
+    readonly parent: TParent;
+    readonly parentContext: ExecutionContext<TParent>;
+}
 
 // @public
 export interface Disposable {
@@ -590,15 +331,6 @@ export type DOMAspectGuards = {
     [DOMAspect.tokenList]?: DOMSinkGuards;
     [DOMAspect.event]?: DOMSinkGuards;
 };
-
-// @public
-export interface DOMContainer extends Container {
-    // @beta
-    handleContextRequests(enable: boolean): void;
-}
-
-// @public
-export const DOMContainer: ContextDecorator<DOMContainer>;
 
 // @public
 export type DOMElementGuards = Record<string, DOMAspectGuards>;
@@ -729,15 +461,6 @@ export const emptyArray: readonly never[];
 export function enableDebug(): void;
 
 // @public
-export function enableHydration(options?: HydrationOptions): void;
-
-// @public
-export const eventArgAccessor: string;
-
-// @public
-export type EventArgType = "event" | "context" | "binding";
-
-// @public
 export interface EventCachedPath extends CachedPathCommon {
     // (undocumented)
     type: "event";
@@ -767,9 +490,6 @@ export const ExecutionContext: Readonly<{
 }>;
 
 // @public
-export const executionContextAccessor: string;
-
-// @public
 export type Expression<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
 // @public
@@ -796,51 +516,11 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
 }
 
 // @public
-export function expressionResolver(rootPropertyName: string | null, expression: ChainedExpression, parentContext: string | null, level: number, schema: Schema): (accessibleObject: any, context: any) => any;
-
-// @public
-export function extractPathsFromChainedExpression(chainedExpression: ChainedExpression): Set<string>;
-
-// @public
-export interface Factory<T extends Constructable = any> {
-    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
-    constructAsync(container: Container, dynamicDependencies?: Key[]): Promise<Resolved<T>>;
-    registerTransformer(transformer: Transformer_2<T>): void;
-    readonly Type: T;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "FactoryImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
-    constructor(Type: T, dependencies: Key[]);
-    // (undocumented)
-    construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
-    // (undocumented)
-    constructAsync(container: Container, dynamicDependencies?: Key[]): Promise<Resolved<T>>;
-    // (undocumented)
-    registerTransformer(transformer: (instance: any) => any): void;
-    // (undocumented)
-    Type: T;
-}
-
-// @public
 export const FAST: {
     warn(_code: number, _values?: Record<string, any>): void;
     error(code: number, _values?: Record<string, any>): Error;
     addMessages(messages: Record<number, string>): void;
 };
-
-// @public
-export type FASTContext<T> = ContextDecorator<T> & {
-    get(target: EventTarget): T;
-    provide(target: EventTarget, value: T): void;
-    request(target: EventTarget, callback: ContextCallback<T>, multiple?: boolean): void;
-    handle(target: EventTarget, callback: (event: ContextEvent<FASTContext<T>>) => void): void;
-};
-
-// @public
-export type FASTContextRequestStrategy = <T extends UnknownContext>(target: EventTarget, context: T, callback: ContextCallback<ContextType<T>>, multiple: any) => void;
 
 // @public
 export interface FASTElement extends HTMLElement {
@@ -895,29 +575,6 @@ export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
-
-// @public
-export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | null;
-
-// @public
-export function getBooleanBinding(rootPropertyName: string | null, expression: ChainedExpression, parentContext: string | null, level: number, schema: Schema): (x: boolean, c: any) => any;
-
-// Warning: (ae-forgotten-export) The symbol "ChildrenMap_2" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function getChildrenMap(previousString: string | null): ChildrenMap_2 | null;
-
-// @public
-export function getExpressionChain(value: string): ChainedExpression | void;
-
-// @public
-export function getIndexOfNextMatchingTag(openingTagStartSlice: string, openingTag: string, closingTag: string, openingTagStartIndex: number): number;
-
-// @public
-export function getNextBehavior(innerHTML: string, offset?: number): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null;
-
-// @public
-export function getRootPropertyName(rootPropertyName: string | null, path: string, context: null | string, type: PathType): string | null;
 
 // @public
 export interface HostBehavior<TSource = any> {
@@ -997,8 +654,6 @@ export type HTMLTemplateTag = (<TSource = any, TParent = any>(strings: TemplateS
     partial(html: string): InlineTemplateDirective;
 };
 
-// Warning: (ae-forgotten-export) The symbol "DefaultExecutionContext" needs to be exported by the entry point index.d.ts
-//
 // @public
 export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
@@ -1027,112 +682,12 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     unbind(): void;
 }
 
-// @public (undocumented)
-export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
-    // (undocumented)
-    [Hydratable]: symbol;
-    // Warning: (ae-forgotten-export) The symbol "ViewNodes" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly bindingViewBoundaries: Record<string, ViewNodes>;
-    // Warning: (ae-forgotten-export) The symbol "HydrationStage" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    readonly hydrationStage: keyof typeof HydrationStage;
-}
-
-// @public (undocumented)
-export class HydrationBindingError extends Error {
-    constructor(
-    message: string | undefined,
-    factory: ViewBehaviorFactory,
-    fragment: DocumentFragment,
-    templateString: string);
-    readonly factory: ViewBehaviorFactory;
-    readonly fragment: DocumentFragment;
-    readonly templateString: string;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "HydrationMarkup" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const HydrationMarkup: Readonly<{
-    attributeMarkerName: "data-fe";
-    contentBindingStartMarker(): string;
-    contentBindingEndMarker(): string;
-    repeatStartMarker(): string;
-    repeatEndMarker(): string;
-    elementBoundaryStartMarker(): string;
-    elementBoundaryEndMarker(): string;
-    isContentBindingStartMarker(data: string): boolean;
-    isContentBindingEndMarker(data: string): boolean;
-    isRepeatViewStartMarker(data: string): boolean;
-    isRepeatViewEndMarker(data: string): boolean;
-    isElementBoundaryStartMarker(node: Node): boolean;
-    isElementBoundaryEndMarker(node: Node): boolean;
-    parseAttributeBindingCount(node: Element): number | null;
-}>;
-
-// @public
-export interface HydrationOptions {
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
-}
-
-// @public
-export class HydrationTracker {
-    constructor(options: HydrationOptions);
-    add(element: HTMLElement): void;
-    mergeOptions(incoming: HydrationOptions): void;
-    remove(element: HTMLElement): void;
-}
-
-// @public
-export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
-
-// @public
-export const inject: (...dependencies: Key[]) => (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
-
-// @public
-export type Injectable<T = {}> = Constructable<T> & {
-    inject?: Key[];
-};
-
 // @public
 export class InlineTemplateDirective implements HTMLDirective {
     constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
     createHTML(add: AddViewBehaviorFactory): string;
     static readonly empty: InlineTemplateDirective;
 }
-
-// @public
-export interface InterfaceConfiguration {
-    friendlyName?: string;
-    respectConnection?: boolean;
-}
-
-// Warning: (ae-forgotten-export) The symbol "HydrationView" needs to be exported by the entry point index.d.ts
-//
-// @beta
-export function isHydratable(view: ViewController): view is HydrationView;
-
-// Warning: (ae-forgotten-export) The symbol "HydratableSyntheticViewTemplate" needs to be exported by the entry point index.d.ts
-//
-// @beta (undocumented)
-export function isHydratable<TSource = any, TParent = any>(template: SyntheticViewTemplate<TSource, TParent>): template is HydratableSyntheticViewTemplate<TSource, TParent>;
-
-// Warning: (ae-forgotten-export) The symbol "HydratableElementViewTemplate" needs to be exported by the entry point index.d.ts
-//
-// @beta (undocumented)
-export function isHydratable<TSource = any, TParent = any>(template: ElementViewTemplate<TSource, TParent>): template is HydratableElementViewTemplate<TSource, TParent>;
-
-// Warning: (ae-forgotten-export) The symbol "HydratableContentTemplate" needs to be exported by the entry point index.d.ts
-//
-// @beta (undocumented)
-export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
-
-// @public
-export function isPlainObject(value: any): value is Record<string, any>;
 
 // @public
 export interface JSONSchema extends JSONSchemaCommon {
@@ -1168,12 +723,6 @@ export interface JSONSchemaDefinition extends JSONSchemaCommon {
 }
 
 // @public
-export type Key = PropertyKey | object | ContextDecorator | Constructable | Resolver;
-
-// @public
-export const lazy: (key: any) => any;
-
-// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
@@ -1185,26 +734,11 @@ export function lengthOf<T>(array: readonly T[]): number;
 export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
 
 // @public
-export const LogicalOperator: {
-    readonly AND: "&&";
-    readonly OR: "||";
-};
-
-// @public
-export type LogicalOperator = (typeof LogicalOperator)[keyof typeof LogicalOperator];
-
-// @public
 export const Markup: Readonly<{
     interpolation: (id: string) => string;
     attribute: (id: string) => string;
     comment: (id: string) => string;
 }>;
-
-// @public
-export const newInstanceForScope: (key: any) => any;
-
-// @public
-export const newInstanceOf: (key: any) => any;
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -1267,59 +801,10 @@ export interface ObservationRecord {
 }
 
 // @public
-export class ObserverMap {
-    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
-
-// @public
-export function observerMap(config?: ObserverMapConfig): FASTElementExtension;
-
-// @public
-export interface ObserverMapConfig {
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-    schema?: Schema;
-}
-
-// @public
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-// @public
-export interface ObserverMapPathNode {
-    // (undocumented)
-    $observe?: boolean;
-    // (undocumented)
-    [propertyName: string]: ObserverMapPathEntry | undefined;
-}
-
-// @public
 export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy_2): Binding<T>;
 
 // @public
 export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy_2, isVolatile?: boolean): Binding<T>;
-
-// @public
-export const Operator: {
-    readonly ACCESS: "access";
-    readonly EQUALS: "==";
-    readonly GREATER_THAN: ">";
-    readonly GREATER_THAN_OR_EQUALS: ">=";
-    readonly LESS_THAN: "<";
-    readonly LESS_THAN_OR_EQUALS: "<=";
-    readonly NOT: "!";
-    readonly NOT_EQUALS: "!=";
-    readonly AND: "&&";
-    readonly OR: "||";
-};
-
-// @public
-export type Operator = (typeof Operator)[keyof typeof Operator];
-
-// @public
-export const optional: (key: any) => any;
 
 // @beta
 export type OwnedState<T> = ReadonlyOwnedState<T> & {
@@ -1329,19 +814,6 @@ export type OwnedState<T> = ReadonlyOwnedState<T> & {
 
 // @beta
 export function ownedState<T>(value: T | (() => T), options?: string | StateOptions): OwnedState<T>;
-
-// @public
-export type ParentLocator = (owner: any) => Container | null;
-
-// @public
-export interface ParsedEventArg {
-    rawArg?: string;
-    // (undocumented)
-    type: EventArgType;
-}
-
-// @public
-export function parseEventArgs(argsString: string): ParsedEventArg[];
 
 // @public
 export const Parser: Readonly<{
@@ -1365,12 +837,6 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
 export interface PartialHTMLDirectiveDefinition {
     aspected?: boolean;
 }
-
-// @public
-export function pathResolver(path: string, contextPath: string | null, level: number, rootSchema: JSONSchema): (accessibleObject: any, context: any) => any;
-
-// @public
-export type PathType = "access" | "default" | "event" | "repeat";
 
 // @public
 export class PropertyChangeNotifier implements Notifier {
@@ -1412,32 +878,6 @@ export interface RegisterPathConfig {
     pathConfig: CachedPath;
     // (undocumented)
     rootPropertyName: string;
-}
-
-// @public
-export type RegisterSelf<T extends Constructable> = {
-    register(container: Container): Resolver<InstanceType<T>>;
-    registerInRequestor: boolean;
-};
-
-// @public
-export interface Registration<K = any> {
-    register(container: Container): Resolver<K>;
-}
-
-// @public
-export const Registration: Readonly<{
-    instance<T>(key: Key, value: T): Registration<T>;
-    singleton<T_1 extends Constructable>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
-    transient<T_2 extends Constructable>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
-    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
-    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
-    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
-}>;
-
-// @public
-export interface Registry {
-    register(container: Container, ...params: unknown[]): void | Resolver;
 }
 
 // @public
@@ -1506,78 +946,6 @@ export interface RepeatOptions {
 }
 
 // @public
-export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
-
-// Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
-//
-// @public
-export type Resolved<K> = K extends ContextDecorator<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
-
-// @public
-export interface ResolvedStringsAndValues {
-    // (undocumented)
-    strings: Array<string>;
-    // (undocumented)
-    values: Array<any>;
-}
-
-// @public
-export interface Resolver<K = any> extends ResolverLike<Container, K> {
-}
-
-// @public
-export class ResolverBuilder<K> {
-    constructor(container: Container, key: Key);
-    aliasTo(destinationKey: Key): Resolver<K>;
-    cachedCallback(value: ResolveCallback<K>): Resolver<K>;
-    callback(value: ResolveCallback<K>): Resolver<K>;
-    instance(value: K): Resolver<K>;
-    singleton(value: Constructable): Resolver<K>;
-    transient(value: Constructable): Resolver<K>;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "ResolverImpl" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export class ResolverImpl implements Resolver, Registration {
-    // (undocumented)
-    get $isResolver(): true;
-    constructor(key: Key, strategy: ResolverStrategy, state: any);
-    // (undocumented)
-    getFactory(container: Container): Factory | null;
-    // (undocumented)
-    key: Key;
-    // (undocumented)
-    register(container: Container): Resolver;
-    // (undocumented)
-    resolve(handler: Container, requestor: Container): any;
-    // (undocumented)
-    resolveAsync(handler: Container, requestor: Container): Promise<any>;
-    // (undocumented)
-    state: any;
-    // (undocumented)
-    strategy: ResolverStrategy;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "ResolverStrategy" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export const enum ResolverStrategy {
-    // (undocumented)
-    alias = 5,
-    // (undocumented)
-    array = 4,
-    // (undocumented)
-    callback = 3,
-    // (undocumented)
-    instance = 0,
-    // (undocumented)
-    singleton = 1,
-    // (undocumented)
-    transient = 2
-}
-
-// @public
 export class Schema {
     constructor(name: string);
     addPath(config: RegisterPathConfig): void;
@@ -1587,23 +955,6 @@ export class Schema {
 
 // @public
 export const schemaRegistry: CachedPathMap;
-
-// @public
-export interface ServiceLocator {
-    get<K extends Key>(key: K): Resolved<K>;
-    get<K extends Key>(key: Key): Resolved<K>;
-    get<K extends Key>(key: K | Key): Resolved<K>;
-    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    getAsync<K extends Key>(key: K): Promise<Resolved<K>>;
-    getAsync<K extends Key>(key: Key): Promise<Resolved<K>>;
-    getAsync<K extends Key>(key: K | Key): Promise<Resolved<K>>;
-    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
-}
-
-// @public
-export const ServiceLocator: ContextDecorator<ServiceLocator>;
 
 // @public
 export interface ShadowRootOptions extends ShadowRootInit {
@@ -1620,17 +971,6 @@ export const Signal: Readonly<{
 
 // @public
 export function signal<T = any>(expression: Expression<T>, options: string | Expression<T>, policy?: DOMPolicy_2): Binding<T>;
-
-// Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function singleton<T extends Constructable>(): typeof singletonDecorator;
-
-// @public (undocumented)
-export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
-
-// @public
-export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
 export function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
@@ -1798,27 +1138,6 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-export type TemplateDirective = "when" | "repeat";
-
-// @public
-export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
-    // (undocumented)
-    closingTagEndIndex: number;
-    // (undocumented)
-    closingTagStartIndex: number;
-    // (undocumented)
-    name: TemplateDirective;
-    // (undocumented)
-    openingTagEndIndex: number;
-    // (undocumented)
-    openingTagStartIndex: number;
-    // (undocumented)
-    type: "templateDirective";
-    // (undocumented)
-    value: string;
-}
-
-// @public
 export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
     elementDidHydrate?(source: HTMLElement): void;
@@ -1829,28 +1148,7 @@ export interface TemplateLifecycleCallbacks {
 }
 
 // @public
-export class TemplateParser {
-    createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
-    parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
-}
-
-// @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
-
-// @public
-type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
-export { Transformer_2 as Transformer }
-
-// @public
-export function transformInnerHTML(innerHTML: string, index?: number): string;
-
-// Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
-//
-// @public
-export function transient<T extends Constructable>(): typeof transientDecorator;
-
-// @public
-export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
 export type TrustedTypesPolicy = {
@@ -1889,9 +1187,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     register(definition: TDefinition): boolean;
 }
 
-// @public
-export type UnknownContext = Context<unknown>;
-
 // Warning: (ae-internal-missing-underscore) The name "UnobservableMutationObserver" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -1913,11 +1208,6 @@ export interface UpdateQueue {
 
 // @public
 export const Updates: UpdateQueue;
-
-// Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function validateKey(key: any): void;
 
 // @public
 export interface ValueConverter {
@@ -2003,8 +1293,6 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 // dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:479:5 - (ae-forgotten-export) The symbol "createContext" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:540:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

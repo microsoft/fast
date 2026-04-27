@@ -8,8 +8,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const rootImportPath = "@microsoft/fast-element";
+const fastElementImportPath = "@microsoft/fast-element/fast-element.js";
+const declarativeImportPath = "@microsoft/fast-element/declarative.js";
+const hydrationImportPath = "@microsoft/fast-element/hydration.js";
+const observerMapImportPath = "@microsoft/fast-element/observer-map.js";
+const attributeMapImportPath = "@microsoft/fast-element/attribute-map.js";
 
-const namedExports = ["FASTElement"];
+const namedExports = [{ name: "FASTElement", importPath: fastElementImportPath }];
 
 const measuredExports = [
     {
@@ -54,10 +59,12 @@ const measuredExports = [
     {
         name: "enableHydration",
         export: "enableHydration",
+        importPath: hydrationImportPath,
     },
     {
         name: "declarativeTemplate",
         export: "declarativeTemplate",
+        importPath: declarativeImportPath,
     },
     {
         name: "ArrayObserver",
@@ -66,10 +73,12 @@ const measuredExports = [
     {
         name: "observerMap",
         export: "observerMap",
+        importPath: observerMapImportPath,
     },
     {
         name: "attributeMap",
         export: "attributeMap",
+        importPath: attributeMapImportPath,
     },
 ];
 
@@ -129,19 +138,21 @@ async function main() {
 
     // Measure each named export in parallel
     const exportResults = await Promise.all(
-        namedExports.map(async name => {
-            const sizes = await measureExport(name);
-            return { name: formatExportLabel(name, rootImportPath), ...sizes };
+        namedExports.map(async ({ name, importPath }) => {
+            const sizes = await measureExport(name, importPath);
+            return { name: formatExportLabel(name, importPath), ...sizes };
         }),
     );
     results.push(...exportResults);
 
     // Measure each root export in parallel
     const measuredResults = await Promise.all(
-        measuredExports.map(async ({ name, export: exportName }) => {
-            const sizes = await measureExport(exportName);
-            return { name: formatExportLabel(name, rootImportPath), ...sizes };
-        }),
+        measuredExports.map(
+            async ({ name, export: exportName, importPath = rootImportPath }) => {
+                const sizes = await measureExport(exportName, importPath);
+                return { name: formatExportLabel(name, importPath), ...sizes };
+            },
+        ),
     );
     results.push(...measuredResults);
 

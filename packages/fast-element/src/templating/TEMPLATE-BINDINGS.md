@@ -280,7 +280,7 @@ Hydration is an opt-in feature. Calling `enableHydration()` patches
 2. A `hydrate(firstChild, lastChild, hostBindingTarget?)` method — creates a `HydrationView` instead of an `HTMLView`.
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration();
 ```

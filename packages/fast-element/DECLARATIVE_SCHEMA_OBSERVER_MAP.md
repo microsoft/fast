@@ -161,11 +161,11 @@ The Schema and Observer Map classes integrate seamlessly with the f-template sys
 ### Configuration
 
 Observer Map functionality is enabled through the `observerMap()` definition
-extension exported from `@microsoft/fast-element`:
+extension exported from `@microsoft/fast-element/observer-map.js`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 MyElement.define(
   {
@@ -184,9 +184,8 @@ For non-declarative/manual schema use, pass the schema in the observer map
 configuration:
 
 ```typescript
-import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 
@@ -475,8 +474,7 @@ To verify that observer mapping ran, inspect the generated schema and the
 observable accessors on the element prototype:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element";
-import { Observable } from "@microsoft/fast-element";
+import { Observable, schemaRegistry } from "@microsoft/fast-element";
 
 const schemas = schemaRegistry.get("my-element");
 const accessors = Observable.getAccessors(MyElement.prototype).map(a => a.name);

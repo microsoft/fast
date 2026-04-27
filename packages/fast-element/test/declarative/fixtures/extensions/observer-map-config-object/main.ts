@@ -1,6 +1,6 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class ConfigObserverMapTestElement extends FASTElement {

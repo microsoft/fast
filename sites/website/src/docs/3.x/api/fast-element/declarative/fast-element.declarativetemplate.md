@@ -61,4 +61,4 @@ _(Optional)_ Optional per-element lifecycle callbacks.
 
 **Returns:**
 
-FASTElementTemplateResolver
+[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)

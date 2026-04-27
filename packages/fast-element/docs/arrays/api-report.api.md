@@ -5,6 +5,23 @@
 ```ts
 
 // @public
+export interface ArrayObserver extends SubscriberSet {
+    addSort(sort: Sort): void;
+    addSplice(splice: Splice): void;
+    flush(): void;
+    readonly lengthObserver: LengthObserver;
+    reset(oldCollection: any[] | undefined): void;
+    readonly sortObserver: SortObserver;
+    strategy: SpliceStrategy | null;
+}
+
+// @public
+export const ArrayObserver: Readonly<{
+    readonly sorted: 0;
+    readonly enable: () => void;
+}>;
+
+// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
@@ -51,7 +68,6 @@ export class Splice {
 // @public
 export interface SpliceStrategy {
     normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
-    // Warning: (ae-forgotten-export) The symbol "ArrayObserver" needs to be exported by the entry point arrays.d.ts
     pop(array: any[], observer: ArrayObserver, pop: typeof Array.prototype.pop, args: any[]): any;
     push(array: any[], observer: ArrayObserver, push: typeof Array.prototype.push, args: any[]): any;
     reverse(array: any[], observer: ArrayObserver, reverse: typeof Array.prototype.reverse, args: any[]): any;

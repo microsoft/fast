@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { html } from "@microsoft/fast-element/html.js";
 import { repeat } from "@microsoft/fast-element/repeat.js";
 

@@ -42,8 +42,8 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
-| Declarative HTML runtime | `@microsoft/fast-element` → `declarativeTemplate()`, `TemplateParser`, `Schema` |
-| Schema-driven extensions | `@microsoft/fast-element` → map helpers usable with declarative or manually supplied schemas |
+| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`; `@microsoft/fast-element/schema.js` → `Schema` |
+| Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → map helpers usable with declarative or manually supplied schemas |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
@@ -91,10 +91,10 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
 - Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
 - On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
-- Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
+- Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
-- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
+- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
@@ -354,7 +354,8 @@ the imperative `html` API:
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
-  exported from `@microsoft/fast-element`. With `declarativeTemplate()` they
+  exported from `@microsoft/fast-element/attribute-map.js` and
+  `@microsoft/fast-element/observer-map.js`. With `declarativeTemplate()` they
   register schema transforms on the element definition, and those transforms run
   after parsing in deterministic order (`attributeMap()` before
   `observerMap()`). Outside declarative templates, `attributeMap()` uses
@@ -364,7 +365,7 @@ the imperative `html` API:
 The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
-`enableHydration()` from `@microsoft/fast-element`. See
+`enableHydration()` from `@microsoft/fast-element/hydration.js`. See
 [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
 architecture.
 

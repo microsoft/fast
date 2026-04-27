@@ -146,7 +146,7 @@ both the initial shadow root template and the `<f-template>`:
 tracked by templates. `@volatile` marks getters whose dependencies change between calls:
 
 ```ts
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { attr, nullableNumberConverter } from "@microsoft/fast-element/attr.js";
 import { Observable, observable } from "@microsoft/fast-element/observable.js";
 import { volatile } from "@microsoft/fast-element/volatile.js";

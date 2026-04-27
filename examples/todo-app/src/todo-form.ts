@@ -1,4 +1,4 @@
-import { customElement, FASTElement } from "@microsoft/fast-element";
+import { customElement, FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 import { styles } from "./todo-form.styles.js";
 import { template } from "./todo-form.template.js";

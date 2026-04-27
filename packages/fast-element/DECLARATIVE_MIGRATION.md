@@ -174,7 +174,7 @@ implementation is internal and is defined automatically by `declarativeTemplate(
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
 Hydration is also no longer installed by `@microsoft/fast-element`.
-Call `enableHydration()` from `@microsoft/fast-element` before FAST
+Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before FAST
 elements connect when prerendered Declarative Shadow DOM should be reused.
 
 ## Schema-driven maps and optional definition schema
@@ -184,8 +184,8 @@ factored away from declarative templating. Import them from
 `@microsoft/fast-element` for declarative or non-declarative use:
 
 ```ts
-import { attributeMap } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 ```
 
 `FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
@@ -194,9 +194,8 @@ a schema in the element definition, and `observerMap()` can also take a schema
 directly in configuration:
 
 ```ts
-import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 

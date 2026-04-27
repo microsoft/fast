@@ -1,4 +1,5 @@
 export {
+    type ArrayObserver,
     type LengthObserver,
     lengthOf,
     Sort,

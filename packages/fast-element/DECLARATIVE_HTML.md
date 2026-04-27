@@ -76,7 +76,7 @@ Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
 you want prerendered Declarative Shadow DOM to be reused:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration({
     hydrationStarted() {
@@ -91,7 +91,7 @@ enableHydration({
 Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 MyComponent.define({
     name: "my-component",
@@ -140,7 +140,7 @@ For non-declarative/manual schemas, import from `@microsoft/fast-element` and
 pass `observerMap({ schema })`.
 
 ```typescript
-import { observerMap } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 ```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
@@ -195,9 +195,8 @@ are observed.
 Manual schema example:
 
 ```typescript
-import { FASTElement } from "@microsoft/fast-element";
-import { Schema } from "@microsoft/fast-element";
-import { observerMap } from "@microsoft/fast-element";
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class MyElement extends FASTElement {}
 
@@ -227,7 +226,7 @@ on the FAST element definition and import `attributeMap()` from
 `@microsoft/fast-element`.
 
 ```typescript
-import { attributeMap } from "@microsoft/fast-element";
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 ```
 
 By default, the binding key is treated as a camelCase property name and the HTML

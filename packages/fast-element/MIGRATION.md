@@ -62,7 +62,7 @@ Core FAST Element helpers are available from the root package export:
 | `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element` |
 | `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
 | `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
-| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element` |
+| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element` |
 | `volatile` | `@microsoft/fast-element` |
 | `children` | `@microsoft/fast-element` |
@@ -75,14 +75,14 @@ Core FAST Element helpers are available from the root package export:
 ### Migration steps
 
 1. Update declarative runtime imports to
-   `@microsoft/fast-element`.
+   `@microsoft/fast-element/declarative.js`.
 2. Update declarative utility imports such as `deepMerge` to
-   `@microsoft/fast-element`.
+   `@microsoft/fast-element/declarative-utilities.js`.
 3. Keep importing FAST Element APIs such as `FASTElement`, `FAST`,
    `ElementController`, definition/controller types, `attr`, `Schema`, and
    `observable` from `@microsoft/fast-element`.
-4. Call `enableHydration()` from `@microsoft/fast-element` when prerendered
-   content should be hydrated.
+4. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` when
+   prerendered content should be hydrated.
 
 ## `TemplateOptions` removal (v3)
 
@@ -135,7 +135,7 @@ Core FAST Element helpers are available from the root package export:
    MyElement.define({ name: "my-element" });
 
    // After
-   import { declarativeTemplate } from "@microsoft/fast-element";
+   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
    MyElement.define({
        name: "my-element",
@@ -146,9 +146,9 @@ Core FAST Element helpers are available from the root package export:
 2. Replace `TemplateElement.options()` with definition extensions:
 
    ```typescript
-   import { declarativeTemplate } from "@microsoft/fast-element";
-   import { attributeMap } from "@microsoft/fast-element";
-   import { observerMap } from "@microsoft/fast-element";
+   import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+   import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
    MyElement.define(
        {
@@ -223,7 +223,7 @@ data source.
 
 The `install-hydratable-view-templates.js` side-effect import is still
 available for advanced scenarios, but the preferred API is
-`enableHydration()` from `@microsoft/fast-element`. The
+`enableHydration()` from `@microsoft/fast-element/hydration.js`. The
 declarative entrypoint no longer installs hydration automatically.
 
 ### Changed behavior

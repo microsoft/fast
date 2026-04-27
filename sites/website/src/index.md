@@ -15,7 +15,7 @@ npm install @microsoft/fast-element
 /*
  * import utilities from @microsoft/fast-element
  */
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { attr } from "@microsoft/fast-element/attr.js";
 import { css } from "@microsoft/fast-element/css.js";
 import { html } from "@microsoft/fast-element/html.js";

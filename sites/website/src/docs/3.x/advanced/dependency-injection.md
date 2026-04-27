@@ -25,7 +25,7 @@ Dependency injection is a flexible & modular design pattern for passing function
 The first step to dependency injection is the creation of a container, this is where dependencies will be injected and resolved. There are two available ways to create a container, you can either use `createContainer()` or `getOrCreateDOMContainer()`. You can have as many containers as you like, however they will only resolve dependencies registered within their container.
 
 ```ts
-import { DI } from "@microsoft/fast-element";
+import { DI } from "@microsoft/fast-element/di.js";
 
 const container = DI.createContainer();
 ```
@@ -35,7 +35,7 @@ Now that your container is created, let's create a few dependencies to host from
 First let's define an interface for the dependency which we'll call `MyServiceConfig`, and create a `ContextDecorator` of the same name which will take the interface as it's generic type:
 
 ```ts
-import { DI } from "@microsoft/fast-element";
+import { DI } from "@microsoft/fast-element/di.js";
 
 export interface MyServiceConfig {
     get: () => Promise<Response>;
@@ -75,7 +75,7 @@ export class App implements AppConfig {
 Finally, let's update our container by registering `MyService` with the dependency injection container. We will use the `MyServiceConfig` as the key, this will allow `App` to resolve the dependency. Note the use of `transient`, this is a utility for creating an instance each time the service is fetched. Other utilities are available, refer to the `di` API documentation for details.
 
 ```ts
-import { DI, Registration } from "@microsoft/fast-element";
+import { DI, Registration } from "@microsoft/fast-element/di.js";
 
 const { transient } = Registration;
 
@@ -99,7 +99,7 @@ When using dependency injection with web components, ensure you define your cont
 The `getOrCreateDOMContainer()` must be used for web components to resolve dependencies. Pass in a node to create the container for, in this example we will use `document.body`.
 
 ```ts
-import { DI, Registration } from "@microsoft/fast-element";
+import { DI, Registration } from "@microsoft/fast-element/di.js";
 
 const { transient } = Registration;
 
@@ -113,9 +113,7 @@ container.register(transient(MyServiceConfig, MyService));
 Once the web component has reached the `connectedCallback` hook, you will be able to access any injected dependencies.
 
 ```ts
-import { FASTElement } from "@microsoft/fast-element";
-import { html } from "@microsoft/fast-element";
-import { observable } from "@microsoft/fast-element";
+import { FASTElement, html, observable } from "@microsoft/fast-element";
 
 export class MyComponent extends FASTElement {
     @MyServiceConfig myService!: MyServiceConfig;

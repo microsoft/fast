@@ -29,6 +29,50 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AttributeDefinition](../fast-element.attributedefinition/)
+
+
+</td><td>
+
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[ElementStyles](../fast-element.elementstyles/)
+
+
+</td><td>
+
+Represents styles that can be applied to a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[FASTElementDefinition](../fast-element.fastelementdefinition/)
+
+
+</td><td>
+
+Defines metadata for a FASTElement.
+
+
+</td></tr>
+<tr><td>
+
+[HTMLView](../fast-element.htmlview/)
+
+
+</td><td>
+
+The standard View implementation, which also implements ElementView and SyntheticView.
+
+
+</td></tr>
+<tr><td>
+
 [Schema](../fast-element.schema/)
 
 
@@ -50,6 +94,17 @@ Converts declarative HTML template markup into the `strings` and `values` arrays
 This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->.
 
 The parsing pipeline is fully synchronous — no promises are allocated during template resolution.
+
+
+</td></tr>
+<tr><td>
+
+[ViewTemplate](../fast-element.viewtemplate/)
+
+
+</td><td>
+
+A template capable of creating HTMLView instances or rendering directly to DOM.
 
 
 </td></tr>
@@ -107,12 +162,34 @@ A path discovered from an access expression.
 </td></tr>
 <tr><td>
 
+[Accessor](../fast-element.accessor/)
+
+
+</td><td>
+
+Represents a getter/setter property accessor on an object.
+
+
+</td></tr>
+<tr><td>
+
 [CachedPathCommon](../fast-element.cachedpathcommon/)
 
 
 </td><td>
 
 Common metadata for paths cached while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
+[CaptureType](../fast-element.capturetype/)
+
+
+</td><td>
+
+A marker interface used to capture types when interpolating Directive helpers into templates.
 
 
 </td></tr>
@@ -140,12 +217,56 @@ A path discovered from a default binding.
 </td></tr>
 <tr><td>
 
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A security policy that FAST can use to interact with the DOM.
+
+
+</td></tr>
+<tr><td>
+
+[ElementView](../fast-element.elementview/)
+
+
+</td><td>
+
+A View representing DOM nodes specifically for rendering the view of a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[ElementViewTemplate](../fast-element.elementviewtemplate/)
+
+
+</td><td>
+
+A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
 [EventCachedPath](../fast-element.eventcachedpath/)
 
 
 </td><td>
 
 A path discovered from an event binding.
+
+
+</td></tr>
+<tr><td>
+
+[HTMLTemplateCompilationResult](../fast-element.htmltemplatecompilationresult/)
+
+
+</td><td>
+
+The result of a template compilation operation.
 
 
 </td></tr>
@@ -184,6 +305,17 @@ A reusable JSON schema definition.
 </td></tr>
 <tr><td>
 
+[PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
+
+
+</td><td>
+
+Represents metadata configuration for a custom element.
+
+
+</td></tr>
+<tr><td>
+
 [RegisterPathConfig](../fast-element.registerpathconfig/)
 
 
@@ -217,12 +349,89 @@ The return type for [TemplateParser.parse()](../fast-element.templateparser.pars
 </td></tr>
 <tr><td>
 
+[ShadowRootOptions](../fast-element.shadowrootoptions/)
+
+
+</td><td>
+
+Shadow root initialization options.
+
+
+</td></tr>
+<tr><td>
+
+[StyleStrategy](../fast-element.stylestrategy/)
+
+
+</td><td>
+
+Implemented to provide specific behavior when adding/removing styles for elements.
+
+
+</td></tr>
+<tr><td>
+
+[StyleTarget](../fast-element.styletarget/)
+
+
+</td><td>
+
+A node that can be targeted by styles.
+
+
+</td></tr>
+<tr><td>
+
+[SyntheticViewTemplate](../fast-element.syntheticviewtemplate/)
+
+
+</td><td>
+
+A template capable of rendering views not specifically connected to custom elements.
+
+
+</td></tr>
+<tr><td>
+
 [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
 
 
 </td><td>
 
 Lifecycle callbacks for template events.
+
+
+</td></tr>
+<tr><td>
+
+[ValueConverter](../fast-element.valueconverter/)
+
+
+</td><td>
+
+Represents objects that can convert values to and from view or model representations.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehavior](../fast-element.viewbehavior/)
+
+
+</td><td>
+
+Represents an object that can contribute behavior to a view.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)
+
+
+</td><td>
+
+A factory that can create a [ViewBehavior](../fast-element.viewbehavior/) associated with a particular location within a DOM fragment.
 
 
 </td></tr>
@@ -242,6 +451,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[AttributeConfiguration](../fast-element.attributeconfiguration/)
+
+
+</td><td>
+
+Metadata used to configure a custom attribute's behavior.
+
+
+</td></tr>
+<tr><td>
 
 [schemaRegistry](../fast-element.schemaregistry/)
 
@@ -269,6 +489,28 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AttributeConfiguration](../fast-element.attributeconfiguration/)
+
+
+</td><td>
+
+Metadata used to configure a custom attribute's behavior.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeMode](../fast-element.attributemode/)
+
+
+</td><td>
+
+The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
 [CachedPath](../fast-element.cachedpath/)
 
 
@@ -291,12 +533,67 @@ A map from element names and root properties to JSON schemas.
 </td></tr>
 <tr><td>
 
+[ComposableStyles](../fast-element.composablestyles/)
+
+
+</td><td>
+
+Represents styles that can be composed into the ShadowDOM of a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[Constructable](../fast-element.constructable/)
+
+
+</td><td>
+
+Represents a type which can be constructed with the new operator.
+
+
+</td></tr>
+<tr><td>
+
+[ConstructibleStyleStrategy](../fast-element.constructiblestylestrategy/)
+
+
+</td><td>
+
+A type that instantiates a StyleStrategy.
+
+
+</td></tr>
+<tr><td>
+
 [FASTElementExtension](../fast-element.fastelementextension/)
 
 
 </td><td>
 
 A callback that receives a FASTElementDefinition during element registration. Extensions are invoked before the element is registered with the platform, allowing plugins to inspect or act on the resolved definition.
+
+
+</td></tr>
+<tr><td>
+
+[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)
+
+
+</td><td>
+
+Resolves an element template from a composed definition.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateValue](../fast-element.templatevalue/)
+
+
+</td><td>
+
+Represents the types of values that can be interpolated into a template.
 
 
 </td></tr>
