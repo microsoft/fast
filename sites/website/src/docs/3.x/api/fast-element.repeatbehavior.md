@@ -20,7 +20,7 @@ A behavior that renders a template for each item in an array.
 **Signature:**
 
 ```typescript
-export declare class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber 
+export declare class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber
 ```
 **Implements:** [ViewBehavior](../fast-element.viewbehavior/)<!-- -->, [Subscriber](../fast-element.subscriber/)
 

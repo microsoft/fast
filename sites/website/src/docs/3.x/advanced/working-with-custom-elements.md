@@ -66,8 +66,9 @@ const template = html<MyProgress>`
 
 **Example:**
 ```ts
-import { attr, FASTElement } from '@microsoft/fast-element';
-import { css } from "@microsoft/fast-element/styles.js";
+import { FASTElement } from '@microsoft/fast-element';
+import { attr } from '@microsoft/fast-element';
+import { css } from "@microsoft/fast-element";
 
 class MyComponent extends FASTElement {
   private dynamicCSS = css`
@@ -100,8 +101,7 @@ class MyComponent extends FASTElement {
 For external signals such as [matchMedia()](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), keep the listener on the element and toggle a separate stylesheet through the same controller APIs. `css` templates stay static, so move runtime conditions into the element rather than binding them inside the stylesheet:
 
 ```ts
-import { FASTElement } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element/styles.js";
+import { css, FASTElement } from "@microsoft/fast-element";
 
 const darkStyles = css`
   :host {

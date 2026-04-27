@@ -20,7 +20,7 @@ A constructed JSON schema from a template
 **Signature:**
 
 ```typescript
-export declare class Schema 
+export declare class Schema
 ```
 
 ## Constructors

@@ -123,11 +123,15 @@ setTheme(lightTheme);
 </html>
 ```
 
-**`entry-client.ts`** registers components for DSD hydration using `define`:
+**`entry-client.ts`** enables hydration and registers components. Component
+definition modules should use `template: declarativeTemplate()`; this
+automatically defines FAST's internal `<f-template>` publisher, so there is no
+manual `TemplateElement.define()` step.
 
 ```ts
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-TemplateElement.define({ name: "f-template" });
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
 
 // Load all define-async modules
 const modules = import.meta.glob("../../src/*/define-async.{ts,js}");
@@ -213,6 +217,7 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts");
 |-----------|----------|
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `readAsset`, `resolveAssetUrl`, `renderFixture`, `renderTemplate` |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer`, `app` |
+| `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/ssr/render.js` | `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
 | `@microsoft/fast-test-harness/ssr/assets.js` | `readAsset`, `resolveAssetUrl` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
