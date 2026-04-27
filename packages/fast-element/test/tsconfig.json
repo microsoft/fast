@@ -5,7 +5,7 @@
         "rootDir": "..",
         "paths": {
             "@microsoft/fast-element": ["../src"],
-            "@microsoft/fast-element/declarative.js": ["../src/declarative.ts"],
+            "@microsoft/fast-element/declarative.js": ["../src/declarative/index.ts"],
             "@microsoft/fast-element/declarative-utilities.js": [
                 "../src/declarative/utilities.ts"
             ],
@@ -25,10 +25,10 @@
             "@microsoft/fast-element/when.js": ["../src/directives/when.ts"],
             "@microsoft/fast-element/repeat.js": ["../src/directives/repeat.ts"],
             "@microsoft/fast-element/attribute-map.js": [
-                "../src/extensions/attribute-map.ts"
+                "../src/declarative/attribute-map.ts"
             ],
             "@microsoft/fast-element/observer-map.js": [
-                "../src/extensions/observer-map.ts"
+                "../src/declarative/observer-map.ts"
             ],
             "@microsoft/fast-element/two-way.js": ["../src/binding/two-way.ts"],
             "@microsoft/fast-element/signal.js": ["../src/binding/signal.ts"],

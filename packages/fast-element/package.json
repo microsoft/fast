@@ -31,9 +31,9 @@
       "default": "./dist/esm/debug.js"
     },
     "./declarative.js": {
-      "types": "./dist/dts/declarative.d.ts",
-      "test": "./src/declarative.ts",
-      "default": "./dist/esm/declarative.js"
+      "types": "./dist/dts/declarative/index.d.ts",
+      "test": "./src/declarative/index.ts",
+      "default": "./dist/esm/declarative/index.js"
     },
     "./declarative-utilities.js": {
       "types": "./dist/dts/declarative/utilities.d.ts",
@@ -41,14 +41,14 @@
       "default": "./dist/esm/declarative/utilities.js"
     },
     "./attribute-map.js": {
-      "types": "./dist/dts/extensions/attribute-map.d.ts",
-      "test": "./src/extensions/attribute-map.ts",
-      "default": "./dist/esm/extensions/attribute-map.js"
+      "types": "./dist/dts/declarative/attribute-map.d.ts",
+      "test": "./src/declarative/attribute-map.ts",
+      "default": "./dist/esm/declarative/attribute-map.js"
     },
     "./observer-map.js": {
-      "types": "./dist/dts/extensions/observer-map.d.ts",
-      "test": "./src/extensions/observer-map.ts",
-      "default": "./dist/esm/extensions/observer-map.js"
+      "types": "./dist/dts/declarative/observer-map.d.ts",
+      "test": "./src/declarative/observer-map.ts",
+      "default": "./dist/esm/declarative/observer-map.js"
     },
     "./hydration.js": {
       "types": "./dist/dts/hydration.d.ts",

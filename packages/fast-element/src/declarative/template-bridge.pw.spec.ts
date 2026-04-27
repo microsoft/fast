@@ -203,7 +203,7 @@ test.describe("declarativeTemplate", () => {
         const result = await build({
             stdin: {
                 contents: `
-                    import { declarativeTemplate } from "./src/declarative.ts";
+                    import { declarativeTemplate } from "./src/declarative/index.ts";
                     export { declarativeTemplate };
                 `,
                 loader: "ts",
@@ -225,8 +225,7 @@ test.describe("declarativeTemplate", () => {
                         if (
                             input.endsWith("src/declarative/attribute-map.ts") ||
                             input.endsWith("src/declarative/observer-map.ts") ||
-                            input.endsWith("src/extensions/attribute-map.ts") ||
-                            input.endsWith("src/extensions/observer-map.ts")
+                            input.endsWith("src/declarative/observer-map-utilities.ts")
                         ) {
                             return outputTotal + data.bytesInOutput;
                         }

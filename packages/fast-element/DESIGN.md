@@ -327,7 +327,7 @@ See `docs/di/api-report.api.md` for the full public API surface.
 
 ### Declarative HTML
 
-**Files**: `src/declarative.ts`, `src/declarative/*`
+**Files**: `src/declarative/index.ts`, `src/declarative/*`
 
 FAST Element also owns the declarative HTML runtime that previously lived in a
 separate package. The dedicated `@microsoft/fast-element/declarative.js`
@@ -356,7 +356,7 @@ the imperative `html` API:
   `definition.schema`, while `observerMap()` can use either `definition.schema`
   or `observerMap({ schema })`.
 
-The `src/declarative.ts` entrypoint is pure at module evaluation time. Running a
+The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
 `enableHydration()` from `@microsoft/fast-element/hydration.js`. See

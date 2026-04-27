@@ -101,12 +101,12 @@ test.describe("extension subpaths", () => {
         expect(message).toContain("observerMap requires a schema");
     });
 
-    test("extension entrypoints do not bundle declarative modules", async () => {
+    test("map entrypoints do not bundle declarative template runtime", async () => {
         const result = await build({
             stdin: {
                 contents: `
-                    import { attributeMap } from "./src/extensions/attribute-map.ts";
-                    import { observerMap } from "./src/extensions/observer-map.ts";
+                    import { attributeMap } from "./src/declarative/attribute-map.ts";
+                    import { observerMap } from "./src/declarative/observer-map.ts";
                     export { attributeMap, observerMap };
                 `,
                 loader: "ts",
@@ -120,9 +120,17 @@ test.describe("extension subpaths", () => {
             write: false,
         });
 
-        const declarativeInputs = Object.keys(result.metafile!.inputs).filter(input =>
-            input.includes("src/declarative/"),
-        );
+        const declarativeInputs = Object.keys(result.metafile!.inputs).filter(input => {
+            if (!input.includes("src/declarative/")) {
+                return false;
+            }
+
+            return !(
+                input.endsWith("src/declarative/attribute-map.ts") ||
+                input.endsWith("src/declarative/observer-map.ts") ||
+                input.endsWith("src/declarative/observer-map-utilities.ts")
+            );
+        });
 
         expect(declarativeInputs).toEqual([]);
     });

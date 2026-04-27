@@ -232,24 +232,19 @@ All delimiters used by the parser are defined in a single `Syntax` interface and
 ```
 packages/fast-element/
 ├── src/
-│   ├── declarative.ts         # Public declarative entrypoint
 │   ├── components/
 │   │   ├── schema.ts          # Shared Schema class + schemaRegistry
 │   │   └── definition-schema-transforms.ts # Definition-scoped schema transform storage
-│   ├── extensions/
-│   │   ├── attribute-map.ts   # attributeMap() subpath implementation
-│   │   └── observer-map.ts    # observerMap() subpath implementation
 │   └── declarative/
-│       ├── index.ts           # Declarative barrel export
+│       ├── index.ts           # Public declarative entrypoint implementation
 │       ├── interfaces.ts      # Message enum (error codes)
 │       ├── debug.ts           # Human-readable declarative debug messages
-│       ├── definition-options.ts # Compatibility re-export for schema transform storage
 │       ├── template.ts        # declarativeTemplate(), internal <f-template> publisher, lifecycle orchestration
 │       ├── template-bridge.ts # Registry/name bridge between definitions and publishers
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
-│       ├── schema.ts          # Compatibility re-export for Schema
-│       ├── observer-map.ts    # Internal observer-map extension alias (not a package export)
-│       ├── attribute-map.ts   # Internal attribute-map extension alias (not a package export)
+│       ├── observer-map.ts    # observerMap() subpath implementation
+│       ├── attribute-map.ts   # attributeMap() subpath implementation
+│       ├── observer-map-utilities.ts # Shared observer-map helpers
 │       ├── utilities.ts       # Declarative parsing helpers
 │       └── syntax.ts          # Syntax delimiter constants
 ├── scripts/
@@ -267,10 +262,10 @@ when the consumer passes them as define extensions.
 ```
 declarative/template.ts ──imports──▶ components/definition-schema-transforms.ts (schema transform reads)
 declarative/template.ts ──imports──▶ components/schema.ts (Schema)
-extensions/attribute-map.ts ──imports──▶ components/definition-schema-transforms.ts (register attribute-map transform)
-extensions/observer-map.ts ──imports──▶ components/definition-schema-transforms.ts (register observer-map transform)
-extensions/observer-map.ts ──imports──▶ components/schema.ts (Schema types)
-extensions/attribute-map.ts ──imports──▶ components/schema.ts (Schema types)
+declarative/attribute-map.ts ──imports──▶ components/definition-schema-transforms.ts (register attribute-map transform)
+declarative/observer-map.ts ──imports──▶ components/definition-schema-transforms.ts (register observer-map transform)
+declarative/observer-map.ts ──imports──▶ components/schema.ts (Schema types)
+declarative/attribute-map.ts ──imports──▶ components/schema.ts (Schema types)
 declarative/utilities.ts ──imports──▶ components/schema.ts (schemaRegistry for cross-element $ref resolution)
 ```
 

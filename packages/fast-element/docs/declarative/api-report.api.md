@@ -34,7 +34,7 @@ export interface ChildrenMap {
     customElementName: string;
 }
 
-// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
+// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point index.d.ts
 //
 // @public
 export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
@@ -51,7 +51,7 @@ export interface EventCachedPath extends CachedPathCommon {
     type: "event";
 }
 
-// Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point declarative.d.ts
+// Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point index.d.ts
 //
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
@@ -136,7 +136,7 @@ export interface TemplateLifecycleCallbacks {
 
 // @public
 export class TemplateParser {
-    // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point declarative.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point index.d.ts
     createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
     parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }

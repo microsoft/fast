@@ -17,6 +17,6 @@ export {
     type RepeatCachedPath,
     Schema,
     schemaRegistry,
-} from "./schema.js";
+} from "../components/schema.js";
 export { declarativeTemplate } from "./template.js";
 export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";

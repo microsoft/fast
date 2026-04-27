@@ -27,7 +27,7 @@ export {
     deepMerge,
     findDef,
     isPlainObject,
-} from "../extensions/observer-map-utilities.js";
+} from "./observer-map-utilities.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 

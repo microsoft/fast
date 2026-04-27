@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
+import {
+    defsPropertyName,
+    type JSONSchema,
+    Schema,
+    schemaRegistry,
+} from "../components/schema.js";
 import { ObserverMap } from "./observer-map.js";
-import { defsPropertyName, type JSONSchema, Schema, schemaRegistry } from "./schema.js";
 
 const testElementName = "test-class";
 
