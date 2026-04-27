@@ -20,7 +20,7 @@ A type that instantiates an ElementController
 **Signature:**
 
 ```typescript
-export interface ElementControllerStrategy 
+export interface ElementControllerStrategy
 ```
 
 ## Methods

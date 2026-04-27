@@ -10,11 +10,74 @@ export const deferHydrationAttribute = "defer-hydration";
 // @public
 export function enableHydration(options?: HydrationOptions): void;
 
+// Warning: (ae-forgotten-export) The symbol "ElementView" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "SyntheticView" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "DefaultExecutionContext" needs to be exported by the entry point hydration.d.ts
+//
+// @public (undocumented)
+export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
+    // (undocumented)
+    [Hydratable]: symbol;
+    // Warning: (ae-forgotten-export) The symbol "ViewNodes" needs to be exported by the entry point hydration.d.ts
+    //
+    // (undocumented)
+    readonly bindingViewBoundaries: Record<string, ViewNodes>;
+    // Warning: (ae-forgotten-export) The symbol "HydrationStage" needs to be exported by the entry point hydration.d.ts
+    //
+    // (undocumented)
+    readonly hydrationStage: keyof typeof HydrationStage;
+}
+
+// @public (undocumented)
+export class HydrationBindingError extends Error {
+    constructor(
+    message: string | undefined,
+    factory: ViewBehaviorFactory,
+    fragment: DocumentFragment,
+    templateString: string);
+    // Warning: (ae-forgotten-export) The symbol "ViewBehaviorFactory" needs to be exported by the entry point hydration.d.ts
+    readonly factory: ViewBehaviorFactory;
+    readonly fragment: DocumentFragment;
+    readonly templateString: string;
+}
+
 // @public
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
 }
+
+// @public
+export class HydrationTracker {
+    constructor(options: HydrationOptions);
+    add(element: HTMLElement): void;
+    mergeOptions(incoming: HydrationOptions): void;
+    remove(element: HTMLElement): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "ViewController" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "HydrationView" needs to be exported by the entry point hydration.d.ts
+//
+// @beta
+export function isHydratable(view: ViewController): view is HydrationView;
+
+// Warning: (ae-forgotten-export) The symbol "SyntheticViewTemplate" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "HydratableSyntheticViewTemplate" needs to be exported by the entry point hydration.d.ts
+//
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: SyntheticViewTemplate<TSource, TParent>): template is HydratableSyntheticViewTemplate<TSource, TParent>;
+
+// Warning: (ae-forgotten-export) The symbol "ElementViewTemplate" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "HydratableElementViewTemplate" needs to be exported by the entry point hydration.d.ts
+//
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: ElementViewTemplate<TSource, TParent>): template is HydratableElementViewTemplate<TSource, TParent>;
+
+// Warning: (ae-forgotten-export) The symbol "ContentTemplate" needs to be exported by the entry point hydration.d.ts
+// Warning: (ae-forgotten-export) The symbol "HydratableContentTemplate" needs to be exported by the entry point hydration.d.ts
+//
+// @beta (undocumented)
+export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
 
 // (No @packageDocumentation comment for this package)
 

@@ -522,7 +522,7 @@ export interface InterfaceConfiguration {
 
     /**
      * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable | notification }
+     * If the resolved value changes due to connection change, an observable notification
      * will be emitted for the property, with the previous and next values provided to any subscriber.
      */
     respectConnection?: boolean;
@@ -581,7 +581,7 @@ function createContext<K extends Key>(
         };
     }
 
-    Interface.toString = function toString(): string {
+    Interface.toString = function interfaceToString(): string {
         return `DIContext<${Interface.name}>`;
     };
 
@@ -1944,7 +1944,7 @@ export class ContainerImpl implements DOMContainer {
             ) {
                 const newResolver = handler.resolvers.get(keyAsValue);
 
-                if (newResolver != void 0) {
+                if (newResolver !== void 0) {
                     return newResolver;
                 }
 
