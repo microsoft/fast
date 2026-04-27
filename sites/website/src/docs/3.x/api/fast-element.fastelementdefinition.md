@@ -20,7 +20,7 @@ Defines metadata for a FASTElement.
 **Signature:**
 
 ```typescript
-export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties
@@ -58,7 +58,7 @@ Description
 
 </td><td>
 
-Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+Record&lt;string, AttributeDefinition&gt;
 
 
 </td><td>
@@ -79,7 +79,7 @@ A map enabling lookup of property by associated attribute name.
 
 </td><td>
 
-ReadonlyArray&lt;[AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+ReadonlyArray&lt;AttributeDefinition&gt;
 
 
 </td><td>
@@ -251,7 +251,7 @@ The name of the custom element.
 
 </td><td>
 
-Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+Record&lt;string, AttributeDefinition&gt;
 
 
 </td><td>
@@ -299,6 +299,25 @@ CustomElementRegistry
 </td><td>
 
 The registry to register this component in by default.
+
+
+</td></tr>
+<tr><td>
+
+[schema?](../fast-element.fastelementdefinition.schema/)
+
+
+</td><td>
+
+
+</td><td>
+
+Schema
+
+
+</td><td>
+
+_(Optional)_ The optional schema associated with the custom element definition. Declarative templates assign this automatically during template resolution. Non-declarative callers can provide one for schema-driven extensions.
 
 
 </td></tr>
@@ -352,7 +371,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt;
+ElementViewTemplate&lt;InstanceType&lt;TType&gt;&gt;
 
 
 </td><td>

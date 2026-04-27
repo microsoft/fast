@@ -115,9 +115,12 @@ Configuration types have moved from `template.ts` to their owning modules. If yo
 | `import type { ObserverMapConfig } from "./template.js"` | `import type { ObserverMapConfig } from "./observer-map.js"` |
 | `import type { AttributeMapConfig } from "./template.js"` | `import type { AttributeMapConfig } from "./attribute-map.js"` |
 
-Public imports now come from
+Public declarative imports now come from
 `@microsoft/fast-element/declarative.js` rather than
-`@microsoft/fast-html`.
+`@microsoft/fast-html`. Existing declarative imports for `attributeMap()` and
+`observerMap()` remain valid. New code that only needs the map extensions should
+prefer `@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`.
 
 ### Schema changes
 
@@ -129,26 +132,85 @@ Public imports now come from
 |---|---|
 | `Schema.jsonSchemaMap.get('my-element')` | `import { schemaRegistry } from "@microsoft/fast-element/declarative.js"; schemaRegistry.get('my-element')` |
 
-### New public exports
+### Public exports
 
-The following are now part of the public API:
+The public entrypoint exports the functional declarative API:
 
 | Export | Purpose |
 |---|---|
+| `declarativeTemplate()` | Resolves `<f-template>` markup for a FAST element definition |
+| `attributeMap()` | Definition extension for automatic `@attr` property registration |
+| `observerMap()` | Definition extension for automatic deep observation |
 | `Schema` | JSON schema builder class |
 | `schemaRegistry` | Module-level registry for cross-element schema lookups |
-| `AttributeMap` | Automatic `@attr` property registration |
-| `AttributeMapOption` | Constant for the `"all"` option value |
 | `JSONSchema` | JSON Schema type interface |
 | `CachedPathMap` | Schema registry map type |
 
 ## Simplified ObserverMap and AttributeMap defaults
 
 The explicit `ObserverMapOption.all` and `AttributeMapOption.all` constants have
-been removed. Calling `observerMap()` or `attributeMap()` with no arguments now
-applies the default "all properties" behavior.
+been removed. Calling `observerMap()` with no arguments observes every
+discovered root property, and calling `attributeMap()` with no arguments maps
+every discovered leaf binding.
 
 | Before | After |
 |---|---|
 | `observerMap(ObserverMapOption.all)` | `observerMap()` |
 | `attributeMap(AttributeMapOption.all)` | `attributeMap()` |
+
+
+## Declarative TemplateElement API removal
+
+The public declarative API is now the functional API. The `<f-template>`
+implementation is internal and is defined automatically by `declarativeTemplate()`.
+
+| Removed | Replacement |
+|---|---|
+| `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
+| `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines the internal publisher in the target registry |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | Per-element callbacks via `declarativeTemplate(callbacks)` and global hydration callbacks via `enableHydration(options)` |
+| `TemplateElement.options({ "my-el": { attributeMap, observerMap } })` | Define extensions: `MyElement.define(definition, [attributeMap(...), observerMap(...)])` |
+| `ElementOptions` / `ElementOptionsDictionary` | No replacement |
+| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
+
+Hydration is also no longer installed by `@microsoft/fast-element/declarative.js`.
+Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before FAST
+elements connect when prerendered Declarative Shadow DOM should be reused.
+
+## Extension subpaths and optional definition schema
+
+`attributeMap()` and `observerMap()` are now schema-driven extensions that are
+factored away from declarative templating. Prefer importing them from their
+dedicated subpaths for tree-shaken or non-declarative use:
+
+```ts
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+```
+
+`FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
+automatically when it parses `<f-template>` markup. Manual schema users can pass
+a schema in the element definition, and `observerMap()` can also take a schema
+directly in configuration:
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-element");
+schema.addPath({
+    rootPropertyName: "user",
+    pathConfig: {
+        type: "default",
+        parentContext: null,
+        currentContext: null,
+        path: "user.name",
+    },
+    childrenMap: null,
+});
+
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```

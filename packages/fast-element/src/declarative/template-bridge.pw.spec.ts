@@ -1,6 +1,9 @@
+import { fileURLToPath } from "node:url";
 import { expect, test } from "@playwright/test";
+import { build } from "esbuild";
 import { DeclarativeTemplateBridge } from "./template-bridge.js";
 
+const packageRoot = fileURLToPath(new URL("../../", import.meta.url));
 const pureDeclarativeEntrypointUrl = `/@fs${
     new URL("../../test/pure-declarative-main.ts", import.meta.url).pathname
 }`;
@@ -137,14 +140,14 @@ test.describe("DeclarativeTemplateBridge", () => {
 });
 
 test.describe("declarativeTemplate", () => {
-    test("keeps the declarative entrypoint pure until a declarative template is created", async ({
+    test("does not install hydration until enableHydration is called", async ({
         page,
     }) => {
         await page.goto("/");
 
         const result = await page.evaluate(async pureEntrypointUrl => {
             // @ts-expect-error: Client module.
-            const { html, isHydratable } = await import("/main.js");
+            const { enableHydration, html, isHydratable } = await import("/main.js");
 
             const beforeRuntimeTemplate = html`<span>before</span>`;
             const beforeImport = isHydratable(beforeRuntimeTemplate);
@@ -157,19 +160,85 @@ test.describe("declarativeTemplate", () => {
             const schema = new Schema("lazy-template");
             const { strings, values } = parser.parse("<span>after create</span>", schema);
             const declarativeTemplate = parser.createTemplate(strings, values);
+            const declarativeTemplateBeforeHydration = isHydratable(declarativeTemplate);
+
+            enableHydration();
 
             return {
                 beforeImport,
                 afterImport,
                 beforeRuntimeTemplateAfterCreate: isHydratable(beforeRuntimeTemplate),
-                declarativeTemplateIsHydratable: isHydratable(declarativeTemplate),
+                declarativeTemplateBeforeHydration,
+                declarativeTemplateAfterHydration: isHydratable(declarativeTemplate),
             };
         }, pureDeclarativeEntrypointUrl);
 
         expect(result.beforeImport).toBe(false);
         expect(result.afterImport).toBe(false);
+        expect(result.declarativeTemplateBeforeHydration).toBe(false);
         expect(result.beforeRuntimeTemplateAfterCreate).toBe(true);
-        expect(result.declarativeTemplateIsHydratable).toBe(true);
+        expect(result.declarativeTemplateAfterHydration).toBe(true);
+    });
+
+    test("does not export map helpers from declarative entrypoint", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async pureEntrypointUrl => {
+            // @ts-expect-error: Client module.
+            const declarative = await import(pureEntrypointUrl);
+
+            return {
+                hasAttributeMap: "attributeMap" in declarative,
+                hasObserverMap: "observerMap" in declarative,
+            };
+        }, pureDeclarativeEntrypointUrl);
+
+        expect(result).toEqual({
+            hasAttributeMap: false,
+            hasObserverMap: false,
+        });
+    });
+
+    test("does not bundle map modules for plain declarativeTemplate", async () => {
+        const result = await build({
+            stdin: {
+                contents: `
+                    import { declarativeTemplate } from "./src/declarative.ts";
+                    export { declarativeTemplate };
+                `,
+                loader: "ts",
+                resolveDir: packageRoot,
+            },
+            bundle: true,
+            format: "esm",
+            metafile: true,
+            minify: true,
+            treeShaking: true,
+            write: false,
+        });
+
+        const mapBytes = Object.values(result.metafile!.outputs).reduce(
+            (total, output) => {
+                return (
+                    total +
+                    Object.entries(output.inputs).reduce((outputTotal, [input, data]) => {
+                        if (
+                            input.endsWith("src/declarative/attribute-map.ts") ||
+                            input.endsWith("src/declarative/observer-map.ts") ||
+                            input.endsWith("src/extensions/attribute-map.ts") ||
+                            input.endsWith("src/extensions/observer-map.ts")
+                        ) {
+                            return outputTotal + data.bytesInOutput;
+                        }
+
+                        return outputTotal;
+                    }, 0)
+                );
+            },
+            0,
+        );
+
+        expect(mapBytes).toBe(0);
     });
 
     test("resolves template-first markup, auto-defines <f-template>, and applies maps", async ({
@@ -182,11 +251,13 @@ test.describe("declarativeTemplate", () => {
             const {
                 FASTElement,
                 FASTElementDefinition,
-                attributeMap,
                 declarativeTemplate,
-                observerMap,
                 uniqueElementName,
             } = await import("/declarative-main.js");
+            // @ts-expect-error: Client module.
+            const { attributeMap, observerMap } = await import(
+                "/extension-subpaths-main.js"
+            );
 
             const elementName = uniqueElementName();
 
@@ -241,6 +312,9 @@ test.describe("declarativeTemplate", () => {
                 labelText: element.shadowRoot?.querySelector(".label")?.textContent ?? "",
                 nestedText:
                     element.shadowRoot?.querySelector(".nested")?.textContent ?? "",
+                schemaRootProperties: Array.from(
+                    definition.schema?.getRootProperties() ?? [],
+                ),
                 templateElementDefined: customElements.get("f-template") !== undefined,
             };
         });
@@ -250,6 +324,93 @@ test.describe("declarativeTemplate", () => {
         expect(result.hasLabelAccessor).toBe(true);
         expect(result.labelText).toBe("hello");
         expect(result.nestedText).toBe("after");
+        expect(result.schemaRootProperties).toEqual(
+            expect.arrayContaining(["label", "data"]),
+        );
+    });
+
+    test("preserves and augments an explicit schema", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                Schema,
+                declarativeTemplate,
+                uniqueElementName,
+            } = await import("/declarative-main.js");
+
+            const elementName = uniqueElementName();
+            const schema = new Schema(elementName);
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><span>{{label}}</span></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {}
+
+            await TestElement.define({
+                name: elementName,
+                schema,
+                template: declarativeTemplate(),
+            });
+
+            const definition = FASTElementDefinition.getByType(TestElement) as any;
+
+            return {
+                sameSchema: definition.schema === schema,
+                schemaRootProperties: Array.from(schema.getRootProperties()),
+            };
+        });
+
+        expect(result.sameSchema).toBe(true);
+        expect(result.schemaRootProperties).toEqual(expect.arrayContaining(["label"]));
+    });
+
+    test("uses a native <f-template> publisher instead of a FASTElement", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                declarativeTemplate,
+                uniqueElementName,
+            } = await import("/declarative-main.js");
+
+            const elementName = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><span>native</span></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {}
+
+            await TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            });
+
+            const templateElement = document.querySelector("f-template")!;
+
+            return {
+                hasFastController: "$fastController" in templateElement,
+                hasFastDefinition:
+                    FASTElementDefinition.getForInstance(templateElement) !== void 0,
+                isHTMLElement: templateElement instanceof HTMLElement,
+            };
+        });
+
+        expect(result.isHTMLElement).toBe(true);
+        expect(result.hasFastController).toBe(false);
+        expect(result.hasFastDefinition).toBe(false);
     });
 
     test("waits for definition-first markup inserted later", async ({ page }) => {
@@ -311,6 +472,106 @@ test.describe("declarativeTemplate", () => {
         expect(result.templateElementDefinedBeforeInsert).toBe(true);
         expect(result.definitionHasConcreteTemplate).toBe(true);
         expect(result.shadowText).toContain("late");
+    });
+
+    test("resolves when a connected <f-template> changes its name", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="old-${elementName}"><template><span>renamed</span></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {}
+
+            let resolved = false;
+            const definePromise = TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            }).then(() => {
+                resolved = true;
+            });
+
+            await Promise.resolve();
+            await Promise.resolve();
+
+            const resolvedBeforeRename = resolved;
+            const templateElement = document.querySelector("f-template") as any;
+            templateElement.name = elementName;
+
+            await definePromise;
+
+            const element = document.createElement(elementName);
+            document.body.appendChild(element);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                resolvedBeforeRename,
+                shadowText: element.shadowRoot?.textContent ?? "",
+            };
+        });
+
+        expect(result.resolvedBeforeRename).toBe(false);
+        expect(result.shadowText).toContain("renamed");
+    });
+
+    test("ignores disconnected <f-template> publishers until they reconnect", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+            const templateElement = document.createElement("f-template");
+
+            templateElement.setAttribute("name", elementName);
+            templateElement.innerHTML = "<template><span>reconnected</span></template>";
+            document.body.appendChild(templateElement);
+            templateElement.remove();
+
+            class TestElement extends FASTElement {}
+
+            let resolved = false;
+            const definePromise = TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            }).then(() => {
+                resolved = true;
+            });
+
+            await Promise.resolve();
+            await Promise.resolve();
+
+            const resolvedBeforeReconnect = resolved;
+            document.body.appendChild(templateElement);
+
+            await definePromise;
+
+            const element = document.createElement(elementName);
+            document.body.appendChild(element);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                resolvedBeforeReconnect,
+                shadowText: element.shadowRoot?.textContent ?? "",
+            };
+        });
+
+        expect(result.resolvedBeforeReconnect).toBe(false);
+        expect(result.shadowText).toContain("reconnected");
     });
 
     test("rejects duplicate matching templates with a clear error", async ({ page }) => {
