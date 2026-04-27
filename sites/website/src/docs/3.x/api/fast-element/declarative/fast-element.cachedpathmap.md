@@ -15,6 +15,8 @@ navigationOptions:
 
 ## CachedPathMap type
 
+A map from element names and root properties to JSON schemas.
+
 **Signature:**
 
 ```typescript

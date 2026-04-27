@@ -32,6 +32,7 @@ export class HydrationTargetElementError extends Error {
 
 /**
  * Represents the DOM boundaries controlled by a view
+ * @public
  */
 export interface ViewBoundaries {
     first: Node;
@@ -41,6 +42,7 @@ export interface ViewBoundaries {
 /**
  * Stores relationships between a {@link ViewBehaviorFactory} and
  * the {@link ViewBoundaries} the factory created.
+ * @public
  */
 export interface ViewBehaviorBoundaries {
     [factoryId: string]: ViewBoundaries;

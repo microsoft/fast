@@ -16,7 +16,7 @@ keywords:
 
 # HTML Templates
 
-The `@microsoft/fast-element` package offers a named export `html` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create HTML snippets which will become your web components shadow DOM.
+The `@microsoft/fast-element` module offers a named export `html` which is a [tag template literal](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals). It can be used to create HTML snippets which will become your web components shadow DOM.
 
 **Example:**
 ```typescript
@@ -33,7 +33,7 @@ When working with the `html` template, bindings allow more complex behavior than
 
 **Example:**
 ```ts
-import { FASTElement, attr, html } from '@microsoft/fast-element';
+import { attr, FASTElement, html } from '@microsoft/fast-element';
 
 const template = html<NameTag>`
   <h3>${x => x.greeting.toUpperCase()}</h3>

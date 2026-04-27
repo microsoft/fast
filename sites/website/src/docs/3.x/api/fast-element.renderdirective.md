@@ -20,7 +20,7 @@ A Directive that enables use of the RenderBehavior.
 **Signature:**
 
 ```typescript
-export declare class RenderDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective 
+export declare class RenderDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective
 ```
 **Implements:** [HTMLDirective](../fast-element.htmldirective/)<!-- -->, [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [BindingDirective](../fast-element.bindingdirective/)
 

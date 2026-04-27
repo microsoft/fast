@@ -20,7 +20,7 @@ A directive that configures list rendering.
 **Signature:**
 
 ```typescript
-export declare class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective 
+export declare class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective
 ```
 **Implements:** [HTMLDirective](../fast-element.htmldirective/)<!-- -->, [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [BindingDirective](../fast-element.bindingdirective/)
 
