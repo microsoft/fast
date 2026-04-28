@@ -36,7 +36,10 @@
       "test": "./src/ssr/*.ts",
       "default": "./dist/esm/ssr/*.js"
     },
-    "./playwright.config.ts": "./playwright.config.ts",
+    "./playwright.config.mjs": {
+      "types": "./playwright.config.d.ts",
+      "default": "./playwright.config.mjs"
+    },
     "./public/*": "./public/*",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
@@ -52,7 +55,8 @@
   },
   "files": [
     "dist",
-    "playwright.config.ts",
+    "playwright.config.mjs",
+    "playwright.config.d.ts",
     "public",
     "server.mjs",
     "start.mjs",
