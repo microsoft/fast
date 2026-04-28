@@ -40,7 +40,10 @@
     "./public/*": "./public/*",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
-    "./vite.config.mjs": "./vite.config.mjs",
+    "./vite.config.mjs": {
+      "types": "./vite.config.d.ts",
+      "default": "./vite.config.mjs"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -53,7 +56,8 @@
     "public",
     "server.mjs",
     "start.mjs",
-    "vite.config.mjs"
+    "vite.config.mjs",
+    "vite.config.d.ts"
   ],
   "dependencies": {
     "@microsoft/fast-build": ">=0.3.0",
