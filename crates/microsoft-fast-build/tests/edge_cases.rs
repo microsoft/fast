@@ -57,6 +57,40 @@ fn test_missing_regular_html_attribute_binding_is_omitted() {
 }
 
 #[test]
+fn test_missing_regular_html_attribute_preserves_static_value_with_quotes() {
+    let result = ok(r#"<div title='a "quote"' class="{{missing}}"></div>"#, "{}");
+    assert_eq!(result, r#"<div title='a "quote"'></div>"#);
+}
+
+#[test]
+fn test_unquoted_attribute_path_does_not_hide_later_binding() {
+    let result = ok(
+        r#"<img src=/assets/a.png alt="{{alt}}">"#,
+        r#"{"alt": "Logo"}"#,
+    );
+    assert_eq!(result, r#"<img src=/assets/a.png alt="Logo">"#);
+}
+
+#[test]
+fn test_bound_attribute_value_is_html_escaped() {
+    let result = ok(
+        r#"<div title="{{value}}"></div>"#,
+        r#"{"value": "a \"quote\" & <tag>"}"#,
+    );
+    assert_eq!(result, r#"<div title="a &quot;quote&quot; &amp; &lt;tag&gt;"></div>"#);
+}
+
+#[test]
+fn test_unquoted_attribute_path_with_missing_later_binding_is_omitted() {
+    let result = ok(r#"<img src=/assets/a.png alt="{{alt}}">"#, "{}");
+    assert_eq!(result, r#"<img src=/assets/a.png>"#);
+    assert!(
+        !result.contains("{{alt}}"),
+        "binding must not remain unresolved: {result}"
+    );
+}
+
+#[test]
 fn test_missing_dot_path_regular_html_attribute_with_empty_state_is_omitted() {
     let result = ok(r#"<div class="{{ foo.bar }}"></div>"#, "{}");
     assert_eq!(result, "<div></div>");

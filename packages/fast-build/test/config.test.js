@@ -321,6 +321,36 @@ describe("no state behavior", () => {
         assert.ok(!output.includes("aria-label="));
         assert.ok(output.includes("<p>"));
     });
+
+    it("uses entry-template rendering when custom element templates are loaded", () => {
+        fs.writeFileSync(
+            path.join(dir, "entry.html"),
+            '<test-element list="{{items}}"></test-element>',
+        );
+        fs.writeFileSync(path.join(dir, "state.json"), '{"items":["one","two"]}');
+        fs.writeFileSync(
+            path.join(dir, "templates.html"),
+            [
+                '<f-template name="test-element"><template>',
+                '<f-repeat value="{{item in list}}"><span>{{item}}</span></f-repeat>',
+                "</template></f-template>",
+            ].join(""),
+        );
+
+        run(
+            [
+                "--entry=entry.html",
+                "--state=state.json",
+                "--templates=templates.html",
+                "--output=out.html",
+            ],
+            dir,
+        );
+        const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+        assert.ok(!output.includes("list="), output);
+        assert.ok(output.includes("one"), output);
+        assert.ok(output.includes("two"), output);
+    });
 });
 
 describe("WASM optional state", () => {
@@ -366,8 +396,8 @@ describe("WASM optional state", () => {
         assert.ok(result.includes("<span>"));
     });
 
-    it("render_with_templates renders entry custom elements from root state", () => {
-        const result = WASM.render_with_templates(
+    it("render_entry_with_templates renders entry custom elements from root state", () => {
+        const result = WASM.render_entry_with_templates(
             "<test-element></test-element>",
             JSON.stringify({
                 "test-element": "<span>{{ foo.bar }}</span>",
@@ -377,8 +407,34 @@ describe("WASM optional state", () => {
         assert.ok(result.includes("Hello"));
     });
 
+    it("exports both template renderers with distinct root tag handling", () => {
+        const templates = JSON.stringify({
+            "test-element": "<span>{{ list }}</span>",
+        });
+        const state = JSON.stringify({ list: ["one", "two"] });
+        const entry = '<test-element list="{{list}}"></test-element>';
+
+        const templateResult = WASM.render_with_templates(entry, templates, state);
+        const entryResult = WASM.render_entry_with_templates(entry, templates, state);
+
+        assert.ok(templateResult.includes('list="[Array]"'), templateResult);
+        assert.ok(!entryResult.includes("list="), entryResult);
+    });
+
     it("render_with_templates accepts a strategy when state is omitted", () => {
         const result = WASM.render_with_templates(
+            '<test-element foo-bar="Hello"></test-element>',
+            JSON.stringify({
+                "test-element": "<span>{{foo-bar}}</span>",
+            }),
+            undefined,
+            "none",
+        );
+        assert.ok(result.includes("Hello"));
+    });
+
+    it("render_entry_with_templates accepts a strategy when state is omitted", () => {
+        const result = WASM.render_entry_with_templates(
             '<test-element foo-bar="Hello"></test-element>',
             JSON.stringify({
                 "test-element": "<span>{{foo-bar}}</span>",

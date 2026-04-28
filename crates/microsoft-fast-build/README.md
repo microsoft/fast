@@ -510,13 +510,15 @@ let result = render_template_with_locator(
 #### WASM / JavaScript API
 
 ```javascript
-const html = render_with_templates(
+const html = render_entry_with_templates(
     entry,
     templatesJson,
     stateJson,
     "camelCase"  // or "none"
 );
 ```
+
+Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering.
 
 Passing `"none"` or `""` as the strategy uses the default behaviour.
 

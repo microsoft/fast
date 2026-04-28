@@ -43,7 +43,7 @@ fast build [options]
         │       └─ omitted state → WASM receives no state and renders with {}
         │
         ▼
-  wasm.render_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
+  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
         ▼
   fs.writeFileSync(output, rendered)
 ```
@@ -73,7 +73,7 @@ The CLI supports an optional JSON configuration file that provides default value
 
 CLI arguments always take precedence over config file values. The merge uses **presence-based** checking (`hasOwnProperty`), not truthiness, so an explicit `--entry=` on the command line will override a config file's `entry` value even if the CLI value is an empty string.
 
-When a value is not provided by either source, built-in defaults apply (`index.html`, `output.html`). State is optional: if neither CLI nor config provides `state`, the CLI does not look for a state file and calls WASM without a state value, which renders as `{}`.
+When a value is not provided by either source, built-in defaults apply (`index.html`, `output.html`). State is optional: if neither CLI nor config provides `state`, the CLI does not look for a state file and calls WASM without a state value, which renders as `{}`. This is a breaking change from earlier CLI behavior that implicitly loaded `state.json` from the current working directory when present.
 
 ### Path resolution
 
@@ -144,12 +144,13 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## WASM integration
 
-Three WASM functions are used:
+Four WASM functions are available; the CLI uses the entry renderer when templates are loaded:
 
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
-| `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | At least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
+| `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
+| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | CLI entry HTML rendering when at least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.
@@ -170,7 +171,7 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 | Config file has non-string value | Print error to stderr; exit code 1 |
 | `--entry` file not found | Print error to stderr; exit code 1 |
 | Explicit `--state` or config `state` file not found | Print error to stderr; exit code 1 |
-| State omitted | Do not check `state.json`; render with an empty state object (`{}`) |
+| State omitted | Do not check `state.json`; render with an empty state object (`{}`); breaking change from earlier implicit `state.json` loading |
 | `--templates` not provided | Warning to stderr; rendering continues without custom elements |
 | `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
 | Pattern matches no files | Warning to stderr; pattern is skipped |

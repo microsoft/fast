@@ -54,7 +54,7 @@ render_template(template, state_str)
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -302,9 +302,10 @@ All render functions accept `config: Option<&RenderConfig>` as their last parame
 - `render_entry_template_with_locator(template, state_str, locator, config)`
 - `render_entry_template_with_locator_without_state(template, locator, config)`
 
-The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render` and `render_with_templates`; omitted state also uses an empty object. `render_with_templates` accepts an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
 
 - `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
+- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
 
 ---
 
@@ -461,12 +462,13 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes three functions to JavaScript via `wasm-bindgen`:
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes four functions to JavaScript via `wasm-bindgen`:
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
-| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
+| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -484,7 +486,11 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
 
 ### `render_with_templates`
 
-Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive the full root state with HTML attributes overlaid, matching CLI entry rendering.
+Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. This preserves the original non-entry semantics for existing JS consumers.
+
+### `render_entry_with_templates`
+
+Accepts the same arguments as `render_with_templates`, but calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive entry opening-tag handling, matching CLI entry rendering.
 
 ---
 

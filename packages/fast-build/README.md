@@ -85,6 +85,8 @@ Produces `output.html`:
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
 
+> **Breaking change:** Earlier versions implicitly loaded `state.json` from the current working directory when `--state` was omitted. To use a state file, pass `--state=state.json` or set `"state": "state.json"` in `fast-build.config.json`.
+
 When a binding value is not present in state:
 
 - Content bindings render nothing, including unresolved dot paths: `<p>{{foo.bar}}</p>` becomes `<p></p>`.

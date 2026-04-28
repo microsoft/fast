@@ -344,7 +344,7 @@ async function runBuild(args) {
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
-        rendered = wasm.render_with_templates(
+        rendered = wasm.render_entry_with_templates(
             entryContent,
             JSON.stringify(templatesMap),
             stateContent,

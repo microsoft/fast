@@ -274,9 +274,10 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
     result.push('<');
     result.push_str(&tag_name);
 
-    for (name, value) in parse_element_attributes(tag) {
+    for attr in parse_element_attribute_parts(tag) {
+        let name = attr.name;
         if name.starts_with('?') {
-            if let Some(v) = value {
+            if let Some(v) = attr.value {
                 let trimmed = v.trim();
                 if trimmed.starts_with("{{") && trimmed.ends_with("}}") && trimmed.len() > 4 {
                     let expr = trimmed[2..trimmed.len() - 2].trim();
@@ -289,18 +290,19 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
             continue;
         }
 
-        match value {
+        match attr.value {
             None => {
                 result.push(' ');
-                result.push_str(&name);
+                result.push_str(&attr.raw);
             }
             Some(v) if v.contains("{{") => {
                 if let Some(resolved) = resolve_attribute_value(&v, root, loop_vars) {
-                    result.push_str(&format!(" {}=\"{}\"", name, resolved));
+                    append_quoted_attribute(&mut result, &name, &resolved);
                 }
             }
-            Some(v) => {
-                result.push_str(&format!(" {}=\"{}\"", name, v));
+            Some(_) => {
+                result.push(' ');
+                result.push_str(&attr.raw);
             }
         }
     }
@@ -312,6 +314,23 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
     }
 
     result
+}
+
+pub(crate) fn append_quoted_attribute(out: &mut String, name: &str, value: &str) {
+    out.push(' ');
+    out.push_str(name);
+    out.push_str("=\"");
+    append_double_quote_escaped(out, value);
+    out.push('"');
+}
+
+fn append_double_quote_escaped(out: &mut String, value: &str) {
+    for ch in value.chars() {
+        match ch {
+            '"' => out.push_str("&quot;"),
+            _ => out.push(ch),
+        }
+    }
 }
 
 fn resolve_attribute_value(
@@ -368,18 +387,18 @@ pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
     };
 
     let mut out = format!("<{}", tag_name);
-    for (name, value) in parse_element_attributes(tag) {
-        if name.starts_with('@') || name.starts_with(':')
+    for attr in parse_element_attribute_parts(tag) {
+        let name = attr.name;
+        if name.starts_with('@')
+            || name.starts_with(':')
             || name.eq_ignore_ascii_case("f-ref")
             || name.eq_ignore_ascii_case("f-slotted")
             || name.eq_ignore_ascii_case("f-children")
         {
             continue;
         }
-        match value {
-            None => { out.push(' '); out.push_str(&name); }
-            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
-        }
+        out.push(' ');
+        out.push_str(&attr.raw);
     }
 
     if is_self_closing {
@@ -448,6 +467,19 @@ fn is_skippable_tag(name: &str, locator: Option<&crate::locator::Locator>) -> bo
 /// Returns `(attribute_name, Option<value>)` — `None` value means boolean attribute.
 /// Handles double-quoted, single-quoted, and unquoted values.
 pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)> {
+    parse_element_attribute_parts(open_tag)
+        .into_iter()
+        .map(|attr| (attr.name, attr.value))
+        .collect()
+}
+
+pub(crate) struct ParsedAttribute {
+    pub name: String,
+    pub value: Option<String>,
+    pub raw: String,
+}
+
+pub(crate) fn parse_element_attribute_parts(open_tag: &str) -> Vec<ParsedAttribute> {
     let mut attrs = Vec::new();
     let bytes = open_tag.as_bytes();
     let mut i = 0;
@@ -482,6 +514,7 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
         {
             i += 1;
         }
+        let name_end = i;
         let name = open_tag[name_start..i].to_string();
 
         if name.is_empty() {
@@ -497,7 +530,11 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
 
         if i >= bytes.len() || bytes[i] != b'=' {
             // Boolean attribute — no value.
-            attrs.push((name, None));
+            attrs.push(ParsedAttribute {
+                name,
+                value: None,
+                raw: open_tag[name_start..name_end].to_string(),
+            });
             continue;
         }
 
@@ -513,7 +550,11 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
         let (value, new_i) = parse_attribute_value(open_tag, bytes, i);
         i = new_i;
 
-        attrs.push((name, Some(value)));
+        attrs.push(ParsedAttribute {
+            name,
+            value: Some(value),
+            raw: open_tag[name_start..i].to_string(),
+        });
     }
 
     attrs
@@ -532,7 +573,7 @@ fn parse_attribute_value(open_tag: &str, bytes: &[u8], i: usize) -> (String, usi
     } else {
         let start = i;
         let mut end = i;
-        while end < bytes.len() && !bytes[end].is_ascii_whitespace() && bytes[end] != b'>' && bytes[end] != b'/' {
+        while end < bytes.len() && !bytes[end].is_ascii_whitespace() && bytes[end] != b'>' {
             end += 1;
         }
         (open_tag[start..end].to_string(), end)

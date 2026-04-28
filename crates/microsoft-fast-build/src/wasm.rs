@@ -1,10 +1,11 @@
-use wasm_bindgen::prelude::*;
-use std::collections::HashMap;
+use crate::config::{AttributeNameStrategy, RenderConfig};
 use crate::{
-    json, Locator, render_entry_template_with_locator, render_entry_with_locator_without_state,
-    render_template, render_template_without_state,
+    json, render_entry_template_with_locator, render_entry_template_with_locator_without_state,
+    render_template, render_template_with_locator, render_template_with_locator_without_state,
+    render_template_without_state, Locator,
 };
-use crate::config::{RenderConfig, AttributeNameStrategy};
+use std::collections::HashMap;
+use wasm_bindgen::prelude::*;
 
 /// Render a FAST HTML template with an optional JSON state string.
 /// Omitted state is treated as an empty object.
@@ -14,6 +15,34 @@ pub fn render(entry: &str, state: Option<String>) -> Result<String, JsValue> {
     match state {
         Some(state) => render_template(entry, &state, None),
         None => render_template_without_state(entry, None),
+    }
+    .map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
+/// Render a FAST HTML template with custom element templates and an optional JSON state string.
+/// Omitted state is treated as an empty object.
+///
+/// This preserves the original non-entry rendering semantics for this export.
+/// Use `render_entry_with_templates` for top-level entry HTML rendering.
+///
+/// `templates_json` is a JSON object mapping element names to their HTML template strings,
+/// e.g. `{"my-button": "<template>...</template>"}`.
+/// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
+/// or `"none"`. Pass an empty string for the default.
+/// Returns the rendered HTML or throws a JavaScript error.
+#[wasm_bindgen]
+pub fn render_with_templates(
+    entry: &str,
+    templates_json: &str,
+    state: Option<String>,
+    attribute_name_strategy: Option<String>,
+) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let locator = Locator::from_templates(templates);
+    let config = build_config(attribute_name_strategy.as_deref())?;
+    match state {
+        Some(state) => render_template_with_locator(entry, &state, &locator, config.as_ref()),
+        None => render_template_with_locator_without_state(entry, &locator, config.as_ref()),
     }
     .map_err(|e| JsValue::from_str(&e.to_string()))
 }
@@ -31,13 +60,18 @@ pub fn render(entry: &str, state: Option<String>) -> Result<String, JsValue> {
 /// or `"none"`. Pass an empty string for the default.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
-pub fn render_with_templates(entry: &str, templates_json: &str, state: Option<String>, attribute_name_strategy: Option<String>) -> Result<String, JsValue> {
+pub fn render_entry_with_templates(
+    entry: &str,
+    templates_json: &str,
+    state: Option<String>,
+    attribute_name_strategy: Option<String>,
+) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_templates(templates);
     let config = build_config(attribute_name_strategy.as_deref())?;
     match state {
         Some(state) => render_entry_template_with_locator(entry, &state, &locator, config.as_ref()),
-        None => render_entry_with_locator_without_state(entry, &locator, config.as_ref()),
+        None => render_entry_template_with_locator_without_state(entry, &locator, config.as_ref()),
     }
     .map_err(|e| JsValue::from_str(&e.to_string()))
 }
@@ -68,29 +102,35 @@ fn escape_json_str(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
     for c in s.chars() {
         match c {
-            '"'  => out.push_str("\\\""),
+            '"' => out.push_str("\\\""),
             '\\' => out.push_str("\\\\"),
             '\n' => out.push_str("\\n"),
             '\r' => out.push_str("\\r"),
             '\t' => out.push_str("\\t"),
-            c    => out.push(c),
+            c => out.push(c),
         }
     }
     out
 }
 
 fn parse_templates_map(templates_json: &str) -> Result<HashMap<String, String>, JsValue> {
-    let parsed = json::parse(templates_json)
-        .map_err(|e| JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message)))?;
+    let parsed = json::parse(templates_json).map_err(|e| {
+        JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message))
+    })?;
     match parsed {
         json::JsonValue::Object(obj) => {
             let mut map = HashMap::new();
             for (k, v) in obj {
                 match v {
-                    json::JsonValue::String(s) => { map.insert(k, s); }
-                    _ => return Err(JsValue::from_str(&format!(
-                        "Template value for '{}' must be a string", k
-                    ))),
+                    json::JsonValue::String(s) => {
+                        map.insert(k, s);
+                    }
+                    _ => {
+                        return Err(JsValue::from_str(&format!(
+                            "Template value for '{}' must be a string",
+                            k
+                        )))
+                    }
                 }
             }
             Ok(map)
