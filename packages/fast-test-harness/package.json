@@ -47,7 +47,8 @@
   },
   "scripts": {
     "build": "npm run build:tsc",
-    "build:tsc": "tsgo -p tsconfig.build.json"
+    "build:tsc": "tsgo -p tsconfig.build.json",
+    "test:node": "node --test"
   },
   "files": [
     "dist",
