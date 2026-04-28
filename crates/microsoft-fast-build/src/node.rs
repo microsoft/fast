@@ -13,7 +13,8 @@ use crate::attribute::{
 /// Recursively render a template fragment against root state and loop variables.
 /// When `hydration` is `Some`, binding markers and attribute compact markers are emitted.
 /// When `is_entry` is `true`, custom elements found in this fragment are treated as root
-/// elements and receive the full root state; otherwise they receive attr-based child state.
+/// elements for opening-tag attribute handling. Child state always starts from the current
+/// root state, with any state-relevant attributes overlaid on top.
 pub fn render_node(
     template: &str,
     root: &JsonValue,
@@ -26,9 +27,15 @@ pub fn render_node(
     let mut result = String::new();
     let mut pos = 0;
     loop {
-        if let Some(ref mut hy) = hydration {
-            pos = process_hydration_tags(template, pos, root, loop_vars, locator, hy, &mut result);
-        }
+        pos = process_plain_html_tags(
+            template,
+            pos,
+            root,
+            loop_vars,
+            locator,
+            hydration.as_mut().map(|h| &mut **h),
+            &mut result,
+        );
         let dir_chunk = match next_directive(template, pos, locator) {
             None => { result.push_str(&template[pos..]); break; }
             Some(d) => d,
@@ -46,13 +53,13 @@ pub fn render_node(
     Ok(result)
 }
 
-fn process_hydration_tags(
+fn process_plain_html_tags(
     template: &str,
     mut pos: usize,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
-    hy: &mut HydrationScope,
+    mut hydration: Option<&mut HydrationScope>,
     result: &mut String,
 ) -> usize {
     loop {
@@ -87,18 +94,29 @@ fn process_hydration_tags(
         // Count {{expr}} and {expr} attribute bindings on this tag.
         let (db, sb) = count_tag_attribute_bindings(tag_str);
         let total = db + sb;
-        if total > 0 {
-            // Allocate binding indices for this tag's bindings, resolve {{expr}}
-            // attribute values, strip client-only attrs, then inject the compact
-            // hydration marker `data-fe-c-{start}-{count}`.
-            let start_idx = hy.binding_idx;
-            hy.binding_idx += total;
-            let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
-            let stripped = strip_client_only_attrs(&resolved);
-            result.push_str(&inject_compact_marker(&stripped, start_idx, total));
-        } else {
-            // No bindings — still strip client-only attrs but no marker needed.
-            result.push_str(&strip_client_only_attrs(tag_str));
+        match hydration.as_mut() {
+            Some(hy) => {
+                if total > 0 {
+                    // Allocate binding indices for this tag's bindings, resolve {{expr}}
+                    // attribute values, strip client-only attrs, then inject the compact
+                    // hydration marker `data-fe-c-{start}-{count}`.
+                    let start_idx = hy.binding_idx;
+                    hy.binding_idx += total;
+                    let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
+                    let stripped = strip_client_only_attrs(&resolved);
+                    result.push_str(&inject_compact_marker(&stripped, start_idx, total));
+                } else {
+                    // No bindings — still strip client-only attrs but no marker needed.
+                    result.push_str(&strip_client_only_attrs(tag_str));
+                }
+            }
+            None => {
+                if db > 0 {
+                    result.push_str(&resolve_attribute_bindings_in_tag(tag_str, root, loop_vars));
+                } else {
+                    result.push_str(tag_str);
+                }
+            }
         }
         pos = tag_end;
     }
