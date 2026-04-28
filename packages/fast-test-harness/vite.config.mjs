@@ -17,6 +17,7 @@ export default defineConfig({
             compilerOptions: {
                 // Needed for FAST's observable system
                 useDefineForClassFields: false,
+                experimentalDecorators: true,
             },
         },
     },
