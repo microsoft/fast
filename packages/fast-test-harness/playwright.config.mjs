@@ -34,7 +34,5 @@ export default defineConfig({
             PORT: PORT.toString(),
         },
         reuseExistingServer: true,
-        stdout: "pipe",
-        stderr: "pipe",
     },
 });

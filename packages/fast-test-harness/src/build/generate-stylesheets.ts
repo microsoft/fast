@@ -33,7 +33,7 @@ export interface GenerateStylesheetsOptions {
 
     /**
      * Directory containing compiled JS style modules, relative to `cwd`.
-     * @default "dist/esm"
+     * @default "dist"
      */
     distDir?: string;
 
@@ -42,6 +42,14 @@ export interface GenerateStylesheetsOptions {
      * @default "** /*.styles.js" (without space)
      */
     pattern?: string;
+
+    /**
+     * Output directory for generated CSS files, relative to `cwd`.
+     * When set, output files are written here instead of next to the
+     * source JS modules.
+     * @default distDir
+     */
+    outDir?: string;
 
     /**
      * Optional formatter function applied to extracted CSS before writing.
@@ -83,12 +91,16 @@ export async function generateStylesheets(
     installDomShim();
 
     const cwd = options.cwd ?? process.cwd();
-    const distDir = path.resolve(cwd, options.distDir ?? "dist/esm");
+    const distDir = path.resolve(cwd, options.distDir ?? "dist");
+    const outDir = options.outDir ? path.resolve(cwd, options.outDir) : null;
     const pattern = options.pattern ?? "**/*.styles.js";
 
     for await (const jsFile of glob(pattern, { cwd: distDir })) {
         const jsFilePath = path.resolve(distDir, jsFile);
-        const cssFilePath = jsFilePath.replace(/\.js$/, ".css");
+        const baseName = path.basename(jsFile, ".js") + ".css";
+        const cssFilePath = outDir
+            ? path.resolve(outDir, baseName)
+            : path.resolve(path.dirname(jsFilePath), baseName);
 
         try {
             const mod = await import(pathToFileURL(jsFilePath).href);

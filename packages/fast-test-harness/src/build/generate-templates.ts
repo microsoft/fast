@@ -50,7 +50,7 @@ export interface GenerateFTemplatesOptions {
 
     /**
      * Directory containing compiled JS template modules, relative to `cwd`.
-     * @default "dist/esm"
+     * @default "dist"
      */
     distDir?: string;
 
@@ -59,6 +59,14 @@ export interface GenerateFTemplatesOptions {
      * @default "** /*.template.js" (without space)
      */
     pattern?: string;
+
+    /**
+     * Output directory for generated HTML files, relative to `cwd`.
+     * When set, output files are written here instead of next to the
+     * source JS modules.
+     * @default distDir
+     */
+    outDir?: string;
 
     /**
      * Tag name prefix for generated component names.
@@ -302,7 +310,8 @@ export async function generateFTemplates(
     installDomShim();
 
     const cwd = options.cwd ?? process.cwd();
-    const distDir = path.resolve(cwd, options.distDir ?? "dist/esm");
+    const distDir = path.resolve(cwd, options.distDir ?? "dist");
+    const outDir = options.outDir ? path.resolve(cwd, options.outDir) : null;
     const pattern = options.pattern ?? "**/*.template.js";
     const tagPrefix = options.tagPrefix ?? "fast";
 
@@ -338,10 +347,9 @@ export async function generateFTemplates(
                 }
             }
 
-            const fTemplatePath = path.resolve(
-                path.dirname(jsFilePath),
-                `${componentDir}.template.html`,
-            );
+            const fTemplatePath = outDir
+                ? path.resolve(outDir, `${componentDir}.template.html`)
+                : path.resolve(path.dirname(jsFilePath), `${componentDir}.template.html`);
 
             await mkdir(path.dirname(fTemplatePath), { recursive: true });
             await writeFile(fTemplatePath, html, "utf8");
