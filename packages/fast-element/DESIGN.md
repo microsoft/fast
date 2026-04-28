@@ -172,7 +172,7 @@ When the tag function is called it invokes `ViewTemplate.create(strings, values)
 
 No DOM nodes are created at this point; compilation is deferred.
 
-See [ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md](./ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md) for more detail on directives and the `Markup`/`Parser` helpers.
+See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) for more detail on directives and the `Markup`/`Parser` helpers.
 
 ---
 
@@ -217,7 +217,7 @@ See [ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md](./ARCHITECTURE_HTML_TAGGED_TE
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
 
-See [src/templating/TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md) for the full binding pipeline including `DOMAspect` routing and two-way binding.
+See [docs/template-bindings.md](./docs/template-bindings.md) for the full binding pipeline including `DOMAspect` routing and two-way binding.
 
 ---
 
@@ -238,7 +238,7 @@ In async mode, the first `enqueue` call schedules a `requestAnimationFrame` call
 
 Observable setters and `attributeChangedCallback` enqueue their DOM mutations through `Updates`, ensuring that multiple synchronous property changes result in only one DOM update per frame.
 
-See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
+See [docs/architecture/updates.md](./docs/architecture/updates.md) for more detail.
 
 ---
 
@@ -472,8 +472,7 @@ src/
 │   ├── ref.ts             # ref directive
 │   ├── render.ts          # render directive
 │   ├── children.ts        # children directive
-│   ├── slotted.ts         # slotted directive
-│   └── TEMPLATE-BINDINGS.md
+│   └── slotted.ts         # slotted directive
 ├── styles/
 │   ├── css.ts             # css tag
 │   ├── element-styles.ts  # ElementStyles
@@ -501,12 +500,12 @@ src/
 
 | Document | What it covers |
 |---|---|
-| [ARCHITECTURE_INTRO.md](./ARCHITECTURE_INTRO.md) | Glossary / index for all architecture docs |
-| [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md) | General FAST usage, compose/define flow, module load sequence |
-| [ARCHITECTURE_FASTELEMENT.md](./ARCHITECTURE_FASTELEMENT.md) | FASTElement & ElementController lifecycle in detail |
-| [ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md](./ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md) | `html` tag, directives, binding pre-processing |
-| [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) | Updates queue, attribute and observable change batching |
-| [src/templating/TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
+| [docs/architecture/intro.md](./docs/architecture/intro.md) | Glossary / index for all architecture docs |
+| [docs/architecture/overview.md](./docs/architecture/overview.md) | General FAST usage, compose/define flow, module load sequence |
+| [docs/architecture/fastelement.md](./docs/architecture/fastelement.md) | FASTElement & ElementController lifecycle in detail |
+| [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) | `html` tag, directives, binding pre-processing |
+| [docs/architecture/updates.md](./docs/architecture/updates.md) | Updates queue, attribute and observable change batching |
+| [docs/template-bindings.md](./docs/template-bindings.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
 | [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
 
 ---
