@@ -31,6 +31,6 @@ DI: Readonly<{
     createContext: typeof createContext;
     inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-    singleton<T_1 extends Constructable>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
+    singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>, options?: SingletonOptions): T & RegisterSelf<T>;
 }>
 ```
