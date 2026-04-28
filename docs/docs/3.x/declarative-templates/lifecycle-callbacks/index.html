@@ -1,0 +1,150 @@
+<h1 id="lifecycle-callbacks">Lifecycle Callbacks</h1>
+<p>FAST declarative templates provide lifecycle callbacks that hook into the rendering and hydration pipeline. These are useful for performance monitoring, debugging, analytics, and managing loading states.</p>
+<h2 id="two-apis-two-scopes">Two APIs, Two Scopes</h2>
+<p>Lifecycle callbacks are split between two APIs based on their scope:</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>API</th>
+<th>Callbacks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per-element</td>
+<td><code>declarativeTemplate(callbacks)</code></td>
+<td><code>elementDidRegister</code>, <code>templateWillUpdate</code>, <code>templateDidUpdate</code>, <code>elementDidDefine</code>, <code>elementWillHydrate</code>, <code>elementDidHydrate</code></td>
+</tr>
+<tr>
+<td>Global</td>
+<td><code>enableHydration(options)</code></td>
+<td><code>hydrationStarted</code>, <code>hydrationComplete</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="enabling-hydration">Enabling Hydration</h2>
+<p>Hydration is <strong>opt-in</strong>. Import and call <code>enableHydration()</code> before any FAST elements connect:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> enableHydration <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/hydration.js"</span><span class="token punctuation">;</span>
+
+<span class="token function">enableHydration</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function">hydrationStarted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"First element is hydrating"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">hydrationComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"All elements hydrated"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Without calling <code>enableHydration()</code>, prerendered content is discarded and elements render client-side.</p>
+<h2 id="per-element-callbacks">Per-Element Callbacks</h2>
+<p>Pass lifecycle callbacks directly to <code>declarativeTemplate()</code>:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+
+MyComponent<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function">elementDidRegister</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> registered</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">templateWillUpdate</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> template updating</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">templateDidUpdate</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> template updated</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">elementDidDefine</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> fully defined</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">elementWillHydrate</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>source<span class="token punctuation">.</span>localName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> starting hydration</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">elementDidHydrate</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>source<span class="token punctuation">.</span>localName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> hydrated</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Each component type gets its own set of callbacks. Different elements can have different callbacks.</p>
+<h2 id="execution-order">Execution Order</h2>
+<p>Callbacks fire in the following order for each element:</p>
+<pre><code>1. elementDidRegister(name)       — JS class registered
+2. templateWillUpdate(name)       — before template is parsed
+3. templateDidUpdate(name)        — after template is assigned
+4. elementDidDefine(name)         — after customElements.define()
+5. hydrationStarted()             — once, on first hydrating element
+6. elementWillHydrate(source)     — before element hydrates
+7. [Hydration occurs]
+8. elementDidHydrate(source)      — after element hydrates
+9. hydrationComplete()            — once, after all elements finish
+</code></pre>
+<p>Steps 5–9 only fire when <code>enableHydration()</code> has been called and the element has prerendered content.</p>
+<blockquote>
+<p><strong>Note:</strong> Template processing is asynchronous. Callbacks for different elements may interleave.</p>
+</blockquote>
+<h2 id="examples">Examples</h2>
+<h3 id="performance-monitoring">Performance Monitoring</h3>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> enableHydration <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/hydration.js"</span><span class="token punctuation">;</span>
+
+<span class="token function">enableHydration</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function">hydrationStarted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        performance<span class="token punctuation">.</span><span class="token function">mark</span><span class="token punctuation">(</span><span class="token string">"hydration:started"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">hydrationComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        performance<span class="token punctuation">.</span><span class="token function">measure</span><span class="token punctuation">(</span><span class="token string">"hydration:total"</span><span class="token punctuation">,</span> <span class="token string">"hydration:started"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+MyComponent<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function">elementWillHydrate</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            performance<span class="token punctuation">.</span><span class="token function">mark</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>source<span class="token punctuation">.</span>localName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:hydrate:start</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">elementDidHydrate</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            performance<span class="token punctuation">.</span><span class="token function">measure</span><span class="token punctuation">(</span>
+                <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>source<span class="token punctuation">.</span>localName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:hydrate</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+                <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>source<span class="token punctuation">.</span>localName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:hydrate:start</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+            <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="loading-state-management">Loading State Management</h3>
+<pre class="language-typescript"><code class="language-typescript"><span class="token function">enableHydration</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function">hydrationStarted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"hydrating"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function">hydrationComplete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">"hydrating"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"interactive"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="declarative-template-without-hydration">Declarative Template Without Hydration</h3>
+<p>Lifecycle callbacks work even without hydration — the template-related callbacks still fire:</p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token comment">// No enableHydration() call needed for template callbacks</span>
+MyComponent<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function">elementDidDefine</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is ready</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In this case, <code>elementWillHydrate</code> and <code>elementDidHydrate</code> will never fire, and the element renders client-side.</p>
+<h2 id="isprerendered-vs-ishydrated"><code>isPrerendered</code> vs <code>isHydrated</code></h2>
+<p>In addition to lifecycle callbacks, the controller exposes two promise-based properties for inspecting the rendering path:</p>
+<ul>
+<li><strong><code>isPrerendered: Promise&lt;boolean&gt;</code></strong> — resolves <code>true</code> when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.</li>
+<li><strong><code>isHydrated: Promise&lt;boolean&gt;</code></strong> — resolves <code>true</code> only when hydration actually ran successfully.</li>
+</ul>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">const</span> controller <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$fastController<span class="token punctuation">;</span>
+<span class="token keyword">const</span> prerendered <span class="token operator">=</span> <span class="token keyword">await</span> controller<span class="token punctuation">.</span>isPrerendered<span class="token punctuation">;</span>
+<span class="token keyword">const</span> hydrated <span class="token operator">=</span> <span class="token keyword">await</span> controller<span class="token punctuation">.</span>isHydrated<span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>prerendered <span class="token operator">&amp;&amp;</span> hydrated<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Element had DSD and was hydrated</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>prerendered <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>hydrated<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Had DSD but hydration wasn't enabled — fell back to client-side render</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// No DSD — normal client-side render</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This distinction is useful when hydration is conditionally enabled or when you need to differentiate between &quot;had prerendered content&quot; and &quot;successfully reused that content.&quot;</p>

@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-tree-view",
+  "id": "fast-tree-view",
+  "title": "Tree view",
+  "description": "The FAST tree view element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-tree-view",
+  "properties": {
+    "render-collapsed-nodes": {
+      "title": "Render collapsed nodes",
+      "description": "Determines whether the tree should render nodes under collapsed items",
+      "mapsToAttribute": "render-collapsed-nodes",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "Supports fast-tree-item elements or elements with a role of 'treeitem'",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

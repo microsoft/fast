@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-data-grid-row",
+  "id": "fast-data-grid-row",
+  "title": "Data grid row",
+  "description": "The FAST data grid row element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-data-grid-row",
+  "properties": {
+    "grid-template-columns": {
+      "title": "Grid template columns",
+      "description": "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
+      "mapsToAttribute": "grid-template-columns",
+      "type": "string"
+    },
+    "row-type": {
+      "enum": [
+        "default",
+        "header",
+        "sticky-header"
+      ],
+      "title": "Row type",
+      "description": "The type of row",
+      "mapsToAttribute": "row-type",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The row content as data grid cells",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

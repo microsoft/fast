@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Generated files
+.docusaurus
+.cache-loader
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.docusaurus
+
+# Static files from the homepage
+static/

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ES2015",
+    "moduleResolution": "Node16",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "lib": [
+      "dom",
+    ],
+  },
+  "include": [
+    "src"
+  ]
+}

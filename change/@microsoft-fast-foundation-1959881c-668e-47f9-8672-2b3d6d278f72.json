@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "no options missing",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "prerelease"
+}

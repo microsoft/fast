@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Update Badge and Breadcrumb templates (https://github.com/microsoft/fast/pull/6797)",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

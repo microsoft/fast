@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-switch",
+  "id": "fast-switch",
+  "title": "Switch",
+  "description": "The FAST switch element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-switch",
+  "properties": {
+    "checked": {
+      "title": "Checked",
+      "description": "Provides the default checked value",
+      "mapsToAttribute": "checked",
+      "type": "boolean"
+    },
+    "name": {
+      "title": "Name",
+      "description": "This element's value will be surfaced during form submission under the provided name",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "required": {
+      "title": "Required",
+      "description": "Require the field to be completed prior to form submission",
+      "mapsToAttribute": "required",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the switch",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "title": "Readonly",
+      "description": "When true, the control will be immutable by user interaction",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the switch represents its visual label",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotCheckedMessage": {
+      "title": "Checked message slot",
+      "description": "Visible content representing the checked state",
+      "mapsToSlot": "checked-message",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotUncheckedMessage": {
+      "title": "Unchecked message slot",
+      "description": "Visible content representing the unchecked state",
+      "mapsToSlot": "unchecked-message",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

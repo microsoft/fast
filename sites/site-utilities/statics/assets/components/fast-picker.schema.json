@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-picker",
+  "id": "fast-picker",
+  "title": "Picker",
+  "description": "The FAST picker element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-picker",
+  "properties": {
+    "selection": {
+      "description": "The selection attribute",
+      "mapsToAttribute": "selection",
+      "type": "string"
+    },
+    "options": {
+      "description": "The options attribute",
+      "mapsToAttribute": "options",
+      "type": "string"
+    },
+    "filter-selected": {
+      "default": true,
+      "description": "The filter-selected attribute",
+      "mapsToAttribute": "filter-selected",
+      "type": "boolean"
+    },
+    "filter-query": {
+      "default": true,
+      "description": "The filter-query attribute",
+      "mapsToAttribute": "filter-query",
+      "type": "boolean"
+    },
+    "max-selected": {
+      "description": "The max-selected attribute",
+      "mapsToAttribute": "max-selected",
+      "type": "number"
+    },
+    "no-suggestions-text": {
+      "description": "The no-suggestions-text attribute",
+      "mapsToAttribute": "no-suggestions-text",
+      "type": "string"
+    },
+    "suggestions-available-text": {
+      "description": "The suggestions-available-text attribute",
+      "mapsToAttribute": "suggestions-available-text",
+      "type": "string"
+    },
+    "loading-text": {
+      "description": "The loading-text attribute",
+      "mapsToAttribute": "loading-text",
+      "type": "string"
+    },
+    "label": {
+      "description": "The label attribute",
+      "mapsToAttribute": "label",
+      "type": "string"
+    },
+    "labelledby": {
+      "description": "The labelledby attribute",
+      "mapsToAttribute": "labelledby",
+      "type": "string"
+    },
+    "menu-placement": {
+      "description": "The menu-placement attribute",
+      "mapsToAttribute": "menu-placement",
+      "type": "string"
+    },
+    "placeholder": {
+      "description": "The placeholder attribute",
+      "mapsToAttribute": "placeholder",
+      "type": "string"
+    },
+    "SlotListRegion": {
+      "description": "The list-region slot",
+      "mapsToSlot": "list-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotMenuRegion": {
+      "description": "The menu-region slot",
+      "mapsToSlot": "menu-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotNoOptionsRegion": {
+      "description": "The no-options-region slot",
+      "mapsToSlot": "no-options-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotLoadingRegion": {
+      "description": "The loading-region slot",
+      "mapsToSlot": "loading-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

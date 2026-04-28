@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: typos in SSR README",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "seanmonahan@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

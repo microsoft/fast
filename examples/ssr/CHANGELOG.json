@@ -1,0 +1,20 @@
+{
+  "name": "fast-ssr",
+  "entries": [
+    {
+      "date": "Wed, 22 Jun 2022 20:17:50 GMT",
+      "tag": "fast-ssr_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "Bump @microsoft/fast-ssr to v1.0.0-beta.4",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f28cdb9fdba9cb27904acfad7444de82d447f39e",
+            "package": "fast-ssr"
+          }
+        ]
+      }
+    }
+  ]
+}

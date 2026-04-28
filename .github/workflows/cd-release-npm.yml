@@ -1,0 +1,61 @@
+name: Release NPM Packages
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 7 * * 0-4'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Add or Update packages
+      run: sudo yarn global add lerna@5.5.2
+
+    - name: Set Git User
+      run: |
+        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
+
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Check for the presence of changed files inside ./change
+      run: yarn checkchange
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing unit tests
+      run: lerna run test --stream
+
+    - name: Publish NPM packages
+      env:
+        NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: yarn publish-ci -n $NPM_SECRET_TOKEN
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build_linux
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Packages Bot'
+        message: 'Release has published to NPM on https://github.com/microsoft/fast/actions/workflows/cd-release-npm.yml'

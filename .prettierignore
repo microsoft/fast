@@ -1,0 +1,11 @@
+*.spec.ts
+!*.pw.spec.ts
+*.spec.tsx
+**/__tests__
+**/__test__
+**/.tmp
+**/bootstrap
+**/coverage
+**/dist
+**/temp
+default-palette.ts

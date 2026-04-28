@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-checkbox",
+  "id": "fast-checkbox",
+  "title": "Checkbox",
+  "description": "The FAST checkbox element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-checkbox",
+  "properties": {
+    "checked": {
+      "title": "Checked",
+      "description": "Whether or not this checkbox is checked by default",
+      "mapsToAttribute": "checked",
+      "type": "boolean"
+    },
+    "name": {
+      "title": "Name",
+      "description": "This element's value will be surfaced during form submission under the provided name",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "required": {
+      "title": "Required",
+      "description": "Require the field to be completed prior to form submission",
+      "mapsToAttribute": "required",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the checkbox",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "title": "Readonly",
+      "description": "When true, the control will be immutable by user interaction",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the checkbox represents its visual label",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotIndeterminateIndicator": {
+      "title": "Indeterminate indicator slot",
+      "description": "Slot to provide a custom icon to represent the inditerminate state",
+      "mapsToSlot": "indeterminate-indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotCheckedIndicator": {
+      "title": "Checked indicator slot",
+      "description": "Slot to provide a custom icon to represent the checked state",
+      "mapsToSlot": "checked-indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
