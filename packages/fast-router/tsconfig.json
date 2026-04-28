@@ -1,19 +1,19 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "experimentalDecorators": true,
+        "types": ["node"],
+        "useUnknownInCatchVariables": false,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "NodeNext",
         "importHelpers": true,
         "moduleResolution": "NodeNext",
-        "lib": [
-            "DOM",
-            "ES2015"
-        ]
+        "lib": ["DOM", "ES2015"]
     },
     "include": ["src"]
 }

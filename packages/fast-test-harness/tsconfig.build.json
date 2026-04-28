@@ -1,8 +1,12 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "baseUrl": ".",
-        "rootDir": "src",
+        "rootDir": "./src",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "types": ["node"],
+        "skipLibCheck": true,
+        "strict": false,
         "declarationDir": "dist/dts",
         "sourceMap": false,
         "outDir": "dist/esm"
