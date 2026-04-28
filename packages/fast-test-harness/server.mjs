@@ -3,9 +3,6 @@ import { createServer as createHttpServer } from "node:http";
 import { extname, resolve } from "node:path";
 import { load } from "cheerio";
 
-const PORT = process.env.PORT || 5273;
-const base = process.env.BASE || "/";
-
 const MIME_TYPES = {
     ".html": "text/html",
     ".js": "application/javascript",
@@ -89,15 +86,46 @@ async function tryServeStatic(req, res, root) {
     }
 }
 
-export async function startServer(cwd = process.cwd(), root, configFile) {
+export async function startServer(cwd = process.cwd(), root, configFile, options = {}) {
+    const {
+        port = process.env.PORT ? Number(process.env.PORT) : 3278,
+        base = process.env.BASE || "/",
+        debug = process.env.FAST_DEBUG === "true",
+    } = options;
+
     root = root ?? resolve(cwd, "./test");
-    configFile = configFile ?? resolve(root, "vite.config.ts");
+
+    try {
+        await fs.access(root);
+    } catch {
+        console.error(
+            `Error: Vite root directory does not exist: ${root}\n` +
+                `  Use --root to specify a different directory, or run from a package with a test/ folder.`,
+        );
+        process.exit(1);
+    }
+
+    if (configFile) {
+        try {
+            await fs.access(configFile);
+        } catch {
+            console.error(
+                `Error: Vite config file not found: ${configFile}\n` +
+                    `  Use --config to specify a different config file.`,
+            );
+            process.exit(1);
+        }
+    }
+
     const indexPath = resolve(root, "./index.html");
 
-    const tempDir = resolve(root, "temp");
-    await fs.rm(tempDir, { recursive: true, force: true });
-    await fs.mkdir(tempDir, { recursive: true });
-    const realTempDir = await fs.realpath(tempDir);
+    let realTempDir;
+    if (debug) {
+        const tempDir = resolve(root, "temp");
+        await fs.rm(tempDir, { recursive: true, force: true });
+        await fs.mkdir(tempDir, { recursive: true });
+        realTempDir = await fs.realpath(tempDir);
+    }
 
     const pendingGenerations = new Map();
     let cachedIndexHtml = null;
@@ -107,7 +135,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
 
     const vite = await createServer({
         root,
-        configFile,
+        ...(configFile && { configFile }),
         server: {
             middlewareMode: true,
             watch: {
@@ -121,7 +149,10 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
                 transformIndexHtml: {
                     order: "pre",
                     async handler(html) {
-                        const $ = load(html, { xml: true });
+                        const $ = load(html, {
+                            xmlMode: false,
+                            decodeEntities: false,
+                        });
                         let changed = false;
 
                         for (const el of $("link[href$='.css']").toArray()) {
@@ -178,7 +209,6 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
 
                 const testId = body.testId;
                 const filename = `ssr-${testId}.html`;
-                const filePath = resolve(realTempDir, filename);
 
                 const fixtureUrl = `/${filename}`;
 
@@ -217,7 +247,10 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
 
                     fixtureCache.set(fixtureUrl, html);
 
-                    await fs.writeFile(filePath, html, "utf-8");
+                    if (debug) {
+                        const filePath = resolve(realTempDir, filename);
+                        await fs.writeFile(filePath, html, "utf-8");
+                    }
                 })();
 
                 pendingGenerations.set(filename, generateTask);
@@ -276,7 +309,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
         });
     });
 
-    server.listen(PORT, () => {
-        console.log(`Server started at http://localhost:${PORT}`);
+    server.listen(port, () => {
+        console.log(`Server started at http://localhost:${port}`);
     });
 }
