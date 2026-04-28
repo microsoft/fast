@@ -42,11 +42,13 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 These contain domain-specific guidance. Read when performing related tasks:
 
 - [TypeScript](./skills/typescript/SKILL.md) — compiler constraints, import/export conventions, decorator usage, testing patterns.
+- [Rust](./skills/rust/SKILL.md) — general guidance on performing updates between the crate and package.
 - [Shipping](./skills/shipping/SKILL.md) — pull request format, change file generation, documentation updates.
 - [Pull Request](./skills/fast-pull-request/SKILL.md) — generate a pull request description from the branch diff.
 - [Bug Report](./skills/fast-bug-report/SKILL.md) — generate a bug report issue from conversation context.
 - [Feature Request](./skills/fast-feature-request/SKILL.md) — generate a feature request issue from conversation context.
 - [Testing](./skills/testing/SKILL.md) — running tests locally and in CI, writing Playwright fixture tests.
+- [Documentation](./skills/documentation/SKILL.md) — adding documentation in code, markdown files in each package/crate, and the website.
 
 ## Commands
 
