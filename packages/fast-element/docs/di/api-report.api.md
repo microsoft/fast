@@ -100,7 +100,7 @@ export const DI: Readonly<{
     createContext: typeof createContext;
     inject(...dependencies: Key[]): (target: any, key?: string | number, descriptor?: PropertyDescriptor | number) => void;
     transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
-    singleton<T_1 extends Constructable>(target: T_1 & Partial<RegisterSelf<T_1>>, options?: SingletonOptions): T_1 & RegisterSelf<T_1>;
+    singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>, options?: SingletonOptions): T & RegisterSelf<T>;
 }>;
 
 // @public
@@ -184,11 +184,11 @@ export interface Registration<K = any> {
 // @public
 export const Registration: Readonly<{
     instance<T>(key: Key, value: T): Registration<T>;
-    singleton<T_1 extends Constructable>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
-    transient<T_2 extends Constructable>(key: Key, value: T_2): Registration<InstanceType<T_2>>;
-    callback<T_3>(key: Key, callback: ResolveCallback<T_3>): Registration<Resolved<T_3>>;
-    cachedCallback<T_4>(key: Key, callback: ResolveCallback<T_4>): Registration<Resolved<T_4>>;
-    aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
+    singleton<T extends Constructable>(key: Key, value: T): Registration<InstanceType<T>>;
+    transient<T extends Constructable>(key: Key, value: T): Registration<InstanceType<T>>;
+    callback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>>;
+    cachedCallback<T>(key: Key, callback: ResolveCallback<T>): Registration<Resolved<T>>;
+    aliasTo<T>(originalKey: T, aliasKey: Key): Registration<Resolved<T>>;
 }>;
 
 // @public
