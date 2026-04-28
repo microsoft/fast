@@ -7,6 +7,10 @@ export {
     type GenerateFTemplatesOptions,
     generateFTemplates,
 } from "./build/generate-templates.js";
+export {
+    type GenerateWebuiTemplatesOptions,
+    generateWebuiTemplates,
+} from "./build/generate-webui-templates.js";
 export { toHaveCustomState } from "./fixtures/assertions.js";
 export {
     CSRFixture,

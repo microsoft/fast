@@ -8,7 +8,7 @@
  *
  * Supports two layout modes:
  *
- * **Multi-component package** (Fluent-style): one package contains all
+ * **Multi-component package**: one package contains all
  * components in subdirectories.
  * ```ts
  * const { render } = createSSRRenderer({
@@ -17,8 +17,8 @@
  * });
  * ```
  *
- * **Per-component packages** (MAI-style): each component is a separate
- * npm package with flat exports.
+ * **Per-component packages**: each component is a separate npm package with
+ * flat exports.
  * ```ts
  * const { render } = createSSRRenderer({
  *     tagPrefix: "mai",
@@ -138,10 +138,80 @@ function toServerUrl(absolutePath: string, packageRoot: string): string {
     return `/${relative(packageRoot, absolutePath).replace(/\\/g, "/")}`;
 }
 
+/**
+ * Parse a JavaScript default value string from CEM into a JSON-safe value.
+ */
+function parseDefaultValue(raw: string): unknown {
+    const trimmed = raw.trim();
+
+    if (trimmed === "" || trimmed === "undefined" || trimmed === "null") {
+        return "";
+    }
+
+    if (trimmed === "true") {
+        return true;
+    }
+
+    if (trimmed === "false") {
+        return false;
+    }
+
+    if (trimmed.startsWith("'") || trimmed.startsWith('"')) {
+        return trimmed.slice(1, -1);
+    }
+
+    const num = Number(trimmed);
+    if (!Number.isNaN(num)) {
+        return num;
+    }
+
+    try {
+        return JSON.parse(trimmed);
+    } catch {
+        return "";
+    }
+}
+
+/**
+ * Load a Custom Elements Manifest and extract default state for a
+ * component. Returns a record of property names to their default values.
+ */
+function loadDefaultStateFromCEM(packageName: string): Record<string, unknown> {
+    const cemPath = resolveSpecifier(`${packageName}/custom-elements.json`);
+    if (!cemPath) {
+        return {};
+    }
+
+    try {
+        const cem = JSON.parse(readFileSync(cemPath, "utf8"));
+        const state: Record<string, unknown> = {};
+
+        for (const mod of cem.modules ?? []) {
+            for (const decl of mod.declarations ?? []) {
+                if (!decl.customElement) continue;
+                for (const member of decl.members ?? []) {
+                    if (member.kind !== "field" || member.privacy !== "public") {
+                        continue;
+                    }
+                    state[member.name] =
+                        member.default != null
+                            ? parseDefaultValue(String(member.default))
+                            : "";
+                }
+            }
+        }
+
+        return state;
+    } catch {
+        return {};
+    }
+}
+
 interface ComponentArtifacts {
     componentName: string;
     fTemplate: string | null;
     stylesUrl: string;
+    defaultState: Record<string, unknown>;
 }
 
 /**
@@ -157,11 +227,13 @@ function loadMonolithicComponent(
         `${packageName}/${componentDir}/template.html`,
     );
     const stylesPath = resolveSpecifier(`${packageName}/${componentDir}/styles.css`);
+    const defaultState = loadDefaultStateFromCEM(packageName);
 
     return {
         componentName: componentDir,
         fTemplate: fTemplatePath ? readFileSync(fTemplatePath, "utf8") : null,
         stylesUrl: stylesPath ? toServerUrl(stylesPath, packageRoot) : "",
+        defaultState,
     };
 }
 
@@ -174,12 +246,13 @@ function loadPerPackageComponent(
     serverRoot: string,
 ): ComponentArtifacts {
     const fTemplatePath = resolveSpecifier(`${reg.packageName}/template.html`);
-    const stylesPath = resolveSpecifier(`${reg.packageName}/styles.css`);
+    const defaultState = loadDefaultStateFromCEM(reg.packageName);
 
     return {
         componentName: reg.name,
         fTemplate: fTemplatePath ? readFileSync(fTemplatePath, "utf8") : null,
-        stylesUrl: stylesPath ? toServerUrl(stylesPath, serverRoot) : "",
+        stylesUrl: `${reg.packageName}/styles.css`,
+        defaultState,
     };
 }
 
@@ -334,11 +407,16 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     }
 
     // Populate maps.
+    const defaultStateByTag = new Map<string, Record<string, unknown>>();
     for (const art of artifacts) {
+        const tagName = `${tagPrefix}-${art.componentName}`;
         if (art.fTemplate) {
             fTemplatesByName.set(art.componentName, art.fTemplate);
         }
         styleUrlsByName.set(art.componentName, art.stylesUrl);
+        if (Object.keys(art.defaultState).length > 0) {
+            defaultStateByTag.set(tagName, art.defaultState);
+        }
     }
 
     // Inject styles into f-templates, then parse into the WASM
@@ -354,6 +432,8 @@ export function createSSRRenderer(options: SSRRendererOptions): {
         const entry = parsed.find((t: any) => t.name !== null);
         if (entry) {
             templatesMap[`${tagPrefix}-${name}`] = entry.content;
+        } else {
+            console.warn(`No named template found for ${tagPrefix}-${name}`);
         }
     }
     const templatesJson = JSON.stringify(templatesMap);
@@ -370,7 +450,12 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     return {
         render(queryObj: Record<string, string> = {}): RenderResult {
             const entryHtml = buildEntryHtml(queryObj);
-            const state = buildState(queryObj);
+            const requestState = buildState(queryObj);
+
+            // Merge CEM default state (base) with request state (overrides).
+            const tagName = String(queryObj.tagName ?? "");
+            const defaults = defaultStateByTag.get(tagName) ?? {};
+            const state = { ...defaults, ...requestState };
 
             let fixture = "";
             if (entryHtml) {
@@ -379,13 +464,15 @@ export function createSSRRenderer(options: SSRRendererOptions): {
                         `<html><body>${entryHtml}</body></html>`,
                         templatesJson,
                         JSON.stringify(state),
+                        "camelCase",
                     );
 
                     // Extract body content from the rendered document.
                     const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
                     fixture = bodyMatch?.[1] ?? entryHtml;
-                } catch {
+                } catch (e) {
                     // Fall back to the raw entry HTML if rendering fails.
+                    console.error("WASM render failed:", e);
                     fixture = entryHtml;
                 }
             }
