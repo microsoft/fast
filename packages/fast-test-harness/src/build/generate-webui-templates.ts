@@ -3,12 +3,11 @@
  * JS modules into declarative shadow DOM `<template>` HTML files suitable
  * for WebUI consumers.
  *
- * Unlike f-templates, webui templates:
- * - Use a bare `<template shadowrootmode="open">` (no `<f-template>` wrapper)
- * - Remove the `{{styles}}` placeholder (styles are linked externally)
- * - Strip client-side-only bindings (`@event`, `:prop`, `f-ref`, `f-slotted`,
- *   `f-children`) since WebUI doesn't hydrate with FAST HTML
- * - Propagate shadow options (e.g. `shadowrootdelegatesfocus`) from the
+ * Webui templates preserve all bindings from the f-template but use a
+ * different wrapper:
+ * - `<template shadowrootmode="open">` instead of `<f-template name="...">`
+ * - No `{{styles}}` placeholder (styles are linked externally)
+ * - Shadow options (e.g. `shadowrootdelegatesfocus`) propagated from the
  *   companion `*.definition-async.js` module
  *
  * Usage as a module:
@@ -23,14 +22,15 @@ import { glob, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { styleText } from "node:util";
-import {
-    closeExpression,
-    eventArgAccessor,
-    openExpression,
-} from "@microsoft/fast-html/syntax.js";
+import { closeExpression, openExpression } from "@microsoft/fast-html/syntax.js";
 import { installDomShim } from "./dom-shim.js";
+import { convertTemplate, type ViewTemplate } from "./generate-templates.js";
 
 const stylesMarker = `${openExpression}styles${closeExpression}`;
+const escapedStylesMarker = new RegExp(
+    stylesMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+    "g",
+);
 
 export interface GenerateWebuiTemplatesOptions {
     /**
@@ -71,74 +71,6 @@ export interface GenerateWebuiTemplatesOptions {
     format?: (html: string, filePath: string) => string | Promise<string>;
 }
 
-interface ViewTemplate {
-    html: string;
-    factories: Record<string, Factory>;
-}
-
-interface Factory {
-    constructor: { name: string };
-    options?: any;
-    dataBinding?: {
-        evaluate: (...args: any[]) => any;
-    };
-}
-
-/**
- * Extract a readable binding expression from a factory's evaluate function.
- */
-function extractBindingExpression(factory: Factory): string {
-    if (!factory?.dataBinding?.evaluate) {
-        return "";
-    }
-
-    const fnStr = factory.dataBinding.evaluate.toString();
-    const arrowMatch = fnStr.match(/=>\s*(.+)$/s);
-    if (arrowMatch) {
-        let expr = arrowMatch[1].trim();
-        expr = expr.replace(/\bx\./g, "").replace(/c\.event\b/g, eventArgAccessor);
-        return expr;
-    }
-
-    return fnStr;
-}
-
-/**
- * Check if a factory is a static sub-template interpolation. If so,
- * evaluate it and return the inlined HTML.
- */
-function tryInlineStaticTemplate(factory: Factory): string | null {
-    if (!factory?.dataBinding?.evaluate) {
-        return null;
-    }
-
-    const fnStr = factory.dataBinding.evaluate.toString();
-
-    if (/^\(\)\s*=>/.test(fnStr)) {
-        try {
-            const result = factory.dataBinding.evaluate({}, {});
-            if (result && typeof result === "object" && typeof result.html === "string") {
-                return result.html;
-            }
-            if (typeof result === "string") {
-                return result;
-            }
-        } catch {
-            // Fall through to normal binding handling.
-        }
-    }
-
-    return null;
-}
-
-/** Client-side binding prefixes that are stripped from webui output. */
-const CLIENT_SIDE_PREFIXES = ["@", ":"];
-const CLIENT_SIDE_DIRECTIVES = ["f-ref", "f-slotted", "f-children"];
-
-function wrapDefaultExpression(expression: string): string {
-    return `${openExpression}${expression}${closeExpression}`;
-}
-
 /**
  * Try to load shadow options from a companion `*.definition-async.js`
  * module next to the template module. Returns an object with template
@@ -167,116 +99,39 @@ async function loadShadowAttributes(
 }
 
 /**
- * Convert a ViewTemplate into a webui-compatible `<template>` HTML string.
- *
- * Strips `<f-template>` wrapping, removes `{{styles}}`, and strips
- * client-side-only bindings.
+ * Transform an f-template string into a webui template by replacing the
+ * `<f-template>` wrapper with `<template shadowrootmode="open">` and
+ * removing the `{{styles}}` placeholder.
  */
-function convertWebuiTemplate(
-    viewTemplate: ViewTemplate,
+function fTemplateToWebui(
+    fTemplateHtml: string,
     shadowAttrs: Record<string, string>,
-): string | null {
-    const { html, factories } = viewTemplate;
+): string {
+    // Extract the inner <template>...</template> from within <f-template>.
+    const innerMatch = fTemplateHtml.match(
+        /<f-template[^>]*>\s*(<template[^>]*>[\s\S]*<\/template>)\s*<\/f-template>/,
+    );
 
-    const factoryEntries = Object.entries(factories);
-
-    let content: string;
-
-    if (factoryEntries.length === 0) {
-        // No factories — pure static template.
-        content = html.replace(/<\/?template[^>]*>/g, "").trim();
-    } else {
-        // Derive the binding marker prefix from the first factory key.
-        const prefix = factoryEntries[0][0].replace(/-\d+$/, "");
-
-        const factoryMap = new Map<string, Factory>();
-        for (const [id, factory] of factoryEntries) {
-            factoryMap.set(id, factory);
-        }
-
-        content = html;
-
-        // Attribute-position markers for directives (f-ref, f-slotted, f-children).
-        // These are client-side only — strip them entirely for webui.
-        const attrBindingRe = new RegExp(
-            `\\s*${prefix}-\\d+="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
-            "g",
-        );
-        content = content.replace(attrBindingRe, (_match: string, factoryId: string) => {
-            const factory = factoryMap.get(factoryId);
-            if (!factory) {
-                return _match;
-            }
-            const name = factory.constructor.name;
-            if (
-                name === "RefDirective" ||
-                name === "SlottedDirective" ||
-                name === "ChildrenDirective"
-            ) {
-                // Strip entirely — these are client-side directives.
-                return "";
-            }
-            return _match;
-        });
-
-        // Event bindings (@click, @input, etc.) — strip for webui.
-        const eventBindingRe = new RegExp(
-            `\\s*@[a-z]+="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
-            "g",
-        );
-        content = content.replace(eventBindingRe, "");
-
-        // Property bindings (:prop) — strip for webui.
-        const propBindingRe = new RegExp(
-            `\\s*:[a-zA-Z-]+="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
-            "g",
-        );
-        content = content.replace(propBindingRe, "");
-
-        // Boolean attribute bindings (?attr) — keep as server-evaluated expressions.
-        const boolAttrBindingRe = new RegExp(
-            `(\\?[a-zA-Z-]+)="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
-            "g",
-        );
-        content = content.replace(
-            boolAttrBindingRe,
-            (_match: string, aspect: string, factoryId: string) => {
-                const factory = factoryMap.get(factoryId);
-                if (!factory) {
-                    return _match;
-                }
-                const evalStr = extractBindingExpression(factory);
-                return `${aspect}="${wrapDefaultExpression(evalStr)}"`;
-            },
-        );
-
-        // Attribute-value and content bindings — keep as expressions or inline statics.
-        const valBindingRe = new RegExp(`${prefix}\\{(${prefix}-\\d+)\\}${prefix}`, "g");
-        content = content.replace(valBindingRe, (_match: string, factoryId: string) => {
-            const factory = factoryMap.get(factoryId);
-            if (!factory) {
-                return _match;
-            }
-
-            const inlined = tryInlineStaticTemplate(factory);
-            if (inlined !== null) {
-                return inlined;
-            }
-
-            const evalStr = extractBindingExpression(factory);
-            return wrapDefaultExpression(evalStr);
-        });
-
-        // Strip the compiled <template> wrapper if present — we'll add our own.
-        content = content.replace(/<\/?template[^>]*>/g, "").trim();
+    if (!innerMatch) {
+        return fTemplateHtml;
     }
 
-    // Build the <template> tag with shadow attributes.
+    let inner = innerMatch[1];
+
+    // Remove {{styles}} placeholder.
+    inner = inner.replace(escapedStylesMarker, "");
+
+    // Replace the opening <template> tag with one that includes shadow attributes.
     const extraAttrs = Object.entries(shadowAttrs)
         .map(([k, v]) => (v ? ` ${k}="${v}"` : ` ${k}`))
         .join("");
 
-    return `<template shadowrootmode="open"${extraAttrs}>\n${content}\n</template>\n`;
+    inner = inner.replace(
+        /^<template[^>]*>/,
+        `<template shadowrootmode="open"${extraAttrs}>`,
+    );
+
+    return inner;
 }
 
 export async function generateWebuiTemplates(
@@ -293,6 +148,7 @@ export async function generateWebuiTemplates(
     for await (const jsFile of glob(pattern, { cwd: distDir })) {
         const jsFilePath = path.resolve(distDir, jsFile);
         const componentDir = path.basename(jsFile, ".template.js");
+        const componentName = `${tagPrefix}-${componentDir}`;
 
         try {
             const mod = await import(pathToFileURL(jsFilePath).href);
@@ -302,17 +158,13 @@ export async function generateWebuiTemplates(
                 continue;
             }
 
-            const shadowAttrs = await loadShadowAttributes(jsFilePath);
-            const webuiHtml = convertWebuiTemplate(template, shadowAttrs);
-            if (!webuiHtml) {
+            const fTemplateHtml = convertTemplate(template, componentName);
+            if (!fTemplateHtml) {
                 continue;
             }
 
-            // Remove {{styles}} — webui consumers link stylesheets externally.
-            let html = webuiHtml.replace(
-                new RegExp(stylesMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
-                "",
-            );
+            const shadowAttrs = await loadShadowAttributes(jsFilePath);
+            let html = fTemplateToWebui(fTemplateHtml, shadowAttrs);
 
             if (options.format) {
                 try {
@@ -320,7 +172,7 @@ export async function generateWebuiTemplates(
                 } catch (formatError: any) {
                     console.warn(
                         styleText(["yellow", "bold"], "⚠"),
-                        `Format failed for ${tagPrefix}-${componentDir}:`,
+                        `Format failed for ${componentName}:`,
                         formatError.message,
                     );
                 }
