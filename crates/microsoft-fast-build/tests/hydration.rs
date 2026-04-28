@@ -82,6 +82,28 @@ fn test_hydration_attribute_binding_compact() {
     assert!(!result.contains("data-fe-c-0-2"), "should not have count 2: {result}");
 }
 
+/// Missing `{{expr}}` attribute values are omitted rather than rendered empty.
+#[test]
+fn test_hydration_missing_attribute_binding_omits_attribute() {
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<input type="{{type}}" value="{{missing}}" class="static">"#,
+    )]);
+    let root = hand_root(vec![("type", str_val("text"))]);
+    let result = render_with_locator(
+        r#"<test-element type="text"></test-element>"#,
+        &root,
+        &locator,
+        None,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(shadow.contains("data-fe-c-0-2"), "compact marker: {result}");
+    assert!(shadow.contains(r#"type="text""#), "resolved attr: {result}");
+    assert!(shadow.contains(r#"class="static""#), "static attr: {result}");
+    assert!(!shadow.contains("value="), "missing attr omitted: {result}");
+}
+
 /// Single-brace `@click="{handler()}"` event binding — compact marker present, attr stripped.
 #[test]
 fn test_hydration_event_binding_compact() {
@@ -481,6 +503,24 @@ fn test_hydration_nested_element_attr_binding() {
     // child-element has attr binding for label="{{title}}" → data-fe-c-0-1
     assert!(result.contains("data-fe-c-0-1"), "attr binding on child-element: {result}");
     assert!(result.contains(r#"label="Hi""#), "resolved attr: {result}");
+}
+
+#[test]
+fn test_hydration_nested_element_missing_attr_binding_omits_attribute() {
+    let locator = make_locator(&[
+        ("parent-element", r#"<child-element label="{{missing}}"></child-element>"#),
+        ("child-element", r#"<span>{{label}}</span>"#),
+    ]);
+    let result = render_with_locator(
+        r#"<parent-element></parent-element>"#,
+        &empty(),
+        &locator,
+        None,
+    ).unwrap();
+
+    assert!(result.contains("data-fe-c-0-1"), "attr binding marker remains: {result}");
+    assert!(!result.contains("label="), "missing attr omitted: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b-->"));
 }
 
 // ── Unescaped triple-brace ────────────────────────────────────────────────────

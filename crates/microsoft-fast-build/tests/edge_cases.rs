@@ -1,6 +1,9 @@
 mod common;
 use common::{ok, make_locator, empty_root};
-use microsoft_fast_build::{render, render_with_locator, render_entry_with_locator, JsonValue};
+use microsoft_fast_build::{
+    render, render_entry_with_locator, render_entry_with_locator_without_state,
+    render_template_without_state, render_with_locator, JsonValue,
+};
 use std::collections::HashMap;
 
 // ── empty and whitespace-only templates ───────────────────────────────────────
@@ -25,6 +28,34 @@ fn test_template_with_no_bindings() {
 fn test_empty_state_object() {
     // A template with no bindings renders fine against an empty state.
     assert_eq!(ok("<h1>Hello</h1>", "{}"), "<h1>Hello</h1>");
+}
+
+#[test]
+fn test_render_template_without_state_uses_empty_object() {
+    let result = render_template_without_state("<h1>{{title}}</h1>", None)
+        .expect("render without state");
+    assert_eq!(result, "<h1></h1>");
+}
+
+#[test]
+fn test_missing_regular_html_attribute_binding_is_omitted() {
+    let result = ok(r#"<div class="{{missing}}"></div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_regular_html_attribute_omits_content_stays_empty() {
+    let result = ok(r#"<div class="{{missing}}">{{missing}}</div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_render_entry_with_locator_without_state_uses_empty_object() {
+    let locator = make_locator(&[("my-el", "<span>{{label}}</span>")]);
+    let result = render_entry_with_locator_without_state("<my-el></my-el>", &locator, None)
+        .expect("render entry without state");
+    assert!(result.contains("<span>"), "shadow content rendered: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b-->"));
 }
 
 // ── deeply nested property access ─────────────────────────────────────────────
@@ -57,12 +88,9 @@ fn test_deeply_nested_in_f_repeat() {
 }
 
 #[test]
-fn test_deeply_nested_missing_intermediate_returns_error() {
-    use microsoft_fast_build::render_template;
-    use microsoft_fast_build::RenderError;
-    let e = render_template("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#, None)
-        .expect_err("expected MissingState");
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {e}");
+fn test_deeply_nested_missing_intermediate_renders_empty() {
+    let result = ok("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#);
+    assert_eq!(result, "");
 }
 
 // ── multiple root custom elements ─────────────────────────────────────────────
