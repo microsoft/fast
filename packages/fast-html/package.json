@@ -21,13 +21,13 @@
     "./rules/*.yml"
   ],
   "scripts": {
-    "build:tsc": "tsc -p ./tsconfig.json",
+    "build:tsc": "tsgo -p ./tsconfig.json",
     "build": "npm run build:tsc && npm run doc && npm run build:fixtures",
     "build:fixtures": "node scripts/build-fixtures.js",
     "build:fixtures:webui": "node scripts/build-fixtures-with-webui.js",
     "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
-    "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
+    "dev": "concurrently -k -n tsgo,server \"npm run watch\" \"npm run test-server\"",
     "doc:ci": "api-extractor run",
     "doc": "npm run doc:ci -- --local",
     "lint": "biome-changed",
