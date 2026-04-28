@@ -23,13 +23,13 @@ Enables using: [W3C Community Context protocol.](https://github.com/webcomponent
 Context: Readonly<{
     eventType: "context-request";
     for<T = unknown>(name: string): FASTContext<T>;
-    create<T_1 = unknown>(name: string, initialValue?: T_1 | undefined): FASTContext<T_1>;
+    create<T = unknown>(name: string, initialValue?: T): FASTContext<T>;
     setDefaultRequestStrategy(strategy: FASTContextRequestStrategy): void;
-    get<T_2 extends UnknownContext>(target: EventTarget, context: T_2): ContextType<T_2>;
-    request<T_3 extends UnknownContext>(target: EventTarget, context: T_3, callback: ContextCallback<ContextType<T_3>>, multiple?: boolean): void;
-    dispatch<T_4 extends UnknownContext>(target: EventTarget, context: T_4, callback: ContextCallback<ContextType<T_4>>, multiple?: boolean): void;
-    provide<T_5 extends UnknownContext>(target: EventTarget, context: T_5, value: ContextType<T_5>): void;
-    handle<T_6 extends UnknownContext>(target: EventTarget, callback: (event: ContextEvent<T_6>) => void, context?: T_6 | undefined): void;
-    defineProperty<T_7 extends UnknownContext>(target: Constructable<EventTarget> | EventTarget, propertyName: string, context: T_7): void;
+    get<T extends UnknownContext>(target: EventTarget, context: T): ContextType<T>;
+    request<T extends UnknownContext>(target: EventTarget, context: T, callback: ContextCallback<ContextType<T>>, multiple?: boolean): void;
+    dispatch<T extends UnknownContext>(target: EventTarget, context: T, callback: ContextCallback<ContextType<T>>, multiple?: boolean): void;
+    provide<T extends UnknownContext>(target: EventTarget, context: T, value: ContextType<T>): void;
+    handle<T extends UnknownContext>(target: EventTarget, callback: (event: ContextEvent<T>) => void, context?: T): void;
+    defineProperty<T extends UnknownContext>(target: Constructable<EventTarget> | EventTarget, propertyName: string, context: T): void;
 }>
 ```
