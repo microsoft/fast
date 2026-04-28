@@ -279,6 +279,9 @@ async function runBuild(args) {
     const output = resolveOption(args, config, configDir, "output", "output.html");
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
     const stateFile = resolveOption(args, config, configDir, "state", "state.json");
+    const stateWasProvided =
+        Object.prototype.hasOwnProperty.call(args, "state") ||
+        Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
@@ -324,18 +327,23 @@ async function runBuild(args) {
     }
     const entryContent = fs.readFileSync(entry, "utf8");
 
-    // Read state file
-    if (!fs.existsSync(stateFile)) {
+    // Read state file when one is provided, or when the default state.json exists.
+    let stateContent;
+    if (fs.existsSync(stateFile)) {
+        stateContent = fs.readFileSync(stateFile, "utf8");
+    } else if (stateWasProvided) {
         process.stderr.write(`Error: State file "${stateFile}" not found.\n`);
         process.exit(1);
     }
-    const stateContent = fs.readFileSync(stateFile, "utf8");
 
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
         rendered = wasm.render_entry_with_templates(
-            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy || ""
+            entryContent,
+            JSON.stringify(templatesMap),
+            stateContent,
+            attributeNameStrategy || "",
         );
     } else {
         rendered = wasm.render(entryContent, stateContent);
@@ -356,7 +364,8 @@ async function main() {
             '                         Separate multiple patterns with commas.\n' +
             '  --output="output.html" Output file path (default: output.html)\n' +
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
-            '  --state="state.json"   State JSON file (default: state.json)\n' +
+            '  --state="state.json"   State JSON file (default: state.json if present,\n' +
+            '                         otherwise an empty state object)\n' +
             '  --attribute-name-strategy="camelCase"\n' +
             '                         Strategy for mapping attribute names to property names.\n' +
             '                         "camelCase" (default) or "none".\n' +
