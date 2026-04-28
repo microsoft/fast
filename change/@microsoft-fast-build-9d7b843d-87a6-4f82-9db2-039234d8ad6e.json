@@ -1,6 +1,6 @@
 {
-  "type": "major",
-  "comment": "breaking: allow fast-build rendering without state; omitted CLI state no longer probes state.json",
+  "type": "minor",
+  "comment": "feat: allow fast-build rendering without state; omitted CLI state no longer probes state.json",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
