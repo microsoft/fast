@@ -310,7 +310,7 @@ export async function generateWebuiTemplates(
 
             // Remove {{styles}} — webui consumers link stylesheets externally.
             let html = webuiHtml.replace(
-                new RegExp(stylesMarker.replace(/[{}]/g, "\\$&"), "g"),
+                new RegExp(stylesMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
                 "",
             );
 
