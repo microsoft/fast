@@ -152,7 +152,7 @@ Both return `RenderError::EmptyBinding` for blank expressions and `RenderError::
 Callers decide how to handle unresolved values:
 - Content bindings (`{{expr}}` / `{{{expr}}}`) render an empty string.
 - HTML attribute bindings omit the entire attribute.
-- `<f-repeat>` still requires its list binding to resolve to an array; a missing list binding returns `RenderError::MissingState`.
+- `<f-repeat>` treats a missing list binding as an empty array and renders zero iterations; present non-array values return `RenderError::NotAnArray`.
 - `<f-when>` evaluates a missing binding as falsy.
 
 ### Loop variable scoping
@@ -198,7 +198,7 @@ Because `||` is sought before `&&`, the recursive split on `||` runs first. Each
 
 1. Extracts inner HTML and end position (same as `render_when`).
 2. Parses `value="{{item in items}}"` with `parse_repeat_expr` — expects exactly three whitespace-separated tokens where the middle is `"in"`.
-3. Resolves the list expression. Returns `RenderError::NotAnArray` if the value is not a `JsonValue::Array`.
+3. Resolves the list expression. Missing values are treated as an empty array. Present non-array values return `RenderError::NotAnArray`.
 4. For each item in the array, pushes `(var_name, item)` onto a new `loop_vars` vec and calls `render_node` on the inner template.
 5. Uses `Iterator::collect::<Result<String, _>>()` to short-circuit on the first error in any iteration.
 
@@ -557,6 +557,6 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
-**`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and missing/invalid required directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` still errors when its list binding is missing or not an array.
+**`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and invalid directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` treats a missing list binding as an empty array while still erroring when a present value is not an array.
 
 **Left-to-right, first-match scanning.** Directives are found by searching for their literal opening strings. The earliest position wins. This is O(n×d) where n is the template length and d is the number of directive types — acceptable for the template sizes this crate targets.

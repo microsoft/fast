@@ -230,6 +230,16 @@ describe("no state behavior", () => {
         assert.equal(output, "<h1></h1><div></div>");
     });
 
+    it("treats missing f-repeat lists as empty when state is omitted", () => {
+        fs.writeFileSync(
+            path.join(dir, "entry.html"),
+            '<ul><f-repeat value="{{item in items}}"><li>{{item}}</li></f-repeat></ul>',
+        );
+        run(["--entry=entry.html", "--output=out.html"], dir);
+        const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+        assert.equal(output, "<ul></ul>");
+    });
+
     it("ignores state.json when state is omitted", () => {
         fs.writeFileSync(
             path.join(dir, "entry.html"),
@@ -326,6 +336,22 @@ describe("WASM optional state", () => {
         assert.equal(
             WASM.render('<div class="{{ foo.bar }}"></div>', "{}"),
             "<div></div>",
+        );
+    });
+
+    it("render treats missing f-repeat lists as empty arrays", () => {
+        assert.equal(
+            WASM.render(
+                '<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>',
+            ),
+            "",
+        );
+        assert.equal(
+            WASM.render(
+                '<f-repeat value="{{item in items.list}}"><span>{{item}}</span></f-repeat>',
+                "{}",
+            ),
+            "",
         );
     });
 

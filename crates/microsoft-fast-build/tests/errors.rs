@@ -195,11 +195,11 @@ fn test_error_repeat_not_an_array_bool() {
 }
 
 #[test]
-fn test_error_repeat_missing_state() {
-    let e = err(r#"<f-repeat value="{{item in missing}}">{{item}}</f-repeat>"#, r#"{}"#);
+fn test_error_repeat_not_an_array_null() {
+    let e = err(r#"<f-repeat value="{{item in items}}">{{item}}</f-repeat>"#, r#"{"items": null}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("missing"), "should name the binding: {msg}");
+    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(msg.contains("items"), "should name the binding: {msg}");
 }
 
 // ── JSON parse errors ─────────────────────────────────────────────────────────

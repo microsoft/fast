@@ -143,10 +143,10 @@ pub fn render_repeat(
             context: template_context(template, at),
         })?;
     match resolve_value(&list_expr, root, loop_vars) {
-        None => Err(RenderError::MissingState {
-            binding: list_expr,
-            context: template_context(template, at),
-        }),
+        None => {
+            let output = render_repeat_items(&inner, &[], &var_name, root, loop_vars, locator, hydration, config)?;
+            Ok((output, after))
+        }
         Some(JsonValue::Array(items)) => {
             let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration, config)?;
             Ok((output, after))

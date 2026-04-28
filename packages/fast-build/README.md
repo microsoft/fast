@@ -89,7 +89,7 @@ When a binding value is not present in state:
 
 - Content bindings render nothing, including unresolved dot paths: `<p>{{foo.bar}}</p>` becomes `<p></p>`.
 - Attribute bindings omit the entire attribute, including unresolved dot paths: `<div class="{{foo.bar}}"></div>` becomes `<div></div>`.
-- `<f-repeat>` still requires its list binding to resolve to an array and errors when the list is missing or not an array.
+- `<f-repeat>` treats a missing list binding, including unresolved dot paths, as an empty array and renders zero iterations. If the binding is present but is not an array, rendering still errors.
 
 ### Custom element templates
 
