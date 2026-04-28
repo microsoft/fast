@@ -5,8 +5,8 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3278;
 
 export default defineConfig({
     retries: CI ? 3 : 1,
-    timeout: CI ? 30_000 : 10_000,
-    fullyParallel: true,
+    timeout: CI ? 10_000 : 5_000,
+    fullyParallel: !CI,
     use: {
         baseURL: `http://localhost:${PORT}`,
         contextOptions: {
