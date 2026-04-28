@@ -81,7 +81,7 @@ export interface GenerateFTemplatesOptions {
     format?: (html: string, filePath: string) => string | Promise<string>;
 }
 
-interface ViewTemplate {
+export interface ViewTemplate {
     html: string;
     factories: Record<string, Factory>;
 }
@@ -179,7 +179,7 @@ function tryInlineStaticTemplate(factory: Factory): string | null {
  * Convert a ViewTemplate's html string and factories into an
  * f-template HTML string.
  */
-function convertTemplate(
+export function convertTemplate(
     viewTemplate: ViewTemplate,
     componentName: string,
 ): string | null {
