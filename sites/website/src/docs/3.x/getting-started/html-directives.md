@@ -29,7 +29,7 @@ Sometimes you need a direct reference to a single DOM node from your template. T
 **Example: Referencing an Element**
 
 ```ts
-import { FASTElement, attr, html, ref } from '@microsoft/fast-element';
+import { attr, FASTElement, html, ref } from '@microsoft/fast-element';
 
 const template = html<MP4Player>`
   <video ${ref('video')}>
@@ -101,7 +101,7 @@ Besides using `ref` to reference a single DOM node, you can use `children` to ge
 **Example: Referencing Child Nodes**
 
 ```ts
-import { FASTElement, html, children, repeat } from '@microsoft/fast-element';
+import { children, FASTElement, html, repeat } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <ul ${children('listItems')}>
@@ -167,7 +167,7 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 **Example: Conditional Rendering**
 
 ```ts
-import { FASTElement, observable, html, when } from '@microsoft/fast-element';
+import { FASTElement, html, observable, when } from '@microsoft/fast-element';
 
 const template = html<MyApp>`
   <h1>My App</h1>
@@ -231,7 +231,7 @@ To render a list of data, use the `repeat` directive, providing the list to rend
 **Example: List Rendering**
 
 ```ts
-import { FASTElement, observable, html, repeat } from '@microsoft/fast-element';
+import { FASTElement, html, observable, repeat } from '@microsoft/fast-element';
 
 const template = html<FriendList>`
   <h1>Friends</h1>

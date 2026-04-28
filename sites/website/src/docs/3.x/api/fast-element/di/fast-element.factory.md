@@ -20,7 +20,7 @@ Used by the default Resolver to create instances of objects when needed.
 **Signature:**
 
 ```typescript
-export interface Factory<T extends Constructable = any> 
+export interface Factory<T extends Constructable = any>
 ```
 
 ## Properties

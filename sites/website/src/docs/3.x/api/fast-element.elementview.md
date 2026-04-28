@@ -20,7 +20,7 @@ A View representing DOM nodes specifically for rendering the view of a custom el
 **Signature:**
 
 ```typescript
-export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> 
+export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent>
 ```
 **Extends:** [View](../fast-element.view/)<!-- -->&lt;TSource, TParent&gt;
 

@@ -38,7 +38,7 @@ const reflectMode = "reflect";
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -132,7 +132,7 @@ export const nullableNumberConverter: ValueConverter = {
 };
 
 /**
- * An implementation of {@link Accessor} that supports reactivity,
+ * An implementation of `Accessor` that supports reactivity,
  * change callbacks, attribute reflection, and type conversion for
  * custom elements.
  * @public
