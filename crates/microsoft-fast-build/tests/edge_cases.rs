@@ -38,8 +38,34 @@ fn test_render_template_without_state_uses_empty_object() {
 }
 
 #[test]
+fn test_missing_dot_path_content_with_empty_state_renders_empty() {
+    let result = ok("<p>{{ foo.bar }}</p>", "{}");
+    assert_eq!(result, "<p></p>");
+}
+
+#[test]
+fn test_missing_dot_path_content_without_state_renders_empty() {
+    let result = render_template_without_state("<p>{{ foo.bar }}</p>", None)
+        .expect("render without state");
+    assert_eq!(result, "<p></p>");
+}
+
+#[test]
 fn test_missing_regular_html_attribute_binding_is_omitted() {
     let result = ok(r#"<div class="{{missing}}"></div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_dot_path_regular_html_attribute_with_empty_state_is_omitted() {
+    let result = ok(r#"<div class="{{ foo.bar }}"></div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_dot_path_regular_html_attribute_without_state_is_omitted() {
+    let result = render_template_without_state(r#"<div class="{{ foo.bar }}"></div>"#, None)
+        .expect("render without state");
     assert_eq!(result, "<div></div>");
 }
 

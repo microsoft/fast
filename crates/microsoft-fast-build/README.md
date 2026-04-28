@@ -509,7 +509,7 @@ let result = render_template_with_locator(
 #### WASM / JavaScript API
 
 ```javascript
-const html = render_entry_with_templates(
+const html = render_with_templates(
     entry,
     templatesJson,
     stateJson,
@@ -594,7 +594,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `UnclosedBinding` | `{{` with no closing `}}` |
 | `UnclosedUnescapedBinding` | `{{{` with no closing `}}}` |
 | `EmptyBinding` | `{{}}` — blank expression |
-| `MissingState` | `{{key}}` where `key` is absent from state |
+| `MissingState` | `<f-repeat>` list binding is absent from state |
 | `UnclosedDirective` | `<f-when>` / `<f-repeat>` with no matching close tag |
 | `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
 | `InvalidRepeatExpression` | Repeat value not in `item in list` format |
@@ -606,7 +606,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 Every error message includes a description of the problem and a snippet of the template near the error site to aid debugging:
 
 ```
-missing state: '{{title}}' has no matching key in the provided state — template: "…<h1>{{title}}</h1>…"
+missing state: '{{items}}' has no matching key in the provided state — template: "…<f-repeat value=\"{{item in items}}\">…"
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```

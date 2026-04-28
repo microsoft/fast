@@ -2,8 +2,7 @@ use wasm_bindgen::prelude::*;
 use std::collections::HashMap;
 use crate::{
     json, Locator, render_entry_template_with_locator, render_entry_with_locator_without_state,
-    render_template, render_template_with_locator, render_template_without_state,
-    render_with_locator_without_state,
+    render_template, render_template_without_state,
 };
 use crate::config::{RenderConfig, AttributeNameStrategy};
 
@@ -19,25 +18,6 @@ pub fn render(entry: &str, state: Option<String>) -> Result<String, JsValue> {
     .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
-/// Render a FAST HTML template with custom element templates and an optional JSON state string.
-/// Omitted state is treated as an empty object.
-/// `templates_json` is a JSON object mapping element names to their HTML template strings,
-/// e.g. `{"my-button": "<template>...</template>"}`.
-/// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
-/// or `"none"`. Pass an empty string for the default.
-/// Returns the rendered HTML or throws a JavaScript error.
-#[wasm_bindgen]
-pub fn render_with_templates(entry: &str, templates_json: &str, state: Option<String>, attribute_name_strategy: Option<String>) -> Result<String, JsValue> {
-    let templates = parse_templates_map(templates_json)?;
-    let locator = Locator::from_templates(templates);
-    let config = build_config(attribute_name_strategy.as_deref())?;
-    match state {
-        Some(state) => render_template_with_locator(entry, &state, &locator, config.as_ref()),
-        None => render_with_locator_without_state(entry, &locator, config.as_ref()),
-    }
-    .map_err(|e| JsValue::from_str(&e.to_string()))
-}
-
 /// Render the top-level **entry HTML** with custom element templates and an optional JSON state string.
 /// Omitted state is treated as an empty object.
 /// Custom elements found at the root level of `entry` build child state from the full root
@@ -45,12 +25,13 @@ pub fn render_with_templates(entry: &str, templates_json: &str, state: Option<St
 /// elements, primitive results (`string`, `number`, and `bool`) are preserved in the rendered
 /// output, while missing and non-primitive values (`array`, `object`, `null`) are stripped.
 ///
-/// `templates_json` is a JSON object mapping element names to their HTML template strings.
+/// `templates_json` is a JSON object mapping element names to their HTML template strings,
+/// e.g. `{"my-button": "<template>...</template>"}`.
 /// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
 /// or `"none"`. Pass an empty string for the default.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
-pub fn render_entry_with_templates(entry: &str, templates_json: &str, state: Option<String>, attribute_name_strategy: Option<String>) -> Result<String, JsValue> {
+pub fn render_with_templates(entry: &str, templates_json: &str, state: Option<String>, attribute_name_strategy: Option<String>) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_templates(templates);
     let config = build_config(attribute_name_strategy.as_deref())?;

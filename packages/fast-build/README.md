@@ -36,7 +36,7 @@ fast build [options]
 | Option | Default | Description |
 |---|---|---|
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
-| `--state="<path>"` | `state.json` if present, otherwise `{}` | JSON file containing the template state. If omitted and no default `state.json` exists, rendering uses an empty state object. If `--state` is provided, the file must exist. |
+| `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
@@ -83,12 +83,12 @@ Produces `output.html`:
 
 ### Missing or omitted state
 
-State is optional. When `--state` is omitted, `fast build` reads `state.json` from the current directory if it exists; if it does not exist, rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
+State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
 
 When a binding value is not present in state:
 
-- Content bindings render nothing: `<p>{{missing}}</p>` becomes `<p></p>`.
-- Attribute bindings omit the entire attribute: `<div class="{{missing}}"></div>` becomes `<div></div>`.
+- Content bindings render nothing, including unresolved dot paths: `<p>{{foo.bar}}</p>` becomes `<p></p>`.
+- Attribute bindings omit the entire attribute, including unresolved dot paths: `<div class="{{foo.bar}}"></div>` becomes `<div></div>`.
 - `<f-repeat>` still requires its list binding to resolve to an array and errors when the list is missing or not an array.
 
 ### Custom element templates
@@ -163,7 +163,7 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error. If `state` is omitted and no default `state.json` exists, rendering uses `{}`; if `state` is present, the referenced file must exist.
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error. If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist.
 
 ## Template syntax
 

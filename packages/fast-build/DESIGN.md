@@ -39,11 +39,11 @@ fast build [options]
         │                └─ wasm.parse_f_templates(html)  ← Rust parses <f-template>
         │
         ├─ fs.readFileSync(entry)   ← entry HTML template
-        ├─ fs.readFileSync(state)   ← state JSON, when provided or when default state.json exists
-        │       └─ missing omitted default state.json → empty object
+        ├─ fs.readFileSync(state)   ← state JSON, only when explicitly provided
+        │       └─ omitted state → WASM receives no state and renders with {}
         │
         ▼
-  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
+  wasm.render_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
         ▼
   fs.writeFileSync(output, rendered)
 ```
@@ -73,7 +73,7 @@ The CLI supports an optional JSON configuration file that provides default value
 
 CLI arguments always take precedence over config file values. The merge uses **presence-based** checking (`hasOwnProperty`), not truthiness, so an explicit `--entry=` on the command line will override a config file's `entry` value even if the CLI value is an empty string.
 
-When a value is not provided by either source, built-in defaults apply (`index.html`, `output.html`). State is optional: if neither CLI nor config provides `state`, the CLI reads the default `state.json` from the current working directory when it exists and otherwise calls WASM without a state value, which renders as `{}`.
+When a value is not provided by either source, built-in defaults apply (`index.html`, `output.html`). State is optional: if neither CLI nor config provides `state`, the CLI does not look for a state file and calls WASM without a state value, which renders as `{}`.
 
 ### Path resolution
 
@@ -90,7 +90,7 @@ The config file must be a JSON object. Each key must be one of the allowed optio
 | Function | Role |
 |----------|------|
 | `loadConfig(configPath)` | Reads, parses, and validates the config file. Returns `{ config, configDir }`. |
-| `resolveOption(args, config, configDir, key, defaultValue)` | Returns the CLI arg if present, otherwise the config value (with path resolution), otherwise the default. The caller separately tracks whether `state` was explicitly provided so an explicit missing state file errors while an omitted missing default uses `{}`. |
+| `resolveOption(args, config, configDir, key, defaultValue)` | Returns the CLI arg if present, otherwise the config value (with path resolution), otherwise the default. The caller separately tracks whether `state` was explicitly provided so an explicit missing state file errors while omitted state is passed through to WASM as `{}`. |
 
 ---
 
@@ -149,7 +149,7 @@ Three WASM functions are used:
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
-| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | At least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
+| `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | At least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.
@@ -170,7 +170,7 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 | Config file has non-string value | Print error to stderr; exit code 1 |
 | `--entry` file not found | Print error to stderr; exit code 1 |
 | Explicit `--state` or config `state` file not found | Print error to stderr; exit code 1 |
-| Omitted default `state.json` not found | Render with an empty state object (`{}`) |
+| State omitted | Do not check `state.json`; render with an empty state object (`{}`) |
 | `--templates` not provided | Warning to stderr; rendering continues without custom elements |
 | `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
 | Pattern matches no files | Warning to stderr; pattern is skipped |
