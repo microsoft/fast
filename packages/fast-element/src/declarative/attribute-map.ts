@@ -1,16 +1,35 @@
 import { AttributeDefinition } from "../components/attributes.js";
+import { setDefinitionSchemaTransform } from "../components/definition-schema-transforms.js";
 import {
     type FASTElementDefinition,
     type FASTElementExtension,
+    hasFASTElementTemplateResolver,
     trackLateAttributeDefinition,
 } from "../components/fast-definitions.js";
+import type { Schema } from "../components/schema.js";
 import { Observable } from "../observation/observable.js";
-import { setDefinitionElementOptions } from "./definition-options.js";
-import type { Schema } from "./schema.js";
+
+export {
+    type AccessCachedPath,
+    type CachedPath,
+    type CachedPathCommon,
+    type CachedPathMap,
+    type ChildrenMap,
+    type DefaultCachedPath,
+    type EventCachedPath,
+    type JSONSchema,
+    type JSONSchemaCommon,
+    type JSONSchemaDefinition,
+    type RegisterPathConfig,
+    type RepeatCachedPath,
+    Schema,
+    schemaRegistry,
+} from "../components/schema.js";
 
 /**
- * Configuration object for the attributeMap element option.
+ * Configuration object for the attributeMap extension.
  * Omitting all fields uses the default attribute-mapping behavior.
+ * @public
  */
 export interface AttributeMapConfig {
     /**
@@ -28,17 +47,50 @@ export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
 
+const attributeMapSchemaTransformKey = "attribute-map";
+const attributeMapSchemaTransformPriority = 0;
+
+function defineAttributeMap(
+    definition: FASTElementDefinition,
+    schema: Schema,
+    config: AttributeMapConfig,
+): void {
+    new AttributeMap(
+        definition.type.prototype,
+        schema,
+        definition,
+        config,
+    ).defineProperties();
+}
+
 /**
- * Creates a FAST element extension that enables declarative attribute mapping
- * for the resolved definition.
- * When called without arguments, uses the default attribute-mapping behavior.
+ * Creates a FAST element extension that enables schema-driven attribute mapping
+ * for the resolved definition. When called without arguments, uses the default
+ * attribute-mapping behavior. The extension uses `definition.schema` immediately
+ * for manual schemas, or the schema generated/augmented by `declarativeTemplate()`.
  * @public
  */
-export function attributeMap(option: AttributeMapConfig = {}): FASTElementExtension {
+export function attributeMap(config: AttributeMapConfig = {}): FASTElementExtension {
     return definition => {
-        setDefinitionElementOptions(definition, {
-            attributeMap: option,
-        });
+        const hasTemplateResolver = hasFASTElementTemplateResolver(definition);
+
+        if (definition.schema && !hasTemplateResolver) {
+            defineAttributeMap(definition, definition.schema, config);
+            return;
+        }
+
+        if (!hasTemplateResolver) {
+            throw new Error(
+                "attributeMap requires a schema. Provide one via FASTElement definition or use declarativeTemplate().",
+            );
+        }
+
+        setDefinitionSchemaTransform(
+            definition,
+            attributeMapSchemaTransformKey,
+            ({ definition, schema }) => defineAttributeMap(definition, schema, config),
+            attributeMapSchemaTransformPriority,
+        );
     };
 }
 
@@ -55,10 +107,10 @@ function camelToKebab(str: string): string {
 
 /**
  * AttributeMap provides functionality for detecting simple (leaf) properties in
- * a generated JSON schema and defining them as @attr properties on a class prototype.
+ * a generated JSON schema and defining them as attr properties on a class prototype.
  *
- * A property is a candidate for @attr when its schema entry has no nested `properties`,
- * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
+ * A property is a candidate for attr when its schema entry has no nested `properties`,
+ * no `type`, and no `anyOf` — for example, a plain `foo` binding.
  *
  * When `attribute-name-strategy` is `"camelCase"` (the default), the binding key is treated as a
  * camelCase property name and the HTML attribute name is derived by converting it to
@@ -68,8 +120,9 @@ function camelToKebab(str: string): string {
  * When `attribute-name-strategy` is `"none"`, the binding key is used
  * as both the attribute name and property name — no normalization is applied.
  *
- * Properties already decorated with `@attr` or `@observable` on the class are left
+ * Properties already decorated with `attr` or `observable` on the class are left
  * untouched.
+ * @public
  */
 export class AttributeMap {
     private schema: Schema;
@@ -80,7 +133,7 @@ export class AttributeMap {
     constructor(
         classPrototype: any,
         schema: Schema,
-        definition?: FASTElementDefinition,
+        definition?: any,
         config?: AttributeMapConfig,
     ) {
         this.classPrototype = classPrototype;

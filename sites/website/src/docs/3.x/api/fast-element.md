@@ -34,7 +34,7 @@ Description
 
 </td><td>
 
-An implementation of [Accessor](../fast-element.accessor/) that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
 
 
 </td></tr>
@@ -46,6 +46,17 @@ An implementation of [Accessor](../fast-element.accessor/) that supports reactiv
 </td><td>
 
 The runtime behavior for child node observation.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultExecutionContext](../fast-element.defaultexecutioncontext/)
+
+
+</td><td>
+
+The default execution context for template views.
 
 
 </td></tr>
@@ -105,27 +116,6 @@ The aspectType (set by HTMLDirective.assignAspect during template processing) de
 </td><td>
 
 The standard View implementation, which also implements ElementView and SyntheticView.
-
-
-</td></tr>
-<tr><td>
-
-[HydrationBindingError](../fast-element.hydrationbindingerror/)
-
-
-</td><td>
-
-
-
-</td></tr>
-<tr><td>
-
-[HydrationTracker](../fast-element.hydrationtracker/)
-
-
-</td><td>
-
-Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
 
 
 </td></tr>
@@ -203,6 +193,17 @@ A behavior that renders a template for each item in an array.
 </td><td>
 
 A directive that configures list rendering.
+
+
+</td></tr>
+<tr><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+A constructed JSON schema from a template
 
 
 </td></tr>
@@ -389,6 +390,52 @@ A directive that observes the `childNodes` of an element and updates a property 
 </td></tr>
 <tr><td>
 
+[composedContains(reference, test)](../fast-element.composedcontains/)
+
+
+</td><td>
+
+Determines if the reference element contains the test element in a "composed" DOM tree that ignores shadow DOM boundaries.
+
+Returns true of the test element is a descendent of the reference, or exists in a shadow DOM that is a logical descendent of the reference. Otherwise returns false.
+
+
+</td></tr>
+<tr><td>
+
+[composedParent(element)](../fast-element.composedparent/)
+
+
+</td><td>
+
+Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries. When the parent of a node is a shadow-root, it will return the host element of the shadow root. Otherwise it will return the parent node or null if no parent node exists.
+
+
+</td></tr>
+<tr><td>
+
+[computedState(initialize, name)](../fast-element.computedstate/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a ComputedState.
+
+
+</td></tr>
+<tr><td>
+
+[cssDirective()](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Decorator: Defines a CSSDirective.
+
+
+</td></tr>
+<tr><td>
+
 [customElement(nameOrDef)](../fast-element.customelement/)
 
 
@@ -411,12 +458,12 @@ Creates a function that can be used to filter a Node array, selecting only eleme
 </td></tr>
 <tr><td>
 
-[enableHydration(options)](../fast-element.enablehydration/)
+[enableDebug()](../fast-element.enabledebug/)
 
 
 </td><td>
 
-Enables hydration support for prerendered FAST elements.
+Enables human-readable FAST debug messages.
 
 
 </td></tr>
@@ -433,45 +480,12 @@ Decorator: Defines an HTMLDirective.
 </td></tr>
 <tr><td>
 
-[isHydratable(view)](../fast-element.ishydratable/)
+[lengthOf(array)](../fast-element.lengthof/)
 
 
 </td><td>
 
-**_(BETA)_** Tests if a template or ViewController is hydratable.
-
-
-</td></tr>
-<tr><td>
-
-[isHydratable(template)](../fast-element.ishydratable_1/)
-
-
-</td><td>
-
-**_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
-[isHydratable(template)](../fast-element.ishydratable_2/)
-
-
-</td><td>
-
-**_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
-[isHydratable(template)](../fast-element.ishydratable_3/)
-
-
-</td><td>
-
-**_(BETA)_**
+Enables observing the length of an array.
 
 
 </td></tr>
@@ -532,6 +546,28 @@ Creates an standard binding.
 </td></tr>
 <tr><td>
 
+[ownedState(value, options)](../fast-element.ownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a reactive state that has its value associated with a specific owner.
+
+
+</td></tr>
+<tr><td>
+
+[reactive(object, deep)](../fast-element.reactive/)
+
+
+</td><td>
+
+**_(BETA)_** Converts a plain object to a reactive, observable object.
+
+
+</td></tr>
+<tr><td>
+
 [ref(propertyName)](../fast-element.ref/)
 
 
@@ -565,6 +601,17 @@ A directive that enables list rendering.
 </td></tr>
 <tr><td>
 
+[signal(expression, options, policy)](../fast-element.signal/)
+
+
+</td><td>
+
+Creates a signal binding configuration with the supplied options.
+
+
+</td></tr>
+<tr><td>
+
 [slotted(propertyOrOptions)](../fast-element.slotted/)
 
 
@@ -576,12 +623,56 @@ A directive that observes the `assignedNodes()` of a slot and updates a property
 </td></tr>
 <tr><td>
 
+[sortedCount(array)](../fast-element.sortedcount/)
+
+
+</td><td>
+
+Enables observing the sorted property of an array.
+
+
+</td></tr>
+<tr><td>
+
+[state(value, options)](../fast-element.state/)
+
+
+</td><td>
+
+**_(BETA)_** Creates a reactive state value.
+
+
+</td></tr>
+<tr><td>
+
+[twoWay(expression, optionsOrChangeEvent, policy, isBindingVolatile)](../fast-element.twoway/)
+
+
+</td><td>
+
+Creates a default binding.
+
+
+</td></tr>
+<tr><td>
+
 [volatile(target, name, descriptor)](../fast-element.volatile/)
 
 
 </td><td>
 
 Decorator: Marks a property getter as having volatile observable dependencies.
+
+
+</td></tr>
+<tr><td>
+
+[watch(object, subscriber)](../fast-element.watch/)
+
+
+</td><td>
+
+**_(BETA)_** Deeply subscribes to changes in existing observable objects.
 
 
 </td></tr>
@@ -613,12 +704,34 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AccessCachedPath](../fast-element.accesscachedpath/)
+
+
+</td><td>
+
+A path discovered from an access expression.
+
+
+</td></tr>
+<tr><td>
+
 [Accessor](../fast-element.accessor/)
 
 
 </td><td>
 
 Represents a getter/setter property accessor on an object.
+
+
+</td></tr>
+<tr><td>
+
+[ArrayObserver](../fast-element.arrayobserver/)
+
+
+</td><td>
+
+An observer for arrays.
 
 
 </td></tr>
@@ -646,6 +759,17 @@ The directive from which a binding originates.
 </td></tr>
 <tr><td>
 
+[CachedPathCommon](../fast-element.cachedpathcommon/)
+
+
+</td><td>
+
+Common metadata for paths cached while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
 [CaptureType](../fast-element.capturetype/)
 
 
@@ -663,6 +787,17 @@ A marker interface used to capture types when interpolating Directive helpers in
 </td><td>
 
 The options used to configure child list observation.
+
+
+</td></tr>
+<tr><td>
+
+[ChildrenMap](../fast-element.childrenmap/)
+
+
+</td><td>
+
+Describes a child custom element binding referenced by a schema path.
 
 
 </td></tr>
@@ -690,23 +825,45 @@ A simple View that can be interpolated into HTML content.
 </td></tr>
 <tr><td>
 
+[CSSDirective](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Directive for use in CSS templates.
+
+
+</td></tr>
+<tr><td>
+
+[CSSDirectiveDefinition](../fast-element.cssdirectivedefinition/)
+
+
+</td><td>
+
+Defines metadata for a CSSDirective.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCachedPath](../fast-element.defaultcachedpath/)
+
+
+</td><td>
+
+A path discovered from a default binding.
+
+
+</td></tr>
+<tr><td>
+
 [Disposable](../fast-element.disposable/)
 
 
 </td><td>
 
 Provides a mechanism for releasing resources.
-
-
-</td></tr>
-<tr><td>
-
-[DOMPolicy](../fast-element.dompolicy/)
-
-
-</td><td>
-
-A security policy that FAST can use to interact with the DOM.
 
 
 </td></tr>
@@ -740,6 +897,17 @@ A View representing DOM nodes specifically for rendering the view of a custom el
 </td><td>
 
 A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[EventCachedPath](../fast-element.eventcachedpath/)
+
+
+</td><td>
+
+A path discovered from an event binding.
 
 
 </td></tr>
@@ -855,22 +1023,45 @@ The result of a template compilation operation.
 </td></tr>
 <tr><td>
 
-[HydratableView](../fast-element.hydratableview/)
+[JSONSchema](../fast-element.jsonschema/)
 
 
 </td><td>
 
+A JSON schema describing a root property.
 
 
 </td></tr>
 <tr><td>
 
-[HydrationOptions](../fast-element.hydrationoptions/)
+[JSONSchemaCommon](../fast-element.jsonschemacommon/)
 
 
 </td><td>
 
-Options for configuring global hydration lifecycle events.
+Common properties shared by schema nodes.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaDefinition](../fast-element.jsonschemadefinition/)
+
+
+</td><td>
+
+A reusable JSON schema definition.
+
+
+</td></tr>
+<tr><td>
+
+[LengthObserver](../fast-element.lengthobserver/)
+
+
+</td><td>
+
+Observes array lengths.
 
 
 </td></tr>
@@ -931,6 +1122,28 @@ Represents metadata configuration for an HTMLDirective.
 </td></tr>
 <tr><td>
 
+[RegisterPathConfig](../fast-element.registerpathconfig/)
+
+
+</td><td>
+
+Configuration for registering a path with a schema.
+
+
+</td></tr>
+<tr><td>
+
+[RepeatCachedPath](../fast-element.repeatcachedpath/)
+
+
+</td><td>
+
+A path discovered from a repeat directive.
+
+
+</td></tr>
+<tr><td>
+
 [RepeatOptions](../fast-element.repeatoptions/)
 
 
@@ -959,6 +1172,28 @@ Shadow root initialization options.
 </td><td>
 
 The options used to configure slotted node observation.
+
+
+</td></tr>
+<tr><td>
+
+[SortObserver](../fast-element.sortobserver/)
+
+
+</td><td>
+
+Observes array sort.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategy](../fast-element.splicestrategy/)
+
+
+</td><td>
+
+An approach to tracking changes in an array.
 
 
 </td></tr>
@@ -1041,6 +1276,17 @@ Lifecycle callbacks for template events.
 </td></tr>
 <tr><td>
 
+[TwoWaySettings](../fast-element.twowaysettings/)
+
+
+</td><td>
+
+The settings required to enable two-way binding.
+
+
+</td></tr>
+<tr><td>
+
 [UpdateQueue](../fast-element.updatequeue/)
 
 
@@ -1096,6 +1342,17 @@ A factory that can create a [ViewBehavior](../fast-element.viewbehavior/) associ
 </td></tr>
 <tr><td>
 
+[ViewBehaviorOrchestrator](../fast-element.viewbehaviororchestrator/)
+
+
+</td><td>
+
+Bridges between ViewBehaviors and HostBehaviors, enabling a host to control ViewBehaviors.
+
+
+</td></tr>
+<tr><td>
+
 [ViewController](../fast-element.viewcontroller/)
 
 
@@ -1121,6 +1378,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[ArrayObserver](../fast-element.arrayobserver/)
+
+
+</td><td>
+
+An observer for arrays.
+
+
+</td></tr>
+<tr><td>
 
 [AttributeConfiguration](../fast-element.attributeconfiguration/)
 
@@ -1155,6 +1423,28 @@ Common APIs related to compilation.
 </td></tr>
 <tr><td>
 
+[css](../fast-element.css/)
+
+
+</td><td>
+
+Transforms a template literal string into styles.
+
+
+</td></tr>
+<tr><td>
+
+[CSSDirective](../fast-element.cssdirective/)
+
+
+</td><td>
+
+Instructs the css engine to provide styles during CSS template composition.
+
+
+</td></tr>
+<tr><td>
+
 [DOM](../fast-element.dom/)
 
 
@@ -1172,6 +1462,17 @@ Common DOM APIs.
 </td><td>
 
 The type of HTML aspect to target.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A helper for creating DOM policies.
 
 
 </td></tr>
@@ -1298,6 +1599,28 @@ Common APIs related to content parsing.
 </td></tr>
 <tr><td>
 
+[schemaRegistry](../fast-element.schemaregistry/)
+
+
+</td><td>
+
+Module-level registry that maps custom element names to their schema maps. Used for cross-element `$ref` resolution (e.g. nested element schemas). Each Schema instance registers itself here on construction.
+
+
+</td></tr>
+<tr><td>
+
+[Signal](../fast-element.signal/)
+
+
+</td><td>
+
+The gateway to signal APIs.
+
+
+</td></tr>
+<tr><td>
+
 [SourceLifetime](../fast-element.sourcelifetime/)
 
 
@@ -1309,12 +1632,56 @@ Describes how the source's lifetime relates to its controller's lifetime.
 </td></tr>
 <tr><td>
 
+[SpliceStrategy](../fast-element.splicestrategy/)
+
+
+</td><td>
+
+Functionality related to tracking changes in arrays.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategySupport](../fast-element.splicestrategysupport/)
+
+
+</td><td>
+
+Indicates what level of feature support the splice strategy provides.
+
+
+</td></tr>
+<tr><td>
+
+[TwoWaySettings](../fast-element.twowaysettings/)
+
+
+</td><td>
+
+Enables configuring two-way binding settings.
+
+
+</td></tr>
+<tr><td>
+
 [Updates](../fast-element.updates/)
 
 
 </td><td>
 
 The default UpdateQueue.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehaviorOrchestrator](../fast-element.viewbehaviororchestrator/)
+
+
+</td><td>
+
+Bridges between ViewBehaviors and HostBehaviors, enabling a host to control ViewBehaviors.
 
 
 </td></tr>
@@ -1363,6 +1730,28 @@ Metadata used to configure a custom attribute's behavior.
 </td><td>
 
 The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPath](../fast-element.cachedpath/)
+
+
+</td><td>
+
+A path discovered while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathMap](../fast-element.cachedpathmap/)
+
+
+</td><td>
+
+A map from element names and root properties to JSON schemas.
 
 
 </td></tr>
@@ -1434,6 +1823,50 @@ Represents styles that can be composed into the ShadowDOM of a custom element.
 </td></tr>
 <tr><td>
 
+[ComputedBuilder](../fast-element.computedbuilder/)
+
+
+</td><td>
+
+**_(BETA)_** Provides computed state capabilities.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedInitializer](../fast-element.computedinitializer/)
+
+
+</td><td>
+
+**_(BETA)_** A callback that initializes the computation.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedSetupCallback](../fast-element.computedsetupcallback/)
+
+
+</td><td>
+
+**_(BETA)_** A callback that enables computation setup.
+
+
+</td></tr>
+<tr><td>
+
+[ComputedState](../fast-element.computedstate/)
+
+
+</td><td>
+
+**_(BETA)_** State whose value is computed from other dependencies.
+
+
+</td></tr>
+<tr><td>
+
 [Constructable](../fast-element.constructable/)
 
 
@@ -1451,6 +1884,28 @@ Represents a type which can be constructed with the new operator.
 </td><td>
 
 A type that instantiates a StyleStrategy.
+
+
+</td></tr>
+<tr><td>
+
+[CSSTemplateTag](../fast-element.csstemplatetag/)
+
+
+</td><td>
+
+Transforms a template literal string into styles.
+
+
+</td></tr>
+<tr><td>
+
+[CSSValue](../fast-element.cssvalue/)
+
+
+</td><td>
+
+Represents the types of values that can be interpolated into a template.
 
 
 </td></tr>
@@ -1478,12 +1933,67 @@ The type of HTML aspect to target.
 </td></tr>
 <tr><td>
 
+[DOMAspectGuards](../fast-element.domaspectguards/)
+
+
+</td><td>
+
+Aspect-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMElementGuards](../fast-element.domelementguards/)
+
+
+</td><td>
+
+Element-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMGuards](../fast-element.domguards/)
+
+
+</td><td>
+
+Guard configuration for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicyOptions](../fast-element.dompolicyoptions/)
+
+
+</td><td>
+
+Options for creating a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
 [DOMSink](../fast-element.domsink/)
 
 
 </td><td>
 
 A function used to send values to a DOM sink.
+
+
+</td></tr>
+<tr><td>
+
+[DOMSinkGuards](../fast-element.domsinkguards/)
+
+
+</td><td>
+
+A specific DOM sink guard for a node aspect.
 
 
 </td></tr>
@@ -1544,12 +2054,78 @@ Transforms a template literal string into a ViewTemplate.
 </td></tr>
 <tr><td>
 
+[OwnedState](../fast-element.ownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** A read/write stateful value associated with an owner.
+
+
+</td></tr>
+<tr><td>
+
+[ReadonlyOwnedState](../fast-element.readonlyownedstate/)
+
+
+</td><td>
+
+**_(BETA)_** A readonly stateful value associated with an object owner.
+
+
+</td></tr>
+<tr><td>
+
+[ReadonlyState](../fast-element.readonlystate/)
+
+
+</td><td>
+
+**_(BETA)_** A readonly stateful value.
+
+
+</td></tr>
+<tr><td>
+
 [SourceLifetime](../fast-element.sourcelifetime/)
 
 
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
+
+
+</td></tr>
+<tr><td>
+
+[SpliceStrategySupport](../fast-element.splicestrategysupport/)
+
+
+</td><td>
+
+The available values for SpliceStrategySupport.
+
+
+</td></tr>
+<tr><td>
+
+[State](../fast-element.state/)
+
+
+</td><td>
+
+**_(BETA)_** A read/write stateful value.
+
+
+</td></tr>
+<tr><td>
+
+[StateOptions](../fast-element.stateoptions/)
+
+
+</td><td>
+
+**_(BETA)_** Options for creating state.
 
 
 </td></tr>
@@ -1572,6 +2148,17 @@ Represents the types of values that can be interpolated into a template.
 </td><td>
 
 A policy for use with the standard trustedTypes platform API.
+
+
+</td></tr>
+<tr><td>
+
+[TwoWayBindingOptions](../fast-element.twowaybindingoptions/)
+
+
+</td><td>
+
+The twoWay binding options.
 
 
 </td></tr>

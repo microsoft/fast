@@ -118,6 +118,10 @@ export function removeNodeSequence(firstNode: Node, lastNode: Node): void {
     parent.removeChild(lastNode);
 }
 
+/**
+ * The default execution context for template views.
+ * @public
+ */
 export class DefaultExecutionContext<TParent> implements ExecutionContext<TParent> {
     /**
      * The index of the current item within a repeat context.

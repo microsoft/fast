@@ -20,6 +20,6 @@ Internally, the DI system maps "keys" to "resolvers". A resolver controls how a 
 **Signature:**
 
 ```typescript
-export interface Resolver<K = any> extends ResolverLike<Container, K> 
+export interface Resolver<K = any> extends ResolverLike<Container, K>
 ```
 **Extends:** ResolverLike&lt;[Container](../fast-element.container/)<!-- -->, K&gt;

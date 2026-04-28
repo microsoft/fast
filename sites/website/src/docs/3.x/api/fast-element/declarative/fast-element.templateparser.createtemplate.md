@@ -77,4 +77,4 @@ The interpreted values.
 
 **Returns:**
 
-ViewTemplate&lt;any, any&gt;
+[ViewTemplate](../fast-element.viewtemplate/)<!-- -->&lt;any, any&gt;

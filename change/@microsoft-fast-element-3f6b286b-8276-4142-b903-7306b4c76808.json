@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Remove the public declarative TemplateElement configuration APIs and make declarative templates use an internal native f-template publisher with explicit hydration opt-in.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

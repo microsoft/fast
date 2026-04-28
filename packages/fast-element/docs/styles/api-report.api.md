@@ -18,9 +18,6 @@ export type ConstructibleStyleStrategy = {
 };
 
 // @public
-export const css: CSSTemplateTag;
-
-// @public
 export interface CSSDirective {
     createCSS(): ComposableStyles;
 }
@@ -39,14 +36,6 @@ export function cssDirective(): (type: Constructable<CSSDirective>) => void;
 export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective> = Constructable<CSSDirective>> {
     readonly type: TType;
 }
-
-// @public
-export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: CSSValue[]) => ElementStyles) & {
-    partial(strings: TemplateStringsArray, ...values: CSSValue[]): CSSDirective;
-};
-
-// @public
-export type CSSValue = ComposableStyles | CSSDirective;
 
 // @public
 export class ElementStyles {

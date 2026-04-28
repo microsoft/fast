@@ -7,5 +7,5 @@ performance monitoring.
 | Fixture | Description |
 |---|---|
 | `errors` | Error handling and edge cases in template rendering. |
-| `lifecycle-callbacks` | `TemplateElement` lifecycle callbacks such as `elementDidRegister`, `hydrationComplete`, etc. |
+| `lifecycle-callbacks` | `declarativeTemplate()` and `enableHydration()` lifecycle callbacks such as `elementDidRegister`, `elementDidHydrate`, and `hydrationComplete`. |
 | `performance-metrics` | Performance monitoring and measurements during the component lifecycle. |

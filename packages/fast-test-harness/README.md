@@ -128,16 +128,17 @@ setTheme(lightTheme);
 </html>
 ```
 
-**`entry-client.ts`** imports the harness SSR entry (which defines the `<f-template>` element) and registers components for DSD hydration using `define`:
+**`entry-client.ts`** imports the harness SSR entry (which enables hydration) and registers components. Component definition modules should use `template: declarativeTemplate()`; this automatically defines FAST's internal `<f-template>` publisher.
 
 ```ts
 import "@microsoft/fast-test-harness/ssr/entry-client.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 import { MyButton, definition } from "../../src/button/index.js";
 
 MyButton.define({
     name: definition.name,
-    templateOptions: "defer-and-hydrate",
+    template: declarativeTemplate(),
 });
 ```
 
@@ -266,6 +267,7 @@ CLI flags take precedence over environment variables.
 | `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState` |
+| `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |

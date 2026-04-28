@@ -1,3 +1,3 @@
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-TemplateElement.define({ name: "f-template" });
+enableHydration();

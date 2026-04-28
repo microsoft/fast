@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add definition-scoped declarative map extensions.",
+  "comment": "Add schema-driven attributeMap and observerMap extension subpaths, optional definition schema, and observerMap schema configuration.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

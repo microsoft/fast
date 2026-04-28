@@ -175,4 +175,63 @@ test.describe("The prerendered content optimization", () => {
         expect(result.isPrerendered).toBe(false);
         expect(result.shadowContent).toContain("CSR rendered");
     });
+
+    test("should fire global hydration callbacks for subsequent batches", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            const events: string[] = [];
+            const name = uniqueElementName();
+
+            enableHydration({
+                hydrationStarted() {
+                    events.push("start");
+                },
+                hydrationComplete() {
+                    events.push("complete");
+                },
+            });
+
+            (
+                await FASTElementDefinition.compose(
+                    class TestElement extends FASTElement {
+                        static definition = {
+                            name,
+                            template: html`<span>hydrated</span>`,
+                        };
+                    },
+                )
+            ).define();
+
+            async function appendPrerenderedElement() {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span>hydrated</span></template></${name}>`,
+                );
+
+                const element = container.firstElementChild as any;
+                await element.$fastController.isHydrated;
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
+
+            await appendPrerenderedElement();
+            await appendPrerenderedElement();
+
+            return events;
+        });
+
+        expect(result).toEqual(["start", "complete", "start", "complete"]);
+    });
 });

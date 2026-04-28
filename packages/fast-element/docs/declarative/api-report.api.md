@@ -5,59 +5,227 @@
 ```ts
 
 // @public
-export class AttributeMap {
-    // Warning: (ae-forgotten-export) The symbol "FASTElementDefinition" needs to be exported by the entry point declarative.d.ts
-    constructor(classPrototype: any, schema: Schema, definition?: FASTElementDefinition, config?: AttributeMapConfig);
+export interface AccessCachedPath extends CachedPathCommon {
     // (undocumented)
-    defineProperties(): void;
+    type: "access";
 }
 
 // @public
-export function attributeMap(option?: AttributeMapConfig): FASTElementExtension;
-
-// @public
-export interface AttributeMapConfig {
-    "attribute-name-strategy"?: "none" | "camelCase";
+export interface Accessor {
+    getValue(source: any): any;
+    name: string;
+    setValue(source: any, value: any): void;
 }
 
-// @public (undocumented)
+// @public
+export type AttributeConfiguration = {
+    property: string;
+    attribute?: string;
+    mode?: AttributeMode;
+    converter?: ValueConverter;
+};
+
+// @public
+export const AttributeConfiguration: Readonly<{
+    locate: (target: {}) => AttributeConfiguration[];
+}>;
+
+// @public
+export class AttributeDefinition implements Accessor {
+    constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
+    readonly attribute: string;
+    // @internal
+    static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
+    readonly converter?: ValueConverter;
+    getValue(source: HTMLElement): any;
+    readonly mode: AttributeMode;
+    readonly name: string;
+    // @internal (undocumented)
+    onAttributeChangedCallback(element: HTMLElement, value: any): void;
+    readonly Owner: Function;
+    setValue(source: HTMLElement, newValue: any): void;
+}
+
+// @public
+export type AttributeMode = "reflect" | "boolean" | "fromView";
+
+// @public
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
+
+// @public
+export interface CachedPathCommon {
+    // (undocumented)
+    currentContext: string | null;
+    // (undocumented)
+    parentContext: string | null;
+    // (undocumented)
+    path: string;
+}
+
+// @public
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
-// Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
-// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
-//
+// @public
+export interface CaptureType {
+}
+
+// @public
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
+
+// @public
+export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+
+// @public
+export type Constructable<T = {}> = {
+    new (...args: any[]): T;
+};
+
+// @public
+export type ConstructibleStyleStrategy = {
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
+
 // @public
 export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 
 // @public
-export interface ElementOptions {
+export interface DefaultCachedPath extends CachedPathCommon {
     // (undocumented)
-    attributeMap?: AttributeMapConfig;
-    // (undocumented)
-    observerMap?: ObserverMapConfig;
+    type: "default";
 }
 
 // @public
-export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
+export interface DOMPolicy {
+    createHTML(value: string): string;
+    // Warning: (ae-forgotten-export) The symbol "DOMAspect" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "DOMSink" needs to be exported by the entry point index.d.ts
+    protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
+}
+
+// @public
+export class ElementStyles {
+    constructor(styles: ReadonlyArray<ComposableStyles>);
+    // @internal (undocumented)
+    addStylesTo(target: StyleTarget): void;
+    // @internal (undocumented)
+    isAttachedTo(target: StyleTarget): boolean;
+    static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
+    // @internal (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
+    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
+    get strategy(): StyleStrategy;
     // (undocumented)
-    [key: string]: ElementOptionsType;
+    readonly styles: ReadonlyArray<ComposableStyles>;
+    static readonly supportsAdoptedStyleSheets: boolean;
+    withStrategy(Strategy: ConstructibleStyleStrategy): this;
+}
+
+// Warning: (ae-forgotten-export) The symbol "View" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
+    appendTo(node: Node): void;
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): any;
+    }): void;
+    // Warning: (ae-forgotten-export) The symbol "SourceLifetime" needs to be exported by the entry point index.d.ts
+    readonly sourceLifetime?: SourceLifetime;
+}
+
+// @public
+export interface ElementViewTemplate<TSource = any, TParent = any> {
+    create(hostBindingTarget: Element): ElementView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
+}
+
+// @public
+export interface EventCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "event";
+}
+
+// @public
+export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
+    readonly attributeLookup: Record<string, AttributeDefinition>;
+    readonly attributes: ReadonlyArray<AttributeDefinition>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
+    define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
+    readonly elementOptions: ElementDefinitionOptions;
+    static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
+    static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
+    get isDefined(): boolean;
+    static isRegistered: Record<string, Function>;
+    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
+    readonly name: string;
+    readonly propertyLookup: Record<string, AttributeDefinition>;
+    // @alpha
+    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
+    // @internal
+    static registerBaseType(type: Function): void;
+    readonly registry: CustomElementRegistry;
+    schema?: Schema;
+    shadowOptions?: ShadowRootOptions;
+    readonly styles?: ElementStyles;
+    template?: ElementViewTemplate<InstanceType<TType>>;
+    readonly type: TType;
 }
 
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
-// @public @deprecated
-export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
+// @public
+export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
+
+// @public
+export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
+    createView(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    // Warning: (ae-forgotten-export) The symbol "CompiledViewBehaviorFactory" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly factories: CompiledViewBehaviorFactory[];
 }
 
-// Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point declarative.d.ts
+// Warning: (ae-forgotten-export) The symbol "DefaultExecutionContext" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "SyntheticView" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ExecutionContext" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
-export interface JSONSchema extends JSONSchemaCommon {
-    // Warning: (ae-forgotten-export) The symbol "JSONSchemaDefinition" needs to be exported by the entry point declarative.d.ts
+// @public
+export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
+    constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
+    appendTo(node: Node): void;
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
+    context: ExecutionContext<TParent>;
+    dispose(): void;
+    static disposeContiguousBatch(views: SyntheticView[]): void;
+    firstChild: Node;
+    insertBefore(node: Node): void;
+    isBound: boolean;
+    isHydrated: Promise<boolean>;
+    isPrerendered: Promise<boolean>;
+    lastChild: Node;
+    // (undocumented)
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): void;
+    }): void;
+    remove(): void;
+    // @internal
+    _skipAttrUpdates: boolean;
+    source: TSource | null;
+    readonly sourceLifetime: SourceLifetime;
+    // Warning: (ae-forgotten-export) The symbol "ViewBehaviorTargets" needs to be exported by the entry point index.d.ts
     //
+    // (undocumented)
+    readonly targets: ViewBehaviorTargets;
+    unbind(): void;
+}
+
+// @public
+export interface JSONSchema extends JSONSchemaCommon {
     // (undocumented)
     $defs?: Record<string, JSONSchemaDefinition>;
     // (undocumented)
@@ -67,31 +235,55 @@ export interface JSONSchema extends JSONSchemaCommon {
 }
 
 // @public
-export class ObserverMap {
-    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
-
-// @public
-export function observerMap(option?: ObserverMapConfig): FASTElementExtension;
-
-// @public
-export interface ObserverMapConfig {
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-}
-
-// @public
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-// @public
-export interface ObserverMapPathNode {
-    // (undocumented)
+export interface JSONSchemaCommon {
     $observe?: boolean;
     // (undocumented)
-    [propertyName: string]: ObserverMapPathEntry | undefined;
+    $ref?: string;
+    // (undocumented)
+    anyOf?: Array<any>;
+    // (undocumented)
+    items?: any;
+    // (undocumented)
+    properties?: any;
+    // (undocumented)
+    type?: string;
+}
+
+// @public
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
+}
+
+// @public
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
+    readonly attributes?: (AttributeConfiguration | string)[];
+    readonly elementOptions?: ElementDefinitionOptions;
+    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
+    readonly name: string;
+    readonly registry?: CustomElementRegistry;
+    readonly schema?: Schema;
+    readonly shadowOptions?: Partial<ShadowRootOptions> | null;
+    readonly styles?: ComposableStyles | ComposableStyles[];
+    readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
+}
+
+// @public
+export interface RegisterPathConfig {
+    // (undocumented)
+    childrenMap: ChildrenMap | null;
+    // (undocumented)
+    pathConfig: CachedPath;
+    // (undocumented)
+    rootPropertyName: string;
+}
+
+// @public
+export interface RepeatCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "repeat";
 }
 
 // @public
@@ -105,7 +297,6 @@ export interface ResolvedStringsAndValues {
 // @public
 export class Schema {
     constructor(name: string);
-    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point declarative.d.ts
     addPath(config: RegisterPathConfig): void;
     getRootProperties(): IterableIterator<string>;
     getSchema(rootPropertyName: string): JSONSchema | null;
@@ -114,35 +305,92 @@ export class Schema {
 // @public
 export const schemaRegistry: CachedPathMap;
 
-// Warning: (ae-forgotten-export) The symbol "FASTElement" needs to be exported by the entry point declarative.d.ts
-// Warning: (ae-forgotten-export) The symbol "TemplatePublisher" needs to be exported by the entry point declarative.d.ts
-//
 // @public
-export class TemplateElement extends FASTElement implements TemplatePublisher {
-    constructor();
-    // @deprecated
-    static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
-    // (undocumented)
-    connectedCallback(): void;
-    // (undocumented)
-    disconnectedCallback(): void;
-    static elementOptions: ElementOptionsDictionary;
-    name?: string;
-    // (undocumented)
-    nameChanged(previousName: string | undefined, nextName: string | undefined): void;
-    static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
-    // Warning: (ae-forgotten-export) The symbol "ElementViewTemplate" needs to be exported by the entry point declarative.d.ts
-    //
-    // @internal
-    publishTemplate(definition: FASTElementDefinition): ElementViewTemplate;
+export interface ShadowRootOptions extends ShadowRootInit {
+    // @beta
+    registry?: CustomElementRegistry;
+}
+
+// @public
+export interface StyleStrategy {
+    addStylesTo(target: StyleTarget): void;
+    removeStylesFrom(target: StyleTarget): void;
+}
+
+// @public
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
+    adoptedStyleSheets?: CSSStyleSheet[];
+    append(styles: HTMLStyleElement): void;
+    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
+    removeChild(styles: HTMLStyleElement): void;
+}
+
+// @public
+export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+    create(): SyntheticView<TSource, TParent>;
+    inline(): CaptureType;
+}
+
+// @public
+export interface TemplateLifecycleCallbacks {
+    elementDidDefine?(name: string): void;
+    elementDidHydrate?(source: HTMLElement): void;
+    elementDidRegister?(name: string): void;
+    elementWillHydrate?(source: HTMLElement): void;
+    templateDidUpdate?(name: string): void;
+    templateWillUpdate?(name: string): void;
 }
 
 // @public
 export class TemplateParser {
-    // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point declarative.d.ts
     createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
     parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }
+
+// Warning: (ae-forgotten-export) The symbol "Expression" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "Binding" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "HTMLDirective" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
+
+// @public
+export interface ValueConverter {
+    fromView(value: any): any;
+    toView(value: any): any;
+}
+
+// @public
+export interface ViewBehavior<TSource = any, TParent = any> {
+    bind(controller: ViewController<TSource, TParent>): void;
+}
+
+// @public
+export interface ViewBehaviorFactory {
+    createBehavior(): ViewBehavior;
+    id?: string;
+    policy?: DOMPolicy;
+    targetNodeId?: string;
+    targetTagName?: string | null;
+}
+
+// @public
+export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
+    // @internal (undocumented)
+    compile(): HTMLTemplateCompilationResult<TSource, TParent>;
+    create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
+    readonly factories: Record<string, ViewBehaviorFactory>;
+    readonly html: string | HTMLTemplateElement;
+    inline(): CaptureType;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    withPolicy(policy: DOMPolicy): this;
+}
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/templating/view.d.ts:45:9 - (ae-forgotten-export) The symbol "ViewController" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

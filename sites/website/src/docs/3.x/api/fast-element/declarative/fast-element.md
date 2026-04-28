@@ -29,31 +29,45 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMap](../fast-element.attributemap/)
+[AttributeDefinition](../fast-element.attributedefinition/)
 
 
 </td><td>
 
-AttributeMap provides functionality for detecting simple (leaf) properties in a generated JSON schema and defining them as  properties on a class prototype.
-
-A property is a candidate for  when its schema entry has no nested `properties`<!-- -->, no `type`<!-- -->, and no `anyOf` — i.e. it is a plain binding like {<!-- -->{<!-- -->foo<!-- -->}<!-- -->} or id="<!-- -->{<!-- -->{<!-- -->foo-bar<!-- -->}<!-- -->}<!-- -->".
-
-When `attribute-name-strategy` is `"camelCase"` (the default), the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. property `fooBar` → attribute `foo-bar`<!-- -->). This matches the build-time `attribute-name-strategy` option in `@microsoft/fast-build`<!-- -->.
-
-When `attribute-name-strategy` is `"none"`<!-- -->, the binding key is used as both the attribute name and property name — no normalization is applied.
-
-Properties already decorated with `@attr` or `@observable` on the class are left untouched.
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
 
 
 </td></tr>
 <tr><td>
 
-[ObserverMap](../fast-element.observermap/)
+[ElementStyles](../fast-element.elementstyles/)
 
 
 </td><td>
 
-ObserverMap provides functionality for caching binding paths, extracting root properties, and defining observable properties on class prototypes
+Represents styles that can be applied to a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[FASTElementDefinition](../fast-element.fastelementdefinition/)
+
+
+</td><td>
+
+Defines metadata for a FASTElement.
+
+
+</td></tr>
+<tr><td>
+
+[HTMLView](../fast-element.htmlview/)
+
+
+</td><td>
+
+The standard View implementation, which also implements ElementView and SyntheticView.
 
 
 </td></tr>
@@ -70,19 +84,6 @@ A constructed JSON schema from a template
 </td></tr>
 <tr><td>
 
-[TemplateElement](../fast-element.templateelement/)
-
-
-</td><td>
-
-The <f-template> custom element that will provide view logic to the element.
-
-Acts as the bridge between declarative HTML templates and the FAST element registry. Lifecycle orchestration (registration, options, callbacks) lives here; template parsing is delegated to [TemplateParser](../fast-element.templateparser/)<!-- -->.
-
-
-</td></tr>
-<tr><td>
-
 [TemplateParser](../fast-element.templateparser/)
 
 
@@ -93,6 +94,17 @@ Converts declarative HTML template markup into the `strings` and `values` arrays
 This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->.
 
 The parsing pipeline is fully synchronous — no promises are allocated during template resolution.
+
+
+</td></tr>
+<tr><td>
+
+[ViewTemplate](../fast-element.viewtemplate/)
+
+
+</td><td>
+
+A template capable of creating HTMLView instances or rendering directly to DOM.
 
 
 </td></tr>
@@ -113,34 +125,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[attributeMap(option)](../fast-element.attributemap/)
-
-
-</td><td>
-
-Creates a FAST element extension that enables declarative attribute mapping for the resolved definition. When called without arguments, uses the default attribute-mapping behavior.
-
-
-</td></tr>
-<tr><td>
-
 [declarativeTemplate(callbacks)](../fast-element.declarativetemplate/)
 
 
 </td><td>
 
 Returns a declarative template resolver that waits for the matching `<f-template>` element and resolves it into a concrete `ViewTemplate`<!-- -->.
-
-
-</td></tr>
-<tr><td>
-
-[observerMap(option)](../fast-element.observermap/)
-
-
-</td><td>
-
-Creates a FAST element extension that enables declarative observer mapping for the resolved definition. When called without arguments, observes every discovered root property.
 
 
 </td></tr>
@@ -161,45 +151,122 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMapConfig](../fast-element.attributemapconfig/)
+[AccessCachedPath](../fast-element.accesscachedpath/)
 
 
 </td><td>
 
-Configuration object for the attributeMap element option. Omitting all fields uses the default attribute-mapping behavior.
+A path discovered from an access expression.
 
 
 </td></tr>
 <tr><td>
 
-[ElementOptions](../fast-element.elementoptions/)
+[Accessor](../fast-element.accessor/)
 
 
 </td><td>
 
-Element options the TemplateElement will use to update the registered element
+Represents a getter/setter property accessor on an object.
 
 
 </td></tr>
 <tr><td>
 
-[ElementOptionsDictionary](../fast-element.elementoptionsdictionary/)
+[CachedPathCommon](../fast-element.cachedpathcommon/)
 
 
 </td><td>
 
-A dictionary of element options the TemplateElement will use to update the registered element
+Common metadata for paths cached while parsing a template.
 
 
 </td></tr>
 <tr><td>
 
-[HydrationLifecycleCallbacks](../fast-element.hydrationlifecyclecallbacks/)
+[CaptureType](../fast-element.capturetype/)
 
 
 </td><td>
 
-Lifecycle callbacks for template events.
+A marker interface used to capture types when interpolating Directive helpers into templates.
+
+
+</td></tr>
+<tr><td>
+
+[ChildrenMap](../fast-element.childrenmap/)
+
+
+</td><td>
+
+Describes a child custom element binding referenced by a schema path.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCachedPath](../fast-element.defaultcachedpath/)
+
+
+</td><td>
+
+A path discovered from a default binding.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A security policy that FAST can use to interact with the DOM.
+
+
+</td></tr>
+<tr><td>
+
+[ElementView](../fast-element.elementview/)
+
+
+</td><td>
+
+A View representing DOM nodes specifically for rendering the view of a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[ElementViewTemplate](../fast-element.elementviewtemplate/)
+
+
+</td><td>
+
+A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[EventCachedPath](../fast-element.eventcachedpath/)
+
+
+</td><td>
+
+A path discovered from an event binding.
+
+
+</td></tr>
+<tr><td>
+
+[HTMLTemplateCompilationResult](../fast-element.htmltemplatecompilationresult/)
+
+
+</td><td>
+
+The result of a template compilation operation.
 
 
 </td></tr>
@@ -210,31 +277,62 @@ Lifecycle callbacks for template events.
 
 </td><td>
 
-
-</td></tr>
-<tr><td>
-
-[ObserverMapConfig](../fast-element.observermapconfig/)
-
-
-</td><td>
-
-Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+A JSON schema describing a root property.
 
 
 </td></tr>
 <tr><td>
 
-[ObserverMapPathNode](../fast-element.observermappathnode/)
+[JSONSchemaCommon](../fast-element.jsonschemacommon/)
 
 
 </td><td>
 
-A node object in the observer-map path tree.
+Common properties shared by schema nodes.
 
-`$observe` controls whether this node itself is observed. When omitted the value is inherited from the nearest ancestor that explicitly sets `$observe`<!-- -->. At the root level the default is `true`<!-- -->.
 
-Child property overrides are keyed by property name.
+</td></tr>
+<tr><td>
+
+[JSONSchemaDefinition](../fast-element.jsonschemadefinition/)
+
+
+</td><td>
+
+A reusable JSON schema definition.
+
+
+</td></tr>
+<tr><td>
+
+[PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
+
+
+</td><td>
+
+Represents metadata configuration for a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[RegisterPathConfig](../fast-element.registerpathconfig/)
+
+
+</td><td>
+
+Configuration for registering a path with a schema.
+
+
+</td></tr>
+<tr><td>
+
+[RepeatCachedPath](../fast-element.repeatcachedpath/)
+
+
+</td><td>
+
+A path discovered from a repeat directive.
 
 
 </td></tr>
@@ -246,6 +344,94 @@ Child property overrides are keyed by property name.
 </td><td>
 
 The return type for [TemplateParser.parse()](../fast-element.templateparser.parse/)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[ShadowRootOptions](../fast-element.shadowrootoptions/)
+
+
+</td><td>
+
+Shadow root initialization options.
+
+
+</td></tr>
+<tr><td>
+
+[StyleStrategy](../fast-element.stylestrategy/)
+
+
+</td><td>
+
+Implemented to provide specific behavior when adding/removing styles for elements.
+
+
+</td></tr>
+<tr><td>
+
+[StyleTarget](../fast-element.styletarget/)
+
+
+</td><td>
+
+A node that can be targeted by styles.
+
+
+</td></tr>
+<tr><td>
+
+[SyntheticViewTemplate](../fast-element.syntheticviewtemplate/)
+
+
+</td><td>
+
+A template capable of rendering views not specifically connected to custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
+
+
+</td><td>
+
+Lifecycle callbacks for template events.
+
+
+</td></tr>
+<tr><td>
+
+[ValueConverter](../fast-element.valueconverter/)
+
+
+</td><td>
+
+Represents objects that can convert values to and from view or model representations.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehavior](../fast-element.viewbehavior/)
+
+
+</td><td>
+
+Represents an object that can contribute behavior to a view.
+
+
+</td></tr>
+<tr><td>
+
+[ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)
+
+
+</td><td>
+
+A factory that can create a [ViewBehavior](../fast-element.viewbehavior/) associated with a particular location within a DOM fragment.
 
 
 </td></tr>
@@ -265,6 +451,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[AttributeConfiguration](../fast-element.attributeconfiguration/)
+
+
+</td><td>
+
+Metadata used to configure a custom attribute's behavior.
+
+
+</td></tr>
+<tr><td>
 
 [schemaRegistry](../fast-element.schemaregistry/)
 
@@ -292,10 +489,78 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AttributeConfiguration](../fast-element.attributeconfiguration/)
+
+
+</td><td>
+
+Metadata used to configure a custom attribute's behavior.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeMode](../fast-element.attributemode/)
+
+
+</td><td>
+
+The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPath](../fast-element.cachedpath/)
+
+
+</td><td>
+
+A path discovered while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
 [CachedPathMap](../fast-element.cachedpathmap/)
 
 
 </td><td>
+
+A map from element names and root properties to JSON schemas.
+
+
+</td></tr>
+<tr><td>
+
+[ComposableStyles](../fast-element.composablestyles/)
+
+
+</td><td>
+
+Represents styles that can be composed into the ShadowDOM of a custom element.
+
+
+</td></tr>
+<tr><td>
+
+[Constructable](../fast-element.constructable/)
+
+
+</td><td>
+
+Represents a type which can be constructed with the new operator.
+
+
+</td></tr>
+<tr><td>
+
+[ConstructibleStyleStrategy](../fast-element.constructiblestylestrategy/)
+
+
+</td><td>
+
+A type that instantiates a StyleStrategy.
 
 
 </td></tr>
@@ -312,14 +577,23 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 </td></tr>
 <tr><td>
 
-[ObserverMapPathEntry](../fast-element.observermappathentry/)
+[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)
 
 
 </td><td>
 
-A node in the observer-map path tree.
+Resolves an element template from a composed definition.
 
-- `true` → observe this path and all descendants (unless overridden by children). - `false` → do NOT observe this path or its descendants (unless overridden by children). - `ObserverMapPathNode` → configure child paths individually; the node itself is observed if `$observe` is true (default when parent is observed).
+
+</td></tr>
+<tr><td>
+
+[TemplateValue](../fast-element.templatevalue/)
+
+
+</td><td>
+
+Represents the types of values that can be interpolated into a template.
 
 
 </td></tr>

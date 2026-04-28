@@ -20,7 +20,7 @@ Controls the lifecycle of an expression and provides relevant context.
 **Signature:**
 
 ```typescript
-export interface ExpressionController<TSource = any, TParent = any> 
+export interface ExpressionController<TSource = any, TParent = any>
 ```
 
 ## Properties

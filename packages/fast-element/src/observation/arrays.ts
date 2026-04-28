@@ -991,7 +991,7 @@ export const ArrayObserver = Object.freeze({
      * Enables the array observation mechanism.
      * @remarks
      * Array observation is enabled automatically when using the
-     * {@link RepeatDirective}, so calling this API manually is
+     * `RepeatDirective`, so calling this API manually is
      * not typically necessary.
      */
     enable(): void {

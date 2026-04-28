@@ -1,1 +1,1 @@
-export * from "../src/declarative.js";
+export { Schema, TemplateParser } from "../src/declarative/index.js";

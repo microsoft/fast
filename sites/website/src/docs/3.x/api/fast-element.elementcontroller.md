@@ -20,7 +20,7 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 **Signature:**
 
 ```typescript
-export declare class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> 
+export declare class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement>
 ```
 **Implements:** [Notifier](../fast-element.notifier/)<!-- -->, [HostController](../fast-element.hostcontroller/)<!-- -->&lt;TElement&gt;
 

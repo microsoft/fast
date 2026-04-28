@@ -74,7 +74,7 @@ flowchart TD
 | `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Exports `definitionAsyncResolver`, `shadowOptionsToAttributes`, and the `ShadowOptionsResolver` type for resolving per-component shadow DOM options. |
 | `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files. Shares the shadow-options resolution pipeline with `generate-templates.ts`. |
 | `src/ssr/render.ts` | `createSSRRenderer` factory — scans for component build artifacts and uses the `@microsoft/fast-build` WASM module to produce SSR output |
-| `src/ssr/entry-client.ts` | SSR hydration entry point — defines `<f-template>` for the browser |
+| `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
 | `playwright.config.mjs` | Shared Playwright configuration (browsers, web server, test matching) |

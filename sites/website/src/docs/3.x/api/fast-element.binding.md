@@ -20,7 +20,7 @@ Captures a binding expression along with related information and capabilities.
 **Signature:**
 
 ```typescript
-export declare abstract class Binding<TSource = any, TReturn = any, TParent = any> 
+export declare abstract class Binding<TSource = any, TReturn = any, TParent = any>
 ```
 
 ## Constructors
@@ -143,7 +143,7 @@ _(Optional)_ Options associated with the binding.
 
 </td><td>
 
-[DOMPolicy](../fast-element.dompolicy/) \| undefined
+DOMPolicy \| undefined
 
 
 </td><td>

@@ -1,8 +1,7 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 class TestCamelCase extends FASTElement {
     @attr({ attribute: "foo-bar" })
@@ -31,7 +30,7 @@ TestCamelCaseNoDash.define({
     template: declarativeTemplate(),
 });
 
-TemplateElement.config({
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

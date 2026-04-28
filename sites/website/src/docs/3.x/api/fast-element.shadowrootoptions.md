@@ -20,7 +20,7 @@ Shadow root initialization options.
 **Signature:**
 
 ```typescript
-export interface ShadowRootOptions extends ShadowRootInit 
+export interface ShadowRootOptions extends ShadowRootInit
 ```
 **Extends:** ShadowRootInit
 

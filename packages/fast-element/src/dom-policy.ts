@@ -455,7 +455,7 @@ export type DOMPolicyOptions = {
 const DOMPolicy = Object.freeze({
     /**
      * Creates a new DOM Policy object.
-     * @param options The options to use in creating the policy.
+     * @param options - The options to use in creating the policy.
      * @returns The newly created DOMPolicy.
      */
     create(options: DOMPolicyOptions = {}): Readonly<IDOMPolicy> {

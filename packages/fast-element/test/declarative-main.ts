@@ -1,2 +1,6 @@
-export * from "../src/declarative.js";
-export * from "./main.js";
+export {
+    declarativeTemplate,
+    Schema,
+    TemplateParser,
+} from "../src/declarative/index.js";
+export { FASTElement, FASTElementDefinition, uniqueElementName } from "./main.js";

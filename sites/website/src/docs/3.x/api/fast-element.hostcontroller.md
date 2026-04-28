@@ -20,7 +20,7 @@ Controls the lifecycle and context of behaviors and styles associated with a com
 **Signature:**
 
 ```typescript
-export interface HostController<TSource = any> extends ExpressionController<TSource> 
+export interface HostController<TSource = any> extends ExpressionController<TSource>
 ```
 **Extends:** [ExpressionController](../fast-element.expressioncontroller/)<!-- -->&lt;TSource&gt;
 

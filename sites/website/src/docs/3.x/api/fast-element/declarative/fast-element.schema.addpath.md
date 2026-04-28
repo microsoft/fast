@@ -48,12 +48,12 @@ config
 
 </td><td>
 
-RegisterPathConfig
+[RegisterPathConfig](../fast-element.registerpathconfig/)
 
 
 </td><td>
 
-RegisterPathConfig
+The path registration configuration.
 
 
 </td></tr>

@@ -4,6 +4,7 @@ import { createTypeRegistry, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
+import type { Schema } from "./schema.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -429,6 +430,13 @@ export interface PartialFASTElementDefinition<
      * Lifecycle callbacks for template events.
      */
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
+
+    /**
+     * The optional schema associated with the custom element definition.
+     * Declarative templates assign this automatically during template resolution.
+     * Non-declarative callers can provide one for schema-driven extensions.
+     */
+    readonly schema?: Schema;
 }
 
 /**
@@ -503,6 +511,13 @@ export class FASTElementDefinition<
     public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 
     /**
+     * The optional schema associated with the custom element definition.
+     * Declarative templates assign this automatically during template resolution.
+     * Non-declarative callers can provide one for schema-driven extensions.
+     */
+    public schema?: Schema;
+
+    /**
      * The definition has been registered to the FAST element registry.
      */
     public static isRegistered: Record<string, Function> = {};
@@ -567,6 +582,7 @@ export class FASTElementDefinition<
                 : { ...defaultElementOptions, ...nameOrConfig.elementOptions };
 
         this.styles = ElementStyles.normalize(nameOrConfig.styles);
+        this.schema = nameOrConfig.schema;
 
         fastElementRegistry.register(this);
         const registeredTypes = getRegisteredTypes(this.registry);

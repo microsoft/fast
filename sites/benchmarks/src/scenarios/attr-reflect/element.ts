@@ -1,10 +1,6 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    nullableNumberConverter,
-} from "@microsoft/fast-element";
-
+import { attr, nullableNumberConverter } from "@microsoft/fast-element/attr.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { html } from "@microsoft/fast-element/html.js";
 export class BenchElement extends FASTElement {
     @attr
     label?: string;

@@ -20,7 +20,7 @@ A template capable of rendering views not specifically connected to custom eleme
 **Signature:**
 
 ```typescript
-export interface SyntheticViewTemplate<TSource = any, TParent = any> 
+export interface SyntheticViewTemplate<TSource = any, TParent = any>
 ```
 
 ## Methods

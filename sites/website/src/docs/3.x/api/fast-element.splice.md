@@ -24,7 +24,7 @@ which are kept in ascending index order of. The tuple represents that at the \|i
 **Signature:**
 
 ```typescript
-export declare class Splice 
+export declare class Splice
 ```
 
 ## Constructors

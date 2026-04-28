@@ -18,7 +18,7 @@ import { type Constructable, isFunction } from "../interfaces.js";
 Sub-entry-points expose focused APIs through the `exports` map:
 
 ```ts
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
 import { reactive } from "@microsoft/fast-element/state.js";
 import { composedParent } from "@microsoft/fast-element/utilities.js";
 ```
@@ -66,7 +66,9 @@ definition.define();
 Templates use the `html` tagged template literal typed to the element class:
 
 ```ts
-import { html, repeat, when } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/html.js";
+import { repeat } from "@microsoft/fast-element/repeat.js";
+import { when } from "@microsoft/fast-element/when.js";
 import type { MyElement } from "./my-element.js";
 
 export const template = html<MyElement>`
@@ -95,7 +97,7 @@ export const template = html<MyElement>`
 Two-way bindings require a sub-entry-point import:
 
 ```ts
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
 ```
 
 ### Partial HTML
@@ -115,7 +117,7 @@ Styles use the `css` tagged template literal. They attach through the element de
 `styles` property:
 
 ```ts
-import { css } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/css.js";
 
 export const styles = css`
     :host {
@@ -144,14 +146,10 @@ both the initial shadow root template and the `<f-template>`:
 tracked by templates. `@volatile` marks getters whose dependencies change between calls:
 
 ```ts
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    Observable,
-    observable,
-    volatile,
-} from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element/attr.js";
+import { Observable, observable } from "@microsoft/fast-element/observable.js";
+import { volatile } from "@microsoft/fast-element/volatile.js";
 
 class MyElement extends FASTElement {
     @attr label?: string;

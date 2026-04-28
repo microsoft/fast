@@ -20,7 +20,7 @@ A base class used for attribute directives that don't need internal state.
 **Signature:**
 
 ```typescript
-export declare abstract class StatelessAttachedAttributeDirective<TOptions> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior 
+export declare abstract class StatelessAttachedAttributeDirective<TOptions> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior
 ```
 **Implements:** [HTMLDirective](../fast-element.htmldirective/)<!-- -->, [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [ViewBehavior](../fast-element.viewbehavior/)
 

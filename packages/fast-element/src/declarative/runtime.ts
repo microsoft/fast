@@ -1,12 +1,10 @@
 import { FAST } from "../platform.js";
-import { ensureHydrationRuntime } from "../hydration/runtime.js";
 import { debugMessages } from "./debug.js";
 
 let declarativeRuntimeInstalled = false;
 
 /**
- * Installs the declarative runtime: ensures hydration support is
- * available and registers declarative-specific debug messages.
+ * Installs the declarative runtime debug messages.
  * @internal
  */
 export function ensureDeclarativeRuntime(): void {
@@ -14,7 +12,6 @@ export function ensureDeclarativeRuntime(): void {
         return;
     }
 
-    ensureHydrationRuntime();
     FAST.addMessages(debugMessages);
     declarativeRuntimeInstalled = true;
 }

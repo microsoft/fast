@@ -20,7 +20,7 @@ Implemented to provide specific behavior when adding/removing styles for element
 **Signature:**
 
 ```typescript
-export interface StyleStrategy 
+export interface StyleStrategy
 ```
 
 ## Methods

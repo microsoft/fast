@@ -4,16 +4,280 @@
 
 ```ts
 
+// @public
+export interface CaptureType {
+}
+
+// @public
+export interface ContentTemplate {
+    create(): ContentView;
+}
+
+// @public
+export interface ContentView {
+    bind(source: any, context?: ExecutionContext): void;
+    // (undocumented)
+    readonly context: ExecutionContext;
+    insertBefore(node: Node): void;
+    remove(): void;
+    unbind(): void;
+}
+
+// @public
+export class DefaultExecutionContext<TParent> implements ExecutionContext<TParent> {
+    get event(): Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+    index: number;
+    get isEven(): boolean;
+    get isFirst(): boolean;
+    get isInMiddle(): boolean;
+    get isLast(): boolean;
+    get isOdd(): boolean;
+    length: number;
+    readonly parent: TParent;
+    readonly parentContext: ExecutionContext<TParent>;
+}
+
 // @beta
 export const deferHydrationAttribute = "defer-hydration";
+
+// @public
+interface Disposable_2 {
+    dispose(): void;
+}
+export { Disposable_2 as Disposable }
+
+// @public
+export const DOMAspect: Readonly<{
+    readonly none: 0;
+    readonly attribute: 1;
+    readonly booleanAttribute: 2;
+    readonly property: 3;
+    readonly content: 4;
+    readonly tokenList: 5;
+    readonly event: 6;
+}>;
+
+// @public
+export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
+
+// @public
+export interface DOMPolicy {
+    createHTML(value: string): string;
+    protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
+}
+
+// @public
+export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
+
+// @public
+export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
+    appendTo(node: Node): void;
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): any;
+    }): void;
+    readonly sourceLifetime?: SourceLifetime;
+}
+
+// @public
+export interface ElementViewTemplate<TSource = any, TParent = any> {
+    create(hostBindingTarget: Element): ElementView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
+}
 
 // @public
 export function enableHydration(options?: HydrationOptions): void;
 
 // @public
+export interface ExecutionContext<TParent = any> {
+    readonly event: Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+    index: number;
+    readonly isEven: boolean;
+    readonly isFirst: boolean;
+    readonly isInMiddle: boolean;
+    readonly isLast: boolean;
+    readonly isOdd: boolean;
+    length: number;
+    parent: TParent;
+    parentContext: ExecutionContext<TParent>;
+}
+
+// @public
+export const ExecutionContext: Readonly<{
+    default: ExecutionContext<any>;
+    getEvent(): Event | null;
+    setEvent(event: Event | null): void;
+}>;
+
+// @public
+export interface ExpressionController<TSource = any, TParent = any> {
+    readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TSource, TParent>): any;
+    }): void;
+    readonly source: TSource;
+    readonly sourceLifetime?: SourceLifetime;
+}
+
+// @beta
+export interface HydratableContentTemplate extends ContentTemplate {
+    hydrate(first: Node, last: Node): ContentView;
+}
+
+// @beta
+export interface HydratableElementViewTemplate<TSource = any, TParent = any> extends ElementViewTemplate<TSource, TParent> {
+    // (undocumented)
+    hydrate(firstChild: Node, lastChild: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
+}
+
+// @beta
+export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any> extends SyntheticViewTemplate {
+    // (undocumented)
+    hydrate(firstChild: Node, lastChild: Node): SyntheticView<TSource, TParent>;
+}
+
+// @public (undocumented)
+export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
+    // (undocumented)
+    [Hydratable]: symbol;
+    // (undocumented)
+    readonly bindingViewBoundaries: Record<string, ViewNodes>;
+    // (undocumented)
+    readonly hydrationStage: keyof typeof HydrationStage;
+}
+
+// @beta
+export type HydratableViewController<TSource = any, TParent = any> = HydratableView<TSource, TParent> & ViewController<TSource, TParent>;
+
+// @public (undocumented)
+export class HydrationBindingError extends Error {
+    constructor(
+    message: string | undefined,
+    factory: ViewBehaviorFactory,
+    fragment: DocumentFragment,
+    templateString: string);
+    readonly factory: ViewBehaviorFactory;
+    readonly fragment: DocumentFragment;
+    readonly templateString: string;
+}
+
+// @public
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
+}
+
+// @public (undocumented)
+export const HydrationStage: {
+    readonly unhydrated: "unhydrated";
+    readonly hydrating: "hydrating";
+    readonly hydrated: "hydrated";
+};
+
+// @public
+export class HydrationTracker {
+    constructor(options: HydrationOptions);
+    add(element: HTMLElement): void;
+    mergeOptions(incoming: HydrationOptions): void;
+    remove(element: HTMLElement): void;
+}
+
+// @beta
+export function isHydratable(view: ViewController): view is HydratableViewController;
+
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: SyntheticViewTemplate<TSource, TParent>): template is HydratableSyntheticViewTemplate<TSource, TParent>;
+
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: ElementViewTemplate<TSource, TParent>): template is HydratableElementViewTemplate<TSource, TParent>;
+
+// @beta (undocumented)
+export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
+
+// @public
+export const SourceLifetime: Readonly<{
+    readonly unknown: undefined;
+    readonly coupled: 1;
+}>;
+
+// @public
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
+
+// @public
+export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {
+    readonly firstChild: Node;
+    insertBefore(node: Node): void;
+    readonly lastChild: Node;
+    remove(): void;
+}
+
+// @public
+export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+    create(): SyntheticView<TSource, TParent>;
+    inline(): CaptureType;
+}
+
+// @public
+export interface View<TSource = any, TParent = any> extends Disposable_2 {
+    bind(source: TSource, context?: ExecutionContext<TParent>): void;
+    readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
+    readonly source: TSource | null;
+    unbind(): void;
+}
+
+// @public
+export interface ViewBehavior<TSource = any, TParent = any> {
+    bind(controller: ViewController<TSource, TParent>): void;
+}
+
+// @public
+export interface ViewBehaviorBoundaries {
+    // (undocumented)
+    [factoryId: string]: ViewBoundaries;
+}
+
+// @public
+export interface ViewBehaviorFactory {
+    createBehavior(): ViewBehavior;
+    id?: string;
+    policy?: DOMPolicy;
+    targetNodeId?: string;
+    targetTagName?: string | null;
+}
+
+// @public
+export type ViewBehaviorTargets = {
+    [id: string]: Node;
+};
+
+// @public
+export interface ViewBoundaries {
+    // (undocumented)
+    first: Node;
+    // (undocumented)
+    last: Node;
+}
+
+// @public
+export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isHydrated?: Promise<boolean>;
+    readonly isPrerendered?: Promise<boolean>;
+    // @internal
+    readonly _skipAttrUpdates?: boolean;
+    readonly targets: ViewBehaviorTargets;
+}
+
+// @public (undocumented)
+export interface ViewNodes {
+    // (undocumented)
+    first: Node;
+    // (undocumented)
+    last: Node;
 }
 
 // (No @packageDocumentation comment for this package)

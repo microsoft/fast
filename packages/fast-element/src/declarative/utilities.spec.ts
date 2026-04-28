@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { type JSONSchema, refPropertyName, Schema } from "./schema.js";
+import { type JSONSchema, refPropertyName, Schema } from "../components/schema.js";
 import {
     type AttributeDataBindingBehaviorConfig,
     type AttributeDirectiveBindingBehaviorConfig,

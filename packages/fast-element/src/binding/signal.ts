@@ -19,8 +19,8 @@ const subscribers: Record<string, undefined | Subscriber | Set<Subscriber>> =
 export const Signal = Object.freeze({
     /**
      * Subscribes to a signal.
-     * @param signal The signal to subscribe to.
-     * @param subscriber The subscriber.
+     * @param signal - The signal to subscribe to.
+     * @param subscriber - The subscriber.
      */
     subscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
@@ -36,8 +36,8 @@ export const Signal = Object.freeze({
 
     /**
      * Unsubscribes from the signal.
-     * @param signal The signal to unsubscribe from.
-     * @param subscriber The subscriber.
+     * @param signal - The signal to unsubscribe from.
+     * @param subscriber - The subscriber.
      */
     unsubscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];

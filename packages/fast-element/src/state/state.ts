@@ -53,7 +53,7 @@ export type State<T> = ReadonlyState<T> & {
 
     /**
      * Sets the current state value.
-     * @param value The new state value.
+     * @param value - The new state value.
      */
     set(value: T): void;
 
@@ -230,7 +230,7 @@ export type ComputedBuilder = {
     on: {
         /**
          * Provides a setup callback for the computation.
-         * @param callback The callback to run to setup the computation.
+         * @param callback - The callback to run to setup the computation.
          */
         setup(callback: ComputedSetupCallback): void;
     };

@@ -20,6 +20,6 @@ The options used to configure slotted node observation.
 **Signature:**
 
 ```typescript
-export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions 
+export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions
 ```
 **Extends:** [NodeBehaviorOptions](../fast-element.nodebehavioroptions/)<!-- -->&lt;T&gt;, AssignedNodesOptions

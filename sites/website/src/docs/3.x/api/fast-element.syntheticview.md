@@ -20,7 +20,7 @@ A view representing a range of DOM nodes which can be added/removed ad hoc.
 **Signature:**
 
 ```typescript
-export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> 
+export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent>
 ```
 **Extends:** [View](../fast-element.view/)<!-- -->&lt;TSource, TParent&gt;
 

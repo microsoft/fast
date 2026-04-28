@@ -95,8 +95,8 @@ Steps 5–9 only fire when `enableHydration()` has been called and the element h
 ### Performance Monitoring
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration({
     hydrationStarted() {

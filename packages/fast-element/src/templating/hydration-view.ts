@@ -6,11 +6,7 @@ import {
     targetFactory,
     type ViewBehaviorBoundaries,
 } from "../hydration/target-builder.js";
-import {
-    type ExecutionContext,
-    Observable,
-    SourceLifetime,
-} from "../observation/observable.js";
+import { type ExecutionContext, SourceLifetime } from "../observation/observable.js";
 import { makeSerializationNoop } from "../platform.js";
 import type { ViewTemplate } from "../templating/template.js";
 import type {
@@ -37,11 +33,23 @@ export interface HydratableView<TSource = any, TParent = any>
     readonly hydrationStage: keyof typeof HydrationStage;
 }
 
+/**
+ * A view controller that can hydrate existing DOM nodes.
+ * @beta
+ */
+export type HydratableViewController<TSource = any, TParent = any> = HydratableView<
+    TSource,
+    TParent
+> &
+    ViewController<TSource, TParent>;
+
+/** @public */
 export interface ViewNodes {
     first: Node;
     last: Node;
 }
 
+/** @public */
 export const HydrationStage = {
     unhydrated: "unhydrated",
     hydrating: "hydrating",

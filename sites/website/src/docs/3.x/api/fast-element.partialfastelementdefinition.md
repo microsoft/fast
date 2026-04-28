@@ -20,7 +20,7 @@ Represents metadata configuration for a custom element.
 **Signature:**
 
 ```typescript
-export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties
@@ -148,6 +148,27 @@ CustomElementRegistry
 </td><td>
 
 _(Optional)_ The registry to register this component in by default.
+
+
+</td></tr>
+<tr><td>
+
+[schema?](../fast-element.partialfastelementdefinition.schema/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+_(Optional)_ The optional schema associated with the custom element definition. Declarative templates assign this automatically during template resolution. Non-declarative callers can provide one for schema-driven extensions.
 
 
 </td></tr>

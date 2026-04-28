@@ -148,6 +148,8 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                         : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`);
                 }
 
+                line = line.replace(/[ \t]+$/u, "");
+
                 if (!skip) {
                     output.push(line);
                 }
@@ -248,14 +250,14 @@ async function buildAPIMarkdown() {
 
     const docFiles = await fs.readdir(markdownAPIDir);
 
-    convertDocFiles(markdownAPIDir, docFiles);
+    await convertDocFiles(markdownAPIDir, docFiles);
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
             const exportDir = `${markdownAPIDir}/${pkg.main}/${pkgExport}`;
             const exportDocFiles = await fs.readdir(exportDir);
 
-            convertDocFiles(
+            await convertDocFiles(
                 exportDir,
                 exportDocFiles,
                 `@microsoft/${pkg.main}`,
