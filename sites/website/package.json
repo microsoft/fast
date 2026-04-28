@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "@microsoft/fast-build": "^0.4.0",
-    "@microsoft/fast-element": "^2.10.4"
+    "@microsoft/fast-element": "^3.0.0-rc.1"
   }
 }

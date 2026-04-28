@@ -38,10 +38,10 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.10.4"
+    "@microsoft/fast-element": "^3.0.0-rc.1"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.4"
+    "@microsoft/fast-element": "^3.0.0-rc.1"
   },
   "beachball": {
     "disallowedChangeTypes": [
