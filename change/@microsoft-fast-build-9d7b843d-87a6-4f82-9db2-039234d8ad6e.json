@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: allow fast-build rendering without state and omit missing bound attributes",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

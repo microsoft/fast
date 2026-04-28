@@ -143,10 +143,10 @@ pub fn render_repeat(
             context: template_context(template, at),
         })?;
     match resolve_value(&list_expr, root, loop_vars) {
-        None => Err(RenderError::MissingState {
-            binding: list_expr,
-            context: template_context(template, at),
-        }),
+        None => {
+            let output = render_repeat_items(&inner, &[], &var_name, root, loop_vars, locator, hydration, config)?;
+            Ok((output, after))
+        }
         Some(JsonValue::Array(items)) => {
             let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration, config)?;
             Ok((output, after))
@@ -410,7 +410,7 @@ fn build_element_open_tag(
     is_entry: bool,
 ) -> String {
     if is_entry {
-        // Entry-level root custom elements receive the full root state directly.
+        // Entry-level root custom element opening tags resolve bindings from root state.
         // Resolve {{binding}} attributes: keep primitives (string/number/bool) with
         // their resolved value, strip non-primitives (array/object/null) since they
         // cannot be meaningfully represented as an HTML attribute value.

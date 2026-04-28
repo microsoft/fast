@@ -6,7 +6,7 @@ This document explains how the crate works internally: the data flow, the key da
 
 ## High-level overview
 
-The crate takes a **FAST declarative HTML template** (a string) and a **JSON state object** and produces static HTML. It does this in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
+The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
 
 ```
 render_template(template, state_str)
@@ -54,7 +54,7 @@ render_template(template, state_str)
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -134,7 +134,7 @@ Both binders share the same structure: find the opening delimiter, find the clos
 ### `render_triple_brace` (`{{{expr}}}`)
 - Same resolution, but skips HTML escaping — used for injecting raw HTML.
 
-Both return `RenderError::EmptyBinding` for blank expressions, `RenderError::UnclosedBinding`/`UnclosedUnescapedBinding` if no closing delimiter is found, and `RenderError::MissingState` if the expression does not resolve.
+Both return `RenderError::EmptyBinding` for blank expressions and `RenderError::UnclosedBinding`/`UnclosedUnescapedBinding` if no closing delimiter is found. If the expression does not resolve in state, the content binding renders an empty string.
 
 ---
 
@@ -148,6 +148,12 @@ Both return `RenderError::EmptyBinding` for blank expressions, `RenderError::Unc
 3. Fall back to `get_nested_property(root, expr)`.
 
 `get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices. The implementation traverses the tree via references and only clones the final leaf value — no intermediate sub-trees are cloned. The one exception is the synthesised `length` value for arrays, which is returned early as an owned `JsonValue::Number` only when `length` is the final segment (for example, `items.length`). Additional segments after `length` do not resolve and return `None` (for example, `items.length.foo`).
+
+Callers decide how to handle unresolved values:
+- Content bindings (`{{expr}}` / `{{{expr}}}`) render an empty string.
+- HTML attribute bindings omit the entire attribute.
+- `<f-repeat>` treats a missing list binding as an empty array and renders zero iterations; present non-array values return `RenderError::NotAnArray`.
+- `<f-when>` evaluates a missing binding as falsy.
 
 ### Loop variable scoping
 
@@ -192,7 +198,7 @@ Because `||` is sought before `&&`, the recursive split on `||` runs first. Each
 
 1. Extracts inner HTML and end position (same as `render_when`).
 2. Parses `value="{{item in items}}"` with `parse_repeat_expr` — expects exactly three whitespace-separated tokens where the middle is `"in"`.
-3. Resolves the list expression. Returns `RenderError::NotAnArray` if the value is not a `JsonValue::Array`.
+3. Resolves the list expression. Missing values are treated as an empty array. Present non-array values return `RenderError::NotAnArray`.
 4. For each item in the array, pushes `(var_name, item)` onto a new `loop_vars` vec and calls `render_node` on the inner template.
 5. Uses `Iterator::collect::<Result<String, _>>()` to short-circuit on the first error in any iteration.
 
@@ -228,7 +234,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - `aria-*` attributes (e.g. `aria-disabled`) are **converted to their camelCase ARIA property name** using the `attribute_lookup::aria_attr_to_property_key` lookup table (`aria-disabled` → `ariaDisabled`, `aria-valuenow` → `ariaValueNow`). This follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention on `Element`. A static lookup table is used instead of algorithmic conversion because ARIA attribute names do not place dashes at word boundaries (e.g. `aria-valuenow`, not `aria-value-now`). Templates reference the camelCase form: `{{ariaDisabled}}`.
    - HTML attributes whose property name differs from the attribute name (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`) are **converted to their camelCase DOM property name** using the `attribute_lookup::html_attr_to_property_key` lookup table. Attributes whose names already match (e.g. `disabled`, `title`) are not in the table and pass through as-is.
    - No value (boolean attribute) → `Bool(true)`
-   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
+   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects); if the binding is missing, the child-state value becomes `JsonValue::Null`, which displays as empty content
    - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
    - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
@@ -236,7 +242,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
    - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
      - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
-     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
+     - **Non-primitives** (`Array`, `Object`, `Null`) and missing values — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
      - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
      - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
@@ -284,16 +290,21 @@ This means the strategy only affects "plain" custom element attributes like `sel
 All render functions accept `config: Option<&RenderConfig>` as their last parameter. Pass `None` for defaults, or `Some(&config)` for custom configuration:
 
 - `render(template, state, config)`
+- `render_without_state(template, config)`
 - `render_template(template, state_str, config)`
+- `render_template_without_state(template, config)`
 - `render_with_locator(template, state, locator, config)`
+- `render_with_locator_without_state(template, locator, config)`
 - `render_template_with_locator(template, state_str, locator, config)`
+- `render_template_with_locator_without_state(template, locator, config)`
 - `render_entry_with_locator(template, state, locator, config)`
+- `render_entry_with_locator_without_state(template, locator, config)`
 - `render_entry_template_with_locator(template, state_str, locator, config)`
+- `render_entry_template_with_locator_without_state(template, locator, config)`
 
-In WASM, `render_with_templates` and `render_entry_with_templates` accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render` and `render_with_templates`; omitted state also uses an empty object. `render_with_templates` accepts an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
 
-- `render_with_templates(entry, templates_json, state, attribute_name_strategy)`
-- `render_entry_with_templates(entry, templates_json, state, attribute_name_strategy)`
+- `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
 
 ---
 
@@ -333,7 +344,7 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 2. The current `binding_idx` is recorded as `start`, and advanced by the total count.
 3. `resolve_attribute_bindings_in_tag` resolves each attribute binding:
    - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
-   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped.
+   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped. If `expr` is missing, the entire attribute is omitted, though the hydration binding count still includes it.
    - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
 4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
@@ -454,8 +465,8 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
-| `render` | `(entry: &str, state: &str) → String` | Render a template with no custom elements |
-| `render_with_templates` | `(entry: &str, templates_json: &str, state: &str) → String` | Render with a pre-built `{name: content}` templates map |
+| `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -473,7 +484,7 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
 
 ### `render_with_templates`
 
-Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator`.
+Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive the full root state with HTML attributes overlaid, matching CLI entry rendering.
 
 ---
 
@@ -546,6 +557,6 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
-**`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` without any silent failures. The one deliberate choice: missing state keys return `RenderError::MissingState` rather than an empty string, so template bugs surface early.
+**`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and invalid directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` treats a missing list binding as an empty array while still erroring when a present value is not an array.
 
 **Left-to-right, first-match scanning.** Directives are found by searching for their literal opening strings. The earliest position wins. This is O(n×d) where n is the template length and d is the number of directive types — acceptable for the template sizes this crate targets.

@@ -221,6 +221,7 @@ When `value` is a bare reference (e.g. `{{items}}`), the value is coerced to a b
 ```
 
 Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$index}}` resolves to the 0-based iteration index. Other bindings fall back to the root state (e.g. `{{title}}` above).
+If the list binding or dot path is missing, `<f-repeat>` treats it as an empty array and renders zero iterations. Present non-array values still return `RenderError::NotAnArray`.
 
 ```html
 <f-repeat value="{{row in rows}}">
@@ -509,7 +510,7 @@ let result = render_template_with_locator(
 #### WASM / JavaScript API
 
 ```javascript
-const html = render_entry_with_templates(
+const html = render_with_templates(
     entry,
     templatesJson,
     stateJson,
@@ -594,7 +595,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `UnclosedBinding` | `{{` with no closing `}}` |
 | `UnclosedUnescapedBinding` | `{{{` with no closing `}}}` |
 | `EmptyBinding` | `{{}}` — blank expression |
-| `MissingState` | `{{key}}` where `key` is absent from state |
+| `MissingState` | Required directive state is absent; missing `<f-repeat>` lists render zero iterations instead |
 | `UnclosedDirective` | `<f-when>` / `<f-repeat>` with no matching close tag |
 | `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
 | `InvalidRepeatExpression` | Repeat value not in `item in list` format |
@@ -606,7 +607,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 Every error message includes a description of the problem and a snippet of the template near the error site to aid debugging:
 
 ```
-missing state: '{{title}}' has no matching key in the provided state — template: "…<h1>{{title}}</h1>…"
+type error: '{{items}}' must resolve to a JSON array for use in <f-repeat> — template: "…<f-repeat value=\"{{item in items}}\">…"
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```

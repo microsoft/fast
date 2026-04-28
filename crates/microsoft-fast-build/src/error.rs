@@ -9,7 +9,7 @@ pub enum RenderError {
     UnclosedUnescapedBinding { expr: String, context: String },
     /// `{{}}` — the expression between `{{` and `}}` is empty.
     EmptyBinding { context: String },
-    /// `{{key}}` — `key` is not present in the provided state.
+    /// A required directive binding is not present in the provided state.
     MissingState { binding: String, context: String },
     /// A directive (`<f-when>` / `<f-repeat>`) has no matching closing tag.
     UnclosedDirective { tag: String, context: String },
