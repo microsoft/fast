@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 5273;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3278;
 
 export default defineConfig({
     clearScreen: false,
@@ -12,10 +12,21 @@ export default defineConfig({
         strictPort: true,
         debug: true,
     },
+    esbuild: {
+        tsconfigRaw: {
+            compilerOptions: {
+                // Needed for FAST's observable system
+                useDefineForClassFields: false,
+            },
+        },
+    },
     build: {
         outDir: "./dist",
         minify: false,
         sourcemap: true,
+    },
+    optimizeDeps: {
+        exclude: ["@microsoft/fast-element", "@microsoft/fast-html"],
     },
     preview: {
         port: PORT,

@@ -1,24 +1,131 @@
 import fs from "node:fs/promises";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import express from "express";
+import { createServer as createHttpServer } from "node:http";
+import { extname, resolve } from "node:path";
+import { load } from "cheerio";
 
-const __dirname = fileURLToPath(dirname(import.meta.url));
+const MIME_TYPES = {
+    ".html": "text/html",
+    ".js": "application/javascript",
+    ".mjs": "application/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
+    ".wasm": "application/wasm",
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".gif": "image/gif",
+    ".ico": "image/x-icon",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+    ".ttf": "font/ttf",
+};
 
-const PORT = process.env.PORT || 5273;
-const base = process.env.BASE || "/";
+/**
+ * Read the full request body as a string.
+ */
+function readBody(req) {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        req.on("data", chunk => chunks.push(chunk));
+        req.on("end", () => resolve(Buffer.concat(chunks).toString()));
+        req.on("error", reject);
+    });
+}
 
-export const app = express();
+/**
+ * Send a JSON response.
+ */
+function jsonResponse(res, statusCode, data) {
+    const body = JSON.stringify(data);
+    res.writeHead(statusCode, {
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(body),
+    });
+    res.end(body);
+}
 
-export async function startServer(cwd = process.cwd(), root, configFile) {
+/**
+ * Send an HTML response.
+ */
+function htmlResponse(res, statusCode, html) {
+    res.writeHead(statusCode, {
+        "Content-Type": "text/html",
+        "Content-Length": Buffer.byteLength(html),
+    });
+    res.end(html);
+}
+
+/**
+ * Try to serve a static file from `root`. Returns true if served.
+ */
+async function tryServeStatic(req, res, root) {
+    const urlPath = new URL(req.url, "http://localhost").pathname;
+    const filePath = resolve(root, `.${urlPath}`);
+
+    // Prevent path traversal.
+    if (!filePath.startsWith(root)) {
+        return false;
+    }
+
+    try {
+        const stat = await fs.stat(filePath);
+        if (!stat.isFile()) {
+            return false;
+        }
+        const ext = extname(filePath);
+        const mime = MIME_TYPES[ext] || "application/octet-stream";
+        const content = await fs.readFile(filePath);
+        res.writeHead(200, {
+            "Content-Type": mime,
+            "Content-Length": content.length,
+        });
+        res.end(content);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+export async function startServer(cwd = process.cwd(), root, configFile, options = {}) {
+    const {
+        port = process.env.PORT ? Number(process.env.PORT) : 3278,
+        base = process.env.BASE || "/",
+        debug = process.env.FAST_DEBUG === "true",
+    } = options;
+
     root = root ?? resolve(cwd, "./test");
-    configFile = configFile ?? resolve(root, "vite.config.ts");
+
+    try {
+        await fs.access(root);
+    } catch {
+        console.error(
+            `Error: Vite root directory does not exist: ${root}\n` +
+                `  Use --root to specify a different directory, or run from a package with a test/ folder.`,
+        );
+        process.exit(1);
+    }
+
+    if (configFile) {
+        try {
+            await fs.access(configFile);
+        } catch {
+            console.error(
+                `Error: Vite config file not found: ${configFile}\n` +
+                    `  Use --config to specify a different config file.`,
+            );
+            process.exit(1);
+        }
+    }
+
     const indexPath = resolve(root, "./index.html");
 
-    const tempDir = resolve(root, "temp");
-    await fs.rm(tempDir, { recursive: true, force: true });
-    await fs.mkdir(tempDir, { recursive: true });
-    const realTempDir = await fs.realpath(tempDir);
+    let realTempDir;
+    if (debug) {
+        const tempDir = resolve(root, "temp");
+        await fs.rm(tempDir, { recursive: true, force: true });
+        await fs.mkdir(tempDir, { recursive: true });
+        realTempDir = await fs.realpath(tempDir);
+    }
 
     const pendingGenerations = new Map();
     let cachedIndexHtml = null;
@@ -28,7 +135,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
 
     const vite = await createServer({
         root,
-        configFile,
+        ...(configFile && { configFile }),
         server: {
             middlewareMode: true,
             watch: {
@@ -36,128 +143,173 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
             },
         },
         appType: "custom",
-        publicDir: resolve(__dirname, "./public"),
+        plugins: [
+            {
+                name: "fast-test-harness:resolve-css-links",
+                transformIndexHtml: {
+                    order: "pre",
+                    async handler(html) {
+                        const $ = load(html, {
+                            xmlMode: false,
+                            decodeEntities: false,
+                        });
+                        let changed = false;
+
+                        for (const el of $("link[href$='.css']").toArray()) {
+                            const href = $(el).attr("href");
+                            if (
+                                !href ||
+                                href.startsWith("/") ||
+                                href.startsWith(".") ||
+                                href.startsWith("http")
+                            ) {
+                                continue;
+                            }
+                            const resolved = await vite.pluginContainer.resolveId(
+                                href,
+                                root,
+                            );
+                            if (resolved?.id) {
+                                $(el).attr("href", `/@fs/${resolved.id}`);
+                                changed = true;
+                            }
+                        }
+
+                        return changed ? $.html() : html;
+                    },
+                },
+            },
+        ],
     });
 
-    app.use(vite.middlewares);
+    const server = createHttpServer(async (req, res) => {
+        const url = new URL(req.url, "http://localhost");
+        const pathname = url.pathname;
 
-    app.use(express.static(cwd));
+        // POST /generate-fixture — SSR fixture generation.
+        if (req.method === "POST" && pathname === "/generate-fixture") {
+            try {
+                const body = JSON.parse(await readBody(req));
 
-    app.post("/generate-fixture", express.json(), async (req, res) => {
-        try {
-            if (!req.body.testId) {
-                throw new Error("testId is required");
-            }
+                if (!body.testId) {
+                    throw new Error("testId is required");
+                }
 
-            if (!/^[a-z0-9_-]+$/i.test(req.body.testId)) {
-                throw new Error("testId contains invalid characters");
-            }
+                if (!/^[a-z0-9_-]+$/i.test(body.testId)) {
+                    throw new Error("testId contains invalid characters");
+                }
 
-            if (req.body.attributes) {
-                req.body.attributes = JSON.parse(req.body.attributes);
-            }
+                if (body.attributes) {
+                    body.attributes = JSON.parse(body.attributes);
+                }
 
-            if (req.body.styles) {
-                req.body.styles = JSON.parse(req.body.styles);
-            }
+                if (body.styles) {
+                    body.styles = JSON.parse(body.styles);
+                }
 
-            const testId = req.body.testId;
-            const filename = `ssr-${testId}.html`;
-            const filePath = resolve(realTempDir, filename);
+                const testId = body.testId;
+                const filename = `ssr-${testId}.html`;
 
-            const url = `/${filename}`;
+                const fixtureUrl = `/${filename}`;
 
-            if (pendingGenerations.has(filename)) {
-                await pendingGenerations.get(filename);
-                return res.status(200).json({ url });
-            }
+                if (pendingGenerations.has(filename)) {
+                    await pendingGenerations.get(filename);
+                    return jsonResponse(res, 200, { url: fixtureUrl });
+                }
 
-            const generateTask = (async () => {
-                const templateFile = await fs.readFile(
-                    resolve(root, "./ssr.html"),
-                    "utf-8",
-                );
-                const page = await vite.transformIndexHtml(url, templateFile);
-
-                const { render } = await vite.ssrLoadModule("/src/entry-server.js");
-
-                const { template, fixture, preloadLinks } = render(req.body);
-
-                const styleTags = (req.body.styles || [])
-                    .map(s => `<style>${s}</style>`)
-                    .join("\n");
-
-                const html = page
-                    .replace(
-                        "<!--fixturetitle-->",
-                        () => req.body.testTitle || "FAST Test Harness (SSR)",
-                    )
-                    .replace("<!--templates-->", () => template ?? "")
-                    .replace("<!--fixture-->", () => fixture ?? "")
-                    .replace(
-                        "<!--stylespreload-->",
-                        () => `${preloadLinks ?? ""}${styleTags}`,
+                const generateTask = (async () => {
+                    const templateFile = await fs.readFile(
+                        resolve(root, "./ssr.html"),
+                        "utf-8",
                     );
 
-                fixtureCache.set(url, html);
+                    const { render } = await vite.ssrLoadModule("/src/entry-server.js");
 
-                // Write to disk for debugging; served from cache above.
-                await fs.writeFile(filePath, html, "utf-8");
-            })();
+                    const { template, fixture, preloadLinks } = render(body);
 
-            pendingGenerations.set(filename, generateTask);
+                    const styleTags = (body.styles || [])
+                        .map(s => `<style>${s}</style>`)
+                        .join("\n");
+
+                    const assembled = templateFile
+                        .replace(
+                            "<!--fixturetitle-->",
+                            () => body.testTitle || "FAST Test Harness (SSR)",
+                        )
+                        .replace("<!--templates-->", () => template ?? "")
+                        .replace("<!--fixture-->", () => fixture ?? "")
+                        .replace(
+                            "<!--stylespreload-->",
+                            () => `${preloadLinks ?? ""}${styleTags}`,
+                        );
+
+                    const html = await vite.transformIndexHtml(fixtureUrl, assembled);
+
+                    fixtureCache.set(fixtureUrl, html);
+
+                    if (debug) {
+                        const filePath = resolve(realTempDir, filename);
+                        await fs.writeFile(filePath, html, "utf-8");
+                    }
+                })();
+
+                pendingGenerations.set(filename, generateTask);
+
+                try {
+                    await generateTask;
+                    jsonResponse(res, 200, { url: fixtureUrl });
+                } finally {
+                    pendingGenerations.delete(filename);
+                }
+            } catch (e) {
+                vite?.ssrFixStacktrace?.(e);
+                console.log(e.stack);
+                res.writeHead(500).end("Internal Server Error");
+            }
+            return;
+        }
+
+        // GET /ssr-*.html — serve cached SSR fixtures.
+        if (req.method === "GET" && /^\/ssr-[^/]+\.html$/.test(pathname)) {
+            const cached = fixtureCache.get(pathname);
+            if (cached) {
+                return htmlResponse(res, 200, cached);
+            }
+        }
+
+        // Try static files from cwd.
+        if (req.method === "GET" && (await tryServeStatic(req, res, cwd))) {
+            return;
+        }
+
+        // Delegate to Vite's middleware (module transforms, HMR, etc.).
+        // Vite handles its own routes; for anything left over, serve
+        // the HTML shell for navigation requests.
+        vite.middlewares(req, res, async () => {
+            const accept = req.headers.accept || "";
+            if (!accept.includes("text/html")) {
+                res.writeHead(404).end();
+                return;
+            }
 
             try {
-                await generateTask;
-                res.status(200).json({ url });
-            } finally {
-                pendingGenerations.delete(filename);
+                const urlPath = (req.url || "").replace(base, "");
+
+                if (!cachedIndexHtml) {
+                    const indexFile = await fs.readFile(indexPath, "utf-8");
+                    cachedIndexHtml = await vite.transformIndexHtml(urlPath, indexFile);
+                }
+
+                htmlResponse(res, 200, cachedIndexHtml);
+            } catch (e) {
+                vite?.ssrFixStacktrace?.(e);
+                console.log(e.stack);
+                res.writeHead(500).end("Internal Server Error");
             }
-        } catch (e) {
-            vite?.ssrFixStacktrace?.(e);
-            console.log(e.stack);
-            res.status(500).end("Internal Server Error");
-        }
+        });
     });
 
-    // Serve SSR fixtures from cache without hitting the filesystem.
-    app.get("/ssr-:id.html", (req, res, next) => {
-        const url = req.path;
-        const cached = fixtureCache.get(url);
-        if (cached) {
-            return res.status(200).set({ "Content-Type": "text/html" }).send(cached);
-        }
-        next();
-    });
-
-    // This server is a Playwright test harness, not a production service.
-    // It only serves localhost during test runs (local and CI). Rate limiting
-    // is unnecessary.
-    app.use("*all", async (req, res, next) => {
-        // Only serve the HTML shell for navigation requests, not for
-        // module/asset requests that Vite's middleware didn't handle.
-        const accept = req.headers.accept || "";
-        if (!accept.includes("text/html")) {
-            return next();
-        }
-
-        try {
-            const url = req.originalUrl.replace(base, "");
-
-            if (!cachedIndexHtml) {
-                const indexFile = await fs.readFile(indexPath, "utf-8");
-                cachedIndexHtml = await vite.transformIndexHtml(url, indexFile);
-            }
-
-            res.status(200).set({ "Content-Type": "text/html" }).send(cachedIndexHtml);
-        } catch (e) {
-            vite?.ssrFixStacktrace?.(e);
-            console.log(e.stack);
-            res.status(500).end("Internal Server Error");
-        }
-    });
-
-    app.listen(PORT, () => {
-        console.log(`Server started at http://localhost:${PORT}`);
+    server.listen(port, () => {
+        console.log(`Server started at http://localhost:${port}`);
     });
 }
