@@ -387,7 +387,7 @@ export interface ExecutionContext<TParent = any> {
 
 // @public
 export const ExecutionContext: Readonly<{
-    default: ExecutionContext<any>;
+    default: ExecutionContext;
     getEvent(): Event | null;
     setEvent(event: Event | null): void;
 }>;
@@ -729,8 +729,8 @@ export const Observable: Readonly<{
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
     getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
+    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn>;
+    isVolatileBinding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn>): boolean;
 }>;
 
 // @public
