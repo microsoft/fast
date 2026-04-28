@@ -1,24 +1,20 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "outDir": "dist/esm",
-    "declaration": true,
-    "declarationDir": "dist/dts",
-    "target": "ES2019",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "importHelpers": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noEmitOnError": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
-  },
-  "include": [
-    "src"
-  ]
+    "compilerOptions": {
+        "rootDir": "./src",
+        "allowSyntheticDefaultImports": true,
+        "outDir": "dist/esm",
+        "declaration": true,
+        "declarationDir": "dist/dts",
+        "target": "ES2019",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noEmitOnError": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "lib": ["dom", "esnext"]
+    },
+    "include": ["src"]
 }
