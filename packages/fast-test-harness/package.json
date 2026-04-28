@@ -1,6 +1,5 @@
 {
   "name": "@microsoft/fast-test-harness",
-  "private": true,
   "version": "0.0.1",
   "author": {
     "name": "Microsoft",
