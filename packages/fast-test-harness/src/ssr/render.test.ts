@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { test } from "node:test";
 import {
     buildEntryHtml,
     buildState,
@@ -8,66 +8,66 @@ import {
     renderTemplate,
 } from "@microsoft/fast-test-harness/ssr/render.js";
 
-describe("parseDefaultValue", () => {
-    it("should return empty string for empty input", () => {
+test.describe("parseDefaultValue", () => {
+    test("should return empty string for empty input", () => {
         assert.strictEqual(parseDefaultValue(""), "");
     });
 
-    it("should return empty string for 'undefined'", () => {
+    test("should return empty string for 'undefined'", () => {
         assert.strictEqual(parseDefaultValue("undefined"), "");
     });
 
-    it("should return empty string for 'null'", () => {
+    test("should return empty string for 'null'", () => {
         assert.strictEqual(parseDefaultValue("null"), "");
     });
 
-    it("should return true for 'true'", () => {
+    test("should return true for 'true'", () => {
         assert.strictEqual(parseDefaultValue("true"), true);
     });
 
-    it("should return false for 'false'", () => {
+    test("should return false for 'false'", () => {
         assert.strictEqual(parseDefaultValue("false"), false);
     });
 
-    it("should strip single quotes from strings", () => {
+    test("should strip single quotes from strings", () => {
         assert.strictEqual(parseDefaultValue("'img'"), "img");
     });
 
-    it("should strip double quotes from strings", () => {
+    test("should strip double quotes from strings", () => {
         assert.strictEqual(parseDefaultValue('"hello"'), "hello");
     });
 
-    it("should parse integers", () => {
+    test("should parse integers", () => {
         assert.strictEqual(parseDefaultValue("42"), 42);
     });
 
-    it("should parse floats", () => {
+    test("should parse floats", () => {
         assert.strictEqual(parseDefaultValue("3.14"), 3.14);
     });
 
-    it("should parse zero", () => {
+    test("should parse zero", () => {
         assert.strictEqual(parseDefaultValue("0"), 0);
     });
 
-    it("should parse JSON arrays", () => {
+    test("should parse JSON arrays", () => {
         assert.deepStrictEqual(parseDefaultValue("[1,2,3]"), [1, 2, 3]);
     });
 
-    it("should parse JSON objects", () => {
+    test("should parse JSON objects", () => {
         assert.deepStrictEqual(parseDefaultValue('{"a":1}'), { a: 1 });
     });
 
-    it("should return empty string for unparseable values", () => {
+    test("should return empty string for unparseable values", () => {
         assert.strictEqual(parseDefaultValue("some random text"), "");
     });
 
-    it("should trim whitespace", () => {
+    test("should trim whitespace", () => {
         assert.strictEqual(parseDefaultValue("  true  "), true);
     });
 });
 
-describe("renderTemplate", () => {
-    it("should replace {{styles}} with a link tag", () => {
+test.describe("renderTemplate", () => {
+    test("should replace {{styles}} with a link tag", () => {
         const result = renderTemplate(
             "<template>{{styles}}<div>hi</div></template>",
             "/styles.css",
@@ -77,7 +77,7 @@ describe("renderTemplate", () => {
         assert.ok(!result.includes("{{styles}}"));
     });
 
-    it("should inject link after <template> if {{styles}} is absent", () => {
+    test("should inject link after <template> if {{styles}} is absent", () => {
         const result = renderTemplate(
             "<template><div>hi</div></template>",
             "/styles.css",
@@ -87,7 +87,7 @@ describe("renderTemplate", () => {
         assert.ok(result.indexOf("<link") > result.indexOf("<template>"));
     });
 
-    it("should return template unchanged when styles URL is empty", () => {
+    test("should return template unchanged when styles URL is empty", () => {
         const input = "<template>{{styles}}<div>hi</div></template>";
         const result = renderTemplate(input, "");
 
@@ -95,18 +95,18 @@ describe("renderTemplate", () => {
     });
 });
 
-describe("buildEntryHtml", () => {
-    it("should return raw html when 'html' key is present", () => {
+test.describe("buildEntryHtml", () => {
+    test("should return raw html when 'html' key is present", () => {
         const result = buildEntryHtml({ html: "<div>raw</div>" });
         assert.strictEqual(result, "<div>raw</div>");
     });
 
-    it("should build a custom element tag from tagName", () => {
+    test("should build a custom element tag from tagName", () => {
         const result = buildEntryHtml({ tagName: "my-el" });
         assert.strictEqual(result, "<my-el></my-el>");
     });
 
-    it("should include innerHTML", () => {
+    test("should include innerHTML", () => {
         const result = buildEntryHtml({
             tagName: "my-el",
             innerHTML: "content",
@@ -114,7 +114,7 @@ describe("buildEntryHtml", () => {
         assert.strictEqual(result, "<my-el>content</my-el>");
     });
 
-    it("should serialize attributes", () => {
+    test("should serialize attributes", () => {
         const result = buildEntryHtml({
             tagName: "my-el",
             attributes: JSON.stringify({ role: "button", size: "large" }),
@@ -124,7 +124,7 @@ describe("buildEntryHtml", () => {
         assert.ok(result.includes('size="large"'));
     });
 
-    it("should handle boolean true attributes", () => {
+    test("should handle boolean true attributes", () => {
         const result = buildEntryHtml({
             tagName: "my-el",
             attributes: JSON.stringify({ disabled: true }),
@@ -134,11 +134,11 @@ describe("buildEntryHtml", () => {
         assert.ok(!result.includes('disabled="'));
     });
 
-    it("should return empty string when no tagName or html", () => {
+    test("should return empty string when no tagName or html", () => {
         assert.strictEqual(buildEntryHtml({}), "");
     });
 
-    it("should handle invalid JSON in attributes gracefully", () => {
+    test("should handle invalid JSON in attributes gracefully", () => {
         const result = buildEntryHtml({
             tagName: "my-el",
             attributes: "not-json",
@@ -148,8 +148,8 @@ describe("buildEntryHtml", () => {
     });
 });
 
-describe("buildState", () => {
-    it("should extract attributes into state", () => {
+test.describe("buildState", () => {
+    test("should extract attributes into state", () => {
         const state = buildState({
             attributes: JSON.stringify({ size: "large", active: true }),
         });
@@ -158,7 +158,7 @@ describe("buildState", () => {
         assert.strictEqual(state.active, true);
     });
 
-    it("should add hyphen-stripped variants", () => {
+    test("should add hyphen-stripped variants", () => {
         const state = buildState({
             attributes: JSON.stringify({ "aria-label": "Close" }),
         });
@@ -167,19 +167,19 @@ describe("buildState", () => {
         assert.strictEqual(state["arialabel"], "Close");
     });
 
-    it("should return empty state for missing attributes", () => {
+    test("should return empty state for missing attributes", () => {
         const state = buildState({});
         assert.deepStrictEqual(state, {});
     });
 
-    it("should handle invalid JSON gracefully", () => {
+    test("should handle invalid JSON gracefully", () => {
         const state = buildState({ attributes: "broken" });
         assert.deepStrictEqual(state, {});
     });
 });
 
-describe("createSSRRenderer", () => {
-    it("should throw when @microsoft/fast-build is not loadable", () => {
+test.describe("createSSRRenderer", () => {
+    test("should throw when @microsoft/fast-build is not loadable", () => {
         // We can't easily make it fail since it IS installed, but we can
         // verify the factory returns a render function on success.
         const renderer = createSSRRenderer({
@@ -190,7 +190,7 @@ describe("createSSRRenderer", () => {
         assert.ok(typeof renderer.render === "function");
     });
 
-    it("should return a RenderResult from render()", () => {
+    test("should return a RenderResult from render()", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -203,7 +203,7 @@ describe("createSSRRenderer", () => {
         assert.ok("preloadLinks" in result, "result should have preloadLinks");
     });
 
-    it("should render a custom element tag in the fixture", () => {
+    test("should render a custom element tag in the fixture", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -221,7 +221,7 @@ describe("createSSRRenderer", () => {
         );
     });
 
-    it("should include attributes in the rendered fixture", () => {
+    test("should include attributes in the rendered fixture", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -242,7 +242,7 @@ describe("createSSRRenderer", () => {
         );
     });
 
-    it("should include theme stylesheet in preloadLinks", () => {
+    test("should include theme stylesheet in preloadLinks", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -257,7 +257,7 @@ describe("createSSRRenderer", () => {
         );
     });
 
-    it("should return empty preloadLinks without a theme", () => {
+    test("should return empty preloadLinks without a theme", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -268,7 +268,7 @@ describe("createSSRRenderer", () => {
         assert.strictEqual(result.preloadLinks, "");
     });
 
-    it("should handle raw HTML via the html key", () => {
+    test("should handle raw HTML via the html key", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -284,7 +284,7 @@ describe("createSSRRenderer", () => {
         );
     });
 
-    it("should return empty fixture for empty query", () => {
+    test("should return empty fixture for empty query", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -295,7 +295,7 @@ describe("createSSRRenderer", () => {
         assert.strictEqual(result.fixture, "");
     });
 
-    it("should work with monolithic packageName mode", () => {
+    test("should work with monolithic packageName mode", () => {
         // The test harness itself doesn't have component subdirectories,
         // so the template map will be empty — but the factory should not throw.
         const { render } = createSSRRenderer({
