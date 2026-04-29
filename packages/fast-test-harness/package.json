@@ -49,9 +49,9 @@
     "clean": "clean dist temp test-results",
     "build": "npm run build:tsc",
     "build:tsc": "tsgo -p tsconfig.build.json",
-    "test": "npm run test:node && npm run test:pw",
+    "test": "npm run test:node && npm run test:playwright",
     "test:node": "node --test \"**/*.test.ts\"",
-    "test:pw": "playwright test"
+    "test:playwright": "playwright test"
   },
   "files": [
     "dist",
