@@ -177,13 +177,13 @@ fn parse_template_metadata(
 
     let attrs = match template.get("shadowrootAttributes") {
         Some(json::JsonValue::Array(attrs)) => parse_shadowroot_attributes(template_name, attrs)?,
+        Some(json::JsonValue::Null) | None => Vec::new(),
         Some(_) => {
             return Err(JsValue::from_str(&format!(
                 "Template metadata for '{}' must use an array shadowrootAttributes property",
                 template_name
             )));
         }
-        None => Vec::new(),
     };
 
     Ok((content, attrs))
@@ -226,6 +226,27 @@ fn parse_shadowroot_attributes(
         parsed.push((name, value));
     }
     Ok(parsed)
+}
+
+#[cfg(all(test, target_arch = "wasm32"))]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_templates_map_treats_null_shadowroot_attributes_as_empty() {
+        let templates = match parse_templates_map(
+            r#"{"test-element":{"content":"<span></span>","shadowrootAttributes":null}}"#,
+        ) {
+            Ok(templates) => templates,
+            Err(_) => panic!("template metadata with null shadowrootAttributes should parse"),
+        };
+
+        let attrs = &templates
+            .get("test-element")
+            .expect("template should be present")
+            .1;
+        assert!(attrs.is_empty());
+    }
 }
 
 /// Build an `Option<RenderConfig>` from the optional strategy string.

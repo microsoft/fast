@@ -90,6 +90,11 @@ impl Locator {
     }
 
     /// Create a Locator from an explicit map (useful for testing without filesystem).
+    ///
+    /// This API only carries template content. Shadowroot-prefixed attributes for
+    /// Declarative Shadow DOM are empty for these entries. Use [`Locator::from_patterns`]
+    /// with `<f-template>` metadata, or call [`Locator::add_template_with_shadowroot_attrs`]
+    /// for templates that need shadowroot attributes.
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
@@ -108,10 +113,32 @@ impl Locator {
     }
 
     /// Add a template directly.
+    ///
+    /// This only stores template content. Shadowroot-prefixed attributes for
+    /// Declarative Shadow DOM are empty for this entry. Use
+    /// [`Locator::add_template_with_shadowroot_attrs`] when the rendered shadow
+    /// `<template>` needs attributes such as `shadowrootmode`.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
             content: content.to_string(),
             shadowroot_attributes: Vec::new(),
+        });
+    }
+
+    /// Add a template directly with shadowroot-prefixed attributes.
+    ///
+    /// Only attributes whose names begin with `shadowroot` are retained. Names
+    /// are normalized to lowercase and duplicate names are ignored, matching
+    /// `<f-template>` parsing. Use `None` for boolean attributes.
+    pub fn add_template_with_shadowroot_attrs(
+        &mut self,
+        element_name: &str,
+        content: &str,
+        attrs: &[(String, Option<String>)],
+    ) {
+        self.templates.insert(element_name.to_string(), TemplateDefinition {
+            content: content.to_string(),
+            shadowroot_attributes: collect_shadowroot_attributes(attrs),
         });
     }
 
@@ -417,6 +444,21 @@ mod tests {
                 ("shadowrootclonable".to_string(), Some("true".to_string())),
             ]
         );
+    }
+
+    #[test]
+    fn test_add_template_with_shadowroot_attrs_preserves_attrs() {
+        let mut locator = Locator::from_templates(std::collections::HashMap::new());
+        let attrs = vec![
+            ("shadowrootmode".to_string(), Some("closed".to_string())),
+            ("shadowrootdelegatesfocus".to_string(), None),
+            ("shadowrootclonable".to_string(), Some("true".to_string())),
+        ];
+
+        locator.add_template_with_shadowroot_attrs("my-el", "<span>shadow</span>", &attrs);
+
+        assert_eq!(locator.get_template("my-el"), Some("<span>shadow</span>"));
+        assert_eq!(locator.get_shadowroot_attributes("my-el"), attrs.as_slice());
     }
 
     #[test]

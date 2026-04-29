@@ -408,13 +408,15 @@ fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String
         }
     }
 
-    let mode = mode
-        .and_then(|value| value)
+    let explicit_mode = explicit_shadowroot_attr_value(mode);
+    let explicit_legacy_shadowroot = explicit_shadowroot_attr_value(legacy_shadowroot);
+    let mode = explicit_mode
+        .clone()
+        .or_else(|| explicit_legacy_shadowroot.clone())
         .unwrap_or_else(|| "open".to_string());
-    let legacy_shadowroot = match legacy_shadowroot {
-        Some(Some(value)) => value,
-        Some(None) | None => mode.clone(),
-    };
+    let legacy_shadowroot = explicit_legacy_shadowroot
+        .or(explicit_mode)
+        .unwrap_or_else(|| mode.clone());
 
     let mut out = String::new();
     append_template_attr_value(&mut out, "shadowrootmode", &mode);
@@ -423,6 +425,10 @@ fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String
         append_template_attr(&mut out, &name, &value);
     }
     out
+}
+
+fn explicit_shadowroot_attr_value(value: Option<Option<String>>) -> Option<String> {
+    value.flatten().filter(|value| !value.is_empty())
 }
 
 fn append_template_attr(out: &mut String, name: &str, value: &Option<String>) {

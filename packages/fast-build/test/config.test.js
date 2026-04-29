@@ -208,7 +208,6 @@ describe("backward compatibility", () => {
     });
 });
 
-
 describe("template shadowroot attributes", () => {
     /** @type {string} */
     let dir;
@@ -245,12 +244,12 @@ describe("template shadowroot attributes", () => {
         );
 
         const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
-        assert.ok(
-            output.includes(
-                `<template shadowrootmode="closed" shadowroot="closed" shadowrootdelegatesfocus>`,
-            ),
-            output,
-        );
+        const templateMatch = output.match(/<template\b[^>]*>/);
+        assert.ok(templateMatch, output);
+        const templateTag = templateMatch[0];
+        assert.ok(templateTag.includes(`shadowrootmode="closed"`), output);
+        assert.ok(templateTag.includes(`shadowroot="closed"`), output);
+        assert.ok(templateTag.includes("shadowrootdelegatesfocus"), output);
     });
 });
 
