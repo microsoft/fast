@@ -140,8 +140,9 @@ function toServerUrl(absolutePath: string, packageRoot: string): string {
 
 /**
  * Parse a JavaScript default value string from CEM into a JSON-safe value.
+ * @internal
  */
-function parseDefaultValue(raw: string): unknown {
+export function parseDefaultValue(raw: string): unknown {
     const trimmed = raw.trim();
 
     if (trimmed === "" || trimmed === "undefined" || trimmed === "null") {
@@ -260,8 +261,9 @@ function loadPerPackageComponent(
  * Replace the `{{styles}}` placeholder in an f-template with a
  * stylesheet `<link>` tag. Falls back to injecting after the opening
  * `<template>` tag if the placeholder is absent.
+ * @internal
  */
-function renderTemplate(rawTemplate: string, styles: string): string {
+export function renderTemplate(rawTemplate: string, styles: string): string {
     const template = rawTemplate.replace(
         "{{styles}}",
         `<link rel="stylesheet" href="${styles}">`,
@@ -281,8 +283,9 @@ function renderTemplate(rawTemplate: string, styles: string): string {
  * Build the entry HTML that the WASM renderer processes.
  * Constructs either a raw HTML fixture or a single custom element
  * from the query parameters.
+ * @internal
  */
-function buildEntryHtml(queryObj: Record<string, string>): string {
+export function buildEntryHtml(queryObj: Record<string, string>): string {
     if ("html" in queryObj) {
         return String(queryObj.html);
     }
@@ -320,8 +323,9 @@ function buildEntryHtml(queryObj: Record<string, string>): string {
  * parameters. Includes attribute values and normalised (hyphen-
  * stripped) variants so bindings like `{{arialabel}}` resolve for
  * an `aria-label` HTML attribute.
+ * @internal
  */
-function buildState(queryObj: Record<string, string>): Record<string, unknown> {
+export function buildState(queryObj: Record<string, string>): Record<string, unknown> {
     let attributes: Record<string, unknown> = {};
     if (queryObj.attributes) {
         try {
