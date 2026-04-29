@@ -255,6 +255,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      [light DOM children]
    </my-button>
    ```
+   The `<template>` receives any `shadowroot*` attributes declared on the source `<f-template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
 Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
@@ -438,16 +440,17 @@ For each glob pattern:
 6. `<f-template>` elements missing a `name` attribute emit a warning to stderr and are ignored.
 7. If two `<f-template>` elements across different files share the same name → `RenderError::DuplicateTemplate`.
 
-### `<f-template>` parsing (`parse_f_templates`, `extract_attr_value`, `extract_template_content`)
+### `<f-template>` parsing (`parse_f_templates`, `parse_element_attributes`, `extract_template_content`)
 
 `parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
 - Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
 - Extracts the attribute string between `<f-template` and `>`.
-- Calls `extract_attr_value(attrs, "name")` to get the name (supports both `"` and `'` quoting).
+- Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
+- Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
 - Extracts the inner HTML between `>` and `</f-template>`.
 - Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
 
-Returns `Vec<(Option<String>, String)>` — pairs of (name, template content).
+Returns a `Vec<FTemplate>` containing the optional name, template content, and the collected shadowroot attributes. The locator stores those attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`.
 
 ### Glob matching
 
@@ -477,12 +480,20 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
 
 ```json
 [
-  {"name": "my-button", "content": "<button>{{label}}</button>"},
-  {"name": null, "content": "<span>unnamed</span>"}
+  {
+    "name": "my-button",
+    "content": "<button>{{label}}</button>",
+    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}]
+  },
+  {
+    "name": null,
+    "content": "<span>unnamed</span>",
+    "shadowrootAttributes": []
+  }
 ]
 ```
 
-`name` is `null` when the `<f-template>` element has no `name` attribute. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+`name` is `null` when the `<f-template>` element has no `name` attribute. The `shadowrootAttributes` array preserves forwarded `shadowroot*` attributes as `{name, value}` metadata, using `null` for boolean attributes. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
 
 ### `render_with_templates`
 

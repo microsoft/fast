@@ -318,6 +318,8 @@ A single file may contain multiple templates:
 
 If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored.
 
+Any `shadowroot*` attributes on `<f-template>` are copied to the rendered Declarative Shadow DOM `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+
 ### Rendering with a Locator
 
 ```rust
@@ -465,7 +467,9 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 </my-button>
 ```
 
+- `shadowrootmode="open"` — the standard declarative shadow DOM mode emitted by default.
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
+- `shadowroot*` attributes declared on the source `<f-template>` are forwarded to the output `<template>`; `shadowrootmode` and `shadowroot` default to `open` when neither has a non-empty value, mirror when exactly one has a non-empty value, and are preserved as authored when both have explicit non-empty values.
 
 Custom elements that have no matching template in the locator are passed through verbatim.
 
