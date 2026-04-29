@@ -25,7 +25,7 @@ export default defineConfig({
         },
     ],
     reporter: "list",
-    testMatch: "src/**/*.pw.spec.ts",
+    testMatch: "**/*.pw.spec.ts",
     webServer: {
         command: "fast-test-harness",
         port: PORT,

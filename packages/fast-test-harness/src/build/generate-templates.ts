@@ -82,7 +82,7 @@ export interface GenerateFTemplatesOptions {
 }
 
 export interface ViewTemplate {
-    html: string;
+    html: string | HTMLTemplateElement;
     factories: Record<string, Factory>;
 }
 
@@ -183,7 +183,11 @@ export function convertTemplate(
     viewTemplate: ViewTemplate,
     componentName: string,
 ): string | null {
-    const { html, factories } = viewTemplate;
+    const { factories } = viewTemplate;
+    const html =
+        typeof viewTemplate.html === "string"
+            ? viewTemplate.html
+            : viewTemplate.html.innerHTML;
 
     const factoryEntries = Object.entries(factories);
     if (factoryEntries.length === 0) {
