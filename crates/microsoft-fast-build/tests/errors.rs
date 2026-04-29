@@ -1,5 +1,5 @@
 mod common;
-use common::err;
+use common::{err, ok};
 use microsoft_fast_build::RenderError;
 
 // ── unclosed bindings ─────────────────────────────────────────────────────────
@@ -56,32 +56,22 @@ fn test_error_whitespace_only_binding() {
     assert!(matches!(e, RenderError::EmptyBinding { .. }), "wrong variant: {msg}");
 }
 
-// ── missing state ─────────────────────────────────────────────────────────────
+// ── missing content values ────────────────────────────────────────────────────
 
 #[test]
-fn test_error_missing_state_double_brace() {
-    let e = err("<p>{{missing}}</p>", r#"{}"#);
-    let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("missing"), "should name the binding: {msg}");
-    assert!(msg.contains("<p>{{missing}}"), "should show template context: {msg}");
+fn test_missing_state_double_brace_renders_empty() {
+    assert_eq!(ok("<p>{{missing}}</p>", r#"{}"#), "<p></p>");
 }
 
 #[test]
-fn test_error_missing_state_triple_brace() {
-    let e = err("{{{ghost}}}", r#"{}"#);
-    let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("ghost"), "should name the binding: {msg}");
+fn test_missing_state_triple_brace_renders_empty() {
+    assert_eq!(ok("{{{ghost}}}", r#"{}"#), "");
 }
 
 #[test]
-fn test_error_missing_nested_property() {
+fn test_missing_nested_property_renders_empty() {
     // foo exists but foo.bar does not
-    let e = err("{{foo.bar}}", r#"{"foo": {}}"#);
-    let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("foo.bar"), "should name the full binding path: {msg}");
+    assert_eq!(ok("{{foo.bar}}", r#"{"foo": {}}"#), "");
 }
 
 // ── unclosed directives ───────────────────────────────────────────────────────
@@ -204,6 +194,14 @@ fn test_error_repeat_not_an_array_bool() {
     assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
 }
 
+#[test]
+fn test_error_repeat_not_an_array_null() {
+    let e = err(r#"<f-repeat value="{{item in items}}">{{item}}</f-repeat>"#, r#"{"items": null}"#);
+    let msg = e.to_string();
+    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(msg.contains("items"), "should name the binding: {msg}");
+}
+
 // ── JSON parse errors ─────────────────────────────────────────────────────────
 
 #[test]
@@ -231,22 +229,19 @@ fn test_error_invalid_json_trailing_comma() {
 // ── error propagation from nested directives ──────────────────────────────────
 
 #[test]
-fn test_error_propagates_from_f_when_inner() {
-    let e = err(
+fn test_missing_content_inside_f_when_renders_empty() {
+    let result = ok(
         r#"<f-when value="{{show}}">{{missing}}</f-when>"#,
         r#"{"show": true}"#,
     );
-    let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("missing"), "should name the missing binding: {msg}");
+    assert_eq!(result, "");
 }
 
 #[test]
-fn test_error_propagates_from_f_repeat_inner() {
-    let e = err(
+fn test_missing_content_inside_f_repeat_renders_empty() {
+    let result = ok(
         r#"<f-repeat value="{{item in items}}">{{missing}}</f-repeat>"#,
         r#"{"items": ["a"]}"#,
     );
-    let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {msg}");
+    assert_eq!(result, "");
 }
