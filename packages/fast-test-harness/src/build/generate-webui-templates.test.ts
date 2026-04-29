@@ -2,24 +2,21 @@ import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, it } from "node:test";
-import { installDomShim } from "@microsoft/fast-test-harness/build/dom-shim.js";
+import { test } from "node:test";
 import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
 
-installDomShim();
-
-describe("generateWebuiTemplates", () => {
+test.describe("generateWebuiTemplates", () => {
     let tempDir: string;
 
-    beforeEach(async () => {
+    test.beforeEach(async () => {
         tempDir = await mkdtemp(join(tmpdir(), "fast-webui-templ-"));
     });
 
-    afterEach(async () => {
+    test.afterEach(async () => {
         await rm(tempDir, { recursive: true, force: true });
     });
 
-    it("should generate a webui template without f-template wrapper", async () => {
+    test("should generate a webui template without f-template wrapper", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -40,7 +37,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(!html.includes("{{styles}}"), "should not have styles marker");
     });
 
-    it("should write to outDir when specified", async () => {
+    test("should write to outDir when specified", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -65,7 +62,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(html.includes('<template shadowrootmode="open">'));
     });
 
-    it("should skip modules without a template export", async () => {
+    test("should skip modules without a template export", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -84,7 +81,7 @@ describe("generateWebuiTemplates", () => {
         }
     });
 
-    it("should apply a format function", async () => {
+    test("should apply a format function", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -106,7 +103,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(html.startsWith("<!-- webui-formatted -->"));
     });
 
-    it("should add shadowrootdelegatesfocus from definition-async", async () => {
+    test("should add shadowrootdelegatesfocus from definition-async", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -135,7 +132,7 @@ describe("generateWebuiTemplates", () => {
         );
     });
 
-    it("should not add shadowrootdelegatesfocus when absent", async () => {
+    test("should not add shadowrootdelegatesfocus when absent", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -153,7 +150,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(!html.includes("shadowrootdelegatesfocus"));
     });
 
-    it("should strip the {{styles}} marker from output", async () => {
+    test("should strip the {{styles}} marker from output", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -180,7 +177,7 @@ describe("generateWebuiTemplates", () => {
         );
     });
 
-    it("should handle modules with a default export", async () => {
+    test("should handle modules with a default export", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -200,7 +197,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(html.includes("<svg></svg>"));
     });
 
-    it("should handle multiple template modules in one pass", async () => {
+    test("should handle multiple template modules in one pass", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -235,7 +232,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(badgeHtml.includes("<span>"));
     });
 
-    it("should gracefully handle a format function that throws", async () => {
+    test("should gracefully handle a format function that throws", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -261,7 +258,7 @@ describe("generateWebuiTemplates", () => {
         assert.ok(html.includes("<div>ok</div>"));
     });
 
-    it("should use a custom glob pattern", async () => {
+    test("should use a custom glob pattern", async () => {
         const distDir = join(tempDir, "dist");
         const sub = join(distDir, "components");
         await mkdir(sub, { recursive: true });

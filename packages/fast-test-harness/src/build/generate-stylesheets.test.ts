@@ -2,24 +2,21 @@ import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, it } from "node:test";
-import { installDomShim } from "@microsoft/fast-test-harness/build/dom-shim.js";
+import { test } from "node:test";
 import { generateStylesheets } from "@microsoft/fast-test-harness/build/generate-stylesheets.js";
 
-installDomShim();
-
-describe("generateStylesheets", () => {
+test.describe("generateStylesheets", () => {
     let tempDir: string;
 
-    beforeEach(async () => {
+    test.beforeEach(async () => {
         tempDir = await mkdtemp(join(tmpdir(), "fast-styles-"));
     });
 
-    afterEach(async () => {
+    test.afterEach(async () => {
         await rm(tempDir, { recursive: true, force: true });
     });
 
-    it("should extract CSS from a styles module", async () => {
+    test("should extract CSS from a styles module", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -36,7 +33,7 @@ describe("generateStylesheets", () => {
         assert.ok(css.includes("span { color: red; }"));
     });
 
-    it("should write to outDir when specified", async () => {
+    test("should write to outDir when specified", async () => {
         const distDir = join(tempDir, "dist");
         const outDir = join(tempDir, "out");
         await mkdir(distDir, { recursive: true });
@@ -52,7 +49,7 @@ describe("generateStylesheets", () => {
         assert.ok(css.includes(".card { padding: 8px; }"));
     });
 
-    it("should apply a format function", async () => {
+    test("should apply a format function", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -70,7 +67,7 @@ describe("generateStylesheets", () => {
         assert.ok(css.startsWith("/* formatted */"));
     });
 
-    it("should flatten nested styles arrays", async () => {
+    test("should flatten nested styles arrays", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -92,7 +89,7 @@ describe("generateStylesheets", () => {
         assert.ok(css.includes("span { font-size: 14px; }"));
     });
 
-    it("should skip modules without a styles export", async () => {
+    test("should skip modules without a styles export", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
