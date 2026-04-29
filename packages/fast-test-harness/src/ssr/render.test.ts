@@ -87,11 +87,12 @@ test.describe("renderTemplate", () => {
         assert.ok(result.indexOf("<link") > result.indexOf("<template>"));
     });
 
-    test("should return template unchanged when styles URL is empty", () => {
+    test("should remove {{styles}} marker when styles URL is empty", () => {
         const input = "<template>{{styles}}<div>hi</div></template>";
         const result = renderTemplate(input, "");
 
-        assert.ok(result.includes('<link rel="stylesheet" href="">'));
+        assert.strictEqual(result, "<template><div>hi</div></template>");
+        assert.ok(!result.includes('<link rel="stylesheet"'));
     });
 });
 
@@ -146,6 +147,17 @@ test.describe("buildEntryHtml", () => {
 
         assert.strictEqual(result, "<my-el></my-el>");
     });
+
+    test("should omit attributes with false, null, or undefined values", () => {
+        const result = buildEntryHtml({
+            tagName: "my-el",
+            attributes: JSON.stringify({ disabled: false, hidden: null, role: "button" }),
+        });
+
+        assert.ok(!result.includes("disabled"), `should not include disabled: ${result}`);
+        assert.ok(!result.includes("hidden"), `should not include hidden: ${result}`);
+        assert.ok(result.includes('role="button"'), `should include role: ${result}`);
+    });
 });
 
 test.describe("buildState", () => {
@@ -179,9 +191,7 @@ test.describe("buildState", () => {
 });
 
 test.describe("createSSRRenderer", () => {
-    test("should throw when @microsoft/fast-build is not loadable", () => {
-        // We can't easily make it fail since it IS installed, but we can
-        // verify the factory returns a render function on success.
+    test("should return a render function when @microsoft/fast-build is installed", () => {
         const renderer = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],

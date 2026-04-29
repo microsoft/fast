@@ -77,11 +77,11 @@ export interface SSRRendererOptions {
     distDir?: string;
 
     /**
-     * URL or package specifier for a global theme stylesheet to include
-     * in every SSR fixture page.
+     * Stylesheet URL or server-relative path for a global theme
+     * stylesheet to include in every SSR fixture page.
      *
-     * If the value starts with `/` or `http`, it is used as-is as a URL.
-     * Otherwise it is resolved via `require.resolve` and converted to a
+     * The value is used directly as the `<link>` tag's `href`.
+     * Callers should provide a fully qualified URL or a
      * server-relative path.
      */
     themeStylesheet?: string;
@@ -174,22 +174,31 @@ export function parseDefaultValue(raw: string): unknown {
 }
 
 /**
- * Load a Custom Elements Manifest and extract default state for a
- * component. Returns a record of property names to their default values.
+ * Load a Custom Elements Manifest and extract default state for
+ * each custom element declaration. Returns a map of tag names to
+ * their default property values.
  */
-function loadDefaultStateFromCEM(packageName: string): Record<string, unknown> {
+function loadDefaultStateFromCEM(
+    packageName: string,
+    tagPrefix: string,
+): Map<string, Record<string, unknown>> {
     const cemPath = resolveSpecifier(`${packageName}/custom-elements.json`);
     if (!cemPath) {
-        return {};
+        return new Map();
     }
 
     try {
         const cem = JSON.parse(readFileSync(cemPath, "utf8"));
-        const state: Record<string, unknown> = {};
+        const result = new Map<string, Record<string, unknown>>();
 
         for (const mod of cem.modules ?? []) {
             for (const decl of mod.declarations ?? []) {
-                if (!decl.customElement) continue;
+                if (!decl.customElement) {
+                    continue;
+                }
+                const tagName =
+                    decl.tagName ?? `${tagPrefix}-${decl.name?.toLowerCase()}`;
+                const state: Record<string, unknown> = {};
                 for (const member of decl.members ?? []) {
                     if (member.kind !== "field" || member.privacy !== "public") {
                         continue;
@@ -199,12 +208,15 @@ function loadDefaultStateFromCEM(packageName: string): Record<string, unknown> {
                             ? parseDefaultValue(String(member.default))
                             : "";
                 }
+                if (Object.keys(state).length > 0) {
+                    result.set(tagName, state);
+                }
             }
         }
 
-        return state;
+        return result;
     } catch {
-        return {};
+        return new Map();
     }
 }
 
@@ -212,7 +224,6 @@ interface ComponentArtifacts {
     componentName: string;
     fTemplate: string | null;
     stylesUrl: string;
-    defaultState: Record<string, unknown>;
 }
 
 /**
@@ -228,13 +239,11 @@ function loadMonolithicComponent(
         `${packageName}/${componentDir}/template.html`,
     );
     const stylesPath = resolveSpecifier(`${packageName}/${componentDir}/styles.css`);
-    const defaultState = loadDefaultStateFromCEM(packageName);
 
     return {
         componentName: componentDir,
         fTemplate: fTemplatePath ? readFileSync(fTemplatePath, "utf8") : null,
         stylesUrl: stylesPath ? toServerUrl(stylesPath, packageRoot) : "",
-        defaultState,
     };
 }
 
@@ -242,18 +251,13 @@ function loadMonolithicComponent(
  * Load artifacts for a component from a per-component package
  * (e.g., `@mai-ui/button/template.html`).
  */
-function loadPerPackageComponent(
-    reg: ComponentRegistration,
-    serverRoot: string,
-): ComponentArtifacts {
+function loadPerPackageComponent(reg: ComponentRegistration): ComponentArtifacts {
     const fTemplatePath = resolveSpecifier(`${reg.packageName}/template.html`);
-    const defaultState = loadDefaultStateFromCEM(reg.packageName);
 
     return {
         componentName: reg.name,
         fTemplate: fTemplatePath ? readFileSync(fTemplatePath, "utf8") : null,
         stylesUrl: `${reg.packageName}/styles.css`,
-        defaultState,
     };
 }
 
@@ -264,16 +268,15 @@ function loadPerPackageComponent(
  * @internal
  */
 export function renderTemplate(rawTemplate: string, styles: string): string {
-    const template = rawTemplate.replace(
-        "{{styles}}",
-        `<link rel="stylesheet" href="${styles}">`,
-    );
+    if (!styles) {
+        return rawTemplate.replace("{{styles}}", "");
+    }
 
-    if (template === rawTemplate && styles) {
-        return template.replace(
-            /(<template[^>]*>)/i,
-            match => `${match}<link rel="stylesheet" href="${styles}">`,
-        );
+    const link = `<link rel="stylesheet" href="${styles}">`;
+    const template = rawTemplate.replace("{{styles}}", link);
+
+    if (template === rawTemplate) {
+        return template.replace(/(<template[^>]*>)/i, match => `${match}${link}`);
     }
 
     return template;
@@ -310,6 +313,7 @@ export function buildEntryHtml(queryObj: Record<string, string>): string {
     const innerHTML = queryObj.innerHTML ? String(queryObj.innerHTML) : "";
 
     const attrs = Object.entries(attributes)
+        .filter(([, value]) => value !== false && value != null)
         .map(([key, value]) =>
             value === true ? key : `${key}="${String(value).replace(/"/g, "")}"`,
         )
@@ -383,9 +387,8 @@ export function createSSRRenderer(options: SSRRendererOptions): {
 
     if (options.components) {
         // Per-component packages (MAI-style).
-        const serverRoot = process.cwd();
         for (const reg of options.components) {
-            artifacts.push(loadPerPackageComponent(reg, serverRoot));
+            artifacts.push(loadPerPackageComponent(reg));
         }
     } else if (options.packageName) {
         // Monolithic package (Fluent-style).
@@ -410,7 +413,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
         }
     }
 
-    // Populate maps.
+    // Populate maps and collect default state from CEM.
     const defaultStateByTag = new Map<string, Record<string, unknown>>();
     for (const art of artifacts) {
         const tagName = `${tagPrefix}-${art.componentName}`;
@@ -418,8 +421,20 @@ export function createSSRRenderer(options: SSRRendererOptions): {
             fTemplatesByName.set(art.componentName, art.fTemplate);
         }
         styleUrlsByName.set(art.componentName, art.stylesUrl);
-        if (Object.keys(art.defaultState).length > 0) {
-            defaultStateByTag.set(tagName, art.defaultState);
+    }
+
+    // Load CEM defaults per-package (each package may contain multiple elements).
+    if (options.components) {
+        for (const reg of options.components) {
+            const cemDefaults = loadDefaultStateFromCEM(reg.packageName, tagPrefix);
+            for (const [tag, state] of cemDefaults) {
+                defaultStateByTag.set(tag, state);
+            }
+        }
+    } else if (options.packageName) {
+        const cemDefaults = loadDefaultStateFromCEM(options.packageName, tagPrefix);
+        for (const [tag, state] of cemDefaults) {
+            defaultStateByTag.set(tag, state);
         }
     }
 

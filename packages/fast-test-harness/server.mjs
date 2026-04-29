@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { createServer as createHttpServer } from "node:http";
-import { extname, resolve } from "node:path";
+import { extname, isAbsolute, relative, resolve } from "node:path";
 import { load } from "cheerio";
 
 const MIME_TYPES = {
@@ -62,8 +62,9 @@ async function tryServeStatic(req, res, root) {
     const urlPath = new URL(req.url, "http://localhost").pathname;
     const filePath = resolve(root, `.${urlPath}`);
 
-    // Prevent path traversal.
-    if (!filePath.startsWith(root)) {
+    // Prevent path traversal — reject if the resolved path escapes root.
+    const rel = relative(root, filePath);
+    if (rel.startsWith("..") || isAbsolute(rel)) {
         return false;
     }
 
