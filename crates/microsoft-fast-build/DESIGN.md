@@ -255,7 +255,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      [light DOM children]
    </my-button>
    ```
-   The `<template>` receives any `shadowroot`-prefixed attributes declared on the source `<f-template>`. If the template metadata does not include `shadowrootmode`, the renderer emits the compatibility default `shadowrootmode="open" shadowroot="open"`. If `shadowrootmode` is present and `shadowroot` is not, the mode value is mirrored to `shadowroot` so older browsers continue to see the legacy attribute.
+   The `<template>` receives any `shadowroot*` attributes declared on the source `<f-template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
