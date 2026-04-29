@@ -119,6 +119,8 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file.
 
+Any `shadowroot`-prefixed attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. Without an explicit `shadowrootmode`, output defaults to `shadowrootmode="open"` and `shadowroot="open"`. When `shadowrootmode` is provided, the CLI also emits legacy `shadowroot` with the same value unless `shadowroot` is explicitly set.
+
 ### Attribute name strategy
 
 The `--attribute-name-strategy` option controls how HTML attribute names on custom elements are mapped to state property names in their shadow templates.
