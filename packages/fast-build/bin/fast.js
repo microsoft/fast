@@ -218,24 +218,28 @@ function staticPrefixDir(pattern) {
 
 /**
  * Parse all `<f-template>` elements from an HTML string using the WASM module.
- * Returns [{name, content}] for templates that have a `name` attribute.
+ * Returns template metadata for templates that have a `name` attribute.
  * Emits a warning to stderr for any `<f-template>` without a `name`.
  * @param {string} html
  * @param {string} filePath - used in warning messages
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string }[]}
+ * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[] }[]}
  */
 function parseFTemplates(html, filePath, wasm) {
-    /** @type {{ name: string | null, content: string }[]} */
+    /** @type {{ name: string | null, content: string, shadowrootAttributes?: { name: string, value: string | null }[] }[]} */
     const parsed = JSON.parse(wasm.parse_f_templates(html));
     const results = [];
-    for (const { name, content } of parsed) {
+    for (const { name, content, shadowrootAttributes } of parsed) {
         if (name === null) {
             process.stderr.write(
                 `Warning: <f-template> without a 'name' attribute in '${filePath}': ${content.trim()}\n`
             );
         } else {
-            results.push({ name, content });
+            results.push({
+                name,
+                content,
+                shadowrootAttributes: shadowrootAttributes || [],
+            });
         }
     }
     return results;
@@ -248,7 +252,7 @@ function parseFTemplates(html, filePath, wasm) {
  * Warns (but does not error) if the base directory does not exist.
  * @param {string} pattern
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string }[]}
+ * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[] }[]}
  */
 function resolvePattern(pattern, wasm) {
     const baseDir = staticPrefixDir(pattern);
@@ -262,8 +266,8 @@ function resolvePattern(pattern, wasm) {
         if (globMatch(pattern, file)) {
             const html = fs.readFileSync(file, "utf8");
             const templates = parseFTemplates(html, file, wasm);
-            for (const { name, content } of templates) {
-                results.push({ name, content });
+            for (const { name, content, shadowrootAttributes } of templates) {
+                results.push({ name, content, shadowrootAttributes });
             }
         }
     }
@@ -306,13 +310,13 @@ async function runBuild(args) {
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, content } of matches) {
+            for (const { name, content, shadowrootAttributes } of matches) {
                 if (name in templatesMap) {
                     process.stderr.write(
                         `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
                     );
                 }
-                templatesMap[name] = content;
+                templatesMap[name] = { content, shadowrootAttributes };
             }
         }
     }

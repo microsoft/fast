@@ -29,7 +29,7 @@ This document is intended for contributors who want to understand the internal a
 ```html
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
 <my-component defer-hydration needs-hydration greeting="Hello">
-    <template shadowrootmode="open">
+    <template shadowrootmode="open" shadowroot="open">
         <!--fe-b$$start$$0$$abc123$$fe-b-->Hello<!--fe-b$$end$$0$$abc123$$fe-b-->
     </template>
 </my-component>
@@ -458,7 +458,7 @@ Standard `FASTElement.define()` requires a template at definition time. `defineA
 When `templateOptions: "defer-and-hydrate"` is used, the server must render:
 
 1. The custom element tag with `defer-hydration needs-hydration` attributes.
-2. A `<template shadowrootmode="open">` containing pre-rendered HTML annotated with FAST's hydration markers.
+2. A `<template shadowrootmode="open" shadowroot="open">` containing pre-rendered HTML annotated with FAST's hydration markers. Build-time renderers keep both attributes for Declarative Shadow DOM compatibility and may forward additional `shadowroot`-prefixed attributes from the source `<f-template>`.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
 
 ### Hydration marker formats
