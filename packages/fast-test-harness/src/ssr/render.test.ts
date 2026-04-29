@@ -158,6 +158,15 @@ test.describe("buildEntryHtml", () => {
         assert.ok(!result.includes("hidden"), `should not include hidden: ${result}`);
         assert.ok(result.includes('role="button"'), `should include role: ${result}`);
     });
+
+    test("should escape special characters in attribute values", () => {
+        const result = buildEntryHtml({
+            tagName: "my-el",
+            attributes: JSON.stringify({ title: 'a&b<c>"d' }),
+        });
+
+        assert.ok(result.includes("a&amp;b&lt;c&gt;&quot;d"), `got: ${result}`);
+    });
 });
 
 test.describe("buildState", () => {
