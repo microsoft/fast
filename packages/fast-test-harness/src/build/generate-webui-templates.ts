@@ -107,16 +107,22 @@ function fTemplateToWebui(
     fTemplateHtml: string,
     shadowAttrs: Record<string, string>,
 ): string {
-    // Extract the inner <template>...</template> from within <f-template>.
-    const innerMatch = fTemplateHtml.match(
-        /<f-template[^>]*>\s*(<template[^>]*>[\s\S]*<\/template>)\s*<\/f-template>/,
-    );
+    // Extract the inner <template>...</template> from within <f-template>
+    // using string operations to avoid polynomial backtracking in regex.
+    const fOpenStart = fTemplateHtml.indexOf("<f-template");
+    const fCloseTag = "</f-template>";
+    const fCloseStart = fTemplateHtml.lastIndexOf(fCloseTag);
 
-    if (!innerMatch) {
+    if (fOpenStart === -1 || fCloseStart === -1) {
         return fTemplateHtml;
     }
 
-    let inner = innerMatch[1];
+    const fOpenEnd = fTemplateHtml.indexOf(">", fOpenStart);
+    if (fOpenEnd === -1) {
+        return fTemplateHtml;
+    }
+
+    let inner = fTemplateHtml.slice(fOpenEnd + 1, fCloseStart).trim();
 
     // Remove {{styles}} placeholder.
     inner = inner.replace(escapedStylesMarker, "");
