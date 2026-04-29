@@ -90,6 +90,168 @@ fn test_custom_element_with_children() {
     assert!(result.contains("</my-layout>"), "close tag: {result}");
 }
 
+#[test]
+fn test_f_template_shadowroot_defaults_remain_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<my-button label="Hi"></my-button>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_shadowrootmode_forwarded_with_legacy_shadowroot() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed></shadowroot-closed>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_legacy_shadowroot_value_mirrors_to_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-legacy-closed.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-legacy-closed></shadowroot-legacy-closed>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_additional_shadowroot_attrs_forwarded() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-extra.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-extra></shadowroot-extra>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable="true">"#),
+        "shadow attrs: {result}"
+    );
+}
+
+#[test]
+fn test_f_template_explicit_shadowroot_value_is_preserved() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-explicit.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-explicit></shadowroot-explicit>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowrootmode_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-mode.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-boolean-mode></shadowroot-boolean-mode>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowroot_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-boolean-shadowroot></shadowroot-boolean-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowrootmode_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-mode></shadowroot-empty-mode>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowroot_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-shadowroot></shadowroot-empty-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowroot_mirrors_closed_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-boolean-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed-boolean-shadowroot></shadowroot-closed-boolean-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowroot_mirrors_closed_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-empty-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed-empty-shadowroot></shadowroot-closed-empty-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowrootmode_mirrors_closed_shadowroot() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode-closed-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-mode-closed-shadowroot></shadowroot-empty-mode-closed-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_shadowroot_attr_values_are_escaped() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-escaped.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-escaped></shadowroot-escaped>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootserializable="a&quot;b&amp;c">"#),
+        "shadow attrs: {result}"
+    );
+}
+
 // ── passthrough when no template or locator ───────────────────────────────────
 
 #[test]
