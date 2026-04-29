@@ -221,7 +221,7 @@ fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 ///
 /// Output format:
 ///   `<original-open-tag>
-///    <template shadowrootmode="open" shadowroot="open">{rendered}</template>
+///    <template {shadowroot-attrs}>{rendered}</template>
 ///    {children}</{tag-name}>`
 ///
 /// For self-closing elements (`<my-button />`), the element is emitted as non-self-closing.
@@ -355,6 +355,7 @@ pub fn render_custom_element(
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
     let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false, config)?;
+    let shadowroot_attributes = build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
@@ -371,11 +372,81 @@ pub fn render_custom_element(
     };
 
     let output = format!(
-        "{}<template shadowrootmode=\"open\" shadowroot=\"open\">{}</template>{}</{}>",
-        element_open, rendered, children, tag_name
+        "{}<template{}>{}</template>{}</{}>",
+        element_open, shadowroot_attributes, rendered, children, tag_name
     );
 
     Ok((output, after))
+}
+
+fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String {
+    let mut mode: Option<Option<String>> = None;
+    let mut legacy_shadowroot: Option<Option<String>> = None;
+    let mut forwarded: Vec<(String, Option<String>)> = Vec::new();
+    let mut seen_forwarded: Vec<String> = Vec::new();
+
+    for (name, value) in attrs {
+        let normalized = name.to_lowercase();
+        match normalized.as_str() {
+            "shadowrootmode" => {
+                if mode.is_none() {
+                    mode = Some(value.clone());
+                }
+            }
+            "shadowroot" => {
+                if legacy_shadowroot.is_none() {
+                    legacy_shadowroot = Some(value.clone());
+                }
+            }
+            _ if normalized.starts_with("shadowroot") => {
+                if !seen_forwarded.contains(&normalized) {
+                    seen_forwarded.push(normalized.clone());
+                    forwarded.push((normalized, value.clone()));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    let explicit_mode = explicit_shadowroot_attr_value(mode);
+    let explicit_legacy_shadowroot = explicit_shadowroot_attr_value(legacy_shadowroot);
+    let mode = explicit_mode
+        .clone()
+        .or_else(|| explicit_legacy_shadowroot.clone())
+        .unwrap_or_else(|| "open".to_string());
+    let legacy_shadowroot = explicit_legacy_shadowroot
+        .or(explicit_mode)
+        .unwrap_or_else(|| mode.clone());
+
+    let mut out = String::new();
+    append_template_attr_value(&mut out, "shadowrootmode", &mode);
+    append_template_attr_value(&mut out, "shadowroot", &legacy_shadowroot);
+    for (name, value) in forwarded {
+        append_template_attr(&mut out, &name, &value);
+    }
+    out
+}
+
+fn explicit_shadowroot_attr_value(value: Option<Option<String>>) -> Option<String> {
+    value.flatten().filter(|value| !value.is_empty())
+}
+
+fn append_template_attr(out: &mut String, name: &str, value: &Option<String>) {
+    match value {
+        Some(value) => append_template_attr_value(out, name, value),
+        None => {
+            out.push(' ');
+            out.push_str(name);
+        }
+    }
+}
+
+fn append_template_attr_value(out: &mut String, name: &str, value: &str) {
+    out.push(' ');
+    out.push_str(name);
+    out.push_str("=\"");
+    out.push_str(&html_escape(value));
+    out.push('"');
 }
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {

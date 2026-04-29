@@ -42,7 +42,7 @@ The template must be wrapped in `<f-template name="[custom-element-name]"><templ
 Example:
 ```html
 <my-custom-element greeting="Hello world">
-    <template shadowrootmode="open">
+    <template shadowrootmode="open" shadowroot="open">
         Hello world
     </template>
 </my-custom-element>
@@ -50,6 +50,8 @@ Example:
     <template>{{greeting}}</template>
 </f-template>
 ```
+
+Build-time renderers such as `@microsoft/fast-build` emit both `shadowrootmode` and the legacy `shadowroot` attribute for Declarative Shadow DOM compatibility. If an `<f-template>` uses `shadowroot`-prefixed attributes, those attributes are forwarded to the rendered `<template>`.
 
 #### Non-browser HTML rendering
 
