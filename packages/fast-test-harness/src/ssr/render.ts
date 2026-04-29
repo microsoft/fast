@@ -314,9 +314,17 @@ export function buildEntryHtml(queryObj: Record<string, string>): string {
 
     const attrs = Object.entries(attributes)
         .filter(([, value]) => value !== false && value != null)
-        .map(([key, value]) =>
-            value === true ? key : `${key}="${String(value).replace(/"/g, "")}"`,
-        )
+        .map(([key, value]) => {
+            if (value === true) {
+                return key;
+            }
+            const escaped = String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+            return `${key}="${escaped}"`;
+        })
         .join(" ");
 
     return `<${tagName}${attrs ? ` ${attrs}` : ""}>${innerHTML}</${tagName}>`;
@@ -369,6 +377,14 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     render: (queryObj: Record<string, string>) => RenderResult;
 } {
     const { tagPrefix } = options;
+
+    if (options.components && options.packageName) {
+        throw new Error(
+            "createSSRRenderer: 'components' and 'packageName' are mutually exclusive. " +
+                "Provide one or the other, not both.",
+        );
+    }
+
     const wasm = loadWasm();
 
     if (!wasm) {

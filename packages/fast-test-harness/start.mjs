@@ -62,7 +62,7 @@ Options:
   -p, --port <number>  Server port (env: PORT, default: 3278)
   -b, --base <path>    Base URL path (env: BASE, default: /)
   -r, --root <path>    Vite root directory (default: <cwd>/test)
-  -c, --config <path>  Vite config file path (default: <root>/vite.config.ts)
+  -c, --config <path>  Vite config file path (default: Vite auto-discovery)
   -d, --debug          Write SSR fixtures to temp/ for inspection
   -v, --version        Show version number
   -h, --help           Show this help message
