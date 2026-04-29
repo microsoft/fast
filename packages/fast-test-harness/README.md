@@ -123,15 +123,17 @@ setTheme(lightTheme);
 </html>
 ```
 
-**`entry-client.ts`** registers components for DSD hydration using `defineAsync`:
+**`entry-client.ts`** imports the harness SSR entry (which defines the `<f-template>` element) and registers components for DSD hydration using `defineAsync`:
 
 ```ts
-import { TemplateElement } from "@microsoft/fast-html";
-TemplateElement.define({ name: "f-template" });
+import { RenderableFASTElement } from "@microsoft/fast-html";
+import "@microsoft/fast-test-harness/ssr/entry-client.js";
+import { MyButton, definition } from "../../src/button/index.js";
 
-// Load all define-async modules
-const modules = import.meta.glob("../../src/*/define-async.{ts,js,mts,mjs}");
-Promise.all(Object.values(modules).map(m => m()));
+RenderableFASTElement(MyButton).defineAsync({
+    name: definition.name,
+    templateOptions: "defer-and-hydrate",
+});
 ```
 
 **`entry-server.ts`** exports a `render()` function that the server calls for each `setTemplate()` request. It returns three strings that get injected into `ssr.html`:
@@ -212,13 +214,21 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts", {
 ### CLI flags
 
 ```
-fast-test-harness [options]
+fast-test-harness [command] [options]
 
+Commands:
+  serve                    Start the test harness dev server (default)
+  generate-templates       Generate <f-template> HTML files from compiled templates
+  generate-stylesheets     Generate CSS files from compiled ElementStyles
+  generate-webui-templates Generate WebUI-compatible DSD templates
+
+Serve options:
   -p, --port <number>    Server port (default: 3278)
   -b, --base <path>      Base URL path (default: /)
   -r, --root <path>      Vite root directory (default: <cwd>/test)
   -c, --config <path>    Vite config file path (default: <root>/vite.config.ts)
   -d, --debug            Write SSR fixtures to temp/ for inspection
+  -v, --version          Show version number
   -h, --help             Show help message
 ```
 
@@ -247,7 +257,10 @@ CLI flags take precedence over environment variables.
 
 | Specifier | Contents |
 |-----------|----------|
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer` |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, build utilities |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions` |
+| `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates` |
+| `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |

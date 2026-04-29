@@ -34,24 +34,28 @@ This document describes the internal architecture of the `@microsoft/fast-test-h
 
 The mode is selected per test via `test.use({ ssr: true })` or globally via the `PLAYWRIGHT_TEST_SSR=true` environment variable.
 
-```
+```ts
 test("renders element", async ({ fastPage }) => {
     await fastPage.setTemplate({ attributes: { label: "Hello" } });
     await expect(fastPage.element).toBeVisible();
 });
-        │
-        ├── CSR path ──────────────────────────────────────────┐
-        │   page.goto("/")                                     │
-        │   page.evaluate() → inject HTML into <body>          │
-        │   waitForCustomElement() + waitForStability()        │
-        │                                                      │
-        └── SSR path ──────────────────────────────────────────┐
-            POST /generate-fixture { tagName, attributes, … } │
-            server: vite.ssrLoadModule("entry-server.js")      │
-            server: render(queryObj) → { template, fixture }   │
-            server: inject into ssr.html → write to temp/      │
-            page.goto("/ssr-<testId>.html")                    │
-            waitForStability()                                 │
+```
+
+Both modes use the same test API. The fixture handles routing internally:
+
+```mermaid
+flowchart TD
+    A["setTemplate(options)"] --> B{ssr?}
+    B -- CSR --> C["page.goto('/')"]
+    C --> D["page.evaluate() — inject HTML into body"]
+    D --> E["waitForCustomElement()"]
+    E --> F["waitForStability()"]
+    B -- SSR --> G["POST /generate-fixture"]
+    G --> H["Server: vite.ssrLoadModule('entry-server.js')"]
+    H --> I["Server: render(queryObj)"]
+    I --> J["Server: assemble ssr.html, cache in memory"]
+    J --> K["page.goto('/ssr-testId.html')"]
+    K --> F
 ```
 
 ---
@@ -68,11 +72,12 @@ test("renders element", async ({ fastPage }) => {
 | `src/build/dom-shim.ts` | Minimal DOM shim for running FAST Element's `css` and `html` tagged templates in Node.js |
 | `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
 | `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files |
+| `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files |
 | `src/ssr/render.ts` | `createSSRRenderer` factory — scans for component build artifacts and uses the `@microsoft/fast-build` WASM module to produce SSR output |
 | `src/ssr/entry-client.ts` | SSR hydration entry point — defines `<f-template>` for the browser |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
-| `start.mjs` | CLI entry point (`fast-test-harness` bin) — parses `--port`, `--base`, `--root`, `--config`, `--debug` flags via `node:util` `parseArgs` and calls `startServer()` |
-| `playwright.config.ts` | Shared Playwright configuration (browsers, web server, test matching) |
+| `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
+| `playwright.config.mjs` | Shared Playwright configuration (browsers, web server, test matching) |
 | `vite.config.mjs` | Shared Vite configuration (port, resolve conditions, build settings) |
 | `public/styles.css` | Base CSS reset served as a Vite public asset |
 
@@ -207,26 +212,31 @@ Browser GET /
 
 The `/generate-fixture` POST endpoint handles SSR fixture generation:
 
-```
-Browser POST /generate-fixture { testId, tagName, attributes, … }
-    → validate testId (derived from Playwright's testInfo.titlePath, alphanumeric + hyphens/underscores only)
-    → JSON.parse attributes and styles (sent as JSON strings within the JSON body)
-    → check pendingGenerations deduplication map
-    → read ssr.html template
-    → vite.ssrLoadModule("/src/entry-server.js")
-    → call render(body) → { template, fixture, preloadLinks }
-    → replace placeholders in ssr.html:
-        <!--fixturetitle--> → test title
-        <!--templates-->    → f-template HTML
-        <!--fixture-->      → rendered element HTML
-        <!--stylespreload--> → preload links + inline styles
-    → vite.transformIndexHtml() for module injection
-    → cache in fixtureCache Map
-    → if debug: write to temp/ssr-<testId>.html (for inspection)
-    → respond with { url: "/ssr-<testId>.html" }
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+    participant V as Vite
+    participant E as entry-server.ts
+
+    B->>S: POST /generate-fixture { testId, tagName, … }
+    S->>S: Validate testId, parse attributes & styles
+    S->>S: Check pendingGenerations (dedup)
+    S->>S: Read ssr.html template
+    S->>V: ssrLoadModule("/src/entry-server.js")
+    V-->>S: entry-server module
+    S->>E: render(body)
+    E-->>S: { template, fixture, preloadLinks }
+    S->>S: Replace placeholders in ssr.html
+    S->>V: transformIndexHtml(url, assembled)
+    V-->>S: Transformed HTML
+    S->>S: Cache in fixtureCache
+    S-->>B: { url: "/ssr-testId.html" }
+    B->>S: GET /ssr-testId.html
+    S-->>B: Cached fixture HTML
 ```
 
-A dedicated `GET /ssr-:id.html` handler serves cached fixtures directly from the in-memory `fixtureCache`. The temp file writes (when debug is enabled) are a secondary output for post-mortem inspection.
+When `debug` is enabled, the server also writes fixtures to `temp/ssr-<testId>.html` for post-failure inspection.
 
 ### Caching and Deduplication
 
@@ -288,10 +298,10 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 | Setting | Value |
 |---------|-------|
 | `retries` | `3` in CI, `1` locally |
-| `timeout` | `30_000` in CI, `10_000` locally |
-| `fullyParallel` | `true` |
+| `timeout` | `10_000` in CI, `5_000` locally |
+| `fullyParallel` | `true` locally, `false` in CI |
 | `use.contextOptions.reducedMotion` | `"reduce"` |
-| `testMatch` | `src/**/*.pw.spec.ts` |
+| `testMatch` | `**/*.pw.spec.ts` |
 | `reporter` | `"list"` |
 | `webServer.command` | `fast-test-harness` |
 | `webServer.port` | `3278` (configurable via `PORT` env var) |
@@ -316,10 +326,10 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 | Specifier | Contents |
 |-----------|----------|
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, build utilities (`installDomShim`, `generateStylesheets`, `generateFTemplates`) |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, build utilities (`installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`) |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
-| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions` |
-| `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates` |
-| `@microsoft/fast-test-harness/playwright.config.ts` | Shared Playwright configuration |
+| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
+| `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates` |
+| `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
