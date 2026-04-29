@@ -50,7 +50,7 @@
     "build": "npm run build:tsc",
     "build:tsc": "tsgo -p tsconfig.build.json",
     "test": "npm run test:node && npm run test:playwright",
-    "test:node": "node --test --test-concurrency=1 \"**/*.test.ts\"",
+    "test:node": "node --test --experimental-test-isolation=none \"**/*.test.ts\"",
     "test:playwright": "playwright test"
   },
   "files": [
@@ -64,7 +64,6 @@
     "vite.config.d.ts"
   ],
   "dependencies": {
-    "@microsoft/fast-build": ">=0.3.0",
     "cheerio": "1.2.0"
   },
   "devDependencies": {
