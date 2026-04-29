@@ -463,6 +463,19 @@ fn test_root_custom_element_primitive_binding_resolved() {
 }
 
 #[test]
+fn test_root_custom_element_missing_binding_attr_omitted() {
+    let locator = make_locator(&[("my-el", "<span>{{text}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el text="{{missing}}"></my-el>"#,
+        "{}",
+        &locator,
+        None,
+    ).unwrap();
+    assert!(!result.contains("text="), "missing binding attr omitted: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$text-0$$fe-b--><!--fe-b$$end$$0$$text-0$$fe-b-->"));
+}
+
+#[test]
 fn test_root_custom_element_boolean_attr_binding_truthy() {
     // ?attr="{{expr}}" on a root element should render as the bare attribute name when truthy.
     let locator = make_locator(&[("my-button", "<button>Click</button>")]);
