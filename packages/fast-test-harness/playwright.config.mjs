@@ -1,9 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const CI = process.env.CI === "true";
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3278;
+
 export default defineConfig({
-    retries: 3,
-    fullyParallel: true,
+    retries: CI ? 3 : 1,
+    timeout: CI ? 10_000 : 5_000,
+    fullyParallel: !CI,
     use: {
+        baseURL: `http://localhost:${PORT}`,
         contextOptions: {
             reducedMotion: "reduce",
         },
@@ -20,12 +25,14 @@ export default defineConfig({
         },
     ],
     reporter: "list",
-    testMatch: "src/**/*.pw.spec.ts",
+    testMatch: "**/*.pw.spec.ts",
     webServer: {
-        command: "node start.mjs",
-        port: 5273,
+        command: "fast-test-harness",
+        port: PORT,
+        env: {
+            ...process.env,
+            PORT: PORT.toString(),
+        },
         reuseExistingServer: true,
-        stdout: "pipe",
-        stderr: "pipe",
     },
 });
