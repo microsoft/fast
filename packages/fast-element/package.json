@@ -226,5 +226,9 @@
   "devDependencies": {
     "@microsoft/fast-build": "*",
     "@microsoft/webui": "0.0.10"
-  }
+  },
+  "files": [
+    "./dist",
+    "CHANGELOG.md"
+  ]
 }
