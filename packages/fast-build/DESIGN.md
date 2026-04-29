@@ -108,6 +108,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 
 - The `name` attribute value becomes the element name key in the templates map.
 - The inner content of the `<template>` child element becomes the raw template string sent to the WASM renderer.
+- Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the WASM renderer applies to the emitted Declarative Shadow DOM `<template>`.
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.
 
@@ -153,7 +154,7 @@ Four WASM functions are available; the CLI uses the entry renderer when template
 | `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | CLI entry HTML rendering when at least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
-`templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.
+`templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>` and any forwarded `shadowrootAttributes`. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, defaulting to `shadowrootmode="open" shadowroot="open"` when no `shadowrootmode` metadata is present and mirroring `shadowrootmode` to the legacy `shadowroot` attribute when `shadowroot` is not explicitly supplied.
 
 See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
 

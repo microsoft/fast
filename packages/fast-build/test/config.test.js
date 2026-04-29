@@ -208,6 +208,52 @@ describe("backward compatibility", () => {
     });
 });
 
+
+describe("template shadowroot attributes", () => {
+    /** @type {string} */
+    let dir;
+
+    beforeEach(() => {
+        dir = tmpDir();
+    });
+
+    afterEach(() => {
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("forwards f-template shadowroot attributes through the CLI", () => {
+        writeFixture(dir, {
+            entry: "<my-el></my-el>",
+            state: "{}",
+        });
+        fs.mkdirSync(path.join(dir, "templates"));
+        fs.writeFileSync(
+            path.join(dir, "templates", "my-el.html"),
+            `<f-template name="my-el" shadowrootmode="closed" shadowrootdelegatesfocus>
+                <template><span>shadow</span></template>
+            </f-template>`,
+        );
+
+        run(
+            [
+                "--templates=templates/*.html",
+                "--entry=entry.html",
+                "--state=state.json",
+                "--output=out.html",
+            ],
+            dir,
+        );
+
+        const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+        assert.ok(
+            output.includes(
+                `<template shadowrootmode="closed" shadowroot="closed" shadowrootdelegatesfocus>`,
+            ),
+            output,
+        );
+    });
+});
+
 describe("no state behavior", () => {
     /** @type {string} */
     let dir;
