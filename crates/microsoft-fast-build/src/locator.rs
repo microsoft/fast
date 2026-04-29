@@ -1,9 +1,23 @@
 use std::collections::HashMap;
 use std::path::Path;
+use crate::attribute::{find_tag_end, parse_element_attributes};
 use crate::error::RenderError;
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct FTemplate {
+    pub name: Option<String>,
+    pub content: String,
+    pub shadowroot_attributes: Vec<(String, Option<String>)>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct TemplateDefinition {
+    content: String,
+    shadowroot_attributes: Vec<(String, Option<String>)>,
+}
+
 pub struct Locator {
-    templates: HashMap<String, String>,
+    templates: HashMap<String, TemplateDefinition>,
 }
 
 impl Locator {
@@ -12,8 +26,8 @@ impl Locator {
     /// The element name is read from the `name` attribute of `<f-template>` elements inside each file.
     /// Errors if two different files contain an `<f-template>` with the same name.
     pub fn from_patterns(patterns: &[&str]) -> Result<Self, RenderError> {
-        // element_name → list of (file_path, template_content) from all matching files
-        let mut element_entries: HashMap<String, Vec<(String, String)>> = HashMap::new();
+        // element_name → list of (file_path, template_definition) from all matching files
+        let mut element_entries: HashMap<String, Vec<(String, FTemplate)>> = HashMap::new();
 
         for &pattern in patterns {
             let dir_str = static_prefix_dir(pattern);
@@ -39,21 +53,18 @@ impl Locator {
                             message: e.to_string(),
                         }
                     })?;
-                    for (name_opt, content) in parse_f_templates(&html) {
-                        match name_opt {
-                            Some(name) => {
-                                element_entries
-                                    .entry(name)
-                                    .or_default()
-                                    .push((norm_file.clone(), content));
-                            }
-                            None => {
-                                eprintln!(
-                                    "warning: <f-template> without a 'name' attribute in '{}': {}",
-                                    norm_file,
-                                    content.trim()
-                                );
-                            }
+                    for template in parse_f_templates(&html) {
+                        if let Some(name) = template.name.clone() {
+                            element_entries
+                                .entry(name)
+                                .or_default()
+                                .push((norm_file.clone(), template));
+                        } else {
+                            eprintln!(
+                                "warning: <f-template> without a 'name' attribute in '{}': {}",
+                                norm_file,
+                                template.content.trim()
+                            );
                         }
                     }
                 }
@@ -66,10 +77,13 @@ impl Locator {
                 let paths = entries.into_iter().map(|(p, _)| p).collect();
                 return Err(RenderError::DuplicateTemplate { element, paths });
             }
-            let (_, content) = entries.into_iter().next().expect(
+            let (_, template) = entries.into_iter().next().expect(
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
-            templates.insert(element, content);
+            templates.insert(element, TemplateDefinition {
+                content: template.content,
+                shadowroot_attributes: template.shadowroot_attributes,
+            });
         }
 
         Ok(Locator { templates })
@@ -77,16 +91,39 @@ impl Locator {
 
     /// Create a Locator from an explicit map (useful for testing without filesystem).
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
+        let templates = templates
+            .into_iter()
+            .map(|(name, content)| (name, TemplateDefinition { content, shadowroot_attributes: Vec::new() }))
+            .collect();
+        Locator { templates }
+    }
+
+    #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
+    pub(crate) fn from_template_definitions(templates: HashMap<String, (String, Vec<(String, Option<String>)>)>) -> Self {
+        let templates = templates
+            .into_iter()
+            .map(|(name, (content, shadowroot_attributes))| (name, TemplateDefinition { content, shadowroot_attributes }))
+            .collect();
         Locator { templates }
     }
 
     /// Add a template directly.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
-        self.templates.insert(element_name.to_string(), content.to_string());
+        self.templates.insert(element_name.to_string(), TemplateDefinition {
+            content: content.to_string(),
+            shadowroot_attributes: Vec::new(),
+        });
     }
 
     pub fn get_template(&self, element_name: &str) -> Option<&str> {
-        self.templates.get(element_name).map(|s| s.as_str())
+        self.templates.get(element_name).map(|template| template.content.as_str())
+    }
+
+    pub fn get_shadowroot_attributes(&self, element_name: &str) -> &[(String, Option<String>)] {
+        self.templates
+            .get(element_name)
+            .map(|template| template.shadowroot_attributes.as_slice())
+            .unwrap_or(&[])
     }
 
     pub fn has_template(&self, element_name: &str) -> bool {
@@ -95,8 +132,8 @@ impl Locator {
 }
 
 /// Parse all `<f-template>` elements from an HTML string.
-/// Returns list of (name, inner_template_content). name is None if missing.
-pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
+/// Returns the name, inner template content, and shadowroot-prefixed attributes.
+pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
     let mut results = Vec::new();
     let mut search_start = 0;
     while let Some(rel) = html[search_start..].find("<f-template") {
@@ -110,12 +147,17 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
             }
         }
         // Find the closing '>' of the opening <f-template ...> tag
-        let tag_close = match html[after_tag..].find('>') {
-            Some(i) => after_tag + i + 1,
+        let tag_close = match find_tag_end(html, tag_start) {
+            Some(i) => i,
             None => break,
         };
-        let attrs = &html[after_tag..tag_close - 1];
-        let name = extract_attr_value(attrs, "name");
+        let open_tag = &html[tag_start..tag_close];
+        let attrs = parse_element_attributes(open_tag);
+        let name = attrs
+            .iter()
+            .find(|(name, _)| name.eq_ignore_ascii_case("name"))
+            .and_then(|(_, value)| value.clone());
+        let shadowroot_attributes = collect_shadowroot_attributes(&attrs);
 
         // Find </f-template>
         let inner_start = tag_close;
@@ -127,31 +169,28 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
         let inner_html = &html[inner_start..inner_end];
         let content = extract_template_content(inner_html);
 
-        results.push((name, content));
+        results.push(FTemplate {
+            name,
+            content,
+            shadowroot_attributes,
+        });
         search_start = inner_end + end_tag.len();
     }
     results
 }
 
-/// Extract the value of an attribute from an attribute string like ` name="foo" `.
-fn extract_attr_value(attrs: &str, attr_name: &str) -> Option<String> {
-    // Try double-quoted: name="value"
-    let double_pat = format!("{}=\"", attr_name);
-    if let Some(pos) = attrs.find(&double_pat) {
-        let value_start = pos + double_pat.len();
-        if let Some(end) = attrs[value_start..].find('"') {
-            return Some(attrs[value_start..value_start + end].to_string());
+fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(String, Option<String>)> {
+    let mut results = Vec::new();
+    let mut seen = Vec::new();
+    for (name, value) in attrs {
+        let normalized = name.to_lowercase();
+        if !normalized.starts_with("shadowroot") || seen.contains(&normalized) {
+            continue;
         }
+        seen.push(normalized.clone());
+        results.push((normalized, value.clone()));
     }
-    // Try single-quoted: name='value'
-    let single_pat = format!("{}='", attr_name);
-    if let Some(pos) = attrs.find(&single_pat) {
-        let value_start = pos + single_pat.len();
-        if let Some(end) = attrs[value_start..].find('\'') {
-            return Some(attrs[value_start..value_start + end].to_string());
-        }
-    }
-    None
+    results
 }
 
 /// Extract the inner content of the first `<template>` element found in `html`.
@@ -332,8 +371,9 @@ mod tests {
 </f-template>"#;
         let results = parse_f_templates(html);
         assert_eq!(results.len(), 1);
-        assert_eq!(results[0].0, Some("my-button".to_string()));
-        assert_eq!(results[0].1, "<button>{{label}}</button>");
+        assert_eq!(results[0].name, Some("my-button".to_string()));
+        assert_eq!(results[0].content, "<button>{{label}}</button>");
+        assert!(results[0].shadowroot_attributes.is_empty());
     }
 
     #[test]
@@ -346,10 +386,10 @@ mod tests {
 </f-template>"#;
         let results = parse_f_templates(html);
         assert_eq!(results.len(), 2);
-        assert_eq!(results[0].0, Some("my-a".to_string()));
-        assert_eq!(results[0].1, "<span>A</span>");
-        assert_eq!(results[1].0, Some("my-b".to_string()));
-        assert_eq!(results[1].1, "<div>B</div>");
+        assert_eq!(results[0].name, Some("my-a".to_string()));
+        assert_eq!(results[0].content, "<span>A</span>");
+        assert_eq!(results[1].name, Some("my-b".to_string()));
+        assert_eq!(results[1].content, "<div>B</div>");
     }
 
     #[test]
@@ -359,7 +399,24 @@ mod tests {
 </f-template>"#;
         let results = parse_f_templates(html);
         assert_eq!(results.len(), 1);
-        assert_eq!(results[0].0, None);
+        assert_eq!(results[0].name, None);
+    }
+
+    #[test]
+    fn test_parse_f_templates_shadowroot_attrs() {
+        let html = r#"<f-template name="my-el" shadowrootmode="closed" shadowrootdelegatesfocus shadowrootclonable="true">
+    <template><span>shadow</span></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(
+            results[0].shadowroot_attributes,
+            vec![
+                ("shadowrootmode".to_string(), Some("closed".to_string())),
+                ("shadowrootdelegatesfocus".to_string(), None),
+                ("shadowrootclonable".to_string(), Some("true".to_string())),
+            ]
+        );
     }
 
     #[test]
