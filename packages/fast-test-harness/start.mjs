@@ -71,8 +71,15 @@ Options:
     }
 
     const { startServer } = await import("./server.mjs");
+
+    const port = values.port ? Number(values.port) : undefined;
+    if (port !== undefined && (!Number.isInteger(port) || port < 1 || port > 65535)) {
+        console.error(`Error: Invalid port number: ${values.port}`);
+        process.exit(1);
+    }
+
     await startServer(process.cwd(), values.root, values.config, {
-        ...(values.port && { port: Number(values.port) }),
+        ...(port && { port }),
         ...(values.base && { base: values.base }),
         ...(values.debug && { debug: true }),
     });
