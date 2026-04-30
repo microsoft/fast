@@ -61,13 +61,9 @@
   },
   "files": [
     "dist",
-    "playwright.config.mjs",
-    "playwright.config.d.ts",
     "public",
-    "server.mjs",
-    "start.mjs",
-    "vite.config.mjs",
-    "vite.config.d.ts"
+    "*.mjs",
+    "*.d.ts"
   ],
   "dependencies": {
     "cheerio": "1.2.0"
