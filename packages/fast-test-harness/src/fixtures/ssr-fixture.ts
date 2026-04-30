@@ -12,6 +12,16 @@ export class SSRFixture extends CSRFixture {
      */
     private templateRendered = false;
 
+    /**
+     * Creates an instance of the SSRFixture.
+     *
+     * @param page - The Playwright page object.
+     * @param tagName - The tag name of the custom element.
+     * @param innerHTML - The inner HTML of the custom element.
+     * @param waitFor - Additional custom elements to wait for.
+     * @param testId - The test ID for the SSR fixture.
+     * @param testTitle - The test title for the SSR fixture.
+     */
     constructor(
         page: Page,
         tagName: string,
