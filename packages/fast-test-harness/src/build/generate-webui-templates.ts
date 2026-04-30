@@ -22,7 +22,10 @@ import { glob, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { styleText } from "node:util";
-import { closeExpression, openExpression } from "@microsoft/fast-html/syntax.js";
+import {
+    closeExpression,
+    openExpression,
+} from "@microsoft/fast-element/declarative-syntax.js";
 import { installDomShim } from "./dom-shim.js";
 import { convertTemplate, type ViewTemplate } from "./generate-templates.js";
 

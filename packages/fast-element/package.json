@@ -45,6 +45,11 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
+    "./declarative-syntax.js": {
+      "types": "./dist/dts/declarative/syntax.d.ts",
+      "test": "./src/declarative/syntax.ts",
+      "default": "./dist/esm/declarative/syntax.js"
+    },
     "./attribute-map.js": {
       "types": "./dist/dts/declarative/attribute-map.d.ts",
       "test": "./src/declarative/attribute-map.ts",

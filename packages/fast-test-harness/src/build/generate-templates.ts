@@ -25,7 +25,7 @@ import {
     closeExpression,
     eventArgAccessor,
     openExpression,
-} from "@microsoft/fast-html/syntax.js";
+} from "@microsoft/fast-element/declarative-syntax.js";
 import { installDomShim } from "./dom-shim.js";
 
 const stylesMarker = `${openExpression}styles${closeExpression}`;

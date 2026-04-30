@@ -133,13 +133,9 @@ import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration();
 
-import { RenderableFASTElement } from "@microsoft/fast-html";
 import { MyButton, definition } from "../../src/button/index.js";
 
-RenderableFASTElement(MyButton).defineAsync({
-    name: definition.name,
-    templateOptions: "defer-and-hydrate",
-});
+MyButton.define(definition);
 ```
 
 **`entry-server.ts`** exports a `render()` function that the server calls for each `setTemplate()` request. It returns three strings that get injected into `ssr.html`:
