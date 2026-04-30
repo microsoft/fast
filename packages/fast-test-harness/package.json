@@ -1,6 +1,5 @@
 {
   "name": "@microsoft/fast-test-harness",
-  "private": true,
   "version": "0.0.1",
   "author": {
     "name": "Microsoft",
@@ -23,33 +22,54 @@
   "exports": {
     ".": {
       "types": "./dist/dts/index.d.ts",
-      "test": "./src/index.ts",
       "default": "./dist/esm/index.js"
     },
-    "./vite.config.mjs": {
-      "default": "./vite.config.mjs"
+    "./build/*.js": {
+      "types": "./dist/dts/build/*.d.ts",
+      "default": "./dist/esm/build/*.js"
     },
     "./ssr/*.js": {
       "types": "./dist/dts/ssr/*.d.ts",
-      "test": "./src/ssr/*.ts",
       "default": "./dist/esm/ssr/*.js"
     },
-    "./playwright.config.ts": "./playwright.config.ts",
+    "./playwright.config.mjs": {
+      "types": "./playwright.config.d.ts",
+      "default": "./playwright.config.mjs"
+    },
     "./public/*": "./public/*",
+    "./template.html": "./test/src/test-widget/test-widget.template.html",
+    "./styles.css": "./test/src/test-widget/test-widget.styles.css",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
+    "./vite.config.mjs": {
+      "types": "./vite.config.d.ts",
+      "default": "./vite.config.mjs"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
+    "clean": "clean dist temp test-results",
     "build": "npm run build:tsc",
-    "build:tsc": "tsgo -p tsconfig.build.json"
+    "build:tsc": "tsgo -p tsconfig.build.json",
+    "test": "npm run test:node && npm run test:playwright",
+    "test:node": "node --test --experimental-test-isolation=none \"**/*.test.ts\"",
+    "test:playwright": "playwright test"
   },
+  "files": [
+    "dist",
+    "playwright.config.mjs",
+    "playwright.config.d.ts",
+    "public",
+    "server.mjs",
+    "start.mjs",
+    "vite.config.mjs",
+    "vite.config.d.ts"
+  ],
   "dependencies": {
-    "express": "5.2.1"
+    "cheerio": "1.2.0"
   },
   "devDependencies": {
-    "@microsoft/fast-html": "*",
-    "@microsoft/fast-build": "*"
+    "@microsoft/fast-html": "*"
   },
   "peerDependencies": {
     "@microsoft/fast-build": ">=0.5.0 <1.0.0",
@@ -58,9 +78,6 @@
     "vite": ">=7.0.0"
   },
   "peerDependenciesMeta": {
-    "@microsoft/fast-build": {
-      "optional": true
-    },
     "@microsoft/fast-html": {
       "optional": true
     }
