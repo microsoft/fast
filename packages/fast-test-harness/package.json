@@ -28,6 +28,10 @@
       "types": "./dist/dts/build/*.d.ts",
       "default": "./dist/esm/build/*.js"
     },
+    "./fixtures/*.js": {
+      "types": "./dist/dts/fixtures/*.d.ts",
+      "default": "./dist/esm/fixtures/*.js"
+    },
     "./ssr/*.js": {
       "types": "./dist/dts/ssr/*.d.ts",
       "default": "./dist/esm/ssr/*.js"
