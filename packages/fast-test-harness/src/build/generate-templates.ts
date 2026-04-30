@@ -56,7 +56,7 @@ export interface GenerateFTemplatesOptions {
 
     /**
      * Glob pattern for template modules, relative to `distDir`.
-     * @default "** /*.template.js" (without space)
+     * @default `**​/*.template.js`
      */
     pattern?: string;
 
