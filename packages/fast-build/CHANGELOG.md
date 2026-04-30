@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 30 Apr 2026 17:21:11 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.5.0
+
+Thu, 30 Apr 2026 17:21:11 GMT
+
+### Minor changes
+
+- feat: change default attribute-name-strategy from none to camelCase (7559015+janechu@users.noreply.github.com)
 
 ## 0.4.0
 
