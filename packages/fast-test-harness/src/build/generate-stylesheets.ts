@@ -4,14 +4,14 @@
  *
  * Usage as a module:
  * ```ts
- * import { generateStylesheets } from "@microsoft/fast-test-harness/build/styles.js";
+ * import { generateStylesheets } from "@microsoft/fast-test-harness/build/generate-stylesheets.js";
  *
  * await generateStylesheets({ cwd: process.cwd() });
  * ```
  *
  * Usage as a Lage worker:
  * ```ts
- * import { generateStylesheets } from "@microsoft/fast-test-harness/build/styles.js";
+ * import { generateStylesheets } from "@microsoft/fast-test-harness/build/generate-stylesheets.js";
  *
  * export default async function init({ target }) {
  *     await generateStylesheets({ cwd: target.cwd });

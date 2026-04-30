@@ -8,7 +8,7 @@
  *
  * Usage as a module:
  * ```ts
- * import { generateFTemplates } from "@microsoft/fast-test-harness/build/f-templates.js";
+ * import { generateFTemplates } from "@microsoft/fast-test-harness/build/generate-templates.js";
  *
  * await generateFTemplates({ cwd: process.cwd(), tagPrefix: "fluent" });
  * ```
