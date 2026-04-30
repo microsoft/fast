@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: enhance SSR renderer and CLI with new template generation capabilities",
+  "packageName": "@microsoft/fast-test-harness",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
