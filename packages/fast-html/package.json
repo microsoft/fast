@@ -17,8 +17,8 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "files": [
-    "./dist",
-    "./rules/*.yml"
+    "dist",
+    "rules/*.yml"
   ],
   "scripts": {
     "build:tsc": "tsgo -p ./tsconfig.json",
@@ -53,6 +53,10 @@
     "./utilities.js": {
       "types": "./dist/dts/components/utilities.d.ts",
       "default": "./dist/esm/components/utilities.js"
+    },
+    "./syntax.js": {
+      "types": "./dist/dts/components/syntax.d.ts",
+      "default": "./dist/esm/components/syntax.js"
     },
     "./rules/*.yml": "./rules/*.yml",
     "./package.json": "./package.json"
