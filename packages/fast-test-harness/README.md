@@ -207,7 +207,7 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts", {
 | --------- | ------- | ----------- |
 | `cwd` | `process.cwd()` | Static file serving root |
 | `root` | `<cwd>/test` | Vite root (contains `index.html`, `ssr.html`) |
-| `configFile` | `<root>/vite.config.ts` | Vite config path |
+| `configFile` | Vite auto-discovery | Vite config path |
 | `options.port` | `3278` | Server port |
 | `options.base` | `/` | Base URL path |
 | `options.debug` | `false` | Write SSR fixtures to `temp/` for inspection |
@@ -227,7 +227,7 @@ Serve options:
   -p, --port <number>    Server port (default: 3278)
   -b, --base <path>      Base URL path (default: /)
   -r, --root <path>      Vite root directory (default: <cwd>/test)
-  -c, --config <path>    Vite config file path (default: <root>/vite.config.ts)
+  -c, --config <path>    Vite config file path (default: Vite auto-discovery)
   -d, --debug            Write SSR fixtures to temp/ for inspection
   -v, --version          Show version number
   -h, --help             Show help message

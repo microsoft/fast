@@ -153,8 +153,8 @@ export async function generateWebuiTemplates(
 
     for await (const jsFile of glob(pattern, { cwd: distDir })) {
         const jsFilePath = path.resolve(distDir, jsFile);
-        const componentDir = path.basename(jsFile, ".template.js");
-        const componentName = `${tagPrefix}-${componentDir}`;
+        const componentBaseName = path.basename(jsFile, ".template.js");
+        const componentName = `${tagPrefix}-${componentBaseName}`;
 
         try {
             const mod = await import(pathToFileURL(jsFilePath).href);
@@ -185,10 +185,10 @@ export async function generateWebuiTemplates(
             }
 
             const webuiPath = outDir
-                ? path.resolve(outDir, `${componentDir}.template-webui.html`)
+                ? path.resolve(outDir, `${componentBaseName}.template-webui.html`)
                 : path.resolve(
                       path.dirname(jsFilePath),
-                      `${componentDir}.template-webui.html`,
+                      `${componentBaseName}.template-webui.html`,
                   );
 
             await mkdir(path.dirname(webuiPath), { recursive: true });

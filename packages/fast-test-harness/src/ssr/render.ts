@@ -419,7 +419,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
             ) {
                 continue;
             }
-            const componentDir = dirname(templatePath);
+            const componentDir = dirname(templatePath).replace(/\\/g, "/");
             if (componentDir === ".") {
                 continue;
             }

@@ -294,11 +294,12 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
             }
 
             try {
-                const urlPath = (req.url || "").replace(base, "");
-
                 if (!cachedIndexHtml) {
                     const indexFile = await fs.readFile(indexPath, "utf-8");
-                    cachedIndexHtml = await vite.transformIndexHtml(urlPath, indexFile);
+                    cachedIndexHtml = await vite.transformIndexHtml(
+                        req.url || "/",
+                        indexFile,
+                    );
                 }
 
                 htmlResponse(res, 200, cachedIndexHtml);

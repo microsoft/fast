@@ -184,7 +184,7 @@ The `startServer(cwd, root, configFile)` function accepts overrides for each pat
 |-----------|---------|-------------|
 | `cwd` | `process.cwd()` | Static file serving root |
 | `root` | `<cwd>/test` | Vite root (contains `index.html`, `ssr.html`) |
-| `configFile` | `<root>/vite.config.ts` | Vite config path |
+| `configFile` | Vite auto-discovery | Vite config path |
 
 ### Startup
 
@@ -264,7 +264,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 | `packageName` | `string?` | — | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | — | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
 | `distDir` | `string?` | `"dist/esm"` | Artifact directory relative to the package root. Only used with `packageName`. |
-| `themeStylesheet` | `string?` | — | URL or package specifier for a global theme stylesheet included in every SSR fixture. |
+| `themeStylesheet` | `string?` | — | Stylesheet URL or server-relative path for a global theme stylesheet included in every SSR fixture. Used directly as the `<link>` tag's `href`. |
 
 **Supported layouts:**
 
@@ -273,15 +273,17 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 **Initialization flow:**
 
-1. Loads the `@microsoft/fast-build` WASM module (throws if not installed).
-2. Collects f-template and stylesheet artifacts for all components.
-3. Injects stylesheet `<link>` tags into f-templates (replaces `{{styles}}` placeholder or inserts after opening `<template>` tag).
-4. Parses f-templates into the WASM templates map (`tagName → inner template content`).
-5. Concatenates all styled f-templates for client hydration.
+1. Validates that `packageName` and `components` are not both provided (throws if so).
+2. Loads the `@microsoft/fast-build` WASM module (throws if not installed).
+3. Collects f-template and stylesheet artifacts for all components.
+4. Injects stylesheet `<link>` tags into f-templates (replaces `{{styles}}` placeholder or strips the marker when styles URL is empty).
+5. Parses f-templates into the WASM templates map (`tagName → inner template content`).
+6. Loads CEM default state per-package, keyed by tag name.
+7. Concatenates all styled f-templates for client hydration.
 
 **Per-request `render(queryObj)` flow:**
 
-1. Builds entry HTML from `queryObj` — either raw HTML (`queryObj.html`) or a constructed element (`queryObj.tagName`, `queryObj.attributes`, `queryObj.innerHTML`).
+1. Builds entry HTML from `queryObj` — either raw HTML (`queryObj.html`) or a constructed element (`queryObj.tagName`, `queryObj.attributes`, `queryObj.innerHTML`). Attributes with `false`, `null`, or `undefined` values are omitted; other values are HTML-escaped.
 2. Builds state JSON from attributes (including hyphen-stripped variants for camelCase bindings).
 3. Calls the WASM `render_entry_with_templates()` to produce full HTML with declarative shadow DOM.
 4. Extracts `<body>` content from the rendered document.
