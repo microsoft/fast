@@ -67,7 +67,7 @@
     "lage": "2.15.8",
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
-    "typescript": "5.3.3",
+    "typescript": "5.5.4",
     "vite": "7.3.2",
     "yargs": "17.7.2"
   },
