@@ -37,6 +37,8 @@
       "default": "./playwright.config.mjs"
     },
     "./public/*": "./public/*",
+    "./template.html": "./test/src/test-widget/test-widget.template.html",
+    "./styles.css": "./test/src/test-widget/test-widget.styles.css",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
     "./vite.config.mjs": {

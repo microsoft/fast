@@ -126,8 +126,9 @@ setTheme(lightTheme);
 **`entry-client.ts`** imports the harness SSR entry (which defines the `<f-template>` element) and registers components for DSD hydration using `defineAsync`:
 
 ```ts
-import { RenderableFASTElement } from "@microsoft/fast-html";
 import "@microsoft/fast-test-harness/ssr/entry-client.js";
+
+import { RenderableFASTElement } from "@microsoft/fast-html";
 import { MyButton, definition } from "../../src/button/index.js";
 
 RenderableFASTElement(MyButton).defineAsync({
