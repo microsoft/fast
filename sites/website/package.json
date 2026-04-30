@@ -29,7 +29,7 @@
     "@microsoft/api-documenter": "7.29.7"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "^0.4.0",
+    "@microsoft/fast-build": "^0.5.0",
     "@microsoft/fast-element": "^2.10.4"
   }
 }

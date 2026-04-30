@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 30 Apr 2026 17:21:11 GMT",
+      "version": "1.0.0-alpha.51",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.51",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "77cd24b00d199fd4b2d2e42a6f2dce2be96396b5",
+            "comment": "feat: change default attribute-name-strategy from none to camelCase"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.5.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Apr 2026 00:29:57 GMT",
       "version": "1.0.0-alpha.50",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.50",
