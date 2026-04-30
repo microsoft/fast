@@ -11,5 +11,6 @@
         "sourceMap": false,
         "outDir": "dist/esm"
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"]
 }
