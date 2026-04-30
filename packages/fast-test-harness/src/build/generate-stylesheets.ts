@@ -39,7 +39,7 @@ export interface GenerateStylesheetsOptions {
 
     /**
      * Glob pattern for style modules, relative to `distDir`.
-     * @default "** /*.styles.js" (without space)
+     * @default `**​/*.styles.js`
      */
     pattern?: string;
 
