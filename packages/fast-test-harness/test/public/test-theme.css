@@ -1,0 +1,7 @@
+:root {
+    --test-theme-color: orange;
+}
+
+* {
+    color: var(--test-theme-color);
+}
