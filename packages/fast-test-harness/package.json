@@ -52,12 +52,16 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "clean": "clean dist temp test-results",
+    "clean": "clean dist temp test-results test/temp",
     "build": "npm run build:tsc",
     "build:tsc": "tsgo -p tsconfig.build.json",
-    "test": "npm run test:node && npm run test:playwright",
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "npm run lint && npm run test:node && npm run test:playwright",
     "test:node": "node --test --experimental-test-isolation=none \"**/*.test.ts\"",
-    "test:playwright": "playwright test"
+    "test:playwright": "playwright test",
+    "test:chromium": "playwright test --project=chromium"
   },
   "files": [
     "dist",
