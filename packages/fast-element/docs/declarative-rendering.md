@@ -527,4 +527,4 @@ Should result in:
 
 For information about the declarative rendering lifecycle inside
 `@microsoft/fast-element`, see
-[DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md).
+[declarative-rendering-lifecycle.md](./declarative-rendering-lifecycle.md).

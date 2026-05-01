@@ -8,13 +8,13 @@
 pub enum AttributeNameStrategy {
     /// No conversion — attribute names are lowercased as-is.
     /// `foo-bar` stays `foo-bar`, matching `{{foo-bar}}` in the template.
-    #[default]
     None,
     /// Convert dashed attribute names to camelCase.
     /// `foo-bar` becomes `fooBar`, matching `{{fooBar}}` in the template.
     /// Attributes that are already handled by specialized lookup tables
     /// (`data-*`, `aria-*`, and HTML global attributes like `tabindex`)
     /// are unaffected — those always use their standard property names.
+    #[default]
     CamelCase,
 }
 

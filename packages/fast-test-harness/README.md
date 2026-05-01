@@ -4,12 +4,32 @@
 
 The `fast-test-harness` package is a Playwright testing harness for FAST Element web components with CSR and SSR support.
 
+## Requirements
+
+- Node.js 22.18 or later
+- Playwright 1.56 or later
+
 ## Installation
 
 To install `fast-test-harness` using `npm`:
 
 ```shell
 npm install --save-dev @microsoft/fast-test-harness
+```
+
+## Test directory setup
+
+The harness serves a Vite dev server from a `test/` directory in your project. CSR and SSR modes use different entry points from the same directory.
+
+```
+test/
+├── index.html              # CSR: loads main.ts
+├── ssr.html                # SSR: template with comment placeholders
+├── vite.config.ts          # Vite config (shared by both modes)
+└── src/
+    ├── main.ts             # CSR: registers components, applies theme
+    ├── entry-client.ts     # SSR: registers components for hydration
+    └── entry-server.ts     # SSR: exports render() for fixture generation
 ```
 
 ## Writing tests
@@ -67,21 +87,6 @@ await expect(element).toHaveCustomState("checked");
 | `waitFor` | `string[]` | `[]` | Additional elements to wait for before testing |
 | `ssr` | `boolean` | `false` | Use SSR mode (or set `PLAYWRIGHT_TEST_SSR=true`) |
 
-## Test directory setup
-
-The harness serves a Vite dev server from a `test/` directory in your project. CSR and SSR modes use different entry points from the same directory.
-
-```
-test/
-├── index.html              # CSR: loads main.ts
-├── ssr.html                # SSR: template with comment placeholders
-├── vite.config.ts          # Vite config (shared by both modes)
-└── src/
-    ├── main.ts             # CSR: registers components, applies theme
-    ├── entry-client.ts     # SSR: registers components for hydration
-    └── entry-server.ts     # SSR: exports render() for fixture generation
-```
-
 ### CSR files
 
 **`index.html`** loads a script that registers your components:
@@ -133,9 +138,9 @@ import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 enableHydration();
 
-// Load all define-async modules
-const modules = import.meta.glob("../../src/*/define-async.{ts,js}");
-Promise.all(Object.values(modules).map(m => m()));
+import { MyButton, definition } from "../../src/button/index.js";
+
+MyButton.define(definition);
 ```
 
 **`entry-server.ts`** exports a `render()` function that the server calls for each `setTemplate()` request. It returns three strings that get injected into `ssr.html`:
@@ -148,35 +153,47 @@ export function render(queryObj: Record<string, string>): {
 };
 ```
 
-Each component needs three build artifacts for SSR: an `<f-template>` (`.template.html`), a DSD template (`.template-dsd.html`), and optionally a stylesheet (`.styles.css`). Use `renderFixture` and `renderTemplate` from the harness to assemble the output:
+Use `createSSRRenderer` from the harness to build the `render()` function. It scans for component build artifacts (f-templates, stylesheets) and uses the `@microsoft/fast-build` WASM renderer to produce declarative shadow DOM on each request.
+
+**Multi-component package** (all components in one package):
 
 ```ts
-import { readAsset, resolveAssetUrl } from "@microsoft/fast-test-harness/ssr/assets.js";
-import { renderFixture, renderTemplate } from "@microsoft/fast-test-harness/ssr/render.js";
+import { createSSRRenderer } from "@microsoft/fast-test-harness/ssr/render.js";
 
-const fTemplate = readAsset("@my-scope/button/template.html");
-const dsd = readAsset("@my-scope/button/template-dsd.html");
-const styles = resolveAssetUrl("@my-scope/button/styles.css");
+const { render } = createSSRRenderer({
+    packageName: "@my-scope/web-components",
+    tagPrefix: "my",
+});
 
-export function render(queryObj: Record<string, string> = {}) {
-    return {
-        template: renderTemplate(fTemplate, styles),
-        fixture: renderFixture(queryObj, dsd, styles),
-        preloadLinks: "",
-    };
-}
+export { render };
+```
+
+**Per-component packages** (each component is a separate npm package):
+
+```ts
+import { createSSRRenderer } from "@microsoft/fast-test-harness/ssr/render.js";
+
+const { render } = createSSRRenderer({
+    tagPrefix: "my",
+    components: [
+        { name: "button", packageName: "@my-scope/button" },
+        { name: "checkbox", packageName: "@my-scope/checkbox" },
+    ],
+});
+
+export { render };
 ```
 
 ## Server
 
-The package includes an Express + Vite server that handles both CSR page serving and SSR fixture generation. Run it directly or let Playwright manage it via `webServer`:
+The package includes a Node.js HTTP server with Vite middleware that handles both CSR page serving and SSR fixture generation. Run it directly or let Playwright manage it via `webServer`:
 
 ```ts
 // playwright.config.ts
 export default defineConfig({
     webServer: {
         command: "fast-test-harness",
-        port: 5173,
+        port: 3278,
         reuseExistingServer: true,
     },
 });
@@ -186,38 +203,72 @@ For custom setup, import `startServer`:
 
 ```ts
 import { startServer } from "@microsoft/fast-test-harness/server.mjs";
-await startServer(process.cwd(), "./test", "./test/vite.config.ts");
+await startServer(process.cwd(), "./test", "./test/vite.config.ts", {
+    port: 4000,
+    debug: true,
+});
 ```
 
 | Parameter | Default | Description |
-|-----------|---------|-------------|
+| --------- | ------- | ----------- |
 | `cwd` | `process.cwd()` | Static file serving root |
 | `root` | `<cwd>/test` | Vite root (contains `index.html`, `ssr.html`) |
-| `configFile` | `<root>/vite.config.ts` | Vite config path |
+| `configFile` | Vite auto-discovery | Vite config path |
+| `options.port` | `3278` | Server port |
+| `options.base` | `/` | Base URL path |
+| `options.debug` | `false` | Write SSR fixtures to `temp/` for inspection |
+
+### CLI flags
+
+```
+fast-test-harness [command] [options]
+
+Commands:
+  serve                    Start the test harness dev server (default)
+  generate-templates       Generate <f-template> HTML files from compiled templates
+  generate-stylesheets     Generate CSS files from compiled ElementStyles
+  generate-webui-templates Generate WebUI-compatible DSD templates
+
+Serve options:
+  -p, --port <number>    Server port (default: 3278)
+  -b, --base <path>      Base URL path (default: /)
+  -r, --root <path>      Vite root directory (default: <cwd>/test)
+  -c, --config <path>    Vite config file path (default: Vite auto-discovery)
+  -d, --debug            Write SSR fixtures to temp/ for inspection
+  -v, --version          Show version number
+  -h, --help             Show help message
+```
+
+CLI flags take precedence over environment variables.
 
 | Environment variable | Default | Description |
-|---------------------|---------|-------------|
-| `PORT` | `5173` | Server port |
-| `BASE` | `/` | Base URL path |
+| -------------------- | ------- | ----------- |
+| `PORT` | `3278` | Server port (overridden by `--port`) |
+| `BASE` | `/` | Base URL path (overridden by `--base`) |
+| `FAST_DEBUG` | — | Set `"true"` to enable debug mode (overridden by `--debug`) |
 | `PLAYWRIGHT_TEST_SSR` | — | Set `"true"` for SSR mode |
 
-## Rendering utilities
+## SSR renderer
 
-**`renderFixture(queryObj, dsdTemplate?, styles?, templateData?, childTemplates?)`** builds the fixture element HTML. Injects the DSD template inside the element when provided. `childTemplates` is a `Record<tagName, dsdHtml>` that injects DSD into nested custom elements found in the innerHTML or raw HTML.
+**`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to render f-templates into declarative shadow DOM.
 
-**`renderTemplate(rawTemplate, styles)`** replaces `{{styles}}` in an f-template HTML string with a `<link>` tag for the given stylesheet URL.
-
-**`readAsset(specifier)`** reads a file as UTF-8 from a package export path or filesystem path using `import.meta.resolve`.
-
-**`resolveAssetUrl(specifier, root?)`** resolves a specifier to a server-relative URL path for use in `<link>` tags.
+| Option | Type | Description |
+|--------|------|-------------|
+| `tagPrefix` | `string` | Tag name prefix for custom elements (e.g., `"fluent"`, `"mai"`) |
+| `packageName` | `string?` | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
+| `components` | `ComponentRegistration[]?` | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
+| `distDir` | `string?` | Artifact directory relative to the package root (default: `"dist/esm"`). Only used with `packageName`. |
+| `themeStylesheet` | `string?` | URL or package specifier for a global theme stylesheet. |
 
 ## Exports
 
 | Specifier | Contents |
 |-----------|----------|
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `readAsset`, `resolveAssetUrl`, `renderFixture`, `renderTemplate` |
-| `@microsoft/fast-test-harness/server.mjs` | `startServer`, `app` |
-| `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
-| `@microsoft/fast-test-harness/ssr/render.js` | `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
-| `@microsoft/fast-test-harness/ssr/assets.js` | `readAsset`, `resolveAssetUrl` |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `toHaveCustomState`, `installDomShim`, `createSSRRenderer` |
+| `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates` |
+| `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
+| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
+| `@microsoft/fast-test-harness/server.mjs` | `startServer` |
+| `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |

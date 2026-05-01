@@ -1,6 +1,6 @@
 {
-  "type": "minor",
-  "comment": "add function-based template resolver sequencing",
+  "type": "prerelease",
+  "comment": "BREAKING CHANGE: add function-based template resolver sequencing",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

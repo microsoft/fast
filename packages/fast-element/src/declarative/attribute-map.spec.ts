@@ -20,13 +20,15 @@ test.describe("AttributeMap", () => {
         expect(hasFooAccessor).toBeTruthy();
     });
 
-    test("should define @attr for a dash-case property", async ({ page }) => {
+    test("should define @attr for a camelCase property derived from binding key", async ({
+        page,
+    }) => {
         const element = page.locator("attribute-map-test-element");
 
         const hasFooBarAccessor = await element.evaluate(node => {
             const desc = Object.getOwnPropertyDescriptor(
                 Object.getPrototypeOf(node),
-                "foo-bar",
+                "fooBar",
             );
             return typeof desc?.get === "function";
         });
@@ -34,14 +36,14 @@ test.describe("AttributeMap", () => {
         expect(hasFooBarAccessor).toBeTruthy();
     });
 
-    test("should use binding key as-is for both attribute and property name", async ({
+    test("should use camelCase property name with kebab-case attribute name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting the foo-bar attribute should update the foo-bar property (no conversion)
+        // Setting the foo-bar attribute should update the fooBar property (camelCase conversion)
         await element.evaluate(node => node.setAttribute("foo-bar", "dash-case-test"));
-        const propValue = await element.evaluate(node => (node as any)["foo-bar"]);
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
         expect(propValue).toBe("dash-case-test");
     });
@@ -79,7 +81,7 @@ test.describe("AttributeMap", () => {
         await expect(page.locator(".foo-value")).toHaveText("attr-value");
     });
 
-    test("should update template when dash-case attribute is set via setAttribute", async ({
+    test("should update template when foo-bar attribute is set via setAttribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
@@ -115,14 +117,14 @@ test.describe("AttributeMap", () => {
         expect(propValue).toBe("lookup-test");
     });
 
-    test("should update definition attributeLookup for dash-case properties", async ({
+    test("should update definition attributeLookup for camelCase properties", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // setAttribute with foo-bar triggers attributeChangedCallback for the foo-bar property
+        // setAttribute with foo-bar triggers attributeChangedCallback for the fooBar property
         await element.evaluate(node => node.setAttribute("foo-bar", "lookup-bar-test"));
-        const propValue = await element.evaluate(node => (node as any)["foo-bar"]);
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
         expect(propValue).toBe("lookup-bar-test");
     });

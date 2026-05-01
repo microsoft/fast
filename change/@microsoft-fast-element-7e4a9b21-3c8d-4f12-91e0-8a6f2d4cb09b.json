@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "chore: replace rollup-plugin-filesize with esbuild bundle size reporting",
+  "type": "prerelease",
+  "comment": "feat: add ./declarative-syntax.js subpath export exposing declarative HTML syntax constants",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

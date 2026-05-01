@@ -1,6 +1,6 @@
 {
-  "type": "major",
-  "comment": "remove FASTGlobal version tracking",
+  "type": "prerelease",
+  "comment": "BREAKING CHANGE: remove FASTGlobal version tracking",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

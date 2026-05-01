@@ -557,7 +557,7 @@ flowchart LR
 
 For a deep dive into the schema structure, context tracking, and proxy system
 see
-[DECLARATIVE_SCHEMA_OBSERVER_MAP.md](./DECLARATIVE_SCHEMA_OBSERVER_MAP.md).
+[declarative-schema-observer-map.md](./declarative-schema-observer-map.md).
 
 ### `$observe` flag on schema nodes
 
@@ -654,7 +654,7 @@ sequenceDiagram
 | `hydrationComplete()` | `enableHydration(options)` | Once, after all prerendered elements have completed hydration. |
 
 For usage examples see
-[DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md).
+[declarative-rendering-lifecycle.md](./declarative-rendering-lifecycle.md).
 
 ---
 
@@ -720,7 +720,7 @@ With `declarativeTemplate()`, connection gating happens before platform registra
 ```
 
 For detailed examples see
-[DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
+[declarative-rendering.md](./declarative-rendering.md).
 
 ---
 
@@ -797,10 +797,10 @@ for an example of a complex multi-feature fixture.
 
 | Document | Topic |
 |---|---|
-| [DECLARATIVE_HTML.md](./DECLARATIVE_HTML.md) | Installation, syntax reference, lifecycle callbacks, usage examples |
-| [DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md) | Hydratable HTML format: comment markers, dataset attributes, directive markers |
-| [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md) | Phase-by-phase rendering lifecycle, callback ordering, performance notes |
-| [DECLARATIVE_SCHEMA_OBSERVER_MAP.md](./DECLARATIVE_SCHEMA_OBSERVER_MAP.md) | Deep dive into Schema JSON structure, ObserverMap proxy system, debugging |
+| [declarative-html.md](./declarative-html.md) | Installation, syntax reference, lifecycle callbacks, usage examples |
+| [declarative-rendering.md](./declarative-rendering.md) | Hydratable HTML format: comment markers, dataset attributes, directive markers |
+| [declarative-rendering-lifecycle.md](./declarative-rendering-lifecycle.md) | Phase-by-phase rendering lifecycle, callback ordering, performance notes |
+| [declarative-schema-observer-map.md](./declarative-schema-observer-map.md) | Deep dive into Schema JSON structure, ObserverMap proxy system, debugging |
 | [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md) | Quick reference for fixture structure |
 | [test/declarative/fixtures/WRITING_FIXTURES.md](./test/declarative/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |
 | [test/declarative/fixtures/extensions/observer-map-deep-merge/README.md](./test/declarative/fixtures/extensions/observer-map-deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Thu, 30 Apr 2026 17:21:11 GMT",
+      "version": "0.5.0",
+      "tag": "@microsoft/fast-build_v0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "77cd24b00d199fd4b2d2e42a6f2dce2be96396b5",
+            "comment": "feat: change default attribute-name-strategy from none to camelCase"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Apr 2026 00:26:37 GMT",
       "version": "0.4.0",
       "tag": "@microsoft/fast-build_v0.4.0",
