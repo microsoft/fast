@@ -11,7 +11,7 @@ import {
 import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
 
 test.describe("convertTemplate", async () => {
-    // Install the DOM shim before any tests — convertTemplate needs fast-html
+    // Install the DOM shim before any tests — convertTemplate needs declarative
     // syntax constants which require a DOM environment, and FAST Element needs
     // basic DOM globals to initialize.
     installDomShim();
