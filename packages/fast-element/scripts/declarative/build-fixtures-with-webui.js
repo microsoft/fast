@@ -6,7 +6,7 @@
  * For each fixture directory this script:
  *   1. Extracts <f-template> components from templates.html into individual
  *      component files (webui uses filename-based component discovery).
- *   2. Builds the fixture with `webui build --plugin=fast`.
+ *   2. Builds the fixture with `webui build --plugin=fast-v3`.
  *   3. Renders the compiled protocol with the fixture's state.json.
  *   4. Writes the rendered index.html into temp/integrations/webui/fixtures/
  *      alongside a copy of main.ts and any extra assets so that Playwright
@@ -80,7 +80,7 @@ function buildFixture(fixtureName) {
     const buildResult = build({
         appDir: buildDir,
         entry: "entry.html",
-        plugin: "fast",
+        plugin: "fast-v3",
         outDir: buildOutDir,
     });
 
@@ -91,7 +91,7 @@ function buildFixture(fixtureName) {
     // Render with state
     const state = JSON.parse(readFileSync(join(fixtureDir, "state.json"), "utf8"));
     let html = render(buildResult.protocol, state, {
-        plugin: "fast",
+        plugin: "fast-v3",
         entry: "entry.html",
     });
 
