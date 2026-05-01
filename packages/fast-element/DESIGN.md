@@ -366,7 +366,7 @@ The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Run
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
 `enableHydration()` from `@microsoft/fast-element/hydration.js`. See
-[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+[`declarative-design.md`](./docs/declarative-design.md) for the detailed
 architecture.
 
 ---
@@ -603,7 +603,7 @@ src/
 | [docs/architecture/fastelement.md](./docs/architecture/fastelement.md) | FASTElement & ElementController lifecycle in detail |
 | [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) | `html` tag, directives, binding pre-processing |
 | [docs/architecture/updates.md](./docs/architecture/updates.md) | Updates queue, attribute and observable change batching |
-| [DECLARATIVE_DESIGN.md](./DECLARATIVE_DESIGN.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
+| [declarative-design.md](./docs/declarative-design.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
 | [docs/template-bindings.md](./docs/template-bindings.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
 | [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
 

@@ -60,7 +60,7 @@ be stack agnostic because JavaScript does not need to be interpreted to emit
 the initial HTML. The declarative runtime expects hydratable comment markers
 and datasets when prerendered content is generated. For the required marker
 format and initial-state application details, see
-[DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
+[declarative-rendering.md](./declarative-rendering.md).
 
 ## Lifecycle Callbacks
 
@@ -467,4 +467,4 @@ rendering differences between `fast-build` and `webui`. The
 `playwright.declarative.webui.config.ts` file sets
 `FAST_WEBUI_INTEGRATION=true`, and affected tests use `test.skip()` with a
 descriptive reason. See the WebUI Integration Tests section in
-[DECLARATIVE_DESIGN.md](./DECLARATIVE_DESIGN.md) for the full list.
+[declarative-design.md](./declarative-design.md) for the full list.
