@@ -476,11 +476,17 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     // Concatenate all f-templates (with styles) for client hydration.
     const allFTemplates = [...fTemplatesByName.values()].join("\n");
 
-    // Resolve theme stylesheet if provided.
-    let preloadLinks = "";
+    // Build preload links: theme stylesheet + component stylesheets.
+    const preloadParts: string[] = [];
     if (options.themeStylesheet) {
-        preloadLinks = `<link rel="stylesheet" href="${options.themeStylesheet}">`;
+        preloadParts.push(`<link rel="stylesheet" href="${options.themeStylesheet}">`);
     }
+    for (const stylesUrl of styleUrlsByName.values()) {
+        if (stylesUrl) {
+            preloadParts.push(`<link rel="preload" href="${stylesUrl}" as="style">`);
+        }
+    }
+    const preloadLinks = preloadParts.join("\n");
 
     return {
         render(queryObj: Record<string, string> = {}): RenderResult {
@@ -505,6 +511,35 @@ export function createSSRRenderer(options: SSRRendererOptions): {
                     // Extract body content from the rendered document.
                     const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
                     fixture = bodyMatch?.[1] ?? entryHtml;
+
+                    // The WASM renderer only injects DSD for top-level
+                    // custom elements. Inject DSD for any nested custom
+                    // elements that have templates but weren't rendered.
+                    for (const nestedTag of Object.keys(templatesMap)) {
+                        // Match opening tags that don't already have a
+                        // DSD <template> as their first child.
+                        const openTagRe = new RegExp(
+                            `(<${nestedTag}(?=[\\s>/])[^>]*>)(?!\\s*<template[\\s>])`,
+                            "g",
+                        );
+
+                        fixture = fixture.replace(openTagRe, (_, open: string) => {
+                            // Render this element in isolation.
+                            const solo: string = wasm.render_with_templates(
+                                `${open}</${nestedTag}>`,
+                                templatesJson,
+                                JSON.stringify(defaultStateByTag.get(nestedTag) ?? {}),
+                                "camelCase",
+                            );
+                            // Extract the DSD that was injected.
+                            const dsdStart = solo.indexOf("<template shadowrootmode");
+                            const dsdEnd = solo.lastIndexOf("</template>");
+                            if (dsdStart !== -1 && dsdEnd > dsdStart) {
+                                return `${open}${solo.slice(dsdStart, dsdEnd + "</template>".length)}`;
+                            }
+                            return open;
+                        });
+                    }
                 } catch (e) {
                     // Fall back to the raw entry HTML if rendering fails.
                     console.error("WASM render failed:", e);
