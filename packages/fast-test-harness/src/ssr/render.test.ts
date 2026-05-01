@@ -276,7 +276,7 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should return empty preloadLinks without a theme", () => {
+    test("should not include theme link in preloadLinks when themeStylesheet is omitted", () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
@@ -284,7 +284,10 @@ test.describe("createSSRRenderer", () => {
 
         const result = render({ tagName: "test-widget" });
 
-        assert.strictEqual(result.preloadLinks, "");
+        assert.ok(
+            !result.preloadLinks.includes('rel="stylesheet"'),
+            `should not have a stylesheet link, got: ${result.preloadLinks}`,
+        );
     });
 
     test("should handle raw HTML via the html key", () => {

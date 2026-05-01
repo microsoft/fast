@@ -28,6 +28,10 @@
       "types": "./dist/dts/build/*.d.ts",
       "default": "./dist/esm/build/*.js"
     },
+    "./fixtures/*.js": {
+      "types": "./dist/dts/fixtures/*.d.ts",
+      "default": "./dist/esm/fixtures/*.js"
+    },
     "./ssr/*.js": {
       "types": "./dist/dts/ssr/*.d.ts",
       "default": "./dist/esm/ssr/*.js"
@@ -48,36 +52,42 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "clean": "clean dist temp test-results",
+    "clean": "clean dist temp test-results test/temp",
     "build": "npm run build:tsc",
     "build:tsc": "tsgo -p tsconfig.build.json",
-    "test": "npm run test:node && npm run test:playwright",
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "npm run lint && npm run test:node && npm run test:playwright",
     "test:node": "node --test --experimental-test-isolation=none \"**/*.test.ts\"",
-    "test:playwright": "playwright test"
+    "test:playwright": "playwright test",
+    "test:chromium": "playwright test --project=chromium"
   },
   "files": [
     "dist",
-    "playwright.config.mjs",
-    "playwright.config.d.ts",
     "public",
-    "server.mjs",
-    "start.mjs",
-    "vite.config.mjs",
-    "vite.config.d.ts"
+    "*.mjs",
+    "*.d.ts"
   ],
+  "devDependencies": {
+    "@microsoft/fast-element": "^2.10.4",
+    "@microsoft/fast-build": "^0.6.0",
+    "@microsoft/fast-html": "^1.0.0-alpha.52"
+  },
   "dependencies": {
     "cheerio": "1.2.0"
   },
-  "devDependencies": {
-    "@microsoft/fast-html": "*"
-  },
   "peerDependencies": {
-    "@microsoft/fast-build": ">=0.6.0 <1.0.0",
-    "@microsoft/fast-html": ">=1.0.0-alpha.52 <1.0.0",
+    "@microsoft/fast-element": "^2.10.4 || ^3.0.0",
+    "@microsoft/fast-build": "^0.6.0",
+    "@microsoft/fast-html": ">=1.0.0-alpha.52",
     "@playwright/test": ">=1.40.0",
     "vite": ">=7.0.0"
   },
   "peerDependenciesMeta": {
+    "@microsoft/fast-element": {
+      "optional": true
+    },
     "@microsoft/fast-html": {
       "optional": true
     }

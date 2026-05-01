@@ -4,12 +4,32 @@
 
 The `fast-test-harness` package is a Playwright testing harness for FAST Element web components with CSR and SSR support.
 
+## Requirements
+
+- Node.js 22.18 or later
+- Playwright 1.56 or later
+
 ## Installation
 
 To install `fast-test-harness` using `npm`:
 
 ```shell
 npm install --save-dev @microsoft/fast-test-harness
+```
+
+## Test directory setup
+
+The harness serves a Vite dev server from a `test/` directory in your project. CSR and SSR modes use different entry points from the same directory.
+
+```
+test/
+├── index.html              # CSR: loads main.ts
+├── ssr.html                # SSR: template with comment placeholders
+├── vite.config.ts          # Vite config (shared by both modes)
+└── src/
+    ├── main.ts             # CSR: registers components, applies theme
+    ├── entry-client.ts     # SSR: registers components for hydration
+    └── entry-server.ts     # SSR: exports render() for fixture generation
 ```
 
 ## Writing tests
@@ -66,21 +86,6 @@ await expect(element).toHaveCustomState("checked");
 | `innerHTML` | `string` | `""` | Default inner HTML |
 | `waitFor` | `string[]` | `[]` | Additional elements to wait for before testing |
 | `ssr` | `boolean` | `false` | Use SSR mode (or set `PLAYWRIGHT_TEST_SSR=true`) |
-
-## Test directory setup
-
-The harness serves a Vite dev server from a `test/` directory in your project. CSR and SSR modes use different entry points from the same directory.
-
-```
-test/
-├── index.html              # CSR: loads main.ts
-├── ssr.html                # SSR: template with comment placeholders
-├── vite.config.ts          # Vite config (shared by both modes)
-└── src/
-    ├── main.ts             # CSR: registers components, applies theme
-    ├── entry-client.ts     # SSR: registers components for hydration
-    └── entry-server.ts     # SSR: exports render() for fixture generation
-```
 
 ### CSR files
 
@@ -258,10 +263,11 @@ CLI flags take precedence over environment variables.
 
 | Specifier | Contents |
 |-----------|----------|
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, build utilities |
-| `@microsoft/fast-test-harness/server.mjs` | `startServer` |
-| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions` |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `toHaveCustomState`, `installDomShim`, `createSSRRenderer` |
 | `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates` |
+| `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
+| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
+| `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
