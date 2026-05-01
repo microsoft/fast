@@ -1,6 +1,6 @@
 {
-  "type": "major",
-  "comment": "remove deprecated declarative event e support",
+  "type": "prerelease",
+  "comment": "BREAKING CHANGE: remove deprecated declarative event e support",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
