@@ -98,7 +98,7 @@ fn test_hydration_missing_attribute_binding_omits_attribute() {
     ).unwrap();
 
     let shadow = extract_shadow(&result);
-    assert!(shadow.contains("data-fe-c-0-2"), "compact marker: {result}");
+    assert!(shadow.contains(r#"data-fe="2""#), "compact marker: {result}");
     assert!(shadow.contains(r#"type="text""#), "resolved attr: {result}");
     assert!(shadow.contains(r#"class="static""#), "static attr: {result}");
     assert!(!shadow.contains("value="), "missing attr omitted: {result}");
@@ -616,9 +616,9 @@ fn test_hydration_nested_element_missing_attr_binding_omits_attribute() {
         None,
     ).unwrap();
 
-    assert!(result.contains("data-fe-c-0-1"), "attr binding marker remains: {result}");
+    assert!(result.contains(r#"data-fe="1""#), "attr binding marker remains: {result}");
     assert!(!result.contains("label="), "missing attr omitted: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b-->"));
+    assert!(result.contains("<!--fe:b--><!--fe:/b-->"), "content binding marker: {result}");
 }
 
 // ── Unescaped triple-brace ────────────────────────────────────────────────────

@@ -634,7 +634,7 @@ fn test_root_custom_element_missing_binding_attr_omitted() {
         None,
     ).unwrap();
     assert!(!result.contains("text="), "missing binding attr omitted: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$text-0$$fe-b--><!--fe-b$$end$$0$$text-0$$fe-b-->"));
+    assert!(result.contains("<!--fe:b--><!--fe:/b-->"), "content binding marker: {result}");
 }
 
 #[test]
