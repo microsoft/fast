@@ -74,11 +74,11 @@ jobs:
         run: cargo install wasm-pack
 
       - name: Build workspaces
-        run: npx lage build ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }} --allow-no-target-runs
+        run: npx lage build ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }} --allow-no-target-runs --verbose
 
       - name: Install playwright dependencies and browsers
         run: |
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npx lage test:node test:playwright ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }} --allow-no-target-runs
+        run: npx lage test:node test:playwright ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }} --allow-no-target-runs --verbose

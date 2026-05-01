@@ -218,24 +218,28 @@ function staticPrefixDir(pattern) {
 
 /**
  * Parse all `<f-template>` elements from an HTML string using the WASM module.
- * Returns [{name, content}] for templates that have a `name` attribute.
+ * Returns template metadata for templates that have a `name` attribute.
  * Emits a warning to stderr for any `<f-template>` without a `name`.
  * @param {string} html
  * @param {string} filePath - used in warning messages
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string }[]}
+ * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[] }[]}
  */
 function parseFTemplates(html, filePath, wasm) {
-    /** @type {{ name: string | null, content: string }[]} */
+    /** @type {{ name: string | null, content: string, shadowrootAttributes?: { name: string, value: string | null }[] }[]} */
     const parsed = JSON.parse(wasm.parse_f_templates(html));
     const results = [];
-    for (const { name, content } of parsed) {
+    for (const { name, content, shadowrootAttributes } of parsed) {
         if (name === null) {
             process.stderr.write(
                 `Warning: <f-template> without a 'name' attribute in '${filePath}': ${content.trim()}\n`
             );
         } else {
-            results.push({ name, content });
+            results.push({
+                name,
+                content,
+                shadowrootAttributes: shadowrootAttributes || [],
+            });
         }
     }
     return results;
@@ -248,7 +252,7 @@ function parseFTemplates(html, filePath, wasm) {
  * Warns (but does not error) if the base directory does not exist.
  * @param {string} pattern
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string }[]}
+ * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[] }[]}
  */
 function resolvePattern(pattern, wasm) {
     const baseDir = staticPrefixDir(pattern);
@@ -262,8 +266,8 @@ function resolvePattern(pattern, wasm) {
         if (globMatch(pattern, file)) {
             const html = fs.readFileSync(file, "utf8");
             const templates = parseFTemplates(html, file, wasm);
-            for (const { name, content } of templates) {
-                results.push({ name, content });
+            for (const { name, content, shadowrootAttributes } of templates) {
+                results.push({ name, content, shadowrootAttributes });
             }
         }
     }
@@ -278,7 +282,10 @@ async function runBuild(args) {
     const templatesArg = resolveOption(args, config, configDir, "templates");
     const output = resolveOption(args, config, configDir, "output", "output.html");
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
-    const stateFile = resolveOption(args, config, configDir, "state", "state.json");
+    const stateFile = resolveOption(args, config, configDir, "state");
+    const stateWasProvided =
+        Object.prototype.hasOwnProperty.call(args, "state") ||
+        Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
@@ -306,13 +313,13 @@ async function runBuild(args) {
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, content } of matches) {
+            for (const { name, content, shadowrootAttributes } of matches) {
                 if (name in templatesMap) {
                     process.stderr.write(
                         `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
                     );
                 }
-                templatesMap[name] = content;
+                templatesMap[name] = { content, shadowrootAttributes };
             }
         }
     }
@@ -324,18 +331,28 @@ async function runBuild(args) {
     }
     const entryContent = fs.readFileSync(entry, "utf8");
 
-    // Read state file
-    if (!fs.existsSync(stateFile)) {
-        process.stderr.write(`Error: State file "${stateFile}" not found.\n`);
-        process.exit(1);
+    // Read state only when explicitly provided; omitted state is handled by WASM as `{}`.
+    let stateContent;
+    if (stateWasProvided) {
+        if (stateFile === undefined || stateFile === "" || !fs.existsSync(stateFile)) {
+            const stateFileLabel =
+                stateFile === undefined || stateFile === ""
+                    ? "(no path provided)"
+                    : `"${stateFile}"`;
+            process.stderr.write(`Error: State file ${stateFileLabel} not found.\n`);
+            process.exit(1);
+        }
+        stateContent = fs.readFileSync(stateFile, "utf8");
     }
-    const stateContent = fs.readFileSync(stateFile, "utf8");
 
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
         rendered = wasm.render_entry_with_templates(
-            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy || "none"
+            entryContent,
+            JSON.stringify(templatesMap),
+            stateContent,
+            attributeNameStrategy || "",
         );
     } else {
         rendered = wasm.render(entryContent, stateContent);
@@ -356,10 +373,11 @@ async function main() {
             '                         Separate multiple patterns with commas.\n' +
             '  --output="output.html" Output file path (default: output.html)\n' +
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
-            '  --state="state.json"   State JSON file (default: state.json)\n' +
-            '  --attribute-name-strategy="none"\n' +
+            '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
+            '                         an empty state object.\n' +
+            '  --attribute-name-strategy="camelCase"\n' +
             '                         Strategy for mapping attribute names to property names.\n' +
-            '                         "none" (default) or "camelCase".\n' +
+            '                         "camelCase" (default) or "none".\n' +
             '  --config="<path>"      Path to a fast-build config JSON file.\n' +
             '                         Defaults to "fast-build.config.json" in the\n' +
             '                         current directory if it exists. File paths in\n' +

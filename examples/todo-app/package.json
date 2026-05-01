@@ -6,7 +6,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json && vite build",
+    "build": "tsgo -p tsconfig.json && vite build",
     "start": "vite",
     "test": "npm run build"
   },

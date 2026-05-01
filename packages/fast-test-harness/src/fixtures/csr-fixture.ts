@@ -2,8 +2,19 @@ import type { Locator, Page } from "@playwright/test";
 
 export type ThemeTokens = Record<string, string | number | boolean>;
 
+/**
+ * The initial attributes for the fixture's template, where boolean attributes are
+ * represented as `true` and omitted when `false`. This allows for a more intuitive
+ * configuration of boolean attributes in the template options.
+ */
 export type InitialTemplateAttributes = Record<string, string | true>;
 
+/**
+ * The attributes for the fixture's template, where boolean attributes can be represented as `true`
+ * or `false`. When `true`, the attribute will be included without a value (e.g., `disabled`), and
+ * when `false`, the attribute will be omitted entirely. This type is used for updating the
+ * template, allowing for both adding and removing boolean attributes.
+ */
 export type TemplateAttributes = Record<string, string | boolean>;
 
 /**
@@ -14,6 +25,10 @@ export type InitialTemplateOptions = {
     innerHTML?: string;
 };
 
+/**
+ * The options for updating the fixture's template, where `attributes` can include boolean values to
+ * add or remove attributes from the element.
+ */
 export type FixtureOptions = Omit<InitialTemplateOptions, "attributes"> & {
     attributes?: TemplateAttributes;
 };
@@ -45,6 +60,19 @@ export class CSRFixture {
 
     /**
      * Additional custom elements to wait for before running the test.
+     *
+     * @remarks
+     * This is useful for fixtures that depend on multiple custom elements being defined
+     * and stable before the test can run. By specifying additional tag names here, the
+     * fixture will wait for these elements to be defined before proceeding. Ensure that
+     * any elements specified here are included on the page and properly defined to
+     * prevent test timeouts.
+     *
+     * @example
+     * test.use({
+     *     tagName: "fast-dropdown",
+     *     waitFor: ["fast-listbox", "fast-option"],
+     * });
      */
     protected readonly waitFor: string[];
 

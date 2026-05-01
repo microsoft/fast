@@ -1,6 +1,6 @@
 {
-  "type": "major",
-  "comment": "Make declarative runtime setup lazy and change @microsoft/fast-element/debug.js to require an explicit enableDebug() call.",
+  "type": "prerelease",
+  "comment": "BREAKING CHANGE: make declarative runtime setup lazy and change @microsoft/fast-element/debug.js to require an explicit enableDebug() call.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

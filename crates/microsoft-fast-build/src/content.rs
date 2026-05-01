@@ -4,6 +4,7 @@ use crate::attribute::find_str;
 use crate::error::{RenderError, template_context, truncate};
 
 /// Render a `{{{ expr }}}` unescaped HTML binding.
+/// Missing values render as an empty string.
 pub fn render_triple_brace(
     template: &str,
     at: usize,
@@ -21,14 +22,12 @@ pub fn render_triple_brace(
     }
     let output = resolve_value(expr, root, loop_vars)
         .map(|v| v.to_display_string())
-        .ok_or_else(|| RenderError::MissingState {
-            binding: expr.to_string(),
-            context: template_context(template, at),
-        })?;
+        .unwrap_or_default();
     Ok((output, end + 3))
 }
 
 /// Render a `{{ expr }}` HTML-escaped content binding.
+/// Missing values render as an empty string.
 pub fn render_double_brace(
     template: &str,
     at: usize,
@@ -46,10 +45,7 @@ pub fn render_double_brace(
     }
     let output = resolve_value(expr, root, loop_vars)
         .map(|v| html_escape(&v.to_display_string()))
-        .ok_or_else(|| RenderError::MissingState {
-            binding: expr.to_string(),
-            context: template_context(template, at),
-        })?;
+        .unwrap_or_default();
     Ok((output, end + 2))
 }
 
