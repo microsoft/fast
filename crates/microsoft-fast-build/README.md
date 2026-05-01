@@ -221,6 +221,7 @@ When `value` is a bare reference (e.g. `{{items}}`), the value is coerced to a b
 ```
 
 Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$index}}` resolves to the 0-based iteration index. Other bindings fall back to the root state (e.g. `{{title}}` above).
+If the list binding or dot path is missing, `<f-repeat>` treats it as an empty array and renders zero iterations. Present non-array values still return `RenderError::NotAnArray`.
 
 ```html
 <f-repeat value="{{row in rows}}">
@@ -316,6 +317,8 @@ A single file may contain multiple templates:
 ```
 
 If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored.
+
+Any `shadowroot*` attributes on `<f-template>` are copied to the rendered Declarative Shadow DOM `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
 ### Rendering with a Locator
 
@@ -464,7 +467,9 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 </my-button>
 ```
 
+- `shadowrootmode="open"` — the standard declarative shadow DOM mode emitted by default.
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
+- `shadowroot*` attributes declared on the source `<f-template>` are forwarded to the output `<template>`; `shadowrootmode` and `shadowroot` default to `open` when neither has a non-empty value, mirror when exactly one has a non-empty value, and are preserved as authored when both have explicit non-empty values.
 
 Custom elements that have no matching template in the locator are passed through verbatim.
 
@@ -516,6 +521,8 @@ const html = render_entry_with_templates(
     "camelCase"  // or "none"
 );
 ```
+
+Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering.
 
 Passing `"none"` or `""` as the strategy uses the default behaviour.
 
@@ -594,7 +601,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `UnclosedBinding` | `{{` with no closing `}}` |
 | `UnclosedUnescapedBinding` | `{{{` with no closing `}}}` |
 | `EmptyBinding` | `{{}}` — blank expression |
-| `MissingState` | `{{key}}` where `key` is absent from state |
+| `MissingState` | Required directive state is absent; missing `<f-repeat>` lists render zero iterations instead |
 | `UnclosedDirective` | `<f-when>` / `<f-repeat>` with no matching close tag |
 | `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
 | `InvalidRepeatExpression` | Repeat value not in `item in list` format |
@@ -606,7 +613,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 Every error message includes a description of the problem and a snippet of the template near the error site to aid debugging:
 
 ```
-missing state: '{{title}}' has no matching key in the provided state — template: "…<h1>{{title}}</h1>…"
+type error: '{{items}}' must resolve to a JSON array for use in <f-repeat> — template: "…<f-repeat value=\"{{item in items}}\">…"
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```

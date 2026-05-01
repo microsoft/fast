@@ -1,6 +1,9 @@
 mod common;
 use common::{ok, make_locator, empty_root};
-use microsoft_fast_build::{render, render_with_locator, render_entry_with_locator, JsonValue};
+use microsoft_fast_build::{
+    render, render_entry_with_locator, render_entry_with_locator_without_state,
+    render_template_without_state, render_with_locator, JsonValue,
+};
 use std::collections::HashMap;
 
 // ── empty and whitespace-only templates ───────────────────────────────────────
@@ -25,6 +28,94 @@ fn test_template_with_no_bindings() {
 fn test_empty_state_object() {
     // A template with no bindings renders fine against an empty state.
     assert_eq!(ok("<h1>Hello</h1>", "{}"), "<h1>Hello</h1>");
+}
+
+#[test]
+fn test_render_template_without_state_uses_empty_object() {
+    let result = render_template_without_state("<h1>{{title}}</h1>", None)
+        .expect("render without state");
+    assert_eq!(result, "<h1></h1>");
+}
+
+#[test]
+fn test_missing_dot_path_content_with_empty_state_renders_empty() {
+    let result = ok("<p>{{ foo.bar }}</p>", "{}");
+    assert_eq!(result, "<p></p>");
+}
+
+#[test]
+fn test_missing_dot_path_content_without_state_renders_empty() {
+    let result = render_template_without_state("<p>{{ foo.bar }}</p>", None)
+        .expect("render without state");
+    assert_eq!(result, "<p></p>");
+}
+
+#[test]
+fn test_missing_regular_html_attribute_binding_is_omitted() {
+    let result = ok(r#"<div class="{{missing}}"></div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_regular_html_attribute_preserves_static_value_with_quotes() {
+    let result = ok(r#"<div title='a "quote"' class="{{missing}}"></div>"#, "{}");
+    assert_eq!(result, r#"<div title='a "quote"'></div>"#);
+}
+
+#[test]
+fn test_unquoted_attribute_path_does_not_hide_later_binding() {
+    let result = ok(
+        r#"<img src=/assets/a.png alt="{{alt}}">"#,
+        r#"{"alt": "Logo"}"#,
+    );
+    assert_eq!(result, r#"<img src=/assets/a.png alt="Logo">"#);
+}
+
+#[test]
+fn test_bound_attribute_value_is_html_escaped() {
+    let result = ok(
+        r#"<div title="{{value}}"></div>"#,
+        r#"{"value": "a \"quote\" & <tag>"}"#,
+    );
+    assert_eq!(result, r#"<div title="a &quot;quote&quot; &amp; &lt;tag&gt;"></div>"#);
+}
+
+#[test]
+fn test_unquoted_attribute_path_with_missing_later_binding_is_omitted() {
+    let result = ok(r#"<img src=/assets/a.png alt="{{alt}}">"#, "{}");
+    assert_eq!(result, r#"<img src=/assets/a.png>"#);
+    assert!(
+        !result.contains("{{alt}}"),
+        "binding must not remain unresolved: {result}"
+    );
+}
+
+#[test]
+fn test_missing_dot_path_regular_html_attribute_with_empty_state_is_omitted() {
+    let result = ok(r#"<div class="{{ foo.bar }}"></div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_dot_path_regular_html_attribute_without_state_is_omitted() {
+    let result = render_template_without_state(r#"<div class="{{ foo.bar }}"></div>"#, None)
+        .expect("render without state");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_missing_regular_html_attribute_omits_content_stays_empty() {
+    let result = ok(r#"<div class="{{missing}}">{{missing}}</div>"#, "{}");
+    assert_eq!(result, "<div></div>");
+}
+
+#[test]
+fn test_render_entry_with_locator_without_state_uses_empty_object() {
+    let locator = make_locator(&[("my-el", "<span>{{label}}</span>")]);
+    let result = render_entry_with_locator_without_state("<my-el></my-el>", &locator, None)
+        .expect("render entry without state");
+    assert!(result.contains("<span>"), "shadow content rendered: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b-->"));
 }
 
 // ── deeply nested property access ─────────────────────────────────────────────
@@ -57,12 +148,9 @@ fn test_deeply_nested_in_f_repeat() {
 }
 
 #[test]
-fn test_deeply_nested_missing_intermediate_returns_error() {
-    use microsoft_fast_build::render_template;
-    use microsoft_fast_build::RenderError;
-    let e = render_template("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#, None)
-        .expect_err("expected MissingState");
-    assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {e}");
+fn test_deeply_nested_missing_intermediate_renders_empty() {
+    let result = ok("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#);
+    assert_eq!(result, "");
 }
 
 // ── multiple root custom elements ─────────────────────────────────────────────

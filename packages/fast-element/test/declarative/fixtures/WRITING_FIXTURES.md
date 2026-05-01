@@ -150,7 +150,7 @@ This file defines the declarative `<f-template>` elements that describe each cus
 
 For a full reference of binding syntax, event bindings, directives (`f-when`,
 `f-repeat`), and execution context access, see the [Syntax section of the
-declarative docs](../../../DECLARATIVE_HTML.md#syntax).
+declarative docs](../../../docs/declarative-html.md#syntax).
 
 Multiple `<f-template>` elements can be defined in a single `templates.html` — one per custom element used in the fixture.
 

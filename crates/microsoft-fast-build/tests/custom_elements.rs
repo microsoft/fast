@@ -1,6 +1,6 @@
 mod common;
 use common::{make_locator, empty_root};
-use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError};
+use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError, RenderConfig, AttributeNameStrategy};
 
 // ── attribute → state mapping ─────────────────────────────────────────────────
 
@@ -88,6 +88,168 @@ fn test_custom_element_with_children() {
     assert!(result.contains(r#"<div class="layout"><slot></slot></div>"#), "shadow content: {result}");
     assert!(result.contains("light DOM content"), "light DOM: {result}");
     assert!(result.contains("</my-layout>"), "close tag: {result}");
+}
+
+#[test]
+fn test_f_template_shadowroot_defaults_remain_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<my-button label="Hi"></my-button>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_shadowrootmode_forwarded_with_legacy_shadowroot() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed></shadowroot-closed>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_legacy_shadowroot_value_mirrors_to_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-legacy-closed.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-legacy-closed></shadowroot-legacy-closed>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_additional_shadowroot_attrs_forwarded() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-extra.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-extra></shadowroot-extra>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable="true">"#),
+        "shadow attrs: {result}"
+    );
+}
+
+#[test]
+fn test_f_template_explicit_shadowroot_value_is_preserved() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-explicit.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-explicit></shadowroot-explicit>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowrootmode_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-mode.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-boolean-mode></shadowroot-boolean-mode>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowroot_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-boolean-shadowroot></shadowroot-boolean-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowrootmode_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-mode></shadowroot-empty-mode>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowroot_defaults_to_open() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-shadowroot></shadowroot-empty-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_boolean_shadowroot_mirrors_closed_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-boolean-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed-boolean-shadowroot></shadowroot-closed-boolean-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowroot_mirrors_closed_mode() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-empty-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-closed-empty-shadowroot></shadowroot-closed-empty-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_empty_shadowrootmode_mirrors_closed_shadowroot() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode-closed-shadowroot.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-empty-mode-closed-shadowroot></shadowroot-empty-mode-closed-shadowroot>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+}
+
+#[test]
+fn test_f_template_shadowroot_attr_values_are_escaped() {
+    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-escaped.html"]).unwrap();
+    let result = render_with_locator(
+        r#"<shadowroot-escaped></shadowroot-escaped>"#,
+        &empty_root(),
+        &locator,
+        None,
+    ).unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootserializable="a&quot;b&amp;c">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 // ── passthrough when no template or locator ───────────────────────────────────
@@ -218,26 +380,28 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
 
 #[test]
 fn test_custom_element_kebab_attr_hyphens_preserved() {
-    // kebab-case attr names are lowercased; hyphens are preserved
+    // kebab-case attr names are lowercased; with explicit none strategy, hyphens are preserved
     let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
+    let none_config = RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::None);
     let result = render_template_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
         &locator,
-        None,
+        Some(&none_config),
     ).unwrap();
     assert!(result.contains("42"), "kebab attr resolved: {result}");
 }
 
 #[test]
 fn test_custom_element_multi_word_kebab_attrs() {
-    // multiple kebab-case attrs are lowercased and passed to the child scope as-is
+    // multiple kebab-case attrs are lowercased; with explicit none strategy, passed to the child scope as-is
     let locator = make_locator(&[("my-el", "<p>{{show-details}}</p><p>{{enable-continue}}</p>")]);
+    let none_config = RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::None);
     let result = render_template_with_locator(
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
         "{}",
         &locator,
-        None,
+        Some(&none_config),
     ).unwrap();
     assert!(result.contains("true"), "show-details: {result}");
     assert!(result.contains("false"), "enable-continue: {result}");
@@ -458,6 +622,19 @@ fn test_root_custom_element_primitive_binding_resolved() {
     ).unwrap();
     assert!(result.contains(r#"text="Hello world""#), "primitive binding resolved: {result}");
     assert!(result.contains("Hello world"), "template still renders state: {result}");
+}
+
+#[test]
+fn test_root_custom_element_missing_binding_attr_omitted() {
+    let locator = make_locator(&[("my-el", "<span>{{text}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el text="{{missing}}"></my-el>"#,
+        "{}",
+        &locator,
+        None,
+    ).unwrap();
+    assert!(!result.contains("text="), "missing binding attr omitted: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$text-0$$fe-b--><!--fe-b$$end$$0$$text-0$$fe-b-->"));
 }
 
 #[test]
