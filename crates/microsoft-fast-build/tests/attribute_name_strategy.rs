@@ -118,24 +118,24 @@ fn test_none_strategy_multi_dashed_attr_preserved() {
     assert!(result.contains("42"), "none strategy should preserve dashes: {result}");
 }
 
-// ── default config matches none strategy ──────────────────────────────────────
+// ── default config matches camelCase strategy ─────────────────────────────────
 
 #[test]
-fn test_default_config_matches_none() {
-    let locator = make_locator(&[("my-el", "<span>{{foo-bar}}</span>")]);
+fn test_default_config_matches_camel_case() {
+    let locator = make_locator(&[("my-el", "<span>{{fooBar}}</span>")]);
     let result_default = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
         None,
     ).unwrap();
-    let result_none = render_with_locator(
+    let result_camel = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
-        Some(&none_config()),
+        Some(&camel_config()),
     ).unwrap();
-    assert_eq!(result_default, result_none, "default should match none strategy");
+    assert_eq!(result_default, result_camel, "default should match camelCase strategy");
 }
 
 // ── camelCase with binding resolution ─────────────────────────────────────────

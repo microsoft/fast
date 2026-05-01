@@ -27,7 +27,7 @@ type FixtureOptions = {
     waitFor: string[];
 };
 
-type Fixtures = {
+export type Fixtures = {
     fastPage: CSRFixture | SSRFixture;
 };
 

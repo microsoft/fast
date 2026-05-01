@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 30 Apr 2026 17:21:11 GMT",
+      "version": "2.10.4",
+      "tag": "@microsoft/fast-element_v2.10.4",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "9f575eb973e92bdf8412d9b6df4ff2dc1e8672e4",
+            "comment": "chore: replace rollup-plugin-filesize with esbuild bundle size reporting"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Apr 2026 00:26:37 GMT",
       "version": "2.10.4",
       "tag": "@microsoft/fast-element_v2.10.4",

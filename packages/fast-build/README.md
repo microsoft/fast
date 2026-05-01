@@ -25,7 +25,7 @@ import { render } from '@microsoft/fast-build';
 
 ## CLI usage
 
-Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with a JSON state file:
+Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with an optional JSON state file:
 
 ```shell
 fast build [options]
@@ -36,10 +36,10 @@ fast build [options]
 | Option | Default | Description |
 |---|---|---|
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
-| `--state="<path>"` | `state.json` | JSON file containing the template state |
+| `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
-| `--attribute-name-strategy="<strategy>"` | `none` | Strategy for mapping HTML attribute names to state property names on custom elements. `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). See [Attribute name strategy](#attribute-name-strategy). |
+| `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
 
 ### Example
@@ -81,6 +81,18 @@ Produces `output.html`:
 </html>
 ```
 
+### Missing or omitted state
+
+State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
+
+> **Breaking change:** Earlier versions implicitly loaded `state.json` from the current working directory when `--state` was omitted. To use a state file, pass `--state=state.json` or set `"state": "state.json"` in `fast-build.config.json`.
+
+When a binding value is not present in state:
+
+- Content bindings render nothing, including unresolved dot paths: `<p>{{foo.bar}}</p>` becomes `<p></p>`.
+- Attribute bindings omit the entire attribute, including unresolved dot paths: `<div class="{{foo.bar}}"></div>` becomes `<div></div>`.
+- `<f-repeat>` treats a missing list binding, including unresolved dot paths, as an empty array and renders zero iterations. If the binding is present but is not an array, rendering still errors.
+
 ### Custom element templates
 
 Pass a glob pattern (or comma-separated list of patterns) to `--templates` to expand custom elements into [Declarative Shadow DOM](https://developer.chrome.com/docs/css-ui/declarative-shadow-dom):
@@ -107,14 +119,16 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file.
 
+Any `shadowroot*` attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. The CLI normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+
 ### Attribute name strategy
 
 The `--attribute-name-strategy` option controls how HTML attribute names on custom elements are mapped to state property names in their shadow templates.
 
 | Strategy | Behaviour | Template binding |
 |---|---|---|
-| `none` (default) | Attribute names lowercased as-is, dashes preserved | `foo-bar` → `{{foo-bar}}` |
-| `camelCase` | Dashed attribute names converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `camelCase` (default) | Dashed attribute names converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `none` | Attribute names lowercased as-is, dashes preserved | `foo-bar` → `{{foo-bar}}` |
 
 The `camelCase` strategy only affects "plain" custom element attributes. It does **not** change:
 - `data-*` attributes (always use `dataset.*` grouping)
@@ -153,7 +167,7 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error.
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error. If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist.
 
 ## Template syntax
 
