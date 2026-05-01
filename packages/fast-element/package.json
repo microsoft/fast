@@ -230,7 +230,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-build": "*",
-    "@microsoft/webui": "0.0.10"
+    "@microsoft/webui": "0.0.12"
   },
   "files": [
     "./dist",
