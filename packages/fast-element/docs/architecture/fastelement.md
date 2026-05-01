@@ -1,6 +1,6 @@
 # FASTElement
 
-The `FASTElement` is our extension of the `HTMLElement`. As such it leverages the lifecycles but also requires additional setup before before the class `constructor` or the `connectedCallback` method is executed which are explained in the [overview](./ARCHITECTURE_OVERVIEW.md). This document explains specifically what `FASTElement` leverages inside the `HTMLElement`s lifecycle hooks.
+The `FASTElement` is our extension of the `HTMLElement`. As such it leverages the lifecycles but also requires additional setup before before the class `constructor` or the `connectedCallback` method is executed which are explained in the [overview](./overview.md). This document explains specifically what `FASTElement` leverages inside the `HTMLElement`s lifecycle hooks.
 
 For an explanation into `HTMLElement` lifecycle hooks refer to the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks).
 

@@ -16,8 +16,9 @@ pub fn render_with_locator(template: &str, root: &JsonValue, locator: &Locator, 
     render_node(template, root, &[], Some(locator), None, false, config)
 }
 
-/// Render the top-level **entry HTML** — custom elements found at this level are treated
-/// as root elements and receive the full root state rather than attribute-based child state.
+/// Render the top-level **entry HTML** — custom elements found at this level use
+/// entry opening-tag handling while their child state starts from the full root
+/// state with HTML attributes overlaid on top.
 pub fn render_entry_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<String, RenderError> {
     let default = RenderConfig::default();
     let config = config.unwrap_or(&default);

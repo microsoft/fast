@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: propagate shadowroot attributes from f-template to declarative shadow DOM template",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

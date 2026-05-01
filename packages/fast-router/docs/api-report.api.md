@@ -81,8 +81,8 @@ export class DefaultRouter implements Router {
     addContributor(contributor: NavigationContributor): void;
     // (undocumented)
     beginRender(route: RecognizedRoute, command: RenderCommand): Promise<{
-        commit: any;
-        rollback: any;
+        commit: () => Promise<void>;
+        rollback: () => Promise<void>;
     }>;
     // (undocumented)
     get config(): RouterConfiguration | null;
@@ -514,12 +514,11 @@ export interface Router<TSettings = any> {
 
 // @beta (undocumented)
 export const Router: Readonly<{
-    getOrCreateFor(element: HTMLElement): Router<any> | DefaultRouter;
+    getOrCreateFor(element: HTMLElement): Router<any>;
     find(element: HTMLElement): Router | null;
-    from<TBase extends {
-        new (): HTMLElement;
-        prototype: HTMLElement;
-    }>(BaseType: TBase): new () => InstanceType<TBase> & RouterElement;
+    from<TBase extends typeof HTMLElement>(BaseType: TBase): {
+        new (): InstanceType<TBase> & RouterElement;
+    };
 }>;
 
 // @beta (undocumented)

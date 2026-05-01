@@ -45,6 +45,11 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
+    "./declarative-syntax.js": {
+      "types": "./dist/dts/declarative/syntax.d.ts",
+      "test": "./src/declarative/syntax.ts",
+      "default": "./dist/esm/declarative/syntax.js"
+    },
     "./attribute-map.js": {
       "types": "./dist/dts/declarative/attribute-map.d.ts",
       "test": "./src/declarative/attribute-map.ts",
@@ -205,8 +210,8 @@
     "build:fixtures:webui": "node scripts/declarative/build-fixtures-with-webui.js",
     "build:rollup": "rollup -c",
     "build:sizes": "node scripts/measure-sizes.js",
-    "build:tsc": "tsc -p ./tsconfig.json",
-    "dev": "tsc -p ./tsconfig.json -w",
+    "build:tsc": "tsgo -p ./tsconfig.json",
+    "dev": "tsgo -p ./tsconfig.json -w",
     "dev:declarative": "concurrently -k -n tsc,server \"npm run dev\" \"npm run test-server:declarative\"",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
