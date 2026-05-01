@@ -235,5 +235,14 @@
   "files": [
     "./dist",
     "CHANGELOG.md"
-  ]
+  ],
+  "beachball": {
+    "disallowedChangeTypes": [
+      "major",
+      "minor",
+      "patch"
+    ],
+    "tag": "rc",
+    "prereleasePrefix": "rc"
+  }
 }
