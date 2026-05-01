@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 30 Apr 2026 17:21:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 00:15:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.52
+
+Fri, 01 May 2026 00:15:38 GMT
+
+### Changes
+
+- update file paths and add syntax export (863023+radium-v@users.noreply.github.com)
+- feat: propagate shadowroot attributes (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.6.0
 
 ## 1.0.0-alpha.51
 

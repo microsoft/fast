@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Thu, 30 Apr 2026 17:21:11 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 01 May 2026 00:15:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.6.0
+
+Fri, 01 May 2026 00:15:38 GMT
+
+### Minor changes
+
+- feat: propagate shadowroot attributes (7559015+janechu@users.noreply.github.com)
+- feat: allow fast-build rendering without state; omitted CLI state no longer probes state.json (7559015+janechu@users.noreply.github.com)
 
 ## 0.5.0
 

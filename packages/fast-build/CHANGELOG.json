@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 00:15:38 GMT",
+      "version": "0.6.0",
+      "tag": "@microsoft/fast-build_v0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4eabc23aa874db773f2564802ac4dd9e5aec4563",
+            "comment": "feat: propagate shadowroot attributes"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "d40f0a79fb6af50fd87a4e09b251ae78e999c36e",
+            "comment": "feat: allow fast-build rendering without state; omitted CLI state no longer probes state.json"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "7d933fbbf8460646fbcd479ac11935a1c62c8736",
+            "comment": "chore: bump packages after failed publish"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Apr 2026 17:21:11 GMT",
       "version": "0.5.0",
       "tag": "@microsoft/fast-build_v0.5.0",

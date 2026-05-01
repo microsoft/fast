@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 00:15:38 GMT",
+      "version": "2.10.4",
+      "tag": "@microsoft/fast-element_v2.10.4",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "aa76170636629744c0a4e8c2203e20bd4c64d3eb",
+            "comment": "docs: update the documentation for agents and move relevant code docs into a per-package docs folder"
+          },
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "7dc34b1203aa08595705d1b91bce670830789791",
+            "comment": "chore: migrate typescript compiltation to typescript/native-preview"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Apr 2026 17:21:11 GMT",
       "version": "2.10.4",
       "tag": "@microsoft/fast-element_v2.10.4",

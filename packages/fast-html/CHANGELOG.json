@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 01 May 2026 00:15:38 GMT",
+      "version": "1.0.0-alpha.52",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.52",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "7d933fbbf8460646fbcd479ac11935a1c62c8736",
+            "comment": "chore: bump packages after failed publish"
+          },
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "7dc34b1203aa08595705d1b91bce670830789791",
+            "comment": "chore: migrate typescript compiltation to typescript/native-preview"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f076f361064d099e6efdc20a038b930070be818c",
+            "comment": "update file paths and add syntax export"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "4eabc23aa874db773f2564802ac4dd9e5aec4563",
+            "comment": "feat: propagate shadowroot attributes"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.6.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Apr 2026 17:21:11 GMT",
       "version": "1.0.0-alpha.51",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.51",
