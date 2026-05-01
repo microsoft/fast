@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "none",
   "comment": "chore: prepare package for publish",
   "packageName": "@microsoft/fast-test-harness",
   "email": "863023+radium-v@users.noreply.github.com",
