@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Sat, 02 May 2026 00:36:36 GMT",
+      "version": "0.1.0",
+      "tag": "@microsoft/fast-test-harness_v0.1.0",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "738316845b8ccae39b568ddd12da4738a1b88d4d",
+            "comment": "chore: prepare package for publish"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "0.1.0",
       "tag": "@microsoft/fast-test-harness_v0.1.0",
