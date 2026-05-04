@@ -21,7 +21,7 @@ FAST is dedicated to providing support for native Web Components and modern Web 
 * Create reusable UI components with `@microsoft/fast-element`, all based on W3C Web Component standards.
 * Integrate FAST Web Components with any library, framework, or build system. You can adopt incrementally without re-writing your existing systems.
 
-For an in-depth explanation of FAST [see our docs introduction](https://fast.design/docs/2.x/introduction/).
+For an in-depth explanation of FAST [see our docs introduction](https://fast.design/docs/3.x/introduction/).
 
 ## Packages
 
@@ -30,7 +30,7 @@ For an in-depth explanation of FAST [see our docs introduction](https://fast.des
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
 
-The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/fast-element/getting-started).
+The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/3.x/getting-started/quick-start/).
 
 ### `@fluentui/web-components`
 
@@ -46,13 +46,13 @@ The source for `@fluentui/web-components` is hosted in [the Fluent UI monorepo](
 We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
 
 * "I just want ready-made components!"
-  * [Check out the FluentUI Web Components.](https://docs.microsoft.com/en-us/fluent-ui/web-components/)
+  * [Check out the FluentUI Web Components.](https://learn.microsoft.com/en-us/fluent-ui/web-components/)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](https://fast.design/docs/getting-started/quick-start)
+  * [Jump to the fast-element docs.](https://fast.design/docs/3.x/getting-started/quick-start/)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](https://fast.design/docs/integrations)
+  * [Jump to the integration docs.](https://fast.design/docs/3.x/integrations/)
 * "I want to look at a quick reference."
-  * [Jump to the Cheat Sheet](https://fast.design/docs/1.x/resources/cheat-sheet)
+  * [Jump to the Cheat Sheet](https://fast.design/docs/1.x/resources/cheat-sheet) *(only available in 1.x)*
 
 ## Roadmap
 
@@ -62,7 +62,7 @@ Major features for the FAST project can be found in the [roadmap](https://github
 
 Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
-Get started here with the [Contributor Guide](https://www.fast.design/docs/community/contributor-guide).
+Get started here with the [Contributor Guide](https://fast.design/docs/3.x/community/join/).
 
 We look forward to building an amazing open source community with you!
 
