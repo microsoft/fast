@@ -38,7 +38,7 @@ const reflectMode = "reflect";
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -75,18 +75,12 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
  * @public
  */
 export const booleanConverter: ValueConverter = {
-    toView(value: any): string {
-        return value ? "true" : "false";
+    toView(value: any): string | null {
+        return value ? "" : null;
     },
 
     fromView(value: any): any {
-        return !(
-            value === null ||
-            value === void 0 ||
-            value === "false" ||
-            value === false ||
-            value === 0
-        );
+        return !!value;
     },
 };
 
@@ -132,7 +126,7 @@ export const nullableNumberConverter: ValueConverter = {
 };
 
 /**
- * An implementation of `Accessor` that supports reactivity,
+ * An implementation of {@link Accessor} that supports reactivity,
  * change callbacks, attribute reflection, and type conversion for
  * custom elements.
  * @public
@@ -241,7 +235,14 @@ export class AttributeDefinition implements Accessor {
         }
 
         this.guards.add(element);
-        this.setValue(element, value);
+        if (this.mode === booleanMode) {
+            // Native HTML boolean attribute semantics: presence of the attribute
+            // (any string value, including "") means `true`; `null` (the value
+            // passed by the platform on `removeAttribute`) means `false`.
+            this.setValue(element, value !== null);
+        } else {
+            this.setValue(element, value);
+        }
         this.guards.delete(element);
     }
 
