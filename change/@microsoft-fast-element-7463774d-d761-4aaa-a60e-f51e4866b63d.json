@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Change evaluation of a boolean attributes property reflection so that a string 'false' evaluates to t",
+  "comment": "fix: align @attr({ mode: 'boolean' }) and booleanConverter with native HTML boolean attribute semantics",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

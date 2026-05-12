@@ -385,3 +385,44 @@ This is a **breaking change** for SSR output format. Any system that produces or
 2. Move the external listener or condition (for example `matchMedia()` or an app event subscription) into the element lifecycle.
 3. Call `this.$fastController.addStyles(styles)` when the condition is active and `this.$fastController.removeStyles(styles)` when it is inactive or during cleanup.
 4. If you previously interpolated bindings or behavior-producing directives into `css`, replace them with element state and standard DOM or controller updates.
+
+## `booleanConverter` aligned with native HTML boolean attribute semantics (v2 → v3)
+
+### Changed behavior
+
+`@attr({ mode: "boolean" })` and `booleanConverter` now match how the platform treats native boolean attributes (e.g., `disabled`, `required`):
+
+- **Attribute → property** is presence-based: `setAttribute(name, anyString)` (including the empty string) sets the property to `true`; only `removeAttribute(name)` makes it `false`.
+- **Property → attribute** uses `Boolean()` coercion: any JavaScript truthy value adds the attribute (with value `""`); any falsy value removes it.
+
+The headline v2 → v3 difference is that `setAttribute(name, "false")` now resolves to property `true`, matching `<input disabled="false">` still being disabled.
+
+`booleanConverter` shape:
+
+```ts
+toView(value: any) {
+    return value ? "" : null;
+}
+
+fromView(value: any) {
+    return !!value;
+}
+```
+
+`booleanConverter` v2 → v3 result differences:
+
+| Call | v2 result | v3 result |
+|---|---|---|
+| `fromView("false")` | `false` | `true` |
+| `fromView("")` | `true` | `false` |
+| `fromView(NaN)` | `true` | `false` |
+| `toView(true)` (or any truthy) | `"true"` | `""` |
+| `toView(false)` (or any falsy) | `"false"` | `null` |
+
+> **Note**: For `mode: "boolean"`, FAST writes attributes via `DOM.setBooleanAttribute` (presence-based) and reads them as `value !== null`, so the `mode: "boolean"` reflection path does **not** route through `booleanConverter.toView()` or `booleanConverter.fromView()`. The converter methods still apply to property assignment (`el.bool = X` runs `fromView(X)`), explicit calls (`booleanConverter.fromView(x)`), and `booleanConverter` paired with `mode: "reflect"` (which calls `toView`).
+
+### Migration steps
+
+1. Audit `boolean`-mode attributes for the literal string `"false"` in templates or SSR HTML — the resulting property will be `true`, not `false`. To express the falsy state, omit the attribute entirely (or call `element.removeAttribute(name)`). Setting `element.bool = false` continues to remove the reflected attribute.
+2. Audit code that calls `booleanConverter.toView()` directly or pairs `booleanConverter` with `mode: "reflect"`. The output strings are no longer `"true"` / `"false"`.
+3. If you need a tri-state attribute (`true` / `false` / unset) that preserves an explicit `"false"` string value, use `nullableBooleanConverter` with `mode: "reflect"` instead of `mode: "boolean"`.
