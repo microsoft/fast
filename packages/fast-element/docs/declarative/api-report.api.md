@@ -46,8 +46,11 @@ export class AttributeDefinition implements Accessor {
     setValue(source: HTMLElement, newValue: any): void;
 }
 
+// Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
+//
 // @public
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
 export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;

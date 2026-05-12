@@ -20,7 +20,7 @@ The mode that specifies the runtime behavior of the attribute.
 **Signature:**
 
 ```typescript
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 ```
 
 ## Remarks
