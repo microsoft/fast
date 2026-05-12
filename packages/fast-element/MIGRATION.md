@@ -385,3 +385,21 @@ This is a **breaking change** for SSR output format. Any system that produces or
 2. Move the external listener or condition (for example `matchMedia()` or an app event subscription) into the element lifecycle.
 3. Call `this.$fastController.addStyles(styles)` when the condition is active and `this.$fastController.removeStyles(styles)` when it is inactive or during cleanup.
 4. If you previously interpolated bindings or behavior-producing directives into `css`, replace them with element state and standard DOM or controller updates.
+
+## `booleanConverter` "false" string handling (v2 → v3)
+
+### Changed behavior
+
+`booleanConverter.fromView()` — used by the `boolean` `AttributeMode` — no longer treats the literal string `"false"` as falsy. The presence of a `boolean`-mode attribute now coerces to `true` regardless of its string value, matching how the platform treats native boolean attributes (for example, `<input disabled="false">` is still disabled).
+
+| Input value | v2 result | v3 result |
+|---|---|---|
+| `"false"` (string) | `false` | `true` |
+| `null`, `undefined`, `false`, `0` | `false` | `false` (unchanged) |
+| Any other value | `true` | `true` (unchanged) |
+
+### Migration steps
+
+1. Audit templates and server-rendered HTML for `boolean`-mode attributes set to the string `"false"`. The element instance property will now resolve to `true` rather than `false`.
+2. To express the falsy state, omit the attribute entirely (or call `element.removeAttribute(name)`) instead of setting it to `"false"`. `el.myBool = false` continues to remove the reflected attribute as before.
+3. If you need a tri-state attribute (`true` / `false` / unset) that preserves an explicit `"false"` value, use `nullableBooleanConverter` with the `reflect` `AttributeMode` instead of the `boolean` mode.

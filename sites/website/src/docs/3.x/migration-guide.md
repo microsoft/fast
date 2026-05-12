@@ -369,6 +369,28 @@ The SSR hydration markers have been simplified from verbose, index-embedded comm
 
 The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBinding` → `parseAttributeBindingCount`) and no longer accept index/scope parameters. See the [package MIGRATION.md](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md#hydration-marker-format-v3) for the complete API mapping.
 
+### `booleanConverter` no longer treats `"false"` as falsy
+
+`booleanConverter.fromView()` — used by `@attr({ mode: "boolean" })` — now returns `true` for the string `"false"`. This matches the platform's behavior for native boolean attributes, where the mere presence of the attribute means `true` regardless of its value (for example, `<input disabled="false">` is still disabled).
+
+2.x Behavior:
+```html
+<my-element my-bool="false"></my-element>
+```
+```ts
+element.myBool === false;
+```
+
+3.x Behavior:
+```html
+<my-element my-bool="false"></my-element>
+```
+```ts
+element.myBool === true;
+```
+
+To express the falsy state, omit the attribute entirely (or call `element.removeAttribute("my-bool")`). Assigning `element.myBool = false` continues to remove the reflected attribute as before. If you need a tri-state attribute that preserves an explicit `"false"` string value, use `nullableBooleanConverter` with `mode: "reflect"` instead of `mode: "boolean"`.
+
 ## New Exports
 
 | Export | Package | Description |
