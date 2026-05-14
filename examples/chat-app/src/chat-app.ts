@@ -159,7 +159,7 @@ export class ChatApp extends FASTElement {
                     for (const chunk of chunks) {
                         iframeDocument.write(chunk);
                         this.scrollTranscript();
-                        await this.delay(160);
+                        await this.delay(600);
                     }
 
                     iframeDocument.write("</streaming-element>");
