@@ -432,7 +432,6 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     // Populate maps and collect default state from CEM.
     const defaultStateByTag = new Map<string, Record<string, unknown>>();
     for (const art of artifacts) {
-        const tagName = `${tagPrefix}-${art.componentName}`;
         if (art.fTemplate) {
             fTemplatesByName.set(art.componentName, art.fTemplate);
         }
@@ -456,17 +455,37 @@ export function createSSRRenderer(options: SSRRendererOptions): {
 
     // Inject styles into f-templates, then parse into the WASM
     // templates map (tag-name → inner template content).
-    const templatesMap: Record<string, string> = {};
+    const templatesMap: Record<
+        string,
+        | string
+        | {
+              content: string;
+              shadowrootAttributes: Array<{ name: string; value: string | null }>;
+          }
+    > = {};
     for (const [name, fTemplate] of fTemplatesByName) {
         const styled = renderTemplate(fTemplate, styleUrlsByName.get(name) ?? "");
         fTemplatesByName.set(name, styled);
 
-        const parsed: Array<{ name: string | null; content: string }> = JSON.parse(
-            wasm.parse_f_templates(styled),
-        );
+        const parsed: Array<{
+            name: string | null;
+            content: string;
+            shadowrootAttributes?: Array<{ name: string; value: string | null }>;
+        }> = JSON.parse(wasm.parse_f_templates(styled));
         const entry = parsed.find((t: any) => t.name !== null);
         if (entry) {
-            templatesMap[`${tagPrefix}-${name}`] = entry.content;
+            const tagName = `${tagPrefix}-${name}`;
+            const attrs = entry.shadowrootAttributes ?? [];
+            // Use the object format when there are extra shadowroot attributes
+            // beyond the default shadowrootmode, so the WASM renderer can
+            // propagate them (e.g. shadowrootdelegatesfocus) onto the DSD
+            // <template> element.
+            const hasExtraAttrs = attrs.some(
+                a => a.name !== "shadowrootmode" && a.name !== "shadowroot",
+            );
+            templatesMap[tagName] = hasExtraAttrs
+                ? { content: entry.content, shadowrootAttributes: attrs }
+                : entry.content;
         } else {
             console.warn(`No named template found for ${tagPrefix}-${name}`);
         }
