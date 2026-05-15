@@ -24,7 +24,13 @@ import { pathToFileURL } from "node:url";
 import { styleText } from "node:util";
 import { closeExpression, openExpression } from "@microsoft/fast-html/syntax.js";
 import { installDomShim } from "./dom-shim.js";
-import { convertTemplate, type ViewTemplate } from "./generate-templates.js";
+import {
+    convertTemplate,
+    definitionAsyncResolver,
+    type ShadowOptionsResolver,
+    shadowOptionsToAttributes,
+    type ViewTemplate,
+} from "./generate-templates.js";
 
 const stylesMarker = `${openExpression}styles${closeExpression}`;
 const escapedStylesMarker = new RegExp(
@@ -69,33 +75,20 @@ export interface GenerateWebuiTemplatesOptions {
      * Optional formatter function applied to generated HTML before writing.
      */
     format?: (html: string, filePath: string) => string | Promise<string>;
-}
 
-/**
- * Try to load shadow options from a companion `*.definition-async.js`
- * module next to the template module. Returns an object with template
- * attribute strings to add (e.g. `shadowrootdelegatesfocus`).
- */
-async function loadShadowAttributes(
-    templateJsPath: string,
-): Promise<Record<string, string>> {
-    const dir = path.dirname(templateJsPath);
-    const base = path.basename(templateJsPath, ".template.js");
-    const defAsyncPath = path.resolve(dir, `${base}.definition-async.js`);
-
-    const attrs: Record<string, string> = {};
-
-    try {
-        const mod = await import(pathToFileURL(defAsyncPath).href);
-        const definition = mod.definition ?? mod.default;
-        if (definition?.shadowOptions?.delegatesFocus) {
-            attrs.shadowrootdelegatesfocus = "";
-        }
-    } catch {
-        // No definition-async module or it failed to load — skip.
-    }
-
-    return attrs;
+    /**
+     * Resolves shadow DOM options for a given template module path.
+     * Resolves shadow DOM options for a given template module path.
+     * Returns a `shadowOptions` object (e.g. `{ delegatesFocus: true }`) or
+     * `undefined` if the component has no special shadow options.
+     *
+     * Defaults to {@link definitionAsyncResolver}, which loads a companion
+     * `*.definition-async.js` module next to each template. Set to `null`
+     * to disable shadow options resolution.
+     *
+     * @default definitionAsyncResolver
+     */
+    resolveShadowOptions?: ShadowOptionsResolver | null;
 }
 
 /**
@@ -169,7 +162,12 @@ export async function generateWebuiTemplates(
                 continue;
             }
 
-            const shadowAttrs = await loadShadowAttributes(jsFilePath);
+            const resolver =
+                options.resolveShadowOptions === null
+                    ? undefined
+                    : (options.resolveShadowOptions ?? definitionAsyncResolver);
+            const shadowOpts = resolver ? await resolver(jsFilePath) : undefined;
+            const shadowAttrs = shadowOptionsToAttributes(shadowOpts);
             let html = fTemplateToWebui(fTemplateHtml, shadowAttrs);
 
             if (options.format) {
@@ -184,8 +182,13 @@ export async function generateWebuiTemplates(
                 }
             }
 
+            const relativeDir = path.relative(distDir, path.dirname(jsFilePath));
             const webuiPath = outDir
-                ? path.resolve(outDir, `${componentBaseName}.template-webui.html`)
+                ? path.resolve(
+                      outDir,
+                      relativeDir,
+                      `${componentBaseName}.template-webui.html`,
+                  )
                 : path.resolve(
                       path.dirname(jsFilePath),
                       `${componentBaseName}.template-webui.html`,
