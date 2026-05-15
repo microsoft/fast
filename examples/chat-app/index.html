@@ -3,136 +3,10 @@
     <head>
         <meta charset="utf-8" />
         <title>FAST Chat App</title>
+        <link rel="stylesheet" href="/styles.css" />
     </head>
     <body>
-        <chat-app welcome-title="FAST Chat Demo" composer-placeholder="Type one of the suggested prompts exactly." initial-suggestion="Hi"><template shadowrootmode="open" shadowroot="open"><style>
-            :host {
-                color: #0f172a;
-                display: block;
-                font-family:
-                    Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
-                    "Helvetica Neue", sans-serif;
-            }
-
-            *,
-            *::before,
-            *::after {
-                box-sizing: border-box;
-            }
-
-            .app-shell {
-                background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
-                border: 1px solid #dbe5f5;
-                border-radius: 24px;
-                box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-                margin: 24px auto;
-                max-width: 760px;
-                padding: 24px;
-            }
-
-            .eyebrow {
-                color: #2563eb;
-                font-size: 0.75rem;
-                font-weight: 700;
-                letter-spacing: 0.08em;
-                margin: 0 0 8px;
-                text-transform: uppercase;
-            }
-
-            h1 {
-                font-size: clamp(1.8rem, 3vw, 2.4rem);
-                line-height: 1.1;
-                margin: 0;
-            }
-
-            .intro {
-                color: #334155;
-                line-height: 1.6;
-                margin: 12px 0 0;
-            }
-
-            .transcript {
-                background: rgba(255, 255, 255, 0.76);
-                border: 1px solid #dbe5f5;
-                border-radius: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 24px;
-                max-height: 520px;
-                min-height: 340px;
-                overflow: auto;
-                padding: 20px;
-            }
-
-            streaming-element {
-                display: contents;
-            }
-
-            .composer {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 20px;
-            }
-
-            label {
-                font-weight: 600;
-            }
-
-            textarea {
-                background: #fff;
-                border: 1px solid #c7d2fe;
-                border-radius: 16px;
-                color: inherit;
-                font: inherit;
-                min-height: 112px;
-                padding: 14px 16px;
-                resize: vertical;
-            }
-
-            textarea:focus {
-                border-color: #2563eb;
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-                outline: none;
-            }
-
-            .composer__hint {
-                color: #475569;
-                display: flex;
-                flex-wrap: wrap;
-                font-size: 0.9rem;
-                gap: 8px 16px;
-            }
-
-            button {
-                align-self: flex-start;
-                background: #2563eb;
-                border: 0;
-                border-radius: 999px;
-                color: #fff;
-                cursor: pointer;
-                font: inherit;
-                font-weight: 600;
-                padding: 10px 18px;
-            }
-
-            button:hover {
-                background: #1d4ed8;
-            }
-
-            @media (max-width: 640px) {
-                .app-shell {
-                    border-radius: 0;
-                    margin: 0;
-                    min-height: 100vh;
-                }
-
-                .transcript {
-                    min-height: 50vh;
-                }
-            }
-        </style>
+        <chat-app welcome-title="FAST Chat Demo" composer-placeholder="Type one of the suggested prompts exactly." initial-suggestion="Hi"><template shadowrootmode="open" shadowroot="open"><link rel="stylesheet" href="/styles.css" />
 
         <section class="app-shell">
             <header>
@@ -146,51 +20,7 @@
             </header>
 
             <div class="transcript" data-fe="2">
-                <chat-message kind="bot"><template shadowrootmode="open" shadowroot="open"><style>
-            :host {
-                display: block;
-            }
-
-            article {
-                background: #ffffff;
-                border: 1px solid #dbe5f5;
-                border-radius: 18px;
-                box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-                line-height: 1.6;
-                padding: 16px 18px;
-            }
-
-            :host([kind="user"]) article {
-                background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-                border-color: #2563eb;
-                color: #eff6ff;
-                margin-left: 72px;
-            }
-
-            :host([kind="bot"]) article {
-                margin-right: 72px;
-            }
-
-            ::slotted(p),
-            ::slotted(ul),
-            ::slotted(ol),
-            ::slotted(chat-card) {
-                display: block;
-                margin: 0 0 12px;
-            }
-
-            ::slotted(p) {
-                white-space: pre-wrap;
-            }
-
-            @media (max-width: 640px) {
-                :host([kind="user"]) article,
-                :host([kind="bot"]) article {
-                    margin-left: 0;
-                    margin-right: 0;
-                }
-            }
-        </style>
+                <chat-message kind="bot"><template shadowrootmode="open" shadowroot="open"><link rel="stylesheet" href="/styles.css" />
 
         <article>
             <slot></slot>
@@ -206,44 +36,7 @@
                         </p>
                     </chat-card>
                 </chat-message>
-                <chat-suggestion text="Hi" data-fe="1"><template shadowrootmode="open" shadowroot="open"><style>
-            :host {
-                display: block;
-                margin-top: -2px;
-            }
-
-            .suggestion {
-                background: rgba(255, 255, 255, 0.9);
-                border: 1px dashed #93c5fd;
-                border-radius: 16px;
-                color: #1e3a8a;
-                cursor: pointer;
-                margin: 0 0 0 auto;
-                max-width: 420px;
-                padding: 10px 14px;
-                user-select: text;
-            }
-
-            .label {
-                display: block;
-                font-size: 0.8rem;
-                font-weight: 600;
-                letter-spacing: 0.02em;
-                margin-bottom: 6px;
-                text-transform: uppercase;
-            }
-
-            code {
-                background: #dbeafe;
-                border-radius: 10px;
-                display: inline-block;
-                font-family:
-                    "SFMono-Regular", SFMono-Regular, Consolas, "Liberation Mono",
-                    Menlo, monospace;
-                padding: 4px 8px;
-                white-space: pre-wrap;
-            }
-        </style>
+                <chat-suggestion text="Hi" data-fe="1"><template shadowrootmode="open" shadowroot="open"><link rel="stylesheet" href="/styles.css" />
 
         <p class="suggestion" data-fe="1">
             <span class="label">Next suggested user message</span>
@@ -263,134 +56,7 @@
         </section></template></chat-app>
         <f-template name="chat-app">
     <template>
-        <style>
-            :host {
-                color: #0f172a;
-                display: block;
-                font-family:
-                    Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
-                    "Helvetica Neue", sans-serif;
-            }
-
-            *,
-            *::before,
-            *::after {
-                box-sizing: border-box;
-            }
-
-            .app-shell {
-                background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
-                border: 1px solid #dbe5f5;
-                border-radius: 24px;
-                box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-                margin: 24px auto;
-                max-width: 760px;
-                padding: 24px;
-            }
-
-            .eyebrow {
-                color: #2563eb;
-                font-size: 0.75rem;
-                font-weight: 700;
-                letter-spacing: 0.08em;
-                margin: 0 0 8px;
-                text-transform: uppercase;
-            }
-
-            h1 {
-                font-size: clamp(1.8rem, 3vw, 2.4rem);
-                line-height: 1.1;
-                margin: 0;
-            }
-
-            .intro {
-                color: #334155;
-                line-height: 1.6;
-                margin: 12px 0 0;
-            }
-
-            .transcript {
-                background: rgba(255, 255, 255, 0.76);
-                border: 1px solid #dbe5f5;
-                border-radius: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 24px;
-                max-height: 520px;
-                min-height: 340px;
-                overflow: auto;
-                padding: 20px;
-            }
-
-            streaming-element {
-                display: contents;
-            }
-
-            .composer {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 20px;
-            }
-
-            label {
-                font-weight: 600;
-            }
-
-            textarea {
-                background: #fff;
-                border: 1px solid #c7d2fe;
-                border-radius: 16px;
-                color: inherit;
-                font: inherit;
-                min-height: 112px;
-                padding: 14px 16px;
-                resize: vertical;
-            }
-
-            textarea:focus {
-                border-color: #2563eb;
-                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-                outline: none;
-            }
-
-            .composer__hint {
-                color: #475569;
-                display: flex;
-                flex-wrap: wrap;
-                font-size: 0.9rem;
-                gap: 8px 16px;
-            }
-
-            button {
-                align-self: flex-start;
-                background: #2563eb;
-                border: 0;
-                border-radius: 999px;
-                color: #fff;
-                cursor: pointer;
-                font: inherit;
-                font-weight: 600;
-                padding: 10px 18px;
-            }
-
-            button:hover {
-                background: #1d4ed8;
-            }
-
-            @media (max-width: 640px) {
-                .app-shell {
-                    border-radius: 0;
-                    margin: 0;
-                    min-height: 100vh;
-                }
-
-                .transcript {
-                    min-height: 50vh;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="/styles.css" />
 
         <section class="app-shell">
             <header>
@@ -440,51 +106,7 @@
 
 <f-template name="chat-message">
     <template>
-        <style>
-            :host {
-                display: block;
-            }
-
-            article {
-                background: #ffffff;
-                border: 1px solid #dbe5f5;
-                border-radius: 18px;
-                box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-                line-height: 1.6;
-                padding: 16px 18px;
-            }
-
-            :host([kind="user"]) article {
-                background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-                border-color: #2563eb;
-                color: #eff6ff;
-                margin-left: 72px;
-            }
-
-            :host([kind="bot"]) article {
-                margin-right: 72px;
-            }
-
-            ::slotted(p),
-            ::slotted(ul),
-            ::slotted(ol),
-            ::slotted(chat-card) {
-                display: block;
-                margin: 0 0 12px;
-            }
-
-            ::slotted(p) {
-                white-space: pre-wrap;
-            }
-
-            @media (max-width: 640px) {
-                :host([kind="user"]) article,
-                :host([kind="bot"]) article {
-                    margin-left: 0;
-                    margin-right: 0;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="/styles.css" />
 
         <article>
             <slot></slot>
@@ -494,32 +116,7 @@
 
 <f-template name="chat-card">
     <template>
-        <style>
-            :host {
-                display: block;
-            }
-
-            article {
-                background: #eff6ff;
-                border: 1px solid #bfdbfe;
-                border-radius: 14px;
-                color: #1e3a8a;
-                padding: 12px 14px;
-            }
-
-            strong {
-                display: block;
-                font-size: 0.9rem;
-                margin-bottom: 6px;
-            }
-
-            ::slotted(p),
-            ::slotted(ul),
-            ::slotted(ol) {
-                display: block;
-                margin: 0 0 8px;
-            }
-        </style>
+        <link rel="stylesheet" href="/styles.css" />
 
         <article>
             <strong>{{heading}}</strong>
@@ -530,44 +127,7 @@
 
 <f-template name="chat-suggestion">
     <template>
-        <style>
-            :host {
-                display: block;
-                margin-top: -2px;
-            }
-
-            .suggestion {
-                background: rgba(255, 255, 255, 0.9);
-                border: 1px dashed #93c5fd;
-                border-radius: 16px;
-                color: #1e3a8a;
-                cursor: pointer;
-                margin: 0 0 0 auto;
-                max-width: 420px;
-                padding: 10px 14px;
-                user-select: text;
-            }
-
-            .label {
-                display: block;
-                font-size: 0.8rem;
-                font-weight: 600;
-                letter-spacing: 0.02em;
-                margin-bottom: 6px;
-                text-transform: uppercase;
-            }
-
-            code {
-                background: #dbeafe;
-                border-radius: 10px;
-                display: inline-block;
-                font-family:
-                    "SFMono-Regular", SFMono-Regular, Consolas, "Liberation Mono",
-                    Menlo, monospace;
-                padding: 4px 8px;
-                white-space: pre-wrap;
-            }
-        </style>
+        <link rel="stylesheet" href="/styles.css" />
 
         <p class="suggestion" @click="{emitSuggestion()}">
             <span class="label">Next suggested user message</span>

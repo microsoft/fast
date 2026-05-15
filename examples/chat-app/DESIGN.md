@@ -140,5 +140,5 @@ Renders the next suggested user prompt as selectable text and emits a `use-sugge
 ## Notable decisions
 
 - The initial welcome bubble is static shell content rather than part of the exact-match turn table, so the canned conversation can start from the first user message.
-- The example keeps all component styling inline inside `templates.html` to avoid extra stylesheet extraction steps and to keep the FAST build pipeline easy to inspect.
+- All component styling lives in a single external `public/styles.css` file. It is linked from the document `<head>` (render-blocking, so the bytes are loaded before the rest of the body is processed) and from inside every `<template shadowrootmode="open">` in `templates.html`. The browser fetches the file once and applies it to each shadow root, so styles are isolated per component but maintained in one place. Each component's rules are scoped with `:host(<tag>)` to keep them from colliding when the same stylesheet is adopted into multiple shadow roots.
 - Dynamic messages are appended at runtime with DOM APIs (and streamed bot HTML) while the overall shell and component authoring remain declarative FAST.
