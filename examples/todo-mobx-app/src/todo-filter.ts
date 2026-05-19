@@ -1,5 +1,5 @@
-import { FASTElement } from "@microsoft/fast-element";
-import { mobxObservableProperty, mobxObserver } from "./mobx-integration/index.js";
+import { autorun } from "mobx";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { type TodoListFilter, todoStore } from "./state/index.js";
 import { styles } from "./todo-filter.styles.js";
 import { template } from "./todo-filter.template.js";
@@ -7,21 +7,32 @@ import { template } from "./todo-filter.template.js";
 /**
  * Filter buttons for switching the visible todo set.
  *
- * The `activeFilter` getter is bridged through `@mobxObservableProperty` so the
- * button highlight reactively follows the MobX store's filter setting.
+ * `activeFilter` is mirrored from the MobX store into a FAST `@observable` via
+ * a single `autorun`, so the button highlight reactively follows the store's
+ * filter setting.
  */
 export class TodoFilter extends FASTElement {
-    @mobxObservableProperty
-    public get activeFilter(): TodoListFilter {
-        return todoStore.activeFilter;
+    @observable public activeFilter: TodoListFilter = "all";
+
+    private _disposer?: () => void;
+
+    public connectedCallback(): void {
+        this._disposer = autorun(() => {
+            this.activeFilter = todoStore.activeFilter;
+        });
+        super.connectedCallback();
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this._disposer?.();
+        this._disposer = undefined;
     }
 
     public setFilter(filter: TodoListFilter): void {
         todoStore.setFilter(filter);
     }
 }
-
-mobxObserver(TodoFilter);
 
 TodoFilter.define({
     name: "todo-filter",

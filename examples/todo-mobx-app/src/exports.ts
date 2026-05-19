@@ -1,4 +1,3 @@
-export * from "./mobx-integration/index.js";
 export * from "./state/index.js";
 export * from "./todo-app.js";
 export * from "./todo-filter.js";
