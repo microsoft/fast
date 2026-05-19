@@ -1,0 +1,282 @@
+:root {
+    /* Typography: font families */
+    --fast-font-family-base:
+        "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica,
+        Arial, sans-serif;
+    --fast-font-family-monospace:
+        ui-monospace, "Cascadia Code", "SF Mono", "Roboto Mono", Consolas,
+        "Liberation Mono", monospace;
+    --fast-font-family-numeric: Bahnschrift, "Segoe UI", system-ui, sans-serif;
+
+    /* Typography: font sizes */
+    --fast-font-size-base-100: 10px;
+    --fast-font-size-base-200: 12px;
+    --fast-font-size-base-300: 14px;
+    --fast-font-size-base-400: 16px;
+    --fast-font-size-base-500: 20px;
+    --fast-font-size-base-600: 24px;
+    --fast-font-size-hero-700: 28px;
+    --fast-font-size-hero-800: 32px;
+    --fast-font-size-hero-900: 40px;
+    --fast-font-size-hero-1000: 68px;
+
+    /* Typography: line heights */
+    --fast-line-height-base-100: 14px;
+    --fast-line-height-base-200: 16px;
+    --fast-line-height-base-300: 20px;
+    --fast-line-height-base-400: 22px;
+    --fast-line-height-base-500: 28px;
+    --fast-line-height-base-600: 32px;
+    --fast-line-height-hero-700: 36px;
+    --fast-line-height-hero-800: 40px;
+    --fast-line-height-hero-900: 52px;
+    --fast-line-height-hero-1000: 92px;
+
+    /* Typography: font weights */
+    --fast-font-weight-regular: 400;
+    --fast-font-weight-medium: 500;
+    --fast-font-weight-semibold: 600;
+    --fast-font-weight-bold: 700;
+
+    /* Spacing: horizontal */
+    --fast-spacing-horizontal-none: 0;
+    --fast-spacing-horizontal-xxs: 2px;
+    --fast-spacing-horizontal-xs: 4px;
+    --fast-spacing-horizontal-s-nudge: 6px;
+    --fast-spacing-horizontal-s: 8px;
+    --fast-spacing-horizontal-m-nudge: 10px;
+    --fast-spacing-horizontal-m: 12px;
+    --fast-spacing-horizontal-l: 16px;
+    --fast-spacing-horizontal-xl: 20px;
+    --fast-spacing-horizontal-xxl: 24px;
+    --fast-spacing-horizontal-xxxl: 32px;
+
+    /* Spacing: vertical */
+    --fast-spacing-vertical-none: 0;
+    --fast-spacing-vertical-xxs: 2px;
+    --fast-spacing-vertical-xs: 4px;
+    --fast-spacing-vertical-s-nudge: 6px;
+    --fast-spacing-vertical-s: 8px;
+    --fast-spacing-vertical-m-nudge: 10px;
+    --fast-spacing-vertical-m: 12px;
+    --fast-spacing-vertical-l: 16px;
+    --fast-spacing-vertical-xl: 20px;
+    --fast-spacing-vertical-xxl: 24px;
+    --fast-spacing-vertical-xxxl: 32px;
+
+    /* Shape */
+    --fast-border-radius-none: 0;
+    --fast-border-radius-small: 2px;
+    --fast-border-radius-medium: 4px;
+    --fast-border-radius-large: 6px;
+    --fast-border-radius-xlarge: 8px;
+    --fast-border-radius-circular: 10000px;
+
+    /* Strokes */
+    --fast-stroke-width-thin: 1px;
+    --fast-stroke-width-thick: 2px;
+    --fast-stroke-width-thicker: 3px;
+    --fast-stroke-width-thickest: 4px;
+
+    /* Motion: duration */
+    --fast-duration-ultra-fast: 50ms;
+    --fast-duration-faster: 100ms;
+    --fast-duration-fast: 150ms;
+    --fast-duration-normal: 200ms;
+    --fast-duration-slow: 300ms;
+    --fast-duration-slower: 400ms;
+    --fast-duration-ultra-slow: 500ms;
+
+    /* Motion: curves */
+    --fast-curve-accelerate-max: cubic-bezier(0.95, 0.05, 0.8, 0.04);
+    --fast-curve-accelerate-mid: cubic-bezier(0.7, 0, 1, 0.5);
+    --fast-curve-accelerate-min: cubic-bezier(0.8, 0, 0.78, 1);
+    --fast-curve-decelerate-max: cubic-bezier(0.1, 0.9, 0.2, 1);
+    --fast-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fast-curve-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
+    --fast-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fast-curve-easy-ease-max: cubic-bezier(0.8, 0, 0.2, 1);
+    --fast-curve-linear: cubic-bezier(0, 0, 1, 1);
+}
+
+:root,
+:root[data-theme="light"] {
+    /* Color: brand */
+    --fast-color-brand-background: #0f6cbd;
+    --fast-color-brand-background-hover: #115ea3;
+    --fast-color-brand-background-pressed: #0c3b5e;
+    --fast-color-brand-background-selected: #0f548c;
+    --fast-color-brand-foreground-1: #0f6cbd;
+    --fast-color-brand-foreground-2: #115ea3;
+    --fast-color-brand-link: #115ea3;
+    --fast-color-brand-link-hover: #0f548c;
+    --fast-color-brand-stroke-1: #0f6cbd;
+
+    /* Color: neutral backgrounds */
+    --fast-color-neutral-background-1: #ffffff;
+    --fast-color-neutral-background-1-hover: #f5f5f5;
+    --fast-color-neutral-background-1-pressed: #edebe9;
+    --fast-color-neutral-background-1-selected: #ebebeb;
+    --fast-color-neutral-background-2: #fafafa;
+    --fast-color-neutral-background-3: #f5f5f5;
+    --fast-color-neutral-background-4: #f0f0f0;
+    --fast-color-neutral-background-5: #ebebeb;
+    --fast-color-neutral-background-6: #e0e0e0;
+    --fast-color-neutral-background-disabled: #f5f5f5;
+    --fast-color-neutral-background-inverted: #292929;
+
+    /* Color: neutral foregrounds */
+    --fast-color-neutral-foreground-1: #242424;
+    --fast-color-neutral-foreground-2: #424242;
+    --fast-color-neutral-foreground-3: #616161;
+    --fast-color-neutral-foreground-4: #707070;
+    --fast-color-neutral-foreground-disabled: #bdbdbd;
+    --fast-color-neutral-foreground-inverted: #ffffff;
+    --fast-color-neutral-foreground-on-brand: #ffffff;
+
+    /* Color: neutral strokes */
+    --fast-color-neutral-stroke-1: #d1d1d1;
+    --fast-color-neutral-stroke-1-hover: #c7c7c7;
+    --fast-color-neutral-stroke-2: #e0e0e0;
+    --fast-color-neutral-stroke-accessible: #616161;
+    --fast-color-neutral-stroke-disabled: #f0f0f0;
+    --fast-color-neutral-stroke-divider: #ebebeb;
+
+    /* Color: status */
+    --fast-color-status-danger-background: #fde7e9;
+    --fast-color-status-danger-foreground: #c50f1f;
+    --fast-color-status-success-background: #dff6dd;
+    --fast-color-status-success-foreground: #0e700e;
+    --fast-color-status-warning-background: #fff4ce;
+    --fast-color-status-warning-foreground: #8a3707;
+
+    /* Shadows */
+    --fast-shadow-2: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-4: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 4px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-8: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 4px 8px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-16: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 8px 16px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-28: 0 0 8px 0 rgba(0, 0, 0, 0.14), 0 14px 28px 0 rgba(0, 0, 0, 0.24);
+    --fast-shadow-64: 0 0 8px 0 rgba(0, 0, 0, 0.14), 0 32px 64px 0 rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="dark"] {
+    /* Color: brand */
+    --fast-color-brand-background: #115ea3;
+    --fast-color-brand-background-hover: #0f6cbd;
+    --fast-color-brand-background-pressed: #0f548c;
+    --fast-color-brand-background-selected: #0c3b5e;
+    --fast-color-brand-foreground-1: #479ef5;
+    --fast-color-brand-foreground-2: #62abf5;
+    --fast-color-brand-link: #62abf5;
+    --fast-color-brand-link-hover: #82c7ff;
+    --fast-color-brand-stroke-1: #479ef5;
+
+    /* Color: neutral backgrounds */
+    --fast-color-neutral-background-1: #292929;
+    --fast-color-neutral-background-1-hover: #333333;
+    --fast-color-neutral-background-1-pressed: #3d3d3d;
+    --fast-color-neutral-background-1-selected: #383838;
+    --fast-color-neutral-background-2: #1f1f1f;
+    --fast-color-neutral-background-3: #141414;
+    --fast-color-neutral-background-4: #0f0f0f;
+    --fast-color-neutral-background-5: #050505;
+    --fast-color-neutral-background-6: #000000;
+    --fast-color-neutral-background-disabled: #1f1f1f;
+    --fast-color-neutral-background-inverted: #ffffff;
+
+    /* Color: neutral foregrounds */
+    --fast-color-neutral-foreground-1: #ffffff;
+    --fast-color-neutral-foreground-2: #f5f5f5;
+    --fast-color-neutral-foreground-3: #c7c7c7;
+    --fast-color-neutral-foreground-4: #adadad;
+    --fast-color-neutral-foreground-disabled: #5c5c5c;
+    --fast-color-neutral-foreground-inverted: #242424;
+    --fast-color-neutral-foreground-on-brand: #ffffff;
+
+    /* Color: neutral strokes */
+    --fast-color-neutral-stroke-1: #666666;
+    --fast-color-neutral-stroke-1-hover: #757575;
+    --fast-color-neutral-stroke-2: #525252;
+    --fast-color-neutral-stroke-accessible: #adadad;
+    --fast-color-neutral-stroke-disabled: #333333;
+    --fast-color-neutral-stroke-divider: #3d3d3d;
+
+    /* Color: status */
+    --fast-color-status-danger-background: #3b0509;
+    --fast-color-status-danger-foreground: #ff99a4;
+    --fast-color-status-success-background: #092b1b;
+    --fast-color-status-success-foreground: #54b054;
+    --fast-color-status-warning-background: #4f2a00;
+    --fast-color-status-warning-foreground: #fcb441;
+
+    /* Shadows */
+    --fast-shadow-2: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 1px 2px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-4: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 4px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-8: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 4px 8px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-16: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 8px 16px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-28: 0 0 8px 0 rgba(0, 0, 0, 0.32), 0 14px 28px 0 rgba(0, 0, 0, 0.56);
+    --fast-shadow-64: 0 0 8px 0 rgba(0, 0, 0, 0.32), 0 32px 64px 0 rgba(0, 0, 0, 0.56);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        /* Color: brand */
+        --fast-color-brand-background: #115ea3;
+        --fast-color-brand-background-hover: #0f6cbd;
+        --fast-color-brand-background-pressed: #0f548c;
+        --fast-color-brand-background-selected: #0c3b5e;
+        --fast-color-brand-foreground-1: #479ef5;
+        --fast-color-brand-foreground-2: #62abf5;
+        --fast-color-brand-link: #62abf5;
+        --fast-color-brand-link-hover: #82c7ff;
+        --fast-color-brand-stroke-1: #479ef5;
+
+        /* Color: neutral backgrounds */
+        --fast-color-neutral-background-1: #292929;
+        --fast-color-neutral-background-1-hover: #333333;
+        --fast-color-neutral-background-1-pressed: #3d3d3d;
+        --fast-color-neutral-background-1-selected: #383838;
+        --fast-color-neutral-background-2: #1f1f1f;
+        --fast-color-neutral-background-3: #141414;
+        --fast-color-neutral-background-4: #0f0f0f;
+        --fast-color-neutral-background-5: #050505;
+        --fast-color-neutral-background-6: #000000;
+        --fast-color-neutral-background-disabled: #1f1f1f;
+        --fast-color-neutral-background-inverted: #ffffff;
+
+        /* Color: neutral foregrounds */
+        --fast-color-neutral-foreground-1: #ffffff;
+        --fast-color-neutral-foreground-2: #f5f5f5;
+        --fast-color-neutral-foreground-3: #c7c7c7;
+        --fast-color-neutral-foreground-4: #adadad;
+        --fast-color-neutral-foreground-disabled: #5c5c5c;
+        --fast-color-neutral-foreground-inverted: #242424;
+        --fast-color-neutral-foreground-on-brand: #ffffff;
+
+        /* Color: neutral strokes */
+        --fast-color-neutral-stroke-1: #666666;
+        --fast-color-neutral-stroke-1-hover: #757575;
+        --fast-color-neutral-stroke-2: #525252;
+        --fast-color-neutral-stroke-accessible: #adadad;
+        --fast-color-neutral-stroke-disabled: #333333;
+        --fast-color-neutral-stroke-divider: #3d3d3d;
+
+        /* Color: status */
+        --fast-color-status-danger-background: #3b0509;
+        --fast-color-status-danger-foreground: #ff99a4;
+        --fast-color-status-success-background: #092b1b;
+        --fast-color-status-success-foreground: #54b054;
+        --fast-color-status-warning-background: #4f2a00;
+        --fast-color-status-warning-foreground: #fcb441;
+
+        /* Shadows */
+        --fast-shadow-2: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 1px 2px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-4: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 4px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-8: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 4px 8px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-16: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 8px 16px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-28:
+            0 0 8px 0 rgba(0, 0, 0, 0.32), 0 14px 28px 0 rgba(0, 0, 0, 0.56);
+        --fast-shadow-64:
+            0 0 8px 0 rgba(0, 0, 0, 0.32), 0 32px 64px 0 rgba(0, 0, 0, 0.56);
+    }
+}
