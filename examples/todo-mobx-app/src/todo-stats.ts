@@ -1,5 +1,5 @@
-import { FASTElement } from "@microsoft/fast-element";
-import { mobxObservableProperty, mobxObserver } from "./mobx-integration/index.js";
+import { autorun } from "mobx";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { todoStore } from "./state/index.js";
 import { styles } from "./todo-stats.styles.js";
 import { template } from "./todo-stats.template.js";
@@ -8,29 +8,32 @@ import { template } from "./todo-stats.template.js";
  * Shows aggregate counts and exposes the "clear completed" and "toggle all"
  * actions.
  *
- * Each surfaced number is a MobX `computed` on the store reached through a
- * `@mobxObservableProperty` getter, so this component re-renders precisely
- * when those counts change, not every time `todos` is touched.
+ * Each surfaced number is a MobX `computed` on the store; a single `autorun`
+ * mirrors them into FAST `@observable` fields so the template re-renders
+ * precisely when those counts change.
  */
 export class TodoStats extends FASTElement {
-    @mobxObservableProperty
-    public get activeCount(): number {
-        return todoStore.activeCount;
+    @observable public activeCount: number = 0;
+    @observable public completedCount: number = 0;
+    @observable public allCompleted: boolean = false;
+    @observable public hasCompleted: boolean = false;
+
+    private _disposer?: () => void;
+
+    public connectedCallback(): void {
+        this._disposer = autorun(() => {
+            this.activeCount = todoStore.activeCount;
+            this.completedCount = todoStore.completedCount;
+            this.allCompleted = todoStore.allCompleted;
+            this.hasCompleted = todoStore.completedCount > 0;
+        });
+        super.connectedCallback();
     }
 
-    @mobxObservableProperty
-    public get completedCount(): number {
-        return todoStore.completedCount;
-    }
-
-    @mobxObservableProperty
-    public get allCompleted(): boolean {
-        return todoStore.allCompleted;
-    }
-
-    @mobxObservableProperty
-    public get hasCompleted(): boolean {
-        return todoStore.completedCount > 0;
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this._disposer?.();
+        this._disposer = undefined;
     }
 
     public clearCompleted(): void {
@@ -41,8 +44,6 @@ export class TodoStats extends FASTElement {
         todoStore.toggleAll();
     }
 }
-
-mobxObserver(TodoStats);
 
 TodoStats.define({
     name: "todo-stats",

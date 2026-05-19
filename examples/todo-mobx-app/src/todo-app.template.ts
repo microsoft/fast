@@ -6,8 +6,8 @@ export const template = html<TodoApp>`
         <header>
             <h1>FAST · MobX Todos</h1>
             <p class="byline">
-                A todo example wired to a MobX store through the
-                <code>@mobxObserver</code> bridge.
+                A todo example wired to a MobX store with one
+                <code>autorun</code> per component.
             </p>
         </header>
 
