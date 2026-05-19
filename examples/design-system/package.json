@@ -1,0 +1,38 @@
+{
+  "name": "@microsoft/fast-examples-design-system",
+  "version": "1.0.0",
+  "description": "Fluent 2-aligned design tokens for FAST example applications.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./themes": {
+      "types": "./dist/themes.d.ts",
+      "default": "./dist/themes.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsgo -p tsconfig.json && node ./scripts/copy-css.mjs",
+    "test": "npm run build"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "examples/design-system"
+  }
+}
