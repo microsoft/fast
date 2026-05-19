@@ -37,6 +37,7 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 - `examples/design-system/` — Shared semantic design tokens (`@microsoft/fast-examples-design-system`) consumed by all example apps.
 - `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns and using the shared `@microsoft/fast-examples-design-system` tokens.
+- `examples/todo-mobx-app/` — A To-Do app demonstrating how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code).
 
 ## Skills
 
