@@ -36,6 +36,7 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 ### Example projects
 
 - `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns.
+- `examples/todo-mobx-app/` — A To-Do app demonstrating how to bridge MobX state into FASTElement template bindings via `@mobxObserver` / `@mobxObservableProperty` decorators.
 
 ## Skills
 
