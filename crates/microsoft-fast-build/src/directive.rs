@@ -360,6 +360,18 @@ pub fn render_custom_element(
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
 
+    // Merge attributes declared on the template's inner `<template>` element
+    // onto the rendered host opening tag. Author attributes on the host element
+    // always win on conflicts; client-only template attrs (`@`, `:`, `f-ref`,
+    // `f-slotted`, `f-children`) are skipped; `{{expr}}` / `?name="{{expr}}"`
+    // bindings resolve against `child_root` (the same state used for the shadow
+    // template).
+    let element_open = merge_template_host_attrs(
+        element_open,
+        locator.get_host_attributes(&tag_name),
+        child_root,
+    );
+
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
         (String::new(), tag_end)
@@ -377,6 +389,155 @@ pub fn render_custom_element(
     );
 
     Ok((output, after))
+}
+
+/// Merge `template_host_attrs` (parsed from the inner `<template …>` element)
+/// onto the already-built host opening tag string `element_open`.
+///
+/// Behaviour:
+/// - Skip client-only template attrs (`@event`, `:prop`, `f-ref`, `f-slotted`,
+///   `f-children`); these have no meaning on a server-rendered host element.
+/// - Skip any template attr whose dedupe key already appears as an author
+///   attribute on the host element — author attributes always win. The dedupe
+///   key for `?name="{{expr}}"` is the bare `name` (lowercased); for everything
+///   else it is the lowercased attribute name.
+/// - Static `name="value"` → emit ` name="html-escaped(value)"`.
+/// - `name="{{expr}}"` → resolve via `resolve_value` against `child_root`;
+///   emit ` name="resolved"` for `String` / `Number` / `Bool`; skip otherwise.
+/// - `?name="{{expr}}"` → evaluate via `evaluate` against `child_root`; emit
+///   bare ` name` when truthy; skip when falsy.
+/// - Static boolean attribute `name` → emit ` name` (no value).
+///
+/// Returns `element_open` unchanged when no attributes survive the filter.
+fn merge_template_host_attrs(
+    element_open: String,
+    template_host_attrs: &[(String, Option<String>)],
+    child_root: &JsonValue,
+) -> String {
+    if template_host_attrs.is_empty() {
+        return element_open;
+    }
+
+    // Author attribute names already present on the rendered opening tag.
+    // `element_open` always ends with `>` and never `/>` (custom elements are
+    // always rendered as non-self-closing here), so parsing the full string
+    // gives the complete attribute set including any `data-fe-c-*` marker.
+    let author_attrs = parse_element_attributes(&element_open);
+    let author_names: Vec<String> = author_attrs
+        .into_iter()
+        .map(|(name, _)| name.to_lowercase())
+        .collect();
+
+    let mut injected = String::new();
+    for (name, value) in template_host_attrs {
+        if is_client_only_attr(name) {
+            continue;
+        }
+        let dedupe_key = if let Some(bare) = name.strip_prefix('?') {
+            bare.to_lowercase()
+        } else {
+            name.to_lowercase()
+        };
+        if author_names.contains(&dedupe_key) {
+            continue;
+        }
+        format_template_host_attr(&mut injected, name, value.as_deref(), child_root);
+    }
+
+    if injected.is_empty() {
+        return element_open;
+    }
+
+    // `element_open` always ends with `>`; splice the new attrs just before it.
+    let gt_pos = match element_open.rfind('>') {
+        Some(p) => p,
+        None => return element_open,
+    };
+    let mut out = String::with_capacity(element_open.len() + injected.len());
+    out.push_str(&element_open[..gt_pos]);
+    out.push_str(&injected);
+    out.push_str(&element_open[gt_pos..]);
+    out
+}
+
+fn is_client_only_attr(name: &str) -> bool {
+    name.starts_with('@')
+        || name.starts_with(':')
+        || name.eq_ignore_ascii_case("f-ref")
+        || name.eq_ignore_ascii_case("f-slotted")
+        || name.eq_ignore_ascii_case("f-children")
+}
+
+/// Append the formatted representation of a single template-host attribute to
+/// `out`. Each emitted attribute is prefixed with a single space so it slots in
+/// before the closing `>` of the host opening tag.
+fn format_template_host_attr(
+    out: &mut String,
+    name: &str,
+    value: Option<&str>,
+    child_root: &JsonValue,
+) {
+    if let Some(bare) = name.strip_prefix('?') {
+        let expr = value
+            .and_then(|v| v.trim().strip_prefix("{{").and_then(|v| v.strip_suffix("}}")))
+            .map(|e| e.trim());
+        if let Some(expr) = expr {
+            if evaluate(expr, child_root, &[]) {
+                out.push(' ');
+                out.push_str(bare);
+            }
+        }
+        return;
+    }
+
+    match value {
+        None => {
+            // Static boolean attribute on the template element.
+            out.push(' ');
+            out.push_str(name);
+        }
+        Some(v) => {
+            let trimmed = v.trim();
+            if let Some(expr) = trimmed
+                .strip_prefix("{{")
+                .and_then(|s| s.strip_suffix("}}"))
+            {
+                let resolved = resolve_value(expr.trim(), child_root, &[])
+                    .unwrap_or(JsonValue::Null);
+                match resolved {
+                    JsonValue::String(s) => {
+                        out.push(' ');
+                        out.push_str(name);
+                        out.push_str("=\"");
+                        out.push_str(&html_escape(&s));
+                        out.push('"');
+                    }
+                    JsonValue::Number(n) => {
+                        out.push(' ');
+                        out.push_str(name);
+                        out.push_str("=\"");
+                        out.push_str(&n.to_string());
+                        out.push('"');
+                    }
+                    JsonValue::Bool(b) => {
+                        out.push(' ');
+                        out.push_str(name);
+                        out.push_str("=\"");
+                        out.push_str(if b { "true" } else { "false" });
+                        out.push('"');
+                    }
+                    // Array / Object / Null → cannot be expressed as an HTML attribute value.
+                    _ => {}
+                }
+            } else {
+                out.push(' ');
+                out.push_str(name);
+                out.push_str("=\"");
+                out.push_str(&html_escape(v));
+                out.push('"');
+            }
+        }
+    }
 }
 
 fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String {

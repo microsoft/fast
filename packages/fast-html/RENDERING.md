@@ -375,6 +375,42 @@ Should result in:
 <!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
 ```
 
+### Host attributes from `<f-template>`
+
+Build-time renderers (e.g. `@microsoft/fast-build`) forward attributes declared on the inner `<template>` element of an `<f-template>` onto the rendered host element opening tag.
+
+Example template:
+```html
+<f-template name="my-button">
+    <template tabindex="0" ?disabled="{{isDisabled}}">
+        <button><slot></slot></button>
+    </template>
+</f-template>
+```
+
+Combined with author HTML `<my-button></my-button>` and state:
+```json
+{
+    "isDisabled": true
+}
+```
+
+Should result in:
+```html
+<my-button tabindex="0" disabled defer-hydration needs-hydration>
+    <template shadowrootmode="open" shadowroot="open">
+        <button><slot></slot></button>
+    </template>
+</my-button>
+```
+
+Rules:
+- Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are skipped — they have no meaning on a server-rendered host element.
+- Author attributes on the host element always win on conflicts (case-insensitive name match; the dedupe key for `?name="{{expr}}"` is the bare `name`).
+- Static `name="value"` is forwarded verbatim (HTML-escaped); static boolean `name` is emitted bare.
+- `name="{{expr}}"` is resolved against the element's initial child state; primitives are emitted as `name="value"`, `Array` / `Object` / `Null` and missing values are stripped.
+- `?name="{{expr}}"` is evaluated as a boolean against the same state; the bare `name` (without `?`) is emitted when truthy and skipped when falsy.
+
 ### Client Side Bindings
 
 Client side bindings are bindings which the client needs, but they are not necessary as part of an initial render. These must still be accounted for when creating hydration comments however, as the template needs to know which elements to attach these bindings to. There are two types of client side bindings, events and attribute directives. These do not require state as they are bound to class methods or properties.

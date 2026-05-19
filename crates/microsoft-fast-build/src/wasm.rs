@@ -90,16 +90,17 @@ pub fn parse_f_templates(html: &str) -> String {
             None => "null".to_string(),
         };
         parts.push(format!(
-            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{}}}",
+            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{},\"hostAttributes\":{}}}",
             name_json,
             escape_json_str(&template.content),
-            shadowroot_attributes_json(&template.shadowroot_attributes)
+            attribute_pairs_json(&template.shadowroot_attributes),
+            attribute_pairs_json(&template.host_attributes)
         ));
     }
     format!("[{}]", parts.join(","))
 }
 
-fn shadowroot_attributes_json(attrs: &[(String, Option<String>)]) -> String {
+fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {
     let mut parts = Vec::with_capacity(attrs.len());
     for (name, value) in attrs {
         let value_json = match value {
@@ -132,7 +133,17 @@ fn escape_json_str(s: &str) -> String {
 
 fn parse_templates_map(
     templates_json: &str,
-) -> Result<HashMap<String, (String, Vec<(String, Option<String>)>)>, JsValue> {
+) -> Result<
+    HashMap<
+        String,
+        (
+            String,
+            Vec<(String, Option<String>)>,
+            Vec<(String, Option<String>)>,
+        ),
+    >,
+    JsValue,
+> {
     let parsed = json::parse(templates_json).map_err(|e| {
         JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message))
     })?;
@@ -142,7 +153,7 @@ fn parse_templates_map(
             for (k, v) in obj {
                 match v {
                     json::JsonValue::String(s) => {
-                        map.insert(k, (s, Vec::new()));
+                        map.insert(k, (s, Vec::new(), Vec::new()));
                     }
                     json::JsonValue::Object(template) => {
                         map.insert(k.clone(), parse_template_metadata(&k, &template)?);
@@ -164,7 +175,14 @@ fn parse_templates_map(
 fn parse_template_metadata(
     template_name: &str,
     template: &HashMap<String, json::JsonValue>,
-) -> Result<(String, Vec<(String, Option<String>)>), JsValue> {
+) -> Result<
+    (
+        String,
+        Vec<(String, Option<String>)>,
+        Vec<(String, Option<String>)>,
+    ),
+    JsValue,
+> {
     let content = match template.get("content") {
         Some(json::JsonValue::String(content)) => content.clone(),
         _ => {
@@ -175,8 +193,10 @@ fn parse_template_metadata(
         }
     };
 
-    let attrs = match template.get("shadowrootAttributes") {
-        Some(json::JsonValue::Array(attrs)) => parse_shadowroot_attributes(template_name, attrs)?,
+    let shadowroot_attrs = match template.get("shadowrootAttributes") {
+        Some(json::JsonValue::Array(attrs)) => {
+            parse_attribute_pairs(template_name, "shadowroot", attrs)?
+        }
         Some(json::JsonValue::Null) | None => Vec::new(),
         Some(_) => {
             return Err(JsValue::from_str(&format!(
@@ -186,11 +206,25 @@ fn parse_template_metadata(
         }
     };
 
-    Ok((content, attrs))
+    let host_attrs = match template.get("hostAttributes") {
+        Some(json::JsonValue::Array(attrs)) => {
+            parse_attribute_pairs(template_name, "host", attrs)?
+        }
+        Some(json::JsonValue::Null) | None => Vec::new(),
+        Some(_) => {
+            return Err(JsValue::from_str(&format!(
+                "Template metadata for '{}' must use an array hostAttributes property",
+                template_name
+            )));
+        }
+    };
+
+    Ok((content, shadowroot_attrs, host_attrs))
 }
 
-fn parse_shadowroot_attributes(
+fn parse_attribute_pairs(
     template_name: &str,
+    kind: &str,
     attrs: &[json::JsonValue],
 ) -> Result<Vec<(String, Option<String>)>, JsValue> {
     let mut parsed = Vec::with_capacity(attrs.len());
@@ -199,8 +233,8 @@ fn parse_shadowroot_attributes(
             json::JsonValue::Object(attr) => attr,
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a non-object shadowroot attribute",
-                    template_name
+                    "Template metadata for '{}' contains a non-object {} attribute",
+                    template_name, kind
                 )));
             }
         };
@@ -208,8 +242,8 @@ fn parse_shadowroot_attributes(
             Some(json::JsonValue::String(name)) => name.clone(),
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a shadowroot attribute without a string name",
-                    template_name
+                    "Template metadata for '{}' contains a {} attribute without a string name",
+                    template_name, kind
                 )));
             }
         };
@@ -218,8 +252,8 @@ fn parse_shadowroot_attributes(
             Some(json::JsonValue::Null) | None => None,
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a shadowroot attribute with a non-string value",
-                    template_name
+                    "Template metadata for '{}' contains a {} attribute with a non-string value",
+                    template_name, kind
                 )));
             }
         };
@@ -246,6 +280,44 @@ mod tests {
             .expect("template should be present")
             .1;
         assert!(attrs.is_empty());
+    }
+
+    #[test]
+    fn parse_templates_map_treats_null_host_attributes_as_empty() {
+        let templates = match parse_templates_map(
+            r#"{"test-element":{"content":"<span></span>","hostAttributes":null}}"#,
+        ) {
+            Ok(templates) => templates,
+            Err(_) => panic!("template metadata with null hostAttributes should parse"),
+        };
+
+        let attrs = &templates
+            .get("test-element")
+            .expect("template should be present")
+            .2;
+        assert!(attrs.is_empty());
+    }
+
+    #[test]
+    fn parse_templates_map_reads_host_attributes() {
+        let templates = match parse_templates_map(
+            r#"{"test-element":{"content":"<span></span>","hostAttributes":[{"name":"tabindex","value":"0"},{"name":"disabled","value":null}]}}"#,
+        ) {
+            Ok(templates) => templates,
+            Err(_) => panic!("template metadata with hostAttributes should parse"),
+        };
+
+        let host = &templates
+            .get("test-element")
+            .expect("template should be present")
+            .2;
+        assert_eq!(
+            host,
+            &vec![
+                ("tabindex".to_string(), Some("0".to_string())),
+                ("disabled".to_string(), None),
+            ]
+        );
     }
 }
 
