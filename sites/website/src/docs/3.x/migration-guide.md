@@ -369,6 +369,61 @@ The SSR hydration markers have been simplified from verbose, index-embedded comm
 
 The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBinding` → `parseAttributeBindingCount`) and no longer accept index/scope parameters. See the [package MIGRATION.md](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md#hydration-marker-format-v3) for the complete API mapping.
 
+### `booleanConverter` aligned with native HTML boolean attribute semantics
+
+`@attr({ mode: "boolean" })` and `booleanConverter` now match how the platform treats native boolean attributes (e.g., `disabled`, `required`):
+
+- **Attribute → property** is presence-based: `setAttribute(name, anyString)` (including the empty string) sets the property to `true`; only `removeAttribute(name)` makes it `false`.
+- **Property → attribute** uses `Boolean()` coercion: any JavaScript truthy value adds the attribute (with value `""`); any falsy value removes it.
+
+The headline difference is that `setAttribute(name, "false")` now resolves to property `true`, matching `<input disabled="false">` still being disabled.
+
+2.x Behavior:
+```html
+<my-element my-bool="false"></my-element>
+```
+```ts
+element.myBool === false;
+```
+
+3.x Behavior:
+```html
+<my-element my-bool="false"></my-element>
+```
+```ts
+element.myBool === true;
+```
+
+`booleanConverter` shape:
+
+```ts
+toView(value: any) {
+    return value ? "" : null;
+}
+
+fromView(value: any) {
+    return !!value;
+}
+```
+
+`booleanConverter` 2.x → 3.x result differences:
+
+| Call | 2.x | 3.x |
+|---|---|---|
+| `fromView("false")` | `false` | `true` |
+| `fromView("")` | `true` | `false` |
+| `fromView(NaN)` | `true` | `false` |
+| `toView(true)` (or any truthy) | `"true"` | `""` |
+| `toView(false)` (or any falsy) | `"false"` | `null` |
+
+For `mode: "boolean"`, FAST writes attributes via `DOM.setBooleanAttribute` (presence-based) and reads them as `value !== null`, so the `mode: "boolean"` reflection path does **not** route through `booleanConverter.toView()` or `booleanConverter.fromView()`. The converter methods still apply to property assignment (`el.bool = X` runs `fromView(X)`), explicit calls (`booleanConverter.fromView(x)`), and `booleanConverter` paired with `mode: "reflect"` (which calls `toView`).
+
+**Migration:**
+
+- Audit `boolean`-mode attributes for the literal string `"false"` in templates or SSR HTML — the resulting property will be `true`, not `false`. To express the falsy state, omit the attribute entirely (or call `element.removeAttribute("my-bool")`). Assigning `element.myBool = false` continues to remove the reflected attribute as before.
+- Audit code that calls `booleanConverter.toView()` directly or pairs `booleanConverter` with `mode: "reflect"`. The output strings are no longer `"true"` / `"false"`.
+- If you need a tri-state attribute that preserves an explicit `"false"` string value, use `nullableBooleanConverter` with `mode: "reflect"` instead of `mode: "boolean"`.
+
 ## New Exports
 
 | Export | Package | Description |
