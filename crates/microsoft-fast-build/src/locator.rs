@@ -8,12 +8,14 @@ pub(crate) struct FTemplate {
     pub name: Option<String>,
     pub content: String,
     pub shadowroot_attributes: Vec<(String, Option<String>)>,
+    pub host_attributes: Vec<(String, Option<String>)>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct TemplateDefinition {
     content: String,
     shadowroot_attributes: Vec<(String, Option<String>)>,
+    host_attributes: Vec<(String, Option<String>)>,
 }
 
 pub struct Locator {
@@ -83,6 +85,7 @@ impl Locator {
             templates.insert(element, TemplateDefinition {
                 content: template.content,
                 shadowroot_attributes: template.shadowroot_attributes,
+                host_attributes: template.host_attributes,
             });
         }
 
@@ -92,22 +95,48 @@ impl Locator {
     /// Create a Locator from an explicit map (useful for testing without filesystem).
     ///
     /// This API only carries template content. Shadowroot-prefixed attributes for
-    /// Declarative Shadow DOM are empty for these entries. Use [`Locator::from_patterns`]
-    /// with `<f-template>` metadata, or call [`Locator::add_template_with_shadowroot_attrs`]
-    /// for templates that need shadowroot attributes.
+    /// Declarative Shadow DOM and host attributes are empty for these entries. Use
+    /// [`Locator::from_patterns`] with `<f-template>` metadata, or call
+    /// [`Locator::add_template_with_attrs`] for templates that need shadowroot
+    /// or host attributes.
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, content)| (name, TemplateDefinition { content, shadowroot_attributes: Vec::new() }))
+            .map(|(name, content)| (name, TemplateDefinition {
+                content,
+                shadowroot_attributes: Vec::new(),
+                host_attributes: Vec::new(),
+            }))
             .collect();
         Locator { templates }
     }
 
-    #[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
-    pub(crate) fn from_template_definitions(templates: HashMap<String, (String, Vec<(String, Option<String>)>)>) -> Self {
+    /// Create a Locator from explicit template metadata.
+    ///
+    /// Each map value is `(content, shadowroot_attributes, host_attributes)`.
+    /// `shadowroot_attributes` are forwarded to the Declarative Shadow DOM
+    /// `<template>` tag; `host_attributes` are merged onto the rendered host
+    /// element's opening tag (author attributes win on conflicts).
+    pub fn from_template_definitions(
+        templates: HashMap<
+            String,
+            (
+                String,
+                Vec<(String, Option<String>)>,
+                Vec<(String, Option<String>)>,
+            ),
+        >,
+    ) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, (content, shadowroot_attributes))| (name, TemplateDefinition { content, shadowroot_attributes }))
+            .map(|(name, (content, shadowroot_attributes, host_attributes))| (
+                name,
+                TemplateDefinition {
+                    content,
+                    shadowroot_attributes,
+                    host_attributes,
+                },
+            ))
             .collect();
         Locator { templates }
     }
@@ -115,30 +144,41 @@ impl Locator {
     /// Add a template directly.
     ///
     /// This only stores template content. Shadowroot-prefixed attributes for
-    /// Declarative Shadow DOM are empty for this entry. Use
-    /// [`Locator::add_template_with_shadowroot_attrs`] when the rendered shadow
-    /// `<template>` needs attributes such as `shadowrootmode`.
+    /// Declarative Shadow DOM and host attributes are empty for this entry.
+    /// Use [`Locator::add_template_with_attrs`] when the rendered shadow
+    /// `<template>` needs attributes such as `shadowrootmode`, or when host
+    /// attributes from the source `<f-template>`'s inner `<template>` should
+    /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
             content: content.to_string(),
             shadowroot_attributes: Vec::new(),
+            host_attributes: Vec::new(),
         });
     }
 
-    /// Add a template directly with shadowroot-prefixed attributes.
+    /// Add a template directly with shadowroot-prefixed attributes and host
+    /// attributes that should be merged onto the rendered host element.
     ///
-    /// Only attributes whose names begin with `shadowroot` are retained. Names
-    /// are normalized to lowercase and duplicate names are ignored, matching
-    /// `<f-template>` parsing. Use `None` for boolean attributes.
-    pub fn add_template_with_shadowroot_attrs(
+    /// `shadowroot_attrs` are filtered by [`collect_shadowroot_attributes`]:
+    /// only attributes whose names begin with `shadowroot` are retained, names
+    /// are normalized to lowercase, and duplicates are ignored. Use `None` for
+    /// boolean attributes.
+    ///
+    /// `host_attrs` are stored verbatim in source order — the renderer is
+    /// responsible for filtering client-only attributes and resolving any
+    /// `{{expr}}` / `?name="{{expr}}"` bindings against the child state.
+    pub fn add_template_with_attrs(
         &mut self,
         element_name: &str,
         content: &str,
-        attrs: &[(String, Option<String>)],
+        shadowroot_attrs: &[(String, Option<String>)],
+        host_attrs: &[(String, Option<String>)],
     ) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
             content: content.to_string(),
-            shadowroot_attributes: collect_shadowroot_attributes(attrs),
+            shadowroot_attributes: collect_shadowroot_attributes(shadowroot_attrs),
+            host_attributes: host_attrs.to_vec(),
         });
     }
 
@@ -150,6 +190,13 @@ impl Locator {
         self.templates
             .get(element_name)
             .map(|template| template.shadowroot_attributes.as_slice())
+            .unwrap_or(&[])
+    }
+
+    pub fn get_host_attributes(&self, element_name: &str) -> &[(String, Option<String>)] {
+        self.templates
+            .get(element_name)
+            .map(|template| template.host_attributes.as_slice())
             .unwrap_or(&[])
     }
 
@@ -194,12 +241,13 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             None => break,
         };
         let inner_html = &html[inner_start..inner_end];
-        let content = extract_template_content(inner_html);
+        let (content, host_attributes) = extract_template_content(inner_html);
 
         results.push(FTemplate {
             name,
             content,
             shadowroot_attributes,
+            host_attributes,
         });
         search_start = inner_end + end_tag.len();
     }
@@ -220,22 +268,27 @@ fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(Str
     results
 }
 
-/// Extract the inner content of the first `<template>` element found in `html`.
-/// Returns the trimmed content between `<template ...>` and `</template>`.
-fn extract_template_content(html: &str) -> String {
+/// Extract the inner content and the opening-tag attributes of the first
+/// `<template>` element found in `html`. Returns the trimmed inner content
+/// and the attributes parsed from the inner `<template …>` opening tag.
+///
+/// If no `<template>` element is found, returns the trimmed input with an
+/// empty attribute list.
+fn extract_template_content(html: &str) -> (String, Vec<(String, Option<String>)>) {
     let open = match html.find("<template") {
         Some(i) => i,
-        None => return html.trim().to_string(),
+        None => return (html.trim().to_string(), Vec::new()),
     };
-    let tag_end = match html[open..].find('>') {
-        Some(i) => open + i + 1,
-        None => return html.trim().to_string(),
+    let tag_end = match find_tag_end(html, open) {
+        Some(i) => i,
+        None => return (html.trim().to_string(), Vec::new()),
     };
     let close = match html[tag_end..].find("</template>") {
         Some(i) => tag_end + i,
-        None => return html.trim().to_string(),
+        None => return (html.trim().to_string(), Vec::new()),
     };
-    html[tag_end..close].trim().to_string()
+    let attrs = parse_element_attributes(&html[open..tag_end]);
+    (html[tag_end..close].trim().to_string(), attrs)
 }
 
 
@@ -401,6 +454,7 @@ mod tests {
         assert_eq!(results[0].name, Some("my-button".to_string()));
         assert_eq!(results[0].content, "<button>{{label}}</button>");
         assert!(results[0].shadowroot_attributes.is_empty());
+        assert!(results[0].host_attributes.is_empty());
     }
 
     #[test]
@@ -415,8 +469,10 @@ mod tests {
         assert_eq!(results.len(), 2);
         assert_eq!(results[0].name, Some("my-a".to_string()));
         assert_eq!(results[0].content, "<span>A</span>");
+        assert!(results[0].host_attributes.is_empty());
         assert_eq!(results[1].name, Some("my-b".to_string()));
         assert_eq!(results[1].content, "<div>B</div>");
+        assert!(results[1].host_attributes.is_empty());
     }
 
     #[test]
@@ -427,6 +483,7 @@ mod tests {
         let results = parse_f_templates(html);
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, None);
+        assert!(results[0].host_attributes.is_empty());
     }
 
     #[test]
@@ -444,10 +501,43 @@ mod tests {
                 ("shadowrootclonable".to_string(), Some("true".to_string())),
             ]
         );
+        assert!(results[0].host_attributes.is_empty());
     }
 
     #[test]
-    fn test_add_template_with_shadowroot_attrs_preserves_attrs() {
+    fn test_parse_f_templates_host_attributes() {
+        let html = r#"<f-template name="my-el">
+    <template tabindex="0" @click="{handle()}" attr="{{val}}"><span>x</span></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(
+            results[0].host_attributes,
+            vec![
+                ("tabindex".to_string(), Some("0".to_string())),
+                ("@click".to_string(), Some("{handle()}".to_string())),
+                ("attr".to_string(), Some("{{val}}".to_string())),
+            ]
+        );
+    }
+
+    #[test]
+    fn test_parse_f_templates_host_attributes_with_quoted_gt() {
+        // A `>` inside a quoted attribute value must not terminate the opening tag.
+        let html = r#"<f-template name="my-el">
+    <template data-x="a>b"><span>x</span></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].content, "<span>x</span>");
+        assert_eq!(
+            results[0].host_attributes,
+            vec![("data-x".to_string(), Some("a>b".to_string()))]
+        );
+    }
+
+    #[test]
+    fn test_add_template_with_attrs_shadowroot_only() {
         let mut locator = Locator::from_templates(std::collections::HashMap::new());
         let attrs = vec![
             ("shadowrootmode".to_string(), Some("closed".to_string())),
@@ -455,16 +545,55 @@ mod tests {
             ("shadowrootclonable".to_string(), Some("true".to_string())),
         ];
 
-        locator.add_template_with_shadowroot_attrs("my-el", "<span>shadow</span>", &attrs);
+        locator.add_template_with_attrs("my-el", "<span>shadow</span>", &attrs, &[]);
 
         assert_eq!(locator.get_template("my-el"), Some("<span>shadow</span>"));
         assert_eq!(locator.get_shadowroot_attributes("my-el"), attrs.as_slice());
+        assert!(locator.get_host_attributes("my-el").is_empty());
+    }
+
+    #[test]
+    fn test_add_template_with_attrs_shadowroot_and_host() {
+        let mut locator = Locator::from_templates(std::collections::HashMap::new());
+        let shadowroot_attrs = vec![
+            ("shadowrootmode".to_string(), Some("closed".to_string())),
+        ];
+        let host_attrs = vec![
+            ("tabindex".to_string(), Some("0".to_string())),
+            ("?disabled".to_string(), Some("{{isDisabled}}".to_string())),
+        ];
+
+        locator.add_template_with_attrs(
+            "my-el",
+            "<span>x</span>",
+            &shadowroot_attrs,
+            &host_attrs,
+        );
+
+        assert_eq!(locator.get_template("my-el"), Some("<span>x</span>"));
+        assert_eq!(locator.get_shadowroot_attributes("my-el"), shadowroot_attrs.as_slice());
+        assert_eq!(locator.get_host_attributes("my-el"), host_attrs.as_slice());
     }
 
     #[test]
     fn test_extract_template_content_basic() {
         let html = "    <template>\n        <button>click</button>\n    </template>\n";
-        let content = extract_template_content(html);
+        let (content, attrs) = extract_template_content(html);
         assert_eq!(content, "<button>click</button>");
+        assert!(attrs.is_empty());
+    }
+
+    #[test]
+    fn test_extract_template_content_with_attrs() {
+        let html = "<template tabindex=\"0\" ?disabled=\"{{isDisabled}}\"><span>x</span></template>";
+        let (content, attrs) = extract_template_content(html);
+        assert_eq!(content, "<span>x</span>");
+        assert_eq!(
+            attrs,
+            vec![
+                ("tabindex".to_string(), Some("0".to_string())),
+                ("?disabled".to_string(), Some("{{isDisabled}}".to_string())),
+            ]
+        );
     }
 }

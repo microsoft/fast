@@ -461,6 +461,12 @@ When `templateOptions: "defer-and-hydrate"` is used, the server must render:
 2. A `<template shadowrootmode="open" shadowroot="open">` containing pre-rendered HTML annotated with FAST's hydration markers. Build-time renderers keep both attributes for Declarative Shadow DOM compatibility and may forward additional `shadowroot`-prefixed attributes from the source `<f-template>`.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
 
+### Host attributes from the source `<f-template>`
+
+Build-time renderers (e.g. `@microsoft/fast-build`) forward attributes declared on the inner `<template>` element of an `<f-template>` onto the rendered host element opening tag. Static attributes are forwarded verbatim (HTML-escaped); `name="{{expr}}"` and `?name="{{expr}}"` are resolved against the element's initial child state (the root state with the host element's HTML attributes overlaid). Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are skipped — they have no meaning on a server-rendered host element.
+
+Author attributes on the host element always win on conflicts (case-insensitive name match; for `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` without the leading `?`). The hydration marker formats described below are unchanged — no additional `data-fe-c` marker is allocated for these propagated attributes.
+
 ### Hydration marker formats
 
 **Content bindings** use HTML comments:
