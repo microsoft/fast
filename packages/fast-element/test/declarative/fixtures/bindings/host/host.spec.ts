@@ -374,4 +374,24 @@ test.describe("Host Bindings Hydration", async () => {
             }
         });
     });
+
+    test.describe("should propagate host attributes from the template's <template>", () => {
+        test("host-autofocus has author-provided autofocus and template-provided tabindex", async ({
+            page,
+        }) => {
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
+            );
+            await page.goto("/fixtures/host-bindings/");
+            await hydrationCompleted;
+
+            const element = page.locator("host-autofocus");
+
+            // Author-provided attribute survives the SSR pipeline.
+            await expect(element).toHaveAttribute("autofocus", "");
+
+            // Template <template tabindex="0"> attribute is propagated to the host tag.
+            await expect(element).toHaveAttribute("tabindex", "0");
+        });
+    });
 });

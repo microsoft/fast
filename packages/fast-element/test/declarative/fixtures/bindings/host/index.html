@@ -1,26 +1,28 @@
 <!DOCTYPE html>
+<!-- biome-ignore-all format: SSR-rendered output binding markers must survive byte-for-byte -->
 <html lang="en-US">
     <head>
         <meta charset="utf-8">
         <title>Host Bindings Test</title>
         <style>
-            /* Ensure custom elements display as block to prevent overlap */
-            host-event-element,
-            host-multi-element,
-            host-static-element,
-            host-events-element,
-            host-multi-content-element,
-            host-text-binding-element,
-            host-property-element,
-            host-all-types-element,
-            host-perm-attr-first,
-            host-perm-bool-first,
-            host-perm-prop-first {
-                display: block;
-                margin: 10px 0;
-                padding: 10px;
-                border: 1px solid #ccc;
-            }
+        /* Ensure custom elements display as block to prevent overlap */
+host-event-element,
+host-multi-element,
+host-static-element,
+host-events-element,
+host-multi-content-element,
+host-text-binding-element,
+host-property-element,
+host-all-types-element,
+host-perm-attr-first,
+host-perm-bool-first,
+host-perm-prop-first,
+host-autofocus {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
         </style>
     </head>
     <body>
@@ -35,6 +37,8 @@
         <host-perm-attr-first text="perm attr first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm attr first<!--fe:/b--></span></template></host-perm-attr-first>
         <host-perm-bool-first text="perm bool first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm bool first<!--fe:/b--></span></template></host-perm-bool-first>
         <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm prop first<!--fe:/b--></span></template></host-perm-prop-first>
+        <!-- biome-ignore lint/a11y/noAutofocus: deliberate fixture verifying author-provided host attribute propagation through SSR -->
+        <host-autofocus autofocus tabindex="0"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->autofocus<!--fe:/b--></span></template></host-autofocus>
 <f-template name="host-event-element">
     <template @click="{handleClick()}">
         <span>{{greeting}}</span>
@@ -87,6 +91,11 @@
 </f-template>
 <f-template name="host-perm-prop-first">
     <template :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-autofocus">
+    <template tabindex="0">
         <span>{{text}}</span>
     </template>
 </f-template>
