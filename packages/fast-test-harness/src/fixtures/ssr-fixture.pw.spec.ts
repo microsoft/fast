@@ -271,6 +271,28 @@ test.describe("SSR: addStyleTag buffering", () => {
     });
 });
 
+test.describe("SSR: url property", () => {
+    test.use({ tagName: "test-widget", ssr: true });
+
+    test("should be undefined before `setTemplate()` is called", async ({ fastPage }) => {
+        expect((fastPage as any).url).toBeUndefined();
+    });
+
+    test("should be set after `setTemplate()` is called", async ({ fastPage }) => {
+        await fastPage.setTemplate();
+
+        expect((fastPage as any).url).toBeDefined();
+        expect((fastPage as any).url).toMatch(/^\/ssr-.*\.html$/);
+    });
+
+    test("should match the page URL pathname", async ({ fastPage, page }) => {
+        await fastPage.setTemplate();
+
+        const pageUrl = new URL(page.url());
+        expect((fastPage as any).url).toBe(pageUrl.pathname);
+    });
+});
+
 test.describe("SSR: multiple elements", () => {
     test.use({ tagName: "test-widget", ssr: true });
 
