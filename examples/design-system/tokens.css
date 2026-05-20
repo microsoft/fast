@@ -1,0 +1,308 @@
+/*
+ * @microsoft/fast-examples-design-system
+ *
+ * Combined entry. Applies theme-independent tokens (typography, spacing,
+ * sizing, shape, motion) on :root, then layers explicit light and dark
+ * color/elevation values via the data-theme attribute, with a
+ * prefers-color-scheme fallback when no attribute is present.
+ *
+ * To force a theme:
+ *     <html data-theme="light">    or    <html data-theme="dark">
+ *
+ * To follow the user's system preference, omit the data-theme attribute.
+ *
+ * For a single-theme app, import ./tokens-light.css or ./tokens-dark.css
+ * directly instead of this file.
+ *
+ * Naming model: derived from the MS Semantic Tokens ("smtc") taxonomy used
+ * by mai-ui (text/padding/gap/corner/stroke/background/foreground/shadow/
+ * status), with FAST's `--fast-` prefix. State vocabulary: rest, hover,
+ * pressed, disabled.
+ */
+
+:root {
+    /* Text: families */
+    --fast-text-style-default-regular-font-family:
+        "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica,
+        Arial, sans-serif;
+    --fast-text-style-code-regular-font-family:
+        ui-monospace, "Cascadia Code", "SF Mono", "Roboto Mono", Consolas,
+        "Liberation Mono", monospace;
+    --fast-text-style-data-viz-regular-font-family:
+        Bahnschrift, "Segoe UI", system-ui, sans-serif;
+
+    /* Text: weights */
+    --fast-text-style-default-regular-weight: 400;
+    --fast-text-style-default-header-weight: 600;
+    --fast-text-style-default-display-weight: 600;
+
+    /* Text: global type ramp (mai-ui convention: lower number = larger) */
+    --fast-text-global-caption2-font-size: 10px;
+    --fast-text-global-caption2-line-height: 14px;
+    --fast-text-global-caption1-font-size: 12px;
+    --fast-text-global-caption1-line-height: 16px;
+    --fast-text-global-body3-font-size: 14px;
+    --fast-text-global-body3-line-height: 20px;
+    --fast-text-global-body2-font-size: 16px;
+    --fast-text-global-body2-line-height: 22px;
+    --fast-text-global-body1-font-size: 18px;
+    --fast-text-global-body1-line-height: 26px;
+    --fast-text-global-subtitle2-font-size: 18px;
+    --fast-text-global-subtitle2-line-height: 26px;
+    --fast-text-global-subtitle1-font-size: 20px;
+    --fast-text-global-subtitle1-line-height: 26px;
+    --fast-text-global-title2-font-size: 20px;
+    --fast-text-global-title2-line-height: 26px;
+    --fast-text-global-title1-font-size: 24px;
+    --fast-text-global-title1-line-height: 32px;
+    --fast-text-global-display2-font-size: 28px;
+    --fast-text-global-display2-line-height: 32px;
+    --fast-text-global-display1-font-size: 38px;
+    --fast-text-global-display1-line-height: 40px;
+
+    /* Padding: content inset */
+    --fast-padding-content-none: 0;
+    --fast-padding-content-xx-small: 4px;
+    --fast-padding-content-x-small: 8px;
+    --fast-padding-content-small: 12px;
+    --fast-padding-content-medium: 16px;
+    --fast-padding-content-large: 20px;
+    --fast-padding-content-x-large: 24px;
+    --fast-padding-content-xx-large: 32px;
+    --fast-padding-content-xxx-large: 40px;
+
+    /* Gap: between elements */
+    --fast-gap-between-content-none: 0;
+    --fast-gap-between-content-xx-small: 4px;
+    --fast-gap-between-content-x-small: 8px;
+    --fast-gap-between-content-small: 12px;
+    --fast-gap-between-content-medium: 16px;
+    --fast-gap-between-content-large: 20px;
+    --fast-gap-between-content-x-large: 22px;
+    --fast-gap-between-content-xx-large: 32px;
+
+    /* Corner: border-radius */
+    --fast-corner-none: 0;
+    --fast-corner-small: 2px;
+    --fast-corner-medium: 4px;
+    --fast-corner-large: 6px;
+    --fast-corner-circular: 9999px;
+
+    /* Stroke widths */
+    --fast-stroke-width-default: 1px;
+    --fast-stroke-width-divider-strong: 1.5px;
+
+    /* Control focus (mai-ui-aligned focus contract) */
+    --fast-ctrl-focus-outer-stroke-width: 2px;
+
+    /* Motion: durations */
+    --fast-duration-ultra-fast: 50ms;
+    --fast-duration-faster: 100ms;
+    --fast-duration-fast: 150ms;
+    --fast-duration-normal: 200ms;
+    --fast-duration-gentle: 250ms;
+    --fast-duration-slow: 300ms;
+    --fast-duration-slower: 400ms;
+    --fast-duration-ultra-slow: 500ms;
+
+    /* Motion: curves */
+    --fast-curve-accelerate-max: cubic-bezier(0.9, 0.1, 1, 0.2);
+    --fast-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+    --fast-curve-accelerate-min: cubic-bezier(0.8, 0, 0.78, 1);
+    --fast-curve-decelerate-max: cubic-bezier(0.1, 0.9, 0.2, 1);
+    --fast-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fast-curve-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
+    --fast-curve-easy-ease-max: cubic-bezier(0.8, 0, 0.2, 1);
+    --fast-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fast-curve-linear: cubic-bezier(0, 0, 1, 1);
+
+    color-scheme: light dark;
+}
+
+:root,
+:root[data-theme="light"] {
+    /* Background: surfaces */
+    --fast-background-web-page-primary: #fafafa;
+    --fast-background-layer-primary-solid: #ffffff;
+    --fast-background-layer-secondary: #f5f5f5;
+
+    /* Background: subtle controls (transparent base; tint on interaction) */
+    --fast-background-ctrl-subtle-rest: transparent;
+    --fast-background-ctrl-subtle-hover: #f5f5f5;
+    --fast-background-ctrl-subtle-pressed: #ebebeb;
+    --fast-background-ctrl-subtle-disabled: transparent;
+
+    /* Background: brand controls */
+    --fast-background-ctrl-brand-rest: #0f6cbd;
+    --fast-background-ctrl-brand-hover: #115ea3;
+    --fast-background-ctrl-brand-pressed: #0c3b5e;
+    --fast-background-ctrl-brand-disabled: #f0f0f0;
+
+    /* Foreground: text + icon */
+    --fast-foreground-ctrl-neutral-primary-rest: #242424;
+    --fast-foreground-ctrl-neutral-primary-disabled: #bdbdbd;
+    --fast-foreground-ctrl-neutral-secondary-rest: #424242;
+    --fast-foreground-ctrl-hint-default: #707070;
+    --fast-foreground-ctrl-on-brand-rest: #ffffff;
+    --fast-foreground-ctrl-brand-rest: #0f6cbd;
+
+    /* Stroke: dividers and outlines */
+    --fast-stroke-divider-default: #d1d1d1;
+    --fast-stroke-divider-subtle: #e0e0e0;
+    --fast-stroke-divider-strong: #616161;
+    --fast-stroke-divider-brand: #0f6cbd;
+    --fast-stroke-ctrl-on-outline-rest: #d1d1d1;
+    --fast-stroke-ctrl-on-outline-disabled: #f0f0f0;
+
+    /* Focus ring color */
+    --fast-ctrl-focus-outer-stroke: #0f6cbd;
+
+    /* Status: solid */
+    --fast-status-danger-background: #c50f1f;
+    --fast-status-danger-foreground: #ffffff;
+    --fast-status-success-background: #0e700e;
+    --fast-status-success-foreground: #ffffff;
+    --fast-status-warning-background: #8a3707;
+    --fast-status-warning-foreground: #ffffff;
+
+    /* Status: tinted (use these for destructive buttons, inline alerts) */
+    --fast-status-danger-tint-background: #fde7e9;
+    --fast-status-danger-tint-foreground: #c50f1f;
+    --fast-status-danger-tint-stroke: #c50f1f;
+    --fast-status-success-tint-background: #dff6dd;
+    --fast-status-success-tint-foreground: #0e700e;
+    --fast-status-success-tint-stroke: #0e700e;
+    --fast-status-warning-tint-background: #fff4ce;
+    --fast-status-warning-tint-foreground: #8a3707;
+    --fast-status-warning-tint-stroke: #8a3707;
+
+    /* Shadow: card (atomic key + ambient pair) */
+    --fast-shadow-card-rest-key: 0 4px 8px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-card-rest-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.12);
+    --fast-shadow-card-rest:
+        var(--fast-shadow-card-rest-key), var(--fast-shadow-card-rest-ambient);
+
+    /* Shadow: flyout */
+    --fast-shadow-flyout-key: 0 8px 16px 0 rgba(0, 0, 0, 0.14);
+    --fast-shadow-flyout-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.12);
+    --fast-shadow-flyout:
+        var(--fast-shadow-flyout-key), var(--fast-shadow-flyout-ambient);
+}
+
+:root[data-theme="dark"] {
+    --fast-background-web-page-primary: #1f1f1f;
+    --fast-background-layer-primary-solid: #292929;
+    --fast-background-layer-secondary: #141414;
+
+    --fast-background-ctrl-subtle-rest: transparent;
+    --fast-background-ctrl-subtle-hover: #333333;
+    --fast-background-ctrl-subtle-pressed: #3d3d3d;
+    --fast-background-ctrl-subtle-disabled: transparent;
+
+    --fast-background-ctrl-brand-rest: #115ea3;
+    --fast-background-ctrl-brand-hover: #0f6cbd;
+    --fast-background-ctrl-brand-pressed: #0f548c;
+    --fast-background-ctrl-brand-disabled: #333333;
+
+    --fast-foreground-ctrl-neutral-primary-rest: #ffffff;
+    --fast-foreground-ctrl-neutral-primary-disabled: #5c5c5c;
+    --fast-foreground-ctrl-neutral-secondary-rest: #f5f5f5;
+    --fast-foreground-ctrl-hint-default: #adadad;
+    --fast-foreground-ctrl-on-brand-rest: #ffffff;
+    --fast-foreground-ctrl-brand-rest: #479ef5;
+
+    --fast-stroke-divider-default: #666666;
+    --fast-stroke-divider-subtle: #525252;
+    --fast-stroke-divider-strong: #adadad;
+    --fast-stroke-divider-brand: #479ef5;
+    --fast-stroke-ctrl-on-outline-rest: #666666;
+    --fast-stroke-ctrl-on-outline-disabled: #333333;
+
+    --fast-ctrl-focus-outer-stroke: #479ef5;
+
+    --fast-status-danger-background: #ff99a4;
+    --fast-status-danger-foreground: #3b0509;
+    --fast-status-success-background: #54b054;
+    --fast-status-success-foreground: #092b1b;
+    --fast-status-warning-background: #fcb441;
+    --fast-status-warning-foreground: #4f2a00;
+
+    --fast-status-danger-tint-background: #3b0509;
+    --fast-status-danger-tint-foreground: #ff99a4;
+    --fast-status-danger-tint-stroke: #ff99a4;
+    --fast-status-success-tint-background: #092b1b;
+    --fast-status-success-tint-foreground: #54b054;
+    --fast-status-success-tint-stroke: #54b054;
+    --fast-status-warning-tint-background: #4f2a00;
+    --fast-status-warning-tint-foreground: #fcb441;
+    --fast-status-warning-tint-stroke: #fcb441;
+
+    --fast-shadow-card-rest-key: 0 4px 8px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-card-rest-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+    --fast-shadow-card-rest:
+        var(--fast-shadow-card-rest-key), var(--fast-shadow-card-rest-ambient);
+    --fast-shadow-flyout-key: 0 8px 16px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-flyout-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+    --fast-shadow-flyout:
+        var(--fast-shadow-flyout-key), var(--fast-shadow-flyout-ambient);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --fast-background-web-page-primary: #1f1f1f;
+        --fast-background-layer-primary-solid: #292929;
+        --fast-background-layer-secondary: #141414;
+
+        --fast-background-ctrl-subtle-rest: transparent;
+        --fast-background-ctrl-subtle-hover: #333333;
+        --fast-background-ctrl-subtle-pressed: #3d3d3d;
+        --fast-background-ctrl-subtle-disabled: transparent;
+
+        --fast-background-ctrl-brand-rest: #115ea3;
+        --fast-background-ctrl-brand-hover: #0f6cbd;
+        --fast-background-ctrl-brand-pressed: #0f548c;
+        --fast-background-ctrl-brand-disabled: #333333;
+
+        --fast-foreground-ctrl-neutral-primary-rest: #ffffff;
+        --fast-foreground-ctrl-neutral-primary-disabled: #5c5c5c;
+        --fast-foreground-ctrl-neutral-secondary-rest: #f5f5f5;
+        --fast-foreground-ctrl-hint-default: #adadad;
+        --fast-foreground-ctrl-on-brand-rest: #ffffff;
+        --fast-foreground-ctrl-brand-rest: #479ef5;
+
+        --fast-stroke-divider-default: #666666;
+        --fast-stroke-divider-subtle: #525252;
+        --fast-stroke-divider-strong: #adadad;
+        --fast-stroke-divider-brand: #479ef5;
+        --fast-stroke-ctrl-on-outline-rest: #666666;
+        --fast-stroke-ctrl-on-outline-disabled: #333333;
+
+        --fast-ctrl-focus-outer-stroke: #479ef5;
+
+        --fast-status-danger-background: #ff99a4;
+        --fast-status-danger-foreground: #3b0509;
+        --fast-status-success-background: #54b054;
+        --fast-status-success-foreground: #092b1b;
+        --fast-status-warning-background: #fcb441;
+        --fast-status-warning-foreground: #4f2a00;
+
+        --fast-status-danger-tint-background: #3b0509;
+        --fast-status-danger-tint-foreground: #ff99a4;
+        --fast-status-danger-tint-stroke: #ff99a4;
+        --fast-status-success-tint-background: #092b1b;
+        --fast-status-success-tint-foreground: #54b054;
+        --fast-status-success-tint-stroke: #54b054;
+        --fast-status-warning-tint-background: #4f2a00;
+        --fast-status-warning-tint-foreground: #fcb441;
+        --fast-status-warning-tint-stroke: #fcb441;
+
+        --fast-shadow-card-rest-key: 0 4px 8px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-card-rest-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+        --fast-shadow-card-rest:
+            var(--fast-shadow-card-rest-key), var(--fast-shadow-card-rest-ambient);
+        --fast-shadow-flyout-key: 0 8px 16px 0 rgba(0, 0, 0, 0.48);
+        --fast-shadow-flyout-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+        --fast-shadow-flyout:
+            var(--fast-shadow-flyout-key), var(--fast-shadow-flyout-ambient);
+    }
+}
