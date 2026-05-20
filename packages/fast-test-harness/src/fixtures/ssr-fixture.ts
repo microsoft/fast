@@ -13,6 +13,19 @@ export class SSRFixture extends CSRFixture {
     private templateRendered = false;
 
     /**
+     * The internal reference to the generated fixture URL.
+     */
+    private _url?: string;
+
+    /**
+     * The URL of the generated SSR fixture page. This is set after {@link setTemplate}
+     * is called and the page navigates to the generated fixture.
+     */
+    public get url(): string | undefined {
+        return this._url;
+    }
+
+    /**
      * Creates an instance of the SSRFixture.
      *
      * @param page - The Playwright page object.
@@ -125,7 +138,8 @@ export class SSRFixture extends CSRFixture {
             throw new Error(`Invalid response from server: ${JSON.stringify(result)}`);
         }
 
-        await this.page.goto(result.url);
+        this._url = result.url;
+        await this.page.goto(this._url!);
 
         await this.waitForStability();
 
