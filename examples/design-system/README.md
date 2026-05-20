@@ -9,9 +9,8 @@ themselves by toggling the `data-theme` attribute on `<html>`.
 This README and [`DESIGN.md`](./DESIGN.md) are the canonical guidance for both
 humans and coding agents working in the `examples/*` workspace.
 
-The naming model is inspired by the MS Semantic Tokens taxonomy (sometimes
-called `smtc`), with the `--fast-` prefix and tuned coverage for FAST example
-apps.
+Token names are semantic and use-site-oriented, with the `--fast-` prefix
+and coverage tuned for FAST example apps.
 
 ## What ships
 

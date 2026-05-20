@@ -66,8 +66,8 @@ alongside this one.
 
 ## Token model
 
-The shared token vocabulary follows the **MS Semantic Tokens (`smtc`)
-naming taxonomy** with a `--fast-` prefix. Tokens are organized by
+The shared token vocabulary uses a **semantic, use-site-oriented**
+naming model with a `--fast-` prefix. Tokens are organized by
 use-site (`background-web-page-*`, `background-ctrl-brand-*`,
 `foreground-ctrl-neutral-primary-*`, `stroke-divider-*`,
 `status-danger-tint-*`) rather than by abstract color role. The grammar:

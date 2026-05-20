@@ -5,7 +5,7 @@
  * tokens.css entry supports light/dark switching via [data-theme] and a
  * prefers-color-scheme fallback.
  *
- * Naming model: MS Semantic Tokens ("smtc") taxonomy, with `--fast-` prefix.
+ * Naming model: semantic, use-site tokens with the `--fast-` prefix.
  */
 
 :root {

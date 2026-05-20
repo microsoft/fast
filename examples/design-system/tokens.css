@@ -14,10 +14,10 @@
  * For a single-theme app, import ./tokens-light.css or ./tokens-dark.css
  * directly instead of this file.
  *
- * Naming model: derived from the MS Semantic Tokens ("smtc") taxonomy used
- * by mai-ui (text/padding/gap/corner/stroke/background/foreground/shadow/
- * status), with FAST's `--fast-` prefix. State vocabulary: rest, hover,
- * pressed, disabled.
+ * Naming model: semantic, use-site tokens organized into categories
+ * (text/padding/gap/corner/stroke/background/foreground/shadow/status),
+ * with FAST's `--fast-` prefix. State vocabulary: rest, hover, pressed,
+ * disabled.
  */
 
 :root {
@@ -36,7 +36,7 @@
     --fast-text-style-default-header-weight: 600;
     --fast-text-style-default-display-weight: 600;
 
-    /* Text: global type ramp (mai-ui convention: lower number = larger) */
+    /* Text: global type ramp (lower number = larger) */
     --fast-text-global-caption2-font-size: 10px;
     --fast-text-global-caption2-line-height: 14px;
     --fast-text-global-caption1-font-size: 12px;
@@ -92,7 +92,7 @@
     --fast-stroke-width-default: 1px;
     --fast-stroke-width-divider-strong: 1.5px;
 
-    /* Control focus (mai-ui-aligned focus contract) */
+    /* Control focus */
     --fast-ctrl-focus-outer-stroke-width: 2px;
 
     /* Motion: durations */

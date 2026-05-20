@@ -28,10 +28,9 @@ If you only need a quickstart, see [`README.md`](./README.md).
 - This package is not a Theme Builder, token-authoring tool, or palette
   generator.
 - This package is not published to npm outside this monorepo.
-- This package is not formally aligned with any external design language. The
-  token names are inspired by the MS Semantic Tokens taxonomy (sometimes
-  called `smtc`), but values, scale, and coverage are tuned for FAST example
-  apps.
+- This package is not formally aligned with any external design language.
+  Token names are semantic and use-site-oriented; values, scale, and
+  coverage are tuned for FAST example apps.
 
 ## Architecture
 
@@ -86,10 +85,8 @@ Ordering rules:
 5. State (`rest`, `hover`, `pressed`, `disabled`, optionally prefixed with
    `selected-`) is always the trailing segment when it applies.
 
-This grammar mirrors the structure of the MS Semantic Tokens taxonomy used by
-the Kumo / mai-ui design tokens. Tokens are scoped by use-site (e.g.
-`ctrl-brand`, `ctrl-on-outline`, `web-page`, `layer`, `card`, `flyout`)
-rather than by abstract color role.
+Tokens are scoped by use-site (e.g. `ctrl-brand`, `ctrl-on-outline`,
+`web-page`, `layer`, `card`, `flyout`) rather than by abstract color role.
 
 ## Category catalog
 
@@ -110,8 +107,7 @@ rather than by abstract color role.
 
 ### Type ramp (text-global-*)
 
-The ramp uses semantic role names. **Lower number = larger** (mai-ui
-convention).
+The ramp uses semantic role names. **Lower number = larger.**
 
 | Tier | Font size | Line height | Intended use |
 | --- | --- | --- | --- |
@@ -158,8 +154,7 @@ rings have their own dedicated token: `ctrl-focus-outer-stroke-width` (2px).
 `selected-pressed`, `selected-disabled`.
 
 The historical web vocabulary of `default`/`active` is **not** used in this
-package — `rest` and `pressed` are the mai-ui idioms and are now the
-authoritative names here as well.
+package — `rest` and `pressed` are the authoritative names.
 
 ### Examples
 
