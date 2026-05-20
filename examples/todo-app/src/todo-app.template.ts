@@ -5,7 +5,22 @@ import type { Todo } from "./todo-list.js";
 import "./todo-form.js";
 
 export const template = html<TodoApp>`
-    <h1>FAST Todos</h1>
+    <div class="toolbar">
+        <h1>FAST Todos</h1>
+        <button
+            type="button"
+            class="theme-toggle"
+            @click=${x => x.toggleTheme()}
+            aria-label="Toggle color theme"
+        >
+            ${x =>
+                x.currentTheme === "dark"
+                    ? "🌙 Dark"
+                    : x.currentTheme === "light"
+                      ? "☀️ Light"
+                      : "🖥️ Auto"}
+        </button>
+    </div>
 
     <todo-form></todo-form>
 
@@ -34,7 +49,7 @@ export const template = html<TodoApp>`
                         &times;
                     </button>
                 </li>
-            `
+            `,
         )}
     </ul>
 `;
