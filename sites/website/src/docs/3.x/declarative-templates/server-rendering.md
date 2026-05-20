@@ -116,6 +116,78 @@ The renderer applies special rules for certain HTML attributes:
 | `aria-*` | camelCase ARIA property | `aria-label` → `ariaLabel` |
 | Boolean (`?attr`) | Truthy/falsy evaluation | `?disabled="{{isOff}}"` → present or absent |
 
+## Host Attribute Propagation
+
+Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
+
+```html
+<f-template name="primary-button">
+    <template tabindex="0" role="button" class="primary">
+        <slot></slot>
+    </template>
+</f-template>
+```
+
+```html
+<!-- Author writes: -->
+<primary-button>Click me</primary-button>
+```
+
+```html
+<!-- Server renders: -->
+<primary-button tabindex="0" role="button" class="primary">
+    <template shadowrootmode="open">
+        <slot></slot>
+    </template>
+</primary-button>
+```
+
+### Supported binding forms
+
+Three forms on the source `<template>` are propagated to the host:
+
+| Form | Behavior on host |
+|---|---|
+| `name="value"` (static) | Emitted verbatim. |
+| `name="{{expression}}"` (dynamic) | Resolved against the same state used to render the shadow root. Primitive values are emitted as-is; `null`, `undefined`, arrays, and objects are stripped. |
+| `?name="{{expression}}"` (boolean) | Evaluated as a boolean. The bare `name` is emitted when truthy and omitted when falsy. |
+
+### Client-only attributes are skipped
+
+Attributes intended for the client-side runtime never appear on the rendered host element:
+
+- `@event` — event listener bindings
+- `:property` — property bindings
+- `f-ref` — element references
+- `f-slotted` — slotted content directives
+- `f-children` — child node directives
+
+These continue to be handled exclusively by the hydration runtime.
+
+### Author attributes win on conflict
+
+When the page author already supplies an attribute on the host element, that value is preserved and the template's value is ignored. Dedupe is performed on the lowercased attribute name, and `?name="{{expression}}"` is deduped against the bare `name`.
+
+```html
+<f-template name="primary-button">
+    <template tabindex="0" class="primary">
+        <slot></slot>
+    </template>
+</f-template>
+
+<!-- Author overrides tabindex; class is propagated. -->
+<primary-button tabindex="-1">Click me</primary-button>
+```
+
+```html
+<!-- Server renders: -->
+<primary-button tabindex="-1" class="primary">…</primary-button>
+```
+
+### Available in `@microsoft/fast-build`
+
+The propagation is implemented by the build-time renderer in `@microsoft/fast-build`. Author-provided host attributes always win, so existing templates that did not previously rely on template-level host attributes continue to render unchanged.
+
 ## Using `@microsoft/fast-build`
 
 The `@microsoft/fast-build` package is a build-time renderer for declarative templates, powered by a WebAssembly core. It implements the rendering contract described above and is primarily used in testing and development workflows.
