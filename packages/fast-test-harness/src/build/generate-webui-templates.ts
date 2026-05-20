@@ -78,7 +78,6 @@ export interface GenerateWebuiTemplatesOptions {
 
     /**
      * Resolves shadow DOM options for a given template module path.
-     * Resolves shadow DOM options for a given template module path.
      * Returns a `shadowOptions` object (e.g. `{ delegatesFocus: true }`) or
      * `undefined` if the component has no special shadow options.
      *
