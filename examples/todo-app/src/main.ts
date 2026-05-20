@@ -1,5 +1,6 @@
-import { DefaultTodoList, TodoList } from "./todo-list.js";
+import "@microsoft/fast-examples-design-system/tokens.css";
 import { app } from "./todo-app.js";
+import { DefaultTodoList, TodoList } from "./todo-list.js";
 
 // Before we allow the app to be defined, we want to
 // make sure that our context data is configured. This
