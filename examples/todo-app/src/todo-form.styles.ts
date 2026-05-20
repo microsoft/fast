@@ -4,66 +4,66 @@ export const styles = css`
     form {
         display: flex;
         align-items: center;
-        gap: var(--fast-spacing-horizontal-s);
-        margin: var(--fast-spacing-vertical-m) 0;
+        gap: var(--fast-spacing-sm);
+        margin: var(--fast-spacing-md) 0;
     }
 
     input[type="text"] {
         flex: 1;
         min-width: 0;
-        background: var(--fast-color-neutral-background-1);
-        color: var(--fast-color-neutral-foreground-1);
-        border: var(--fast-stroke-width-thin) solid
-            var(--fast-color-neutral-stroke-1);
-        border-radius: var(--fast-border-radius-medium);
-        padding: var(--fast-spacing-vertical-xxs)
-            var(--fast-spacing-horizontal-s);
+        background: var(--fast-color-background-default);
+        color: var(--fast-color-foreground-default);
+        border: var(--fast-border-width-sm) solid
+            var(--fast-color-border-default);
+        border-radius: var(--fast-radius-md);
+        padding: var(--fast-spacing-2xs)
+            var(--fast-spacing-sm);
         font-family: var(--fast-font-family-base);
-        font-size: var(--fast-font-size-base-300);
-        line-height: var(--fast-line-height-base-300);
+        font-size: var(--fast-font-size-body-1);
+        line-height: var(--fast-line-height-body-1);
     }
 
     input[type="text"]:focus-visible {
-        border-color: var(--fast-color-brand-stroke-1);
-        outline: var(--fast-stroke-width-thick) solid
-            var(--fast-color-brand-stroke-1);
-        outline-offset: var(--fast-stroke-width-thin);
+        border-color: var(--fast-color-accent-border);
+        outline: var(--fast-border-width-md) solid
+            var(--fast-color-accent-border);
+        outline-offset: var(--fast-border-width-sm);
     }
 
     button[type="submit"] {
-        background: var(--fast-color-brand-background);
-        color: var(--fast-color-neutral-foreground-on-brand);
-        border: var(--fast-stroke-width-thin) solid
-            var(--fast-color-brand-stroke-1);
-        border-radius: var(--fast-border-radius-medium);
-        padding: var(--fast-spacing-vertical-xs)
-            var(--fast-spacing-horizontal-m);
+        background: var(--fast-color-accent-default);
+        color: var(--fast-color-foreground-on-accent);
+        border: var(--fast-border-width-sm) solid
+            var(--fast-color-accent-border);
+        border-radius: var(--fast-radius-md);
+        padding: var(--fast-spacing-xs)
+            var(--fast-spacing-md);
         font-family: inherit;
-        font-size: var(--fast-font-size-base-300);
-        line-height: var(--fast-line-height-base-300);
+        font-size: var(--fast-font-size-body-1);
+        line-height: var(--fast-line-height-body-1);
         cursor: pointer;
         transition: background var(--fast-duration-fast)
-            var(--fast-curve-easy-ease);
+            var(--fast-easing-standard);
     }
 
     button[type="submit"]:hover {
-        background: var(--fast-color-brand-background-hover);
+        background: var(--fast-color-accent-default-hover);
     }
 
     button[type="submit"]:active {
-        background: var(--fast-color-brand-background-pressed);
+        background: var(--fast-color-accent-default-active);
     }
 
     button[type="submit"]:focus-visible {
-        outline: var(--fast-stroke-width-thick) solid
-            var(--fast-color-brand-stroke-1);
-        outline-offset: var(--fast-stroke-width-thin);
+        outline: var(--fast-border-width-md) solid
+            var(--fast-color-accent-border);
+        outline-offset: var(--fast-border-width-sm);
     }
 
     button[type="submit"]:disabled {
-        background: var(--fast-color-neutral-background-disabled);
-        color: var(--fast-color-neutral-foreground-disabled);
-        border-color: var(--fast-color-neutral-stroke-disabled);
+        background: var(--fast-color-background-disabled);
+        color: var(--fast-color-foreground-disabled);
+        border-color: var(--fast-color-border-disabled);
         cursor: not-allowed;
     }
 `;
