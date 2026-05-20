@@ -19,6 +19,34 @@ pub fn make_locator(entries: &[(&str, &str)]) -> Locator {
     Locator::from_templates(templates)
 }
 
+/// Build a `Locator` where each entry specifies host attributes that should be
+/// merged onto the rendered host element opening tag. `host_attrs` mirrors the
+/// shape produced by `<f-template>` parsing: `(name, Option<value>)` pairs in
+/// source order. `None` denotes a static boolean attribute (no `=`).
+pub fn make_locator_with_host_attrs(
+    entries: &[(&str, &str, &[(&str, Option<&str>)])],
+) -> Locator {
+    let mut templates: HashMap<
+        String,
+        (
+            String,
+            Vec<(String, Option<String>)>,
+            Vec<(String, Option<String>)>,
+        ),
+    > = HashMap::new();
+    for (name, content, host_attrs) in entries {
+        let host = host_attrs
+            .iter()
+            .map(|(n, v)| ((*n).to_string(), v.map(|s| s.to_string())))
+            .collect();
+        templates.insert(
+            (*name).to_string(),
+            ((*content).to_string(), Vec::new(), host),
+        );
+    }
+    Locator::from_template_definitions(templates)
+}
+
 pub fn empty_root() -> JsonValue {
     JsonValue::Object(HashMap::new())
 }
