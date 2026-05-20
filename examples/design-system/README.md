@@ -1,9 +1,9 @@
 # @microsoft/fast-examples-design-system
 
 A CSS-only design system for FAST example apps. The package ships three
-hand-authored stylesheets that define a Fluent 2-aligned set of CSS custom
-properties for color, typography, spacing, shape, elevation, and motion. There
-is **no JavaScript or TypeScript implementation** — example apps wire themes
+hand-authored stylesheets that define a shared set of CSS custom properties
+for color, typography, spacing, shape, elevation, and motion. There is **no
+JavaScript or TypeScript implementation** — example apps wire themes
 themselves by toggling the `data-theme` attribute on `<html>`.
 
 This README and [`DESIGN.md`](./DESIGN.md) are the canonical guidance for both

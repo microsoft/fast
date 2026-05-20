@@ -25,7 +25,7 @@ alongside this one.
 
 ## Goals
 
-- Give every app in `examples/*` the same Fluent 2-aligned visual language.
+- Give every app in `examples/*` a shared, consistent visual language.
 - Provide a single source of truth for shared visual tokens.
 - Stay framework-free and dependency-free by exposing CSS custom properties
   only. No theme runtime, no helper API, no component layer.
@@ -34,7 +34,6 @@ alongside this one.
 
 ## Non-goals
 
-- This workspace is not a replacement for `@fluentui/web-components`.
 - It is not a theme-authoring or palette-generation tool.
 - It is not a component library.
 - It is not published outside this monorepo.
@@ -215,4 +214,3 @@ across `examples/*`. When editing files in this workspace:
 
 - [Examples design-system package README](./design-system/README.md)
 - [Examples design-system authoring guide](./design-system/DESIGN.md)
-- [Fluent 2 design tokens](https://fluent2.microsoft.design/design-tokens)

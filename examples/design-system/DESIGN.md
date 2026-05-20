@@ -9,8 +9,7 @@ If you only need a quickstart, see [`README.md`](./README.md).
 
 ## Goals
 
-- Provide a single Fluent 2-aligned token vocabulary for every app in
-  `examples/*`.
+- Provide a single shared token vocabulary for every app in `examples/*`.
 - Stay framework- and runtime-neutral: tokens are plain CSS custom properties
   that work in any stylesheet, template, or shadow root.
 - Use **semantic, role-based names** so styles describe intent (`background`,
@@ -189,7 +188,7 @@ The token name stays semantic across themes; only the value changes.
 | --- | --- | --- |
 | `--fast-color-background-default` | Near-white primary surface | Near-black primary surface |
 | `--fast-color-foreground-default` | Near-black default text | Near-white default text |
-| `--fast-color-accent-default` | Fluent brand blue | Fluent brand blue, tuned for dark contrast |
+| `--fast-color-accent-default` | Brand blue | Brand blue, tuned for dark contrast |
 | `--fast-color-feedback-danger-foreground` | Danger foreground tuned for light surfaces | Danger foreground tuned for dark surfaces |
 | `--fast-color-border-divider` | Subtle light divider | Subtle dark divider |
 
@@ -295,8 +294,6 @@ language. When making changes to any file in `examples/`:
 
 ## Reference
 
-- [Fluent 2 design tokens](https://fluent2.microsoft.design/design-tokens/)
-- [Fluent 2 color guidance](https://fluent2.microsoft.design/color/)
 - [`README.md`](./README.md) — quickstart and token catalog
 - [`../README.md`](../README.md) — overview of the `examples/` workspace
 - [`../DESIGN.md`](../DESIGN.md) — workspace-level design guidance

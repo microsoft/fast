@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-examples-design-system",
   "version": "1.0.0",
-  "description": "Fluent 2-aligned design tokens for FAST example applications.",
+  "description": "Shared design tokens for FAST example applications.",
   "private": true,
   "exports": {
     ".": "./tokens.css",
