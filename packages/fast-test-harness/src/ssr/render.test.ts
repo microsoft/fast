@@ -333,4 +333,33 @@ test.describe("createSSRRenderer", () => {
         // Without matching templates the WASM renderer should still produce output.
         assert.ok("fixture" in result);
     });
+
+    test("should propagate shadowrootdelegatesfocus to DSD output", () => {
+        const { render } = createSSRRenderer({
+            tagPrefix: "test",
+            packageName: "@microsoft/fast-test-harness",
+            distDir: "test/src/test-widget",
+        });
+
+        const result = render({ tagName: "test-input", innerHTML: "" });
+
+        assert.ok(
+            result.fixture.includes("shadowrootdelegatesfocus"),
+            `DSD output should include shadowrootdelegatesfocus, got: ${result.fixture}`,
+        );
+    });
+
+    test("should not include shadowrootdelegatesfocus for components without it", () => {
+        const { render } = createSSRRenderer({
+            tagPrefix: "test",
+            components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
+        });
+
+        const result = render({ tagName: "test-widget", innerHTML: "hello" });
+
+        assert.ok(
+            !result.fixture.includes("shadowrootdelegatesfocus"),
+            `DSD output should not include shadowrootdelegatesfocus, got: ${result.fixture}`,
+        );
+    });
 });
