@@ -1,154 +1,173 @@
 /*
- * @microsoft/fast-examples-design-system
+ * @microsoft/fast-examples-design-system — dark theme only
  *
- * Self-contained dark theme stylesheet. Defines every shared token on :root
- * with dark color and elevation values. Use this file when an app should only
- * render in dark mode and will never need a runtime theme switch.
+ * Use this entry for an app that only ships dark. The combined
+ * tokens.css entry supports light/dark switching via [data-theme] and a
+ * prefers-color-scheme fallback.
  *
- * For switchable light/dark themes, import ./tokens.css instead.
+ * Naming model: MS Semantic Tokens ("smtc") taxonomy, with `--fast-` prefix.
  */
 
 :root {
-    /* Typography: font families */
-    --fast-font-family-base:
-        "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica,
-        Arial, sans-serif;
-    --fast-font-family-monospace:
-        ui-monospace, "Cascadia Code", "SF Mono", "Roboto Mono", Consolas,
-        "Liberation Mono", monospace;
-    --fast-font-family-numeric: Bahnschrift, "Segoe UI", system-ui, sans-serif;
-
-    /* Typography: font sizes */
-    --fast-font-size-caption-2: 10px;
-    --fast-font-size-caption-1: 12px;
-    --fast-font-size-body-1: 14px;
-    --fast-font-size-body-2: 16px;
-    --fast-font-size-subtitle-2: 20px;
-    --fast-font-size-subtitle-1: 24px;
-    --fast-font-size-title-3: 28px;
-    --fast-font-size-title-2: 32px;
-    --fast-font-size-title-1: 40px;
-    --fast-font-size-display: 68px;
-
-    /* Typography: line heights */
-    --fast-line-height-caption-2: 14px;
-    --fast-line-height-caption-1: 16px;
-    --fast-line-height-body-1: 20px;
-    --fast-line-height-body-2: 22px;
-    --fast-line-height-subtitle-2: 28px;
-    --fast-line-height-subtitle-1: 32px;
-    --fast-line-height-title-3: 36px;
-    --fast-line-height-title-2: 40px;
-    --fast-line-height-title-1: 52px;
-    --fast-line-height-display: 92px;
-
-    /* Typography: font weights */
-    --fast-font-weight-regular: 400;
-    --fast-font-weight-medium: 500;
-    --fast-font-weight-semibold: 600;
-    --fast-font-weight-bold: 700;
-
-    /* Spacing */
-    --fast-spacing-none: 0;
-    --fast-spacing-2xs: 2px;
-    --fast-spacing-xs: 4px;
-    --fast-spacing-sm: 8px;
-    --fast-spacing-md: 12px;
-    --fast-spacing-lg: 16px;
-    --fast-spacing-xl: 20px;
-    --fast-spacing-2xl: 24px;
-    --fast-spacing-3xl: 32px;
-
-    /* Shape */
-    --fast-radius-none: 0;
-    --fast-radius-sm: 2px;
-    --fast-radius-md: 4px;
-    --fast-radius-lg: 6px;
-    --fast-radius-xl: 8px;
-    --fast-radius-pill: 10000px;
-
-    /* Border widths */
-    --fast-border-width-sm: 1px;
-    --fast-border-width-md: 2px;
-    --fast-border-width-lg: 3px;
-    --fast-border-width-xl: 4px;
-
-    /* Motion: durations */
-    --fast-duration-instant: 50ms;
-    --fast-duration-fastest: 100ms;
-    --fast-duration-fast: 150ms;
-    --fast-duration-normal: 200ms;
-    --fast-duration-slow: 300ms;
-    --fast-duration-slowest: 400ms;
-    --fast-duration-extra-slow: 500ms;
-
-    /* Motion: easings */
-    --fast-easing-accelerate-strong: cubic-bezier(0.95, 0.05, 0.8, 0.04);
-    --fast-easing-accelerate: cubic-bezier(0.7, 0, 1, 0.5);
-    --fast-easing-accelerate-subtle: cubic-bezier(0.8, 0, 0.78, 1);
-    --fast-easing-decelerate-strong: cubic-bezier(0.1, 0.9, 0.2, 1);
-    --fast-easing-decelerate: cubic-bezier(0, 0, 0, 1);
-    --fast-easing-decelerate-subtle: cubic-bezier(0.33, 0, 0.1, 1);
-    --fast-easing-standard: cubic-bezier(0.33, 0, 0.67, 1);
-    --fast-easing-emphasized: cubic-bezier(0.8, 0, 0.2, 1);
-    --fast-easing-linear: cubic-bezier(0, 0, 1, 1);
-
     color-scheme: dark;
 
-    /* Color: backgrounds */
-    --fast-color-background-default: #292929;
-    --fast-color-background-default-hover: #333333;
-    --fast-color-background-default-active: #3d3d3d;
-    --fast-color-background-default-selected: #383838;
-    --fast-color-background-canvas: #1f1f1f;
-    --fast-color-background-subtle: #141414;
-    --fast-color-background-muted: #0f0f0f;
-    --fast-color-background-emphasis-subtle: #050505;
-    --fast-color-background-emphasis: #000000;
-    --fast-color-background-disabled: #1f1f1f;
-    --fast-color-background-inverse: #ffffff;
+    /* Text: families */
+    --fast-text-style-default-regular-font-family:
+        "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica,
+        Arial, sans-serif;
+    --fast-text-style-code-regular-font-family:
+        ui-monospace, "Cascadia Code", "SF Mono", "Roboto Mono", Consolas,
+        "Liberation Mono", monospace;
+    --fast-text-style-data-viz-regular-font-family:
+        Bahnschrift, "Segoe UI", system-ui, sans-serif;
 
-    /* Color: foregrounds */
-    --fast-color-foreground-default: #ffffff;
-    --fast-color-foreground-muted: #f5f5f5;
-    --fast-color-foreground-subtle: #c7c7c7;
-    --fast-color-foreground-faint: #adadad;
-    --fast-color-foreground-disabled: #5c5c5c;
-    --fast-color-foreground-inverse: #242424;
-    --fast-color-foreground-on-accent: #ffffff;
+    /* Text: weights */
+    --fast-text-style-default-regular-weight: 400;
+    --fast-text-style-default-header-weight: 600;
+    --fast-text-style-default-display-weight: 600;
 
-    /* Color: borders */
-    --fast-color-border-default: #666666;
-    --fast-color-border-default-hover: #757575;
-    --fast-color-border-subtle: #525252;
-    --fast-color-border-strong: #adadad;
-    --fast-color-border-disabled: #333333;
-    --fast-color-border-divider: #3d3d3d;
+    /* Text: global type ramp */
+    --fast-text-global-caption2-font-size: 10px;
+    --fast-text-global-caption2-line-height: 14px;
+    --fast-text-global-caption1-font-size: 12px;
+    --fast-text-global-caption1-line-height: 16px;
+    --fast-text-global-body3-font-size: 14px;
+    --fast-text-global-body3-line-height: 20px;
+    --fast-text-global-body2-font-size: 16px;
+    --fast-text-global-body2-line-height: 22px;
+    --fast-text-global-body1-font-size: 18px;
+    --fast-text-global-body1-line-height: 26px;
+    --fast-text-global-subtitle2-font-size: 18px;
+    --fast-text-global-subtitle2-line-height: 26px;
+    --fast-text-global-subtitle1-font-size: 20px;
+    --fast-text-global-subtitle1-line-height: 26px;
+    --fast-text-global-title2-font-size: 20px;
+    --fast-text-global-title2-line-height: 26px;
+    --fast-text-global-title1-font-size: 24px;
+    --fast-text-global-title1-line-height: 32px;
+    --fast-text-global-display2-font-size: 28px;
+    --fast-text-global-display2-line-height: 32px;
+    --fast-text-global-display1-font-size: 38px;
+    --fast-text-global-display1-line-height: 40px;
 
-    /* Color: accent */
-    --fast-color-accent-default: #115ea3;
-    --fast-color-accent-default-hover: #0f6cbd;
-    --fast-color-accent-default-active: #0f548c;
-    --fast-color-accent-default-selected: #0c3b5e;
-    --fast-color-accent-foreground: #479ef5;
-    --fast-color-accent-foreground-hover: #62abf5;
-    --fast-color-accent-link: #62abf5;
-    --fast-color-accent-link-hover: #82c7ff;
-    --fast-color-accent-border: #479ef5;
+    /* Padding */
+    --fast-padding-content-none: 0;
+    --fast-padding-content-xx-small: 4px;
+    --fast-padding-content-x-small: 8px;
+    --fast-padding-content-small: 12px;
+    --fast-padding-content-medium: 16px;
+    --fast-padding-content-large: 20px;
+    --fast-padding-content-x-large: 24px;
+    --fast-padding-content-xx-large: 32px;
+    --fast-padding-content-xxx-large: 40px;
 
-    /* Color: feedback */
-    --fast-color-feedback-danger-background: #3b0509;
-    --fast-color-feedback-danger-foreground: #ff99a4;
-    --fast-color-feedback-success-background: #092b1b;
-    --fast-color-feedback-success-foreground: #54b054;
-    --fast-color-feedback-warning-background: #4f2a00;
-    --fast-color-feedback-warning-foreground: #fcb441;
+    /* Gap */
+    --fast-gap-between-content-none: 0;
+    --fast-gap-between-content-xx-small: 4px;
+    --fast-gap-between-content-x-small: 8px;
+    --fast-gap-between-content-small: 12px;
+    --fast-gap-between-content-medium: 16px;
+    --fast-gap-between-content-large: 20px;
+    --fast-gap-between-content-x-large: 22px;
+    --fast-gap-between-content-xx-large: 32px;
 
-    /* Shadows */
-    --fast-shadow-xs: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 1px 2px 0 rgba(0, 0, 0, 0.48);
-    --fast-shadow-sm: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 2px 4px 0 rgba(0, 0, 0, 0.48);
-    --fast-shadow-md: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 4px 8px 0 rgba(0, 0, 0, 0.48);
-    --fast-shadow-lg: 0 0 2px 0 rgba(0, 0, 0, 0.28), 0 8px 16px 0 rgba(0, 0, 0, 0.48);
-    --fast-shadow-xl: 0 0 8px 0 rgba(0, 0, 0, 0.32), 0 14px 28px 0 rgba(0, 0, 0, 0.56);
-    --fast-shadow-2xl: 0 0 8px 0 rgba(0, 0, 0, 0.32), 0 32px 64px 0 rgba(0, 0, 0, 0.56);
+    /* Corner */
+    --fast-corner-none: 0;
+    --fast-corner-small: 2px;
+    --fast-corner-medium: 4px;
+    --fast-corner-large: 6px;
+    --fast-corner-circular: 9999px;
+
+    /* Stroke widths */
+    --fast-stroke-width-default: 1px;
+    --fast-stroke-width-divider-strong: 1.5px;
+
+    /* Control focus */
+    --fast-ctrl-focus-outer-stroke-width: 2px;
+
+    /* Motion: durations */
+    --fast-duration-ultra-fast: 50ms;
+    --fast-duration-faster: 100ms;
+    --fast-duration-fast: 150ms;
+    --fast-duration-normal: 200ms;
+    --fast-duration-gentle: 250ms;
+    --fast-duration-slow: 300ms;
+    --fast-duration-slower: 400ms;
+    --fast-duration-ultra-slow: 500ms;
+
+    /* Motion: curves */
+    --fast-curve-accelerate-max: cubic-bezier(0.9, 0.1, 1, 0.2);
+    --fast-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+    --fast-curve-accelerate-min: cubic-bezier(0.8, 0, 0.78, 1);
+    --fast-curve-decelerate-max: cubic-bezier(0.1, 0.9, 0.2, 1);
+    --fast-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fast-curve-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
+    --fast-curve-easy-ease-max: cubic-bezier(0.8, 0, 0.2, 1);
+    --fast-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fast-curve-linear: cubic-bezier(0, 0, 1, 1);
+
+    /* Background: surfaces */
+    --fast-background-web-page-primary: #1f1f1f;
+    --fast-background-layer-primary-solid: #292929;
+    --fast-background-layer-secondary: #141414;
+
+    --fast-background-ctrl-subtle-rest: transparent;
+    --fast-background-ctrl-subtle-hover: #333333;
+    --fast-background-ctrl-subtle-pressed: #3d3d3d;
+    --fast-background-ctrl-subtle-disabled: transparent;
+
+    --fast-background-ctrl-brand-rest: #115ea3;
+    --fast-background-ctrl-brand-hover: #0f6cbd;
+    --fast-background-ctrl-brand-pressed: #0f548c;
+    --fast-background-ctrl-brand-disabled: #333333;
+
+    /* Foreground */
+    --fast-foreground-ctrl-neutral-primary-rest: #ffffff;
+    --fast-foreground-ctrl-neutral-primary-disabled: #5c5c5c;
+    --fast-foreground-ctrl-neutral-secondary-rest: #f5f5f5;
+    --fast-foreground-ctrl-hint-default: #adadad;
+    --fast-foreground-ctrl-on-brand-rest: #ffffff;
+    --fast-foreground-ctrl-brand-rest: #479ef5;
+
+    /* Stroke */
+    --fast-stroke-divider-default: #666666;
+    --fast-stroke-divider-subtle: #525252;
+    --fast-stroke-divider-strong: #adadad;
+    --fast-stroke-divider-brand: #479ef5;
+    --fast-stroke-ctrl-on-outline-rest: #666666;
+    --fast-stroke-ctrl-on-outline-disabled: #333333;
+
+    /* Focus ring color */
+    --fast-ctrl-focus-outer-stroke: #479ef5;
+
+    /* Status: solid */
+    --fast-status-danger-background: #ff99a4;
+    --fast-status-danger-foreground: #3b0509;
+    --fast-status-success-background: #54b054;
+    --fast-status-success-foreground: #092b1b;
+    --fast-status-warning-background: #fcb441;
+    --fast-status-warning-foreground: #4f2a00;
+
+    /* Status: tinted */
+    --fast-status-danger-tint-background: #3b0509;
+    --fast-status-danger-tint-foreground: #ff99a4;
+    --fast-status-danger-tint-stroke: #ff99a4;
+    --fast-status-success-tint-background: #092b1b;
+    --fast-status-success-tint-foreground: #54b054;
+    --fast-status-success-tint-stroke: #54b054;
+    --fast-status-warning-tint-background: #4f2a00;
+    --fast-status-warning-tint-foreground: #fcb441;
+    --fast-status-warning-tint-stroke: #fcb441;
+
+    /* Shadow: card */
+    --fast-shadow-card-rest-key: 0 4px 8px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-card-rest-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+    --fast-shadow-card-rest:
+        var(--fast-shadow-card-rest-key), var(--fast-shadow-card-rest-ambient);
+
+    /* Shadow: flyout */
+    --fast-shadow-flyout-key: 0 8px 16px 0 rgba(0, 0, 0, 0.48);
+    --fast-shadow-flyout-ambient: 0 0 2px 0 rgba(0, 0, 0, 0.28);
+    --fast-shadow-flyout:
+        var(--fast-shadow-flyout-key), var(--fast-shadow-flyout-ambient);
 }

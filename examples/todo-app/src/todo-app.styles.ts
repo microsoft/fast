@@ -3,114 +3,114 @@ import { css } from "@microsoft/fast-element";
 export const styles = css`
     :host {
         display: block;
-        padding: var(--fast-spacing-lg);
+        padding: var(--fast-padding-content-medium);
         max-width: 480px;
-        font-family: var(--fast-font-family-base);
-        color: var(--fast-color-foreground-default);
-        background: var(--fast-color-background-default);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-border-subtle);
-        border-radius: var(--fast-radius-lg);
-        box-shadow: var(--fast-shadow-md);
-        margin: var(--fast-spacing-2xl) auto;
+        font-family: var(--fast-text-style-default-regular-font-family);
+        color: var(--fast-foreground-ctrl-neutral-primary-rest);
+        background: var(--fast-background-layer-primary-solid);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-subtle);
+        border-radius: var(--fast-corner-large);
+        box-shadow: var(--fast-shadow-card-rest);
+        margin: var(--fast-gap-between-content-x-large) auto;
     }
 
     .toolbar {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        gap: var(--fast-spacing-sm);
+        gap: var(--fast-gap-between-content-x-small);
     }
 
     h1 {
-        margin: 0 0 var(--fast-spacing-md);
-        font-size: var(--fast-font-size-title-3);
-        line-height: var(--fast-line-height-title-3);
-        font-weight: var(--fast-font-weight-semibold);
-        color: var(--fast-color-accent-foreground);
+        margin: 0 0 var(--fast-gap-between-content-small);
+        font-size: var(--fast-text-global-display2-font-size);
+        line-height: var(--fast-text-global-display2-line-height);
+        font-weight: var(--fast-text-style-default-header-weight);
+        color: var(--fast-foreground-ctrl-brand-rest);
     }
 
     .theme-toggle {
-        background: var(--fast-color-accent-default);
-        color: var(--fast-color-foreground-on-accent);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-accent-border);
-        border-radius: var(--fast-radius-md);
-        padding: var(--fast-spacing-xs)
-            var(--fast-spacing-md);
+        background: var(--fast-background-ctrl-brand-rest);
+        color: var(--fast-foreground-ctrl-on-brand-rest);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-brand);
+        border-radius: var(--fast-corner-medium);
+        padding: var(--fast-padding-content-xx-small)
+            var(--fast-padding-content-small);
         font-family: inherit;
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
         cursor: pointer;
         transition: background var(--fast-duration-fast)
-            var(--fast-easing-standard);
+            var(--fast-curve-easy-ease);
     }
 
     .theme-toggle:hover {
-        background: var(--fast-color-accent-default-hover);
+        background: var(--fast-background-ctrl-brand-hover);
     }
 
     .theme-toggle:active {
-        background: var(--fast-color-accent-default-active);
+        background: var(--fast-background-ctrl-brand-pressed);
     }
 
     .theme-toggle:focus-visible {
-        outline: var(--fast-border-width-md) solid
-            var(--fast-color-accent-border);
-        outline-offset: var(--fast-border-width-sm);
+        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+            var(--fast-ctrl-focus-outer-stroke);
+        outline-offset: var(--fast-stroke-width-default);
     }
 
     section {
         display: flex;
         align-items: center;
-        gap: var(--fast-spacing-sm);
-        margin-top: var(--fast-spacing-md);
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
-        color: var(--fast-color-foreground-muted);
+        gap: var(--fast-gap-between-content-x-small);
+        margin-top: var(--fast-gap-between-content-small);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
+        color: var(--fast-foreground-ctrl-neutral-secondary-rest);
     }
 
     select {
-        background: var(--fast-color-background-default);
-        color: var(--fast-color-foreground-default);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-border-default);
-        border-radius: var(--fast-radius-sm);
-        padding: var(--fast-spacing-2xs)
-            var(--fast-spacing-sm);
+        background: var(--fast-background-layer-primary-solid);
+        color: var(--fast-foreground-ctrl-neutral-primary-rest);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-ctrl-on-outline-rest);
+        border-radius: var(--fast-corner-small);
+        padding: var(--fast-padding-content-xx-small)
+            var(--fast-padding-content-x-small);
         font-family: inherit;
         font-size: inherit;
         line-height: inherit;
     }
 
     select:focus-visible {
-        outline: var(--fast-border-width-md) solid
-            var(--fast-color-accent-border);
-        outline-offset: var(--fast-border-width-sm);
+        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+            var(--fast-ctrl-focus-outer-stroke);
+        outline-offset: var(--fast-stroke-width-default);
     }
 
     .todo-list {
         list-style-type: none;
         padding: 0;
-        margin: var(--fast-spacing-md) 0 0;
+        margin: var(--fast-gap-between-content-small) 0 0;
     }
 
     .todo {
-        margin: var(--fast-spacing-sm) 0;
-        padding: var(--fast-spacing-sm);
+        margin: var(--fast-gap-between-content-x-small) 0;
+        padding: var(--fast-padding-content-x-small);
         display: flex;
         align-items: center;
-        gap: var(--fast-spacing-sm);
-        border-radius: var(--fast-radius-md);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-border-divider);
-        background: var(--fast-color-background-canvas);
+        gap: var(--fast-gap-between-content-x-small);
+        border-radius: var(--fast-corner-medium);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-default);
+        background: var(--fast-background-layer-secondary);
         transition: background var(--fast-duration-fast)
-            var(--fast-easing-standard);
+            var(--fast-curve-easy-ease);
     }
 
     .todo:hover {
-        background: var(--fast-color-background-default-hover);
+        background: var(--fast-background-ctrl-subtle-hover);
     }
 
     .description {
@@ -118,38 +118,38 @@ export const styles = css`
         align-self: center;
         margin: 0;
         flex: 1;
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
     }
 
     .description.done {
         text-decoration: line-through;
-        color: var(--fast-color-foreground-subtle);
+        color: var(--fast-foreground-ctrl-hint-default);
     }
 
     .todo button {
-        color: var(--fast-color-feedback-danger-foreground);
+        color: var(--fast-status-danger-tint-foreground);
         background: transparent;
         border: none;
-        border-radius: var(--fast-radius-md);
-        padding: var(--fast-spacing-xs)
-            var(--fast-spacing-xs);
+        border-radius: var(--fast-corner-medium);
+        padding: var(--fast-padding-content-xx-small)
+            var(--fast-padding-content-xx-small);
         font-family: inherit;
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
         cursor: pointer;
         transition: background var(--fast-duration-fast)
-            var(--fast-easing-standard);
+            var(--fast-curve-easy-ease);
     }
 
     .todo button:hover,
     .todo button:active {
-        background: var(--fast-color-feedback-danger-background);
+        background: var(--fast-status-danger-tint-background);
     }
 
     .todo button:focus-visible {
-        outline: var(--fast-border-width-md) solid
-            var(--fast-color-feedback-danger-foreground);
-        outline-offset: var(--fast-border-width-sm);
+        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+            var(--fast-status-danger-tint-stroke);
+        outline-offset: var(--fast-stroke-width-default);
     }
 `;

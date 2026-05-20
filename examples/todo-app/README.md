@@ -48,20 +48,27 @@ package intentionally exposes no JavaScript theme API.
 The todo app styles use shared tokens for layout, surfaces, typography, and
 interaction states. For example:
 
-- App shell surface: `--fast-color-background-default`,
-  `--fast-color-foreground-default`, `--fast-color-border-subtle`,
-  `--fast-radius-lg`, `--fast-shadow-md`, `--fast-spacing-lg`.
-- Primary action (theme toggle button): `--fast-color-accent-default`,
-  `--fast-color-foreground-on-accent`, `--fast-color-accent-border`,
-  `--fast-color-accent-default-hover`, `--fast-color-accent-default-active`.
-- Typography: `--fast-font-family-base`, `--fast-font-size-body-1` paired
-  with `--fast-line-height-body-1`, `--fast-font-size-title-3` paired with
-  `--fast-line-height-title-3`.
-- Feedback: `--fast-color-feedback-danger-foreground` and
-  `--fast-color-feedback-danger-background` for the per-row remove action.
-- Motion: `--fast-duration-fast` and `--fast-easing-standard` for hover and
+- App shell surface: `--fast-background-layer-primary-solid`,
+  `--fast-foreground-ctrl-neutral-primary-rest`,
+  `--fast-stroke-divider-subtle`, `--fast-corner-large`,
+  `--fast-shadow-card-rest`, `--fast-padding-content-medium`.
+- Primary action (theme toggle button, Add): `--fast-background-ctrl-brand-rest`,
+  `--fast-foreground-ctrl-on-brand-rest`, `--fast-stroke-divider-brand`,
+  `--fast-background-ctrl-brand-hover`, `--fast-background-ctrl-brand-pressed`.
+- Typography: `--fast-text-style-default-regular-font-family`,
+  `--fast-text-global-body3-font-size` paired with
+  `--fast-text-global-body3-line-height`,
+  `--fast-text-global-display2-font-size` paired with
+  `--fast-text-global-display2-line-height`.
+- Destructive action (per-row delete button):
+  `--fast-status-danger-tint-foreground` (red text at rest),
+  `--fast-status-danger-tint-background` (subtle red hover fill),
+  `--fast-status-danger-tint-stroke` (focus outline).
+- Focus rings: `--fast-ctrl-focus-outer-stroke` paired with
+  `--fast-ctrl-focus-outer-stroke-width`.
+- Motion: `--fast-duration-fast` and `--fast-curve-easy-ease` for hover and
   press transitions.
 
-No design value (color, font size, line height, spacing, radius, border
-width, shadow, duration, or easing) is hard-coded in the app's component
-styles.
+No design value (color, font size, line height, padding, gap, corner,
+stroke width, shadow, duration, or curve) is hard-coded in the app's
+component styles.

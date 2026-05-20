@@ -9,6 +9,10 @@ themselves by toggling the `data-theme` attribute on `<html>`.
 This README and [`DESIGN.md`](./DESIGN.md) are the canonical guidance for both
 humans and coding agents working in the `examples/*` workspace.
 
+The naming model is inspired by the MS Semantic Tokens taxonomy (sometimes
+called `smtc`), with the `--fast-` prefix and tuned coverage for FAST example
+apps.
+
 ## What ships
 
 | File | Contents | Use when |
@@ -70,7 +74,7 @@ import "@microsoft/fast-examples-design-system/tokens-light.css";
 
 Reference tokens through `var(--fast-...)` in FAST `css` template literals or
 in any other CSS context. Never hard-code colors, font sizes, spacing, radii,
-border widths, shadows, durations, or easings.
+border widths, shadows, durations, or curves.
 
 ```ts
 import { css } from "@microsoft/fast-element";
@@ -78,16 +82,18 @@ import { css } from "@microsoft/fast-element";
 export const styles = css`
     :host {
         display: block;
-        padding: var(--fast-spacing-lg);
-        background: var(--fast-color-background-default);
-        color: var(--fast-color-foreground-default);
-        border: var(--fast-border-width-sm) solid var(--fast-color-border-subtle);
-        border-radius: var(--fast-radius-lg);
-        box-shadow: var(--fast-shadow-md);
-        font-family: var(--fast-font-family-base);
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
-        transition: background var(--fast-duration-fast) var(--fast-easing-standard);
+        padding: var(--fast-padding-content-medium);
+        background: var(--fast-background-layer-primary-solid);
+        color: var(--fast-foreground-ctrl-neutral-primary-rest);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-subtle);
+        border-radius: var(--fast-corner-large);
+        box-shadow: var(--fast-shadow-card-rest);
+        font-family: var(--fast-text-style-default-regular-font-family);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
+        transition: background var(--fast-duration-fast)
+            var(--fast-curve-easy-ease);
     }
 `;
 ```
@@ -129,21 +135,28 @@ glance:
 
 | Category | Examples |
 | --- | --- |
-| Color: background | `--fast-color-background-default`, `--fast-color-background-canvas`, `--fast-color-background-default-hover`, `--fast-color-background-emphasis`, `--fast-color-background-inverse`, `--fast-color-background-disabled` |
-| Color: foreground | `--fast-color-foreground-default`, `--fast-color-foreground-muted`, `--fast-color-foreground-subtle`, `--fast-color-foreground-on-accent`, `--fast-color-foreground-inverse`, `--fast-color-foreground-disabled` |
-| Color: border | `--fast-color-border-default`, `--fast-color-border-subtle`, `--fast-color-border-strong`, `--fast-color-border-divider`, `--fast-color-border-disabled` |
-| Color: accent | `--fast-color-accent-default`, `--fast-color-accent-default-hover`, `--fast-color-accent-foreground`, `--fast-color-accent-link`, `--fast-color-accent-border` |
-| Color: feedback | `--fast-color-feedback-danger-foreground`, `--fast-color-feedback-danger-background`, `--fast-color-feedback-success-foreground`, `--fast-color-feedback-success-background`, `--fast-color-feedback-warning-foreground`, `--fast-color-feedback-warning-background` |
-| Font family | `--fast-font-family-base`, `--fast-font-family-monospace`, `--fast-font-family-numeric` |
-| Font size (type ramp) | `--fast-font-size-caption-2`, `--fast-font-size-caption-1`, `--fast-font-size-body-1`, `--fast-font-size-body-2`, `--fast-font-size-subtitle-2`, `--fast-font-size-subtitle-1`, `--fast-font-size-title-3`, `--fast-font-size-title-2`, `--fast-font-size-title-1`, `--fast-font-size-display` |
-| Line height | Same ramp names paired with each font size, e.g. `--fast-line-height-body-1` |
-| Font weight | `--fast-font-weight-regular`, `--fast-font-weight-medium`, `--fast-font-weight-semibold`, `--fast-font-weight-bold` |
-| Spacing | `--fast-spacing-none`, `--fast-spacing-2xs`, `--fast-spacing-xs`, `--fast-spacing-sm`, `--fast-spacing-md`, `--fast-spacing-lg`, `--fast-spacing-xl`, `--fast-spacing-2xl`, `--fast-spacing-3xl` |
-| Radius | `--fast-radius-none`, `--fast-radius-sm`, `--fast-radius-md`, `--fast-radius-lg`, `--fast-radius-xl`, `--fast-radius-pill` |
-| Border width | `--fast-border-width-sm`, `--fast-border-width-md`, `--fast-border-width-lg`, `--fast-border-width-xl` |
-| Shadow | `--fast-shadow-xs`, `--fast-shadow-sm`, `--fast-shadow-md`, `--fast-shadow-lg`, `--fast-shadow-xl`, `--fast-shadow-2xl` |
-| Duration | `--fast-duration-instant`, `--fast-duration-fastest`, `--fast-duration-fast`, `--fast-duration-normal`, `--fast-duration-slow`, `--fast-duration-slowest`, `--fast-duration-extra-slow` |
-| Easing | `--fast-easing-standard`, `--fast-easing-emphasized`, `--fast-easing-accelerate`, `--fast-easing-accelerate-subtle`, `--fast-easing-accelerate-strong`, `--fast-easing-decelerate`, `--fast-easing-decelerate-subtle`, `--fast-easing-decelerate-strong`, `--fast-easing-linear` |
+| Background: surfaces | `--fast-background-web-page-primary`, `--fast-background-layer-primary-solid`, `--fast-background-layer-secondary` |
+| Background: subtle controls | `--fast-background-ctrl-subtle-rest`, `--fast-background-ctrl-subtle-hover`, `--fast-background-ctrl-subtle-pressed`, `--fast-background-ctrl-subtle-disabled` |
+| Background: brand controls | `--fast-background-ctrl-brand-rest`, `--fast-background-ctrl-brand-hover`, `--fast-background-ctrl-brand-pressed`, `--fast-background-ctrl-brand-disabled` |
+| Foreground | `--fast-foreground-ctrl-neutral-primary-rest`, `--fast-foreground-ctrl-neutral-primary-disabled`, `--fast-foreground-ctrl-neutral-secondary-rest`, `--fast-foreground-ctrl-hint-default`, `--fast-foreground-ctrl-on-brand-rest`, `--fast-foreground-ctrl-brand-rest` |
+| Stroke: dividers | `--fast-stroke-divider-default`, `--fast-stroke-divider-subtle`, `--fast-stroke-divider-strong`, `--fast-stroke-divider-brand` |
+| Stroke: control outlines | `--fast-stroke-ctrl-on-outline-rest`, `--fast-stroke-ctrl-on-outline-disabled` |
+| Stroke widths | `--fast-stroke-width-default`, `--fast-stroke-width-divider-strong` |
+| Control focus | `--fast-ctrl-focus-outer-stroke`, `--fast-ctrl-focus-outer-stroke-width` |
+| Status: solid | `--fast-status-{danger, success, warning}-background`, `--fast-status-{danger, success, warning}-foreground` |
+| Status: tinted | `--fast-status-{danger, success, warning}-tint-background`, `--fast-status-{danger, success, warning}-tint-foreground`, `--fast-status-{danger, success, warning}-tint-stroke` |
+| Shadow | `--fast-shadow-card-rest-key`, `--fast-shadow-card-rest-ambient`, `--fast-shadow-card-rest`, `--fast-shadow-flyout-key`, `--fast-shadow-flyout-ambient`, `--fast-shadow-flyout` |
+| Text: families | `--fast-text-style-default-regular-font-family`, `--fast-text-style-code-regular-font-family`, `--fast-text-style-data-viz-regular-font-family` |
+| Text: weights | `--fast-text-style-default-regular-weight`, `--fast-text-style-default-header-weight`, `--fast-text-style-default-display-weight` |
+| Text: global ramp (font size + line height pairs) | `--fast-text-global-caption2-*`, `--fast-text-global-caption1-*`, `--fast-text-global-body3-*`, `--fast-text-global-body2-*`, `--fast-text-global-body1-*`, `--fast-text-global-subtitle2-*`, `--fast-text-global-subtitle1-*`, `--fast-text-global-title2-*`, `--fast-text-global-title1-*`, `--fast-text-global-display2-*`, `--fast-text-global-display1-*` |
+| Padding (inset) | `--fast-padding-content-none`, `--fast-padding-content-xx-small`, `-x-small`, `-small`, `-medium`, `-large`, `-x-large`, `-xx-large`, `-xxx-large` |
+| Gap (between elements) | `--fast-gap-between-content-none`, `--fast-gap-between-content-xx-small`, `-x-small`, `-small`, `-medium`, `-large`, `-x-large`, `-xx-large` |
+| Corner | `--fast-corner-none`, `--fast-corner-small`, `--fast-corner-medium`, `--fast-corner-large`, `--fast-corner-circular` |
+| Duration | `--fast-duration-ultra-fast`, `--fast-duration-faster`, `--fast-duration-fast`, `--fast-duration-normal`, `--fast-duration-gentle`, `--fast-duration-slow`, `--fast-duration-slower`, `--fast-duration-ultra-slow` |
+| Curve | `--fast-curve-accelerate-max`, `-mid`, `-min`, `--fast-curve-decelerate-max`, `-mid`, `-min`, `--fast-curve-easy-ease-max`, `--fast-curve-easy-ease`, `--fast-curve-linear` |
+
+State vocabulary on interactive tokens: `rest`, `hover`, `pressed`,
+`disabled`. Optionally prefixed with `selected-` for selectable controls.
 
 See [`DESIGN.md`](./DESIGN.md) for the full naming grammar, the rationale, and
 the rules for adding new tokens.

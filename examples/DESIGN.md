@@ -66,38 +66,51 @@ alongside this one.
 
 ## Token model
 
-The shared token vocabulary uses **semantic, role-based names**. The grammar
-is:
+The shared token vocabulary follows the **MS Semantic Tokens (`smtc`)
+naming taxonomy** with a `--fast-` prefix. Tokens are organized by
+use-site (`background-web-page-*`, `background-ctrl-brand-*`,
+`foreground-ctrl-neutral-primary-*`, `stroke-divider-*`,
+`status-danger-tint-*`) rather than by abstract color role. The grammar:
 
 ```text
---fast-<category>[-<role>][-<variant>][-<state>]
+--fast-<category>[-<subcategory>][-<slot>][-<variant>][-<state>]
 ```
 
-| Category | Role examples | Variant / scale examples |
+| Category | Subcategory / slot examples | Variant / state examples |
 | --- | --- | --- |
-| `color` | `background`, `foreground`, `border`, `accent`, `feedback` | `default`, `canvas`, `subtle`, `muted`, `emphasis`, `inverse`, `disabled`, `on-accent`, `divider`, `strong`, `link`, `success-foreground`, `danger-background` |
-| `font-family` | – | `base`, `monospace`, `numeric` |
-| `font-size` / `line-height` | – | type-ramp names: `caption-2`, `caption-1`, `body-1`, `body-2`, `subtitle-2`, `subtitle-1`, `title-3`, `title-2`, `title-1`, `display` |
-| `font-weight` | – | `regular`, `medium`, `semibold`, `bold` |
-| `spacing`, `radius`, `border-width` | – | t-shirt sizing: `none`, `2xs`, `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, plus `pill` for radius |
-| `shadow` | – | `xs`, `sm`, `md`, `lg`, `xl`, `2xl` |
-| `duration` | – | `instant`, `fastest`, `fast`, `normal`, `slow`, `slowest`, `extra-slow` |
-| `easing` | – | `standard`, `emphasized`, `accelerate[-subtle|-strong]`, `decelerate[-subtle|-strong]`, `linear` |
+| `text` | `style-default-regular-font-family`, `style-default-header-weight`, `global-body3-font-size`, `global-display2-line-height` | — |
+| `padding` | `content-{none, xx-small, x-small, small, medium, large, x-large, xx-large, xxx-large}` | — |
+| `gap` | `between-content-{none, xx-small, x-small, small, medium, large, x-large, xx-large}` | — |
+| `corner` | `{none, small, medium, large, circular}` | — |
+| `stroke` | `width-default`, `width-divider-strong`, `divider-{default, subtle, strong, brand}`, `ctrl-on-outline-{rest, disabled}` | — |
+| `ctrl` | `focus-outer-stroke`, `focus-outer-stroke-width` | — |
+| `background` | `web-page-primary`, `layer-{primary-solid, secondary}`, `ctrl-{subtle, brand}` | `rest`, `hover`, `pressed`, `disabled` |
+| `foreground` | `ctrl-{neutral-primary, neutral-secondary, hint, on-brand, brand}` | `rest`, `hover`, `pressed`, `disabled`, `default` |
+| `status` | `{danger, success, warning}-{background, foreground}` and `-tint-{background, foreground, stroke}` | — |
+| `shadow` | `card-rest-{key, ambient}`, `card-rest`, `flyout-{key, ambient}`, `flyout` | — |
+| `duration` | `{ultra-fast, faster, fast, normal, gentle, slow, slower, ultra-slow}` | — |
+| `curve` | `{accelerate, decelerate}-{max, mid, min}`, `easy-ease-max`, `easy-ease`, `linear` | — |
 
-Interaction states (`hover`, `active`, `selected`, `disabled`, `focus`) are
-always the final segment: `--fast-color-background-default-hover`,
-`--fast-color-accent-default-active`,
-`--fast-color-border-default-hover`.
+Interaction state (`rest`, `hover`, `pressed`, `disabled`, optionally
+prefixed with `selected-`) is always the final segment when present:
+`--fast-background-ctrl-brand-hover`, `--fast-background-ctrl-subtle-pressed`,
+`--fast-foreground-ctrl-neutral-primary-disabled`.
 
 A few representative tokens:
 
-- Color: `--fast-color-background-default`, `--fast-color-foreground-default`,
-  `--fast-color-accent-default`, `--fast-color-feedback-danger-foreground`.
-- Type: `--fast-font-size-body-1` paired with `--fast-line-height-body-1`,
-  `--fast-font-size-title-3` paired with `--fast-line-height-title-3`.
-- Layout: `--fast-spacing-md`, `--fast-radius-lg`, `--fast-border-width-sm`.
-- Elevation and motion: `--fast-shadow-md`, `--fast-duration-fast`,
-  `--fast-easing-standard`.
+- Background / foreground: `--fast-background-layer-primary-solid`,
+  `--fast-foreground-ctrl-neutral-primary-rest`,
+  `--fast-background-ctrl-brand-rest`, `--fast-foreground-ctrl-on-brand-rest`,
+  `--fast-status-danger-tint-foreground`.
+- Type: `--fast-text-global-body3-font-size` paired with
+  `--fast-text-global-body3-line-height`,
+  `--fast-text-global-display2-font-size` paired with
+  `--fast-text-global-display2-line-height`.
+- Layout: `--fast-padding-content-medium`,
+  `--fast-gap-between-content-x-small`, `--fast-corner-large`,
+  `--fast-stroke-width-default`.
+- Elevation and motion: `--fast-shadow-card-rest`, `--fast-duration-fast`,
+  `--fast-curve-easy-ease`.
 
 For the full taxonomy and the rules for adding tokens, see
 [`design-system/DESIGN.md`](./design-system/DESIGN.md).
@@ -139,24 +152,26 @@ three-state (light / dark / auto) toggle implemented this way.
 
 ### Choose tokens by intent
 
-- Pick the token whose **role** matches the styled element, not the token
-  whose current value matches a desired hex code. The value will change
-  between themes; the role will not.
-- Pair `--fast-font-size-*` and `--fast-line-height-*` tokens by the same
-  ramp name so vertical rhythm stays consistent.
+- Pick the token whose **use-site** matches the styled element, not the
+  token whose current value matches a desired hex code. The value will
+  change between themes; the name will not.
+- Pair `--fast-text-global-<tier>-font-size` and
+  `--fast-text-global-<tier>-line-height` tokens by the same ramp tier so
+  vertical rhythm stays consistent.
 
 ### Style components with tokens only
 
-- Use `var(--fast-...)` for every color, font size, line height, spacing,
-  radius, border width, shadow, duration, and easing.
+- Use `var(--fast-...)` for every color, font size, line height, padding,
+  gap, corner, stroke width, shadow, duration, and curve.
 - Layout primitives (`display`, `flex`, `grid`, `gap`, `align-items`, etc.)
-  do not need tokens. Numeric scale values (font sizes, spacing, etc.) do.
+  do not need tokens. Numeric scale values (font sizes, padding, gap, etc.)
+  do.
 
 ### Scope app-local design decisions to the app
 
 - If a value is meaningful inside only one component, define a local custom
   property inside that component's `css` block, ideally backed by a `--fast-*`
-  token: `--my-card-elevation: var(--fast-shadow-md);`.
+  token: `--my-card-elevation: var(--fast-shadow-card-rest);`.
 - Do **not** add app-specific tokens at `:root` from inside an example app.
 - Do **not** add a new shared token unless multiple apps or patterns will
   reuse it (see the decision tree in
@@ -178,16 +193,18 @@ across `examples/*`. When editing files in this workspace:
   `@microsoft/fast-examples-design-system`.** The package intentionally
   exports CSS only.
 - **Never hard-code design values** (colors, font sizes, line heights,
-  spacing, radii, border widths, shadows, durations, easings) in component
-  styles. Use a `var(--fast-...)` token.
+  padding, gaps, corners, stroke widths, shadows, durations, curves) in
+  component styles. Use a `var(--fast-...)` token.
 - **Never invent shared tokens at `:root`** from inside an example app. Add
   them to `@microsoft/fast-examples-design-system` instead.
 - **Map intent, not value, when refactoring.** An existing `#666666`
   foreground used as helper text should become
-  `--fast-color-foreground-subtle`, not whichever foreground token happens to
-  match `#666666` literally in the current theme.
-- **Pair font-size and line-height** tokens by the same ramp name
-  (`body-1` ↔ `body-1`, `title-3` ↔ `title-3`).
+  `--fast-foreground-ctrl-neutral-secondary-rest`, not whichever foreground
+  token happens to match `#666666` literally in the current theme. Reserve
+  `--fast-foreground-ctrl-hint-default` for placeholder and helper text
+  specifically.
+- **Pair font-size and line-height** tokens by the same ramp tier
+  (`body3` ↔ `body3`, `display2` ↔ `display2`).
 - **Theme toggling is two lines of DOM code.** Reach for
   `document.documentElement.setAttribute("data-theme", value)` or
   `removeAttribute("data-theme")` rather than introducing any shared helper.
@@ -198,8 +215,8 @@ across `examples/*`. When editing files in this workspace:
 
 ## Anti-patterns
 
-- Hard-coding colors, font sizes, line heights, spacing, radii, border
-  widths, shadows, durations, or easings in component CSS.
+- Hard-coding colors, font sizes, line heights, padding, gaps, corners,
+  stroke widths, shadows, durations, or curves in component CSS.
 - Importing JavaScript from `@microsoft/fast-examples-design-system`. No such
   exports exist.
 - Bypassing `var(--fast-...)` when styling shared UI patterns.
@@ -209,6 +226,9 @@ across `examples/*`. When editing files in this workspace:
 - Using class names instead of the `data-theme` attribute to switch themes.
 - Naming tokens or local custom properties after products, components, or
   hex values.
+- Using the historical state vocabulary (`default`, `active`,
+  `default-hover`) — the current package uses `rest`, `hover`, `pressed`,
+  `disabled`.
 
 ## Reference
 

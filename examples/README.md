@@ -28,10 +28,12 @@ The available imports are:
 | `@microsoft/fast-examples-design-system/tokens-dark.css` | Dark-only apps. |
 
 Style components with semantic tokens such as
-`--fast-color-background-default`, `--fast-color-foreground-default`,
-`--fast-color-accent-default`, `--fast-font-size-body-1`,
-`--fast-spacing-md`, and `--fast-radius-lg`. Never hard-code colors, font
-sizes, spacing, radii, border widths, shadows, durations, or easings.
+`--fast-background-layer-primary-solid`,
+`--fast-foreground-ctrl-neutral-primary-rest`,
+`--fast-background-ctrl-brand-rest`, `--fast-text-global-body3-font-size`,
+`--fast-padding-content-medium`, and `--fast-corner-large`. Never hard-code
+colors, font sizes, padding, gaps, corners, stroke widths, shadows,
+durations, or curves.
 
 See:
 

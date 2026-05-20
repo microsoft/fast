@@ -4,66 +4,66 @@ export const styles = css`
     form {
         display: flex;
         align-items: center;
-        gap: var(--fast-spacing-sm);
-        margin: var(--fast-spacing-md) 0;
+        gap: var(--fast-gap-between-content-x-small);
+        margin: var(--fast-gap-between-content-small) 0;
     }
 
     input[type="text"] {
         flex: 1;
         min-width: 0;
-        background: var(--fast-color-background-default);
-        color: var(--fast-color-foreground-default);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-border-default);
-        border-radius: var(--fast-radius-md);
-        padding: var(--fast-spacing-2xs)
-            var(--fast-spacing-sm);
-        font-family: var(--fast-font-family-base);
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
+        background: var(--fast-background-layer-primary-solid);
+        color: var(--fast-foreground-ctrl-neutral-primary-rest);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-ctrl-on-outline-rest);
+        border-radius: var(--fast-corner-medium);
+        padding: var(--fast-padding-content-xx-small)
+            var(--fast-padding-content-x-small);
+        font-family: var(--fast-text-style-default-regular-font-family);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
     }
 
     input[type="text"]:focus-visible {
-        border-color: var(--fast-color-accent-border);
-        outline: var(--fast-border-width-md) solid
-            var(--fast-color-accent-border);
-        outline-offset: var(--fast-border-width-sm);
+        border-color: var(--fast-ctrl-focus-outer-stroke);
+        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+            var(--fast-ctrl-focus-outer-stroke);
+        outline-offset: var(--fast-stroke-width-default);
     }
 
     button[type="submit"] {
-        background: var(--fast-color-accent-default);
-        color: var(--fast-color-foreground-on-accent);
-        border: var(--fast-border-width-sm) solid
-            var(--fast-color-accent-border);
-        border-radius: var(--fast-radius-md);
-        padding: var(--fast-spacing-xs)
-            var(--fast-spacing-md);
+        background: var(--fast-background-ctrl-brand-rest);
+        color: var(--fast-foreground-ctrl-on-brand-rest);
+        border: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-brand);
+        border-radius: var(--fast-corner-medium);
+        padding: var(--fast-padding-content-xx-small)
+            var(--fast-padding-content-small);
         font-family: inherit;
-        font-size: var(--fast-font-size-body-1);
-        line-height: var(--fast-line-height-body-1);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
         cursor: pointer;
         transition: background var(--fast-duration-fast)
-            var(--fast-easing-standard);
+            var(--fast-curve-easy-ease);
     }
 
     button[type="submit"]:hover {
-        background: var(--fast-color-accent-default-hover);
+        background: var(--fast-background-ctrl-brand-hover);
     }
 
     button[type="submit"]:active {
-        background: var(--fast-color-accent-default-active);
+        background: var(--fast-background-ctrl-brand-pressed);
     }
 
     button[type="submit"]:focus-visible {
-        outline: var(--fast-border-width-md) solid
-            var(--fast-color-accent-border);
-        outline-offset: var(--fast-border-width-sm);
+        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+            var(--fast-ctrl-focus-outer-stroke);
+        outline-offset: var(--fast-stroke-width-default);
     }
 
     button[type="submit"]:disabled {
-        background: var(--fast-color-background-disabled);
-        color: var(--fast-color-foreground-disabled);
-        border-color: var(--fast-color-border-disabled);
+        background: var(--fast-background-ctrl-brand-disabled);
+        color: var(--fast-foreground-ctrl-neutral-primary-disabled);
+        border-color: var(--fast-stroke-ctrl-on-outline-disabled);
         cursor: not-allowed;
     }
 `;
