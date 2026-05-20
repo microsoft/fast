@@ -35,25 +35,19 @@ If you only need a quickstart, see [`README.md`](./README.md).
 ## Architecture
 
 ```text
-tokens.css            ─┐
-tokens-light.css       ├─▶ :root CSS custom properties ─▶ var(--fast-*) ─▶ rendered UI
-tokens-dark.css       ─┘                ▲
-                                        │
-                            <html data-theme="..."> attribute (set by the app)
+tokens.css ─▶ :root CSS custom properties ─▶ var(--fast-*) ─▶ rendered UI
+                          ▲
+                          │
+              <html data-theme="..."> attribute (set by the app)
 ```
 
 The flow is intentionally short:
 
-1. The app imports one of the three stylesheets at startup.
-2. The stylesheet registers every shared token on `:root`.
+1. The app imports `tokens.css` at startup.
+2. The stylesheet registers every shared token on `:root`. Color and
+   elevation values resolve through the CSS `light-dark()` function,
+   driven by the inherited `color-scheme`.
 3. Components reference tokens through `var(--fast-...)`.
-4. If the app uses `tokens.css`, setting `data-theme` on `<html>` swaps the
-   active palette; removing the attribute restores `prefers-color-scheme`
-   behavior.
-
-`tokens.css` is the recommended entry. The single-theme variants exist for
-apps that want a smaller payload or want to avoid the `prefers-color-scheme`
-media query entirely.
 
 ## Naming grammar
 
@@ -181,28 +175,30 @@ package — `rest` and `pressed` are the authoritative names.
 
 ## Theme model
 
-`tokens.css` ships three layers of values:
+`tokens.css` declares one block:
 
 ```css
 :root {
+    color-scheme: light dark;
+
     /* theme-independent tokens (typography, padding, gap, corner, motion) */
+
+    /* theme-resolving tokens — color and elevation */
+    --fast-background-web-page-primary: light-dark(#fafafa, #1f1f1f);
+    --fast-foreground-ctrl-neutral-primary-rest: light-dark(#242424, #ffffff);
+    /* ... */
 }
 
-:root,
-:root[data-theme="light"] {
-    /* light color and shadow values */
-}
-
-:root[data-theme="dark"] {
-    /* dark color and shadow values */
-}
-
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) {
-        /* dark color and shadow values when no explicit theme is set */
-    }
-}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 ```
+
+Each color or elevation token wraps its light value and dark value in the
+CSS [`light-dark()`][light-dark] function. The browser picks the matching
+value from the inherited `color-scheme`, which follows
+`prefers-color-scheme` unless `data-theme` forces it.
+
+[light-dark]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark
 
 This produces three states:
 
@@ -216,9 +212,17 @@ An attribute (rather than a class) is used because it is an explicit, single
 state container that is easy to inspect in dev tools, easy to set during SSR
 or hydration, and easy to assert in tests.
 
-`tokens-light.css` and `tokens-dark.css` define every token unconditionally
-on `:root` and additionally set `color-scheme: light` or `color-scheme: dark`.
-They are the right choice when an app deliberately renders only one mode.
+For an intentionally single-theme app, hard-code the attribute in markup
+(`<html data-theme="light">`) and never touch it from JavaScript. The
+package does not ship separate single-theme stylesheets; one file covers
+every case.
+
+### Browser support
+
+The `light-dark()` function requires Chrome / Edge 123+, Firefox 120+, or
+Safari 17.5+ (all shipped 2023–2024). This package targets evergreen
+browsers and does not ship a fallback. Apps that need to support older
+browsers should provide their own static token sheet.
 
 ## Light vs dark color mapping
 
@@ -286,8 +290,10 @@ Need a value?
 2. Match the grammar: `--fast-<category>-<subcategory>-<slot>[-<variant>][-<state>]`.
 3. Keep names semantic. Avoid product-, component-, or palette-specific
    suffixes such as `button-primary-blue`.
-4. For colors and shadows, add **both light and dark** values (in
-   `tokens.css`, `tokens-light.css`, and `tokens-dark.css`).
+4. For colors and shadows, add **both light and dark** values in a single
+   `light-dark(lightValue, darkValue)` declaration. Theme-independent
+   colors (such as `--fast-foreground-ctrl-on-brand-rest`, which is always
+   white) can stay as a plain value.
 5. Keep scales monotonic: t-shirt sizes go from smallest to largest,
    durations from fastest to slowest, shadows from lowest to highest
    elevation.
@@ -312,8 +318,8 @@ Need a value?
 - For interactive variants, is the state segment (`rest`, `hover`, `pressed`,
   `disabled`) last?
 - Are paired font-size and line-height values both added?
-- For colors and shadows, are both light and dark values defined in all three
-  stylesheets?
+- For colors and shadows, are both light and dark values supplied via
+  `light-dark()` (or is the token genuinely theme-independent)?
 - Would another example-app developer understand the token from its name
   alone, without extra docs?
 

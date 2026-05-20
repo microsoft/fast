@@ -43,9 +43,9 @@ alongside this one.
 
 ```text
 @microsoft/fast-examples-design-system
-        │  (tokens.css / tokens-light.css / tokens-dark.css)
+        │  (tokens.css)
         ▼
-  :root CSS custom properties
+  :root CSS custom properties (color/elevation via light-dark())
         │
         ▼
   var(--fast-*) inside component css`...` blocks
@@ -58,7 +58,7 @@ alongside this one.
 ```
 
 - The design-system package is private and CSS-only.
-- Apps import one of its stylesheets at startup.
+- Apps import `tokens.css` at startup.
 - Components style themselves through `var(--fast-...)` references.
 - Theme switching is owned by the consuming app, which writes the
   `data-theme` attribute directly on `<html>`. Removing the attribute returns
@@ -125,16 +125,25 @@ Three theme states are supported:
 | `"dark"` | Dark, regardless of system preference. |
 | _absent_ | Follows `prefers-color-scheme`. |
 
-The package implements this via four CSS layers in `tokens.css`:
+The package implements this in a single stylesheet using `color-scheme`
+and the CSS `light-dark()` function:
 
 ```css
-:root { /* typography, spacing, radius, motion, etc. */ }
-:root, :root[data-theme="light"] { /* light colors */ }
-:root[data-theme="dark"] { /* dark colors */ }
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) { /* dark colors */ }
+:root {
+    color-scheme: light dark;
+    /* typography, spacing, radius, motion, etc. */
+    --fast-background-web-page-primary: light-dark(#fafafa, #1f1f1f);
+    --fast-foreground-ctrl-neutral-primary-rest: light-dark(#242424, #ffffff);
+    /* ... */
 }
+
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 ```
+
+`light-dark()` requires Chrome / Edge 123+, Firefox 120+, or Safari 17.5+
+(all shipped 2023–2024). The example apps target evergreen browsers and
+ship no fallback.
 
 To switch themes from app code, write the attribute directly on the document
 root. There is no shared API for this; the design-system package is CSS-only.

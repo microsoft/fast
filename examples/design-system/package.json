@@ -5,14 +5,10 @@
   "private": true,
   "exports": {
     ".": "./tokens.css",
-    "./tokens.css": "./tokens.css",
-    "./tokens-light.css": "./tokens-light.css",
-    "./tokens-dark.css": "./tokens-dark.css"
+    "./tokens.css": "./tokens.css"
   },
   "files": [
     "tokens.css",
-    "tokens-light.css",
-    "tokens-dark.css",
     "DESIGN.md",
     "README.md"
   ],

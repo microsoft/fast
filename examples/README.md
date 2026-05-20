@@ -15,17 +15,15 @@ FAST patterns in a complete app context.
 ## Shared design system
 
 Every example app must consume `@microsoft/fast-examples-design-system`. The
-package is **CSS-only** — it ships three stylesheets and ships no JavaScript
-or TypeScript. Apps wire theme switching themselves using the `data-theme`
-attribute on `<html>`.
+package is **CSS-only** — it ships a single stylesheet (`tokens.css`) and no
+JavaScript or TypeScript. Apps wire theme switching themselves using the
+`data-theme` attribute on `<html>`.
 
-The available imports are:
+The package exposes a single import:
 
-| Import | When to use |
+| Import | What it does |
 | --- | --- |
-| `@microsoft/fast-examples-design-system/tokens.css` | Default. Supports a runtime light/dark toggle and `prefers-color-scheme`. |
-| `@microsoft/fast-examples-design-system/tokens-light.css` | Light-only apps. |
-| `@microsoft/fast-examples-design-system/tokens-dark.css` | Dark-only apps. |
+| `@microsoft/fast-examples-design-system/tokens.css` | Declares every token on `:root`. Color and elevation values use `light-dark()`; theme is controlled by `prefers-color-scheme` (default) or `<html data-theme="light"\|"dark">` (forced). |
 
 Style components with semantic tokens such as
 `--fast-background-layer-primary-solid`,
@@ -53,8 +51,9 @@ See:
 3. Add `"@microsoft/fast-examples-design-system": "workspace:*"` to the new
    app's `dependencies` and run `npm install` from the repo root.
 4. Import `@microsoft/fast-examples-design-system/tokens.css` exactly once at
-   the app entry point (typically `src/main.ts`). Use `tokens-light.css` or
-   `tokens-dark.css` instead if the app is intentionally single-theme.
+   the app entry point (typically `src/main.ts`). For an intentionally
+   single-theme app, hard-code `<html data-theme="light">` (or `"dark"`)
+   in `index.html` and never touch it from JavaScript.
 5. Reference tokens via `var(--fast-...)` in component `css` template
    literals — do not hard-code design values.
 6. If the app needs a theme toggle, set or remove the `data-theme` attribute

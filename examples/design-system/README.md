@@ -14,14 +14,19 @@ and coverage tuned for FAST example apps.
 
 ## What ships
 
-| File | Contents | Use when |
-| --- | --- | --- |
-| `tokens.css` | All tokens, with light values on `:root` and dark overrides via `[data-theme="dark"]` and `prefers-color-scheme: dark`. | The app supports a runtime theme toggle, or wants automatic system-preference behavior. **Recommended default.** |
-| `tokens-light.css` | All tokens on `:root` with light color values; sets `color-scheme: light`. | The app is light-only and will never switch themes. |
-| `tokens-dark.css` | All tokens on `:root` with dark color values; sets `color-scheme: dark`. | The app is dark-only and will never switch themes. |
+The package ships exactly one stylesheet:
+
+| File | Contents |
+| --- | --- |
+| `tokens.css` | Every token, declared once on `:root`. Color and elevation values use the CSS `light-dark()` function, so each declaration carries both its light and dark resolution side by side. `color-scheme: light dark` enables system-preference resolution; `<html data-theme="light">` or `<html data-theme="dark">` forces a theme. |
 
 The package is `"private": true` and consumed via the workspace dependency
 `"@microsoft/fast-examples-design-system": "workspace:*"`.
+
+`tokens.css` uses the CSS `light-dark()` function, which requires
+Chrome / Edge 123+, Firefox 120+, or Safari 17.5+ (all shipped in
+2023–2024). These example apps target evergreen browsers; there is no
+fallback for older versions.
 
 ## Install
 
@@ -42,8 +47,6 @@ Import the stylesheet exactly once at the app entry point — typically the same
 file that defines or bootstraps the root custom element. The bundler (Vite in
 the existing examples) inlines the CSS into the document.
 
-### Switchable light / dark (recommended)
-
 ```ts
 // src/main.ts
 import "@microsoft/fast-examples-design-system/tokens.css";
@@ -60,13 +63,11 @@ import "@microsoft/fast-examples-design-system/tokens.css";
 </html>
 ```
 
-### Light-only or dark-only app
+If the app is intentionally single-theme, hard-code the attribute and never
+touch it from JavaScript:
 
-```ts
-// src/main.ts
-import "@microsoft/fast-examples-design-system/tokens-light.css";
-// or:
-// import "@microsoft/fast-examples-design-system/tokens-dark.css";
+```html
+<html lang="en" data-theme="light"> <!-- or "dark" -->
 ```
 
 ### Referencing tokens from component CSS
@@ -99,14 +100,20 @@ export const styles = css`
 
 ## Theme switching
 
-When `tokens.css` is loaded, the active theme is selected by the `data-theme`
-attribute on `<html>`:
+The active theme is selected by the `data-theme` attribute on `<html>`:
 
 | `data-theme` value | Effective theme |
 | --- | --- |
 | `"light"` | Forced light |
 | `"dark"` | Forced dark |
 | _absent_ | Follows `prefers-color-scheme` (dark if the system requests dark, light otherwise) |
+
+Under the hood, `tokens.css` declares `color-scheme: light dark` on `:root`
+and uses the CSS `light-dark()` function in every color/elevation token.
+The browser picks the matching value based on the inherited
+`color-scheme`. Setting `data-theme="light"` or `data-theme="dark"`
+overrides `color-scheme` to that single value, which flips every
+`light-dark()` resolution. No media query is needed.
 
 To wire a toggle, write the attribute directly from your application code. The
 design system itself contains no JavaScript — toggles, persistence, and event
@@ -129,8 +136,8 @@ auto) toggle that uses only this DOM API.
 
 ## Token catalog
 
-The complete list of tokens lives in the source CSS files. Categories at a
-glance:
+The complete list of tokens lives in [`tokens.css`](./tokens.css). Categories
+at a glance:
 
 | Category | Examples |
 | --- | --- |
