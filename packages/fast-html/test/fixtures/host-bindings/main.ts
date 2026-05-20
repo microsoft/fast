@@ -212,6 +212,16 @@ RenderableFASTElement(HostPermPropFirst).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+// Test 12: Autofocus
+class HostAutofocus extends FASTElement {
+    @attr
+    text: string = "autofocus";
+}
+RenderableFASTElement(HostAutofocus).defineAsync({
+    name: "host-autofocus",
+    templateOptions: "defer-and-hydrate",
+});
+
 TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;

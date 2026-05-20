@@ -109,6 +109,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 - The `name` attribute value becomes the element name key in the templates map.
 - The inner content of the `<template>` child element becomes the raw template string sent to the WASM renderer.
 - Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the WASM renderer applies to the emitted Declarative Shadow DOM `<template>`.
+- Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The WASM renderer merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.
 
@@ -116,7 +117,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 
 | Function | Role |
 |----------|------|
-| `parseFTemplates(html, filePath, wasm)` | Calls `wasm.parse_f_templates(html)` and emits warnings for nameless templates |
+| `parseFTemplates(html, filePath, wasm)` | Calls `wasm.parse_f_templates(html)` and emits warnings for nameless templates. Returns `{name, content, shadowrootAttributes, hostAttributes}` entries. |
 
 The `<f-template>` parsing logic lives exclusively in the Rust crate (`locator::parse_f_templates`) and is exposed via the `wasm.parse_f_templates` WASM export. The JS layer only handles warnings and file I/O; it contains no duplicate parsing logic.
 
@@ -154,7 +155,7 @@ Four WASM functions are available; the CLI uses the entry renderer when template
 | `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | CLI entry HTML rendering when at least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
-`templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>` and any forwarded `shadowrootAttributes`. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>`. It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+`templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>`, any forwarded `shadowrootAttributes`, and a `hostAttributes` array carrying the attributes declared on the inner `<template>` element. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>` and merging `hostAttributes` onto the rendered host element opening tag (author host attributes win on conflicts; client-only attrs and `{{expr}}` / `?name="{{expr}}"` bindings are handled by the WASM renderer — see the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details). It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
 See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
 
