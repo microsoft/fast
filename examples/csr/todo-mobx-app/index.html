@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <title>FAST Todos · MobX</title>
+        <style>
+        html,
+        body {
+            margin: 0;
+            background: var(--fast-background-web-page-primary);
+            color: var(--fast-foreground-ctrl-neutral-primary-rest);
+            font-family: var(--fast-text-style-default-regular-font-family);
+        }
+
+        :not(:defined) {
+            visibility: hidden;
+        }
+        </style>
+    </head>
+    <body>
+        <todo-app></todo-app>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
+</html>

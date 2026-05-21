@@ -1,6 +1,6 @@
 # MobX Todo App (FAST)
 
-A small Todo app that uses **[MobX](https://mobx.js.org/)** as its state library and **[`@microsoft/fast-element`](../../packages/fast-element)** for its Web Components. It is the MobX counterpart to [`examples/todo-app`](../todo-app).
+A small Todo app that uses **[MobX](https://mobx.js.org/)** as its state library and **[`@microsoft/fast-element`](../../../packages/fast-element)** for its Web Components. It is the MobX counterpart to [`examples/csr/todo-app`](../todo-app), and like every example app it consumes the shared [`@microsoft/fast-examples-design-system`](../../design-system) tokens for styling.
 
 The example shows that you do **not** need a custom decorator or any bridge code to integrate MobX with `@microsoft/fast-element` — a single `autorun` per component, set up in `connectedCallback` and disposed in `disconnectedCallback`, is all that is needed.
 
@@ -78,16 +78,33 @@ That is the entire integration. The template binds to `${x => x.activeCount}` (e
 | Filtered list view backed by a MobX computed | [`src/todo-list.ts`](./src/todo-list.ts) |
 | Aggregate stats (active count, completed count, all-completed) | [`src/todo-stats.ts`](./src/todo-stats.ts) |
 | Toggle-all and clear-completed actions | [`src/todo-stats.ts`](./src/todo-stats.ts), [`src/state/todo-store.ts`](./src/state/todo-store.ts) |
+| Styling exclusively via the shared design-system tokens | every `src/*.styles.ts`, [`index.html`](./index.html), [`src/main.ts`](./src/main.ts) |
 
 ## Project layout
 
 ```
-examples/todo-mobx-app/
-├── index.html                     # mounts <todo-app>
+examples/csr/todo-mobx-app/
+├── index.html                     # mounts <todo-app>, sets data-theme="light"
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
 ├── README.md                      # this file
+├── DESIGN.md                      # why the autorun pattern, lifecycle details
+└── src/
+    ├── design-system.d.ts         # module shim for the tokens stylesheet import
+    ├── exports.ts                 # barrel for tooling
+    ├── main.ts                    # entry — imports tokens.css, wires storage, defines <todo-app>
+    ├── state/                     # MobX layer (framework-agnostic)
+    │   ├── index.ts
+    │   ├── persistence.ts
+    │   └── todo-store.ts
+    ├── todo-app.{ts,template.ts,styles.ts}
+    ├── todo-form.{ts,template.ts,styles.ts}
+    ├── todo-list.{ts,template.ts,styles.ts}
+    ├── todo-item.{ts,template.ts,styles.ts}
+    ├── todo-filter.{ts,template.ts,styles.ts}
+    └── todo-stats.{ts,template.ts,styles.ts}
+```
 ├── DESIGN.md                      # why the autorun pattern, lifecycle details
 └── src/
     ├── exports.ts                 # barrel for tooling
@@ -108,4 +125,4 @@ See [DESIGN.md](./DESIGN.md) for an explanation of why this pattern is sufficien
 
 ## License
 
-MIT — see the [monorepo root](../../LICENSE).
+MIT — see the [monorepo root](../../../LICENSE).

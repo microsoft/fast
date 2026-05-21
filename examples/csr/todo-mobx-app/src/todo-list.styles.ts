@@ -3,20 +3,19 @@ import { css } from "@microsoft/fast-element";
 export const styles = css`
     :host {
         display: block;
-        margin: 12px 0;
+        margin: var(--fast-gap-between-content-small) 0;
     }
 
     .todo-list {
         list-style-type: none;
         padding: 0;
         margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--fast-gap-between-content-xx-small);
     }
 
     .todo-row {
-        border-bottom: 1px solid #eee;
-    }
-
-    .todo-row:last-child {
-        border-bottom: none;
+        display: block;
     }
 `;

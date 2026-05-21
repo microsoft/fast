@@ -10,7 +10,12 @@ FAST patterns in a complete app context.
 | Folder | Package | Purpose |
 | --- | --- | --- |
 | `design-system` | `@microsoft/fast-examples-design-system` | Shared CSS design tokens (no JS) consumed by every example app. |
-| `todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
+| `csr/todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
+| `csr/todo-mobx-app` | `@microsoft/fast-todo-mobx-app-example` | A To-Do app showing how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code), styled with the shared design-system tokens. |
+
+Example apps are grouped by rendering strategy. Client-side-rendered (CSR)
+apps live under [`examples/csr/`](./csr/); future server-side-rendered (SSR)
+apps will live alongside them under their own subfolder.
 
 ## Shared design system
 
@@ -45,9 +50,10 @@ See:
 
 ## Creating a new example app
 
-1. Scaffold a new folder under `examples/<your-app>/`.
-2. Use [`examples/todo-app/`](./todo-app/) as a reference for `package.json`,
-   `tsconfig.json`, `vite.config.ts`, and `index.html`.
+1. Scaffold a new folder under the appropriate rendering-strategy subfolder
+   (CSR apps go under `examples/csr/<your-app>/`).
+2. Use [`examples/csr/todo-app/`](./csr/todo-app/) as a reference for
+   `package.json`, `tsconfig.json`, `vite.config.ts`, and `index.html`.
 3. Add `"@microsoft/fast-examples-design-system": "workspace:*"` to the new
    app's `dependencies` and run `npm install` from the repo root.
 4. Import `@microsoft/fast-examples-design-system/tokens.css` exactly once at
@@ -75,10 +81,11 @@ npm install
 npm start -w @microsoft/fast-<your-app>-example
 ```
 
-For the existing example app:
+For the existing example apps:
 
 ```shell
 npm start -w @microsoft/fast-todo-app-example
+npm start -w @microsoft/fast-todo-mobx-app-example
 ```
 
 ## Useful links

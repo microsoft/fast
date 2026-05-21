@@ -19,7 +19,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast.git",
-    "directory": "examples/todo-app"
+    "directory": "examples/csr/todo-app"
   },
   "dependencies": {
     "@microsoft/fast-element": "^2.10.4",

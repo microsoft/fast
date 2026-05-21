@@ -19,10 +19,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast.git",
-    "directory": "examples/todo-mobx-app"
+    "directory": "examples/csr/todo-mobx-app"
   },
   "dependencies": {
     "@microsoft/fast-element": "^2.10.4",
+    "@microsoft/fast-examples-design-system": "^1.0.0",
     "mobx": "^6.13.5",
     "tslib": "^2.6.3"
   }

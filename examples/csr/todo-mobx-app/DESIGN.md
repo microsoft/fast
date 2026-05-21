@@ -27,7 +27,7 @@ FAST and MobX both track property reads to invalidate dependents when state chan
 | | FAST (`@microsoft/fast-element`) | MobX |
 |---|---|---|
 | What gets observed | `@attr`, `@observable`, array mutations through FAST's `arrays.ts` patch, and any access wrapped in `Observable.track(source, name)` | Properties touched while a `reaction`, `autorun`, or `computed` is running |
-| Subscriber primitive | `ExpressionNotifier` (an internal "watcher" stack — see [`observation/observable.ts`](../../packages/fast-element/src/observation/observable.ts)) | `Reaction` / `ComputedValue` |
+| Subscriber primitive | `ExpressionNotifier` (an internal "watcher" stack — see [`observation/observable.ts`](../../../packages/fast-element/src/observation/observable.ts)) | `Reaction` / `ComputedValue` |
 | How a change re-renders | `Observable.notify(source, name)` → bound `ExpressionNotifier`s fire `handleChange` → enqueues an `Updates` task | The reaction's effect function runs synchronously |
 
 There is no direct interop. If a FAST template binding reads a MobX-observable, MobX does not know to notify FAST. If a MobX `reaction` reads a FAST `@observable`, FAST does not know to notify MobX.
@@ -220,7 +220,7 @@ This is the only component where the pattern needs an extra wrinkle on top of th
 ## Package layout
 
 ```
-examples/todo-mobx-app/
+examples/csr/todo-mobx-app/
 ├── DESIGN.md                       ← this file
 ├── README.md                       ← developer-facing intro
 ├── index.html
@@ -228,6 +228,7 @@ examples/todo-mobx-app/
 ├── tsconfig.json
 ├── vite.config.ts
 └── src/
+    ├── design-system.d.ts          ← module shim for the tokens stylesheet import
     ├── exports.ts
     ├── main.ts
     ├── state/
