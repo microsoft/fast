@@ -1,0 +1,29 @@
+<template
+    shadowrootmode="open"
+    @toggle-item="{onToggleItem(e)}"
+    @delete-item="{onDeleteItem(e)}"
+>
+    <h1>{{ title }}</h1>
+
+    <div class="add-form">
+        <input
+            class="add-input"
+            placeholder="What needs to be done?"
+            f-ref="{addInput}"
+            @keydown="{onAddKeydown(e)}"
+        >
+        <button type="button" class="add-button" @click="{onAddClick()}">Add</button>
+    </div>
+
+    <div class="todo-list">
+        <for each="item in items">
+            <todo-item
+                id="{{item.id}}"
+                title="{{item.title}}"
+                state="{{item.state}}"
+            ></todo-item>
+        </for>
+    </div>
+
+    <div class="footer"><span>{{ remainingCount }} items remaining</span></div>
+</template>

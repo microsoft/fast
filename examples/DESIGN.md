@@ -1,7 +1,9 @@
 # FAST example apps — design guidance
 
 This document is the workspace-level guide for building UI in `examples/*`
-and its rendering-strategy subfolders (currently `examples/csr/`). It
+and its rendering-strategy subfolders (`examples/csr/` for client-side
+rendered apps, `examples/ssr/` for apps whose initial markup is pre-rendered
+on the server with `@microsoft/fast-build` or `@microsoft/webui`). It
 explains how the apps share a visual language, the constraints every example
 must follow, and the rules that humans and coding agents should apply when
 making changes. The token vocabulary itself lives in
@@ -26,8 +28,8 @@ alongside this one.
 
 ## Goals
 
-- Give every app in `examples/*` (across all rendering-strategy subfolders)
-  a shared, consistent visual language.
+- Give every app in `examples/*` (across both `csr/` and `ssr/` rendering
+  strategies) a shared, consistent visual language.
 - Provide a single source of truth for shared visual tokens.
 - Stay framework-free and dependency-free by exposing CSS custom properties
   only. No theme runtime, no helper API, no component layer.
@@ -157,8 +159,11 @@ document.documentElement.removeAttribute("data-theme"); // restore system
 ```
 
 For an intentionally single-theme app — like
-[`todo-app`](./todo-app/) — hard-code the attribute in markup
-(`<html data-theme="light">`) and never touch it from JavaScript.
+[`csr/todo-app`](./csr/todo-app/), [`csr/todo-mobx-app`](./csr/todo-mobx-app/),
+or [`ssr/webui-todo-app`](./ssr/webui-todo-app/) (all light), and
+[`ssr/chat-app`](./ssr/chat-app/) (dark) — hard-code the attribute in markup
+(`<html data-theme="light">` or `<html data-theme="dark">`) and never touch
+it from JavaScript.
 
 ## Authoring rules
 

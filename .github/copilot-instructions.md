@@ -35,9 +35,16 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 ### Example projects
 
+Example apps are grouped by rendering strategy. Client-side-rendered (CSR)
+apps live under `examples/csr/`; server-side-rendered (SSR) apps — including
+those that pre-render their initial markup with `@microsoft/fast-build` or
+`@microsoft/webui` — live under `examples/ssr/`.
+
 - `examples/design-system/` — Shared semantic design tokens (`@microsoft/fast-examples-design-system`) consumed by all example apps.
 - `examples/csr/todo-app/` — A simple To-Do app demonstrating FAST usage patterns and using the shared `@microsoft/fast-examples-design-system` tokens.
 - `examples/csr/todo-mobx-app/` — A To-Do app demonstrating how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code).
+- `examples/ssr/chat-app/` — A declarative chat app that pre-renders its shell with `@microsoft/fast-build` and streams canned assistant replies, styled with the shared design-system tokens (dark theme, no runtime toggle).
+- `examples/ssr/webui-todo-app/` — A To-Do app that pre-renders with `@microsoft/webui` (`webui serve --plugin=fast`) and hydrates with `@microsoft/fast-html`, styled with the shared design-system tokens (light theme, no runtime toggle).
 
 ## Skills
 
