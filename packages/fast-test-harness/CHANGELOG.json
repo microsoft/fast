@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Thu, 21 May 2026 00:04:58 GMT",
+      "version": "0.2.0",
+      "tag": "@microsoft/fast-test-harness_v0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "d0dc9baf3d238690ae7086abd61f5df915941f74",
+            "comment": "feat: add support for shadow DOM options in template generation and SSR rendering"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.7.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-html to v1.0.0-alpha.53",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 02 May 2026 00:36:36 GMT",
       "version": "0.1.0",
       "tag": "@microsoft/fast-test-harness_v0.1.0",

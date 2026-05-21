@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-html",
-  "version": "1.0.0-alpha.52",
+  "version": "1.0.0-alpha.53",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -68,7 +68,7 @@
     "@microsoft/fast-element": "^2.10.4"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "^0.6.0",
+    "@microsoft/fast-build": "^0.7.0",
     "@microsoft/fast-element": "^2.10.4",
     "@microsoft/webui": "0.0.10"
   },

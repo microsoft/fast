@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 01 May 2026 00:15:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 21 May 2026 00:04:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.53
+
+Thu, 21 May 2026 00:04:58 GMT
+
+### Changes
+
+- feat: SSR-rendered output now includes host attributes declared on the inner <template> element of an <f-template> (e.g. tabindex="0"), with author-provided host attributes winning on conflict and client-only prefixes (@, :, f-ref, f-slotted, f-children) skipped (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.7.0
 
 ## 1.0.0-alpha.52
 
