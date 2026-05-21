@@ -1,6 +1,7 @@
 # FAST example apps — design guidance
 
-This document is the workspace-level guide for building UI in `examples/*`. It
+This document is the workspace-level guide for building UI in `examples/*`
+and its rendering-strategy subfolders (currently `examples/csr/`). It
 explains how the apps share a visual language, the constraints every example
 must follow, and the rules that humans and coding agents should apply when
 making changes. The token vocabulary itself lives in
@@ -25,7 +26,8 @@ alongside this one.
 
 ## Goals
 
-- Give every app in `examples/*` a shared, consistent visual language.
+- Give every app in `examples/*` (across all rendering-strategy subfolders)
+  a shared, consistent visual language.
 - Provide a single source of truth for shared visual tokens.
 - Stay framework-free and dependency-free by exposing CSS custom properties
   only. No theme runtime, no helper API, no component layer.
