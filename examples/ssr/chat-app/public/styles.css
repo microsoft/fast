@@ -1,0 +1,323 @@
+/*
+ * Chat app styles.
+ *
+ * Loaded twice on purpose:
+ *   1. From <head> in entry.html — render-blocks the document so the file is
+ *      fetched and cached before the HTML body is processed.
+ *   2. From inside each <template shadowrootmode="open"> in templates.html —
+ *      applies the styles inside each component's shadow root using the same
+ *      cached file.
+ *
+ * Because the same stylesheet is loaded into the document and multiple shadow
+ * roots, document-level rules stay limited to the page shell and component
+ * rules remain scoped with :host(<tag>) so they don't bleed across roots.
+ */
+
+html,
+body {
+    background: var(--fast-background-web-page-primary);
+    color: var(--fast-foreground-ctrl-neutral-primary-rest);
+}
+
+body {
+    margin: 0;
+}
+
+/* ----- chat-app ----- */
+
+:host(chat-app),
+:host(chat-app) *,
+:host(chat-app) *::before,
+:host(chat-app) *::after {
+    box-sizing: border-box;
+}
+
+:host(chat-app) {
+    color: var(--fast-foreground-ctrl-neutral-primary-rest);
+    display: block;
+    font-family: var(--fast-text-style-default-regular-font-family);
+    font-size: var(--fast-text-global-body3-font-size);
+    line-height: var(--fast-text-global-body3-line-height);
+}
+
+:host(chat-app) .app-shell {
+    background: var(--fast-background-layer-primary-solid);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-subtle);
+    border-radius: var(--fast-corner-large);
+    box-shadow: var(--fast-shadow-card-rest);
+    margin: var(--fast-gap-between-content-x-large) auto;
+    max-width: 760px;
+    padding: var(--fast-padding-content-x-large);
+}
+
+:host(chat-app) .eyebrow {
+    color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+    font-size: var(--fast-text-global-caption1-font-size);
+    font-weight: var(--fast-text-style-default-header-weight);
+    line-height: var(--fast-text-global-caption1-line-height);
+    margin: 0 0 var(--fast-gap-between-content-x-small);
+    text-transform: uppercase;
+}
+
+:host(chat-app) h1 {
+    font-size: var(--fast-text-global-display2-font-size);
+    font-weight: var(--fast-text-style-default-display-weight);
+    line-height: var(--fast-text-global-display2-line-height);
+    margin: 0;
+}
+
+:host(chat-app) .intro {
+    color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+    font-size: var(--fast-text-global-body2-font-size);
+    line-height: var(--fast-text-global-body2-line-height);
+    margin: var(--fast-gap-between-content-small) 0 0;
+}
+
+:host(chat-app) code {
+    font-family: var(--fast-text-style-code-regular-font-family);
+}
+
+:host(chat-app) .transcript {
+    background: var(--fast-background-layer-secondary);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-default);
+    border-radius: var(--fast-corner-large);
+    display: flex;
+    flex-direction: column;
+    gap: var(--fast-gap-between-content-small);
+    margin-top: var(--fast-gap-between-content-x-large);
+    max-height: 520px;
+    min-height: 340px;
+    overflow: auto;
+    padding: var(--fast-padding-content-large);
+}
+
+:host(chat-app) streaming-element {
+    display: contents;
+}
+
+:host(chat-app) .composer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fast-gap-between-content-small);
+    margin-top: var(--fast-gap-between-content-large);
+}
+
+:host(chat-app) label {
+    font-size: var(--fast-text-global-body3-font-size);
+    font-weight: var(--fast-text-style-default-header-weight);
+    line-height: var(--fast-text-global-body3-line-height);
+}
+
+:host(chat-app) textarea {
+    background: var(--fast-background-layer-secondary);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-ctrl-on-outline-rest);
+    border-radius: var(--fast-corner-medium);
+    color: inherit;
+    font: inherit;
+    min-height: 112px;
+    padding: var(--fast-padding-content-small) var(--fast-padding-content-medium);
+    resize: vertical;
+    transition:
+        background var(--fast-duration-fast) var(--fast-curve-easy-ease),
+        border-color var(--fast-duration-fast) var(--fast-curve-easy-ease),
+        outline-color var(--fast-duration-fast) var(--fast-curve-easy-ease);
+}
+
+:host(chat-app) textarea::placeholder {
+    color: var(--fast-foreground-ctrl-hint-default);
+}
+
+:host(chat-app) textarea:focus-visible {
+    border-color: var(--fast-ctrl-focus-outer-stroke);
+    outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+        var(--fast-ctrl-focus-outer-stroke);
+    outline-offset: var(--fast-stroke-width-default);
+}
+
+:host(chat-app) .composer__hint {
+    color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--fast-text-global-caption1-font-size);
+    line-height: var(--fast-text-global-caption1-line-height);
+    gap: var(--fast-gap-between-content-x-small) var(--fast-gap-between-content-medium);
+}
+
+:host(chat-app) button {
+    align-self: flex-start;
+    background: var(--fast-background-ctrl-brand-rest);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-brand);
+    border-radius: var(--fast-corner-circular);
+    color: var(--fast-foreground-ctrl-on-brand-rest);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--fast-text-global-body3-font-size);
+    font-weight: var(--fast-text-style-default-header-weight);
+    line-height: var(--fast-text-global-body3-line-height);
+    padding: var(--fast-padding-content-x-small) var(--fast-padding-content-small);
+    transition:
+        background var(--fast-duration-fast) var(--fast-curve-easy-ease),
+        border-color var(--fast-duration-fast) var(--fast-curve-easy-ease);
+}
+
+:host(chat-app) button:hover {
+    background: var(--fast-background-ctrl-brand-hover);
+}
+
+:host(chat-app) button:active {
+    background: var(--fast-background-ctrl-brand-pressed);
+}
+
+:host(chat-app) button:focus-visible {
+    outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+        var(--fast-ctrl-focus-outer-stroke);
+    outline-offset: var(--fast-stroke-width-default);
+}
+
+@media (max-width: 640px) {
+    :host(chat-app) .app-shell {
+        border-radius: var(--fast-corner-none);
+        margin: 0;
+        min-height: 100vh;
+    }
+
+    :host(chat-app) .transcript {
+        min-height: 50vh;
+    }
+}
+
+/* ----- chat-message ----- */
+
+:host(chat-message) {
+    display: block;
+}
+
+:host(chat-message) article {
+    background: var(--fast-background-layer-primary-solid);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-subtle);
+    border-radius: var(--fast-corner-medium);
+    box-shadow: var(--fast-shadow-card-rest);
+    color: var(--fast-foreground-ctrl-neutral-primary-rest);
+    font-size: var(--fast-text-global-body2-font-size);
+    line-height: var(--fast-text-global-body2-line-height);
+    padding: var(--fast-padding-content-medium);
+}
+
+:host(chat-message[kind="user"]) article {
+    background: var(--fast-background-ctrl-brand-rest);
+    border-color: var(--fast-stroke-divider-brand);
+    color: var(--fast-foreground-ctrl-on-brand-rest);
+    margin-left: calc(
+        var(--fast-padding-content-xxx-large) +
+        var(--fast-gap-between-content-xx-large)
+    );
+}
+
+:host(chat-message[kind="bot"]) article {
+    margin-right: calc(
+        var(--fast-padding-content-xxx-large) +
+        var(--fast-gap-between-content-xx-large)
+    );
+}
+
+:host(chat-message) ::slotted(p),
+:host(chat-message) ::slotted(ul),
+:host(chat-message) ::slotted(ol),
+:host(chat-message) ::slotted(chat-card) {
+    display: block;
+    margin: 0 0 var(--fast-gap-between-content-small);
+}
+
+:host(chat-message) ::slotted(p) {
+    white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+    :host(chat-message[kind="user"]) article,
+    :host(chat-message[kind="bot"]) article {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* ----- chat-card ----- */
+
+:host(chat-card) {
+    display: block;
+}
+
+:host(chat-card) article {
+    background: var(--fast-background-layer-secondary);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-default);
+    border-radius: var(--fast-corner-medium);
+    color: var(--fast-foreground-ctrl-neutral-primary-rest);
+    padding: var(--fast-padding-content-small) var(--fast-padding-content-medium);
+}
+
+:host(chat-card) strong {
+    color: var(--fast-foreground-ctrl-brand-rest);
+    display: block;
+    font-size: var(--fast-text-global-body3-font-size);
+    font-weight: var(--fast-text-style-default-header-weight);
+    line-height: var(--fast-text-global-body3-line-height);
+    margin-bottom: var(--fast-gap-between-content-xx-small);
+}
+
+:host(chat-card) ::slotted(p),
+:host(chat-card) ::slotted(ul),
+:host(chat-card) ::slotted(ol) {
+    display: block;
+    margin: 0 0 var(--fast-gap-between-content-x-small);
+}
+
+/* ----- chat-suggestion ----- */
+
+:host(chat-suggestion) {
+    display: block;
+}
+
+:host(chat-suggestion) .suggestion {
+    background: var(--fast-background-layer-primary-solid);
+    border: var(--fast-stroke-width-default) dashed var(--fast-stroke-divider-brand);
+    border-radius: var(--fast-corner-medium);
+    color: var(--fast-foreground-ctrl-brand-rest);
+    cursor: pointer;
+    margin: 0 0 0 auto;
+    max-width: 420px;
+    padding: var(--fast-padding-content-x-small) var(--fast-padding-content-small);
+    transition:
+        background var(--fast-duration-fast) var(--fast-curve-easy-ease),
+        border-color var(--fast-duration-fast) var(--fast-curve-easy-ease),
+        color var(--fast-duration-fast) var(--fast-curve-easy-ease);
+    user-select: text;
+}
+
+:host(chat-suggestion) .suggestion:hover {
+    background: var(--fast-background-ctrl-subtle-hover);
+}
+
+:host(chat-suggestion) .suggestion:active {
+    background: var(--fast-background-ctrl-subtle-pressed);
+}
+
+:host(chat-suggestion) .label {
+    color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+    display: block;
+    font-size: var(--fast-text-global-caption1-font-size);
+    font-weight: var(--fast-text-style-default-header-weight);
+    line-height: var(--fast-text-global-caption1-line-height);
+    margin-bottom: var(--fast-gap-between-content-xx-small);
+    text-transform: uppercase;
+}
+
+:host(chat-suggestion) code {
+    background: var(--fast-background-layer-secondary);
+    border-radius: var(--fast-corner-medium);
+    color: inherit;
+    display: inline-block;
+    font-family: var(--fast-text-style-code-regular-font-family);
+    font-size: var(--fast-text-global-body3-font-size);
+    line-height: var(--fast-text-global-body3-line-height);
+    padding: var(--fast-padding-content-xx-small) var(--fast-padding-content-x-small);
+    white-space: pre-wrap;
+}

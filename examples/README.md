@@ -12,10 +12,11 @@ FAST patterns in a complete app context.
 | `design-system` | `@microsoft/fast-examples-design-system` | Shared CSS design tokens (no JS) consumed by every example app. |
 | `csr/todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
 | `csr/todo-mobx-app` | `@microsoft/fast-todo-mobx-app-example` | A To-Do app showing how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code), styled with the shared design-system tokens. |
+| `ssr/chat-app` | `@microsoft/fast-chat-app-example` | A declarative FAST chat demo that pre-renders with `@microsoft/fast-build` and streams canned assistant replies into the transcript, styled with the shared design-system tokens (dark theme, no runtime toggle). |
 
 Example apps are grouped by rendering strategy. Client-side-rendered (CSR)
-apps live under [`examples/csr/`](./csr/); future server-side-rendered (SSR)
-apps will live alongside them under their own subfolder.
+apps live under [`examples/csr/`](./csr/) and server-side-rendered (SSR) apps
+live under [`examples/ssr/`](./ssr/).
 
 ## Shared design system
 
@@ -51,17 +52,19 @@ See:
 ## Creating a new example app
 
 1. Scaffold a new folder under the appropriate rendering-strategy subfolder
-   (CSR apps go under `examples/csr/<your-app>/`).
-2. Use [`examples/csr/todo-app/`](./csr/todo-app/) as a reference for
-   `package.json`, `tsconfig.json`, `vite.config.ts`, and `index.html`.
-3. Add `"@microsoft/fast-examples-design-system": "workspace:*"` to the new
+   (CSR apps go under `examples/csr/<your-app>/`; SSR apps go under
+   `examples/ssr/<your-app>/`).
+2. Use [`examples/csr/todo-app/`](./csr/todo-app/) as a reference for CSR
+   apps, or [`examples/ssr/chat-app/`](./ssr/chat-app/) as a reference for
+   SSR apps (`package.json`, `tsconfig.json`, build config, entry HTML).
+3. Add `"@microsoft/fast-examples-design-system": "^1.0.0"` to the new
    app's `dependencies` and run `npm install` from the repo root.
 4. Import `@microsoft/fast-examples-design-system/tokens.css` exactly once at
-   the app entry point (typically `src/main.ts`). For an intentionally
-   single-theme app, hard-code `<html data-theme="light">` (or `"dark"`)
-   in `index.html` and never touch it from JavaScript.
+   the app entry point (typically `src/main.ts` or `src/index.ts`). For an
+   intentionally single-theme app, hard-code `<html data-theme="light">` (or
+   `"dark"`) in the entry HTML and never touch it from JavaScript.
 5. Reference tokens via `var(--fast-...)` in component `css` template
-   literals — do not hard-code design values.
+   literals or `.css` files — do not hard-code design values.
 6. If the app needs a theme toggle, set or remove the `data-theme` attribute
    on `<html>` from your app code:
    ```ts
@@ -86,6 +89,7 @@ For the existing example apps:
 ```shell
 npm start -w @microsoft/fast-todo-app-example
 npm start -w @microsoft/fast-todo-mobx-app-example
+npm start -w @microsoft/fast-chat-app-example
 ```
 
 ## Useful links
