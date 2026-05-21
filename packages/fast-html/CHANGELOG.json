@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 21 May 2026 00:04:58 GMT",
+      "version": "1.0.0-alpha.53",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.53",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "89c18a1dd8e6787d56e4f399f7950e0fbc6e3d1f",
+            "comment": "feat: SSR-rendered output now includes host attributes declared on the inner <template> element of an <f-template> (e.g. tabindex=\"0\"), with author-provided host attributes winning on conflict and client-only prefixes (@, :, f-ref, f-slotted, f-children) skipped"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.7.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "1.0.0-alpha.52",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.52",

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: SSR-rendered output now includes host attributes declared on the inner <template> element of an <f-template> (e.g. tabindex=\"0\"), with author-provided host attributes winning on conflict and client-only prefixes (@, :, f-ref, f-slotted, f-children) skipped",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Thu, 21 May 2026 00:04:58 GMT",
+      "version": "0.7.0",
+      "tag": "@microsoft/fast-build_v0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "89c18a1dd8e6787d56e4f399f7950e0fbc6e3d1f",
+            "comment": "feat: propagate host attributes from inner <template> of <f-template> onto the rendered host element opening tag during SSR (static, {{expr}}, and ?name=\"{{expr}}\" bindings; author-provided host attributes win on conflict; client-only attribute prefixes @, :, f-ref, f-slotted, f-children are skipped)"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "0.6.0",
       "tag": "@microsoft/fast-build_v0.6.0",

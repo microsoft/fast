@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: add support for shadow DOM options in template generation and SSR rendering",
-  "packageName": "@microsoft/fast-test-harness",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

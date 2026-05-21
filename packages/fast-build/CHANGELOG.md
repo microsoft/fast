@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 01 May 2026 00:15:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 21 May 2026 00:04:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.7.0
+
+Thu, 21 May 2026 00:04:58 GMT
+
+### Minor changes
+
+- feat: propagate host attributes from inner <template> of <f-template> onto the rendered host element opening tag during SSR (static, {{expr}}, and ?name="{{expr}}" bindings; author-provided host attributes win on conflict; client-only attribute prefixes @, :, f-ref, f-slotted, f-children are skipped) (7559015+janechu@users.noreply.github.com)
 
 ## 0.6.0
 
