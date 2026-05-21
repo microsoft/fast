@@ -1,16 +1,7 @@
-import type { FASTElementTemplateResolver } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement } from "@microsoft/fast-html";
 
-export class ChatMessage extends FASTElement {
+export class ChatMessage extends RenderableFASTElement(FASTElement) {
     @attr
     public kind?: string;
 }
-
-export const chatMessageDefinition = {
-    name: "chat-message",
-    template: declarativeTemplate() as unknown as FASTElementTemplateResolver<
-        typeof ChatMessage
-    >,
-};

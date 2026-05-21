@@ -1,9 +1,7 @@
-import type { FASTElementTemplateResolver } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement } from "@microsoft/fast-html";
 
-export class ChatSuggestion extends FASTElement {
+export class ChatSuggestion extends RenderableFASTElement(FASTElement) {
     @attr
     public text?: string;
 
@@ -11,10 +9,3 @@ export class ChatSuggestion extends FASTElement {
         this.$emit("use-suggestion", this.text ?? "");
     }
 }
-
-export const chatSuggestionDefinition = {
-    name: "chat-suggestion",
-    template: declarativeTemplate() as unknown as FASTElementTemplateResolver<
-        typeof ChatSuggestion
-    >,
-};
