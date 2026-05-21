@@ -35,7 +35,8 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 ### Example projects
 
-- `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns.
+- `examples/design-system/` — Shared semantic design tokens (`@microsoft/fast-examples-design-system`) consumed by all example apps.
+- `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns and using the shared `@microsoft/fast-examples-design-system` tokens.
 
 ## Skills
 
