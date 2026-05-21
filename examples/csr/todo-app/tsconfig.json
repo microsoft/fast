@@ -3,7 +3,7 @@
         "plugins": [
             {
                 "name": "@genesiscommunitysuccess/custom-elements-lsp",
-                "srcRouteFromTSServer": "../../../examples/todo-app",
+                "srcRouteFromTSServer": "../../../../examples/csr/todo-app",
                 "parser": {
                     "fastEnable": true,
                     "timeout": 2000,
