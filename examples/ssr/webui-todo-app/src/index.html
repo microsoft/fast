@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html dir="{{textdirection}}" lang="en">
+<html dir="{{textdirection}}" lang="en" data-theme="light">
     <head>
         <meta charset="utf-8">
         <title>{{ title }}</title>
+        <link rel="stylesheet" href="/index.css">
         <style>
         * {
             box-sizing: border-box;
@@ -11,12 +12,12 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: var(--fast-text-style-default-regular-font-family);
             max-width: 640px;
             margin: 0 auto;
-            padding: 32px;
-            background: #f8f9fa;
-            color: #212529;
+            padding: var(--fast-padding-content-xx-large);
+            background: var(--fast-background-web-page-primary);
+            color: var(--fast-foreground-ctrl-neutral-primary-rest);
         }
         </style>
     </head>

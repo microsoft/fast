@@ -14,7 +14,7 @@
     "sites/*",
     "examples/*",
     "examples/csr/*",
-    "examples/webui-todo-app"
+    "examples/ssr/*"
   ],
   "engines": {
     "npm": ">=10.0.0",

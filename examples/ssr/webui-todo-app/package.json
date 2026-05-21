@@ -20,10 +20,11 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Microsoft/fast.git",
-        "directory": "examples/webui-todo-app"
+        "directory": "examples/ssr/webui-todo-app"
     },
     "dependencies": {
         "@microsoft/fast-element": "^2.10.3",
+        "@microsoft/fast-examples-design-system": "^1.0.0",
         "@microsoft/fast-html": "*",
         "@microsoft/webui": "^0.0.6",
         "tslib": "^2.6.3"
