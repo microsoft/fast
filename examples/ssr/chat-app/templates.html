@@ -1,0 +1,84 @@
+<f-template name="chat-app">
+    <template>
+        <link rel="stylesheet" href="/styles.css">
+
+        <section class="app-shell">
+            <header>
+                <p class="eyebrow">FAST example</p>
+                <h1>{{ welcomeTitle }}</h1>
+                <p class="intro">
+                    A declarative FAST shell that pre-renders with
+                    <code>@microsoft/fast-build</code>
+                    and streams each assistant reply with a hidden iframe plus
+                    <code>document.write()</code>.
+                </p>
+            </header>
+
+            <div
+                class="transcript"
+                f-ref="{transcript}"
+                @use-suggestion="{handleSuggestion($e)}"
+            >
+                <chat-message kind="bot">
+                    <p>
+                        <strong>Welcome!</strong>
+                        Send the exact suggested prompt to step through the canned chat.
+                    </p>
+                    <chat-card heading="How to use it">
+                        <p>
+                            Each assistant turn mixes native HTML with FAST custom
+                            elements and streams into the transcript a chunk at a time.
+                        </p>
+                    </chat-card>
+                </chat-message>
+                <chat-suggestion text="{{initialSuggestion}}"></chat-suggestion>
+            </div>
+
+            <form class="composer" @submit="{handleSubmit($e)}">
+                <label for="chat-composer">Message</label>
+                <textarea
+                    id="chat-composer"
+                    rows="4"
+                    placeholder="{{composerPlaceholder}}"
+                    f-ref="{composer}"
+                    @keydown="{handleComposerKeydown($e)}"
+                ></textarea>
+                <div class="composer__hint">
+                    <span>Enter sends the message.</span>
+                    <span>Shift+Enter inserts a newline.</span>
+                </div>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </template>
+</f-template>
+
+<f-template name="chat-message">
+    <template>
+        <link rel="stylesheet" href="/styles.css">
+
+        <article><slot></slot></article>
+    </template>
+</f-template>
+
+<f-template name="chat-card">
+    <template>
+        <link rel="stylesheet" href="/styles.css">
+
+        <article>
+            <strong>{{ heading }}</strong>
+            <slot></slot>
+        </article>
+    </template>
+</f-template>
+
+<f-template name="chat-suggestion">
+    <template>
+        <link rel="stylesheet" href="/styles.css">
+
+        <p class="suggestion" @click="{emitSuggestion()}">
+            <span class="label">Next suggested user message</span>
+            <code>{{ text }}</code>
+        </p>
+    </template>
+</f-template>
