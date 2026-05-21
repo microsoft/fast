@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html dir="{{textdirection}}" lang="en" data-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/index.css">
+        <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--fast-text-style-default-regular-font-family);
+            max-width: 640px;
+            margin: 0 auto;
+            padding: var(--fast-padding-content-xx-large);
+            background: var(--fast-background-web-page-primary);
+            color: var(--fast-foreground-ctrl-neutral-primary-rest);
+        }
+        </style>
+    </head>
+
+    <body>
+        <todo-app title="{{title}}"></todo-app>
+
+        <script type="module" src="/index.js"></script>
+    </body>
+</html>
