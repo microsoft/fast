@@ -13,6 +13,7 @@
 
 performance.mark("todo-hydration-started");
 
+import "@microsoft/fast-examples-design-system/tokens.css";
 import { TemplateElement } from "@microsoft/fast-html";
 
 // Side-effect imports — register custom elements via defineAsync
