@@ -15,49 +15,12 @@ export const styles = css`
         margin: var(--fast-gap-between-content-x-large) auto;
     }
 
-    .toolbar {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: var(--fast-gap-between-content-x-small);
-    }
-
     h1 {
         margin: 0 0 var(--fast-gap-between-content-small);
         font-size: var(--fast-text-global-display2-font-size);
         line-height: var(--fast-text-global-display2-line-height);
         font-weight: var(--fast-text-style-default-header-weight);
         color: var(--fast-foreground-ctrl-brand-rest);
-    }
-
-    .theme-toggle {
-        background: var(--fast-background-ctrl-brand-rest);
-        color: var(--fast-foreground-ctrl-on-brand-rest);
-        border: var(--fast-stroke-width-default) solid
-            var(--fast-stroke-divider-brand);
-        border-radius: var(--fast-corner-medium);
-        padding: var(--fast-padding-content-xx-small)
-            var(--fast-padding-content-small);
-        font-family: inherit;
-        font-size: var(--fast-text-global-body3-font-size);
-        line-height: var(--fast-text-global-body3-line-height);
-        cursor: pointer;
-        transition: background var(--fast-duration-fast)
-            var(--fast-curve-easy-ease);
-    }
-
-    .theme-toggle:hover {
-        background: var(--fast-background-ctrl-brand-hover);
-    }
-
-    .theme-toggle:active {
-        background: var(--fast-background-ctrl-brand-pressed);
-    }
-
-    .theme-toggle:focus-visible {
-        outline: var(--fast-ctrl-focus-outer-stroke-width) solid
-            var(--fast-ctrl-focus-outer-stroke);
-        outline-offset: var(--fast-stroke-width-default);
     }
 
     section {

@@ -10,7 +10,7 @@ FAST patterns in a complete app context.
 | Folder | Package | Purpose |
 | --- | --- | --- |
 | `design-system` | `@microsoft/fast-examples-design-system` | Shared CSS design tokens (no JS) consumed by every example app. |
-| `todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, including a three-state light/dark/auto toggle. |
+| `todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
 
 ## Shared design system
 

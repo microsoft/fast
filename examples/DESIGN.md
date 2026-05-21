@@ -154,8 +154,9 @@ document.documentElement.setAttribute("data-theme", "light");
 document.documentElement.removeAttribute("data-theme"); // restore system
 ```
 
-[`todo-app/src/todo-app.ts`](./todo-app/src/todo-app.ts) contains a working
-three-state (light / dark / auto) toggle implemented this way.
+For an intentionally single-theme app — like
+[`todo-app`](./todo-app/) — hard-code the attribute in markup
+(`<html data-theme="light">`) and never touch it from JavaScript.
 
 ## Authoring rules
 

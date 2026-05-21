@@ -131,8 +131,9 @@ document.documentElement.setAttribute("data-theme", "dark");
 document.documentElement.removeAttribute("data-theme");
 ```
 
-See [`../todo-app/`](../todo-app/) for a working three-state (light, dark,
-auto) toggle that uses only this DOM API.
+See [`../todo-app/`](../todo-app/) for a working consumer of the design
+system. The example deliberately uses a single (light) theme set
+statically in markup; it does not implement a runtime toggle.
 
 ## Token catalog
 

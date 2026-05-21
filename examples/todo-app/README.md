@@ -17,31 +17,17 @@ JavaScript or TypeScript exports. `src/main.ts` imports
 `@microsoft/fast-examples-design-system/tokens.css` once, and the rest of the
 app references the registered `--fast-*` design tokens through `var(...)`.
 
-For the shared package overview, available stylesheets, token catalog, and
-authoring rules, see
-[`examples/design-system/README.md`](../design-system/README.md) and
+The app uses the **light** theme. `<html data-theme="light">` is set
+statically in [`index.html`](./index.html); the app does not implement a
+theme toggle. (The shared design-system package supports dark and
+system-preference themes via the same `data-theme` attribute — see
+[`examples/design-system/README.md`](../design-system/README.md) — but this
+example deliberately keeps the surface area minimal and demonstrates only
+token consumption.)
+
+For the shared package overview, the token catalog, and authoring rules,
+see [`examples/design-system/README.md`](../design-system/README.md) and
 [`examples/design-system/DESIGN.md`](../design-system/DESIGN.md).
-
-## Theme toggle
-
-The toolbar includes a three-state toggle that displays as `☀️ Light`,
-`🌙 Dark`, or `🖥️ Auto`. The toggle cycles in that order.
-
-The toggle is implemented entirely inside the app, in
-[`src/todo-app.ts`](./src/todo-app.ts), by reading and writing the
-`data-theme` attribute on `<html>` with plain DOM APIs:
-
-```ts
-document.documentElement.setAttribute("data-theme", "light");
-document.documentElement.setAttribute("data-theme", "dark");
-document.documentElement.removeAttribute("data-theme"); // Auto
-```
-
-The shared `tokens.css` stylesheet responds to that attribute and falls back
-to `prefers-color-scheme` while no explicit theme is set, so the default
-`🖥️ Auto` state tracks the user's system preference automatically. This
-pattern is what every example app is expected to use — the design-system
-package intentionally exposes no JavaScript theme API.
 
 ## Token usage
 
@@ -52,7 +38,7 @@ interaction states. For example:
   `--fast-foreground-ctrl-neutral-primary-rest`,
   `--fast-stroke-divider-subtle`, `--fast-corner-large`,
   `--fast-shadow-card-rest`, `--fast-padding-content-medium`.
-- Primary action (theme toggle button, Add): `--fast-background-ctrl-brand-rest`,
+- Primary action (Add): `--fast-background-ctrl-brand-rest`,
   `--fast-foreground-ctrl-on-brand-rest`, `--fast-stroke-divider-brand`,
   `--fast-background-ctrl-brand-hover`, `--fast-background-ctrl-brand-pressed`.
 - Typography: `--fast-text-style-default-regular-font-family`,
