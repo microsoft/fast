@@ -12,7 +12,8 @@
     "build",
     "packages/*",
     "sites/*",
-    "examples/*"
+    "examples/*",
+    "examples/ssr/*"
   ],
   "engines": {
     "npm": ">=10.0.0",

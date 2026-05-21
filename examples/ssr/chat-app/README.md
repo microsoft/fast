@@ -2,6 +2,23 @@
 
 A small declarative FAST chat demo that pre-renders its initial markup with `@microsoft/fast-build` and streams canned assistant replies with a hidden iframe plus `document.write()`.
 
+## Design system
+
+This example consumes the shared `@microsoft/fast-examples-design-system`
+workspace package. The design-system package is **CSS-only** — `src/main.ts`
+imports `@microsoft/fast-examples-design-system/tokens.css` once, and
+`public/styles.css` references the registered `--fast-*` tokens through
+`var(...)`.
+
+The app uses the **dark** theme statically. `<html data-theme="dark">` is set
+in [`entry.html`](./entry.html), so the FAST build step carries that attribute
+into the generated `index.html`. The example does not implement a runtime
+theme toggle.
+
+For the shared package overview, the token catalog, and authoring rules, see
+[`../../design-system/README.md`](../../design-system/README.md) and
+[`../../design-system/DESIGN.md`](../../design-system/DESIGN.md).
+
 ## What it demonstrates
 
 - declarative FAST custom elements via `declarativeTemplate()`
@@ -45,7 +62,8 @@ The build first regenerates `index.html` from `entry.html`, `state.json`, and `t
 - `state.json` — initial state used while pre-rendering the page shell
 - `templates.html` — declarative FAST templates for the custom elements
 - `build-markup.mjs` — runs `@microsoft/fast-build` and injects the templates into `index.html`
+- `public/styles.css` — token-based shared stylesheet for the page shell and component shadow roots
 - `src/` — runtime classes, canned conversation data, and hydration bootstrap
 - `index.html` — generated pre-rendered page used by Vite
 
-See [DESIGN.md](./DESIGN.md) for architecture details and the canned conversation data.
+See [DESIGN.md](./DESIGN.md) for architecture details, design-system notes, and the canned conversation data.

@@ -36,6 +36,7 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 - `examples/design-system/` — Shared semantic design tokens (`@microsoft/fast-examples-design-system`) consumed by all example apps.
 - `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns and using the shared `@microsoft/fast-examples-design-system` tokens.
+- `examples/ssr/chat-app/` — A declarative FAST chat demo that pre-renders with `@microsoft/fast-build` and streams canned assistant replies into the transcript. Dark theme.
 
 ## Skills
 
