@@ -5,3 +5,8 @@ export class ChatCard extends RenderableFASTElement(FASTElement) {
     @attr
     public heading?: string;
 }
+
+ChatCard.defineAsync({
+    name: "chat-card",
+    templateOptions: "defer-and-hydrate",
+});

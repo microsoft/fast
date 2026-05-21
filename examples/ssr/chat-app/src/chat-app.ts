@@ -191,3 +191,8 @@ export class ChatApp extends RenderableFASTElement(FASTElement) {
         });
     }
 }
+
+ChatApp.defineAsync({
+    name: "chat-app",
+    templateOptions: "defer-and-hydrate",
+});

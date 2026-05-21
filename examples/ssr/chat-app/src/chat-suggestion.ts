@@ -9,3 +9,8 @@ export class ChatSuggestion extends RenderableFASTElement(FASTElement) {
         this.$emit("use-suggestion", this.text ?? "");
     }
 }
+
+ChatSuggestion.defineAsync({
+    name: "chat-suggestion",
+    templateOptions: "defer-and-hydrate",
+});

@@ -5,7 +5,7 @@
         <section class="app-shell">
             <header>
                 <p class="eyebrow">FAST example</p>
-                <h1>{{ welcomeTitle }}</h1>
+                <h1>{{welcomeTitle}}</h1>
                 <p class="intro">
                     A declarative FAST shell that pre-renders with
                     <code>@microsoft/fast-build</code>
@@ -66,7 +66,7 @@
         <link rel="stylesheet" href="/styles.css">
 
         <article>
-            <strong>{{ heading }}</strong>
+            <strong>{{heading}}</strong>
             <slot></slot>
         </article>
     </template>
@@ -78,7 +78,7 @@
 
         <p class="suggestion" @click="{emitSuggestion()}">
             <span class="label">Next suggested user message</span>
-            <code>{{ text }}</code>
+            <code>{{text}}</code>
         </p>
     </template>
 </f-template>
