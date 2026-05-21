@@ -1,3 +1,4 @@
+import "@microsoft/fast-examples-design-system/tokens.css";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { ChatApp, chatAppDefinition } from "./chat-app.js";

@@ -20,10 +20,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast.git",
-    "directory": "examples/chat-app"
+    "directory": "examples/ssr/chat-app"
   },
   "dependencies": {
     "@microsoft/fast-element": "^3.0.0-rc.1",
+    "@microsoft/fast-examples-design-system": "^1.0.0",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

@@ -13,7 +13,8 @@
     "packages/*",
     "sites/*",
     "examples/*",
-    "examples/csr/*"
+    "examples/csr/*",
+    "examples/ssr/*"
   ],
   "engines": {
     "npm": ">=10.0.0",
