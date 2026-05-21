@@ -1,0 +1,75 @@
+:host {
+    display: block;
+    padding: var(--fast-padding-content-medium);
+    max-width: 480px;
+}
+
+h1 {
+    font-size: var(--fast-text-global-title1-font-size);
+    line-height: var(--fast-text-global-title1-line-height);
+    font-weight: var(--fast-text-style-default-header-weight);
+    margin-bottom: var(--fast-gap-between-content-medium);
+    color: var(--fast-foreground-ctrl-brand-rest);
+}
+
+.add-form {
+    display: flex;
+    gap: var(--fast-gap-between-content-x-small);
+    margin-bottom: var(--fast-gap-between-content-medium);
+}
+
+.add-input {
+    flex: 1;
+    padding: var(--fast-padding-content-x-small) var(--fast-padding-content-small);
+    font-size: var(--fast-text-global-body3-font-size);
+    line-height: var(--fast-text-global-body3-line-height);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-ctrl-on-outline-rest);
+    border-radius: var(--fast-corner-large);
+    outline: none;
+    font-family: inherit;
+}
+
+.add-input:focus {
+    border-color: var(--fast-ctrl-focus-outer-stroke);
+    outline: var(--fast-ctrl-focus-outer-stroke-width) solid
+        var(--fast-ctrl-focus-outer-stroke);
+    outline-offset: var(--fast-stroke-width-default);
+}
+
+.add-button {
+    padding: var(--fast-padding-content-x-small) var(--fast-padding-content-large);
+    font-size: var(--fast-text-global-body3-font-size);
+    line-height: var(--fast-text-global-body3-line-height);
+    font-family: inherit;
+    background: var(--fast-background-ctrl-brand-rest);
+    color: var(--fast-foreground-ctrl-on-brand-rest);
+    border: none;
+    border-radius: var(--fast-corner-large);
+    cursor: pointer;
+    transition: background var(--fast-duration-fast) var(--fast-curve-easy-ease);
+}
+
+.add-button:hover {
+    background: var(--fast-background-ctrl-brand-hover);
+}
+
+.add-button:active {
+    background: var(--fast-background-ctrl-brand-pressed);
+}
+
+.todo-list {
+    background: var(--fast-background-layer-primary-solid);
+    border: var(--fast-stroke-width-default) solid var(--fast-stroke-divider-subtle);
+    border-radius: var(--fast-corner-large);
+    box-shadow: var(--fast-shadow-card-rest);
+    overflow: hidden;
+}
+
+.footer {
+    margin-top: var(--fast-gap-between-content-medium);
+    padding: var(--fast-padding-content-x-small);
+    text-align: center;
+    font-size: var(--fast-text-global-caption1-font-size);
+    line-height: var(--fast-text-global-caption1-line-height);
+    color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+}
