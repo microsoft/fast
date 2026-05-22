@@ -37,4 +37,15 @@ export const template = html<TodoApp>`
             `,
         )}
     </ul>
+
+    <footer>
+        <span class="active-count">
+            ${x =>
+                `${x.todos.activeCount} ${
+                    x.todos.activeCount === 1 ? "item" : "items"
+                } left`}
+        </span>
+        <span aria-hidden="true">·</span>
+        <span class="completed-count">${x => `${x.todos.completedCount} completed`}</span>
+    </footer>
 `;
