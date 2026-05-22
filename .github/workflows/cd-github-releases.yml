@@ -5,10 +5,6 @@ on:
   schedule:
   - cron: '0 8 * * *' # Midnight PST = 08:00 UTC.
 
-env:
-  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
-
 permissions: { contents: write }
 
 jobs:
@@ -17,18 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
 
     - uses: actions/setup-node@v6
       with:
         node-version: 22
-
-    - name: Set Git User
-      run: |
-        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
-        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
     - name: Cache multiple paths
       uses: actions/cache@v4
@@ -56,12 +44,7 @@ jobs:
     - name: Build workspaces
       run: npm run build
 
-    - name: Bump versions and pack tarballs
-      run: npm run publish-ci
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-    - name: Create GitHub releases for new package versions
+    - name: Pack publishable workspaces and create GitHub releases
       run: node build/scripts/create-github-releases.mjs
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
