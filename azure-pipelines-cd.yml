@@ -73,10 +73,10 @@ extends:
             displayName: "Install package dependencies"
 
           - script: |
-              node build/scripts/download-github-releases.mjs
+              bash build/scripts/download-github-releases.sh
             displayName: "Download new GitHub release tarballs that have not been published to npm"
             env:
-              GITHUB_TOKEN: $(GH_TOKEN)
+              GH_TOKEN: $(GH_TOKEN)
               GITHUB_REPOSITORY: microsoft/fast
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
