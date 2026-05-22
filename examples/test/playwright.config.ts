@@ -62,7 +62,7 @@ export default defineConfig({
             stderr: "pipe",
         },
         {
-            command: "npm start -w @microsoft/fast-webui-todo-app-example",
+            command: "npm run start:e2e -w @microsoft/fast-webui-todo-app-example",
             url: "http://localhost:8081",
             cwd: "../..",
             reuseExistingServer: !isCI,

@@ -8,7 +8,9 @@
         "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --metafile=dist/meta.json",
         "start:client": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --sourcemap --watch",
         "start:server": "webui serve ./src --state ./data/state.json --plugin=fast --servedir ./dist --port 8081 --watch",
+        "start:server:nowatch": "webui serve ./src --state ./data/state.json --plugin=fast --servedir ./dist --port 8081",
         "start": "npm run build && npm run start:server",
+        "start:e2e": "npm run build && npm run start:server:nowatch",
         "test": "npm run build"
     },
     "author": {

@@ -66,6 +66,12 @@ Each project gets a matching `webServer` entry so Playwright starts and
 stops the dev server automatically. Workers are forced to `1` so the SSR
 app's shared `state.json` is never contended.
 
+The SSR `webui-todo-app` is started with `npm run start:e2e` (not `npm
+start`) which omits `webui serve`'s `--watch` flag. With `--watch` enabled
+the dev server opens a livereload SSE channel and reloads the page every
+time the app mutates its in-memory state — fine for local dev, fatal for
+deterministic E2E.
+
 ### Adapters
 
 `TodoAppAdapter` (`support/adapters/types.ts`) is the contract every adapter
