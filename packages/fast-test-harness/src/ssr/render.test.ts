@@ -4,67 +4,8 @@ import {
     buildEntryHtml,
     buildState,
     createSSRRenderer,
-    parseDefaultValue,
     renderTemplate,
 } from "@microsoft/fast-test-harness/ssr/render.js";
-
-test.describe("parseDefaultValue", () => {
-    test("should return empty string for empty input", () => {
-        assert.strictEqual(parseDefaultValue(""), "");
-    });
-
-    test("should return empty string for 'undefined'", () => {
-        assert.strictEqual(parseDefaultValue("undefined"), "");
-    });
-
-    test("should return empty string for 'null'", () => {
-        assert.strictEqual(parseDefaultValue("null"), "");
-    });
-
-    test("should return true for 'true'", () => {
-        assert.strictEqual(parseDefaultValue("true"), true);
-    });
-
-    test("should return false for 'false'", () => {
-        assert.strictEqual(parseDefaultValue("false"), false);
-    });
-
-    test("should strip single quotes from strings", () => {
-        assert.strictEqual(parseDefaultValue("'img'"), "img");
-    });
-
-    test("should strip double quotes from strings", () => {
-        assert.strictEqual(parseDefaultValue('"hello"'), "hello");
-    });
-
-    test("should parse integers", () => {
-        assert.strictEqual(parseDefaultValue("42"), 42);
-    });
-
-    test("should parse floats", () => {
-        assert.strictEqual(parseDefaultValue("3.14"), 3.14);
-    });
-
-    test("should parse zero", () => {
-        assert.strictEqual(parseDefaultValue("0"), 0);
-    });
-
-    test("should parse JSON arrays", () => {
-        assert.deepStrictEqual(parseDefaultValue("[1,2,3]"), [1, 2, 3]);
-    });
-
-    test("should parse JSON objects", () => {
-        assert.deepStrictEqual(parseDefaultValue('{"a":1}'), { a: 1 });
-    });
-
-    test("should return empty string for unparseable values", () => {
-        assert.strictEqual(parseDefaultValue("some random text"), "");
-    });
-
-    test("should trim whitespace", () => {
-        assert.strictEqual(parseDefaultValue("  true  "), true);
-    });
-});
 
 test.describe("renderTemplate", () => {
     test("should replace {{styles}} with a link tag", () => {
