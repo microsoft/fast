@@ -115,4 +115,17 @@ export const styles = css`
             var(--fast-status-danger-tint-stroke);
         outline-offset: var(--fast-stroke-width-default);
     }
+
+    footer {
+        display: flex;
+        align-items: center;
+        gap: var(--fast-gap-between-content-x-small);
+        margin-top: var(--fast-gap-between-content-small);
+        padding-top: var(--fast-padding-content-x-small);
+        border-top: var(--fast-stroke-width-default) solid
+            var(--fast-stroke-divider-subtle);
+        font-size: var(--fast-text-global-body3-font-size);
+        line-height: var(--fast-text-global-body3-line-height);
+        color: var(--fast-foreground-ctrl-neutral-secondary-rest);
+    }
 `;

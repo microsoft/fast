@@ -1,0 +1,39 @@
+<template
+    shadowrootmode="open"
+    @toggle-item="{onToggleItem($e)}"
+    @delete-item="{onDeleteItem($e)}"
+>
+    <h1>FAST Todos</h1>
+
+    <form @submit="{onSubmit()}">
+        <input type="text" f-ref="{addInput}" @input="{onInput($e)}">
+        <button type="submit" ?disabled="{{!description}}">Add Todo</button>
+    </form>
+
+    <section>
+        <label for="filter">Filter:</label>
+        <select name="filter" id="filter" title="filter" @change="{onFilterChange($e)}">
+            <option value="all" selected>All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+        </select>
+    </section>
+
+    <ul class="todo-list">
+        <for each="item in filteredItems">
+            <li>
+                <todo-item
+                    id="{{item.id}}"
+                    description="{{item.description}}"
+                    state="{{item.state}}"
+                ></todo-item>
+            </li>
+        </for>
+    </ul>
+
+    <footer>
+        <span class="active-count"></span>
+        <span aria-hidden="true">·</span>
+        <span class="completed-count"></span>
+    </footer>
+</template>
