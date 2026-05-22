@@ -1,0 +1,17 @@
+<template shadowrootmode="open">
+    <input
+        type="checkbox"
+        class="toggle"
+        ?checked="{{state == 'done'}}"
+        @change="{onToggleChange()}"
+    >
+    <span class="description"></span>
+    <button
+        type="button"
+        class="delete"
+        @click="{onDeleteClick()}"
+        aria-label="Remove item"
+    >
+        &times;
+    </button>
+</template>

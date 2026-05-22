@@ -101,9 +101,25 @@ export class TodoStore {
         this.todos = this.todos.filter(candidate => candidate.id !== todo.id);
     }
 
+    /** Removes a todo by its id. */
+    public removeById(id: string): void {
+        this.todos = this.todos.filter(candidate => candidate.id !== id);
+    }
+
     /** Toggles a todo's completion state. */
     public toggle(todo: Todo): void {
         const target = this.todos.find(candidate => candidate.id === todo.id);
+
+        if (target === undefined) {
+            return;
+        }
+
+        target.done = !target.done;
+    }
+
+    /** Toggles a todo's completion state by id. */
+    public toggleById(id: string): void {
+        const target = this.todos.find(candidate => candidate.id === id);
 
         if (target === undefined) {
             return;
