@@ -28,7 +28,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template-webui.html"), "utf8");
         assert.ok(html.includes('<template shadowrootmode="open">'));
@@ -167,7 +167,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "label.template-webui.html"), "utf8");
         assert.ok(
@@ -220,7 +220,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const buttonHtml = await readFile(
             join(distDir, "button.template-webui.html"),

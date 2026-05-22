@@ -352,7 +352,7 @@ export function convertTemplate(
     // so the test harness can substitute it with a <link rel="stylesheet"> at
     // render time. Harness fallback auto-injects if the marker is missing, but
     // emitting it explicitly keeps generated output consistent with hand-authored
-    // f-templates (see MAI core components).
+    // f-templates.
     fInner = fInner.replace(/(<template[^>]*>)/, `$1${stylesMarker}`);
     return `<f-template name="${componentName}" shadowrootmode="open">\n${fInner}\n</f-template>\n`;
 }
