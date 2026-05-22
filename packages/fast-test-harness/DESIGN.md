@@ -264,7 +264,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `tagPrefix` | `string` | — | Tag name prefix for custom elements (e.g., `"fluent"`, `"mai"`) |
+| `tagPrefix` | `string` | — | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | — | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | — | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
 | `distDir` | `string?` | `"dist/esm"` | Artifact directory relative to the package root. Only used with `packageName`. |

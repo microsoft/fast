@@ -158,10 +158,10 @@ test.describe("generateFTemplates", () => {
             };`,
         );
 
-        await generateFTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateFTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template.html"), "utf8");
-        assert.ok(html.includes('<f-template name="mai-badge"'));
+        assert.ok(html.includes('<f-template name="contoso-badge"'));
         assert.ok(html.includes("<slot></slot>"));
         assert.ok(html.includes("{{styles}}"));
     });
@@ -329,7 +329,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template-webui.html"), "utf8");
         assert.ok(html.includes('<template shadowrootmode="open">'));
