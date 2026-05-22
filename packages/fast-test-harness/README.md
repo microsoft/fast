@@ -267,7 +267,7 @@ CLI flags take precedence over environment variables.
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `toHaveCustomState`, `installDomShim`, `createSSRRenderer` |
 | `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
-| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
+| `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState` |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
