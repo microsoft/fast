@@ -2,21 +2,39 @@
     "textdirection": "ltr",
     "language": "en",
     "title": "FAST Todos",
-    "remainingCount": 2,
+    "activeFilter": "all",
+    "description": "",
     "items": [
         {
             "id": "1",
-            "title": "Buy groceries",
+            "description": "Buy groceries",
             "state": "done"
         },
         {
             "id": "2",
-            "title": "Write documentation",
+            "description": "Write documentation",
             "state": "pending"
         },
         {
             "id": "3",
-            "title": "Ship feature",
+            "description": "Ship feature",
+            "state": "pending"
+        }
+    ],
+    "filteredItems": [
+        {
+            "id": "1",
+            "description": "Buy groceries",
+            "state": "done"
+        },
+        {
+            "id": "2",
+            "description": "Write documentation",
+            "state": "pending"
+        },
+        {
+            "id": "3",
+            "description": "Ship feature",
             "state": "pending"
         }
     ]
