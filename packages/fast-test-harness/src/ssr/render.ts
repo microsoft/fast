@@ -21,10 +21,10 @@
  * flat exports.
  * ```ts
  * const { render } = createSSRRenderer({
- *     tagPrefix: "mai",
+ *     tagPrefix: "contoso",
  *     components: [
- *         { name: "button", packageName: "@mai-ui/button" },
- *         { name: "checkbox", packageName: "@mai-ui/checkbox" },
+ *         { name: "button", packageName: "@contoso/button" },
+ *         { name: "checkbox", packageName: "@contoso/checkbox" },
  *     ],
  * });
  * ```
@@ -44,28 +44,28 @@ export interface ComponentRegistration {
 
     /**
      * The npm package name for this component
-     * (e.g., "@mai-ui/button").
+     * (e.g., "@contoso/button").
      */
     packageName: string;
 }
 
 export interface SSRRendererOptions {
     /**
-     * Tag name prefix for custom elements (e.g., "fluent", "mai").
+     * Tag name prefix for custom elements (e.g., "fluent", "contoso").
      */
     tagPrefix: string;
 
     /**
      * The npm package name used to resolve component build artifacts
      * when all components live in subdirectories of a single package
-     * (Fluent-style). Mutually exclusive with `components`.
+     * (monolithic layout). Mutually exclusive with `components`.
      */
     packageName?: string;
 
     /**
-     * Explicit list of per-component packages (MAI-style). Each entry
-     * maps a component name to its npm package. Mutually exclusive
-     * with `packageName`.
+     * Explicit list of per-component packages. Each entry maps a
+     * component name to its npm package. Mutually exclusive with
+     * `packageName`.
      */
     components?: ComponentRegistration[];
 
@@ -249,7 +249,7 @@ function loadMonolithicComponent(
 
 /**
  * Load artifacts for a component from a per-component package
- * (e.g., `@mai-ui/button/template.html`).
+ * (e.g., `@contoso/button/template.html`).
  */
 function loadPerPackageComponent(reg: ComponentRegistration): ComponentArtifacts {
     const fTemplatePath = resolveSpecifier(`${reg.packageName}/template.html`);
@@ -369,9 +369,9 @@ export function buildState(queryObj: Record<string, string>): Record<string, unk
  *
  * Supports two modes:
  * - **`packageName`**: Scans a monolithic package's dist directory for
- *   components in subdirectories (Fluent-style).
+ *   components in subdirectories (monolithic layout).
  * - **`components`**: Uses an explicit list of per-component packages
- *   with flat exports (MAI-style).
+ *   with flat exports.
  */
 export function createSSRRenderer(options: SSRRendererOptions): {
     render: (queryObj: Record<string, string>) => RenderResult;
@@ -402,12 +402,12 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     const artifacts: ComponentArtifacts[] = [];
 
     if (options.components) {
-        // Per-component packages (MAI-style).
+        // Per-component packages
         for (const reg of options.components) {
             artifacts.push(loadPerPackageComponent(reg));
         }
     } else if (options.packageName) {
-        // Monolithic package (Fluent-style).
+        // Monolithic package
         const packageRoot = resolvePackageRoot(options.packageName);
         const distDir = join(packageRoot, options.distDir ?? "dist/esm");
         const pattern = "**/*.template.html";
