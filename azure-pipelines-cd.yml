@@ -2,8 +2,8 @@ trigger: none
 pr: none
 
 schedules:
-- cron: '0 0 * * *'
-  displayName: Daily Release
+- cron: '0 9 * * *' # 1am PST = 09:00 UTC.
+  displayName: Daily npm Publish from GitHub Releases
   branches:
     include:
     - main
@@ -39,7 +39,40 @@ extends:
     settings:
       networkIsolationPolicy: Permissive
     stages:
-    - stage: Stage
+    # Lightweight detection stage: lists GitHub releases and skips any that are
+    # already on npm. If nothing remains to publish, the Publish stage is
+    # skipped via the cross-stage `condition` on `hasReleases`.
+    - stage: Detect
+      displayName: Detect new GitHub releases
+      jobs:
+      - job: Check
+        steps:
+          - checkout: self
+
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+            displayName: "Install Node.js"
+
+          - script: |
+              node build/scripts/download-github-releases.mjs
+              if compgen -G "publish_artifacts/*.tgz" > /dev/null; then
+                echo "Found $(ls publish_artifacts/*.tgz | wc -l) tarball(s) to publish."
+                echo "##vso[task.setvariable variable=hasReleases;isOutput=true]true"
+              else
+                echo "No new releases to publish; downstream Publish stage will be skipped."
+                echo "##vso[task.setvariable variable=hasReleases;isOutput=true]false"
+              fi
+            name: probe
+            displayName: "Detect new GitHub releases that have not been published to npm"
+            env:
+              GH_TOKEN: $(GH_TOKEN)
+              GITHUB_REPOSITORY: microsoft/fast
+
+    - stage: Publish
+      displayName: Publish tarballs to npm
+      dependsOn: Detect
+      condition: eq(dependencies.Detect.outputs['Check.probe.hasReleases'], 'true')
       jobs:
       - job: HostJob
 
@@ -73,21 +106,10 @@ extends:
             displayName: "Install package dependencies"
 
           - script: |
-              curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-              export PATH="$HOME/.cargo/bin:$PATH"
-              echo "##vso[task.prependpath]$HOME/.cargo/bin"
-              rustup target add wasm32-unknown-unknown
-              cargo install wasm-pack
-            displayName: "Install Rust and wasm-pack"
-
-          - script: |
-              npm run build
-            displayName: "Build workspaces"
-
-          - script: |
-              npm run publish-ci
-            displayName: "Use Beachball publish to bump, pack, and commit without publishing"
+              node build/scripts/download-github-releases.mjs
+            displayName: "Download new GitHub release tarballs that have not been published to npm"
             env:
               GH_TOKEN: $(GH_TOKEN)
+              GITHUB_REPOSITORY: microsoft/fast
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
