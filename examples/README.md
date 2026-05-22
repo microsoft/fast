@@ -13,6 +13,7 @@ FAST patterns in a complete app context.
 | `csr/todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
 | `csr/todo-mobx-app` | `@microsoft/fast-todo-mobx-app-example` | A To-Do app showing how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code), styled with the shared design-system tokens. |
 | `ssr/chat-app` | `@microsoft/fast-chat-app-example` | A declarative FAST chat demo that pre-renders with `@microsoft/fast-build` and streams canned assistant replies into the transcript, styled with the shared design-system tokens (dark theme, no runtime toggle). |
+| `ssr/webui-todo-app` | `@microsoft/fast-webui-todo-app-example` | A To-Do app pre-rendered by `@microsoft/webui` and hydrated by `@microsoft/fast-html`, styled with the shared design-system tokens (light theme, no runtime toggle). |
 
 Example apps are grouped by rendering strategy. Client-side-rendered (CSR)
 apps live under [`examples/csr/`](./csr/) and server-side-rendered (SSR) apps
@@ -55,8 +56,9 @@ See:
    (CSR apps go under `examples/csr/<your-app>/`; SSR apps go under
    `examples/ssr/<your-app>/`).
 2. Use [`examples/csr/todo-app/`](./csr/todo-app/) as a reference for CSR
-   apps, or [`examples/ssr/chat-app/`](./ssr/chat-app/) as a reference for
-   SSR apps (`package.json`, `tsconfig.json`, build config, entry HTML).
+   apps, or [`examples/ssr/chat-app/`](./ssr/chat-app/) /
+   [`examples/ssr/webui-todo-app/`](./ssr/webui-todo-app/) as a reference
+   for SSR apps (`package.json`, `tsconfig.json`, build config, entry HTML).
 3. Add `"@microsoft/fast-examples-design-system": "^1.0.0"` to the new
    app's `dependencies` and run `npm install` from the repo root.
 4. Import `@microsoft/fast-examples-design-system/tokens.css` exactly once at
@@ -90,6 +92,7 @@ For the existing example apps:
 npm start -w @microsoft/fast-todo-app-example
 npm start -w @microsoft/fast-todo-mobx-app-example
 npm start -w @microsoft/fast-chat-app-example
+npm start -w @microsoft/fast-webui-todo-app-example
 ```
 
 ## Useful links
