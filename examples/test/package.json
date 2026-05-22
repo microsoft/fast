@@ -1,0 +1,21 @@
+{
+    "name": "@microsoft/fast-examples-e2e",
+    "version": "1.0.0",
+    "description": "End-to-end Playwright tests for the FAST example todo apps (csr/todo-app, csr/todo-mobx-app, ssr/webui-todo-app).",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "test:e2e": "playwright test --config=playwright.config.ts"
+    },
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "homepage": "https://www.fast.design/",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "examples/test"
+    }
+}

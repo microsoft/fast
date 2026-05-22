@@ -17,18 +17,12 @@ import { template } from "./todo-form.template.js";
 export class TodoForm extends FASTElement {
     @observable public description: string = "";
 
-    public submit(): void {
+    public submitTodo(): void {
         const value = this.description.trim();
         if (value === "") {
             return;
         }
         todoStore.add(value);
         this.description = "";
-    }
-
-    public handleSubmit(event: Event): boolean {
-        event.preventDefault();
-        this.submit();
-        return false;
     }
 }

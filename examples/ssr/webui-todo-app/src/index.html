@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html dir="{{textdirection}}" lang="en" data-theme="light">
     <head>
         <meta charset="utf-8">
-        <title>FAST Todos</title>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/index.css">
         <style>
         html,
         body {
@@ -17,8 +18,10 @@
         }
         </style>
     </head>
+
     <body>
         <todo-app></todo-app>
-        <script type="module" src="/src/main.ts"></script>
+
+        <script type="module" src="/index.js"></script>
     </body>
 </html>
