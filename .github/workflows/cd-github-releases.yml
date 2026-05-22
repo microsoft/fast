@@ -62,6 +62,6 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     - name: Create GitHub releases for new package versions
-      run: bash build/scripts/create-github-releases.sh
+      run: node build/scripts/create-github-releases.mjs
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -73,7 +73,7 @@ extends:
             displayName: "Install package dependencies"
 
           - script: |
-              bash build/scripts/download-github-releases.sh
+              node build/scripts/download-github-releases.mjs
             displayName: "Download new GitHub release tarballs that have not been published to npm"
             env:
               GH_TOKEN: $(GH_TOKEN)
