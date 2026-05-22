@@ -1,10 +1,10 @@
 # FAST example apps — design guidance
 
 This document is the workspace-level guide for building UI in `examples/*`
-and its rendering-strategy subfolders (currently `examples/csr/`). It
-explains how the apps share a visual language, the constraints every example
-must follow, and the rules that humans and coding agents should apply when
-making changes. The token vocabulary itself lives in
+and its rendering-strategy subfolders (`examples/csr/` and `examples/ssr/`).
+It explains how the apps share a visual language, the constraints every
+example must follow, and the rules that humans and coding agents should
+apply when making changes. The token vocabulary itself lives in
 [`design-system/DESIGN.md`](./design-system/DESIGN.md); read that file
 alongside this one.
 
@@ -157,8 +157,10 @@ document.documentElement.removeAttribute("data-theme"); // restore system
 ```
 
 For an intentionally single-theme app — like
-[`todo-app`](./todo-app/) — hard-code the attribute in markup
-(`<html data-theme="light">`) and never touch it from JavaScript.
+[`csr/todo-app`](./csr/todo-app/) and
+[`ssr/webui-todo-app`](./ssr/webui-todo-app/) — hard-code the attribute in
+markup (`<html data-theme="light">` or `<html data-theme="dark">`) and never
+touch it from JavaScript.
 
 ## Authoring rules
 

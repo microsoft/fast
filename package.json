@@ -13,7 +13,8 @@
     "packages/*",
     "sites/*",
     "examples/*",
-    "examples/csr/*"
+    "examples/csr/*",
+    "examples/ssr/*"
   ],
   "engines": {
     "npm": ">=10.0.0",
@@ -41,6 +42,7 @@
     "test:validation": "npm run test:diff",
     "test": "lage test:node test:playwright",
     "test:chromium": "lage test:node test:chromium",
+    "test:e2e": "npm run test:e2e -w @microsoft/fast-examples-e2e",
     "watch": "tsgo -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
     "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
