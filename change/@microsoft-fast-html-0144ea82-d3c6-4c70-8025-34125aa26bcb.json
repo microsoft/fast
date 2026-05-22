@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "feat(examples): add footer counters, E2E tests, and unified todo apps",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

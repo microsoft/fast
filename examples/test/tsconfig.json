@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "esnext",
+        "lib": ["DOM", "esnext"],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": false,
+        "verbatimModuleSyntax": false
+    },
+    "include": ["playwright.config.ts", "support/**/*.ts", "tests/**/*.ts"]
+}
