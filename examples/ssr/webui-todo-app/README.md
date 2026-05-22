@@ -15,8 +15,8 @@ render that hydrates into a fully interactive FAST web component application.
   and renders initial state into static HTML
 - **Client-side hydration**: `@microsoft/fast-html` picks up prerendered DOM
   and attaches FAST reactive bindings
-- **Todo functionality**: Add items, toggle completion, delete items,
-  remaining count
+- **Todo functionality**: Add items via a form, filter by status (all,
+  active, completed), toggle completion via native checkbox, delete items
 
 ## Prerequisites
 
@@ -113,8 +113,10 @@ Bootstraps hydration by:
 | `{{expr}}` | Server + client | `{{title}}` — HTML-escaped value |
 | `{{{expr}}}` | Server + client | Raw unescaped HTML |
 | `{expr}` | Client-only | `{onClick(e)}` — event handlers, refs |
-| `@event="{handler}"` | Client-only | `@click="{onAddClick()}"` |
+| `@event="{handler}"` | Client-only | `@submit="{onSubmit()}"`, `@change="{onToggleChange()}"` |
+| `?attr="{{expr}}"` | Server + client | `?disabled="{{!description}}"`, `?checked="{{state == 'done'}}"` |
 | `f-ref="{prop}"` | Client-only | `f-ref="{addInput}"` — element reference |
+| `$e` | Event arg | `@input="{onInput($e)}"` — current event |
 
 ### Template directives
 

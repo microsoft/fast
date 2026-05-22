@@ -75,19 +75,77 @@ examples/ssr/webui-todo-app/
 
 ### `todo-app`
 
-`todo-app` is the root custom element. It:
+`todo-app` is the root custom element. Its template renders, in order:
 
-- reads the prerendered `<todo-item>` children during `prepare()`,
-- converts them into an observable `items` array,
-- tracks `remainingCount`,
-- handles add, toggle, and delete operations, and
-- re-renders the list through FAST bindings after hydration.
+- a literal `<h1>FAST Todos</h1>`,
+- a `<form>` containing a text `<input>` (bound to `description`) and an
+  "Add Todo" `<button type="submit">` that is `?disabled="{{!description}}"`,
+- a `<section>` with a `<label>` and `<select>` filter (All / Active /
+  Completed) bound to `activeFilter`, and
+- a `<ul class="todo-list">` populated by `<for each="item in filteredItems">`
+  with one `<li>` per visible `<todo-item>`.
+
+Internally it:
+
+- reads the prerendered `<todo-item>` children during `prepare()` and
+  reconstructs an observable `items` array;
+- maintains `@observable activeFilter` (`"all" | "active" | "completed"`),
+  `@observable description`, and `@observable filteredItems`;
+- recomputes `filteredItems` from `items` whenever `items` or `activeFilter`
+  changes (via `itemsChanged()` and `activeFilterChanged()` callbacks); and
+- handles add, toggle, delete, and filter-change events from its template.
+
+Toggle uses **immutable replacement** with a freshly constructed object
+literal (not the spread operator) — see
+[Reactive update patterns](#reactive-update-patterns) below.
 
 ### `todo-item`
 
-`todo-item` is a focused row component. It accepts `id`, `title`, and `state`
-attributes, then emits `toggle-item` and `delete-item` events that the parent
-handles.
+`todo-item` is a focused row component. It accepts `id`, `description`, and
+`state` attributes; its template renders a native `<input type="checkbox">`
+(whose `?checked` mirrors `state == 'done'`), a `<span class="description">`,
+and a delete `<button class="delete">` showing `×`. `state="done"` adds a
+line-through via `:host([state="done"]) .description`. The component emits
+`toggle-item` and `delete-item` `CustomEvent`s carrying `{ id }` that the
+parent handles.
+
+The description text is assigned imperatively in `connectedCallback` and a
+`descriptionChanged` callback (instead of via a `{{ description }}` text
+interpolation in the shadow template) to work around a known fast-html
+hydration mismatch for text-interpolation bindings inside hydrated
+declarative-HTML templates.
+
+## Reactive update patterns
+
+`@microsoft/fast-html`'s `RenderableFASTElement` configures **deep observation**
+(`observerMap: "all"`) for the template's binding paths. To make nested
+properties on items reactive, the mixin replaces each item's enumerable own
+properties (`id`, `description`, `state`) with accessor pairs backed by
+underscore prefixed fields (`_id`, `_description`, `_state`).
+
+This has a non-obvious consequence: the idiomatic immutable update
+
+```ts
+{ ...item, state: "pending" }    // ❌ leaks _state from the wrapper
+```
+
+copies **both** `state` and `_state` from the observed item. When the new
+object is re-wrapped on assignment back to `items`, the wrapper finds the
+existing `_state` and uses it as the backing value, so the visible `state`
+property is silently restored to the old value.
+
+The correct pattern is to construct a fresh literal containing only the
+public properties:
+
+```ts
+{                                // ✅ no leaked backing fields
+    id: item.id,
+    description: item.description,
+    state: item.state === "done" ? "pending" : "done",
+}
+```
+
+`onToggleItem` in `src/todo-app/todo-app.ts` uses this pattern.
 
 ## Design system wiring
 

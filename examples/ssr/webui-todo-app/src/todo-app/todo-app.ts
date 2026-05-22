@@ -1,19 +1,24 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement } from "@microsoft/fast-html";
 
 interface TodoItemData {
     id: string;
-    title: string;
+    description: string;
     state: string;
 }
 
+type TodoListFilter = "all" | "active" | "completed";
+
 export class TodoApp extends RenderableFASTElement(FASTElement) {
-    @attr title = "";
-    @observable items!: TodoItemData[];
-    @observable remainingCount!: number;
+    @observable items: TodoItemData[] = [];
+    @observable activeFilter: TodoListFilter = "all";
+    @observable description: string = "";
+    @observable filteredItems: TodoItemData[] = [];
+    @observable activeCount: number = 0;
+    @observable completedCount: number = 0;
 
     addInput!: HTMLInputElement;
 
@@ -21,6 +26,24 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
 
     connectedCallback(): void {
         super.connectedCallback();
+        this.syncCounts();
+    }
+
+    itemsChanged(): void {
+        this.recomputeFilteredItems();
+        this.recomputeCounts();
+    }
+
+    activeFilterChanged(): void {
+        this.recomputeFilteredItems();
+    }
+
+    activeCountChanged(): void {
+        this.syncCounts();
+    }
+
+    completedCountChanged(): void {
+        this.syncCounts();
     }
 
     async prepare(): Promise<void> {
@@ -29,7 +52,7 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
         for (const el of this.shadowRoot!.querySelectorAll("todo-item")) {
             items.push({
                 id: el.getAttribute("id") || "",
-                title: el.getAttribute("title") || "",
+                description: el.getAttribute("description") || "",
                 state: el.getAttribute("state") || "pending",
             });
         }
@@ -39,57 +62,97 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
         if (items.length > 0) {
             this.nextId = Math.max(...items.map(i => Number(i.id) || 0)) + 1;
         }
-
-        this.updateCount();
     }
 
     onToggleItem(e: CustomEvent<{ id: string }>): void {
-        const item = this.items.find(i => i.id === e.detail.id);
-
-        if (item) {
-            item.state = item.state === "done" ? "pending" : "done";
-        }
-
-        this.updateCount();
+        this.items = this.items.map(item =>
+            item.id === e.detail.id
+                ? {
+                      id: item.id,
+                      description: item.description,
+                      state: item.state === "done" ? "pending" : "done",
+                  }
+                : item,
+        );
     }
 
     onDeleteItem(e: CustomEvent<{ id: string }>): void {
         this.items = this.items.filter(item => item.id !== e.detail.id);
-        this.updateCount();
     }
 
-    onAddKeydown(e: KeyboardEvent) {
-        if (e.key === "Enter") {
-            this.addTodo();
-        }
-
-        return true;
+    onInput(e: Event): void {
+        this.description = (e.target as HTMLInputElement).value;
     }
 
-    onAddClick(): void {
-        this.addTodo();
+    onFilterChange(e: Event): void {
+        this.activeFilter = (e.target as HTMLSelectElement).value as TodoListFilter;
     }
 
-    private addTodo(): void {
-        const input = this.addInput;
-
-        if (!input) return;
-
-        const text = input.value.trim();
+    onSubmit(): void {
+        const text = this.description.trim();
 
         if (!text) return;
 
         this.items = [
             ...this.items,
-            { id: String(this.nextId++), title: text, state: "pending" },
+            { id: String(this.nextId++), description: text, state: "pending" },
         ];
-        this.updateCount();
-        input.value = "";
-        input.focus();
+        this.description = "";
+
+        if (this.addInput) {
+            this.addInput.value = "";
+            this.addInput.focus();
+        }
     }
 
-    private updateCount(): void {
-        this.remainingCount = this.items.filter(i => i.state !== "done").length;
+    private recomputeFilteredItems(): void {
+        switch (this.activeFilter) {
+            case "active":
+                this.filteredItems = this.items.filter(i => i.state !== "done");
+                break;
+            case "completed":
+                this.filteredItems = this.items.filter(i => i.state === "done");
+                break;
+            default:
+                this.filteredItems = this.items;
+        }
+    }
+
+    private recomputeCounts(): void {
+        let active = 0;
+        let completed = 0;
+
+        for (const item of this.items) {
+            if (item.state === "done") {
+                completed++;
+            } else {
+                active++;
+            }
+        }
+
+        this.activeCount = active;
+        this.completedCount = completed;
+    }
+
+    /**
+     * Work around the fast-html hydration text-binding mismatch (see the
+     * `<todo-item>` `syncDescription()` helper for context): write the
+     * footer counters into the shadow DOM imperatively rather than via
+     * `{{ activeCount }}` / `{{ completedCount }}` text interpolations.
+     */
+    private syncCounts(): void {
+        const activeSpan = this.shadowRoot?.querySelector(".active-count");
+        const completedSpan = this.shadowRoot?.querySelector(".completed-count");
+
+        if (activeSpan) {
+            activeSpan.textContent = `${this.activeCount} ${
+                this.activeCount === 1 ? "item" : "items"
+            } left`;
+        }
+
+        if (completedSpan) {
+            completedSpan.textContent = `${this.completedCount} completed`;
+        }
     }
 }
 

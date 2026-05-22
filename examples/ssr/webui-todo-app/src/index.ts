@@ -29,6 +29,7 @@ TemplateElement.options({
         hydrationComplete() {
             performance.measure("todo-hydration-completed", "todo-hydration-started");
             console.log("Hydration complete!");
+            (window as unknown as { __todoHydrated?: boolean }).__todoHydrated = true;
         },
     })
     .define({
