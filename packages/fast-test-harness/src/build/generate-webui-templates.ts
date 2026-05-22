@@ -14,7 +14,7 @@
  * ```ts
  * import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
  *
- * await generateWebuiTemplates({ cwd: process.cwd(), tagPrefix: "mai" });
+ * await generateWebuiTemplates({ cwd: process.cwd(), tagPrefix: "contoso" });
  * ```
  */
 
