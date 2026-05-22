@@ -253,7 +253,7 @@ CLI flags take precedence over environment variables.
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `tagPrefix` | `string` | Tag name prefix for custom elements (e.g., `"fluent"`, `"mai"`) |
+| `tagPrefix` | `string` | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
 | `distDir` | `string?` | Artifact directory relative to the package root (default: `"dist/esm"`). Only used with `packageName`. |
