@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "refactor: remove parseDefaultValue and CEM-related logic from SSR renderer",
-  "packageName": "@microsoft/fast-test-harness",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

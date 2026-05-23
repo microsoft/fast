@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 23 May 2026 00:13:09 GMT",
+      "version": "2.10.4",
+      "tag": "@microsoft/fast-element_v2.10.4",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "13916c12b6c8eb77d5f348befb7b4abca4750416",
+            "comment": "chore: regenerate fast-element SIZES.md"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "2.10.4",
       "tag": "@microsoft/fast-element_v2.10.4",

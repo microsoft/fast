@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sat, 23 May 2026 00:13:09 GMT",
+      "version": "1.0.0-alpha.53",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.53",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "13916c12b6c8eb77d5f348befb7b4abca4750416",
+            "comment": "feat(examples): add footer counters, E2E tests, and unified todo apps"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 May 2026 00:04:58 GMT",
       "version": "1.0.0-alpha.53",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.53",

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Thu, 21 May 2026 00:04:58 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 23 May 2026 00:13:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.0
+
+Sat, 23 May 2026 00:13:09 GMT
+
+### Minor changes
+
+- refactor: remove parseDefaultValue and CEM-related logic from SSR renderer (863023+radium-v@users.noreply.github.com)
 
 ## 0.2.0
 
