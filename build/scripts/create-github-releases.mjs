@@ -23,9 +23,10 @@
  *   5. Otherwise (when not `--check-only`) packs the npm tarball into
  *      `publish_artifacts_npm/` with `npm pack`, optionally packs the
  *      paired crate into `publish_artifacts_crates/` with
- *      `cargo package`, pushes an annotated git tag, and creates the
- *      GitHub release with both assets attached (`gh release create
- *      --verify-tag`).
+ *      `cargo package`, and creates the GitHub release with both
+ *      assets attached (`gh release create --target <sha>`). The `gh`
+ *      CLI creates the git tag atomically with the release, so the
+ *      tag and the release exist if and only if each other does.
  *
  * Modes:
  *
@@ -226,10 +227,6 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
             assets.push(destCrate);
         }
 
-        console.log(`Creating annotated tag ${tag}...`);
-        run("git", ["tag", "-a", tag, "-m", `Release ${name}@${version}`]);
-        run("git", ["push", "origin", tag], { stdio: "inherit" });
-
         const notes = [
             `Nightly release for \`${name}@${version}\`.`,
             "",
@@ -239,6 +236,17 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
                 " by the nightly Azure release pipeline.",
         ].join("\n");
 
+        // Let `gh release create` create the tag atomically with the
+        // release so that "tag exists" and "release exists" are always
+        // the same fact. If we created the tag separately and pushed
+        // it, and then `gh release create` failed, the next workflow
+        // run would think the release was already done (because the
+        // tag exists) and skip it forever.
+        const targetSha = (
+            process.env.GITHUB_SHA || run("git", ["rev-parse", "HEAD"])
+        ).trim();
+
+        console.log(`Creating release ${tag} at ${targetSha.slice(0, 7)}...`);
         run(
             "gh",
             [
@@ -246,7 +254,8 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
                 "create",
                 tag,
                 ...assets,
-                "--verify-tag",
+                "--target",
+                targetSha,
                 "--title",
                 `${name}@${version}`,
                 "--notes",

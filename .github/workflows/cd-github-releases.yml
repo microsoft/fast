@@ -5,10 +5,6 @@ on:
   push:
     branches: [main]
 
-env:
-  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
-
 permissions: { contents: write }
 
 jobs:
@@ -41,17 +37,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
+        fetch-depth: 0  # need all tags so `git rev-parse` can detect existing releases.
 
     - uses: actions/setup-node@v6
       with:
         node-version: 22
-
-    - name: Set Git User
-      run: |
-        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
-        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
     - name: Cache multiple paths
       uses: actions/cache@v4
