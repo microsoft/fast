@@ -122,6 +122,8 @@ extends:
           # Push a `deployed/<tag>` marker tag for each release that was just
           # published so that the next nightly Check stage sees it and skips
           # the release. Reads the list of tags written by the download script.
+          # Idempotent: a marker tag that already exists locally (i.e. fetched
+          # from origin via `fetchTags: true`) is left alone instead of failing.
           - script: |
               set -euo pipefail
               META_FILE=publish_artifacts_meta/undeployed-tags.txt
@@ -132,6 +134,10 @@ extends:
               while IFS= read -r tag; do
                 [ -z "$tag" ] && continue
                 DEPLOY_TAG="deployed/${tag}"
+                if git rev-parse --verify --quiet "refs/tags/${DEPLOY_TAG}" >/dev/null; then
+                  echo "Already marked deployed: ${DEPLOY_TAG} (skipping)"
+                  continue
+                fi
                 echo "Marking deployed: ${DEPLOY_TAG}"
                 git tag "${DEPLOY_TAG}"
                 git push origin "${DEPLOY_TAG}"
