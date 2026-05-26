@@ -21,10 +21,10 @@
  * flat exports.
  * ```ts
  * const { render } = createSSRRenderer({
- *     tagPrefix: "mai",
+ *     tagPrefix: "contoso",
  *     components: [
- *         { name: "button", packageName: "@mai-ui/button" },
- *         { name: "checkbox", packageName: "@mai-ui/checkbox" },
+ *         { name: "button", packageName: "@contoso/button" },
+ *         { name: "checkbox", packageName: "@contoso/checkbox" },
  *     ],
  * });
  * ```
@@ -44,28 +44,28 @@ export interface ComponentRegistration {
 
     /**
      * The npm package name for this component
-     * (e.g., "@mai-ui/button").
+     * (e.g., "@contoso/button").
      */
     packageName: string;
 }
 
 export interface SSRRendererOptions {
     /**
-     * Tag name prefix for custom elements (e.g., "fluent", "mai").
+     * Tag name prefix for custom elements (e.g., "fluent", "contoso").
      */
     tagPrefix: string;
 
     /**
      * The npm package name used to resolve component build artifacts
      * when all components live in subdirectories of a single package
-     * (Fluent-style). Mutually exclusive with `components`.
+     * (monolithic layout). Mutually exclusive with `components`.
      */
     packageName?: string;
 
     /**
-     * Explicit list of per-component packages (MAI-style). Each entry
-     * maps a component name to its npm package. Mutually exclusive
-     * with `packageName`.
+     * Explicit list of per-component packages. Each entry maps a
+     * component name to its npm package. Mutually exclusive with
+     * `packageName`.
      */
     components?: ComponentRegistration[];
 
@@ -138,88 +138,6 @@ function toServerUrl(absolutePath: string, packageRoot: string): string {
     return `/${relative(packageRoot, absolutePath).replace(/\\/g, "/")}`;
 }
 
-/**
- * Parse a JavaScript default value string from CEM into a JSON-safe value.
- * @internal
- */
-export function parseDefaultValue(raw: string): unknown {
-    const trimmed = raw.trim();
-
-    if (trimmed === "" || trimmed === "undefined" || trimmed === "null") {
-        return "";
-    }
-
-    if (trimmed === "true") {
-        return true;
-    }
-
-    if (trimmed === "false") {
-        return false;
-    }
-
-    if (trimmed.startsWith("'") || trimmed.startsWith('"')) {
-        return trimmed.slice(1, -1);
-    }
-
-    const num = Number(trimmed);
-    if (!Number.isNaN(num)) {
-        return num;
-    }
-
-    try {
-        return JSON.parse(trimmed);
-    } catch {
-        return "";
-    }
-}
-
-/**
- * Load a Custom Elements Manifest and extract default state for
- * each custom element declaration. Returns a map of tag names to
- * their default property values.
- */
-function loadDefaultStateFromCEM(
-    packageName: string,
-    tagPrefix: string,
-): Map<string, Record<string, unknown>> {
-    const cemPath = resolveSpecifier(`${packageName}/custom-elements.json`);
-    if (!cemPath) {
-        return new Map();
-    }
-
-    try {
-        const cem = JSON.parse(readFileSync(cemPath, "utf8"));
-        const result = new Map<string, Record<string, unknown>>();
-
-        for (const mod of cem.modules ?? []) {
-            for (const decl of mod.declarations ?? []) {
-                if (!decl.customElement) {
-                    continue;
-                }
-                const tagName =
-                    decl.tagName ?? `${tagPrefix}-${decl.name?.toLowerCase()}`;
-                const state: Record<string, unknown> = {};
-                for (const member of decl.members ?? []) {
-                    if (member.kind !== "field" || member.privacy !== "public") {
-                        continue;
-                    }
-                    state[member.name] =
-                        member.default != null
-                            ? parseDefaultValue(String(member.default))
-                            : "";
-                }
-                if (Object.keys(state).length > 0) {
-                    result.set(tagName, state);
-                }
-            }
-        }
-
-        return result;
-    } catch {
-        return new Map();
-    }
-}
-
 interface ComponentArtifacts {
     componentName: string;
     fTemplate: string | null;
@@ -249,7 +167,7 @@ function loadMonolithicComponent(
 
 /**
  * Load artifacts for a component from a per-component package
- * (e.g., `@mai-ui/button/template.html`).
+ * (e.g., `@contoso/button/template.html`).
  */
 function loadPerPackageComponent(reg: ComponentRegistration): ComponentArtifacts {
     const fTemplatePath = resolveSpecifier(`${reg.packageName}/template.html`);
@@ -369,9 +287,9 @@ export function buildState(queryObj: Record<string, string>): Record<string, unk
  *
  * Supports two modes:
  * - **`packageName`**: Scans a monolithic package's dist directory for
- *   components in subdirectories (Fluent-style).
+ *   components in subdirectories (monolithic layout).
  * - **`components`**: Uses an explicit list of per-component packages
- *   with flat exports (MAI-style).
+ *   with flat exports.
  */
 export function createSSRRenderer(options: SSRRendererOptions): {
     render: (queryObj: Record<string, string>) => RenderResult;
@@ -402,12 +320,12 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     const artifacts: ComponentArtifacts[] = [];
 
     if (options.components) {
-        // Per-component packages (MAI-style).
+        // Per-component packages
         for (const reg of options.components) {
             artifacts.push(loadPerPackageComponent(reg));
         }
     } else if (options.packageName) {
-        // Monolithic package (Fluent-style).
+        // Monolithic package
         const packageRoot = resolvePackageRoot(options.packageName);
         const distDir = join(packageRoot, options.distDir ?? "dist/esm");
         const pattern = "**/*.template.html";
@@ -429,28 +347,12 @@ export function createSSRRenderer(options: SSRRendererOptions): {
         }
     }
 
-    // Populate maps and collect default state from CEM.
-    const defaultStateByTag = new Map<string, Record<string, unknown>>();
+    // Populate template and style maps from collected artifacts.
     for (const art of artifacts) {
         if (art.fTemplate) {
             fTemplatesByName.set(art.componentName, art.fTemplate);
         }
         styleUrlsByName.set(art.componentName, art.stylesUrl);
-    }
-
-    // Load CEM defaults per-package (each package may contain multiple elements).
-    if (options.components) {
-        for (const reg of options.components) {
-            const cemDefaults = loadDefaultStateFromCEM(reg.packageName, tagPrefix);
-            for (const [tag, state] of cemDefaults) {
-                defaultStateByTag.set(tag, state);
-            }
-        }
-    } else if (options.packageName) {
-        const cemDefaults = loadDefaultStateFromCEM(options.packageName, tagPrefix);
-        for (const [tag, state] of cemDefaults) {
-            defaultStateByTag.set(tag, state);
-        }
     }
 
     // Inject styles into f-templates, then parse into the WASM
@@ -510,12 +412,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     return {
         render(queryObj: Record<string, string> = {}): RenderResult {
             const entryHtml = buildEntryHtml(queryObj);
-            const requestState = buildState(queryObj);
-
-            // Merge CEM default state (base) with request state (overrides).
-            const tagName = String(queryObj.tagName ?? "");
-            const defaults = defaultStateByTag.get(tagName) ?? {};
-            const state = { ...defaults, ...requestState };
+            const state = buildState(queryObj);
 
             let fixture = "";
             if (entryHtml) {
@@ -547,7 +444,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
                             const solo: string = wasm.render_with_templates(
                                 `${open}</${nestedTag}>`,
                                 templatesJson,
-                                JSON.stringify(defaultStateByTag.get(nestedTag) ?? {}),
+                                "{}",
                                 "camelCase",
                             );
                             // Extract the DSD that was injected.

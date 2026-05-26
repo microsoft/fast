@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Sat, 23 May 2026 00:13:09 GMT",
+      "version": "0.3.0",
+      "tag": "@microsoft/fast-test-harness_v0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "454714ac66d1022d3d9e40a3b1face5dc72cde06",
+            "comment": "refactor: remove parseDefaultValue and CEM-related logic from SSR renderer"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "a46f63c935d716d991d2b50f9e06daf219b5cff7",
+            "comment": "fix: update references to \"contoso\" in documentation and tests"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 May 2026 00:04:58 GMT",
       "version": "0.2.0",
       "tag": "@microsoft/fast-test-harness_v0.2.0",
