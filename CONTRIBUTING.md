@@ -187,7 +187,7 @@ git diff
 node build/scripts/create-github-releases.mjs --check-only
 ```
 
-The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` git tag does not yet exist on `origin`.
+The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` tag is not present in the local git tag list. Run `git fetch --tags --prune origin` beforehand if you want the preview to reflect the current state on `origin` rather than your stale local refs — though for a fresh bump that hasn't been pushed yet, your local tag list is the source of truth anyway.
 
 A typical bump PR touches:
 
