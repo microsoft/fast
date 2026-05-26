@@ -138,7 +138,10 @@ extends:
                   continue
                 fi
                 echo "Marking deployed: ${DEPLOY_TAG}"
-                git tag "${DEPLOY_TAG}"
+                # Point the marker at the release tag's commit (not the
+                # agent's current HEAD) so the marker stays accurate even
+                # if the pipeline is re-run from a later commit.
+                git tag "${DEPLOY_TAG}" "refs/tags/${tag}"
                 git push origin "${DEPLOY_TAG}"
               done < "$META_FILE"
             displayName: "Mark releases as deployed"
