@@ -93,9 +93,11 @@ const deployed = new Set(
 );
 // Match beachball's release tag format: `${name}_v${major}.${minor}.${patch}`,
 // where the version is the publishable portion (`1.0.0` or `1.0.0-alpha.3`).
-// `deployed/` marker tags are excluded explicitly so they aren't re-processed
-// as if they were releases.
-const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+/;
+// Anchored at the end of the tag name so trailing junk (e.g. a stray
+// suffix accidentally appended after a real version) does not get
+// misclassified as a release. `deployed/` marker tags are excluded
+// explicitly so they aren't re-processed as if they were releases.
+const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+(?:-[\w.-]+)?$/;
 const releaseTags = allTags.filter(
     t => !t.startsWith("deployed/") && RELEASE_TAG_RE.test(t),
 );
