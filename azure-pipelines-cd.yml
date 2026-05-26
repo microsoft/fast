@@ -2,11 +2,12 @@ trigger: none
 pr: none
 
 schedules:
-- cron: '0 0 * * *'
-  displayName: Daily Release
+- cron: '0 9 * * *' # 09:00 UTC daily (~1am Pacific in standard time, ~2am during DST).
+  displayName: Daily npm/crates publish from GitHub Releases
   branches:
     include:
     - main
+  always: true  # run even when there are no new commits — we are checking external GitHub releases, not repo changes.
 
 # The `resources` specify the location and version of the 1ES PT.
 resources:
@@ -39,21 +40,57 @@ extends:
     settings:
       networkIsolationPolicy: Permissive
     stages:
-    - stage: Stage
+
+    # ── Stage 1: Lightweight detection (runs every night, ~1-2 min) ──
+    # This stage is separate so that when no deployment is needed, the
+    # heavyweight Package stage (with all its 1ES SDL tasks) is skipped
+    # entirely — avoiding ~30 min of unnecessary agent provisioning and
+    # compliance scans on no-op nights.
+    - stage: Check
+      displayName: Detect undeployed GitHub releases
       jobs:
-      - job: HostJob
-
-        variables:
-          npm_config_cache: $(Pipeline.Workspace)/.npm
-
+      - job: CheckVersion
         steps:
           - checkout: self
             persistCredentials: "true"
+            fetchTags: true
+
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+            displayName: "Install Node.js"
+
+          # The check uses local `git tag` rather than `npm view` / `cargo search`
+          # because external network calls from 1ES agents to npm/crates.io are
+          # unreliable. The Package stage pushes a `deployed/<tag>` marker tag
+          # after a successful publish, and the next pipeline run sees that
+          # marker via `git tag -l`.
+          - script: |
+              node build/scripts/download-github-releases.mjs --check-only
+            displayName: "Detect releases whose tarballs have not been published"
+            name: deploymentCheck
+            env:
+              GITHUB_REPOSITORY: microsoft/fast
+
+    # ── Stage 2: Download, publish, and mark deployed (skipped on no-op nights) ──
+    - stage: Package
+      displayName: Publish tarballs to npm and crates.io
+      dependsOn: Check
+      condition: eq(dependencies.Check.outputs['CheckVersion.deploymentCheck.needsDeployment'], 'true')
+      variables:
+        npm_config_cache: $(Pipeline.Workspace)/.npm
+      jobs:
+      - job: Deploy
+        steps:
+          - checkout: self
+            persistCredentials: "true"
+            fetchTags: true
 
           - script: |
               git config --global user.email fastsvc@microsoft.com
               git config --global user.name "Microsoft FAST Builds"
               git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
+            displayName: "Configure git for tag push"
 
           - task: UseNode@1
             inputs:
@@ -73,21 +110,35 @@ extends:
             displayName: "Install package dependencies"
 
           - script: |
-              curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-              export PATH="$HOME/.cargo/bin:$PATH"
-              echo "##vso[task.prependpath]$HOME/.cargo/bin"
-              rustup target add wasm32-unknown-unknown
-              cargo install wasm-pack
-            displayName: "Install Rust and wasm-pack"
-
-          - script: |
-              npm run build
-            displayName: "Build workspaces"
-
-          - script: |
-              npm run publish-ci
-            displayName: "Use Beachball publish to bump, pack, and commit without publishing"
+              node build/scripts/download-github-releases.mjs
+            displayName: "Download undeployed release assets and sort into npm/crates folders"
             env:
               GH_TOKEN: $(GH_TOKEN)
+              GITHUB_REPOSITORY: microsoft/fast
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
+
+          # Push a `deployed/<tag>` marker tag for each release that was just
+          # published so that the next nightly Check stage sees it and skips
+          # the release. Reads the list of tags written by the download script.
+          # Idempotent: a marker tag that already exists locally (i.e. fetched
+          # from origin via `fetchTags: true`) is left alone instead of failing.
+          - script: |
+              set -euo pipefail
+              META_FILE=publish_artifacts_meta/undeployed-tags.txt
+              if [ ! -s "$META_FILE" ]; then
+                echo "No tags to mark as deployed."
+                exit 0
+              fi
+              while IFS= read -r tag; do
+                [ -z "$tag" ] && continue
+                DEPLOY_TAG="deployed/${tag}"
+                if git rev-parse --verify --quiet "refs/tags/${DEPLOY_TAG}" >/dev/null; then
+                  echo "Already marked deployed: ${DEPLOY_TAG} (skipping)"
+                  continue
+                fi
+                echo "Marking deployed: ${DEPLOY_TAG}"
+                git tag "${DEPLOY_TAG}"
+                git push origin "${DEPLOY_TAG}"
+              done < "$META_FILE"
+            displayName: "Mark releases as deployed"
