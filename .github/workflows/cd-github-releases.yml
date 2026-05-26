@@ -1,0 +1,78 @@
+name: Release packages to GitHub releases
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 12am PST = 08:00 UTC (drifts to ~11pm PDT during US daylight time).
+    # Runs ~1 hour before the Azure CD pipeline (09:00 UTC) so any new
+    # GitHub releases this job creates are ready for that night's publish.
+    - cron: '0 8 * * *'
+
+permissions: { contents: write }
+
+jobs:
+  # Lightweight detection: walks the workspaces directory tree (no `npm ci`,
+  # no build, no `gh` API call) and checks whether each `${name}_v${version}`
+  # tag already exists in git. The downstream `release` job is skipped if
+  # every current version already has a tag.
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      hasMissingReleases: ${{ steps.check.outputs.hasMissingReleases }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # need all tags for `git rev-parse refs/tags/<tag>`.
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - id: check
+      name: Detect publishable workspaces without a release tag
+      run: node build/scripts/create-github-releases.mjs --check-only
+
+  release:
+    needs: detect
+    if: needs.detect.outputs.hasMissingReleases == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # need all tags so `git rev-parse` can detect existing releases.
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - name: Cache multiple paths
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install package dependencies
+      run: npm ci
+
+    - name: Install Rust and wasm-pack
+      run: |
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+        export PATH="$HOME/.cargo/bin:$PATH"
+        rustup target add wasm32-unknown-unknown
+        cargo install wasm-pack
+        echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+    - name: Build workspaces
+      run: npm run build
+
+    - name: Pack and create GitHub releases
+      run: node build/scripts/create-github-releases.mjs
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
