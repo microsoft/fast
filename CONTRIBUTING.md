@@ -146,6 +146,83 @@ Example of how to format `MIGRATION.md`:
 - `Bat` has been updated to use the new API [`BatConfig`](link/to/api).
 ```
 
+### Publishing
+
+Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, the [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) workflow attaches the freshly-packed tarballs to a GitHub release per package, and the nightly Azure pipeline ([`azure-pipelines-cd.yml`](azure-pipelines-cd.yml)) downloads those assets and publishes them to npm and crates.io. The detailed CD design is documented in [`.github/workflows/README.md`](.github/workflows/README.md).
+
+This section covers the maintainer workflow for opening the bump PR.
+
+#### 1. Prerequisites
+
+Every PR that touches a publishable workspace should include a beachball [change file](#change-files). Bump PRs consume the accumulated change files; if a workspace needs to be bumped but has no change file (e.g. on first release, or because a contributor forgot to add one), generate one yourself with `npm run change` before bumping.
+
+#### 2. Create the bump branch
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b chore/bump-$(date +%Y-%m-%d)
+```
+
+#### 3. Run `npm run bump`
+
+```bash
+npm run bump
+```
+
+This single command:
+
+- Reads every file under `change/`.
+- Bumps `package.json` and updates `CHANGELOG.md` / `CHANGELOG.json` for every affected workspace.
+- Runs the `postbump` hook in [`beachball.config.js`](beachball.config.js) — for any bumped npm package that has a paired Rust crate at `crates/<crate-name>/Cargo.toml` (where `<crate-name>` is the npm name with the leading `@` dropped and `/` replaced with `-`, e.g. `@microsoft/fast-build` → `microsoft-fast-build`), the hook rewrites the crate's `Cargo.toml` and `Cargo.lock` to the new version so they stay in lock-step with the npm package.
+- Deletes the consumed change files.
+
+No commit, push, npm publish, or git tag is made by `npm run bump`.
+
+#### 4. Review the result
+
+```bash
+git status
+git diff
+node build/scripts/create-github-releases.mjs --check-only
+```
+
+The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` tag is not present in the local git tag list. Run `git fetch --tags --prune origin` beforehand if you want the preview to reflect the current state on `origin` rather than your stale local refs — though for a fresh bump that hasn't been pushed yet, your local tag list is the source of truth anyway.
+
+A typical bump PR touches:
+
+- `packages/<name>/package.json` (`version` field) for each bumped workspace
+- `packages/<name>/CHANGELOG.md` and `CHANGELOG.json` for each bumped workspace
+- `crates/<crate-name>/Cargo.toml` and `crates/<crate-name>/Cargo.lock` for any paired Rust crate (handled automatically by the postbump hook)
+- Deletions under `change/`
+
+#### 5. Open the PR
+
+```bash
+git add -A
+git commit -m "chore: release packages"
+git push origin chore/bump-$(date +%Y-%m-%d)
+gh pr create --fill --base main
+```
+
+The bump PR goes through normal review. `npm run checkchange` will pass because the change files have all been consumed; the PR itself does **not** publish anything.
+
+:::note
+Do not edit `package.json` or `Cargo.toml` versions by hand. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+:::
+
+#### 6. After merge
+
+After merge, [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) runs on its nightly cron (`0 8 * * *` UTC, ~12am PST) — or you can trigger it immediately via `gh workflow run cd-github-releases.yml` if you don't want to wait. Its `detect` job notices the new `${name}_v${version}` tags don't yet exist; the `release` job packs each `.tgz` (and any paired `.crate`) and atomically creates one GitHub release per bumped package. The next nightly run of [`azure-pipelines-cd.yml`](azure-pipelines-cd.yml) (scheduled ~1 hour later at 09:00 UTC) downloads those assets, hands off to `FAST.Release.PipelineTemplate` for the actual `npm publish` / `cargo publish`, and on success pushes `deployed/<tag>` marker tags so the publish is never repeated.
+
+#### Hotfix or single-package bump
+
+The same flow works for a single-package release — just keep only the relevant change file(s) before running `npm run bump`, or pass `--package` to beachball directly:
+
+```bash
+npx beachball bump --package "@microsoft/fast-build"
+```
+
 ### Recommended Settings for Visual Studio Code
 
 You can use any code editor you like when working with the FAST monorepo. One of our favorites is [Visual Studio Code](https://code.visualstudio.com/). VS Code has great autocomplete support for TypeScript and JavaScript APIs, as well as a rich ecosystem of plugins.
