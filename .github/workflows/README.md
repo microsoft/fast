@@ -13,7 +13,7 @@ All CI workflows that run against pull requests are configured to skip draft PRs
 
 ## Continuous Deployment
 
-Nightly publishing is split into two coordinated jobs so that npm credentials never leave the Azure environment. The flow mirrors the pattern used by [microsoft/webui](https://github.com/microsoft/webui/blob/main/.github/workflows/publish.yml): GitHub Releases are the source of truth, and `deployed/<tag>` git marker tags track which releases have already been published.
+Nightly publishing is split into two coordinated jobs so that npm credentials never leave the Azure environment. GitHub Releases are the source of truth, and `deployed/<tag>` git marker tags track which releases have already been published.
 
 - **`cd-github-releases.yml`** (GitHub Actions) triggers on **`push` to `main`** and on `workflow_dispatch`. It does **not** bump versions or push source changes to `main` — version bumps land on `main` through ordinary human-authored pull requests (for example, by running `npm run bump` locally and opening a PR). The workflow has two jobs:
   1. **`detect`** — checks out `main` with `fetch-depth: 0` and runs [`build/scripts/create-github-releases.mjs --check-only`](../../build/scripts/create-github-releases.mjs). The script walks the workspaces tree (no `npm ci` required), computes `${name}_v${version}` for every non-private workspace, and emits `hasMissingReleases=true` if any of those git tags do not yet exist.

@@ -10,8 +10,7 @@
  * Invoked by `azure-pipelines-cd.yml` before the existing
  * `FAST.Release.PipelineTemplate` runs. We use a `deployed/<tag>` git
  * marker tag instead of `npm view` / `cargo search` because external
- * calls from 1ES agents to npm/crates.io are unreliable (per the
- * webui Azure-pipeline guidance).
+ * calls from 1ES agents to npm/crates.io are unreliable.
  *
  * After a successful publish the Azure pipeline pushes the
  * `deployed/<tag>` marker tag for each release that was published; the
