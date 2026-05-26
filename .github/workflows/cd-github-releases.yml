@@ -2,8 +2,11 @@ name: Release packages to GitHub releases
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
+  schedule:
+    # 12am PST = 08:00 UTC (drifts to ~11pm PDT during US daylight time).
+    # Runs ~1 hour before the Azure CD pipeline (09:00 UTC) so any new
+    # GitHub releases this job creates are ready for that night's publish.
+    - cron: '0 8 * * *'
 
 permissions: { contents: write }
 

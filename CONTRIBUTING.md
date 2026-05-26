@@ -213,7 +213,7 @@ Do not edit `package.json` or `Cargo.toml` versions by hand. Let `npm run bump` 
 
 #### 6. After merge
 
-The push to `main` triggers [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml). Its `detect` job notices the new `${name}_v${version}` tags don't yet exist; the `release` job packs each `.tgz` (and any paired `.crate`) and atomically creates one GitHub release per bumped package. The next nightly run of [`azure-pipelines-cd.yml`](azure-pipelines-cd.yml) downloads those assets, hands off to `FAST.Release.PipelineTemplate` for the actual `npm publish` / `cargo publish`, and on success pushes `deployed/<tag>` marker tags so the publish is never repeated.
+After merge, [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) runs on its nightly cron (`0 8 * * *` UTC, ~12am PST) — or you can trigger it immediately via `gh workflow run cd-github-releases.yml` if you don't want to wait. Its `detect` job notices the new `${name}_v${version}` tags don't yet exist; the `release` job packs each `.tgz` (and any paired `.crate`) and atomically creates one GitHub release per bumped package. The next nightly run of [`azure-pipelines-cd.yml`](azure-pipelines-cd.yml) (scheduled ~1 hour later at 09:00 UTC) downloads those assets, hands off to `FAST.Release.PipelineTemplate` for the actual `npm publish` / `cargo publish`, and on success pushes `deployed/<tag>` marker tags so the publish is never repeated.
 
 #### Hotfix or single-package bump
 
