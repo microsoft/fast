@@ -176,6 +176,15 @@ if (CHECK_ONLY || missing.length === 0) {
     process.exit(0);
 }
 
+// `--check-only` only enumerates missing releases via local git state,
+// but creating releases requires `gh release create`, which needs a
+// token. Fail fast here so the workflow surfaces a clear error rather
+// than a generic `gh` auth failure mid-loop.
+if (!process.env.GH_TOKEN) {
+    console.error("GH_TOKEN must be set so the `gh` CLI can create GitHub releases.");
+    process.exit(1);
+}
+
 mkdirSync(NPM_DIR, { recursive: true });
 mkdirSync(CRATES_DIR, { recursive: true });
 
@@ -268,7 +277,8 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
         created += 1;
     } catch (error) {
         hasErrors = true;
-        console.error(`Failed to release ${name}@${version}:`, error.message);
+        const message = error instanceof Error ? error.message : String(error);
+        console.error(`Failed to release ${name}@${version}: ${message}`);
     }
 }
 
