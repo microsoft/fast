@@ -2,21 +2,56 @@ name: Release packages to GitHub releases
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: '0 8 * * *' # Midnight PST = 08:00 UTC.
+  push:
+    branches: [main]
+
+env:
+  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
 
 permissions: { contents: write }
 
 jobs:
-  release:
+  # Lightweight detection: walks the workspaces directory tree (no `npm ci`,
+  # no build, no `gh` API call) and checks whether each `${name}_v${version}`
+  # tag already exists in git. The downstream `release` job is skipped if
+  # every current version already has a tag.
+  detect:
     runs-on: ubuntu-latest
-
+    outputs:
+      hasMissingReleases: ${{ steps.check.outputs.hasMissingReleases }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # need all tags for `git rev-parse refs/tags/<tag>`.
 
     - uses: actions/setup-node@v6
       with:
         node-version: 22
+
+    - id: check
+      name: Detect publishable workspaces without a release tag
+      run: node build/scripts/create-github-releases.mjs --check-only
+
+  release:
+    needs: detect
+    if: needs.detect.outputs.hasMissingReleases == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - name: Set Git User
+      run: |
+        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
     - name: Cache multiple paths
       uses: actions/cache@v4
@@ -44,7 +79,7 @@ jobs:
     - name: Build workspaces
       run: npm run build
 
-    - name: Pack publishable workspaces and create GitHub releases
+    - name: Pack and create GitHub releases
       run: node build/scripts/create-github-releases.mjs
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
