@@ -3,10 +3,11 @@ pr: none
 
 schedules:
 - cron: '0 9 * * *' # 1am PST = 09:00 UTC.
-  displayName: Daily npm Publish from GitHub Releases
+  displayName: Daily npm/crates publish from GitHub Releases
   branches:
     include:
     - main
+  always: true  # run even when there are no new commits — we are checking external GitHub releases, not repo changes.
 
 # The `resources` specify the location and version of the 1ES PT.
 resources:
@@ -39,54 +40,58 @@ extends:
     settings:
       networkIsolationPolicy: Permissive
     stages:
-    # Lightweight detection stage: lists GitHub releases and skips any that are
-    # already on npm. If nothing remains to publish, the Publish stage is
-    # skipped via the cross-stage `condition` on `hasReleases`.
-    - stage: Detect
-      displayName: Detect new GitHub releases
+
+    # ── Stage 1: Lightweight detection (runs every night, ~1-2 min) ──
+    # This stage is separate so that when no deployment is needed, the
+    # heavyweight Package stage (with all its 1ES SDL tasks) is skipped
+    # entirely — avoiding ~30 min of unnecessary agent provisioning and
+    # compliance scans on no-op nights.
+    - stage: Check
+      displayName: Detect undeployed GitHub releases
       jobs:
-      - job: Check
+      - job: CheckVersion
         steps:
           - checkout: self
+            persistCredentials: "true"
+            fetchTags: true
 
           - task: UseNode@1
             inputs:
               version: "22.x"
             displayName: "Install Node.js"
 
+          # The check uses local `git tag` rather than `npm view` / `cargo search`
+          # because external network calls from 1ES agents to npm/crates.io are
+          # unreliable (per the webui Azure-pipeline guidance). The Package
+          # stage pushes a `deployed/<tag>` marker tag after a successful
+          # publish, and the next pipeline run sees that marker via `git tag -l`.
           - script: |
-              node build/scripts/download-github-releases.mjs
-              if compgen -G "publish_artifacts/*.tgz" > /dev/null; then
-                echo "Found $(ls publish_artifacts/*.tgz | wc -l) tarball(s) to publish."
-                echo "##vso[task.setvariable variable=hasReleases;isOutput=true]true"
-              else
-                echo "No new releases to publish; downstream Publish stage will be skipped."
-                echo "##vso[task.setvariable variable=hasReleases;isOutput=true]false"
-              fi
-            name: probe
-            displayName: "Detect new GitHub releases that have not been published to npm"
+              node build/scripts/download-github-releases.mjs --check-only
+            displayName: "Detect releases whose tarballs have not been published"
+            name: deploymentCheck
             env:
-              GH_TOKEN: $(GH_TOKEN)
               GITHUB_REPOSITORY: microsoft/fast
 
-    - stage: Publish
-      displayName: Publish tarballs to npm
-      dependsOn: Detect
-      condition: eq(dependencies.Detect.outputs['Check.probe.hasReleases'], 'true')
+    # ── Stage 2: Download, publish, and mark deployed (skipped on no-op nights) ──
+    - stage: Package
+      displayName: Publish tarballs to npm and crates.io
+      dependsOn: Check
+      condition: eq(dependencies.Check.outputs['CheckVersion.deploymentCheck.needsDeployment'], 'true')
+      variables:
+        npm_config_cache: $(Pipeline.Workspace)/.npm
+        undeployedTags: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.undeployedTags'] ]
       jobs:
-      - job: HostJob
-
-        variables:
-          npm_config_cache: $(Pipeline.Workspace)/.npm
-
+      - job: Deploy
         steps:
           - checkout: self
             persistCredentials: "true"
+            fetchTags: true
 
           - script: |
               git config --global user.email fastsvc@microsoft.com
               git config --global user.name "Microsoft FAST Builds"
               git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
+            displayName: "Configure git for tag push"
 
           - task: UseNode@1
             inputs:
@@ -107,9 +112,28 @@ extends:
 
           - script: |
               node build/scripts/download-github-releases.mjs
-            displayName: "Download new GitHub release tarballs that have not been published to npm"
+            displayName: "Download undeployed release assets and sort into npm/crates folders"
             env:
               GH_TOKEN: $(GH_TOKEN)
               GITHUB_REPOSITORY: microsoft/fast
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
+
+          # Push a `deployed/<tag>` marker tag for each release that was just
+          # published so that the next nightly Check stage sees it and skips
+          # the release. Reads the list of tags written by the download script.
+          - script: |
+              set -euo pipefail
+              META_FILE=publish_artifacts_meta/undeployed-tags.txt
+              if [ ! -s "$META_FILE" ]; then
+                echo "No tags to mark as deployed."
+                exit 0
+              fi
+              while IFS= read -r tag; do
+                [ -z "$tag" ] && continue
+                DEPLOY_TAG="deployed/${tag}"
+                echo "Marking deployed: ${DEPLOY_TAG}"
+                git tag "${DEPLOY_TAG}"
+                git push origin "${DEPLOY_TAG}"
+              done < "$META_FILE"
+            displayName: "Mark releases as deployed"

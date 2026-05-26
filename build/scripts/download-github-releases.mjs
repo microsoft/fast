@@ -1,22 +1,54 @@
 #!/usr/bin/env node
 /**
- * Download GitHub release tarballs whose `${name}@${version}` has not yet
- * been published to npm.
+ * Download GitHub release assets whose `${name}_v${version}` git tag has
+ * no `deployed/<tag>` counterpart, and sort them into separate folders
+ * for the publish template:
+ *
+ *   - `.tgz`   -> `publish_artifacts_npm/`
+ *   - `.crate` -> `publish_artifacts_crates/`
  *
  * Invoked by `azure-pipelines-cd.yml` before the existing
- * `FAST.Release.PipelineTemplate` publishes from `publish_artifacts/`. For
- * every GitHub release in `$GITHUB_REPOSITORY` whose tag matches beachball's
- * `${name}_v${version}` format, we ask npm whether that exact version is
- * already published. Anything missing has its `.tgz` assets downloaded into
- * `publish_artifacts/` so the downstream 1ES template can `npm publish` them.
+ * `FAST.Release.PipelineTemplate` runs. We use a `deployed/<tag>` git
+ * marker tag instead of `npm view` / `cargo search` because external
+ * calls from 1ES agents to npm/crates.io are unreliable (per the
+ * webui Azure-pipeline guidance).
  *
- * Authentication: the `gh` CLI reads `GH_TOKEN` from the environment.
+ * After a successful publish the Azure pipeline pushes the
+ * `deployed/<tag>` marker tag for each release that was published; the
+ * next run sees it via `git tag -l` and skips that release.
+ *
+ * Modes:
+ *
+ *   - default: download assets for every undeployed release. Writes the
+ *     processed tag list to `publish_artifacts_meta/undeployed-tags.txt`
+ *     so the Azure pipeline can push `deployed/<tag>` markers after the
+ *     publish template completes.
+ *   - `--check-only`: enumerate undeployed releases only. Sets the
+ *     `needsDeployment` and `undeployedTags` Azure Pipelines output
+ *     variables (when running under `TF_BUILD`). No downloads.
+ *
+ * Inputs:
+ *
+ *   - `GITHUB_REPOSITORY` env var (`owner/repo`) — required.
+ *   - `GH_TOKEN` env var — required for non-`--check-only` mode so the
+ *     `gh` CLI can authenticate.
+ *
+ * The script never reads any package.json or Cargo.toml: the
+ * source of truth for "what should be published" is the set of git
+ * tags. This keeps the script working on a freshly-cloned 1ES agent
+ * with no `node_modules` or cargo registry.
  */
 
 import { execFileSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readdirSync, renameSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
-const PUBLISH_DIR = "publish_artifacts";
+const NPM_DIR = "publish_artifacts_npm";
+const CRATES_DIR = "publish_artifacts_crates";
+const META_DIR = "publish_artifacts_meta";
+const STAGE_DIR = "publish_artifacts_stage";
+
+const CHECK_ONLY = process.argv.includes("--check-only");
 
 const repo = process.env.GITHUB_REPOSITORY;
 if (!repo) {
@@ -28,87 +60,85 @@ function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
 }
 
-function isPublishedToNpm(name, version) {
-    try {
-        const out = execFileSync(
-            "npm",
-            ["view", `${name}@${version}`, "version", "--json"],
-            {
-                encoding: "utf8",
-                stdio: ["ignore", "pipe", "ignore"],
-            },
-        ).trim();
-        return out.length > 0;
-    } catch {
-        // npm view exits non-zero for E404; treat as not published.
-        return false;
+function listGitTags() {
+    return run("git", ["tag", "--list"])
+        .split("\n")
+        .map(t => t.trim())
+        .filter(Boolean);
+}
+
+function setAzureOutput(name, value) {
+    if (!process.env.TF_BUILD) return;
+    console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
+}
+
+const allTags = listGitTags();
+const deployed = new Set(
+    allTags.filter(t => t.startsWith("deployed/")).map(t => t.slice("deployed/".length)),
+);
+const releaseTags = allTags.filter(t => /_v\d+\.\d+/.test(t));
+const undeployed = releaseTags.filter(t => !deployed.has(t)).sort();
+
+console.log(`Release tags total:        ${releaseTags.length}`);
+console.log(`Already deployed:          ${releaseTags.length - undeployed.length}`);
+console.log(`Undeployed:                ${undeployed.length}`);
+
+if (undeployed.length > 0) {
+    console.log("\nUndeployed tags:");
+    for (const tag of undeployed) {
+        console.log(`  - ${tag}`);
     }
 }
 
-mkdirSync(PUBLISH_DIR, { recursive: true });
+setAzureOutput("needsDeployment", undeployed.length > 0 ? "true" : "false");
+setAzureOutput("undeployedTags", undeployed.join(","));
 
-const releasesJson = run("gh", [
-    "release",
-    "list",
-    "--repo",
-    repo,
-    "--limit",
-    "1000",
-    "--json",
-    "tagName",
-]);
-const tags = JSON.parse(releasesJson).map(r => r.tagName);
+if (CHECK_ONLY || undeployed.length === 0) {
+    process.exit(0);
+}
 
-let downloaded = 0;
+mkdirSync(NPM_DIR, { recursive: true });
+mkdirSync(CRATES_DIR, { recursive: true });
+mkdirSync(META_DIR, { recursive: true });
+
 let hasErrors = false;
+const processed = [];
 
-for (const tag of tags) {
-    const sep = tag.lastIndexOf("_v");
-    if (sep === -1) {
-        console.log(`Skipping non-beachball release tag: ${tag}`);
-        continue;
-    }
-
-    const name = tag.slice(0, sep);
-    const version = tag.slice(sep + 2);
-
+for (const tag of undeployed) {
     try {
-        if (isPublishedToNpm(name, version)) {
-            console.log(`Already on npm: ${name}@${version}`);
-            continue;
-        }
-
-        console.log(`Downloading ${name}@${version} assets...`);
+        console.log(`\nDownloading assets for ${tag}...`);
+        mkdirSync(STAGE_DIR, { recursive: true });
         run(
             "gh",
-            [
-                "release",
-                "download",
-                tag,
-                "--repo",
-                repo,
-                "--pattern",
-                "*.tgz",
-                "--dir",
-                PUBLISH_DIR,
-                "--clobber",
-            ],
+            ["release", "download", tag, "--repo", repo, "--dir", STAGE_DIR, "--clobber"],
             { stdio: "inherit" },
         );
-        downloaded += 1;
+
+        for (const file of readdirSync(STAGE_DIR)) {
+            const src = join(STAGE_DIR, file);
+            if (file.endsWith(".tgz")) {
+                renameSync(src, join(NPM_DIR, file));
+            } else if (file.endsWith(".crate")) {
+                renameSync(src, join(CRATES_DIR, file));
+            } else {
+                console.warn(`  Ignoring unknown asset type: ${file}`);
+            }
+        }
+
+        processed.push(tag);
     } catch (error) {
         hasErrors = true;
-        console.error(`Failed to process release ${tag}:`, error.message);
+        console.error(`Failed to download release ${tag}:`, error.message);
     }
 }
 
-if (downloaded === 0 && !hasErrors) {
-    console.log(
-        "No new releases to publish — all GitHub releases already match versions on npm.",
-    );
-} else {
-    console.log(`Downloaded assets for ${downloaded} release(s).`);
-}
+writeFileSync(
+    join(META_DIR, "undeployed-tags.txt"),
+    processed.join("\n") + (processed.length ? "\n" : ""),
+);
+
+console.log(`\nProcessed ${processed.length}/${undeployed.length} release(s).`);
+console.log(`Tag list written to ${join(META_DIR, "undeployed-tags.txt")}`);
 
 if (hasErrors) {
     process.exitCode = 1;
