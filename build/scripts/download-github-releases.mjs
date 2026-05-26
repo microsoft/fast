@@ -62,6 +62,15 @@ if (!repo) {
     process.exit(1);
 }
 
+// `--check-only` works against the local git tag list and never invokes
+// `gh`, so it does not need a token. In non-check mode we call
+// `gh release download`, which fails with a generic auth error if
+// `GH_TOKEN` is missing; fail fast here with a clearer message.
+if (!CHECK_ONLY && !process.env.GH_TOKEN) {
+    console.error("GH_TOKEN must be set so the `gh` CLI can download release assets.");
+    process.exit(1);
+}
+
 function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
 }
@@ -110,9 +119,13 @@ if (CHECK_ONLY || undeployed.length === 0) {
     process.exit(0);
 }
 
-mkdirSync(NPM_DIR, { recursive: true });
-mkdirSync(CRATES_DIR, { recursive: true });
-mkdirSync(META_DIR, { recursive: true });
+// Clear the publish artifact directories before recreating them so a
+// re-run (locally or after a partially-failed Azure attempt) cannot
+// pick up stale `.tgz` / `.crate` files from a previous invocation.
+for (const dir of [NPM_DIR, CRATES_DIR, META_DIR]) {
+    rmSync(dir, { recursive: true, force: true });
+    mkdirSync(dir, { recursive: true });
+}
 
 let hasErrors = false;
 const processed = [];
@@ -131,22 +144,36 @@ for (const tag of undeployed) {
             { stdio: "inherit" },
         );
 
+        let foundAssets = 0;
         for (const file of readdirSync(STAGE_DIR)) {
             const src = join(STAGE_DIR, file);
             if (file.endsWith(".tgz")) {
                 renameSync(src, join(NPM_DIR, file));
+                foundAssets += 1;
             } else if (file.endsWith(".crate")) {
                 renameSync(src, join(CRATES_DIR, file));
+                foundAssets += 1;
             } else {
                 console.warn(`  Ignoring unknown asset type: ${file}`);
                 unlinkSync(src);
             }
         }
 
+        // Refuse to mark a tag as processed if its release had no
+        // recognised publish assets. Otherwise the Azure pipeline would
+        // push the `deployed/<tag>` marker, and the (presumably broken)
+        // release would never be retried.
+        if (foundAssets === 0) {
+            throw new Error(
+                `Release ${tag} contained no .tgz or .crate assets; refusing to mark as deployed.`,
+            );
+        }
+
         processed.push(tag);
     } catch (error) {
         hasErrors = true;
-        console.error(`Failed to download release ${tag}:`, error.message);
+        const message = error instanceof Error ? error.message : String(error);
+        console.error(`Failed to download release ${tag}: ${message}`);
     }
 }
 
