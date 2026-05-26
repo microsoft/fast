@@ -39,7 +39,14 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readdirSync, renameSync, writeFileSync } from "node:fs";
+import {
+    mkdirSync,
+    readdirSync,
+    renameSync,
+    rmSync,
+    unlinkSync,
+    writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 
 const NPM_DIR = "publish_artifacts_npm";
@@ -75,7 +82,14 @@ const allTags = listGitTags();
 const deployed = new Set(
     allTags.filter(t => t.startsWith("deployed/")).map(t => t.slice("deployed/".length)),
 );
-const releaseTags = allTags.filter(t => /_v\d+\.\d+/.test(t));
+// Match beachball's release tag format: `${name}_v${major}.${minor}.${patch}`,
+// where the version is the publishable portion (`1.0.0` or `1.0.0-alpha.3`).
+// `deployed/` marker tags are excluded explicitly so they aren't re-processed
+// as if they were releases.
+const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+/;
+const releaseTags = allTags.filter(
+    t => !t.startsWith("deployed/") && RELEASE_TAG_RE.test(t),
+);
 const undeployed = releaseTags.filter(t => !deployed.has(t)).sort();
 
 console.log(`Release tags total:        ${releaseTags.length}`);
@@ -106,6 +120,10 @@ const processed = [];
 for (const tag of undeployed) {
     try {
         console.log(`\nDownloading assets for ${tag}...`);
+        // Clear the stage dir before each iteration so leftover unknown-type
+        // files from a previous release are not reprocessed (or warned about
+        // repeatedly).
+        rmSync(STAGE_DIR, { recursive: true, force: true });
         mkdirSync(STAGE_DIR, { recursive: true });
         run(
             "gh",
@@ -121,6 +139,7 @@ for (const tag of undeployed) {
                 renameSync(src, join(CRATES_DIR, file));
             } else {
                 console.warn(`  Ignoring unknown asset type: ${file}`);
+                unlinkSync(src);
             }
         }
 
