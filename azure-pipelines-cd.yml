@@ -2,7 +2,7 @@ trigger: none
 pr: none
 
 schedules:
-- cron: '0 9 * * *' # 1am PST = 09:00 UTC.
+- cron: '0 9 * * *' # 09:00 UTC daily (~1am Pacific in standard time, ~2am during DST).
   displayName: Daily npm/crates publish from GitHub Releases
   branches:
     include:
@@ -79,7 +79,6 @@ extends:
       condition: eq(dependencies.Check.outputs['CheckVersion.deploymentCheck.needsDeployment'], 'true')
       variables:
         npm_config_cache: $(Pipeline.Workspace)/.npm
-        undeployedTags: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.undeployedTags'] ]
       jobs:
       - job: Deploy
         steps:
