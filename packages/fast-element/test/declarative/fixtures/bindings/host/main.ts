@@ -215,6 +215,16 @@ HostPermPropFirst.define({
     template: declarativeTemplate(),
 });
 
+// Test 12: Autofocus
+class HostAutofocus extends FASTElement {
+    @attr
+    text: string = "autofocus";
+}
+HostAutofocus.define({
+    name: "host-autofocus",
+    template: declarativeTemplate(),
+});
+
 enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
