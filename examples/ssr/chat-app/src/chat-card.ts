@@ -11,7 +11,7 @@ export class ChatCard extends FASTElement {
 ChatCard.define(
     {
         name: "chat-card",
-        template: declarativeTemplate() as any,
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

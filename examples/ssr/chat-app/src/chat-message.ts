@@ -11,7 +11,7 @@ export class ChatMessage extends FASTElement {
 ChatMessage.define(
     {
         name: "chat-message",
-        template: declarativeTemplate() as any,
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

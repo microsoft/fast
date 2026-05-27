@@ -15,7 +15,7 @@ export class ChatSuggestion extends FASTElement {
 ChatSuggestion.define(
     {
         name: "chat-suggestion",
-        template: declarativeTemplate() as any,
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

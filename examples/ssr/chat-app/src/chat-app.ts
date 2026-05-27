@@ -197,7 +197,7 @@ export class ChatApp extends FASTElement {
 ChatApp.define(
     {
         name: "chat-app",
-        template: declarativeTemplate() as any,
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

@@ -45,7 +45,7 @@ export class TodoItem extends FASTElement {
 TodoItem.define(
     {
         name: "todo-item",
-        template: declarativeTemplate() as any,
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

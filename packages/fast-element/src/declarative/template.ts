@@ -5,6 +5,7 @@ import type {
     TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 import { Schema } from "../components/schema.js";
+import type { Constructable } from "../interfaces.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { Message } from "./interfaces.js";
@@ -93,9 +94,9 @@ function chainLifecycleCallback<TArgs extends unknown[]>(
  * @param callbacks - Optional per-element lifecycle callbacks.
  * @public
  */
-export function declarativeTemplate(
-    callbacks?: TemplateLifecycleCallbacks,
-): FASTElementTemplateResolver {
+export function declarativeTemplate<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver<TType> {
     ensureDeclarativeRuntime();
 
     return async definition => {
