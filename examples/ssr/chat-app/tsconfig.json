@@ -7,7 +7,6 @@
         "importHelpers": true,
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
-        "skipLibCheck": true,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,

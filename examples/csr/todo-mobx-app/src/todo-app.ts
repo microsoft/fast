@@ -51,7 +51,7 @@ export class TodoApp extends FASTElement {
     }
 }
 
-export const app = TodoApp.compose({
+export const app = await TodoApp.compose({
     name: "todo-app",
     template,
     styles,
