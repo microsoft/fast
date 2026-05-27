@@ -1,0 +1,214 @@
+/*
+ * @microsoft/fast-examples-design-system
+ *
+ * Single-file token contract. Theme-independent tokens (typography, sizing,
+ * shape, motion) and theme-resolving tokens (color, elevation) all live on
+ * :root. Color and shadow tokens use the CSS light-dark() function, so each
+ * declaration carries both its light and dark resolution side by side.
+ *
+ * Theme selection:
+ *
+ *   - No data-theme attribute on <html>  → follows prefers-color-scheme.
+ *   - <html data-theme="light">          → forced light.
+ *   - <html data-theme="dark">           → forced dark.
+ *
+ * Naming model: semantic, use-site tokens organized into categories
+ * (text/padding/gap/corner/stroke/background/foreground/shadow/status),
+ * with FAST's `--fast-` prefix. State vocabulary: rest, hover, pressed,
+ * disabled.
+ *
+ * Requires browsers that support the CSS light-dark() function
+ * (Chrome / Edge 123+, Firefox 120+, Safari 17.5+).
+ */
+
+:root {
+    color-scheme: light dark;
+
+    /* Text: families */
+    --fast-text-style-default-regular-font-family:
+        "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Helvetica,
+        Arial, sans-serif;
+    --fast-text-style-code-regular-font-family:
+        ui-monospace, "Cascadia Code", "SF Mono", "Roboto Mono", Consolas,
+        "Liberation Mono", monospace;
+    --fast-text-style-data-viz-regular-font-family:
+        Bahnschrift, "Segoe UI", system-ui, sans-serif;
+
+    /* Text: weights */
+    --fast-text-style-default-regular-weight: 400;
+    --fast-text-style-default-header-weight: 600;
+    --fast-text-style-default-display-weight: 600;
+
+    /* Text: global type ramp (lower number = larger) */
+    --fast-text-global-caption2-font-size: 10px;
+    --fast-text-global-caption2-line-height: 14px;
+    --fast-text-global-caption1-font-size: 12px;
+    --fast-text-global-caption1-line-height: 16px;
+    --fast-text-global-body3-font-size: 14px;
+    --fast-text-global-body3-line-height: 20px;
+    --fast-text-global-body2-font-size: 16px;
+    --fast-text-global-body2-line-height: 22px;
+    --fast-text-global-body1-font-size: 18px;
+    --fast-text-global-body1-line-height: 26px;
+    --fast-text-global-subtitle2-font-size: 18px;
+    --fast-text-global-subtitle2-line-height: 26px;
+    --fast-text-global-subtitle1-font-size: 20px;
+    --fast-text-global-subtitle1-line-height: 26px;
+    --fast-text-global-title2-font-size: 20px;
+    --fast-text-global-title2-line-height: 26px;
+    --fast-text-global-title1-font-size: 24px;
+    --fast-text-global-title1-line-height: 32px;
+    --fast-text-global-display2-font-size: 28px;
+    --fast-text-global-display2-line-height: 32px;
+    --fast-text-global-display1-font-size: 38px;
+    --fast-text-global-display1-line-height: 40px;
+
+    /* Padding: content inset */
+    --fast-padding-content-none: 0;
+    --fast-padding-content-xx-small: 4px;
+    --fast-padding-content-x-small: 8px;
+    --fast-padding-content-small: 12px;
+    --fast-padding-content-medium: 16px;
+    --fast-padding-content-large: 20px;
+    --fast-padding-content-x-large: 24px;
+    --fast-padding-content-xx-large: 32px;
+    --fast-padding-content-xxx-large: 40px;
+
+    /* Gap: between elements */
+    --fast-gap-between-content-none: 0;
+    --fast-gap-between-content-xx-small: 4px;
+    --fast-gap-between-content-x-small: 8px;
+    --fast-gap-between-content-small: 12px;
+    --fast-gap-between-content-medium: 16px;
+    --fast-gap-between-content-large: 20px;
+    --fast-gap-between-content-x-large: 22px;
+    --fast-gap-between-content-xx-large: 32px;
+
+    /* Corner: border-radius */
+    --fast-corner-none: 0;
+    --fast-corner-small: 2px;
+    --fast-corner-medium: 4px;
+    --fast-corner-large: 6px;
+    --fast-corner-circular: 9999px;
+
+    /* Stroke widths */
+    --fast-stroke-width-default: 1px;
+    --fast-stroke-width-divider-strong: 1.5px;
+
+    /* Control focus */
+    --fast-ctrl-focus-outer-stroke-width: 2px;
+
+    /* Motion: durations */
+    --fast-duration-ultra-fast: 50ms;
+    --fast-duration-faster: 100ms;
+    --fast-duration-fast: 150ms;
+    --fast-duration-normal: 200ms;
+    --fast-duration-gentle: 250ms;
+    --fast-duration-slow: 300ms;
+    --fast-duration-slower: 400ms;
+    --fast-duration-ultra-slow: 500ms;
+
+    /* Motion: curves */
+    --fast-curve-accelerate-max: cubic-bezier(0.9, 0.1, 1, 0.2);
+    --fast-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+    --fast-curve-accelerate-min: cubic-bezier(0.8, 0, 0.78, 1);
+    --fast-curve-decelerate-max: cubic-bezier(0.1, 0.9, 0.2, 1);
+    --fast-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fast-curve-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
+    --fast-curve-easy-ease-max: cubic-bezier(0.8, 0, 0.2, 1);
+    --fast-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fast-curve-linear: cubic-bezier(0, 0, 1, 1);
+
+    /*
+     * Theme-resolving tokens
+     *
+     * Color and elevation values are wrapped in light-dark(lightValue,
+     * darkValue). The browser picks the matching value based on the active
+     * color-scheme, which follows prefers-color-scheme by default and can
+     * be forced via the data-theme attribute on <html> (see overrides at
+     * the end of this file).
+     */
+
+    /* Background: surfaces */
+    --fast-background-web-page-primary: light-dark(#fafafa, #1f1f1f);
+    --fast-background-layer-primary-solid: light-dark(#ffffff, #292929);
+    --fast-background-layer-secondary: light-dark(#f5f5f5, #141414);
+
+    /* Background: subtle controls (transparent base; tint on interaction) */
+    --fast-background-ctrl-subtle-rest: transparent;
+    --fast-background-ctrl-subtle-hover: light-dark(#f5f5f5, #333333);
+    --fast-background-ctrl-subtle-pressed: light-dark(#ebebeb, #3d3d3d);
+    --fast-background-ctrl-subtle-disabled: transparent;
+
+    /* Background: brand controls */
+    --fast-background-ctrl-brand-rest: light-dark(#0f6cbd, #115ea3);
+    --fast-background-ctrl-brand-hover: light-dark(#115ea3, #0f6cbd);
+    --fast-background-ctrl-brand-pressed: light-dark(#0c3b5e, #0f548c);
+    --fast-background-ctrl-brand-disabled: light-dark(#f0f0f0, #333333);
+
+    /* Foreground: text + icon */
+    --fast-foreground-ctrl-neutral-primary-rest: light-dark(#242424, #ffffff);
+    --fast-foreground-ctrl-neutral-primary-disabled: light-dark(#bdbdbd, #5c5c5c);
+    --fast-foreground-ctrl-neutral-secondary-rest: light-dark(#424242, #f5f5f5);
+    --fast-foreground-ctrl-hint-default: light-dark(#707070, #adadad);
+    --fast-foreground-ctrl-on-brand-rest: #ffffff;
+    --fast-foreground-ctrl-brand-rest: light-dark(#0f6cbd, #479ef5);
+
+    /* Stroke: dividers and outlines */
+    --fast-stroke-divider-default: light-dark(#d1d1d1, #666666);
+    --fast-stroke-divider-subtle: light-dark(#e0e0e0, #525252);
+    --fast-stroke-divider-strong: light-dark(#616161, #adadad);
+    --fast-stroke-divider-brand: light-dark(#0f6cbd, #479ef5);
+    --fast-stroke-ctrl-on-outline-rest: light-dark(#d1d1d1, #666666);
+    --fast-stroke-ctrl-on-outline-disabled: light-dark(#f0f0f0, #333333);
+
+    /* Focus ring color */
+    --fast-ctrl-focus-outer-stroke: light-dark(#0f6cbd, #479ef5);
+
+    /* Status: solid */
+    --fast-status-danger-background: light-dark(#c50f1f, #ff99a4);
+    --fast-status-danger-foreground: light-dark(#ffffff, #3b0509);
+    --fast-status-success-background: light-dark(#0e700e, #54b054);
+    --fast-status-success-foreground: light-dark(#ffffff, #092b1b);
+    --fast-status-warning-background: light-dark(#8a3707, #fcb441);
+    --fast-status-warning-foreground: light-dark(#ffffff, #4f2a00);
+
+    /* Status: tinted (use these for destructive buttons, inline alerts) */
+    --fast-status-danger-tint-background: light-dark(#fde7e9, #3b0509);
+    --fast-status-danger-tint-foreground: light-dark(#c50f1f, #ff99a4);
+    --fast-status-danger-tint-stroke: light-dark(#c50f1f, #ff99a4);
+    --fast-status-success-tint-background: light-dark(#dff6dd, #092b1b);
+    --fast-status-success-tint-foreground: light-dark(#0e700e, #54b054);
+    --fast-status-success-tint-stroke: light-dark(#0e700e, #54b054);
+    --fast-status-warning-tint-background: light-dark(#fff4ce, #4f2a00);
+    --fast-status-warning-tint-foreground: light-dark(#8a3707, #fcb441);
+    --fast-status-warning-tint-stroke: light-dark(#8a3707, #fcb441);
+
+    /* Shadow: card (atomic key + ambient pair, plus composed alias) */
+    --fast-shadow-card-rest-key: 0 4px 8px 0
+        light-dark(rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.48));
+    --fast-shadow-card-rest-ambient: 0 0 2px 0
+        light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28));
+    --fast-shadow-card-rest:
+        var(--fast-shadow-card-rest-key), var(--fast-shadow-card-rest-ambient);
+
+    /* Shadow: flyout */
+    --fast-shadow-flyout-key: 0 8px 16px 0
+        light-dark(rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.48));
+    --fast-shadow-flyout-ambient: 0 0 2px 0
+        light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28));
+    --fast-shadow-flyout:
+        var(--fast-shadow-flyout-key), var(--fast-shadow-flyout-ambient);
+}
+
+/*
+ * Forced themes. Setting data-theme overrides the inherited color-scheme,
+ * which flips every light-dark() resolution to the corresponding value.
+ */
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+}

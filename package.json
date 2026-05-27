@@ -12,7 +12,9 @@
     "build",
     "packages/*",
     "sites/*",
-    "examples/*"
+    "examples/*",
+    "examples/csr/*",
+    "examples/ssr/*"
   ],
   "engines": {
     "npm": ">=10.0.0",
@@ -33,13 +35,13 @@
     "check": "beachball check ",
     "build:gh-pages": "npm run build -w @microsoft/fast-site",
     "publish": "beachball publish",
-    "publish-ci": "beachball publish -y --no-publish",
     "sync": "beachball sync",
     "test:diff:error": "echo \"Untracked files exist, try running npm run build to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
     "test:validation": "npm run test:diff",
     "test": "lage test:node test:playwright",
     "test:chromium": "lage test:node test:chromium",
+    "test:e2e": "npm run test:e2e -w @microsoft/fast-examples-e2e",
     "watch": "tsgo -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
     "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
@@ -58,26 +60,13 @@
     "@rollup/plugin-terser": "1.0.0",
     "@rollup/plugin-typescript": "12.3.0",
     "@typescript/native-preview": "7.0.0-dev.20260421.2",
-    "@types/express": "^5.0.6",
+    "@types/node": "^22.18.11",
     "beachball": "2.63.0",
     "concurrently": "9.2.1",
-    "esm": "3.2.25",
-    "express": "4.22.1",
-    "glob": "10.5.0",
     "lage": "2.15.8",
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
     "typescript": "5.5.4",
-    "vite": "7.3.2",
-    "yargs": "17.7.2"
-  },
-  "overrides": {
-    "pacote": "21.3.0",
-    "sucrase": {
-      "glob": "$glob"
-    },
-    "read-package-json": {
-      "glob": "$glob"
-    }
+    "vite": "7.3.2"
   }
 }

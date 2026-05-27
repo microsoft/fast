@@ -1,0 +1,33 @@
+{
+  "name": "@microsoft/fast-chat-app-example",
+  "version": "1.0.0",
+  "description": "Declarative FAST chat app example with iframe streaming",
+  "main": "dist/exports.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build:markup": "node ./build-markup.mjs",
+    "build": "npm run build:markup && tsgo -p tsconfig.json && vite build",
+    "start": "npm run build:markup && vite",
+    "test": "npm run build"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "examples/ssr/chat-app"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "^3.0.0-rc.1",
+    "@microsoft/fast-examples-design-system": "*",
+    "tslib": "^2.6.3"
+  },
+  "devDependencies": {
+    "@microsoft/fast-build": "*"
+  }
+}

@@ -79,6 +79,55 @@ export interface GenerateFTemplatesOptions {
      * Optional formatter function applied to generated HTML before writing.
      */
     format?: (html: string, filePath: string) => string | Promise<string>;
+
+    /**
+     * Resolves shadow DOM options for a given template module path.
+     * Returns a `shadowOptions` object (e.g. `{ delegatesFocus: true }`) or
+     * `undefined` if the component has no special shadow options.
+     *
+     * Defaults to {@link definitionAsyncResolver}, which loads a companion
+     * `*.definition-async.js` module next to each template. Set to `null`
+     * to disable shadow options resolution.
+     *
+     * @default definitionAsyncResolver
+     */
+    resolveShadowOptions?: ShadowOptionsResolver | null;
+}
+
+/**
+ * A function that resolves shadow DOM options for a template module.
+ * Receives the absolute path to the compiled `*.template.js` file and
+ * returns shadow options or `undefined`.
+ */
+export type ShadowOptionsResolver = (
+    templateJsPath: string,
+) => Record<string, unknown> | undefined | Promise<Record<string, unknown> | undefined>;
+
+/**
+ * Convention-based resolver that loads a companion `*.definition-async.js`
+ * module next to the template module and returns its `shadowOptions`.
+ *
+ * For a template at `dist/textarea/textarea.template.js`, this looks for
+ * `dist/textarea/textarea.definition-async.js`.
+ *
+ * This is the default resolver used by {@link generateFTemplates} and
+ * {@link generateWebuiTemplates} when `resolveShadowOptions` is not
+ * specified.
+ */
+export async function definitionAsyncResolver(
+    templateJsPath: string,
+): Promise<Record<string, unknown> | undefined> {
+    const dir = path.dirname(templateJsPath);
+    const base = path.basename(templateJsPath, ".template.js");
+    const defAsyncPath = path.resolve(dir, `${base}.definition-async.js`);
+
+    try {
+        const mod = await import(pathToFileURL(defAsyncPath).href);
+        const definition = mod.definition ?? mod.default;
+        return definition?.shadowOptions;
+    } catch {
+        return undefined;
+    }
 }
 
 export interface ViewTemplate {
@@ -303,9 +352,36 @@ export function convertTemplate(
     // so the test harness can substitute it with a <link rel="stylesheet"> at
     // render time. Harness fallback auto-injects if the marker is missing, but
     // emitting it explicitly keeps generated output consistent with hand-authored
-    // f-templates (see MAI core components).
+    // f-templates.
     fInner = fInner.replace(/(<template[^>]*>)/, `$1${stylesMarker}`);
     return `<f-template name="${componentName}" shadowrootmode="open">\n${fInner}\n</f-template>\n`;
+}
+
+/**
+ * Convert a `shadowOptions` object (e.g. `{ delegatesFocus: true }`) into
+ * DSD template attribute entries (e.g. `{ shadowrootdelegatesfocus: "" }`).
+ */
+export function shadowOptionsToAttributes(
+    shadowOptions: Record<string, unknown> | undefined,
+): Record<string, string> {
+    const attrs: Record<string, string> = {};
+    if (!shadowOptions) {
+        return attrs;
+    }
+
+    for (const [key, value] of Object.entries(shadowOptions)) {
+        if (key === "mode") {
+            continue;
+        }
+        const attrName = `shadowroot${key.toLowerCase()}`;
+        if (value === true) {
+            attrs[attrName] = "";
+        } else if (typeof value === "string" && value !== "") {
+            attrs[attrName] = value;
+        }
+    }
+
+    return attrs;
 }
 
 export async function generateFTemplates(
@@ -337,7 +413,20 @@ export async function generateFTemplates(
                 continue;
             }
 
+            // Resolve shadow options and inject them into the <f-template> tag.
+            const resolver =
+                options.resolveShadowOptions === null
+                    ? undefined
+                    : (options.resolveShadowOptions ?? definitionAsyncResolver);
+            const shadowOpts = resolver ? await resolver(jsFilePath) : undefined;
+            const shadowAttrs = shadowOptionsToAttributes(shadowOpts);
             let html = fTemplateHtml;
+            if (Object.keys(shadowAttrs).length > 0) {
+                const extraAttrs = Object.entries(shadowAttrs)
+                    .map(([k, v]) => (v ? ` ${k}="${v}"` : ` ${k}`))
+                    .join("");
+                html = html.replace(/(<f-template[^>]*)(>)/, `$1${extraAttrs}$2`);
+            }
 
             if (options.format) {
                 try {
@@ -351,8 +440,9 @@ export async function generateFTemplates(
                 }
             }
 
+            const relativeDir = path.relative(distDir, path.dirname(jsFilePath));
             const fTemplatePath = outDir
-                ? path.resolve(outDir, `${componentBaseName}.template.html`)
+                ? path.resolve(outDir, relativeDir, `${componentBaseName}.template.html`)
                 : path.resolve(
                       path.dirname(jsFilePath),
                       `${componentBaseName}.template.html`,
