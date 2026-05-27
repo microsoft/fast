@@ -18,6 +18,7 @@
         "moduleResolution": "bundler",
         "importHelpers": true,
         "experimentalDecorators": true,
+        "useDefineForClassFields": false,
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
