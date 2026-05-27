@@ -1,0 +1,30 @@
+{
+  "name": "@microsoft/fast-todo-mobx-app-example",
+  "version": "1.0.0",
+  "description": "A Todo example that uses MobX for state, demonstrating how MobX observables, computeds, actions, and reactions can be bridged into FASTElement template bindings.",
+  "main": "dist/exports.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsgo -p tsconfig.json && vite build",
+    "start": "vite",
+    "test": "npm run build"
+  },
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "examples/csr/todo-mobx-app"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "^3.0.0-rc.1",
+    "@microsoft/fast-examples-design-system": "^1.0.0",
+    "mobx": "^6.13.5",
+    "tslib": "^2.6.3"
+  }
+}

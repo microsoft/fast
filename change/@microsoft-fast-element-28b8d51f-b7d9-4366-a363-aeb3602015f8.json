@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "make declarativeTemplate() generic over the element constructor so its returned FASTElementTemplateResolver narrows to the specific element type at the call site, removing the need for an `as any` cast when calling Element.define({ template: declarativeTemplate() }, [...]) under noImplicitThis.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -52,7 +52,7 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 | `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 
@@ -247,8 +247,28 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
      - No `data-fe` marker is added — root elements at entry level have no parent hydration scope.
    - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe="N"` is injected.
-8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
-9. **Emit Declarative Shadow DOM** with hydration attributes:
+8. **Template host attribute propagation.** Attributes declared on the inner `<template>` element of the source `<f-template>` are merged onto the rendered host opening tag built in step 7. `merge_template_host_attrs` (in `directive.rs`) splices the surviving attributes in just before the closing `>`, resolving any bindings against `child_root` — the same child state used to render the shadow template (the root state with the host element's HTML attributes overlaid).
+   - **Client-only attrs are skipped**: any template host attr whose name starts with `@` (event) or `:` (property binding), or whose lowercased name is `f-ref`, `f-slotted`, or `f-children`, is dropped — none of these have any meaning on a server-rendered host element.
+   - **Author attributes win.** Attributes already present on the host element opening tag (the author markup) are preserved verbatim. Template host attrs whose lowercased name matches an existing author attribute are skipped. For `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` (without the leading `?`).
+   - **Static `name="value"`** → emitted verbatim with the value HTML-escaped. **Static boolean `name`** (no `=`) → emitted bare.
+   - **`name="{{expr}}"`** → resolved against `child_root`. `String` / `Number` / `Bool` values are emitted as `name="value"` (HTML-escaped); `Array` / `Object` / `Null` and missing values are stripped.
+   - **`?name="{{expr}}"`** → evaluated as a boolean against `child_root`; the bare `name` (without the leading `?`) is emitted when truthy and skipped when falsy.
+   - Applies to **both** root entry-level custom elements (`is_entry: true`) and nested custom elements (`is_entry: false`).
+   - **No `data-fe` hydration marker is allocated** for propagated template host attrs — they are static or initial-render-only attributes on the host element, not client-side bindings.
+
+   *Worked example.* Given the template
+   ```html
+   <f-template name="my-el">
+       <template tabindex="0" ?disabled="{{isDisabled}}">…</template>
+   </f-template>
+   ```
+   the author markup `<my-el disabled></my-el>` and state `{"isDisabled": false}` render as
+   ```html
+   <my-el disabled tabindex="0">…</my-el>
+   ```
+   — the author's `disabled` is preserved verbatim, the template's `?disabled` is dropped by the dedupe rule, and `tabindex="0"` is appended.
+9. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+10. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
@@ -448,9 +468,9 @@ For each glob pattern:
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
 - Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
 - Extracts the inner HTML between `>` and `</f-template>`.
-- Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
+- Calls `extract_template_content` on the inner HTML to get the content **and the attributes** declared on the inner `<template>` element. The returned attribute list is preserved as the template's **host attributes**, available later via `Locator::get_host_attributes` and merged onto the rendered host opening tag by `merge_template_host_attrs` (see the **Custom elements** section above).
 
-Returns a `Vec<FTemplate>` containing the optional name, template content, and the collected shadowroot attributes. The locator stores those attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`.
+Returns a `Vec<FTemplate>` containing the optional name, template content, the collected shadowroot attributes, and the inner `<template>` element's host attributes. The locator stores the shadowroot attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`, and stores the host attributes so they can be merged onto the rendered host element opening tag.
 
 ### Glob matching
 
