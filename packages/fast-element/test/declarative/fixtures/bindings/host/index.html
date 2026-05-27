@@ -38,7 +38,8 @@ host-autofocus {
         <host-perm-bool-first text="perm bool first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm bool first<!--fe:/b--></span></template></host-perm-bool-first>
         <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm prop first<!--fe:/b--></span></template></host-perm-prop-first>
         <!-- biome-ignore lint/a11y/noAutofocus: deliberate fixture verifying author-provided host attribute propagation through SSR -->
-        <host-autofocus autofocus tabindex="0"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->autofocus<!--fe:/b--></span></template></host-autofocus>
+        <host-autofocus autofocus tabindex="0"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-autofocus>
+<!-- biome-ignore-all format: SSR renderer requires multi-line <template> layout for binding marker placement -->
 <f-template name="host-event-element">
     <template @click="{handleClick()}">
         <span>{{greeting}}</span>

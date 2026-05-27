@@ -37,10 +37,6 @@ export default defineConfig({
             name: "csr-todo-mobx",
             use: { baseURL: "http://localhost:9001" },
         },
-        {
-            name: "ssr-webui-todo",
-            use: { baseURL: "http://localhost:8081" },
-        },
     ],
     webServer: [
         {
@@ -58,15 +54,6 @@ export default defineConfig({
             cwd: "../..",
             reuseExistingServer: !isCI,
             timeout: 60_000,
-            stdout: "pipe",
-            stderr: "pipe",
-        },
-        {
-            command: "npm run start:e2e -w @microsoft/fast-webui-todo-app-example",
-            url: "http://localhost:8081",
-            cwd: "../..",
-            reuseExistingServer: !isCI,
-            timeout: 180_000,
             stdout: "pipe",
             stderr: "pipe",
         },

@@ -382,7 +382,7 @@ test.describe("Host Bindings Hydration", async () => {
             const hydrationCompleted = page.waitForFunction(
                 () => (window as any).hydrationCompleted === true,
             );
-            await page.goto("/fixtures/host-bindings/");
+            await page.goto("/fixtures/bindings/host/");
             await hydrationCompleted;
 
             const element = page.locator("host-autofocus");
