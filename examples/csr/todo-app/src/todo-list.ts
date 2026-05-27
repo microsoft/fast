@@ -9,6 +9,8 @@ export const TodoList = Context.create<TodoList>("TodoList");
 export interface TodoList {
     activeFilter: TodoListFilter;
     readonly filtered: readonly Todo[];
+    readonly activeCount: number;
+    readonly completedCount: number;
     add(description: string): void;
     remove(todo: Todo): void;
 }
@@ -40,6 +42,23 @@ export class DefaultTodoList {
         }
     }
 
+    @volatile
+    public get activeCount(): number {
+        // This getter is decorated with @volatile because the array's
+        // length and the set of tracked item.done properties can change
+        // between invocations. Without @volatile, FAST captures the
+        // dependency graph on first evaluation only — at startup the
+        // array is empty, so no item.done subscriptions get registered
+        // and later toggles don't re-run the binding.
+        return this._todos.reduce((n, item) => n + (item.done ? 0 : 1), 0);
+    }
+
+    @volatile
+    public get completedCount(): number {
+        // See note on activeCount for why this getter is @volatile.
+        return this._todos.reduce((n, item) => n + (item.done ? 1 : 0), 0);
+    }
+
     constructor(todos?: Todo[]) {
         if (todos) {
             this._todos = todos.map(x => reactive(x));
@@ -62,9 +81,10 @@ export class DefaultTodoList {
     private splice(index: number, removeCount: number, ...newItem: Todo[]) {
         this._todos.splice(index, removeCount, ...newItem);
 
-        // Because the filtered property returns different arrays depending
-        // on the filter, we need to notify FAST that the dependent _todos
-        // observable has changed whenever we splice the internal data structure.
-        this.activeFilter !== "all" && Observable.notify(this, "_todos");
+        // Notify FAST that the dependent _todos observable has changed. Both
+        // the filtered list (when activeFilter is "active" or "completed") and
+        // the count getters (activeCount / completedCount) depend on the
+        // array structure, so we always emit the notification.
+        Observable.notify(this, "_todos");
     }
 }

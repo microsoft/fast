@@ -42,6 +42,7 @@
     },
     "./public/*": "./public/*",
     "./template.html": "./test/src/test-widget/test-widget.template.html",
+    "./input/template.html": "./test/src/test-widget/input/test-input.template.html",
     "./styles.css": "./test/src/test-widget/test-widget.styles.css",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
