@@ -208,7 +208,9 @@ gh pr create --fill --base main
 The bump PR goes through normal review. `npm run checkchange` will pass because the change files have all been consumed; the PR itself does **not** publish anything.
 
 :::note
-Do not edit `package.json` or `Cargo.toml` versions by hand. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+Avoid editing `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR — let `npm run bump` and the postbump hook do it during a release. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+
+The exception is a deliberate version-only edit (e.g. a hotfix override, paired Rust/npm version sync recovery, or automation-driven version pin): `npm run checkchange` will auto-tolerate a hand-edited `version` field in `packages/*/package.json` as long as that is the only file touched in the package directory and the only line changed in `package.json`. In that case you do **not** need to author a change file. If you also need to bump the paired Rust crate, edit `crates/<crate-name>/Cargo.toml` and `crates/<crate-name>/Cargo.lock` to match — the `postbump` hook only fires during `npm run bump`, not on hand edits, so manual npm version edits must be paired with manual crate version edits. See [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) for the full auto-exclusion conditions.
 :::
 
 #### 6. After merge
