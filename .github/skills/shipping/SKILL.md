@@ -146,6 +146,13 @@ The Beachball config ([`beachball.config.js`](../../../beachball.config.js)) ign
 - `package-lock.json`
 - `.vscode/`, `.prettierrc`
 
+Additionally, [`build/scripts/checkchange.mjs`](../../../build/scripts/checkchange.mjs) (which wraps `beachball check` for the `checkchange` npm script) skips the check entirely on **manual version bump** branches authored by a repo admin. Specifically, both of the following must be true for the current run:
+
+1. Branch name matches `^publish_\d+$` (beachball's documented publish-branch convention).
+2. The actor (`$GITHUB_ACTOR` in CI; locally, the user from `gh api user`) has the `admin` role on `microsoft/fast`, verified via the GitHub REST API.
+
+If either condition fails, the change-file requirement applies as before. See [`CONTRIBUTING.md` > Manual version bumps](../../../CONTRIBUTING.md#manual-version-bumps) for the full rationale and reviewer expectations.
+
 ## Cross-branch targeting
 
 When working across feature branches, target the branch explicitly:

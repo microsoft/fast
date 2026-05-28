@@ -158,10 +158,12 @@ Every PR that touches a publishable workspace should include a beachball [change
 
 #### 2. Create the bump branch
 
+The branch name must match beachball's `publish_<timestamp>` convention so that [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) recognizes the PR as a bump and skips the change-file requirement, provided the actor has the `admin` role on the repo (see [Manual version bumps](#manual-version-bumps) below for the bypass details).
+
 ```bash
 git checkout main
 git pull origin main
-git checkout -b chore/bump-$(date +%Y-%m-%d)
+git checkout -b "publish_$(node -p 'Date.now()')"
 ```
 
 #### 3. Run `npm run bump`
@@ -201,14 +203,16 @@ A typical bump PR touches:
 ```bash
 git add -A
 git commit -m "chore: release packages"
-git push origin chore/bump-$(date +%Y-%m-%d)
+git push origin "$(git rev-parse --abbrev-ref HEAD)"
 gh pr create --fill --base main
 ```
 
-The bump PR goes through normal review. `npm run checkchange` will pass because the change files have all been consumed; the PR itself does **not** publish anything.
+The bump PR goes through normal review. `npm run checkchange` will pass because the branch name matches `publish_<timestamp>` and the actor has admin on the repo (see [Manual version bumps](#manual-version-bumps)); the PR itself does **not** publish anything.
 
 :::note
-Do not edit `package.json` or `Cargo.toml` versions by hand. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+
+A narrow exception exists for the **manual version bump** flow described in [the next section](#manual-version-bumps) — hotfix overrides, paired Rust/npm sync recovery, or scripted version pins. Those edits are tolerated by `npm run checkchange` only on a `publish_<timestamp>` branch whose actor has the `admin` role on `microsoft/fast`.
 :::
 
 #### 6. After merge
@@ -222,6 +226,28 @@ The same flow works for a single-package release — just keep only the relevant
 ```bash
 npx beachball bump --package "@microsoft/fast-build"
 ```
+
+### Manual version bumps
+
+`npm run checkchange` normally requires a beachball [change file](#change-files) for any edit to `packages/*/package.json`, including a single `"version"` line. Three maintainer-driven flows produce legitimate `package.json` edits without a change file:
+
+- The full bump PR documented in [Publishing](#publishing) above (`npm run bump` consumes the change files, so by the time the PR is opened there is nothing left for `npm run change` to record).
+- **Hotfix overrides** where the entire change is `1.2.3` → `1.2.4` on one or two workspaces.
+- **Paired Rust crate ↔ npm package sync recovery** where the postbump hook missed an entry (the npm version is correct but `Cargo.toml` drifted, or vice versa) and a maintainer is forcing the two back into agreement.
+
+To accommodate these flows without weakening the check for the broad contributor population, [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) skips beachball entirely **only** when both of the following are true for the current run:
+
+1. **Branch name matches `^publish_\d+$`** — beachball's own convention for its temporary publish branch, generated as `'publish_' + String(new Date().getTime())` in [`beachball/lib/commands/publish.js`](https://github.com/microsoft/beachball/blob/master/src/commands/publish.ts). Recommended way to generate one:
+   ```bash
+   git checkout -b "publish_$(node -p 'Date.now()')"
+   ```
+2. **Actor has the `admin` role on `microsoft/fast`,** verified live via the GitHub REST API (`GET /repos/microsoft/fast/collaborators/<login>/permission`). The wrapper reads the actor login from `$GITHUB_ACTOR` in CI and falls back to `gh api user --jq .login` locally; it reads the API token from `$GITHUB_TOKEN` → `$GH_TOKEN` → `gh auth token` in order. Maintainership lives in the GitHub repo settings, so adding or removing a maintainer requires no change to this script.
+
+If either condition fails, beachball runs normally and the change-file requirement applies. The bypass is granted only when the GitHub API responds with `"admin"`; any short-circuit before that (missing token, missing login, network error, non-admin role) falls through to `beachball check` and the wrapper logs the reason.
+
+Every bypass writes a multi-line banner to the CI log naming the branch, the actor, the resolved role, and the source of each (env var vs. local CLI). Reviewers should spot-check that banner on bump PRs and either close the PR or rename the branch (drop the `publish_` prefix) if the diff turns out to contain real source-code changes rather than a version bump.
+
+To grant or revoke the bypass for someone, change their role on `microsoft/fast` (Settings → Collaborators and teams). The wrapper picks up the change on the next CI run.
 
 ### Recommended Settings for Visual Studio Code
 
