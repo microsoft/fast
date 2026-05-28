@@ -122,3 +122,12 @@ module.exports = {
         postbump: syncPairedCrateVersion,
     },
 };
+
+// Note: `npm run checkchange` is wrapped by
+// `build/scripts/checkchange.mjs` so that hand-edited version-only
+// bumps in `packages/*/package.json` (hotfix overrides, paired
+// Rust/npm sync recovery, automation-driven version pins) don't
+// require a no-op change file. The wrapper adds dynamic
+// `--scope "!packages/<pkg>"` exclusions before invoking
+// `beachball check`. See that script's header for the full set of
+// auto-exclusion conditions.

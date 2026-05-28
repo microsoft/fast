@@ -146,6 +146,8 @@ The Beachball config ([`beachball.config.js`](../../../beachball.config.js)) ign
 - `package-lock.json`
 - `.vscode/`, `.prettierrc`
 
+In addition, the `npm run checkchange` wrapper ([`build/scripts/checkchange.mjs`](../../../build/scripts/checkchange.mjs)) auto-tolerates **version-only** hand edits to `packages/*/package.json`: a PR that only bumps a workspace's `version` field (no other files in that package directory, no other fields in `package.json`) is auto-excluded from beachball's check and does not need a change file. This is intended for hotfix overrides, paired Rust/npm sync recovery, and automation-driven version pins. Any other edit in the package directory re-enables the standard requirement. Remember to also update the paired `crates/<crate-name>/Cargo.toml` and `Cargo.lock` for any package that has one — the `postbump` hook only fires during `npm run bump`.
+
 ## Cross-branch targeting
 
 When working across feature branches, target the branch explicitly:
