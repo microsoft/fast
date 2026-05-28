@@ -98,8 +98,9 @@ export async function generateStylesheets(
     for await (const jsFile of glob(pattern, { cwd: distDir })) {
         const jsFilePath = path.resolve(distDir, jsFile);
         const baseName = path.basename(jsFile, ".js") + ".css";
+        const relativeDir = path.relative(distDir, path.dirname(jsFilePath));
         const cssFilePath = outDir
-            ? path.resolve(outDir, baseName)
+            ? path.resolve(outDir, relativeDir, baseName)
             : path.resolve(path.dirname(jsFilePath), baseName);
 
         try {
