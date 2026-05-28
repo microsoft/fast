@@ -231,6 +231,27 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 | `f-children="{prop}"` | Children attribute directive |
 | `f-ref="{prop}"` | Element ref attribute directive |
 
+### Code-sample auto-escape
+
+Any text or attribute value inside a `<code>` element has its `{` and `}` characters automatically replaced with the HTML numeric character references `&#123;` and `&#125;` before template parsing. As a result, binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) inside `<code>` are rendered as literal text rather than being interpreted as FAST bindings — making `<code>` blocks safe for embedding code samples that contain binding-like syntax.
+
+```html
+<h1>{{title}}</h1>
+<pre><code>span {{greeting}} /span</code></pre>
+```
+
+In the rendered DOM the `<h1>` binds to the `title` property, while the `<code>` displays the literal text `span {{greeting}} /span`.
+
+The server-side preprocessor (`escape_code_sample_elements` in `microsoft-fast-build`) additionally rewrites the `<` and `>` of every **FAST directive tag** (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) found inside `<code>` as `&lt;` and `&gt;`, so authors can write them literally:
+
+```html
+<pre><code><f-when value="{{flag}}">wrapped</f-when></code></pre>
+```
+
+renders the visible text `<f-when value="{{flag}}">wrapped</f-when>` without activating the directive. Tag-name matching is case-insensitive because browsers normalise HTML tag names to lowercase during parsing, so `<F-When>` would otherwise become a live `<f-when>` element after the DOM round-trip. Non-directive elements inside `<code>` — including real HTML elements (`<button>`) and custom elements (`<my-widget>`) — are deliberately **not** angle-escaped so they keep rendering as live DOM elements; only brace-binding syntax in their attribute values is neutralised.
+
+The brace escape runs in both the client-side `<f-template>` parser (`escapeBracesInCodeElements` in `utilities.ts`) and the server-side renderer (`escape_code_sample_elements` in `microsoft-fast-build`), guaranteeing identical binding positions between SSR output and client hydration. The directive-tag angle escape only needs to run on the server because the DOM serializer re-encodes `<`/`>` in text content (so the client never sees a raw `<f-when>` inside `<code>` regardless of what the page source contained). This approach is modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences.
+
 For full syntax reference see [README.md](./README.md).
 
 ---
