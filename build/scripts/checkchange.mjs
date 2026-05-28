@@ -55,7 +55,6 @@ const ALLOWED_LOGINS = new Set(["janechu", "chrisdholt"]);
 const ALLOWED_EMAILS = new Set([
     "7559015+janechu@users.noreply.github.com",
     "13071055+chrisdholt@users.noreply.github.com",
-    "chhol@microsoft.com",
 ]);
 
 const PUBLISH_BRANCH_RE = /^publish_\d+$/;
