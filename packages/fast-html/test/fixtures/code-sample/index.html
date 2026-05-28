@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <code-display><template shadowrootmode="open" shadowroot="open"><h1 id="bound"><!--fe-b$$start$$0$$greeting-0$$fe-b-->Hello<!--fe-b$$end$$0$$greeting-0$$fe-b--></h1>
+        <pre id="sample"><code>span &#123;&#123;greeting&#125;&#125; /span</code></pre>
+        <pre id="sample-directive"><code>&lt;f-when value="&#123;&#123;flag&#125;&#125;"&gt;wrapped&lt;/f-when&gt;</code></pre>
+        <pre id="sample-client"><code>button @click="&#123;handler()&#125;" /button</code></pre>
+        <p id="after"><!--fe-b$$start$$1$$greeting-1$$fe-b-->Hello<!--fe-b$$end$$1$$greeting-1$$fe-b--> world</p></template></code-display>
+<f-template name="code-display">
+    <template>
+        <h1 id="bound">{{greeting}}</h1>
+        <pre id="sample"><code>span {{greeting}} /span</code></pre>
+        <pre id="sample-directive"><code>&lt;f-when value="{{flag}}"&gt;wrapped&lt;/f-when&gt;</code></pre>
+        <pre id="sample-client"><code>button @click="{handler()}" /button</code></pre>
+        <p id="after">{{greeting}} world</p>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

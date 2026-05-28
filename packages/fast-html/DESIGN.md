@@ -231,6 +231,19 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 | `f-children="{prop}"` | Children attribute directive |
 | `f-ref="{prop}"` | Element ref attribute directive |
 
+### Code-sample auto-escape
+
+Any text or attribute value inside a `<code>` element has its `{` and `}` characters automatically replaced with the HTML numeric character references `&#123;` and `&#125;` before template parsing. As a result, binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) inside `<code>` are rendered as literal text rather than being interpreted as FAST bindings — making `<code>` blocks safe for embedding code samples that contain binding-like syntax.
+
+```html
+<h1>{{title}}</h1>
+<pre><code>span {{greeting}} /span</code></pre>
+```
+
+In the rendered DOM the `<h1>` binds to the `title` property, while the `<code>` displays the literal text `span {{greeting}} /span`. Directive tags such as `<f-when>` and `<f-repeat>` are **not** auto-escaped — author them as `&lt;f-when&gt;` if you need to show them literally.
+
+The same preprocessing pass (`escapeBracesInCodeElements` in `utilities.ts`, mirrored by `escape_braces_in_code_elements` in `microsoft-fast-build`) runs in both the client-side `<f-template>` parser and the server-side renderer, guaranteeing identical binding positions between SSR output and client hydration. This approach is modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences.
+
 For full syntax reference see [README.md](./README.md).
 
 ---

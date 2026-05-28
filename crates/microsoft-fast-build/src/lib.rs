@@ -64,6 +64,7 @@ mod config;
 mod content;
 mod directive;
 mod hydration;
+mod code_escape;
 mod node;
 mod renderer;
 mod error;
