@@ -158,10 +158,10 @@ test.describe("generateFTemplates", () => {
             };`,
         );
 
-        await generateFTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateFTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template.html"), "utf8");
-        assert.ok(html.includes('<f-template name="mai-badge"'));
+        assert.ok(html.includes('<f-template name="contoso-badge"'));
         assert.ok(html.includes("<slot></slot>"));
         assert.ok(html.includes("{{styles}}"));
     });
@@ -182,6 +182,32 @@ test.describe("generateFTemplates", () => {
 
         const html = await readFile(join(tempDir, "out", "card.template.html"), "utf8");
         assert.ok(html.includes('<f-template name="fast-card"'));
+    });
+
+    test("should preserve subdirectory structure in outDir", async () => {
+        const distDir = join(tempDir, "dist", "button");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "button.template.js"),
+            `export const template = {
+                html: "<template><button>click</button></template>",
+                factories: {}
+            };`,
+        );
+
+        await generateFTemplates({
+            cwd: tempDir,
+            outDir: "src",
+            tagPrefix: "fast",
+            resolveShadowOptions: null,
+        });
+
+        const html = await readFile(
+            join(tempDir, "src", "button", "button.template.html"),
+            "utf8",
+        );
+        assert.ok(html.includes('<f-template name="fast-button"'));
     });
 
     test("should skip modules without a template export", async () => {
@@ -224,6 +250,60 @@ test.describe("generateFTemplates", () => {
         const html = await readFile(join(distDir, "text.template.html"), "utf8");
         assert.ok(html.startsWith("<!-- formatted -->"));
     });
+
+    test("should add `shadowrootdelegatesfocus` by default when definition-async exists", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "input.template.js"),
+            `export const template = {
+                html: "<template><input /></template>",
+                factories: {}
+            };`,
+        );
+
+        await writeFile(
+            join(distDir, "input.definition-async.js"),
+            `export const definition = {
+                name: "fast-input",
+                shadowOptions: { delegatesFocus: true },
+            };`,
+        );
+
+        await generateFTemplates({
+            cwd: tempDir,
+            tagPrefix: "fast",
+        });
+
+        const html = await readFile(join(distDir, "input.template.html"), "utf8");
+        assert.ok(
+            html.includes("shadowrootdelegatesfocus"),
+            `should include delegatesFocus on f-template tag, got: ${html}`,
+        );
+        assert.ok(
+            html.includes("<f-template"),
+            `should still have f-template wrapper, got: ${html}`,
+        );
+    });
+
+    test("should not add `shadowrootdelegatesfocus` when no definition-async exists", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "div.template.js"),
+            `export const template = {
+                html: "<template><div>hello</div></template>",
+                factories: {}
+            };`,
+        );
+
+        await generateFTemplates({ cwd: tempDir, tagPrefix: "fast" });
+
+        const html = await readFile(join(distDir, "div.template.html"), "utf8");
+        assert.ok(!html.includes("shadowrootdelegatesfocus"));
+    });
 });
 
 test.describe("generateWebuiTemplates", () => {
@@ -249,7 +329,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template-webui.html"), "utf8");
         assert.ok(html.includes('<template shadowrootmode="open">'));
@@ -283,7 +363,7 @@ test.describe("generateWebuiTemplates", () => {
         assert.ok(html.includes('<template shadowrootmode="open">'));
     });
 
-    test("should add shadowrootdelegatesfocus from definition-async", async () => {
+    test("should add shadowrootdelegatesfocus by default when definition-async exists", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -303,7 +383,10 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "fast" });
+        await generateWebuiTemplates({
+            cwd: tempDir,
+            tagPrefix: "fast",
+        });
 
         const html = await readFile(join(distDir, "input.template-webui.html"), "utf8");
         assert.ok(
@@ -312,7 +395,7 @@ test.describe("generateWebuiTemplates", () => {
         );
     });
 
-    test("should not add shadowrootdelegatesfocus when absent", async () => {
+    test("should not add shadowrootdelegatesfocus when no definition-async exists", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 

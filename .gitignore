@@ -71,7 +71,10 @@ obj/
 test-results/
 
 # Pack directory
-publish_artifacts/
+publish_artifacts_npm/
+publish_artifacts_crates/
+publish_artifacts_meta/
+publish_artifacts_stage/
 
 # Rust build artifacts
 crates/**/target/

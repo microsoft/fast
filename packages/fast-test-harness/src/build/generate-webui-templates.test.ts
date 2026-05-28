@@ -28,7 +28,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "badge.template-webui.html"), "utf8");
         assert.ok(html.includes('<template shadowrootmode="open">'));
@@ -103,7 +103,7 @@ test.describe("generateWebuiTemplates", () => {
         assert.ok(html.startsWith("<!-- webui-formatted -->"));
     });
 
-    test("should add shadowrootdelegatesfocus from definition-async", async () => {
+    test("should add shadowrootdelegatesfocus by default when definition-async exists", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -123,7 +123,10 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "fast" });
+        await generateWebuiTemplates({
+            cwd: tempDir,
+            tagPrefix: "fast",
+        });
 
         const html = await readFile(join(distDir, "input.template-webui.html"), "utf8");
         assert.ok(
@@ -132,7 +135,7 @@ test.describe("generateWebuiTemplates", () => {
         );
     });
 
-    test("should not add shadowrootdelegatesfocus when absent", async () => {
+    test("should not add shadowrootdelegatesfocus when no definition-async exists", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
 
@@ -164,7 +167,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const html = await readFile(join(distDir, "label.template-webui.html"), "utf8");
         assert.ok(
@@ -217,7 +220,7 @@ test.describe("generateWebuiTemplates", () => {
             };`,
         );
 
-        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "mai" });
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "contoso" });
 
         const buttonHtml = await readFile(
             join(distDir, "button.template-webui.html"),
