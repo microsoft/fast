@@ -158,7 +158,7 @@ Every PR that touches a publishable workspace should include a beachball [change
 
 #### 2. Create the bump branch
 
-The branch name must match beachball's `publish_<timestamp>` convention so that [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) recognizes the PR as a bump and skips the change-file requirement (see [Manual version bumps](#manual-version-bumps) below for the bypass details).
+The branch name must match beachball's `publish_<timestamp>` convention so that [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) recognizes the PR as a bump and skips the change-file requirement, provided the actor has the `admin` role on the repo (see [Manual version bumps](#manual-version-bumps) below for the bypass details).
 
 ```bash
 git checkout main
@@ -207,12 +207,12 @@ git push origin "$(git rev-parse --abbrev-ref HEAD)"
 gh pr create --fill --base main
 ```
 
-The bump PR goes through normal review. `npm run checkchange` will pass because the branch name matches `publish_<timestamp>` and the commit author is on the [manual-bump allowlist](#manual-version-bumps); the PR itself does **not** publish anything.
+The bump PR goes through normal review. `npm run checkchange` will pass because the branch name matches `publish_<timestamp>` and the actor has admin on the repo (see [Manual version bumps](#manual-version-bumps)); the PR itself does **not** publish anything.
 
 :::note
 Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
 
-A narrow exception exists for the **manual version bump** flow described in [the next section](#manual-version-bumps) — hotfix overrides, paired Rust/npm sync recovery, or scripted version pins. Those edits are tolerated by `npm run checkchange` only on a `publish_<timestamp>` branch authored by an allowlisted maintainer.
+A narrow exception exists for the **manual version bump** flow described in [the next section](#manual-version-bumps) — hotfix overrides, paired Rust/npm sync recovery, or scripted version pins. Those edits are tolerated by `npm run checkchange` only on a `publish_<timestamp>` branch whose actor has the `admin` role on `microsoft/fast`.
 :::
 
 #### 6. After merge
@@ -241,13 +241,13 @@ To accommodate these flows without weakening the check for the broad contributor
    ```bash
    git checkout -b "publish_$(node -p 'Date.now()')"
    ```
-2. **Actor is on the maintainer allowlist.** The wrapper reads `$GITHUB_ACTOR` in CI (the user who opened or synchronized the PR) and falls back to the HEAD commit author email locally. Allowlisted identities are listed inline at the top of [`checkchange.mjs`](build/scripts/checkchange.mjs).
+2. **Actor has the `admin` role on `microsoft/fast`,** verified live via the GitHub REST API (`GET /repos/microsoft/fast/collaborators/<login>/permission`). The wrapper reads the actor login from `$GITHUB_ACTOR` in CI and falls back to `gh api user --jq .login` locally; it reads the API token from `$GITHUB_TOKEN` → `$GH_TOKEN` → `gh auth token` in order. Maintainership lives in the GitHub repo settings, so adding or removing a maintainer requires no change to this script.
 
-If either condition fails, beachball runs normally and the change-file requirement applies. Both conditions must be deliberately satisfied — naming a branch `publish_1234567890` is not enough on its own, nor is being a maintainer on a regular feature branch.
+If either condition fails, beachball runs normally and the change-file requirement applies. The bypass is granted only when the GitHub API responds with `"admin"`; any short-circuit before that (missing token, missing login, network error, non-admin role) falls through to `beachball check` and the wrapper logs the reason.
 
-Every bypass writes a multi-line banner to the CI log naming the branch, the actor, and the source of each (env var vs. local git). Reviewers should spot-check that banner on bump PRs and either close the PR or rename the branch (drop the `publish_` prefix) if the diff turns out to contain real source-code changes rather than a version bump.
+Every bypass writes a multi-line banner to the CI log naming the branch, the actor, the resolved role, and the source of each (env var vs. local CLI). Reviewers should spot-check that banner on bump PRs and either close the PR or rename the branch (drop the `publish_` prefix) if the diff turns out to contain real source-code changes rather than a version bump.
 
-To extend the allowlist (e.g. a new maintainer takes ownership of releases), edit the `ALLOWED_LOGINS` and `ALLOWED_EMAILS` constants near the top of the wrapper and open a PR — the diff is auditable and the change is reverted by the next reviewer if unintended.
+To grant or revoke the bypass for someone, change their role on `microsoft/fast` (Settings → Collaborators and teams). The wrapper picks up the change on the next CI run.
 
 ### Recommended Settings for Visual Studio Code
 
