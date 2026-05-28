@@ -482,6 +482,24 @@ Example:
 {{{html}}}
 ```
 
+#### Opting out of template parsing with `f-no-parse`
+
+Add the boolean `f-no-parse` attribute to any element to exclude its subtree from template parsing. Binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) and directive tags (`<f-when>`, `<f-repeat>`) inside the element are rendered as literal text instead of being interpreted by FAST. This is useful for displaying code samples or documentation that intentionally contain binding-like syntax.
+
+The attribute itself is stripped from the rendered output by both the server-side renderer (`@microsoft/fast-build`) and the client-side `<f-template>` parser, so the binding count stays in sync between SSR and hydration.
+
+Example:
+```html
+<f-template name="docs-page">
+    <template>
+        <h1>{{title}}</h1>
+        <pre><code f-no-parse>span {{greeting}} /span</code></pre>
+    </template>
+</f-template>
+```
+
+In the rendered DOM the `<h1>` binds to the `title` property, while the `<code>` displays the literal text `span {{greeting}} /span` (the `f-no-parse` attribute is removed).
+
 ### Writing Components
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.

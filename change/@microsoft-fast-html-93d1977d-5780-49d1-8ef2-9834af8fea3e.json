@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: add f-no-parse opt-out attribute so subtrees containing literal binding-like syntax (e.g. code samples) are excluded from template parsing",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

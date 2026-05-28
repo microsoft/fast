@@ -41,7 +41,7 @@ render_template(template, state_str)
 | Module | Role |
 |--------|------|
 | `lib.rs` | Public API surface — render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` calls |
+| `renderer.rs` | Thin entry points converting the public API into `render_node` calls. Preprocesses the top-level `template` string through `apply_no_parse_directive` so `f-no-parse` subtrees are excluded from binding/directive scanning |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
@@ -52,7 +52,8 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `apply_no_parse_directive` so any `<element f-no-parse>…</element>` block has the attribute stripped and its inner binding/directive syntax replaced with HTML numeric character references. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `no_parse.rs` | `apply_no_parse_directive` — opt-out preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML, removes the boolean `f-no-parse` attribute from each tagged element's opening tag, and inside that subtree replaces `{` → `&#123;`, `}` → `&#125;`, `<f-when` → `&lt;f-when`, `<f-repeat` → `&lt;f-repeat`. Mirrors the JavaScript-side `applyNoParseDirective` in `@microsoft/fast-html` so SSR and client hydration produce identical binding counts and positions |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 | `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 

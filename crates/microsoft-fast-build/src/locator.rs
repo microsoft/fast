@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use crate::attribute::{find_tag_end, parse_element_attributes};
 use crate::error::RenderError;
+use crate::no_parse::apply_no_parse_directive;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct FTemplate {
@@ -83,7 +84,7 @@ impl Locator {
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
             templates.insert(element, TemplateDefinition {
-                content: template.content,
+                content: apply_no_parse_directive(&template.content),
                 shadowroot_attributes: template.shadowroot_attributes,
                 host_attributes: template.host_attributes,
             });
@@ -103,7 +104,7 @@ impl Locator {
         let templates = templates
             .into_iter()
             .map(|(name, content)| (name, TemplateDefinition {
-                content,
+                content: apply_no_parse_directive(&content),
                 shadowroot_attributes: Vec::new(),
                 host_attributes: Vec::new(),
             }))
@@ -132,7 +133,7 @@ impl Locator {
             .map(|(name, (content, shadowroot_attributes, host_attributes))| (
                 name,
                 TemplateDefinition {
-                    content,
+                    content: apply_no_parse_directive(&content),
                     shadowroot_attributes,
                     host_attributes,
                 },
@@ -151,7 +152,7 @@ impl Locator {
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: content.to_string(),
+            content: apply_no_parse_directive(content),
             shadowroot_attributes: Vec::new(),
             host_attributes: Vec::new(),
         });
@@ -176,7 +177,7 @@ impl Locator {
         host_attrs: &[(String, Option<String>)],
     ) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: content.to_string(),
+            content: apply_no_parse_directive(content),
             shadowroot_attributes: collect_shadowroot_attributes(shadowroot_attrs),
             host_attributes: host_attrs.to_vec(),
         });

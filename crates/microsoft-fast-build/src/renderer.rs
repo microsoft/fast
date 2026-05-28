@@ -3,17 +3,20 @@ use crate::error::RenderError;
 use crate::config::RenderConfig;
 use crate::node::render_node;
 use crate::locator::Locator;
+use crate::no_parse::apply_no_parse_directive;
 
 pub fn render(template: &str, root: &JsonValue, config: Option<&RenderConfig>) -> Result<String, RenderError> {
     let default = RenderConfig::default();
     let config = config.unwrap_or(&default);
-    render_node(template, root, &[], None, None, false, config)
+    let preprocessed = apply_no_parse_directive(template);
+    render_node(&preprocessed, root, &[], None, None, false, config)
 }
 
 pub fn render_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<String, RenderError> {
     let default = RenderConfig::default();
     let config = config.unwrap_or(&default);
-    render_node(template, root, &[], Some(locator), None, false, config)
+    let preprocessed = apply_no_parse_directive(template);
+    render_node(&preprocessed, root, &[], Some(locator), None, false, config)
 }
 
 /// Render the top-level **entry HTML** — custom elements found at this level use
@@ -22,5 +25,6 @@ pub fn render_with_locator(template: &str, root: &JsonValue, locator: &Locator, 
 pub fn render_entry_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<String, RenderError> {
     let default = RenderConfig::default();
     let config = config.unwrap_or(&default);
-    render_node(template, root, &[], Some(locator), None, true, config)
+    let preprocessed = apply_no_parse_directive(template);
+    render_node(&preprocessed, root, &[], Some(locator), None, true, config)
 }

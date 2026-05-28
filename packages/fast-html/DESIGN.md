@@ -231,6 +231,14 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 | `f-children="{prop}"` | Children attribute directive |
 | `f-ref="{prop}"` | Element ref attribute directive |
 
+### Opt-out attribute
+
+| Attribute | Example | Behaviour |
+|---|---|---|
+| `f-no-parse` | `<code f-no-parse>{{greeting}}</code>` | Element subtree is excluded from template parsing — binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) and directive tags (`<f-when>`, `<f-repeat>`) inside are rendered as literal text |
+
+The `f-no-parse` boolean attribute is intended for embedding code samples or documentation that contain literal binding-like syntax. During template preprocessing the attribute is stripped from the opening tag and the inner HTML is neutralized by replacing `{`/`}` with `&#123;`/`&#125;` and `<f-when`/`<f-repeat` with their entity-encoded equivalents. The browser decodes the entities when rendering, so the user sees the original characters but the FAST parser never recognizes them as template syntax. The same preprocessing pass runs in both the client-side `<f-template>` parser (`applyNoParseDirective` in `utilities.ts`) and the server-side renderer (`apply_no_parse_directive` in `microsoft-fast-build`), guaranteeing identical binding positions between SSR output and client hydration.
+
 For full syntax reference see [README.md](./README.md).
 
 ---
