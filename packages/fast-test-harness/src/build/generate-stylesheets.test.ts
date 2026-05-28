@@ -49,6 +49,24 @@ test.describe("generateStylesheets", () => {
         assert.ok(css.includes(".card { padding: 8px; }"));
     });
 
+    test("should preserve subdirectory structure in outDir", async () => {
+        const distDir = join(tempDir, "dist", "badge");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "badge.styles.js"),
+            `export const styles = { styles: [":host { display: inline; }"] };`,
+        );
+
+        await generateStylesheets({ cwd: tempDir, outDir: "src" });
+
+        const css = await readFile(
+            join(tempDir, "src", "badge", "badge.styles.css"),
+            "utf8",
+        );
+        assert.ok(css.includes(":host { display: inline; }"));
+    });
+
     test("should apply a format function", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
