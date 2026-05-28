@@ -22,6 +22,7 @@ import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
     type AttributeDirective,
+    applyNoParseDirective,
     bindingResolver,
     type ChainedExpression,
     contextPrefixDot,
@@ -346,7 +347,9 @@ class TemplateElement extends FASTElement {
                 // Callback: Before template has been evaluated and assigned
                 TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
 
-                const innerHTML = transformInnerHTML(this.innerHTML);
+                const innerHTML = transformInnerHTML(
+                    applyNoParseDirective(this.innerHTML),
+                );
 
                 // Cache paths during template processing (pass undefined if observerMap is not available)
                 const { strings, values } = await this.resolveStringsAndValues(

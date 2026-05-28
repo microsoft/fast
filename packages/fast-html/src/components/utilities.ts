@@ -146,6 +146,288 @@ const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
+/**
+ * The name of the boolean attribute that marks an element subtree as opt-out
+ * from FAST declarative template parsing. When present on an element, the
+ * parser will not detect any data bindings (`{{}}`, `{{{}}}`, `{}`) or
+ * template directives (`<f-when>`, `<f-repeat>`) within the element or its
+ * descendants. The attribute itself is stripped from the rendered output.
+ *
+ * This is useful for displaying literal template syntax (e.g. code samples
+ * documenting binding expressions) where the curly-brace text should be
+ * preserved as-is and not interpreted as a binding.
+ */
+export const noParseAttribute = "f-no-parse";
+
+const VOID_ELEMENTS = new Set([
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+]);
+
+interface OpeningTagMatch {
+    tagName: string;
+    tagStart: number;
+    tagEnd: number;
+    contentStart: number;
+    isSelfClosing: boolean;
+    hasNoParse: boolean;
+    noParseAttrStart: number;
+    noParseAttrEnd: number;
+}
+
+/**
+ * Parse an opening tag at `pos` (which points at `<`). Returns the parsed tag
+ * descriptor if `<` introduces an element opening tag, otherwise `null`
+ * (e.g. for `</tag>`, `<!--`, `<!doctype`, `<?...`, or end-of-input).
+ *
+ * The parser is tolerant of attribute values containing `>` only when they
+ * are quoted; quoted attribute values are correctly handled so that a `>`
+ * inside quotes does not terminate the tag.
+ */
+function parseOpeningTag(html: string, pos: number): OpeningTagMatch | null {
+    if (html.charAt(pos) !== "<") return null;
+    const next = html.charAt(pos + 1);
+    if (next === "/" || next === "!" || next === "?" || next === "") return null;
+    if (!/[A-Za-z]/.test(next)) return null;
+
+    let nameEnd = pos + 1;
+    while (nameEnd < html.length && /[A-Za-z0-9-]/.test(html.charAt(nameEnd))) {
+        nameEnd++;
+    }
+    const tagName = html.slice(pos + 1, nameEnd).toLowerCase();
+    if (tagName === "") return null;
+
+    let cursor = nameEnd;
+    let hasNoParse = false;
+    let noParseAttrStart = -1;
+    let noParseAttrEnd = -1;
+
+    while (cursor < html.length) {
+        while (cursor < html.length && /\s/.test(html.charAt(cursor))) cursor++;
+        const ch = html.charAt(cursor);
+        if (ch === ">" || ch === "" || (ch === "/" && html.charAt(cursor + 1) === ">")) {
+            break;
+        }
+        const attrStart = cursor;
+        while (
+            cursor < html.length &&
+            !/[\s=>/]/.test(html.charAt(cursor)) &&
+            html.charAt(cursor) !== ""
+        ) {
+            cursor++;
+        }
+        const attrName = html.slice(attrStart, cursor);
+        let attrTerminator = cursor;
+        while (attrTerminator < html.length && /\s/.test(html.charAt(attrTerminator))) {
+            attrTerminator++;
+        }
+        if (html.charAt(attrTerminator) === "=") {
+            cursor = attrTerminator + 1;
+            while (cursor < html.length && /\s/.test(html.charAt(cursor))) cursor++;
+            const quote = html.charAt(cursor);
+            if (quote === '"' || quote === "'") {
+                const end = html.indexOf(quote, cursor + 1);
+                cursor = end === -1 ? html.length : end + 1;
+            } else {
+                while (cursor < html.length && !/[\s>]/.test(html.charAt(cursor))) {
+                    cursor++;
+                }
+            }
+            if (attrName === noParseAttribute) {
+                hasNoParse = true;
+                noParseAttrStart = attrStart;
+                noParseAttrEnd = cursor;
+            }
+        } else {
+            if (attrName === noParseAttribute) {
+                hasNoParse = true;
+                noParseAttrStart = attrStart;
+                noParseAttrEnd = cursor;
+            }
+        }
+    }
+
+    let isSelfClosing = false;
+    if (html.charAt(cursor) === "/" && html.charAt(cursor + 1) === ">") {
+        isSelfClosing = true;
+        cursor += 2;
+    } else if (html.charAt(cursor) === ">") {
+        cursor += 1;
+    } else {
+        return null;
+    }
+
+    return {
+        tagName,
+        tagStart: pos,
+        tagEnd: cursor,
+        contentStart: cursor,
+        isSelfClosing: isSelfClosing || VOID_ELEMENTS.has(tagName),
+        hasNoParse,
+        noParseAttrStart,
+        noParseAttrEnd,
+    };
+}
+
+/**
+ * Find the position of the matching close tag for an element opened at
+ * `contentStart` with name `tagName`. Returns the index of the `<` of the
+ * matching `</tagName>` close tag, or `html.length` if no matching tag is
+ * found (in which case the entire remaining input is treated as the
+ * element's content). Nested same-name elements are tracked via a depth
+ * counter so the matching close tag is correctly identified.
+ */
+function findMatchingCloseTag(
+    html: string,
+    contentStart: number,
+    tagName: string,
+): number {
+    let depth = 1;
+    let pos = contentStart;
+    const closeNeedle = `</${tagName}`;
+
+    while (pos < html.length) {
+        const lt = html.indexOf("<", pos);
+        if (lt === -1) return html.length;
+
+        const lowerSlice = html.slice(lt, lt + closeNeedle.length).toLowerCase();
+        if (lowerSlice === closeNeedle) {
+            const charAfter = html.charAt(lt + closeNeedle.length);
+            if (charAfter === ">" || /\s/.test(charAfter)) {
+                depth--;
+                if (depth === 0) return lt;
+                const gt = html.indexOf(">", lt);
+                pos = gt === -1 ? html.length : gt + 1;
+                continue;
+            }
+        }
+
+        if (html.startsWith("<!--", lt)) {
+            const end = html.indexOf("-->", lt + 4);
+            pos = end === -1 ? html.length : end + 3;
+            continue;
+        }
+        if (html.charAt(lt + 1) === "!" || html.charAt(lt + 1) === "?") {
+            const end = html.indexOf(">", lt);
+            pos = end === -1 ? html.length : end + 1;
+            continue;
+        }
+        if (html.charAt(lt + 1) === "/") {
+            const end = html.indexOf(">", lt);
+            pos = end === -1 ? html.length : end + 1;
+            continue;
+        }
+
+        const opening = parseOpeningTag(html, lt);
+        if (opening === null) {
+            pos = lt + 1;
+            continue;
+        }
+        if (opening.tagName === tagName && !opening.isSelfClosing) {
+            depth++;
+        }
+        pos = opening.tagEnd;
+    }
+
+    return html.length;
+}
+
+/**
+ * Escape FAST syntax characters and directive tags inside an `f-no-parse`
+ * subtree so the parser does not detect them as bindings or directives.
+ * Curly braces are escaped with numeric character references (`&#123;`,
+ * `&#125;`) and `<f-when` / `<f-repeat` are escaped with `&lt;`. The
+ * browser decodes these entities when rendering, so the literal characters
+ * still appear in the final output.
+ */
+function neutralizeNoParseContent(content: string): string {
+    return content
+        .replace(/\{/g, "&#123;")
+        .replace(/\}/g, "&#125;")
+        .replace(/<(f-when|f-repeat)\b/gi, "&lt;$1");
+}
+
+/**
+ * Preprocess an HTML string by neutralizing FAST template syntax inside any
+ * element bearing the `f-no-parse` attribute. The attribute is stripped from
+ * the rendered output and its subtree is left with literal text content
+ * suitable for displaying code samples that contain binding-like syntax.
+ */
+export function applyNoParseDirective(innerHTML: string): string {
+    if (innerHTML.indexOf(noParseAttribute) === -1) {
+        return innerHTML;
+    }
+
+    let pos = 0;
+    let result = "";
+
+    while (pos < innerHTML.length) {
+        const lt = innerHTML.indexOf("<", pos);
+        if (lt === -1) {
+            result += innerHTML.slice(pos);
+            break;
+        }
+
+        if (innerHTML.startsWith("<!--", lt)) {
+            const end = innerHTML.indexOf("-->", lt + 4);
+            const tail = end === -1 ? innerHTML.length : end + 3;
+            result += innerHTML.slice(pos, tail);
+            pos = tail;
+            continue;
+        }
+
+        const opening = parseOpeningTag(innerHTML, lt);
+        if (opening === null) {
+            result += innerHTML.slice(pos, lt + 1);
+            pos = lt + 1;
+            continue;
+        }
+
+        result += innerHTML.slice(pos, opening.tagStart);
+
+        if (!opening.hasNoParse) {
+            result += innerHTML.slice(opening.tagStart, opening.tagEnd);
+            pos = opening.tagEnd;
+            continue;
+        }
+
+        const strippedOpening =
+            innerHTML
+                .slice(opening.tagStart, opening.noParseAttrStart)
+                .replace(/\s+$/, "") +
+            innerHTML.slice(opening.noParseAttrEnd, opening.tagEnd);
+        result += strippedOpening;
+
+        if (opening.isSelfClosing) {
+            pos = opening.tagEnd;
+            continue;
+        }
+
+        const closeStart = findMatchingCloseTag(
+            innerHTML,
+            opening.contentStart,
+            opening.tagName,
+        );
+        const innerContent = innerHTML.slice(opening.contentStart, closeStart);
+        result += neutralizeNoParseContent(innerContent);
+        pos = closeStart;
+    }
+
+    return result;
+}
+
 const LogicalOperator = {
     AND: "&&",
     OR: "||",
