@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Thu, 28 May 2026 19:16:49 GMT",
+      "version": "0.3.1",
+      "tag": "@microsoft/fast-test-harness_v0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "1efcd16e8fc4e2f38c977111ee4b2e9b583379bb",
+            "comment": "fix: correct output directory structure for generated CSS files"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 23 May 2026 00:13:09 GMT",
       "version": "0.3.0",
       "tag": "@microsoft/fast-test-harness_v0.3.0",
