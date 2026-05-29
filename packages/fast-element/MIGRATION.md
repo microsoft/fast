@@ -20,33 +20,38 @@
 2. Fix duplicate FAST installs in your bundler or dependency graph instead of relying on version tracking at runtime.
 3. Remove any `fast-kernel` script attributes. They no longer affect FAST initialization.
 
-## Native `globalThis` requirement (v2 → v3)
+## Native globals and scheduler requirements (v2 → v3)
 
 ### Changed behavior
 
 - **Native `globalThis` required**: `@microsoft/fast-element` no longer installs
-  a `globalThis` polyfill as a side effect. The package only keeps the
-  `requestIdleCallback` / `cancelIdleCallback` fallback for environments that
-  still lack those APIs.
+  a `globalThis` polyfill as a side effect.
+- **No idle-callback polyfill**: FAST Element v3 no longer installs or depends
+  on a `requestIdleCallback` / `cancelIdleCallback` fallback. The async
+  `Updates` queue schedules work with `globalThis.requestAnimationFrame`.
 
 ### Migration steps
 
 1. Verify that the browsers and JS runtimes you support provide native
-   `globalThis`.
-2. If you still target an older runtime without `globalThis`, load that
-   polyfill before importing `@microsoft/fast-element`.
+   `globalThis` and, when using async DOM updates, `requestAnimationFrame`.
+2. If you still target an older runtime without `globalThis` or
+   `requestAnimationFrame`, load those polyfills before importing
+   `@microsoft/fast-element`.
+3. You do not need to polyfill `requestIdleCallback` or `cancelIdleCallback`
+   for FAST Element itself. Only provide them if your application or another
+   dependency calls those APIs directly.
 
 ## Declarative HTML moved into fast-element (v3)
 
-Declarative HTML APIs now ship from `@microsoft/fast-element` instead of the
-removed `@microsoft/fast-html` package.
+Declarative HTML APIs now ship from focused `@microsoft/fast-element` package
+path exports instead of the removed `@microsoft/fast-html` package.
 
 ### Import changes
 
 | Before | After |
 |---|---|
-| `@microsoft/fast-html` | `@microsoft/fast-element` |
-| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element` |
+| `@microsoft/fast-html` | `@microsoft/fast-element/declarative.js` |
+| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative-utilities.js` |
 
 Core FAST Element helpers are available from the root package export:
 
@@ -62,7 +67,7 @@ Core FAST Element helpers are available from the root package export:
 | `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element` |
 | `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
 | `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
-| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
+| `enableHydration`, `deferHydrationAttribute`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element` |
 | `volatile` | `@microsoft/fast-element` |
 | `children` | `@microsoft/fast-element` |
@@ -207,20 +212,21 @@ data source.
 
 ## Prerendered Content Optimization (v2 → v3)
 
-### Removed exports
+### Removed and moved APIs
 
-| Export | Replacement |
+| 2.x API | 3.x guidance |
 |---|---|
 | `HydratableElementController` | `ElementController` (prerendered path built in) |
-| `HydrationControllerCallbacks` | `ElementHydrationCallbacks` via `ElementController.configHydration()` |
-| `needsHydrationAttribute` | `ElementController.isPrerendered` |
-| `deferHydrationAttribute` | Template-pending guard in `ElementController.connect()` |
+| `HydrationControllerCallbacks` | Global callbacks via `enableHydration(options)`; per-element callbacks via `declarativeTemplate(callbacks)` |
+| `needsHydrationAttribute` | No replacement. Existing shadow root detection sets `ElementController.isPrerendered`. |
+| Root `deferHydrationAttribute` export | Import `deferHydrationAttribute` from `@microsoft/fast-element/hydration.js` only if you still need the legacy attribute string. New server-rendered markup should omit `defer-hydration`. |
 
 ### Removed side-effect imports
 
 | Import | Replacement |
 |---|---|
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
+| `@microsoft/fast-element/install-hydratable-view-templates.js` | No replacement needed — `enableHydration()` installs hydratable template support |
 
 Use `enableHydration()` from `@microsoft/fast-element/hydration.js` when SSR
 content should hydrate. The declarative entrypoint no longer installs hydration
@@ -236,8 +242,10 @@ automatically.
 
 ### New APIs
 
-- **`ElementController.isPrerendered`** (`Promise<boolean>`): Resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. Component authors can await this to know when the element is fully interactive.
+- **`ElementController.isPrerendered`** (`Promise<boolean>`): Resolves to `true` when the element had a declarative shadow root at connect time, or `false` when the component was client-side rendered.
+- **`ElementController.isHydrated`** (`Promise<boolean>`): Resolves to `true` only when hydration ran successfully.
 - **`ViewController.isPrerendered`** (`Promise<boolean> | undefined`): Available to custom directives. Resolves to `true` when the view's content was prerendered, `false` otherwise.
+- **`ViewController.isHydrated`** (`Promise<boolean> | undefined`): Available to custom directives. Resolves to `true` only when hydration ran successfully.
 
 ### Migration steps
 

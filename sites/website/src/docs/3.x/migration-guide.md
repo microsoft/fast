@@ -38,12 +38,11 @@ enableHydration();
 
 Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
 imports as part of the migration. The older
-`install-hydratable-view-templates.js` helper remains available for advanced
-use cases, but the preferred API is `enableHydration()`.
-`@microsoft/fast-element` no longer installs hydration
-automatically.
+`install-hydratable-view-templates.js` side-effect helper should also be
+removed; `enableHydration()` installs hydratable template support.
+`@microsoft/fast-element` no longer installs hydration automatically.
 
-### `needsHydrationAttribute` and `deferHydrationAttribute` removed
+### `needs-hydration` and `defer-hydration` markup no longer required
 
 These attributes are no longer needed in server-rendered markup.
 
@@ -115,7 +114,7 @@ connectedCallback() {
 ### Declarative HTML imports moved
 
 The `@microsoft/fast-html` package has been removed. Import declarative HTML
-APIs from the FAST Element root package instead:
+APIs from FAST Element path exports instead:
 
 ```ts
 // Before
@@ -142,7 +141,7 @@ definition/controller types, and helper APIs from `@microsoft/fast-element`:
 | `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element` |
 | `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
 | `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
-| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
+| `enableHydration`, `deferHydrationAttribute`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element` |
 | `volatile` | `@microsoft/fast-element` |
 | `children` | `@microsoft/fast-element` |
@@ -167,8 +166,8 @@ when an element uses `template: declarativeTemplate()`.
 | `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
 
-Import `declarativeTemplate()` and schema-driven map extensions from
-`@microsoft/fast-element`:
+Import `declarativeTemplate()` and schema-driven map extensions from their
+focused path exports:
 
 ```ts
 import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
@@ -333,9 +332,11 @@ Update imports to:
 import { ArrayObserver } from "@microsoft/fast-element";
 ```
 
-### `deferHydrationAttribute` moved to `@microsoft/fast-element`
+### `deferHydrationAttribute` moved to `@microsoft/fast-element/hydration.js`
 
-`deferHydrationAttribute` is available from the root package export.
+`deferHydrationAttribute` is no longer exported by the root package. Most apps
+can remove `defer-hydration` from server-rendered markup; if you still need the
+legacy attribute string, import it from the hydration path export.
 
 2.x imported `deferHydrationAttribute` from the root package.
 
@@ -346,12 +347,16 @@ const attribute = "defer-hydration";
 
 3.x Example:
 ```ts
-import { deferHydrationAttribute } from "@microsoft/fast-element";
+import { deferHydrationAttribute } from "@microsoft/fast-element/hydration.js";
 ```
 
-### `requestIdleCallback` polyfill removed
+### `requestIdleCallback` / `cancelIdleCallback` polyfill removed
 
-The built-in `requestIdleCallback` / `cancelIdleCallback` polyfill has been removed. If your application targets environments without these APIs, provide your own polyfill.
+FAST Element v3 no longer installs or depends on a `requestIdleCallback` /
+`cancelIdleCallback` fallback. You do not need to polyfill those APIs for FAST
+Element itself. The async `Updates` queue schedules DOM work with
+`requestAnimationFrame`, so provide a `requestAnimationFrame` polyfill before
+importing FAST Element when running in a non-browser environment that lacks it.
 
 ### Hydration marker format changed
 
@@ -431,6 +436,7 @@ For `mode: "boolean"`, FAST writes attributes via `DOM.setBooleanAttribute` (pre
 | `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
 | `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
 | `enableHydration()` | `fast-element/hydration.js` | Enables hydration support for FAST elements |
+| `deferHydrationAttribute` | `fast-element/hydration.js` | Legacy `defer-hydration` attribute string for compatibility code |
 | `HydrationTracker` | `fast-element/hydration.js` | Standalone hydration lifecycle tracker class |
 | `HydrationOptions` | `fast-element/hydration.js` | Type for hydration configuration options |
 | `ViewController.isPrerendered` | `fast-element/templating.js` | `Promise<boolean>` — DSD detection for custom directives |
