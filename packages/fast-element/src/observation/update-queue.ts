@@ -40,8 +40,15 @@ export interface UpdateQueue {
 
 const tasks: Callable[] = [];
 const pendingErrors: any[] = [];
-const rAF = globalThis.requestAnimationFrame;
 let updateAsync = true;
+
+function schedule(): void {
+    if (typeof globalThis.requestAnimationFrame === "function") {
+        globalThis.requestAnimationFrame(process);
+    } else {
+        setTimeout(process, 0);
+    }
+}
 
 function throwFirstError(): void {
     if (pendingErrors.length) {
@@ -92,7 +99,7 @@ function enqueue(callable: Callable): void {
     tasks.push(callable);
 
     if (tasks.length < 2) {
-        updateAsync ? rAF(process) : process();
+        updateAsync ? schedule() : process();
     }
 }
 

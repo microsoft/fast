@@ -44,7 +44,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
 | Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`; `@microsoft/fast-element/schema.js` → `Schema` |
 | Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → map helpers usable with declarative or manually supplied schemas |
-| Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
+| Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned with a `setTimeout` fallback) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
@@ -258,7 +258,7 @@ See [docs/template-bindings.md](./docs/template-bindings.md) for the full bindin
 - `Updates.next()` – returns a `Promise` that resolves after the next flush.
 - `Updates.setMode(isAsync)` – toggle async (default) vs. synchronous mode.
 
-In async mode, the first `enqueue` call schedules a `requestAnimationFrame` callback that drains up to 1024 tasks per frame. Errors in tasks are deferred via `setTimeout` so they don't abort the remaining tasks.
+In async mode, the first `enqueue` call schedules a `requestAnimationFrame` callback that drains up to 1024 tasks per frame. If `requestAnimationFrame` is unavailable, the queue falls back to `setTimeout` so non-browser runtimes still process async updates. Errors in tasks are deferred via `setTimeout` so they don't abort the remaining tasks.
 
 Observable setters and `attributeChangedCallback` enqueue their DOM mutations through `Updates`, ensuring that multiple synchronous property changes result in only one DOM update per frame.
 
@@ -446,7 +446,7 @@ flowchart TD
     NOTIFY["PropertyChangeNotifier.notify(propertyName)"]
     SUBS["For each Subscriber in SubscriberSet\nsubscriber.handleChange(subject, propertyName)"]
     ENQ["Updates.enqueue(binding task)"]
-    RAF["requestAnimationFrame fires\nUpdates.process()"]
+    RAF["requestAnimationFrame/setTimeout fires\nUpdates.process()"]
     EVAL["ExpressionNotifier re-evaluates expression"]
     DOM["DOM aspect updated\n(attribute / property / content / event)"]
 

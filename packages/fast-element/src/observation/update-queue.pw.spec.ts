@@ -1,10 +1,69 @@
 import { expect, test } from "@playwright/test";
+import { Updates } from "./update-queue.js";
 
 const waitMilliseconds = 100;
 const maxRecursion = 10;
 
 test.describe("The UpdateQueue", () => {
     test.describe("when updating DOM asynchronously", () => {
+        test("batches tasks with requestAnimationFrame when available", () => {
+            const originalRequestAnimationFrame = globalThis.requestAnimationFrame;
+            const callbacks: FrameRequestCallback[] = [];
+
+            globalThis.requestAnimationFrame = callback => {
+                callbacks.push(callback);
+                return callbacks.length;
+            };
+
+            try {
+                const calls: number[] = [];
+
+                Updates.enqueue(() => {
+                    calls.push(0);
+                });
+                Updates.enqueue(() => {
+                    calls.push(1);
+                });
+                Updates.enqueue(() => {
+                    calls.push(2);
+                });
+
+                expect(callbacks.length).toBe(1);
+                expect(calls).toEqual([]);
+
+                callbacks[0]!(0);
+
+                expect(calls).toEqual([0, 1, 2]);
+            } finally {
+                globalThis.requestAnimationFrame = originalRequestAnimationFrame;
+                Updates.process();
+            }
+        });
+
+        test("falls back when requestAnimationFrame is unavailable", async () => {
+            const originalRequestAnimationFrame = globalThis.requestAnimationFrame;
+
+            globalThis.requestAnimationFrame = undefined as any;
+
+            try {
+                let called = false;
+
+                Updates.enqueue(() => {
+                    called = true;
+                });
+
+                const calledBefore = called;
+
+                await new Promise(resolve => setTimeout(resolve, waitMilliseconds));
+
+                expect(calledBefore).toBe(false);
+                expect(called).toBe(true);
+            } finally {
+                globalThis.requestAnimationFrame = originalRequestAnimationFrame;
+                Updates.process();
+            }
+        });
+
         test("calls task in a future turn", async ({ page }) => {
             await page.goto("/");
 
@@ -151,12 +210,12 @@ test.describe("The UpdateQueue", () => {
                 const target = 1060;
                 const targetList: number[] = [];
 
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     targetList.push(i);
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
@@ -182,12 +241,12 @@ test.describe("The UpdateQueue", () => {
                 const target = 2060;
                 const targetList: number[] = [];
 
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     targetList.push(i);
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
