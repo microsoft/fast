@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "dependentChangeType": "none",
+  "email": "",
+  "comment": "Add package export smoke coverage and docs sync checks.",
+  "packageName": "@microsoft/fast-element"
+}
