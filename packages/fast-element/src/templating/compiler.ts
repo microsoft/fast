@@ -1,6 +1,7 @@
 import { oneTime } from "../binding/one-time.js";
 import { oneWay } from "../binding/one-way.js";
-import { DOM, type DOMPolicy } from "../dom.js";
+import { DOM } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
