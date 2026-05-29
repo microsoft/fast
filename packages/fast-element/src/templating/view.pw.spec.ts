@@ -310,6 +310,109 @@ test.describe("The HTMLView", () => {
             expect(result.source1IsSecond).toBe(true);
             expect(result.boundState1).toBe(false);
         });
+
+        test("updates context when binding the same source with a new context", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { html } = await import("/main.js");
+
+                const source = {};
+                const context1 = { value: "one" };
+                const context2 = { value: "two" };
+                let evaluations = 0;
+                const template = html`
+                    <span>${(_source: any, context: { value: string }) => {
+                        evaluations++;
+                        return context.value;
+                    }}</span>
+                `;
+                const host = document.createElement("div");
+                const view = template.create();
+
+                view.bind(source, context1);
+                view.appendTo(host);
+                const afterFirstBind = host.textContent;
+
+                view.bind(source, context1);
+                const afterSameContextBind = host.textContent;
+                const evaluationsAfterSameContextBind = evaluations;
+
+                view.bind(source, context2);
+
+                return {
+                    afterFirstBind,
+                    afterSameContextBind,
+                    evaluationsAfterSameContextBind,
+                    afterNewContextBind: host.textContent,
+                    evaluationsAfterNewContextBind: evaluations,
+                    contextUpdated: view.context === context2,
+                };
+            });
+
+            expect(result.afterFirstBind?.trim()).toBe("one");
+            expect(result.afterSameContextBind?.trim()).toBe("one");
+            expect(result.evaluationsAfterSameContextBind).toBe(1);
+            expect(result.afterNewContextBind?.trim()).toBe("two");
+            expect(result.evaluationsAfterNewContextBind).toBe(2);
+            expect(result.contextUpdated).toBe(true);
+        });
+
+        test("updates hydrated view context when binding the same source", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { enableHydration, html } = await import("/main.js");
+
+                enableHydration();
+
+                const source = {};
+                const context1 = { value: "one" };
+                const context2 = { value: "two" };
+                const host = document.createElement("div");
+                host.innerHTML = "<!--fe:b-->one<!--fe:/b-->";
+
+                let evaluations = 0;
+                const template = html`${(_source: any, context: { value: string }) => {
+                    evaluations++;
+                    return context.value;
+                }}`;
+                const view = template.hydrate(host.firstChild!, host.lastChild!);
+
+                view.bind(source, context1);
+                const afterFirstBind = host.textContent;
+
+                view.bind(source, context1);
+                const afterSameContextBind = host.textContent;
+                const evaluationsAfterSameContextBind = evaluations;
+
+                view.bind(source, context2);
+
+                return {
+                    afterFirstBind,
+                    afterSameContextBind,
+                    evaluationsAfterSameContextBind,
+                    afterNewContextBind: host.textContent,
+                    evaluationsAfterNewContextBind: evaluations,
+                    contextUpdated: view.context === context2,
+                    hydrationStage: view.hydrationStage,
+                };
+            });
+
+            expect(result.afterFirstBind).toBe("one");
+            expect(result.afterSameContextBind).toBe("one");
+            expect(result.evaluationsAfterSameContextBind).toBe(1);
+            expect(result.afterNewContextBind).toBe("two");
+            expect(result.evaluationsAfterNewContextBind).toBe(2);
+            expect(result.contextUpdated).toBe(true);
+            expect(result.hydrationStage).toBe("hydrated");
+        });
     });
 
     test.describe("execution context", () => {
