@@ -482,6 +482,24 @@ Example:
 {{{html}}}
 ```
 
+#### Code-sample auto-escape inside `<code>`
+
+Any text or attribute value inside a `<code>` element has its `{` and `}` characters automatically replaced with the HTML numeric character references `&#123;` and `&#125;` before template parsing. As a result, binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) inside `<code>` are rendered as literal text rather than being interpreted as FAST bindings — making `<code>` blocks safe for embedding code samples that contain binding-like syntax. No marker attribute is needed.
+
+The escape is applied symmetrically by both the server-side renderer (`@microsoft/fast-build`) and the client-side `<f-template>` parser, so binding positions stay in sync between SSR and hydration. Directive tags such as `<f-when>` and `<f-repeat>` are **not** auto-escaped — author them as `&lt;f-when&gt;` if you need to show them literally inside a code sample. This behaviour mirrors how Microsoft WebUI's `webui-press` markdown renderer transparently escapes the same characters inside code spans and code fences.
+
+Example:
+```html
+<f-template name="docs-page">
+    <template>
+        <h1>{{title}}</h1>
+        <pre><code>span {{greeting}} /span</code></pre>
+    </template>
+</f-template>
+```
+
+In the rendered DOM the `<h1>` binds to the `title` property, while the `<code>` displays the literal text `span {{greeting}} /span`.
+
 ### Writing Components
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.

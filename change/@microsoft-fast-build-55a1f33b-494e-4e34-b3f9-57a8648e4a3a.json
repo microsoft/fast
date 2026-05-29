@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: auto-escape `{`/`}` inside `<code>` elements during SSR so literal binding-like text in code samples renders correctly and stays in sync with client hydration",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
