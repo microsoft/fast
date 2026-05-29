@@ -1,0 +1,7 @@
+{
+  "comment": "Preserve view context when rebinding the same source.",
+  "type": "prerelease",
+  "packageName": "@microsoft/fast-element",
+  "dependentChangeType": "none",
+  "email": "chujane@microsoft.com"
+}
