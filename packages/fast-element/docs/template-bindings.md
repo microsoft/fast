@@ -205,13 +205,18 @@ sequenceDiagram
     Directive->>Context: ExecutionContext.setEvent(event)
     Directive->>Binding: evaluate(controller.source, controller.context)
     Binding->>Source: Execute handler: (s, c) => s.handleClick(c.event)
-    Source-->>Binding: Return result
-    Binding-->>Directive: Return result
+    Source-->>Binding: Return result or throw
+    Binding-->>Directive: Return result or throw
+    Directive->>Context: ExecutionContext.setEvent(null) in finally
     alt result !== true
         Directive->>DOM: event.preventDefault()
     end
-    Directive->>Context: ExecutionContext.setEvent(null)
 ```
+
+`ExecutionContext.setEvent(null)` runs in a `finally` path, so thrown event
+handlers cannot leak the event context into later handlers or evaluations. When
+the handler completes normally, the existing convention remains: any return value
+other than `true` prevents the event's default action.
 
 ### 7. Content Binding – Template Composition
 

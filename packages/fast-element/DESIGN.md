@@ -166,6 +166,10 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 | `listener` | Same as `oneWay` but attaches as a DOM event handler |
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
+Event listener bindings set the current DOM event on `ExecutionContext` only while
+the handler expression is evaluating. The event is cleared in a `finally` path even
+when the handler throws; for completed evaluations, any result other than `true`
+continues to call `preventDefault()` on the event.
 
 ---
 

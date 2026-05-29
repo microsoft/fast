@@ -425,7 +425,7 @@ export class HTMLBindingDirective
      * Implements the EventListener interface. When a DOM event fires on the target
      * element, this method retrieves the ViewController stored on the element,
      * sets the event on the ExecutionContext so `c.event` is available to the
-     * binding expression, and evaluates the expression. If the expression returns
+     * binding expression, and clears it after evaluation. If the expression returns
      * anything other than `true`, the event's default action is prevented.
      * @internal
      */
@@ -433,12 +433,14 @@ export class HTMLBindingDirective
         const controller = event.currentTarget![this.data] as ViewController;
 
         if (controller.isBound) {
-            ExecutionContext.setEvent(event);
-            const result = this.dataBinding.evaluate(
-                controller.source,
-                controller.context,
-            );
-            ExecutionContext.setEvent(null);
+            let result: any;
+
+            try {
+                ExecutionContext.setEvent(event);
+                result = this.dataBinding.evaluate(controller.source, controller.context);
+            } finally {
+                ExecutionContext.setEvent(null);
+            }
 
             if (result !== true) {
                 event.preventDefault();
