@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::path::Path;
 use crate::attribute::{find_tag_end, parse_element_attributes};
+use crate::code_escape::escape_braces_in_code_elements;
 use crate::error::RenderError;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -81,7 +82,7 @@ impl Locator {
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
             templates.insert(element, TemplateDefinition {
-                content: template.content,
+                content: escape_braces_in_code_elements(&template.content),
                 shadowroot_attributes: template.shadowroot_attributes,
             });
         }
@@ -98,7 +99,7 @@ impl Locator {
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, content)| (name, TemplateDefinition { content, shadowroot_attributes: Vec::new() }))
+            .map(|(name, content)| (name, TemplateDefinition { content: escape_braces_in_code_elements(&content), shadowroot_attributes: Vec::new() }))
             .collect();
         Locator { templates }
     }
@@ -107,7 +108,7 @@ impl Locator {
     pub(crate) fn from_template_definitions(templates: HashMap<String, (String, Vec<(String, Option<String>)>)>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, (content, shadowroot_attributes))| (name, TemplateDefinition { content, shadowroot_attributes }))
+            .map(|(name, (content, shadowroot_attributes))| (name, TemplateDefinition { content: escape_braces_in_code_elements(&content), shadowroot_attributes }))
             .collect();
         Locator { templates }
     }
@@ -120,7 +121,7 @@ impl Locator {
     /// `<template>` needs attributes such as `shadowrootmode`.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: content.to_string(),
+            content: escape_braces_in_code_elements(content),
             shadowroot_attributes: Vec::new(),
         });
     }
@@ -137,7 +138,7 @@ impl Locator {
         attrs: &[(String, Option<String>)],
     ) {
         self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: content.to_string(),
+            content: escape_braces_in_code_elements(content),
             shadowroot_attributes: collect_shadowroot_attributes(attrs),
         });
     }

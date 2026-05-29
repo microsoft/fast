@@ -522,6 +522,7 @@ interface TemplateResolutionContext {
 | `assignObservables(schema, rootSchema, data, target, rootProperty)` | Wraps objects/arrays in `Proxy` for deep observation. |
 | `deepMerge(target, source)` | Merges source into an existing proxy, preserving proxy identity and triggering observable notifications. |
 | `transformInnerHTML(html)` | Normalises HTML-encoded operator characters (`&gt;`, `&lt;`, etc.) used in `<f-when>` expressions. |
+| `escapeBracesInCodeElements(html)` | Replaces `{` / `}` characters inside every `<code>` element with `&#123;` / `&#125;` so binding-like syntax in code samples renders literally rather than being interpreted as FAST bindings. Mirrors the brace-escape behaviour of Microsoft WebUI's `webui-press` markdown renderer; the same pass runs on the server in `microsoft-fast-build`. |
 
 ### Binding classification
 

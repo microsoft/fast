@@ -1,0 +1,9 @@
+<f-template name="code-display">
+    <template>
+        <h1 id="bound">{{greeting}}</h1>
+        <pre id="sample"><code>span {{greeting}} /span</code></pre>
+        <pre id="sample-directive"><code>&lt;f-when value="{{flag}}"&gt;wrapped&lt;/f-when&gt;</code></pre>
+        <pre id="sample-client"><code>button @click="{handler()}" /button</code></pre>
+        <p id="after">{{greeting}} world</p>
+    </template>
+</f-template>
