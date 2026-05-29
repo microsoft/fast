@@ -6,13 +6,14 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import { isHydratable } from "../components/hydration.js";
 import type { DOMPolicy } from "../dom.js";
-import { type Constructable, isFunction, isString } from "../interfaces.js";
+import { type Constructable, isFunction, isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import type { ContentTemplate, ContentView } from "./html-binding-directive.js";
 import {
     type AddViewBehaviorFactory,
@@ -21,6 +22,7 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
+import { HydrationStage } from "./hydration-view.js";
 import { Markup } from "./markup.js";
 import {
     type CaptureType,
@@ -29,7 +31,6 @@ import {
     type TemplateValue,
     ViewTemplate,
 } from "./template.js";
-import { HydrationStage } from "./hydration-view.js";
 
 type ComposableView = ContentView & {
     isComposed?: boolean;
@@ -487,6 +488,15 @@ function register(optionsOrInstruction: any): RenderInstruction {
     const instruction = instanceOf(optionsOrInstruction)
         ? optionsOrInstruction
         : create(optionsOrInstruction);
+
+    if (lookup[instruction.name] !== void 0) {
+        const typeName = (instruction.type as Function).name || "(anonymous)";
+
+        FAST.warn(Message.duplicateRenderInstruction, {
+            type: typeName,
+            name: instruction.name,
+        });
+    }
 
     return (lookup[instruction.name] = instruction);
 }
