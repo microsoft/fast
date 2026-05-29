@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: warn when duplicate render instruction registrations replace existing entries",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

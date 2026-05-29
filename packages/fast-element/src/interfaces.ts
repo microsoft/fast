@@ -66,8 +66,6 @@ export type ParameterDecorator = (
     parameterIndex: number,
 ) => void;
 
-
-
 /**
  * Warning and error messages.
  * @internal
@@ -87,6 +85,7 @@ export const enum Message {
     cannotSetTemplatePolicyAfterCompilation = 1208,
     blockedByDOMPolicy = 1209,
     invalidHydrationAttributeMarker = 1210,
+    duplicateRenderInstruction = 1211,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

@@ -22,6 +22,8 @@ const baseDebugMessages = {
         "'${aspectName}' on '${tagName}' is blocked by the current DOMPolicy.",
     [1210 /* invalidHydrationAttributeMarker */]:
         "Invalid data-fe attribute value '${value}'. Expected a positive integer.",
+    [1211 /* duplicateRenderInstruction */]:
+        "Replacing existing RenderInstruction for '${type}' with name '${name}'.",
     [1401 /* missingElementDefinition */]: "Missing FASTElement definition.",
     [1501 /* noRegistrationForContext */]:
         "No registration for Context/Interface '${name}'.",
