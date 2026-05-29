@@ -7,14 +7,21 @@ export { isHydratable } from "./components/hydration.js";
 export { HydrationTracker } from "./components/hydration-tracker.js";
 export type {
     DOMAspect,
-    DOMPolicy,
     DOMSink,
 } from "./dom.js";
+export {
+    type DOMAspectGuards,
+    type DOMElementGuards,
+    type DOMGuards,
+    DOMPolicy,
+    type DOMPolicyOptions,
+    type DOMSinkGuards,
+} from "./dom-policy.js";
 export type {
     ViewBehaviorBoundaries,
     ViewBoundaries,
 } from "./hydration/target-builder.js";
-export type { Disposable } from "./interfaces.js";
+export type { Disposable, TrustedTypesPolicy } from "./interfaces.js";
 export type {
     ExecutionContext,
     ExpressionController,
