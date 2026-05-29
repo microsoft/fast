@@ -1213,6 +1213,248 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 }
 
 /**
+ * Tag name of the HTML element whose contents are auto-escaped to render
+ * code samples literally.
+ * @public
+ */
+export const codeElementName = "code";
+
+const CODE_ESCAPE_VOID_ELEMENTS = new Set([
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+]);
+
+interface OpeningTagMatch {
+    tagName: string;
+    tagStart: number;
+    tagEnd: number;
+    contentStart: number;
+    isSelfClosing: boolean;
+}
+
+/**
+ * Parse an opening tag at `pos` (which points at `<`). Returns the parsed tag
+ * descriptor if `<` introduces an element opening tag, otherwise `null`
+ * (e.g. for `</tag>`, `<!--`, `<!doctype`, `<?...`, or end-of-input).
+ *
+ * The parser is tolerant of attribute values containing `>` only when they
+ * are quoted; quoted attribute values are correctly handled so that a `>`
+ * inside quotes does not terminate the tag.
+ */
+function parseOpeningTagForCodeEscape(html: string, pos: number): OpeningTagMatch | null {
+    if (html.charAt(pos) !== "<") return null;
+    const next = html.charAt(pos + 1);
+    if (next === "/" || next === "!" || next === "?" || next === "") return null;
+    if (!/[A-Za-z]/.test(next)) return null;
+
+    let nameEnd = pos + 1;
+    while (nameEnd < html.length && /[A-Za-z0-9-]/.test(html.charAt(nameEnd))) {
+        nameEnd++;
+    }
+    const tagName = html.slice(pos + 1, nameEnd).toLowerCase();
+    if (tagName === "") return null;
+
+    let cursor = nameEnd;
+
+    while (cursor < html.length) {
+        while (cursor < html.length && /\s/.test(html.charAt(cursor))) cursor++;
+        const ch = html.charAt(cursor);
+        if (ch === ">" || ch === "" || (ch === "/" && html.charAt(cursor + 1) === ">")) {
+            break;
+        }
+        while (
+            cursor < html.length &&
+            !/[\s=>/]/.test(html.charAt(cursor)) &&
+            html.charAt(cursor) !== ""
+        ) {
+            cursor++;
+        }
+        let attrTerminator = cursor;
+        while (attrTerminator < html.length && /\s/.test(html.charAt(attrTerminator))) {
+            attrTerminator++;
+        }
+        if (html.charAt(attrTerminator) === "=") {
+            cursor = attrTerminator + 1;
+            while (cursor < html.length && /\s/.test(html.charAt(cursor))) cursor++;
+            const quote = html.charAt(cursor);
+            if (quote === '"' || quote === "'") {
+                const end = html.indexOf(quote, cursor + 1);
+                cursor = end === -1 ? html.length : end + 1;
+            } else {
+                while (cursor < html.length && !/[\s>]/.test(html.charAt(cursor))) {
+                    cursor++;
+                }
+            }
+        }
+    }
+
+    let isSelfClosing = false;
+    if (html.charAt(cursor) === "/" && html.charAt(cursor + 1) === ">") {
+        isSelfClosing = true;
+        cursor += 2;
+    } else if (html.charAt(cursor) === ">") {
+        cursor += 1;
+    } else {
+        return null;
+    }
+
+    return {
+        tagName,
+        tagStart: pos,
+        tagEnd: cursor,
+        contentStart: cursor,
+        isSelfClosing: isSelfClosing || CODE_ESCAPE_VOID_ELEMENTS.has(tagName),
+    };
+}
+
+/**
+ * Find the position of the matching close tag for an element opened at
+ * `contentStart` with name `tagName`. Returns the index of the `<` of the
+ * matching `</tagName>` close tag, or `html.length` if no matching tag is
+ * found. Nested same-name elements are tracked via a depth counter.
+ */
+function findMatchingCloseTagForCodeEscape(
+    html: string,
+    contentStart: number,
+    tagName: string,
+): number {
+    let depth = 1;
+    let pos = contentStart;
+    const closeNeedle = `</${tagName}`;
+
+    while (pos < html.length) {
+        const lt = html.indexOf("<", pos);
+        if (lt === -1) return html.length;
+
+        const lowerSlice = html.slice(lt, lt + closeNeedle.length).toLowerCase();
+        if (lowerSlice === closeNeedle) {
+            const charAfter = html.charAt(lt + closeNeedle.length);
+            if (charAfter === ">" || /\s/.test(charAfter)) {
+                depth--;
+                if (depth === 0) return lt;
+                const gt = html.indexOf(">", lt);
+                pos = gt === -1 ? html.length : gt + 1;
+                continue;
+            }
+        }
+
+        if (html.startsWith("<!--", lt)) {
+            const end = html.indexOf("-->", lt + 4);
+            pos = end === -1 ? html.length : end + 3;
+            continue;
+        }
+        if (html.charAt(lt + 1) === "!" || html.charAt(lt + 1) === "?") {
+            const end = html.indexOf(">", lt);
+            pos = end === -1 ? html.length : end + 1;
+            continue;
+        }
+        if (html.charAt(lt + 1) === "/") {
+            const end = html.indexOf(">", lt);
+            pos = end === -1 ? html.length : end + 1;
+            continue;
+        }
+
+        const opening = parseOpeningTagForCodeEscape(html, lt);
+        if (opening === null) {
+            pos = lt + 1;
+            continue;
+        }
+        if (opening.tagName === tagName && !opening.isSelfClosing) {
+            depth++;
+        }
+        pos = opening.tagEnd;
+    }
+
+    return html.length;
+}
+
+function escapeBracesInCodeContent(content: string): string {
+    return content.replace(/[{}]/g, c => (c === "{" ? "&#123;" : "&#125;"));
+}
+
+/**
+ * Preprocess an HTML string by escaping FAST brace characters inside every
+ * `<code>` element. Mirrors the brace-escaping behaviour of Microsoft
+ * WebUI's `webui-press` markdown renderer so that example template
+ * snippets inside `<code>` render literally instead of being interpreted
+ * as bindings. The same pass runs in the server-side renderer in
+ * `microsoft-fast-build` so SSR output and client hydration produce
+ * identical binding positions.
+ *
+ * Nested `<code>` elements are handled via depth tracking. The pass is
+ * idempotent because `{` / `}` inside an already-processed `<code>` have
+ * been replaced with entities, so a second pass finds nothing to escape.
+ * @public
+ */
+export function escapeBracesInCodeElements(innerHTML: string): string {
+    if (innerHTML.indexOf("<code") === -1) {
+        return innerHTML;
+    }
+
+    let pos = 0;
+    let result = "";
+
+    while (pos < innerHTML.length) {
+        const lt = innerHTML.indexOf("<", pos);
+        if (lt === -1) {
+            result += innerHTML.slice(pos);
+            break;
+        }
+
+        if (innerHTML.startsWith("<!--", lt)) {
+            const end = innerHTML.indexOf("-->", lt + 4);
+            const tail = end === -1 ? innerHTML.length : end + 3;
+            result += innerHTML.slice(pos, tail);
+            pos = tail;
+            continue;
+        }
+
+        const opening = parseOpeningTagForCodeEscape(innerHTML, lt);
+        if (opening === null) {
+            result += innerHTML.slice(pos, lt + 1);
+            pos = lt + 1;
+            continue;
+        }
+
+        if (opening.tagName !== codeElementName) {
+            result += innerHTML.slice(pos, opening.tagEnd);
+            pos = opening.tagEnd;
+            continue;
+        }
+
+        result += innerHTML.slice(pos, opening.tagEnd);
+
+        if (opening.isSelfClosing) {
+            pos = opening.tagEnd;
+            continue;
+        }
+
+        const closeStart = findMatchingCloseTagForCodeEscape(
+            innerHTML,
+            opening.contentStart,
+            codeElementName,
+        );
+        const innerContent = innerHTML.slice(opening.contentStart, closeStart);
+        result += escapeBracesInCodeContent(innerContent);
+        pos = closeStart;
+    }
+
+    return result;
+}
+
+/**
  * Resolves boolean logic
  * used for f-when and boolean attributes
  * @param rootPropertyName - The current root property name.

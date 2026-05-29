@@ -68,6 +68,7 @@ mod node;
 mod renderer;
 mod error;
 mod locator;
+mod code_escape;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
