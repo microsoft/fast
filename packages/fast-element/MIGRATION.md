@@ -26,8 +26,9 @@
 
 - **Native `globalThis` required**: `@microsoft/fast-element` no longer installs
   a `globalThis` polyfill as a side effect. The package only keeps the
-  `requestIdleCallback` / `cancelIdleCallback` fallback for environments that
-  still lack those APIs.
+  `requestIdleCallback` / `cancelIdleCallback` fallback and the async update
+  scheduler's `requestAnimationFrame` fallback for environments that still lack
+  those APIs.
 
 ### Migration steps
 

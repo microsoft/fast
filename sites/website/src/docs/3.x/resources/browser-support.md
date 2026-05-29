@@ -30,3 +30,7 @@ The following browsers have native support for the Web Components features used 
 FAST Element v3 no longer polyfills `globalThis` for older engines. If you need
 to support an environment below these minimums, load a `globalThis` polyfill
 before importing FAST.
+
+The async update scheduler uses `requestAnimationFrame` in browsers. Runtimes
+without `requestAnimationFrame` use a `setTimeout` fallback so queued updates
+still flush outside browser environments.
