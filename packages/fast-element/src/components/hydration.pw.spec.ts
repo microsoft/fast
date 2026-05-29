@@ -329,4 +329,162 @@ test.describe("The prerendered content optimization", () => {
             never: "never",
         });
     });
+
+    test("should client render when render hydration boundaries are empty", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                render,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client rendered";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${render(x => x.value, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                isHydrated: await element.$fastController.isHydrated,
+                text: element.shadowRoot?.textContent?.trim() ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.isHydrated).toBe(true);
+        expect(result.text).toBe("client rendered");
+        expect(result.spanCount).toBe(1);
+    });
+
+    test("should create missing repeat views when SSR rendered fewer items", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one", "two", "three"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("onetwothree");
+        expect(result.spanCount).toBe(3);
+    });
+
+    test("should remove extra repeat ranges when SSR rendered more items", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span><!--fe:b-->server-two<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("one");
+        expect(result.spanCount).toBe(1);
+    });
 });
