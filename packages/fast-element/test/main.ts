@@ -73,6 +73,8 @@ export { oneTime } from "../src/binding/one-time.js";
 export { listener, oneWay } from "../src/binding/one-way.js";
 export { Signal, signal } from "../src/binding/signal.js";
 export { twoWay } from "../src/binding/two-way.js";
+export { Schema } from "../src/components/schema.js";
+export { AttributeMap } from "../src/declarative/attribute-map.js";
 export { isString } from "../src/interfaces.js";
 export { Metadata } from "../src/metadata.js";
 export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";

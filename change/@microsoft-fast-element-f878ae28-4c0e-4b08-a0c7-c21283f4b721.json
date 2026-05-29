@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Filter late attribute MutationObserver records.",
+  "packageName": "@microsoft/fast-element",
+  "email": "chujane@microsoft.com",
+  "dependentChangeType": "none"
+}
