@@ -21,6 +21,7 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
+import { HydrationStage } from "./hydration-view.js";
 import { Markup } from "./markup.js";
 import {
     type CaptureType,
@@ -29,7 +30,6 @@ import {
     type TemplateValue,
     ViewTemplate,
 } from "./template.js";
-import { HydrationStage } from "./hydration-view.js";
 
 type ComposableView = ContentView & {
     isComposed?: boolean;
@@ -85,10 +85,11 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
             if (viewNodes) {
                 this.view = this.template.hydrate(viewNodes.first, viewNodes.last);
                 this.bindView(this.view);
+                return;
             }
-        } else {
-            this.refreshView();
         }
+
+        this.refreshView();
     }
 
     /**
