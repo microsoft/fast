@@ -16,6 +16,7 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
+import { HydrationStage, type HydrationView } from "./hydration-view.js";
 import { Markup } from "./markup.js";
 import type {
     CaptureType,
@@ -23,14 +24,7 @@ import type {
     SyntheticViewTemplate,
     ViewTemplate,
 } from "./template.js";
-import {
-    HydrationStage,
-    type HydrationView,
-} from "./hydration-view.js";
-import {
-    HTMLView,
-    type SyntheticView,
-} from "./view.js";
+import { HTMLView, type SyntheticView } from "./view.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -79,6 +73,34 @@ function bindWithPositioning(
 
 function isCommentNode(node: Node): node is Comment {
     return node.nodeType === Node.COMMENT_NODE;
+}
+
+interface HydrationRepeatRange {
+    start: Node;
+    end: Node;
+    startMarker: Comment;
+    endMarker: Comment;
+}
+
+function removeNodeRange(first: Node, last: Node): void {
+    const parentNode = first.parentNode;
+
+    if (parentNode === null) {
+        return;
+    }
+
+    let current: Node | null = first;
+
+    while (current !== null) {
+        const next = current.nextSibling;
+        parentNode.removeChild(current);
+
+        if (current === last) {
+            break;
+        }
+
+        current = next;
+    }
 }
 
 export class HydrationRepeatError extends Error {
@@ -408,12 +430,13 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             return;
         }
 
-        const itemCount = this.items.length;
-        this.views = new Array(itemCount);
+        const items = this.items;
+        const itemCount = items.length;
+        const views = (this.views = new Array(itemCount));
 
         // First pass: collect all repeat marker pairs by walking backward.
-        // Each entry is { start: Node, end: Node } for the item content range.
-        const itemRanges: { start: Node; end: Node }[] = [];
+        // Each entry tracks both the item content range and its SSR markers.
+        const itemRanges: HydrationRepeatRange[] = [];
         let current: Node | null = this.location.previousSibling;
 
         while (current !== null) {
@@ -422,9 +445,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 continue;
             }
 
-            // Found repeat end marker
-            current.data = "";
-            const end = current.previousSibling;
+            const endMarker = current;
+            endMarker.data = "";
+            const end = endMarker.previousSibling;
             if (!end) {
                 throw new Error(
                     `Error when hydrating inside "${
@@ -445,12 +468,17 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             const startMarker = start;
                             startMarker.data = "";
                             current = startMarker.previousSibling;
-                            const itemStart = startMarker.nextSibling!;
+                            const itemStart = startMarker.nextSibling ?? endMarker;
 
                             // Empty item: start and end markers are adjacent.
                             const itemEnd = end === startMarker ? itemStart : end;
 
-                            itemRanges.push({ start: itemStart, end: itemEnd });
+                            itemRanges.push({
+                                start: itemStart,
+                                end: itemEnd,
+                                startMarker,
+                                endMarker,
+                            });
                             break;
                         }
                         depth--;
@@ -472,11 +500,25 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         itemRanges.reverse();
 
         // Hydrate each SSR item at its correct index (0-based from start).
-        for (let i = 0; i < itemRanges.length && i < itemCount; i++) {
+        const hydrationCount = Math.min(itemRanges.length, itemCount);
+
+        for (let i = 0; i < hydrationCount; i++) {
             const { start, end } = itemRanges[i];
             const view = template.hydrate(start, end);
-            this.views[i] = view;
-            this.bindView(view, this.items, i, this.controller);
+            views[i] = view;
+            this.bindView(view, items, i, this.controller);
+        }
+
+        for (let i = hydrationCount; i < itemCount; i++) {
+            const view = template.create();
+            views[i] = view;
+            this.bindView(view, items, i, this.controller);
+            view.insertBefore(this.location);
+        }
+
+        for (let i = itemCount, ii = itemRanges.length; i < ii; i++) {
+            const { startMarker, endMarker } = itemRanges[i];
+            removeNodeRange(startMarker, endMarker);
         }
     }
 }
