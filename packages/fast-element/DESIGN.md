@@ -14,6 +14,7 @@ For deep dives into specific areas, see the linked detailed documents.
    - [FASTElement & ElementController](#fastelement--elementcontroller)
    - [Observables & Notifiers](#observables--notifiers)
    - [Bindings](#bindings)
+   - [DOM Policy](#dom-policy)
    - [html Tagged Template Literal](#html-tagged-template-literal)
    - [ViewTemplate & Compiler](#viewtemplate--compiler)
    - [Views & Behaviors](#views--behaviors)
@@ -166,6 +167,25 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 | `listener` | Same as `oneWay` but attaches as a DOM event handler |
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
+
+---
+
+### DOM Policy
+
+**Files**: `src/dom.ts`, `src/dom-policy.ts`
+
+`DOM.policy` is the templating system's DOM write policy. `DOMPolicy.create()` builds a
+policy from Trusted Types integration plus default guard maps for element-specific and
+aspect-wide sinks. User guard configuration is merged with those defaults so partial
+overrides preserve unspecified built-in guards.
+
+The default guards block known dangerous sinks such as inline event handlers,
+`innerHTML`, script text/source writes, and executable object/link/embed sources. URL
+attributes and properties that remain writable are routed through the built-in URL guard,
+which trims surrounding whitespace/control characters, normalizes protocol detection
+across case, embedded controls, and bounded percent-decoding, and rejects
+`javascript:`, `vbscript:`, and `data:` protocols without treating safe or
+protocol-relative URLs as unsafe.
 
 ---
 
