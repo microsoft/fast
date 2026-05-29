@@ -31,6 +31,14 @@ for (const fixtureName of fixtures) {
 
     // Step 2: inject <f-template> declarations from templates.html before <script>
     const fTemplates = readFileSync(templatesFile, "utf8").trim();
+    // Apply the same `<code>`-sample escape the entry HTML goes through, so
+    // author-written code samples inside `<f-template>` (literal `{{...}}`,
+    // `<f-when>`, `<f-repeat>`) survive into the rendered page as text
+    // instead of being interpreted by the client-side template parser.
+    const wasm = require(
+        require.resolve("@microsoft/fast-build/wasm/microsoft_fast_build.js"),
+    );
+    const escapedFTemplates = wasm.escape_code_samples(fTemplates);
     const rawHtml = readFileSync(outputFile, "utf8");
 
     if (!rawHtml.includes('<script type="module"')) {
@@ -41,7 +49,7 @@ for (const fixtureName of fixtures) {
 
     const html = rawHtml.replace(
         /(\s*)<script type="module"/,
-        `\n${fTemplates}\n$1<script type="module"`,
+        `\n${escapedFTemplates}\n$1<script type="module"`,
     );
 
     writeFileSync(outputFile, html);
