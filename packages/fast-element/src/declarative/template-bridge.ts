@@ -1,7 +1,5 @@
 import type { FASTElementDefinition } from "../components/fast-definitions.js";
-import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
-import { Message } from "./interfaces.js";
 
 /**
  * Publishes a concrete template for a definition.
@@ -141,25 +139,13 @@ export class DeclarativeTemplateBridge {
             return;
         }
 
-        const publishers = [...bucket.publishers];
+        // Set iteration preserves insertion order, so duplicate publishers leave
+        // the first connected publisher responsible for pending requests.
+        const publisher = bucket.publishers.values().next().value;
 
-        if (publishers.length > 1) {
-            const error = FAST.error(Message.moreThanOneMatchingTemplateProvided, {
-                name,
-            });
-
-            for (const request of [...bucket.requests]) {
-                this.rejectRequest(registry, name, bucket, request, error);
-            }
-
+        if (publisher === undefined) {
             return;
         }
-
-        if (publishers.length === 0) {
-            return;
-        }
-
-        const [publisher] = publishers;
 
         for (const request of bucket.requests) {
             if (request.settled) {
