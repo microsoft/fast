@@ -1,4 +1,7 @@
-export type { HydrationOptions } from "./components/enable-hydration.js";
+export type {
+    HydrationConfig,
+    HydrationOptions,
+} from "./components/enable-hydration.js";
 export {
     deferHydrationAttribute,
     enableHydration,

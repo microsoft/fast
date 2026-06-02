@@ -1,13 +1,17 @@
-import type { Mutable } from "../interfaces.js";
 import { ensureHydrationRuntime } from "../hydration/runtime.js";
+import type { Mutable } from "../interfaces.js";
 import { SourceLifetime } from "../observation/observable.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { HydratableElementViewTemplate } from "../templating/template.js";
 import { ElementController } from "./element-controller.js";
 import { isHydratable } from "./hydration.js";
-import { type HydrationOptions, HydrationTracker } from "./hydration-tracker.js";
+import {
+    type HydrationConfig,
+    type HydrationOptions,
+    HydrationTracker,
+} from "./hydration-tracker.js";
 
-export type { HydrationOptions };
+export type { HydrationConfig, HydrationOptions };
 
 /**
  * No-op handler used during prerendered bind to discard the
@@ -28,12 +32,17 @@ let hookInstalled = false;
  *
  * Safe to call multiple times — the hydration hook is installed once
  * and subsequent calls merge their options into the shared tracker.
+ * By default, the hook stops hydrating new prerendered elements after
+ * the global `hydrationComplete` callback. Set
+ * `noopAfterHydrationComplete` to `false` for streaming scenarios that
+ * append hydratable Declarative Shadow DOM after the initial batch.
  *
  * @example
  * ```ts
  * import { enableHydration } from "@microsoft/fast-element/hydration.js";
  *
  * enableHydration({
+ *     noopAfterHydrationComplete: false,
  *     hydrationComplete() {
  *         console.log("hydration complete");
  *     },
@@ -51,9 +60,8 @@ export function enableHydration(options?: HydrationOptions): void {
         hookInstalled = true;
         const activeTracker = tracker;
 
-        ElementController.installHydrationHook(
-        (controller, template, element, host) => {
-            if (!isHydratable(template)) {
+        ElementController.installHydrationHook((controller, template, element, host) => {
+            if (!activeTracker.shouldHydrate || !isHydratable(template)) {
                 return false;
             }
 
@@ -70,9 +78,11 @@ export function enableHydration(options?: HydrationOptions): void {
                 const firstChild = host.firstChild!;
                 const lastChild = host.lastChild!;
 
-                const view = (
-                    template as HydratableElementViewTemplate
-                ).hydrate(firstChild, lastChild, element);
+                const view = (template as HydratableElementViewTemplate).hydrate(
+                    firstChild,
+                    lastChild,
+                    element,
+                );
 
                 (controller as any).view = view;
 
@@ -103,8 +113,7 @@ export function enableHydration(options?: HydrationOptions): void {
             }
 
             return true;
-        },
-    );
+        });
     } else if (options && tracker) {
         // Merge options into existing tracker for subsequent calls
         tracker.mergeOptions(options);
