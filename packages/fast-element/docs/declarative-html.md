@@ -88,6 +88,16 @@ enableHydration({
 });
 ```
 
+The hydration hook no-ops for new prerendered elements after the first
+`hydrationComplete` callback by default. Streaming scenarios that append
+hydratable Declarative Shadow DOM later can keep the hook active:
+
+```typescript
+enableHydration({
+    noopAfterHydrationComplete: false,
+});
+```
+
 Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript

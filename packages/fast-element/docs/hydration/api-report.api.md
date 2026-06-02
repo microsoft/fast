@@ -169,6 +169,7 @@ export class HydrationBindingError extends Error {
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
+    noopAfterHydrationComplete?: boolean;
 }
 
 // @public (undocumented)
@@ -184,6 +185,7 @@ export class HydrationTracker {
     add(element: HTMLElement): void;
     mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
+    get shouldHydrate(): boolean;
 }
 
 // @beta
