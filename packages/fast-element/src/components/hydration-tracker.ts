@@ -1,18 +1,4 @@
 /**
- * Configuration for global hydration behavior.
- * @public
- */
-export interface HydrationConfig {
-    /**
-     * Indicates whether the hydration hook should stop handling new
-     * prerendered elements after hydration completes.
-     *
-     * @defaultValue true
-     */
-    noopAfterHydrationComplete: boolean;
-}
-
-/**
  * Options for configuring global hydration lifecycle events and behavior.
  * @public
  */
@@ -35,10 +21,6 @@ type HydrationCallbacks = Pick<
     "hydrationStarted" | "hydrationComplete"
 >;
 
-const defaultHydrationConfig: HydrationConfig = Object.freeze({
-    noopAfterHydrationComplete: true,
-});
-
 /**
  * Tracks prerendered elements through the hydration lifecycle and
  * fires global callbacks at start and completion. Per-element callbacks
@@ -53,11 +35,11 @@ export class HydrationTracker {
     private completed = false;
     private checkTimer: ReturnType<typeof setTimeout> | null = null;
     private callbacks: HydrationCallbacks;
-    private config: HydrationConfig;
+    private noopAfterHydrationComplete: boolean;
 
     constructor(options: HydrationOptions) {
         this.callbacks = options;
-        this.config = resolveHydrationConfig(options);
+        this.noopAfterHydrationComplete = options.noopAfterHydrationComplete ?? true;
     }
 
     /**
@@ -65,7 +47,7 @@ export class HydrationTracker {
      * prerendered elements.
      */
     public get shouldHydrate(): boolean {
-        return !this.completed || this.config.noopAfterHydrationComplete === false;
+        return !this.completed || this.noopAfterHydrationComplete === false;
     }
 
     /**
@@ -136,19 +118,9 @@ export class HydrationTracker {
         };
 
         if (incoming.noopAfterHydrationComplete !== void 0) {
-            this.config = resolveHydrationConfig({
-                noopAfterHydrationComplete: incoming.noopAfterHydrationComplete,
-            });
+            this.noopAfterHydrationComplete = incoming.noopAfterHydrationComplete;
         }
     }
-}
-
-function resolveHydrationConfig(options: HydrationOptions): HydrationConfig {
-    return {
-        noopAfterHydrationComplete:
-            options.noopAfterHydrationComplete ??
-            defaultHydrationConfig.noopAfterHydrationComplete,
-    };
 }
 
 function chainCallback(

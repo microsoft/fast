@@ -5,13 +5,9 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { HydratableElementViewTemplate } from "../templating/template.js";
 import { ElementController } from "./element-controller.js";
 import { isHydratable } from "./hydration.js";
-import {
-    type HydrationConfig,
-    type HydrationOptions,
-    HydrationTracker,
-} from "./hydration-tracker.js";
+import { type HydrationOptions, HydrationTracker } from "./hydration-tracker.js";
 
-export type { HydrationConfig, HydrationOptions };
+export type { HydrationOptions };
 
 /**
  * No-op handler used during prerendered bind to discard the
@@ -49,7 +45,7 @@ let hookInstalled = false;
  * });
  * ```
  *
- * @param options - Optional callbacks for global hydration events.
+ * @param options - Optional global hydration callbacks and behavior.
  * @public
  */
 export function enableHydration(options?: HydrationOptions): void {

@@ -166,11 +166,6 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
-export interface HydrationConfig {
-    noopAfterHydrationComplete: boolean;
-}
-
-// @public
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;

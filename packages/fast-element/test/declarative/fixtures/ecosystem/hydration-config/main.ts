@@ -13,12 +13,12 @@ enableHydration({
     },
 });
 
-export class HydrationConfigElement extends FASTElement {
+export class HydrationOptionsElement extends FASTElement {
     @attr
     label: string = "Initial";
 }
 
-HydrationConfigElement.define({
+HydrationOptionsElement.define({
     name: "hydration-config-element",
     template: declarativeTemplate(),
 });
