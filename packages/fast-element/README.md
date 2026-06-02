@@ -188,6 +188,16 @@ enableHydration({
 });
 ```
 
+By default, hydration handles the initial prerendered batch and then no-ops
+after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
+after the initial batch, keep the hydration hook active:
+
+```typescript
+enableHydration({
+    noopAfterHydrationComplete: false,
+});
+```
+
 When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. Two properties on the controller let you inspect the result:
 
 - **`isPrerendered: Promise<boolean>`** — resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.
