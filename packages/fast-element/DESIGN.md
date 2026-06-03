@@ -116,6 +116,10 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 
 `SubscriberSet` is an optimised set that stores the first two subscribers inline (avoiding heap allocations for the common 1–2 subscriber case) and falls back to an array. `PropertyChangeNotifier` extends `SubscriberSet` to support per-property subscriptions.
 
+#### Array observation
+
+`ArrayObserver` tracks array mutations as splices, sorts, or resets and schedules batched delivery through the update queue. Subscribing to an array observer flushes pending mutations before adding the subscriber, except while a notification is already in progress; changes made during notification remain queued for a later flush so subscribers are not notified reentrantly.
+
 #### ExpressionNotifier (binding observer)
 
 `Observable.binding(expression, subscriber)` creates an `ExpressionNotifier`. When `observe(source, context)` is called it:
