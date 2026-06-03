@@ -8,7 +8,7 @@ eleventyNavigation:
   title: Defining Elements
 navigationOptions:
   activeKey: declarative-defining-elements3x
-description: Learn how to register declarative FASTElement components and use observerMap and attributeMap extensions.
+description: Learn how to register declarative FASTElement components, load template strings, and use observerMap and attributeMap extensions.
 keywords:
   - FASTElement
   - declarative
@@ -58,6 +58,43 @@ The `template: declarativeTemplate()` setting tells FAST to wait for a matching 
 :::important
 The `<f-template>` elements must be present in the DOM when the component definition resolves. A common pattern is to include the `<f-template>` elements directly in the HTML page before the script module loads.
 :::
+
+## Loading Template Strings
+
+Use `declarativeTemplate({ callback })` when an element's `<f-template>` should
+be loaded by JavaScript instead of a connected DOM element. The callback
+receives a `templateStringResolver` and can perform async work, including
+dynamic imports or `fetch()`. The callback must return or await the resolver
+promise. The resolver accepts a string or `Promise<string>`, and template
+resolution rejects with a diagnostic error if the callback completes
+successfully without calling it.
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+class LazyElement extends FASTElement {}
+
+LazyElement.define({
+    name: "lazy-element",
+    template: declarativeTemplate({
+        async callback({ templateStringResolver }) {
+            const response = await fetch("/templates/lazy-element.html");
+            await templateStringResolver(response.text());
+        },
+    }),
+});
+```
+
+The resolved string passed to `templateStringResolver()` must contain exactly one
+`<f-template>` element. Attributes on the `<f-template>` are preserved, and the
+`<f-template>` must contain exactly one child `<template>`.
+
+```html
+<f-template name="lazy-element" data-source="fetch">
+    <template>{{message}}</template>
+</f-template>
+```
 
 ## Complete File Structure
 

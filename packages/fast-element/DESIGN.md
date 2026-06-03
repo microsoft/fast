@@ -351,6 +351,16 @@ the imperative `html` API:
 - The internal `<f-template>` publisher parses HTML and returns concrete
   `ViewTemplate` instances through the registry-aware declarative template
   bridge.
+- `declarativeTemplate({ callback })` registers a transient string publisher for
+  the definition's name. The callback receives the element definition and a
+  `templateStringResolver()` function, so it can load template markup with
+  async flows such as `import()` or `fetch()`. The resolver accepts either a
+  string or `Promise<string>`, validates that the resolved string contains
+  exactly one `<f-template>`, preserves attributes on that element, and then
+  routes it through the same publisher path as a connected `<f-template>`. The
+  callback must return or await the resolver promise; if it completes
+  successfully without calling `templateStringResolver()`, template resolution
+  rejects with a diagnostic error instead of waiting indefinitely.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
@@ -577,7 +587,7 @@ src/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
 ├── context.ts             # Context, FASTContext, Context protocol
 ├── declarative/
-│   ├── template.ts        # declarativeTemplate() and internal f-template publisher
+│   ├── template.ts        # declarativeTemplate(), string callback, internal f-template publisher
 │   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
 │   ├── schema.ts          # Compatibility re-export for Schema
 │   ├── definition-options.ts # Compatibility re-export for schema transforms

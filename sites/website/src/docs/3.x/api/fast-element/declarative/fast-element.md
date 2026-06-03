@@ -134,6 +134,17 @@ Returns a declarative template resolver that waits for the matching `<f-template
 
 
 </td></tr>
+<tr><td>
+
+[declarativeTemplate(options)](../fast-element.declarativetemplate_1/)
+
+
+</td><td>
+
+Returns a declarative template resolver that waits for the matching `<f-template>` element, or an `<f-template>` string supplied through `options.callback`<!-- -->, and resolves it into a concrete `ViewTemplate`<!-- -->.
+
+
+</td></tr>
 </tbody></table>
 
 ## Interfaces
@@ -201,6 +212,28 @@ A marker interface used to capture types when interpolating Directive helpers in
 </td><td>
 
 Describes a child custom element binding referenced by a schema path.
+
+
+</td></tr>
+<tr><td>
+
+[DeclarativeTemplateCallbackContext](../fast-element.declarativetemplatecallbackcontext/)
+
+
+</td><td>
+
+Context provided to a declarative template callback.
+
+
+</td></tr>
+<tr><td>
+
+[DeclarativeTemplateOptions](../fast-element.declarativetemplateoptions/)
+
+
+</td><td>
+
+Options for `declarativeTemplate()`<!-- -->.
 
 
 </td></tr>
@@ -561,6 +594,32 @@ Represents a type which can be constructed with the new operator.
 </td><td>
 
 A type that instantiates a StyleStrategy.
+
+
+</td></tr>
+<tr><td>
+
+[DeclarativeTemplateCallback](../fast-element.declarativetemplatecallback/)
+
+
+</td><td>
+
+Callback invoked while resolving a declarative template.
+
+The callback may complete asynchronously after dynamic imports, fetches, or other async template-loading work. It must return or await the promise from `templateStringResolver()`<!-- -->. If the callback completes successfully without calling `templateStringResolver()`<!-- -->, template resolution rejects.
+
+
+</td></tr>
+<tr><td>
+
+[DeclarativeTemplateStringResolver](../fast-element.declarativetemplatestringresolver/)
+
+
+</td><td>
+
+Resolves a string, or a promise for a string, containing an `<f-template>` element for a declarative template callback.
+
+The resolved string must contain exactly one `<f-template>` element. Attributes on the `<f-template>` are preserved, and the `<f-template>` must contain exactly one child `<template>` element. The returned promise settles when string resolution and template creation complete.
 
 
 </td></tr>

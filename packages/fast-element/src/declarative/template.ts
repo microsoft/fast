@@ -17,13 +17,73 @@ const templateElementName = "f-template";
 
 const ensuredTemplateElements = new WeakMap<CustomElementRegistry, Promise<void>>();
 
+type FTemplateElementConstructor = CustomElementConstructor & {
+    new (): FTemplateElement;
+};
+
 type MutableFASTElementDefinition = FASTElementDefinition & {
     lifecycleCallbacks?: TemplateLifecycleCallbacks;
 };
 
+/**
+ * Resolves a string, or a promise for a string, containing an `<f-template>`
+ * element for a declarative template callback.
+ *
+ * The resolved string must contain exactly one `<f-template>` element.
+ * Attributes on the `<f-template>` are preserved, and the `<f-template>` must
+ * contain exactly one child `<template>` element. The returned promise settles
+ * when string resolution and template creation complete.
+ * @public
+ */
+export type DeclarativeTemplateStringResolver = (
+    templateString: string | Promise<string>,
+) => Promise<void>;
+
+/**
+ * Context provided to a declarative template callback.
+ * @public
+ */
+export interface DeclarativeTemplateCallbackContext {
+    /**
+     * The FAST element definition whose template is being resolved.
+     */
+    readonly definition: FASTElementDefinition;
+
+    /**
+     * Resolves a string containing an `<f-template>` element into the template
+     * for the current definition.
+     */
+    readonly templateStringResolver: DeclarativeTemplateStringResolver;
+}
+
+/**
+ * Callback invoked while resolving a declarative template.
+ *
+ * The callback may complete asynchronously after dynamic imports, fetches, or
+ * other async template-loading work. It must return or await the promise from
+ * `templateStringResolver()`. If the callback completes successfully without
+ * calling `templateStringResolver()`, template resolution rejects.
+ * @public
+ */
+export type DeclarativeTemplateCallback = (
+    context: DeclarativeTemplateCallbackContext,
+) => void | Promise<void>;
+
+/**
+ * Options for `declarativeTemplate()`.
+ * @public
+ */
+export interface DeclarativeTemplateOptions extends TemplateLifecycleCallbacks {
+    /**
+     * Optional callback used to resolve an `<f-template>` from a string instead
+     * of a connected `<f-template>` element in the DOM.
+     */
+    readonly callback?: DeclarativeTemplateCallback;
+}
+
 function isTemplateElementConstructor(
     value: CustomElementConstructor | undefined,
-): boolean {
+): value is FTemplateElementConstructor {
     return value === FTemplateElement || value?.prototype instanceof FTemplateElement;
 }
 
@@ -86,6 +146,132 @@ function chainLifecycleCallback<TArgs extends unknown[]>(
     };
 }
 
+function createTemplateElementFromString(
+    templateString: string,
+    registry: CustomElementRegistry,
+    name: string,
+): FTemplateElement {
+    const container = document.createElement("template");
+    container.innerHTML = templateString;
+
+    const fragment = document.createDocumentFragment();
+    fragment.append(container.content);
+
+    const [source, ...additionalTemplates] = Array.from(
+        fragment.querySelectorAll(templateElementName),
+    );
+
+    if (source === void 0 || additionalTemplates.length > 0) {
+        throw FAST.error(Message.invalidTemplateString, { name });
+    }
+
+    const TemplateElement = registry.get(templateElementName);
+
+    if (!isTemplateElementConstructor(TemplateElement)) {
+        throw new Error(
+            "The <f-template> element must be defined before resolving a template string.",
+        );
+    }
+
+    const templateElement = new TemplateElement();
+
+    for (const attribute of Array.from(source.attributes)) {
+        templateElement.setAttribute(attribute.name, attribute.value);
+    }
+
+    templateElement.append(...Array.from(source.childNodes));
+
+    return templateElement;
+}
+
+class TemplateStringPublisher implements TemplatePublisher {
+    public constructor(private readonly callback: DeclarativeTemplateCallback) {}
+
+    public publishTemplate(
+        definition: FASTElementDefinition,
+    ): Promise<ElementViewTemplate> {
+        return new Promise((resolve, reject) => {
+            let settled = false;
+            let resolverCalled = false;
+            let resolverCompletion: Promise<void> | undefined;
+
+            const rejectTemplate = (error: unknown): void => {
+                if (settled) {
+                    return;
+                }
+
+                settled = true;
+                reject(error);
+            };
+
+            const resolveTemplate = (template: ElementViewTemplate): void => {
+                if (settled) {
+                    return;
+                }
+
+                settled = true;
+                resolve(template);
+            };
+
+            const templateStringResolver: DeclarativeTemplateStringResolver =
+                templateString => {
+                    if (settled) {
+                        return Promise.resolve();
+                    }
+
+                    if (resolverCompletion) {
+                        return resolverCompletion;
+                    }
+
+                    resolverCalled = true;
+
+                    const templatePromise = Promise.resolve(templateString).then(
+                        resolvedTemplateString => {
+                            const templateElement = createTemplateElementFromString(
+                                resolvedTemplateString,
+                                definition.registry,
+                                definition.name,
+                            );
+
+                            return templateElement.publishTemplate(definition);
+                        },
+                    );
+
+                    templatePromise.then(resolveTemplate, rejectTemplate);
+
+                    resolverCompletion = templatePromise.then(() => void 0);
+                    resolverCompletion.catch(() => {});
+
+                    return resolverCompletion;
+                };
+
+            Promise.resolve()
+                .then(() =>
+                    this.callback({
+                        definition,
+                        templateStringResolver,
+                    }),
+                )
+                .then(
+                    () => {
+                        if (!resolverCalled) {
+                            rejectTemplate(
+                                FAST.error(Message.templateStringResolverNotCalled, {
+                                    name: definition.name,
+                                }),
+                            );
+                        }
+                    },
+                    error => {
+                        if (!resolverCalled) {
+                            rejectTemplate(error);
+                        }
+                    },
+                );
+        });
+    }
+}
+
 /**
  * Returns a declarative template resolver that waits for the matching
  * `<f-template>` element and resolves it into a concrete `ViewTemplate`.
@@ -95,41 +281,76 @@ function chainLifecycleCallback<TArgs extends unknown[]>(
  */
 export function declarativeTemplate(
     callbacks?: TemplateLifecycleCallbacks,
+): FASTElementTemplateResolver;
+/**
+ * Returns a declarative template resolver that waits for the matching
+ * `<f-template>` element, or an `<f-template>` string supplied through
+ * `options.callback`, and resolves it into a concrete `ViewTemplate`.
+ *
+ * @param options - Optional per-element lifecycle callbacks and template
+ * callback.
+ * @public
+ */
+export function declarativeTemplate(
+    options?: DeclarativeTemplateOptions,
+): FASTElementTemplateResolver;
+export function declarativeTemplate(
+    options?: DeclarativeTemplateOptions,
 ): FASTElementTemplateResolver {
     ensureDeclarativeRuntime();
 
     return async definition => {
-        if (callbacks) {
+        if (options) {
             const existing = definition.lifecycleCallbacks;
             (definition as MutableFASTElementDefinition).lifecycleCallbacks = {
                 elementDidRegister: chainLifecycleCallback(
                     existing?.elementDidRegister,
-                    callbacks.elementDidRegister,
+                    options.elementDidRegister,
                 ),
                 templateWillUpdate: chainLifecycleCallback(
                     existing?.templateWillUpdate,
-                    callbacks.templateWillUpdate,
+                    options.templateWillUpdate,
                 ),
                 templateDidUpdate: chainLifecycleCallback(
                     existing?.templateDidUpdate,
-                    callbacks.templateDidUpdate,
+                    options.templateDidUpdate,
                 ),
                 elementDidDefine: chainLifecycleCallback(
                     existing?.elementDidDefine,
-                    callbacks.elementDidDefine,
+                    options.elementDidDefine,
                 ),
                 elementWillHydrate: chainLifecycleCallback(
                     existing?.elementWillHydrate,
-                    callbacks.elementWillHydrate,
+                    options.elementWillHydrate,
                 ),
                 elementDidHydrate: chainLifecycleCallback(
                     existing?.elementDidHydrate,
-                    callbacks.elementDidHydrate,
+                    options.elementDidHydrate,
                 ),
             };
         }
 
         await ensureTemplateElementDefined(definition.registry);
+
+        if (options?.callback) {
+            const publisher = new TemplateStringPublisher(options.callback);
+            declarativeTemplateBridge.registerPublisher(
+                definition.registry,
+                definition.name,
+                publisher,
+            );
+
+            try {
+                return await declarativeTemplateBridge.requestTemplate(definition);
+            } finally {
+                declarativeTemplateBridge.unregisterPublisher(
+                    definition.registry,
+                    definition.name,
+                    publisher,
+                );
+            }
+        }
+
         return declarativeTemplateBridge.requestTemplate(definition);
     };
 }

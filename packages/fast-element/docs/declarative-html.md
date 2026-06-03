@@ -7,8 +7,9 @@ The declarative entrypoint in `@microsoft/fast-element` interprets FAST
 declarative HTML syntax as a template for a FAST web component.
 
 This document focuses on declarative-runtime implementation details:
-template structure, prerendered markup requirements, lifecycle callbacks,
-binding configuration, syntax, and integration testing.
+template structure, async string template loading, prerendered markup
+requirements, lifecycle callbacks, binding configuration, syntax, and
+integration testing.
 
 For package installation, using `declarativeTemplate()`, extension setup, and
 the package-level hydration overview, see the
@@ -53,6 +54,44 @@ Example:
 The legacy `defer-hydration` and `needs-hydration` attributes are no longer
 required.
 
+## Async Template Strings
+
+Use `declarativeTemplate({ callback })` when the `<f-template>` markup should be
+loaded by JavaScript rather than provided as a connected DOM element. The
+callback receives the current element definition and a `templateStringResolver`.
+It may return a promise, so template strings can come from dynamic imports,
+`fetch()`, or another async source. The callback must return or await the
+resolver promise. The resolver accepts a string or `Promise<string>`, and
+template resolution rejects with a diagnostic error if the callback completes
+successfully without calling it.
+
+```typescript
+import { FASTElement } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+class LazyElement extends FASTElement {}
+
+LazyElement.define({
+    name: "lazy-element",
+    template: declarativeTemplate({
+        async callback({ templateStringResolver }) {
+            const response = await fetch("/templates/lazy-element.html");
+            await templateStringResolver(response.text());
+        },
+    }),
+});
+```
+
+The resolved string must contain exactly one `<f-template>` element, and that
+`<f-template>` must contain exactly one child `<template>`. Attributes on the
+`<f-template>`, including `name`, are preserved before the template is parsed.
+
+```html
+<f-template name="lazy-element" data-source="fetch">
+    <template>{{message}}</template>
+</f-template>
+```
+
 ## Non-browser HTML Rendering
 
 One of the benefits of FAST declarative HTML templates is that the server can
@@ -69,7 +108,7 @@ hook into template processing and hydration. The callbacks are split by scope:
 
 | Scope | API | Callbacks |
 |---|---|---|
-| Per element | `declarativeTemplate(callbacks)` | `elementDidRegister`, `templateWillUpdate`, `templateDidUpdate`, `elementDidDefine`, `elementWillHydrate`, `elementDidHydrate` |
+| Per element | `declarativeTemplate(options)` | `callback`, `elementDidRegister`, `templateWillUpdate`, `templateDidUpdate`, `elementDidDefine`, `elementWillHydrate`, `elementDidHydrate` |
 | Global hydration | `enableHydration(options)` | `hydrationStarted`, `hydrationComplete` |
 
 Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
