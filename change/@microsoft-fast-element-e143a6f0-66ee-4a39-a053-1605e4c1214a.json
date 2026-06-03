@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: defer array observer changes queued during notification",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
