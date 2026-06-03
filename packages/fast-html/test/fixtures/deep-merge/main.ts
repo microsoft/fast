@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, Observable, observable, Updates } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
@@ -345,6 +345,67 @@ class DeepMergeTestElement extends FASTElement {
         };
 
         deepMerge(this.users[0], updates);
+    }
+
+    public async testDeepMergeObserverMapReentry() {
+        const items = this.users[0].orders[0].items;
+        const observer = Observable.getNotifier(items);
+        let firstCalls = 0;
+        let depth = 0;
+        let maxDepth = 0;
+
+        const nestedSubscriber = {
+            handleChange() {},
+        };
+
+        observer.subscribe({
+            handleChange: () => {
+                firstCalls++;
+                depth++;
+                maxDepth = Math.max(maxDepth, depth);
+
+                if (firstCalls === 1) {
+                    deepMerge(this.users[0].orders[0], {
+                        items: [
+                            {
+                                id: 3001,
+                                name: "Dock",
+                                price: 125.0,
+                                inStock: true,
+                                tags: ["accessories"],
+                                metadata: {
+                                    views: 40,
+                                    rating: 4.2,
+                                },
+                            },
+                        ],
+                    });
+                    observer.subscribe(nestedSubscriber);
+                }
+
+                depth--;
+            },
+        });
+
+        items.push({
+            id: 3000,
+            name: "Cable",
+            price: 10.0,
+            inStock: true,
+            tags: ["accessories"],
+            metadata: {
+                views: 10,
+                rating: 4.0,
+            },
+        });
+
+        await Updates.next();
+
+        return {
+            firstCalls,
+            maxDepth,
+            itemCount: items.length,
+        };
     }
 }
 
