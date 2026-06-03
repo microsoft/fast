@@ -656,6 +656,70 @@ test.describe("declarativeTemplate", () => {
         expect(result.shadowText).toContain("reconnected");
     });
 
+    test("rejects when callback completes without calling templateStringResolver", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const message = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            class TestElement extends FASTElement {}
+
+            try {
+                await TestElement.define({
+                    name: elementName,
+                    template: declarativeTemplate({
+                        callback() {},
+                    }),
+                });
+                return "";
+            } catch (error) {
+                return (error as Error).message;
+            }
+        });
+
+        expect(message).toContain("completed without calling templateStringResolver()");
+    });
+
+    test("propagates promise rejection from templateStringResolver", async ({ page }) => {
+        await page.goto("/");
+
+        const message = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            class TestElement extends FASTElement {}
+
+            try {
+                await TestElement.define({
+                    name: elementName,
+                    template: declarativeTemplate({
+                        callback({ templateStringResolver }) {
+                            return templateStringResolver(
+                                Promise.reject(new Error("template load failed")),
+                            );
+                        },
+                    }),
+                });
+                return "";
+            } catch (error) {
+                return (error as Error).message;
+            }
+        });
+
+        expect(message).toBe("template load failed");
+    });
+
     test("rejects duplicate matching templates with a clear error", async ({ page }) => {
         await page.goto("/");
 

@@ -50,5 +50,11 @@ export type {
     ViewTemplate,
 } from "../templating/template.js";
 export type { ElementView, HTMLView } from "../templating/view.js";
-export { declarativeTemplate } from "./template.js";
+export {
+    type DeclarativeTemplateCallback,
+    type DeclarativeTemplateCallbackContext,
+    type DeclarativeTemplateOptions,
+    type DeclarativeTemplateStringResolver,
+    declarativeTemplate,
+} from "./template.js";
 export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";

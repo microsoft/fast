@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: allow declarativeTemplate callbacks to resolve templates from f-template strings",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

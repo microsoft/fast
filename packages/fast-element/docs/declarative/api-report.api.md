@@ -97,6 +97,26 @@ export type ConstructibleStyleStrategy = {
 export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 
 // @public
+export function declarativeTemplate(options?: DeclarativeTemplateOptions): FASTElementTemplateResolver;
+
+// @public
+export type DeclarativeTemplateCallback = (context: DeclarativeTemplateCallbackContext) => void | Promise<void>;
+
+// @public
+export interface DeclarativeTemplateCallbackContext {
+    readonly definition: FASTElementDefinition;
+    readonly templateStringResolver: DeclarativeTemplateStringResolver;
+}
+
+// @public
+export interface DeclarativeTemplateOptions extends TemplateLifecycleCallbacks {
+    readonly callback?: DeclarativeTemplateCallback;
+}
+
+// @public
+export type DeclarativeTemplateStringResolver = (templateString: string | Promise<string>) => Promise<void>;
+
+// @public
 export interface DefaultCachedPath extends CachedPathCommon {
     // (undocumented)
     type: "default";
