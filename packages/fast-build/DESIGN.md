@@ -11,7 +11,7 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 1. Parsing CLI arguments and loading configuration
 2. Locating and parsing template HTML files (glob scanning + `<f-template>` extraction)
 3. Loading the entry HTML file and optional state JSON file
-4. Calling the WASM renderer or streaming renderer
+4. Calling the WASM renderer in HTML or stream mode
 5. Writing the rendered output file or raw stream chunks to stdout
 
 ```
@@ -49,7 +49,7 @@ fast build [options]
      │    └─ no templates     → wasm.render(entry, state?)
      │              ▼
      │        fs.writeFileSync(output, rendered)
-     └─ true  → wasm.render_entry_stream_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
+     └─ true  → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, true)
                     ▼
               JSON.parse(chunksJson) → process.stdout.write(chunk)
 ```
@@ -151,14 +151,13 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## WASM integration
 
-Five WASM functions are available; the CLI uses the entry renderer when templates are loaded or streaming is requested:
+Four WASM functions are available; the CLI uses the entry renderer when templates are loaded or streaming is requested:
 
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
 | `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
-| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | CLI entry HTML rendering when at least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
-| `wasm.render_entry_stream_with_templates(entry, templatesJson, state?, strategy)` | CLI `--stream` rendering. Returns a JSON array string of raw HTML chunks. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
+| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>` and any forwarded `shadowrootAttributes`. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>`. It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
@@ -173,10 +172,10 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 forms. The option is not accepted in `fast-build.config.json`.
 
 When streaming is enabled, the CLI always calls
-`wasm.render_entry_stream_with_templates`, passing `{}` for `templatesJson` when
-no templates were loaded. The WASM export returns a JSON array string. The CLI
-validates that the parsed value is an array of strings and writes each chunk to
-stdout without separators.
+`wasm.render_entry_with_templates(..., true)`, passing `{}` for `templatesJson`
+when no templates were loaded. With `stream` set to `true`, the WASM export
+returns a JSON array string. The CLI validates that the parsed value is an array
+of strings and writes each chunk to stdout without separators.
 
 Streaming mode does not write `--output`, does not print `Built: ...`, and does
 not warn when `--templates` is omitted. Non-streaming output remains unchanged.

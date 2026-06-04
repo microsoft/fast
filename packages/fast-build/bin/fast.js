@@ -383,18 +383,19 @@ async function runBuild(args) {
 
     // Render
     if (stream) {
-        if (typeof wasm.render_entry_stream_with_templates !== "function") {
+        if (typeof wasm.render_entry_with_templates !== "function") {
             process.stderr.write(
-                "Error: Streaming requires render_entry_stream_with_templates to be exported by the WASM module.\n"
+                "Error: Streaming requires render_entry_with_templates to be exported by the WASM module.\n"
             );
             process.exit(1);
         }
 
-        const renderedChunks = wasm.render_entry_stream_with_templates(
+        const renderedChunks = wasm.render_entry_with_templates(
             entryContent,
             JSON.stringify(templatesMap),
             stateContent,
             attributeNameStrategy || "",
+            true,
         );
 
         /** @type {unknown} */

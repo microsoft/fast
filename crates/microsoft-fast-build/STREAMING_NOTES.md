@@ -2,9 +2,10 @@
 
 `microsoft-fast-build` currently implements **simulated streaming**. The renderer
 walks the template with the same semantics as normal rendering and returns a
-precomputed `Vec<String>` of HTML chunks. The WASM export serializes that vector
-as a JSON array string; the `@microsoft/fast-build` CLI parses the array and
-writes each chunk directly to stdout.
+precomputed `Vec<String>` of HTML chunks. The WASM `render_entry_with_templates`
+export serializes that vector as a JSON array string when called with
+`stream: true`; the `@microsoft/fast-build` CLI parses the array and writes each
+chunk directly to stdout.
 
 ## Guarantees
 
@@ -24,6 +25,8 @@ writes each chunk directly to stdout.
   result is returned to JavaScript.
 - The CLI `--stream` mode is stdout-only. It does not write `--output` and does
   not print the normal `Built: ...` message.
+- The CLI uses `render_entry_with_templates(..., true)` for `--stream`, passing
+  `{}` as `templates_json` when no templates were loaded.
 - The CLI writes raw HTML chunks, not a Node.js `ReadableStream`, so consumers
   should pipe stdout if they need process-level streaming.
 - Shadow templates for custom elements are rendered fully before the custom

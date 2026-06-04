@@ -95,7 +95,9 @@ fast build --entry=index.html --state=state.json --stream
 
 Streaming is simulated by the WebAssembly renderer: chunks are prepared in
 memory, returned to JavaScript as a JSON array, parsed by the CLI, and then
-written to stdout. Chunk boundaries are safe for HTML parsing:
+written to stdout. `--stream` uses the same entry renderer with its stream flag
+enabled and passes an empty templates map when no `--templates` glob is
+provided. Chunk boundaries are safe for HTML parsing:
 
 - Attribute bindings stay within complete opening tag chunks.
 - Custom element opening chunks include the complete Declarative Shadow DOM

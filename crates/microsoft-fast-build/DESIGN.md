@@ -55,7 +55,7 @@ render_template(template, state_str)
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `render_entry_stream_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -344,11 +344,10 @@ All render functions accept `config: Option<&RenderConfig>` as their last parame
 - `render_entry_template_stream_with_locator(template, state_str, locator, config)`
 - `render_entry_template_stream_with_locator_without_state(template, locator, config)`
 
-The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, `render_entry_with_templates`, and `render_entry_stream_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`), and `render_entry_with_templates` accepts an optional fifth `stream` boolean:
 
 - `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
-- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
-- `render_entry_stream_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
+- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?)`
 
 ---
 
@@ -506,14 +505,13 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes five functions to JavaScript via `wasm-bindgen`:
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes four functions to JavaScript via `wasm-bindgen`:
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
-| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
-| `render_entry_stream_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML into a JSON array string of stream chunks; omitted state is `{}` |
+| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -543,13 +541,14 @@ Accepts `templates_json` as a JSON object string mapping element names to raw te
 
 ### `render_entry_with_templates`
 
-Accepts the same arguments as `render_with_templates`, but calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive entry opening-tag handling, matching CLI entry rendering.
-
-### `render_entry_stream_with_templates`
-
-Accepts the same arguments as `render_entry_with_templates`, but calls the entry
-streaming APIs and serializes the resulting `Vec<String>` as a JSON array
-string. JavaScript callers parse the array before writing the raw chunks.
+Accepts the same arguments as `render_with_templates`, plus an optional fifth
+`stream` boolean. With `stream` omitted or `false`, it calls
+`render_entry_template_with_locator` when state is provided, or the no-state
+equivalent when it is omitted. Root-level custom elements therefore receive
+entry opening-tag handling, matching CLI entry rendering. With `stream` set to
+`true`, it calls the entry streaming APIs and serializes the resulting
+`Vec<String>` as a JSON array string. JavaScript callers parse the array before
+writing the raw chunks.
 
 ---
 

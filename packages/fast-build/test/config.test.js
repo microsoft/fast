@@ -72,29 +72,18 @@ const stub = {
         calls.push({ name: "render", entry, state });
         return "<h1>Non-stream</h1>";
     },
-    render_entry_with_templates(entry, templatesJson, state, attributeNameStrategy) {
+    render_entry_with_templates(entry, templatesJson, state, attributeNameStrategy, stream) {
         calls.push({
             name: "render_entry_with_templates",
             entry,
             templatesJson,
             state,
             attributeNameStrategy,
+            stream,
         });
-        return "<my-el>Non-stream</my-el>";
-    },
-    render_entry_stream_with_templates(
-        entry,
-        templatesJson,
-        state,
-        attributeNameStrategy,
-    ) {
-        calls.push({
-            name: "render_entry_stream_with_templates",
-            entry,
-            templatesJson,
-            state,
-            attributeNameStrategy,
-        });
+        if (!stream) {
+            return "<my-el>Non-stream</my-el>";
+        }
         let title = "";
         try {
             title = JSON.parse(state || "{}").title || "";
@@ -351,7 +340,7 @@ describe("stream output", () => {
             dir,
         );
         const renderCall = calls.find(
-            call => call.name === "render_entry_stream_with_templates",
+            call => call.name === "render_entry_with_templates",
         );
 
         assert.equal(stdout, "<h1>Hello</h1>");
@@ -359,11 +348,11 @@ describe("stream output", () => {
         assert.ok(!fs.existsSync(path.join(dir, "out.html")));
         assert.ok(renderCall);
         assert.equal(renderCall.templatesJson, "{}");
+        assert.equal(renderCall.stream, true);
         assert.ok(!calls.some(call => call.name === "render"));
-        assert.ok(!calls.some(call => call.name === "render_entry_with_templates"));
     });
 
-    it("streams with templates through render_entry_stream_with_templates", () => {
+    it("streams with templates through render_entry_with_templates stream flag", () => {
         fs.writeFileSync(
             path.join(dir, "entry.html"),
             '<my-el text="{{title}}"></my-el>',
@@ -385,7 +374,7 @@ describe("stream output", () => {
             dir,
         );
         const renderCall = calls.find(
-            call => call.name === "render_entry_stream_with_templates",
+            call => call.name === "render_entry_with_templates",
         );
         assert.ok(renderCall);
         const templates = JSON.parse(renderCall.templatesJson);
@@ -396,8 +385,8 @@ describe("stream output", () => {
             { name: "shadowrootmode", value: "open" },
         ]);
         assert.equal(renderCall.attributeNameStrategy, "none");
+        assert.equal(renderCall.stream, true);
         assert.ok(calls.some(call => call.name === "parse_f_templates"));
-        assert.ok(!calls.some(call => call.name === "render_entry_with_templates"));
     });
 });
 

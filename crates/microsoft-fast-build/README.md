@@ -548,11 +548,20 @@ const html = render_entry_with_templates(
     entry,
     templatesJson,
     stateJson,
-    "camelCase"  // or "none"
+    "camelCase", // or "none"
+    false        // optional stream flag
+);
+
+const chunksJson = render_entry_with_templates(
+    entry,
+    templatesJson,
+    stateJson,
+    "camelCase",
+    true
 );
 ```
 
-Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering.
+Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering. Passing `true` as the optional fifth argument switches `render_entry_with_templates` to stream mode and returns a JSON array string of HTML chunks; omitted or `false` returns normal HTML.
 
 Passing `"none"` or `""` as the strategy uses the default behaviour.
 
