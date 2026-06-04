@@ -302,6 +302,26 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator(".complex-history").nth(1)).toHaveText("draft/true");
     });
 
+    test("should observe deep mutations after replacing nested arrays", async ({
+        page,
+    }) => {
+        await page
+            .locator("observer-map-internal-test-element")
+            .evaluate((element: any) =>
+                element.replaceComplexRowsAndMutateNestedObject(),
+            );
+
+        await expect(page.locator(".complex-row").first()).toContainText(
+            "Row Replacement",
+        );
+        await expect(page.locator(".complex-cell").first()).toContainText(
+            "Cell Replacement: mutated",
+        );
+        await expect(page.locator(".complex-history").first()).toHaveText(
+            "replacement/true",
+        );
+    });
+
     test("should update global stats with nested metrics", async ({ page }) => {
         // Check initial engagement stats
         const initialDaily = await page

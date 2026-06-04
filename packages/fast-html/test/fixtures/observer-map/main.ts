@@ -1,5 +1,12 @@
-import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    Observable,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -475,6 +482,41 @@ class ObserverMapInternalTestElement extends FASTElement {
 
         suite.sections[1].rows[0].cells[0].meta.history[0].flags.reviewed = true;
         suite.sections[1].rows[0].cells[0].meta.status = "approved";
+    }
+
+    public async replaceComplexRowsAndMutateNestedObject() {
+        const section = this.complex.suites[0].sections[0];
+
+        deepMerge(section, {
+            rows: [
+                {
+                    label: "Row Replacement",
+                    cells: [
+                        {
+                            value: "Cell Replacement",
+                            meta: {
+                                status: "replaced",
+                                history: [
+                                    {
+                                        note: "replacement",
+                                        flags: {
+                                            reviewed: false,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            ],
+        });
+
+        await Updates.next();
+
+        section.rows[0].cells[0].meta.status = "mutated";
+        section.rows[0].cells[0].meta.history[0].flags.reviewed = true;
+
+        await Updates.next();
     }
 
     public defineB() {
