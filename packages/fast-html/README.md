@@ -268,7 +268,9 @@ When `properties` is omitted, all root properties are observed (backward compati
 
 When observer-map data is updated with `deepMerge`, array properties are replaced
 rather than updated in place. This avoids synchronous reentrant array work and
-allows repeat bindings to observe the new array reference.
+allows repeat bindings to observe the new array reference. Replacement arrays
+are processed through observerMap so nested item properties and subsequent array
+mutations remain observable.
 
 #### `attributeMap`
 

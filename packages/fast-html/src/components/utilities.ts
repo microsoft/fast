@@ -1,4 +1,4 @@
-import { Observable } from "@microsoft/fast-element/observable.js";
+import { type Accessor, Observable } from "@microsoft/fast-element/observable.js";
 import {
     defsPropertyName,
     fastContextMetaData,
@@ -181,7 +181,58 @@ const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
 /**
  * A map of arrays being observered
  */
-const observedArraysMap = new WeakMap<object, void>();
+const observedArraysMap = new WeakSet<object>();
+
+function defineObservableProperty(
+    targetObject: any,
+    key: string,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema,
+    target: any,
+    rootProperty: string,
+): void {
+    if (!Observable.getAccessors(targetObject).some(accessor => accessor.name === key)) {
+        const field = `_${key}`;
+        const callback = `${key}Changed`;
+        const accessor: Accessor = {
+            name: key,
+            getValue(source: any): any {
+                Observable.track(source, key);
+                return source[field];
+            },
+            setValue(source: any, value: any): void {
+                const oldValue = source[field];
+                const newValue = assignObservables(
+                    schema,
+                    rootSchema,
+                    value,
+                    target,
+                    rootProperty,
+                );
+
+                if (oldValue !== newValue) {
+                    source[field] = newValue;
+
+                    const changeCallback = source[callback];
+
+                    if (typeof changeCallback === "function") {
+                        changeCallback.call(source, oldValue, newValue);
+                    }
+
+                    Observable.notify(source, key);
+                }
+            },
+        };
+
+        Observable.defineProperty(targetObject, accessor);
+    }
+}
+
+function findArrayItemDef(schema: JSONSchema | JSONSchemaDefinition): string | null {
+    const items = (schema as JSONSchema).items;
+
+    return findDef(schema) ?? (items === undefined ? null : findDef(items));
+}
 
 /**
  * Get the index of the next matching tag
@@ -1228,38 +1279,51 @@ function assignObservablesToArray(
         ? proxiedData.map((item: any) => {
               const originalItem = Object.assign({}, item);
 
-              assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+              assignProxyToItemsInArray(
+                  item,
+                  originalItem,
+                  schema,
+                  rootSchema,
+                  target,
+                  rootProperty,
+              );
 
               return Object.assign(item, originalItem);
           })
         : proxiedData;
 
-    Observable.getNotifier(data).subscribe({
-        handleChange(subject, args) {
-            args.forEach((arg: any) => {
-                if (arg.addedCount > 0) {
-                    if (schemaProperties) {
-                        for (let i = arg.addedCount - 1; i >= 0; i--) {
-                            const item = subject[arg.index + i];
-                            const originalItem = Object.assign({}, item);
+    if (!observedArraysMap.has(data)) {
+        observedArraysMap.add(data);
 
-                            assignProxyToItemsInArray(
-                                item,
-                                originalItem,
-                                schema,
-                                rootSchema,
-                            );
+        Observable.getNotifier(data).subscribe({
+            handleChange(subject, args) {
+                args.forEach((arg: any) => {
+                    if (arg.addedCount > 0) {
+                        if (schemaProperties) {
+                            for (let i = arg.addedCount - 1; i >= 0; i--) {
+                                const item = subject[arg.index + i];
+                                const originalItem = Object.assign({}, item);
 
-                            Object.assign(item, originalItem);
+                                assignProxyToItemsInArray(
+                                    item,
+                                    originalItem,
+                                    schema,
+                                    rootSchema,
+                                    target,
+                                    rootProperty,
+                                );
+
+                                Object.assign(item, originalItem);
+                            }
                         }
-                    }
 
-                    // Notify observers of the target object's root property
-                    Observable.notify(target, rootProperty);
-                }
-            });
-        },
-    });
+                        // Notify observers of the target object's root property
+                        Observable.notify(target, rootProperty);
+                    }
+                });
+            },
+        });
+    }
 
     if (schemaProperties !== null) {
         return data;
@@ -1337,24 +1401,6 @@ export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | nul
 }
 
 /**
- * Subscribe to a notifier on data that is an observed array
- * @param data - The array being observed
- * @param updateArrayObservables - The function to call to update the array item
- */
-function assignSubscribeToObservableArray(
-    data: any,
-    updateArrayObservables: () => void,
-): void {
-    Observable.getNotifier(data).subscribe({
-        handleChange(subject, args) {
-            args.forEach((arg: any) => {
-                updateArrayObservables();
-            });
-        },
-    });
-}
-
-/**
  * Assign observables to data
  * @param schema - The schema
  * @param rootSchema - The root schema mapping to the root property
@@ -1375,7 +1421,7 @@ export function assignObservables(
 
     switch (dataType) {
         case "array": {
-            const context = findDef(schema);
+            const context = findArrayItemDef(schema);
 
             if (context) {
                 proxiedData = assignObservablesToArray(
@@ -1387,23 +1433,6 @@ export function assignObservables(
                     target,
                     rootProperty,
                 );
-
-                if (!observedArraysMap.has(proxiedData)) {
-                    observedArraysMap.set(
-                        proxiedData,
-                        assignSubscribeToObservableArray(proxiedData, () =>
-                            assignObservablesToArray(
-                                proxiedData,
-                                (rootSchema as JSONSchema)[defsPropertyName]?.[
-                                    context
-                                ] as JSONSchemaDefinition,
-                                rootSchema,
-                                target,
-                                rootProperty,
-                            ),
-                        ),
-                    );
-                }
             } else {
                 // Primitive array (items have no schema $ref): wrap in a proxy so that
                 // direct index assignments (e.g. arr[0] = value) use FAST's splice-based
@@ -1446,6 +1475,8 @@ function assignProxyToItemsInArray(
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
+    target: any,
+    rootProperty: string,
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1472,7 +1503,14 @@ function assignProxyToItemsInArray(
         );
 
         // Then make the property observable
-        Observable.defineProperty(proxiableItem, key);
+        defineObservableProperty(
+            proxiableItem,
+            key,
+            childSchema,
+            rootSchema,
+            target,
+            rootProperty,
+        );
     });
 }
 
@@ -1548,7 +1586,7 @@ function assignProxyToItemsInObject(
             addTargetToObject(proxiedData, target, rootProperty);
         }
     } else if (type === "array") {
-        const context = findDef((schema as JSONSchema).items);
+        const context = findArrayItemDef(schema);
 
         if (context) {
             const definition = (rootSchema as JSONSchema)[defsPropertyName]?.[context];
@@ -1561,19 +1599,6 @@ function assignProxyToItemsInObject(
                     target,
                     rootProperty,
                 );
-
-                if (!observedArraysMap.has(proxiedData)) {
-                    observedArraysMap.set(
-                        proxiedData,
-                        assignObservablesToArray(
-                            proxiedData,
-                            definition as JSONSchemaDefinition,
-                            rootSchema,
-                            target,
-                            rootProperty,
-                        ),
-                    );
-                }
             }
         }
     }
@@ -1657,7 +1682,7 @@ export function assignProxy(
                 }
 
                 obj[prop] = assignObservables(
-                    schema,
+                    childSchema ?? schema,
                     rootSchema,
                     value,
                     target,

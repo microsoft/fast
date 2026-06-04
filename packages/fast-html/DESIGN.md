@@ -122,7 +122,9 @@ When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all ro
 Observer-map-managed array updates replace the array reference when `deepMerge`
 receives a new array. This avoids mutating an existing observed array while it
 may be notifying subscribers and lets repeat bindings observe the new array
-reference.
+reference. Replaced arrays are wrapped with the schema for the assigned
+property, and array observer subscriptions are installed once per array so
+reprocessing does not duplicate accessors or notification work.
 
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
