@@ -13,3 +13,4 @@ export {
     type ObserverMapPathNode,
     TemplateElement,
 } from "./template.js";
+export type { ObserverMapUpdateScheduler } from "./utilities.js";

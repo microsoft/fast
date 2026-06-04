@@ -31,6 +31,7 @@ import {
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
+    type ObserverMapUpdateScheduler,
     parseEventArgs,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
@@ -82,6 +83,11 @@ export interface ObserverMapPathNode {
  * root properties participate in observer-map observation.
  */
 export interface ObserverMapConfig {
+    /**
+     * Schedules observer-map updates. When omitted, updates run synchronously.
+     */
+    updateScheduler?: ObserverMapUpdateScheduler;
+
     /**
      * Per-root-property observation control.
      * Keys are root property names discovered in the template schema.

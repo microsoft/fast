@@ -266,6 +266,20 @@ observerMap: {
 
 When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
+If observer-map data is updated from within existing observation callbacks, provide
+an `updateScheduler` to defer observer-map array updates and avoid synchronous
+reentrant array work:
+
+```typescript
+TemplateElement.options({
+    "user-profile": {
+        observerMap: {
+            updateScheduler: queueMicrotask,
+        },
+    },
+}).define({ name: "f-template" });
+```
+
 #### `attributeMap`
 
 When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"camelCase"` attribute name strategy.

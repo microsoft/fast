@@ -412,7 +412,9 @@ class DeepMergeTestElement extends FASTElement {
 
 TemplateElement.options({
     "deep-merge-test-element": {
-        observerMap: "all",
+        observerMap: {
+            updateScheduler: queueMicrotask,
+        },
     },
 })
     .config({

@@ -1,7 +1,11 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
 import type { JSONSchema, Schema } from "./schema.js";
 import type { ObserverMapConfig, ObserverMapPathEntry } from "./template.js";
-import { assignObservables, deepMerge } from "./utilities.js";
+import {
+    assignObservables,
+    deepMerge,
+    type ObserverMapUpdateScheduler,
+} from "./utilities.js";
 
 /**
  * Determines whether a config entry (or any of its descendants) enables observation.
@@ -120,11 +124,13 @@ export class ObserverMap {
     private schema: Schema;
     private classPrototype: any;
     private config: ObserverMapConfig | undefined;
+    private updateScheduler: ObserverMapUpdateScheduler | undefined;
 
     constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig) {
         this.classPrototype = classPrototype;
         this.schema = schema;
         this.config = config;
+        this.updateScheduler = config?.updateScheduler;
     }
 
     public defineProperties(): void {
@@ -201,6 +207,7 @@ export class ObserverMap {
             proxiedObject,
             target,
             rootProperty,
+            this.updateScheduler,
         );
 
         return proxiedObject;
@@ -217,7 +224,7 @@ export class ObserverMap {
         propertyName: string,
         existingChangedMethod?: (prev: any, next: any) => void,
     ): ((prev: any, next: any) => void) => {
-        const getAndAssignObservablesAlias = this.getAndAssignObservables;
+        const getAndAssignObservablesAlias = this.getAndAssignObservables.bind(this);
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
