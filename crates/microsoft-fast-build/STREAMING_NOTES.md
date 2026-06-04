@@ -35,7 +35,10 @@ chunk directly to stdout.
   DOM immediately.
 - Chunk boundaries are an implementation detail except for the safety rules
   above. Consumers should not depend on a specific number of chunks.
-- False `<f-when>` branches, empty repeats, and missing or empty content
-  bindings can remove chunks entirely.
+- In non-hydrated stream scopes, false `<f-when>` branches, empty repeats,
+  and missing or empty content bindings can remove chunks entirely. When
+  hydration is active, the renderer still emits the same hydration marker
+  comments as the equivalent non-streamed render, even when the rendered value
+  or directive body is empty.
 - No additional template-render cache is introduced for streaming; the renderer
   reuses the locator/template map and renders each encountered custom element.
