@@ -571,9 +571,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
-// Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public
@@ -1177,16 +1175,15 @@ export const TwoWaySettings: Readonly<{
     configure(settings: TwoWaySettings): void;
 }>;
 
-// Warning: (ae-forgotten-export) The symbol "TypeDefinition" needs to be exported by the entry point index.d.ts
-// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
+export interface TypeDefinition {
+    type: Function;
+}
+
+// @public
 export interface TypeRegistry<TDefinition extends TypeDefinition> {
-    // (undocumented)
     getByType(key: Function): TDefinition | undefined;
-    // (undocumented)
     getForInstance(object: any): TDefinition | undefined;
-    // (undocumented)
     register(definition: TDefinition): boolean;
 }
 
