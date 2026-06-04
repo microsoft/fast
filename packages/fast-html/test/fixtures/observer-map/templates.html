@@ -17,8 +17,8 @@
                 Render: {{stats.metrics.performance.rendertime}}s
             </div>
             <div class="controls">
-                <button @click="{updateStats()}">Update Stats</button>
-                <button @click="{addNewUser()}">Add New User</button>
+                <button type="button" @click="{updateStats()}">Update Stats</button>
+                <button type="button" @click="{addNewUser()}">Add New User</button>
             </div>
         </div>
 
@@ -60,14 +60,14 @@
                     </div>
 
                     <div class="controls">
-                        <button @click="{selectUser(user.id)}">Select User</button>
-                        <button @click="{updateUserAge(user.id)}">Age +1</button>
-                        <button @click="{toggleUserTheme(user.id)}">Toggle Theme</button>
-                        <button @click="{updateUserLocation(user.id)}">Change Location</button>
-                        <button @click="{updateNotificationSettings(user.id)}">Update Notifications</button>
-                        <button @click="{addNotificationCategory(user.id)}">Add Category</button>
-                        <button @click="{removeNotificationCategory(user.id)}">Remove Tech Category</button>
-                        <button @click="{removeUser(user.id)}">Remove User</button>
+                        <button type="button" @click="{selectUser(user.id)}">Select User</button>
+                        <button type="button" @click="{updateUserAge(user.id)}">Age +1</button>
+                        <button type="button" @click="{toggleUserTheme(user.id)}">Toggle Theme</button>
+                        <button type="button" @click="{updateUserLocation(user.id)}">Change Location</button>
+                        <button type="button" @click="{updateNotificationSettings(user.id)}">Update Notifications</button>
+                        <button type="button" @click="{addNotificationCategory(user.id)}">Add Category</button>
+                        <button type="button" @click="{removeNotificationCategory(user.id)}">Remove Tech Category</button>
+                        <button type="button" @click="{removeUser(user.id)}">Remove User</button>
                     </div>
 
                     <div>
@@ -92,12 +92,12 @@
                                     </f-repeat>
                                 </div>
                                 <div class="controls">
-                                    <button @click="{incrementPostLikes(post.id)}">Like Post</button>
+                                    <button type="button" @click="{incrementPostLikes(post.id)}">Like Post</button>
                                 </div>
                             </div>
                         </f-repeat>
                         <div class="controls">
-                            <button @click="{addPostToUser(user.id)}">Add New Post</button>
+                            <button type="button" @click="{addPostToUser(user.id)}">Add New Post</button>
                         </div>
                     </div>
                 </div>
@@ -122,14 +122,14 @@
         <f-when value="{{a}}">
             <span class="nested-define">{{a.b.c}}</span>
         </f-when>
-        <button @click="{defineB()}">Define B</button>
-        <button @click="{updateC()}">Update C</button>
+        <button type="button" @click="{defineB()}">Define B</button>
+        <button type="button" @click="{updateC()}">Update C</button>
         <br>
         <f-when value="{{x}}">
             <span class="nested-define-2">{{x.y.z}}</span>
         </f-when>
-        <button @click="{defineY()}">Define Y</button>
-        <button @click="{updateZ()}">Update Z</button>
+        <button type="button" @click="{defineY()}">Define Y</button>
+        <button type="button" @click="{updateZ()}">Update Z</button>
         <div>
             <f-repeat value="{{group in groups}}">
                 <f-repeat value="{{item in group.items}}">
@@ -142,21 +142,55 @@
                 </f-repeat>
             </f-repeat>
         </div>
-        <button @click="{removeAllItems()}">Remove all items</button>
-        <button @click="{addAnItem()}">Add an item</button>
-        <button @click="{updateAnItem()}">Update an item</button>
-        <button @click="{removeGroup()}">Remove groups</button>
-        <button @click="{addGroup()}">Add group</button>
-        <button @click="{updateActionLabel()}">Update an action label</button>
+        <button type="button" @click="{removeAllItems()}">Remove all items</button>
+        <button type="button" @click="{addAnItem()}">Add an item</button>
+        <button type="button" @click="{updateAnItem()}">Update an item</button>
+        <button type="button" @click="{removeGroup()}">Remove groups</button>
+        <button type="button" @click="{addGroup()}">Add group</button>
+        <button type="button" @click="{updateActionLabel()}">Update an action label</button>
+        <div class="complex-owner">
+            Owner: {{complex.owner.profile.name}} |
+            Timezone: {{complex.owner.profile.settings.timezone}}
+        </div>
+        <div class="complex-tree">
+            <f-repeat value="{{suite in complex.suites}}">
+                <section class="complex-suite">
+                    <h4>{{suite.name}}</h4>
+                    <f-repeat value="{{section in suite.sections}}">
+                        <div class="complex-section">
+                            <h5>{{section.title}}</h5>
+                            <f-repeat value="{{row in section.rows}}">
+                                <div class="complex-row">
+                                    <strong>{{row.label}}</strong>
+                                    <f-repeat value="{{cell in row.cells}}">
+                                        <span class="complex-cell">
+                                            {{cell.value}}: {{cell.meta.status}}
+                                            <f-repeat value="{{history in cell.meta.history}}">
+                                                <em class="complex-history">
+                                                    {{history.note}}/{{history.flags.reviewed}}
+                                                </em>
+                                            </f-repeat>
+                                        </span>
+                                    </f-repeat>
+                                </div>
+                            </f-repeat>
+                        </div>
+                    </f-repeat>
+                </section>
+            </f-repeat>
+        </div>
+        <button type="button" @click="{updateComplexObjectFields()}">Update complex object fields</button>
+        <button type="button" @click="{addComplexNestedItems()}">Add complex nested items</button>
+        <button type="button" @click="{addComplexSectionAndMutate()}">Add complex section</button>
     </template>
 </f-template>
 <f-template name="observer-map-with-observables-test-element">
     <template>
         Level 3 Value: {{value1}}
-        <button @click="{updateValue1()}">Update Value1</button>
+        <button type="button" @click="{updateValue1()}">Update Value1</button>
         <br>
         Level 3 Value Observable: {{value2}}
-        <button @click="{updateValue2()}">Update Value2</button>
+        <button type="button" @click="{updateValue2()}">Update Value2</button>
     </template>
 </f-template>
 <f-template name="observer-map-simple-array-test-element">
@@ -166,7 +200,7 @@
                 <li class="simple-item">{{item}}</li>
             </f-repeat>
         </ul>
-        <button @click="{updateFirstItem()}">Update First Item</button>
-        <button @click="{updateSecondItem()}">Update Second Item</button>
+        <button type="button" @click="{updateFirstItem()}">Update First Item</button>
+        <button type="button" @click="{updateSecondItem()}">Update Second Item</button>
     </template>
 </f-template>
