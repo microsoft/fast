@@ -118,7 +118,9 @@ The DOM after hydration should look like this:
 
 ### Fast Element Registry
 
-The `fastElementRegistry` serves as the central coordination point between the two packages:
+The `fastElementRegistry` serves as the central coordination point between the
+two packages and is available to consumers from
+`@microsoft/fast-element/registry.js`:
 
 - Stores partial element definitions created by `define()`
 - Provides lookup mechanism via `register()` for template attachment

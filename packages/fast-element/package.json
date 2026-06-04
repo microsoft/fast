@@ -35,6 +35,11 @@
       "test": "./src/components/fast-element.ts",
       "default": "./dist/esm/components/fast-element.js"
     },
+    "./registry.js": {
+      "types": "./dist/dts/registry.d.ts",
+      "test": "./src/registry.ts",
+      "default": "./dist/esm/registry.js"
+    },
     "./declarative.js": {
       "types": "./dist/dts/declarative/index.d.ts",
       "test": "./src/declarative/index.ts",

@@ -38,6 +38,7 @@ export type {
     FASTElementTemplateResolver,
     PartialFASTElementDefinition,
     ShadowRootOptions,
+    TypeDefinition,
     TypeRegistry,
 } from "./components/fast-definitions.js";
 export {
