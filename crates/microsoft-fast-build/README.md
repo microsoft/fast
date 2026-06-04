@@ -49,6 +49,36 @@ let html = render("<p>{{name}}</p>", &state)?;
 
 Both functions return `Result<String, RenderError>`. See [Error Handling](#error-handling).
 
+### Render simulated stream chunks
+
+Streaming APIs return precomputed HTML chunks in memory. Joining the chunks
+matches the equivalent non-streamed render, while chunk boundaries are chosen
+around content bindings and custom elements.
+
+```rust
+use microsoft_fast_build::{render_template, render_template_stream};
+
+let chunks = render_template_stream(
+    "<p>{{message}}</p>",
+    r#"{"message": "Hello"}"#,
+    None,
+)?;
+
+let html = render_template(
+    "<p>{{message}}</p>",
+    r#"{"message": "Hello"}"#,
+    None,
+)?;
+
+assert_eq!(chunks, vec!["<p>", "Hello", "</p>"]);
+assert_eq!(chunks.join(""), html);
+```
+
+Custom element streaming uses the `*_stream_with_locator` and
+`render_entry_*_stream_with_locator` APIs. For entry HTML, a custom element's
+opening tag chunk includes the complete Declarative Shadow DOM template; light
+DOM content follows in later chunks.
+
 ---
 
 ## Template Syntax

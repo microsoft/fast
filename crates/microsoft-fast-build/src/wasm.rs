@@ -1,6 +1,7 @@
 use crate::config::{AttributeNameStrategy, RenderConfig};
 use crate::{
     json, render_entry_template_with_locator, render_entry_template_with_locator_without_state,
+    render_entry_template_stream_with_locator, render_entry_template_stream_with_locator_without_state,
     render_template, render_template_with_locator, render_template_with_locator_without_state,
     render_template_without_state, Locator,
 };
@@ -76,6 +77,27 @@ pub fn render_entry_with_templates(
     .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
+/// Render the top-level **entry HTML** as a JSON array string of stream chunks.
+/// Omitted state is treated as an empty object. `templates_json` may be `{}`.
+#[wasm_bindgen]
+pub fn render_entry_stream_with_templates(
+    entry: &str,
+    templates_json: &str,
+    state: Option<String>,
+    attribute_name_strategy: Option<String>,
+) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let locator = Locator::from_template_definitions(templates);
+    let config = build_config(attribute_name_strategy.as_deref())?;
+    let chunks = match state {
+        Some(state) => render_entry_template_stream_with_locator(entry, &state, &locator, config.as_ref()),
+        None => render_entry_template_stream_with_locator_without_state(entry, &locator, config.as_ref()),
+    }
+    .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+    Ok(json_string_array(&chunks))
+}
+
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns a JSON array of template metadata objects,
 /// one per `<f-template>` element found. `name` is `null` when the element has
@@ -128,6 +150,14 @@ fn escape_json_str(s: &str) -> String {
         }
     }
     out
+}
+
+fn json_string_array(items: &[String]) -> String {
+    let mut parts = Vec::with_capacity(items.len());
+    for item in items {
+        parts.push(format!("\"{}\"", escape_json_str(item)));
+    }
+    format!("[{}]", parts.join(","))
 }
 
 fn parse_templates_map(

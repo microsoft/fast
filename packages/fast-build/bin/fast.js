@@ -7,6 +7,7 @@ const path = require("path");
 
 const WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
 const DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
+const VALUELESS_CLI_FLAGS = new Set(["stream"]);
 const ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
@@ -16,7 +17,8 @@ const ALLOWED_CONFIG_KEYS = new Set([
 ]);
 
 /**
- * Parse CLI arguments of the form --key="value" or --key=value.
+ * Parse CLI arguments of the form --key="value", --key=value, or supported
+ * valueless flags like --stream.
  * @param {string[]} argv
  * @returns {Record<string, string>}
  */
@@ -26,9 +28,40 @@ function parseArgs(argv) {
         const match = arg.match(/^--([^=]+)=(.*)$/s);
         if (match) {
             args[match[1]] = match[2].replace(/^"|"$/g, "");
+            continue;
+        }
+
+        const flag = arg.match(/^--([^=]+)$/s);
+        if (flag && VALUELESS_CLI_FLAGS.has(flag[1])) {
+            args[flag[1]] = "true";
         }
     }
     return args;
+}
+
+/**
+ * Resolve a CLI-only boolean flag.
+ * @param {Record<string, string>} args - Parsed CLI arguments.
+ * @param {string} key - The option key.
+ * @returns {boolean}
+ */
+function resolveBooleanFlag(args, key) {
+    if (!Object.prototype.hasOwnProperty.call(args, key)) {
+        return false;
+    }
+
+    const value = args[key].trim().toLowerCase();
+    if (value === "true" || value === "") {
+        return true;
+    }
+    if (value === "false") {
+        return false;
+    }
+
+    process.stderr.write(
+        `Error: Invalid --${key} value "${args[key]}". Expected "true" or "false".\n`
+    );
+    process.exit(1);
 }
 
 /**
@@ -287,6 +320,7 @@ async function runBuild(args) {
         Object.prototype.hasOwnProperty.call(args, "state") ||
         Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
+    const stream = resolveBooleanFlag(args, "stream");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(
@@ -301,9 +335,11 @@ async function runBuild(args) {
     // Resolve template files
     const templatesMap = {};
     if (!templatesArg) {
-        process.stderr.write(
-            "Warning: --templates was not provided. No custom element templates will be loaded.\n"
-        );
+        if (!stream) {
+            process.stderr.write(
+                "Warning: --templates was not provided. No custom element templates will be loaded.\n"
+            );
+        }
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
@@ -346,6 +382,48 @@ async function runBuild(args) {
     }
 
     // Render
+    if (stream) {
+        if (typeof wasm.render_entry_stream_with_templates !== "function") {
+            process.stderr.write(
+                "Error: Streaming requires render_entry_stream_with_templates to be exported by the WASM module.\n"
+            );
+            process.exit(1);
+        }
+
+        const renderedChunks = wasm.render_entry_stream_with_templates(
+            entryContent,
+            JSON.stringify(templatesMap),
+            stateContent,
+            attributeNameStrategy || "",
+        );
+
+        /** @type {unknown} */
+        let chunks;
+        try {
+            chunks = JSON.parse(renderedChunks);
+        } catch (e) {
+            process.stderr.write(
+                `Error: Streaming renderer returned invalid JSON: ${e.message}\n`
+            );
+            process.exit(1);
+        }
+
+        if (
+            !Array.isArray(chunks) ||
+            chunks.some((chunk) => typeof chunk !== "string")
+        ) {
+            process.stderr.write(
+                "Error: Streaming renderer must return a JSON array of strings.\n"
+            );
+            process.exit(1);
+        }
+
+        for (const chunk of chunks) {
+            process.stdout.write(chunk);
+        }
+        return;
+    }
+
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
         rendered = wasm.render_entry_with_templates(
@@ -375,6 +453,8 @@ async function main() {
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
             '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
             '                         an empty state object.\n' +
+            '  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n' +
+            '                         of writing an output file.\n' +
             '  --attribute-name-strategy="camelCase"\n' +
             '                         Strategy for mapping attribute names to property names.\n' +
             '                         "camelCase" (default) or "none".\n' +
