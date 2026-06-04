@@ -9,13 +9,18 @@ const os = require("node:os");
 
 const FAST_BIN = path.resolve(__dirname, "../bin/fast.js");
 const WASM = require("../wasm/microsoft_fast_build.js");
+const WASM_MODULE = path.resolve(__dirname, "../wasm/microsoft_fast_build.js");
 
 function tmpDir() {
     return fs.mkdtempSync(path.join(os.tmpdir(), "fast-build-test-"));
 }
 
 function run(args, cwd) {
-    return execFileSync(process.execPath, [FAST_BIN, "build", ...args], {
+    return runNode(args, cwd);
+}
+
+function runNode(args, cwd, nodeArgs = []) {
+    return execFileSync(process.execPath, [...nodeArgs, FAST_BIN, "build", ...args], {
         cwd,
         encoding: "utf8",
         stdio: ["pipe", "pipe", "pipe"],
@@ -37,6 +42,83 @@ function runWithStderr(args, cwd) {
             exitCode: e.status,
         };
     }
+}
+
+function writeWasmStub(dir) {
+    const preload = path.join(dir, "wasm-stub.cjs");
+    const record = path.join(dir, "wasm-calls.json");
+
+    fs.writeFileSync(
+        preload,
+        `
+const fs = require("node:fs");
+const Module = require("node:module");
+const wasmPath = ${JSON.stringify(WASM_MODULE)};
+const recordPath = ${JSON.stringify(record)};
+const calls = [];
+
+const stub = {
+    parse_f_templates(html) {
+        calls.push({ name: "parse_f_templates", html });
+        return JSON.stringify([
+            {
+                name: "my-el",
+                content: "<span>{{text}}</span>",
+                shadowrootAttributes: [{ name: "shadowrootmode", value: "open" }],
+            },
+        ]);
+    },
+    render(entry, state) {
+        calls.push({ name: "render", entry, state });
+        return "<h1>Non-stream</h1>";
+    },
+    render_entry_with_templates(entry, templatesJson, state, attributeNameStrategy, stream) {
+        calls.push({
+            name: "render_entry_with_templates",
+            entry,
+            templatesJson,
+            state,
+            attributeNameStrategy,
+            stream,
+        });
+        if (!stream) {
+            return "<my-el>Non-stream</my-el>";
+        }
+        let title = "";
+        try {
+            title = JSON.parse(state || "{}").title || "";
+        } catch {}
+        if (entry.includes("my-el")) {
+            return JSON.stringify(["<my-el>", title, "</my-el>"]);
+        }
+        return JSON.stringify(["<h1>", title, "</h1>"]);
+    },
+};
+
+process.on("exit", () => {
+    fs.writeFileSync(recordPath, JSON.stringify(calls));
+});
+
+const originalLoad = Module._load;
+Module._load = function (request, parent, isMain) {
+    const resolved = Module._resolveFilename(request, parent, isMain);
+    if (resolved === wasmPath) {
+        return stub;
+    }
+    return originalLoad.apply(this, arguments);
+};
+`,
+    );
+
+    return { preload, record };
+}
+
+function runWithStubbedWasm(args, cwd) {
+    const { preload, record } = writeWasmStub(cwd);
+    const stdout = runNode(args, cwd, ["--require", preload]);
+    const calls = JSON.parse(fs.readFileSync(record, "utf8"));
+
+    return { stdout, calls };
 }
 
 function writeFixture(dir, { entry, state, output, config, configName }) {
@@ -177,6 +259,20 @@ describe("config validation", () => {
         assert.equal(result.exitCode, 1);
         assert.ok(result.stderr.includes("Failed to parse"));
     });
+
+    it("keeps stream CLI-only by rejecting stream in config", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                stream: "true",
+            },
+        });
+        const result = runWithStderr([], dir);
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes('Unknown key "stream"'));
+    });
 });
 
 describe("backward compatibility", () => {
@@ -205,6 +301,92 @@ describe("backward compatibility", () => {
         run(["--state=state.json", "--output=out.html"], dir);
         const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
         assert.ok(output.includes("Hello"));
+    });
+
+    it("writes output and prints Built when --stream=false", () => {
+        writeFixture(dir, {});
+        const stdout = run(
+            [
+                "--entry=entry.html",
+                "--state=state.json",
+                "--output=out.html",
+                "--stream=false",
+            ],
+            dir,
+        );
+        const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+
+        assert.equal(stdout, "Built: out.html\n");
+        assert.ok(output.includes("Hello"));
+    });
+});
+
+describe("stream output", () => {
+    /** @type {string} */
+    let dir;
+
+    beforeEach(() => {
+        dir = tmpDir();
+    });
+
+    afterEach(() => {
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("treats valueless --stream as true and streams without templates", () => {
+        writeFixture(dir, {});
+        const { stdout, calls } = runWithStubbedWasm(
+            ["--stream", "--entry=entry.html", "--state=state.json", "--output=out.html"],
+            dir,
+        );
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+
+        assert.equal(stdout, "<h1>Hello</h1>");
+        assert.ok(!stdout.includes("Built:"));
+        assert.ok(!fs.existsSync(path.join(dir, "out.html")));
+        assert.ok(renderCall);
+        assert.equal(renderCall.templatesJson, "{}");
+        assert.equal(renderCall.stream, true);
+        assert.ok(!calls.some(call => call.name === "render"));
+    });
+
+    it("streams with templates through render_entry_with_templates stream flag", () => {
+        fs.writeFileSync(
+            path.join(dir, "entry.html"),
+            '<my-el text="{{title}}"></my-el>',
+        );
+        fs.writeFileSync(path.join(dir, "state.json"), '{"title":"Hello"}');
+        fs.writeFileSync(
+            path.join(dir, "templates.html"),
+            '<f-template name="my-el"><span>{{text}}</span></f-template>',
+        );
+
+        const { stdout, calls } = runWithStubbedWasm(
+            [
+                "--stream",
+                "--entry=entry.html",
+                "--state=state.json",
+                "--templates=templates.html",
+                "--attribute-name-strategy=none",
+            ],
+            dir,
+        );
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+        assert.ok(renderCall);
+        const templates = JSON.parse(renderCall.templatesJson);
+
+        assert.equal(stdout, "<my-el>Hello</my-el>");
+        assert.equal(templates["my-el"].content, "<span>{{text}}</span>");
+        assert.deepEqual(templates["my-el"].shadowrootAttributes, [
+            { name: "shadowrootmode", value: "open" },
+        ]);
+        assert.equal(renderCall.attributeNameStrategy, "none");
+        assert.equal(renderCall.stream, true);
+        assert.ok(calls.some(call => call.name === "parse_f_templates"));
     });
 });
 
