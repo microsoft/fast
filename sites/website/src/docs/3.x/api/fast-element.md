@@ -1287,6 +1287,28 @@ The settings required to enable two-way binding.
 </td></tr>
 <tr><td>
 
+[TypeDefinition](../fast-element.typedefinition/)
+
+
+</td><td>
+
+A type that can be registered with a `TypeRegistry`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[TypeRegistry](../fast-element.typeregistry/)
+
+
+</td><td>
+
+A registry that stores definitions by type.
+
+
+</td></tr>
+<tr><td>
+
 [UpdateQueue](../fast-element.updatequeue/)
 
 
@@ -1517,6 +1539,17 @@ The FAST messaging API for warnings and errors.
 </td><td>
 
 A minimal base class for FASTElements that also provides static helpers for working with FASTElements.
+
+
+</td></tr>
+<tr><td>
+
+[fastElementRegistry](../fast-element.fastelementregistry/)
+
+
+</td><td>
+
+The FAST custom element registry.
 
 
 </td></tr>

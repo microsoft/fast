@@ -1,6 +1,10 @@
 import { type Constructable, isFunction, isString } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import { createTypeRegistry, type TypeRegistry } from "../platform.js";
+import {
+    createTypeRegistry,
+    type TypeDefinition,
+    type TypeRegistry,
+} from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
@@ -11,13 +15,16 @@ const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
 
 /**
- * The FAST custom element registry
- * @internal
+ * The FAST custom element registry.
+ * @remarks
+ * This registry stores FAST element definitions by constructor so consumers can
+ * look up the `FASTElementDefinition` associated with an element type or instance.
+ * @public
  */
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition> =
     createTypeRegistry<FASTElementDefinition>();
 
-export type { TypeRegistry };
+export type { TypeDefinition, TypeRegistry };
 
 /**
  * Shadow root initialization options.
