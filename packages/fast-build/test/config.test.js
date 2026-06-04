@@ -10,6 +10,7 @@ const os = require("node:os");
 const FAST_BIN = path.resolve(__dirname, "../bin/fast.js");
 const WASM = require("../wasm/microsoft_fast_build.js");
 const WASM_MODULE = path.resolve(__dirname, "../wasm/microsoft_fast_build.js");
+const WASM_STUB = path.resolve(__dirname, "wasm-stub.cjs");
 
 function tmpDir() {
     return fs.mkdtempSync(path.join(os.tmpdir(), "fast-build-test-"));
@@ -19,10 +20,11 @@ function run(args, cwd) {
     return runNode(args, cwd);
 }
 
-function runNode(args, cwd, nodeArgs = []) {
+function runNode(args, cwd, nodeArgs = [], env = process.env) {
     return execFileSync(process.execPath, [...nodeArgs, FAST_BIN, "build", ...args], {
         cwd,
         encoding: "utf8",
+        env,
         stdio: ["pipe", "pipe", "pipe"],
     });
 }
@@ -45,77 +47,22 @@ function runWithStderr(args, cwd) {
 }
 
 function writeWasmStub(dir) {
-    const preload = path.join(dir, "wasm-stub.cjs");
     const record = path.join(dir, "wasm-calls.json");
 
-    fs.writeFileSync(
-        preload,
-        `
-const fs = require("node:fs");
-const Module = require("node:module");
-const wasmPath = ${JSON.stringify(WASM_MODULE)};
-const recordPath = ${JSON.stringify(record)};
-const calls = [];
-
-const stub = {
-    parse_f_templates(html) {
-        calls.push({ name: "parse_f_templates", html });
-        return JSON.stringify([
-            {
-                name: "my-el",
-                content: "<span>{{text}}</span>",
-                shadowrootAttributes: [{ name: "shadowrootmode", value: "open" }],
-            },
-        ]);
-    },
-    render(entry, state) {
-        calls.push({ name: "render", entry, state });
-        return "<h1>Non-stream</h1>";
-    },
-    render_entry_with_templates(entry, templatesJson, state, attributeNameStrategy, stream) {
-        calls.push({
-            name: "render_entry_with_templates",
-            entry,
-            templatesJson,
-            state,
-            attributeNameStrategy,
-            stream,
-        });
-        if (!stream) {
-            return "<my-el>Non-stream</my-el>";
-        }
-        let title = "";
-        try {
-            title = JSON.parse(state || "{}").title || "";
-        } catch {}
-        if (entry.includes("my-el")) {
-            return JSON.stringify(["<my-el>", title, "</my-el>"]);
-        }
-        return JSON.stringify(["<h1>", title, "</h1>"]);
-    },
-};
-
-process.on("exit", () => {
-    fs.writeFileSync(recordPath, JSON.stringify(calls));
-});
-
-const originalLoad = Module._load;
-Module._load = function (request, parent, isMain) {
-    const resolved = Module._resolveFilename(request, parent, isMain);
-    if (resolved === wasmPath) {
-        return stub;
-    }
-    return originalLoad.apply(this, arguments);
-};
-`,
-    );
-
-    return { preload, record };
+    return {
+        preload: WASM_STUB,
+        record,
+        env: {
+            ...process.env,
+            FAST_BUILD_WASM_STUB_MODULE: WASM_MODULE,
+            FAST_BUILD_WASM_STUB_RECORD: record,
+        },
+    };
 }
 
 function runWithStubbedWasm(args, cwd) {
-    const { preload, record } = writeWasmStub(cwd);
-    const stdout = runNode(args, cwd, ["--require", preload]);
+    const { preload, record, env } = writeWasmStub(cwd);
+    const stdout = runNode(args, cwd, ["--require", preload], env);
     const calls = JSON.parse(fs.readFileSync(record, "utf8"));
 
     return { stdout, calls };
