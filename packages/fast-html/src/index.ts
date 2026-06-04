@@ -9,6 +9,7 @@ export {
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
+    type ObserverMapUpdateScheduler,
     RenderableFASTElement,
     TemplateElement,
 } from "./components/index.js";

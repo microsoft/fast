@@ -27,6 +27,7 @@ export interface ObserverMapConfig {
     properties?: {
         [rootProperty: string]: ObserverMapPathEntry;
     };
+    updateScheduler?: ObserverMapUpdateScheduler;
 }
 
 // @public
@@ -39,6 +40,9 @@ export interface ObserverMapPathNode {
     // (undocumented)
     [propertyName: string]: ObserverMapPathEntry | undefined;
 }
+
+// @public
+export type ObserverMapUpdateScheduler = (update: () => void) => void;
 
 // @public
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;

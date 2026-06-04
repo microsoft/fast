@@ -292,4 +292,22 @@ test.describe("Deep Merge Test Fixture", () => {
         // Should still work correctly
         await expect(firstItem).toContainText("Views: 300");
     });
+
+    test("should defer observerMap deepMerge array changes queued during notification", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testDeepMergeObserverMapReentry());
+
+        expect(result.maxDepth).toBe(1);
+        expect(result.firstCalls).toBe(2);
+        expect(result.itemCount).toBe(1);
+    });
 });

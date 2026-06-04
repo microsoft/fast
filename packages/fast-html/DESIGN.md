@@ -119,6 +119,11 @@ Each path entry can be:
 
 When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
+`ObserverMapConfig.updateScheduler` optionally schedules observer-map updates
+for managed data. The default scheduler runs updates synchronously. Consumers can
+provide `queueMicrotask`, `requestAnimationFrame`, or another scheduler to defer
+array updates caused by `deepMerge` while preserving array identity.
+
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
 2. `true`/`false` booleans apply to the entire subtree.
