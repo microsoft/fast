@@ -84,10 +84,11 @@ Produces `output.html`:
 
 ### Streaming output
 
-Pass `--stream`, `--stream=true`, or `--stream=false` to control stdout
-streaming. When streaming is enabled, the CLI writes raw rendered HTML chunks to
-stdout, does not write the `--output` file, and does not print the normal
-`Built: ...` message.
+Pass `--stream`, `--stream=true`, or `--stream=false`, or set
+`"stream": true` in `fast-build.config.json`, to control stdout streaming. When
+streaming is enabled, the CLI writes raw rendered HTML chunks to stdout, does
+not write the `--output` file, and does not print the normal `Built: ...`
+message.
 
 ```shell
 fast build --entry=index.html --state=state.json --stream
@@ -191,7 +192,7 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error. If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. `stream` is intentionally CLI-only and is not accepted in config files.
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, and `stream`. Unknown keys produce an error. Values must be strings except `stream`, which must be a JSON boolean (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values, including `--stream=false` overriding `"stream": true`.
 
 ## Template syntax
 

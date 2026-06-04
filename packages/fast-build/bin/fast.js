@@ -14,7 +14,10 @@ const ALLOWED_CONFIG_KEYS = new Set([
     "output",
     "templates",
     "attribute-name-strategy",
+    "stream",
 ]);
+
+/** @typedef {Record<string, string | boolean>} FastBuildConfig */
 
 /**
  * Parse CLI arguments of the form --key="value", --key=value, or supported
@@ -40,28 +43,34 @@ function parseArgs(argv) {
 }
 
 /**
- * Resolve a CLI-only boolean flag.
+ * Resolve a boolean option, preferring CLI args over config values.
+ * CLI values accept true, false, or an empty valueless flag.
  * @param {Record<string, string>} args - Parsed CLI arguments.
+ * @param {FastBuildConfig} config - Parsed config file values.
  * @param {string} key - The option key.
  * @returns {boolean}
  */
-function resolveBooleanFlag(args, key) {
-    if (!Object.prototype.hasOwnProperty.call(args, key)) {
-        return false;
+function resolveBooleanOption(args, config, key) {
+    if (Object.prototype.hasOwnProperty.call(args, key)) {
+        const value = args[key].trim().toLowerCase();
+        if (value === "true" || value === "") {
+            return true;
+        }
+        if (value === "false") {
+            return false;
+        }
+
+        process.stderr.write(
+            `Error: Invalid --${key} value "${args[key]}". Expected "true" or "false".\n`
+        );
+        process.exit(1);
     }
 
-    const value = args[key].trim().toLowerCase();
-    if (value === "true" || value === "") {
-        return true;
-    }
-    if (value === "false") {
-        return false;
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        return config[key] === true;
     }
 
-    process.stderr.write(
-        `Error: Invalid --${key} value "${args[key]}". Expected "true" or "false".\n`
-    );
-    process.exit(1);
+    return false;
 }
 
 /**
@@ -75,7 +84,7 @@ function resolveBooleanFlag(args, key) {
  * file's directory so that the caller can use them directly.
  *
  * @param {string | undefined} configPath - Explicit path from --config, if any.
- * @returns {{ config: Record<string, string>, configDir: string | null }}
+ * @returns {{ config: FastBuildConfig, configDir: string | null }}
  */
 function loadConfig(configPath) {
     /** @type {string} */
@@ -125,6 +134,16 @@ function loadConfig(configPath) {
             );
             process.exit(1);
         }
+        if (key === "stream") {
+            if (typeof raw[key] !== "boolean") {
+                process.stderr.write(
+                    `Error: Value for "${key}" in config file "${resolvedPath}" must be a boolean.\n`
+                );
+                process.exit(1);
+            }
+            continue;
+        }
+
         if (typeof raw[key] !== "string") {
             process.stderr.write(
                 `Error: Value for "${key}" in config file "${resolvedPath}" must be a string.\n`
@@ -143,7 +162,7 @@ function loadConfig(configPath) {
  * CLI-derived paths are resolved relative to CWD (the default behaviour).
  *
  * @param {Record<string, string>} args - Parsed CLI arguments.
- * @param {Record<string, string>} config - Parsed config file values.
+ * @param {FastBuildConfig} config - Parsed config file values.
  * @param {string | null} configDir - Directory of the config file, or null.
  * @param {string} key - The option key.
  * @param {string} [defaultValue] - Fallback when neither source provides a value.
@@ -155,6 +174,9 @@ function resolveOption(args, config, configDir, key, defaultValue) {
     }
     if (Object.prototype.hasOwnProperty.call(config, key)) {
         const value = config[key];
+        if (typeof value !== "string") {
+            return defaultValue;
+        }
         const isFilePath = key === "entry" || key === "state" || key === "output" || key === "templates";
         if (isFilePath && configDir !== null) {
             return path.resolve(configDir, value);
@@ -320,7 +342,7 @@ async function runBuild(args) {
         Object.prototype.hasOwnProperty.call(args, "state") ||
         Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
-    const stream = resolveBooleanFlag(args, "stream");
+    const stream = resolveBooleanOption(args, config, "stream");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(

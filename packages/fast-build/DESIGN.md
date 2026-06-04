@@ -26,6 +26,7 @@ fast build [options]
         │       └─ default CWD lookup         ← silent fallback if missing
         │
         ├─ resolveOption(args, config, …)     ← CLI args override config values
+        ├─ resolveBooleanOption(args, config, "stream")
         │
         ├─ wasm = require(WASM_MODULE)         ← load WASM first
         │
@@ -89,7 +90,7 @@ CLI-provided paths are resolved relative to the current working directory (the d
 
 ### Validation
 
-The config file must be a JSON object. Each key must be one of the allowed option names (`entry`, `state`, `output`, `templates`, `attribute-name-strategy`) and each value must be a string. Unknown keys and non-string values produce an error referencing the config file path. `stream` is intentionally CLI-only and is rejected in config files.
+The config file must be a JSON object. Each key must be one of the allowed option names (`entry`, `state`, `output`, `templates`, `attribute-name-strategy`, `stream`). Unknown keys and invalid value types produce an error referencing the config file path. Path and string options must be strings; `stream` must be a JSON boolean (`true` or `false`).
 
 ### Helpers
 
@@ -97,6 +98,7 @@ The config file must be a JSON object. Each key must be one of the allowed optio
 |----------|------|
 | `loadConfig(configPath)` | Reads, parses, and validates the config file. Returns `{ config, configDir }`. |
 | `resolveOption(args, config, configDir, key, defaultValue)` | Returns the CLI arg if present, otherwise the config value (with path resolution), otherwise the default. The caller separately tracks whether `state` was explicitly provided so an explicit missing state file errors while omitted state is passed through to WASM as `{}`. |
+| `resolveBooleanOption(args, config, key)` | Resolves boolean options such as `stream`, with CLI values taking precedence over config booleans. |
 
 ---
 
@@ -168,8 +170,10 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 
 ## Stream output
 
-`--stream`, `--stream=true`, and `--stream=false` are parsed as CLI-only boolean
-forms. The option is not accepted in `fast-build.config.json`.
+`--stream`, `--stream=true`, and `--stream=false` are parsed as CLI boolean
+forms. `fast-build.config.json` also accepts `"stream": true` or
+`"stream": false`. CLI arguments take precedence, so `--stream=false` disables
+streaming even when the config enables it.
 
 When streaming is enabled, the CLI always calls
 `wasm.render_entry_with_templates(..., true)`, passing `{}` for `templatesJson`

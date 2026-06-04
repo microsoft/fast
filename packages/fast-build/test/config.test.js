@@ -207,7 +207,7 @@ describe("config validation", () => {
         assert.ok(result.stderr.includes("Failed to parse"));
     });
 
-    it("keeps stream CLI-only by rejecting stream in config", () => {
+    it("rejects non-boolean stream config values", () => {
         writeFixture(dir, {
             config: {
                 entry: "entry.html",
@@ -218,7 +218,8 @@ describe("config validation", () => {
         });
         const result = runWithStderr([], dir);
         assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes('Unknown key "stream"'));
+        assert.ok(result.stderr.includes('Value for "stream"'));
+        assert.ok(result.stderr.includes("must be a boolean"));
     });
 });
 
@@ -265,6 +266,81 @@ describe("backward compatibility", () => {
 
         assert.equal(stdout, "Built: out.html\n");
         assert.ok(output.includes("Hello"));
+    });
+});
+
+describe("stream config", () => {
+    /** @type {string} */
+    let dir;
+
+    beforeEach(() => {
+        dir = tmpDir();
+    });
+
+    afterEach(() => {
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("streams when stream is true in config", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                stream: true,
+            },
+        });
+
+        const { stdout, calls } = runWithStubbedWasm([], dir);
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+
+        assert.equal(stdout, "<h1>Hello</h1>");
+        assert.ok(!stdout.includes("Built:"));
+        assert.ok(!fs.existsSync(path.join(dir, "out.html")));
+        assert.ok(renderCall);
+        assert.equal(renderCall.stream, true);
+    });
+
+    it("lets --stream override stream false in config", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                stream: false,
+            },
+        });
+
+        const { stdout, calls } = runWithStubbedWasm(["--stream"], dir);
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+
+        assert.equal(stdout, "<h1>Hello</h1>");
+        assert.ok(!fs.existsSync(path.join(dir, "out.html")));
+        assert.ok(renderCall);
+        assert.equal(renderCall.stream, true);
+    });
+
+    it("lets --stream=false override stream true in config", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                stream: true,
+            },
+        });
+
+        const { stdout, calls } = runWithStubbedWasm(["--stream=false"], dir);
+        const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+
+        assert.equal(stdout, `Built: ${path.join(dir, "out.html")}\n`);
+        assert.equal(output, "<h1>Non-stream</h1>");
+        assert.ok(calls.some(call => call.name === "render"));
+        assert.ok(!calls.some(call => call.stream === true));
     });
 });
 
