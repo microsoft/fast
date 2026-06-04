@@ -3,6 +3,10 @@ import type { JSONSchema, Schema } from "./schema.js";
 import type { ObserverMapConfig, ObserverMapPathEntry } from "./template.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
+const scheduleObserverMapUpdate = (update: () => void): void => {
+    queueMicrotask(update);
+};
+
 /**
  * Determines whether a config entry (or any of its descendants) enables observation.
  * Used to decide whether a root property needs an observable accessor and change handler.
@@ -201,6 +205,7 @@ export class ObserverMap {
             proxiedObject,
             target,
             rootProperty,
+            scheduleObserverMapUpdate,
         );
 
         return proxiedObject;
@@ -217,7 +222,7 @@ export class ObserverMap {
         propertyName: string,
         existingChangedMethod?: (prev: any, next: any) => void,
     ): ((prev: any, next: any) => void) => {
-        const getAndAssignObservablesAlias = this.getAndAssignObservables;
+        const getAndAssignObservablesAlias = this.getAndAssignObservables.bind(this);
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {

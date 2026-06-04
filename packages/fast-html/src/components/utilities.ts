@@ -183,6 +183,34 @@ const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
  */
 const observedArraysMap = new WeakMap<object, void>();
 
+type ObserverMapUpdateScheduler = (update: () => void) => void;
+
+const runObserverMapUpdate: ObserverMapUpdateScheduler = update => update();
+const observerMapUpdateSchedulers = new WeakMap<object, ObserverMapUpdateScheduler>();
+
+function setObserverMapUpdateScheduler(
+    value: any,
+    updateScheduler: ObserverMapUpdateScheduler,
+): void {
+    if (value !== null && typeof value === "object") {
+        observerMapUpdateSchedulers.set(value, updateScheduler);
+    }
+}
+
+function getObserverMapUpdateScheduler(...values: any[]): ObserverMapUpdateScheduler {
+    for (const value of values) {
+        if (value !== null && typeof value === "object") {
+            const updateScheduler = observerMapUpdateSchedulers.get(value);
+
+            if (updateScheduler !== void 0) {
+                return updateScheduler;
+            }
+        }
+    }
+
+    return runObserverMapUpdate;
+}
+
 /**
  * Get the index of the next matching tag
  * @param openingTagStartSlice - The slice starting from the opening tag
@@ -1219,6 +1247,7 @@ function assignObservablesToArray(
     rootSchema: JSONSchema,
     target: any,
     rootProperty: string,
+    updateScheduler: ObserverMapUpdateScheduler = runObserverMapUpdate,
 ): any {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1228,11 +1257,19 @@ function assignObservablesToArray(
         ? proxiedData.map((item: any) => {
               const originalItem = Object.assign({}, item);
 
-              assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+              assignProxyToItemsInArray(
+                  item,
+                  originalItem,
+                  schema,
+                  rootSchema,
+                  updateScheduler,
+              );
 
               return Object.assign(item, originalItem);
           })
         : proxiedData;
+
+    setObserverMapUpdateScheduler(data, updateScheduler);
 
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
@@ -1248,6 +1285,7 @@ function assignObservablesToArray(
                                 originalItem,
                                 schema,
                                 rootSchema,
+                                updateScheduler,
                             );
 
                             Object.assign(item, originalItem);
@@ -1271,7 +1309,7 @@ function assignObservablesToArray(
     // their items are individually proxied, and FAST's own push/splice/etc.
     // already carry splice records — double-wrapping would produce duplicate
     // splice notifications.
-    return new Proxy(data, {
+    const proxy = new Proxy(data, {
         set: (arr: any, prop: string | symbol, value: any) => {
             const idx = typeof prop === "string" ? Number(prop) : NaN;
 
@@ -1286,6 +1324,10 @@ function assignObservablesToArray(
             return true;
         },
     });
+
+    setObserverMapUpdateScheduler(proxy, updateScheduler);
+
+    return proxy;
 }
 
 /**
@@ -1344,11 +1386,12 @@ export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | nul
 function assignSubscribeToObservableArray(
     data: any,
     updateArrayObservables: () => void,
+    updateScheduler: ObserverMapUpdateScheduler,
 ): void {
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
-                updateArrayObservables();
+                updateScheduler(updateArrayObservables);
             });
         },
     });
@@ -1369,6 +1412,7 @@ export function assignObservables(
     data: any,
     target: any,
     rootProperty: string,
+    updateScheduler: (update: () => void) => void = runObserverMapUpdate,
 ): typeof Proxy {
     const dataType = getDataType(data);
     let proxiedData = data;
@@ -1386,21 +1430,26 @@ export function assignObservables(
                     rootSchema,
                     target,
                     rootProperty,
+                    updateScheduler,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
                     observedArraysMap.set(
                         proxiedData,
-                        assignSubscribeToObservableArray(proxiedData, () =>
-                            assignObservablesToArray(
-                                proxiedData,
-                                (rootSchema as JSONSchema)[defsPropertyName]?.[
-                                    context
-                                ] as JSONSchemaDefinition,
-                                rootSchema,
-                                target,
-                                rootProperty,
-                            ),
+                        assignSubscribeToObservableArray(
+                            proxiedData,
+                            () =>
+                                assignObservablesToArray(
+                                    proxiedData,
+                                    (rootSchema as JSONSchema)[defsPropertyName]?.[
+                                        context
+                                    ] as JSONSchemaDefinition,
+                                    rootSchema,
+                                    target,
+                                    rootProperty,
+                                    updateScheduler,
+                                ),
+                            updateScheduler,
                         ),
                     );
                 }
@@ -1414,6 +1463,7 @@ export function assignObservables(
                     rootSchema,
                     target,
                     rootProperty,
+                    updateScheduler,
                 );
             }
 
@@ -1426,6 +1476,7 @@ export function assignObservables(
                 proxiedData,
                 schema,
                 rootSchema,
+                updateScheduler,
             );
             break;
         }
@@ -1446,6 +1497,7 @@ function assignProxyToItemsInArray(
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
+    updateScheduler: ObserverMapUpdateScheduler,
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1469,6 +1521,7 @@ function assignProxyToItemsInArray(
             originalItem[key],
             schemaProperties[key],
             rootSchema,
+            updateScheduler,
         );
 
         // Then make the property observable
@@ -1510,6 +1563,7 @@ function assignProxyToItemsInObject(
     data: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
+    updateScheduler: ObserverMapUpdateScheduler,
 ): any | typeof Proxy {
     const type = getDataType(data);
     const schemaProperties = getSchemaProperties(schema);
@@ -1531,6 +1585,7 @@ function assignProxyToItemsInObject(
                 proxiedData[property],
                 schemaProperties[property],
                 rootSchema,
+                updateScheduler,
             );
         });
 
@@ -1542,6 +1597,7 @@ function assignProxyToItemsInObject(
                 target,
                 rootProperty,
                 proxiedData,
+                updateScheduler,
             );
 
             // Add this target to the object's target list
@@ -1560,6 +1616,7 @@ function assignProxyToItemsInObject(
                     rootSchema,
                     target,
                     rootProperty,
+                    updateScheduler,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1571,6 +1628,7 @@ function assignProxyToItemsInObject(
                             rootSchema,
                             target,
                             rootProperty,
+                            updateScheduler,
                         ),
                     );
                 }
@@ -1634,6 +1692,7 @@ export function assignProxy(
     target: any,
     rootProperty: string,
     object: any,
+    updateScheduler: (update: () => void) => void = runObserverMapUpdate,
 ): typeof Proxy {
     if (!object.$isProxy) {
         const schemaProperties = getSchemaProperties(schema);
@@ -1662,6 +1721,7 @@ export function assignProxy(
                     value,
                     target,
                     rootProperty,
+                    updateScheduler,
                 );
 
                 notifyObservables(proxy);
@@ -1694,6 +1754,8 @@ export function assignProxy(
                 return false;
             },
         });
+
+        setObserverMapUpdateScheduler(proxy, updateScheduler);
 
         return proxy;
     }
@@ -1944,8 +2006,13 @@ export function deepMerge(target: any, source: any): boolean {
             );
 
             if (isTargetArray) {
-                // Use splice to maintain observable array tracking
-                targetValue.splice(0, targetValue.length, ...clonedItems);
+                getObserverMapUpdateScheduler(
+                    targetValue,
+                    target,
+                )(() => {
+                    // Use splice to maintain observable array tracking
+                    targetValue.splice(0, targetValue.length, ...clonedItems);
+                });
             } else {
                 // Target isn't an array, replace it
                 target[key] = clonedItems;

@@ -119,6 +119,10 @@ Each path entry can be:
 
 When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
+Observer-map-managed array updates are scheduled automatically when `deepMerge`
+preserves array identity with `splice()`. This avoids synchronous reentrant
+array work when data is updated from an existing observation callback.
+
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
 2. `true`/`false` booleans apply to the entire subtree.
