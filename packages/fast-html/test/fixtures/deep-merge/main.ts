@@ -358,6 +358,75 @@ class DeepMergeTestElement extends FASTElement {
         };
     }
 
+    public async replaceOrdersAndMutateNestedData() {
+        this.updateUserOrders();
+
+        await Updates.next();
+
+        this.users[0].orders[0].total = 123.45;
+        this.users[0].orders[0].items[0].metadata.views = 401;
+
+        await Updates.next();
+    }
+
+    public async replaceOrdersAndPushNestedItem() {
+        this.updateUserOrders();
+
+        await Updates.next();
+
+        this.users[0].orders[0].items.push({
+            id: 1005,
+            name: "Stand",
+            price: 25.0,
+            inStock: true,
+            tags: ["accessories"],
+            metadata: {
+                views: 50,
+                rating: 4.1,
+            },
+        });
+
+        await Updates.next();
+    }
+
+    public async countAccessorsForInitialOrdersPush() {
+        const newOrder = {
+            id: 104,
+            date: "2024-05-01",
+            total: 25.0,
+            items: [],
+        };
+
+        this.users[0].orders.push(newOrder);
+
+        await Updates.next();
+
+        const accessorNames = Observable.getAccessors(newOrder).map(
+            accessor => accessor.name,
+        );
+
+        return {
+            accessorCount: accessorNames.length,
+            duplicateAccessors: accessorNames.filter(
+                (name, index) => accessorNames.indexOf(name) !== index,
+            ),
+            orderCount: this.users[0].orders.length,
+        };
+    }
+
+    public countAccessorsForInitialOrder() {
+        const accessorNames = Observable.getAccessors(this.users[0].orders[0]).map(
+            accessor => accessor.name,
+        );
+
+        return {
+            accessorCount: accessorNames.length,
+            duplicateAccessors: accessorNames.filter(
+                (name, index) => accessorNames.indexOf(name) !== index,
+            ),
+        };
+    }
+
     public async testDeepMergeObserverMapReentry() {
         const items = this.users[0].orders[0].items;
         const observer = Observable.getNotifier(items);

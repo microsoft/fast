@@ -285,6 +285,73 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(page.locator(".user-card").first()).toContainText("Order #103");
     });
 
+    test("should observe nested object properties after replacing arrays with deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.replaceOrdersAndMutateNestedData());
+
+        const firstOrder = page.locator(".order").first();
+        await expect(firstOrder).toContainText("Total: $123.45");
+        await expect(firstOrder.locator(".item").first()).toContainText("Views: 401");
+    });
+
+    test("should observe nested array mutations after replacing arrays with deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.replaceOrdersAndPushNestedItem());
+
+        const firstOrder = page.locator(".order").first();
+        await expect(firstOrder.locator(".item")).toHaveCount(2);
+        await expect(firstOrder).toContainText("Stand");
+    });
+
+    test("should not duplicate observerMap array item accessors", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.countAccessorsForInitialOrdersPush());
+
+        expect(result.orderCount).toBe(3);
+        expect(result.duplicateAccessors).toEqual([]);
+    });
+
+    test("should not duplicate observerMap accessors for initial array items", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.countAccessorsForInitialOrder());
+
+        expect(result.duplicateAccessors).toEqual([]);
+    });
+
     test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
         page,
     }) => {
