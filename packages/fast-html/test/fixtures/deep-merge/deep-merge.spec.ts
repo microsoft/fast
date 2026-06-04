@@ -269,7 +269,23 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(newUser).toContainText("No orders yet");
     });
 
-    test("should preserve object identity for observable arrays when using deepMerge", async ({
+    test("should replace observable arrays when using deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testArrayReplacement());
+
+        expect(result.sameOrders).toBe(false);
+        expect(result.orderCount).toBe(1);
+        await expect(page.locator(".user-card").first()).toContainText("Order #103");
+    });
+
+    test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
         page,
     }) => {
         const hydrationCompleted = page.waitForFunction(
@@ -277,19 +293,15 @@ test.describe("Deep Merge Test Fixture", () => {
         );
         await page.goto("/fixtures/deep-merge/");
         await hydrationCompleted;
-        // This test verifies that splice is used internally by checking
-        // that updates work correctly multiple times (proving the array
-        // reference is maintained)
 
-        await page.click('button:has-text("Update Product Tags")');
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testDeepMergeObserverMapReentry());
 
-        const firstItem = page.locator(".item").first();
-        await expect(firstItem).toContainText("Views: 300");
-
-        // Update again - if array identity wasn't preserved, this might fail
-        await page.click('button:has-text("Update Product Tags")');
-
-        // Should still work correctly
-        await expect(firstItem).toContainText("Views: 300");
+        expect(result.maxDepth).toBe(1);
+        expect(result.firstCalls).toBe(1);
+        expect(result.sameArray).toBe(false);
+        expect(result.currentItemCount).toBe(1);
+        expect(result.oldItemCount).toBe(3);
     });
 });
