@@ -11,14 +11,14 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 1. Parsing CLI arguments and loading configuration
 2. Locating and parsing template HTML files (glob scanning + `<f-template>` extraction)
 3. Loading the entry HTML file and optional state JSON file
-4. Calling the WASM renderer
-5. Writing the rendered output
+4. Calling the WASM renderer in HTML or stream mode
+5. Writing the rendered output file or raw stream chunks to stdout
 
 ```
 fast build [options]
         │
         ▼
-  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy, --config
+  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy, --config, --stream
         │
         ├─ loadConfig(configPath)             ← load fast-build.config.json
         │       │
@@ -43,9 +43,15 @@ fast build [options]
         │       └─ omitted state → WASM receives no state and renders with {}
         │
         ▼
-  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
-        ▼
-  fs.writeFileSync(output, rendered)
+  stream?
+     ├─ false
+     │    ├─ templates loaded → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
+     │    └─ no templates     → wasm.render(entry, state?)
+     │              ▼
+     │        fs.writeFileSync(output, rendered)
+     └─ true  → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, true)
+                    ▼
+              JSON.parse(chunksJson) → process.stdout.write(chunk)
 ```
 
 ---
@@ -83,7 +89,7 @@ CLI-provided paths are resolved relative to the current working directory (the d
 
 ### Validation
 
-The config file must be a JSON object. Each key must be one of the allowed option names (`entry`, `state`, `output`, `templates`, `attribute-name-strategy`) and each value must be a string. Unknown keys and non-string values produce an error referencing the config file path.
+The config file must be a JSON object. Each key must be one of the allowed option names (`entry`, `state`, `output`, `templates`, `attribute-name-strategy`) and each value must be a string. Unknown keys and non-string values produce an error referencing the config file path. `stream` is intentionally CLI-only and is rejected in config files.
 
 ### Helpers
 
@@ -145,18 +151,36 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## WASM integration
 
-Four WASM functions are available; the CLI uses the entry renderer when templates are loaded:
+Four WASM functions are available; the CLI uses the entry renderer when templates are loaded or streaming is requested:
 
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
 | `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
-| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy)` | CLI entry HTML rendering when at least one template was loaded. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
+| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>` and any forwarded `shadowrootAttributes`. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>`. It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
 See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
+
+---
+
+## Stream output
+
+`--stream`, `--stream=true`, and `--stream=false` are parsed as CLI-only boolean
+forms. The option is not accepted in `fast-build.config.json`.
+
+When streaming is enabled, the CLI always calls
+`wasm.render_entry_with_templates(..., true)`, passing `{}` for `templatesJson`
+when no templates were loaded. With `stream` set to `true`, the WASM export
+returns a JSON array string. The CLI validates that the parsed value is an array
+of strings and writes each chunk to stdout without separators.
+
+Streaming mode does not write `--output`, does not print `Built: ...`, and does
+not warn when `--templates` is omitted. Non-streaming output remains unchanged.
+Chunk construction happens in Rust before the WASM call returns, so this is
+simulated streaming rather than a lazy Node.js `ReadableStream`.
 
 ---
 
@@ -173,9 +197,12 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 | `--entry` file not found | Print error to stderr; exit code 1 |
 | Explicit `--state` or config `state` file not found | Print error to stderr; exit code 1 |
 | State omitted | Do not check `state.json`; render with an empty state object (`{}`); breaking change from earlier implicit `state.json` loading |
-| `--templates` not provided | Warning to stderr; rendering continues without custom elements |
+| `--templates` not provided | Warning to stderr in non-streaming mode; rendering continues without custom elements |
 | `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
+| `--stream` value is not `true`, `false`, or empty | Print error to stderr; exit code 1 |
 | Pattern matches no files | Warning to stderr; pattern is skipped |
 | `<f-template>` without `name` | Warning to stderr; template is skipped |
 | Duplicate template name across files | Warning to stderr; later entry overwrites earlier |
+| Streaming WASM export missing | Print error to stderr; exit code 1 |
+| Streaming WASM return is not a JSON string array | Print error to stderr; exit code 1 |
 | WASM render error | Print error to stderr; exit code 1 |
