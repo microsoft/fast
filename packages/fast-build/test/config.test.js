@@ -365,7 +365,7 @@ describe("stream output", () => {
 
         const { stdout, calls } = runWithStubbedWasm(
             [
-                "--stream=true",
+                "--stream",
                 "--entry=entry.html",
                 "--state=state.json",
                 "--templates=templates.html",
