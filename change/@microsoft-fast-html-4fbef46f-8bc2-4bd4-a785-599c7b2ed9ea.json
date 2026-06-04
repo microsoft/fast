@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "breaking: replace arrays during observerMap deepMerge",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
