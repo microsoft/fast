@@ -1938,18 +1938,11 @@ export function deepMerge(target: any, source: any): boolean {
         hasChanges = true;
 
         if (Array.isArray(sourceValue)) {
-            const isTargetArray = Array.isArray(targetValue);
             const clonedItems = sourceValue.map((item: unknown) =>
                 isPlainObject(item) ? { ...item } : item,
             );
 
-            if (isTargetArray) {
-                // Use splice to maintain observable array tracking
-                targetValue.splice(0, targetValue.length, ...clonedItems);
-            } else {
-                // Target isn't an array, replace it
-                target[key] = clonedItems;
-            }
+            target[key] = clonedItems;
             continue;
         }
 
