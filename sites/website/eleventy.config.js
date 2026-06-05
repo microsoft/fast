@@ -1,53 +1,60 @@
+import { createRequire } from "node:module";
+import path from "node:path";
+import { IdAttributePlugin } from "@11ty/eleventy";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
-import { IdAttributePlugin } from "@11ty/eleventy";
 import { admonitionPlugin } from "./plugins/admonitions.js";
 
-export default function(eleventyConfig) {
-  /**
-   * Styles
-   */
-  eleventyConfig.addPassthroughCopy("src/css/main.css");
-  eleventyConfig.addPassthroughCopy("src/css/prism-vsc-dark-plus.css");
-  eleventyConfig.addPassthroughCopy("src/css/variables.css");
+const require = createRequire(import.meta.url);
+const githubMarkdownCssDir = path.dirname(
+    require.resolve("github-markdown-css/package.json"),
+);
 
-  /**
-   * Scripts
-   */
-  eleventyConfig.addPassthroughCopy("src/js/sidebar-navigation.js");
-  eleventyConfig.addPassthroughCopy("src/js/navbar-toggle.js");
+export default function (eleventyConfig) {
+    /**
+     * Styles
+     */
+    eleventyConfig.addPassthroughCopy("src/css");
+    eleventyConfig.addPassthroughCopy({
+        [path.join(githubMarkdownCssDir, "github-markdown-dark.css")]:
+            "css/github-markdown-dark.css",
+    });
 
-  /**
-   * Assets
-   */
-  eleventyConfig.addPassthroughCopy("src/static/favicon.ico");
-  eleventyConfig.addPassthroughCopy("src/static/fast-inline-logo.svg");
+    /**
+     * Scripts
+     */
+    eleventyConfig.addPassthroughCopy("src/js");
 
-  /**
-   * Plugins
-   */
-  eleventyConfig.addPlugin(eleventyNavigationPlugin);
-  eleventyConfig.addPlugin(syntaxHighlight);
-  eleventyConfig.addPlugin(IdAttributePlugin);
+    /**
+     * Assets
+     */
+    eleventyConfig.addPassthroughCopy("src/static");
 
-  /**
-   * Markdown
-   */
-  eleventyConfig.amendLibrary("md", (md) => {
-    md.use(admonitionPlugin);
-  });
+    /**
+     * Plugins
+     */
+    eleventyConfig.addPlugin(eleventyNavigationPlugin);
+    eleventyConfig.addPlugin(syntaxHighlight);
+    eleventyConfig.addPlugin(IdAttributePlugin);
 
-  /**
-   * Filters
-   */
-  eleventyConfig.addFilter("version", function(value) {
-    const version = "2.x";
+    /**
+     * Markdown
+     */
+    eleventyConfig.amendLibrary("md", md => {
+        md.use(admonitionPlugin);
+    });
 
-    if (typeof value === "string") {
-        const splitUrl = value.split("/");
-        return splitUrl[2] ?? version;
-    }
+    /**
+     * Filters
+     */
+    eleventyConfig.addFilter("version", function (value) {
+        const version = "2.x";
 
-    return version;
-  });
-};
+        if (typeof value === "string") {
+            const splitUrl = value.split("/");
+            return splitUrl[2] ?? version;
+        }
+
+        return version;
+    });
+}
