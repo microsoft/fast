@@ -29,8 +29,8 @@
  * Inputs:
  *
  *   - `GITHUB_REPOSITORY` env var (`owner/repo`) — required.
- *   - `GH_TOKEN` env var — required in Azure so the `gh` CLI can enumerate
- *     releases and download assets.
+ *   - `GH_TOKEN` env var — required for non-`--check-only` mode so the
+ *     `gh` CLI can download release assets.
  *
  * The script never reads any package.json or Cargo.toml: the
  * source of truth for "what should be published" is the set of actual GitHub
@@ -63,13 +63,12 @@ if (!repo) {
     process.exit(1);
 }
 
-// Azure Pipelines must provide `GH_TOKEN` because both modes enumerate GitHub
-// Releases through `gh api`. Local check-only runs may still use an existing
-// `gh auth login` session; default mode requires the token explicitly because
-// it downloads publish assets.
-if (!process.env.GH_TOKEN && (process.env.TF_BUILD || !CHECK_ONLY)) {
-    const action = CHECK_ONLY ? "list GitHub releases" : "download release assets";
-    console.error(`GH_TOKEN must be set so the \`gh\` CLI can ${action}.`);
+// `--check-only` enumerates public GitHub Releases through the REST API, so it
+// does not need an Azure secret. In non-check mode we call `gh release download`,
+// which fails with a generic auth error if `GH_TOKEN` is missing; fail fast here
+// with a clearer message.
+if (!CHECK_ONLY && !process.env.GH_TOKEN) {
+    console.error("GH_TOKEN must be set so the `gh` CLI can download release assets.");
     process.exit(1);
 }
 
@@ -84,20 +83,46 @@ function listGitTags() {
         .filter(Boolean);
 }
 
-function listGitHubReleases() {
-    const output = run("gh", [
-        "api",
-        "--paginate",
-        `repos/${repo}/releases`,
-        "--jq",
-        ".[] | { tagName: .tag_name, isDraft: .draft } | @json",
-    ]);
+function getNextUrl(linkHeader) {
+    if (!linkHeader) return null;
 
-    return output
-        .split("\n")
-        .map(line => line.trim())
-        .filter(Boolean)
-        .map(line => JSON.parse(line));
+    for (const part of linkHeader.split(",")) {
+        const match = /<([^>]+)>;\s*rel="next"/.exec(part.trim());
+        if (match) return match[1];
+    }
+
+    return null;
+}
+
+async function listGitHubReleases() {
+    let url = `https://api.github.com/repos/${repo}/releases?per_page=100`;
+    const releases = [];
+    const headers = {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "fast-release-downloader",
+    };
+
+    while (url) {
+        const response = await fetch(url, { headers });
+
+        if (!response.ok) {
+            const body = await response.text();
+            throw new Error(
+                `Failed to list GitHub releases (${response.status} ${response.statusText}): ${body}`,
+            );
+        }
+
+        for (const release of await response.json()) {
+            releases.push({
+                tagName: release.tag_name,
+                isDraft: release.draft,
+            });
+        }
+
+        url = getNextUrl(response.headers.get("link"));
+    }
+
+    return releases;
 }
 
 function setAzureOutput(name, value) {
@@ -116,7 +141,7 @@ const deployed = new Set(
 // misclassified as a release. We enumerate actual GitHub releases here,
 // so historical bare beachball tags are not deployment candidates.
 const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+(?:-[\w.-]+)?$/;
-const githubReleases = listGitHubReleases();
+const githubReleases = await listGitHubReleases();
 const releaseTags = githubReleases
     .filter(({ tagName, isDraft }) => !isDraft && RELEASE_TAG_RE.test(tagName))
     .map(({ tagName }) => tagName)

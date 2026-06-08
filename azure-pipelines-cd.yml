@@ -69,7 +69,6 @@ extends:
             displayName: "Detect releases whose tarballs have not been published"
             name: deploymentCheck
             env:
-              GH_TOKEN: $(GH_TOKEN)
               GITHUB_REPOSITORY: microsoft/fast
 
     # ── Stage 2: Download, publish, and mark deployed (skipped on no-op nights) ──
