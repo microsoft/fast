@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Sat, 23 May 2026 00:13:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 08 Jun 2026 20:39:45 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.1
+
+Mon, 08 Jun 2026 20:39:45 GMT
+
+### Patches
+
+- fix: correct output directory structure for generated CSS files (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-html to v1.0.0-alpha.54
 
 ## 0.3.0
 
