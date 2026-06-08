@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 08 Jun 2026 20:39:45 GMT",
+      "version": "1.0.0-alpha.54",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.54",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ab7c66e5a1c4a5ee513b00249a94003e1540d338",
+            "comment": "breaking: replace arrays during observerMap deepMerge"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 23 May 2026 00:13:09 GMT",
       "version": "1.0.0-alpha.53",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.53",

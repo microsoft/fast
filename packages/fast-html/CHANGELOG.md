@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 21 May 2026 00:04:58 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 08 Jun 2026 20:39:45 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.54
+
+Mon, 08 Jun 2026 20:39:45 GMT
+
+### Changes
+
+- breaking: replace arrays during observerMap deepMerge (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.53
 
