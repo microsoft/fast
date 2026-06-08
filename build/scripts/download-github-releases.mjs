@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Download GitHub release assets whose `${name}_v${version}` git tag has
- * no `deployed/<tag>` counterpart, and sort them into separate folders
+ * Download GitHub release assets whose `${name}_v${version}` GitHub release
+ * has no `deployed/<tag>` counterpart, and sort them into separate folders
  * for the publish template:
  *
  *   - `.tgz`   -> `publish_artifacts_npm/`
@@ -29,13 +29,14 @@
  * Inputs:
  *
  *   - `GITHUB_REPOSITORY` env var (`owner/repo`) — required.
- *   - `GH_TOKEN` env var — required for non-`--check-only` mode so the
- *     `gh` CLI can authenticate.
+ *   - `GH_TOKEN` env var — required in Azure so the `gh` CLI can enumerate
+ *     releases and download assets.
  *
  * The script never reads any package.json or Cargo.toml: the
- * source of truth for "what should be published" is the set of git
- * tags. This keeps the script working on a freshly-cloned 1ES agent
- * with no `node_modules` or cargo registry.
+ * source of truth for "what should be published" is the set of actual GitHub
+ * releases. This keeps historical bare beachball tags from being treated as
+ * deployable releases while still working on a freshly-cloned 1ES agent with
+ * no `node_modules` or cargo registry.
  */
 
 import { execFileSync } from "node:child_process";
@@ -62,12 +63,13 @@ if (!repo) {
     process.exit(1);
 }
 
-// `--check-only` works against the local git tag list and never invokes
-// `gh`, so it does not need a token. In non-check mode we call
-// `gh release download`, which fails with a generic auth error if
-// `GH_TOKEN` is missing; fail fast here with a clearer message.
-if (!CHECK_ONLY && !process.env.GH_TOKEN) {
-    console.error("GH_TOKEN must be set so the `gh` CLI can download release assets.");
+// Azure Pipelines must provide `GH_TOKEN` because both modes enumerate GitHub
+// Releases through `gh api`. Local check-only runs may still use an existing
+// `gh auth login` session; default mode requires the token explicitly because
+// it downloads publish assets.
+if (!process.env.GH_TOKEN && (process.env.TF_BUILD || !CHECK_ONLY)) {
+    const action = CHECK_ONLY ? "list GitHub releases" : "download release assets";
+    console.error(`GH_TOKEN must be set so the \`gh\` CLI can ${action}.`);
     process.exit(1);
 }
 
@@ -80,6 +82,22 @@ function listGitTags() {
         .split("\n")
         .map(t => t.trim())
         .filter(Boolean);
+}
+
+function listGitHubReleases() {
+    const output = run("gh", [
+        "api",
+        "--paginate",
+        `repos/${repo}/releases`,
+        "--jq",
+        ".[] | { tagName: .tag_name, isDraft: .draft } | @json",
+    ]);
+
+    return output
+        .split("\n")
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => JSON.parse(line));
 }
 
 function setAzureOutput(name, value) {
@@ -95,15 +113,18 @@ const deployed = new Set(
 // where the version is the publishable portion (`1.0.0` or `1.0.0-alpha.3`).
 // Anchored at the end of the tag name so trailing junk (e.g. a stray
 // suffix accidentally appended after a real version) does not get
-// misclassified as a release. `deployed/` marker tags are excluded
-// explicitly so they aren't re-processed as if they were releases.
+// misclassified as a release. We enumerate actual GitHub releases here,
+// so historical bare beachball tags are not deployment candidates.
 const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+(?:-[\w.-]+)?$/;
-const releaseTags = allTags.filter(
-    t => !t.startsWith("deployed/") && RELEASE_TAG_RE.test(t),
-);
+const githubReleases = listGitHubReleases();
+const releaseTags = githubReleases
+    .filter(({ tagName, isDraft }) => !isDraft && RELEASE_TAG_RE.test(tagName))
+    .map(({ tagName }) => tagName)
+    .sort();
 const undeployed = releaseTags.filter(t => !deployed.has(t)).sort();
 
-console.log(`Release tags total:        ${releaseTags.length}`);
+console.log(`GitHub releases total:     ${githubReleases.length}`);
+console.log(`Package releases:          ${releaseTags.length}`);
 console.log(`Already deployed:          ${releaseTags.length - undeployed.length}`);
 console.log(`Undeployed:                ${undeployed.length}`);
 
