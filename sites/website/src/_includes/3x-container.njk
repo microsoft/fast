@@ -26,6 +26,8 @@ navigationOptions:
     <div class="container padding-top--md padding-bottom--lg">
         <div class="col doc-item">
             {{ content | safe }}
+            {% set paginationCollection = collections.3x %}
+            {% include "pagination-nav.njk" %}
         </div>
     </div>
 </main>
