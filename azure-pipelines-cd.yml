@@ -60,11 +60,10 @@ extends:
               version: "22.x"
             displayName: "Install Node.js"
 
-          # The check uses local `git tag` rather than `npm view` / `cargo search`
-          # because external network calls from 1ES agents to npm/crates.io are
-          # unreliable. The Package stage pushes a `deployed/<tag>` marker tag
-          # after a successful publish, and the next pipeline run sees that
-          # marker via `git tag -l`.
+          # The check enumerates GitHub Releases rather than every local git tag
+          # because historical beachball tags may not have release assets. The
+          # Package stage pushes a `deployed/<tag>` marker tag after a successful
+          # publish, and the next pipeline run sees that marker via `git tag -l`.
           - script: |
               node build/scripts/download-github-releases.mjs --check-only
             displayName: "Detect releases whose tarballs have not been published"
