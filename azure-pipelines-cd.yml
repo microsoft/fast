@@ -174,20 +174,47 @@ extends:
 
           - script: |
               set -euo pipefail
-              mkdir -p publish_artifacts_npm publish_artifacts_crates publish_artifacts_meta
-              find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} publish_artifacts_npm/ \;
-              find "$(System.ArtifactsDirectory)" -name "*.crate" -exec cp {} publish_artifacts_crates/ \;
+              rm -rf publish_artifacts_npm publish_artifacts_crates publish_artifacts_meta
+              mkdir -p publish_artifacts_meta
+
+              if find "$(System.ArtifactsDirectory)" -name "*.tgz" -print -quit | grep -q .; then
+                mkdir -p publish_artifacts_npm
+                find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} publish_artifacts_npm/ \;
+              fi
+
+              if find "$(System.ArtifactsDirectory)" -name "*.crate" -print -quit | grep -q .; then
+                mkdir -p publish_artifacts_crates
+                find "$(System.ArtifactsDirectory)" -name "*.crate" -exec cp {} publish_artifacts_crates/ \;
+              fi
+
               printf '%s\n' "$(undeployedTags)" | tr ',' '\n' | sed '/^$/d' > publish_artifacts_meta/undeployed-tags.txt
 
-              if ! find publish_artifacts_npm publish_artifacts_crates -type f | grep -q .; then
+              has_assets=false
+              if [ -d publish_artifacts_npm ] && find publish_artifacts_npm -maxdepth 1 -type f -print -quit | grep -q .; then
+                has_assets=true
+              fi
+              if [ -d publish_artifacts_crates ] && find publish_artifacts_crates -maxdepth 1 -type f -print -quit | grep -q .; then
+                has_assets=true
+              fi
+              if [ "$has_assets" != "true" ]; then
                 echo "No GitHub release assets were downloaded."
                 exit 1
               fi
 
               echo "npm artifacts:"
-              find publish_artifacts_npm -maxdepth 1 -type f -print | sort
+              if [ -d publish_artifacts_npm ]; then
+                find publish_artifacts_npm -maxdepth 1 -type f -print | sort
+              else
+                echo "none"
+              fi
+
               echo "crate artifacts:"
-              find publish_artifacts_crates -maxdepth 1 -type f -print | sort
+              if [ -d publish_artifacts_crates ]; then
+                find publish_artifacts_crates -maxdepth 1 -type f -print | sort
+              else
+                echo "none"
+              fi
+
               echo "deployment markers:"
               cat publish_artifacts_meta/undeployed-tags.txt
             displayName: "Separate release artifacts"
