@@ -28,6 +28,8 @@ Both scripts are thin Node.js wrappers around existing CLI tools and repository 
 
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
 
+The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching Azure CD variables and a conditional `DownloadGitHubRelease@0` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
+
 When adding a new non-private workspace that should publish through CD:
 
 1. Ensure the workspace is included in the root `package.json` `workspaces` list and has a `name` and `version`.
