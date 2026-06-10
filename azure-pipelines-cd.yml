@@ -60,9 +60,9 @@ extends:
               version: "22.x"
             displayName: "Install Node.js"
 
-          # The check uses local `git tag` rather than `npm view` / `cargo search`
-          # because external network calls from 1ES agents to npm/crates.io are
-          # unreliable. The Package stage pushes a `deployed/<tag>` marker tag
+          # The check enumerates current workspace release tags rather than every
+          # historical package tag so older beachball tags are not deployment
+          # candidates. The Package stage pushes a `deployed/<tag>` marker tag
           # after a successful publish, and the next pipeline run sees that
           # marker via `git tag -l`.
           - script: |
@@ -79,6 +79,20 @@ extends:
       condition: eq(dependencies.Check.outputs['CheckVersion.deploymentCheck.needsDeployment'], 'true')
       variables:
         npm_config_cache: $(Pipeline.Workspace)/.npm
+        undeployedTags: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.undeployedTags'] ]
+        # When adding a new publishable workspace, add its package-specific
+        # deployment outputs here and a matching DownloadGitHubRelease@0 task
+        # below. See .github/workflows/README.md > Continuous Deployment.
+        fastBuildNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastBuildNeedsDeployment'] ]
+        fastBuildReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastBuildReleaseTag'] ]
+        fastElementNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementNeedsDeployment'] ]
+        fastElementReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementReleaseTag'] ]
+        fastHtmlNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastHtmlNeedsDeployment'] ]
+        fastHtmlReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastHtmlReleaseTag'] ]
+        fastRouterNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterNeedsDeployment'] ]
+        fastRouterReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterReleaseTag'] ]
+        fastTestHarnessNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessNeedsDeployment'] ]
+        fastTestHarnessReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessReleaseTag'] ]
       jobs:
       - job: Deploy
         steps:
@@ -89,7 +103,6 @@ extends:
           - script: |
               git config --global user.email fastsvc@microsoft.com
               git config --global user.name "Microsoft FAST Builds"
-              git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
             displayName: "Configure git for tag push"
 
           - task: UseNode@1
@@ -109,18 +122,108 @@ extends:
               npm ci
             displayName: "Install package dependencies"
 
+          - task: DownloadGitHubRelease@0
+            displayName: "Download @microsoft/fast-build release assets"
+            condition: and(succeeded(), eq(variables['fastBuildNeedsDeployment'], 'true'))
+            inputs:
+              connection: fast
+              userRepository: microsoft/fast
+              defaultVersionType: 'specificTag'
+              version: '$(fastBuildReleaseTag)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: DownloadGitHubRelease@0
+            displayName: "Download @microsoft/fast-element release assets"
+            condition: and(succeeded(), eq(variables['fastElementNeedsDeployment'], 'true'))
+            inputs:
+              connection: fast
+              userRepository: microsoft/fast
+              defaultVersionType: 'specificTag'
+              version: '$(fastElementReleaseTag)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: DownloadGitHubRelease@0
+            displayName: "Download @microsoft/fast-html release assets"
+            condition: and(succeeded(), eq(variables['fastHtmlNeedsDeployment'], 'true'))
+            inputs:
+              connection: fast
+              userRepository: microsoft/fast
+              defaultVersionType: 'specificTag'
+              version: '$(fastHtmlReleaseTag)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: DownloadGitHubRelease@0
+            displayName: "Download @microsoft/fast-router release assets"
+            condition: and(succeeded(), eq(variables['fastRouterNeedsDeployment'], 'true'))
+            inputs:
+              connection: fast
+              userRepository: microsoft/fast
+              defaultVersionType: 'specificTag'
+              version: '$(fastRouterReleaseTag)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
+          - task: DownloadGitHubRelease@0
+            displayName: "Download @microsoft/fast-test-harness release assets"
+            condition: and(succeeded(), eq(variables['fastTestHarnessNeedsDeployment'], 'true'))
+            inputs:
+              connection: fast
+              userRepository: microsoft/fast
+              defaultVersionType: 'specificTag'
+              version: '$(fastTestHarnessReleaseTag)'
+              downloadPath: '$(System.ArtifactsDirectory)'
+
           - script: |
-              node build/scripts/download-github-releases.mjs
-            displayName: "Download undeployed release assets and sort into npm/crates folders"
-            env:
-              GH_TOKEN: $(GH_TOKEN)
-              GITHUB_REPOSITORY: microsoft/fast
+              set -euo pipefail
+              rm -rf publish_artifacts_npm publish_artifacts_crates publish_artifacts_meta
+              mkdir -p publish_artifacts_meta
+
+              if find "$(System.ArtifactsDirectory)" -name "*.tgz" -print -quit | grep -q .; then
+                mkdir -p publish_artifacts_npm
+                find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} publish_artifacts_npm/ \;
+              fi
+
+              if find "$(System.ArtifactsDirectory)" -name "*.crate" -print -quit | grep -q .; then
+                mkdir -p publish_artifacts_crates
+                find "$(System.ArtifactsDirectory)" -name "*.crate" -exec cp {} publish_artifacts_crates/ \;
+              fi
+
+              printf '%s\n' "$(undeployedTags)" | tr ',' '\n' | sed '/^$/d' > publish_artifacts_meta/undeployed-tags.txt
+
+              has_assets=false
+              if [ -d publish_artifacts_npm ] && find publish_artifacts_npm -maxdepth 1 -type f -print -quit | grep -q .; then
+                has_assets=true
+              fi
+              if [ -d publish_artifacts_crates ] && find publish_artifacts_crates -maxdepth 1 -type f -print -quit | grep -q .; then
+                has_assets=true
+              fi
+              if [ "$has_assets" != "true" ]; then
+                echo "No GitHub release assets were downloaded."
+                exit 1
+              fi
+
+              echo "npm artifacts:"
+              if [ -d publish_artifacts_npm ]; then
+                find publish_artifacts_npm -maxdepth 1 -type f -print | sort
+              else
+                echo "none"
+              fi
+
+              echo "crate artifacts:"
+              if [ -d publish_artifacts_crates ]; then
+                find publish_artifacts_crates -maxdepth 1 -type f -print | sort
+              else
+                echo "none"
+              fi
+
+              echo "deployment markers:"
+              cat publish_artifacts_meta/undeployed-tags.txt
+            displayName: "Separate release artifacts"
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
 
           # Push a `deployed/<tag>` marker tag for each release that was just
           # published so that the next nightly Check stage sees it and skips
-          # the release. Reads the list of tags written by the download script.
+          # the release. Reads the list of tags prepared before publishing.
           # Idempotent: a marker tag that already exists locally (i.e. fetched
           # from origin via `fetchTags: true`) is left alone instead of failing.
           - script: |

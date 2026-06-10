@@ -50,6 +50,8 @@ jobs:
 
     - name: Check for the presence of changed files inside ./change
       run: npm run checkchange
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Biome CI check
       run: npm run biome:ci

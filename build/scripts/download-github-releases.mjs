@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 /**
- * Download GitHub release assets whose `${name}_v${version}` git tag has
- * no `deployed/<tag>` counterpart, and sort them into separate folders
- * for the publish template:
- *
- *   - `.tgz`   -> `publish_artifacts_npm/`
- *   - `.crate` -> `publish_artifacts_crates/`
+ * Detect current publishable workspaces whose `${name}_v${version}` release tag
+ * has no `deployed/<tag>` counterpart.
  *
  * Invoked by `azure-pipelines-cd.yml` before the existing
  * `FAST.Release.PipelineTemplate` runs. We use a `deployed/<tag>` git
@@ -16,58 +12,36 @@
  * `deployed/<tag>` marker tag for each release that was published; the
  * next run sees it via `git tag -l` and skips that release.
  *
- * Modes:
- *
- *   - default: download assets for every undeployed release. Writes the
- *     processed tag list to `publish_artifacts_meta/undeployed-tags.txt`
- *     so the Azure pipeline can push `deployed/<tag>` markers after the
- *     publish template completes.
- *   - `--check-only`: enumerate undeployed releases only. Sets the
- *     `needsDeployment` and `undeployedTags` Azure Pipelines output
- *     variables (when running under `TF_BUILD`). No downloads.
+ * The Azure pipeline uses this script during its Check stage, then downloads
+ * release assets through `DownloadGitHubRelease@0` using the repo's GitHub
+ * service connection. This avoids direct GitHub API calls from this script and
+ * keeps the flow aligned with the WebUI CD pipeline.
  *
  * Inputs:
  *
  *   - `GITHUB_REPOSITORY` env var (`owner/repo`) — required.
- *   - `GH_TOKEN` env var — required for non-`--check-only` mode so the
- *     `gh` CLI can authenticate.
- *
- * The script never reads any package.json or Cargo.toml: the
- * source of truth for "what should be published" is the set of git
- * tags. This keeps the script working on a freshly-cloned 1ES agent
- * with no `node_modules` or cargo registry.
+ * The script reads workspace package manifests and paired Cargo manifests only:
+ * the source of truth for "what should be published" is the current workspace
+ * versions plus matching release tags. This keeps historical bare beachball tags
+ * from being treated as deployable releases while still working on a
+ * freshly-cloned 1ES agent with no `node_modules` or cargo registry.
  */
 
 import { execFileSync } from "node:child_process";
-import {
-    mkdirSync,
-    readdirSync,
-    renameSync,
-    rmSync,
-    unlinkSync,
-    writeFileSync,
-} from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const NPM_DIR = "publish_artifacts_npm";
-const CRATES_DIR = "publish_artifacts_crates";
-const META_DIR = "publish_artifacts_meta";
-const STAGE_DIR = "publish_artifacts_stage";
-
 const CHECK_ONLY = process.argv.includes("--check-only");
+if (!CHECK_ONLY) {
+    console.error(
+        "download-github-releases.mjs only supports --check-only; Azure Pipelines downloads assets with DownloadGitHubRelease@0.",
+    );
+    process.exit(1);
+}
 
 const repo = process.env.GITHUB_REPOSITORY;
 if (!repo) {
     console.error("GITHUB_REPOSITORY must be set to owner/repo");
-    process.exit(1);
-}
-
-// `--check-only` works against the local git tag list and never invokes
-// `gh`, so it does not need a token. In non-check mode we call
-// `gh release download`, which fails with a generic auth error if
-// `GH_TOKEN` is missing; fail fast here with a clearer message.
-if (!CHECK_ONLY && !process.env.GH_TOKEN) {
-    console.error("GH_TOKEN must be set so the `gh` CLI can download release assets.");
     process.exit(1);
 }
 
@@ -82,111 +56,119 @@ function listGitTags() {
         .filter(Boolean);
 }
 
+function npmNameToCrateName(npmName) {
+    return npmName.replace(/^@/, "").replace(/\//g, "-");
+}
+
+function npmNameToOutputPrefix(npmName) {
+    return npmNameToCrateName(npmName)
+        .replace(/^microsoft-/, "")
+        .replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
+}
+
+function readCargoTomlVersion(cargoTomlPath) {
+    const content = readFileSync(cargoTomlPath, "utf8");
+    let inPackage = false;
+    for (const rawLine of content.split("\n")) {
+        const line = rawLine.trim();
+        if (line.startsWith("[")) {
+            inPackage = line === "[package]";
+            continue;
+        }
+        if (!inPackage) continue;
+        const m = /^version\s*=\s*"([^"]+)"/.exec(line);
+        if (m) return m[1];
+    }
+    return null;
+}
+
+function listPublishableWorkspaces() {
+    const rootPkg = JSON.parse(readFileSync("package.json", "utf8"));
+    const patterns = rootPkg.workspaces || [];
+    const locations = new Set();
+
+    for (const pattern of patterns) {
+        if (pattern.endsWith("/*")) {
+            const parent = pattern.slice(0, -2);
+            if (!existsSync(parent)) continue;
+            for (const entry of readdirSync(parent, { withFileTypes: true })) {
+                if (entry.isDirectory()) {
+                    locations.add(join(parent, entry.name));
+                }
+            }
+        } else {
+            locations.add(pattern);
+        }
+    }
+
+    const workspaces = [];
+    for (const location of locations) {
+        const pkgPath = join(location, "package.json");
+        if (!existsSync(pkgPath)) continue;
+        const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+        if (pkg.private === true) continue;
+        if (!pkg.name || !pkg.version) continue;
+
+        const crateName = npmNameToCrateName(pkg.name);
+        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
+        const hasCrate = existsSync(cargoTomlPath);
+
+        if (hasCrate) {
+            const crateVersion = readCargoTomlVersion(cargoTomlPath);
+            if (crateVersion !== pkg.version) {
+                throw new Error(
+                    `Version mismatch for ${pkg.name}: package.json is ${pkg.version} but ${cargoTomlPath} is ${crateVersion}. Update one to match the other.`,
+                );
+            }
+        }
+
+        workspaces.push({
+            location,
+            name: pkg.name,
+            version: pkg.version,
+            tag: `${pkg.name}_v${pkg.version}`,
+            outputPrefix: npmNameToOutputPrefix(pkg.name),
+        });
+    }
+
+    return workspaces;
+}
+
 function setAzureOutput(name, value) {
     if (!process.env.TF_BUILD) return;
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
 const allTags = listGitTags();
+const tagSet = new Set(allTags);
 const deployed = new Set(
     allTags.filter(t => t.startsWith("deployed/")).map(t => t.slice("deployed/".length)),
 );
-// Match beachball's release tag format: `${name}_v${major}.${minor}.${patch}`,
-// where the version is the publishable portion (`1.0.0` or `1.0.0-alpha.3`).
-// Anchored at the end of the tag name so trailing junk (e.g. a stray
-// suffix accidentally appended after a real version) does not get
-// misclassified as a release. `deployed/` marker tags are excluded
-// explicitly so they aren't re-processed as if they were releases.
-const RELEASE_TAG_RE = /_v\d+\.\d+\.\d+(?:-[\w.-]+)?$/;
-const releaseTags = allTags.filter(
-    t => !t.startsWith("deployed/") && RELEASE_TAG_RE.test(t),
-);
-const undeployed = releaseTags.filter(t => !deployed.has(t)).sort();
+const publishable = listPublishableWorkspaces();
+const releaseCandidates = publishable
+    .filter(({ tag }) => tagSet.has(tag))
+    .sort((a, b) => a.tag.localeCompare(b.tag));
+const undeployed = releaseCandidates.filter(({ tag }) => !deployed.has(tag));
+const undeployedTagSet = new Set(undeployed.map(({ tag }) => tag));
 
-console.log(`Release tags total:        ${releaseTags.length}`);
-console.log(`Already deployed:          ${releaseTags.length - undeployed.length}`);
+console.log(`Publishable workspaces:    ${publishable.length}`);
+console.log(`Current release tags:      ${releaseCandidates.length}`);
+console.log(`Already deployed:          ${releaseCandidates.length - undeployed.length}`);
 console.log(`Undeployed:                ${undeployed.length}`);
 
 if (undeployed.length > 0) {
     console.log("\nUndeployed tags:");
-    for (const tag of undeployed) {
+    for (const { tag } of undeployed) {
         console.log(`  - ${tag}`);
     }
 }
 
 setAzureOutput("needsDeployment", undeployed.length > 0 ? "true" : "false");
-setAzureOutput("undeployedTags", undeployed.join(","));
-
-if (CHECK_ONLY || undeployed.length === 0) {
-    process.exit(0);
-}
-
-// Clear the publish artifact directories before recreating them so a
-// re-run (locally or after a partially-failed Azure attempt) cannot
-// pick up stale `.tgz` / `.crate` files from a previous invocation.
-for (const dir of [NPM_DIR, CRATES_DIR, META_DIR]) {
-    rmSync(dir, { recursive: true, force: true });
-    mkdirSync(dir, { recursive: true });
-}
-
-let hasErrors = false;
-const processed = [];
-
-for (const tag of undeployed) {
-    try {
-        console.log(`\nDownloading assets for ${tag}...`);
-        // Clear the stage dir before each iteration so leftover unknown-type
-        // files from a previous release are not reprocessed (or warned about
-        // repeatedly).
-        rmSync(STAGE_DIR, { recursive: true, force: true });
-        mkdirSync(STAGE_DIR, { recursive: true });
-        run(
-            "gh",
-            ["release", "download", tag, "--repo", repo, "--dir", STAGE_DIR, "--clobber"],
-            { stdio: "inherit" },
-        );
-
-        let foundAssets = 0;
-        for (const file of readdirSync(STAGE_DIR)) {
-            const src = join(STAGE_DIR, file);
-            if (file.endsWith(".tgz")) {
-                renameSync(src, join(NPM_DIR, file));
-                foundAssets += 1;
-            } else if (file.endsWith(".crate")) {
-                renameSync(src, join(CRATES_DIR, file));
-                foundAssets += 1;
-            } else {
-                console.warn(`  Ignoring unknown asset type: ${file}`);
-                unlinkSync(src);
-            }
-        }
-
-        // Refuse to mark a tag as processed if its release had no
-        // recognised publish assets. Otherwise the Azure pipeline would
-        // push the `deployed/<tag>` marker, and the (presumably broken)
-        // release would never be retried.
-        if (foundAssets === 0) {
-            throw new Error(
-                `Release ${tag} contained no .tgz or .crate assets; refusing to mark as deployed.`,
-            );
-        }
-
-        processed.push(tag);
-    } catch (error) {
-        hasErrors = true;
-        const message = error instanceof Error ? error.message : String(error);
-        console.error(`Failed to download release ${tag}: ${message}`);
-    }
-}
-
-writeFileSync(
-    join(META_DIR, "undeployed-tags.txt"),
-    processed.join("\n") + (processed.length ? "\n" : ""),
-);
-
-console.log(`\nProcessed ${processed.length}/${undeployed.length} release(s).`);
-console.log(`Tag list written to ${join(META_DIR, "undeployed-tags.txt")}`);
-
-if (hasErrors) {
-    process.exitCode = 1;
+setAzureOutput("undeployedTags", undeployed.map(({ tag }) => tag).join(","));
+for (const workspace of publishable) {
+    setAzureOutput(`${workspace.outputPrefix}ReleaseTag`, workspace.tag);
+    setAzureOutput(
+        `${workspace.outputPrefix}NeedsDeployment`,
+        undeployedTagSet.has(workspace.tag) ? "true" : "false",
+    );
 }

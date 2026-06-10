@@ -1,5 +1,12 @@
-import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    Observable,
+    observable,
+    Updates,
+} from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -320,6 +327,48 @@ class ObserverMapInternalTestElement extends FASTElement {
         },
     ];
 
+    public complex = {
+        owner: {
+            profile: {
+                name: "Owner A",
+                settings: {
+                    timezone: "UTC",
+                },
+            },
+        },
+        suites: [
+            {
+                name: "Suite A",
+                sections: [
+                    {
+                        title: "Section A",
+                        rows: [
+                            {
+                                label: "Row A",
+                                cells: [
+                                    {
+                                        value: "Cell A",
+                                        meta: {
+                                            status: "ready",
+                                            history: [
+                                                {
+                                                    note: "created",
+                                                    flags: {
+                                                        reviewed: false,
+                                                    },
+                                                },
+                                            ],
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    };
+
     public removeAllItems() {
         this.groups[0].items.shift();
     }
@@ -366,6 +415,108 @@ class ObserverMapInternalTestElement extends FASTElement {
 
     public updateActionLabel() {
         this.groups[0].items[0].actions.trailing[0].label = "action label B";
+    }
+
+    public updateComplexObjectFields() {
+        const cell = this.complex.suites[0].sections[0].rows[0].cells[0];
+
+        this.complex.owner.profile.name = "Owner B";
+        this.complex.owner.profile.settings.timezone = "PST";
+        cell.meta.status = "done";
+        cell.meta.history[0].flags.reviewed = true;
+    }
+
+    public addComplexNestedItems() {
+        const row = this.complex.suites[0].sections[0].rows[0];
+
+        row.cells[0].meta.history.push({
+            note: "reviewed",
+            flags: {
+                reviewed: true,
+            },
+        });
+
+        row.cells.push({
+            value: "Cell B",
+            meta: {
+                status: "pending",
+                history: [
+                    {
+                        note: "queued",
+                        flags: {
+                            reviewed: false,
+                        },
+                    },
+                ],
+            },
+        });
+    }
+
+    public addComplexSectionAndMutate() {
+        const suite = this.complex.suites[0];
+
+        suite.sections.push({
+            title: "Section B",
+            rows: [
+                {
+                    label: "Row B",
+                    cells: [
+                        {
+                            value: "Cell C",
+                            meta: {
+                                status: "new",
+                                history: [
+                                    {
+                                        note: "draft",
+                                        flags: {
+                                            reviewed: false,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            ],
+        });
+
+        suite.sections[1].rows[0].cells[0].meta.history[0].flags.reviewed = true;
+        suite.sections[1].rows[0].cells[0].meta.status = "approved";
+    }
+
+    public async replaceComplexRowsAndMutateNestedObject() {
+        const section = this.complex.suites[0].sections[0];
+
+        deepMerge(section, {
+            rows: [
+                {
+                    label: "Row Replacement",
+                    cells: [
+                        {
+                            value: "Cell Replacement",
+                            meta: {
+                                status: "replaced",
+                                history: [
+                                    {
+                                        note: "replacement",
+                                        flags: {
+                                            reviewed: false,
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+            ],
+        });
+
+        await Updates.next();
+
+        section.rows[0].cells[0].meta.status = "mutated";
+        section.rows[0].cells[0].meta.history[0].flags.reviewed = true;
+
+        await Updates.next();
     }
 
     public defineB() {

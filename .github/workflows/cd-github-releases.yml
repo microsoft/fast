@@ -75,4 +75,4 @@ jobs:
     - name: Pack and create GitHub releases
       run: node build/scripts/create-github-releases.mjs
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ github.token }}

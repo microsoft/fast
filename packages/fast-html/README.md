@@ -266,6 +266,12 @@ observerMap: {
 
 When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
+When observer-map data is updated with `deepMerge`, array properties are replaced
+rather than updated in place. This avoids synchronous reentrant array work and
+allows repeat bindings to observe the new array reference. Replacement arrays
+are processed through observerMap so nested item properties and subsequent array
+mutations remain observable.
+
 #### `attributeMap`
 
 When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"camelCase"` attribute name strategy.

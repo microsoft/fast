@@ -105,6 +105,10 @@ function syncPairedCrateVersion(packagePath, name, version) {
     }
 }
 
+// `npm run checkchange` is wrapped by `build/scripts/checkchange.mjs`,
+// which can skip `beachball check` for maintainer-authored manual bump
+// branches (see CONTRIBUTING.md > "Manual version bumps"). The
+// `ignorePatterns` and `hooks` below still apply when beachball runs.
 module.exports = {
     ignorePatterns: [
         ".ignore",

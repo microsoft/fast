@@ -269,7 +269,23 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(newUser).toContainText("No orders yet");
     });
 
-    test("should preserve object identity for observable arrays when using deepMerge", async ({
+    test("should replace observable arrays when using deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testArrayReplacement());
+
+        expect(result.sameOrders).toBe(false);
+        expect(result.orderCount).toBe(1);
+        await expect(page.locator(".user-card").first()).toContainText("Order #103");
+    });
+
+    test("should observe nested object properties after replacing arrays with deepMerge", async ({
         page,
     }) => {
         const hydrationCompleted = page.waitForFunction(
@@ -277,19 +293,82 @@ test.describe("Deep Merge Test Fixture", () => {
         );
         await page.goto("/fixtures/deep-merge/");
         await hydrationCompleted;
-        // This test verifies that splice is used internally by checking
-        // that updates work correctly multiple times (proving the array
-        // reference is maintained)
 
-        await page.click('button:has-text("Update Product Tags")');
+        await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.replaceOrdersAndMutateNestedData());
 
-        const firstItem = page.locator(".item").first();
-        await expect(firstItem).toContainText("Views: 300");
+        const firstOrder = page.locator(".order").first();
+        await expect(firstOrder).toContainText("Total: $123.45");
+        await expect(firstOrder.locator(".item").first()).toContainText("Views: 401");
+    });
 
-        // Update again - if array identity wasn't preserved, this might fail
-        await page.click('button:has-text("Update Product Tags")');
+    test("should observe nested array mutations after replacing arrays with deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
 
-        // Should still work correctly
-        await expect(firstItem).toContainText("Views: 300");
+        await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.replaceOrdersAndPushNestedItem());
+
+        const firstOrder = page.locator(".order").first();
+        await expect(firstOrder.locator(".item")).toHaveCount(2);
+        await expect(firstOrder).toContainText("Stand");
+    });
+
+    test("should not duplicate observerMap array item accessors", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.countAccessorsForInitialOrdersPush());
+
+        expect(result.orderCount).toBe(3);
+        expect(result.duplicateAccessors).toEqual([]);
+    });
+
+    test("should not duplicate observerMap accessors for initial array items", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.countAccessorsForInitialOrder());
+
+        expect(result.duplicateAccessors).toEqual([]);
+    });
+
+    test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testDeepMergeObserverMapReentry());
+
+        expect(result.maxDepth).toBe(1);
+        expect(result.firstCalls).toBe(1);
+        expect(result.sameArray).toBe(false);
+        expect(result.currentItemCount).toBe(1);
+        expect(result.oldItemCount).toBe(3);
     });
 });

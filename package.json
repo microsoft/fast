@@ -31,7 +31,7 @@
     "bump": "beachball bump",
     "build": "lage build",
     "change": "beachball change --dependent-change-type none",
-    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
+    "checkchange": "node build/scripts/check-publish-pipeline.mjs && node build/scripts/checkchange.mjs",
     "check": "beachball check ",
     "build:gh-pages": "npm run build -w @microsoft/fast-site",
     "publish": "beachball publish",
