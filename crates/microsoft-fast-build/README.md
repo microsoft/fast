@@ -49,6 +49,41 @@ let html = render("<p>{{name}}</p>", &state)?;
 
 Both functions return `Result<String, RenderError>`. See [Error Handling](#error-handling).
 
+### Render simulated stream chunks
+
+Streaming APIs return precomputed HTML chunks in memory. Joining the chunks
+matches the equivalent non-streamed render, while chunk boundaries are chosen
+around content bindings and custom elements. Stream rendering uses the same
+top-level preprocessing as normal rendering, including automatic escaping of
+FAST-like syntax inside `<code>` elements.
+
+```rust
+use microsoft_fast_build::{render_template, render_template_stream};
+
+let chunks = render_template_stream(
+    "<p>{{message}}</p>",
+    r#"{"message": "Hello"}"#,
+    None,
+)?;
+
+let html = render_template(
+    "<p>{{message}}</p>",
+    r#"{"message": "Hello"}"#,
+    None,
+)?;
+
+assert_eq!(chunks, vec!["<p>", "Hello", "</p>"]);
+assert_eq!(chunks.join(""), html);
+```
+
+Custom element streaming uses the `*_stream_with_locator` and
+`render_entry_*_stream_with_locator` APIs. For entry HTML, a custom element's
+opening tag chunk includes the complete Declarative Shadow DOM template; light
+DOM content follows in later chunks. Template host attributes declared on the
+inner `<template>` element are merged onto the streamed host opening tag with
+the same author-wins and client-only-attribute filtering rules as normal
+rendering.
+
 ---
 
 ## Template Syntax
@@ -518,11 +553,20 @@ const html = render_entry_with_templates(
     entry,
     templatesJson,
     stateJson,
-    "camelCase"  // or "none"
+    "camelCase", // or "none"
+    false        // optional stream flag
+);
+
+const chunksJson = render_entry_with_templates(
+    entry,
+    templatesJson,
+    stateJson,
+    "camelCase",
+    true
 );
 ```
 
-Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering.
+Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering. Passing `true` as the optional fifth argument switches `render_entry_with_templates` to stream mode and returns a JSON array string of HTML chunks; omitted or `false` returns normal HTML.
 
 Passing `"none"` or `""` as the strategy uses the default behaviour.
 

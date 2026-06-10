@@ -193,7 +193,7 @@ fn render_repeat_items(
     }
 }
 
-fn build_loop_vars(
+pub(crate) fn build_loop_vars(
     loop_vars: &[(String, JsonValue)],
     var_name: &str,
     item: &JsonValue,
@@ -206,7 +206,7 @@ fn build_loop_vars(
 }
 
 /// Parse `"item in list"` into `("item", "list")`.
-fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
+pub(crate) fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
     let parts: Vec<&str> = expr.trim().splitn(3, ' ').collect();
     if parts.len() == 3 && parts[1] == "in" && !parts[0].is_empty() && !parts[2].is_empty() {
         Some((parts[0].to_string(), parts[2].to_string()))
@@ -231,7 +231,7 @@ pub fn render_custom_element(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: &Locator,
-    parent_hydration: Option<&mut HydrationScope>,
+    mut parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
@@ -255,99 +255,18 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Build the child state used to render this element's shadow template.
-    //
-    // The child state always starts with the current root state as a base so
-    // all unbound state keys (e.g. `text`, `error`, `showProgress`) propagate
-    // through to every descendant custom element automatically. Per-element
-    // attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
-    // top, overriding root state for any overlapping key.
-    //
-    // When the element has no state-relevant attributes, we skip cloning the
-    // root state entirely and pass it through by reference.
-    //
-    // Attribute processing rules:
-    //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
-    //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
-    //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
-    //   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
-    //   - HTML attrs with mismatched property names → camelCase via lookup table
-    //   - Anything else → lowercased key (or camelCase when `attribute_name_strategy` is `CamelCase`)
-    fn build_attr_state(
-        attrs: &[(String, Option<String>)],
-        root: &JsonValue,
-        loop_vars: &[(String, JsonValue)],
-        base: std::collections::HashMap<String, JsonValue>,
-        strategy: AttributeNameStrategy,
-    ) -> JsonValue {
-        let mut state_map = base;
-        for (attr_name, value) in attrs {
-            if attr_name.starts_with('@')
-                || attr_name.starts_with('?')
-                || attr_name.eq_ignore_ascii_case("f-ref")
-                || attr_name.eq_ignore_ascii_case("f-slotted")
-                || attr_name.eq_ignore_ascii_case("f-children")
-            {
-                continue;
-            }
-            if let Some(prop_name) = attr_name.strip_prefix(':') {
-                let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-                let key = prop_name.to_lowercase();
-                state_map.insert(key, json_val);
-                continue;
-            }
-            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            let lowered = attr_name.to_lowercase();
-            if let Some(path) = data_attr_to_dataset_key(&lowered) {
-                if let Some((group, prop)) = path.split_once('.') {
-                    let group_val = state_map
-                        .entry(group.to_string())
-                        .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
-                    if let JsonValue::Object(ref mut map) = group_val {
-                        map.insert(prop.to_string(), json_val);
-                    }
-                }
-            } else if let Some(key) = aria_attr_to_property_key(&lowered) {
-                state_map.insert(key.to_string(), json_val);
-            } else if let Some(key) = html_attr_to_property_key(&lowered) {
-                state_map.insert(key.to_string(), json_val);
-            } else if strategy == AttributeNameStrategy::CamelCase && lowered.contains('-') {
-                state_map.insert(kebab_to_camel(&lowered), json_val);
-            } else {
-                state_map.insert(lowered, json_val);
-            }
-        }
-        JsonValue::Object(state_map)
-    }
-
-    /// Returns true if any parsed attribute would contribute to child state.
-    fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
-        attrs.iter().any(|(name, _)| {
-            !name.starts_with('@')
-                && !name.starts_with('?')
-                && !name.eq_ignore_ascii_case("f-ref")
-                && !name.eq_ignore_ascii_case("f-slotted")
-                && !name.eq_ignore_ascii_case("f-children")
-        })
-    }
-
     // Parse attributes once, then decide whether cloning is necessary.
     // When the element has no state-relevant attributes, skip the HashMap
     // clone and reuse `root` directly — avoids O(state-size) work per element
     // in deep custom-element trees.
     let attrs = parse_element_attributes(open_tag_content);
-    let child_root_owned;
-    let child_root: &JsonValue = if has_state_relevant_attrs(&attrs) {
-        let base = if let JsonValue::Object(ref root_map) = root {
-            root_map.clone()
-        } else {
-            std::collections::HashMap::new()
-        };
-        child_root_owned = build_attr_state(&attrs, root, loop_vars, base, config.attribute_name_strategy);
-        &child_root_owned
-    } else {
-        root
-    };
+    let child_root_owned = build_custom_element_child_root(
+        &attrs,
+        root,
+        loop_vars,
+        config.attribute_name_strategy,
+    );
+    let child_root = child_root_owned.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
@@ -356,7 +275,14 @@ pub fn render_custom_element(
     let shadowroot_attributes = build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
+    let element_open = build_element_open_tag(
+        &open_tag_base,
+        open_tag_content,
+        root,
+        loop_vars,
+        parent_hydration.as_mut().map(|h| &mut **h),
+        is_entry,
+    );
 
     // Merge attributes declared on the template's inner `<template>` element
     // onto the rendered host opening tag. Author attributes on the host element
@@ -381,9 +307,23 @@ pub fn render_custom_element(
             })?
     };
 
+    let rendered_children = if children.is_empty() {
+        String::new()
+    } else {
+        render_node(
+            &children,
+            root,
+            loop_vars,
+            Some(locator),
+            parent_hydration.as_mut().map(|h| &mut **h),
+            false,
+            config,
+        )?
+    };
+
     let output = format!(
         "{}<template{}>{}</template>{}</{}>",
-        element_open, shadowroot_attributes, rendered, children, tag_name
+        element_open, shadowroot_attributes, rendered, rendered_children, tag_name
     );
 
     Ok((output, after))
@@ -407,7 +347,7 @@ pub fn render_custom_element(
 /// - Static boolean attribute `name` → emit ` name` (no value).
 ///
 /// Returns `element_open` unchanged when no attributes survive the filter.
-fn merge_template_host_attrs(
+pub(crate) fn merge_template_host_attrs(
     element_open: String,
     template_host_attrs: &[(String, Option<String>)],
     child_root: &JsonValue,
@@ -538,7 +478,96 @@ fn format_template_host_attr(
     }
 }
 
-fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String {
+/// Build the child state used to render a custom element's shadow template.
+///
+/// The child state starts with the current root state as a base so unbound state
+/// keys propagate through descendant custom elements. Per-element attributes are
+/// then overlaid on top, overriding root state for matching keys.
+///
+/// Attribute processing rules:
+///   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
+///   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
+///   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
+///   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
+///   - HTML attrs with mismatched property names → camelCase via lookup table
+///   - Anything else → lowercased key (or camelCase when `attribute_name_strategy` is `CamelCase`)
+pub(crate) fn build_custom_element_child_root(
+    attrs: &[(String, Option<String>)],
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+    strategy: AttributeNameStrategy,
+) -> Option<JsonValue> {
+    if !has_state_relevant_attrs(attrs) {
+        return None;
+    }
+
+    let base = if let JsonValue::Object(ref root_map) = root {
+        root_map.clone()
+    } else {
+        std::collections::HashMap::new()
+    };
+
+    Some(build_attr_state(attrs, root, loop_vars, base, strategy))
+}
+
+fn build_attr_state(
+    attrs: &[(String, Option<String>)],
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+    base: std::collections::HashMap<String, JsonValue>,
+    strategy: AttributeNameStrategy,
+) -> JsonValue {
+    let mut state_map = base;
+    for (attr_name, value) in attrs {
+        if attr_name.starts_with('@')
+            || attr_name.starts_with('?')
+            || attr_name.eq_ignore_ascii_case("f-ref")
+            || attr_name.eq_ignore_ascii_case("f-slotted")
+            || attr_name.eq_ignore_ascii_case("f-children")
+        {
+            continue;
+        }
+        if let Some(prop_name) = attr_name.strip_prefix(':') {
+            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+            let key = prop_name.to_lowercase();
+            state_map.insert(key, json_val);
+            continue;
+        }
+        let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+        let lowered = attr_name.to_lowercase();
+        if let Some(path) = data_attr_to_dataset_key(&lowered) {
+            if let Some((group, prop)) = path.split_once('.') {
+                let group_val = state_map
+                    .entry(group.to_string())
+                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
+                if let JsonValue::Object(ref mut map) = group_val {
+                    map.insert(prop.to_string(), json_val);
+                }
+            }
+        } else if let Some(key) = aria_attr_to_property_key(&lowered) {
+            state_map.insert(key.to_string(), json_val);
+        } else if let Some(key) = html_attr_to_property_key(&lowered) {
+            state_map.insert(key.to_string(), json_val);
+        } else if strategy == AttributeNameStrategy::CamelCase && lowered.contains('-') {
+            state_map.insert(kebab_to_camel(&lowered), json_val);
+        } else {
+            state_map.insert(lowered, json_val);
+        }
+    }
+    JsonValue::Object(state_map)
+}
+
+fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
+    attrs.iter().any(|(name, _)| {
+        !name.starts_with('@')
+            && !name.starts_with('?')
+            && !name.eq_ignore_ascii_case("f-ref")
+            && !name.eq_ignore_ascii_case("f-slotted")
+            && !name.eq_ignore_ascii_case("f-children")
+    })
+}
+
+pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String {
     let mut mode: Option<Option<String>> = None;
     let mut legacy_shadowroot: Option<Option<String>> = None;
     let mut forwarded: Vec<(String, Option<String>)> = Vec::new();
@@ -631,7 +660,7 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
     JsonValue::String(v.clone())
 }
 
-fn build_element_open_tag(
+pub(crate) fn build_element_open_tag(
     open_tag_base: &str,
     open_tag_content: &str,
     root: &JsonValue,

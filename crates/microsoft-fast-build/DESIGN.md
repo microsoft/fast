@@ -6,7 +6,7 @@ This document explains how the crate works internally: the data flow, the key da
 
 ## High-level overview
 
-The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
+The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML or precomputed HTML stream chunks. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
 
 ```
 render_template(template, state_str)
@@ -40,9 +40,10 @@ render_template(template, state_str)
 
 | Module | Role |
 |--------|------|
-| `lib.rs` | Public API surface — render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` calls. Preprocesses the top-level `template` string through `escape_code_sample_elements` so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
+| `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
+| `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. Preprocesses the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
+| `streaming.rs` | Simulated streaming loop — mirrors `node.rs` and returns non-empty HTML chunks |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
@@ -87,6 +88,42 @@ The loop works like a cursor:
 7. Repeat.
 
 All handlers return `Result<(String, usize), RenderError>`. The `usize` is the byte position in the original template that the handler consumed up to — the cursor's next position.
+
+---
+
+## Simulated streaming — `streaming.rs`
+
+`stream_node` mirrors the recursive rendering loop in `node.rs`, but returns
+`Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
+is prepared in memory before the API returns. The invariant is that
+`chunks.join("")` matches the equivalent non-streamed render, including the
+same top-level `escape_code_sample_elements` preprocessing performed by
+`renderer.rs`.
+
+The streaming loop flushes literal HTML before each content binding or custom
+element, omits empty chunks, and resolves attribute bindings while the complete
+opening tag is still in the current chunk. This prevents streamed consumers from
+receiving a partial tag.
+
+Custom elements are split conservatively:
+
+1. The opening tag is rendered with any attribute bindings resolved.
+2. The full Declarative Shadow DOM `<template>` is rendered into the same
+   opening chunk.
+3. Light DOM children are streamed recursively.
+4. The custom element closing tag is appended to the final light DOM chunk, or
+   to the opening chunk when the element has no children.
+
+The shadow template itself is not streamed independently. Keeping it with the
+opening tag ensures custom element constructors can discover Declarative Shadow
+DOM as soon as the element is parsed.
+
+Streaming custom-element rendering uses the same directive helpers as the
+non-streamed path: child state is built from root state plus author attributes,
+the host opening tag is produced by `build_element_open_tag`, and inner
+`<template>` host attributes are merged with `merge_template_host_attrs`.
+Author attributes still win, client-only host attributes are skipped, and
+template-host bindings resolve against the child state.
 
 ---
 
@@ -316,19 +353,31 @@ All render functions accept `config: Option<&RenderConfig>` as their last parame
 - `render_without_state(template, config)`
 - `render_template(template, state_str, config)`
 - `render_template_without_state(template, config)`
+- `render_template_stream(template, state_str, config)`
+- `render_template_stream_without_state(template, config)`
+- `render_stream(template, state, config)`
+- `render_stream_without_state(template, config)`
 - `render_with_locator(template, state, locator, config)`
 - `render_with_locator_without_state(template, locator, config)`
+- `render_stream_with_locator(template, state, locator, config)`
+- `render_stream_with_locator_without_state(template, locator, config)`
 - `render_template_with_locator(template, state_str, locator, config)`
 - `render_template_with_locator_without_state(template, locator, config)`
+- `render_template_stream_with_locator(template, state_str, locator, config)`
+- `render_template_stream_with_locator_without_state(template, locator, config)`
 - `render_entry_with_locator(template, state, locator, config)`
 - `render_entry_with_locator_without_state(template, locator, config)`
+- `render_entry_stream_with_locator(template, state, locator, config)`
+- `render_entry_stream_with_locator_without_state(template, locator, config)`
 - `render_entry_template_with_locator(template, state_str, locator, config)`
 - `render_entry_template_with_locator_without_state(template, locator, config)`
+- `render_entry_template_stream_with_locator(template, state_str, locator, config)`
+- `render_entry_template_stream_with_locator_without_state(template, locator, config)`
 
-The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`), and `render_entry_with_templates` accepts an optional fifth `stream` boolean:
 
 - `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
-- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
+- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?)`
 
 ---
 
@@ -494,7 +543,7 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 |--------|-----------|-------------|
 | `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
-| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
+| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -524,7 +573,14 @@ Accepts `templates_json` as a JSON object string mapping element names to raw te
 
 ### `render_entry_with_templates`
 
-Accepts the same arguments as `render_with_templates`, but calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive entry opening-tag handling, matching CLI entry rendering.
+Accepts the same arguments as `render_with_templates`, plus an optional fifth
+`stream` boolean. With `stream` omitted or `false`, it calls
+`render_entry_template_with_locator` when state is provided, or the no-state
+equivalent when it is omitted. Root-level custom elements therefore receive
+entry opening-tag handling, matching CLI entry rendering. With `stream` set to
+`true`, it calls the entry streaming APIs and serializes the resulting
+`Vec<String>` as a JSON array string. JavaScript callers parse the array before
+writing the raw chunks.
 
 ---
 
