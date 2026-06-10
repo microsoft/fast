@@ -176,37 +176,96 @@ function from<TBase extends typeof HTMLElement>(BaseType: TBase) {
 }
 
 /**
- * A minimal base class for FASTElements that also provides
- * static helpers for working with FASTElements.
+ * The FASTElement constructor and static registration helpers.
  * @public
  */
-export const FASTElement: {
-    new (): FASTElement;
-    define: typeof define;
-    compose: typeof compose;
-    from: typeof from;
-} = Object.assign(createFASTElement(HTMLElement), {
+export interface FASTElementConstructor {
     /**
-     * Creates a new FASTElement base class inherited from the
-     * provided base type.
-     * @param BaseType - The base element type to inherit from.
+     * Creates a FASTElement instance.
      */
-    from,
+    new (): FASTElement;
+
+    /**
+     * Defines a platform custom element based on the provided type and definition.
+     * @param nameOrDef - The name of the element to define or a definition object.
+     * @param extensions - Optional callbacks to run before registration.
+     */
+    define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        this: TType,
+        nameOrDef: string | PartialFASTElementDefinition<TType>,
+        extensions?: FASTElementExtension[],
+    ): Promise<TType>;
 
     /**
      * Defines a platform custom element based on the provided type and definition.
      * @param type - The custom element type to define.
-     * @param nameOrDef - The name of the element to define or a definition object
-     * that describes the element to define.
+     * @param nameOrDef - The name of the element to define or a definition object.
+     * @param extensions - Optional callbacks to run before registration.
      */
-    define,
+    define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition<TType>,
+        extensions?: FASTElementExtension[],
+    ): Promise<TType>;
 
     /**
-     * Defines metadata for a FASTElement which can be used to later define the element.
-     * @public
+     * Composes FASTElement metadata without registering the element.
+     * @param nameOrDef - The name of the element to compose or a definition object.
      */
-    compose,
-});
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        this: TType,
+        nameOrDef: string | PartialFASTElementDefinition<TType>,
+    ): Promise<FASTElementDefinition<TType>>;
+
+    /**
+     * Composes FASTElement metadata without registering the element.
+     * @param type - The custom element type to compose.
+     * @param nameOrDef - The name of the element to compose or a definition object.
+     */
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition<TType>,
+    ): Promise<FASTElementDefinition<TType>>;
+
+    /**
+     * Creates a new FASTElement base class inherited from the provided base type.
+     * @param BaseType - The base element type to inherit from.
+     */
+    from<TBase extends typeof HTMLElement>(
+        BaseType: TBase,
+    ): { new (): InstanceType<TBase> & FASTElement };
+}
+
+/**
+ * A minimal base class for FASTElements that also provides
+ * static helpers for working with FASTElements.
+ * @public
+ */
+export const FASTElement: FASTElementConstructor = Object.assign(
+    createFASTElement(HTMLElement),
+    {
+        /**
+         * Creates a new FASTElement base class inherited from the
+         * provided base type.
+         * @param BaseType - The base element type to inherit from.
+         */
+        from,
+
+        /**
+         * Defines a platform custom element based on the provided type and definition.
+         * @param type - The custom element type to define.
+         * @param nameOrDef - The name of the element to define or a definition object
+         * that describes the element to define.
+         */
+        define,
+
+        /**
+         * Defines metadata for a FASTElement which can be used to later define the element.
+         * @public
+         */
+        compose,
+    },
+);
 
 /**
  * Decorator: Defines a platform custom element based on `FASTElement`.

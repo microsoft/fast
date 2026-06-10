@@ -80,7 +80,7 @@ policy
 
 </td><td>
 
-DOMPolicy \| undefined
+[DOMPolicy](../fast-element.dompolicy/) \| undefined
 
 
 </td><td>

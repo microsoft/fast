@@ -14,6 +14,8 @@ navigationOptions:
 [@microsoft/fast-element](../fast-element/index.html)
 
 
+Core APIs for building standards-based Web Components with FAST Element.
+
 ## Classes
 
 <table><thead><tr><th>
@@ -869,6 +871,17 @@ Provides a mechanism for releasing resources.
 </td></tr>
 <tr><td>
 
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A policy that controls whether values can be written to DOM sinks.
+
+
+</td></tr>
+<tr><td>
+
 [ElementControllerStrategy](../fast-element.elementcontrollerstrategy/)
 
 
@@ -963,6 +976,17 @@ Observes an expression for changes.
 </td><td>
 
 Represents a custom element based on the FASTElement infrastructure.
+
+
+</td></tr>
+<tr><td>
+
+[FASTElementConstructor](../fast-element.fastelementconstructor/)
+
+
+</td><td>
+
+The FASTElement constructor and static registration helpers.
 
 
 </td></tr>

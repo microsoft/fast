@@ -80,25 +80,17 @@ export class AttributeDefinition implements Accessor {
     setValue(source: HTMLElement, newValue: any): void;
 }
 
-// Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
-//
 // @public
-export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 // @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy_2 | undefined, isVolatile?: boolean);
+    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy, isVolatile?: boolean);
     abstract createObserver(subscriber: Subscriber, directive: BindingDirective): ExpressionObserver<TSource, TReturn, TParent>;
-    // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
-    // (undocumented)
     isVolatile: boolean;
     options?: any;
-    // Warning: (ae-forgotten-export) The symbol "DOMPolicy_2" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    policy?: DOMPolicy_2 | undefined;
+    policy?: DOMPolicy;
 }
 
 // @public
@@ -171,16 +163,16 @@ export type Class<T, C = {}> = C & Constructable<T> & {
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>,
-policy: DOMPolicy_2) => HTMLTemplateCompilationResult;
+policy: DOMPolicy) => HTMLTemplateCompilationResult;
 
 // @public
 export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 // @public
 export const Compiler: {
-    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy_2): HTMLTemplateCompilationResult<TSource, TParent>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: DOMPolicy_2): ViewBehaviorFactory;
+    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: DOMPolicy): ViewBehaviorFactory;
 };
 
 // @public
@@ -305,8 +297,8 @@ export interface Disposable {
 
 // @public
 export const DOM: Readonly<{
-    readonly policy: DOMPolicy_2;
-    setPolicy(value: DOMPolicy_2): void;
+    readonly policy: DOMPolicy;
+    setPolicy(value: DOMPolicy): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
@@ -345,8 +337,14 @@ export type DOMGuards = {
 };
 
 // @public
+export interface DOMPolicy {
+    createHTML(value: string): string;
+    protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
+}
+
+// @public
 export const DOMPolicy: Readonly<{
-    create(options?: DOMPolicyOptions): Readonly<DOMPolicy_2>;
+    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
 }>;
 
 // @public
@@ -535,12 +533,19 @@ export interface FASTElement extends HTMLElement {
 }
 
 // @public
-export const FASTElement: {
+export const FASTElement: FASTElementConstructor;
+
+// @public
+export interface FASTElementConstructor {
     new (): FASTElement;
-    define: typeof define;
-    compose: typeof compose;
-    from: typeof from;
-};
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(this: TType, nameOrDef: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
+    define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(this: TType, nameOrDef: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
+    define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
+    from<TBase extends typeof HTMLElement>(BaseType: TBase): {
+        new (): InstanceType<TBase> & FASTElement;
+    };
+}
 
 // @public
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
@@ -608,14 +613,13 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
-    // (undocumented)
     dataBinding: Binding;
     // @internal
     handleChange(binding: Expression, observer: ExpressionObserver): void;
     // @internal
     handleEvent(event: Event): void;
     id: string;
-    policy: DOMPolicy_2;
+    policy: DOMPolicy;
     sourceAspect: string;
     targetAspect: string;
     targetNodeId: string;
@@ -804,10 +808,10 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy_2): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
 
 // @public
-export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy_2, isVolatile?: boolean): Binding<T>;
+export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
 
 // @beta
 export type OwnedState<T> = ReadonlyOwnedState<T> & {
@@ -973,7 +977,7 @@ export const Signal: Readonly<{
 }>;
 
 // @public
-export function signal<T = any>(expression: Expression<T>, options: string | Expression<T>, policy?: DOMPolicy_2): Binding<T>;
+export function signal<T = any>(expression: Expression<T>, options: string | Expression<T>, policy?: DOMPolicy): Binding<T>;
 
 // @public
 export function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
@@ -1159,7 +1163,7 @@ export type TrustedTypesPolicy = {
 };
 
 // @public
-export function twoWay<T = any>(expression: Expression<T>, optionsOrChangeEvent?: TwoWayBindingOptions | string, policy?: DOMPolicy_2, isBindingVolatile?: boolean): Binding<T>;
+export function twoWay<T = any>(expression: Expression<T>, optionsOrChangeEvent?: TwoWayBindingOptions | string, policy?: DOMPolicy, isBindingVolatile?: boolean): Binding<T>;
 
 // @public
 export type TwoWayBindingOptions = {
@@ -1177,11 +1181,12 @@ export const TwoWaySettings: Readonly<{
     configure(settings: TwoWaySettings): void;
 }>;
 
-// Warning: (ae-forgotten-export) The symbol "TypeDefinition" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
-export interface TypeRegistry<TDefinition extends TypeDefinition> {
+export interface TypeRegistry<TDefinition extends {
+    type: Function;
+}> {
     // (undocumented)
     getByType(key: Function): TDefinition | undefined;
     // (undocumented)
@@ -1236,7 +1241,7 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 export interface ViewBehaviorFactory {
     createBehavior(): ViewBehavior;
     id?: string;
-    policy?: DOMPolicy_2;
+    policy?: DOMPolicy;
     targetNodeId?: string;
     targetTagName?: string | null;
 }
@@ -1270,16 +1275,16 @@ export interface ViewController<TSource = any, TParent = any> extends Expression
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
-    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy_2 | undefined);
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
     // @internal (undocumented)
     compile(): HTMLTemplateCompilationResult<TSource, TParent>;
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy_2): ViewTemplate<TSource, TParent>;
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    withPolicy(policy: DOMPolicy_2): this;
+    withPolicy(policy: DOMPolicy): this;
 }
 
 // @public
@@ -1290,13 +1295,5 @@ export function watch(object: any, subscriber: Subscriber | ((subject: any, args
 
 // @public
 export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType;
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-
-// (No @packageDocumentation comment for this package)
 
 ```
