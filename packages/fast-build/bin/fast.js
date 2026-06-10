@@ -7,16 +7,21 @@ const path = require("path");
 
 const WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
 const DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
+const VALUELESS_CLI_FLAGS = new Set(["stream"]);
 const ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
     "templates",
     "attribute-name-strategy",
+    "stream",
 ]);
 
+/** @typedef {Record<string, string | boolean>} FastBuildConfig */
+
 /**
- * Parse CLI arguments of the form --key="value" or --key=value.
+ * Parse CLI arguments of the form --key="value", --key=value, or supported
+ * valueless flags like --stream.
  * @param {string[]} argv
  * @returns {Record<string, string>}
  */
@@ -26,9 +31,46 @@ function parseArgs(argv) {
         const match = arg.match(/^--([^=]+)=(.*)$/s);
         if (match) {
             args[match[1]] = match[2].replace(/^"|"$/g, "");
+            continue;
+        }
+
+        const flag = arg.match(/^--([^=]+)$/s);
+        if (flag && VALUELESS_CLI_FLAGS.has(flag[1])) {
+            args[flag[1]] = "true";
         }
     }
     return args;
+}
+
+/**
+ * Resolve a boolean option, preferring CLI args over config values.
+ * CLI values accept true, false, or an empty valueless flag.
+ * @param {Record<string, string>} args - Parsed CLI arguments.
+ * @param {FastBuildConfig} config - Parsed config file values.
+ * @param {string} key - The option key.
+ * @returns {boolean}
+ */
+function resolveBooleanOption(args, config, key) {
+    if (Object.prototype.hasOwnProperty.call(args, key)) {
+        const value = args[key].trim().toLowerCase();
+        if (value === "true" || value === "") {
+            return true;
+        }
+        if (value === "false") {
+            return false;
+        }
+
+        process.stderr.write(
+            `Error: Invalid --${key} value "${args[key]}". Expected "true" or "false".\n`
+        );
+        process.exit(1);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        return config[key] === true;
+    }
+
+    return false;
 }
 
 /**
@@ -42,7 +84,7 @@ function parseArgs(argv) {
  * file's directory so that the caller can use them directly.
  *
  * @param {string | undefined} configPath - Explicit path from --config, if any.
- * @returns {{ config: Record<string, string>, configDir: string | null }}
+ * @returns {{ config: FastBuildConfig, configDir: string | null }}
  */
 function loadConfig(configPath) {
     /** @type {string} */
@@ -92,6 +134,16 @@ function loadConfig(configPath) {
             );
             process.exit(1);
         }
+        if (key === "stream") {
+            if (typeof raw[key] !== "boolean") {
+                process.stderr.write(
+                    `Error: Value for "${key}" in config file "${resolvedPath}" must be a boolean.\n`
+                );
+                process.exit(1);
+            }
+            continue;
+        }
+
         if (typeof raw[key] !== "string") {
             process.stderr.write(
                 `Error: Value for "${key}" in config file "${resolvedPath}" must be a string.\n`
@@ -110,7 +162,7 @@ function loadConfig(configPath) {
  * CLI-derived paths are resolved relative to CWD (the default behaviour).
  *
  * @param {Record<string, string>} args - Parsed CLI arguments.
- * @param {Record<string, string>} config - Parsed config file values.
+ * @param {FastBuildConfig} config - Parsed config file values.
  * @param {string | null} configDir - Directory of the config file, or null.
  * @param {string} key - The option key.
  * @param {string} [defaultValue] - Fallback when neither source provides a value.
@@ -122,6 +174,9 @@ function resolveOption(args, config, configDir, key, defaultValue) {
     }
     if (Object.prototype.hasOwnProperty.call(config, key)) {
         const value = config[key];
+        if (typeof value !== "string") {
+            return defaultValue;
+        }
         const isFilePath = key === "entry" || key === "state" || key === "output" || key === "templates";
         if (isFilePath && configDir !== null) {
             return path.resolve(configDir, value);
@@ -287,6 +342,7 @@ async function runBuild(args) {
         Object.prototype.hasOwnProperty.call(args, "state") ||
         Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
+    const stream = resolveBooleanOption(args, config, "stream");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(
@@ -301,9 +357,11 @@ async function runBuild(args) {
     // Resolve template files
     const templatesMap = {};
     if (!templatesArg) {
-        process.stderr.write(
-            "Warning: --templates was not provided. No custom element templates will be loaded.\n"
-        );
+        if (!stream) {
+            process.stderr.write(
+                "Warning: --templates was not provided. No custom element templates will be loaded.\n"
+            );
+        }
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
@@ -346,6 +404,49 @@ async function runBuild(args) {
     }
 
     // Render
+    if (stream) {
+        if (typeof wasm.render_entry_with_templates !== "function") {
+            process.stderr.write(
+                "Error: Streaming requires render_entry_with_templates to be exported by the WASM module.\n"
+            );
+            process.exit(1);
+        }
+
+        const renderedChunks = wasm.render_entry_with_templates(
+            entryContent,
+            JSON.stringify(templatesMap),
+            stateContent,
+            attributeNameStrategy || "",
+            true,
+        );
+
+        /** @type {unknown} */
+        let chunks;
+        try {
+            chunks = JSON.parse(renderedChunks);
+        } catch (e) {
+            process.stderr.write(
+                `Error: Streaming renderer returned invalid JSON: ${e.message}\n`
+            );
+            process.exit(1);
+        }
+
+        if (
+            !Array.isArray(chunks) ||
+            chunks.some((chunk) => typeof chunk !== "string")
+        ) {
+            process.stderr.write(
+                "Error: Streaming renderer must return a JSON array of strings.\n"
+            );
+            process.exit(1);
+        }
+
+        for (const chunk of chunks) {
+            process.stdout.write(chunk);
+        }
+        return;
+    }
+
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
         rendered = wasm.render_entry_with_templates(
@@ -375,6 +476,8 @@ async function main() {
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
             '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
             '                         an empty state object.\n' +
+            '  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n' +
+            '                         of writing an output file.\n' +
             '  --attribute-name-strategy="camelCase"\n' +
             '                         Strategy for mapping attribute names to property names.\n' +
             '                         "camelCase" (default) or "none".\n' +
