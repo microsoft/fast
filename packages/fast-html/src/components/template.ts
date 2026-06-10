@@ -26,6 +26,7 @@ import {
     type ChainedExpression,
     contextPrefixDot,
     type DataBindingBehaviorConfig,
+    escapeBracesInCodeElements,
     eventArgAccessor,
     getBooleanBinding,
     getExpressionChain,
@@ -346,7 +347,9 @@ class TemplateElement extends FASTElement {
                 // Callback: Before template has been evaluated and assigned
                 TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
 
-                const innerHTML = transformInnerHTML(this.innerHTML);
+                const innerHTML = transformInnerHTML(
+                    escapeBracesInCodeElements(this.innerHTML),
+                );
 
                 // Cache paths during template processing (pass undefined if observerMap is not available)
                 const { strings, values } = await this.resolveStringsAndValues(
