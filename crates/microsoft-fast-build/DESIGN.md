@@ -41,7 +41,7 @@ render_template(template, state_str)
 | Module | Role |
 |--------|------|
 | `lib.rs` | Public API surface — render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` calls |
+| `renderer.rs` | Thin entry points converting the public API into `render_node` calls. Preprocesses the top-level `template` string through `escape_code_sample_elements` so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
@@ -52,9 +52,10 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
 
 ---
 

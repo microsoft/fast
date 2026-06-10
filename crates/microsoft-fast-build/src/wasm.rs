@@ -76,6 +76,30 @@ pub fn render_entry_with_templates(
     .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
+/// Apply the FAST code-sample escape to an HTML string.
+///
+/// Walks the input HTML and, for every `<code>` element, escapes:
+///
+/// * curly braces (`{` → `&#123;`, `}` → `&#125;`) in text content and
+///   attribute values — so the FAST template parser does not interpret
+///   `{{ ... }}` / `{ ... }` inside code samples as bindings;
+/// * angle brackets of FAST directive tags (`<f-when>`, `</f-when>`,
+///   `<f-repeat>`, `</f-repeat>`, case-insensitive) — so those directive
+///   tags surface as literal text instead of being activated as real
+///   elements. Angle brackets of any other tag (`<button>`, custom
+///   elements, …) are left untouched so they keep rendering as live DOM.
+///
+/// Non-`<code>` regions of the input are returned verbatim. The function
+/// is idempotent — running it on an already-escaped string is a no-op.
+///
+/// Intended for build-time tooling that needs to inject author-written
+/// HTML containing `<code>` samples into a rendered page without going
+/// through the full `render_*` pipeline.
+#[wasm_bindgen]
+pub fn escape_code_samples(html: &str) -> String {
+    crate::code_escape::escape_code_sample_elements(html)
+}
+
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns a JSON array of template metadata objects,
 /// one per `<f-template>` element found. `name` is `null` when the element has
