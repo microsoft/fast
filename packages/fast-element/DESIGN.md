@@ -350,7 +350,9 @@ the imperative `html` API:
 
 - The internal `<f-template>` publisher parses HTML and returns concrete
   `ViewTemplate` instances through the registry-aware declarative template
-  bridge.
+  bridge. If duplicate connected publishers share a name, the first connected
+  publisher supplies the definition template and later duplicates do not
+  reassign it.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
