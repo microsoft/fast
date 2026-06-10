@@ -1,6 +1,7 @@
 use crate::config::{AttributeNameStrategy, RenderConfig};
+use crate::json::{self, escape_json_str, json_string_array};
 use crate::{
-    json, render_entry_template_stream_with_locator,
+    render_entry_template_stream_with_locator,
     render_entry_template_stream_with_locator_without_state, render_entry_template_with_locator,
     render_entry_template_with_locator_without_state, render_template,
     render_template_with_locator, render_template_with_locator_without_state,
@@ -137,29 +138,6 @@ fn shadowroot_attributes_json(attrs: &[(String, Option<String>)]) -> String {
             escape_json_str(name),
             value_json
         ));
-    }
-    format!("[{}]", parts.join(","))
-}
-
-fn escape_json_str(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for c in s.chars() {
-        match c {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            '\t' => out.push_str("\\t"),
-            c => out.push(c),
-        }
-    }
-    out
-}
-
-fn json_string_array(items: &[String]) -> String {
-    let mut parts = Vec::with_capacity(items.len());
-    for item in items {
-        parts.push(format!("\"{}\"", escape_json_str(item)));
     }
     format!("[{}]", parts.join(","))
 }
