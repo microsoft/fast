@@ -1,7 +1,10 @@
 use crate::config::{AttributeNameStrategy, RenderConfig};
+use crate::json::{self, escape_json_str, json_string_array};
 use crate::{
-    json, render_entry_template_with_locator, render_entry_template_with_locator_without_state,
-    render_template, render_template_with_locator, render_template_with_locator_without_state,
+    render_entry_template_stream_with_locator,
+    render_entry_template_stream_with_locator_without_state, render_entry_template_with_locator,
+    render_entry_template_with_locator_without_state, render_template,
+    render_template_with_locator, render_template_with_locator_without_state,
     render_template_without_state, Locator,
 };
 use std::collections::HashMap;
@@ -58,22 +61,46 @@ pub fn render_with_templates(
 /// e.g. `{"my-button": "<template>...</template>"}`, or template metadata objects.
 /// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
 /// or `"none"`. Pass an empty string for the default.
-/// Returns the rendered HTML or throws a JavaScript error.
+/// Pass `stream: true` to return a JSON array string of stream chunks; in
+/// stream mode, `templates_json` may be `{}`. Omitted or `false` stream
+/// preserves the rendered HTML behavior.
 #[wasm_bindgen]
 pub fn render_entry_with_templates(
     entry: &str,
     templates_json: &str,
     state: Option<String>,
     attribute_name_strategy: Option<String>,
+    stream: Option<bool>,
 ) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_template_definitions(templates);
     let config = build_config(attribute_name_strategy.as_deref())?;
-    match state {
-        Some(state) => render_entry_template_with_locator(entry, &state, &locator, config.as_ref()),
-        None => render_entry_template_with_locator_without_state(entry, &locator, config.as_ref()),
+
+    if stream.unwrap_or(false) {
+        let chunks = match state {
+            Some(state) => {
+                render_entry_template_stream_with_locator(entry, &state, &locator, config.as_ref())
+            }
+            None => render_entry_template_stream_with_locator_without_state(
+                entry,
+                &locator,
+                config.as_ref(),
+            ),
+        }
+        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+        Ok(json_string_array(&chunks))
+    } else {
+        match state {
+            Some(state) => {
+                render_entry_template_with_locator(entry, &state, &locator, config.as_ref())
+            }
+            None => {
+                render_entry_template_with_locator_without_state(entry, &locator, config.as_ref())
+            }
+        }
+        .map_err(|e| JsValue::from_str(&e.to_string()))
     }
-    .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 /// Parse all `<f-template>` elements from an HTML string.
@@ -113,21 +140,6 @@ fn shadowroot_attributes_json(attrs: &[(String, Option<String>)]) -> String {
         ));
     }
     format!("[{}]", parts.join(","))
-}
-
-fn escape_json_str(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for c in s.chars() {
-        match c {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            '\t' => out.push_str("\\t"),
-            c => out.push(c),
-        }
-    }
-    out
 }
 
 fn parse_templates_map(
