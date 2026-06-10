@@ -256,6 +256,72 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator(".action-label")).toHaveText("action label B");
     });
 
+    test("should render complex nested arrays and objects", async ({ page }) => {
+        await expect(page.locator(".complex-owner")).toContainText("Owner: Owner A");
+        await expect(page.locator(".complex-owner")).toContainText("Timezone: UTC");
+        await expect(page.locator(".complex-suite")).toHaveCount(1);
+        await expect(page.locator(".complex-section")).toHaveCount(1);
+        await expect(page.locator(".complex-row")).toHaveCount(1);
+        await expect(page.locator(".complex-cell")).toHaveCount(1);
+        await expect(page.locator(".complex-cell")).toContainText("Cell A: ready");
+        await expect(page.locator(".complex-history")).toHaveText("created/false");
+    });
+
+    test("should update deep object fields inside nested arrays", async ({ page }) => {
+        await page.locator("button:has-text('Update complex object fields')").click();
+
+        await expect(page.locator(".complex-owner")).toContainText("Owner: Owner B");
+        await expect(page.locator(".complex-owner")).toContainText("Timezone: PST");
+        await expect(page.locator(".complex-cell")).toContainText("Cell A: done");
+        await expect(page.locator(".complex-history")).toHaveText("created/true");
+    });
+
+    test("should observe additions at multiple nested array levels", async ({ page }) => {
+        await page.locator("button:has-text('Add complex nested items')").click();
+
+        await expect(page.locator(".complex-cell")).toHaveCount(2);
+        await expect(page.locator(".complex-history")).toHaveCount(3);
+        await expect(page.locator(".complex-cell").nth(1)).toContainText(
+            "Cell B: pending",
+        );
+        await expect(page.locator(".complex-history").nth(1)).toHaveText("reviewed/true");
+        await expect(page.locator(".complex-history").nth(2)).toHaveText("queued/false");
+    });
+
+    test("should observe new deeply nested objects created in added array branches", async ({
+        page,
+    }) => {
+        await page.locator("button:has-text('Add complex section')").click();
+
+        await expect(page.locator(".complex-section")).toHaveCount(2);
+        await expect(page.locator(".complex-section").nth(1)).toContainText("Section B");
+        await expect(page.locator(".complex-row").nth(1)).toContainText("Row B");
+        await expect(page.locator(".complex-cell").nth(1)).toContainText(
+            "Cell C: approved",
+        );
+        await expect(page.locator(".complex-history").nth(1)).toHaveText("draft/true");
+    });
+
+    test("should observe deep mutations after replacing nested arrays", async ({
+        page,
+    }) => {
+        await page
+            .locator("observer-map-internal-test-element")
+            .evaluate((element: any) =>
+                element.replaceComplexRowsAndMutateNestedObject(),
+            );
+
+        await expect(page.locator(".complex-row").first()).toContainText(
+            "Row Replacement",
+        );
+        await expect(page.locator(".complex-cell").first()).toContainText(
+            "Cell Replacement: mutated",
+        );
+        await expect(page.locator(".complex-history").first()).toHaveText(
+            "replacement/true",
+        );
+    });
+
     test("should update global stats with nested metrics", async ({ page }) => {
         // Check initial engagement stats
         const initialDaily = await page

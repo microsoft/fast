@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, Observable, observable, Updates } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
@@ -345,6 +345,150 @@ class DeepMergeTestElement extends FASTElement {
         };
 
         deepMerge(this.users[0], updates);
+    }
+
+    public testArrayReplacement() {
+        const previousOrders = this.users[0].orders;
+
+        this.updateUserOrders();
+
+        return {
+            sameOrders: previousOrders === this.users[0].orders,
+            orderCount: this.users[0].orders.length,
+        };
+    }
+
+    public async replaceOrdersAndMutateNestedData() {
+        this.updateUserOrders();
+
+        await Updates.next();
+
+        this.users[0].orders[0].total = 123.45;
+        this.users[0].orders[0].items[0].metadata.views = 401;
+
+        await Updates.next();
+    }
+
+    public async replaceOrdersAndPushNestedItem() {
+        this.updateUserOrders();
+
+        await Updates.next();
+
+        this.users[0].orders[0].items.push({
+            id: 1005,
+            name: "Stand",
+            price: 25.0,
+            inStock: true,
+            tags: ["accessories"],
+            metadata: {
+                views: 50,
+                rating: 4.1,
+            },
+        });
+
+        await Updates.next();
+    }
+
+    public async countAccessorsForInitialOrdersPush() {
+        const newOrder = {
+            id: 104,
+            date: "2024-05-01",
+            total: 25.0,
+            items: [],
+        };
+
+        this.users[0].orders.push(newOrder);
+
+        await Updates.next();
+
+        const accessorNames = Observable.getAccessors(newOrder).map(
+            accessor => accessor.name,
+        );
+
+        return {
+            accessorCount: accessorNames.length,
+            duplicateAccessors: accessorNames.filter(
+                (name, index) => accessorNames.indexOf(name) !== index,
+            ),
+            orderCount: this.users[0].orders.length,
+        };
+    }
+
+    public countAccessorsForInitialOrder() {
+        const accessorNames = Observable.getAccessors(this.users[0].orders[0]).map(
+            accessor => accessor.name,
+        );
+
+        return {
+            accessorCount: accessorNames.length,
+            duplicateAccessors: accessorNames.filter(
+                (name, index) => accessorNames.indexOf(name) !== index,
+            ),
+        };
+    }
+
+    public async testDeepMergeObserverMapReentry() {
+        const items = this.users[0].orders[0].items;
+        const observer = Observable.getNotifier(items);
+        let firstCalls = 0;
+        let depth = 0;
+        let maxDepth = 0;
+
+        const nestedSubscriber = {
+            handleChange() {},
+        };
+
+        observer.subscribe({
+            handleChange: () => {
+                firstCalls++;
+                depth++;
+                maxDepth = Math.max(maxDepth, depth);
+
+                if (firstCalls === 1) {
+                    deepMerge(this.users[0].orders[0], {
+                        items: [
+                            {
+                                id: 3001,
+                                name: "Dock",
+                                price: 125.0,
+                                inStock: true,
+                                tags: ["accessories"],
+                                metadata: {
+                                    views: 40,
+                                    rating: 4.2,
+                                },
+                            },
+                        ],
+                    });
+                    observer.subscribe(nestedSubscriber);
+                }
+
+                depth--;
+            },
+        });
+
+        items.push({
+            id: 3000,
+            name: "Cable",
+            price: 10.0,
+            inStock: true,
+            tags: ["accessories"],
+            metadata: {
+                views: 10,
+                rating: 4.0,
+            },
+        });
+
+        await Updates.next();
+        await Updates.next();
+
+        return {
+            firstCalls,
+            maxDepth,
+            currentItemCount: this.users[0].orders[0].items.length,
+            oldItemCount: items.length,
+            sameArray: items === this.users[0].orders[0].items,
+        };
     }
 }
 
