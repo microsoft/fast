@@ -56,6 +56,32 @@ test.describe("DeclarativeTemplateBridge", () => {
         expect(await requestB).toBe(templateB);
     });
 
+    test("keeps the first publisher when duplicate publishers share a name", async () => {
+        const bridge = new DeclarativeTemplateBridge();
+        const registry = {
+            define() {},
+            get() {
+                return void 0;
+            },
+        } as unknown as CustomElementRegistry;
+        const firstTemplate = { id: "first" } as any;
+        const secondTemplate = { id: "second" } as any;
+
+        const request = bridge.requestTemplate({
+            name: "test-element",
+            registry,
+        } as any);
+
+        bridge.registerPublisher(registry, "test-element", {
+            publishTemplate: async () => firstTemplate,
+        });
+        bridge.registerPublisher(registry, "test-element", {
+            publishTemplate: async () => secondTemplate,
+        });
+
+        expect(await request).toBe(firstTemplate);
+    });
+
     test("requeues active requests when a publisher disconnects", async () => {
         const bridge = new DeclarativeTemplateBridge();
         const registry = {
@@ -656,35 +682,96 @@ test.describe("declarativeTemplate", () => {
         expect(result.shadowText).toContain("reconnected");
     });
 
-    test("rejects duplicate matching templates with a clear error", async ({ page }) => {
+    test("does not reassign a resolved template for duplicate f-template names", async ({
+        page,
+    }) => {
+        const pageErrors: string[] = [];
+        page.on("pageerror", error => {
+            pageErrors.push(error.message);
+        });
+
         await page.goto("/");
 
-        const message = await page.evaluate(async () => {
+        const result = await page.evaluate(async () => {
+            const errors: string[] = [];
+            window.addEventListener("error", event => {
+                errors.push(event.message);
+            });
+            window.addEventListener("unhandledrejection", event => {
+                errors.push(event.reason?.message ?? String(event.reason));
+            });
+
             // @ts-expect-error: Client module.
-            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
-                "/declarative-main.js"
-            );
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                declarativeTemplate,
+                uniqueElementName,
+            } = await import("/declarative-main.js");
 
             const elementName = uniqueElementName();
 
             document.body.insertAdjacentHTML(
                 "beforeend",
-                `<f-template name="${elementName}"><template><span>first</span></template></f-template><f-template name="${elementName}"><template><span>second</span></template></f-template>`,
+                `<f-template name="${elementName}"><template><span class="label">first {{label}}</span></template></f-template><f-template name="${elementName}"><template><span class="label">second {{label}}</span></template></f-template>`,
             );
 
-            class TestElement extends FASTElement {}
+            class TestElement extends FASTElement {
+                public label = "initial";
+            }
+
+            let defineError = "";
 
             try {
                 await TestElement.define({
                     name: elementName,
                     template: declarativeTemplate(),
                 });
-                return "";
             } catch (error) {
-                return (error as Error).message;
+                defineError = (error as Error).message;
+                return {
+                    defineError,
+                    errors,
+                    firstText: "",
+                    secondText: "",
+                    templateStable: false,
+                };
             }
+
+            const definition = FASTElementDefinition.getByType(TestElement) as any;
+            const resolvedTemplate = definition.template;
+            const firstElement = document.createElement(elementName) as any;
+            document.body.appendChild(firstElement);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            const duplicateTemplate = document.createElement("f-template");
+            duplicateTemplate.setAttribute("name", elementName);
+            duplicateTemplate.innerHTML =
+                '<template><span class="label">third {{label}}</span></template>';
+            document.body.appendChild(duplicateTemplate);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            const secondElement = document.createElement(elementName) as any;
+            secondElement.label = "later";
+            document.body.appendChild(secondElement);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                defineError,
+                errors,
+                firstText:
+                    firstElement.shadowRoot?.querySelector(".label")?.textContent ?? "",
+                secondText:
+                    secondElement.shadowRoot?.querySelector(".label")?.textContent ?? "",
+                templateStable: definition.template === resolvedTemplate,
+            };
         });
 
-        expect(message).toContain("There can only be one connected <f-template");
+        expect(result.defineError).toBe("");
+        expect(result.errors).toEqual([]);
+        expect(pageErrors).toEqual([]);
+        expect(result.templateStable).toBe(true);
+        expect(result.firstText).toBe("first initial");
+        expect(result.secondText).toBe("first later");
     });
 });
