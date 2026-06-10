@@ -79,6 +79,11 @@ When connected to the DOM it:
 4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
 
+When multiple connected `<f-template>` publishers share the same `name`, the
+bridge resolves pending definitions from the first connected publisher and keeps
+the resolved template stable. Later duplicate publishers do not reassign the
+definition template.
+
 ### `TemplateParser` — declarative HTML parser
 
 A standalone class that converts declarative HTML template markup into the
