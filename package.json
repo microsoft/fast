@@ -62,7 +62,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260421.2",
     "@types/node": "^22.18.11",
     "beachball": "2.63.0",
-    "concurrently": "9.2.1",
+    "concurrently": "10.0.3",
     "lage": "2.15.8",
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
