@@ -1244,10 +1244,18 @@ hr {
     text-decoration-thickness: 2px;
 }
 
-.navbar__logo img,
+.navbar__logo img {
+    height: inherit;
+}
+
 body,
 html {
-    height: inherit;
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 .badge,
