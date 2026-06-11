@@ -21,6 +21,6 @@ A helper for creating DOM policies.
 
 ```typescript
 DOMPolicy: Readonly<{
-    create(options?: DOMPolicyOptions): Readonly<IDOMPolicy>;
+    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
 }>
 ```

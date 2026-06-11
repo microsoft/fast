@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>Hydration Config Test</title>
+    </head>
+    <body>
+        <hydration-config-element label="Initial" data-server-node="initial"><template shadowrootmode="open" shadowroot="open"><span id="label" data-server-node="initial" data-fe="1"><!--fe:b-->Initial<!--fe:/b--></span></template></hydration-config-element>
+        <template id="late-hydration-markup">
+            <hydration-config-element label="Late" data-server-node="late"><template shadowrootmode="open" shadowroot="open"><span id="label" data-server-node="late" data-fe="1"><!--fe:b-->Late<!--fe:/b--></span></template></hydration-config-element>
+        </template>
+<f-template name="hydration-config-element">
+    <template>
+        <span id="label" data-server-node="{{dataset.serverNode}}">{{label}}</span>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
