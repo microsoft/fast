@@ -25,4 +25,4 @@ html: string | HTMLTemplateElement,
 factories: Record<string, ViewBehaviorFactory>,
 policy: DOMPolicy) => TemplateCompilationResult;
 ```
-**References:** [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [TemplateCompilationResult](../fast-element.htmltemplatecompilationresult/)
+**References:** [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [DOMPolicy](../fast-element.dompolicy/)<!-- -->, [TemplateCompilationResult](../fast-element.htmltemplatecompilationresult/)

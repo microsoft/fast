@@ -48,7 +48,7 @@ policy
 
 </td><td>
 
-DOMPolicy
+[DOMPolicy](../fast-element.dompolicy/)
 
 
 </td><td>

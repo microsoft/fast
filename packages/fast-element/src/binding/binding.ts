@@ -1,4 +1,5 @@
-import type { DOMAspect, DOMPolicy } from "../dom.js";
+import type { DOMAspect } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type { Expression, ExpressionObserver } from "../observation/observable.js";
 
@@ -36,16 +37,35 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     options?: any;
 
     /**
+     * Evaluates the binding.
+     */
+    public evaluate: Expression<TSource, TReturn, TParent>;
+
+    /**
+     * The security policy to associate with this binding.
+     */
+    public policy?: DOMPolicy;
+
+    /**
+     * Indicates whether the binding is volatile.
+     */
+    public isVolatile: boolean;
+
+    /**
      * Creates a binding.
      * @param evaluate - Evaluates the binding.
      * @param policy - The security policy to associate with this binding.
      * @param isVolatile - Indicates whether the binding is volatile.
      */
     public constructor(
-        public evaluate: Expression<TSource, TReturn, TParent>,
-        public policy?: DOMPolicy,
-        public isVolatile: boolean = false,
-    ) {}
+        evaluate: Expression<TSource, TReturn, TParent>,
+        policy?: DOMPolicy,
+        isVolatile: boolean = false,
+    ) {
+        this.evaluate = evaluate;
+        this.policy = policy;
+        this.isVolatile = isVolatile;
+    }
 
     /**
      * Creates an observer capable of notifying a subscriber when the output of a binding changes.

@@ -4,9 +4,12 @@ import { createTypeRegistry, FAST, type TypeDefinition } from "./platform.js";
 test.describe("The FAST module", () => {
     test.describe("messaging API", () => {
         test("can create errors with codes", async () => {
-            const error = FAST.error(42);
+            const code = 42;
+            FAST.addMessages({ [code]: `Error ${code}` });
+
+            const error = FAST.error(code);
             expect(error).toBeInstanceOf(Error);
-            expect(error.message).toContain("42");
+            expect(error.message).toContain(`${code}`);
         });
     });
 });
