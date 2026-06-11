@@ -1,4 +1,4 @@
-import type { DOMPolicy } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     type Expression,
