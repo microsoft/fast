@@ -211,16 +211,7 @@ impl Locator {
 pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
     let mut results = Vec::new();
     let mut search_start = 0;
-    while let Some(rel) = html[search_start..].find("<f-template") {
-        let tag_start = search_start + rel;
-        let after_tag = tag_start + "<f-template".len();
-        // Ensure next char is not alphanumeric or '-' (avoid matching <f-templateX>)
-        if let Some(next_ch) = html[after_tag..].chars().next() {
-            if next_ch.is_alphanumeric() || next_ch == '-' {
-                search_start = after_tag;
-                continue;
-            }
-        }
+    while let Some(tag_start) = find_html_start_tag(html, "f-template", search_start) {
         // Find the closing '>' of the opening <f-template ...> tag
         let tag_close = match find_tag_end(html, tag_start) {
             Some(i) => i,
@@ -233,12 +224,10 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             .find(|(name, _)| name.eq_ignore_ascii_case("name"))
             .and_then(|(_, value)| value.clone());
         let shadowroot_attributes = collect_shadowroot_attributes(&attrs);
-
         // Find </f-template>
         let inner_start = tag_close;
-        let end_tag = "</f-template>";
-        let inner_end = match html[inner_start..].find(end_tag) {
-            Some(i) => inner_start + i,
+        let (inner_end, end_tag_close) = match find_html_end_tag(html, "f-template", inner_start) {
+            Some(result) => result,
             None => break,
         };
         let inner_html = &html[inner_start..inner_end];
@@ -250,9 +239,82 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             shadowroot_attributes,
             host_attributes,
         });
-        search_start = inner_end + end_tag.len();
+        search_start = end_tag_close;
     }
     results
+}
+
+fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Option<usize> {
+    let bytes = html.as_bytes();
+    let tag_name = tag_name.as_bytes();
+    let mut pos = from;
+
+    while let Some(rel) = html[pos..].find('<') {
+        let tag_start = pos + rel;
+        let name_start = tag_start + 1;
+
+        if name_start >= bytes.len() {
+            return None;
+        }
+
+        if bytes[name_start] != b'/'
+            && starts_with_ascii_case_insensitive(bytes, name_start, tag_name)
+            && is_html_tag_name_boundary(bytes.get(name_start + tag_name.len()).copied())
+        {
+            return Some(tag_start);
+        }
+
+        pos = name_start;
+    }
+
+    None
+}
+
+fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Option<(usize, usize)> {
+    let bytes = html.as_bytes();
+    let tag_name = tag_name.as_bytes();
+    let mut pos = from;
+
+    while let Some(rel) = html[pos..].find("</") {
+        let tag_start = pos + rel;
+        let name_start = tag_start + 2;
+
+        if starts_with_ascii_case_insensitive(bytes, name_start, tag_name) {
+            let mut tag_end = name_start + tag_name.len();
+
+            while tag_end < bytes.len() && bytes[tag_end].is_ascii_whitespace() {
+                tag_end += 1;
+            }
+
+            if tag_end < bytes.len() && bytes[tag_end] == b'>' {
+                return Some((tag_start, tag_end + 1));
+            }
+        }
+
+        pos = name_start;
+    }
+
+    None
+}
+
+fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8]) -> bool {
+    let end = start + expected.len();
+
+    if end > bytes.len() {
+        return false;
+    }
+
+    bytes[start..end]
+        .iter()
+        .zip(expected)
+        .all(|(actual, expected)| actual.eq_ignore_ascii_case(expected))
+}
+
+fn is_html_tag_name_boundary(byte: Option<u8>) -> bool {
+    matches!(byte, Some(b'>') | Some(b'/'))
+        || byte
+            .map(|byte| byte.is_ascii_whitespace())
+            .unwrap_or(false)
 }
 
 fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(String, Option<String>)> {
@@ -276,7 +338,7 @@ fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(Str
 /// If no `<template>` element is found, returns the trimmed input with an
 /// empty attribute list.
 fn extract_template_content(html: &str) -> (String, Vec<(String, Option<String>)>) {
-    let open = match html.find("<template") {
+    let open = match find_html_start_tag(html, "template", 0) {
         Some(i) => i,
         None => return (html.trim().to_string(), Vec::new()),
     };
@@ -284,8 +346,8 @@ fn extract_template_content(html: &str) -> (String, Vec<(String, Option<String>)
         Some(i) => i,
         None => return (html.trim().to_string(), Vec::new()),
     };
-    let close = match html[tag_end..].find("</template>") {
-        Some(i) => tag_end + i,
+    let close = match find_html_end_tag(html, "template", tag_end) {
+        Some((i, _)) => i,
         None => return (html.trim().to_string(), Vec::new()),
     };
     let attrs = parse_element_attributes(&html[open..tag_end]);
@@ -506,6 +568,48 @@ mod tests {
     }
 
     #[test]
+    fn test_parse_f_templates_open_tags_with_whitespace() {
+        let html = r#"<f-template
+    name="my-button"
+    shadowrootmode="open"
+>
+    <template
+        tabindex="0"
+    ><button>{{label}}</button></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].name, Some("my-button".to_string()));
+        assert_eq!(results[0].content, "<button>{{label}}</button>");
+        assert_eq!(
+            results[0].shadowroot_attributes,
+            vec![("shadowrootmode".to_string(), Some("open".to_string()))]
+        );
+        assert_eq!(
+            results[0].host_attributes,
+            vec![("tabindex".to_string(), Some("0".to_string()))]
+        );
+    }
+
+    #[test]
+    fn test_parse_f_templates_template_closing_tag_with_whitespace() {
+        let html = "<f-template name=\"my-button\"><template><button>{{label}}</button></template\n\t></f-template>";
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].name, Some("my-button".to_string()));
+        assert_eq!(results[0].content, "<button>{{label}}</button>");
+    }
+
+    #[test]
+    fn test_parse_f_templates_f_template_closing_tag_with_whitespace() {
+        let html = "<f-template name=\"my-button\"><template><button>{{label}}</button></template></f-template\n>";
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].name, Some("my-button".to_string()));
+        assert_eq!(results[0].content, "<button>{{label}}</button>");
+    }
+
+    #[test]
     fn test_parse_f_templates_host_attributes() {
         let html = r#"<f-template name="my-el">
     <template tabindex="0" @click="{handle()}" attr="{{val}}"><span>x</span></template>
@@ -596,5 +700,13 @@ mod tests {
                 ("?disabled".to_string(), Some("{{isDisabled}}".to_string())),
             ]
         );
+    }
+
+    #[test]
+    fn test_extract_template_content_closing_tag_with_whitespace() {
+        let html = "<template tabindex=\"0\"><span>x</span></template \n\t>";
+        let (content, attrs) = extract_template_content(html);
+        assert_eq!(content, "<span>x</span>");
+        assert_eq!(attrs, vec![("tabindex".to_string(), Some("0".to_string()))]);
     }
 }
