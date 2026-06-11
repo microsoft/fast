@@ -93,8 +93,10 @@ The hydration hook no-ops for new prerendered elements after the first
 hydratable Declarative Shadow DOM later can keep the hook active:
 
 ```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
 enableHydration({
-    noopAfterHydrationComplete: false,
+    stopHydration: StopHydration.never,
 });
 ```
 

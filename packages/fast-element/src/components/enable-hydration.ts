@@ -7,6 +7,7 @@ import { ElementController } from "./element-controller.js";
 import { isHydratable } from "./hydration.js";
 import { type HydrationOptions, HydrationTracker } from "./hydration-tracker.js";
 
+export { StopHydration } from "./hydration-tracker.js";
 export type { HydrationOptions };
 
 /**
@@ -30,15 +31,15 @@ let hookInstalled = false;
  * and subsequent calls merge their options into the shared tracker.
  * By default, the hook stops hydrating new prerendered elements after
  * the global `hydrationComplete` callback. Set
- * `noopAfterHydrationComplete` to `false` for streaming scenarios that
- * append hydratable Declarative Shadow DOM after the initial batch.
+ * `stopHydration` to `StopHydration.never` for streaming scenarios
+ * that append hydratable Declarative Shadow DOM after the initial batch.
  *
  * @example
  * ```ts
- * import { enableHydration } from "@microsoft/fast-element/hydration.js";
+ * import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
  *
  * enableHydration({
- *     noopAfterHydrationComplete: false,
+ *     stopHydration: StopHydration.never,
  *     hydrationComplete() {
  *         console.log("hydration complete");
  *     },

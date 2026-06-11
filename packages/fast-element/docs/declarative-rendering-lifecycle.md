@@ -171,7 +171,7 @@ The lifecycle callbacks are split between two APIs:
 
 The `hydrationComplete` callback fires only after every prerendered element has finished binding.
 By default, hydration no-ops for later prerendered batches after this callback.
-Set `noopAfterHydrationComplete: false` in `enableHydration()` when streaming
+Set `stopHydration: StopHydration.never` in `enableHydration()` when streaming
 Declarative Shadow DOM should continue hydrating after the initial batch.
 
 ### Callback Execution Order
@@ -207,11 +207,11 @@ callbacks are passed directly to `declarativeTemplate()`:
 
 ```typescript
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
 
 // Global hydration events
 enableHydration({
-    noopAfterHydrationComplete: false,
+    stopHydration: StopHydration.never,
     hydrationStarted() {
         console.log("Hydration started");
     },

@@ -661,7 +661,7 @@ sequenceDiagram
 
 By default, hydration no-ops for later prerendered batches after
 `hydrationComplete()` fires. Set
-`enableHydration({ noopAfterHydrationComplete: false })` when Declarative Shadow
+`enableHydration({ stopHydration: StopHydration.never })` when Declarative Shadow
 DOM may be streamed into the page after the initial hydration batch.
 
 For usage examples see

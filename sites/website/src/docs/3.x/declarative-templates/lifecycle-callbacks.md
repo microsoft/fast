@@ -36,12 +36,14 @@ enableHydration({
 
 Without calling `enableHydration()`, prerendered content is discarded and elements render client-side.
 By default, hydration no-ops for new prerendered elements after the first
-`hydrationComplete` callback. Set `noopAfterHydrationComplete: false` when your
+`hydrationComplete` callback. Set `stopHydration: StopHydration.never` when your
 app streams Declarative Shadow DOM after the initial batch:
 
 ```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
 enableHydration({
-    noopAfterHydrationComplete: false,
+    stopHydration: StopHydration.never,
 });
 ```
 

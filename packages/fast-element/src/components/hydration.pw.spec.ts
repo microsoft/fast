@@ -261,6 +261,7 @@ test.describe("The prerendered content optimization", () => {
                 FASTElement,
                 FASTElementDefinition,
                 html,
+                StopHydration,
                 uniqueElementName,
             } = await import("/main.js");
 
@@ -268,7 +269,7 @@ test.describe("The prerendered content optimization", () => {
             const name = uniqueElementName();
 
             enableHydration({
-                noopAfterHydrationComplete: false,
+                stopHydration: StopHydration.never,
                 hydrationStarted() {
                     events.push("start");
                 },
@@ -309,11 +310,23 @@ test.describe("The prerendered content optimization", () => {
             const first = await appendPrerenderedElement();
             const second = await appendPrerenderedElement();
 
-            return { events, first, second };
+            return {
+                events,
+                first,
+                second,
+                stopHydrationValues: {
+                    hydrationComplete: StopHydration.hydrationComplete,
+                    never: StopHydration.never,
+                },
+            };
         });
 
         expect(result.events).toEqual(["start", "complete", "start", "complete"]);
         expect(result.first).toBe(true);
         expect(result.second).toBe(true);
+        expect(result.stopHydrationValues).toEqual({
+            hydrationComplete: "hydration-complete",
+            never: "never",
+        });
     });
 });

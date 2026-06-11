@@ -195,8 +195,10 @@ after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
 after the initial batch, keep the hydration hook active:
 
 ```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
 enableHydration({
-    noopAfterHydrationComplete: false,
+    stopHydration: StopHydration.never,
 });
 ```
 

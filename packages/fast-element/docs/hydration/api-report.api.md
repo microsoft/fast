@@ -202,7 +202,7 @@ export class HydrationBindingError extends Error {
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
-    noopAfterHydrationComplete?: boolean;
+    stopHydration?: StopHydration;
 }
 
 // @public (undocumented)
@@ -241,6 +241,15 @@ export const SourceLifetime: Readonly<{
 
 // @public
 export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
+
+// @public
+export const StopHydration: Readonly<{
+    readonly hydrationComplete: "hydration-complete";
+    readonly never: "never";
+}>;
+
+// @public
+export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
 
 // @public
 export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {

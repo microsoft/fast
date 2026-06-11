@@ -1,4 +1,25 @@
 /**
+ * Describes when FAST should stop hydrating newly connected prerendered elements.
+ * @public
+ */
+export const StopHydration = Object.freeze({
+    /**
+     * Stop hydrating new prerendered elements after the active hydration batch completes.
+     */
+    hydrationComplete: "hydration-complete",
+    /**
+     * Keep the hydration hook active for later prerendered elements.
+     */
+    never: "never",
+} as const);
+
+/**
+ * Describes when FAST should stop hydrating newly connected prerendered elements.
+ * @public
+ */
+export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
+
+/**
  * Options for configuring global hydration lifecycle events and behavior.
  * @public
  */
@@ -8,12 +29,12 @@ export interface HydrationOptions {
     /** Called after all prerendered elements in a hydration batch complete. */
     hydrationComplete?(): void;
     /**
-     * Indicates whether the hydration hook should stop handling new
-     * prerendered elements after hydration completes.
+     * Indicates when the hydration hook should stop handling new
+     * prerendered elements.
      *
-     * @defaultValue true
+     * @defaultValue StopHydration.hydrationComplete
      */
-    noopAfterHydrationComplete?: boolean;
+    stopHydration?: StopHydration;
 }
 
 type HydrationCallbacks = Pick<
@@ -35,11 +56,11 @@ export class HydrationTracker {
     private completed = false;
     private checkTimer: ReturnType<typeof setTimeout> | null = null;
     private callbacks: HydrationCallbacks;
-    private noopAfterHydrationComplete: boolean;
+    private stopHydration: StopHydration;
 
     constructor(options: HydrationOptions) {
         this.callbacks = options;
-        this.noopAfterHydrationComplete = options.noopAfterHydrationComplete ?? true;
+        this.stopHydration = options.stopHydration ?? StopHydration.hydrationComplete;
     }
 
     /**
@@ -47,7 +68,7 @@ export class HydrationTracker {
      * prerendered elements.
      */
     public get shouldHydrate(): boolean {
-        return !this.completed || this.noopAfterHydrationComplete === false;
+        return !this.completed || this.stopHydration === StopHydration.never;
     }
 
     /**
@@ -117,8 +138,8 @@ export class HydrationTracker {
             ),
         };
 
-        if (incoming.noopAfterHydrationComplete !== void 0) {
-            this.noopAfterHydrationComplete = incoming.noopAfterHydrationComplete;
+        if (incoming.stopHydration !== void 0) {
+            this.stopHydration = incoming.stopHydration;
         }
     }
 }
