@@ -2,6 +2,7 @@ export type { HydrationOptions } from "./components/enable-hydration.js";
 export {
     deferHydrationAttribute,
     enableHydration,
+    StopHydration,
 } from "./components/enable-hydration.js";
 export { isHydratable } from "./components/hydration.js";
 export { HydrationTracker } from "./components/hydration-tracker.js";
