@@ -5,7 +5,7 @@
 ```ts
 
 // @public
-export interface CaptureType {
+export interface CaptureType<TSource = any, TParent = any> {
 }
 
 // @public
@@ -251,7 +251,7 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
