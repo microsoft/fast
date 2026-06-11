@@ -43,7 +43,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | `@microsoft/fast-element/context.js` | Path-only context protocol APIs. | `./dist/esm/context.js` | `./dist/dts/context.d.ts` |
 | `@microsoft/fast-element/di.js` | Path-only dependency injection APIs. | `./dist/esm/di/di.js` | `./dist/dts/di/di.d.ts` |
 | `@microsoft/fast-element/dom.js` | DOM abstraction and DOM aspect APIs. | `./dist/esm/dom.js` | `./dist/dts/dom.d.ts` |
-| `@microsoft/fast-element/dom-policy.js` | Trusted Types DOM policy helpers. | `./dist/esm/dom-policy.js` | `./dist/dts/dom-policy.d.ts` |
+| `@microsoft/fast-element/dom-policy.js` | Trusted Types DOM policy helpers for [DOMPolicy and Trusted Types](./dom-policy-and-trusted-types.md). | `./dist/esm/dom-policy.js` | `./dist/dts/dom-policy.d.ts` |
 | `@microsoft/fast-element/updates.js` | DOM update queue APIs. | `./dist/esm/updates.js` | `./dist/dts/updates.d.ts` |
 | `@microsoft/fast-element/arrays.js` | Array observation helpers. | `./dist/esm/arrays.js` | `./dist/dts/arrays.d.ts` |
 | `@microsoft/fast-element/array-observer.js` | ArrayObserver. | `./dist/esm/array-observer.js` | `./dist/dts/array-observer.d.ts` |
