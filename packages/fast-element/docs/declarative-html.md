@@ -32,11 +32,12 @@ The `@microsoft/fast-element` entrypoint itself remains
 side-effect free at import time. Declarative APIs lazily install declarative
 debug messages when they create templates. Hydratable `ViewTemplate` support is
 installed only when `enableHydration()` is called from
-`@microsoft/fast-element`.
+`@microsoft/fast-element/hydration.js`.
 
 `observerMap()` and `attributeMap()` are available from
-`@microsoft/fast-element`, including when using the maps without declarative
-templates.
+`@microsoft/fast-element/observer-map.js` and
+`@microsoft/fast-element/attribute-map.js`, including when using the maps
+without declarative templates.
 
 Example:
 ```html
@@ -88,6 +89,18 @@ enableHydration({
 });
 ```
 
+The hydration hook no-ops for new prerendered elements after the first
+`hydrationComplete` callback by default. Streaming scenarios that append
+hydratable Declarative Shadow DOM later can keep the hook active:
+
+```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    stopHydration: StopHydration.never,
+});
+```
+
 Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript
@@ -136,8 +149,8 @@ When the `observerMap()` extension is applied to an element definition,
 it automatically sets up deep reactive observation for root properties
 discovered in the template. Declarative templates assign `definition.schema`
 during template resolution, so `observerMap()` has schema data automatically.
-For non-declarative/manual schemas, import from `@microsoft/fast-element` and
-pass `observerMap({ schema })`.
+For non-declarative/manual schemas, import from
+`@microsoft/fast-element/observer-map.js` and pass `observerMap({ schema })`.
 
 ```typescript
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
