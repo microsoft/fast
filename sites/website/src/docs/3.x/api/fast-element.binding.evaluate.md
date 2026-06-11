@@ -15,6 +15,8 @@ navigationOptions:
 
 ## Binding.evaluate property
 
+Evaluates the binding.
+
 **Signature:**
 
 ```typescript

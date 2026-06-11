@@ -46,11 +46,8 @@ export class AttributeDefinition implements Accessor {
     setValue(source: HTMLElement, newValue: any): void;
 }
 
-// Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
-// Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
-//
 // @public
-export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 // @public
 export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
@@ -103,12 +100,60 @@ export interface DefaultCachedPath extends CachedPathCommon {
 }
 
 // @public
+export const DOMAspect: Readonly<{
+    readonly none: 0;
+    readonly attribute: 1;
+    readonly booleanAttribute: 2;
+    readonly property: 3;
+    readonly content: 4;
+    readonly tokenList: 5;
+    readonly event: 6;
+}>;
+
+// @public
+export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
+
+// @public
+export type DOMAspectGuards = {
+    [DOMAspect.attribute]?: DOMSinkGuards;
+    [DOMAspect.booleanAttribute]?: DOMSinkGuards;
+    [DOMAspect.property]?: DOMSinkGuards;
+    [DOMAspect.content]?: DOMSinkGuards;
+    [DOMAspect.tokenList]?: DOMSinkGuards;
+    [DOMAspect.event]?: DOMSinkGuards;
+};
+
+// @public
+export type DOMElementGuards = Record<string, DOMAspectGuards>;
+
+// @public
+export type DOMGuards = {
+    elements: DOMElementGuards;
+    aspects: DOMAspectGuards;
+};
+
+// @public
 export interface DOMPolicy {
     createHTML(value: string): string;
-    // Warning: (ae-forgotten-export) The symbol "DOMAspect" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DOMSink" needs to be exported by the entry point index.d.ts
     protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
 }
+
+// @public
+export const DOMPolicy: Readonly<{
+    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
+}>;
+
+// @public
+export type DOMPolicyOptions = {
+    trustedType?: TrustedTypesPolicy;
+    guards?: Partial<DOMGuards>;
+};
+
+// @public
+export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
+
+// @public
+export type DOMSinkGuards = Record<string, (tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink) => DOMSink>;
 
 // @public
 export class ElementStyles {
@@ -356,6 +401,11 @@ export class TemplateParser {
 //
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
 
 // @public
 export interface ValueConverter {

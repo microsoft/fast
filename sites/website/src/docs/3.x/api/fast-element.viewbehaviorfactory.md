@@ -75,7 +75,7 @@ _(Optional)_ The unique id of the factory.
 
 </td><td>
 
-DOMPolicy
+[DOMPolicy](../fast-element.dompolicy/)
 
 
 </td><td>

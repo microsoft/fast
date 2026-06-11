@@ -15,6 +15,16 @@
             "!package-lock.json"
         ]
     },
+    "overrides": [
+        {
+            "includes": ["**/test/declarative/fixtures/**/*.html"],
+            "html": {
+                "formatter": {
+                    "enabled": false
+                }
+            }
+        }
+    ],
     "html": {
         "formatter": {
             "enabled": true
