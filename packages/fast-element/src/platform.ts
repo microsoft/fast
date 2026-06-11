@@ -61,7 +61,7 @@ export interface TypeDefinition {
  * Do not change. Part of shared kernel contract.
  * @internal
  */
-export interface TypeRegistry<TDefinition extends TypeDefinition> {
+export interface TypeRegistry<TDefinition extends { type: Function }> {
     register(definition: TDefinition): boolean;
     getByType(key: Function): TDefinition | undefined;
     getForInstance(object: any): TDefinition | undefined;
@@ -72,7 +72,7 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
  * @internal
  */
 export function createTypeRegistry<
-    TDefinition extends TypeDefinition,
+    TDefinition extends { type: Function },
 >(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 
