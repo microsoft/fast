@@ -116,11 +116,11 @@ Configuration types have moved from `template.ts` to their owning modules. If yo
 | `import type { AttributeMapConfig } from "./template.js"` | `import type { AttributeMapConfig } from "./attribute-map.js"` |
 
 Public declarative imports now come from
-`@microsoft/fast-element` rather than
-`@microsoft/fast-html`. Existing declarative imports for `attributeMap()` and
-`observerMap()` remain valid. New code that only needs the map extensions should
-prefer `@microsoft/fast-element` and
-`@microsoft/fast-element`.
+`@microsoft/fast-element/declarative.js` rather than
+`@microsoft/fast-html`, and declarative utilities come from
+`@microsoft/fast-element/declarative-utilities.js`. Map extensions come from
+`@microsoft/fast-element/attribute-map.js` and
+`@microsoft/fast-element/observer-map.js`.
 
 ### Schema changes
 
