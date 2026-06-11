@@ -678,7 +678,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
         | string
         | Expression<TSource, ContentTemplate | string | Node, TParent>
         | Binding<TSource, ContentTemplate | string | Node, TParent>,
-): CaptureType {
+): CaptureType<TSource, TParent> {
     let dataBinding: Binding<TSource>;
 
     if (value === void 0) {
