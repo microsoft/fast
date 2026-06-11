@@ -119,6 +119,8 @@ The type of aspect to target.
 
 </td><td>
 
+The binding configuration to apply.
+
 
 </td></tr>
 <tr><td>
@@ -150,7 +152,7 @@ The unique id of the factory.
 
 </td><td>
 
-DOMPolicy
+[DOMPolicy](../fast-element.dompolicy/)
 
 
 </td><td>

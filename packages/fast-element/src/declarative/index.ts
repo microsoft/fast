@@ -28,8 +28,16 @@ export {
     Schema,
     schemaRegistry,
 } from "../components/schema.js";
-export type { DOMPolicy } from "../dom.js";
-export type { Constructable } from "../interfaces.js";
+export type { DOMAspect, DOMSink } from "../dom.js";
+export {
+    type DOMAspectGuards,
+    type DOMElementGuards,
+    type DOMGuards,
+    DOMPolicy,
+    type DOMPolicyOptions,
+    type DOMSinkGuards,
+} from "../dom-policy.js";
+export type { Constructable, TrustedTypesPolicy } from "../interfaces.js";
 export type { Accessor } from "../observation/observable.js";
 export type {
     ComposableStyles,

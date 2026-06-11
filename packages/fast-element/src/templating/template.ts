@@ -1,7 +1,7 @@
 import { Binding } from "../binding/binding.js";
 import { oneTime } from "../binding/one-time.js";
 import { oneWay } from "../binding/one-way.js";
-import type { DOMPolicy } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import { isFunction, isString, Message } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";

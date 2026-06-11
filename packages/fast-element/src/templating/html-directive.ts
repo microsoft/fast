@@ -1,5 +1,6 @@
 import type { Binding } from "../binding/binding.js";
-import { DOMAspect, type DOMPolicy } from "../dom.js";
+import { DOMAspect } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import type { Constructable, Mutable } from "../interfaces.js";
 import type { ExpressionController } from "../observation/observable.js";
 import { createTypeRegistry, makeSerializationNoop } from "../platform.js";
