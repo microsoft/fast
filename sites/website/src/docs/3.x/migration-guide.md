@@ -338,7 +338,7 @@ import { ArrayObserver } from "@microsoft/fast-element";
 can remove `defer-hydration` from server-rendered markup; if you still need the
 legacy attribute string, import it from the hydration path export.
 
-2.x imported `deferHydrationAttribute` from the root package.
+In 2.x, `deferHydrationAttribute` was exported by the root package.
 
 2.x Example:
 ```ts
