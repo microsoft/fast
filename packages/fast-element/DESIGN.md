@@ -594,6 +594,10 @@ src/
     └── target-builder.ts  # Hydration target resolution
 ```
 
+The published export surface is guarded by scripts under `scripts/`.
+`smoke-package-exports.js` imports every `package.json` export after `build:tsc`, and
+`check-path-exports-docs.js` regenerates or verifies the 3.x path exports documentation table.
+
 ---
 
 ## Detailed Architecture Documents
