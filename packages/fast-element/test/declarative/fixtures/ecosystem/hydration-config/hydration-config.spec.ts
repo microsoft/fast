@@ -16,15 +16,45 @@ test.describe("Hydration configuration", () => {
         );
 
         const result = await page.evaluate(async () => {
+            const rawFixtureHtml = await fetch(location.href).then(response =>
+                response.text(),
+            );
+
+            const lateTemplateMatch = rawFixtureHtml.match(
+                /<template\s+id="late-hydration-markup"[^>]*>/i,
+            );
+
+            if (lateTemplateMatch === null || lateTemplateMatch.index === undefined) {
+                throw new Error("Late hydration markup was not generated.");
+            }
+
+            const lateMarkupStart = lateTemplateMatch.index + lateTemplateMatch[0].length;
+            const templateTag = /<\/?template\b[^>]*>/gi;
+            templateTag.lastIndex = lateMarkupStart;
+
+            let depth = 1;
+            let closingTemplateIndex = -1;
+            let templateMatch: RegExpExecArray | null;
+
+            while ((templateMatch = templateTag.exec(rawFixtureHtml)) !== null) {
+                depth += templateMatch[0].startsWith("</") ? -1 : 1;
+
+                if (depth === 0) {
+                    closingTemplateIndex = templateMatch.index;
+                    break;
+                }
+            }
+
+            if (closingTemplateIndex === -1) {
+                throw new Error("Late hydration markup template was not closed.");
+            }
+
+            const lateMarkup = rawFixtureHtml
+                .slice(lateMarkupStart, closingTemplateIndex)
+                .trim();
             const container = document.createElement("div");
             document.body.appendChild(container);
-            (container as any).setHTMLUnsafe(`
-                <hydration-config-element label="Late">
-                    <template shadowrootmode="open">
-                        <span id="label" data-server-node="late"><!--fe:b-->Late<!--fe:/b--></span>
-                    </template>
-                </hydration-config-element>
-            `);
+            (container as any).setHTMLUnsafe(lateMarkup);
 
             const element = container.firstElementChild as any;
             customElements.upgrade(container);
