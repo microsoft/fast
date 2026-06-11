@@ -1,3 +1,4 @@
+import type { DOMPolicy as DOMPolicyDefinition } from "./dom-policy.js";
 import { Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
@@ -63,34 +64,14 @@ export type DOMSink = (
  * A security policy that FAST can use to interact with the DOM.
  * @public
  */
-export interface DOMPolicy {
-    /**
-     * Creates safe HTML from the provided value.
-     * @param value - The source to convert to safe HTML.
-     */
-    createHTML(value: string): string;
-
-    /**
-     * Protects a DOM sink that intends to write to the DOM.
-     * @param tagName - The tag name for the element to write to.
-     * @param aspect - The aspect of the DOM to write to.
-     * @param aspectName - The name of the aspect to write to.
-     * @param sink - The sink that is used to write to the DOM.
-     */
-    protect(
-        tagName: string | null,
-        aspect: DOMAspect,
-        aspectName: string,
-        sink: DOMSink,
-    ): DOMSink;
-}
+export interface DOMPolicy extends DOMPolicyDefinition {}
 
 const createHTML = html => html;
 const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
     ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
     : { createHTML };
 
-let defaultPolicy: DOMPolicy = Object.freeze({
+let defaultPolicy: DOMPolicyDefinition = Object.freeze({
     createHTML(value: string): string {
         return fastTrustedType.createHTML(value);
     },
@@ -115,7 +96,7 @@ export const DOM = Object.freeze({
     /**
      * Gets the dom policy used by the templating system.
      */
-    get policy(): DOMPolicy {
+    get policy(): DOMPolicyDefinition {
         return defaultPolicy;
     },
 
@@ -126,7 +107,7 @@ export const DOM = Object.freeze({
      * This API can only be called once, for security reasons. It should be
      * called by the application developer at the start of their program.
      */
-    setPolicy(value: DOMPolicy): void {
+    setPolicy(value: DOMPolicyDefinition): void {
         if (defaultPolicy !== fastPolicy) {
             throw FAST.error(Message.onlySetDOMPolicyOnce);
         }

@@ -298,6 +298,140 @@ fast build --attribute-name-strategy=none --templates="./components/**/*.html"
 The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, import `attributeMap` from `@microsoft/fast-element/attribute-map.js` and configure the client with `attributeMap({ "attribute-name-strategy": "none" })`. Existing declarative imports remain supported.
 :::
 
+## Troubleshooting Hydration
+
+Hydration succeeds when the HTML produced by the server matches the template and
+data that the client runtime sees during the element's first render. If hydration
+does not run, FAST renders client-side. If hydration starts but cannot map a
+binding, FAST reports a hydration error rather than silently repairing the DOM.
+
+### Call `enableHydration()` before elements connect
+
+Hydration is opt-in. Call `enableHydration()` before FAST elements are defined or
+connected so the controller can install the hydration hook before the first
+render.
+
+```ts
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+await import("./components.js");
+```
+
+If a prerendered element connects before `enableHydration()` runs, the existing
+shadow root is treated as client-render fallback: `isPrerendered` resolves
+`true`, `isHydrated` resolves `false`, and FAST replaces the prerendered content
+with a client-rendered view. Calling `enableHydration()` later does not hydrate
+elements that already completed their first render.
+
+### Keep renderer and client versions in sync
+
+The renderer and client both rely on the same depth-first binding order and the
+same marker syntax. Use matching FAST Element v3 versions of
+`@microsoft/fast-build` and `@microsoft/fast-element`, and deploy server and
+client updates together. Version skew can produce errors such as
+`HydrationTargetElementError` or `HydrationBindingError` because the client
+expects a different set or order of binding targets than the server emitted.
+
+### Check hydration markers
+
+FAST markers are intentionally data-free and sequential:
+
+| Marker | Purpose |
+|---|---|
+| `data-fe="N"` | `N` attribute, boolean, property, event, or directive bindings target the element |
+| `<!--fe:b-->...<!--fe:/b-->` | Content binding boundaries |
+| `<!--fe:r-->...<!--fe:/r-->` | One repeated item |
+| `<!--fe:e-->...<!--fe:/e-->` | Nested custom element boundary |
+
+Do not minify or sanitize away FAST comments or `data-fe` attributes before the
+client loads. A missing `fe:/b` marker, an invalid `data-fe` count, or a changed
+DOM shape means the hydration walker cannot target the compiled bindings.
+
+### Match the first repeat count
+
+Repeated views are hydrated by pairing existing `fe:r` ranges with the client's
+initial array items by index. Ensure the server state and the client state have
+the same item count and order for the first bind.
+
+```html
+<!-- one server-rendered repeat item -->
+<!--fe:r--><li>One</li><!--fe:/r-->
+```
+
+```ts
+// Client state must also start with one item.
+items = ["One"];
+```
+
+If the client starts with more items than the server rendered, those extra
+initial items do not have DOM ranges to hydrate. If the server rendered more
+items than the client starts with, extra prerendered DOM can remain unmanaged.
+After hydration, normal repeat updates can add, remove, or reorder items.
+
+### Resolve declarative templates before upgrade
+
+`declarativeTemplate()` waits for one connected `<f-template>` whose `name`
+matches the element definition. Template-first and definition-first loading both
+work, but the custom element definition does not finish until the matching
+template is available.
+
+```html
+<f-template name="user-card">
+    <template><p>{{name}}</p></template>
+</f-template>
+```
+
+```ts
+class UserCard extends FASTElement {}
+
+await UserCard.define({
+    name: "user-card",
+    template: declarativeTemplate(),
+});
+```
+
+If the `<f-template>` is inserted late, renamed, or reconnected later, the define
+promise waits until it can publish the template. Keep the prerendered DOM
+unchanged while waiting, and avoid duplicate connected `<f-template>` elements
+with the same name.
+
+### Understand fallback vs. hydration errors
+
+FAST uses the client-render path when no prerendered shadow root is present,
+hydration was not enabled in time, or the template is not hydratable. In this
+path the controller clears stale prerendered content before rendering the client
+view.
+
+Hydration errors happen after FAST has opted into hydrating a prerendered,
+hydratable template. Common causes are:
+
+- The server and client templates are not identical.
+- FAST markers were removed or corrupted.
+- Client state changed the first-render shape, especially `repeat` counts.
+- Script or third-party code modified the shadow DOM before hydration.
+
+### Inspect `isPrerendered` and `isHydrated`
+
+Use the controller promises to distinguish SSR, hydration, and fallback in
+diagnostics or tests.
+
+```ts
+const controller = element.$fastController;
+const [isPrerendered, isHydrated] = await Promise.all([
+    controller.isPrerendered,
+    controller.isHydrated,
+]);
+
+if (isPrerendered && !isHydrated) {
+    console.warn("Prerendered content fell back to client rendering.");
+}
+```
+
+`isPrerendered` resolves `true` when the element had a declarative shadow root at
+connect time. `isHydrated` resolves `true` only when FAST successfully reused the
+existing DOM.
+
 ## Writing Components for SSR
 
 When designing components for server-side rendering, keep these guidelines in mind:

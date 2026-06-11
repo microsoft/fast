@@ -5,7 +5,7 @@ import { oneWay } from "../binding/one-way.js";
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import { isHydratable } from "../components/hydration.js";
-import type { DOMPolicy } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import { type Constructable, isFunction, isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
@@ -21,6 +21,7 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
+import { HydrationStage } from "./hydration-view.js";
 import { Markup } from "./markup.js";
 import {
     type CaptureType,
@@ -29,7 +30,6 @@ import {
     type TemplateValue,
     ViewTemplate,
 } from "./template.js";
-import { HydrationStage } from "./hydration-view.js";
 
 type ComposableView = ContentView & {
     isComposed?: boolean;

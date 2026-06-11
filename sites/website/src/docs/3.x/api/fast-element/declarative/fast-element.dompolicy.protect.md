@@ -64,7 +64,7 @@ aspect
 
 </td><td>
 
-DOMAspect
+[DOMAspect](../fast-element.domaspect/)
 
 
 </td><td>
@@ -96,7 +96,7 @@ sink
 
 </td><td>
 
-DOMSink
+[DOMSink](../fast-element.domsink/)
 
 
 </td><td>
@@ -109,4 +109,4 @@ The sink that is used to write to the DOM.
 
 **Returns:**
 
-DOMSink
+[DOMSink](../fast-element.domsink/)

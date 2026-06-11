@@ -1,6 +1,32 @@
-import { DOMAspect, type DOMSink, type DOMPolicy as IDOMPolicy } from "./dom.js";
+import { DOMAspect, type DOMSink } from "./dom.js";
 import { isString, Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
+
+/**
+ * A policy that controls whether values can be written to DOM sinks.
+ * @public
+ */
+export interface DOMPolicy {
+    /**
+     * Creates safe HTML from the provided value.
+     * @param value - The source to convert to safe HTML.
+     */
+    createHTML(value: string): string;
+
+    /**
+     * Protects a DOM sink that intends to write to the DOM.
+     * @param tagName - The tag name for the element to write to.
+     * @param aspect - The aspect of the DOM to write to.
+     * @param aspectName - The name of the aspect to write to.
+     * @param sink - The sink that is used to write to the DOM.
+     */
+    protect(
+        tagName: string | null,
+        aspect: DOMAspect,
+        aspectName: string,
+        sink: DOMSink,
+    ): DOMSink;
+}
 
 /**
  * A specific DOM sink guard for a node aspect.
@@ -452,13 +478,13 @@ export type DOMPolicyOptions = {
  * A helper for creating DOM policies.
  * @public
  */
-const DOMPolicy = Object.freeze({
+export const DOMPolicy = Object.freeze({
     /**
      * Creates a new DOM Policy object.
      * @param options - The options to use in creating the policy.
      * @returns The newly created DOMPolicy.
      */
-    create(options: DOMPolicyOptions = {}): Readonly<IDOMPolicy> {
+    create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
         const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
 
@@ -498,5 +524,3 @@ const DOMPolicy = Object.freeze({
         });
     },
 });
-
-export { DOMPolicy };

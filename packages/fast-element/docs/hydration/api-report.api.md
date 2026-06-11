@@ -63,13 +63,46 @@ export const DOMAspect: Readonly<{
 export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
 
 // @public
+export type DOMAspectGuards = {
+    [DOMAspect.attribute]?: DOMSinkGuards;
+    [DOMAspect.booleanAttribute]?: DOMSinkGuards;
+    [DOMAspect.property]?: DOMSinkGuards;
+    [DOMAspect.content]?: DOMSinkGuards;
+    [DOMAspect.tokenList]?: DOMSinkGuards;
+    [DOMAspect.event]?: DOMSinkGuards;
+};
+
+// @public
+export type DOMElementGuards = Record<string, DOMAspectGuards>;
+
+// @public
+export type DOMGuards = {
+    elements: DOMElementGuards;
+    aspects: DOMAspectGuards;
+};
+
+// @public
 export interface DOMPolicy {
     createHTML(value: string): string;
     protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
 }
 
 // @public
+export const DOMPolicy: Readonly<{
+    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
+}>;
+
+// @public
+export type DOMPolicyOptions = {
+    trustedType?: TrustedTypesPolicy;
+    guards?: Partial<DOMGuards>;
+};
+
+// @public
 export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
+
+// @public
+export type DOMSinkGuards = Record<string, (tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink) => DOMSink>;
 
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
@@ -222,6 +255,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
     inline(): CaptureType;
 }
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
 
 // @public
 export interface View<TSource = any, TParent = any> extends Disposable_2 {
