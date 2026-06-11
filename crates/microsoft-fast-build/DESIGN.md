@@ -41,7 +41,7 @@ render_template(template, state_str)
 | Module | Role |
 |--------|------|
 | `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. Preprocesses the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
+| `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `streaming.rs` | Simulated streaming loop — mirrors `node.rs` and returns non-empty HTML chunks |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
@@ -383,7 +383,7 @@ The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use t
 
 ## Hydration markers — `hydration.rs`
 
-When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and emits **named markers** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
+When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and emits **data-free markers** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
 
 ### Scopes
 
@@ -649,7 +649,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**Named hydration markers.** Marker names are derived from the binding context: content bindings use `<expr>-<idx>` (e.g. `title-0`, `item.name-2`), f-when uses `when-<idx>`, and f-repeat uses `repeat-<idx>`. This makes markers human-readable and self-describing without a shared ID counter. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`. The scheme differs from the FAST HTML package which uses random alphanumeric UUIDs, but the structure is equivalent.
+**Data-free hydration markers.** Comment markers carry only a type indicator and start/end flag (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). The FAST client pairs them by balanced depth counting and derives factory-to-node mappings from DFS traversal order. `HydrationScope` only tracks `binding_idx` for attribute binding counts; it does not carry marker names or scope IDs.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
