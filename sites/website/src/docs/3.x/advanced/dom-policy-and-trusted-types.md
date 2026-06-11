@@ -35,14 +35,13 @@ Use a policy to:
 import { DOM } from "@microsoft/fast-element/dom.js";
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 
-function sanitizeHTML(value: string): string {
-    // Use your application's HTML sanitizer here.
-    return value;
-}
-
 const trustedType = globalThis.trustedTypes?.createPolicy("app-fast-html", {
-    createHTML: sanitizeHTML,
-}) ?? { createHTML: sanitizeHTML };
+    createHTML(html) {
+        // FAST templates are framework-authored source, so this policy only
+        // wraps them for Trusted Types. Sanitize user HTML in sink guards.
+        return html;
+    },
+}) ?? { createHTML: html => html };
 
 DOM.setPolicy(DOMPolicy.create({ trustedType }));
 ```
@@ -130,17 +129,20 @@ function sanitizeHTML(value: string): string {
 }
 
 const trustedType = globalThis.trustedTypes?.createPolicy("app-rich-text", {
-    createHTML: sanitizeHTML,
-}) ?? { createHTML: sanitizeHTML };
+    createHTML(html) {
+        // This policy is only used for sanitized rich-text binding values.
+        return html;
+    },
+}) ?? { createHTML: html => html };
 
 const richTextPolicy = DOMPolicy.create({
-    trustedType,
     guards: {
         aspects: {
             [DOMAspect.property]: {
                 innerHTML: (_tagName, _aspect, _aspectName, sink) => {
                     return (target, name, value, ...rest) => {
-                        sink(target, name, trustedType.createHTML(String(value)), ...rest);
+                        const sanitized = sanitizeHTML(String(value));
+                        sink(target, name, trustedType.createHTML(sanitized), ...rest);
                     };
                 },
             },
@@ -153,7 +155,7 @@ const template = html<MessageView>`
 `;
 ```
 
-Declarative templates follow the same rule. Double-brace content bindings are escaped. Triple-brace bindings render unescaped HTML, so use them only with trusted or sanitized content and a policy appropriate for the containing component.
+Declarative templates follow the same rule. Double-brace content bindings are escaped. Triple-brace bindings render through an `innerHTML` binding, so the default DOMPolicy blocks them unless the containing component provides an `innerHTML` guard. Use them only with trusted or sanitized content and a policy appropriate for the containing component.
 
 ## Template-specific policies
 

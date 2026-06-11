@@ -78,7 +78,7 @@ To bind the content of an element, simply provide the expression within the star
 ```
 
 :::note
-Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Properties binding](#properties) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, and follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types.md) before rendering sanitized HTML.
+Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Properties binding](#properties) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, which is blocked by the default DOMPolicy unless you configure an `innerHTML` guard. Follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types.md) before rendering sanitized HTML.
 :::
 
 ### Booleans
