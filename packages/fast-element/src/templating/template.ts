@@ -61,8 +61,8 @@ export interface HydratableElementViewTemplate<TSource = any, TParent = any>
  * into templates.
  * @public
  */
-/* eslint-disable-next-line */
-export interface CaptureType {}
+// biome-ignore lint/correctness/noUnusedVariables: Type parameters carry template source and parent inference.
+export interface CaptureType<TSource = any, TParent = any> {}
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
@@ -77,7 +77,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
      * Returns a directive that can inline the template.
      */
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 /**
@@ -116,7 +116,7 @@ export type TemplateValue<TSource, TParent = any> =
     | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
     | HTMLDirective
-    | CaptureType;
+    | CaptureType<TSource, TParent>;
 
 const noFactories = Object.create(null);
 
@@ -226,7 +226,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * Returns a directive that can inline the template.
      */
-    public inline(): CaptureType {
+    public inline(): CaptureType<TSource, TParent> {
         return new InlineTemplateDirective(
             isString(this.html) ? this.html : this.html.innerHTML,
             this.factories,

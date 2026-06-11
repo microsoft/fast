@@ -216,7 +216,7 @@ async function buildAPIMarkdown() {
 
     await new Promise((resolve, reject) =>
         exec(
-            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
+            `api-documenter markdown -i "${tempAPIDir}" -o "${markdownAPIDir}"`,
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);
@@ -233,7 +233,7 @@ async function buildAPIMarkdown() {
         for (const pkgExport of pkg.exports) {
             await new Promise((resolve, reject) =>
                 exec(
-                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
+                    `api-documenter markdown -i "${tempAPIDir}/${pkg.main}/${pkgExport}" -o "${markdownAPIDir}/${pkg.main}/${pkgExport}"`,
                     (err, stdout, stderr) => {
                         console.log(stdout);
                         console.error(stderr);

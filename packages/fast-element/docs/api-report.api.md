@@ -125,7 +125,7 @@ export type Callable = typeof Function.prototype.call | {
 };
 
 // @public
-export interface CaptureType {
+export interface CaptureType<TSource = any, TParent = any> {
 }
 
 // @public
@@ -133,7 +133,7 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 }
 
 // @public
-export function children<TSource = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType;
+export function children<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
 
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
@@ -869,7 +869,7 @@ export type ReadonlyState<T> = {
 };
 
 // @public
-export const ref: <TSource = any>(propertyName: keyof TSource & string) => CaptureType;
+export const ref: <TSource = any, TParent = any>(propertyName: keyof TSource & string) => CaptureType<TSource, TParent>;
 
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
@@ -888,7 +888,7 @@ export interface RegisterPathConfig {
 }
 
 // @public
-export function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType;
+export function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType<TSource, TParent>;
 
 // @public
 export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
@@ -914,7 +914,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective, ViewBehavi
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType<TSource, TParent>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
@@ -980,7 +980,7 @@ export const Signal: Readonly<{
 export function signal<T = any>(expression: Expression<T>, options: string | Expression<T>, policy?: DOMPolicy): Binding<T>;
 
 // @public
-export function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
+export function slotted<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
 
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
@@ -1141,7 +1141,7 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
@@ -1155,7 +1155,7 @@ export interface TemplateLifecycleCallbacks {
 }
 
 // @public
-export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
+export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
 // @public
 export type TrustedTypesPolicy = {
@@ -1282,7 +1282,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }
@@ -1294,6 +1294,6 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 export function watch(object: any, subscriber: Subscriber | ((subject: any, args: any) => void)): Disposable;
 
 // @public
-export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType;
+export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
 
 ```
