@@ -35,6 +35,15 @@ enableHydration({
 ```
 
 Without calling `enableHydration()`, prerendered content is discarded and elements render client-side.
+By default, hydration no-ops for new prerendered elements after the first
+`hydrationComplete` callback. Set `noopAfterHydrationComplete: false` when your
+app streams Declarative Shadow DOM after the initial batch:
+
+```typescript
+enableHydration({
+    noopAfterHydrationComplete: false,
+});
+```
 
 ## Per-Element Callbacks
 
@@ -79,11 +88,11 @@ Callbacks fire in the following order for each element:
 2. templateWillUpdate(name)       — before template is parsed
 3. templateDidUpdate(name)        — after template is assigned
 4. elementDidDefine(name)         — after customElements.define()
-5. hydrationStarted()             — once, on first hydrating element
+5. hydrationStarted()             — once per active hydration batch
 6. elementWillHydrate(source)     — before element hydrates
 7. [Hydration occurs]
 8. elementDidHydrate(source)      — after element hydrates
-9. hydrationComplete()            — once, after all elements finish
+9. hydrationComplete()            — once per active hydration batch
 ```
 
 Steps 5–9 only fire when `enableHydration()` has been called and the element has prerendered content.

@@ -619,7 +619,7 @@ sequenceDiagram
     participant PerEl as TemplateLifecycleCallbacks
     participant Global as HydrationOptions
 
-    App->>Global: enableHydration(globalCallbacks) [optional]
+    App->>Global: enableHydration(options) [optional]
     App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate(callbacks)}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
 
@@ -656,8 +656,13 @@ sequenceDiagram
 | `elementDidDefine(name)` | `declarativeTemplate(callbacks)` | After platform registration completes. |
 | `elementWillHydrate(source)` | `declarativeTemplate(callbacks)` | Before `ElementController` hydrates a prerendered instance; only after `enableHydration()`. |
 | `elementDidHydrate(source)` | `declarativeTemplate(callbacks)` | After an instance is fully hydrated; only after `enableHydration()`. |
-| `hydrationStarted()` | `enableHydration(options)` | Once, when the first prerendered element begins hydrating. |
-| `hydrationComplete()` | `enableHydration(options)` | Once, after all prerendered elements have completed hydration. |
+| `hydrationStarted()` | `enableHydration(options)` | Once per active hydration batch, when the first prerendered element begins hydrating. |
+| `hydrationComplete()` | `enableHydration(options)` | Once per active hydration batch, after all prerendered elements have completed hydration. |
+
+By default, hydration no-ops for later prerendered batches after
+`hydrationComplete()` fires. Set
+`enableHydration({ noopAfterHydrationComplete: false })` when Declarative Shadow
+DOM may be streamed into the page after the initial hydration batch.
 
 For usage examples see
 [declarative-rendering-lifecycle.md](./declarative-rendering-lifecycle.md).
