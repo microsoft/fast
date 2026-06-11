@@ -176,7 +176,7 @@ test.describe("The prerendered content optimization", () => {
         expect(result.shadowContent).toContain("CSR rendered");
     });
 
-    test("should fire global hydration callbacks for subsequent batches", async ({
+    test("should skip hydrating subsequent batches by default after hydration completes", async ({
         page,
     }) => {
         await page.goto("/");
@@ -214,6 +214,81 @@ test.describe("The prerendered content optimization", () => {
                 )
             ).define();
 
+            async function appendPrerenderedElement(includeServerMarker = false) {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span${
+                        includeServerMarker ? ' data-server-marker="true"' : ""
+                    }>hydrated</span></template></${name}>`,
+                );
+
+                const element = container.firstElementChild as any;
+                customElements.upgrade(container);
+                for (let i = 0; element.$fastController === void 0 && i < 10; i++) {
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+                }
+                const isHydrated = await element.$fastController.isHydrated;
+                const serverMarker = element.shadowRoot
+                    ?.querySelector("span")
+                    ?.getAttribute("data-server-marker");
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                return { isHydrated, serverMarker };
+            }
+
+            const first = await appendPrerenderedElement();
+            const second = await appendPrerenderedElement(true);
+
+            return { events, first, second };
+        });
+
+        expect(result.events).toEqual(["start", "complete"]);
+        expect(result.first.isHydrated).toBe(true);
+        expect(result.second.isHydrated).toBe(false);
+        expect(result.second.serverMarker).toBeNull();
+    });
+
+    test("should keep hydration active for subsequent batches when configured", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                StopHydration,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            const events: string[] = [];
+            const name = uniqueElementName();
+
+            enableHydration({
+                stopHydration: StopHydration.never,
+                hydrationStarted() {
+                    events.push("start");
+                },
+                hydrationComplete() {
+                    events.push("complete");
+                },
+            });
+
+            (
+                await FASTElementDefinition.compose(
+                    class TestElement extends FASTElement {
+                        static definition = {
+                            name,
+                            template: html`<span>hydrated</span>`,
+                        };
+                    },
+                )
+            ).define();
+
             async function appendPrerenderedElement() {
                 const container = document.createElement("div");
                 document.body.appendChild(container);
@@ -222,16 +297,36 @@ test.describe("The prerendered content optimization", () => {
                 );
 
                 const element = container.firstElementChild as any;
-                await element.$fastController.isHydrated;
+                customElements.upgrade(container);
+                for (let i = 0; element.$fastController === void 0 && i < 10; i++) {
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+                }
+                const isHydrated = await element.$fastController.isHydrated;
                 await new Promise(resolve => setTimeout(resolve, 0));
+
+                return isHydrated;
             }
 
-            await appendPrerenderedElement();
-            await appendPrerenderedElement();
+            const first = await appendPrerenderedElement();
+            const second = await appendPrerenderedElement();
 
-            return events;
+            return {
+                events,
+                first,
+                second,
+                stopHydrationValues: {
+                    hydrationComplete: StopHydration.hydrationComplete,
+                    never: StopHydration.never,
+                },
+            };
         });
 
-        expect(result).toEqual(["start", "complete", "start", "complete"]);
+        expect(result.events).toEqual(["start", "complete", "start", "complete"]);
+        expect(result.first).toBe(true);
+        expect(result.second).toBe(true);
+        expect(result.stopHydrationValues).toEqual({
+            hydrationComplete: "hydration-complete",
+            never: "never",
+        });
     });
 });

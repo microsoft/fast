@@ -136,8 +136,10 @@ MyElement.define({
 `declarativeTemplate()` automatically defines FAST's internal native
 `<f-template>` publisher in the relevant registry, resolves the matching
 `<f-template name="my-element">`, and keeps the definition template concrete
-before `define()` resolves. Consumers should not import or define the
-`<f-template>` implementation directly.
+before `define()` resolves. If multiple matching `<f-template>` elements are
+connected, the first connected element supplies the template and later duplicates
+do not reassign it. Consumers should not import or define the `<f-template>`
+implementation directly.
 
 Declarative schema behavior is enabled with define extensions:
 
@@ -185,6 +187,18 @@ enableHydration({
     hydrationComplete() {
         console.log("hydration complete");
     },
+});
+```
+
+By default, hydration handles the initial prerendered batch and then no-ops
+after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
+after the initial batch, keep the hydration hook active:
+
+```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    stopHydration: StopHydration.never,
 });
 ```
 

@@ -66,6 +66,34 @@ pub fn parse(input: &str) -> Result<JsonValue, JsonError> {
     Ok(value)
 }
 
+#[cfg(any(test, target_arch = "wasm32"))]
+pub(crate) fn escape_json_str(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    for c in s.chars() {
+        match c {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            '\u{08}' => out.push_str("\\b"),
+            '\u{0c}' => out.push_str("\\f"),
+            c if c <= '\u{1f}' => out.push_str(&format!("\\u{:04x}", c as u32)),
+            c => out.push(c),
+        }
+    }
+    out
+}
+
+#[cfg(any(test, target_arch = "wasm32"))]
+pub(crate) fn json_string_array(items: &[String]) -> String {
+    let mut parts = Vec::with_capacity(items.len());
+    for item in items {
+        parts.push(format!("\"{}\"", escape_json_str(item)));
+    }
+    format!("[{}]", parts.join(","))
+}
+
 fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
     let input = input.trim_start();
     if input.is_empty() {
@@ -292,6 +320,24 @@ mod tests {
         } else {
             panic!("Expected string");
         }
+    }
+
+    #[test]
+    fn test_escape_json_str_escapes_all_control_characters() {
+        let escaped = escape_json_str("a\"\n\r\t\\\u{0000}\u{0008}\u{000c}\u{001f}b");
+
+        assert_eq!(escaped, "a\\\"\\n\\r\\t\\\\\\u0000\\b\\f\\u001fb");
+    }
+
+    #[test]
+    fn test_json_string_array_escapes_control_characters() {
+        let json = json_string_array(&[
+            "first".to_string(),
+            "line\u{000b}separator".to_string(),
+        ]);
+
+        assert_eq!(json, "[\"first\",\"line\\u000bseparator\"]");
+        assert!(parse(&json).is_ok());
     }
 
     #[test]

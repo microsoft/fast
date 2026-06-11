@@ -11,7 +11,7 @@ import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
 import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
-import { transformInnerHTML } from "./utilities.js";
+import { escapeBracesInCodeElements, transformInnerHTML } from "./utilities.js";
 
 const templateElementName = "f-template";
 
@@ -202,7 +202,7 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
 
         const schema = definition.schema ?? new Schema(name);
         definition.schema = schema;
-        const innerHTML = transformInnerHTML(this.innerHTML);
+        const innerHTML = transformInnerHTML(escapeBracesInCodeElements(this.innerHTML));
         const parser = new TemplateParser();
         const { strings, values } = parser.parse(innerHTML, schema);
 
