@@ -202,6 +202,7 @@ export class HydrationBindingError extends Error {
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
+    stopHydration?: StopHydration;
 }
 
 // @public (undocumented)
@@ -217,6 +218,7 @@ export class HydrationTracker {
     add(element: HTMLElement): void;
     mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
+    get shouldHydrate(): boolean;
 }
 
 // @beta
@@ -239,6 +241,15 @@ export const SourceLifetime: Readonly<{
 
 // @public
 export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
+
+// @public
+export const StopHydration: Readonly<{
+    readonly hydrationComplete: "hydration-complete";
+    readonly never: "never";
+}>;
+
+// @public
+export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
 
 // @public
 export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {
