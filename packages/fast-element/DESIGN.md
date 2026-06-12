@@ -53,7 +53,9 @@ For deep dives into specific areas, see the linked detailed documents.
 The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
 
 The root entrypoint exports the FAST Element implementation APIs. Focused package
-path exports remain available when a consumer wants a narrower entrypoint.
+path exports remain available when a consumer wants a narrower entrypoint,
+including `@microsoft/fast-element/registry.js` for FAST element definition
+lookups.
 
 ---
 
@@ -99,7 +101,7 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. Consumers that need focused access to definition lookup can import `fastElementRegistry` from `@microsoft/fast-element/registry.js`. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
 
 #### Extensions
 
@@ -537,6 +539,7 @@ src/
 ├── metadata.ts            # Reflect-based metadata helpers
 ├── utilities.ts           # UnobservableMutationObserver and other helpers
 ├── debug.ts               # Exports enableDebug() for human-readable FAST errors
+├── registry.ts            # fastElementRegistry focused path export
 ├── observation/
 │   ├── observable.ts      # Observable, @observable, ExpressionNotifier, ExecutionContext
 │   ├── notifier.ts        # Subscriber, Notifier, SubscriberSet, PropertyChangeNotifier

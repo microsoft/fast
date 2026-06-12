@@ -81,8 +81,10 @@ Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.
 The root `@microsoft/fast-element` entrypoint exports the FAST Element
 implementation APIs, including the element base class, kernel, controller,
 definition APIs, template APIs, binding helpers, directives, styles, and schema
-helpers. Declarative, hydration, context, and dependency injection APIs are
-available from their focused path exports.
+helpers. The FAST element registry is also available from
+`@microsoft/fast-element/registry.js` for focused definition lookups.
+Declarative, hydration, context, and dependency injection APIs are available
+from their focused path exports.
 
 Focused package path exports remain available for consumers that want to import
 a narrower entrypoint directly. The website's
