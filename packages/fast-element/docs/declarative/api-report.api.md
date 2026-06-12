@@ -66,7 +66,7 @@ export interface CachedPathCommon {
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
 // @public
-export interface CaptureType {
+export interface CaptureType<TSource = any, TParent = any> {
 }
 
 // @public
@@ -376,7 +376,7 @@ export interface StyleTarget extends Pick<Node, "getRootNode"> {
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
@@ -400,7 +400,7 @@ export class TemplateParser {
 // Warning: (ae-forgotten-export) The symbol "HTMLDirective" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
+export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
 // @public
 export type TrustedTypesPolicy = {
@@ -436,7 +436,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }

@@ -1,11 +1,12 @@
 const path = require("node:path");
 const { createInterface } = require("node:readline");
-const { exec } = require("node:child_process");
+const { execFile } = require("node:child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
+const apiDocumenterPath = require.resolve("@microsoft/api-documenter/lib/start");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
 const majorVersion = process.argv[2] || "3";
 const currentVersion = `${majorVersion}x`;
@@ -43,6 +44,24 @@ async function safeWrite(dest, content) {
         await fs.mkdir(path.dirname(dest), { recursive: true });
         await fs.writeFile(dest, content);
     }
+}
+
+function runApiDocumenter(inputDir, outputDir) {
+    return new Promise((resolve, reject) =>
+        execFile(
+            process.execPath,
+            [apiDocumenterPath, "markdown", "-i", inputDir, "-o", outputDir],
+            (err, stdout, stderr) => {
+                console.log(stdout);
+                console.error(stderr);
+                if (err) {
+                    return reject(err);
+                }
+
+                return resolve();
+            },
+        ),
+    );
 }
 
 // Copy the api.json files from the packages.
@@ -214,36 +233,13 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 async function buildAPIMarkdown() {
     await copyAPI();
 
-    await new Promise((resolve, reject) =>
-        exec(
-            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
-            (err, stdout, stderr) => {
-                console.log(stdout);
-                console.error(stderr);
-                if (err) {
-                    return reject(err);
-                }
-
-                return resolve();
-            },
-        ),
-    );
+    await runApiDocumenter(tempAPIDir, markdownAPIDir);
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
-            await new Promise((resolve, reject) =>
-                exec(
-                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
-                    (err, stdout, stderr) => {
-                        console.log(stdout);
-                        console.error(stderr);
-                        if (err) {
-                            return reject(err);
-                        }
-
-                        return resolve();
-                    },
-                ),
+            await runApiDocumenter(
+                path.join(tempAPIDir, pkg.main, pkgExport),
+                path.join(markdownAPIDir, pkg.main, pkgExport),
             );
         }
     }

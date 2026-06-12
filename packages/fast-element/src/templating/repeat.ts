@@ -16,6 +16,7 @@ import {
     type ViewBehaviorFactory,
     type ViewController,
 } from "./html-directive.js";
+import { HydrationStage, type HydrationView } from "./hydration-view.js";
 import { Markup } from "./markup.js";
 import type {
     CaptureType,
@@ -23,14 +24,7 @@ import type {
     SyntheticViewTemplate,
     ViewTemplate,
 } from "./template.js";
-import {
-    HydrationStage,
-    type HydrationView,
-} from "./hydration-view.js";
-import {
-    HTMLView,
-    type SyntheticView,
-} from "./view.js";
+import { HTMLView, type SyntheticView } from "./view.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -548,7 +542,7 @@ export function repeat<
         | Binding<TSource, ViewTemplate<any, TSource>>
         | ViewTemplate<any, TSource>,
     options: RepeatOptions = defaultRepeatOptions,
-): CaptureType {
+): CaptureType<TSource, TParent> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, {
