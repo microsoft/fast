@@ -166,10 +166,13 @@ The lifecycle callbacks are split between two APIs:
 - `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
 
 **Global hydration callbacks** — passed to `enableHydration()`:
-- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
-- `hydrationComplete()` - Called once after all prerendered elements have completed hydration
+- `hydrationStarted()` - Called when a prerendered hydration batch begins
+- `hydrationComplete()` - Called after all prerendered elements in a hydration batch complete
 
 The `hydrationComplete` callback fires only after every prerendered element has finished binding.
+By default, hydration no-ops for later prerendered batches after this callback.
+Set `stopHydration: StopHydration.never` in `enableHydration()` when streaming
+Declarative Shadow DOM should continue hydrating after the initial batch.
 
 ### Callback Execution Order
 
@@ -186,12 +189,12 @@ Template Processing Phase (asynchronous):
   5. elementDidDefine(name)
   
 Hydration Phase (per element, only when enableHydration() has been called):
-  6. hydrationStarted()           [once, on first element]
+  6. hydrationStarted()           [once per active hydration batch]
   7. elementWillHydrate(source)
   8. [Hydration occurs]
   9. elementDidHydrate(source)
   
-Completion (called once for all elements):
+Completion (called once per active hydration batch):
   10. hydrationComplete()
 ```
 
@@ -204,10 +207,11 @@ callbacks are passed directly to `declarativeTemplate()`:
 
 ```typescript
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
 
 // Global hydration events
 enableHydration({
+    stopHydration: StopHydration.never,
     hydrationStarted() {
         console.log("Hydration started");
     },

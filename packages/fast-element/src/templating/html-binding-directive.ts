@@ -1,6 +1,7 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { isHydratable } from "../components/hydration.js";
-import { DOM, DOMAspect, type DOMPolicy } from "../dom.js";
+import { DOM, DOMAspect } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import { Message } from "../interfaces.js";
 import {
     ExecutionContext,
@@ -316,10 +317,17 @@ export class HTMLBindingDirective
     aspectType: DOMAspect = DOMAspect.content;
 
     /**
+     * The binding configuration to apply.
+     */
+    dataBinding: Binding;
+
+    /**
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: Binding) {}
+    constructor(dataBinding: Binding) {
+        this.dataBinding = dataBinding;
+    }
 
     /**
      * Creates HTML to be used within a template.

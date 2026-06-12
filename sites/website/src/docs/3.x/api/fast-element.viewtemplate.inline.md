@@ -20,8 +20,8 @@ Returns a directive that can inline the template.
 **Signature:**
 
 ```typescript
-inline(): CaptureType;
+inline(): CaptureType<TSource, TParent>;
 ```
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)
+[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;

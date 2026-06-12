@@ -71,7 +71,7 @@ flowchart TD
 | `src/fixtures/assertions.ts` | Custom Playwright assertion `toHaveCustomState` |
 | `src/build/dom-shim.ts` | Minimal DOM shim for running FAST Element's `css` and `html` tagged templates in Node.js |
 | `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
-| `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files |
+| `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Static wrapper stripping and style-marker injection recognize browser-valid `<template>` tags with ASCII whitespace before `>` in opening and closing tags. |
 | `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files |
 | `src/ssr/render.ts` | `createSSRRenderer` factory — scans for component build artifacts and uses the `@microsoft/fast-build` WASM module to produce SSR output |
 | `src/ssr/entry-client.ts` | SSR hydration entry point — defines `<f-template>` for the browser |
@@ -277,7 +277,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 2. Loads the `@microsoft/fast-build` WASM module (throws if not installed).
 3. Collects f-template and stylesheet artifacts for all components.
 4. Injects stylesheet `<link>` tags into f-templates (replaces `{{styles}}` placeholder or strips the marker when styles URL is empty).
-5. Parses f-templates into the WASM templates map (`tagName → inner template content`).
+5. Parses f-templates into the WASM templates map (`tagName → inner template content`), including wrappers with ASCII whitespace before `>` in opening and closing tags.
 6. Loads CEM default state per-package, keyed by tag name.
 7. Concatenates all styled f-templates for client hydration.
 

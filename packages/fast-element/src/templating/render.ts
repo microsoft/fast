@@ -5,7 +5,7 @@ import { oneWay } from "../binding/one-way.js";
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import { isHydratable } from "../components/hydration.js";
-import type { DOMPolicy } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import { type Constructable, isFunction, isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
@@ -688,7 +688,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
         | string
         | Expression<TSource, ContentTemplate | string | Node, TParent>
         | Binding<TSource, ContentTemplate | string | Node, TParent>,
-): CaptureType {
+): CaptureType<TSource, TParent> {
     let dataBinding: Binding<TSource>;
 
     if (value === void 0) {

@@ -29,6 +29,8 @@ import {
 import { installDomShim } from "./dom-shim.js";
 
 const stylesMarker = `${openExpression}styles${closeExpression}`;
+const templateOpenTagPattern = /<template(?:\s[^>]*)?\s*\/?>/i;
+const templateWrapperTagPattern = /<template(?:\s[^>]*)?\s*\/?>|<\/template\s*>/gi;
 
 function wrapClientExpression(expression: string): string {
     return `${clientSideOpenExpression}${expression}${clientSideCloseExpression}`;
@@ -192,7 +194,7 @@ export function convertTemplate(
     const factoryEntries = Object.entries(factories);
     if (factoryEntries.length === 0) {
         // No factories — pure static template.
-        const content = html.replace(/<\/?template[^>]*>/g, "").trim();
+        const content = html.replace(templateWrapperTagPattern, "").trim();
         return `<f-template name="${componentName}" shadowrootmode="open"><template>${stylesMarker}${content}</template></f-template>\n`;
     }
 
@@ -296,7 +298,7 @@ export function convertTemplate(
     });
 
     let fInner = fContent.trim();
-    if (!/<template[^>]*>/.test(fInner)) {
+    if (!templateOpenTagPattern.test(fInner)) {
         fInner = `<template>${fInner}</template>`;
     }
     // Inject the {{styles}} marker immediately after the opening <template> tag
@@ -304,7 +306,7 @@ export function convertTemplate(
     // render time. Harness fallback auto-injects if the marker is missing, but
     // emitting it explicitly keeps generated output consistent with hand-authored
     // f-templates (see MAI core components).
-    fInner = fInner.replace(/(<template[^>]*>)/, `$1${stylesMarker}`);
+    fInner = fInner.replace(templateOpenTagPattern, match => `${match}${stylesMarker}`);
     return `<f-template name="${componentName}" shadowrootmode="open">\n${fInner}\n</f-template>\n`;
 }
 

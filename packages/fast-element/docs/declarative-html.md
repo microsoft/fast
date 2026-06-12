@@ -32,11 +32,12 @@ The `@microsoft/fast-element` entrypoint itself remains
 side-effect free at import time. Declarative APIs lazily install declarative
 debug messages when they create templates. Hydratable `ViewTemplate` support is
 installed only when `enableHydration()` is called from
-`@microsoft/fast-element`.
+`@microsoft/fast-element/hydration.js`.
 
 `observerMap()` and `attributeMap()` are available from
-`@microsoft/fast-element`, including when using the maps without declarative
-templates.
+`@microsoft/fast-element/observer-map.js` and
+`@microsoft/fast-element/attribute-map.js`, including when using the maps
+without declarative templates.
 
 Example:
 ```html
@@ -88,6 +89,18 @@ enableHydration({
 });
 ```
 
+The hydration hook no-ops for new prerendered elements after the first
+`hydrationComplete` callback by default. Streaming scenarios that append
+hydratable Declarative Shadow DOM later can keep the hook active:
+
+```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    stopHydration: StopHydration.never,
+});
+```
+
 Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
 
 ```typescript
@@ -136,8 +149,8 @@ When the `observerMap()` extension is applied to an element definition,
 it automatically sets up deep reactive observation for root properties
 discovered in the template. Declarative templates assign `definition.schema`
 during template resolution, so `observerMap()` has schema data automatically.
-For non-declarative/manual schemas, import from `@microsoft/fast-element` and
-pass `observerMap({ schema })`.
+For non-declarative/manual schemas, import from
+`@microsoft/fast-element/observer-map.js` and pass `observerMap({ schema })`.
 
 ```typescript
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
@@ -438,6 +451,28 @@ Example:
 ```html
 {{{html}}}
 ```
+
+### Code samples inside `<code>`
+
+Any text or attribute value inside a `<code>` element has its `{` and `}` characters automatically replaced with the HTML numeric character references `&#123;` and `&#125;` before template parsing. As a result, binding delimiters (`{{...}}`, `{{{...}}}`, `{...}`) inside `<code>` are rendered as literal text rather than being interpreted as FAST bindings — making `<code>` blocks safe for embedding code samples that contain binding-like syntax. No marker attribute is needed.
+
+In addition, the build-time renderer (`@microsoft/fast-build`) entity-escapes the `<` and `>` of every **FAST directive tag** (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>`, so authors can write the directive literally without manually entity-encoding the angle brackets. Tag-name matching is case-insensitive. Non-directive elements inside `<code>` — real HTML elements such as `<button>` and custom elements such as `<my-widget>` — keep their angle brackets and continue to render as live DOM elements; only brace-binding syntax in their attribute values is neutralised.
+
+The brace escape is applied symmetrically by both the server-side renderer and the client-side `<f-template>` parser, so binding positions stay in sync between SSR and hydration. The directive-tag angle escape only needs to run on the server: the DOM serializer re-encodes `<`/`>` in text content, so the client-side parser never sees a raw `<f-when>` inside `<code>` regardless of what the page source contained. This behaviour mirrors how Microsoft WebUI's `webui-press` markdown renderer transparently escapes the same characters inside code spans and code fences.
+
+Example:
+```html
+<f-template name="docs-page">
+    <template>
+        <h1>{{title}}</h1>
+        <pre><code>span {{greeting}} /span</code></pre>
+        <pre><code><f-when value="{{flag}}">wrapped</f-when></code></pre>
+        <pre><code>Try: <button class="demo">click</button></code></pre>
+    </template>
+</f-template>
+```
+
+The `<h1>` binds to `title`, the first `<code>` displays the literal text `span {{greeting}} /span`, the second displays the literal text `<f-when value="{{flag}}">wrapped</f-when>`, and the third renders a live `<button>` element alongside the surrounding sample text.
 
 ## Writing Components
 
