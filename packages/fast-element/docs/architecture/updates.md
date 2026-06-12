@@ -1,6 +1,14 @@
 # `Updates`
 
-The `Updates` API is part of the `FAST` global. The updates that are queued include updates to attributes, observables, and observed arrays.
+The `Updates` API batches FAST Element DOM work in the client-side browser
+`Window` runtime. Queued work includes updates to attributes, observables, and
+observed arrays. The async queue is aligned to `requestAnimationFrame`, which is
+expected to be available in the supported runtime.
+
+FAST Element is not intended to run its client runtime in workers, server-side
+JavaScript runtimes, or other non-window hosts. Code that needs server rendering
+should generate HTML for the browser, then let the browser window run FAST
+Element, connect custom elements, and process queued updates.
 
 ## Attributes
 

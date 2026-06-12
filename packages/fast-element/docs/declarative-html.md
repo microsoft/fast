@@ -58,9 +58,11 @@ required.
 
 One of the benefits of FAST declarative HTML templates is that the server can
 be stack agnostic because JavaScript does not need to be interpreted to emit
-the initial HTML. The declarative runtime expects hydratable comment markers
-and datasets when prerendered content is generated. For the required marker
-format and initial-state application details, see
+the initial HTML. This does not mean the FAST Element client runtime runs on the
+server: custom element definition, hydration, client rendering, and reactive
+updates still run in the browser `Window`. The declarative runtime expects
+hydratable comment markers and datasets when prerendered content is generated.
+For the required marker format and initial-state application details, see
 [declarative-rendering.md](./declarative-rendering.md).
 
 ## Lifecycle Callbacks

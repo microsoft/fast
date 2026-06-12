@@ -4,6 +4,11 @@ The `FASTElement` is our extension of the `HTMLElement`. As such it leverages th
 
 For an explanation into `HTMLElement` lifecycle hooks refer to the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks).
 
+Because `FASTElement` extends `HTMLElement`, it is a browser `Window` runtime
+API. It is not intended to execute in workers, server-side JavaScript runtimes,
+or other non-window hosts where custom element lifecycle callbacks and animation
+frame scheduling are unavailable.
+
 ## A Custom Element is Detected by the Browser
 
 Because the `FASTElement` is an extension of the `HTMLElement`, it makes use of the same lifecycle hooks and extends them with `$fastController`. It also initializes using another class `ElementController`, the methods this are called during the custom elements native `constructor`, `connectedCallback`, `disconnectedCallback`, and `attributeChangedCallback` lifecycle hooks.

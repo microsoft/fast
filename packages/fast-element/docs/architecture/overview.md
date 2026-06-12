@@ -26,6 +26,11 @@ The `FASTElement.compose()` function creates a new `FASTElementDefinition`, whic
 
 Let's step back from defining the Custom Element and consider what is happening when we import from the `@microsoft/fast-element` package.
 
+The FAST Element client runtime is expected to run in the browser `Window`.
+Custom element definition, connection, rendering, and update scheduling all rely
+on browser APIs such as the Custom Element Registry, DOM, Shadow DOM, and
+`requestAnimationFrame`.
+
 First, a global `FAST` property will be created if one does not already exist, typically in browser on the `window`.
 
 Additionally, when Custom Elements are included in a script a few things might happen even before a Custom Element gets detected by the browser. First, there are initial side effects caused by the use of decorators. These include the `attr` decorator from `@microsoft/fast-element` and the `observable` decorator from `@microsoft/fast-element`.

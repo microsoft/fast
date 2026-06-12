@@ -24,6 +24,9 @@
 
 ### Changed behavior
 
+- **Browser `Window` runtime required**: `@microsoft/fast-element` is a
+  client-side browser runtime. It expects browser DOM, Custom Elements, Shadow
+  DOM, and scheduling APIs such as `requestAnimationFrame`.
 - **Native `globalThis` required**: `@microsoft/fast-element` no longer installs
   a `globalThis` polyfill as a side effect.
 - **No idle-callback polyfill**: FAST Element v3 no longer installs or depends
@@ -32,12 +35,14 @@
 
 ### Migration steps
 
-1. Verify that the browsers and JS runtimes you support provide native
-   `globalThis` and, when using async DOM updates, `requestAnimationFrame`.
-2. If you still target an older runtime without `globalThis` or
-   `requestAnimationFrame`, load those polyfills before importing
-   `@microsoft/fast-element`.
-3. You do not need to polyfill `requestIdleCallback` or `cancelIdleCallback`
+1. Verify that the browsers you support provide native `globalThis` and
+   `requestAnimationFrame`.
+2. If you still target an older browser without `globalThis`, load that polyfill
+   before importing `@microsoft/fast-element`.
+3. Do not import or run the FAST Element client runtime in workers,
+   server-side JavaScript runtimes, or other non-window hosts. SSR tools may
+   emit HTML, but hydration and client rendering run in the browser `Window`.
+4. You do not need to polyfill `requestIdleCallback` or `cancelIdleCallback`
    for FAST Element itself. Only provide them if your application or another
    dependency calls those APIs directly.
 
