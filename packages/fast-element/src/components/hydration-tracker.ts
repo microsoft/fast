@@ -19,6 +19,8 @@ export const StopHydration = Object.freeze({
  */
 export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
 
+import type { HydrationDebugger } from "../hydration/hydration-debugger.js";
+
 /**
  * Options for configuring global hydration lifecycle events and behavior.
  * @public
@@ -35,6 +37,15 @@ export interface HydrationOptions {
      * @defaultValue StopHydration.hydrationComplete
      */
     stopHydration?: StopHydration;
+    /**
+     * Optional opt-in debugger that swaps the default minimal hydration
+     * mismatch error message for a rich "Expected … / Received …" report
+     * including an HTML snippet of the SSR DOM and structured
+     * `expected`/`received` fields on `HydrationBindingError` /
+     * `HydrationTargetElementError`. Obtained via
+     * `hydrationDebugger()` from `@microsoft/fast-element/hydration.js`.
+     */
+    debugger?: HydrationDebugger;
 }
 
 type HydrationCallbacks = Pick<

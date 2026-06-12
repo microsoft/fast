@@ -517,9 +517,27 @@ When the server-rendered DOM doesn't match the client template, hydration throws
 
 | Error | Cause | Contains |
 |---|---|---|
-| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factory list, target node, template string |
-| `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets | Factory, cloned fragment, template string, available target IDs |
-| `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting, or item count mismatches between SSR DOM and client data | Hydration stage, items length, view states |
+| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factories array, target node; with `hydrationDebugger()` installed: structured `expected` (string or `HydrationMismatchExpectation`) describing what the walk wanted next, and `received` (`HydrationMismatchActual`) containing an HTML snippet of the offending DOM |
+| `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets after the SSR DOM walk completes | Factory, cloned fragment, template string; with `hydrationDebugger()` installed: structured `expected` (`HydrationMismatchExpectation` with `tagName` and human-readable `aspect`) and `received` (`HydrationMismatchActual` with an HTML snippet of the SSR view range) |
+| `HydrationRepeatError` | A repeat view slot is unexpectedly `null` / `undefined` during rebind or unbind (internal invariant violation). SSR/client item-count mismatches are no longer surfaced as errors — they are reconciled silently by `RepeatBehavior.hydrateViews()` (missing client views are created, extra SSR ranges are removed) | Hydration stage, items length, view states |
 | `FAST.error(1210)` | `data-fe` attribute contains a non-numeric or non-positive value | Attribute value |
 
 These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition.
+
+By default, both errors emit a minimal one-line message that points at the opt-in `hydrationDebugger()`. Install the debugger from `@microsoft/fast-element/hydration.js` and pass it to `enableHydration` to swap in the rich format:
+
+```ts
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+With the debugger installed, both errors format their message as:
+
+```
+Hydration mismatch in <host-element>.
+  Expected: <tag> with <aspect> binding   (or a structural description)
+  Received: <SSR HTML snippet>
+```
+
+and expose the same information programmatically through the `expected` and `received` fields so tooling can read the structured description without parsing the message string. Keeping the debugger out of the import graph saves ~0.5 KB on the production hydration bundle.

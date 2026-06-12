@@ -192,14 +192,51 @@ export class HydrationBindingError extends Error {
     message: string | undefined,
     factory: ViewBehaviorFactory,
     fragment: DocumentFragment,
-    templateString: string);
+    templateString: string,
+    expected?: HydrationMismatchExpectation | undefined,
+    received?: HydrationMismatchActual | undefined);
+    readonly expected?: HydrationMismatchExpectation | undefined;
     readonly factory: ViewBehaviorFactory;
     readonly fragment: DocumentFragment;
+    readonly received?: HydrationMismatchActual | undefined;
     readonly templateString: string;
 }
 
 // @public
+export interface HydrationDebugger {
+    readonly diagnostic: HydrationDiagnostic;
+}
+
+// @public
+export function hydrationDebugger(): HydrationDebugger;
+
+// @public
+export interface HydrationDiagnostic {
+    formatBindingMismatch(factory: ViewBehaviorFactory, firstChild: Node, lastChild: Node, hostName: string | undefined): HydrationDiagnosticResult;
+    formatStructuralError(node: Node, hostName: string | undefined, expectedDescription: string): HydrationDiagnosticResult;
+}
+
+// @public
+export interface HydrationDiagnosticResult {
+    expected?: HydrationMismatchExpectation | string;
+    message: string;
+    received?: HydrationMismatchActual;
+}
+
+// @public
+export interface HydrationMismatchActual {
+    html: string;
+}
+
+// @public
+export interface HydrationMismatchExpectation {
+    aspect: string;
+    tagName: string | null;
+}
+
+// @public
 export interface HydrationOptions {
+    debugger?: HydrationDebugger;
     hydrationComplete?(): void;
     hydrationStarted?(): void;
     stopHydration?: StopHydration;
