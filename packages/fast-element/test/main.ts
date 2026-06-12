@@ -44,6 +44,7 @@ export {
 } from "../src/di/di.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
+export { hydrationDebugger } from "../src/hydration/hydration-debugger.js";
 export { Observable, observable, volatile } from "../src/observation/observable.js";
 export { Updates } from "../src/observation/update-queue.js";
 export { css } from "../src/styles/css.js";

@@ -86,10 +86,11 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
             if (viewNodes) {
                 this.view = this.template.hydrate(viewNodes.first, viewNodes.last);
                 this.bindView(this.view);
+                return;
             }
-        } else {
-            this.refreshView();
         }
+
+        this.refreshView();
     }
 
     /**
