@@ -22,7 +22,12 @@ keywords:
 
 # Server-Side Rendering
 
-One of the core benefits of FAST's declarative HTML templates is stack-agnostic server-side rendering. Because `<f-template>` markup is standard HTML with binding expressions — not JavaScript — any server technology can render the initial page without a JS runtime.
+One of the core benefits of FAST's declarative HTML templates is stack-agnostic server-side rendering. Because `<f-template>` markup is standard HTML with binding expressions — not JavaScript — any server technology can render the initial page without running the FAST Element client runtime.
+
+The FAST Element client runtime remains browser-only. Servers emit HTML and
+hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
+custom elements, runs `enableHydration()`, and processes reactive updates with
+browser scheduling APIs such as `requestAnimationFrame`.
 
 ## The Rendering Contract
 
@@ -302,8 +307,16 @@ The attribute name strategy must match between the server-side build and the cli
 
 Hydration succeeds when the HTML produced by the server matches the template and
 data that the client runtime sees during the element's first render. If hydration
-does not run, FAST renders client-side. If hydration starts but cannot map a
-binding, FAST reports a hydration error rather than silently repairing the DOM.
+does not run, FAST renders client-side. If hydration starts and detects a
+recoverable mismatch — empty `render()` view boundaries, or a `repeat()` whose
+SSR item count disagrees with the client array — it silently reconciles by
+falling back to the client view or by creating/removing the affected items so
+the page is correct after first paint. If the mismatch cannot be reconciled
+(structural binding-target mismatch, malformed markers, modified DOM) FAST
+throws either `HydrationBindingError` or `HydrationTargetElementError`. By
+default the thrown error carries a one-line message pointing at the opt-in
+`hydrationDebugger()`; install the debugger to get an "Expected … / Received …"
+report with the SSR HTML snippet at the mismatch.
 
 ### Call `enableHydration()` before elements connect
 
@@ -324,6 +337,34 @@ shadow root is treated as client-render fallback: `isPrerendered` resolves
 with a client-rendered view. Calling `enableHydration()` later does not hydrate
 elements that already completed their first render.
 
+### Opt in to rich mismatch diagnostics with `hydrationDebugger()`
+
+Pass `hydrationDebugger()` through `enableHydration` to swap the default
+one-line "install hydrationDebugger" error message for a rich
+"Expected / Received" formatter with the SSR HTML snippet, plus structured
+`expected` and `received` fields on `HydrationBindingError` and
+`HydrationTargetElementError`. The debugger module is tree-shaken out of
+production hydration bundles unless you import it, so the rich diagnostic
+helpers only land in builds that opt in.
+
+```ts
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+With the debugger installed, an unrecoverable mismatch produces output such as:
+
+```
+Hydration mismatch in <my-element>.
+  Expected: <span> with content binding
+  Received: <span>server</span>
+```
+
+Both errors also expose `error.expected` and `error.received` so devtools and
+bug-report templates can read the structured description without parsing the
+message string.
+
 ### Keep renderer and client versions in sync
 
 The renderer and client both rely on the same depth-first binding order and the
@@ -332,6 +373,8 @@ same marker syntax. Use matching FAST Element v3 versions of
 client updates together. Version skew can produce errors such as
 `HydrationTargetElementError` or `HydrationBindingError` because the client
 expects a different set or order of binding targets than the server emitted.
+Use `hydrationDebugger()` (above) to see exactly which binding the renderer and
+client disagree on.
 
 ### Check hydration markers
 
@@ -348,11 +391,13 @@ Do not minify or sanitize away FAST comments or `data-fe` attributes before the
 client loads. A missing `fe:/b` marker, an invalid `data-fe` count, or a changed
 DOM shape means the hydration walker cannot target the compiled bindings.
 
-### Match the first repeat count
+### `repeat()` reconciles repeat-count mismatches automatically
 
 Repeated views are hydrated by pairing existing `fe:r` ranges with the client's
-initial array items by index. Ensure the server state and the client state have
-the same item count and order for the first bind.
+initial array items by index. `repeat()` does not require the SSR and client
+counts to match for the first bind: it hydrates the overlapping prefix, calls
+`template.create()` to fill in missing items past the SSR ranges, and removes
+extra SSR ranges past the client item count.
 
 ```html
 <!-- one server-rendered repeat item -->
@@ -360,14 +405,18 @@ the same item count and order for the first bind.
 ```
 
 ```ts
-// Client state must also start with one item.
-items = ["One"];
+// Client may start with more items than the server rendered.
+items = ["One", "Two", "Three"];
 ```
 
-If the client starts with more items than the server rendered, those extra
-initial items do not have DOM ranges to hydrate. If the server rendered more
-items than the client starts with, extra prerendered DOM can remain unmanaged.
+The hydrated DOM ends with `<li>One</li><li>Two</li><li>Three</li>` — the SSR
+item is reused, and the extra two items are created client-side. The mirror
+case (server rendered more items than the client has) trims the orphan ranges.
 After hydration, normal repeat updates can add, remove, or reorder items.
+
+If a non-recoverable repeat-marker problem occurs (missing `fe:r` / `fe:/r`,
+unbalanced depth), hydration still throws a structured error pointing at the
+offending marker.
 
 ### Resolve declarative templates before upgrade
 
@@ -396,19 +445,32 @@ promise waits until it can publish the template. Keep the prerendered DOM
 unchanged while waiting, and avoid duplicate connected `<f-template>` elements
 with the same name.
 
-### Understand fallback vs. hydration errors
+### Understand recovery, fallback, and hydration errors
 
 FAST uses the client-render path when no prerendered shadow root is present,
 hydration was not enabled in time, or the template is not hydratable. In this
 path the controller clears stale prerendered content before rendering the client
 view.
 
-Hydration errors happen after FAST has opted into hydrating a prerendered,
-hydratable template. Common causes are:
+When hydration is enabled and a prerendered element connects, FAST may:
+
+- **Hydrate cleanly** — SSR and client agree; the existing DOM is bound in
+  place.
+- **Recover silently** — a `render()` directive's SSR view boundary is empty,
+  or a `repeat()` directive's SSR item count disagrees with the client array.
+  FAST creates / removes the affected views so the final DOM matches the
+  client template. No console output is emitted; observe the post-hydration
+  DOM (or `isHydrated`) to confirm.
+- **Throw a hydration error** — for unrecoverable mismatches: a binding
+  factory's target node is missing from the SSR DOM, an attribute binding
+  count overflows, or a marker is malformed. Install `hydrationDebugger()`
+  (above) to see what the runtime expected and what the SSR DOM produced.
+
+Common causes of unrecoverable errors:
 
 - The server and client templates are not identical.
-- FAST markers were removed or corrupted.
-- Client state changed the first-render shape, especially `repeat` counts.
+- FAST markers were removed or corrupted (minifier, sanitizer, intermediate
+  HTML processor).
 - Script or third-party code modified the shadow DOM before hydration.
 
 ### Inspect `isPrerendered` and `isHydrated`

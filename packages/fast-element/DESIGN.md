@@ -45,13 +45,21 @@ For deep dives into specific areas, see the linked detailed documents.
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
 | Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`; `@microsoft/fast-element/schema.js` → `Schema` |
 | Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → map helpers usable with declarative or manually supplied schemas |
-| Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
+| Async DOM updates | `Updates` queue (batched with `requestAnimationFrame`) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
 The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
+
+FAST Element is designed for client-side browser `Window` runtimes. Core
+element authoring and binding paths depend on browser platform APIs including
+Custom Elements, DOM, Shadow DOM, and `requestAnimationFrame` for async update
+batching. Worker contexts, server-side JavaScript runtimes, and other non-window
+hosts are outside the supported runtime boundary for the FAST Element client
+runtime. Server rendering should produce HTML for a browser to hydrate or render,
+rather than executing the FAST Element client runtime in the server process.
 
 The root entrypoint exports the FAST Element implementation APIs. Focused package
 path exports remain available when a consumer wants a narrower entrypoint,
@@ -93,10 +101,76 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
 - Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
-- On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
+- On `connect()`: restores pre-upgrade observable values, synchronizes any late-defined attribute-map attributes and observes only those late attributes for future DOM changes, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
 - Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
+- During hydration, server-rendered markup is treated as an optimisation over the
+  client template rather than as a source of blank output. If a `render()`
+  directive has an expected binding target but no SSR view boundaries, it creates
+  and binds the client view at the hydrated location. `repeat()` hydrates the
+  overlapping SSR/client item ranges, creates client views for missing SSR
+  ranges, and removes extra SSR ranges when the client item count is smaller.
+  Malformed or untargetable markers still surface structured hydration errors —
+  see [Hydration mismatch diagnostics](#hydration-mismatch-diagnostics) below.
+
+### Hydration mismatch diagnostics
+
+When SSR markup cannot be reconciled with the client template (a recovery path
+above does not apply), hydration throws either `HydrationBindingError`
+(after the DOM walk, when a binding factory has no resolved target) or
+`HydrationTargetElementError` (during the DOM walk, for structural marker
+problems).
+
+By default the error message is a short one-liner that points consumers at
+the opt-in `hydrationDebugger()`:
+
+```
+Hydration mismatch in <my-element>. Install hydrationDebugger() from
+"@microsoft/fast-element/hydration.js" and pass it as
+enableHydration({ debugger: hydrationDebugger() }) for an
+"Expected / Received" report including the SSR HTML snippet.
+```
+
+This keeps the rich diagnostic helpers (HTML serialization, aspect
+description, message formatter) out of production hydration bundles for
+consumers that do not need them.
+
+Opt in to the rich format at app boot:
+
+```ts
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+With the debugger installed, the same errors emit:
+
+```
+Hydration mismatch in <my-element>.
+  Expected: <span> with content binding
+  Received: <span>server</span>
+```
+
+and the structured `expected` / `received` fields on the thrown error are
+populated so devtools or bug-report templates can read them without
+parsing the message string.
+
+- `HydrationBindingError` carries a `HydrationMismatchExpectation`
+  describing the binding factory that had no target (its `tagName` and a
+  human-readable `aspect`, e.g. `content`,
+  `` "property `className`" ``) and a `HydrationMismatchActual` with an
+  HTML snippet of the SSR view range where the binding was meant to apply.
+- `HydrationTargetElementError` carries either a structured
+  `HydrationMismatchExpectation` or a free-form description string
+  (e.g. `` "no more attribute bindings (template defines 1)" ``) plus the
+  same `received` HTML snippet pointing at the offending node.
+
+The diagnostic interface is pluggable: implement `HydrationDiagnostic`
+and call `installHydrationDiagnostic` (or, more commonly, wrap your
+formatter in a custom `HydrationDebugger` and pass it through
+`enableHydration({ debugger })`) if you want to route diagnostics into
+logging, telemetry, or a devtools panel.
 - **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. By default, the hook no-ops for later prerendered batches after hydration completes; `enableHydration({ stopHydration: StopHydration.never })` keeps the hook active for streamed Declarative Shadow DOM so new elements continue checking for an existing shadow root and hydrate instead of re-rendering it. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
@@ -432,7 +506,8 @@ flowchart TD
     PRERENDER -->|no| NORMAL[isPrerendered = false\nisHydrated = false]
     SETFLAG --> OBS[Restore pre-upgrade observable values]
     NORMAL --> OBS
-    OBS --> BEHAV[Connect HostBehaviors]
+    OBS --> LATEATTR[Sync and observe late-defined attributes]
+    LATEATTR --> BEHAV[Connect HostBehaviors]
     BEHAV --> RENDER{isPrerendered AND\ntemplate is hydratable?}
     RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets\nisHydrated = true]
     RENDER -->|no| CLONE[ViewTemplate.render → HTMLView.appendTo shadow root]
@@ -550,7 +625,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content) and hydration has been enabled via `enableHydration()`, the installed hydration hook uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
-6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
+6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. In the supported browser `Window` runtime, the next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
 
 ---
@@ -572,7 +647,7 @@ src/
 │   ├── observable.ts      # Observable, @observable, ExpressionNotifier, ExecutionContext
 │   ├── notifier.ts        # Subscriber, Notifier, SubscriberSet, PropertyChangeNotifier
 │   ├── arrays.ts          # ArrayObserver, Splice, SpliceStrategy
-│   └── update-queue.ts    # Updates (UpdateQueue)
+│   └── update-queue.ts    # Updates (UpdateQueue; browser Window scheduling)
 ├── binding/
 │   ├── binding.ts         # Binding abstract base class, BindingDirective
 │   ├── one-way.ts         # oneWay, listener

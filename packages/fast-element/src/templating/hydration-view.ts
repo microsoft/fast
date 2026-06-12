@@ -1,5 +1,11 @@
 import { Hydratable } from "../components/hydration.js";
 import {
+    getHostName,
+    getHydrationDiagnostic,
+    type HydrationMismatchActual,
+    type HydrationMismatchExpectation,
+} from "../hydration/diagnostics.js";
+import {
     buildViewBindingTargets,
     createRangeForNodes,
     HydrationTargetElementError,
@@ -78,6 +84,18 @@ export class HydrationBindingError extends Error {
          * threw the binding error.
          */
         public readonly templateString: string,
+
+        /**
+         * Structured description of the binding the hydration walk was
+         * attempting to apply when the mismatch was detected.
+         */
+        public readonly expected?: HydrationMismatchExpectation,
+
+        /**
+         * Structured description of the server-rendered DOM that was
+         * encountered at the mismatch point.
+         */
+        public readonly received?: HydrationMismatchActual,
     ) {
         super(message);
     }
@@ -238,51 +256,24 @@ export class HydrationView<TSource = any, TParent = any>
                         templateString = templateString.innerHTML;
                     }
 
-                    const hostElement = (this.firstChild?.getRootNode() as ShadowRoot)
-                        .host;
-                    const hostName = hostElement?.nodeName || "unknown";
-                    const factoryInfo = factory as any;
-
-                    // Build detailed error message
-                    const details: string[] = [
-                        `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
-                        `\nMismatch Details:`,
-                        `  - Expected target node ID: "${factory.targetNodeId}"`,
-                        `  - Available target IDs: [${
-                            Object.keys(this.targets).join(", ") || "none"
-                        }]`,
-                    ];
-
-                    if (factory.targetTagName) {
-                        details.push(`  - Expected tag name: "${factory.targetTagName}"`);
-                    }
-
-                    if (factoryInfo.sourceAspect) {
-                        details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
-                    }
-
-                    if (factoryInfo.aspectType !== undefined) {
-                        details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
-                    }
-
-                    details.push(
-                        `\nThis usually means:`,
-                        `  1. The server-rendered HTML doesn't match the client template`,
-                        `  2. The hydration markers are missing or corrupted`,
-                        `  3. The DOM structure was modified before hydration`,
-                        `\nTemplate: ${templateString.slice(0, 200)}${
-                            templateString.length > 200 ? "..." : ""
-                        }`,
+                    const fragment = createRangeForNodes(
+                        this.firstChild,
+                        this.lastChild,
+                    ).cloneContents();
+                    const result = getHydrationDiagnostic().formatBindingMismatch(
+                        factory,
+                        this.firstChild,
+                        this.lastChild,
+                        getHostName(this.firstChild),
                     );
 
                     throw new HydrationBindingError(
-                        details.join("\n"),
+                        result.message,
                         factory,
-                        createRangeForNodes(
-                            this.firstChild,
-                            this.lastChild,
-                        ).cloneContents(),
+                        fragment,
                         templateString,
+                        result.expected as HydrationMismatchExpectation | undefined,
+                        result.received as HydrationMismatchActual | undefined,
                     );
                 }
             }

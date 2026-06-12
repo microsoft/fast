@@ -15,6 +15,12 @@ keywords:
 
 # Migrating from 2.x to 3.x
 
+FAST Element 3.x targets client-side browser `Window` runtimes. Do not import or
+run the FAST Element client runtime in workers, server-side JavaScript runtimes,
+or other non-window hosts. Server rendering tools may emit HTML, but hydration
+and client rendering run in the browser window where DOM, Custom Elements,
+Shadow DOM, and `requestAnimationFrame` are available.
+
 ## Breaking Changes
 
 ### `HydratableElementController` removed

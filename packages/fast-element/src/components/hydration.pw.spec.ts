@@ -329,4 +329,375 @@ test.describe("The prerendered content optimization", () => {
             never: "never",
         });
     });
+
+    test("should client render when render hydration boundaries are empty", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                render,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client rendered";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${render(x => x.value, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                isHydrated: await element.$fastController.isHydrated,
+                text: element.shadowRoot?.textContent?.trim() ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.isHydrated).toBe(true);
+        expect(result.text).toBe("client rendered");
+        expect(result.spanCount).toBe(1);
+    });
+
+    test("should create missing repeat views when SSR rendered fewer items", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one", "two", "three"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("onetwothree");
+        expect(result.spanCount).toBe(3);
+    });
+
+    test("should remove extra repeat ranges when SSR rendered more items", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span><!--fe:b-->server-two<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("one");
+        expect(result.spanCount).toBe(1);
+    });
+
+    test("HydrationBindingError emits a minimal message when the debugger is not installed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expected?: unknown;
+                received?: unknown;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expected = err.expected;
+                captured.received = err.received;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span>server</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("hydrationDebugger()");
+        expect(result.expected).toBeUndefined();
+        expect(result.received).toBeUndefined();
+    });
+
+    test("HydrationBindingError reports expected aspect and received DOM snippet when hydrationDebugger is installed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                hydrationDebugger,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration({ debugger: hydrationDebugger() });
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expectedTagName?: string | null;
+                expectedAspect?: string;
+                receivedHtml?: string;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expectedTagName = err.expected?.tagName;
+                captured.expectedAspect = err.expected?.aspect;
+                captured.receivedHtml = err.received?.html;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                // SSR rendered <span>server</span> with no hydration markers —
+                // the client template's content binding has no marker to attach to.
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span>server</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("Expected: content binding");
+        expect(result.message).toContain("Received:");
+        expect(result.message).toContain("server");
+        expect(result.expectedTagName).toBeNull();
+        expect(result.expectedAspect).toBe("content");
+        expect(result.receivedHtml).toContain("<span>");
+        expect(result.receivedHtml).toContain("server");
+    });
+
+    test("HydrationTargetElementError reports excess attribute binding count and received element when hydrationDebugger is installed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                hydrationDebugger,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration({ debugger: hydrationDebugger() });
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                cls = "active";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span :className="${x =>
+                        x.cls}">text</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expected?: string;
+                receivedHtml?: string;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expected =
+                    typeof err.expected === "string"
+                        ? err.expected
+                        : err.expected?.aspect;
+                captured.receivedHtml = err.received?.html;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                // SSR claims the span has 3 attribute bindings but the client
+                // template only declares 1. Hydration walk runs out of factories.
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span data-fe="3" class="x">text</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("no more attribute bindings");
+        expect(result.message).toContain("Received:");
+        expect(result.expected).toContain("no more attribute bindings");
+        expect(result.receivedHtml).toContain("<span");
+        expect(result.receivedHtml).toContain('class="x"');
+    });
 });

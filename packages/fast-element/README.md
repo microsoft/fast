@@ -55,10 +55,16 @@ Looking for a quick guide on building components?  Check out [our Cheat Sheet](.
 
 ## Browser Requirements
 
-FAST Element v3 assumes a modern runtime with native `globalThis`. The `FAST`
-object is now a module-scoped export (not on `globalThis`). If you need to
-support an environment without `globalThis`, load that polyfill before
+FAST Element v3 assumes a client-side browser `Window` runtime with native
+`globalThis`, Custom Elements, DOM, Shadow DOM, and `requestAnimationFrame`.
+The `FAST` object is now a module-scoped export (not on `globalThis`). If you
+need to support an older browser without `globalThis`, load that polyfill before
 importing `@microsoft/fast-element`.
+
+The FAST Element client runtime is not intended to execute in workers,
+server-side JavaScript runtimes, or other non-window hosts. Use server-side
+rendering tools to produce HTML for the browser, and run FAST Element in the
+client window where custom elements connect, render, update, and hydrate.
 
 ## Debug entrypoint
 
@@ -217,6 +223,25 @@ This enables several optimizations:
   hydrate with a concrete template.
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
+
+### Hydration Mismatch Diagnostics
+
+If a prerendered DOM diverges from the client template in a way FAST cannot
+reconcile (the `render()` empty-boundary and `repeat()` count-mismatch cases
+recover silently), `HydrationBindingError` or `HydrationTargetElementError` is
+thrown. By default the message is a single line pointing at the opt-in
+`hydrationDebugger()`. Install the debugger to get a rich
+"Expected … / Received …" report with the SSR HTML snippet and structured
+`expected` / `received` fields on the thrown error:
+
+```typescript
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+The debugger module is tree-shaken out of production hydration bundles when
+not imported, so the rich diagnostic helpers only land in builds that opt in.
 
 Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
 

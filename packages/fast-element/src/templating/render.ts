@@ -86,10 +86,11 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
             if (viewNodes) {
                 this.view = this.template.hydrate(viewNodes.first, viewNodes.last);
                 this.bindView(this.view);
+                return;
             }
-        } else {
-            this.refreshView();
         }
+
+        this.refreshView();
     }
 
     /**
@@ -369,12 +370,70 @@ const nullTemplate = html`
     &nbsp;
 `;
 
+type TemplateBindingValue = ContentTemplate | string | Node;
+
 function instructionToTemplate(def: RenderInstruction | undefined) {
     if (def === void 0) {
         return nullTemplate;
     }
 
     return def.template;
+}
+
+function resolveTemplateBindingValue<TSource = any, TParent = any>(
+    result: TemplateBindingValue,
+    dataBinding: Binding<TSource>,
+    source: TSource,
+    context: ExecutionContext<TParent>,
+): ContentTemplate {
+    if (isString(result)) {
+        return instructionToTemplate(
+            getForInstance(dataBinding.evaluate(source, context), result),
+        );
+    }
+
+    if (result instanceof Node) {
+        return (result as any).$fastTemplate ?? new NodeTemplate(result);
+    }
+
+    return result;
+}
+
+function adaptTemplateBinding<TSource = any, TParent = any>(
+    binding: Binding<TSource, TemplateBindingValue, TParent>,
+    dataBinding: Binding<TSource>,
+): Binding<TSource, ContentTemplate, TParent> {
+    const evaluateTemplate = binding.evaluate;
+    const adapter = Object.create(Object.getPrototypeOf(binding)) as Binding<
+        TSource,
+        ContentTemplate,
+        TParent
+    >;
+
+    for (const propertyName of Object.getOwnPropertyNames(binding)) {
+        if (propertyName !== "evaluate") {
+            Object.defineProperty(
+                adapter,
+                propertyName,
+                Object.getOwnPropertyDescriptor(binding, propertyName)!,
+            );
+        }
+    }
+
+    Object.defineProperty(adapter, "evaluate", {
+        configurable: true,
+        enumerable: true,
+        value: (source: TSource, context: ExecutionContext<TParent>) =>
+            resolveTemplateBindingValue(
+                evaluateTemplate(source, context),
+                dataBinding,
+                source,
+                context,
+            ),
+        writable: true,
+    });
+
+    return adapter;
 }
 
 function createElementTemplate<TSource = any, TParent = any>(
@@ -741,23 +800,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
             return instructionToTemplate(getForInstance(data, template));
         });
     } else if (template instanceof Binding) {
-        const evaluateTemplate = template.evaluate;
-
-        template.evaluate = (s: any, c: ExecutionContext) => {
-            let result = evaluateTemplate(s, c);
-
-            if (isString(result)) {
-                result = instructionToTemplate(
-                    getForInstance(dataBinding.evaluate(s, c), result),
-                );
-            } else if (result instanceof Node) {
-                result = (result as any).$fastTemplate ?? new NodeTemplate(result);
-            }
-
-            return result;
-        };
-
-        templateBinding = template as any;
+        templateBinding = adaptTemplateBinding(template, dataBinding);
     } else {
         templateBinding = oneTime((s: any, c: ExecutionContext) => template);
     }

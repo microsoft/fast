@@ -629,7 +629,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * customElements.define() completed.
      */
     protected observeLateAttributes() {
-        if (getLateAttributeLookup(this.definition) === null) {
+        const lateAttributes = getLateAttributeLookup(this.definition);
+
+        if (lateAttributes === null) {
             return;
         }
 
@@ -664,7 +666,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
         });
 
-        element[lateAttributeObserver].observe(element, { attributes: true });
+        element[lateAttributeObserver].observe(element, {
+            attributes: true,
+            attributeFilter: Object.keys(lateAttributes),
+        });
     }
 
     /**
