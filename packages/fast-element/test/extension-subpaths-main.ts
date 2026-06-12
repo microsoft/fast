@@ -6,4 +6,8 @@ export {
     ObserverMap,
     observerMap,
 } from "@microsoft/fast-element/observer-map.js";
+export {
+    FASTElementDefinition,
+    fastElementRegistry,
+} from "@microsoft/fast-element/registry.js";
 export { Schema } from "../src/components/schema.js";
