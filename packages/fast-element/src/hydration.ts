@@ -19,6 +19,14 @@ export {
     type DOMSinkGuards,
 } from "./dom-policy.js";
 export type {
+    HydrationDiagnostic,
+    HydrationDiagnosticResult,
+    HydrationMismatchActual,
+    HydrationMismatchExpectation,
+} from "./hydration/diagnostics.js";
+export type { HydrationDebugger } from "./hydration/hydration-debugger.js";
+export { hydrationDebugger } from "./hydration/hydration-debugger.js";
+export type {
     ViewBehaviorBoundaries,
     ViewBoundaries,
 } from "./hydration/target-builder.js";

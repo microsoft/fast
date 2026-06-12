@@ -105,6 +105,72 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
+- During hydration, server-rendered markup is treated as an optimisation over the
+  client template rather than as a source of blank output. If a `render()`
+  directive has an expected binding target but no SSR view boundaries, it creates
+  and binds the client view at the hydrated location. `repeat()` hydrates the
+  overlapping SSR/client item ranges, creates client views for missing SSR
+  ranges, and removes extra SSR ranges when the client item count is smaller.
+  Malformed or untargetable markers still surface structured hydration errors —
+  see [Hydration mismatch diagnostics](#hydration-mismatch-diagnostics) below.
+
+### Hydration mismatch diagnostics
+
+When SSR markup cannot be reconciled with the client template (a recovery path
+above does not apply), hydration throws either `HydrationBindingError`
+(after the DOM walk, when a binding factory has no resolved target) or
+`HydrationTargetElementError` (during the DOM walk, for structural marker
+problems).
+
+By default the error message is a short one-liner that points consumers at
+the opt-in `hydrationDebugger()`:
+
+```
+Hydration mismatch in <my-element>. Install hydrationDebugger() from
+"@microsoft/fast-element/hydration.js" and pass it as
+enableHydration({ debugger: hydrationDebugger() }) for an
+"Expected / Received" report including the SSR HTML snippet.
+```
+
+This keeps the rich diagnostic helpers (HTML serialization, aspect
+description, message formatter) out of production hydration bundles for
+consumers that do not need them.
+
+Opt in to the rich format at app boot:
+
+```ts
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+With the debugger installed, the same errors emit:
+
+```
+Hydration mismatch in <my-element>.
+  Expected: <span> with content binding
+  Received: <span>server</span>
+```
+
+and the structured `expected` / `received` fields on the thrown error are
+populated so devtools or bug-report templates can read them without
+parsing the message string.
+
+- `HydrationBindingError` carries a `HydrationMismatchExpectation`
+  describing the binding factory that had no target (its `tagName` and a
+  human-readable `aspect`, e.g. `content`,
+  `` "property `className`" ``) and a `HydrationMismatchActual` with an
+  HTML snippet of the SSR view range where the binding was meant to apply.
+- `HydrationTargetElementError` carries either a structured
+  `HydrationMismatchExpectation` or a free-form description string
+  (e.g. `` "no more attribute bindings (template defines 1)" ``) plus the
+  same `received` HTML snippet pointing at the offending node.
+
+The diagnostic interface is pluggable: implement `HydrationDiagnostic`
+and call `installHydrationDiagnostic` (or, more commonly, wrap your
+formatter in a custom `HydrationDebugger` and pass it through
+`enableHydration({ debugger })`) if you want to route diagnostics into
+logging, telemetry, or a devtools panel.
 - **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. By default, the hook no-ops for later prerendered batches after hydration completes; `enableHydration({ stopHydration: StopHydration.never })` keeps the hook active for streamed Declarative Shadow DOM so new elements continue checking for an existing shadow root and hydrate instead of re-rendering it. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.

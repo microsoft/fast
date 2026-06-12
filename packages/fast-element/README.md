@@ -224,6 +224,25 @@ This enables several optimizations:
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
 
+### Hydration Mismatch Diagnostics
+
+If a prerendered DOM diverges from the client template in a way FAST cannot
+reconcile (the `render()` empty-boundary and `repeat()` count-mismatch cases
+recover silently), `HydrationBindingError` or `HydrationTargetElementError` is
+thrown. By default the message is a single line pointing at the opt-in
+`hydrationDebugger()`. Install the debugger to get a rich
+"Expected … / Received …" report with the SSR HTML snippet and structured
+`expected` / `received` fields on the thrown error:
+
+```typescript
+import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ debugger: hydrationDebugger() });
+```
+
+The debugger module is tree-shaken out of production hydration bundles when
+not imported, so the rich diagnostic helpers only land in builds that opt in.
+
 Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
 
 ```typescript
