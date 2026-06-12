@@ -321,7 +321,9 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 
 - Holds the cloned `DocumentFragment` nodes.
 - Has a `targets` map (resolved lazily) from structural node IDs to live `Node` references.
-- `bind(source, context)` iterates all `ViewBehavior` instances and calls `behavior.bind(controller)`.
+- `bind(source, context)` updates the current source/context and iterates all
+  `ViewBehavior` instances when either identity changes; it returns early only
+  when both are unchanged.
 - `unbind()` calls `behavior.unbind()` on each behavior and clears the source.
 - `appendTo(node)` / `insertBefore(node)` / `remove()` move its DOM nodes in the tree.
 

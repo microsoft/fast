@@ -31,8 +31,8 @@ import {
 
 /** @public */
 export interface HydratableView<TSource = any, TParent = any>
-    extends ElementView,
-        SyntheticView,
+    extends ElementView<TSource, TParent>,
+        SyntheticView<TSource, TParent>,
         DefaultExecutionContext<TParent> {
     [Hydratable]: symbol;
     readonly bindingViewBoundaries: Record<string, ViewNodes>;
@@ -203,12 +203,12 @@ export class HydrationView<TSource = any, TParent = any>
     }
 
     public bind(source: TSource, context: ExecutionContext<any> = this): void {
-        if (this.hydrationStage !== HydrationStage.hydrated) {
-            this._hydrationStage = HydrationStage.hydrating;
+        if (this.source === source && this.context === context) {
+            return;
         }
 
-        if (this.source === source) {
-            return;
+        if (this.hydrationStage !== HydrationStage.hydrated) {
+            this._hydrationStage = HydrationStage.hydrating;
         }
 
         let behaviors = this.behaviors;
