@@ -103,7 +103,30 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
   and binds the client view at the hydrated location. `repeat()` hydrates the
   overlapping SSR/client item ranges, creates client views for missing SSR
   ranges, and removes extra SSR ranges when the client item count is smaller.
-  Malformed or untargetable markers still surface structured hydration errors.
+  Malformed or untargetable markers still surface structured hydration errors —
+  see [Hydration mismatch diagnostics](#hydration-mismatch-diagnostics) below.
+
+### Hydration mismatch diagnostics
+
+When SSR markup cannot be reconciled with the client template (a recovery path
+above does not apply), hydration throws a structured error with a single
+"Expected … / Received …" message and matching `expected` / `received` fields:
+
+```
+Hydration mismatch in <my-element>.
+  Expected: <span> with content binding
+  Received: <span>server</span>
+```
+
+- `HydrationBindingError` (thrown after the DOM walk completes) carries a
+  `HydrationMismatchExpectation` describing the binding factory that had no
+  target (its `tagName` and a human-readable `aspect`, e.g. `content`,
+  `` "property `className`" ``) and a `HydrationMismatchActual` with an HTML
+  snippet of the SSR view range where the binding was meant to apply.
+- `HydrationTargetElementError` (thrown during the DOM walk) carries either a
+  structured `HydrationMismatchExpectation` or a free-form description string
+  (e.g. `` "no more attribute bindings (template defines 1)" ``) plus the same
+  `received` HTML snippet pointing at the offending node.
 - **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. By default, the hook no-ops for later prerendered batches after hydration completes; `enableHydration({ stopHydration: StopHydration.never })` keeps the hook active for streamed Declarative Shadow DOM so new elements continue checking for an existing shadow root and hydrate instead of re-rendering it. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.

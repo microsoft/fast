@@ -487,4 +487,150 @@ test.describe("The prerendered content optimization", () => {
         expect(result.text).toBe("one");
         expect(result.spanCount).toBe(1);
     });
+
+    test("HydrationBindingError reports expected aspect and received DOM snippet", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expectedTagName?: string | null;
+                expectedAspect?: string;
+                receivedHtml?: string;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expectedTagName = err.expected?.tagName;
+                captured.expectedAspect = err.expected?.aspect;
+                captured.receivedHtml = err.received?.html;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                // SSR rendered <span>server</span> with no hydration markers —
+                // the client template's content binding has no marker to attach to.
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span>server</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("Expected: content binding");
+        expect(result.message).toContain("Received:");
+        expect(result.message).toContain("server");
+        expect(result.expectedTagName).toBeNull();
+        expect(result.expectedAspect).toBe("content");
+        expect(result.receivedHtml).toContain("<span>");
+        expect(result.receivedHtml).toContain("server");
+    });
+
+    test("HydrationTargetElementError reports excess attribute binding count and received element", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                cls = "active";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span :className="${x =>
+                        x.cls}">text</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expected?: string;
+                receivedHtml?: string;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expected =
+                    typeof err.expected === "string"
+                        ? err.expected
+                        : err.expected?.aspect;
+                captured.receivedHtml = err.received?.html;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                // SSR claims the span has 3 attribute bindings but the client
+                // template only declares 1. Hydration walk runs out of factories.
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span data-fe="3" class="x">text</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("no more attribute bindings");
+        expect(result.message).toContain("Received:");
+        expect(result.expected).toContain("no more attribute bindings");
+        expect(result.receivedHtml).toContain("<span");
+        expect(result.receivedHtml).toContain('class="x"');
+    });
 });

@@ -517,9 +517,17 @@ When the server-rendered DOM doesn't match the client template, hydration throws
 
 | Error | Cause | Contains |
 |---|---|---|
-| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factory list, target node, template string |
-| `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets | Factory, cloned fragment, template string, available target IDs |
+| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factories array, target node, structured `expected` (string or `HydrationMismatchExpectation`) describing what the walk wanted next, and `received` (`HydrationMismatchActual`) containing an HTML snippet of the offending DOM |
+| `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets after the SSR DOM walk completes | Factory, cloned fragment, template string, structured `expected` (`HydrationMismatchExpectation` with `tagName` and human-readable `aspect`) and `received` (`HydrationMismatchActual` with an HTML snippet of the SSR view range) |
 | `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting, or item count mismatches between SSR DOM and client data | Hydration stage, items length, view states |
 | `FAST.error(1210)` | `data-fe` attribute contains a non-numeric or non-positive value | Attribute value |
 
-These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition.
+These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition. Both `HydrationBindingError` and `HydrationTargetElementError` format their message as:
+
+```
+Hydration mismatch in <host-element>.
+  Expected: <tag> with <aspect> binding   (or a structural description)
+  Received: <SSR HTML snippet>
+```
+
+and expose the same information programmatically through the `expected` and `received` fields so tooling can read the structured description without parsing the message string.
