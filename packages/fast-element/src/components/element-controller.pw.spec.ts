@@ -1743,6 +1743,135 @@ test.describe("The ElementController", () => {
         });
     });
 
+    test.describe("with late-defined attributes", () => {
+        test("syncs late attributes and filters late attribute observation", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    AttributeMap,
+                    FASTElement,
+                    FASTElementDefinition,
+                    Schema,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const NativeMutationObserver = window.MutationObserver;
+                const observeOptions: Array<{
+                    attributes?: boolean;
+                    attributeFilter?: string[];
+                }> = [];
+                const callbackAttributes: Array<string | null> = [];
+                let callbackCount = 0;
+
+                class FilteringMutationObserver extends NativeMutationObserver {
+                    constructor(callback: MutationCallback) {
+                        super((records, observer) => {
+                            callbackCount++;
+                            callbackAttributes.push(
+                                ...records.map(record => record.attributeName),
+                            );
+                            callback(records, observer);
+                        });
+                    }
+
+                    observe(target: Node, options?: MutationObserverInit): void {
+                        observeOptions.push({
+                            attributes: options?.attributes,
+                            attributeFilter: options?.attributeFilter
+                                ? [...options.attributeFilter]
+                                : undefined,
+                        });
+                        super.observe(target, options);
+                    }
+                }
+
+                (window as any).MutationObserver = FilteringMutationObserver;
+
+                try {
+                    class LateAttributeElement extends FASTElement {}
+
+                    const name = uniqueElementName();
+                    const definition = await FASTElementDefinition.compose(
+                        LateAttributeElement,
+                        {
+                            name,
+                            template: html<any>`<span>${x => x.lateValue}</span>`,
+                        },
+                    );
+
+                    definition.define();
+
+                    const schema = new Schema(name);
+                    schema.addPath({
+                        rootPropertyName: "lateValue",
+                        pathConfig: {
+                            type: "default",
+                            parentContext: null,
+                            currentContext: null,
+                            path: "lateValue",
+                        },
+                        childrenMap: null,
+                    });
+                    new AttributeMap(
+                        LateAttributeElement.prototype,
+                        schema,
+                        definition,
+                    ).defineProperties();
+
+                    const element = document.createElement(name) as any;
+                    element.setAttribute("late-value", "initial");
+                    document.body.appendChild(element);
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+
+                    const initialProperty = element.lateValue;
+                    const initialText = element.shadowRoot?.textContent ?? "";
+
+                    element.setAttribute("unrelated", "noise");
+                    await new Promise(resolve => setTimeout(resolve, 0));
+
+                    const callbacksAfterUnrelated = callbackCount;
+                    const attributesAfterUnrelated = [...callbackAttributes];
+
+                    element.setAttribute("late-value", "updated");
+                    await new Promise(resolve => setTimeout(resolve, 0));
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+
+                    return {
+                        attributesAfterUnrelated,
+                        callbackAttributes,
+                        callbacksAfterLate: callbackCount,
+                        callbacksAfterUnrelated,
+                        initialProperty,
+                        initialText,
+                        observeOptions,
+                        updatedProperty: element.lateValue,
+                        updatedText: element.shadowRoot?.textContent ?? "",
+                    };
+                } finally {
+                    (window as any).MutationObserver = NativeMutationObserver;
+                }
+            });
+
+            expect(result.initialProperty).toBe("initial");
+            expect(result.initialText).toContain("initial");
+            expect(result.observeOptions).toContainEqual({
+                attributes: true,
+                attributeFilter: ["late-value"],
+            });
+            expect(result.callbacksAfterUnrelated).toBe(0);
+            expect(result.attributesAfterUnrelated).toEqual([]);
+            expect(result.callbacksAfterLate).toBe(1);
+            expect(result.callbackAttributes).toEqual(["late-value"]);
+            expect(result.updatedProperty).toBe("updated");
+            expect(result.updatedText).toContain("updated");
+        });
+    });
+
     test.describe("with pre-existing shadow dom on the host", () => {
         test("re-renders the view during connect", async ({ page }) => {
             await page.goto("/");
