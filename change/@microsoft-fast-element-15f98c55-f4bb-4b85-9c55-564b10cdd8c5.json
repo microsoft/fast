@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Improve hydration mismatch behaviour: render() falls back to client rendering when SSR view boundaries are empty, repeat() reconciles SSR/client item-count mismatches by creating missing client views or removing extra SSR ranges, and unrecoverable mismatches now throw a structured \"Expected / Received\" error with the SSR HTML snippet and the binding aspect (HydrationBindingError, HydrationTargetElementError).",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

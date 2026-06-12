@@ -192,10 +192,25 @@ export class HydrationBindingError extends Error {
     message: string | undefined,
     factory: ViewBehaviorFactory,
     fragment: DocumentFragment,
-    templateString: string);
+    templateString: string,
+    expected?: HydrationMismatchExpectation | undefined,
+    received?: HydrationMismatchActual | undefined);
+    readonly expected?: HydrationMismatchExpectation | undefined;
     readonly factory: ViewBehaviorFactory;
     readonly fragment: DocumentFragment;
+    readonly received?: HydrationMismatchActual | undefined;
     readonly templateString: string;
+}
+
+// @public
+export interface HydrationMismatchActual {
+    html: string;
+}
+
+// @public
+export interface HydrationMismatchExpectation {
+    aspect: string;
+    tagName: string | null;
 }
 
 // @public

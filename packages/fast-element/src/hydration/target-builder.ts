@@ -4,6 +4,13 @@ import type {
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "../templating/html-directive.js";
+import {
+    formatHydrationMismatchMessage,
+    getHostName,
+    type HydrationMismatchActual,
+    type HydrationMismatchExpectation,
+    serializeNodeForError,
+} from "./diagnostics.js";
 
 export class HydrationTargetElementError extends Error {
     /**
@@ -25,6 +32,18 @@ export class HydrationTargetElementError extends Error {
          * The node to target factory.
          */
         public readonly node: Node,
+        /**
+         * Structured description of the binding the hydration walk was
+         * attempting to apply when the mismatch was detected. Free-form
+         * string for structural errors that do not correspond to a single
+         * binding factory.
+         */
+        public readonly expected?: HydrationMismatchExpectation | string,
+        /**
+         * Structured description of the server-rendered DOM that was
+         * encountered at the mismatch point.
+         */
+        public readonly received?: HydrationMismatchActual,
     ) {
         super(message);
     }
@@ -135,14 +154,20 @@ export function buildViewBindingTargets(
                     for (let i = 0; i < count; i++) {
                         const factory = factories[factoryPointer++];
                         if (!factory) {
+                            const received: HydrationMismatchActual = {
+                                html: serializeNodeForError(node),
+                            };
+                            const expected = `no more attribute bindings (template defines ${factories.length})`;
                             throw new HydrationTargetElementError(
-                                `HydrationView was unable to successfully target factory on ${
-                                    node.nodeName
-                                } inside ${
-                                    (node.getRootNode() as ShadowRoot).host.nodeName
-                                }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+                                formatHydrationMismatchMessage(
+                                    getHostName(node),
+                                    expected,
+                                    received,
+                                ),
                                 factories,
                                 node as Element,
+                                expected,
+                                received,
                             );
                         }
                         targetFactory(factory, node, targets);
@@ -164,13 +189,20 @@ export function buildViewBindingTargets(
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
                     if (!factory) {
+                        const received: HydrationMismatchActual = {
+                            html: "<!--fe:b--> (orphan content binding marker)",
+                        };
+                        const expected = `no more content bindings (template defines ${factories.length})`;
                         throw new HydrationTargetElementError(
-                            `HydrationView ran out of factories while processing a content binding marker inside ${
-                                (node.getRootNode() as ShadowRoot).host?.nodeName ??
-                                "unknown"
-                            }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+                            formatHydrationMismatchMessage(
+                                getHostName(node),
+                                expected,
+                                received,
+                            ),
                             factories,
                             node,
+                            expected,
+                            received,
                         );
                     }
                     targetContentBinding(
@@ -206,12 +238,16 @@ function targetContentBinding(
     node.data = "";
 
     if (current === null) {
+        const expected = "content following `<!--fe:b-->` content binding marker";
+        const received: HydrationMismatchActual = {
+            html: "<!--fe:b--> (no following sibling)",
+        };
         throw new HydrationTargetElementError(
-            `Error hydrating content binding inside "${
-                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
-            }": no sibling found after content binding start marker.`,
+            formatHydrationMismatchMessage(getHostName(node), expected, received),
             factories,
             node,
+            expected,
+            received,
         );
     }
 
@@ -233,12 +269,16 @@ function targetContentBinding(
     }
 
     if (current === null) {
+        const expected = "matching `<!--fe:/b-->` content binding close marker";
+        const received: HydrationMismatchActual = {
+            html: serializeNodeForError(node),
+        };
         throw new HydrationTargetElementError(
-            `Error hydrating content binding inside "${
-                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
-            }": missing fe:/b end marker.`,
+            formatHydrationMismatchMessage(getHostName(node), expected, received),
             factories,
             node,
+            expected,
+            received,
         );
     }
 
@@ -293,12 +333,16 @@ function skipToElementBoundaryEnd(
         current = walker.nextSibling();
     }
 
+    const expected = "matching `<!--fe:/e-->` element boundary close marker";
+    const received: HydrationMismatchActual = {
+        html: serializeNodeForError(startNode),
+    };
     throw new HydrationTargetElementError(
-        `HydrationView could not find the end of an element boundary inside ${
-            (startNode.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
-        }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+        formatHydrationMismatchMessage(getHostName(startNode), expected, received),
         factories,
         startNode,
+        expected,
+        received,
     );
 }
 
