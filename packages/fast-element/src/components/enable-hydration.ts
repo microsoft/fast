@@ -1,3 +1,4 @@
+import { installHydrationDiagnostic } from "../hydration/diagnostics.js";
 import { ensureHydrationRuntime } from "../hydration/runtime.js";
 import type { Mutable } from "../interfaces.js";
 import { SourceLifetime } from "../observation/observable.js";
@@ -34,6 +35,13 @@ let hookInstalled = false;
  * `stopHydration` to `StopHydration.never` for streaming scenarios
  * that append hydratable Declarative Shadow DOM after the initial batch.
  *
+ * Pass `debugger: hydrationDebugger()` to swap the default minimal
+ * hydration mismatch error message for a rich "Expected / Received"
+ * report including the SSR HTML snippet and structured
+ * `expected`/`received` fields on `HydrationBindingError` /
+ * `HydrationTargetElementError`. The debugger module is tree-shaken
+ * out of production hydration bundles unless explicitly imported.
+ *
  * @example
  * ```ts
  * import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
@@ -46,11 +54,22 @@ let hookInstalled = false;
  * });
  * ```
  *
+ * @example Rich hydration mismatch diagnostics
+ * ```ts
+ * import { enableHydration, hydrationDebugger } from "@microsoft/fast-element/hydration.js";
+ *
+ * enableHydration({ debugger: hydrationDebugger() });
+ * ```
+ *
  * @param options - Optional global hydration callbacks and behavior.
  * @public
  */
 export function enableHydration(options?: HydrationOptions): void {
     ensureHydrationRuntime();
+
+    if (options?.debugger) {
+        installHydrationDiagnostic(options.debugger.diagnostic);
+    }
 
     if (!hookInstalled) {
         tracker = new HydrationTracker(options ?? {});
