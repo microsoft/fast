@@ -460,10 +460,110 @@ type Operator = (typeof Operator)[keyof typeof Operator];
  */
 const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
 
+const rawSymbol = Symbol("raw");
+
+interface ArrayObserverRegistration {
+    target: any;
+    rootProperty: string;
+    schema: JSONSchema | JSONSchemaDefinition;
+    rootSchema: JSONSchema;
+    subscriber: any;
+}
+
 /**
- * A map of arrays being observered
+ * A map of arrays being observed with their registrations
  */
-const observedArraysMap = new WeakSet<object>();
+const observedArraysMap = new WeakMap<object, ArrayObserverRegistration[]>();
+
+function isReachable(root: any, subject: any, visited = new Set<any>()): boolean {
+    if (root === null || typeof root !== "object") {
+        return false;
+    }
+    const rawRoot = root[rawSymbol] || root;
+    const rawSubject = subject[rawSymbol] || subject;
+    if (rawRoot === rawSubject) {
+        return true;
+    }
+    if (visited.has(rawRoot)) {
+        return false;
+    }
+    visited.add(rawRoot);
+
+    if (Array.isArray(rawRoot)) {
+        for (const item of rawRoot) {
+            if (isReachable(item, rawSubject, visited)) {
+                return true;
+            }
+        }
+    } else {
+        const keys = Object.keys(rawRoot);
+        for (const key of keys) {
+            try {
+                const val = rawRoot[key];
+                if (isReachable(val, rawSubject, visited)) {
+                    return true;
+                }
+            } catch {
+                // Ignore errors from property getters
+            }
+        }
+    }
+    return false;
+}
+
+function teardownRegistrations(
+    value: any,
+    target: any,
+    rootProperty: string,
+    visited = new Set<any>(),
+): void {
+    if (value === null || typeof value !== "object") {
+        return;
+    }
+    const rawValue = value[rawSymbol] || value;
+    if (visited.has(rawValue)) {
+        return;
+    }
+    visited.add(rawValue);
+
+    if (Array.isArray(rawValue)) {
+        const registrations = observedArraysMap.get(rawValue);
+        if (registrations) {
+            const rootVal = target[rootProperty];
+            const stillReachable = isReachable(rootVal, rawValue);
+
+            const remaining: ArrayObserverRegistration[] = [];
+            for (const reg of registrations) {
+                if (
+                    reg.target === target &&
+                    reg.rootProperty === rootProperty &&
+                    !stillReachable
+                ) {
+                    Observable.getNotifier(rawValue).unsubscribe(reg.subscriber);
+                } else {
+                    remaining.push(reg);
+                }
+            }
+            if (remaining.length > 0) {
+                observedArraysMap.set(rawValue, remaining);
+            } else {
+                observedArraysMap.delete(rawValue);
+            }
+        }
+        for (const item of rawValue) {
+            teardownRegistrations(item, target, rootProperty, visited);
+        }
+    } else {
+        const keys = Object.keys(rawValue);
+        for (const key of keys) {
+            try {
+                teardownRegistrations(rawValue[key], target, rootProperty, visited);
+            } catch {
+                // Ignore errors from property getters
+            }
+        }
+    }
+}
 
 function defineObservableProperty(
     targetObject: any,
@@ -502,6 +602,8 @@ function defineObservableProperty(
                     }
 
                     Observable.notify(source, key);
+
+                    teardownRegistrations(oldValue, target, rootProperty);
                 }
             },
         };
@@ -1555,30 +1657,50 @@ function assignObservablesToArray(
 ): any {
     const schemaProperties = getSchemaProperties(schema);
 
+    const rawData = proxiedData[rawSymbol] || proxiedData;
+    const isAlreadyMapped = observedArraysMap.has(rawData);
+
     // If the schema has no properties, the array contains primitives (e.g. string[])
     // — observe the array for changes but skip per-item proxying.
-    const data = schemaProperties
-        ? proxiedData.map((item: any) => {
-              const originalItem = Object.assign({}, item);
+    const data =
+        schemaProperties && !isAlreadyMapped
+            ? rawData.map((item: any) => {
+                  const originalItem = Object.assign({}, item);
 
-              assignProxyToItemsInArray(
-                  item,
-                  originalItem,
-                  schema,
-                  rootSchema,
-                  target,
-                  rootProperty,
-              );
+                  assignProxyToItemsInArray(
+                      item,
+                      originalItem,
+                      schema,
+                      rootSchema,
+                      target,
+                      rootProperty,
+                  );
 
-              return Object.assign(item, originalItem);
-          })
-        : proxiedData;
+                  return Object.assign(item, originalItem);
+              })
+            : rawData;
 
-    if (!observedArraysMap.has(data)) {
-        observedArraysMap.add(data);
+    let registrations = observedArraysMap.get(data);
+    if (!registrations) {
+        registrations = [];
+        observedArraysMap.set(data, registrations);
+    }
 
-        Observable.getNotifier(data).subscribe({
-            handleChange(subject, args) {
+    const alreadyObserved = registrations.some(
+        reg =>
+            reg.target === target &&
+            reg.rootProperty === rootProperty &&
+            reg.schema === schema &&
+            reg.rootSchema === rootSchema,
+    );
+
+    if (!alreadyObserved) {
+        const subscriber = {
+            handleChange(subject: any, args: any) {
+                if (!isReachable(target[rootProperty], subject)) {
+                    return;
+                }
+
                 args.forEach((arg: any) => {
                     if (arg.addedCount > 0) {
                         if (schemaProperties) {
@@ -1604,7 +1726,17 @@ function assignObservablesToArray(
                     }
                 });
             },
+        };
+
+        registrations.push({
+            target,
+            rootProperty,
+            schema,
+            rootSchema,
+            subscriber,
         });
+
+        Observable.getNotifier(data).subscribe(subscriber);
     }
 
     if (schemaProperties !== null) {
@@ -1630,6 +1762,15 @@ function assignObservablesToArray(
             }
 
             return true;
+        },
+        get: (arr: any, prop: string | symbol) => {
+            if (prop === rawSymbol) {
+                return arr;
+            }
+            if (prop === "$isProxy") {
+                return true;
+            }
+            return arr[prop];
         },
     });
 }
@@ -1973,9 +2114,14 @@ export function assignProxy(
 
                 notifyObservables(proxy);
 
+                teardownRegistrations(currentValue, target, rootProperty);
+
                 return true;
             },
             get: (target, key) => {
+                if (key === rawSymbol) {
+                    return target;
+                }
                 if (key !== "$isProxy") {
                     return target[key];
                 }
@@ -1986,6 +2132,7 @@ export function assignProxy(
                 if (prop in obj) {
                     const propName = typeof prop === "string" ? prop : String(prop);
                     const childSchema = schemaProperties?.[propName];
+                    const currentValue = obj[prop];
 
                     delete obj[prop];
 
@@ -1995,6 +2142,8 @@ export function assignProxy(
                     }
 
                     notifyObservables(proxy);
+
+                    teardownRegistrations(currentValue, target, rootProperty);
 
                     return true;
                 }

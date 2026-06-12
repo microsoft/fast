@@ -371,4 +371,144 @@ test.describe("Deep Merge Test Fixture", () => {
         expect(result.currentItemCount).toBe(1);
         expect(result.oldItemCount).toBe(3);
     });
+
+    test("should prevent stale root array mutations from notifying after deepMerge replacement", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testStaleRootArrayMutate());
+
+        expect(result.currentOrdersLength).toBe(1);
+        expect(result.staleOrdersLength).toBe(3);
+
+        const firstUser = page.locator(".user-card").first();
+        await expect(firstUser.locator(".order")).toHaveCount(1);
+        await expect(firstUser).not.toContainText("Order #999");
+    });
+
+    test("should prevent stale root array mutations from notifying after direct assignment replacement", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) =>
+                element.testStaleRootArrayDirectAssignmentMutate(),
+            );
+
+        expect(result.currentOrdersLength).toBe(1);
+        expect(result.staleOrdersLength).toBe(3);
+
+        const firstUser = page.locator(".user-card").first();
+        await expect(firstUser.locator(".order")).toHaveCount(1);
+        await expect(firstUser).not.toContainText("Order #999");
+    });
+
+    test("should prevent stale nested array mutations from notifying after deepMerge replacement", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testStaleNestedArrayMutate());
+
+        expect(result.currentItemsLength).toBe(1);
+        expect(result.staleItemsLength).toBe(3);
+
+        const firstUser = page.locator(".user-card").first();
+        await expect(firstUser.locator(".item")).toHaveCount(1);
+        await expect(firstUser).not.toContainText("Stale Item");
+    });
+
+    test("should prevent stale nested array mutations from notifying after direct assignment replacement", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) =>
+                element.testStaleNestedArrayDirectAssignmentMutate(),
+            );
+
+        expect(result.currentItemsLength).toBe(1);
+        expect(result.staleItemsLength).toBe(3);
+
+        const firstUser = page.locator(".user-card").first();
+        await expect(firstUser.locator(".item")).toHaveCount(1);
+        await expect(firstUser).not.toContainText("Stale Item");
+    });
+
+    test("should continue notifying active owners of a shared array after another owner replaces its property via deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testSharedArray());
+
+        expect(result.sameBefore).toBe(true);
+        expect(result.user0OrdersLength).toBe(1);
+        expect(result.user1OrdersLength).toBe(2);
+        expect(result.sharedLength).toBe(2);
+
+        const firstUser = page.locator(".user-card").nth(0);
+        const secondUser = page.locator(".user-card").nth(1);
+
+        await expect(firstUser.locator(".order")).toHaveCount(1);
+        await expect(secondUser.locator(".order")).toHaveCount(2);
+        await expect(secondUser).toContainText("Order #301");
+    });
+
+    test("should continue notifying active owners of a shared array after another owner replaces its property via direct assignment", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testSharedArrayDirectAssignment());
+
+        expect(result.sameBefore).toBe(true);
+        expect(result.user0OrdersLength).toBe(1);
+        expect(result.user1OrdersLength).toBe(2);
+        expect(result.sharedLength).toBe(2);
+
+        const firstUser = page.locator(".user-card").nth(0);
+        const secondUser = page.locator(".user-card").nth(1);
+
+        await expect(firstUser.locator(".order")).toHaveCount(1);
+        await expect(secondUser.locator(".order")).toHaveCount(2);
+        await expect(secondUser).toContainText("Order #301");
+    });
 });

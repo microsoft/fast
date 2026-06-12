@@ -490,6 +490,163 @@ class DeepMergeTestElement extends FASTElement {
             sameArray: items === this.users[0].orders[0].items,
         };
     }
+
+    public testStaleRootArrayMutate() {
+        const rootArray = this.users[0].orders;
+        this.updateUserOrders();
+        rootArray.push({
+            id: 999,
+            date: "2024-12-31",
+            total: 0,
+            items: [],
+        });
+        return {
+            currentOrdersLength: this.users[0].orders.length,
+            staleOrdersLength: rootArray.length,
+        };
+    }
+
+    public testStaleRootArrayDirectAssignmentMutate() {
+        const rootArray = this.users[0].orders;
+        this.users[0].orders = [
+            {
+                id: 105,
+                date: "2024-04-01",
+                total: 99.99,
+                items: [],
+            },
+        ];
+        rootArray.push({
+            id: 999,
+            date: "2024-12-31",
+            total: 0,
+            items: [],
+        });
+        return {
+            currentOrdersLength: this.users[0].orders.length,
+            staleOrdersLength: rootArray.length,
+        };
+    }
+
+    public testStaleNestedArrayMutate() {
+        const nestedArray = this.users[0].orders[0].items;
+        this.updateUserOrders();
+        nestedArray.push({
+            id: 9999,
+            name: "Stale Item",
+            price: 0,
+            inStock: true,
+            tags: ["stale"],
+            metadata: { views: 0, rating: 0 },
+        });
+        return {
+            currentItemsLength: this.users[0].orders[0].items.length,
+            staleItemsLength: nestedArray.length,
+        };
+    }
+
+    public testStaleNestedArrayDirectAssignmentMutate() {
+        const nestedArray = this.users[0].orders[0].items;
+        this.users[0].orders = [
+            {
+                id: 101,
+                date: "2024-01-15",
+                total: 150.5,
+                items: [
+                    {
+                        id: 1004,
+                        name: "Replacement Monitor",
+                        price: 99.99,
+                        inStock: true,
+                        tags: ["electronics"],
+                        metadata: { views: 1, rating: 5 },
+                    },
+                ],
+            },
+        ];
+        nestedArray.push({
+            id: 9999,
+            name: "Stale Item",
+            price: 0,
+            inStock: true,
+            tags: ["stale"],
+            metadata: { views: 0, rating: 0 },
+        });
+        return {
+            currentItemsLength: this.users[0].orders[0].items.length,
+            staleItemsLength: nestedArray.length,
+        };
+    }
+
+    public testSharedArray() {
+        const shared = [
+            {
+                id: 300,
+                date: "2024-05-01",
+                total: 10,
+                items: [],
+            },
+        ];
+        this.users[0].orders = shared;
+        this.users[1].orders = this.users[0].orders;
+        const sameBefore = this.users[0].orders === this.users[1].orders;
+        deepMerge(this.users[0], {
+            orders: [
+                {
+                    id: 103,
+                    date: "2024-04-01",
+                    total: 99.99,
+                    items: [],
+                },
+            ],
+        });
+        this.users[1].orders.push({
+            id: 301,
+            date: "2024-05-02",
+            total: 20,
+            items: [],
+        });
+        return {
+            sameBefore,
+            user0OrdersLength: this.users[0].orders.length,
+            user1OrdersLength: this.users[1].orders.length,
+            sharedLength: this.users[1].orders.length,
+        };
+    }
+
+    public testSharedArrayDirectAssignment() {
+        const shared = [
+            {
+                id: 300,
+                date: "2024-05-01",
+                total: 10,
+                items: [],
+            },
+        ];
+        this.users[0].orders = shared;
+        this.users[1].orders = this.users[0].orders;
+        const sameBefore = this.users[0].orders === this.users[1].orders;
+        this.users[0].orders = [
+            {
+                id: 103,
+                date: "2024-04-01",
+                total: 99.99,
+                items: [],
+            },
+        ];
+        this.users[1].orders.push({
+            id: 301,
+            date: "2024-05-02",
+            total: 20,
+            items: [],
+        });
+        return {
+            sameBefore,
+            user0OrdersLength: this.users[0].orders.length,
+            user1OrdersLength: this.users[1].orders.length,
+            sharedLength: this.users[1].orders.length,
+        };
+    }
 }
 
 TemplateElement.options({
