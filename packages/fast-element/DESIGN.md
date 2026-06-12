@@ -243,6 +243,12 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
 
+The `render` directive in `src/templating/render.ts` uses `RenderInstruction`
+registrations to resolve templates for arbitrary model types. Registrations are
+keyed by model constructor and instruction name. Registering another instruction
+for the same type/name pair intentionally replaces the existing instruction and
+emits a debug warning through `FAST.warn`; production behavior remains unchanged.
+
 See [docs/template-bindings.md](./docs/template-bindings.md) for the full binding pipeline including `DOMAspect` routing and two-way binding.
 
 ---
