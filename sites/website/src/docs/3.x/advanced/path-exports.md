@@ -21,13 +21,17 @@ keywords:
 
 This table is generated from the `exports` field in `@microsoft/fast-element/package.json`.
 
+Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package exports, and use `npm run doc:path-exports:check -w @microsoft/fast-element` to verify the generated table is current.
+
 | Import path | Provides | Runtime target | Types |
 |---|---|---|---|
 | `@microsoft/fast-element` | Root implementation export for FAST Element APIs. | `./dist/esm/index.js` | `./dist/dts/index.d.ts` |
 | `@microsoft/fast-element/debug.js` | Debug message helpers. | `./dist/esm/debug.js` | `./dist/dts/debug.d.ts` |
 | `@microsoft/fast-element/fast-element.js` | FASTElement and the customElement decorator. | `./dist/esm/components/fast-element.js` | `./dist/dts/components/fast-element.d.ts` |
+| `@microsoft/fast-element/registry.js` | FAST element definition registry APIs. | `./dist/esm/registry.js` | `./dist/dts/registry.d.ts` |
 | `@microsoft/fast-element/declarative.js` | Path-only declarative template APIs. | `./dist/esm/declarative/index.js` | `./dist/dts/declarative/index.d.ts` |
 | `@microsoft/fast-element/declarative-utilities.js` | Declarative parser and observer-map utilities. | `./dist/esm/declarative/utilities.js` | `./dist/dts/declarative/utilities.d.ts` |
+| `@microsoft/fast-element/declarative-syntax.js` | Declarative template syntax constants. | `./dist/esm/declarative/syntax.js` | `./dist/dts/declarative/syntax.d.ts` |
 | `@microsoft/fast-element/attribute-map.js` | Schema-driven attribute map extension. | `./dist/esm/declarative/attribute-map.js` | `./dist/dts/declarative/attribute-map.d.ts` |
 | `@microsoft/fast-element/observer-map.js` | Schema-driven observer map extension. | `./dist/esm/declarative/observer-map.js` | `./dist/dts/declarative/observer-map.d.ts` |
 | `@microsoft/fast-element/hydration.js` | Path-only opt-in hydration APIs. | `./dist/esm/hydration.js` | `./dist/dts/hydration.d.ts` |
@@ -40,7 +44,7 @@ This table is generated from the `exports` field in `@microsoft/fast-element/pac
 | `@microsoft/fast-element/context.js` | Path-only context protocol APIs. | `./dist/esm/context.js` | `./dist/dts/context.d.ts` |
 | `@microsoft/fast-element/di.js` | Path-only dependency injection APIs. | `./dist/esm/di/di.js` | `./dist/dts/di/di.d.ts` |
 | `@microsoft/fast-element/dom.js` | DOM abstraction and DOM aspect APIs. | `./dist/esm/dom.js` | `./dist/dts/dom.d.ts` |
-| `@microsoft/fast-element/dom-policy.js` | Trusted Types DOM policy helpers. | `./dist/esm/dom-policy.js` | `./dist/dts/dom-policy.d.ts` |
+| `@microsoft/fast-element/dom-policy.js` | Trusted Types DOM policy helpers for [DOMPolicy and Trusted Types](./dom-policy-and-trusted-types.md). | `./dist/esm/dom-policy.js` | `./dist/dts/dom-policy.d.ts` |
 | `@microsoft/fast-element/updates.js` | DOM update queue APIs. | `./dist/esm/updates.js` | `./dist/dts/updates.d.ts` |
 | `@microsoft/fast-element/arrays.js` | Array observation helpers. | `./dist/esm/arrays.js` | `./dist/dts/arrays.d.ts` |
 | `@microsoft/fast-element/array-observer.js` | ArrayObserver. | `./dist/esm/array-observer.js` | `./dist/dts/array-observer.d.ts` |

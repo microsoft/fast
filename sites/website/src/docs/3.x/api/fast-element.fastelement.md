@@ -20,10 +20,5 @@ A minimal base class for FASTElements that also provides static helpers for work
 **Signature:**
 
 ```typescript
-FASTElement: {
-    new (): FASTElement;
-    define: typeof define;
-    compose: typeof compose;
-    from: typeof from;
-}
+FASTElement: FASTElementConstructor
 ```

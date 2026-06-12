@@ -38,9 +38,10 @@ fast build [options]
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
-| `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
+| `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided in non-streaming mode or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
+| `--stream[=true/false]` | `false` | Write rendered HTML chunks directly to stdout instead of writing `--output`. Valueless `--stream` is treated as `true`. |
 
 ### Example
 
@@ -81,6 +82,30 @@ Produces `output.html`:
 </html>
 ```
 
+### Streaming output
+
+Pass `--stream`, `--stream=true`, or `--stream=false`, or set
+`"stream": true` in `fast-build.config.json`, to control stdout streaming. When
+streaming is enabled, the CLI writes raw rendered HTML chunks to stdout, does
+not write the `--output` file, and does not print the normal `Built: ...`
+message.
+
+```shell
+fast build --entry=index.html --state=state.json --stream
+```
+
+Streaming is simulated by the WebAssembly renderer: chunks are prepared in
+memory, returned to JavaScript as a JSON array, parsed by the CLI, and then
+written to stdout. `--stream` uses the same entry renderer with its stream flag
+enabled and passes an empty templates map when no `--templates` glob is
+provided. Chunk boundaries are safe for HTML parsing:
+
+- Attribute bindings stay within complete opening tag chunks.
+- Custom element opening chunks include the complete Declarative Shadow DOM
+  template.
+- Empty chunks are omitted.
+- Concatenating all chunks matches the normal non-streamed render.
+
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
@@ -117,7 +142,7 @@ Template files must use the following format:
 </f-template>
 ```
 
-If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file.
+If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 Any `shadowroot*` attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. The CLI normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
@@ -167,7 +192,7 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error. If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist.
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, and `stream`. Unknown keys produce an error. Values must be strings except `stream`, which must be a JSON boolean (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values, including `--stream=false` overriding `"stream": true`.
 
 ## Template syntax
 
