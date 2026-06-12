@@ -95,6 +95,46 @@ export type DOMGuards = {
     aspects: DOMAspectGuards;
 };
 
+const surroundingWhitespaceAndControlChars =
+    /^[\u0000-\u0020\u007F]+|[\u0000-\u0020\u007F]+$/g;
+const whitespaceAndControlChars = /[\u0000-\u0020\u007F]+/g;
+const unsafeURLProtocol = /^(?:javascript|vbscript|data):/;
+
+function trimURL(value: string): string {
+    return value.replace(surroundingWhitespaceAndControlChars, "");
+}
+
+function decodeURL(value: string): string {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+}
+
+function hasUnsafeURLProtocol(value: string): boolean {
+    let normalized = trimURL(value);
+
+    for (let i = 0; i < 3; ++i) {
+        const decoded = decodeURL(normalized);
+
+        if (decoded === normalized) {
+            break;
+        }
+
+        normalized = trimURL(decoded);
+    }
+
+    normalized = normalized.replace(whitespaceAndControlChars, "").toLowerCase();
+
+    return unsafeURLProtocol.test(normalized);
+}
+
+function sanitizeURL(value: string): string {
+    const trimmed = trimURL(value);
+    return hasUnsafeURLProtocol(trimmed) ? "" : trimmed;
+}
+
 function safeURL(
     tagName: string | null,
     aspect: DOMAspect,
@@ -103,7 +143,7 @@ function safeURL(
 ): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
         if (isString(value)) {
-            value = value.replace(/(javascript:|vbscript:|data:)/, "");
+            value = sanitizeURL(value);
         }
 
         sink(target, name, value, ...rest);
@@ -404,7 +444,7 @@ function createElementGuards(
                 break;
             case undefined:
                 // keep the default
-                result[tag] = createDOMAspectGuards(overrideValue, {});
+                result[tag] = createDOMAspectGuards(defaultValue, {});
                 break;
             default:
                 // override the default aspects
