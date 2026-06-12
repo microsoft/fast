@@ -3,7 +3,7 @@
 1. [Initial State](#initial-state)
 2. [Hydrating Comments and Datasets](#hydration-comments-and-datasets)
 
-This document details information on rendering hydratable content and includes some pointers on how Dependency Injection can be used to create services that hydrate a custom elements state.
+This document details information on rendering hydratable content and includes some pointers on how Dependency Injection can be used to create services that hydrate a custom elements state. Non-browser rendering in this context means producing HTML that a browser can parse and hydrate later; it does not mean running the FAST Element client runtime in a worker, server-side JavaScript runtime, or other non-window host.
 
 ## Initial State
 
