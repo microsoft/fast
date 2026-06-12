@@ -369,7 +369,7 @@ export class HTMLView<TSource = any, TParent = any>
      * @param context - The execution context to run the behaviors within.
      */
     public bind(source: TSource, context: ExecutionContext<TParent> = this): void {
-        if (this.source === source) {
+        if (this.source === source && this.context === context) {
             return;
         }
 
