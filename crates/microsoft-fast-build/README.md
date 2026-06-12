@@ -351,7 +351,7 @@ A single file may contain multiple templates:
 </f-template>
 ```
 
-If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored.
+If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 Any `shadowroot*` attributes on `<f-template>` are copied to the rendered Declarative Shadow DOM `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 

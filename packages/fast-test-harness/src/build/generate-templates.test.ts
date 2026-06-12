@@ -48,6 +48,35 @@ test.describe("convertTemplate", async () => {
         assert.ok(stylesIdx > templateIdx, "{{styles}} should appear after <template>");
     });
 
+    test("should strip static template wrapper tags with whitespace", () => {
+        const template = {
+            html: '<template\n    data-host="x"\n><span>content</span></template \n\t>',
+            factories: {},
+        };
+        const result = convertTemplate(template, "fast-whitespace");
+
+        assert.ok(result);
+        assert.ok(result.includes("<span>content</span>"), `got: ${result}`);
+        assert.ok(!result.includes("data-host"), `got: ${result}`);
+        assert.ok(!result.includes("</template \n\t>"), `got: ${result}`);
+    });
+
+    test("should inject {{styles}} after template opening tags with whitespace", () => {
+        const template = {
+            html: "<template\n><span>content</span></template \n>",
+            factories: {
+                "fast-test-1": {
+                    constructor: { name: "UnknownDirective" },
+                },
+            },
+        };
+        const result = convertTemplate(template, "fast-whitespace-dynamic");
+
+        assert.ok(result);
+        assert.ok(!result.includes("<template><template"), `got: ${result}`);
+        assert.ok(result.includes("<template\n>{{styles}}"), `got: ${result}`);
+    });
+
     test("should convert RefDirective factories to f-ref attributes", () => {
         const template = html`<template><div ${ref("myRef")}></div></template>`;
         const result = convertTemplate(template, "fast-ref");

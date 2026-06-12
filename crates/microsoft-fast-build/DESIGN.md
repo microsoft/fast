@@ -514,12 +514,12 @@ For each glob pattern:
 
 ### `<f-template>` parsing (`parse_f_templates`, `parse_element_attributes`, `extract_template_content`)
 
-`parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
-- Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
-- Extracts the attribute string between `<f-template` and `>`.
+`parse_f_templates(html)` scans for real `<f-template>` start tags using browser tag-name boundaries. For each match:
+- Verifies the character after `<f-template` is ASCII whitespace, `/`, or `>` to avoid matching non-`f-template` tags such as `<f-template-x>`.
+- Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
 - Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
-- Extracts the inner HTML between `>` and `</f-template>`.
+- Extracts the inner HTML between `>` and a matching `</f-template>` end tag, allowing ASCII whitespace before the closing `>`.
 - Calls `extract_template_content` on the inner HTML to get the content **and the attributes** declared on the inner `<template>` element. The returned attribute list is preserved as the template's **host attributes**, available later via `Locator::get_host_attributes` and merged onto the rendered host opening tag by `merge_template_host_attrs` (see the **Custom elements** section above).
 
 Returns a `Vec<FTemplate>` containing the optional name, template content, the collected shadowroot attributes, and the inner `<template>` element's host attributes. The locator stores the shadowroot attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`, and stores the host attributes so they can be merged onto the rendered host element opening tag.

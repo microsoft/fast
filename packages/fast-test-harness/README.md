@@ -240,6 +240,10 @@ Serve options:
 
 CLI flags take precedence over environment variables.
 
+`generate-templates` preserves browser-valid `<template>` wrappers and strips
+static wrappers even when the opening or closing tag includes ASCII whitespace
+before `>`.
+
 | Environment variable | Default | Description |
 | -------------------- | ------- | ----------- |
 | `PORT` | `3278` | Server port (overridden by `--port`) |
@@ -249,7 +253,7 @@ CLI flags take precedence over environment variables.
 
 ## SSR renderer
 
-**`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to render f-templates into declarative shadow DOM.
+**`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to parse f-templates and render them into declarative shadow DOM, including wrapper tags whose opening or closing `>` is preceded by ASCII whitespace.
 
 | Option | Type | Description |
 |--------|------|-------------|
