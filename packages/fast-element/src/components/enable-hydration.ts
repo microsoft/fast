@@ -1,3 +1,4 @@
+import { installHydrationDiagnostic } from "../hydration/diagnostics.js";
 import { ensureHydrationRuntime } from "../hydration/runtime.js";
 import type { Mutable } from "../interfaces.js";
 import { SourceLifetime } from "../observation/observable.js";
@@ -51,6 +52,10 @@ let hookInstalled = false;
  */
 export function enableHydration(options?: HydrationOptions): void {
     ensureHydrationRuntime();
+
+    if (options?.debugger) {
+        installHydrationDiagnostic(options.debugger.diagnostic);
+    }
 
     if (!hookInstalled) {
         tracker = new HydrationTracker(options ?? {});

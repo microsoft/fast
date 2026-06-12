@@ -1,11 +1,9 @@
 import { Hydratable } from "../components/hydration.js";
 import {
-    describeExpectedTarget,
-    formatHydrationMismatchMessage,
     getHostName,
+    getHydrationDiagnostic,
     type HydrationMismatchActual,
     type HydrationMismatchExpectation,
-    serializeRangeForError,
 } from "../hydration/diagnostics.js";
 import {
     buildViewBindingTargets,
@@ -262,19 +260,20 @@ export class HydrationView<TSource = any, TParent = any>
                         this.firstChild,
                         this.lastChild,
                     ).cloneContents();
-                    const expected = describeExpectedTarget(factory);
-                    const received: HydrationMismatchActual = {
-                        html: serializeRangeForError(this.firstChild, this.lastChild),
-                    };
-                    const hostName = getHostName(this.firstChild);
+                    const result = getHydrationDiagnostic().formatBindingMismatch(
+                        factory,
+                        this.firstChild,
+                        this.lastChild,
+                        getHostName(this.firstChild),
+                    );
 
                     throw new HydrationBindingError(
-                        formatHydrationMismatchMessage(hostName, expected, received),
+                        result.message,
                         factory,
                         fragment,
                         templateString,
-                        expected,
-                        received,
+                        result.expected as HydrationMismatchExpectation | undefined,
+                        result.received as HydrationMismatchActual | undefined,
                     );
                 }
             }

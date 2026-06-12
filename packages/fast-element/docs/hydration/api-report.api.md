@@ -203,6 +203,27 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
+export interface HydrationDebugger {
+    readonly diagnostic: HydrationDiagnostic;
+}
+
+// @public
+export function hydrationDebugger(): HydrationDebugger;
+
+// @public
+export interface HydrationDiagnostic {
+    formatBindingMismatch(factory: ViewBehaviorFactory, firstChild: Node, lastChild: Node, hostName: string | undefined): HydrationDiagnosticResult;
+    formatStructuralError(node: Node, hostName: string | undefined, expectedDescription: string): HydrationDiagnosticResult;
+}
+
+// @public
+export interface HydrationDiagnosticResult {
+    expected?: HydrationMismatchExpectation | string;
+    message: string;
+    received?: HydrationMismatchActual;
+}
+
+// @public
 export interface HydrationMismatchActual {
     html: string;
 }
@@ -215,6 +236,7 @@ export interface HydrationMismatchExpectation {
 
 // @public
 export interface HydrationOptions {
+    debugger?: HydrationDebugger;
     hydrationComplete?(): void;
     hydrationStarted?(): void;
     stopHydration?: StopHydration;

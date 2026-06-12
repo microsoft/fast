@@ -488,7 +488,7 @@ test.describe("The prerendered content optimization", () => {
         expect(result.spanCount).toBe(1);
     });
 
-    test("HydrationBindingError reports expected aspect and received DOM snippet", async ({
+    test("HydrationBindingError emits a minimal message when the debugger is not installed", async ({
         page,
     }) => {
         await page.goto("/");
@@ -504,6 +504,72 @@ test.describe("The prerendered content optimization", () => {
             } = await import("/main.js");
 
             enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                value = "client";
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const captured: {
+                message?: string;
+                expected?: unknown;
+                received?: unknown;
+            } = {};
+            const handler = (event: ErrorEvent) => {
+                event.preventDefault();
+                const err = event.error as any;
+                if (!err || captured.message) return;
+                captured.message = err.message;
+                captured.expected = err.expected;
+                captured.received = err.received;
+            };
+            window.addEventListener("error", handler);
+
+            try {
+                const container = document.createElement("div");
+                document.body.appendChild(container);
+                (container as any).setHTMLUnsafe(
+                    `<${name}><template shadowrootmode="open"><span>server</span></template></${name}>`,
+                );
+
+                await new Promise(resolve => setTimeout(resolve, 50));
+            } finally {
+                window.removeEventListener("error", handler);
+            }
+
+            return captured;
+        });
+
+        expect(result.message).toContain("Hydration mismatch");
+        expect(result.message).toContain("hydrationDebugger()");
+        expect(result.expected).toBeUndefined();
+        expect(result.received).toBeUndefined();
+    });
+
+    test("HydrationBindingError reports expected aspect and received DOM snippet when hydrationDebugger is installed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                hydrationDebugger,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration({ debugger: hydrationDebugger() });
             const name = uniqueElementName();
 
             class TestElement extends FASTElement {
@@ -561,7 +627,7 @@ test.describe("The prerendered content optimization", () => {
         expect(result.receivedHtml).toContain("server");
     });
 
-    test("HydrationTargetElementError reports excess attribute binding count and received element", async ({
+    test("HydrationTargetElementError reports excess attribute binding count and received element when hydrationDebugger is installed", async ({
         page,
     }) => {
         await page.goto("/");
@@ -573,10 +639,11 @@ test.describe("The prerendered content optimization", () => {
                 FASTElement,
                 FASTElementDefinition,
                 html,
+                hydrationDebugger,
                 uniqueElementName,
             } = await import("/main.js");
 
-            enableHydration();
+            enableHydration({ debugger: hydrationDebugger() });
             const name = uniqueElementName();
 
             class TestElement extends FASTElement {

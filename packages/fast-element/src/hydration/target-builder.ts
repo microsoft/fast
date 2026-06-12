@@ -5,11 +5,10 @@ import type {
     ViewBehaviorTargets,
 } from "../templating/html-directive.js";
 import {
-    formatHydrationMismatchMessage,
     getHostName,
+    getHydrationDiagnostic,
     type HydrationMismatchActual,
     type HydrationMismatchExpectation,
-    serializeNodeForError,
 } from "./diagnostics.js";
 
 export class HydrationTargetElementError extends Error {
@@ -154,20 +153,18 @@ export function buildViewBindingTargets(
                     for (let i = 0; i < count; i++) {
                         const factory = factories[factoryPointer++];
                         if (!factory) {
-                            const received: HydrationMismatchActual = {
-                                html: serializeNodeForError(node),
-                            };
                             const expected = `no more attribute bindings (template defines ${factories.length})`;
+                            const result = getHydrationDiagnostic().formatStructuralError(
+                                node,
+                                getHostName(node),
+                                expected,
+                            );
                             throw new HydrationTargetElementError(
-                                formatHydrationMismatchMessage(
-                                    getHostName(node),
-                                    expected,
-                                    received,
-                                ),
+                                result.message,
                                 factories,
                                 node as Element,
-                                expected,
-                                received,
+                                result.expected,
+                                result.received,
                             );
                         }
                         targetFactory(factory, node, targets);
@@ -189,20 +186,18 @@ export function buildViewBindingTargets(
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
                     if (!factory) {
-                        const received: HydrationMismatchActual = {
-                            html: "<!--fe:b--> (orphan content binding marker)",
-                        };
                         const expected = `no more content bindings (template defines ${factories.length})`;
+                        const result = getHydrationDiagnostic().formatStructuralError(
+                            node,
+                            getHostName(node),
+                            expected,
+                        );
                         throw new HydrationTargetElementError(
-                            formatHydrationMismatchMessage(
-                                getHostName(node),
-                                expected,
-                                received,
-                            ),
+                            result.message,
                             factories,
                             node,
-                            expected,
-                            received,
+                            result.expected,
+                            result.received,
                         );
                     }
                     targetContentBinding(
@@ -239,15 +234,17 @@ function targetContentBinding(
 
     if (current === null) {
         const expected = "content following `<!--fe:b-->` content binding marker";
-        const received: HydrationMismatchActual = {
-            html: "<!--fe:b--> (no following sibling)",
-        };
+        const result = getHydrationDiagnostic().formatStructuralError(
+            node,
+            getHostName(node),
+            expected,
+        );
         throw new HydrationTargetElementError(
-            formatHydrationMismatchMessage(getHostName(node), expected, received),
+            result.message,
             factories,
             node,
-            expected,
-            received,
+            result.expected,
+            result.received,
         );
     }
 
@@ -270,15 +267,17 @@ function targetContentBinding(
 
     if (current === null) {
         const expected = "matching `<!--fe:/b-->` content binding close marker";
-        const received: HydrationMismatchActual = {
-            html: serializeNodeForError(node),
-        };
+        const result = getHydrationDiagnostic().formatStructuralError(
+            node,
+            getHostName(node),
+            expected,
+        );
         throw new HydrationTargetElementError(
-            formatHydrationMismatchMessage(getHostName(node), expected, received),
+            result.message,
             factories,
             node,
-            expected,
-            received,
+            result.expected,
+            result.received,
         );
     }
 
@@ -334,15 +333,17 @@ function skipToElementBoundaryEnd(
     }
 
     const expected = "matching `<!--fe:/e-->` element boundary close marker";
-    const received: HydrationMismatchActual = {
-        html: serializeNodeForError(startNode),
-    };
+    const result = getHydrationDiagnostic().formatStructuralError(
+        startNode,
+        getHostName(startNode),
+        expected,
+    );
     throw new HydrationTargetElementError(
-        formatHydrationMismatchMessage(getHostName(startNode), expected, received),
+        result.message,
         factories,
         startNode,
-        expected,
-        received,
+        result.expected,
+        result.received,
     );
 }
 

@@ -1,4 +1,3 @@
-import { DOMAspect } from "../dom.js";
 import type { ViewBehaviorFactory } from "../templating/html-directive.js";
 
 /**
@@ -16,7 +15,8 @@ export interface HydrationMismatchExpectation {
 
     /**
      * Human-readable description of the binding aspect, for example
-     * `"content"`, `` "property `className`" ``, or `` "attribute `aria-label`" ``.
+     * `"content"`, `` "property `className`" ``, or
+     * `` "attribute `aria-label`" ``.
      */
     aspect: string;
 }
@@ -34,159 +34,117 @@ export interface HydrationMismatchActual {
     html: string;
 }
 
-const aspectLabels: Readonly<Record<number, string>> = Object.freeze({
-    [DOMAspect.attribute]: "attribute",
-    [DOMAspect.booleanAttribute]: "boolean attribute",
-    [DOMAspect.property]: "property",
-    [DOMAspect.content]: "content",
-    [DOMAspect.tokenList]: "token list",
-    [DOMAspect.event]: "event",
-});
+/**
+ * Result of a hydration-mismatch diagnostic format call.
+ * @public
+ */
+export interface HydrationDiagnosticResult {
+    /**
+     * The error message to attach to the thrown hydration error.
+     */
+    message: string;
+
+    /**
+     * Structured description of the binding the hydration walk was
+     * attempting to apply. The default diagnostic leaves this `undefined`;
+     * install `hydrationDebugger()` to populate it.
+     */
+    expected?: HydrationMismatchExpectation | string;
+
+    /**
+     * Structured description of the server-rendered DOM that was
+     * encountered at the mismatch point. The default diagnostic leaves
+     * this `undefined`; install `hydrationDebugger()` to populate it.
+     */
+    received?: HydrationMismatchActual;
+}
 
 /**
- * Returns a human-readable description of a binding aspect suitable for
- * inclusion in error messages, e.g. `"content"`,
- * `` "property `className`" ``.
- * @internal
+ * Pluggable formatter for hydration mismatch errors. The default
+ * implementation is a minimal one-line message; install
+ * {@link hydrationDebugger} to swap in the rich "Expected … / Received …"
+ * formatter with an HTML snippet of the SSR DOM.
+ * @public
  */
-export function describeAspect(
-    aspectType: DOMAspect | undefined,
-    sourceAspect: string | undefined,
+export interface HydrationDiagnostic {
+    /**
+     * Format a binding-resolution mismatch (a factory whose `targetNodeId`
+     * has no entry in the resolved targets after the SSR DOM walk).
+     */
+    formatBindingMismatch(
+        factory: ViewBehaviorFactory,
+        firstChild: Node,
+        lastChild: Node,
+        hostName: string | undefined,
+    ): HydrationDiagnosticResult;
+
+    /**
+     * Format a structural error encountered during the SSR DOM walk
+     * (e.g. attribute binding count overflow, missing close marker).
+     */
+    formatStructuralError(
+        node: Node,
+        hostName: string | undefined,
+        expectedDescription: string,
+    ): HydrationDiagnosticResult;
+}
+
+function formatMinimalMessage(
+    hostName: string | undefined,
+    detail: string | undefined,
 ): string {
-    const base = aspectType !== undefined ? (aspectLabels[aspectType] ?? "binding") : "binding";
-    return sourceAspect ? `${base} \`${sourceAspect}\`` : base;
-}
-
-/**
- * Returns a {@link HydrationMismatchExpectation} describing the binding target
- * that hydration was attempting to apply when the mismatch was detected.
- * @internal
- */
-export function describeExpectedTarget(
-    factory: ViewBehaviorFactory,
-): HydrationMismatchExpectation {
-    const aspectType = (factory as { aspectType?: DOMAspect }).aspectType;
-    const sourceAspect = (factory as { sourceAspect?: string }).sourceAspect;
-    return {
-        tagName: factory.targetTagName ?? null,
-        aspect: describeAspect(aspectType, sourceAspect),
-    };
-}
-
-const defaultSnippetLength = 500;
-
-function stripEmptyComments(root: Node): void {
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_COMMENT);
-    const empties: Comment[] = [];
-    let current: Node | null;
-
-    while ((current = walker.nextNode()) !== null) {
-        if ((current as Comment).data === "") {
-            empties.push(current as Comment);
-        }
-    }
-
-    for (const comment of empties) {
-        comment.parentNode?.removeChild(comment);
-    }
-}
-
-function truncate(value: string, maxLength: number): string {
-    return value.length > maxLength ? `${value.slice(0, maxLength)}…` : value;
-}
-
-/**
- * Serializes a DocumentFragment to a clean HTML string for use in error
- * messages. Removes empty comment markers left over from hydration walks
- * and truncates at the given maximum length with an ellipsis.
- * @internal
- */
-export function serializeFragmentForError(
-    fragment: DocumentFragment,
-    maxLength: number = defaultSnippetLength,
-): string {
-    const wrapper = document.createElement("div");
-    wrapper.appendChild(fragment.cloneNode(true));
-    stripEmptyComments(wrapper);
-    return truncate(wrapper.innerHTML.trim(), maxLength);
-}
-
-/**
- * Serializes a single DOM node to a clean HTML string for use in error
- * messages. Removes empty comment markers and truncates at the given
- * maximum length with an ellipsis.
- * @internal
- */
-export function serializeNodeForError(
-    node: Node,
-    maxLength: number = defaultSnippetLength,
-): string {
-    const wrapper = document.createElement("div");
-    wrapper.appendChild(node.cloneNode(true));
-    stripEmptyComments(wrapper);
-    return truncate(wrapper.innerHTML.trim(), maxLength);
-}
-
-/**
- * Serializes the run of nodes from `first` through `last` (inclusive) to a
- * clean HTML string suitable for inclusion in error messages. Unlike
- * {@link serializeFragmentForError}, this captures the *outer* HTML of each
- * node — so wrapping elements remain visible in the snippet. Removes empty
- * comment markers left over from hydration walks and truncates at the given
- * maximum length with an ellipsis.
- * @internal
- */
-export function serializeRangeForError(
-    first: Node,
-    last: Node,
-    maxLength: number = defaultSnippetLength,
-): string {
-    const wrapper = document.createElement("div");
-    let current: Node | null = first;
-
-    while (current !== null) {
-        wrapper.appendChild(current.cloneNode(true));
-
-        if (current === last) {
-            break;
-        }
-
-        current = current.nextSibling;
-    }
-
-    stripEmptyComments(wrapper);
-    return truncate(wrapper.innerHTML.trim(), maxLength);
-}
-
-/**
- * Formats the canonical "Hydration mismatch in <host>." error message used by
- * {@link HydrationBindingError} and {@link HydrationTargetElementError}. The
- * `expected` parameter may be either a structured
- * {@link HydrationMismatchExpectation} or a free-form description string for
- * structural errors that do not map cleanly to a specific binding factory.
- * @internal
- */
-export function formatHydrationMismatchMessage(
-    hostNodeName: string | undefined,
-    expected: HydrationMismatchExpectation | string,
-    received: HydrationMismatchActual,
-): string {
-    const host = (hostNodeName ?? "unknown").toLowerCase();
-    const expectedText =
-        typeof expected === "string"
-            ? expected
-            : expected.tagName
-                ? `<${expected.tagName.toLowerCase()}> with ${expected.aspect} binding`
-                : `${expected.aspect} binding`;
-
+    const host = (hostName ?? "unknown").toLowerCase();
+    const suffix = detail ? `: ${detail}` : "";
     return (
-        `Hydration mismatch in <${host}>.\n` +
-        `  Expected: ${expectedText}\n` +
-        `  Received: ${received.html}`
+        `Hydration mismatch in <${host}>${suffix}. Install ` +
+        `hydrationDebugger() from "@microsoft/fast-element/hydration.js" and ` +
+        `pass it as enableHydration({ debugger: hydrationDebugger() }) for an ` +
+        `"Expected / Received" report including the SSR HTML snippet.`
     );
 }
 
-function getHostName(node: Node | null | undefined): string | undefined {
+const defaultDiagnostic: HydrationDiagnostic = {
+    formatBindingMismatch(_factory, _firstChild, _lastChild, hostName) {
+        return {
+            message: formatMinimalMessage(hostName, undefined),
+        };
+    },
+    formatStructuralError(_node, hostName, expectedDescription) {
+        return {
+            message: formatMinimalMessage(hostName, expectedDescription),
+        };
+    },
+};
+
+let activeDiagnostic: HydrationDiagnostic = defaultDiagnostic;
+
+/**
+ * Installs a {@link HydrationDiagnostic} as the active formatter for
+ * hydration mismatch errors. Called by `enableHydration()` when an opt-in
+ * debugger configuration is supplied; not exposed as `@public` because
+ * library consumers should always go through `enableHydration` to install
+ * a debugger.
+ * @internal
+ */
+export function installHydrationDiagnostic(diagnostic: HydrationDiagnostic): void {
+    activeDiagnostic = diagnostic;
+}
+
+/**
+ * Returns the currently active {@link HydrationDiagnostic} — either the
+ * minimal default or one installed by an opt-in debugger.
+ * @internal
+ */
+export function getHydrationDiagnostic(): HydrationDiagnostic {
+    return activeDiagnostic;
+}
+
+/**
+ * Reads the host element's tag name from any node inside a hydration view.
+ * Returns `undefined` when the node is not inside a shadow root.
+ * @internal
+ */
+export function getHostName(node: Node | null | undefined): string | undefined {
     if (!node) {
         return undefined;
     }
@@ -194,11 +152,3 @@ function getHostName(node: Node | null | undefined): string | undefined {
     const root = node.getRootNode();
     return (root as ShadowRoot).host?.nodeName;
 }
-
-/**
- * Helper for reading the host element's tag name from any node inside a
- * hydration view. Returns `undefined` when the node is not inside a shadow
- * root.
- * @internal
- */
-export { getHostName };
