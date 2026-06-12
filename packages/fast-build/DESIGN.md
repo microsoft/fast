@@ -119,6 +119,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 - Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the WASM renderer applies to the emitted Declarative Shadow DOM `<template>`.
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.
+- The Rust parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 ### Helpers
 
