@@ -19,7 +19,7 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 76.82 KB | 23.03 KB | 20.45 KB |
+| CDN Rollup Bundle | 76.90 KB | 23.04 KB | 20.42 KB |
 | FASTElement (@microsoft/fast-element/fast-element.js) | 23.84 KB | 7.39 KB | 6.65 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 288 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.77 KB | 2.52 KB | 2.24 KB |
@@ -30,11 +30,11 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | slotted (@microsoft/fast-element/slotted.js) | 4.66 KB | 1.81 KB | 1.59 KB |
 | volatile (@microsoft/fast-element/volatile.js) | 6.86 KB | 2.55 KB | 2.26 KB |
 | when (@microsoft/fast-element/when.js) | 1.88 KB | 731 B | 584 B |
-| html (@microsoft/fast-element/html.js) | 25.48 KB | 8.34 KB | 7.48 KB |
-| repeat (@microsoft/fast-element/repeat.js) | 29.52 KB | 9.38 KB | 8.49 KB |
+| html (@microsoft/fast-element/html.js) | 25.62 KB | 8.38 KB | 7.52 KB |
+| repeat (@microsoft/fast-element/repeat.js) | 29.65 KB | 9.43 KB | 8.52 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
-| enableHydration (@microsoft/fast-element/hydration.js) | 43.30 KB | 13.22 KB | 11.89 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 60.57 KB | 19.10 KB | 17.07 KB |
+| enableHydration (@microsoft/fast-element/hydration.js) | 43.43 KB | 13.26 KB | 11.92 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 60.71 KB | 19.16 KB | 17.13 KB |
 | ArrayObserver (@microsoft/fast-element/array-observer.js) | 12.57 KB | 4.47 KB | 4.03 KB |
 | observerMap (@microsoft/fast-element/observer-map.js) | 20.47 KB | 7.26 KB | 6.53 KB |
 | attributeMap (@microsoft/fast-element/attribute-map.js) | 15.84 KB | 5.60 KB | 5.05 KB |

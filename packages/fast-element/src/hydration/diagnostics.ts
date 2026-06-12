@@ -1,4 +1,5 @@
 import type { ViewBehaviorFactory } from "../templating/html-directive.js";
+import { formatDefaultMismatchMessage, unknownHostName } from "./messages.js";
 
 /**
  * Structured description of the binding hydration was expecting to apply when
@@ -15,8 +16,7 @@ export interface HydrationMismatchExpectation {
 
     /**
      * Human-readable description of the binding aspect, for example
-     * `"content"`, `` "property `className`" ``, or
-     * `` "attribute `aria-label`" ``.
+     * `"content"`, `"property className"`, or `"attribute aria-label"`.
      */
     aspect: string;
 }
@@ -93,14 +93,8 @@ function formatMinimalMessage(
     hostName: string | undefined,
     detail: string | undefined,
 ): string {
-    const host = (hostName ?? "unknown").toLowerCase();
-    const suffix = detail ? `: ${detail}` : "";
-    return (
-        `Hydration mismatch in <${host}>${suffix}. Install ` +
-        `hydrationDebugger() from "@microsoft/fast-element/hydration.js" and ` +
-        `pass it as enableHydration({ debugger: hydrationDebugger() }) for an ` +
-        `"Expected / Received" report including the SSR HTML snippet.`
-    );
+    const host = (hostName ?? unknownHostName).toLowerCase();
+    return formatDefaultMismatchMessage(host, detail);
 }
 
 const defaultDiagnostic: HydrationDiagnostic = {

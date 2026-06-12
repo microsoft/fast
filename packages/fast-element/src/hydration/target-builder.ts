@@ -10,6 +10,13 @@ import {
     type HydrationMismatchActual,
     type HydrationMismatchExpectation,
 } from "./diagnostics.js";
+import {
+    expectedContentAfterStartMarker,
+    expectedContentEndMarker,
+    expectedElementBoundaryEndMarker,
+    formatNoMoreAttributeBindings,
+    formatNoMoreContentBindings,
+} from "./messages.js";
 
 export class HydrationTargetElementError extends Error {
     /**
@@ -153,7 +160,9 @@ export function buildViewBindingTargets(
                     for (let i = 0; i < count; i++) {
                         const factory = factories[factoryPointer++];
                         if (!factory) {
-                            const expected = `no more attribute bindings (template defines ${factories.length})`;
+                            const expected = formatNoMoreAttributeBindings(
+                                factories.length,
+                            );
                             const result = getHydrationDiagnostic().formatStructuralError(
                                 node,
                                 getHostName(node),
@@ -186,7 +195,7 @@ export function buildViewBindingTargets(
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
                     if (!factory) {
-                        const expected = `no more content bindings (template defines ${factories.length})`;
+                        const expected = formatNoMoreContentBindings(factories.length);
                         const result = getHydrationDiagnostic().formatStructuralError(
                             node,
                             getHostName(node),
@@ -233,7 +242,7 @@ function targetContentBinding(
     node.data = "";
 
     if (current === null) {
-        const expected = "content following `<!--fe:b-->` content binding marker";
+        const expected = expectedContentAfterStartMarker;
         const result = getHydrationDiagnostic().formatStructuralError(
             node,
             getHostName(node),
@@ -266,7 +275,7 @@ function targetContentBinding(
     }
 
     if (current === null) {
-        const expected = "matching `<!--fe:/b-->` content binding close marker";
+        const expected = expectedContentEndMarker;
         const result = getHydrationDiagnostic().formatStructuralError(
             node,
             getHostName(node),
@@ -332,7 +341,7 @@ function skipToElementBoundaryEnd(
         current = walker.nextSibling();
     }
 
-    const expected = "matching `<!--fe:/e-->` element boundary close marker";
+    const expected = expectedElementBoundaryEndMarker;
     const result = getHydrationDiagnostic().formatStructuralError(
         startNode,
         getHostName(startNode),

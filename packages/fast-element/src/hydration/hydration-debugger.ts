@@ -6,14 +6,27 @@ import type {
     HydrationMismatchActual,
     HydrationMismatchExpectation,
 } from "./diagnostics.js";
+import {
+    aspectLabelAttribute,
+    aspectLabelBooleanAttribute,
+    aspectLabelContent,
+    aspectLabelEvent,
+    aspectLabelProperty,
+    aspectLabelTokenList,
+    aspectLabelUnknown,
+    formatAspect,
+    formatExpectedTarget,
+    formatRichMismatchMessage,
+    unknownHostName,
+} from "./messages.js";
 
-const aspectLabels: Readonly<Record<number, string>> = Object.freeze({
-    [DOMAspect.attribute]: "attribute",
-    [DOMAspect.booleanAttribute]: "boolean attribute",
-    [DOMAspect.property]: "property",
-    [DOMAspect.content]: "content",
-    [DOMAspect.tokenList]: "token list",
-    [DOMAspect.event]: "event",
+const aspectLabelsByCode: Readonly<Record<number, string>> = Object.freeze({
+    [DOMAspect.attribute]: aspectLabelAttribute,
+    [DOMAspect.booleanAttribute]: aspectLabelBooleanAttribute,
+    [DOMAspect.property]: aspectLabelProperty,
+    [DOMAspect.content]: aspectLabelContent,
+    [DOMAspect.tokenList]: aspectLabelTokenList,
+    [DOMAspect.event]: aspectLabelEvent,
 });
 
 const defaultSnippetLength = 500;
@@ -23,8 +36,10 @@ function describeAspect(
     sourceAspect: string | undefined,
 ): string {
     const base =
-        aspectType !== undefined ? (aspectLabels[aspectType] ?? "binding") : "binding";
-    return sourceAspect ? `${base} \`${sourceAspect}\`` : base;
+        aspectType !== undefined
+            ? (aspectLabelsByCode[aspectType] ?? aspectLabelUnknown)
+            : aspectLabelUnknown;
+    return formatAspect(base, sourceAspect);
 }
 
 function describeExpectedTarget(
@@ -92,19 +107,13 @@ function formatMismatchMessage(
     expected: HydrationMismatchExpectation | string,
     received: HydrationMismatchActual,
 ): string {
-    const host = (hostName ?? "unknown").toLowerCase();
+    const host = (hostName ?? unknownHostName).toLowerCase();
     const expectedText =
         typeof expected === "string"
             ? expected
-            : expected.tagName
-              ? `<${expected.tagName.toLowerCase()}> with ${expected.aspect} binding`
-              : `${expected.aspect} binding`;
+            : formatExpectedTarget(expected.tagName, expected.aspect);
 
-    return (
-        `Hydration mismatch in <${host}>.\n` +
-        `  Expected: ${expectedText}\n` +
-        `  Received: ${received.html}`
-    );
+    return formatRichMismatchMessage(host, expectedText, received.html);
 }
 
 const richDiagnostic: HydrationDiagnostic = {
