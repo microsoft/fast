@@ -14,6 +14,7 @@ For deep dives into specific areas, see the linked detailed documents.
    - [FASTElement & ElementController](#fastelement--elementcontroller)
    - [Observables & Notifiers](#observables--notifiers)
    - [Bindings](#bindings)
+   - [DOM Policy](#dom-policy)
    - [html Tagged Template Literal](#html-tagged-template-literal)
    - [ViewTemplate & Compiler](#viewtemplate--compiler)
    - [Views & Behaviors](#views--behaviors)
@@ -53,7 +54,9 @@ For deep dives into specific areas, see the linked detailed documents.
 The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
 
 The root entrypoint exports the FAST Element implementation APIs. Focused package
-path exports remain available when a consumer wants a narrower entrypoint.
+path exports remain available when a consumer wants a narrower entrypoint,
+including `@microsoft/fast-element/registry.js` for FAST element definition
+lookups.
 
 ---
 
@@ -94,12 +97,12 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
-- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
+- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. By default, the hook no-ops for later prerendered batches after hydration completes; `enableHydration({ stopHydration: StopHydration.never })` keeps the hook active for streamed Declarative Shadow DOM so new elements continue checking for an existing shadow root and hydrate instead of re-rendering it. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. Consumers that need focused access to definition lookup can import `fastElementRegistry` from `@microsoft/fast-element/registry.js`. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
 
 #### Extensions
 
@@ -166,6 +169,25 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 | `listener` | Same as `oneWay` but attaches as a DOM event handler |
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
+
+---
+
+### DOM Policy
+
+**Files**: `src/dom.ts`, `src/dom-policy.ts`
+
+`DOM.policy` is the templating system's DOM write policy. `DOMPolicy.create()` builds a
+policy from Trusted Types integration plus default guard maps for element-specific and
+aspect-wide sinks. User guard configuration is merged with those defaults so partial
+overrides preserve unspecified built-in guards.
+
+The default guards block known dangerous sinks such as inline event handlers,
+`innerHTML`, script text/source writes, and executable object/link/embed sources. URL
+attributes and properties that remain writable are routed through the built-in URL guard,
+which trims surrounding whitespace/control characters, normalizes protocol detection
+across case, embedded controls, and bounded percent-decoding, and rejects
+`javascript:`, `vbscript:`, and `data:` protocols without treating safe or
+protocol-relative URLs as unsafe.
 
 ---
 
@@ -240,6 +262,12 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 | `children` / `slotted` | `ChildrenDirective` / `SlottedDirective` | Observes DOM mutations |
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
+
+The `render` directive in `src/templating/render.ts` uses `RenderInstruction`
+registrations to resolve templates for arbitrary model types. Registrations are
+keyed by model constructor and instruction name. Registering another instruction
+for the same type/name pair intentionally replaces the existing instruction and
+emits a debug warning through `FAST.warn`; production behavior remains unchanged.
 
 See [docs/template-bindings.md](./docs/template-bindings.md) for the full binding pipeline including `DOMAspect` routing and two-way binding.
 
@@ -350,7 +378,9 @@ the imperative `html` API:
 
 - The internal `<f-template>` publisher parses HTML and returns concrete
   `ViewTemplate` instances through the registry-aware declarative template
-  bridge.
+  bridge. If duplicate connected publishers share a name, the first connected
+  publisher supplies the definition template and later duplicates do not
+  reassign it.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
@@ -536,6 +566,7 @@ src/
 ├── metadata.ts            # Reflect-based metadata helpers
 ├── utilities.ts           # UnobservableMutationObserver and other helpers
 ├── debug.ts               # Exports enableDebug() for human-readable FAST errors
+├── registry.ts            # fastElementRegistry focused path export
 ├── observation/
 │   ├── observable.ts      # Observable, @observable, ExpressionNotifier, ExecutionContext
 │   ├── notifier.ts        # Subscriber, Notifier, SubscriberSet, PropertyChangeNotifier
@@ -592,6 +623,10 @@ src/
 └── hydration/
     └── target-builder.ts  # Hydration target resolution
 ```
+
+The published export surface is guarded by scripts under `scripts/`.
+`smoke-package-exports.js` imports every `package.json` export after `build:tsc`, and
+`check-path-exports-docs.js` regenerates or verifies the 3.x path exports documentation table.
 
 ---
 

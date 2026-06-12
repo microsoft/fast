@@ -1,3 +1,8 @@
+/**
+ * Core APIs for building standards-based Web Components with FAST Element.
+ * @packageDocumentation
+ */
+
 // Kernel
 
 // Components
@@ -33,6 +38,7 @@ export type {
     FASTElementTemplateResolver,
     PartialFASTElementDefinition,
     ShadowRootOptions,
+    TypeDefinition,
     TypeRegistry,
 } from "./components/fast-definitions.js";
 export {
@@ -40,7 +46,11 @@ export {
     fastElementRegistry,
     type TemplateLifecycleCallbacks,
 } from "./components/fast-definitions.js";
-export { customElement, FASTElement } from "./components/fast-element.js";
+export {
+    customElement,
+    FASTElement,
+    type FASTElementConstructor,
+} from "./components/fast-element.js";
 export { enableDebug } from "./debug.js";
 // Directives
 export {
@@ -69,7 +79,7 @@ export {
     slotted,
 } from "./directives/slotted.js";
 export { when } from "./directives/when.js";
-export * from "./dom.js";
+export { DOM, DOMAspect, type DOMSink } from "./dom.js";
 export {
     type DOMAspectGuards,
     type DOMElementGuards,

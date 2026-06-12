@@ -156,6 +156,133 @@ test.describe("the dom policy helper", () => {
         expect(await (await states.getProperty("invoked")).jsonValue()).toBe(1);
     });
 
+    test("preserves default element guards when applying partial element guard configs", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+
+            const policy = DOMPolicy.create({
+                guards: {
+                    elements: {
+                        a: {
+                            [DOMAspect.attribute]: {
+                                title(tagName, aspect, aspectName, sink) {
+                                    return sink;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            function setProperty(node, name, value) {
+                node[name] = value;
+            }
+
+            let scriptSrcBlocked = false;
+
+            try {
+                policy.protect("script", DOMAspect.property, "src", setProperty);
+            } catch {
+                scriptSrcBlocked = true;
+            }
+
+            const area = document.createElement("area");
+            const areaHrefSink = policy.protect(
+                "area",
+                DOMAspect.attribute,
+                "href",
+                DOM.setAttribute,
+            );
+
+            areaHrefSink(area, "href", " JaVaScRiPt:alert(1) ");
+
+            return {
+                areaHref: area.getAttribute("href"),
+                scriptSrcBlocked,
+            };
+        });
+
+        expect(result).toEqual({
+            areaHref: "",
+            scriptSrcBlocked: true,
+        });
+    });
+
+    test("filters unsafe URL protocols with case, whitespace, controls, and encoding", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+
+            const policy = DOMPolicy.create();
+            const hrefSink = policy.protect(
+                "a",
+                DOMAspect.attribute,
+                "href",
+                DOM.setAttribute,
+            );
+
+            return [
+                "javascript:alert(1)",
+                " JaVaScRiPt:alert(1) ",
+                "\u0000java\u000Ascript:alert(1)",
+                "java%0Ascript:alert(1)",
+                "%6Aava%73cript%3Aalert(1)",
+                "vbscript:msgbox(1)",
+                "data:text/html,<svg onload=alert(1)>",
+            ].map(value => {
+                const element = document.createElement("a");
+                hrefSink(element, "href", value);
+                return element.getAttribute("href");
+            });
+        });
+
+        expect(results).toEqual(["", "", "", "", "", "", ""]);
+    });
+
+    test("preserves safe and protocol-relative URL values after trimming", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+
+            const policy = DOMPolicy.create();
+            const hrefSink = policy.protect(
+                "a",
+                DOMAspect.attribute,
+                "href",
+                DOM.setAttribute,
+            );
+
+            return [
+                " https://fast.design/docs ",
+                "//fast.design/assets/logo.svg",
+                "/docs/data:text/plain",
+            ].map(value => {
+                const element = document.createElement("a");
+                hrefSink(element, "href", value);
+                return element.getAttribute("href");
+            });
+        });
+
+        expect(results).toEqual([
+            "https://fast.design/docs",
+            "//fast.design/assets/logo.svg",
+            "/docs/data:text/plain",
+        ]);
+    });
+
     test("can create a policy with custom aspect guards", async ({ page }) => {
         await page.goto("/");
 

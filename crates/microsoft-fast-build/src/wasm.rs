@@ -1,7 +1,10 @@
 use crate::config::{AttributeNameStrategy, RenderConfig};
+use crate::json::{self, escape_json_str, json_string_array};
 use crate::{
-    json, render_entry_template_with_locator, render_entry_template_with_locator_without_state,
-    render_template, render_template_with_locator, render_template_with_locator_without_state,
+    render_entry_template_stream_with_locator,
+    render_entry_template_stream_with_locator_without_state, render_entry_template_with_locator,
+    render_entry_template_with_locator_without_state, render_template,
+    render_template_with_locator, render_template_with_locator_without_state,
     render_template_without_state, Locator,
 };
 use std::collections::HashMap;
@@ -58,22 +61,70 @@ pub fn render_with_templates(
 /// e.g. `{"my-button": "<template>...</template>"}`, or template metadata objects.
 /// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
 /// or `"none"`. Pass an empty string for the default.
-/// Returns the rendered HTML or throws a JavaScript error.
+/// Pass `stream: true` to return a JSON array string of stream chunks; in
+/// stream mode, `templates_json` may be `{}`. Omitted or `false` stream
+/// preserves the rendered HTML behavior.
 #[wasm_bindgen]
 pub fn render_entry_with_templates(
     entry: &str,
     templates_json: &str,
     state: Option<String>,
     attribute_name_strategy: Option<String>,
+    stream: Option<bool>,
 ) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_template_definitions(templates);
     let config = build_config(attribute_name_strategy.as_deref())?;
-    match state {
-        Some(state) => render_entry_template_with_locator(entry, &state, &locator, config.as_ref()),
-        None => render_entry_template_with_locator_without_state(entry, &locator, config.as_ref()),
+
+    if stream.unwrap_or(false) {
+        let chunks = match state {
+            Some(state) => {
+                render_entry_template_stream_with_locator(entry, &state, &locator, config.as_ref())
+            }
+            None => render_entry_template_stream_with_locator_without_state(
+                entry,
+                &locator,
+                config.as_ref(),
+            ),
+        }
+        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+        Ok(json_string_array(&chunks))
+    } else {
+        match state {
+            Some(state) => {
+                render_entry_template_with_locator(entry, &state, &locator, config.as_ref())
+            }
+            None => {
+                render_entry_template_with_locator_without_state(entry, &locator, config.as_ref())
+            }
+        }
+        .map_err(|e| JsValue::from_str(&e.to_string()))
     }
-    .map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
+/// Apply the FAST code-sample escape to an HTML string.
+///
+/// Walks the input HTML and, for every `<code>` element, escapes:
+///
+/// * curly braces (`{` → `&#123;`, `}` → `&#125;`) in text content and
+///   attribute values — so the FAST template parser does not interpret
+///   `{{ ... }}` / `{ ... }` inside code samples as bindings;
+/// * angle brackets of FAST directive tags (`<f-when>`, `</f-when>`,
+///   `<f-repeat>`, `</f-repeat>`, case-insensitive) — so those directive
+///   tags surface as literal text instead of being activated as real
+///   elements. Angle brackets of any other tag (`<button>`, custom
+///   elements, …) are left untouched so they keep rendering as live DOM.
+///
+/// Non-`<code>` regions of the input are returned verbatim. The function
+/// is idempotent — running it on an already-escaped string is a no-op.
+///
+/// Intended for build-time tooling that needs to inject author-written
+/// HTML containing `<code>` samples into a rendered page without going
+/// through the full `render_*` pipeline.
+#[wasm_bindgen]
+pub fn escape_code_samples(html: &str) -> String {
+    crate::code_escape::escape_code_sample_elements(html)
 }
 
 /// Parse all `<f-template>` elements from an HTML string.
@@ -90,16 +141,17 @@ pub fn parse_f_templates(html: &str) -> String {
             None => "null".to_string(),
         };
         parts.push(format!(
-            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{}}}",
+            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{},\"hostAttributes\":{}}}",
             name_json,
             escape_json_str(&template.content),
-            shadowroot_attributes_json(&template.shadowroot_attributes)
+            attribute_pairs_json(&template.shadowroot_attributes),
+            attribute_pairs_json(&template.host_attributes)
         ));
     }
     format!("[{}]", parts.join(","))
 }
 
-fn shadowroot_attributes_json(attrs: &[(String, Option<String>)]) -> String {
+fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {
     let mut parts = Vec::with_capacity(attrs.len());
     for (name, value) in attrs {
         let value_json = match value {
@@ -115,24 +167,19 @@ fn shadowroot_attributes_json(attrs: &[(String, Option<String>)]) -> String {
     format!("[{}]", parts.join(","))
 }
 
-fn escape_json_str(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for c in s.chars() {
-        match c {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            '\t' => out.push_str("\\t"),
-            c => out.push(c),
-        }
-    }
-    out
-}
-
 fn parse_templates_map(
     templates_json: &str,
-) -> Result<HashMap<String, (String, Vec<(String, Option<String>)>)>, JsValue> {
+) -> Result<
+    HashMap<
+        String,
+        (
+            String,
+            Vec<(String, Option<String>)>,
+            Vec<(String, Option<String>)>,
+        ),
+    >,
+    JsValue,
+> {
     let parsed = json::parse(templates_json).map_err(|e| {
         JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message))
     })?;
@@ -142,7 +189,7 @@ fn parse_templates_map(
             for (k, v) in obj {
                 match v {
                     json::JsonValue::String(s) => {
-                        map.insert(k, (s, Vec::new()));
+                        map.insert(k, (s, Vec::new(), Vec::new()));
                     }
                     json::JsonValue::Object(template) => {
                         map.insert(k.clone(), parse_template_metadata(&k, &template)?);
@@ -164,7 +211,14 @@ fn parse_templates_map(
 fn parse_template_metadata(
     template_name: &str,
     template: &HashMap<String, json::JsonValue>,
-) -> Result<(String, Vec<(String, Option<String>)>), JsValue> {
+) -> Result<
+    (
+        String,
+        Vec<(String, Option<String>)>,
+        Vec<(String, Option<String>)>,
+    ),
+    JsValue,
+> {
     let content = match template.get("content") {
         Some(json::JsonValue::String(content)) => content.clone(),
         _ => {
@@ -175,8 +229,10 @@ fn parse_template_metadata(
         }
     };
 
-    let attrs = match template.get("shadowrootAttributes") {
-        Some(json::JsonValue::Array(attrs)) => parse_shadowroot_attributes(template_name, attrs)?,
+    let shadowroot_attrs = match template.get("shadowrootAttributes") {
+        Some(json::JsonValue::Array(attrs)) => {
+            parse_attribute_pairs(template_name, "shadowroot", attrs)?
+        }
         Some(json::JsonValue::Null) | None => Vec::new(),
         Some(_) => {
             return Err(JsValue::from_str(&format!(
@@ -186,11 +242,25 @@ fn parse_template_metadata(
         }
     };
 
-    Ok((content, attrs))
+    let host_attrs = match template.get("hostAttributes") {
+        Some(json::JsonValue::Array(attrs)) => {
+            parse_attribute_pairs(template_name, "host", attrs)?
+        }
+        Some(json::JsonValue::Null) | None => Vec::new(),
+        Some(_) => {
+            return Err(JsValue::from_str(&format!(
+                "Template metadata for '{}' must use an array hostAttributes property",
+                template_name
+            )));
+        }
+    };
+
+    Ok((content, shadowroot_attrs, host_attrs))
 }
 
-fn parse_shadowroot_attributes(
+fn parse_attribute_pairs(
     template_name: &str,
+    kind: &str,
     attrs: &[json::JsonValue],
 ) -> Result<Vec<(String, Option<String>)>, JsValue> {
     let mut parsed = Vec::with_capacity(attrs.len());
@@ -199,8 +269,8 @@ fn parse_shadowroot_attributes(
             json::JsonValue::Object(attr) => attr,
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a non-object shadowroot attribute",
-                    template_name
+                    "Template metadata for '{}' contains a non-object {} attribute",
+                    template_name, kind
                 )));
             }
         };
@@ -208,8 +278,8 @@ fn parse_shadowroot_attributes(
             Some(json::JsonValue::String(name)) => name.clone(),
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a shadowroot attribute without a string name",
-                    template_name
+                    "Template metadata for '{}' contains a {} attribute without a string name",
+                    template_name, kind
                 )));
             }
         };
@@ -218,8 +288,8 @@ fn parse_shadowroot_attributes(
             Some(json::JsonValue::Null) | None => None,
             _ => {
                 return Err(JsValue::from_str(&format!(
-                    "Template metadata for '{}' contains a shadowroot attribute with a non-string value",
-                    template_name
+                    "Template metadata for '{}' contains a {} attribute with a non-string value",
+                    template_name, kind
                 )));
             }
         };
@@ -246,6 +316,44 @@ mod tests {
             .expect("template should be present")
             .1;
         assert!(attrs.is_empty());
+    }
+
+    #[test]
+    fn parse_templates_map_treats_null_host_attributes_as_empty() {
+        let templates = match parse_templates_map(
+            r#"{"test-element":{"content":"<span></span>","hostAttributes":null}}"#,
+        ) {
+            Ok(templates) => templates,
+            Err(_) => panic!("template metadata with null hostAttributes should parse"),
+        };
+
+        let attrs = &templates
+            .get("test-element")
+            .expect("template should be present")
+            .2;
+        assert!(attrs.is_empty());
+    }
+
+    #[test]
+    fn parse_templates_map_reads_host_attributes() {
+        let templates = match parse_templates_map(
+            r#"{"test-element":{"content":"<span></span>","hostAttributes":[{"name":"tabindex","value":"0"},{"name":"disabled","value":null}]}}"#,
+        ) {
+            Ok(templates) => templates,
+            Err(_) => panic!("template metadata with hostAttributes should parse"),
+        };
+
+        let host = &templates
+            .get("test-element")
+            .expect("template should be present")
+            .2;
+        assert_eq!(
+            host,
+            &vec![
+                ("tabindex".to_string(), Some("0".to_string())),
+                ("disabled".to_string(), None),
+            ]
+        );
     }
 }
 

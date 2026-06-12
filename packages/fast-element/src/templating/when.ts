@@ -25,7 +25,7 @@ export function when<TSource = any, TReturn = any, TParent = any>(
     elseTemplateOrTemplateBinding?:
         | SyntheticViewTemplate<TSource, TParent>
         | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>,
-): CaptureType {
+): CaptureType<TSource, TParent> {
     const dataBinding = isFunction(condition) ? condition : () => condition;
     const templateBinding = normalizeBinding(templateOrTemplateBinding);
     const elseBinding = normalizeBinding(elseTemplateOrTemplateBinding);

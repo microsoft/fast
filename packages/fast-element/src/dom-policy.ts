@@ -1,6 +1,32 @@
-import { DOMAspect, type DOMSink, type DOMPolicy as IDOMPolicy } from "./dom.js";
+import { DOMAspect, type DOMSink } from "./dom.js";
 import { isString, Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
+
+/**
+ * A policy that controls whether values can be written to DOM sinks.
+ * @public
+ */
+export interface DOMPolicy {
+    /**
+     * Creates safe HTML from the provided value.
+     * @param value - The source to convert to safe HTML.
+     */
+    createHTML(value: string): string;
+
+    /**
+     * Protects a DOM sink that intends to write to the DOM.
+     * @param tagName - The tag name for the element to write to.
+     * @param aspect - The aspect of the DOM to write to.
+     * @param aspectName - The name of the aspect to write to.
+     * @param sink - The sink that is used to write to the DOM.
+     */
+    protect(
+        tagName: string | null,
+        aspect: DOMAspect,
+        aspectName: string,
+        sink: DOMSink,
+    ): DOMSink;
+}
 
 /**
  * A specific DOM sink guard for a node aspect.
@@ -69,6 +95,46 @@ export type DOMGuards = {
     aspects: DOMAspectGuards;
 };
 
+const surroundingWhitespaceAndControlChars =
+    /^[\u0000-\u0020\u007F]+|[\u0000-\u0020\u007F]+$/g;
+const whitespaceAndControlChars = /[\u0000-\u0020\u007F]+/g;
+const unsafeURLProtocol = /^(?:javascript|vbscript|data):/;
+
+function trimURL(value: string): string {
+    return value.replace(surroundingWhitespaceAndControlChars, "");
+}
+
+function decodeURL(value: string): string {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+}
+
+function hasUnsafeURLProtocol(value: string): boolean {
+    let normalized = trimURL(value);
+
+    for (let i = 0; i < 3; ++i) {
+        const decoded = decodeURL(normalized);
+
+        if (decoded === normalized) {
+            break;
+        }
+
+        normalized = trimURL(decoded);
+    }
+
+    normalized = normalized.replace(whitespaceAndControlChars, "").toLowerCase();
+
+    return unsafeURLProtocol.test(normalized);
+}
+
+function sanitizeURL(value: string): string {
+    const trimmed = trimURL(value);
+    return hasUnsafeURLProtocol(trimmed) ? "" : trimmed;
+}
+
 function safeURL(
     tagName: string | null,
     aspect: DOMAspect,
@@ -77,7 +143,7 @@ function safeURL(
 ): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
         if (isString(value)) {
-            value = value.replace(/(javascript:|vbscript:|data:)/, "");
+            value = sanitizeURL(value);
         }
 
         sink(target, name, value, ...rest);
@@ -378,7 +444,7 @@ function createElementGuards(
                 break;
             case undefined:
                 // keep the default
-                result[tag] = createDOMAspectGuards(overrideValue, {});
+                result[tag] = createDOMAspectGuards(defaultValue, {});
                 break;
             default:
                 // override the default aspects
@@ -452,13 +518,13 @@ export type DOMPolicyOptions = {
  * A helper for creating DOM policies.
  * @public
  */
-const DOMPolicy = Object.freeze({
+export const DOMPolicy = Object.freeze({
     /**
      * Creates a new DOM Policy object.
      * @param options - The options to use in creating the policy.
      * @returns The newly created DOMPolicy.
      */
-    create(options: DOMPolicyOptions = {}): Readonly<IDOMPolicy> {
+    create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
         const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
 
@@ -498,5 +564,3 @@ const DOMPolicy = Object.freeze({
         });
     },
 });
-
-export { DOMPolicy };

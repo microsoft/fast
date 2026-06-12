@@ -7,5 +7,6 @@ performance monitoring.
 | Fixture | Description |
 |---|---|
 | `errors` | Error handling and edge cases in template rendering. |
+| `hydration-config` | Hydration configuration for Declarative Shadow DOM appended after the initial hydration batch. |
 | `lifecycle-callbacks` | `declarativeTemplate()` and `enableHydration()` lifecycle callbacks such as `elementDidRegister`, `elementDidHydrate`, and `hydrationComplete`. |
 | `performance-metrics` | Performance monitoring and measurements during the component lifecycle. |

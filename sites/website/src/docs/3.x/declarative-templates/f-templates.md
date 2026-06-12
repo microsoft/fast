@@ -70,7 +70,7 @@ Content bindings are HTML-escaped for security. To render raw HTML, use triple c
 ```
 
 :::warning
-Triple-brace bindings insert unescaped HTML directly into the DOM. Only use them with trusted content to avoid cross-site scripting (XSS) vulnerabilities. An additional wrapping `div` element is created to host the binding.
+Triple-brace bindings render unescaped HTML through an `innerHTML` binding with an additional wrapping `div`. The default DOMPolicy blocks that `innerHTML` write unless the host app configures an `innerHTML` guard. Only use triple-brace bindings with trusted or sanitized content to avoid cross-site scripting (XSS) vulnerabilities, and follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types.md).
 :::
 
 ## Attribute Bindings

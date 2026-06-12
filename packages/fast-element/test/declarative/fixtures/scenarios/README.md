@@ -4,4 +4,5 @@ Fixtures for complex scenarios that may involve multiple features interacting to
 
 | Fixture | Description |
 |---|---|
+| `duplicate-template-names` | Duplicate connected `<f-template>` publishers with the same `name` attribute keep the first template assignment for a simple bound element. |
 | `nested-elements` | Nested custom elements with state propagation through shadow boundaries, event handling inside `f-repeat` with `$c.parent` context access, and `f-when` conditions within repeated content. |

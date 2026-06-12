@@ -79,6 +79,11 @@ When connected to the DOM it:
 4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
 
+When multiple connected `<f-template>` publishers share the same `name`, the
+bridge resolves pending definitions from the first connected publisher and keeps
+the resolved template stable. Later duplicate publishers do not reassign the
+definition template.
+
 ### `TemplateParser` — declarative HTML parser
 
 A standalone class that converts declarative HTML template markup into the
@@ -522,6 +527,7 @@ interface TemplateResolutionContext {
 | `assignObservables(schema, rootSchema, data, target, rootProperty)` | Wraps objects/arrays in `Proxy` for deep observation. |
 | `deepMerge(target, source)` | Merges source into an existing proxy, preserving proxy identity and triggering observable notifications. |
 | `transformInnerHTML(html)` | Normalises HTML-encoded operator characters (`&gt;`, `&lt;`, etc.) used in `<f-when>` expressions. |
+| `escapeBracesInCodeElements(html)` | Replaces `{` / `}` characters inside every `<code>` element with `&#123;` / `&#125;` so binding-like syntax in code samples renders literally rather than being interpreted as FAST bindings. Client-side half of a two-stage escape — the brace escape mirrors the server-side pass in `microsoft-fast-build` (necessary client-side because `&#123;` / `&#125;` decode back to literal `{` / `}` in the DOM and `.innerHTML` does not re-encode them). The angle-bracket escape for FAST directive tags (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) inside `<code>` runs only on the server because the DOM serializer re-encodes `<` / `>` in text content automatically. Real HTML elements (`<button>`) and custom elements inside `<code>` keep their angle brackets and continue to render as live DOM elements. Modeled on Microsoft WebUI's `webui-press` markdown renderer. |
 
 ### Binding classification
 
@@ -613,7 +619,7 @@ sequenceDiagram
     participant PerEl as TemplateLifecycleCallbacks
     participant Global as HydrationOptions
 
-    App->>Global: enableHydration(globalCallbacks) [optional]
+    App->>Global: enableHydration(options) [optional]
     App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate(callbacks)}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
 
@@ -650,8 +656,13 @@ sequenceDiagram
 | `elementDidDefine(name)` | `declarativeTemplate(callbacks)` | After platform registration completes. |
 | `elementWillHydrate(source)` | `declarativeTemplate(callbacks)` | Before `ElementController` hydrates a prerendered instance; only after `enableHydration()`. |
 | `elementDidHydrate(source)` | `declarativeTemplate(callbacks)` | After an instance is fully hydrated; only after `enableHydration()`. |
-| `hydrationStarted()` | `enableHydration(options)` | Once, when the first prerendered element begins hydrating. |
-| `hydrationComplete()` | `enableHydration(options)` | Once, after all prerendered elements have completed hydration. |
+| `hydrationStarted()` | `enableHydration(options)` | Once per active hydration batch, when the first prerendered element begins hydrating. |
+| `hydrationComplete()` | `enableHydration(options)` | Once per active hydration batch, after all prerendered elements have completed hydration. |
+
+By default, hydration no-ops for later prerendered batches after
+`hydrationComplete()` fires. Set
+`enableHydration({ stopHydration: StopHydration.never })` when Declarative Shadow
+DOM may be streamed into the page after the initial hydration batch.
 
 For usage examples see
 [declarative-rendering-lifecycle.md](./declarative-rendering-lifecycle.md).

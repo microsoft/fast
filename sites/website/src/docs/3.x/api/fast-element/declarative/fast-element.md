@@ -222,7 +222,7 @@ A path discovered from a default binding.
 
 </td><td>
 
-A security policy that FAST can use to interact with the DOM.
+A policy that controls whether values can be written to DOM sinks.
 
 
 </td></tr>
@@ -463,6 +463,28 @@ Metadata used to configure a custom attribute's behavior.
 </td></tr>
 <tr><td>
 
+[DOMAspect](../fast-element.domaspect/)
+
+
+</td><td>
+
+The type of HTML aspect to target.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicy](../fast-element.dompolicy/)
+
+
+</td><td>
+
+A helper for creating DOM policies.
+
+
+</td></tr>
+<tr><td>
+
 [schemaRegistry](../fast-element.schemaregistry/)
 
 
@@ -566,6 +588,83 @@ A type that instantiates a StyleStrategy.
 </td></tr>
 <tr><td>
 
+[DOMAspect](../fast-element.domaspect/)
+
+
+</td><td>
+
+The type of HTML aspect to target.
+
+
+</td></tr>
+<tr><td>
+
+[DOMAspectGuards](../fast-element.domaspectguards/)
+
+
+</td><td>
+
+Aspect-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMElementGuards](../fast-element.domelementguards/)
+
+
+</td><td>
+
+Element-specific guards for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMGuards](../fast-element.domguards/)
+
+
+</td><td>
+
+Guard configuration for a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMPolicyOptions](../fast-element.dompolicyoptions/)
+
+
+</td><td>
+
+Options for creating a DOM Policy.
+
+
+</td></tr>
+<tr><td>
+
+[DOMSink](../fast-element.domsink/)
+
+
+</td><td>
+
+A function used to send values to a DOM sink.
+
+
+</td></tr>
+<tr><td>
+
+[DOMSinkGuards](../fast-element.domsinkguards/)
+
+
+</td><td>
+
+A specific DOM sink guard for a node aspect.
+
+
+</td></tr>
+<tr><td>
+
 [FASTElementExtension](../fast-element.fastelementextension/)
 
 
@@ -594,6 +693,17 @@ Resolves an element template from a composed definition.
 </td><td>
 
 Represents the types of values that can be interpolated into a template.
+
+
+</td></tr>
+<tr><td>
+
+[TrustedTypesPolicy](../fast-element.trustedtypespolicy/)
+
+
+</td><td>
+
+A policy for use with the standard trustedTypes platform API.
 
 
 </td></tr>

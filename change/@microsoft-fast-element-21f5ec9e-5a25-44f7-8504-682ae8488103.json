@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Add hydration configuration for streamed Declarative Shadow DOM.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
