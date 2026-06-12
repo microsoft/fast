@@ -52,8 +52,13 @@ if (files.length === 0) {
 
 try {
     execFileSync(
-        resolve(root, "node_modules", ".bin", "biome"),
-        [command, ...biomeArgs, ...files],
+        process.execPath,
+        [
+            resolve(root, "node_modules", "@biomejs", "biome", "bin", "biome"),
+            command,
+            ...biomeArgs,
+            ...files,
+        ],
         { stdio: "inherit", cwd: root },
     );
 } catch (error) {

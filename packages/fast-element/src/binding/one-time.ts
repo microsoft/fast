@@ -1,4 +1,4 @@
-import type { DOMPolicy } from "../dom.js";
+import type { DOMPolicy } from "../dom-policy.js";
 import type {
     Expression,
     ExpressionController,

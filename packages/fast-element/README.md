@@ -81,8 +81,10 @@ Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.
 The root `@microsoft/fast-element` entrypoint exports the FAST Element
 implementation APIs, including the element base class, kernel, controller,
 definition APIs, template APIs, binding helpers, directives, styles, and schema
-helpers. Declarative, hydration, context, and dependency injection APIs are
-available from their focused path exports.
+helpers. The FAST element registry is also available from
+`@microsoft/fast-element/registry.js` for focused definition lookups.
+Declarative, hydration, context, and dependency injection APIs are available
+from their focused path exports.
 
 Focused package path exports remain available for consumers that want to import
 a narrower entrypoint directly. The website's
@@ -136,8 +138,10 @@ MyElement.define({
 `declarativeTemplate()` automatically defines FAST's internal native
 `<f-template>` publisher in the relevant registry, resolves the matching
 `<f-template name="my-element">`, and keeps the definition template concrete
-before `define()` resolves. Consumers should not import or define the
-`<f-template>` implementation directly.
+before `define()` resolves. If multiple matching `<f-template>` elements are
+connected, the first connected element supplies the template and later duplicates
+do not reassign it. Consumers should not import or define the `<f-template>`
+implementation directly.
 
 Declarative schema behavior is enabled with define extensions:
 
@@ -185,6 +189,18 @@ enableHydration({
     hydrationComplete() {
         console.log("hydration complete");
     },
+});
+```
+
+By default, hydration handles the initial prerendered batch and then no-ops
+after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
+after the initial batch, keep the hydration hook active:
+
+```typescript
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    stopHydration: StopHydration.never,
 });
 ```
 

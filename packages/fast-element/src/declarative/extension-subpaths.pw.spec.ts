@@ -30,6 +30,41 @@ test.describe("extension subpaths", () => {
         expect(result.hasSchema).toBe(true);
     });
 
+    test("exports the FAST element registry from the registry subpath", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElementDefinition, fastElementRegistry } = await import(
+                "/extension-subpaths-main.js"
+            );
+
+            class RegistrySubpathElement extends HTMLElement {}
+
+            const name = `registry-subpath-element-${crypto.randomUUID()}`;
+            const definition = await FASTElementDefinition.compose(
+                RegistrySubpathElement,
+                { name },
+            );
+            definition.define();
+            const instance = document.createElement(name);
+
+            return {
+                hasRegistry: typeof fastElementRegistry.getByType === "function",
+                getByTypeReturnsDefinition:
+                    fastElementRegistry.getByType(RegistrySubpathElement) === definition,
+                getForInstanceReturnsDefinition:
+                    fastElementRegistry.getForInstance(instance) === definition,
+            };
+        });
+
+        expect(result.hasRegistry).toBe(true);
+        expect(result.getByTypeReturnsDefinition).toBe(true);
+        expect(result.getForInstanceReturnsDefinition).toBe(true);
+    });
+
     test("observerMap accepts a schema for non-declarative use", async ({ page }) => {
         await page.goto("/");
 

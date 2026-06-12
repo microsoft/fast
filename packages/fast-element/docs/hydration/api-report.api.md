@@ -5,7 +5,7 @@
 ```ts
 
 // @public
-export interface CaptureType {
+export interface CaptureType<TSource = any, TParent = any> {
 }
 
 // @public
@@ -63,13 +63,46 @@ export const DOMAspect: Readonly<{
 export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
 
 // @public
+export type DOMAspectGuards = {
+    [DOMAspect.attribute]?: DOMSinkGuards;
+    [DOMAspect.booleanAttribute]?: DOMSinkGuards;
+    [DOMAspect.property]?: DOMSinkGuards;
+    [DOMAspect.content]?: DOMSinkGuards;
+    [DOMAspect.tokenList]?: DOMSinkGuards;
+    [DOMAspect.event]?: DOMSinkGuards;
+};
+
+// @public
+export type DOMElementGuards = Record<string, DOMAspectGuards>;
+
+// @public
+export type DOMGuards = {
+    elements: DOMElementGuards;
+    aspects: DOMAspectGuards;
+};
+
+// @public
 export interface DOMPolicy {
     createHTML(value: string): string;
     protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
 }
 
 // @public
+export const DOMPolicy: Readonly<{
+    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
+}>;
+
+// @public
+export type DOMPolicyOptions = {
+    trustedType?: TrustedTypesPolicy;
+    guards?: Partial<DOMGuards>;
+};
+
+// @public
 export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
+
+// @public
+export type DOMSinkGuards = Record<string, (tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink) => DOMSink>;
 
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
@@ -169,6 +202,7 @@ export class HydrationBindingError extends Error {
 export interface HydrationOptions {
     hydrationComplete?(): void;
     hydrationStarted?(): void;
+    stopHydration?: StopHydration;
 }
 
 // @public (undocumented)
@@ -184,6 +218,7 @@ export class HydrationTracker {
     add(element: HTMLElement): void;
     mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
+    get shouldHydrate(): boolean;
 }
 
 // @beta
@@ -208,6 +243,15 @@ export const SourceLifetime: Readonly<{
 export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
 
 // @public
+export const StopHydration: Readonly<{
+    readonly hydrationComplete: "hydration-complete";
+    readonly never: "never";
+}>;
+
+// @public
+export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
+
+// @public
 export interface SyntheticView<TSource = any, TParent = any> extends View<TSource, TParent> {
     readonly firstChild: Node;
     insertBefore(node: Node): void;
@@ -218,8 +262,13 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
-    inline(): CaptureType;
+    inline(): CaptureType<TSource, TParent>;
 }
+
+// @public
+export type TrustedTypesPolicy = {
+    createHTML(html: string): string;
+};
 
 // @public
 export interface View<TSource = any, TParent = any> extends Disposable_2 {

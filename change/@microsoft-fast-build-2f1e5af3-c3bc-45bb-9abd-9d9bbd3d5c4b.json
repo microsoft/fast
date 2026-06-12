@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: add simulated streaming output for fast-build",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -6,7 +6,7 @@ This document explains how the crate works internally: the data flow, the key da
 
 ## High-level overview
 
-The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
+The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML or precomputed HTML stream chunks. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
 
 ```
 render_template(template, state_str)
@@ -21,7 +21,7 @@ render_template(template, state_str)
   node::render_node(template, root, loop_vars, locator, hydration?)     │
         │                                                                │
         ├─ [hydration mode] scan HTML opening tags for attr bindings     │
-        │        └─ inject data-fe="N" attribute markers                 │
+        │        └─ inject data-fe-c-{n}-{count} compact markers        │
         │                                                                │
         ├─ scan forward: next_directive()                                │
         │        │                                                       │
@@ -41,8 +41,9 @@ render_template(template, state_str)
 | Module | Role |
 |--------|------|
 | `lib.rs` | Public API surface — render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` calls |
+| `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
+| `streaming.rs` | Simulated streaming loop — mirrors `node.rs` and returns non-empty HTML chunks |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
@@ -52,9 +53,10 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
 
 ---
 
@@ -68,8 +70,8 @@ fn render_node(template, root, loop_vars, locator, hydration: Option<&mut Hydrat
 
 The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
 
-- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe` marker is added.
-- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe` marker injected when inside a parent hydration scope.
+- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe-c` marker is added.
+- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe-c` compact marker injected when inside a parent hydration scope.
 
 **Child state** is built the same way regardless of `is_entry`: the current root state is always used as a base, with per-element attributes overlaid on top. This ensures all unbound state keys propagate through to every descendant custom element automatically.
 
@@ -77,15 +79,42 @@ The `is_entry` flag distinguishes two rendering contexts for **opening-tag attri
 
 The loop works like a cursor:
 
-1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a `data-fe="N"` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
+1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a compact `data-fe-c-{start}-{count}` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
 2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
 3. If nothing is found, append `template[pos..]` to output and break.
 4. Otherwise, append the literal text from `pos` up to the directive's start.
-5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` markers.
+5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe-b$$start$$N$$UUID$$fe-b-->VALUE<!--fe-b$$end$$...-->` markers.
 6. Append `chunk` and advance `pos` to `next_pos`.
 7. Repeat.
 
 All handlers return `Result<(String, usize), RenderError>`. The `usize` is the byte position in the original template that the handler consumed up to — the cursor's next position.
+
+---
+
+## Simulated streaming — `streaming.rs`
+
+`stream_node` mirrors the recursive rendering loop in `node.rs`, but returns
+`Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
+is prepared in memory before the API returns. The invariant is that
+`chunks.join("")` matches the equivalent non-streamed render.
+
+The streaming loop flushes literal HTML before each content binding or custom
+element, omits empty chunks, and resolves attribute bindings while the complete
+opening tag is still in the current chunk. This prevents streamed consumers from
+receiving a partial tag.
+
+Custom elements are split conservatively:
+
+1. The opening tag is rendered with any attribute bindings resolved.
+2. The full Declarative Shadow DOM `<template>` is rendered into the same
+   opening chunk.
+3. Light DOM children are streamed recursively.
+4. The custom element closing tag is appended to the final light DOM chunk, or
+   to the opening chunk when the element has no children.
+
+The shadow template itself is not streamed independently. Keeping it with the
+opening tag ensures custom element constructors can discover Declarative Shadow
+DOM as soon as the element is parsed.
 
 ---
 
@@ -118,7 +147,7 @@ The skip logic lives in `attribute::find_single_brace` and `attribute::skip_sing
 
 ### Attribute directive stripping in Declarative Shadow DOM
 
-Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe` binding count still includes them so the FAST runtime allocates the correct binding slots.
+Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe-c` compact binding count still includes them so the FAST runtime allocates the correct binding slots.
 
 ---
 
@@ -245,10 +274,30 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - **Non-primitives** (`Array`, `Object`, `Null`) and missing values — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
      - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
-     - No `data-fe` marker is added — root elements at entry level have no parent hydration scope.
-   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe="N"` is injected.
-8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
-9. **Emit Declarative Shadow DOM** with hydration attributes:
+     - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
+   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe-c-{start}-{count}` is injected.
+8. **Template host attribute propagation.** Attributes declared on the inner `<template>` element of the source `<f-template>` are merged onto the rendered host opening tag built in step 7. `merge_template_host_attrs` (in `directive.rs`) splices the surviving attributes in just before the closing `>`, resolving any bindings against `child_root` — the same child state used to render the shadow template (the root state with the host element's HTML attributes overlaid).
+   - **Client-only attrs are skipped**: any template host attr whose name starts with `@` (event) or `:` (property binding), or whose lowercased name is `f-ref`, `f-slotted`, or `f-children`, is dropped — none of these have any meaning on a server-rendered host element.
+   - **Author attributes win.** Attributes already present on the host element opening tag (the author markup) are preserved verbatim. Template host attrs whose lowercased name matches an existing author attribute are skipped. For `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` (without the leading `?`).
+   - **Static `name="value"`** → emitted verbatim with the value HTML-escaped. **Static boolean `name`** (no `=`) → emitted bare.
+   - **`name="{{expr}}"`** → resolved against `child_root`. `String` / `Number` / `Bool` values are emitted as `name="value"` (HTML-escaped); `Array` / `Object` / `Null` and missing values are stripped.
+   - **`?name="{{expr}}"`** → evaluated as a boolean against `child_root`; the bare `name` (without the leading `?`) is emitted when truthy and skipped when falsy.
+   - Applies to **both** root entry-level custom elements (`is_entry: true`) and nested custom elements (`is_entry: false`).
+   - **No `data-fe-c` hydration marker is allocated** for propagated template host attrs — they are static or initial-render-only attributes on the host element, not client-side bindings.
+
+   *Worked example.* Given the template
+   ```html
+   <f-template name="my-el">
+       <template tabindex="0" ?disabled="{{isDisabled}}">…</template>
+   </f-template>
+   ```
+   the author markup `<my-el disabled></my-el>` and state `{"isDisabled": false}` render as
+   ```html
+   <my-el disabled tabindex="0">…</my-el>
+   ```
+   — the author's `disabled` is preserved verbatim, the template's `?disabled` is dropped by the dedupe rule, and `tabindex="0"` is appended.
+9. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+10. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
@@ -257,7 +306,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    ```
    The `<template>` receives any `shadowroot*` attributes declared on the source `<f-template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
-   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe="N"` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
+   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
 Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
 
@@ -295,19 +344,31 @@ All render functions accept `config: Option<&RenderConfig>` as their last parame
 - `render_without_state(template, config)`
 - `render_template(template, state_str, config)`
 - `render_template_without_state(template, config)`
+- `render_template_stream(template, state_str, config)`
+- `render_template_stream_without_state(template, config)`
+- `render_stream(template, state, config)`
+- `render_stream_without_state(template, config)`
 - `render_with_locator(template, state, locator, config)`
 - `render_with_locator_without_state(template, locator, config)`
+- `render_stream_with_locator(template, state, locator, config)`
+- `render_stream_with_locator_without_state(template, locator, config)`
 - `render_template_with_locator(template, state_str, locator, config)`
 - `render_template_with_locator_without_state(template, locator, config)`
+- `render_template_stream_with_locator(template, state_str, locator, config)`
+- `render_template_stream_with_locator_without_state(template, locator, config)`
 - `render_entry_with_locator(template, state, locator, config)`
 - `render_entry_with_locator_without_state(template, locator, config)`
+- `render_entry_stream_with_locator(template, state, locator, config)`
+- `render_entry_stream_with_locator_without_state(template, locator, config)`
 - `render_entry_template_with_locator(template, state_str, locator, config)`
 - `render_entry_template_with_locator_without_state(template, locator, config)`
+- `render_entry_template_stream_with_locator(template, state_str, locator, config)`
+- `render_entry_template_stream_with_locator_without_state(template, locator, config)`
 
-The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`), and `render_entry_with_templates` accepts an optional fifth `stream` boolean:
 
 - `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
-- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
+- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?)`
 
 ---
 
@@ -327,19 +388,19 @@ Scope boundaries are:
 | `f-when` truthy body | Child scope via `hy.child()` (binding_idx reset to 0) |
 | `f-repeat` item template | Fresh `HydrationScope` per item (binding_idx reset to 0) |
 
-Scopes carry no numeric ID. Markers are data-free sequential strings matched by string equality; pairing uses balanced depth counting.
+Scopes carry no numeric ID. Marker names are derived from the binding context (see below) and are therefore self-describing.
 
 ### Content binding markers
 
 When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
 
 ```
-<!--fe:b-->VALUE<!--fe:/b-->
+<!--fe-b$$start$$N$$<expr>-N$$fe-b-->VALUE<!--fe-b$$end$$N$$<expr>-N$$fe-b-->
 ```
 
-Markers carry no binding index or expression name. They are paired by balanced depth counting — each `<!--fe:b-->` increments a counter and each `<!--fe:/b-->` decrements it; when the counter returns to zero the pair is complete.
+`N` is the current `binding_idx` from the scope; `<expr>` is the expression text (e.g. `title`, `item.name`, `$index`). So `{{title}}` at index 0 produces marker name `title-0`, and `{{item.name}}` at index 2 produces `item.name-2`.
 
-### Attribute binding markers
+### Attribute binding markers (compact format)
 
 Plain HTML opening tags in the literal regions are scanned by `attribute::find_next_plain_html_tag` **before** `next_directive` processes them. For each tag that has `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
 
@@ -349,7 +410,7 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
    - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
    - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped. If `expr` is missing, the entire attribute is omitted, though the hydration binding count still includes it.
    - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
-4. `inject_marker` inserts `data-fe="N"` (where `N` is the binding count) before the closing `>` of the tag.
+4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
 
@@ -397,27 +458,27 @@ contenteditable="true"   →  state["contentEditable"] = "true"
 ### `f-when` markers
 
 ```
-<!--fe:b-->
+<!--fe-b$$start$$N$$when-N$$fe-b-->
 [inner content in child scope, or empty if falsy]
-<!--fe:/b-->
+<!--fe-b$$end$$N$$when-N$$fe-b-->
 ```
 
-The binding index `N` is allocated from the outer (parent) scope's `binding_idx`. The markers are data-free and paired by balanced depth counting.
+`N` is allocated from the outer (parent) scope's `binding_idx`. The marker name is `when-N`.
 
 ### `f-repeat` markers
 
 ```
-<!--fe:b-->
-<!--fe:r-->
+<!--fe-b$$start$$N$$repeat-N$$fe-b-->
+<!--fe-repeat$$start$$0$$fe-repeat-->
   [item 0 rendered with fresh binding_idx = 0]
-<!--fe:/r-->
-<!--fe:r-->
+<!--fe-repeat$$end$$0$$fe-repeat-->
+<!--fe-repeat$$start$$1$$fe-repeat-->
   [item 1 rendered with fresh binding_idx = 0]
-<!--fe:/r-->
-<!--fe:/b-->
+<!--fe-repeat$$end$$1$$fe-repeat-->
+<!--fe-b$$end$$N$$repeat-N$$fe-b-->
 ```
 
-The outer `<!--fe:b-->` / `<!--fe:/b-->` markers wrap the entire repeat directive. Each item is wrapped in `<!--fe:r-->` / `<!--fe:/r-->` markers. All markers are data-free; pairing uses balanced depth counting. Each item gets its own fresh `HydrationScope`, so per-item content bindings restart at index 0.
+The outer markers use `repeat-N` where `N` is the binding index in the parent scope. Each item gets its own fresh `HydrationScope`, so per-item content bindings are named after their expressions (e.g. `item-0`, `item.name-1`).
 
 ### `$index` in `f-repeat`
 
@@ -442,15 +503,15 @@ For each glob pattern:
 
 ### `<f-template>` parsing (`parse_f_templates`, `parse_element_attributes`, `extract_template_content`)
 
-`parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
-- Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
-- Extracts the attribute string between `<f-template` and `>`.
+`parse_f_templates(html)` scans for real `<f-template>` start tags using browser tag-name boundaries. For each match:
+- Verifies the character after `<f-template` is ASCII whitespace, `/`, or `>` to avoid matching non-`f-template` tags such as `<f-template-x>`.
+- Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
 - Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
-- Extracts the inner HTML between `>` and `</f-template>`.
-- Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
+- Extracts the inner HTML between `>` and a matching `</f-template>` end tag, allowing ASCII whitespace before the closing `>`.
+- Calls `extract_template_content` on the inner HTML to get the content **and the attributes** declared on the inner `<template>` element. The returned attribute list is preserved as the template's **host attributes**, available later via `Locator::get_host_attributes` and merged onto the rendered host opening tag by `merge_template_host_attrs` (see the **Custom elements** section above).
 
-Returns a `Vec<FTemplate>` containing the optional name, template content, and the collected shadowroot attributes. The locator stores those attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`.
+Returns a `Vec<FTemplate>` containing the optional name, template content, the collected shadowroot attributes, and the inner `<template>` element's host attributes. The locator stores the shadowroot attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`, and stores the host attributes so they can be merged onto the rendered host element opening tag.
 
 ### Glob matching
 
@@ -471,7 +532,7 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 |--------|-----------|-------------|
 | `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
-| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}` |
+| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -501,7 +562,14 @@ Accepts `templates_json` as a JSON object string mapping element names to raw te
 
 ### `render_entry_with_templates`
 
-Accepts the same arguments as `render_with_templates`, but calls `render_entry_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. Root-level custom elements therefore receive entry opening-tag handling, matching CLI entry rendering.
+Accepts the same arguments as `render_with_templates`, plus an optional fifth
+`stream` boolean. With `stream` omitted or `false`, it calls
+`render_entry_template_with_locator` when state is provided, or the no-state
+equivalent when it is omitted. Root-level custom elements therefore receive
+entry opening-tag handling, matching CLI entry rendering. With `stream` set to
+`true`, it calls the entry streaming APIs and serializes the resulting
+`Vec<String>` as a JSON array string. JavaScript callers parse the array before
+writing the raw chunks.
 
 ---
 
@@ -570,9 +638,9 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**Named hydration markers.** Markers are data-free fixed strings (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`) matched by string equality — no regex parsing required. Pairing uses balanced depth counting rather than ID matching. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`.
+**Named hydration markers.** Marker names are derived from the binding context: content bindings use `<expr>-<idx>` (e.g. `title-0`, `item.name-2`), f-when uses `when-<idx>`, and f-repeat uses `repeat-<idx>`. This makes markers human-readable and self-describing without a shared ID counter. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`. The scheme differs from the FAST HTML package which uses random alphanumeric UUIDs, but the structure is equivalent.
 
-**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
+**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
 **`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and invalid directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` treats a missing list binding as an empty array while still erroring when a present value is not an array.
 
