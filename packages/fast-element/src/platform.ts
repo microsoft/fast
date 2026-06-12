@@ -50,20 +50,38 @@ export function getDebugMessageLookup(): Record<number, string> {
 export const emptyArray = Object.freeze([]);
 
 /**
- * Do not change. Part of shared kernel contract.
- * @internal
+ * A type that can be registered with a `TypeRegistry`.
+ * @public
  */
 export interface TypeDefinition {
+    /**
+     * The registered type constructor.
+     */
     type: Function;
 }
 
 /**
- * Do not change. Part of shared kernel contract.
- * @internal
+ * A registry that stores definitions by type.
+ * @public
  */
-export interface TypeRegistry<TDefinition extends { type: Function }> {
+export interface TypeRegistry<TDefinition extends TypeDefinition> {
+    /**
+     * Registers a type definition.
+     * @param definition - The type definition to register.
+     * @returns `true` when the definition was registered, otherwise `false`.
+     */
     register(definition: TDefinition): boolean;
+
+    /**
+     * Gets a definition by type.
+     * @param key - The type to retrieve the definition for.
+     */
     getByType(key: Function): TDefinition | undefined;
+
+    /**
+     * Gets a definition by instance.
+     * @param object - The instance to retrieve the definition for.
+     */
     getForInstance(object: any): TDefinition | undefined;
 }
 
@@ -72,7 +90,7 @@ export interface TypeRegistry<TDefinition extends { type: Function }> {
  * @internal
  */
 export function createTypeRegistry<
-    TDefinition extends { type: Function },
+    TDefinition extends TypeDefinition,
 >(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 

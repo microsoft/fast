@@ -28,6 +28,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | `@microsoft/fast-element` | Root implementation export for FAST Element APIs. | `./dist/esm/index.js` | `./dist/dts/index.d.ts` |
 | `@microsoft/fast-element/debug.js` | Debug message helpers. | `./dist/esm/debug.js` | `./dist/dts/debug.d.ts` |
 | `@microsoft/fast-element/fast-element.js` | FASTElement and the customElement decorator. | `./dist/esm/components/fast-element.js` | `./dist/dts/components/fast-element.d.ts` |
+| `@microsoft/fast-element/registry.js` | FAST element definition registry APIs. | `./dist/esm/registry.js` | `./dist/dts/registry.d.ts` |
 | `@microsoft/fast-element/declarative.js` | Path-only declarative template APIs. | `./dist/esm/declarative/index.js` | `./dist/dts/declarative/index.d.ts` |
 | `@microsoft/fast-element/declarative-utilities.js` | Declarative parser and observer-map utilities. | `./dist/esm/declarative/utilities.js` | `./dist/dts/declarative/utilities.d.ts` |
 | `@microsoft/fast-element/declarative-syntax.js` | Declarative template syntax constants. | `./dist/esm/declarative/syntax.js` | `./dist/dts/declarative/syntax.d.ts` |
