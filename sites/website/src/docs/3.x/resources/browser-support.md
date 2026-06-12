@@ -14,10 +14,12 @@ keywords:
 ---
 
 FAST Element v3 builds on native web platform features. The baseline
-client-rendered runtime expects autonomous custom elements, Shadow DOM, and
-native `globalThis` support. Optional capabilities, such as Declarative Shadow
-DOM hydration and constructable stylesheets, use newer browser features when
-they are available.
+client-rendered runtime expects a browser `Window` environment with autonomous
+custom elements, Shadow DOM, `requestAnimationFrame`, and native `globalThis`
+support. Worker contexts, server-side JavaScript runtimes, and other non-window
+hosts are outside the supported runtime boundary for FAST Element's client
+runtime. Optional capabilities, such as Declarative Shadow DOM hydration and
+constructable stylesheets, use newer browser features when they are available.
 
 ## Baseline runtime support
 
@@ -47,10 +49,11 @@ an application opts into those features.
 |---|---|---|
 | Web Components / custom elements | Supported by the baseline browsers above for autonomous custom elements. FAST Element does not use customized built-in elements. | No FAST fallback. Browsers must provide native custom elements, or the application must load compatible platform polyfills before defining FAST elements. |
 | Shadow DOM | Supported by the baseline browsers above. FAST creates an open shadow root by default for templates and style encapsulation. | No FAST Shadow DOM polyfill. Components that intentionally set `shadowOptions: null` can render to light DOM, but default FAST Element authoring expects browser Shadow DOM support. |
+| `requestAnimationFrame` | Required by the FAST Element client runtime for asynchronous DOM update batching through `Updates`. Supported by the baseline browser `Window` environments above. | FAST Element does not support worker or non-window runtimes where `requestAnimationFrame` is unavailable. Run FAST Element in the browser window and use server-rendering tools only to produce HTML for the browser to consume. |
 | Declarative Shadow DOM | Optional for client-only rendering. Hydration requires browser support for `<template shadowrootmode>`, such as Chrome/Edge 111+, Firefox 123+, Safari/iOS Safari 16.4+, Opera 97+, Samsung Internet 22+, and current Chromium-based mobile browsers. | FAST hydrates an existing shadow root; it does not make unsupported browsers parse Declarative Shadow DOM. Older browsers need an application-level DSD transform/polyfill before components connect, or they should use client rendering. |
 | `adoptedStyleSheets` / constructable stylesheets | Supported in Chrome 73+, Edge 79+, Firefox 101+, Safari/iOS Safari 16.4+, Opera 60+, Samsung Internet 11.1+, and current Chromium-based mobile browsers. | FAST falls back to injected `<style>` elements for string-based `css` styles when adopted stylesheets are unavailable. Passing `CSSStyleSheet` instances directly requires browser constructable stylesheet support. |
 | Trusted Types | Not part of the FAST Element baseline. Available in Chrome/Edge 83+, Firefox 148+, Safari/iOS Safari 26+, Opera 69+, Samsung Internet 13+, and matching current Chromium-based mobile browsers. | FAST creates a Trusted Types policy when `globalThis.trustedTypes` exists and otherwise uses its string-based DOM policy. Apps that enforce `require-trusted-types-for` must configure an appropriate DOM policy before templates compile. |
-| `globalThis` | Required by FAST Element v3. The baseline versions above include native `globalThis` support. | FAST Element v3 no longer polyfills `globalThis`. Load a `globalThis` polyfill before importing FAST in older browsers or non-browser runtimes. |
+| `globalThis` | Required by FAST Element v3. The baseline browser versions above include native `globalThis` support. | FAST Element v3 no longer polyfills `globalThis`. Load a `globalThis` polyfill before importing FAST in older browsers. |
 
 ## SSR and hydration notes
 

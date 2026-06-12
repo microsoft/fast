@@ -22,7 +22,12 @@ keywords:
 
 # Server-Side Rendering
 
-One of the core benefits of FAST's declarative HTML templates is stack-agnostic server-side rendering. Because `<f-template>` markup is standard HTML with binding expressions — not JavaScript — any server technology can render the initial page without a JS runtime.
+One of the core benefits of FAST's declarative HTML templates is stack-agnostic server-side rendering. Because `<f-template>` markup is standard HTML with binding expressions — not JavaScript — any server technology can render the initial page without running the FAST Element client runtime.
+
+The FAST Element client runtime remains browser-only. Servers emit HTML and
+hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
+custom elements, runs `enableHydration()`, and processes reactive updates with
+browser scheduling APIs such as `requestAnimationFrame`.
 
 ## The Rendering Contract
 
