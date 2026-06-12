@@ -26,7 +26,7 @@ FAST Element provides two ways to author web component templates:
 1. **Imperative** — JavaScript tagged template literals using the `html` function.
 2. **Declarative** — Plain HTML `<f-template>` elements parsed at runtime.
 
-The declarative model moves template authoring from JavaScript into HTML. Because templates are expressed as standard markup, they can be rendered by any server-side technology without a JavaScript runtime — enabling true stack-agnostic server-side rendering.
+The declarative model moves template authoring from JavaScript into HTML. Because templates are expressed as standard markup, they can be rendered by any server-side technology without running the FAST Element client runtime — enabling true stack-agnostic server-side rendering. Hydration and client rendering still run in the browser `Window`.
 
 ## When to Use Declarative Templates
 

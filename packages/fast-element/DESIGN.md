@@ -45,13 +45,21 @@ For deep dives into specific areas, see the linked detailed documents.
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
 | Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`; `@microsoft/fast-element/schema.js` → `Schema` |
 | Schema-driven extensions | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` → map helpers usable with declarative or manually supplied schemas |
-| Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
+| Async DOM updates | `Updates` queue (batched with `requestAnimationFrame`) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
 The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element`, and `Observable` from `@microsoft/fast-element`.
+
+FAST Element is designed for client-side browser `Window` runtimes. Core
+element authoring and binding paths depend on browser platform APIs including
+Custom Elements, DOM, Shadow DOM, and `requestAnimationFrame` for async update
+batching. Worker contexts, server-side JavaScript runtimes, and other non-window
+hosts are outside the supported runtime boundary for the FAST Element client
+runtime. Server rendering should produce HTML for a browser to hydrate or render,
+rather than executing the FAST Element client runtime in the server process.
 
 The root entrypoint exports the FAST Element implementation APIs. Focused package
 path exports remain available when a consumer wants a narrower entrypoint,
@@ -615,7 +623,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content) and hydration has been enabled via `enableHydration()`, the installed hydration hook uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
-6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
+6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. In the supported browser `Window` runtime, the next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
 
 ---
@@ -637,7 +645,7 @@ src/
 │   ├── observable.ts      # Observable, @observable, ExpressionNotifier, ExecutionContext
 │   ├── notifier.ts        # Subscriber, Notifier, SubscriberSet, PropertyChangeNotifier
 │   ├── arrays.ts          # ArrayObserver, Splice, SpliceStrategy
-│   └── update-queue.ts    # Updates (UpdateQueue)
+│   └── update-queue.ts    # Updates (UpdateQueue; browser Window scheduling)
 ├── binding/
 │   ├── binding.ts         # Binding abstract base class, BindingDirective
 │   ├── one-way.ts         # oneWay, listener
