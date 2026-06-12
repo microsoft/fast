@@ -174,7 +174,7 @@ export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any> e
 }
 
 // @public (undocumented)
-export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
+export interface HydratableView<TSource = any, TParent = any> extends ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, DefaultExecutionContext<TParent> {
     // (undocumented)
     [Hydratable]: symbol;
     // (undocumented)
