@@ -20,7 +20,7 @@ Creates a binding.
 **Signature:**
 
 ```typescript
-constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
+constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy, isVolatile?: boolean);
 ```
 
 ## Parameters
@@ -64,7 +64,7 @@ policy
 
 </td><td>
 
-[DOMPolicy](../fast-element.dompolicy/) \| undefined
+[DOMPolicy](../fast-element.dompolicy/)
 
 
 </td><td>

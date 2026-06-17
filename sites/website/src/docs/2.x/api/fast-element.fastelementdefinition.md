@@ -20,7 +20,7 @@ Defines metadata for a FASTElement.
 **Signature:**
 
 ```typescript
-export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
+export declare class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
 ```
 
 ## Properties
@@ -262,7 +262,7 @@ A map enabling lookup of attribute by associated property name.
 </td></tr>
 <tr><td>
 
-[registerAsync](../fast-element.fastelementdefinition.registerasync/)
+[register](../fast-element.fastelementdefinition.register/)
 
 
 </td><td>
@@ -272,7 +272,7 @@ A map enabling lookup of attribute by associated property name.
 
 </td><td>
 
-(name: string) =&gt; Promise&lt;Function&gt;
+(name: string, registry?: CustomElementRegistry) =&gt; Promise&lt;Function&gt;
 
 
 </td><td>
@@ -299,6 +299,25 @@ CustomElementRegistry
 </td><td>
 
 The registry to register this component in by default.
+
+
+</td></tr>
+<tr><td>
+
+[schema?](../fast-element.fastelementdefinition.schema/)
+
+
+</td><td>
+
+
+</td><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+_(Optional)_ The optional schema associated with the custom element definition. Declarative templates assign this automatically during template resolution. Non-declarative callers can provide one for schema-driven extensions.
 
 
 </td></tr>
@@ -352,31 +371,12 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)
+[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt;
 
 
 </td><td>
 
 _(Optional)_ The template to render for the custom element.
-
-
-</td></tr>
-<tr><td>
-
-[templateOptions?](../fast-element.fastelementdefinition.templateoptions/)
-
-
-</td><td>
-
-
-</td><td>
-
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** _(Optional)_ The template options.
 
 
 </td></tr>
@@ -439,7 +439,7 @@ Creates an instance of FASTElementDefinition.
 </td></tr>
 <tr><td>
 
-[define(registry)](../fast-element.fastelementdefinition.define/)
+[define(registry, extensions)](../fast-element.fastelementdefinition.define/)
 
 
 </td><td>

@@ -22,7 +22,7 @@
     "directory": "examples/csr/todo-mobx-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.10.4",
+    "@microsoft/fast-element": "file:../../../packages/fast-element",
     "@microsoft/fast-examples-design-system": "^1.0.0",
     "mobx": "^6.13.5",
     "tslib": "^2.6.3"

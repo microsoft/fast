@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 import { attr, FASTElement } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 export class TodoItem extends FASTElement {
     @attr id = "";
@@ -39,7 +41,10 @@ export class TodoItem extends FASTElement {
     }
 }
 
-TodoItem.define({
-    name: "todo-item",
-    templateOptions: "defer-and-hydrate",
-});
+TodoItem.define(
+    {
+        name: "todo-item",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);

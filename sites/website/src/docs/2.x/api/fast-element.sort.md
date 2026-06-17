@@ -20,7 +20,7 @@ A sort array indicates new index positions of array items.
 **Signature:**
 
 ```typescript
-export declare class Sort 
+export declare class Sort
 ```
 
 ## Constructors

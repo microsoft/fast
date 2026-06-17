@@ -20,7 +20,7 @@ Represents styles that can be applied to a custom element.
 **Signature:**
 
 ```typescript
-export declare class ElementStyles 
+export declare class ElementStyles
 ```
 
 ## Constructors
@@ -81,27 +81,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[behaviors](../fast-element.elementstyles.behaviors/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-ReadonlyArray&lt;[HostBehavior](../fast-element.hostbehavior/)<!-- -->&lt;HTMLElement&gt;&gt; \| null
-
-
-</td><td>
-
-The behaviors associated with this set of styles.
-
-
-</td></tr>
-<tr><td>
 
 [strategy](../fast-element.elementstyles.strategy/)
 
@@ -213,20 +192,6 @@ Normalizes a set of composable style options.
 </td><td>
 
 Sets the default strategy type to use when creating style strategies.
-
-
-</td></tr>
-<tr><td>
-
-[withBehaviors(behaviors)](../fast-element.elementstyles.withbehaviors/)
-
-
-</td><td>
-
-
-</td><td>
-
-Associates behaviors with this set of styles.
 
 
 </td></tr>

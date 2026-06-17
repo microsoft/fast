@@ -232,7 +232,7 @@
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "*",
+    "@microsoft/fast-build": "0.7.0",
     "@microsoft/webui": "0.0.12"
   },
   "files": [

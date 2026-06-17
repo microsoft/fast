@@ -20,7 +20,7 @@ The runtime behavior for template references.
 **Signature:**
 
 ```typescript
-export declare class RefDirective extends StatelessAttachedAttributeDirective<string> 
+export declare class RefDirective extends StatelessAttachedAttributeDirective<string>
 ```
 **Extends:** [StatelessAttachedAttributeDirective](../fast-element.statelessattachedattributedirective/)<!-- -->&lt;string&gt;
 

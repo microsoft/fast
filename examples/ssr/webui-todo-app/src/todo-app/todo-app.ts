@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 interface TodoItemData {
     id: string;
@@ -156,7 +158,10 @@ export class TodoApp extends FASTElement {
     }
 }
 
-TodoApp.define({
-    name: "todo-app",
-    templateOptions: "defer-and-hydrate",
-});
+TodoApp.define(
+    {
+        name: "todo-app",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);

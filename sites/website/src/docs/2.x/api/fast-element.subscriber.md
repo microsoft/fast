@@ -20,7 +20,7 @@ Implemented by objects that are interested in change notifications.
 **Signature:**
 
 ```typescript
-export interface Subscriber 
+export interface Subscriber
 ```
 
 ## Methods

@@ -21,8 +21,8 @@ A function capable of compiling a template from the preprocessed form produced b
 
 ```typescript
 export type CompilationStrategy = (
-html: string | HTMLTemplateElement, 
-factories: Record<string, ViewBehaviorFactory>, 
+html: string | HTMLTemplateElement,
+factories: Record<string, ViewBehaviorFactory>,
 policy: DOMPolicy) => TemplateCompilationResult;
 ```
 **References:** [ViewBehaviorFactory](../fast-element.viewbehaviorfactory/)<!-- -->, [DOMPolicy](../fast-element.dompolicy/)<!-- -->, [TemplateCompilationResult](../fast-element.htmltemplatecompilationresult/)

@@ -20,7 +20,7 @@ An implementation of [Accessor](../fast-element.accessor/) that supports reactiv
 **Signature:**
 
 ```typescript
-export declare class AttributeDefinition implements Accessor 
+export declare class AttributeDefinition implements Accessor
 ```
 **Implements:** [Accessor](../fast-element.accessor/)
 

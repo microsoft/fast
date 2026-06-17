@@ -14,24 +14,14 @@
 performance.mark("todo-hydration-started");
 
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-// Side-effect imports — register custom elements via define()
-import "./todo-app/todo-app.js";
-import "./todo-item/todo-item.js";
+enableHydration({
+    hydrationComplete() {
+        performance.measure("todo-hydration-completed", "todo-hydration-started");
+        console.log("Hydration complete!");
+        (window as unknown as { __todoHydrated?: boolean }).__todoHydrated = true;
+    },
+});
 
-// Configure and start hydration
-TemplateElement.options({
-    "todo-app": { observerMap: "all" },
-    "todo-item": { observerMap: "all" },
-})
-    .config({
-        hydrationComplete() {
-            performance.measure("todo-hydration-completed", "todo-hydration-started");
-            console.log("Hydration complete!");
-            (window as unknown as { __todoHydrated?: boolean }).__todoHydrated = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+await Promise.all([import("./todo-app/todo-app.js"), import("./todo-item/todo-item.js")]);

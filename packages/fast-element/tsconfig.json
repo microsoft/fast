@@ -19,5 +19,5 @@
         "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
     },
     "include": ["src"],
-    "exclude": ["src/**/*.pw.spec.ts"]
+    "exclude": ["src/**/*.spec.ts", "src/**/*.pw.spec.ts"]
 }

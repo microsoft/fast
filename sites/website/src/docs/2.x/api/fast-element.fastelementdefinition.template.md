@@ -20,5 +20,5 @@ The template to render for the custom element.
 **Signature:**
 
 ```typescript
-template?: ElementViewTemplate;
+template?: ElementViewTemplate<InstanceType<TType>>;
 ```

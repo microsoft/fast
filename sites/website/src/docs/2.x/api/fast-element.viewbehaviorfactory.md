@@ -20,7 +20,7 @@ A factory that can create a [ViewBehavior](../fast-element.viewbehavior/) associ
 **Signature:**
 
 ```typescript
-export interface ViewBehaviorFactory 
+export interface ViewBehaviorFactory
 ```
 
 ## Properties

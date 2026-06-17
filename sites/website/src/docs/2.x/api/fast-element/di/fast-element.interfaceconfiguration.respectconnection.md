@@ -15,7 +15,7 @@ navigationOptions:
 
 ## InterfaceConfiguration.respectConnection property
 
-When true, the dependency will be re-resolved when FASTElement connection changes. If the resolved value changes due to connection change, a  will be emitted for the property, with the previous and next values provided to any subscriber.
+When true, the dependency will be re-resolved when FASTElement connection changes. If the resolved value changes due to connection change, an observable notification will be emitted for the property, with the previous and next values provided to any subscriber.
 
 **Signature:**
 

@@ -20,7 +20,7 @@ Defines metadata for an HTMLDirective.
 **Signature:**
 
 ```typescript
-export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>> extends Required<PartialHTMLDirectiveDefinition> 
+export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>> extends Required<PartialHTMLDirectiveDefinition>
 ```
 **Extends:** Required&lt;[PartialHTMLDirectiveDefinition](../fast-element.partialhtmldirectivedefinition/)<!-- -->&gt;
 

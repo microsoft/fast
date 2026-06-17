@@ -20,7 +20,7 @@ The result of a template compilation operation.
 **Signature:**
 
 ```typescript
-export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> 
+export interface HTMLTemplateCompilationResult<TSource = any, TParent = any>
 ```
 
 ## Properties

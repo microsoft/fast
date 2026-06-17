@@ -20,7 +20,7 @@ Represents an object that can contribute behavior to a host.
 **Signature:**
 
 ```typescript
-export interface HostBehavior<TSource = any> 
+export interface HostBehavior<TSource = any>
 ```
 
 ## Methods

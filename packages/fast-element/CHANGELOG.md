@@ -4,6 +4,40 @@
 
 <!-- Start content -->
 
+## 3.0.0-rc.1
+
+Tue, 28 Apr 2026 04:42:02 GMT
+
+### Major changes
+
+- remove FASTGlobal version tracking (7559015+janechu@users.noreply.github.com)
+- Remove hydration view template side effect and unused export paths (7559015+janechu@users.noreply.github.com)
+- Move optional helpers to dedicated flat fast-element subpath exports such as @microsoft/fast-element/children.js, @microsoft/fast-element/repeat.js, @microsoft/fast-element/two-way.js, @microsoft/fast-element/signal.js, @microsoft/fast-element/attribute-map.js, and @microsoft/fast-element/observer-map.js while keeping controller and definition internals on the root entrypoint. (7559015+janechu@users.noreply.github.com)
+- Remove the public declarative TemplateElement configuration APIs and make declarative templates use an internal native f-template publisher with explicit hydration opt-in. (7559015+janechu@users.noreply.github.com)
+- Replace HydratableElementController with automatic prerendered content optimization. When a component connects with an existing shadow root, bindings skip attribute/booleanAttribute DOM updates during initial render while still setting up event listeners, observers, and dependency tracking. Added isPrerendered flag to ElementController and ViewController. Added template-pending guard for defineAsync flow. (7559015+janechu@users.noreply.github.com)
+- Move declarative HTML APIs into @microsoft/fast-element/declarative.js, expose schema map helpers from extension subpaths, and remove the @microsoft/fast-html package. (7559015+janechu@users.noreply.github.com)
+- Remove ElementStyles.withBehaviors, CSS style behaviors, and CSS bindings in fast-element. (7559015+janechu@users.noreply.github.com)
+- Remove TemplateOptions from fast-element definitions and drop templateOptions-based connection/define waiting. (7559015+janechu@users.noreply.github.com)
+- Simplify hydration markers to data-free sequential format (fe:b, fe:/b, fe:r, fe:/r, fe:e, fe:/e). Replace regex parsing with string equality checks. Single data-fe attribute replaces three old formats. Breaking change: SSR output format changed. (7559015+janechu@users.noreply.github.com)
+- remove deprecated declarative event e support (7559015+janechu@users.noreply.github.com)
+- Make declarative runtime setup lazy and change @microsoft/fast-element/debug.js to require an explicit enableDebug() call. (7559015+janechu@users.noreply.github.com)
+- Remove defineAsync and composeAsync — define() and compose() now return Promises (7559015+janechu@users.noreply.github.com)
+- Remove the built-in globalThis polyfill; fast-element v3 now requires native globalThis (7559015+janechu@users.noreply.github.com)
+- fix: remove the fast-kernel multi-kernel modes. Breaking change: FAST no longer supports configuring isolated or version-scoped kernels via the script attribute. (7559015+janechu@users.noreply.github.com)
+
+### Minor changes
+
+- Add schema-driven attributeMap and observerMap extension subpaths, optional definition schema, and observerMap schema configuration. (7559015+janechu@users.noreply.github.com)
+- add declarativeTemplate for auto-resolving <f-template> markup (7559015+janechu@users.noreply.github.com)
+- Add extensions array argument to FASTElement.define() and FASTElementDefinition.define() (7559015+janechu@users.noreply.github.com)
+- feat: modularize hydration and expose lifecycle callbacks via enableHydration() and declarativeTemplate() (7559015+janechu@users.noreply.github.com)
+- add function-based template resolver sequencing (7559015+janechu@users.noreply.github.com)
+
+### Changes
+
+- chore: replace rollup-plugin-filesize with esbuild bundle size reporting (7559015+janechu@users.noreply.github.com)
+- Simplify fast-element declarative package documentation and test configuration without changing the published API. (7559015+janechu@users.noreply.github.com)
+
 ## 2.10.4
 
 Fri, 17 Apr 2026 00:26:37 GMT

@@ -15,7 +15,7 @@ navigationOptions:
 
 ## TemplateLifecycleCallbacks.elementDidDefine() method
 
-Called after the custom element has been defined
+Called after the custom element has been defined.
 
 **Signature:**
 

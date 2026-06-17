@@ -20,7 +20,7 @@ A record of observable property access.
 **Signature:**
 
 ```typescript
-export interface ObservationRecord 
+export interface ObservationRecord
 ```
 
 ## Properties

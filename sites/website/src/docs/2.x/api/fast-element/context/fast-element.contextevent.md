@@ -24,7 +24,7 @@ If the requested context event contains a truthy `multiple` value, then a provid
 **Signature:**
 
 ```typescript
-export declare class ContextEvent<T extends UnknownContext> extends Event 
+export declare class ContextEvent<T extends UnknownContext> extends Event
 ```
 **Extends:** Event
 

@@ -20,7 +20,7 @@ A Behavior that enables advanced rendering.
 **Signature:**
 
 ```typescript
-export declare class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber 
+export declare class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber
 ```
 **Implements:** [ViewBehavior](../fast-element.viewbehavior/)<!-- -->, [Subscriber](../fast-element.subscriber/)
 

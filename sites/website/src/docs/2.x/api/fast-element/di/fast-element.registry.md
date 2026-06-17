@@ -20,7 +20,7 @@ Implemented by objects that which to register dependencies in a container.
 **Signature:**
 
 ```typescript
-export interface Registry 
+export interface Registry
 ```
 
 ## Methods

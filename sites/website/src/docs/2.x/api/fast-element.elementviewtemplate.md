@@ -20,7 +20,7 @@ A template capable of creating views specifically for rendering custom elements.
 **Signature:**
 
 ```typescript
-export interface ElementViewTemplate<TSource = any, TParent = any> 
+export interface ElementViewTemplate<TSource = any, TParent = any>
 ```
 
 ## Methods

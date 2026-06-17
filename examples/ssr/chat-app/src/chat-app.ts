@@ -1,4 +1,7 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 import type { ChatTurn } from "./chat-data.js";
 import { cannedTurnMap, fallbackTurn } from "./chat-data.js";
 
@@ -191,7 +194,11 @@ export class ChatApp extends FASTElement {
     }
 }
 
-ChatApp.define({
-    name: "chat-app",
-    templateOptions: "defer-and-hydrate",
-});
+FASTElement.define(
+    ChatApp,
+    {
+        name: "chat-app",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);

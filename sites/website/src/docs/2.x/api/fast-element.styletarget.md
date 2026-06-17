@@ -20,7 +20,7 @@ A node that can be targeted by styles.
 **Signature:**
 
 ```typescript
-export interface StyleTarget extends Pick<Node, "getRootNode"> 
+export interface StyleTarget extends Pick<Node, "getRootNode">
 ```
 **Extends:** Pick&lt;Node, "getRootNode"&gt;
 

@@ -20,7 +20,7 @@ A utility class used that constructs and registers resolvers for a dependency in
 **Signature:**
 
 ```typescript
-export declare class ResolverBuilder<K> 
+export declare class ResolverBuilder<K>
 ```
 
 ## Constructors

@@ -20,7 +20,7 @@ A template capable of creating HTMLView instances or rendering directly to DOM.
 **Signature:**
 
 ```typescript
-export declare class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> 
+export declare class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent>
 ```
 **Implements:** [ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;TSource, TParent&gt;, [SyntheticViewTemplate](../fast-element.syntheticviewtemplate/)<!-- -->&lt;TSource, TParent&gt;
 

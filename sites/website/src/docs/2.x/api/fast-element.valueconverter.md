@@ -20,7 +20,7 @@ Represents objects that can convert values to and from view or model representat
 **Signature:**
 
 ```typescript
-export interface ValueConverter 
+export interface ValueConverter
 ```
 
 ## Methods

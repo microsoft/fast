@@ -15,8 +15,10 @@ navigationOptions:
 
 ## Binding.policy property
 
+The security policy to associate with this binding.
+
 **Signature:**
 
 ```typescript
-policy?: DOMPolicy | undefined;
+policy?: DOMPolicy;
 ```
