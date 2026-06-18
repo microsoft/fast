@@ -22,11 +22,13 @@ This guide provides a quick introduction to building a web component using FAST 
 
 This guide assumes you're building a browser bundle with TypeScript, via a build tool such as esbuild, Rollup, Vite, or Webpack.
 
-Install `@microsoft/fast-element` as a dev dependency:
+Install `@microsoft/fast-element` as a dependency:
 
 ```bash
-npm install --save-dev @microsoft/fast-element
+npm install --save @microsoft/fast-element
 ```
+
+If you're publishing a reusable component library, you can install `@microsoft/fast-element` as a peer dependency instead with the `--save-peer` flag.
 
 You may need to adjust your `tsconfig.json` to accommodate the conventions used throughout this guide. The following options are recommended:
 
@@ -37,10 +39,14 @@ You may need to adjust your `tsconfig.json` to accommodate the conventions used 
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2022",
-    "useDefineForClassFields": false // should be false when targeting ES2022 or newer (see FAST#5261)
+    "useDefineForClassFields": false
   }
 }
 ```
+
+:::note
+TypeScript enables `useDefineForClassFields` by default when `target` is `ES2022` or higher. FAST's property decorators (`@attr`, `@observable`, and others) rely on the older field-assignment semantics, so this option must be set to `false` explicitly. Because the default changes with the compilation target, it's an easy setting to overlook. See [microsoft/fast#5261](https://github.com/microsoft/fast/issues/5261) for the tracking discussion.
+:::
 
 ## Create a Web Component
 
@@ -66,7 +72,7 @@ import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 
 class HelloWorld extends FASTElement {
     @attr
-    name: string;
+    name?: string;
 }
 ```
 

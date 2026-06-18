@@ -62,12 +62,13 @@ Use `DOMPolicy.create()` to build a policy. The `trustedType` option takes a `Tr
 ```ts
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 
-const trustedType = trustedTypes.createPolicy("my-app", {
-    createHTML(value) {
-        // Run the value through a sanitizer such as DOMPurify before returning it.
-        return sanitize(value);
-    },
-});
+function createHTML(value) {
+    // Run the value through a sanitizer such as DOMPurify before returning it.
+    return sanitize(value);
+}
+
+const trustedType =
+    globalThis.trustedTypes?.createPolicy("my-app", { createHTML }) ?? { createHTML };
 
 const policy = DOMPolicy.create({ trustedType });
 ```

@@ -19,12 +19,12 @@ keywords:
 
 Custom elements typically build their shadow DOM either imperatively, by calling DOM APIs such as `appendChild()`, or by cloning a `<template>` element. FAST provides a tagged template function called `html`, which lets you describe the structure of a component's view declaratively in JavaScript and bind it to the component's state.
 
-Templates created with `html` are reactive. When an expression interpolated into the template reads from an observable property, FAST's observation system subscribes to that property and updates the corresponding part of the DOM whenever the value changes. Properties become observable through `@attr`, `@observable`, or the lower-level [`Observable`](/docs/3.x/getting-started/fast-element/#manually-tracking-observables) APIs. A template is associated with a component through the `template` option passed to [`define()` or `compose()`](/docs/3.x/getting-started/fast-element/#defining-the-element).
+Templates created with `html` are reactive. When an expression interpolated into the template reads from an observable property, FAST's observation system subscribes to that property and updates the corresponding part of the DOM whenever the value changes. Properties become observable through `@attr`, `@observable`, or the lower-level [`Observable`](../../getting-started/fast-element/#manually-tracking-observables) APIs. A template is associated with a component through the `template` option passed to [`define()` or `compose()`](../../getting-started/fast-element/#defining-the-element).
 
 This document describes how to author templates with the `html` function, including bindings for content, attributes, properties, and events, and how to type templates for use with TypeScript.
 
 :::tip
-For server-side rendering, see the [declarative templates](/docs/3.x/declarative-templates/overview/) documentation, which describes an alternate authoring format and the [`observerMap()`](/docs/3.x/declarative-templates/defining-elements/#observermap) extension for making schema-derived properties observable.
+For server-side rendering, see the [declarative templates](../../declarative-templates/overview/) documentation, which describes an alternate authoring format and the [`observerMap()`](../../declarative-templates/defining-elements/#observermap) extension for making schema-derived properties observable.
 :::
 
 ## Template Basics
@@ -72,7 +72,7 @@ const template = html<MyElement>`
 :::note
 A non-function value passed to `${...}` is treated as a one-time static value and is not re-evaluated.
 
-Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Properties binding](#properties) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, which is blocked by the default DOMPolicy unless you configure an `innerHTML` guard. Follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types.md) before rendering sanitized HTML.
+Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Property bindings](#property-bindings) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, which is blocked by the default DOMPolicy unless you configure an `innerHTML` guard. Follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types/) before rendering sanitized HTML.
 :::
 
 ### Content Bindings
@@ -138,7 +138,7 @@ In the example above, the property binding `:indeterminate="${x => x.isIndetermi
 Property bindings are case-sensitive. Camel-cased property names such as `:tabIndex`, `:ariaLabel`, and `:scrollTop` are preserved as written and resolved against the corresponding DOM properties.
 
 :::note
-FAST does not allow binding to `innerHTML` without first attaching a [`DOMPolicy`](/docs/3.x/advanced/dom-policy-and-trusted-types/) to the template, to prevent accidental injection of untrusted markup.
+FAST does not allow binding to `innerHTML` without first attaching a [`DOMPolicy`](../../advanced/dom-policy-and-trusted-types/) to the template, to prevent accidental injection of untrusted markup.
 :::
 
 #### Binding to `classList`
@@ -155,7 +155,7 @@ When `modifierClasses` changes from `"foo bar"` to `"baz"`, FAST removes `foo` a
 
 ### Event Bindings
 
-Event bindings are used to attach event listeners to elements within the template. They are denoted by prefixing an attribute binding with an at symbol (`@`). The value returned by the binding function is expected to be a function, which is registered as an event listener for the specified event type.
+Event bindings attach an event listener to an element within the template. They are denoted by prefixing the event name with an at symbol (`@`). When the event fires, FAST evaluates the binding expression. Unlike some frameworks, the expression is not expected to return a handler function; instead it does the work directly, typically by calling a method on the component.
 
 ```ts
 import { FASTElement, html } from "@microsoft/fast-element";
@@ -171,7 +171,7 @@ const template = html<MyElement>`
 `;
 ```
 
-The `@click` binding registers `handleClick` as a `click` listener on the `<button>` element. When the button is clicked, FAST invokes the handler with the component instance as `x`.
+The `@click` binding adds a `click` listener to the `<button>`. When the button is clicked, FAST evaluates `x => x.handleClick()`, calling `handleClick` with the component instance as `x`.
 
 #### Accessing the Event
 

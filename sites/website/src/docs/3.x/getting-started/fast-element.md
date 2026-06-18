@@ -138,7 +138,7 @@ export class MyElement extends FASTElement {
 In this example, the `count` property is decorated with `@observable`, which means that any changes to `count` will trigger the `countChanged` callback, allowing you to respond to changes in the internal state of your component.
 
 :::tip
-FAST's `Observable` API can be used independently of custom elements, so you can create observable objects and properties in any JavaScript class, not just those that extend `FASTElement`. Read the [Reactivity](/docs/advanced/reactivity.md) section for more details on using observables in FAST.
+FAST's `Observable` API can be used independently of custom elements, so you can create observable objects and properties in any JavaScript class, not just those that extend `FASTElement`. Read the [Reactivity](../../advanced/reactivity/) section for more details on using observables in FAST.
 :::
 
 ### Manually Tracking Observables
