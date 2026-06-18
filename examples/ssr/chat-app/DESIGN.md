@@ -67,18 +67,19 @@ This example follows the same top-level shape as `examples/csr/todo-app/` and ad
 
 ### Hydration and declarative templates
 
-`src/main.ts` imports the shared design tokens, side-effect-imports each
-component class, and triggers hydration by registering the `<f-template>`
-custom element via `@microsoft/fast-element/declarative.js` `TemplateElement`:
+`src/main.ts` imports the shared design tokens, enables hydration with
+`enableHydration()`, and dynamically imports each component class so the
+matching `<f-template>` definitions can resolve through `declarativeTemplate()`:
 
 - `chat-message`
 - `chat-card`
 - `chat-suggestion`
 - `chat-app`
 
-Each class extends `FASTElement` and calls `define()` with
-`templateOptions: "defer-and-hydrate"`, so its rendered shadow root is hydrated
-against the matching `<f-template name="...">` in `templates.html`.
+Each class extends `FASTElement` and calls the subclass static `define()` with
+`template: declarativeTemplate()` and `observerMap()`, so its rendered shadow
+root is hydrated against the matching `<f-template name="...">` in
+`templates.html`.
 
 ### Conversation model
 

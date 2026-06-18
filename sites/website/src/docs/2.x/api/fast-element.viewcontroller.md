@@ -20,7 +20,7 @@ Controls the lifecycle of a view and provides relevant context.
 **Signature:**
 
 ```typescript
-export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent>
+export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> 
 ```
 **Extends:** [ExpressionController](../fast-element.expressioncontroller/)<!-- -->&lt;TSource, TParent&gt;
 
@@ -48,48 +48,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[isHydrated?](../fast-element.viewcontroller.ishydrated/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;boolean&gt;
-
-
-</td><td>
-
-_(Optional)_ Resolves `true` after prerendered content has been hydrated, `false` when client-side rendered or hydration not enabled.
-
-
-</td></tr>
-<tr><td>
-
-[isPrerendered?](../fast-element.viewcontroller.isprerendered/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;boolean&gt;
-
-
-</td><td>
-
-_(Optional)_ Resolves `true` when the view's host element had prerendered content (existing shadow root).
-
-
-</td></tr>
-<tr><td>
 
 [targets](../fast-element.viewcontroller.targets/)
 

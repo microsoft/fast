@@ -20,7 +20,7 @@ Lifecycle callbacks for template events.
 **Signature:**
 
 ```typescript
-export interface TemplateLifecycleCallbacks
+export interface TemplateLifecycleCallbacks 
 ```
 
 ## Methods
@@ -43,40 +43,7 @@ Description
 
 </td><td>
 
-_(Optional)_ Called after the custom element has been defined.
-
-
-</td></tr>
-<tr><td>
-
-[elementDidHydrate(source)?](../fast-element.templatelifecyclecallbacks.elementdidhydrate/)
-
-
-</td><td>
-
-_(Optional)_ Called after an individual element's hydration has finished.
-
-
-</td></tr>
-<tr><td>
-
-[elementDidRegister(name)?](../fast-element.templatelifecyclecallbacks.elementdidregister/)
-
-
-</td><td>
-
-_(Optional)_ Called after the JS class definition has been registered.
-
-
-</td></tr>
-<tr><td>
-
-[elementWillHydrate(source)?](../fast-element.templatelifecyclecallbacks.elementwillhydrate/)
-
-
-</td><td>
-
-_(Optional)_ Called before an individual element's hydration begins.
+_(Optional)_ Called after the custom element has been defined
 
 
 </td></tr>
@@ -87,18 +54,7 @@ _(Optional)_ Called before an individual element's hydration begins.
 
 </td><td>
 
-_(Optional)_ Called after the template has been assigned to the definition.
-
-
-</td></tr>
-<tr><td>
-
-[templateWillUpdate(name)?](../fast-element.templatelifecyclecallbacks.templatewillupdate/)
-
-
-</td><td>
-
-_(Optional)_ Called before the template has been evaluated and assigned.
+_(Optional)_ Called after the template has been assigned to the definition
 
 
 </td></tr>

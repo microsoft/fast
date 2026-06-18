@@ -20,9 +20,9 @@ The standard View implementation, which also implements ElementView and Syntheti
 **Signature:**
 
 ```typescript
-export declare class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent>
+export declare class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> 
 ```
-**Extends:** [DefaultExecutionContext](../fast-element.defaultexecutioncontext/)<!-- -->&lt;TParent&gt;
+**Extends:** DefaultExecutionContext&lt;TParent&gt;
 
 **Implements:** [ElementView](../fast-element.elementview/)<!-- -->&lt;TSource, TParent&gt;, [SyntheticView](../fast-element.syntheticview/)<!-- -->&lt;TSource, TParent&gt;, [ExecutionContext](../fast-element.executioncontext/)<!-- -->&lt;TParent&gt;
 
@@ -137,44 +137,6 @@ boolean
 </td><td>
 
 Indicates whether the controller is bound.
-
-
-</td></tr>
-<tr><td>
-
-[isHydrated](../fast-element.htmlview.ishydrated/)
-
-
-</td><td>
-
-
-</td><td>
-
-Promise&lt;boolean&gt;
-
-
-</td><td>
-
-Resolves `true` after prerendered content has been hydrated, `false` when client-side rendered or hydration not enabled.
-
-
-</td></tr>
-<tr><td>
-
-[isPrerendered](../fast-element.htmlview.isprerendered/)
-
-
-</td><td>
-
-
-</td><td>
-
-Promise&lt;boolean&gt;
-
-
-</td><td>
-
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` when the view is client-side rendered. Resolves once the first bind completes.
 
 
 </td></tr>

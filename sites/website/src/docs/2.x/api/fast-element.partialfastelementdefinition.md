@@ -20,7 +20,7 @@ Represents metadata configuration for a custom element.
 **Signature:**
 
 ```typescript
-export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>
+export interface PartialFASTElementDefinition 
 ```
 
 ## Properties
@@ -153,27 +153,6 @@ _(Optional)_ The registry to register this component in by default.
 </td></tr>
 <tr><td>
 
-[schema?](../fast-element.partialfastelementdefinition.schema/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-[Schema](../fast-element.schema/)
-
-
-</td><td>
-
-_(Optional)_ The optional schema associated with the custom element definition. Declarative templates assign this automatically during template resolution. Non-declarative callers can provide one for schema-driven extensions.
-
-
-</td></tr>
-<tr><td>
-
 [shadowOptions?](../fast-element.partialfastelementdefinition.shadowoptions/)
 
 
@@ -226,12 +205,33 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
+[ElementViewTemplate](../fast-element.elementviewtemplate/)
 
 
 </td><td>
 
-_(Optional)_ The template, or template resolver, for the custom element.
+_(Optional)_ The template to render for the custom element.
+
+
+</td></tr>
+<tr><td>
+
+[templateOptions?](../fast-element.partialfastelementdefinition.templateoptions/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+[TemplateOptions](../fast-element.templateoptions/)
+
+
+</td><td>
+
+**_(ALPHA)_** _(Optional)_ Options controlling how the template will be created.
 
 
 </td></tr>

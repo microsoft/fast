@@ -1,11 +1,11 @@
 ---
 id: "fast-element.dompolicy"
-title: "DOMPolicy variable"
+title: "DOMPolicy interface"
 layout: 2x-api
 eleventyNavigation:
   key: "api2xfast-element.dompolicy"
   parent: "api2xfast-element"
-  title: "DOMPolicy variable"
+  title: "DOMPolicy interface"
 navigationOptions:
   activeKey: "api2xfast-element.dompolicy"
 ---
@@ -13,14 +13,49 @@ navigationOptions:
 
 [@microsoft/fast-element](../fast-element/index.html) &gt; [DOMPolicy](../fast-element.dompolicy/index.html)
 
-## DOMPolicy variable
+## DOMPolicy interface
 
-A helper for creating DOM policies.
+A security policy that FAST can use to interact with the DOM.
 
 **Signature:**
 
 ```typescript
-DOMPolicy: Readonly<{
-    create(options?: DOMPolicyOptions): Readonly<DOMPolicy>;
-}>
+export interface DOMPolicy 
 ```
+
+## Methods
+
+<table><thead><tr><th>
+
+Method
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[createHTML(value)](../fast-element.dompolicy.createhtml/)
+
+
+</td><td>
+
+Creates safe HTML from the provided value.
+
+
+</td></tr>
+<tr><td>
+
+[protect(tagName, aspect, aspectName, sink)](../fast-element.dompolicy.protect/)
+
+
+</td><td>
+
+Protects a DOM sink that intends to write to the DOM.
+
+
+</td></tr>
+</tbody></table>

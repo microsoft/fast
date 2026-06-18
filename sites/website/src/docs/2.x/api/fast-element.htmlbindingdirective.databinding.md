@@ -15,8 +15,6 @@ navigationOptions:
 
 ## HTMLBindingDirective.dataBinding property
 
-The binding configuration to apply.
-
 **Signature:**
 
 ```typescript

@@ -20,6 +20,6 @@ Represents the types of values that can be interpolated into a template.
 **Signature:**
 
 ```typescript
-export type CSSValue = ComposableStyles | CSSDirective;
+export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
 ```
-**References:** [ComposableStyles](../fast-element.composablestyles/)<!-- -->, [CSSDirective](../fast-element.cssdirective/)
+**References:** [Expression](../fast-element.expression/)<!-- -->, [Binding](../fast-element.binding/)<!-- -->, [ComposableStyles](../fast-element.composablestyles/)<!-- -->, [CSSDirective](../fast-element.cssdirective/)

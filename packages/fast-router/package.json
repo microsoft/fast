@@ -41,7 +41,7 @@
     "@microsoft/fast-element": "3.0.0-rc.1"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": ">=3.0.0-rc.1 <3.0.0"
+    "@microsoft/fast-element": "3.0.0-rc.1"
   },
   "beachball": {
     "disallowedChangeTypes": [

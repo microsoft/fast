@@ -20,7 +20,7 @@ Defines metadata for a CSSDirective.
 **Signature:**
 
 ```typescript
-export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective> = Constructable<CSSDirective>>
+export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective> = Constructable<CSSDirective>> 
 ```
 
 ## Properties

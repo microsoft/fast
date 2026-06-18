@@ -20,7 +20,7 @@ Observes array sort.
 **Signature:**
 
 ```typescript
-export interface SortObserver extends Subscriber
+export interface SortObserver extends Subscriber 
 ```
 **Extends:** [Subscriber](../fast-element.subscriber/)
 

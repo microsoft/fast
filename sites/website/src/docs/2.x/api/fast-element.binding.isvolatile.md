@@ -15,8 +15,6 @@ navigationOptions:
 
 ## Binding.isVolatile property
 
-Indicates whether the binding is volatile.
-
 **Signature:**
 
 ```typescript

@@ -21,8 +21,8 @@ Common DOM APIs.
 
 ```typescript
 DOM: Readonly<{
-    readonly policy: DOMPolicyDefinition;
-    setPolicy(value: DOMPolicyDefinition): void;
+    readonly policy: DOMPolicy;
+    setPolicy(value: DOMPolicy): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>

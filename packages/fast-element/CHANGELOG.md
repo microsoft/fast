@@ -33,11 +33,6 @@ Tue, 28 Apr 2026 04:42:02 GMT
 - feat: modularize hydration and expose lifecycle callbacks via enableHydration() and declarativeTemplate() (7559015+janechu@users.noreply.github.com)
 - add function-based template resolver sequencing (7559015+janechu@users.noreply.github.com)
 
-### Changes
-
-- chore: replace rollup-plugin-filesize with esbuild bundle size reporting (7559015+janechu@users.noreply.github.com)
-- Simplify fast-element declarative package documentation and test configuration without changing the published API. (7559015+janechu@users.noreply.github.com)
-
 ## 2.10.4
 
 Fri, 17 Apr 2026 00:26:37 GMT

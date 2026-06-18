@@ -20,7 +20,7 @@ Observes array lengths.
 **Signature:**
 
 ```typescript
-export interface LengthObserver extends Subscriber
+export interface LengthObserver extends Subscriber 
 ```
 **Extends:** [Subscriber](../fast-element.subscriber/)
 

@@ -15,15 +15,50 @@ navigationOptions:
 
 ## CSSDirective.createCSS() method
 
-Creates static styles to interpolate into the CSS document.
+Creates a CSS fragment to interpolate into the CSS document.
 
 **Signature:**
 
 ```typescript
-createCSS(): ComposableStyles;
+createCSS(add: AddBehavior): ComposableStyles;
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+add
+
+
+</td><td>
+
+[AddBehavior](../fast-element.addbehavior/)
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
 **Returns:**
 
 [ComposableStyles](../fast-element.composablestyles/)
 
-- the styles to interpolate into CSS
+- the string to interpolate into CSS

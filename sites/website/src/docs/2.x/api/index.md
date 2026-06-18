@@ -35,8 +35,6 @@ Description
 
 </td><td>
 
-Core APIs for building standards-based Web Components with FAST Element.
-
 
 </td></tr>
 </tbody></table>
