@@ -1,8 +1,7 @@
 import { html } from "@microsoft/fast-element/html.js";
 import { repeat } from "@microsoft/fast-element/repeat.js";
-import { twoWay } from "@microsoft/fast-element/two-way.js";
 import type { TodoApp } from "./todo-app.js";
-import type { Todo } from "./todo-list.js";
+import type { Todo, TodoListFilter } from "./todo-list.js";
 import "./todo-form.js";
 
 export const template = html<TodoApp>`
@@ -12,7 +11,15 @@ export const template = html<TodoApp>`
 
     <section>
         <label for="filter">Filter:</label>
-        <select name="filter" title="filter" :value=${twoWay(x => x.todos.activeFilter)}>
+        <select
+            name="filter"
+            title="filter"
+            :value=${x => x.todos.activeFilter}
+            @change=${(x, c) =>
+                x.todos.setFilter(
+                    (c.event.target as HTMLSelectElement).value as TodoListFilter,
+                )}
+        >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>

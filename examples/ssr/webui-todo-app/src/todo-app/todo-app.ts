@@ -220,7 +220,7 @@ export class TodoApp extends FASTElement {
     }
 }
 
-TodoApp.define(
+export const todoAppDefinition = TodoApp.define(
     {
         name: "todo-app",
         template: declarativeTemplate(),

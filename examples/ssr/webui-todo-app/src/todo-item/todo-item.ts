@@ -41,7 +41,7 @@ export class TodoItem extends FASTElement {
     }
 }
 
-TodoItem.define(
+export const todoItemDefinition = TodoItem.define(
     {
         name: "todo-item",
         template: declarativeTemplate(),
