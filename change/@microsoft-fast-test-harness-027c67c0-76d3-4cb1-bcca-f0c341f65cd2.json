@@ -2,6 +2,6 @@
   "type": "patch",
   "comment": "Handle browser-valid whitespace in f-template wrapper tags",
   "packageName": "@microsoft/fast-test-harness",
-  "email": "chujane@microsoft.com",
+  "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }
