@@ -67,6 +67,9 @@
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
     "typescript": "5.5.4",
-    "vite": "7.3.2"
+    "vite": "7.3.5"
+  },
+  "overrides": {
+    "esbuild": "0.28.1"
   }
 }
