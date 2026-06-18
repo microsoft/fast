@@ -65,7 +65,7 @@ jobs:
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npx lage test:node test:chromium ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose
+      run: npx lage test:node test:chromium ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose --concurrency 1
 
     - name: Testing final validation
       run: npm run test:validation
