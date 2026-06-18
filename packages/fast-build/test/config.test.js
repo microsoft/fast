@@ -13,7 +13,7 @@ const WASM_MODULE = path.resolve(__dirname, "../wasm/microsoft_fast_build.js");
 const WASM_STUB = path.resolve(__dirname, "wasm-stub.cjs");
 
 function tmpDir() {
-    return fs.mkdtempSync(path.join(os.tmpdir(), "fast-build-test-"));
+    return fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "fast-build-test-")));
 }
 
 function run(args, cwd) {
