@@ -1,4 +1,3 @@
-import type { Page } from "@playwright/test";
 import type { FilterValue, TodoAppAdapter } from "./types.js";
 
 /**
@@ -35,7 +34,15 @@ export const ssrWebuiTodoAdapter: TodoAppAdapter = {
     async addTodo(page, text) {
         const input = page.locator("todo-app form input[type=text]");
         await input.fill(text);
-        await page.locator("todo-app form button[type=submit]").click();
+        await input.dispatchEvent("input");
+        const addButton = page.locator("todo-app form button[type=submit]");
+        await addButton.waitFor();
+        await addButton.evaluate((button: HTMLButtonElement) => {
+            if (button.disabled) {
+                throw new Error("Add Todo button is still disabled after input.");
+            }
+        });
+        await addButton.click();
         await page.locator("todo-item .description", { hasText: text }).waitFor();
     },
     async descriptions(page) {
