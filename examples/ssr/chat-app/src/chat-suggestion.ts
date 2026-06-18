@@ -12,8 +12,7 @@ export class ChatSuggestion extends FASTElement {
     }
 }
 
-FASTElement.define(
-    ChatSuggestion,
+ChatSuggestion.define(
     {
         name: "chat-suggestion",
         template: declarativeTemplate(),

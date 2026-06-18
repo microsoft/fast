@@ -194,8 +194,7 @@ export class ChatApp extends FASTElement {
     }
 }
 
-FASTElement.define(
-    ChatApp,
+ChatApp.define(
     {
         name: "chat-app",
         template: declarativeTemplate(),

@@ -318,7 +318,7 @@ Primary declarative exports intended for application code:
 
 | Export | Purpose |
 |---|---|
-| `declarativeTemplate()` | `@microsoft/fast-element/declarative.js` template resolver for `FASTElement.define()`; auto-defines the internal `<f-template>` publisher and waits for the matching template. |
+| `declarativeTemplate()` | `@microsoft/fast-element/declarative.js` template resolver for subclass `define()` calls; auto-defines the internal `<f-template>` publisher and waits for the matching template. |
 | `TemplateParser` | `@microsoft/fast-element/declarative.js` standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `Schema` | `@microsoft/fast-element/schema.js` JSON schema builder that records binding paths discovered during template parsing. Each instance owns its own schema map and registers itself in the `schemaRegistry` for cross-element `$ref` resolution. |
 | `schemaRegistry` | `@microsoft/fast-element/schema.js` module-level `Map<string, Map<string, JSONSchema>>` that indexes schemas by custom element name. Used for cross-element lookups (e.g. nested component `$ref` resolution). |
@@ -701,7 +701,7 @@ tagged templates produce.
 
 ### Deferred template attachment via define
 
-Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a concrete template is provided at definition time. When `template: declarativeTemplate()` is used, the `Promise` resolves after the matching `<f-template>` supplies a concrete template through the bridge. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
+Standard subclass `define()` calls return a `Promise` that resolves immediately when a concrete template is provided at definition time. When `template: declarativeTemplate()` is used, the `Promise` resolves after the matching `<f-template>` supplies a concrete template through the bridge. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 

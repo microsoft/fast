@@ -8,8 +8,7 @@ export class ChatMessage extends FASTElement {
     public kind?: string;
 }
 
-FASTElement.define(
-    ChatMessage,
+ChatMessage.define(
     {
         name: "chat-message",
         template: declarativeTemplate(),

@@ -213,9 +213,9 @@ export class MyElement extends FASTElement {
   count = 0;
 }
 
-FASTElement.define(MyElement);
+MyElement.define();
 ```
 
 :::note
-The `definition` can also be separated from the class and passed into the `define` call directly if desired. Here's what that would look like: `FASTElement.define(MyElement, myDefinition);`
+The `definition` can also be separated from the class and passed into the `define` call directly if desired. Here's what that would look like: `MyElement.define(myDefinition);`
 :::

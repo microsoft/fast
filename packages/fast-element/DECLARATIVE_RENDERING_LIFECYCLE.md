@@ -13,8 +13,8 @@ core runtime and its declarative entrypoint:
 - **`@microsoft/fast-element/declarative.js`**: Provides the `f-template`
   custom element that processes HTML templates and attaches them to FAST
   elements as a `ViewTemplate` in lieu of an `html` template created during
-  `FASTElement.define()`. The preferred path uses `declarativeTemplate()` so
-  `FASTElement.define()` waits for the matching declarative template and keeps
+  a subclass `define()` call. The preferred path uses `declarativeTemplate()` so
+  the subclass `define()` call waits for the matching declarative template and keeps
   the definition concrete before registration completes.
 
 ## Lifecycle Phases
@@ -81,7 +81,7 @@ The lifecycle flow during this phase:
    data bindings, directives, and other template features into the `ViewTemplate`
    model which is also used by the `@microsoft/fast-element` `html` tag template.
 4. **Template Attachment**: The concrete `ViewTemplate` is returned to
-   `FASTElement.define()`, which assigns it to the definition before platform
+   the subclass `define()` call, which assigns it to the definition before platform
    registration completes.
 
 ### Phase 4: Composition Completion

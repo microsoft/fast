@@ -710,7 +710,7 @@ test.describe("The template compiler", () => {
                     const htmlResult = toHTML(fragment, true);
 
                     let policiesMatch = true;
-                    for (let i = 0, ii = factories.length; i < length; ++i) {
+                    for (let i = 0; i < length; ++i) {
                         if (factories[i].policy !== pol.expected) {
                             policiesMatch = false;
                         }
@@ -1012,7 +1012,7 @@ test.describe("The template compiler", () => {
                 const tag = html.partial(name);
 
                 const TestElement = class extends FASTElement {};
-                await FASTElement.define(TestElement, {
+                await TestElement.define({
                     name,
                     template: html`
                         <div></div>

@@ -277,7 +277,7 @@ Custom directives can also await `controller.isPrerendered` and `controller.isHy
 
 ## Define Extensions
 
-`FASTElement.define()` accepts an optional second argument — an array of extension callbacks that are invoked with the resolved element definition before the element is registered with the platform. This enables a plugin pattern where reusable behaviors can hook into element registration.
+The static `define()` method on a `FASTElement` subclass accepts an optional second argument — an array of extension callbacks that are invoked with the resolved element definition before the element is registered with the platform. This enables a plugin pattern where reusable behaviors can hook into element registration.
 
 ```typescript
 import { FASTElement, type FASTElementExtension } from "@microsoft/fast-element";
@@ -292,10 +292,6 @@ class MyComponent extends FASTElement {
     // component code
 }
 
-// Method style
 MyComponent.define({ name: "my-component", template, styles }, [logger()]);
-
-// Static style
-FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
 ```
 Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.

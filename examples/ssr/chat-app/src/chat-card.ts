@@ -8,8 +8,7 @@ export class ChatCard extends FASTElement {
     public heading?: string;
 }
 
-FASTElement.define(
-    ChatCard,
+ChatCard.define(
     {
         name: "chat-card",
         template: declarativeTemplate(),

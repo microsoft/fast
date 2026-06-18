@@ -301,12 +301,6 @@ MyComponent.define({
 }, [myPlugin()]);
 ```
 
-Extensions can also be used with the static call style:
-
-```ts
-FASTElement.define(MyComponent, { name: "my-component" }, [myPlugin()]);
-```
-
 ## Lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine. However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.

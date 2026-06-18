@@ -21,7 +21,7 @@ For the shared package overview, the token catalog, and authoring rules, see
 
 ## What it demonstrates
 
-- declarative FAST custom elements via `FASTElement.define()` + `@microsoft/fast-element/declarative.js` `<f-template>`s
+- declarative FAST custom elements via subclass `define()` calls + `@microsoft/fast-element/declarative.js` `<f-template>`s
 - initial markup rendered from `entry.html` + `templates.html`
 - chunked assistant response streaming with the Jake Archibald iframe technique
 - mixed native HTML and FAST custom elements in each canned reply

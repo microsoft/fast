@@ -106,7 +106,7 @@ Core FAST Element helpers are available from the root package export:
 
 ### Changed behavior
 
-- `FASTElement.define()` no longer uses `templateOptions` to delay platform
+- Subclass `define()` calls no longer use `templateOptions` to delay platform
   definition or connection.
 - Elements can still be defined before a template is attached; a later
   `FASTElementDefinition.template` update notifies connected elements so they
@@ -313,13 +313,13 @@ This is a **breaking change** for SSR output format. Any system that produces or
 
 | Removed | Replacement |
 |---|---|
-| `FASTElement.defineAsync()` | `FASTElement.define()` (now returns `Promise<TType>`) |
+| `FASTElement.defineAsync()` | Subclass `define()` calls (now return `Promise<TType>`) |
 | `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (now returns `Promise<FASTElementDefinition>`) |
 | `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
 
 ### Changed behavior
 
-- **`FASTElement.define()`** now returns `Promise<TType>`. When a concrete
+- Subclass **`define()`** calls now return `Promise<TType>`. When a concrete
   template is provided at definition time, the Promise resolves immediately.
   When `template: declarativeTemplate()` is used, the Promise resolves after
   the matching `<f-template>` supplies the concrete template.
