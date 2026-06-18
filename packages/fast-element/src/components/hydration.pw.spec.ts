@@ -7,8 +7,8 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                // @ts-expect-error: Client module.
                 await import("/main.js");
 
             const name = uniqueElementName();
@@ -46,8 +46,8 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                // @ts-expect-error: Client module.
                 await import("/main.js");
 
             const name = uniqueElementName();
@@ -95,8 +95,8 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                // @ts-expect-error: Client module.
                 await import("/main.js");
 
             const name = uniqueElementName();
@@ -137,13 +137,13 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 FASTElement,
                 FASTElementDefinition,
                 html,
                 observable,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             const name = uniqueElementName();
@@ -152,7 +152,7 @@ test.describe("The prerendered content optimization", () => {
                 label: string = "default";
                 static definition = {
                     name,
-                    template: html<TestElement>`<span>${x => x.label}</span>`,
+                    template: html<TestElement>`<span>${(x: { label: any }) => x.label}</span>`,
                 };
             }
             (TestElement as any).label = undefined;
@@ -182,13 +182,13 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 enableHydration,
                 FASTElement,
                 FASTElementDefinition,
                 html,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             const events: string[] = [];
@@ -255,7 +255,6 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 enableHydration,
                 FASTElement,
@@ -263,6 +262,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 StopHydration,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             const events: string[] = [];
@@ -335,8 +335,7 @@ test.describe("The prerendered content optimization", () => {
     }) => {
         await page.goto("/");
 
-        const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
+        const element = await page.evaluateHandle(async () => {
             const {
                 enableHydration,
                 FASTElement,
@@ -344,6 +343,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 render,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration();
@@ -355,7 +355,7 @@ test.describe("The prerendered content optimization", () => {
                 static definition = {
                     name,
                     template: html<TestElement>`
-                        ${render(x => x.value, html<string>`<span>${x => x}</span>`)}
+                        ${render((x: { value: any }) => x.value, html<string>`<span>${(x: any) => x}</span>`)}
                     `,
                 };
             }
@@ -368,7 +368,14 @@ test.describe("The prerendered content optimization", () => {
                 `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:/b--></template></${name}>`,
             );
 
-            const element = container.firstElementChild as any;
+            return container.firstElementChild;
+        });
+
+        expect(await element.evaluate((x: any) => x.$fastController)).toEqual(
+            expect.anything(),
+        );
+
+        const result = await element.evaluate(async (element: any) => {
             await element.$fastController.isHydrated;
             await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -389,8 +396,7 @@ test.describe("The prerendered content optimization", () => {
     }) => {
         await page.goto("/");
 
-        const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
+        const element = await page.evaluateHandle(async () => {
             const {
                 enableHydration,
                 FASTElement,
@@ -398,6 +404,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 repeat,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration();
@@ -409,7 +416,7 @@ test.describe("The prerendered content optimization", () => {
                 static definition = {
                     name,
                     template: html<TestElement>`
-                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                        ${repeat((x: { items: any }) => x.items, html<string>`<span>${(x: any) => x}</span>`)}
                     `,
                 };
             }
@@ -422,7 +429,14 @@ test.describe("The prerendered content optimization", () => {
                 `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
             );
 
-            const element = container.firstElementChild as any;
+            return container.firstElementChild;
+        });
+
+        expect(await element.evaluate((x: any) => x.$fastController)).toEqual(
+            expect.anything(),
+        );
+
+        const result = await element.evaluate(async (element: any) => {
             await element.$fastController.isHydrated;
             await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -441,8 +455,7 @@ test.describe("The prerendered content optimization", () => {
     }) => {
         await page.goto("/");
 
-        const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
+        const element = await page.evaluateHandle(async () => {
             const {
                 enableHydration,
                 FASTElement,
@@ -450,6 +463,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 repeat,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration();
@@ -461,7 +475,7 @@ test.describe("The prerendered content optimization", () => {
                 static definition = {
                     name,
                     template: html<TestElement>`
-                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                        ${repeat((x: { items: any }) => x.items, html<string>`<span>${(x: any) => x}</span>`)}
                     `,
                 };
             }
@@ -474,7 +488,14 @@ test.describe("The prerendered content optimization", () => {
                 `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span><!--fe:b-->server-two<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
             );
 
-            const element = container.firstElementChild as any;
+            return container.firstElementChild;
+        });
+
+        expect(await element.evaluate((x: any) => x.$fastController)).toEqual(
+            expect.anything(),
+        );
+
+        const result = await element.evaluate(async (element: any) => {
             await element.$fastController.isHydrated;
             await new Promise(resolve => requestAnimationFrame(resolve));
 
@@ -494,13 +515,13 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 enableHydration,
                 FASTElement,
                 FASTElementDefinition,
                 html,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration();
@@ -511,7 +532,7 @@ test.describe("The prerendered content optimization", () => {
 
                 static definition = {
                     name,
-                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                    template: html<TestElement>`<span>${(x: { value: any }) => x.value}</span>`,
                 };
             }
 
@@ -559,7 +580,6 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 enableHydration,
                 FASTElement,
@@ -567,6 +587,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 hydrationDebugger,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration({ debugger: hydrationDebugger() });
@@ -577,7 +598,7 @@ test.describe("The prerendered content optimization", () => {
 
                 static definition = {
                     name,
-                    template: html<TestElement>`<span>${x => x.value}</span>`,
+                    template: html<TestElement>`<span>${(x: { value: any }) => x.value}</span>`,
                 };
             }
 
@@ -633,7 +654,6 @@ test.describe("The prerendered content optimization", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 enableHydration,
                 FASTElement,
@@ -641,6 +661,7 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 hydrationDebugger,
                 uniqueElementName,
+                // @ts-expect-error: Client module.
             } = await import("/main.js");
 
             enableHydration({ debugger: hydrationDebugger() });
@@ -651,7 +672,7 @@ test.describe("The prerendered content optimization", () => {
 
                 static definition = {
                     name,
-                    template: html<TestElement>`<span :className="${x =>
+                    template: html<TestElement>`<span :className="${(x: { cls: any }) =>
                         x.cls}">text</span>`,
                 };
             }

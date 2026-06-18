@@ -69,7 +69,6 @@ export const conditionalTimeout = function (
         }, 5);
     });
 };
-export { createTrackableDOMPolicy, toHTML } from "../src/__test__/helpers.js";
 export { Binding } from "../src/binding/binding.js";
 export { oneTime } from "../src/binding/one-time.js";
 export { listener, oneWay } from "../src/binding/one-way.js";
@@ -104,6 +103,7 @@ export { ViewTemplate } from "../src/templating/template.js";
 export { HTMLView } from "../src/templating/view.js";
 export { when } from "../src/templating/when.js";
 export { fixture } from "../src/testing/fixture.js";
+export { createTrackableDOMPolicy, toHTML } from "./helpers.js";
 export function removeWhitespace(str: string): string {
     return str
         .trim()
