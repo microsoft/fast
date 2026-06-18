@@ -39,8 +39,8 @@
     "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
     "test:validation": "npm run test:diff",
-    "test": "lage test:node test:playwright",
-    "test:chromium": "lage test:node test:chromium",
+    "test": "lage test:node test:playwright --verbose --concurrency 1",
+    "test:chromium": "lage test:node test:chromium --verbose --concurrency 1",
     "test:e2e": "npm run test:e2e -w @microsoft/fast-examples-e2e",
     "watch": "tsgo -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
@@ -67,6 +67,9 @@
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
     "typescript": "5.5.4",
-    "vite": "7.3.2"
+    "vite": "7.3.5"
+  },
+  "overrides": {
+    "esbuild": "0.28.1"
   }
 }
