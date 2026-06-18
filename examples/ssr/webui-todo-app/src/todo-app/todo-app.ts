@@ -27,7 +27,15 @@ export class TodoApp extends FASTElement {
 
     private nextId = 100;
     private formEvents: AbortController | null = null;
+    private hydrated = false;
     private readonly handleInput = (e: Event): void => this.onInput(e);
+    private readonly handleFilterChange = (e: Event): void => this.onFilterChange(e);
+    private readonly handleToggleItem = (e: Event): void => {
+        this.onToggleItem(e as CustomEvent<{ id: string }>);
+    };
+    private readonly handleDeleteItem = (e: Event): void => {
+        this.onDeleteItem(e as CustomEvent<{ id: string }>);
+    };
     private readonly handleSubmit = (e: SubmitEvent): void => {
         e.preventDefault();
         this.onSubmit();
@@ -42,8 +50,15 @@ export class TodoApp extends FASTElement {
     }
 
     syncFormControls(): void {
+        this.hydrated = true;
+        this.prepareItems();
         this.connectFormEvents();
+        this.recomputeFilteredItems();
+        this.recomputeCounts();
         this.syncAddButton();
+        this.syncFilterSelect();
+        this.syncList();
+        this.syncCounts();
     }
 
     disconnectedCallback(): void {
@@ -59,6 +74,7 @@ export class TodoApp extends FASTElement {
 
     activeFilterChanged(): void {
         this.recomputeFilteredItems();
+        this.syncFilterSelect();
     }
 
     activeCountChanged(): void {
@@ -67,6 +83,10 @@ export class TodoApp extends FASTElement {
 
     completedCountChanged(): void {
         this.syncCounts();
+    }
+
+    filteredItemsChanged(): void {
+        this.syncList();
     }
 
     descriptionChanged(): void {
@@ -143,8 +163,17 @@ export class TodoApp extends FASTElement {
 
         this.getAddInput()?.addEventListener("input", this.handleInput, { signal });
         this.getForm()?.addEventListener("submit", this.handleSubmit, { signal });
+        this.getFilterSelect()?.addEventListener("change", this.handleFilterChange, {
+            signal,
+        });
         this.shadowRoot?.addEventListener("input", this.handleInput, { signal });
         this.shadowRoot?.addEventListener("submit", this.handleSubmit, { signal });
+        this.shadowRoot?.addEventListener("toggle-item", this.handleToggleItem, {
+            signal,
+        });
+        this.shadowRoot?.addEventListener("delete-item", this.handleDeleteItem, {
+            signal,
+        });
     }
 
     private recomputeFilteredItems(): void {
@@ -197,11 +226,55 @@ export class TodoApp extends FASTElement {
         }
     }
 
+    /**
+     * Declarative repeat hydration currently leaves the pre-rendered list static.
+     * Keep the SSR output for first paint, then replace the list with client-owned
+     * elements after hydration so add, toggle, delete, and filter updates render.
+     */
+    private syncList(): void {
+        if (!this.hydrated) {
+            return;
+        }
+
+        const list = this.getList();
+
+        if (!list) {
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        for (const item of this.filteredItems) {
+            const li = document.createElement("li");
+            const todoItem = document.createElement("todo-item");
+
+            todoItem.setAttribute("id", item.id);
+            todoItem.setAttribute("description", item.description);
+            todoItem.setAttribute("state", item.state);
+
+            li.append(todoItem);
+            fragment.append(li);
+        }
+
+        list.replaceChildren(fragment);
+    }
+
     private syncAddButton(): void {
         const button = this.getAddButton();
         if (button) {
             button.disabled = this.description.trim().length === 0;
         }
+    }
+
+    private syncFilterSelect(): void {
+        const select = this.getFilterSelect();
+        if (select) {
+            select.value = this.activeFilter;
+        }
+    }
+
+    private getList(): HTMLUListElement | null {
+        return this.shadowRoot?.querySelector<HTMLUListElement>(".todo-list") ?? null;
     }
 
     private getForm(): HTMLFormElement | null {
@@ -222,6 +295,13 @@ export class TodoApp extends FASTElement {
             this.shadowRoot?.querySelector<HTMLButtonElement>(
                 "form button[type=submit]",
             ) ??
+            null
+        );
+    }
+
+    private getFilterSelect(): HTMLSelectElement | null {
+        return (
+            this.shadowRoot?.querySelector<HTMLSelectElement>("select[name=filter]") ??
             null
         );
     }
