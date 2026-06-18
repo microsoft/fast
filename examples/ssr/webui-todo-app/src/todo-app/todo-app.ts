@@ -21,14 +21,30 @@ export class TodoApp extends FASTElement {
     @observable activeCount: number = 0;
     @observable completedCount: number = 0;
 
+    form!: HTMLFormElement;
     addInput!: HTMLInputElement;
+    addButton!: HTMLButtonElement;
 
     private nextId = 100;
+    private formEvents: AbortController | null = null;
+    private readonly handleInput = (e: Event): void => this.onInput(e);
+    private readonly handleSubmit = (e: SubmitEvent): void => {
+        e.preventDefault();
+        this.onSubmit();
+    };
 
     connectedCallback(): void {
         super.connectedCallback();
         this.prepareItems();
+        this.connectFormEvents();
+        this.syncAddButton();
         this.syncCounts();
+    }
+
+    disconnectedCallback(): void {
+        this.formEvents?.abort();
+        this.formEvents = null;
+        super.disconnectedCallback();
     }
 
     itemsChanged(): void {
@@ -46,6 +62,10 @@ export class TodoApp extends FASTElement {
 
     completedCountChanged(): void {
         this.syncCounts();
+    }
+
+    descriptionChanged(): void {
+        this.syncAddButton();
     }
 
     private prepareItems(): void {
@@ -84,6 +104,7 @@ export class TodoApp extends FASTElement {
 
     onInput(e: Event): void {
         this.description = (e.target as HTMLInputElement).value;
+        this.syncAddButton();
     }
 
     onFilterChange(e: Event): void {
@@ -105,6 +126,17 @@ export class TodoApp extends FASTElement {
             this.addInput.value = "";
             this.addInput.focus();
         }
+
+        this.syncAddButton();
+    }
+
+    private connectFormEvents(): void {
+        this.formEvents?.abort();
+        this.formEvents = new AbortController();
+        const { signal } = this.formEvents;
+
+        this.addInput?.addEventListener("input", this.handleInput, { signal });
+        this.form?.addEventListener("submit", this.handleSubmit, { signal });
     }
 
     private recomputeFilteredItems(): void {
@@ -154,6 +186,12 @@ export class TodoApp extends FASTElement {
 
         if (completedSpan) {
             completedSpan.textContent = `${this.completedCount} completed`;
+        }
+    }
+
+    private syncAddButton(): void {
+        if (this.addButton) {
+            this.addButton.disabled = this.description.trim().length === 0;
         }
     }
 }

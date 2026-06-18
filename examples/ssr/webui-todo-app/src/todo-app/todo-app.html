@@ -5,9 +5,11 @@
 >
     <h1>FAST Todos</h1>
 
-    <form @submit="{onSubmit()}">
-        <input type="text" f-ref="{addInput}" @input="{onInput($e)}">
-        <button type="submit" ?disabled="{{!description}}">Add Todo</button>
+    <form f-ref="{form}">
+        <input type="text" f-ref="{addInput}">
+        <button type="submit" f-ref="{addButton}" ?disabled="{{!description}}">
+            Add Todo
+        </button>
     </form>
 
     <section>
