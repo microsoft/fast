@@ -112,7 +112,8 @@ export class TodoApp extends FASTElement {
     }
 
     onSubmit(): void {
-        const text = this.description.trim();
+        const input = this.getAddInput();
+        const text = (input?.value ?? this.description).trim();
 
         if (!text) return;
 
@@ -122,9 +123,9 @@ export class TodoApp extends FASTElement {
         ];
         this.description = "";
 
-        if (this.addInput) {
-            this.addInput.value = "";
-            this.addInput.focus();
+        if (input) {
+            input.value = "";
+            input.focus();
         }
 
         this.syncAddButton();
@@ -135,8 +136,8 @@ export class TodoApp extends FASTElement {
         this.formEvents = new AbortController();
         const { signal } = this.formEvents;
 
-        this.addInput?.addEventListener("input", this.handleInput, { signal });
-        this.form?.addEventListener("submit", this.handleSubmit, { signal });
+        this.getAddInput()?.addEventListener("input", this.handleInput, { signal });
+        this.getForm()?.addEventListener("submit", this.handleSubmit, { signal });
     }
 
     private recomputeFilteredItems(): void {
@@ -190,9 +191,32 @@ export class TodoApp extends FASTElement {
     }
 
     private syncAddButton(): void {
-        if (this.addButton) {
-            this.addButton.disabled = this.description.trim().length === 0;
+        const button = this.getAddButton();
+        if (button) {
+            button.disabled = this.description.trim().length === 0;
         }
+    }
+
+    private getForm(): HTMLFormElement | null {
+        return this.form ?? this.shadowRoot?.querySelector("form") ?? null;
+    }
+
+    private getAddInput(): HTMLInputElement | null {
+        return (
+            this.addInput ??
+            this.shadowRoot?.querySelector<HTMLInputElement>("form input[type=text]") ??
+            null
+        );
+    }
+
+    private getAddButton(): HTMLButtonElement | null {
+        return (
+            this.addButton ??
+            this.shadowRoot?.querySelector<HTMLButtonElement>(
+                "form button[type=submit]",
+            ) ??
+            null
+        );
     }
 }
 

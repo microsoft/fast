@@ -24,7 +24,11 @@ export const template = html<TodoApp>`
             x => x.todos.filtered,
             html<Todo, TodoApp>`
                 <li class="todo">
-                    <input type="checkbox" :checked=${twoWay(x => x.done)} />
+                    <input
+                        type="checkbox"
+                        :checked=${x => x.done}
+                        @change=${(x, c) => c.parent.todos.toggle(x)}
+                    />
                     <span class="description ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>

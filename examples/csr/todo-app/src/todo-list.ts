@@ -13,6 +13,7 @@ export interface TodoList {
     readonly completedCount: number;
     add(description: string): void;
     remove(todo: Todo): void;
+    toggle(todo: Todo): void;
 }
 
 export class DefaultTodoList {
@@ -74,6 +75,15 @@ export class DefaultTodoList {
         index !== -1 && this.splice(index, 1);
     }
 
+    public toggle(todo: Todo) {
+        todo.done = !todo.done;
+        this.notifyDerivedState();
+    }
+
+    public activeFilterChanged(): void {
+        Observable.notify(this, "filtered");
+    }
+
     /**
      * This method centralizes all updates to the internal array so that we
      * can guarantee that observers are notified in the appropriate cases.
@@ -86,5 +96,12 @@ export class DefaultTodoList {
         // the count getters (activeCount / completedCount) depend on the
         // array structure, so we always emit the notification.
         Observable.notify(this, "_todos");
+        this.notifyDerivedState();
+    }
+
+    private notifyDerivedState(): void {
+        Observable.notify(this, "filtered");
+        Observable.notify(this, "activeCount");
+        Observable.notify(this, "completedCount");
     }
 }
