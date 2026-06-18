@@ -1,6 +1,6 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
-import { isHydratable } from "../components/hydration.js";
+import { HydrationMarkup, isHydratable } from "../components/hydration.js";
 import { ArrayObserver, type Sort, type Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
@@ -440,7 +440,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         let current: Node | null = this.location.previousSibling;
 
         while (current !== null) {
-            if (!isCommentNode(current) || current.data !== "fe:/r") {
+            if (
+                !isCommentNode(current) ||
+                !HydrationMarkup.isRepeatViewEndMarker(current.data)
+            ) {
                 current = current.previousSibling;
                 continue;
             }
@@ -461,9 +464,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             let depth = 0;
             while (start !== null) {
                 if (isCommentNode(start)) {
-                    if (start.data === "fe:/r") {
+                    if (HydrationMarkup.isRepeatViewEndMarker(start.data)) {
                         depth++;
-                    } else if (start.data === "fe:r") {
+                    } else if (HydrationMarkup.isRepeatViewStartMarker(start.data)) {
                         if (depth === 0) {
                             const startMarker = start;
                             startMarker.data = "";

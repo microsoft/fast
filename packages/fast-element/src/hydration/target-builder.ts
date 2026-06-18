@@ -148,14 +148,49 @@ export function buildViewBindingTargets(
     const boundaries: ViewBehaviorBoundaries = {};
 
     // Sequential factory pointer — skip host bindings at the start
-    let factoryPointer = getHydrationIndexOffset(factories);
+    const hydrationIndexOffset = getHydrationIndexOffset(factories);
+    let factoryPointer = hydrationIndexOffset;
 
     let node: Node | null = (walker.currentNode = firstNode);
 
     while (node !== null) {
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
-                const count = HydrationMarkup.parseAttributeBindingCount(node as Element);
+                const element = node as Element;
+                const legacyIndices =
+                    HydrationMarkup.parseLegacyAttributeBindingIndices(element);
+
+                if (legacyIndices !== null) {
+                    for (const index of legacyIndices) {
+                        const factoryIndex = index + hydrationIndexOffset;
+                        const factory = factories[factoryIndex];
+                        if (!factory) {
+                            const expected = formatNoMoreAttributeBindings(
+                                factories.length,
+                            );
+                            const result = getHydrationDiagnostic().formatStructuralError(
+                                node,
+                                getHostName(node),
+                                expected,
+                            );
+                            throw new HydrationTargetElementError(
+                                result.message,
+                                factories,
+                                element,
+                                result.expected,
+                                result.received,
+                            );
+                        }
+
+                        targetFactory(factory, node, targets);
+                        factoryPointer = Math.max(factoryPointer, factoryIndex + 1);
+                    }
+
+                    HydrationMarkup.removeLegacyAttributeBindingMarkers(element);
+                    break;
+                }
+
+                const count = HydrationMarkup.parseAttributeBindingCount(element);
                 if (count !== null) {
                     for (let i = 0; i < count; i++) {
                         const factory = factories[factoryPointer++];
@@ -178,22 +213,28 @@ export function buildViewBindingTargets(
                         }
                         targetFactory(factory, node, targets);
                     }
-                    (node as Element).removeAttribute(
-                        HydrationMarkup.attributeMarkerName,
-                    );
+                    element.removeAttribute(HydrationMarkup.attributeMarkerName);
                 }
                 break;
             }
 
             case Node.COMMENT_NODE: {
                 const data = (node as Comment).data;
-                if (data === "fe:e") {
+                if (HydrationMarkup.isElementBoundaryStartMarker(node)) {
                     // Element boundary — clear start marker and skip subtree
                     (node as Comment).data = "";
                     skipToElementBoundaryEnd(walker, factories, node);
-                } else if (data === "fe:b") {
+                } else if (HydrationMarkup.isContentBindingStartMarker(data)) {
                     // Content binding — consume next factory
-                    const factory = factories[factoryPointer++];
+                    const legacyIndex =
+                        HydrationMarkup.parseLegacyContentBindingStartIndex(data);
+                    const factoryIndex =
+                        legacyIndex === null
+                            ? factoryPointer++
+                            : legacyIndex + hydrationIndexOffset;
+                    const factory = factories[factoryIndex];
+                    factoryPointer = Math.max(factoryPointer, factoryIndex + 1);
+
                     if (!factory) {
                         const expected = formatNoMoreContentBindings(factories.length);
                         const result = getHydrationDiagnostic().formatStructuralError(
@@ -263,9 +304,9 @@ function targetContentBinding(
     let depth = 0;
     while (current !== null) {
         if (isComment(current)) {
-            if (current.data === "fe:b") {
+            if (HydrationMarkup.isContentBindingStartMarker(current.data)) {
                 depth++;
-            } else if (current.data === "fe:/b") {
+            } else if (HydrationMarkup.isContentBindingEndMarker(current.data)) {
                 if (depth === 0) break;
                 depth--;
             }
@@ -326,10 +367,10 @@ function skipToElementBoundaryEnd(
     let current = walker.nextSibling();
     while (current !== null) {
         if (isComment(current)) {
-            if (current.data === "fe:e") {
+            if (HydrationMarkup.isElementBoundaryStartMarker(current)) {
                 current.data = "";
                 depth++;
-            } else if (current.data === "fe:/e") {
+            } else if (HydrationMarkup.isElementBoundaryEndMarker(current)) {
                 if (depth === 0) {
                     current.data = "";
                     return;

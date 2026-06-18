@@ -27,7 +27,6 @@ export class TodoApp extends FASTElement {
 
     private nextId = 100;
     private formEvents: AbortController | null = null;
-    private hydrated = false;
     private readonly handleInput = (e: Event): void => this.onInput(e);
     private readonly handleFilterChange = (e: Event): void => this.onFilterChange(e);
     private readonly handleToggleItem = (e: Event): void => {
@@ -50,15 +49,17 @@ export class TodoApp extends FASTElement {
     }
 
     syncFormControls(): void {
-        this.hydrated = true;
         this.prepareItems();
         this.connectFormEvents();
         this.recomputeFilteredItems();
         this.recomputeCounts();
         this.syncAddButton();
         this.syncFilterSelect();
-        this.syncList();
         this.syncCounts();
+    }
+
+    prepareHydrationState(): void {
+        this.prepareItems();
     }
 
     disconnectedCallback(): void {
@@ -83,10 +84,6 @@ export class TodoApp extends FASTElement {
 
     completedCountChanged(): void {
         this.syncCounts();
-    }
-
-    filteredItemsChanged(): void {
-        this.syncList();
     }
 
     descriptionChanged(): void {
@@ -226,39 +223,6 @@ export class TodoApp extends FASTElement {
         }
     }
 
-    /**
-     * Declarative repeat hydration currently leaves the pre-rendered list static.
-     * Keep the SSR output for first paint, then replace the list with client-owned
-     * elements after hydration so add, toggle, delete, and filter updates render.
-     */
-    private syncList(): void {
-        if (!this.hydrated) {
-            return;
-        }
-
-        const list = this.getList();
-
-        if (!list) {
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-
-        for (const item of this.filteredItems) {
-            const li = document.createElement("li");
-            const todoItem = document.createElement("todo-item");
-
-            todoItem.setAttribute("id", item.id);
-            todoItem.setAttribute("description", item.description);
-            todoItem.setAttribute("state", item.state);
-
-            li.append(todoItem);
-            fragment.append(li);
-        }
-
-        list.replaceChildren(fragment);
-    }
-
     private syncAddButton(): void {
         const button = this.getAddButton();
         if (button) {
@@ -271,10 +235,6 @@ export class TodoApp extends FASTElement {
         if (select) {
             select.value = this.activeFilter;
         }
-    }
-
-    private getList(): HTMLUListElement | null {
-        return this.shadowRoot?.querySelector<HTMLUListElement>(".todo-list") ?? null;
     }
 
     private getForm(): HTMLFormElement | null {
@@ -311,6 +271,11 @@ export const todoAppDefinition = TodoApp.define(
     {
         name: "todo-app",
         template: declarativeTemplate({
+            elementWillHydrate(source) {
+                if (source instanceof TodoApp) {
+                    source.prepareHydrationState();
+                }
+            },
             elementDidHydrate(source) {
                 if (source instanceof TodoApp) {
                     source.syncFormControls();
