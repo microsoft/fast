@@ -138,7 +138,7 @@ In the example above, the property binding `:indeterminate="${x => x.isIndetermi
 Property bindings are case-sensitive. Camel-cased property names such as `:tabIndex`, `:ariaLabel`, and `:scrollTop` are preserved as written and resolved against the corresponding DOM properties.
 
 :::note
-FAST does not allow binding to `innerHTML` without first attaching a [`DOMPolicy`](/docs/3.x/advanced/dom-policy/) to the template, to prevent accidental injection of untrusted markup.
+FAST does not allow binding to `innerHTML` without first attaching a [`DOMPolicy`](/docs/3.x/advanced/dom-policy-and-trusted-types/) to the template, to prevent accidental injection of untrusted markup.
 :::
 
 #### Binding to `classList`
