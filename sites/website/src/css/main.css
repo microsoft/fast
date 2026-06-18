@@ -2688,6 +2688,47 @@ body:not(.navigation-with-keyboard) :not(input):focus {
     }
 }
 
+.pagination-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.pagination-nav__link {
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: var(--ifm-global-radius);
+    display: flex;
+    flex-direction: column;
+    line-height: var(--ifm-heading-line-height);
+    padding: 1rem;
+    transition: border-color var(--ifm-transition-fast)
+        var(--ifm-transition-timing-default);
+}
+
+.pagination-nav__link:hover {
+    border-color: var(--ifm-color-primary);
+    text-decoration: none;
+}
+
+.pagination-nav__link--next {
+    grid-column: 2 / 3;
+    text-align: right;
+}
+
+.pagination-nav__sublabel {
+    color: var(--ifm-color-content-secondary);
+    font-size: var(--ifm-h6-font-size);
+    font-weight: var(--ifm-font-weight-semibold);
+    margin-bottom: 0.25rem;
+}
+
+.pagination-nav__label {
+    color: var(--ifm-link-color);
+    font-weight: var(--ifm-font-weight-bold);
+    word-break: break-word;
+}
+
 @media print {
     .footer,
     .menu,
