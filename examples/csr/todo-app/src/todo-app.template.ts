@@ -14,9 +14,9 @@ export const template = html<TodoApp>`
         <select
             name="filter"
             title="filter"
-            :value=${x => x.todos.activeFilter}
+            :value=${x => x.activeFilter}
             @change=${(x, c) =>
-                x.todos.setFilter(
+                x.setFilter(
                     (c.event.target as HTMLSelectElement).value as TodoListFilter,
                 )}
         >
@@ -28,19 +28,19 @@ export const template = html<TodoApp>`
 
     <ul class="todo-list">
         ${repeat(
-            x => x.todos.filtered,
+            x => x.items,
             html<Todo, TodoApp>`
                 <li class="todo">
                     <input
                         type="checkbox"
                         :checked=${x => x.done}
-                        @change=${(x, c) => c.parent.todos.toggle(x)}
+                        @change=${(x, c) => c.parent.toggle(x)}
                     />
                     <span class="description ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
                     <button
-                        @click=${(x, c) => c.parent.todos.remove(x)}
+                        @click=${(x, c) => c.parent.removeTodo(x)}
                         aria-label="Remove item"
                     >
                         &times;
@@ -52,12 +52,9 @@ export const template = html<TodoApp>`
 
     <footer>
         <span class="active-count">
-            ${x =>
-                `${x.todos.activeCount} ${
-                    x.todos.activeCount === 1 ? "item" : "items"
-                } left`}
+            ${x => `${x.activeCount} ${x.activeCount === 1 ? "item" : "items"} left`}
         </span>
         <span aria-hidden="true">·</span>
-        <span class="completed-count">${x => `${x.todos.completedCount} completed`}</span>
+        <span class="completed-count">${x => `${x.completedCount} completed`}</span>
     </footer>
 `;

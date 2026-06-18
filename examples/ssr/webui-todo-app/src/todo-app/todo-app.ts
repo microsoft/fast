@@ -41,6 +41,11 @@ export class TodoApp extends FASTElement {
         this.syncCounts();
     }
 
+    syncFormControls(): void {
+        this.connectFormEvents();
+        this.syncAddButton();
+    }
+
     disconnectedCallback(): void {
         this.formEvents?.abort();
         this.formEvents = null;
@@ -223,7 +228,13 @@ export class TodoApp extends FASTElement {
 export const todoAppDefinition = TodoApp.define(
     {
         name: "todo-app",
-        template: declarativeTemplate(),
+        template: declarativeTemplate({
+            elementDidHydrate(source) {
+                if (source instanceof TodoApp) {
+                    source.syncFormControls();
+                }
+            },
+        }),
     },
     [observerMap()],
 );
