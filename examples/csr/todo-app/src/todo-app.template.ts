@@ -4,6 +4,17 @@ import type { TodoApp } from "./todo-app.js";
 import type { Todo, TodoListFilter } from "./todo-list.js";
 import "./todo-form.js";
 
+function filteredItems(x: TodoApp): readonly Todo[] {
+    switch (x.activeFilter) {
+        case "active":
+            return x.items.filter(item => !item.done);
+        case "completed":
+            return x.items.filter(item => item.done);
+        default:
+            return x.items;
+    }
+}
+
 export const template = html<TodoApp>`
     <h1>FAST Todos</h1>
 
@@ -28,7 +39,7 @@ export const template = html<TodoApp>`
 
     <ul class="todo-list">
         ${repeat(
-            x => x.items,
+            x => filteredItems(x),
             html<Todo, TodoApp>`
                 <li class="todo">
                     <input

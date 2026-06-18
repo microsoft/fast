@@ -143,6 +143,8 @@ export class TodoApp extends FASTElement {
 
         this.getAddInput()?.addEventListener("input", this.handleInput, { signal });
         this.getForm()?.addEventListener("submit", this.handleSubmit, { signal });
+        this.shadowRoot?.addEventListener("input", this.handleInput, { signal });
+        this.shadowRoot?.addEventListener("submit", this.handleSubmit, { signal });
     }
 
     private recomputeFilteredItems(): void {

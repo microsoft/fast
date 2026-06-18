@@ -7,6 +7,7 @@ export type TodoListFilter = "all" | "active" | "completed";
 export const TodoList = Context.create<TodoList>("TodoList");
 export interface TodoList {
     activeFilter: TodoListFilter;
+    readonly all: readonly Todo[];
     readonly filtered: readonly Todo[];
     readonly activeCount: number;
     readonly completedCount: number;
@@ -64,15 +65,16 @@ export class DefaultTodoList {
     private splice(index: number, removeCount: number, ...newItem: Todo[]) {
         this._todos.splice(index, removeCount, ...newItem);
 
-        // Notify FAST that the dependent _todos observable has changed. Both
-        // the filtered list (when activeFilter is "active" or "completed") and
-        // the count getters (activeCount / completedCount) depend on the
-        // array structure, so we always emit the notification.
-        Observable.notify(this, "_todos");
         this.syncDerivedState();
+        // Notify subscribers after derived state is current. The array is
+        // mutated in place, so observers of `all` need this explicit signal.
+        Observable.notify(this, "_todos");
     }
 
     private syncDerivedState(): void {
+        this.activeCount = this._todos.reduce((n, item) => n + (item.done ? 0 : 1), 0);
+        this.completedCount = this._todos.reduce((n, item) => n + (item.done ? 1 : 0), 0);
+
         switch (this.activeFilter) {
             case "active":
                 this.filtered = this._todos.filter(x => !x.done);
@@ -83,8 +85,5 @@ export class DefaultTodoList {
             default:
                 this.filtered = this._todos;
         }
-
-        this.activeCount = this._todos.reduce((n, item) => n + (item.done ? 0 : 1), 0);
-        this.completedCount = this._todos.reduce((n, item) => n + (item.done ? 1 : 0), 0);
     }
 }

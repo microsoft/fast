@@ -34,7 +34,7 @@ export const ssrWebuiTodoAdapter: TodoAppAdapter = {
     async addTodo(page, text) {
         const input = page.locator("todo-app form input[type=text]");
         await input.fill(text);
-        await input.dispatchEvent("input");
+        await input.dispatchEvent("input", { bubbles: true, composed: true });
         const addButton = page.locator("todo-app form button[type=submit]");
         await addButton.waitFor();
         await addButton.evaluate((button: HTMLButtonElement) => {

@@ -44,6 +44,7 @@ export class TodoApp extends FASTElement {
 
     private subscribeToTodos(): void {
         const notifier = Observable.getNotifier(this.todos);
+        notifier.subscribe(this.todoSubscriber, "_todos");
         notifier.subscribe(this.todoSubscriber, "filtered");
         notifier.subscribe(this.todoSubscriber, "activeFilter");
         notifier.subscribe(this.todoSubscriber, "activeCount");
@@ -52,6 +53,7 @@ export class TodoApp extends FASTElement {
 
     private unsubscribeFromTodos(): void {
         const notifier = Observable.getNotifier(this.todos);
+        notifier.unsubscribe(this.todoSubscriber, "_todos");
         notifier.unsubscribe(this.todoSubscriber, "filtered");
         notifier.unsubscribe(this.todoSubscriber, "activeFilter");
         notifier.unsubscribe(this.todoSubscriber, "activeCount");
@@ -59,10 +61,16 @@ export class TodoApp extends FASTElement {
     }
 
     private syncTodos(): void {
-        this.items = this.todos.filtered;
+        this.items = this.todos.all;
         this.activeFilter = this.todos.activeFilter;
-        this.activeCount = this.todos.activeCount;
-        this.completedCount = this.todos.completedCount;
+        this.activeCount = this.items.reduce(
+            (count, item) => count + (item.done ? 0 : 1),
+            0,
+        );
+        this.completedCount = this.items.reduce(
+            (count, item) => count + (item.done ? 1 : 0),
+            0,
+        );
     }
 }
 
