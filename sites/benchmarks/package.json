@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@microsoft/fast-build": "*",
-    "@microsoft/fast-element": "3.0.0-rc.1"
+    "@microsoft/fast-element": "3.0.0-rc.2"
   }
 }

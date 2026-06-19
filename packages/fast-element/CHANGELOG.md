@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 19 Jun 2026 21:43:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.0.0-rc.2
+
+Fri, 19 Jun 2026 21:43:37 GMT
+
+### Changes
+
+- feat: expose declarative HTML syntax constants from declarative utilities (7559015+janechu@users.noreply.github.com)
+- fix: restore CaptureType generic type capture for template directives (7559015+janechu@users.noreply.github.com)
+- feat: change default attribute-name-strategy from none to camelCase (7559015+janechu@users.noreply.github.com)
+- feat: auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags) (7559015+janechu@users.noreply.github.com)
+- Filter late attribute MutationObserver records. (7559015+janechu@users.noreply.github.com)
+- feat: propagate shadowroot attributes from f-template to declarative shadow DOM template (7559015+janechu@users.noreply.github.com)
+- Preserve view context when rebinding the same source. (7559015+janechu@users.noreply.github.com)
+- feat: warn when duplicate render instruction registrations replace existing entries (7559015+janechu@users.noreply.github.com)
+- fix: align @attr({ mode: 'boolean' }) and booleanConverter with native HTML boolean attribute semantics (7559015+janechu@users.noreply.github.com)
+- Add a registry path export for FAST element definition lookups. (7559015+janechu@users.noreply.github.com)
+- Improve hydration mismatch behaviour: render() falls back to client rendering when SSR view boundaries are empty, repeat() reconciles SSR/client item-count mismatches by creating missing client views or removing extra SSR ranges, and unrecoverable mismatches throw via a pluggable HydrationDiagnostic. Opt in to the rich 'Expected / Received' format with the SSR HTML snippet and structured expected/received fields on HydrationBindingError / HydrationTargetElementError by passing enableHydration({ debugger: hydrationDebugger() }) (hydrationDebugger is exported from '@microsoft/fast-element/hydration.js'). (7559015+janechu@users.noreply.github.com)
+- Add hydration configuration for streamed Declarative Shadow DOM. (7559015+janechu@users.noreply.github.com)
+- Avoid mutating render template bindings (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615
 
 ## 3.0.0-rc.1
 
