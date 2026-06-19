@@ -1,10 +1,77 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { Observable, observable } from "@microsoft/fast-element/observable.js";
 import { styles } from "./todo-app.styles.js";
 import { template } from "./todo-app.template.js";
-import { TodoList } from "./todo-list.js";
+import { type Todo, TodoList, type TodoListFilter } from "./todo-list.js";
 
 export class TodoApp extends FASTElement {
     @TodoList todos!: TodoList;
+
+    @observable items: readonly Todo[] = [];
+    @observable activeFilter: TodoListFilter = "all";
+    @observable activeCount: number = 0;
+    @observable completedCount: number = 0;
+
+    private readonly todoSubscriber = {
+        handleChange: () => this.syncTodos(),
+    };
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        this.subscribeToTodos();
+        this.syncTodos();
+    }
+
+    disconnectedCallback(): void {
+        this.unsubscribeFromTodos();
+        super.disconnectedCallback();
+    }
+
+    setFilter(filter: TodoListFilter): void {
+        this.todos.setFilter(filter);
+        this.syncTodos();
+    }
+
+    toggle(todo: Todo): void {
+        this.todos.toggle(todo);
+        this.syncTodos();
+    }
+
+    removeTodo(todo: Todo): void {
+        this.todos.remove(todo);
+        this.syncTodos();
+    }
+
+    private subscribeToTodos(): void {
+        const notifier = Observable.getNotifier(this.todos);
+        notifier.subscribe(this.todoSubscriber, "_todos");
+        notifier.subscribe(this.todoSubscriber, "filtered");
+        notifier.subscribe(this.todoSubscriber, "activeFilter");
+        notifier.subscribe(this.todoSubscriber, "activeCount");
+        notifier.subscribe(this.todoSubscriber, "completedCount");
+    }
+
+    private unsubscribeFromTodos(): void {
+        const notifier = Observable.getNotifier(this.todos);
+        notifier.unsubscribe(this.todoSubscriber, "_todos");
+        notifier.unsubscribe(this.todoSubscriber, "filtered");
+        notifier.unsubscribe(this.todoSubscriber, "activeFilter");
+        notifier.unsubscribe(this.todoSubscriber, "activeCount");
+        notifier.unsubscribe(this.todoSubscriber, "completedCount");
+    }
+
+    private syncTodos(): void {
+        this.items = this.todos.all;
+        this.activeFilter = this.todos.activeFilter;
+        this.activeCount = this.items.reduce(
+            (count, item) => count + (item.done ? 0 : 1),
+            0,
+        );
+        this.completedCount = this.items.reduce(
+            (count, item) => count + (item.done ? 1 : 0),
+            0,
+        );
+    }
 }
 
 // By using this API instead of the @customElement

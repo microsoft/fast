@@ -100,10 +100,10 @@ Each component uses co-located files:
 
 Bootstraps hydration by:
 
-1. Importing components (side-effect registration via `define()`)
-2. Configuring `TemplateElement` with observer maps for reactive attribute
-   tracking
-3. Defining `<f-template>` to trigger hydration of prerendered shadow DOM
+1. Enabling hydration with `enableHydration()`
+2. Importing components, which register themselves via subclass `define()` calls
+   using `declarativeTemplate()` and `observerMap()`
+3. Resolving matching `<f-template>` definitions to hydrate prerendered shadow DOM
 
 ### Binding syntax
 

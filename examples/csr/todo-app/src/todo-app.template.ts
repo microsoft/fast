@@ -1,9 +1,19 @@
 import { html } from "@microsoft/fast-element/html.js";
 import { repeat } from "@microsoft/fast-element/repeat.js";
-import { twoWay } from "@microsoft/fast-element/two-way.js";
 import type { TodoApp } from "./todo-app.js";
-import type { Todo } from "./todo-list.js";
+import type { Todo, TodoListFilter } from "./todo-list.js";
 import "./todo-form.js";
+
+function filteredItems(x: TodoApp): readonly Todo[] {
+    switch (x.activeFilter) {
+        case "active":
+            return x.items.filter(item => !item.done);
+        case "completed":
+            return x.items.filter(item => item.done);
+        default:
+            return x.items;
+    }
+}
 
 export const template = html<TodoApp>`
     <h1>FAST Todos</h1>
@@ -12,7 +22,15 @@ export const template = html<TodoApp>`
 
     <section>
         <label for="filter">Filter:</label>
-        <select name="filter" title="filter" :value=${twoWay(x => x.todos.activeFilter)}>
+        <select
+            name="filter"
+            title="filter"
+            :value=${x => x.activeFilter}
+            @change=${(x, c) =>
+                x.setFilter(
+                    (c.event.target as HTMLSelectElement).value as TodoListFilter,
+                )}
+        >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -21,15 +39,19 @@ export const template = html<TodoApp>`
 
     <ul class="todo-list">
         ${repeat(
-            x => x.todos.filtered,
+            x => filteredItems(x),
             html<Todo, TodoApp>`
                 <li class="todo">
-                    <input type="checkbox" :checked=${twoWay(x => x.done)} />
+                    <input
+                        type="checkbox"
+                        :checked=${x => x.done}
+                        @change=${(x, c) => c.parent.toggle(x)}
+                    />
                     <span class="description ${x => (x.done ? "done" : "")}">
                         ${x => x.description}
                     </span>
                     <button
-                        @click=${(x, c) => c.parent.todos.remove(x)}
+                        @click=${(x, c) => c.parent.removeTodo(x)}
                         aria-label="Remove item"
                     >
                         &times;
@@ -41,12 +63,9 @@ export const template = html<TodoApp>`
 
     <footer>
         <span class="active-count">
-            ${x =>
-                `${x.todos.activeCount} ${
-                    x.todos.activeCount === 1 ? "item" : "items"
-                } left`}
+            ${x => `${x.activeCount} ${x.activeCount === 1 ? "item" : "items"} left`}
         </span>
         <span aria-hidden="true">·</span>
-        <span class="completed-count">${x => `${x.todos.completedCount} completed`}</span>
+        <span class="completed-count">${x => `${x.completedCount} completed`}</span>
     </footer>
 `;

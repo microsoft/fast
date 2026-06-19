@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 interface TodoItemData {
     id: string;
@@ -19,14 +21,51 @@ export class TodoApp extends FASTElement {
     @observable activeCount: number = 0;
     @observable completedCount: number = 0;
 
+    form!: HTMLFormElement;
     addInput!: HTMLInputElement;
+    addButton!: HTMLButtonElement;
 
     private nextId = 100;
+    private formEvents: AbortController | null = null;
+    private readonly handleInput = (e: Event): void => this.onInput(e);
+    private readonly handleFilterChange = (e: Event): void => this.onFilterChange(e);
+    private readonly handleToggleItem = (e: Event): void => {
+        this.onToggleItem(e as CustomEvent<{ id: string }>);
+    };
+    private readonly handleDeleteItem = (e: Event): void => {
+        this.onDeleteItem(e as CustomEvent<{ id: string }>);
+    };
+    private readonly handleSubmit = (e: SubmitEvent): void => {
+        e.preventDefault();
+        this.onSubmit();
+    };
 
     connectedCallback(): void {
         super.connectedCallback();
         this.prepareItems();
+        this.connectFormEvents();
+        this.syncAddButton();
         this.syncCounts();
+    }
+
+    syncFormControls(): void {
+        this.prepareItems();
+        this.connectFormEvents();
+        this.recomputeFilteredItems();
+        this.recomputeCounts();
+        this.syncAddButton();
+        this.syncFilterSelect();
+        this.syncCounts();
+    }
+
+    prepareHydrationState(): void {
+        this.prepareItems();
+    }
+
+    disconnectedCallback(): void {
+        this.formEvents?.abort();
+        this.formEvents = null;
+        super.disconnectedCallback();
     }
 
     itemsChanged(): void {
@@ -36,6 +75,7 @@ export class TodoApp extends FASTElement {
 
     activeFilterChanged(): void {
         this.recomputeFilteredItems();
+        this.syncFilterSelect();
     }
 
     activeCountChanged(): void {
@@ -44,6 +84,10 @@ export class TodoApp extends FASTElement {
 
     completedCountChanged(): void {
         this.syncCounts();
+    }
+
+    descriptionChanged(): void {
+        this.syncAddButton();
     }
 
     private prepareItems(): void {
@@ -82,6 +126,7 @@ export class TodoApp extends FASTElement {
 
     onInput(e: Event): void {
         this.description = (e.target as HTMLInputElement).value;
+        this.syncAddButton();
     }
 
     onFilterChange(e: Event): void {
@@ -89,7 +134,8 @@ export class TodoApp extends FASTElement {
     }
 
     onSubmit(): void {
-        const text = this.description.trim();
+        const input = this.getAddInput();
+        const text = (input?.value ?? this.description).trim();
 
         if (!text) return;
 
@@ -99,10 +145,32 @@ export class TodoApp extends FASTElement {
         ];
         this.description = "";
 
-        if (this.addInput) {
-            this.addInput.value = "";
-            this.addInput.focus();
+        if (input) {
+            input.value = "";
+            input.focus();
         }
+
+        this.syncAddButton();
+    }
+
+    private connectFormEvents(): void {
+        this.formEvents?.abort();
+        this.formEvents = new AbortController();
+        const { signal } = this.formEvents;
+
+        this.getAddInput()?.addEventListener("input", this.handleInput, { signal });
+        this.getForm()?.addEventListener("submit", this.handleSubmit, { signal });
+        this.getFilterSelect()?.addEventListener("change", this.handleFilterChange, {
+            signal,
+        });
+        this.shadowRoot?.addEventListener("input", this.handleInput, { signal });
+        this.shadowRoot?.addEventListener("submit", this.handleSubmit, { signal });
+        this.shadowRoot?.addEventListener("toggle-item", this.handleToggleItem, {
+            signal,
+        });
+        this.shadowRoot?.addEventListener("delete-item", this.handleDeleteItem, {
+            signal,
+        });
     }
 
     private recomputeFilteredItems(): void {
@@ -154,9 +222,66 @@ export class TodoApp extends FASTElement {
             completedSpan.textContent = `${this.completedCount} completed`;
         }
     }
+
+    private syncAddButton(): void {
+        const button = this.getAddButton();
+        if (button) {
+            button.disabled = this.description.trim().length === 0;
+        }
+    }
+
+    private syncFilterSelect(): void {
+        const select = this.getFilterSelect();
+        if (select) {
+            select.value = this.activeFilter;
+        }
+    }
+
+    private getForm(): HTMLFormElement | null {
+        return this.form ?? this.shadowRoot?.querySelector("form") ?? null;
+    }
+
+    private getAddInput(): HTMLInputElement | null {
+        return (
+            this.addInput ??
+            this.shadowRoot?.querySelector<HTMLInputElement>("form input[type=text]") ??
+            null
+        );
+    }
+
+    private getAddButton(): HTMLButtonElement | null {
+        return (
+            this.addButton ??
+            this.shadowRoot?.querySelector<HTMLButtonElement>(
+                "form button[type=submit]",
+            ) ??
+            null
+        );
+    }
+
+    private getFilterSelect(): HTMLSelectElement | null {
+        return (
+            this.shadowRoot?.querySelector<HTMLSelectElement>("select[name=filter]") ??
+            null
+        );
+    }
 }
 
-TodoApp.define({
-    name: "todo-app",
-    templateOptions: "defer-and-hydrate",
-});
+export const todoAppDefinition = TodoApp.define(
+    {
+        name: "todo-app",
+        template: declarativeTemplate({
+            elementWillHydrate(source) {
+                if (source instanceof TodoApp) {
+                    source.prepareHydrationState();
+                }
+            },
+            elementDidHydrate(source) {
+                if (source instanceof TodoApp) {
+                    source.syncFormControls();
+                }
+            },
+        }),
+    },
+    [observerMap()],
+);

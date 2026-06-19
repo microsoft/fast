@@ -25,7 +25,7 @@ import { styleText } from "node:util";
 import {
     closeExpression,
     openExpression,
-} from "@microsoft/fast-element/declarative-syntax.js";
+} from "@microsoft/fast-element/declarative-utilities.js";
 import { installDomShim } from "./dom-shim.js";
 import {
     convertTemplate,

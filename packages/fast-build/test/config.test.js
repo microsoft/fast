@@ -337,7 +337,7 @@ describe("stream config", () => {
         const { stdout, calls } = runWithStubbedWasm(["--stream=false"], dir);
         const output = fs.readFileSync(path.join(dir, "out.html"), "utf8");
 
-        assert.equal(stdout, `Built: ${path.join(dir, "out.html")}\n`);
+        assert.equal(stdout, `Built: ${fs.realpathSync(path.join(dir, "out.html"))}\n`);
         assert.equal(output, "<h1>Non-stream</h1>");
         assert.ok(calls.some(call => call.name === "render"));
         assert.ok(!calls.some(call => call.stream === true));

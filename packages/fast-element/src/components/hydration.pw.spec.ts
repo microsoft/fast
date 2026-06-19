@@ -436,6 +436,116 @@ test.describe("The prerendered content optimization", () => {
         expect(result.spanCount).toBe(3);
     });
 
+    test("should hydrate legacy indexed repeat markers", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one", "two"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(x => x.items, html<string>`<span>${x => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe-b$$start$$0$$repeat-1$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><span><!--fe-b$$start$$0$$item-1$$fe-b-->server-one<!--fe-b$$end$$0$$item-1$$fe-b--></span><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-1$$fe-b--></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as any;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("onetwo");
+        expect(result.spanCount).toBe(2);
+    });
+
+    test("should hydrate legacy indexed attribute markers", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                ref,
+                uniqueElementName,
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                count = 0;
+                disabled = false;
+                input!: HTMLInputElement;
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        <input ${ref("input")}>
+                        <button
+                            ?disabled=${x => x.disabled}
+                            @click=${x => x.count++}
+                        >
+                            Increment
+                        </button>
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><input data-fe-b-0><button data-fe-c-1-2>Increment</button></template></${name}>`,
+            );
+
+            const element = container.firstElementChild as TestElement;
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            element.shadowRoot!.querySelector("button")!.click();
+
+            return {
+                count: element.count,
+                inputResolved:
+                    element.input === element.shadowRoot!.querySelector("input"),
+            };
+        });
+
+        expect(result.count).toBe(1);
+        expect(result.inputResolved).toBe(true);
+    });
+
     test("should remove extra repeat ranges when SSR rendered more items", async ({
         page,
     }) => {

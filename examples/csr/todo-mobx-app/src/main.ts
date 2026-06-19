@@ -8,4 +8,4 @@ import "./todo-form.js";
 // lifetime of the page.
 connectStoreToStorage(todoStore, "fast-todo-mobx-app");
 
-app.define();
+void app.then(definition => definition.define());

@@ -73,7 +73,7 @@ export interface ExecutionContext<TParent = any> {
 
 // @public
 export const ExecutionContext: Readonly<{
-    default: ExecutionContext<any>;
+    default: ExecutionContext;
     getEvent(): Event | null;
     setEvent(event: Event | null): void;
 }>;

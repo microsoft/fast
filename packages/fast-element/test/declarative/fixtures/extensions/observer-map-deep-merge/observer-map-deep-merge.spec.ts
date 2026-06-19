@@ -273,7 +273,7 @@ test.describe("Deep Merge Test Fixture", () => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
-        await page.goto("/fixtures/deep-merge/");
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
         await hydrationCompleted;
 
         const result = await page
@@ -309,7 +309,7 @@ test.describe("Deep Merge Test Fixture", () => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
-        await page.goto("/fixtures/deep-merge/");
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
         await hydrationCompleted;
 
         await page
@@ -325,7 +325,7 @@ test.describe("Deep Merge Test Fixture", () => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
-        await page.goto("/fixtures/deep-merge/");
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
         await hydrationCompleted;
 
         const result = await page
@@ -342,7 +342,7 @@ test.describe("Deep Merge Test Fixture", () => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
-        await page.goto("/fixtures/deep-merge/");
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
         await hydrationCompleted;
 
         const result = await page
@@ -358,7 +358,7 @@ test.describe("Deep Merge Test Fixture", () => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
-        await page.goto("/fixtures/deep-merge/");
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
         await hydrationCompleted;
 
         const result = await page

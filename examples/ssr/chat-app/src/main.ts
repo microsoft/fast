@@ -1,17 +1,11 @@
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-// Side-effect imports — register the chat custom elements
-import "./chat-app.js";
-import "./chat-card.js";
-import "./chat-message.js";
-import "./chat-suggestion.js";
+enableHydration();
 
-TemplateElement.options({
-    "chat-app": { observerMap: "all" },
-    "chat-card": { observerMap: "all" },
-    "chat-message": { observerMap: "all" },
-    "chat-suggestion": { observerMap: "all" },
-}).define({
-    name: "f-template",
-});
+void Promise.all([
+    import("./chat-app.js"),
+    import("./chat-card.js"),
+    import("./chat-message.js"),
+    import("./chat-suggestion.js"),
+]);

@@ -91,7 +91,7 @@ export type ConstructibleStyleStrategy = {
 };
 
 // @public
-export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
+export function declarativeTemplate<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver<TType>;
 
 // @public
 export interface DefaultCachedPath extends CachedPathCommon {

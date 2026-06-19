@@ -58,7 +58,7 @@ test.describe("FASTElement", () => {
             expect(result.receivedName).toBe(result.expectedName);
         });
 
-        test("should call extensions with the definition when using static style", async ({
+        test("should call extensions with the definition when using subclass define", async ({
             page,
         }) => {
             await page.goto("/");
@@ -76,7 +76,7 @@ test.describe("FASTElement", () => {
                     extensionCalls.push(def.name);
                 };
 
-                await FASTElement.define(TestElement, { name: elName }, [extension]);
+                await TestElement.define({ name: elName }, [extension]);
 
                 return {
                     callCount: extensionCalls.length,

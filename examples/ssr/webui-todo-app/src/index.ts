@@ -14,24 +14,29 @@
 performance.mark("todo-hydration-started");
 
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import type { TodoApp } from "./todo-app/todo-app.js";
 
-// Side-effect imports — register custom elements via define()
-import "./todo-app/todo-app.js";
-import "./todo-item/todo-item.js";
+let resolveHydrationComplete!: () => void;
+const hydrationComplete = new Promise<void>(resolve => {
+    resolveHydrationComplete = resolve;
+});
 
-// Configure and start hydration
-TemplateElement.options({
-    "todo-app": { observerMap: "all" },
-    "todo-item": { observerMap: "all" },
-})
-    .config({
-        hydrationComplete() {
-            performance.measure("todo-hydration-completed", "todo-hydration-started");
-            console.log("Hydration complete!");
-            (window as unknown as { __todoHydrated?: boolean }).__todoHydrated = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+enableHydration({
+    hydrationComplete() {
+        performance.measure("todo-hydration-completed", "todo-hydration-started");
+        console.log("Hydration complete!");
+        resolveHydrationComplete();
+    },
+});
+
+const [{ todoAppDefinition }, { todoItemDefinition }] = await Promise.all([
+    import("./todo-app/todo-app.js"),
+    import("./todo-item/todo-item.js"),
+]);
+
+await Promise.all([todoAppDefinition, todoItemDefinition, hydrationComplete]);
+document
+    .querySelectorAll<TodoApp>("todo-app")
+    .forEach(element => element.syncFormControls());
+(window as unknown as { __todoHydrated?: boolean }).__todoHydrated = true;

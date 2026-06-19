@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "clean build tmp",
-    "prebuild": "npm run clean && node scripts/generate-docs.cjs 2",
+    "prebuild": "npm run clean && node scripts/generate-docs.cjs 3",
     "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
     "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve",
     "help": "npx @11ty/eleventy --help"
@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "@microsoft/fast-build": "^0.7.0",
-    "@microsoft/fast-element": "^3.0.0-rc.1"
+    "@microsoft/fast-element": "3.0.0-rc.1"
   }
 }
