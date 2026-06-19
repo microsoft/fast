@@ -39,6 +39,7 @@ import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
+let skipCratesCache;
 if (!CHECK_ONLY) {
     console.error(
         "download-github-releases.mjs only supports --check-only; Azure Pipelines downloads assets with DownloadGitHubRelease@0.",
@@ -88,10 +89,13 @@ function currentBranchName() {
 }
 
 function shouldSkipCrates() {
-    return (
-        process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
-        currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH
-    );
+    if (skipCratesCache === undefined) {
+        skipCratesCache =
+            process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
+            currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH;
+    }
+
+    return skipCratesCache;
 }
 
 function npmNameToOutputPrefix(npmName) {

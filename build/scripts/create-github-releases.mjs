@@ -61,6 +61,7 @@ const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
 const CHECK_ONLY = process.argv.includes("--check-only");
 const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
+let skipCratesCache;
 
 function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
@@ -94,10 +95,13 @@ function currentBranchName() {
 }
 
 function shouldSkipCrates() {
-    return (
-        process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
-        currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH
-    );
+    if (skipCratesCache === undefined) {
+        skipCratesCache =
+            process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
+            currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH;
+    }
+
+    return skipCratesCache;
 }
 
 function readCargoTomlVersion(cargoTomlPath) {
