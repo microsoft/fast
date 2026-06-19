@@ -23,6 +23,9 @@
  *   - `FAST_RELEASE_SKIP_CRATES=true` — skips paired Rust crate validation.
  *     This is also enabled automatically on `releases/fast-element-v3-rc`,
  *     whose RC publishes npm packages only.
+ * TODO #7595: Remove this RC-only crate skip before merging
+ * `releases/fast-element-v3-rc` back to `main` after FAST Element 3.x stable
+ * has been released. See https://github.com/microsoft/fast/issues/7595.
  * The script reads workspace package manifests and paired Cargo manifests only:
  * the source of truth for "what should be published" is the current workspace
  * versions plus matching release tags. This keeps historical bare beachball tags

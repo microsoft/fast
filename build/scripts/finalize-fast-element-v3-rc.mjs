@@ -14,6 +14,10 @@
  * To apply changes to the current worktree:
  *
  *   node build/scripts/finalize-fast-element-v3-rc.mjs --apply
+ *
+ * TODO #7595: Remove this RC-only finalizer before merging
+ * `releases/fast-element-v3-rc` back to `main` after FAST Element 3.x stable
+ * has been released. See https://github.com/microsoft/fast/issues/7595.
  */
 
 import { execFileSync } from "node:child_process";
@@ -42,6 +46,7 @@ const ALLOW_NON_RC_REF = args.has("--allow-non-rc-ref");
 const REF = readArg("--ref") ?? "HEAD";
 const TARGET_RC_BRANCH = "releases/fast-element-v3-rc";
 const TARGET_RC_REF = readArg("--target-ref") ?? `origin/${TARGET_RC_BRANCH}`;
+// TODO #7595: Remove branch-suffixed RC versioning before merge-back to main.
 // Single source for the branch-cut date used by companion versions and npm dist-tag.
 const RC_BRANCH_CUT_DATE = "2026-06-15";
 const RC_DATE = formatRcDate(RC_BRANCH_CUT_DATE);

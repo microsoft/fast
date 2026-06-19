@@ -39,6 +39,9 @@
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation and
  * packaging. This is also enabled automatically on `releases/fast-element-v3-rc`,
  * whose RC publishes npm packages only.
+ * TODO #7595: Remove this RC-only crate skip before merging
+ * `releases/fast-element-v3-rc` back to `main` after FAST Element 3.x stable
+ * has been released. See https://github.com/microsoft/fast/issues/7595.
  *
  * Authentication: the `gh` CLI reads `GH_TOKEN` from the environment.
  */
