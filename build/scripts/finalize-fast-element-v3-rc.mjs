@@ -38,9 +38,15 @@ const args = new Set(process.argv.slice(2));
 const APPLY = args.has("--apply");
 const KEEP = args.has("--keep");
 const ALLOW_SCRIPT_OVERRIDES = args.has("--allow-script-overrides");
+const ALLOW_NON_RC_REF = args.has("--allow-non-rc-ref");
 const REF = readArg("--ref") ?? "HEAD";
-const RC_SUFFIX = "fast-element-v3-rc-20260616";
-const RC_DIST_TAG = "rc-20260616";
+const TARGET_RC_BRANCH = "releases/fast-element-v3-rc";
+const TARGET_RC_REF = readArg("--target-ref") ?? `origin/${TARGET_RC_BRANCH}`;
+// Single source for the branch-cut date used by companion versions and npm dist-tag.
+const RC_BRANCH_CUT_DATE = "2026-06-15";
+const RC_DATE = formatRcDate(RC_BRANCH_CUT_DATE);
+const RC_SUFFIX = `fast-element-v3-rc-${RC_DATE}`;
+const RC_DIST_TAG = `rc-${RC_DATE}`;
 
 const packageOrder = [
     "@microsoft/fast-build",
@@ -70,8 +76,32 @@ function run(file, commandArgs, options = {}) {
     });
 }
 
+function git(commandArgs, options = {}) {
+    return run("git", commandArgs, options).trim();
+}
+
+function gitSucceeds(commandArgs, options = {}) {
+    try {
+        execFileSync("git", commandArgs, {
+            cwd: options.cwd ?? repoRoot,
+            stdio: "ignore",
+        });
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 function readJson(path) {
     return JSON.parse(readFileSync(path, "utf8"));
+}
+
+function formatRcDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        throw new Error(`Invalid RC branch-cut date ${value}. Expected YYYY-MM-DD.`);
+    }
+
+    return value.replaceAll("-", "");
 }
 
 function writeJson(path, value) {
@@ -118,6 +148,29 @@ function ensureCleanWorktree() {
         throw new Error(
             "The worktree must be clean before finalizing the RC.\n" +
                 "Commit, stash, or discard existing changes first.",
+        );
+    }
+}
+
+function ensureRcBaseRef(ref) {
+    if (ALLOW_NON_RC_REF) {
+        return;
+    }
+
+    let targetSha;
+    let refSha;
+    try {
+        targetSha = git(["rev-parse", "--verify", TARGET_RC_REF]);
+        refSha = git(["rev-parse", "--verify", ref]);
+    } catch {
+        throw new Error(
+            `Unable to resolve ${TARGET_RC_REF} and ${ref}. Fetch the RC branch or pass --target-ref/--allow-non-rc-ref.`,
+        );
+    }
+
+    if (!gitSucceeds(["merge-base", "--is-ancestor", targetSha, refSha])) {
+        throw new Error(
+            `${ref} is not based on ${TARGET_RC_REF}. The FAST Element v3 RC finalizer only runs on branches snapped from ${TARGET_RC_BRANCH}. Pass --allow-non-rc-ref to override intentionally.`,
         );
     }
 }
@@ -215,6 +268,28 @@ function computeFinalVersions() {
             rawVersions["@microsoft/fast-test-harness"],
         ),
     };
+}
+
+function parseFastElementRcNumber(version) {
+    const match = /^3\.0\.0-rc\.(\d+)$/.exec(version);
+    if (!match) {
+        throw new Error(
+            `Expected @microsoft/fast-element to be a 3.0.0 RC, got ${version}.`,
+        );
+    }
+
+    return Number(match[1]);
+}
+
+function assertFastElementRcAdvanced(beforeVersion, afterVersion) {
+    const before = parseFastElementRcNumber(beforeVersion);
+    const after = parseFastElementRcNumber(afterVersion);
+
+    if (after <= before) {
+        throw new Error(
+            `Expected @microsoft/fast-element RC version to advance beyond ${beforeVersion}, got ${afterVersion}. Check that prerelease change files are present before finalizing.`,
+        );
+    }
 }
 
 function rewritePackageVersions(finalVersions) {
@@ -344,7 +419,21 @@ function updateLockfile() {
     );
 }
 
-function verifyFinalState(finalVersions) {
+function readCargoVersion() {
+    const cargoToml = readFileSync(
+        join(repoRoot, "crates/microsoft-fast-build/Cargo.toml"),
+        "utf8",
+    );
+    const match = /^\s*version\s*=\s*"([^"]+)"/m.exec(cargoToml);
+
+    if (!match) {
+        throw new Error("Could not read microsoft-fast-build Cargo.toml version.");
+    }
+
+    return match[1];
+}
+
+function verifyFinalState(finalVersions, initialCrateVersion) {
     for (const packageName of packageOrder) {
         const pkg = getPackage(packageName);
         if (pkg.version !== finalVersions[packageName]) {
@@ -354,13 +443,10 @@ function verifyFinalState(finalVersions) {
         }
     }
 
-    const cargoToml = readFileSync(
-        join(repoRoot, "crates/microsoft-fast-build/Cargo.toml"),
-        "utf8",
-    );
-    if (!/version\s*=\s*"0\.7\.0"/.test(cargoToml)) {
+    const crateVersion = readCargoVersion();
+    if (crateVersion !== initialCrateVersion) {
         throw new Error(
-            "microsoft-fast-build Cargo.toml changed. The v3 RC finalizer must not version the Rust crate.",
+            `microsoft-fast-build Cargo.toml changed from ${initialCrateVersion} to ${crateVersion}. The v3 RC finalizer must not version the Rust crate.`,
         );
     }
 
@@ -381,6 +467,7 @@ function printVersionTable(finalVersions) {
     for (const packageName of packageOrder) {
         console.log(`  - ${packageName}@${finalVersions[packageName]}`);
     }
+    console.log(`\nRC branch-cut date: ${RC_BRANCH_CUT_DATE} (${RC_DATE})`);
     console.log(`\nUse npm dist-tag: ${RC_DIST_TAG}`);
     console.log("Rust crate packaging is intentionally excluded for this RC branch.");
 }
@@ -400,34 +487,50 @@ function previewReleases() {
 }
 
 function applyFinalizer() {
+    ensureRcBaseRef("HEAD");
     ensureCleanWorktree();
     ensureChangeFilesExist();
+
+    const baselineVersions = Object.fromEntries(
+        packageOrder.map(packageName => [packageName, getPackage(packageName).version]),
+    );
+    const initialCrateVersion = readCargoVersion();
 
     runBeachballBump();
 
     const rawVersions = Object.fromEntries(
         packageOrder.map(packageName => [packageName, getPackage(packageName).version]),
     );
+    assertFastElementRcAdvanced(
+        baselineVersions["@microsoft/fast-element"],
+        rawVersions["@microsoft/fast-element"],
+    );
     const finalVersions = computeFinalVersions();
 
     rewritePackageVersions(finalVersions);
     rewriteChangelogs(finalVersions, rawVersions);
     updateLockfile();
-    verifyFinalState(finalVersions);
+    verifyFinalState(finalVersions, initialCrateVersion);
     printVersionTable(finalVersions);
     previewReleases();
 }
 
 function dryRun() {
-    const temp = mkdtempSync(join(tmpdir(), "fast-element-v3-rc-finalizer-"));
-    const repoDir = join(temp, "repo");
-    console.log(`Creating disposable worktree at ${repoDir}`);
-    run("git", ["worktree", "add", "--detach", repoDir, REF], {
-        cwd: repoRoot,
-        stdio: "inherit",
-    });
+    ensureRcBaseRef(REF);
+
+    let temp;
+    let repoDir;
 
     try {
+        gitSucceeds(["worktree", "prune"]);
+        temp = mkdtempSync(join(tmpdir(), "fast-element-v3-rc-finalizer-"));
+        repoDir = join(temp, "repo");
+        console.log(`Creating disposable worktree at ${repoDir}`);
+        run("git", ["worktree", "add", "--detach", repoDir, REF], {
+            cwd: repoRoot,
+            stdio: "inherit",
+        });
+
         for (const file of [
             "build/scripts/finalize-fast-element-v3-rc.mjs",
             "build/scripts/create-github-releases.mjs",
@@ -450,13 +553,29 @@ function dryRun() {
         run("git", ["--no-pager", "diff", "--stat"], { cwd: repoDir, stdio: "inherit" });
     } finally {
         if (KEEP) {
-            console.log(`Keeping disposable worktree: ${repoDir}`);
+            if (repoDir) {
+                console.log(`Keeping disposable worktree: ${repoDir}`);
+            }
         } else {
-            run("git", ["worktree", "remove", "--force", repoDir], {
-                cwd: repoRoot,
-                stdio: "inherit",
-            });
-            rmSync(temp, { recursive: true, force: true });
+            if (repoDir && existsSync(repoDir)) {
+                try {
+                    run("git", ["worktree", "remove", "--force", repoDir], {
+                        cwd: repoRoot,
+                        stdio: "inherit",
+                    });
+                } catch (error) {
+                    console.warn(
+                        `Could not remove disposable worktree ${repoDir}: ${
+                            error instanceof Error ? error.message : String(error)
+                        }`,
+                    );
+                    gitSucceeds(["worktree", "prune"]);
+                }
+            }
+
+            if (temp) {
+                rmSync(temp, { recursive: true, force: true });
+            }
         }
     }
 }
