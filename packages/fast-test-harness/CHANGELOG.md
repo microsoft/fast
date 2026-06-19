@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Mon, 08 Jun 2026 20:39:45 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 19 Jun 2026 22:15:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.0-fast-element-v3-rc-20260615
+
+Fri, 19 Jun 2026 22:15:55 GMT
+
+### Minor changes
+
+- fix: migrate build utilities to consume declarative HTML syntax from @microsoft/fast-element (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615
+- Bump @microsoft/fast-element to v3.0.0-rc.2
+
+### Patches
+
+- Handle browser-valid whitespace in f-template wrapper tags (7559015+janechu@users.noreply.github.com)
 
 ## 0.3.1
 

@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2026 22:15:55 GMT",
+      "version": "0.4.0-fast-element-v3-rc-20260615",
+      "tag": "@microsoft/fast-test-harness_v0.4.0-fast-element-v3-rc-20260615",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "Handle browser-valid whitespace in f-template wrapper tags"
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "8a24df4dc67b10cb11940d004f4697fe6f2f22e9",
+            "comment": "fix: migrate build utilities to consume declarative HTML syntax from @microsoft/fast-element"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-element to v3.0.0-rc.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 Jun 2026 20:39:45 GMT",
       "version": "0.3.1",
       "tag": "@microsoft/fast-test-harness_v0.3.1",

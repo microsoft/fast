@@ -2,6 +2,125 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2026 22:15:55 GMT",
+      "version": "3.0.0-rc.2",
+      "tag": "@microsoft/fast-element_v3.0.0-rc.2",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "afb9a41aa5c5b31717098395f217b8cce2ba2d04",
+            "comment": "Filter late attribute MutationObserver records."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8a6be9b30bc2d3403fb1f75b3852438686735462",
+            "comment": "fix: align @attr({ mode: 'boolean' }) and booleanConverter with native HTML boolean attribute semantics"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "feat: expose declarative HTML syntax constants from declarative utilities"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ccc149b33ac80afe5b87c528ad987847756a0df9",
+            "comment": "fix: restore CaptureType generic type capture for template directives"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8a24df4dc67b10cb11940d004f4697fe6f2f22e9",
+            "comment": "feat: change default attribute-name-strategy from none to camelCase"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0be252483e571f0615fadc11352c230e55b61f15",
+            "comment": "feat: auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags)"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "7505d9e6fa32748dfea8933a149d46b2c1ddc942",
+            "comment": "Improve hydration mismatch behaviour: render() falls back to client rendering when SSR view boundaries are empty, repeat() reconciles SSR/client item-count mismatches by creating missing client views or removing extra SSR ranges, and unrecoverable mismatches throw via a pluggable HydrationDiagnostic. Opt in to the rich 'Expected / Received' format with the SSR HTML snippet and structured expected/received fields on HydrationBindingError / HydrationTargetElementError by passing enableHydration({ debugger: hydrationDebugger() }) (hydrationDebugger is exported from '@microsoft/fast-element/hydration.js')."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "78467e3cd18750325627aba80be1a51ecf8c9a5a",
+            "comment": "Add hydration configuration for streamed Declarative Shadow DOM."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "7e433a8616bcbd71c30dac04586924e5214bf9ab",
+            "comment": "Avoid mutating render template bindings"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8a24df4dc67b10cb11940d004f4697fe6f2f22e9",
+            "comment": "feat: propagate shadowroot attributes from f-template to declarative shadow DOM template"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "dd41435d6c28fb0f0fa67f2fe0a50c84f17c20b8",
+            "comment": "Preserve view context when rebinding the same source."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "749367f0e9279bcfef97f3d4a40fc36f01059546",
+            "comment": "feat: warn when duplicate render instruction registrations replace existing entries"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a8b85c1a6abb844722f1625c85b5cba1a41d5c2b",
+            "comment": "Add a registry path export for FAST element definition lookups."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-element",
+            "comment": "Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f364382ba67a0765bbd3a5e567a3d5a5c66f68c7",
+            "comment": "Allow duplicate f-template names to keep the first template assignment"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fd939d5b9130afc7cb7457e5aba7fbca5273954f",
+            "comment": "Harden DOM policy guard merging and unsafe URL filtering."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "218f8d35c1ec3ede4f2a7f8ca8b5556e2de18f2e",
+            "comment": "docs: clean up fast-element API report surface"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "fc18caa0dcf43553cde975da871580babf673ed0",
+            "comment": "Add package export smoke coverage and docs sync checks."
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Apr 2026 04:42:02 GMT",
       "version": "3.0.0-rc.1",
       "tag": "@microsoft/fast-element_v3.0.0-rc.1",

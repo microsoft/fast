@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -232,7 +232,7 @@
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "0.7.0",
+    "@microsoft/fast-build": "0.8.0-fast-element-v3-rc-20260615",
     "@microsoft/webui": "0.0.12"
   },
   "files": [
