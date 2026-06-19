@@ -36,6 +36,10 @@
  *     to `"true"` or `"false"`. Performs no packing, no tagging, no
  *     release creation. Safe to run without `node_modules` populated.
  *
+ * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation and
+ * packaging. This is also enabled automatically on `releases/fast-element-v3-rc`,
+ * whose RC publishes npm packages only.
+ *
  * Authentication: the `gh` CLI reads `GH_TOKEN` from the environment.
  */
 
@@ -53,6 +57,7 @@ import { basename, join, resolve } from "node:path";
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
 const CHECK_ONLY = process.argv.includes("--check-only");
+const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
 
 function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
@@ -71,6 +76,25 @@ function gitTagExists(tag) {
 
 function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
+}
+
+function currentBranchName() {
+    if (process.env.GITHUB_REF_NAME) {
+        return process.env.GITHUB_REF_NAME;
+    }
+
+    try {
+        return run("git", ["rev-parse", "--abbrev-ref", "HEAD"]).trim();
+    } catch {
+        return "";
+    }
+}
+
+function shouldSkipCrates() {
+    return (
+        process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
+        currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH
+    );
 }
 
 function readCargoTomlVersion(cargoTomlPath) {
@@ -118,7 +142,7 @@ function listPublishableWorkspaces() {
 
         const crateName = npmNameToCrateName(pkg.name);
         const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        const hasCrate = existsSync(cargoTomlPath);
+        const hasCrate = existsSync(cargoTomlPath) && !shouldSkipCrates();
 
         if (hasCrate) {
             const crateVersion = readCargoTomlVersion(cargoTomlPath);
@@ -147,6 +171,9 @@ function setGitHubOutput(name, value) {
 }
 
 const publishable = listPublishableWorkspaces();
+if (shouldSkipCrates()) {
+    console.log("Paired Rust crate assets are skipped for this release run.");
+}
 
 if (publishable.length === 0) {
     console.log("No publishable workspaces found.");

@@ -227,6 +227,22 @@ The same flow works for a single-package release — just keep only the relevant
 npx beachball bump --package "@microsoft/fast-build"
 ```
 
+#### FAST Element v3 RC finalizer
+
+The `releases/fast-element-v3-rc` branch uses a custom RC version plan that Beachball cannot express directly. To finalize that branch, run the guarded local finalizer instead of raw `npm run bump`:
+
+```bash
+npm run finalize:fast-element-v3-rc
+```
+
+By default this creates a disposable worktree, runs the finalizer there, prints the resulting version table and diff summary, and removes the worktree. To apply the same edits to the current worktree after reviewing the dry run:
+
+```bash
+npm run finalize:fast-element-v3-rc -- --apply
+```
+
+The finalizer uses Beachball only to consume change files and generate changelog entries, then rewrites the explicit RC versions and exact internal dependency pins. It does not publish, tag, push, create GitHub releases, or invoke any release workflow. The v3 RC branch publishes npm packages only; paired Rust crate validation and packaging are skipped automatically for `releases/fast-element-v3-rc` and can be skipped explicitly with `FAST_RELEASE_SKIP_CRATES=true` during local previews.
+
 ### Manual version bumps
 
 `npm run checkchange` normally requires a beachball [change file](#change-files) for any edit to `packages/*/package.json`, including a single `"version"` line. Three maintainer-driven flows produce legitimate `package.json` edits without a change file:

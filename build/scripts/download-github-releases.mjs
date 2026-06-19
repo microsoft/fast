@@ -20,6 +20,9 @@
  * Inputs:
  *
  *   - `GITHUB_REPOSITORY` env var (`owner/repo`) — required.
+ *   - `FAST_RELEASE_SKIP_CRATES=true` — skips paired Rust crate validation.
+ *     This is also enabled automatically on `releases/fast-element-v3-rc`,
+ *     whose RC publishes npm packages only.
  * The script reads workspace package manifests and paired Cargo manifests only:
  * the source of truth for "what should be published" is the current workspace
  * versions plus matching release tags. This keeps historical bare beachball tags
@@ -32,6 +35,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
+const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
 if (!CHECK_ONLY) {
     console.error(
         "download-github-releases.mjs only supports --check-only; Azure Pipelines downloads assets with DownloadGitHubRelease@0.",
@@ -58,6 +62,33 @@ function listGitTags() {
 
 function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
+}
+
+function currentBranchName() {
+    if (process.env.BUILD_SOURCEBRANCH?.startsWith("refs/heads/")) {
+        return process.env.BUILD_SOURCEBRANCH.slice("refs/heads/".length);
+    }
+
+    if (process.env.BUILD_SOURCEBRANCHNAME) {
+        return process.env.BUILD_SOURCEBRANCHNAME;
+    }
+
+    if (process.env.GITHUB_REF_NAME) {
+        return process.env.GITHUB_REF_NAME;
+    }
+
+    try {
+        return run("git", ["rev-parse", "--abbrev-ref", "HEAD"]).trim();
+    } catch {
+        return "";
+    }
+}
+
+function shouldSkipCrates() {
+    return (
+        process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
+        currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH
+    );
 }
 
 function npmNameToOutputPrefix(npmName) {
@@ -111,7 +142,7 @@ function listPublishableWorkspaces() {
 
         const crateName = npmNameToCrateName(pkg.name);
         const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        const hasCrate = existsSync(cargoTomlPath);
+        const hasCrate = existsSync(cargoTomlPath) && !shouldSkipCrates();
 
         if (hasCrate) {
             const crateVersion = readCargoTomlVersion(cargoTomlPath);
@@ -145,6 +176,9 @@ const deployed = new Set(
     allTags.filter(t => t.startsWith("deployed/")).map(t => t.slice("deployed/".length)),
 );
 const publishable = listPublishableWorkspaces();
+if (shouldSkipCrates()) {
+    console.log("Paired Rust crate assets are skipped for this deployment check.");
+}
 const releaseCandidates = publishable
     .filter(({ tag }) => tagSet.has(tag))
     .sort((a, b) => a.tag.localeCompare(b.tag));
