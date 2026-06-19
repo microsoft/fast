@@ -67,6 +67,15 @@ const packagePaths = {
     "@microsoft/fast-test-harness": "packages/fast-test-harness",
 };
 
+const privateWorkspaceDependencyPaths = [
+    "examples/csr/todo-app",
+    "examples/csr/todo-mobx-app",
+    "examples/ssr/chat-app",
+    "examples/ssr/webui-todo-app",
+    "sites/benchmarks",
+    "sites/website",
+];
+
 function readArg(name) {
     const index = process.argv.indexOf(name);
     return index === -1 ? undefined : process.argv[index + 1];
@@ -101,6 +110,12 @@ function readJson(path) {
     return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function readJsonIndent(path) {
+    const content = readFileSync(path, "utf8");
+    const match = /^\n?([ \t]+)"/m.exec(content);
+    return match?.[1] ?? "  ";
+}
+
 function formatRcDate(value) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
         throw new Error(`Invalid RC branch-cut date ${value}. Expected YYYY-MM-DD.`);
@@ -110,7 +125,7 @@ function formatRcDate(value) {
 }
 
 function writeJson(path, value) {
-    writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+    writeFileSync(path, `${JSON.stringify(value, null, readJsonIndent(path))}\n`);
 }
 
 function packageJsonPath(packageName) {
@@ -347,6 +362,40 @@ function rewritePackageVersions(finalVersions) {
     }
 }
 
+function rewritePrivateWorkspaceDependencies(finalVersions) {
+    for (const packagePath of privateWorkspaceDependencyPaths) {
+        const path = join(repoRoot, packagePath, "package.json");
+        if (!existsSync(path)) {
+            continue;
+        }
+
+        const pkg = readJson(path);
+
+        for (const section of ["dependencies", "devDependencies", "peerDependencies"]) {
+            setDependency(
+                pkg,
+                section,
+                "@microsoft/fast-element",
+                finalVersions["@microsoft/fast-element"],
+            );
+
+            if (
+                pkg[section]?.["@microsoft/fast-build"] !== undefined &&
+                pkg[section]["@microsoft/fast-build"] !== "*"
+            ) {
+                setDependency(
+                    pkg,
+                    section,
+                    "@microsoft/fast-build",
+                    finalVersions["@microsoft/fast-build"],
+                );
+            }
+        }
+
+        writeJson(path, pkg);
+    }
+}
+
 function rewriteChangelogJson(packageName, finalVersions, rawVersions) {
     const path = changelogJsonPath(packageName);
     if (!existsSync(path)) {
@@ -513,6 +562,7 @@ function applyFinalizer() {
     const finalVersions = computeFinalVersions();
 
     rewritePackageVersions(finalVersions);
+    rewritePrivateWorkspaceDependencies(finalVersions);
     rewriteChangelogs(finalVersions, rawVersions);
     updateLockfile();
     verifyFinalState(finalVersions, initialCrateVersion);
