@@ -227,6 +227,26 @@ The same flow works for a single-package release — just keep only the relevant
 npx beachball bump --package "@microsoft/fast-build"
 ```
 
+#### FAST Element v3 RC finalizer
+
+The `releases/fast-element-v3-rc` branch uses a custom RC version plan that Beachball cannot express directly. To finalize that branch, run the guarded local finalizer instead of raw `npm run bump`:
+
+```bash
+npm run finalize:fast-element-v3-rc
+```
+
+By default this creates a disposable worktree, runs the finalizer there, prints the resulting version table and diff summary, and removes the worktree. To apply the same edits to the current worktree after reviewing the dry run:
+
+```bash
+npm run finalize:fast-element-v3-rc -- --apply
+```
+
+The finalizer uses Beachball only to consume change files and generate changelog entries, then rewrites the explicit RC versions and exact internal dependency pins. It does not publish, tag, push, create GitHub releases, or invoke any release workflow. The v3 RC branch publishes npm packages only; paired Rust crate validation and packaging are skipped automatically for `releases/fast-element-v3-rc` and can be skipped explicitly with `FAST_RELEASE_SKIP_CRATES=true` during local previews.
+
+:::warning[Temporary RC branch logic]
+Before merging `releases/fast-element-v3-rc` back into `main` after FAST Element 3.x stable has been released, complete [issue #7595](https://github.com/microsoft/fast/issues/7595). Remove the temporary finalizer script, the `finalize:fast-element-v3-rc` package script, this documentation section, and the npm-only paired-crate skip logic added for the RC branch. Start from [PR #7594](https://github.com/microsoft/fast/pull/7594) and cross-check the RC baseline/prep work in [PR #7591](https://github.com/microsoft/fast/pull/7591) so the merge-back does not leave branch-specific version suffix, dist-tag, or crate-skip behavior on `main`.
+:::
+
 ### Manual version bumps
 
 `npm run checkchange` normally requires a beachball [change file](#change-files) for any edit to `packages/*/package.json`, including a single `"version"` line. Three maintainer-driven flows produce legitimate `package.json` edits without a change file:

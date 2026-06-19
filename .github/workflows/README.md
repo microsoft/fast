@@ -24,6 +24,8 @@ Nightly publishing is split into two coordinated jobs so that npm credentials ne
 
 Both scripts are thin Node.js wrappers around existing CLI tools and repository metadata — no extra npm dependencies and no custom GitHub API client. Idempotency is enforced entirely through git tags (`${name}_v${version}` on the GitHub side, `deployed/${name}_v${version}` on the Azure side), so neither side needs to talk to npm.org or crates.io to decide whether work is required.
 
+The `releases/fast-element-v3-rc` branch is npm-only for paired artifacts: the `microsoft-fast-build` Rust crate is not packaged or published from that RC branch. The release scripts detect that branch automatically and skip paired crate validation/packaging; local previews can request the same behavior with `FAST_RELEASE_SKIP_CRATES=true`. This is temporary RC-only logic tracked by [issue #7595](https://github.com/microsoft/fast/issues/7595). Before merging the RC branch back to `main` after FAST Element 3.x stable, remove the crate-skip behavior and related finalizer workflow from [PR #7594](https://github.com/microsoft/fast/pull/7594), cross-checking the RC baseline/prep work in [PR #7591](https://github.com/microsoft/fast/pull/7591).
+
 ### Adding a publishable package
 
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
