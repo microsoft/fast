@@ -439,6 +439,22 @@ Creates an instance of FASTElementDefinition.
 </td></tr>
 <tr><td>
 
+[compose(type, nameOrDef)](../fast-element.fastelementdefinition.compose_1/)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+Creates an instance of FASTElementDefinition.
+
+
+</td></tr>
+<tr><td>
+
 [define(registry, extensions)](../fast-element.fastelementdefinition.define/)
 
 

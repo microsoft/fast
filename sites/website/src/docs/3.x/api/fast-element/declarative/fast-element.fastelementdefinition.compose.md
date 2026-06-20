@@ -20,7 +20,9 @@ Creates an instance of FASTElementDefinition.
 **Signature:**
 
 ```typescript
-static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
+static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef: PartialFASTElementDefinition<TType> & {
+        template: FASTElementTemplateResolver<TType>;
+    }): Promise<FASTElementDefinition<TType>>;
 ```
 
 ## Parameters
@@ -64,12 +66,12 @@ nameOrDef
 
 </td><td>
 
-string \| [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)<!-- -->&lt;TType&gt;
+[PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)<!-- -->&lt;TType&gt; &amp; { template: [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;; }
 
 
 </td><td>
 
-_(Optional)_ The name of the element to define or a config object that describes the element to define.
+The name of the element to define or a config object that describes the element to define.
 
 
 </td></tr>
@@ -78,3 +80,5 @@ _(Optional)_ The name of the element to define or a config object that describes
 **Returns:**
 
 Promise&lt;[FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->&lt;TType&gt;&gt;
+
+A promise that resolves to the composed FASTElementDefinition.

@@ -60,12 +60,34 @@ Composes FASTElement metadata without registering the element.
 </td></tr>
 <tr><td>
 
-[compose(type, nameOrDef)](../fast-element.fastelementconstructor.compose_1/)
+[compose(this, nameOrDef)](../fast-element.fastelementconstructor.compose_1/)
 
 
 </td><td>
 
-Composes FASTElement metadata without registering the element.
+Composes element metadata into a FASTElementDefinition instance.
+
+
+</td></tr>
+<tr><td>
+
+[compose(type, nameOrDef)](../fast-element.fastelementconstructor.compose_2/)
+
+
+</td><td>
+
+Composes FASTElement metadata into a FASTElementDefinition instance.
+
+
+</td></tr>
+<tr><td>
+
+[compose(type, nameOrDef)](../fast-element.fastelementconstructor.compose_3/)
+
+
+</td><td>
+
+Composes FASTElement metadata into a FASTElementDefinition instance.
 
 
 </td></tr>
