@@ -685,7 +685,15 @@ export class FASTElementDefinition<
                 ? new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
                 : new FASTElementDefinition<TType>(type, nameOrDef);
 
-        if (hasFASTElementTemplateResolver(definition)) {
+        // Return a Promise when the caller passes a definition carrying a
+        // template resolver. Inspecting the constructed definition instead
+        // would make `compose(type)` asynchronous whenever the resolver is
+        // inherited from `type.definition`, breaking the synchronous overload.
+        if (
+            nameOrDef != null &&
+            !isString(nameOrDef) &&
+            isFASTElementTemplateResolver(nameOrDef.template)
+        ) {
             return Promise.resolve(definition);
         }
 

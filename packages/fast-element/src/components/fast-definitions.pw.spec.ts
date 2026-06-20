@@ -432,6 +432,40 @@ test.describe("FASTElementDefinition", () => {
             expect(result.isDefinition).toBe(true);
             expect(result.templateUnresolvedAfterCompose).toBe(true);
         });
+
+        test("composes synchronously for compose(type) even when the type carries a resolver definition", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                const template = html`<span>resolved</span>`;
+
+                class ResolverElement extends FASTElement {
+                    static definition = {
+                        name: uniqueElementName(),
+                        template: () => template,
+                    };
+                }
+
+                // No explicit `nameOrDef`, so the resolver is inherited from
+                // `ResolverElement.definition`. This must stay synchronous to
+                // keep the `compose(type)` overload sound.
+                const composed = FASTElementDefinition.compose(ResolverElement);
+
+                return {
+                    isPromise: typeof composed?.then === "function",
+                    isDefinition: composed instanceof FASTElementDefinition,
+                };
+            });
+
+            expect(result.isPromise).toBe(false);
+            expect(result.isDefinition).toBe(true);
+        });
     });
 
     test.describe("register async", () => {
