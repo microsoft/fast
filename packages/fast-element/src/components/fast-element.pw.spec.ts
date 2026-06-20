@@ -369,4 +369,61 @@ test.describe("FASTElement", () => {
             expect(result.shadowText).toContain("deferred");
         });
     });
+
+    test.describe("compose", () => {
+        test("composes synchronously when no template resolver is provided", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElement, FASTElementDefinition, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class SyncElement extends FASTElement {}
+
+                const composed = SyncElement.compose(uniqueElementName());
+
+                return {
+                    isPromise: typeof composed?.then === "function",
+                    isDefinition: composed instanceof FASTElementDefinition,
+                };
+            });
+
+            expect(result.isPromise).toBe(false);
+            expect(result.isDefinition).toBe(true);
+        });
+
+        test("composes asynchronously when a template resolver is provided", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class AsyncElement extends FASTElement {}
+
+                const template = html`<span>resolved</span>`;
+                const composed = AsyncElement.compose({
+                    name: uniqueElementName(),
+                    template: () => template,
+                });
+
+                const isPromise = typeof composed?.then === "function";
+                const definition = await composed;
+
+                return {
+                    isPromise,
+                    isDefinition: definition instanceof FASTElementDefinition,
+                };
+            });
+
+            expect(result.isPromise).toBe(true);
+            expect(result.isDefinition).toBe(true);
+        });
+    });
 });

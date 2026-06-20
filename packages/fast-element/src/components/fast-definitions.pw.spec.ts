@@ -341,6 +341,97 @@ test.describe("FASTElementDefinition", () => {
             expect(def1Extends).toBe(true);
             expect(def2Extends).toBe(true);
         });
+
+        test("returns the definition synchronously when no template resolver is provided", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElementDefinition, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class MyElement extends HTMLElement {}
+
+                const composed = FASTElementDefinition.compose(
+                    MyElement,
+                    uniqueElementName(),
+                );
+
+                return {
+                    isPromise: typeof composed?.then === "function",
+                    isDefinition: composed instanceof FASTElementDefinition,
+                };
+            });
+
+            expect(result.isPromise).toBe(false);
+            expect(result.isDefinition).toBe(true);
+        });
+
+        test("returns the definition synchronously when given a concrete template", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {}
+
+                const composed = FASTElementDefinition.compose(TestElement, {
+                    name: uniqueElementName(),
+                    template: html`<span>concrete</span>`,
+                });
+
+                return {
+                    isPromise: typeof composed?.then === "function",
+                    isDefinition: composed instanceof FASTElementDefinition,
+                    hasTemplate: composed.template !== undefined,
+                };
+            });
+
+            expect(result.isPromise).toBe(false);
+            expect(result.isDefinition).toBe(true);
+            expect(result.hasTemplate).toBe(true);
+        });
+
+        test("returns a Promise when a template resolver is provided", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {}
+
+                const template = html`<span>resolved</span>`;
+                const composed = FASTElementDefinition.compose(TestElement, {
+                    name: uniqueElementName(),
+                    template: () => template,
+                });
+
+                const isPromise = typeof composed?.then === "function";
+                const definition = await composed;
+
+                return {
+                    isPromise,
+                    isDefinition: definition instanceof FASTElementDefinition,
+                    // compose does not run the resolver; the template is resolved
+                    // later, during define().
+                    templateUnresolvedAfterCompose: definition.template === undefined,
+                };
+            });
+
+            expect(result.isPromise).toBe(true);
+            expect(result.isDefinition).toBe(true);
+            expect(result.templateUnresolvedAfterCompose).toBe(true);
+        });
     });
 
     test.describe("register async", () => {

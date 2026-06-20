@@ -4,6 +4,7 @@ import {
     applyFASTElementExtensions,
     FASTElementDefinition,
     type FASTElementExtension,
+    type FASTElementTemplateResolver,
     type PartialFASTElementDefinition,
     resolveFASTElementTemplate,
 } from "./fast-definitions.js";
@@ -108,18 +109,56 @@ function createFASTElement<T extends typeof HTMLElement>(
     return type as any;
 }
 
+/**
+ * Composes element metadata into a FASTElementDefinition instance.
+ *
+ * @param nameOrDef - A definition object with a template resolver.
+ * @returns A promise that resolves to the composed FASTElementDefinition.
+ */
+function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    this: TType,
+    nameOrDef: PartialFASTElementDefinition<TType> & {
+        template: FASTElementTemplateResolver<TType>;
+    },
+): Promise<FASTElementDefinition<TType>>;
+/**
+ * Composes element metadata into a FASTElementDefinition instance.
+ *
+ * @param nameOrDef - The element's tag name, or a definition object describing the element.
+ * @returns A FASTElementDefinition instance.
+ */
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
     nameOrDef: string | PartialFASTElementDefinition<TType>,
+): FASTElementDefinition<TType>;
+/**
+ * Composes element metadata into a FASTElementDefinition instance.
+ *
+ * @param type - The custom element type to compose.
+ * @param nameOrDef - A definition object with a template resolver.
+ * @returns A promise that resolves to the composed FASTElementDefinition.
+ */
+function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+    type: TType,
+    nameOrDef: PartialFASTElementDefinition<TType> & {
+        template: FASTElementTemplateResolver<TType>;
+    },
 ): Promise<FASTElementDefinition<TType>>;
+/**
+ * Composes element metadata into a FASTElementDefinition instance.
+ *
+ * @param type - The custom element type to compose.
+ * @param nameOrDef - The element's tag name, or a definition object describing the element.
+ * @returns A FASTElementDefinition instance.
+ */
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
     nameOrDef?: string | PartialFASTElementDefinition<TType>,
-): Promise<FASTElementDefinition<TType>>;
+): FASTElementDefinition<TType>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition<TType>,
     nameOrDef?: string | PartialFASTElementDefinition<TType>,
-): Promise<FASTElementDefinition<TType>> {
+): FASTElementDefinition<TType> | Promise<FASTElementDefinition<TType>> {
     if (isFunction(type)) {
         return FASTElementDefinition.compose(type, nameOrDef);
     }
@@ -151,14 +190,14 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
         nameOrDef = undefined;
     }
 
-    const composePromise = isFunction(type)
+    const composed = isFunction(type)
         ? FASTElementDefinition.compose(
               type,
               nameOrDef as string | PartialFASTElementDefinition<TType> | undefined,
           )
         : FASTElementDefinition.compose(this, type);
 
-    return composePromise.then(def => {
+    return Promise.resolve(composed).then(def => {
         applyFASTElementExtensions(def, def.registry, extensions);
 
         const template = resolveFASTElementTemplate(def);
@@ -210,22 +249,52 @@ export interface FASTElementConstructor {
 
     /**
      * Composes FASTElement metadata without registering the element.
-     * @param nameOrDef - The name of the element to compose or a definition object.
+     *
+     * @param nameOrDef - A definition object with a template resolver.
+     * @returns A promise that resolves to the composed FASTElementDefinition.
+     */
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        this: TType,
+        nameOrDef: PartialFASTElementDefinition<TType> & {
+            template: FASTElementTemplateResolver<TType>;
+        },
+    ): Promise<FASTElementDefinition<TType>>;
+
+    /**
+     * Composes element metadata into a FASTElementDefinition instance.
+     *
+     * @param nameOrDef - The element's tag name, or a definition object describing the element.
+     * @returns A FASTElementDefinition instance.
      */
     compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
         this: TType,
         nameOrDef: string | PartialFASTElementDefinition<TType>,
+    ): FASTElementDefinition<TType>;
+
+    /**
+     * Composes FASTElement metadata into a FASTElementDefinition instance.
+     * @param type - The custom element type to compose.
+     * @param nameOrDef - A definition object with a template resolver.
+     * @returns A promise that resolves to the composed FASTElementDefinition.
+     */
+    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
+        type: TType,
+        nameOrDef: PartialFASTElementDefinition<TType> & {
+            template: FASTElementTemplateResolver<TType>;
+        },
     ): Promise<FASTElementDefinition<TType>>;
 
     /**
-     * Composes FASTElement metadata without registering the element.
+     * Composes FASTElement metadata into a FASTElementDefinition instance.
+     *
      * @param type - The custom element type to compose.
-     * @param nameOrDef - The name of the element to compose or a definition object.
+     * @param nameOrDef - The element's tag name, or a definition object describing the element.
+     * @returns A FASTElementDefinition instance.
      */
     compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition<TType>,
-    ): Promise<FASTElementDefinition<TType>>;
+    ): FASTElementDefinition<TType>;
 
     /**
      * Creates a new FASTElement base class inherited from the provided base type.

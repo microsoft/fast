@@ -646,22 +646,51 @@ export class FASTElementDefinition<
 
     /**
      * Creates an instance of FASTElementDefinition.
+     *
      * @param type - The type this definition is being created for.
      * @param nameOrDef - The name of the element to define or a config object
      * that describes the element to define.
+     * @returns A promise that resolves to the composed FASTElementDefinition.
+     */
+    public static compose<
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+    >(
+        type: TType,
+        nameOrDef: PartialFASTElementDefinition<TType> & {
+            template: FASTElementTemplateResolver<TType>;
+        },
+    ): Promise<FASTElementDefinition<TType>>;
+
+    /**
+     * Creates an instance of FASTElementDefinition.
+     *
+     * @param type - The type this definition is being created for.
+     * @param nameOrDef - The name of the element to define or a config object
+     * that describes the element to define.
+     * @returns A composed FASTElementDefinition instance.
      */
     public static compose<
         TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition<TType>,
-    ): Promise<FASTElementDefinition<TType>> {
+    ): FASTElementDefinition<TType>;
+    public static compose<
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+    >(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition<TType>,
+    ): FASTElementDefinition<TType> | Promise<FASTElementDefinition<TType>> {
         const definition =
             fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)
                 ? new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
                 : new FASTElementDefinition<TType>(type, nameOrDef);
 
-        return Promise.resolve(definition);
+        if (hasFASTElementTemplateResolver(definition)) {
+            return Promise.resolve(definition);
+        }
+
+        return definition;
     }
 
     /**
