@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags)",
-  "packageName": "@microsoft/fast-element",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

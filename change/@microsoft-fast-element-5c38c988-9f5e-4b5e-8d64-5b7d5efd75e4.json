@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "dependentChangeType": "none",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "comment": "Add package export smoke coverage and docs sync checks.",
-  "packageName": "@microsoft/fast-element"
-}

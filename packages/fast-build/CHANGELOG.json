@@ -2,6 +2,37 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2026 22:15:55 GMT",
+      "version": "0.8.0-fast-element-v3-rc-20260615",
+      "tag": "@microsoft/fast-build_v0.8.0-fast-element-v3-rc-20260615",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "fecdf78b76616272df88775ad647a9a54f410891",
+            "comment": "feat: add simulated streaming output for fast-build"
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "Handle browser-valid whitespace in f-template wrapper tags"
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "0be252483e571f0615fadc11352c230e55b61f15",
+            "comment": "feat: auto-escape code samples inside `<code>` elements during SSR — braces (`{`/`}`) everywhere and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) — so literal binding-like text and directive syntax render correctly while real HTML/custom elements inside `<code>` remain live DOM elements. Also exposes a new `escape_code_samples(html)` WASM export so build-time tooling can apply the same escape to author HTML that is injected into a rendered page outside the normal render pipeline."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 May 2026 00:04:58 GMT",
       "version": "0.7.0",
       "tag": "@microsoft/fast-build_v0.7.0",

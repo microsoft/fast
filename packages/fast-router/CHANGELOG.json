@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 19 Jun 2026 22:15:55 GMT",
+      "version": "1.0.0-alpha.30-fast-element-v3-rc-20260615",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30-fast-element-v3-rc-20260615",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "chore: align FAST Element peer and dev dependency ranges for v3 RC publish prep"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "1.0.0-alpha.30",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
