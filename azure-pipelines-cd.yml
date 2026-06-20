@@ -88,6 +88,8 @@ extends:
         fastBuildReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastBuildReleaseTag'] ]
         fastElementNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementNeedsDeployment'] ]
         fastElementReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementReleaseTag'] ]
+        fastElementNpmDistTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementNpmDistTag'] ]
+        fastElementNeedsNpmDistTagUpdate: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementNeedsNpmDistTagUpdate'] ]
         fastRouterNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterNeedsDeployment'] ]
         fastRouterReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterReleaseTag'] ]
         fastTestHarnessNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessNeedsDeployment'] ]
@@ -216,6 +218,23 @@ extends:
             displayName: "Configure npm publish dist-tag"
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
+
+          - script: |
+              set -euo pipefail
+              FAST_ELEMENT_VERSION="$(fastElementReleaseTag)"
+              FAST_ELEMENT_VERSION="${FAST_ELEMENT_VERSION#@microsoft/fast-element_v}"
+              echo "Adding @microsoft/fast-element@${FAST_ELEMENT_VERSION} to npm dist-tag: $(fastElementNpmDistTag)"
+              npm dist-tag add "@microsoft/fast-element@${FAST_ELEMENT_VERSION}" "$(fastElementNpmDistTag)"
+
+              TEMP_TAG_VERSION="$(npm view @microsoft/fast-element "dist-tags.$(npm_config_tag)" || true)"
+              if [ "${TEMP_TAG_VERSION}" = "${FAST_ELEMENT_VERSION}" ]; then
+                echo "Removing temporary @microsoft/fast-element npm dist-tag: $(npm_config_tag)"
+                npm dist-tag rm "@microsoft/fast-element" "$(npm_config_tag)"
+              else
+                echo "Temporary tag $(npm_config_tag) does not point to @microsoft/fast-element@${FAST_ELEMENT_VERSION}; skipping removal."
+              fi
+            displayName: "Correct @microsoft/fast-element npm dist-tag"
+            condition: and(succeeded(), eq(variables['fastElementNeedsNpmDistTagUpdate'], 'true'))
 
           # Push a `deployed/<tag>` marker tag for each release that was just
           # published so that the next nightly Check stage sees it and skips

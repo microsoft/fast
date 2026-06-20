@@ -39,7 +39,9 @@ import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
+const FAST_ELEMENT_PACKAGE = "@microsoft/fast-element";
 const rcDistTagPattern = /fast-element-v3-rc-(\d{8})/;
+const fastElementRcPattern = /^3\.0\.0-rc\.\d+$/;
 let skipCratesCache;
 if (!CHECK_ONLY) {
     console.error(
@@ -189,6 +191,16 @@ function deriveNpmDistTag(workspaces) {
     return "latest";
 }
 
+function deriveFastElementNpmDistTag(workspaces, fallbackTag) {
+    const fastElement = workspaces.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
+
+    if (fastElementRcPattern.test(fastElement?.version ?? "")) {
+        return "rc";
+    }
+
+    return fallbackTag;
+}
+
 const allTags = listGitTags();
 const tagSet = new Set(allTags);
 const deployed = new Set(
@@ -204,12 +216,19 @@ const releaseCandidates = publishable
 const undeployed = releaseCandidates.filter(({ tag }) => !deployed.has(tag));
 const undeployedTagSet = new Set(undeployed.map(({ tag }) => tag));
 const npmDistTag = deriveNpmDistTag(publishable);
+const fastElementNpmDistTag = deriveFastElementNpmDistTag(publishable, npmDistTag);
+const fastElement = publishable.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
+const shouldRetagFastElement =
+    fastElement !== undefined &&
+    undeployedTagSet.has(fastElement.tag) &&
+    fastElementNpmDistTag !== npmDistTag;
 
 console.log(`Publishable workspaces:    ${publishable.length}`);
 console.log(`Current release tags:      ${releaseCandidates.length}`);
 console.log(`Already deployed:          ${releaseCandidates.length - undeployed.length}`);
 console.log(`Undeployed:                ${undeployed.length}`);
 console.log(`npm dist-tag:              ${npmDistTag}`);
+console.log(`FAST Element npm dist-tag: ${fastElementNpmDistTag}`);
 
 if (undeployed.length > 0) {
     console.log("\nUndeployed tags:");
@@ -221,6 +240,11 @@ if (undeployed.length > 0) {
 setAzureOutput("needsDeployment", undeployed.length > 0 ? "true" : "false");
 setAzureOutput("undeployedTags", undeployed.map(({ tag }) => tag).join(","));
 setAzureOutput("npmDistTag", npmDistTag);
+setAzureOutput("fastElementNpmDistTag", fastElementNpmDistTag);
+setAzureOutput(
+    "fastElementNeedsNpmDistTagUpdate",
+    shouldRetagFastElement ? "true" : "false",
+);
 for (const workspace of publishable) {
     setAzureOutput(`${workspace.outputPrefix}ReleaseTag`, workspace.tag);
     setAzureOutput(
