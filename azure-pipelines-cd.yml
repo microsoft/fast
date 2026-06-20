@@ -116,10 +116,6 @@ extends:
               path: $(npm_config_cache)
             displayName: "Cache npm"
 
-          - script: |
-              npm ci
-            displayName: "Install package dependencies"
-
           - task: DownloadGitHubRelease@0
             displayName: "Download @microsoft/fast-build release assets"
             condition: and(succeeded(), eq(variables['fastBuildNeedsDeployment'], 'true'))
