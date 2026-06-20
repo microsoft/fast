@@ -49,7 +49,7 @@ jobs:
       run: npm ci
 
     - name: Check for the presence of changed files inside ./change
-      run: npm run checkchange
+      run: npm run checkchange -- ${{ github.event_name == 'pull_request' && format('--branch origin/{0}', github.event.pull_request.base.ref) || '' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
