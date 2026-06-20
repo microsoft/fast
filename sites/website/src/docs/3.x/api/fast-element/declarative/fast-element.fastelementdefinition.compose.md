@@ -71,7 +71,7 @@ nameOrDef
 
 </td><td>
 
-The name of the element to define or a config object that describes the element to define.
+A config object whose `template` is a resolver.
 
 
 </td></tr>
