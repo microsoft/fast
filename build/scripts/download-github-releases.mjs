@@ -39,6 +39,7 @@ import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
+const rcDistTagPattern = /fast-element-v3-rc-(\d{8})/;
 let skipCratesCache;
 if (!CHECK_ONLY) {
     console.error(
@@ -177,6 +178,17 @@ function setAzureOutput(name, value) {
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
+function deriveNpmDistTag(workspaces) {
+    for (const { version } of workspaces) {
+        const match = rcDistTagPattern.exec(version);
+        if (match) {
+            return `rc-${match[1]}`;
+        }
+    }
+
+    return "latest";
+}
+
 const allTags = listGitTags();
 const tagSet = new Set(allTags);
 const deployed = new Set(
@@ -191,11 +203,13 @@ const releaseCandidates = publishable
     .sort((a, b) => a.tag.localeCompare(b.tag));
 const undeployed = releaseCandidates.filter(({ tag }) => !deployed.has(tag));
 const undeployedTagSet = new Set(undeployed.map(({ tag }) => tag));
+const npmDistTag = deriveNpmDistTag(publishable);
 
 console.log(`Publishable workspaces:    ${publishable.length}`);
 console.log(`Current release tags:      ${releaseCandidates.length}`);
 console.log(`Already deployed:          ${releaseCandidates.length - undeployed.length}`);
 console.log(`Undeployed:                ${undeployed.length}`);
+console.log(`npm dist-tag:              ${npmDistTag}`);
 
 if (undeployed.length > 0) {
     console.log("\nUndeployed tags:");
@@ -206,6 +220,7 @@ if (undeployed.length > 0) {
 
 setAzureOutput("needsDeployment", undeployed.length > 0 ? "true" : "false");
 setAzureOutput("undeployedTags", undeployed.map(({ tag }) => tag).join(","));
+setAzureOutput("npmDistTag", npmDistTag);
 for (const workspace of publishable) {
     setAzureOutput(`${workspace.outputPrefix}ReleaseTag`, workspace.tag);
     setAzureOutput(
