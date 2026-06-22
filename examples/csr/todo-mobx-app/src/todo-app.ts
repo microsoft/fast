@@ -1,5 +1,5 @@
 import { autorun } from "mobx";
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement, FASTElementDefinition, observable } from "@microsoft/fast-element";
 import { type Todo, type TodoListFilter, todoStore } from "./state/index.js";
 import { styles } from "./todo-app.styles.js";
 import { template } from "./todo-app.template.js";
@@ -51,7 +51,7 @@ export class TodoApp extends FASTElement {
     }
 }
 
-export const app = TodoApp.compose({
+export const app = FASTElementDefinition.compose(TodoApp, {
     name: "todo-app",
     template,
     styles,

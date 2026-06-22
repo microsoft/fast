@@ -323,7 +323,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
   template is provided at definition time, the Promise resolves immediately.
   When `template: declarativeTemplate()` is used, the Promise resolves after
   the matching `<f-template>` supplies the concrete template.
-- **`FASTElement.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
+- Subclass compose helpers are no longer part of the public authoring surface; use subclass `define()` for registration, or `FASTElementDefinition.compose()` when a deferred definition object is required.
 - **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
 

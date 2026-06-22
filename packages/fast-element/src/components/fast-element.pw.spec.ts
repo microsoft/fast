@@ -1,6 +1,25 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("FASTElement", () => {
+    test("does not expose compose as a static helper", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement } = await import("/main.js");
+
+            class TestElement extends FASTElement {}
+
+            return {
+                baseHasCompose: "compose" in FASTElement,
+                subclassHasCompose: "compose" in TestElement,
+            };
+        });
+
+        expect(result.baseHasCompose).toBe(false);
+        expect(result.subclassHasCompose).toBe(false);
+    });
+
     test("instanceof checks should provide TypeScript support for HTMLElement and FASTElement methods and properties", async ({
         page,
     }) => {

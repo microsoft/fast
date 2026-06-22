@@ -108,25 +108,6 @@ function createFASTElement<T extends typeof HTMLElement>(
     return type as any;
 }
 
-function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-    this: TType,
-    nameOrDef: string | PartialFASTElementDefinition<TType>,
-): Promise<FASTElementDefinition<TType>>;
-function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-    type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition<TType>,
-): Promise<FASTElementDefinition<TType>>;
-function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-    type: TType | string | PartialFASTElementDefinition<TType>,
-    nameOrDef?: string | PartialFASTElementDefinition<TType>,
-): Promise<FASTElementDefinition<TType>> {
-    if (isFunction(type)) {
-        return FASTElementDefinition.compose(type, nameOrDef);
-    }
-
-    return FASTElementDefinition.compose(this, type);
-}
-
 function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
     return typeof (value as PromiseLike<T> | undefined)?.then === "function";
 }
@@ -209,25 +190,6 @@ export interface FASTElementConstructor {
     ): Promise<TType>;
 
     /**
-     * Composes FASTElement metadata without registering the element.
-     * @param nameOrDef - The name of the element to compose or a definition object.
-     */
-    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-        this: TType,
-        nameOrDef: string | PartialFASTElementDefinition<TType>,
-    ): Promise<FASTElementDefinition<TType>>;
-
-    /**
-     * Composes FASTElement metadata without registering the element.
-     * @param type - The custom element type to compose.
-     * @param nameOrDef - The name of the element to compose or a definition object.
-     */
-    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-        type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition<TType>,
-    ): Promise<FASTElementDefinition<TType>>;
-
-    /**
      * Creates a new FASTElement base class inherited from the provided base type.
      * @param BaseType - The base element type to inherit from.
      */
@@ -258,12 +220,6 @@ export const FASTElement: FASTElementConstructor = Object.assign(
          * that describes the element to define.
          */
         define,
-
-        /**
-         * Defines metadata for a FASTElement which can be used to later define the element.
-         * @public
-         */
-        compose,
     },
 );
 

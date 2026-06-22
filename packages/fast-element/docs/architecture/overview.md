@@ -2,8 +2,8 @@
 
 `FASTElement` is an extension of `HTMLElement` which makes use of Custom Element APIs native to the browser. It also supplies the following methods:
 
-- The `compose` method combines the Custom Element name, template, style, and other options to create the definition for the Custom Element.
-- The `define` method makes use of the native Custom Element [`define()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) to register the Custom Element with a Custom Element Registry.
+- The `define` method combines the Custom Element name, template, style, and other options into a `FASTElementDefinition`, then uses the native Custom Element [`define()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) to register the Custom Element with a Custom Element Registry.
+- `FASTElementDefinition.compose()` can create a definition directly when registration needs to be deferred.
 - The `from` method allows the use of Customized Built-in elements, which extend from native elements such as `HTMLButtonElement`.
 
 ### Creating a Custom Element from FASTElement
@@ -13,14 +13,14 @@ A basic developer flow for defining a custom element looks like this:
 ```mermaid
 flowchart TD
     A[Create a <code>FASTElement</code> web component by extending the <code>FASTElement</code> class] --> F
-    F[Compose with <code>FASTElement.compose</code> to include template and styles] --> G[Define the component in the browser with <code>FASTElement.define</code>]
+    F[Prepare the definition with template and styles] --> G[Define the component in the browser with <code>define()</code>]
 ```
 
-Let's take a look at the compose step to see what the FAST architecture is doing at this stage.
+Let's take a look at the definition step to see what the FAST architecture is doing at this stage.
 
-### Composing a Custom Element
+### Defining a Custom Element
 
-The `FASTElement.compose()` function creates a new `FASTElementDefinition`, which includes all metadata needed for the element (such as templates, attributes, and styles). The element definition is registered with the global `FAST` for re-use, and the `FASTElementDefinition` is returned. The resulting object can be retrieved via `ElementController.definition`.
+The subclass `define()` method creates a new `FASTElementDefinition`, which includes all metadata needed for the element (such as templates, attributes, and styles), and registers it with the configured Custom Element Registry. When you need to create a definition before registering it, call `FASTElementDefinition.compose()` directly and later call `define()` on the returned definition. The resulting object can be retrieved via `ElementController.definition`.
 
 ## A Custom Element in JavaScript is sent to the Browser
 

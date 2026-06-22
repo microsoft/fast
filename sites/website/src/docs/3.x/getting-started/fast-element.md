@@ -274,11 +274,12 @@ export const FooRegistry = Object.freeze({
   registry: customElements,
 });
 
-HelloWorld.compose({
+HelloWorld.define({
   name: `${FooRegistry.prefix}-tab`,
   template,
   styles,
-}).define(FooRegistry);
+  registry: FooRegistry.registry,
+});
 ```
 
 ### Define Extensions

@@ -49,28 +49,6 @@ Creates a FASTElement instance.
 </td></tr>
 <tr><td>
 
-[compose(this, nameOrDef)](../fast-element.fastelementconstructor.compose/)
-
-
-</td><td>
-
-Composes FASTElement metadata without registering the element.
-
-
-</td></tr>
-<tr><td>
-
-[compose(type, nameOrDef)](../fast-element.fastelementconstructor.compose_1/)
-
-
-</td><td>
-
-Composes FASTElement metadata without registering the element.
-
-
-</td></tr>
-<tr><td>
-
 [define(this, nameOrDef, extensions)](../fast-element.fastelementconstructor.define/)
 
 

@@ -538,8 +538,6 @@ export const FASTElement: FASTElementConstructor;
 // @public
 export interface FASTElementConstructor {
     new (): FASTElement;
-    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(this: TType, nameOrDef: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
-    compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
     define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(this: TType, nameOrDef: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
     define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
     from<TBase extends typeof HTMLElement>(BaseType: TBase): {
