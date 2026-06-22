@@ -27,7 +27,7 @@ export interface FASTElement extends HTMLElement {
     $emit(
         type: string,
         detail?: any,
-        options?: Omit<CustomEventInit, "detail">
+        options?: Omit<CustomEventInit, "detail">,
     ): boolean | void;
 
     /**
@@ -58,13 +58,13 @@ export interface FASTElement extends HTMLElement {
     attributeChangedCallback(
         name: string,
         oldValue: string | null,
-        newValue: string | null
+        newValue: string | null,
     ): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
-    BaseType: T
+    BaseType: T,
 ): { new (): InstanceType<T> & FASTElement } {
     const type = class extends (BaseType as any) {
         public readonly $fastController!: ElementController;
@@ -78,7 +78,7 @@ function createFASTElement<T extends typeof HTMLElement>(
         public $emit(
             type: string,
             detail?: any,
-            options?: Omit<CustomEventInit, "detail">
+            options?: Omit<CustomEventInit, "detail">,
         ): boolean | void {
             return this.$fastController.emit(type, detail, options);
         }
@@ -94,7 +94,7 @@ function createFASTElement<T extends typeof HTMLElement>(
         public attributeChangedCallback(
             name: string,
             oldValue: string | null,
-            newValue: string | null
+            newValue: string | null,
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
@@ -105,17 +105,25 @@ function createFASTElement<T extends typeof HTMLElement>(
     return type as any;
 }
 
+/**
+ * Defines metadata for a FASTElement which can be used to later define the element.
+ * @deprecated Use `define()` with a definition object instead.
+ */
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType>;
+/**
+ * Defines metadata for a FASTElement which can be used to later define the element.
+ * @deprecated Use `define()` with a definition object instead.
+ */
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType> {
     if (isFunction(type)) {
         return FASTElementDefinition.compose(type, nameOrDef);
@@ -125,22 +133,22 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
 }
 
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
 ): Promise<FASTElementDefinition<TType>>;
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): Promise<FASTElementDefinition<TType>>;
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): Promise<TType> {
     if (isFunction(type)) {
         return new Promise<FASTElementDefinition<TType>>(resolve => {
@@ -163,15 +171,15 @@ function defineAsync<
 
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
 ): TType;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): TType;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): TType {
     if (isFunction(type)) {
         return FASTElementDefinition.compose(type, nameOrDef).define().type;
@@ -192,6 +200,10 @@ function from<TBase extends typeof HTMLElement>(BaseType: TBase) {
 export const FASTElement: {
     new (): FASTElement;
     define: typeof define;
+    /**
+     * Defines metadata for a FASTElement which can be used to later define the element.
+     * @deprecated Use `define()` with a definition object instead.
+     */
     compose: typeof compose;
     defineAsync: typeof defineAsync;
     from: typeof from;
@@ -214,6 +226,7 @@ export const FASTElement: {
     /**
      * Defines metadata for a FASTElement which can be used to later define the element.
      * @public
+     * @deprecated Use `define()` with a definition object instead.
      */
     compose,
 

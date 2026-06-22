@@ -3,7 +3,7 @@ import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
+import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -15,7 +15,7 @@ const fastElementBaseTypes = new Set<Function>();
  */
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
-    () => createTypeRegistry<FASTElementDefinition>()
+    () => createTypeRegistry<FASTElementDefinition>(),
 );
 
 export type { TypeRegistry };
@@ -125,7 +125,7 @@ export interface PartialFASTElementDefinition {
  * @public
  */
 export class FASTElementDefinition<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 > {
     private platformDefined = false;
 
@@ -204,7 +204,7 @@ export class FASTElementDefinition<
 
     private constructor(
         type: TType,
-        nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
+        nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition,
     ) {
         if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
@@ -243,8 +243,8 @@ export class FASTElementDefinition<
             nameOrConfig.shadowOptions === void 0
                 ? defaultShadowOptions
                 : nameOrConfig.shadowOptions === null
-                ? void 0
-                : { ...defaultShadowOptions, ...nameOrConfig.shadowOptions };
+                  ? void 0
+                  : { ...defaultShadowOptions, ...nameOrConfig.shadowOptions };
 
         this.elementOptions =
             nameOrConfig.elementOptions === void 0
@@ -281,12 +281,13 @@ export class FASTElementDefinition<
      * @param type - The type this definition is being created for.
      * @param nameOrDef - The name of the element to define or a config object
      * that describes the element to define.
+     * @deprecated Use `FASTElement.define()` with a definition object instead.
      */
     public static compose<
-        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
+        nameOrDef?: string | PartialFASTElementDefinition,
     ): FASTElementDefinition<TType> {
         if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
             return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
@@ -329,7 +330,7 @@ export class FASTElementDefinition<
 
             Observable.getNotifier(FASTElementDefinition.isRegistered).subscribe(
                 { handleChange: () => resolve(FASTElementDefinition.isRegistered[name]) },
-                name
+                name,
             );
         });
     };
@@ -344,15 +345,15 @@ export class FASTElementDefinition<
      * @alpha
      */
     public static composeAsync<
-        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
+        nameOrDef?: string | PartialFASTElementDefinition,
     ): Promise<FASTElementDefinition<TType>> {
         return new Promise(resolve => {
             if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
                 resolve(
-                    new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
+                    new FASTElementDefinition<TType>(class extends type {}, nameOrDef),
                 );
             }
 
@@ -362,12 +363,12 @@ export class FASTElementDefinition<
                 {
                     handleChange: () => {
                         definition.lifecycleCallbacks?.templateDidUpdate?.(
-                            definition.name
+                            definition.name,
                         );
                         resolve(definition);
                     },
                 },
-                "template"
+                "template",
             );
         });
     }
