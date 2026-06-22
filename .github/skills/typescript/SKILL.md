@@ -47,11 +47,12 @@ await MyElement.define({
 
 Use `compose()` when registration should be deferred — downstream libraries like Fluent
 Web Components use this pattern with a design-system registry. `compose()` returns a
-`Promise<FASTElementDefinition>` that always resolves immediately:
+`FASTElementDefinition` synchronously, or a `Promise<FASTElementDefinition>` when the
+definition's `template` is a resolver:
 
 ```ts
 // my-element.definition.ts
-export const definition = await MyElement.compose({
+export const definition = MyElement.compose({
     name: "my-element",
     template,
     styles,
@@ -59,6 +60,17 @@ export const definition = await MyElement.compose({
 
 // define.ts (side-effect import)
 definition.define();
+```
+
+```ts
+// my-element.definition-async.ts
+export const declarativeDefinition = MyElement.compose({
+    name: "my-element",
+    template: declarativeTemplate(),
+});
+
+// define.ts (side-effect import)
+void declarativeDefinition.then(definition => definition.define());
 ```
 
 ## Templates

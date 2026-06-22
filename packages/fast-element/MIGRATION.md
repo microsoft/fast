@@ -314,7 +314,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
 | Removed | Replacement |
 |---|---|
 | `FASTElement.defineAsync()` | Subclass `define()` calls (now return `Promise<TType>`) |
-| `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (now returns `Promise<FASTElementDefinition>`) |
+| `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (returns `Promise<FASTElementDefinition>` when given a template resolver) |
 | `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
 
 ### Changed behavior
@@ -323,8 +323,8 @@ This is a **breaking change** for SSR output format. Any system that produces or
   template is provided at definition time, the Promise resolves immediately.
   When `template: declarativeTemplate()` is used, the Promise resolves after
   the matching `<f-template>` supplies the concrete template.
-- **`FASTElement.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
-- **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
+- **`FASTElement.compose()`** returns a `FASTElementDefinition` synchronously. It returns a `Promise<FASTElementDefinition>` when the definition's `template` is a resolver function.
+- **`FASTElementDefinition.compose()`** returns a `FASTElementDefinition` synchronously. It returns a `Promise<FASTElementDefinition>` when the definition's `template` is a resolver function.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
 
 ### Migration steps
@@ -349,10 +349,16 @@ This is a **breaking change** for SSR output format. Any system that produces or
 
    ```typescript
    // Before
-   const def = await FASTElementDefinition.composeAsync(MyElement, name);
+   const def = await FASTElementDefinition.composeAsync(MyElement, {
+       name,
+       template: declarativeTemplate(),
+   });
 
    // After
-   const def = await FASTElementDefinition.compose(MyElement, name);
+   const def = await FASTElementDefinition.compose(MyElement, {
+       name,
+       template: declarativeTemplate(),
+   });
    ```
 
 3. Replace `registerAsync()` calls with `register()`:
@@ -365,14 +371,15 @@ This is a **breaking change** for SSR output format. Any system that produces or
    const el = await FASTElementDefinition.register(name);
    ```
 
-4. Add `await` to `compose()` calls that chain `.define()`:
+4. `compose()` calls that chain `.define()` stay synchronous unless `options`
+   passes a template resolver:
 
    ```typescript
-    // Before
+    // Concrete template or none — compose() is synchronous, no await needed
     FASTElementDefinition.compose(MyElement, options).define();
 
-    // After
-    (await FASTElementDefinition.compose(MyElement, options)).define();
+    // Resolver-backed template — compose() returns a Promise
+    (await FASTElementDefinition.compose(MyElement, resolverOptions)).define();
    ```
 
 ## Dynamic stylesheet behaviors (v3)
