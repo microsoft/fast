@@ -1,5 +1,7 @@
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { defineApp } from "./todo-app.js";
+import { TodoApp } from "./todo-app.js";
+import { styles } from "./todo-app.styles.js";
+import { template } from "./todo-app.template.js";
 import { DefaultTodoList, TodoList } from "./todo-list.js";
 
 // Before we allow the app to be defined, we want to
@@ -12,4 +14,8 @@ import { DefaultTodoList, TodoList } from "./todo-list.js";
 TodoList.provide(document, new DefaultTodoList());
 
 // Define the todo-app custom element
-void defineApp();
+TodoApp.define({
+    name: "todo-app",
+    template,
+    styles,
+});

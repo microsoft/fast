@@ -1,7 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { Observable, observable } from "@microsoft/fast-element/observable.js";
-import { styles } from "./todo-app.styles.js";
-import { template } from "./todo-app.template.js";
 import { type Todo, TodoList, type TodoListFilter } from "./todo-list.js";
 
 export class TodoApp extends FASTElement {
@@ -72,12 +70,4 @@ export class TodoApp extends FASTElement {
             0,
         );
     }
-}
-
-export function defineApp(): Promise<typeof TodoApp> {
-    return TodoApp.define({
-        name: "todo-app",
-        template,
-        styles,
-    });
 }

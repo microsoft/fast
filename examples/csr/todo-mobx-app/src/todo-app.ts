@@ -1,8 +1,6 @@
 import { autorun } from "mobx";
 import { FASTElement, observable } from "@microsoft/fast-element";
 import { type Todo, type TodoListFilter, todoStore } from "./state/index.js";
-import { styles } from "./todo-app.styles.js";
-import { template } from "./todo-app.template.js";
 
 /**
  * Root component for the MobX-backed todo example.
@@ -49,12 +47,4 @@ export class TodoApp extends FASTElement {
             todoStore.setFilter(next);
         }
     }
-}
-
-export function defineApp(): Promise<typeof TodoApp> {
-    return TodoApp.define({
-        name: "todo-app",
-        template,
-        styles,
-    });
 }
