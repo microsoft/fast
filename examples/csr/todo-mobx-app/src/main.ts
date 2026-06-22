@@ -1,6 +1,6 @@
 import "@microsoft/fast-examples-design-system/tokens.css";
 import { connectStoreToStorage, todoStore } from "./state/index.js";
-import { app } from "./todo-app.js";
+import { defineTodoApp } from "./todo-app.js";
 import "./todo-form.js";
 
 // Wire MobX's autorun to localStorage so the store is hydrated on load and
@@ -8,4 +8,4 @@ import "./todo-form.js";
 // lifetime of the page.
 connectStoreToStorage(todoStore, "fast-todo-mobx-app");
 
-app.define();
+defineTodoApp();
