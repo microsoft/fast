@@ -181,11 +181,50 @@ function setAzureOutput(name, value) {
 }
 
 function deriveNpmDistTag(workspaces) {
-    for (const { version } of workspaces) {
+    const rcDates = new Set();
+    const missingRcSuffix = [];
+    const isFastElementV3RcBranch = currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH;
+
+    for (const { name, version } of workspaces) {
         const match = rcDistTagPattern.exec(version);
         if (match) {
-            return `rc-${match[1]}`;
+            rcDates.add(match[1]);
+            continue;
         }
+
+        if (isFastElementV3RcBranch && name !== FAST_ELEMENT_PACKAGE) {
+            missingRcSuffix.push(`${name}@${version}`);
+        }
+    }
+
+    if (missingRcSuffix.length > 0) {
+        throw new Error(
+            `Cannot derive FAST Element v3 RC npm dist-tag because these undeployed companion package versions are missing a fast-element-v3-rc-YYYYMMDD suffix: ${missingRcSuffix.join(", ")}.`,
+        );
+    }
+
+    if (rcDates.size > 1) {
+        throw new Error(
+            `Cannot derive a single FAST Element v3 RC npm dist-tag from multiple dates: ${Array.from(
+                rcDates,
+            )
+                .map(date => `rc-${date}`)
+                .sort()
+                .join(", ")}.`,
+        );
+    }
+
+    if (rcDates.size === 1) {
+        return `rc-${Array.from(rcDates)[0]}`;
+    }
+
+    if (
+        workspaces.some(
+            ({ name, version }) =>
+                name === FAST_ELEMENT_PACKAGE && fastElementRcPattern.test(version),
+        )
+    ) {
+        return "rc";
     }
 
     return "latest";
@@ -215,9 +254,9 @@ const releaseCandidates = publishable
     .sort((a, b) => a.tag.localeCompare(b.tag));
 const undeployed = releaseCandidates.filter(({ tag }) => !deployed.has(tag));
 const undeployedTagSet = new Set(undeployed.map(({ tag }) => tag));
-const npmDistTag = deriveNpmDistTag(publishable);
-const fastElementNpmDistTag = deriveFastElementNpmDistTag(publishable, npmDistTag);
-const fastElement = publishable.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
+const npmDistTag = deriveNpmDistTag(undeployed);
+const fastElementNpmDistTag = deriveFastElementNpmDistTag(undeployed, npmDistTag);
+const fastElement = undeployed.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
 const shouldRetagFastElement =
     fastElement !== undefined &&
     undeployedTagSet.has(fastElement.tag) &&
