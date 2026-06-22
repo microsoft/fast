@@ -1,6 +1,6 @@
 {
-  "type": "minor",
-  "comment": "Deprecate the compose APIs in favor of define() and update related docs and examples.",
+  "type": "patch",
+  "comment": "fix: deprecate the compose APIs in favor of define() and update related docs and examples.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
