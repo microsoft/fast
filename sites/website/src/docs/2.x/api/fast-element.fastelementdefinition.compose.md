@@ -16,9 +16,9 @@ navigationOptions:
 ## FASTElementDefinition.compose() method
 
 > Warning: This API is now obsolete.
->
+> 
 > Use `FASTElement.define()` with a definition object instead.
->
+> 
 
 Creates an instance of FASTElementDefinition.
 
