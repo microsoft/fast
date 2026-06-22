@@ -314,6 +314,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
 | Removed | Replacement |
 |---|---|
 | `FASTElement.defineAsync()` | Subclass `define()` calls (now return `Promise<TType>`) |
+| `FASTElement.compose()` and subclass `compose()` calls | Subclass `define()` calls, or `FASTElementDefinition.compose()` when a deferred definition object is required |
 | `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (now returns `Promise<FASTElementDefinition>`) |
 | `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
 
@@ -345,7 +346,45 @@ This is a **breaking change** for SSR output format. Any system that produces or
     });
    ```
 
-2. Replace `composeAsync()` calls with `compose()` and add `await`:
+2. Replace subclass `compose()` calls that immediately register an element with
+   `define()`:
+
+   ```typescript
+    // Before
+    MyElement.compose({
+        name: "my-element",
+        template,
+        styles,
+    }).define();
+
+    // After
+    await MyElement.define({
+        name: "my-element",
+        template,
+        styles,
+    });
+   ```
+
+3. Replace subclass `compose()` calls that need a definition object with
+   `FASTElementDefinition.compose()`:
+
+   ```typescript
+    // Before
+    const def = MyElement.compose({
+        name: "my-element",
+        template,
+        styles,
+    });
+
+    // After
+    const def = await FASTElementDefinition.compose(MyElement, {
+        name: "my-element",
+        template,
+        styles,
+    });
+   ```
+
+4. Replace `composeAsync()` calls with `compose()` and add `await`:
 
    ```typescript
    // Before
@@ -355,7 +394,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
    const def = await FASTElementDefinition.compose(MyElement, name);
    ```
 
-3. Replace `registerAsync()` calls with `register()`:
+5. Replace `registerAsync()` calls with `register()`:
 
    ```typescript
    // Before
@@ -365,7 +404,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
    const el = await FASTElementDefinition.register(name);
    ```
 
-4. Add `await` to `compose()` calls that chain `.define()`:
+6. Add `await` to `FASTElementDefinition.compose()` calls that chain `.define()`:
 
    ```typescript
     // Before

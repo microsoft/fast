@@ -223,6 +223,47 @@ enableDebug();
 If you want debug behavior enabled automatically, keep using the root package
 `development` export or the debug rollup bundle.
 
+### `FASTElement.compose()` removed
+
+`FASTElement.compose()` and subclass `compose()` calls have been removed from
+the public authoring API. If the code immediately registers the element, call
+`define()` on the subclass instead:
+
+```ts
+// Before
+MyElement.compose({
+    name: "my-element",
+    template,
+    styles,
+}).define();
+
+// After
+await MyElement.define({
+    name: "my-element",
+    template,
+    styles,
+});
+```
+
+If the code needs to create a definition object before registering it, call
+`FASTElementDefinition.compose()` directly and await the returned definition:
+
+```ts
+// Before
+const definition = MyElement.compose({
+    name: "my-element",
+    template,
+    styles,
+});
+
+// After
+const definition = await FASTElementDefinition.compose(MyElement, {
+    name: "my-element",
+    template,
+    styles,
+});
+```
+
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
 The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.
