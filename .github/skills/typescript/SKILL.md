@@ -44,19 +44,16 @@ MyElement.define({
 });
 ```
 
-Use `compose()` when registration should be deferred — downstream libraries like Fluent
-Web Components use this pattern with a design-system registry:
+The `compose()` API is deprecated. Use `define()` with a definition object for
+new components:
 
 ```ts
-// my-element.definition.ts
-export const definition = MyElement.compose({
+// define.ts (side-effect import)
+MyElement.define({
     name: "my-element",
     template,
     styles,
 });
-
-// define.ts (side-effect import)
-definition.define();
 ```
 
 ## Templates

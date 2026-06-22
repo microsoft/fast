@@ -443,6 +443,7 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    // @deprecated
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     // @alpha
     static composeAsync<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
@@ -1111,10 +1112,10 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:63:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:64:5 - (ae-forgotten-export) The symbol "defineAsync" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:65:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:70:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:75:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:76:5 - (ae-forgotten-export) The symbol "defineAsync" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:77:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
