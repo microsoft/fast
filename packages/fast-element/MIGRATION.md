@@ -314,8 +314,8 @@ This is a **breaking change** for SSR output format. Any system that produces or
 | Removed | Replacement |
 |---|---|
 | `FASTElement.defineAsync()` | Subclass `define()` calls (now return `Promise<TType>`) |
-| `FASTElement.compose()` and subclass `compose()` calls | Subclass `define()` calls, or `FASTElementDefinition.compose()` when a deferred definition object is required |
-| `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (now returns `Promise<FASTElementDefinition>`) |
+| `FASTElement.compose()` and subclass `compose()` calls | Subclass `define()` calls |
+| `FASTElementDefinition.composeAsync()` | Subclass `define()` calls |
 | `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
 
 ### Changed behavior
@@ -324,8 +324,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
   template is provided at definition time, the Promise resolves immediately.
   When `template: declarativeTemplate()` is used, the Promise resolves after
   the matching `<f-template>` supplies the concrete template.
-- Subclass compose helpers are no longer part of the public authoring surface; use subclass `define()` for registration, or `FASTElementDefinition.compose()` when a deferred definition object is required.
-- **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
+- Subclass compose helpers are no longer part of the public authoring surface; use subclass `define()` for registration.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
 
 ### Migration steps
@@ -365,36 +364,26 @@ This is a **breaking change** for SSR output format. Any system that produces or
     });
    ```
 
-3. Replace subclass `compose()` calls that need a definition object with
-   `FASTElementDefinition.compose()`:
-
-   ```typescript
-    // Before
-    const def = MyElement.compose({
-        name: "my-element",
-        template,
-        styles,
-    });
-
-    // After
-    const def = await FASTElementDefinition.compose(MyElement, {
-        name: "my-element",
-        template,
-        styles,
-    });
-   ```
-
-4. Replace `composeAsync()` calls with `compose()` and add `await`:
+3. Replace `FASTElementDefinition.composeAsync()` calls that register an element
+   with subclass `define()`:
 
    ```typescript
    // Before
-   const def = await FASTElementDefinition.composeAsync(MyElement, name);
+   (await FASTElementDefinition.composeAsync(MyElement, {
+       name: "my-element",
+       template,
+       styles,
+   })).define();
 
    // After
-   const def = await FASTElementDefinition.compose(MyElement, name);
+   await MyElement.define({
+       name: "my-element",
+       template,
+       styles,
+   });
    ```
 
-5. Replace `registerAsync()` calls with `register()`:
+4. Replace `registerAsync()` calls with `register()`:
 
    ```typescript
    // Before
@@ -404,14 +393,15 @@ This is a **breaking change** for SSR output format. Any system that produces or
    const el = await FASTElementDefinition.register(name);
    ```
 
-6. Add `await` to `FASTElementDefinition.compose()` calls that chain `.define()`:
+5. Replace `FASTElementDefinition.compose()` calls that chain `.define()` with
+   subclass `define()`:
 
    ```typescript
     // Before
     FASTElementDefinition.compose(MyElement, options).define();
 
     // After
-    (await FASTElementDefinition.compose(MyElement, options)).define();
+    await MyElement.define(options);
    ```
 
 ## Dynamic stylesheet behaviors (v3)

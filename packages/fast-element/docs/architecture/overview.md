@@ -3,7 +3,6 @@
 `FASTElement` is an extension of `HTMLElement` which makes use of Custom Element APIs native to the browser. It also supplies the following methods:
 
 - The `define` method combines the Custom Element name, template, style, and other options into a `FASTElementDefinition`, then uses the native Custom Element [`define()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) to register the Custom Element with a Custom Element Registry.
-- `FASTElementDefinition.compose()` can create a definition directly when registration needs to be deferred.
 - The `from` method allows the use of Customized Built-in elements, which extend from native elements such as `HTMLButtonElement`.
 
 ### Creating a Custom Element from FASTElement
@@ -20,7 +19,7 @@ Let's take a look at the definition step to see what the FAST architecture is do
 
 ### Defining a Custom Element
 
-The subclass `define()` method creates a new `FASTElementDefinition`, which includes all metadata needed for the element (such as templates, attributes, and styles), and registers it with the configured Custom Element Registry. When you need to create a definition before registering it, call `FASTElementDefinition.compose()` directly and later call `define()` on the returned definition. The resulting object can be retrieved via `ElementController.definition`.
+The subclass `define()` method creates a new `FASTElementDefinition`, which includes all metadata needed for the element (such as templates, attributes, and styles), and registers it with the configured Custom Element Registry. The resulting object can be retrieved via `ElementController.definition`.
 
 ## A Custom Element in JavaScript is sent to the Browser
 

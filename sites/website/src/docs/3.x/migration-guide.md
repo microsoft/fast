@@ -245,25 +245,6 @@ await MyElement.define({
 });
 ```
 
-If the code needs to create a definition object before registering it, call
-`FASTElementDefinition.compose()` directly and await the returned definition:
-
-```ts
-// Before
-const definition = MyElement.compose({
-    name: "my-element",
-    template,
-    styles,
-});
-
-// After
-const definition = await FASTElementDefinition.compose(MyElement, {
-    name: "my-element",
-    template,
-    styles,
-});
-```
-
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
 The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.

@@ -1,4 +1,3 @@
-import { FASTElementDefinition } from "@microsoft/fast-element";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { Observable, observable } from "@microsoft/fast-element/observable.js";
 import { styles } from "./todo-app.styles.js";
@@ -75,9 +74,10 @@ export class TodoApp extends FASTElement {
     }
 }
 
-// Compose without immediately defining so startup can provide context first.
-export const app = await FASTElementDefinition.compose(TodoApp, {
-    name: "todo-app",
-    template,
-    styles,
-});
+export function defineApp(): Promise<typeof TodoApp> {
+    return TodoApp.define({
+        name: "todo-app",
+        template,
+        styles,
+    });
+}
