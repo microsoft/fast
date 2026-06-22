@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "chore: include fast-router in the fast-element v3 RC prerelease train.",
+  "packageName": "@microsoft/fast-router",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
