@@ -14,20 +14,19 @@
 performance.mark("todo-hydration-started");
 
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 import type { TodoApp } from "./todo-app/todo-app.js";
 
-let resolveHydrationComplete!: () => void;
-const hydrationComplete = new Promise<void>(resolve => {
-    resolveHydrationComplete = resolve;
+let resolveHydrationReady!: () => void;
+const hydrationReady = new Promise<void>(resolve => {
+    resolveHydrationReady = resolve;
 });
 
-enableHydration({
-    hydrationComplete() {
-        performance.measure("todo-hydration-completed", "todo-hydration-started");
-        console.log("Hydration complete!");
-        resolveHydrationComplete();
-    },
+enableHydration();
+void whenHydrated.then(() => {
+    performance.measure("todo-hydration-completed", "todo-hydration-started");
+    console.log("Hydration complete!");
+    resolveHydrationReady();
 });
 
 const [{ todoAppDefinition }, { todoItemDefinition }] = await Promise.all([
@@ -35,7 +34,7 @@ const [{ todoAppDefinition }, { todoItemDefinition }] = await Promise.all([
     import("./todo-item/todo-item.js"),
 ]);
 
-await Promise.all([todoAppDefinition, todoItemDefinition, hydrationComplete]);
+await Promise.all([todoAppDefinition, todoItemDefinition, hydrationReady]);
 document
     .querySelectorAll<TodoApp>("todo-app")
     .forEach(element => element.syncFormControls());

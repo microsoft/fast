@@ -125,7 +125,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[declarativeTemplate(callbacks)](../fast-element.declarativetemplate/)
+[declarativeTemplate()](../fast-element.declarativetemplate/)
 
 
 </td><td>
@@ -388,17 +388,6 @@ A node that can be targeted by styles.
 </td><td>
 
 A template capable of rendering views not specifically connected to custom elements.
-
-
-</td></tr>
-<tr><td>
-
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for template events.
 
 
 </td></tr>

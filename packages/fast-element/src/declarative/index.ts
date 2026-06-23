@@ -10,7 +10,6 @@ export {
     type FASTElementTemplateResolver,
     type PartialFASTElementDefinition,
     type ShadowRootOptions,
-    type TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 export {
     type AccessCachedPath,

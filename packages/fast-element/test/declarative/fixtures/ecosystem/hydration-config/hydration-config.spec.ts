@@ -5,7 +5,7 @@ test.describe("Hydration configuration", () => {
         page,
     }) => {
         await page.goto("/fixtures/ecosystem/hydration-config/");
-        await page.waitForFunction(() => (window as any).hydrationCompletionCount >= 1);
+        await page.waitForFunction(() => (window as any).hydrationCompleted === true);
 
         const supportsSetHTMLUnsafe = await page.evaluate(
             () => "setHTMLUnsafe" in Element.prototype,
@@ -70,7 +70,6 @@ test.describe("Hydration configuration", () => {
             await new Promise(resolve => setTimeout(resolve, 0));
 
             return {
-                completionCount: (window as any).hydrationCompletionCount,
                 isHydrated,
                 serverNodeAttribute,
                 text: label.textContent,
@@ -80,6 +79,5 @@ test.describe("Hydration configuration", () => {
         expect(result.isHydrated).toBe(true);
         expect(result.serverNodeAttribute).toBe("late");
         expect(result.text).toBe("Updated");
-        expect(result.completionCount).toBeGreaterThanOrEqual(2);
     });
 });

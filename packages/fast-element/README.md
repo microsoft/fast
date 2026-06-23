@@ -189,18 +189,17 @@ object and `$c` for the execution context.
 Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({
-    hydrationComplete() {
-        console.log("hydration complete");
-    },
-});
+enableHydration();
+
+await whenHydrated;
+console.log("hydration complete");
 ```
 
 By default, hydration handles the initial prerendered batch and then no-ops
-after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
-after the initial batch, keep the hydration hook active:
+after the active hydration batch completes. If your app streams Declarative
+Shadow DOM after the initial batch, keep the hydration hook active:
 
 ```typescript
 import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
@@ -242,24 +241,6 @@ enableHydration({ debugger: hydrationDebugger() });
 
 The debugger module is tree-shaken out of production hydration bundles when
 not imported, so the rich diagnostic helpers only land in builds that opt in.
-
-Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
-
-```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-
-MyComponent.define({
-    name: "my-component",
-    template: declarativeTemplate({
-        elementWillHydrate(source) {
-            console.log(`${source.localName} will hydrate`);
-        },
-        elementDidHydrate(source) {
-            console.log(`${source.localName} hydrated`);
-        },
-    }),
-});
-```
 
 Component authors can await both promises to distinguish prerendered content from successful hydration:
 

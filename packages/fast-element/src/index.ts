@@ -42,7 +42,6 @@ export type {
 export {
     FASTElementDefinition,
     fastElementRegistry,
-    type TemplateLifecycleCallbacks,
 } from "./components/fast-definitions.js";
 export {
     customElement,

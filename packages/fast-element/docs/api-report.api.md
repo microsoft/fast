@@ -556,7 +556,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     static isRegistered: Record<string, Function>;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @alpha
@@ -827,7 +826,6 @@ export const Parser: Readonly<{
 export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly schema?: Schema;
@@ -1138,16 +1136,6 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
     inline(): CaptureType<TSource, TParent>;
-}
-
-// @public
-export interface TemplateLifecycleCallbacks {
-    elementDidDefine?(name: string): void;
-    elementDidHydrate?(source: HTMLElement): void;
-    elementDidRegister?(name: string): void;
-    elementWillHydrate?(source: HTMLElement): void;
-    templateDidUpdate?(name: string): void;
-    templateWillUpdate?(name: string): void;
 }
 
 // @public

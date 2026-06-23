@@ -40,42 +40,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
 }
 
 /**
- * Lifecycle callbacks for template events.
- * @public
- */
-export interface TemplateLifecycleCallbacks {
-    /**
-     * Called after the JS class definition has been registered.
-     */
-    elementDidRegister?(name: string): void;
-
-    /**
-     * Called before the template has been evaluated and assigned.
-     */
-    templateWillUpdate?(name: string): void;
-
-    /**
-     * Called after the template has been assigned to the definition.
-     */
-    templateDidUpdate?(name: string): void;
-
-    /**
-     * Called after the custom element has been defined.
-     */
-    elementDidDefine?(name: string): void;
-
-    /**
-     * Called before an individual element's hydration begins.
-     */
-    elementWillHydrate?(source: HTMLElement): void;
-
-    /**
-     * Called after an individual element's hydration has finished.
-     */
-    elementDidHydrate?(source: HTMLElement): void;
-}
-
-/**
  * A callback that receives a FASTElementDefinition during element registration.
  * Extensions are invoked before the element is registered with the platform,
  * allowing plugins to inspect or act on the resolved definition.
@@ -158,6 +122,84 @@ function getRegisteredTypes(
     return registeredTypes;
 }
 
+/**
+ * Resolves when the named element is registered with the FAST element registry
+ * or defined with the platform custom element registry.
+ * @param name - The name of the custom element to wait for.
+ * @param registry - The custom element registry to observe.
+ * @public
+ */
+export function whenRegistered(
+    name: string,
+    registry: CustomElementRegistry = customElements,
+): Promise<Function> {
+    const definedType = registry.get(name);
+
+    if (definedType !== void 0) {
+        return Promise.resolve(definedType as Function);
+    }
+
+    const registeredTypes = getRegisteredTypes(registry);
+
+    if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
+        Observable.defineProperty(registeredTypes, name);
+    }
+
+    const registeredType = registeredTypes[name];
+
+    if (registeredType) {
+        return Promise.resolve(registeredType);
+    }
+
+    return new Promise((resolve, reject) => {
+        const notifier = Observable.getNotifier(registeredTypes);
+        let settled = false;
+        let subscriber: { handleChange(): void };
+
+        const cleanup = () => {
+            notifier.unsubscribe(subscriber, name);
+        };
+
+        const settle = (value: Function) => {
+            if (settled) {
+                return;
+            }
+
+            settled = true;
+            cleanup();
+            resolve(value);
+        };
+
+        const fail = (error: unknown) => {
+            if (settled) {
+                return;
+            }
+
+            settled = true;
+            cleanup();
+            reject(error);
+        };
+
+        subscriber = {
+            handleChange: () => {
+                const value = registeredTypes[name];
+
+                if (value) {
+                    settle(value);
+                }
+            },
+        };
+
+        notifier.subscribe(subscriber, name);
+
+        try {
+            registry.whenDefined(name).then(value => settle(value as Function), fail);
+        } catch (error) {
+            fail(error);
+        }
+    });
+}
+
 function finalizeResolvedTemplate<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
@@ -167,10 +209,8 @@ function finalizeResolvedTemplate<
     pendingTemplateResolutions.delete(
         definition as FASTElementDefinition<Constructable<HTMLElement>>,
     );
-
     if (definition.template === void 0 && template !== void 0) {
         definition.template = template;
-        definition.lifecycleCallbacks?.templateDidUpdate?.(definition.name);
     }
 
     if (definition.template !== void 0) {
@@ -434,11 +474,6 @@ export interface PartialFASTElementDefinition<
     readonly registry?: CustomElementRegistry;
 
     /**
-     * Lifecycle callbacks for template events.
-     */
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
-
-    /**
      * The optional schema associated with the custom element definition.
      * Declarative templates assign this automatically during template resolution.
      * Non-declarative callers can provide one for schema-driven extensions.
@@ -511,11 +546,6 @@ export class FASTElementDefinition<
      * The registry to register this component in by default.
      */
     readonly registry: CustomElementRegistry;
-
-    /**
-     * Lifecycle callbacks for template events.
-     */
-    public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 
     /**
      * The optional schema associated with the custom element definition.
@@ -625,7 +655,6 @@ export class FASTElementDefinition<
                         if (template !== void 0 && !registry.get(this.name)) {
                             this.platformDefined = true;
                             registry.define(this.name, type as any, this.elementOptions);
-                            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
                         }
                     })
                     .catch(error => {
@@ -635,10 +664,8 @@ export class FASTElementDefinition<
 
                 return this;
             }
-
             this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
-            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
         }
 
         return this;
@@ -690,39 +717,10 @@ export class FASTElementDefinition<
      * @param name - The name of the defined custom element.
      * @alpha
      */
-    public static register = async (
+    public static register: (
         name: string,
-        registry: CustomElementRegistry = customElements,
-    ): Promise<Function> => {
-        const registeredTypes = getRegisteredTypes(registry);
-
-        if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
-            Observable.defineProperty(registeredTypes, name);
-        }
-
-        return new Promise(resolve => {
-            if (registeredTypes[name]) {
-                resolve(registeredTypes[name]);
-                return;
-            }
-
-            const notifier = Observable.getNotifier(registeredTypes);
-            const subscriber = {
-                handleChange: () => {
-                    const value = registeredTypes[name];
-
-                    if (!value) {
-                        return;
-                    }
-
-                    notifier.unsubscribe(subscriber, name);
-                    resolve(value);
-                },
-            };
-
-            notifier.subscribe(subscriber, name);
-        });
-    };
+        registry?: CustomElementRegistry,
+    ) => Promise<Function> = whenRegistered;
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

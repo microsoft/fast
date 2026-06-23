@@ -8,7 +8,7 @@ import { ElementController } from "./element-controller.js";
 import { isHydratable } from "./hydration.js";
 import { type HydrationOptions, HydrationTracker } from "./hydration-tracker.js";
 
-export { StopHydration } from "./hydration-tracker.js";
+export { StopHydration, whenHydrated } from "./hydration-tracker.js";
 export type { HydrationOptions };
 
 /**
@@ -31,9 +31,10 @@ let hookInstalled = false;
  * Safe to call multiple times — the hydration hook is installed once
  * and subsequent calls merge their options into the shared tracker.
  * By default, the hook stops hydrating new prerendered elements after
- * the global `hydrationComplete` callback. Set
- * `stopHydration` to `StopHydration.never` for streaming scenarios
- * that append hydratable Declarative Shadow DOM after the initial batch.
+ * the initial hydration batch completes. Set `stopHydration` to
+ * `StopHydration.never` for streaming scenarios that append hydratable
+ * Declarative Shadow DOM after the initial batch. Await `whenHydrated`
+ * to run code after the active hydration batch completes.
  *
  * Pass `debugger: hydrationDebugger()` to swap the default minimal
  * hydration mismatch error message for a rich "Expected / Received"
@@ -44,14 +45,14 @@ let hookInstalled = false;
  *
  * @example
  * ```ts
- * import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+ * import { enableHydration, StopHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
  *
  * enableHydration({
  *     stopHydration: StopHydration.never,
- *     hydrationComplete() {
- *         console.log("hydration complete");
- *     },
  * });
+ *
+ * await whenHydrated;
+ * console.log("hydration complete");
  * ```
  *
  * @example Rich hydration mismatch diagnostics
@@ -61,7 +62,7 @@ let hookInstalled = false;
  * enableHydration({ debugger: hydrationDebugger() });
  * ```
  *
- * @param options - Optional global hydration callbacks and behavior.
+ * @param options - Optional hydration behavior.
  * @public
  */
 export function enableHydration(options?: HydrationOptions): void {
@@ -81,16 +82,9 @@ export function enableHydration(options?: HydrationOptions): void {
                 return false;
             }
 
-            const callbacks = controller.definition.lifecycleCallbacks;
             activeTracker.add(element);
 
             try {
-                try {
-                    callbacks?.elementWillHydrate?.(element);
-                } catch {
-                    // A lifecycle callback must never prevent hydration.
-                }
-
                 const firstChild = host.firstChild!;
                 const lastChild = host.lastChild!;
 
@@ -118,12 +112,6 @@ export function enableHydration(options?: HydrationOptions): void {
                 (view as any as Mutable<ViewController>).sourceLifetime =
                     SourceLifetime.coupled;
                 (controller as any).hasExistingShadowRoot = false;
-
-                try {
-                    callbacks?.elementDidHydrate?.(element);
-                } catch {
-                    // A lifecycle callback must never prevent post-hydration work.
-                }
             } finally {
                 activeTracker.remove(element);
             }

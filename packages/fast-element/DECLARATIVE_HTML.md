@@ -7,7 +7,7 @@ The declarative entrypoint in `@microsoft/fast-element` interprets FAST
 declarative HTML syntax as a template for a FAST web component.
 
 This document focuses on declarative-runtime implementation details:
-template structure, prerendered markup requirements, lifecycle callbacks,
+template structure, prerendered markup requirements, promise readiness APIs,
 binding configuration, syntax, and integration testing.
 
 For package installation, using `declarativeTemplate()`, extension setup, and
@@ -65,35 +65,25 @@ hydratable comment markers and datasets when prerendered content is generated.
 For the required marker format and initial-state application details, see
 [DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
 
-## Lifecycle Callbacks
+## Promise readiness APIs
 
-FAST Element's declarative APIs provide lifecycle callbacks that allow you to
-hook into template processing and hydration. The callbacks are split by scope:
-
-| Scope | API | Callbacks |
-|---|---|---|
-| Per element | `declarativeTemplate(callbacks)` | `elementDidRegister`, `templateWillUpdate`, `templateDidUpdate`, `elementDidDefine`, `elementWillHydrate`, `elementDidHydrate` |
-| Global hydration | `enableHydration(options)` | `hydrationStarted`, `hydrationComplete` |
+FAST Element's declarative APIs expose promises for the registration and
+hydration readiness points that are useful to application code.
 
 Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
-you want prerendered Declarative Shadow DOM to be reused:
+you want prerendered Declarative Shadow DOM to be reused, then await
+`whenHydrated` when code needs to run after the active hydration batch:
 
 ```typescript
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({
-    hydrationStarted() {
-        console.log("Hydration started");
-    },
-    hydrationComplete() {
-        console.log("All elements hydrated");
-    },
-});
+enableHydration();
+await whenHydrated;
 ```
 
-The hydration hook no-ops for new prerendered elements after the first
-`hydrationComplete` callback by default. Streaming scenarios that append
-hydratable Declarative Shadow DOM later can keep the hook active:
+The hydration hook no-ops for new prerendered elements after the initial
+hydration batch completes by default. Streaming scenarios that append hydratable
+Declarative Shadow DOM later can keep the hook active:
 
 ```typescript
 import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
@@ -103,47 +93,15 @@ enableHydration({
 });
 ```
 
-Pass per-element lifecycle callbacks directly to `declarativeTemplate()`:
+To wait for an element class to be registered with the FAST registry or the
+platform custom element registry, use `whenRegistered` from the registry
+subpath:
 
 ```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { whenRegistered } from "@microsoft/fast-element/registry.js";
 
-MyComponent.define({
-    name: "my-component",
-    template: declarativeTemplate({
-        elementDidRegister(name) {
-            console.log(`Element registered: ${name}`);
-        },
-        templateWillUpdate(name) {
-            console.log(`Template updating: ${name}`);
-        },
-        templateDidUpdate(name) {
-            console.log(`Template updated: ${name}`);
-        },
-        elementDidDefine(name) {
-            console.log(`Element defined: ${name}`);
-        },
-        elementWillHydrate(source) {
-            console.log(`Element will hydrate: ${source.localName}`);
-        },
-        elementDidHydrate(source) {
-            console.log(`Element hydrated: ${source.localName}`);
-        },
-    }),
-});
+await whenRegistered("my-component");
 ```
-
-The lifecycle callbacks occur in this general sequence:
-
-1. `elementDidRegister(name)`
-2. `templateWillUpdate(name)` → template processing → `templateDidUpdate(name)`
-3. `elementDidDefine(name)`
-4. If `enableHydration()` was called and the element has prerendered content:
-   `hydrationStarted()` → `elementWillHydrate(source)` → hydration →
-   `elementDidHydrate(source)` → `hydrationComplete()`
-
-Template processing is asynchronous and happens independently for each element,
-so callbacks for different elements may interleave.
 
 ## `observerMap`
 

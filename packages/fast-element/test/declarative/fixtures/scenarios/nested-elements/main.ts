@@ -2,40 +2,31 @@ import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { whenRegistered } from "@microsoft/fast-element/registry.js";
 
 (window as any).messages = [];
 
-const lifecycleCallbacks = {
-    elementDidDefine(name: string) {
-        (window as any).messages.push(
-            `Element did define: ${name} [${performance.now()}]`,
-        );
-    },
-    elementDidRegister(name: string) {
-        (window as any).messages.push(
-            `Element did register: ${name} [${performance.now()}]`,
-        );
-    },
-    templateDidUpdate(name: string) {
-        (window as any).messages.push(
-            `Template did update: ${name} [${performance.now()}]`,
-        );
-    },
-    templateWillUpdate(name: string) {
-        (window as any).messages.push(
-            `Template will update: ${name} [${performance.now()}]`,
-        );
-    },
-};
+const trackedElements = [
+    "test-element-repeat-event",
+    "test-when-in-repeat",
+    "parent-element",
+    "child-element",
+    "grand-child-element",
+];
 
-enableHydration({
-    hydrationComplete() {
-        (window as any).messages.push(`Hydration complete [${performance.now()}]`);
-        (window as any).hydrationCompleted = true;
-    },
+for (const name of trackedElements) {
+    void whenRegistered(name).then(() => {
+        (window as any).messages.push(`Element registered: ${name}`);
+    });
+}
+
+enableHydration();
+void whenHydrated.then(() => {
+    (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+    (window as any).hydrationCompleted = true;
 });
 
 // Mock data sources - simulating fetched data
@@ -166,7 +157,7 @@ export class TestElementRepeatEvent extends FASTElement {
 }
 TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
-    template: declarativeTemplate(lifecycleCallbacks),
+    template: declarativeTemplate(),
 });
 
 export class TestWhenInRepeat extends FASTElement {
@@ -184,7 +175,7 @@ export class TestWhenInRepeat extends FASTElement {
 TestWhenInRepeat.define(
     {
         name: "test-when-in-repeat",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -192,7 +183,7 @@ TestWhenInRepeat.define(
 ItemList.define(
     {
         name: "parent-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -200,7 +191,7 @@ ItemList.define(
 Item.define(
     {
         name: "child-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -208,7 +199,7 @@ Item.define(
 GrandChildItem.define(
     {
         name: "grand-child-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

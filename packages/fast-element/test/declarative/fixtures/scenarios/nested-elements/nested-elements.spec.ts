@@ -11,16 +11,16 @@ test.describe("Nested Elements Hydration", () => {
 
         const messages = (await page.evaluate("window.messages")) as string[];
 
-        // Verify elements were defined
-        const parentDefined = messages.some(message =>
-            message.startsWith("Element did define: parent-element"),
+        // Verify element registration promises resolved
+        const parentRegistered = messages.some(message =>
+            message.startsWith("Element registered: parent-element"),
         );
-        const childDefined = messages.some(message =>
-            message.startsWith("Element did define: child-element"),
+        const childRegistered = messages.some(message =>
+            message.startsWith("Element registered: child-element"),
         );
 
-        expect(parentDefined).toBe(true);
-        expect(childDefined).toBe(true);
+        expect(parentRegistered).toBe(true);
+        expect(childRegistered).toBe(true);
 
         // Verify hydration completed
         const hydrationComplete = messages.some(message =>

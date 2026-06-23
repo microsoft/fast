@@ -2,7 +2,6 @@ import { getDefinitionSchemaTransforms } from "../components/definition-schema-t
 import type {
     FASTElementDefinition,
     FASTElementTemplateResolver,
-    TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 import { Schema } from "../components/schema.js";
 import type { Constructable } from "../interfaces.js";
@@ -17,10 +16,6 @@ import { escapeBracesInCodeElements, transformInnerHTML } from "./utilities.js";
 const templateElementName = "f-template";
 
 const ensuredTemplateElements = new WeakMap<CustomElementRegistry, Promise<void>>();
-
-type MutableFASTElementDefinition = FASTElementDefinition & {
-    lifecycleCallbacks?: TemplateLifecycleCallbacks;
-};
 
 function isTemplateElementConstructor(
     value: CustomElementConstructor | undefined,
@@ -69,67 +64,18 @@ async function ensureTemplateElementDefined(
     return pending;
 }
 
-function chainLifecycleCallback<TArgs extends unknown[]>(
-    first: ((...args: TArgs) => void) | undefined,
-    second: ((...args: TArgs) => void) | undefined,
-): ((...args: TArgs) => void) | undefined {
-    if (!first) {
-        return second;
-    }
-
-    if (!second) {
-        return first;
-    }
-
-    return (...args: TArgs) => {
-        first(...args);
-        second(...args);
-    };
-}
-
 /**
  * Returns a declarative template resolver that waits for the matching
  * `<f-template>` element and resolves it into a concrete `ViewTemplate`.
  *
- * @param callbacks - Optional per-element lifecycle callbacks.
  * @public
  */
 export function declarativeTemplate<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
->(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver<TType> {
+>(): FASTElementTemplateResolver<TType> {
     ensureDeclarativeRuntime();
 
     return async definition => {
-        if (callbacks) {
-            const existing = definition.lifecycleCallbacks;
-            (definition as MutableFASTElementDefinition).lifecycleCallbacks = {
-                elementDidRegister: chainLifecycleCallback(
-                    existing?.elementDidRegister,
-                    callbacks.elementDidRegister,
-                ),
-                templateWillUpdate: chainLifecycleCallback(
-                    existing?.templateWillUpdate,
-                    callbacks.templateWillUpdate,
-                ),
-                templateDidUpdate: chainLifecycleCallback(
-                    existing?.templateDidUpdate,
-                    callbacks.templateDidUpdate,
-                ),
-                elementDidDefine: chainLifecycleCallback(
-                    existing?.elementDidDefine,
-                    callbacks.elementDidDefine,
-                ),
-                elementWillHydrate: chainLifecycleCallback(
-                    existing?.elementWillHydrate,
-                    callbacks.elementWillHydrate,
-                ),
-                elementDidHydrate: chainLifecycleCallback(
-                    existing?.elementDidHydrate,
-                    callbacks.elementDidHydrate,
-                ),
-            };
-        }
-
         await ensureTemplateElementDefined(definition.registry);
         return declarativeTemplateBridge.requestTemplate(definition);
     };
@@ -197,9 +143,6 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         if (templates.length === 0) {
             throw FAST.error(Message.noTemplateProvided, { name });
         }
-
-        definition.lifecycleCallbacks?.elementDidRegister?.(name);
-        definition.lifecycleCallbacks?.templateWillUpdate?.(name);
 
         const schema = definition.schema ?? new Schema(name);
         definition.schema = schema;

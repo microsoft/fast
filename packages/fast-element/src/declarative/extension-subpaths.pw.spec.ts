@@ -36,23 +36,28 @@ test.describe("extension subpaths", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
             const { FASTElementDefinition, fastElementRegistry } = await import(
-                // @ts-expect-error: Client module.
                 "/extension-subpaths-main.js"
             );
 
             class RegistrySubpathElement extends HTMLElement {}
 
             const name = `registry-subpath-element-${crypto.randomUUID()}`;
+            const registered = fastElementRegistry.whenRegistered(name);
             const definition = await FASTElementDefinition.compose(
                 RegistrySubpathElement,
                 { name },
             );
+            const registeredDefinition = await registered;
             definition.define();
             const instance = document.createElement(name);
 
             return {
                 hasRegistry: typeof fastElementRegistry.getByType === "function",
+                hasWhenRegistered:
+                    typeof fastElementRegistry.whenRegistered === "function",
+                whenRegisteredReturnsDefinition: registeredDefinition === definition,
                 getByTypeReturnsDefinition:
                     fastElementRegistry.getByType(RegistrySubpathElement) === definition,
                 getForInstanceReturnsDefinition:
@@ -61,6 +66,8 @@ test.describe("extension subpaths", () => {
         });
 
         expect(result.hasRegistry).toBe(true);
+        expect(result.hasWhenRegistered).toBe(true);
+        expect(result.whenRegisteredReturnsDefinition).toBe(true);
         expect(result.getByTypeReturnsDefinition).toBe(true);
         expect(result.getForInstanceReturnsDefinition).toBe(true);
     });

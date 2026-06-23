@@ -295,10 +295,8 @@ import {
     type CachedPathMap,
     type JSONSchema,
 } from "@microsoft/fast-element/schema.js";
-import {
-    type FASTElementExtension,
-    type TemplateLifecycleCallbacks,
-} from "@microsoft/fast-element";
+import { type FASTElementExtension } from "@microsoft/fast-element";
+import { whenRegistered } from "@microsoft/fast-element/registry.js";
 import {
     attributeMap,
     type AttributeMapConfig,
@@ -343,7 +341,6 @@ Additionally, `@microsoft/fast-element` exports these types:
 | Type | Source Module | Purpose |
 |---|---|---|
 | `FASTElementExtension` | `fast-definitions.ts` | Definition extension callback signature used by `attributeMap()` and `observerMap()`. |
-| `TemplateLifecycleCallbacks` | `fast-definitions.ts` | Per-element lifecycle callbacks accepted by `declarativeTemplate()`. |
 | `JSONSchema` | `components/schema.ts` | JSON Schema interface used by `Schema` for property structure. |
 | `CachedPathMap` | `components/schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
 
@@ -623,51 +620,40 @@ sequenceDiagram
     participant FER as FASTElementDefinition
     participant FTE as internal f-template
     participant EC as ElementController
-    participant PerEl as TemplateLifecycleCallbacks
-    participant Global as HydrationOptions
+    participant Registry as whenRegistered
+    participant Hydration as whenHydrated
 
-    App->>Global: enableHydration(options) [optional]
-    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate(callbacks)}, [attributeMap(), observerMap()])
+    App->>Hydration: enableHydration() [optional]
+    App->>Registry: whenRegistered('my-el') [optional]
+    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
+    FER->>Registry: resolve registration waiters
 
     DOM->>FTE: f-template connected to DOM
     FTE->>FTE: bridge matches registry + name
-    FTE->>PerEl: elementDidRegister('my-el')
-    FTE->>PerEl: templateWillUpdate('my-el')
     FTE->>FTE: parse template → schema → transforms → ViewTemplate
     FTE->>FER: return viewTemplate to resolver
-    FER->>PerEl: templateDidUpdate('my-el')
     FER->>FER: customElements.define('my-el', MyElement)
-    FER->>PerEl: elementDidDefine('my-el')
 
     DOM->>EC: element instance connects with existing shadow root
     EC->>EC: isPrerendered = true (existing shadow root detected)
     alt enableHydration() was called
-        EC->>Global: hydrationStarted()
-        EC->>PerEl: elementWillHydrate(element)
         EC->>EC: template.hydrate() — maps existing DOM to binding targets
-        EC->>PerEl: elementDidHydrate(element)
-        EC->>Global: hydrationComplete()
+        EC->>Hydration: resolve active batch when all pending elements finish
     else hydration not enabled
         EC->>EC: client-side render; isHydrated = false
     end
 ```
 
-### Lifecycle callback reference
+### Promise readiness reference
 
-| Callback | API | When |
+| Promise | Import path | Resolves when |
 |---|---|---|
-| `elementDidRegister(name)` | `declarativeTemplate(callbacks)` | The matching `<f-template>` begins publishing for the definition. |
-| `templateWillUpdate(name)` | `declarativeTemplate(callbacks)` | Just before template HTML is parsed. |
-| `templateDidUpdate(name)` | `declarativeTemplate(callbacks)` | After `ViewTemplate` is assigned to the definition. |
-| `elementDidDefine(name)` | `declarativeTemplate(callbacks)` | After platform registration completes. |
-| `elementWillHydrate(source)` | `declarativeTemplate(callbacks)` | Before `ElementController` hydrates a prerendered instance; only after `enableHydration()`. |
-| `elementDidHydrate(source)` | `declarativeTemplate(callbacks)` | After an instance is fully hydrated; only after `enableHydration()`. |
-| `hydrationStarted()` | `enableHydration(options)` | Once per active hydration batch, when the first prerendered element begins hydrating. |
-| `hydrationComplete()` | `enableHydration(options)` | Once per active hydration batch, after all prerendered elements have completed hydration. |
+| `whenRegistered(name)` | `@microsoft/fast-element/registry.js` | The named element is registered with FAST's element registry or defined with the platform custom element registry. |
+| `whenHydrated` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
 
-By default, hydration no-ops for later prerendered batches after
-`hydrationComplete()` fires. Set
+By default, hydration no-ops for later prerendered batches after the initial
+batch completes. Set
 `enableHydration({ stopHydration: StopHydration.never })` when Declarative Shadow
 DOM may be streamed into the page after the initial hydration batch.
 
@@ -795,8 +781,8 @@ between `fast-build` and `webui` rendering:
 ### Hydration readiness
 
 Fixtures that exercise prerendered output wait for hydration to complete before
-running assertions. Each `main.ts` calls `enableHydration({
-hydrationComplete() { ... } })` to set a global flag, and each spec file calls
+running assertions. Each `main.ts` calls `enableHydration()` and then awaits
+`whenHydrated` to set a global flag, and each spec file calls
 `page.waitForFunction()` after `page.goto()` to block until the flag is set.
 See [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
 for the implementation pattern.

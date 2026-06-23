@@ -90,27 +90,6 @@ _(Optional)_ Options controlling how the custom element is defined with the plat
 </td></tr>
 <tr><td>
 
-[lifecycleCallbacks?](../fast-element.partialfastelementdefinition.lifecyclecallbacks/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-_(Optional)_ Lifecycle callbacks for template events.
-
-
-</td></tr>
-<tr><td>
-
 [name](../fast-element.partialfastelementdefinition.name/)
 
 

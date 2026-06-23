@@ -17,5 +17,6 @@ export {
 export {
     FASTElementDefinition,
     fastElementRegistry,
+    whenRegistered,
 } from "@microsoft/fast-element/registry.js";
 export { Schema } from "@microsoft/fast-element/schema.js";

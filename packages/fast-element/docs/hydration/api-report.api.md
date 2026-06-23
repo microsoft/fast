@@ -237,8 +237,6 @@ export interface HydrationMismatchExpectation {
 // @public
 export interface HydrationOptions {
     debugger?: HydrationDebugger;
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
     stopHydration?: StopHydration;
 }
 
@@ -365,6 +363,9 @@ export interface ViewNodes {
     // (undocumented)
     last: Node;
 }
+
+// @public
+export const whenHydrated: Promise<void>;
 
 // (No @packageDocumentation comment for this package)
 

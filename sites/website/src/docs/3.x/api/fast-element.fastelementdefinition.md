@@ -199,27 +199,6 @@ The definition has been registered to the FAST element registry.
 </td></tr>
 <tr><td>
 
-[lifecycleCallbacks?](../fast-element.fastelementdefinition.lifecyclecallbacks/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-_(Optional)_ Lifecycle callbacks for template events.
-
-
-</td></tr>
-<tr><td>
-
 [name](../fast-element.fastelementdefinition.name/)
 
 

@@ -1,6 +1,6 @@
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 class TestElement extends FASTElement {
@@ -52,8 +52,7 @@ TestElement.define(
     [observerMap()],
 );
 
-enableHydration({
-    hydrationComplete() {
-        (window as any).hydrationCompleted = true;
-    },
+enableHydration();
+void whenHydrated.then(() => {
+    (window as any).hydrationCompleted = true;
 });

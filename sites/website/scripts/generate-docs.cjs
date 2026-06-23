@@ -16,12 +16,16 @@ const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
 const packages = [
     {
         main: "fast-element",
-        exports: ["context", "declarative", "di"],
+        exports: ["context", "declarative", "di", "hydration", "registry"],
     },
 ];
 
 function yamlString(value) {
     return JSON.stringify(value);
+}
+
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 async function safeCopy(source, dest) {
@@ -139,7 +143,10 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                 }
 
                 if (pkg && exportPath) {
-                    line = line.replace(pkg, `${pkg}/${exportPath}`);
+                    line = line.replace(
+                        new RegExp(`${escapeRegExp(pkg)}(?!/)`, "g"),
+                        `${pkg}/${exportPath}`,
+                    );
                     parent = `${pkg}/${exportPath}${currentVersion}`;
                 }
 

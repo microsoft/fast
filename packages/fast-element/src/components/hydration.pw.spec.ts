@@ -194,14 +194,7 @@ test.describe("The prerendered content optimization", () => {
             const events: string[] = [];
             const name = uniqueElementName();
 
-            enableHydration({
-                hydrationStarted() {
-                    events.push("start");
-                },
-                hydrationComplete() {
-                    events.push("complete");
-                },
-            });
+            const hydration = enableHydration();
 
             (
                 await FASTElementDefinition.compose(
@@ -232,18 +225,18 @@ test.describe("The prerendered content optimization", () => {
                 const serverMarker = element.shadowRoot
                     ?.querySelector("span")
                     ?.getAttribute("data-server-marker");
-                await new Promise(resolve => setTimeout(resolve, 0));
 
                 return { isHydrated, serverMarker };
             }
 
             const first = await appendPrerenderedElement();
+            await hydration.whenHydrated().then(() => events.push("complete"));
             const second = await appendPrerenderedElement(true);
 
             return { events, first, second };
         });
 
-        expect(result.events).toEqual(["start", "complete"]);
+        expect(result.events).toEqual(["complete"]);
         expect(result.first.isHydrated).toBe(true);
         expect(result.second.isHydrated).toBe(false);
         expect(result.second.serverMarker).toBeNull();
@@ -268,14 +261,8 @@ test.describe("The prerendered content optimization", () => {
             const events: string[] = [];
             const name = uniqueElementName();
 
-            enableHydration({
+            const hydration = enableHydration({
                 stopHydration: StopHydration.never,
-                hydrationStarted() {
-                    events.push("start");
-                },
-                hydrationComplete() {
-                    events.push("complete");
-                },
             });
 
             (
@@ -302,13 +289,14 @@ test.describe("The prerendered content optimization", () => {
                     await new Promise(resolve => requestAnimationFrame(resolve));
                 }
                 const isHydrated = await element.$fastController.isHydrated;
-                await new Promise(resolve => setTimeout(resolve, 0));
 
                 return isHydrated;
             }
 
             const first = await appendPrerenderedElement();
+            await hydration.whenHydrated(name).then(() => events.push("complete"));
             const second = await appendPrerenderedElement();
+            await hydration.whenHydrated(name).then(() => events.push("complete"));
 
             return {
                 events,
@@ -321,7 +309,7 @@ test.describe("The prerendered content optimization", () => {
             };
         });
 
-        expect(result.events).toEqual(["start", "complete", "start", "complete"]);
+        expect(result.events).toEqual(["complete", "complete"]);
         expect(result.first).toBe(true);
         expect(result.second).toBe(true);
         expect(result.stopHydrationValues).toEqual({

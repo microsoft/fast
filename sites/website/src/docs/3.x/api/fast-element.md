@@ -1289,17 +1289,6 @@ A template capable of rendering views not specifically connected to custom eleme
 </td></tr>
 <tr><td>
 
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for template events.
-
-
-</td></tr>
-<tr><td>
-
 [TwoWaySettings](../fast-element.twowaysettings/)
 
 

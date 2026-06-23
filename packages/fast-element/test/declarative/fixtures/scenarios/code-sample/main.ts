@@ -1,7 +1,7 @@
 import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
 
 class CodeDisplay extends FASTElement {
     @attr
@@ -21,8 +21,7 @@ console.error = (...args: any[]) => {
     originalConsoleError.apply(console, args);
 };
 
-enableHydration({
-    hydrationComplete() {
-        (window as any).hydrationCompleted = true;
-    },
+enableHydration();
+void whenHydrated.then(() => {
+    (window as any).hydrationCompleted = true;
 });
