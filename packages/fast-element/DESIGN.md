@@ -95,7 +95,7 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` and registered globally via `fastElementRegistry`.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.define()` and registered globally via `fastElementRegistry`.
 
 ---
 
@@ -303,7 +303,7 @@ See `docs/di/api-report.api.md` for the full public API surface.
 ```mermaid
 flowchart TD
     A([Browser loads script]) --> B[FAST global created on globalThis]
-    B --> C[FASTElement subclass executes FASTElement.compose]
+    B --> C[FASTElement subclass executes FASTElement.define]
     C --> D[Observable decorators register accessors on the prototype]
     C --> E[Attribute decorators push AttributeDefinition to the class]
     C --> F[html tag is evaluated – ViewTemplate created with factories]
@@ -430,7 +430,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 **Authoring flow summary**:
 
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `FASTElement.define({ name, template, styles })`.
-2. `FASTElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
+2. `FASTElement.define` creates the element definition and registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template (`ViewTemplate.render`) into the shadow root. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
