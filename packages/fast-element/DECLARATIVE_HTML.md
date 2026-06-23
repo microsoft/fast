@@ -7,7 +7,7 @@ The declarative entrypoint in `@microsoft/fast-element` interprets FAST
 declarative HTML syntax as a template for a FAST web component.
 
 This document focuses on declarative-runtime implementation details:
-template structure, prerendered markup requirements, promise readiness APIs,
+template structure, prerendered markup requirements, hydration promise APIs,
 binding configuration, syntax, and integration testing.
 
 For package installation, using `declarativeTemplate()`, extension setup, and
@@ -65,7 +65,7 @@ hydratable comment markers and datasets when prerendered content is generated.
 For the required marker format and initial-state application details, see
 [DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
 
-## Promise readiness APIs
+## Hydration promise APIs
 
 FAST Element's declarative APIs expose promises for the registration and
 hydration readiness points that are useful to application code.
@@ -96,14 +96,6 @@ enableHydration({
 
 When `StopHydration.never` is used, `enableHydration().whenHydrated`
 intentionally remains pending because hydration has no global completion point.
-
-To wait for an element class to be registered with the FAST registry or the
-platform custom element registry, use the component's static `whenRegistered`
-promise:
-
-```typescript
-await MyComponent.whenRegistered;
-```
 
 ## `observerMap`
 

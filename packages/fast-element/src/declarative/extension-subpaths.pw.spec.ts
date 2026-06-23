@@ -64,7 +64,6 @@ test.describe("extension subpaths", () => {
                     fastElementRegistry.getForInstance(instance) === definition,
             };
         });
-
         expect(result.hasRegistry).toBe(true);
         expect(result.hasWhenRegistered).toBe(true);
         expect(result.whenRegisteredReturnsDefinition).toBe(true);

@@ -5,7 +5,6 @@ import {
     FASTElementDefinition,
     type FASTElementExtension,
     getFASTElementTypeHydration,
-    getFASTElementTypeRegistration,
     type PartialFASTElementDefinition,
     resolveFASTElementTemplate,
 } from "./fast-definitions.js";
@@ -69,7 +68,6 @@ export interface FASTElement extends HTMLElement {
 
 type FASTElementType<T extends typeof HTMLElement> = {
     new (): InstanceType<T> & FASTElement;
-    readonly whenRegistered: Promise<Function>;
     readonly whenHydrated: Promise<void>;
 };
 
@@ -78,10 +76,6 @@ function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T,
 ): FASTElementType<T> {
     const type = class extends (BaseType as any) {
-        public static get whenRegistered(): Promise<Function> {
-            return getFASTElementTypeRegistration(this);
-        }
-
         public static get whenHydrated(): Promise<void> {
             return getFASTElementTypeHydration(this);
         }
@@ -183,11 +177,6 @@ export interface FASTElementConstructor {
     new (): FASTElement;
 
     /**
-     * Resolves when this FASTElement type has been registered.
-     */
-    readonly whenRegistered: Promise<Function>;
-
-    /**
      * Resolves when hydration work for this FASTElement type completes.
      */
     readonly whenHydrated: Promise<void>;
@@ -223,7 +212,6 @@ export interface FASTElementConstructor {
         BaseType: TBase,
     ): {
         new (): InstanceType<TBase> & FASTElement;
-        readonly whenRegistered: Promise<Function>;
         readonly whenHydrated: Promise<void>;
     };
 }

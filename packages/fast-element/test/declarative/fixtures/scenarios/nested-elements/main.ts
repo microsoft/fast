@@ -188,17 +188,3 @@ GrandChildItem.define(
     },
     [observerMap()],
 );
-
-const trackedElements = [
-    [TestElementRepeatEvent, "test-element-repeat-event"],
-    [TestWhenInRepeat, "test-when-in-repeat"],
-    [ItemList, "parent-element"],
-    [Item, "child-element"],
-    [GrandChildItem, "grand-child-element"],
-] as const;
-
-for (const [type, name] of trackedElements) {
-    void type.whenRegistered.then(() => {
-        (window as any).messages.push(`Element registered: ${name}`);
-    });
-}

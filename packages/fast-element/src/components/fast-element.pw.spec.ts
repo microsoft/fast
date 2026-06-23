@@ -27,27 +27,6 @@ test.describe("FASTElement", () => {
     });
 
     test.describe("define with extensions", () => {
-        test("should expose a static promise for component registration", async ({
-            page,
-        }) => {
-            await page.goto("/");
-
-            const result = await page.evaluate(async () => {
-                // @ts-expect-error: Client module.
-                const { FASTElement, uniqueElementName } = await import("/main.js");
-
-                class TestElement extends FASTElement {}
-
-                const elName = uniqueElementName();
-                const registered = TestElement.whenRegistered;
-                await TestElement.define({ name: elName });
-
-                return (await registered) === TestElement;
-            });
-
-            expect(result).toBe(true);
-        });
-
         test("should call extensions with the definition when using method style", async ({
             page,
         }) => {

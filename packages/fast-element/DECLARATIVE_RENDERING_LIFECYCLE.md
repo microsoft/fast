@@ -130,7 +130,7 @@ two packages and is available to consumers from
 
 Both packages use the Observable pattern for coordination:
 
-- `FASTElementDefinition.register()` uses `Observable.getNotifier()` to notify when elements are registered
+- Element definition template assignment notifies observers that are waiting for a concrete template
 - Template attachment triggers observable notifications to complete the lifecycle
 
 ## Error Handling
@@ -151,22 +151,10 @@ The asynchronous nature of the lifecycle provides several performance benefits:
 
 This coordinated lifecycle enables powerful scenarios like server-side rendering, progressive enhancement, and dynamic template loading while maintaining the reactive capabilities of FAST Element.
 
-## Promise readiness APIs
+## Hydration promise APIs
 
-FAST Element exposes promises for the registration and hydration readiness points
-that are useful to application code.
-
-### `MyComponent.whenRegistered`
-
-Use a component's static `whenRegistered` promise to wait until the element type
-has been registered with FAST's element registry or defined with the platform
-custom element registry.
-
-```typescript
-await MyComponent.whenRegistered;
-```
-
-### Hydration promises
+FAST Element exposes promises for hydration readiness points that are useful to
+application code.
 
 Hydration must be explicitly opted into by calling `enableHydration()`. Await
 the returned controller's `whenHydrated` promise when code needs to run after

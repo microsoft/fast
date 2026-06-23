@@ -17,25 +17,6 @@ test.describe("Declarative Template Without Hydration", () => {
         await expect(counterElement).toHaveText("Count: 0");
     });
 
-    test("should resolve whenRegistered without hydration", async ({ page }) => {
-        const allDefined = page.waitForFunction(
-            () => (window as any).allDefined === true,
-        );
-        await page.goto("/fixtures/ecosystem/declarative-no-hydration/");
-        await allDefined;
-
-        const events = await page.evaluate(() => (window as any).promiseEvents);
-
-        const registeredNames = new Set(
-            events
-                .filter((e: any) => e.promise === "whenRegistered")
-                .map((e: any) => e.name),
-        );
-
-        expect(registeredNames.has("basic-element")).toBe(true);
-        expect(registeredNames.has("counter-element")).toBe(true);
-    });
-
     test("should not resolve whenHydrated when enableHydration is not called", async ({
         page,
     }) => {

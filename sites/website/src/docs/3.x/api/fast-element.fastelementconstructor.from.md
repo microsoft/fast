@@ -22,7 +22,6 @@ Creates a new FASTElement base class inherited from the provided base type.
 ```typescript
 from<TBase extends typeof HTMLElement>(BaseType: TBase): {
         new (): InstanceType<TBase> & FASTElement;
-        readonly whenRegistered: Promise<Function>;
         readonly whenHydrated: Promise<void>;
     };
 ```
@@ -65,4 +64,4 @@ The base element type to inherit from.
 
 **Returns:**
 
-{ new (): InstanceType&lt;TBase&gt; &amp; [FASTElement](../fast-element.fastelement/)<!-- -->; readonly whenRegistered: Promise&lt;Function&gt;; readonly whenHydrated: Promise&lt;void&gt;; }
+{ new (): InstanceType&lt;TBase&gt; &amp; [FASTElement](../fast-element.fastelement/)<!-- -->; readonly whenHydrated: Promise&lt;void&gt;; }

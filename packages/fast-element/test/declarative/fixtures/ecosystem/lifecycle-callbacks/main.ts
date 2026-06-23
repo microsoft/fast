@@ -105,23 +105,4 @@ DeferredChildElement.define({
     template: declarativeTemplate(),
 });
 
-const trackedElements = [
-    [SimpleElement, "simple-element"],
-    [ComplexElement, "complex-element"],
-    [NestedElement, "nested-element"],
-    [DeferredElement, "deferred-element"],
-    [DeferredParentElement, "deferred-parent-element"],
-    [DeferredChildElement, "deferred-child-element"],
-] as const;
-
-void Promise.all(
-    trackedElements.map(([type, name]) =>
-        type.whenRegistered.then(() => {
-            promiseEvents.push({ promise: "whenRegistered", name });
-        }),
-    ),
-).then(() => {
-    (window as any).registrationsCompleted = true;
-});
-
 (window as any).promiseEvents = promiseEvents;

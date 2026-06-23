@@ -1,33 +1,15 @@
 import { expect, test } from "@playwright/test";
 
 async function waitForPromiseAPIs(page: import("@playwright/test").Page): Promise<void> {
-    const registrationsCompleted = page.waitForFunction(
-        () => (window as any).registrationsCompleted === true,
-    );
     const hydrationCompleted = page.waitForFunction(
         () => (window as any).hydrationCompleted === true,
     );
 
     await page.goto("/fixtures/ecosystem/lifecycle-callbacks/");
-    await Promise.all([registrationsCompleted, hydrationCompleted]);
+    await hydrationCompleted;
 }
 
 test.describe("Promise APIs", async () => {
-    test("resolves whenRegistered for declarative elements", async ({ page }) => {
-        await waitForPromiseAPIs(page);
-
-        const events = await page.evaluate(() => (window as any).promiseEvents);
-        const registeredNames = new Set(
-            events
-                .filter((e: any) => e.promise === "whenRegistered")
-                .map((e: any) => e.name),
-        );
-
-        expect(registeredNames.has("simple-element")).toBe(true);
-        expect(registeredNames.has("complex-element")).toBe(true);
-        expect(registeredNames.has("nested-element")).toBe(true);
-    });
-
     test("resolves whenHydrated after the active hydration batch", async ({ page }) => {
         await waitForPromiseAPIs(page);
 
@@ -49,14 +31,8 @@ test.describe("Promise APIs", async () => {
         await waitForPromiseAPIs(page);
 
         const events = await page.evaluate(() => (window as any).promiseEvents);
-        const registeredNames = new Set(
-            events
-                .filter((e: any) => e.promise === "whenRegistered")
-                .map((e: any) => e.name),
-        );
 
-        expect(registeredNames.has("complex-element")).toBe(true);
-        expect(registeredNames.has("nested-element")).toBe(true);
+        expect(events.some((e: any) => e.promise === "whenHydrated")).toBe(true);
     });
 
     test("should properly hydrate elements and maintain functionality", async ({

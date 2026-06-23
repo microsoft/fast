@@ -161,7 +161,7 @@ when an element uses `template: declarativeTemplate()`.
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
-| `TemplateElement.config(callbacks)` | `MyElement.whenRegistered` for registration waits, `MyElement.whenHydrated` for component hydration waits, and `enableHydration().whenHydrated` for the active hydration batch |
+| `TemplateElement.config(callbacks)` | `MyElement.whenHydrated` for component hydration waits and `enableHydration().whenHydrated` for the active hydration batch |
 | `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
 
@@ -184,7 +184,6 @@ await MyElement.define(
     [attributeMap(), observerMap()],
 );
 
-await MyElement.whenRegistered;
 await MyElement.whenHydrated;
 await hydration.whenHydrated;
 ```

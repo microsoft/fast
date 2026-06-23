@@ -67,27 +67,6 @@ Resolves when hydration work for this FASTElement type completes.
 
 
 </td></tr>
-<tr><td>
-
-[whenRegistered](../fast-element.fastelementconstructor.whenregistered/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;Function&gt;
-
-
-</td><td>
-
-Resolves when this FASTElement type has been registered.
-
-
-</td></tr>
 </tbody></table>
 
 ## Methods

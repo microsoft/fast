@@ -619,14 +619,11 @@ sequenceDiagram
     participant FER as FASTElementDefinition
     participant FTE as internal f-template
     participant EC as ElementController
-    participant Registry as MyElement.whenRegistered
     participant Hydration as enableHydration().whenHydrated
 
     App->>Hydration: const hydration = enableHydration() [optional]
-    App->>Registry: MyElement.whenRegistered [optional]
     App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
-    FER->>Registry: resolve registration waiters
 
     DOM->>FTE: f-template connected to DOM
     FTE->>FTE: bridge matches registry + name
@@ -648,7 +645,6 @@ sequenceDiagram
 
 | Promise | Import path | Resolves when |
 |---|---|---|
-| `MyElement.whenRegistered` | Static FAST element class API | The element type is registered with FAST's element registry or defined with the platform custom element registry. |
 | `MyElement.whenHydrated` | Static FAST element class API | Hydration work for that element type completes. |
 | `enableHydration().whenHydrated` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
 

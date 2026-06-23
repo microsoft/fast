@@ -3,14 +3,12 @@ import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 
-const promiseEvents: Array<{ promise: string; name?: string }> = [];
-
 class BasicElement extends FASTElement {
     @attr
     greeting: string = "Hello";
 }
 
-BasicElement.define({
+const basicDefinition = BasicElement.define({
     name: "basic-element",
     template: declarativeTemplate(),
 });
@@ -24,24 +22,11 @@ class CounterElement extends FASTElement {
     }
 }
 
-CounterElement.define({
+const counterDefinition = CounterElement.define({
     name: "counter-element",
     template: declarativeTemplate(),
 });
 
-const elementTypes = [
-    [BasicElement, "basic-element"],
-    [CounterElement, "counter-element"],
-] as const;
-
-void Promise.all(
-    elementTypes.map(([type, name]) =>
-        type.whenRegistered.then(() => {
-            promiseEvents.push({ promise: "whenRegistered", name });
-        }),
-    ),
-).then(() => {
+void Promise.all([basicDefinition, counterDefinition]).then(() => {
     (window as any).allDefined = true;
 });
-
-(window as any).promiseEvents = promiseEvents;

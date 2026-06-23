@@ -93,13 +93,6 @@ const lateAttributeLookups = new WeakMap<
     Record<string, AttributeDefinition>
 >();
 
-type TypeRegistrationState = {
-    promise: Promise<Function>;
-    resolve(value: Function): void;
-};
-
-const pendingTypeRegistrations = new WeakMap<Function, TypeRegistrationState>();
-
 type TypeHydrationState = {
     promise: Promise<void>;
     pendingCount: number;
@@ -138,159 +131,6 @@ function getRegisteredTypes(
     }
 
     return registeredTypes;
-}
-
-function waitForElementRegistration(
-    name: string,
-    registry: CustomElementRegistry = customElements,
-): Promise<Function> {
-    const definedType = registry.get(name);
-
-    if (definedType !== void 0) {
-        return Promise.resolve(definedType as Function);
-    }
-
-    const registeredTypes = getRegisteredTypes(registry);
-
-    if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
-        Observable.defineProperty(registeredTypes, name);
-    }
-
-    const registeredType = registeredTypes[name];
-
-    if (registeredType) {
-        return Promise.resolve(registeredType);
-    }
-
-    return new Promise((resolve, reject) => {
-        const notifier = Observable.getNotifier(registeredTypes);
-        let settled = false;
-        let subscriber: { handleChange(): void };
-
-        const cleanup = () => {
-            notifier.unsubscribe(subscriber, name);
-        };
-
-        const settle = (value: Function) => {
-            if (settled) {
-                return;
-            }
-
-            settled = true;
-            cleanup();
-            resolve(value);
-        };
-
-        const fail = (error: unknown) => {
-            if (settled) {
-                return;
-            }
-
-            settled = true;
-            cleanup();
-            reject(error);
-        };
-
-        subscriber = {
-            handleChange: () => {
-                const value = registeredTypes[name];
-
-                if (value) {
-                    settle(value);
-                }
-            },
-        };
-
-        notifier.subscribe(subscriber, name);
-
-        try {
-            registry.whenDefined(name).then(value => settle(value as Function), fail);
-        } catch (error) {
-            fail(error);
-        }
-    });
-}
-
-function createTypeRegistrationState(type: Function): TypeRegistrationState {
-    let resolve!: (value: Function) => void;
-    const promise = new Promise<Function>(settle => {
-        resolve = settle;
-    });
-    const state = { promise, resolve };
-    pendingTypeRegistrations.set(type, state);
-    return state;
-}
-
-function resolveTypeRegistration(type: Function): void {
-    const state = pendingTypeRegistrations.get(type);
-
-    if (state !== void 0) {
-        pendingTypeRegistrations.delete(type);
-        state.resolve(type);
-    }
-}
-
-function getRegistrationDefinition(
-    type: Function,
-): { name: string; registry: CustomElementRegistry } | null {
-    const definition = fastElementRegistry.getByType(type);
-
-    if (definition !== void 0) {
-        return {
-            name: definition.name,
-            registry: definition.registry,
-        };
-    }
-
-    const staticDefinition = (
-        type as { definition?: string | PartialFASTElementDefinition }
-    ).definition;
-
-    if (isString(staticDefinition)) {
-        return {
-            name: staticDefinition,
-            registry: customElements,
-        };
-    }
-
-    if (staticDefinition !== void 0) {
-        return {
-            name: staticDefinition.name,
-            registry: staticDefinition.registry ?? customElements,
-        };
-    }
-
-    return null;
-}
-
-/**
- * Gets the promise used by FASTElement static `whenRegistered`.
- * @internal
- */
-export function getFASTElementTypeRegistration(type: Function): Promise<Function> {
-    if (fastElementRegistry.getByType(type) !== void 0) {
-        return Promise.resolve(type);
-    }
-
-    const registrationDefinition = getRegistrationDefinition(type);
-
-    if (registrationDefinition !== null) {
-        return waitForElementRegistration(
-            registrationDefinition.name,
-            registrationDefinition.registry,
-        ).then(registeredType => {
-            if (registeredType !== type) {
-                throw new Error(
-                    `The ${registrationDefinition.name} element was registered with a different type.`,
-                );
-            }
-
-            return registeredType;
-        });
-    }
-
-    return (pendingTypeRegistrations.get(type) ?? createTypeRegistrationState(type))
-        .promise;
 }
 
 function createTypeHydrationState(type: Function): TypeHydrationState {
@@ -839,7 +679,6 @@ export class FASTElementDefinition<
         }
 
         registeredTypes[this.name] = this.type;
-        resolveTypeRegistration(this.type);
     }
 
     /**
