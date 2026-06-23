@@ -2,9 +2,9 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
-      "date": "Tue, 23 Jun 2026 02:12:54 GMT",
-      "version": "0.8.0-fast-element-v3-rc-20260615",
-      "tag": "@microsoft/fast-build_v0.8.0-fast-element-v3-rc-20260615",
+      "date": "Tue, 23 Jun 2026 03:06:37 GMT",
+      "version": "0.8.1-fast-element-v3-rc-20260615",
+      "tag": "@microsoft/fast-build_v0.8.1-fast-element-v3-rc-20260615",
       "comments": {
         "patch": [
           {

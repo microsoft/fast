@@ -2,9 +2,9 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
-      "date": "Tue, 23 Jun 2026 02:12:54 GMT",
-      "version": "0.4.0-fast-element-v3-rc-20260615",
-      "tag": "@microsoft/fast-test-harness_v0.4.0-fast-element-v3-rc-20260615",
+      "date": "Tue, 23 Jun 2026 03:06:37 GMT",
+      "version": "0.4.1-fast-element-v3-rc-20260615",
+      "tag": "@microsoft/fast-test-harness_v0.4.1-fast-element-v3-rc-20260615",
       "comments": {
         "patch": [
           {
@@ -16,7 +16,7 @@
           {
             "author": "beachball",
             "package": "@microsoft/fast-test-harness",
-            "comment": "Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615",
+            "comment": "Bump @microsoft/fast-build to v0.8.1-fast-element-v3-rc-20260615",
             "commit": "not available"
           },
           {

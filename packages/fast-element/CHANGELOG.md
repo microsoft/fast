@@ -1,17 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Tue, 23 Jun 2026 02:12:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 23 Jun 2026 03:06:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
 
 ## 3.0.0-rc.3
 
-Tue, 23 Jun 2026 02:12:54 GMT
+Tue, 23 Jun 2026 03:06:37 GMT
 
 ### Changes
 
 - BREAKING: Remove FASTElement.compose from the public API. (7559015+janechu@users.noreply.github.com)
-- Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615
+- Bump @microsoft/fast-build to v0.8.1-fast-element-v3-rc-20260615
 
 ## 3.0.0-rc.2
 
