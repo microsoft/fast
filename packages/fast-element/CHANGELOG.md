@@ -32,7 +32,7 @@ Fri, 19 Jun 2026 22:15:55 GMT
 - Preserve view context when rebinding the same source. (7559015+janechu@users.noreply.github.com)
 - feat: warn when duplicate render instruction registrations replace existing entries (7559015+janechu@users.noreply.github.com)
 - Add a registry path export for FAST element definition lookups. (7559015+janechu@users.noreply.github.com)
-- Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615-fast-element-v3-rc-20260615
+- Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615
 
 ## 3.0.0-rc.1
 

@@ -443,8 +443,25 @@ function rewriteChangelogMd(packageName, finalVersions, rawVersions) {
     const rawVersion = rawVersions[packageName];
     const finalVersion = finalVersions[packageName];
     content = content.replace(`## ${rawVersion}\n`, `## ${finalVersion}\n`);
-    content = rewriteVersionReferences(content, finalVersions, rawVersions);
+    content = rewriteChangelogSection(content, finalVersion, section =>
+        rewriteVersionReferences(section, finalVersions, rawVersions),
+    );
     writeFileSync(path, content);
+}
+
+function rewriteChangelogSection(content, version, rewrite) {
+    const heading = `## ${version}\n`;
+    const start = content.indexOf(heading);
+    if (start === -1) {
+        throw new Error(`Could not find generated changelog heading ${heading.trim()}.`);
+    }
+
+    const nextHeading = content.indexOf("\n## ", start + heading.length);
+    const end = nextHeading === -1 ? content.length : nextHeading;
+
+    return (
+        content.slice(0, start) + rewrite(content.slice(start, end)) + content.slice(end)
+    );
 }
 
 function rewriteVersionReferences(input, finalVersions, rawVersions) {
