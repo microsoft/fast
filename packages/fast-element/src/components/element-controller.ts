@@ -409,7 +409,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @param styles - the styles to remove.
      */
     public removeStyles(
-        styles: ElementStyles | HTMLStyleElement | null | undefined
+        styles: ElementStyles | HTMLStyleElement | null | undefined,
     ): void {
         if (!styles) {
             return;
@@ -542,7 +542,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public onAttributeChangedCallback(
         name: string,
         oldValue: string | null,
-        newValue: string | null
+        newValue: string | null,
     ): void {
         const attrDef = this.definition.attributeLookup[name];
 
@@ -562,11 +562,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public emit(
         type: string,
         detail?: any,
-        options?: Omit<CustomEventInit, "detail">
+        options?: Omit<CustomEventInit, "detail">,
     ): void | boolean {
         if (this.stage === Stages.connected) {
             return this.source.dispatchEvent(
-                new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
+                new CustomEvent(type, { detail, ...defaultEventOptions, ...options }),
             );
         }
 
@@ -619,7 +619,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public static forCustomElement(
         element: HTMLElement,
-        override: boolean = false
+        override: boolean = false,
     ): ElementController {
         const controller: ElementController = (element as any).$fastController;
 
@@ -640,7 +640,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                     (element as FASTElement).$fastController.connect();
                 },
             },
-            "template"
+            "template",
         );
 
         Observable.getNotifier(definition).subscribe(
@@ -650,12 +650,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                     (element as FASTElement).$fastController.connect();
                 },
             },
-            "shadowOptions"
+            "shadowOptions",
         );
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
-            definition
+            definition,
         ));
     }
 
@@ -766,7 +766,7 @@ export class StyleElementStrategy implements StyleStrategy {
     public removeStylesFrom(target: StyleTarget): void {
         target = usableStyleTarget(normalizeStyleTarget(target));
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
-            `.${this.styleClass}`
+            `.${this.styleClass}`,
         );
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
@@ -780,10 +780,10 @@ let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleShee
 };
 let removeAdoptedStyleSheets = (
     target: Required<StyleTarget>,
-    sheets: CSSStyleSheet[]
+    sheets: CSSStyleSheet[],
 ) => {
     target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1,
     );
 };
 if (ElementStyles.supportsAdoptedStyleSheets) {
@@ -806,7 +806,7 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
                 }
             }
         };
-    } catch (e) {
+    } catch (_e) {
         // Do nothing if an error is thrown, the default
         // case handles FrozenArray.
     }
@@ -823,32 +823,43 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
 export const needsHydrationAttribute = "needs-hydration";
 
 /**
- * Lifecycle callbacks for element hydration events
- * @public
+ * Experimental lifecycle callbacks for element hydration events.
+ * @remarks
+ * These hooks are alpha and may change or be removed before the v3 stable
+ * release.
+ * @alpha
  */
 export interface HydrationControllerCallbacks<
-    TElement extends HTMLElement = HTMLElement
+    TElement extends HTMLElement = HTMLElement,
 > {
     /**
      * Called once when the first element enters the hydration pipeline.
      * This is the earliest point at which we know a component has been
      * async-defined with `defer-and-hydrate`, a template is pending via
      * `<f-template>`, and the element has `needs-hydration`.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     hydrationStarted?(): void;
 
     /**
-     * Called before an individual element's hydration begins
+     * Called before an individual element's hydration begins.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     elementWillHydrate?(source: TElement): void;
 
     /**
-     * Called after an individual element's hydration has finished
+     * Called after an individual element's hydration has finished.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     elementDidHydrate?(source: TElement): void;
 
     /**
-     * Called after all elements have completed hydration
+     * Called after all elements have completed hydration.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     hydrationComplete?(): void;
 }
@@ -860,7 +871,7 @@ export interface HydrationControllerCallbacks<
  * @beta
  */
 export class HydratableElementController<
-    TElement extends HTMLElement = HTMLElement
+    TElement extends HTMLElement = HTMLElement,
 > extends ElementController<TElement> {
     /**
      * Controls whether the controller will hydrate during the connect() method.
@@ -869,7 +880,7 @@ export class HydratableElementController<
      */
     protected needsHydration?: boolean;
     private static hydrationObserver = new UnobservableMutationObserver(
-        HydratableElementController.hydrationObserverHandler
+        HydratableElementController.hydrationObserverHandler,
     );
 
     /**
@@ -891,7 +902,8 @@ export class HydratableElementController<
     }
 
     /**
-     * Lifecycle callbacks for hydration events
+     * Experimental lifecycle callbacks for hydration events.
+     * @alpha
      */
     public static lifecycleCallbacks: HydrationControllerCallbacks = {};
 
@@ -925,7 +937,9 @@ export class HydratableElementController<
     }
 
     /**
-     * Configure lifecycle callbacks for hydration events
+     * Configure alpha lifecycle callbacks for hydration events.
+     * @param callbacks - Alpha/experimental lifecycle callbacks.
+     * @alpha
      */
     public static config(callbacks: HydrationControllerCallbacks) {
         HydratableElementController.lifecycleCallbacks = callbacks;
@@ -952,7 +966,7 @@ export class HydratableElementController<
         if (deadline.didTimeout) {
             HydratableElementController.idleCallbackId = requestIdleCallback(
                 HydratableElementController.checkHydrationComplete,
-                { timeout: 50 }
+                { timeout: 50 },
             );
             return;
         }
@@ -1019,7 +1033,7 @@ export class HydratableElementController<
 
         try {
             HydratableElementController.lifecycleCallbacks.elementWillHydrate?.(
-                this.source
+                this.source,
             );
         } catch {
             // A lifecycle callback must never prevent hydration.
@@ -1054,7 +1068,7 @@ export class HydratableElementController<
                 (this as Mutable<this>).view = this.template.hydrate(
                     firstChild,
                     lastChild,
-                    element
+                    element,
                 );
                 this.view?.bind(this.source);
             } else {
@@ -1092,7 +1106,7 @@ export class HydratableElementController<
 
         try {
             HydratableElementController.lifecycleCallbacks.elementDidHydrate?.(
-                this.source
+                this.source,
             );
         } catch {
             // A lifecycle callback must never prevent hydration.
@@ -1114,7 +1128,7 @@ export class HydratableElementController<
 
             HydratableElementController.idleCallbackId = requestIdleCallback(
                 HydratableElementController.checkHydrationComplete,
-                { timeout: 50 }
+                { timeout: 50 },
             );
         }
     }

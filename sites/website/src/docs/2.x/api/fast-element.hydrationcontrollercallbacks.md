@@ -15,13 +15,20 @@ navigationOptions:
 
 ## HydrationControllerCallbacks interface
 
-Lifecycle callbacks for element hydration events
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
+Experimental lifecycle callbacks for element hydration events.
 
 **Signature:**
 
 ```typescript
 export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> 
 ```
+
+## Remarks
+
+These hooks are alpha and may change or be removed before the v3 stable release.
 
 ## Methods
 
@@ -43,7 +50,7 @@ Description
 
 </td><td>
 
-_(Optional)_ Called after an individual element's hydration has finished
+**_(ALPHA)_** _(Optional)_ Called after an individual element's hydration has finished.
 
 
 </td></tr>
@@ -54,7 +61,7 @@ _(Optional)_ Called after an individual element's hydration has finished
 
 </td><td>
 
-_(Optional)_ Called before an individual element's hydration begins
+**_(ALPHA)_** _(Optional)_ Called before an individual element's hydration begins.
 
 
 </td></tr>
@@ -65,7 +72,7 @@ _(Optional)_ Called before an individual element's hydration begins
 
 </td><td>
 
-_(Optional)_ Called after all elements have completed hydration
+**_(ALPHA)_** _(Optional)_ Called after all elements have completed hydration.
 
 
 </td></tr>
@@ -76,7 +83,7 @@ _(Optional)_ Called after all elements have completed hydration
 
 </td><td>
 
-_(Optional)_ Called once when the first element enters the hydration pipeline. This is the earliest point at which we know a component has been async-defined with `defer-and-hydrate`<!-- -->, a template is pending via `<f-template>`<!-- -->, and the element has `needs-hydration`<!-- -->.
+**_(ALPHA)_** _(Optional)_ Called once when the first element enters the hydration pipeline. This is the earliest point at which we know a component has been async-defined with `defer-and-hydrate`<!-- -->, a template is pending via `<f-template>`<!-- -->, and the element has `needs-hydration`<!-- -->.
 
 
 </td></tr>

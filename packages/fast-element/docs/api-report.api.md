@@ -453,6 +453,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     static isRegistered: Record<string, Function>;
+    // @alpha
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
@@ -591,10 +592,12 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
 
 // @beta
 export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
+    // @alpha
     static config(callbacks: HydrationControllerCallbacks): typeof HydratableElementController;
     connect(): void;
     disconnect(): void;
     static install(): void;
+    // @alpha
     static lifecycleCallbacks: HydrationControllerCallbacks;
     protected needsHydration?: boolean;
     get shadowOptions(): ShadowRootOptions | undefined;
@@ -627,7 +630,7 @@ export class HydrationBindingError extends Error {
     readonly templateString: string;
 }
 
-// @public
+// @alpha
 export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> {
     elementDidHydrate?(source: TElement): void;
     elementWillHydrate?(source: TElement): void;
@@ -758,6 +761,7 @@ export const Parser: Readonly<{
 export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
+    // @alpha
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
@@ -1005,7 +1009,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     inline(): CaptureType<TSource, TParent>;
 }
 
-// @public
+// @alpha
 export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
     templateDidUpdate?(name: string): void;

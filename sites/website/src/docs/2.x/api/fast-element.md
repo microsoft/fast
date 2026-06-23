@@ -947,7 +947,7 @@ The result of a template compilation operation.
 
 </td><td>
 
-Lifecycle callbacks for element hydration events
+**_(ALPHA)_** Experimental lifecycle callbacks for element hydration events.
 
 
 </td></tr>
@@ -1145,7 +1145,7 @@ A template capable of rendering views not specifically connected to custom eleme
 
 </td><td>
 
-Lifecycle callbacks for template events.
+**_(ALPHA)_** Experimental lifecycle callbacks for template events.
 
 
 </td></tr>
