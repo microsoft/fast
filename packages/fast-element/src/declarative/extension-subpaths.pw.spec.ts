@@ -44,12 +44,12 @@ test.describe("extension subpaths", () => {
             class RegistrySubpathElement extends HTMLElement {}
 
             const name = `registry-subpath-element-${crypto.randomUUID()}`;
-            const registered = fastElementRegistry.whenRegistered(name);
+            const pendingDefinition = fastElementRegistry.whenRegistered(name);
             const definition = await FASTElementDefinition.compose(
                 RegistrySubpathElement,
                 { name },
             );
-            const registeredDefinition = await registered;
+            const registeredDefinition = await pendingDefinition;
             definition.define();
             const instance = document.createElement(name);
 

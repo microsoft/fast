@@ -7,6 +7,7 @@ export type {
 export {
     FASTElementDefinition,
     type FASTElementExtension,
+    type FASTElementRegistry,
     type FASTElementTemplateResolver,
     fastElementRegistry,
     type PartialFASTElementDefinition,

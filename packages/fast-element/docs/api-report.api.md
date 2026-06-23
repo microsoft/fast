@@ -574,7 +574,12 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // @public
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
+export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition> {
+    whenRegistered(name: string, registry?: CustomElementRegistry): Promise<FASTElementDefinition>;
+}
+
+// @public
+export const fastElementRegistry: FASTElementRegistry;
 
 // @public
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;

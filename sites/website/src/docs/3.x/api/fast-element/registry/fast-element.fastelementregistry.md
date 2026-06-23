@@ -20,9 +20,9 @@ The FAST custom element registry.
 **Signature:**
 
 ```typescript
-fastElementRegistry: TypeRegistry<FASTElementDefinition>
+fastElementRegistry: FASTElementRegistry
 ```
 
 ## Remarks
 
-This registry stores FAST element definitions by constructor so consumers can look up the `FASTElementDefinition` associated with an element type or instance.
+This registry stores FAST element definitions by constructor so consumers can look up the `FASTElementDefinition` associated with an element type, instance, or registered tag name.

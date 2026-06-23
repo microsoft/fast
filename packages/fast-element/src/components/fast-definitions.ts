@@ -14,16 +14,6 @@ const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
 
-/**
- * The FAST custom element registry.
- * @remarks
- * This registry stores FAST element definitions by constructor so consumers can
- * look up the `FASTElementDefinition` associated with an element type or instance.
- * @public
- */
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition> =
-    createTypeRegistry<FASTElementDefinition>();
-
 export type { TypeDefinition, TypeRegistry };
 
 /**
@@ -38,6 +28,35 @@ export interface ShadowRootOptions extends ShadowRootInit {
      */
     registry?: CustomElementRegistry;
 }
+
+/**
+ * The FAST custom element registry.
+ * @public
+ */
+export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition> {
+    /**
+     * Resolves when a FAST element definition has been registered for the tag name.
+     * @param name - The custom element tag name.
+     * @param registry - The custom element registry to observe.
+     */
+    whenRegistered(
+        name: string,
+        registry?: CustomElementRegistry,
+    ): Promise<FASTElementDefinition>;
+}
+
+/**
+ * The FAST custom element registry.
+ * @remarks
+ * This registry stores FAST element definitions by constructor so consumers can
+ * look up the `FASTElementDefinition` associated with an element type, instance,
+ * or registered tag name.
+ * @public
+ */
+export const fastElementRegistry: FASTElementRegistry = Object.freeze({
+    ...createTypeRegistry<FASTElementDefinition>(),
+    whenRegistered,
+});
 
 /**
  * A callback that receives a FASTElementDefinition during element registration.
@@ -131,6 +150,47 @@ function getRegisteredTypes(
     }
 
     return registeredTypes;
+}
+
+function getDefinitionForType(
+    type: Function | undefined,
+): FASTElementDefinition | undefined {
+    return type === void 0 ? void 0 : fastElementRegistry.getByType(type);
+}
+
+function whenRegistered(
+    name: string,
+    registry: CustomElementRegistry = customElements,
+): Promise<FASTElementDefinition> {
+    const registeredTypes = getRegisteredTypes(registry);
+
+    if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
+        Observable.defineProperty(registeredTypes, name);
+    }
+
+    const definition = getDefinitionForType(registeredTypes[name]);
+
+    if (definition !== void 0) {
+        return Promise.resolve(definition);
+    }
+
+    return new Promise(resolve => {
+        const notifier = Observable.getNotifier(registeredTypes);
+        const subscriber = {
+            handleChange: () => {
+                const definition = getDefinitionForType(registeredTypes[name]);
+
+                if (definition === void 0) {
+                    return;
+                }
+
+                notifier.unsubscribe(subscriber, name);
+                resolve(definition);
+            },
+        };
+
+        notifier.subscribe(subscriber, name);
+    });
 }
 
 function createTypeHydrationState(type: Function): TypeHydrationState {

@@ -88,7 +88,8 @@ The root `@microsoft/fast-element` entrypoint exports the FAST Element
 implementation APIs, including the element base class, kernel, controller,
 definition APIs, template APIs, binding helpers, directives, styles, and schema
 helpers. The FAST element registry is also available from
-`@microsoft/fast-element/registry.js` for focused definition lookups.
+`@microsoft/fast-element/registry.js` for focused definition lookups and
+`fastElementRegistry.whenRegistered(tagName)` registration promises.
 Declarative, hydration, context, and dependency injection APIs are available
 from their focused path exports.
 

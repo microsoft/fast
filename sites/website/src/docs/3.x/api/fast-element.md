@@ -992,6 +992,17 @@ The FASTElement constructor and static registration helpers.
 </td></tr>
 <tr><td>
 
+[FASTElementRegistry](../fast-element.fastelementregistry/)
+
+
+</td><td>
+
+The FAST custom element registry.
+
+
+</td></tr>
+<tr><td>
+
 [HostBehavior](../fast-element.hostbehavior/)
 
 

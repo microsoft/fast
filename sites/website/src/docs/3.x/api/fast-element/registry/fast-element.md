@@ -110,6 +110,17 @@ A template capable of creating views specifically for rendering custom elements.
 </td></tr>
 <tr><td>
 
+[FASTElementRegistry](../fast-element.fastelementregistry/)
+
+
+</td><td>
+
+The FAST custom element registry.
+
+
+</td></tr>
+<tr><td>
+
 [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
 
 

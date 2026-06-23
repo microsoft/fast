@@ -124,6 +124,8 @@ two packages and is available to consumers from
 
 - Stores partial element definitions created by `define()`
 - Provides lookup mechanism via `register()` for template attachment
+- Resolves `fastElementRegistry.whenRegistered(tagName)` when a matching
+  definition is registered
 - Maintains the registry of all FAST element definitions
 
 ### Observable Pattern
