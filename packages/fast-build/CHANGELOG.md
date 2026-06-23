@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 19 Jun 2026 22:15:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 23 Jun 2026 02:12:54 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.0-fast-element-v3-rc-20260615
+
+Tue, 23 Jun 2026 02:12:54 GMT
+
+### Patches
+
+- chore: include fast-build in the fast-element v3 RC prerelease train. (7559015+janechu@users.noreply.github.com)
 
 ## 0.8.0-fast-element-v3-rc-20260615
 

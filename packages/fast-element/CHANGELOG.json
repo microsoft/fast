@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 23 Jun 2026 02:12:54 GMT",
+      "version": "3.0.0-rc.3",
+      "tag": "@microsoft/fast-element_v3.0.0-rc.3",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d2021ef7456d8f4b7d227c8fd78df82aaec18590",
+            "comment": "BREAKING: Remove FASTElement.compose from the public API."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-element",
+            "comment": "Bump @microsoft/fast-build to v0.8.0-fast-element-v3-rc-20260615",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 19 Jun 2026 22:15:55 GMT",
       "version": "3.0.0-rc.2",
       "tag": "@microsoft/fast-element_v3.0.0-rc.2",
