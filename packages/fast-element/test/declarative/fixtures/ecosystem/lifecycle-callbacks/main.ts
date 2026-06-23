@@ -8,7 +8,7 @@ import { observerMap } from "@microsoft/fast-element/observer-map.js";
 export const promiseEvents: Array<{ promise: string; name?: string }> = [];
 
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     promiseEvents.push({ promise: "whenHydrated" });
     (window as any).hydrationCompleted = true;
 });

@@ -1,5 +1,4 @@
 import { type Constructable, isFunction } from "../interfaces.js";
-import { getFASTElementTypeHydration } from "./component-hydration.js";
 import { ElementController } from "./element-controller.js";
 import {
     applyFASTElementExtensions,
@@ -69,15 +68,8 @@ export interface FASTElement extends HTMLElement {
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T,
-): T &
-    FASTElementConstructor & {
-        new (): InstanceType<T> & FASTElement;
-    } {
+): T & FASTElementConstructor & { new (): InstanceType<T> & FASTElement } {
     const type = class extends (BaseType as any) {
-        public static get whenHydrated(): Promise<void> {
-            return getFASTElementTypeHydration(this);
-        }
-
         public readonly $fastController!: ElementController;
 
         public constructor() {
@@ -175,11 +167,6 @@ export interface FASTElementConstructor {
     new (): FASTElement;
 
     /**
-     * Resolves when hydration work for this FASTElement type completes.
-     */
-    readonly whenHydrated: Promise<void>;
-
-    /**
      * Defines a platform custom element based on the provided type and definition.
      * @param nameOrDef - The name of the element to define or a definition object.
      * @param extensions - Optional callbacks to run before registration.
@@ -208,10 +195,7 @@ export interface FASTElementConstructor {
      */
     from<TBase extends typeof HTMLElement>(
         BaseType: TBase,
-    ): TBase &
-        FASTElementConstructor & {
-            new (): InstanceType<TBase> & FASTElement;
-        };
+    ): TBase & FASTElementConstructor & { new (): InstanceType<TBase> & FASTElement };
 }
 
 /**

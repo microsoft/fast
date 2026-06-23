@@ -129,7 +129,7 @@ Core FAST Element helpers are available from the root package export:
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines FAST's internal `<f-template>` publisher in the target registry |
-| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `MyElement.whenHydrated` for component hydration waits and `enableHydration().whenHydrated` for the active hydration batch |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `enableHydration().whenHydrated(tagName)` for tag-specific hydration waits and `enableHydration().whenHydrated()` for the active hydration batch |
 | `TemplateElement.options(...)`, `ElementOptions`, `ElementOptionsDictionary` | Define extensions: `attributeMap(...)` and `observerMap(...)` passed as the second argument to `define()` |
 | `AttributeMap` / `ObserverMap` exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
@@ -176,9 +176,9 @@ Core FAST Element helpers are available from the root package export:
    `declarativeTemplate()` assigns it automatically, and `observerMap()` can
    take a manual schema with `observerMap({ schema })`.
 
-3. Replace `TemplateElement.config()` with `MyElement.whenHydrated` for
-   component hydration waits and `enableHydration().whenHydrated` for the active
-   hydration batch.
+3. Replace `TemplateElement.config()` with `enableHydration().whenHydrated(tagName)`
+   for tag-specific hydration waits and `enableHydration().whenHydrated()` for the
+   active hydration batch.
    Hydration is not installed by `declarative.js`; call `enableHydration()`
    before elements connect when SSR content should hydrate.
 

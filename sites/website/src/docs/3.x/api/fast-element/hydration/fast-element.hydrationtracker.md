@@ -102,27 +102,6 @@ Indicates whether the hydration hook should attempt to hydrate prerendered eleme
 
 
 </td></tr>
-<tr><td>
-
-[whenHydrated](../fast-element.hydrationtracker.whenhydrated/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;void&gt;
-
-
-</td><td>
-
-Resolves when the active hydration batch completes.
-
-
-</td></tr>
 </tbody></table>
 
 ## Methods
@@ -182,6 +161,32 @@ Merges additional options into the tracker.
 </td><td>
 
 Removes an element from the pending set and schedules a debounced completion check.
+
+
+</td></tr>
+<tr><td>
+
+[whenHydrated()](../fast-element.hydrationtracker.whenhydrated/)
+
+
+</td><td>
+
+
+</td><td>
+
+Resolves when the active hydration batch completes.
+
+
+</td></tr>
+<tr><td>
+
+[whenHydrated(tagName)](../fast-element.hydrationtracker.whenhydrated_1/)
+
+
+</td><td>
+
+
+</td><td>
 
 
 </td></tr>

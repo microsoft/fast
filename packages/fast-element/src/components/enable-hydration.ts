@@ -36,7 +36,7 @@ let hookInstalled = false;
  * and subsequent calls merge their options into the shared tracker.
  * By default, the hook stops hydrating new prerendered elements after
  * the initial hydration batch completes. Await the returned controller's
- * `whenHydrated` promise to run code after the active hydration batch
+ * `whenHydrated()` promise to run code after the active hydration batch
  * completes.
  *
  * Set `stopHydration` to `StopHydration.never` for streaming scenarios
@@ -57,7 +57,7 @@ let hookInstalled = false;
  *
  * const hydration = enableHydration();
  *
- * await hydration.whenHydrated;
+ * await hydration.whenHydrated();
  * console.log("hydration complete");
  * ```
  *

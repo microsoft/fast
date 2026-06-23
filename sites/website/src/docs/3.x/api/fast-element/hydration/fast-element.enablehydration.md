@@ -67,7 +67,7 @@ _(Optional)_ Optional hydration behavior.
 
 Call this before any FAST elements connect to the DOM. Hydration logic is not active unless this function is called, keeping `FASTElement` lightweight for client-side-only applications.
 
-Safe to call multiple times — the hydration hook is installed once and subsequent calls merge their options into the shared tracker. By default, the hook stops hydrating new prerendered elements after the initial hydration batch completes. Await the returned controller's `whenHydrated` promise to run code after the active hydration batch completes.
+Safe to call multiple times — the hydration hook is installed once and subsequent calls merge their options into the shared tracker. By default, the hook stops hydrating new prerendered elements after the initial hydration batch completes. Await the returned controller's `whenHydrated()` promise to run code after the active hydration batch completes.
 
 Set `stopHydration` to `StopHydration.never` for streaming scenarios that append hydratable Declarative Shadow DOM after the initial batch. In this mode, `whenHydrated` intentionally remains pending because hydration never reaches a global completion point.
 
@@ -81,7 +81,7 @@ import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 const hydration = enableHydration();
 
-await hydration.whenHydrated;
+await hydration.whenHydrated();
 console.log("hydration complete");
 ```
 

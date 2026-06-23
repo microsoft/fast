@@ -194,14 +194,14 @@ import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 const hydration = enableHydration();
 
-await hydration.whenHydrated;
+await hydration.whenHydrated();
 console.log("hydration complete");
 ```
 
 By default, hydration handles the initial prerendered batch and then no-ops
 after the active hydration batch completes. If your app streams Declarative
 Shadow DOM after the initial batch, keep the hydration hook active. In this
-mode, `enableHydration().whenHydrated` intentionally remains pending because
+mode, `enableHydration().whenHydrated()` intentionally remains pending because
 hydration never reaches a global completion point.
 
 ```typescript

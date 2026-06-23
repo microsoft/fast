@@ -543,7 +543,6 @@ export interface FASTElementConstructor {
     from<TBase extends typeof HTMLElement>(BaseType: TBase): TBase & FASTElementConstructor & {
         new (): InstanceType<TBase> & FASTElement;
     };
-    readonly whenHydrated: Promise<void>;
 }
 
 // @public

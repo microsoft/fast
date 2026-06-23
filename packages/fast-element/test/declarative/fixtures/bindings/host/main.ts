@@ -226,6 +226,6 @@ HostAutofocus.define({
 });
 
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;
 });

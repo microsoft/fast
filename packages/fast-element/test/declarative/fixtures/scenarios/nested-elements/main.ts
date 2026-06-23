@@ -9,7 +9,7 @@ import { observerMap } from "@microsoft/fast-element/observer-map.js";
 (window as any).messages = [];
 
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     (window as any).messages.push(`Hydration complete [${performance.now()}]`);
     (window as any).hydrationCompleted = true;
 });

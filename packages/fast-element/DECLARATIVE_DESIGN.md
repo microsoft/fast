@@ -619,7 +619,7 @@ sequenceDiagram
     participant FER as FASTElementDefinition
     participant FTE as internal f-template
     participant EC as ElementController
-    participant Hydration as enableHydration().whenHydrated
+    participant Hydration as enableHydration().whenHydrated()
 
     App->>Hydration: const hydration = enableHydration() [optional]
     App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
@@ -645,14 +645,14 @@ sequenceDiagram
 
 | Promise | Import path | Resolves when |
 |---|---|---|
-| `MyElement.whenHydrated` | Static FAST element class API | Hydration work for that element type completes. |
-| `enableHydration().whenHydrated` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
+| `enableHydration().whenHydrated("my-element")` | `@microsoft/fast-element/hydration.js` | Hydration work for that tag name completes. |
+| `enableHydration().whenHydrated()` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
 
 By default, hydration no-ops for later prerendered batches after the initial
 batch completes. Set
 `enableHydration({ stopHydration: StopHydration.never })` when Declarative Shadow
 DOM may be streamed into the page after the initial hydration batch. In that
-mode, `enableHydration().whenHydrated` intentionally remains pending because
+mode, `enableHydration().whenHydrated()` intentionally remains pending because
 there is no global completion point.
 
 For usage examples see

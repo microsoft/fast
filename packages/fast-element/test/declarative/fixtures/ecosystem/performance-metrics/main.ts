@@ -6,7 +6,7 @@ import { volatile } from "@microsoft/fast-element/volatile.js";
 
 performance.mark("hydration:started");
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     performance.measure("hydration:complete", "hydration:started");
     (window as any).hydrationCompleted = true;
 });

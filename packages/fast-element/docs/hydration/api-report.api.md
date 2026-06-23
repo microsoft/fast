@@ -204,7 +204,8 @@ export class HydrationBindingError extends Error {
 
 // @public
 export interface HydrationController {
-    readonly whenHydrated: Promise<void>;
+    whenHydrated(): Promise<void>;
+    whenHydrated(tagName: string): Promise<void>;
 }
 
 // @public
@@ -259,7 +260,9 @@ export class HydrationTracker implements HydrationController {
     mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
     get shouldHydrate(): boolean;
-    get whenHydrated(): Promise<void>;
+    whenHydrated(): Promise<void>;
+    // (undocumented)
+    whenHydrated(tagName: string): Promise<void>;
 }
 
 // @beta

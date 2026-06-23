@@ -621,7 +621,7 @@ ObserverMapSimpleArrayTestElement.define(
 
 // Enable ObserverMap via definition-scoped extensions for this test
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;
 });
 

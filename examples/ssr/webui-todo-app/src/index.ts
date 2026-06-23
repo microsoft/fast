@@ -23,7 +23,7 @@ const hydrationReady = new Promise<void>(resolve => {
 });
 
 const hydration = enableHydration();
-void hydration.whenHydrated.then(() => {
+void hydration.whenHydrated().then(() => {
     performance.measure("todo-hydration-completed", "todo-hydration-started");
     console.log("Hydration complete!");
     resolveHydrationReady();

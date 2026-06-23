@@ -159,20 +159,20 @@ FAST Element exposes promises for hydration readiness points that are useful to
 application code.
 
 Hydration must be explicitly opted into by calling `enableHydration()`. Await
-the returned controller's `whenHydrated` promise when code needs to run after
-the active hydration batch completes. Await `MyComponent.whenHydrated` when code
-needs to wait for a specific component class.
+the returned controller's `whenHydrated()` promise when code needs to run after
+the active hydration batch completes. Pass a tag name to `whenHydrated(tagName)`
+when code needs to wait for a specific FAST element.
 
 ```typescript
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 const hydration = enableHydration();
-await MyComponent.whenHydrated;
-await hydration.whenHydrated;
+await hydration.whenHydrated("my-component");
+await hydration.whenHydrated();
 ```
 
 By default, hydration no-ops for later prerendered batches after the initial
 batch completes. Set `stopHydration: StopHydration.never` in
 `enableHydration()` when streaming Declarative Shadow DOM should continue
-hydrating after the initial batch. In that mode, `hydration.whenHydrated`
+hydrating after the initial batch. In that mode, `hydration.whenHydrated()`
 intentionally remains pending because hydration has no global completion point.

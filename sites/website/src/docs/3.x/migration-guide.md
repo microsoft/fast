@@ -82,12 +82,12 @@ HydratableElementController.config({
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 const hydration = enableHydration();
-await hydration.whenHydrated;
+await hydration.whenHydrated();
 ```
 
-Use `MyElement.whenHydrated` when application code needs to wait for hydration
-work associated with a specific component class. Use
-`enableHydration().whenHydrated` for the active global hydration batch. When
+Use `enableHydration().whenHydrated("my-element")` when application code needs to
+wait for hydration work associated with a specific tag name. Use
+`enableHydration().whenHydrated()` for the active global hydration batch. When
 `stopHydration: StopHydration.never` is configured, the global promise
 intentionally remains pending because hydration never reaches a global
 completion point.
@@ -161,7 +161,7 @@ when an element uses `template: declarativeTemplate()`.
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
-| `TemplateElement.config(callbacks)` | `MyElement.whenHydrated` for component hydration waits and `enableHydration().whenHydrated` for the active hydration batch |
+| `TemplateElement.config(callbacks)` | `enableHydration().whenHydrated(tagName)` for tag-specific hydration waits and `enableHydration().whenHydrated()` for the active hydration batch |
 | `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
 
@@ -184,8 +184,8 @@ await MyElement.define(
     [attributeMap(), observerMap()],
 );
 
-await MyElement.whenHydrated;
-await hydration.whenHydrated;
+await hydration.whenHydrated("my-element");
+await hydration.whenHydrated();
 ```
 
 `FASTElementDefinition.schema` is optional. Declarative templates assign it

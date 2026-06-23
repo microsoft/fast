@@ -23,52 +23,6 @@ The FASTElement constructor and static registration helpers.
 export interface FASTElementConstructor
 ```
 
-## Properties
-
-<table><thead><tr><th>
-
-Property
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[whenHydrated](../fast-element.fastelementconstructor.whenhydrated/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;void&gt;
-
-
-</td><td>
-
-Resolves when hydration work for this FASTElement type completes.
-
-
-</td></tr>
-</tbody></table>
-
 ## Methods
 
 <table><thead><tr><th>

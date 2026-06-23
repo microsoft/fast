@@ -29,7 +29,7 @@ Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a
 
 Fixtures that exercise prerendered Declarative Shadow DOM should enable
 hydration explicitly and set a global flag after the hydration controller's
-`whenHydrated` promise resolves so
+`whenHydrated()` promise resolves so
 Playwright tests can wait for the element to be fully interactive before
 asserting. The standard pattern is:
 
@@ -39,7 +39,7 @@ asserting. The standard pattern is:
     import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
     const hydration = enableHydration();
-    void hydration.whenHydrated.then(() => {
+    void hydration.whenHydrated().then(() => {
         (window as any).hydrationCompleted = true;
     });
     ```

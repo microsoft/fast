@@ -23,21 +23,11 @@ The controller returned by `enableHydration()`<!-- -->.
 export interface HydrationController
 ```
 
-## Properties
+## Methods
 
 <table><thead><tr><th>
 
-Property
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Type
+Method
 
 
 </th><th>
@@ -48,22 +38,23 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[whenHydrated](../fast-element.hydrationcontroller.whenhydrated/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;void&gt;
+[whenHydrated()](../fast-element.hydrationcontroller.whenhydrated/)
 
 
 </td><td>
 
 Resolves when the active hydration batch completes.
+
+
+</td></tr>
+<tr><td>
+
+[whenHydrated(tagName)](../fast-element.hydrationcontroller.whenhydrated_1/)
+
+
+</td><td>
+
+Resolves when hydration work for the specified tag name completes.
 
 
 </td></tr>

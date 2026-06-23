@@ -1,9 +1,4 @@
 import type { HydrationDebugger } from "../hydration/hydration-debugger.js";
-import {
-    addFASTElementTypeHydration,
-    removeFASTElementTypeHydration,
-    resolveFASTElementHydrationBatch,
-} from "./component-hydration.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 /**
@@ -62,8 +57,21 @@ export interface HydrationController {
      * promise intentionally remains pending because hydration never reaches a
      * global completion point.
      */
-    readonly whenHydrated: Promise<void>;
+    whenHydrated(): Promise<void>;
+    /**
+     * Resolves when hydration work for the specified tag name completes.
+     * @param tagName - The custom element tag name to observe.
+     */
+    whenHydrated(tagName: string): Promise<void>;
 }
+
+type TagHydrationState = {
+    promise: Promise<void>;
+    pendingCount: number;
+    resolve(): void;
+    resolveTimer: ReturnType<typeof setTimeout> | null;
+    resolved: boolean;
+};
 
 /**
  * Tracks prerendered elements through the hydration lifecycle and
@@ -73,7 +81,8 @@ export interface HydrationController {
  */
 export class HydrationTracker implements HydrationController {
     private elements: Set<HTMLElement> = new Set();
-    private elementTypes: WeakMap<HTMLElement, Function> = new WeakMap();
+    private elementTags: WeakMap<HTMLElement, string> = new WeakMap();
+    private tagHydrationStates: Map<string, TagHydrationState> = new Map();
     private started = false;
     private completed = false;
     private checkTimer: ReturnType<typeof setTimeout> | null = null;
@@ -89,7 +98,13 @@ export class HydrationTracker implements HydrationController {
     /**
      * Resolves when the active hydration batch completes.
      */
-    public get whenHydrated(): Promise<void> {
+    public whenHydrated(): Promise<void>;
+    public whenHydrated(tagName: string): Promise<void>;
+    public whenHydrated(tagName?: string): Promise<void> {
+        if (tagName !== void 0) {
+            return this.getTagHydrationPromise(tagName);
+        }
+
         return this._whenHydrated;
     }
 
@@ -116,13 +131,12 @@ export class HydrationTracker implements HydrationController {
         }
 
         if (!this.elements.has(element)) {
-            const type =
-                FASTElementDefinition.getForInstance(element)?.type ??
-                (element.constructor as Function);
+            const tagName =
+                FASTElementDefinition.getForInstance(element)?.name ?? element.localName;
 
             this.elements.add(element);
-            this.elementTypes.set(element, type);
-            addFASTElementTypeHydration(type);
+            this.elementTags.set(element, tagName);
+            this.addTagHydration(tagName);
         }
     }
 
@@ -132,11 +146,11 @@ export class HydrationTracker implements HydrationController {
      */
     public remove(element: HTMLElement): void {
         if (this.elements.delete(element)) {
-            const type = this.elementTypes.get(element);
+            const tagName = this.elementTags.get(element);
 
-            if (type !== void 0) {
-                this.elementTypes.delete(element);
-                removeFASTElementTypeHydration(type);
+            if (tagName !== void 0) {
+                this.elementTags.delete(element);
+                this.removeTagHydration(tagName);
             }
         }
 
@@ -184,10 +198,119 @@ export class HydrationTracker implements HydrationController {
         });
     }
 
+    private getTagHydrationPromise(tagName: string): Promise<void> {
+        const state = this.getTagHydrationState(tagName);
+
+        if (this.completed && this.stopHydration !== StopHydration.never) {
+            this.resolveTagHydrationState(state);
+        }
+
+        return state.promise;
+    }
+
+    private addTagHydration(tagName: string): void {
+        const state = this.getTagHydrationState(tagName);
+
+        if (state.resolveTimer !== null) {
+            clearTimeout(state.resolveTimer);
+            state.resolveTimer = null;
+        }
+
+        if (state.resolved) {
+            this.prepareTagHydrationState(state);
+        }
+
+        state.pendingCount++;
+    }
+
+    private removeTagHydration(tagName: string): void {
+        const state = this.getTagHydrationState(tagName);
+
+        if (state.pendingCount > 0) {
+            state.pendingCount--;
+        }
+
+        if (state.pendingCount === 0) {
+            this.scheduleTagHydrationResolution(state);
+        }
+    }
+
+    private getTagHydrationState(tagName: string): TagHydrationState {
+        const normalizedTagName = tagName.toLowerCase();
+        let state = this.tagHydrationStates.get(normalizedTagName);
+
+        if (state === void 0) {
+            state = this.createTagHydrationState();
+            this.tagHydrationStates.set(normalizedTagName, state);
+        }
+
+        return state;
+    }
+
+    private createTagHydrationState(): TagHydrationState {
+        let resolve!: () => void;
+        const promise = new Promise<void>(settle => {
+            resolve = settle;
+        });
+
+        return {
+            promise,
+            pendingCount: 0,
+            resolve,
+            resolveTimer: null,
+            resolved: false,
+        };
+    }
+
+    private prepareTagHydrationState(state: TagHydrationState): void {
+        let resolve!: () => void;
+        state.promise = new Promise<void>(settle => {
+            resolve = settle;
+        });
+        state.resolve = resolve;
+        state.resolved = false;
+    }
+
+    private resolveTagHydrationState(state: TagHydrationState): void {
+        if (state.resolved) {
+            return;
+        }
+
+        if (state.resolveTimer !== null) {
+            clearTimeout(state.resolveTimer);
+            state.resolveTimer = null;
+        }
+
+        state.resolved = true;
+        state.resolve();
+    }
+
+    private scheduleTagHydrationResolution(state: TagHydrationState): void {
+        if (state.resolveTimer !== null) {
+            clearTimeout(state.resolveTimer);
+        }
+
+        state.resolveTimer = setTimeout(() => {
+            state.resolveTimer = null;
+
+            if (state.pendingCount === 0) {
+                this.resolveTagHydrationState(state);
+            }
+        }, 0);
+    }
+
+    private resolveTagHydrationPromises(): void {
+        for (const state of this.tagHydrationStates.values()) {
+            if (state.pendingCount === 0) {
+                this.resolveTagHydrationState(state);
+            }
+        }
+    }
+
     private resolveHydrationPromise(): void {
         const resolve = this.resolveWhenHydrated;
         this.resolveWhenHydrated = null;
         resolve?.();
-        resolveFASTElementHydrationBatch();
+        this.resolveTagHydrationPromises();
     }
 }

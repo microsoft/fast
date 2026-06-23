@@ -67,19 +67,19 @@ For the required marker format and initial-state application details, see
 
 ## Hydration promise APIs
 
-FAST Element's declarative APIs expose promises for the registration and
-hydration readiness points that are useful to application code.
+FAST Element's declarative APIs expose hydration readiness promises that are
+useful to application code.
 
 Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
 you want prerendered Declarative Shadow DOM to be reused, then await
-the returned controller's `whenHydrated` promise when code needs to run after
+the returned controller's `whenHydrated()` promise when code needs to run after
 the active hydration batch:
 
 ```typescript
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 const hydration = enableHydration();
-await hydration.whenHydrated;
+await hydration.whenHydrated();
 ```
 
 The hydration hook no-ops for new prerendered elements after the initial
@@ -94,7 +94,7 @@ enableHydration({
 });
 ```
 
-When `StopHydration.never` is used, `enableHydration().whenHydrated`
+When `StopHydration.never` is used, `enableHydration().whenHydrated()`
 intentionally remains pending because hydration has no global completion point.
 
 ## `observerMap`

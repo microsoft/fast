@@ -1,11 +1,11 @@
 ---
 id: "fast-element.hydrationtracker.whenhydrated"
-title: "HydrationTracker.whenHydrated property"
+title: "HydrationTracker.whenHydrated() method"
 layout: 3x-api
 eleventyNavigation:
   key: "hydration.jsapi3xfast-element.hydrationtracker.whenhydrated"
   parent: "@microsoft/fast-element/hydration.js3x"
-  title: "HydrationTracker.whenHydrated property"
+  title: "HydrationTracker.whenHydrated() method"
 navigationOptions:
   activeKey: "hydration.jsapi3xfast-element.hydrationtracker.whenhydrated"
 ---
@@ -13,12 +13,15 @@ navigationOptions:
 
 [@microsoft/fast-element/hydration.js](../fast-element/index.html) &gt; [HydrationTracker](../fast-element.hydrationtracker/index.html) &gt; [whenHydrated](../fast-element.hydrationtracker.whenhydrated/index.html)
 
-## HydrationTracker.whenHydrated property
+## HydrationTracker.whenHydrated() method
 
 Resolves when the active hydration batch completes.
 
 **Signature:**
 
 ```typescript
-get whenHydrated(): Promise<void>;
+whenHydrated(): Promise<void>;
 ```
+**Returns:**
+
+Promise&lt;void&gt;
