@@ -78,7 +78,6 @@ extends:
       dependsOn: Check
       condition: eq(dependencies.Check.outputs['CheckVersion.deploymentCheck.needsDeployment'], 'true')
       variables:
-        npm_config_cache: $(Pipeline.Workspace)/.npm
         npm_config_tag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.npmDistTag'] ]
         undeployedTags: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.undeployedTags'] ]
         # When adding a new publishable workspace, add its package-specific
@@ -110,14 +109,6 @@ extends:
             inputs:
               version: "22.x"
             displayName: "Install Node.js"
-
-          - task: Cache@2
-            inputs:
-              key: 'npm | "$(Agent.OS)" | package-lock.json'
-              restoreKeys: |
-                npm | "$(Agent.OS)"
-              path: $(npm_config_cache)
-            displayName: "Cache npm"
 
           - task: DownloadGitHubRelease@0
             displayName: "Download @microsoft/fast-build release assets"
