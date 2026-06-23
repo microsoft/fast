@@ -1,10 +1,10 @@
 import { type Constructable, isFunction } from "../interfaces.js";
+import { getFASTElementTypeHydration } from "./component-hydration.js";
 import { ElementController } from "./element-controller.js";
 import {
     applyFASTElementExtensions,
     FASTElementDefinition,
     type FASTElementExtension,
-    getFASTElementTypeHydration,
     type PartialFASTElementDefinition,
     resolveFASTElementTemplate,
 } from "./fast-definitions.js";

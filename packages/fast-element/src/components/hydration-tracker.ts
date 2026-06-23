@@ -1,10 +1,10 @@
 import type { HydrationDebugger } from "../hydration/hydration-debugger.js";
 import {
     addFASTElementTypeHydration,
-    FASTElementDefinition,
     removeFASTElementTypeHydration,
     resolveFASTElementHydrationBatch,
-} from "./fast-definitions.js";
+} from "./component-hydration.js";
+import { FASTElementDefinition } from "./fast-definitions.js";
 
 /**
  * Describes when FAST should stop hydrating newly connected prerendered elements.

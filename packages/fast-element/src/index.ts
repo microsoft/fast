@@ -33,22 +33,22 @@ export {
 } from "./components/element-controller.js";
 export type {
     FASTElementExtension,
-    FASTElementRegistry,
     FASTElementTemplateResolver,
     PartialFASTElementDefinition,
     ShadowRootOptions,
     TypeDefinition,
     TypeRegistry,
 } from "./components/fast-definitions.js";
-export {
-    FASTElementDefinition,
-    fastElementRegistry,
-} from "./components/fast-definitions.js";
+export { FASTElementDefinition } from "./components/fast-definitions.js";
 export {
     customElement,
     FASTElement,
     type FASTElementConstructor,
 } from "./components/fast-element.js";
+export {
+    type FASTElementRegistry,
+    fastElementRegistry,
+} from "./components/fast-element-registry.js";
 export { enableDebug } from "./debug.js";
 export { DOM, DOMAspect, type DOMSink } from "./dom.js";
 export {
