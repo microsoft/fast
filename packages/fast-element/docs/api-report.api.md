@@ -540,9 +540,8 @@ export interface FASTElementConstructor {
     new (): FASTElement;
     define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(this: TType, nameOrDef: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
     define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
-    from<TBase extends typeof HTMLElement>(BaseType: TBase): {
+    from<TBase extends typeof HTMLElement>(BaseType: TBase): TBase & FASTElementConstructor & {
         new (): InstanceType<TBase> & FASTElement;
-        readonly whenHydrated: Promise<void>;
     };
     readonly whenHydrated: Promise<void>;
 }

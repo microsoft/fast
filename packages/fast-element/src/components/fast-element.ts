@@ -66,15 +66,13 @@ export interface FASTElement extends HTMLElement {
     ): void;
 }
 
-type FASTElementType<T extends typeof HTMLElement> = {
-    new (): InstanceType<T> & FASTElement;
-    readonly whenHydrated: Promise<void>;
-};
-
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T,
-): FASTElementType<T> {
+): T &
+    FASTElementConstructor & {
+        new (): InstanceType<T> & FASTElement;
+    } {
     const type = class extends (BaseType as any) {
         public static get whenHydrated(): Promise<void> {
             return getFASTElementTypeHydration(this);
@@ -210,10 +208,10 @@ export interface FASTElementConstructor {
      */
     from<TBase extends typeof HTMLElement>(
         BaseType: TBase,
-    ): {
-        new (): InstanceType<TBase> & FASTElement;
-        readonly whenHydrated: Promise<void>;
-    };
+    ): TBase &
+        FASTElementConstructor & {
+            new (): InstanceType<TBase> & FASTElement;
+        };
 }
 
 /**
