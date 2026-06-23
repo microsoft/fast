@@ -6,7 +6,6 @@ import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 import {
     fastElementRegistry,
-    getRegisteredTypes,
     globalFASTElementRegisteredTypes,
 } from "./fast-element-registry.js";
 import type { Schema } from "./schema.js";
@@ -514,13 +513,6 @@ export class FASTElementDefinition<
         this.schema = nameOrConfig.schema;
 
         fastElementRegistry.register(this);
-        const registeredTypes = getRegisteredTypes(this.registry);
-
-        if (!Object.prototype.hasOwnProperty.call(registeredTypes, this.name)) {
-            Observable.defineProperty(registeredTypes, this.name);
-        }
-
-        registeredTypes[this.name] = this.type;
     }
 
     /**

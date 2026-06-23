@@ -15,6 +15,8 @@ const registeredTypesByRegistry = new WeakMap<
     Record<string, Function>
 >();
 
+const typeRegistry = createTypeRegistry<FASTElementDefinition>();
+
 /**
  * The FAST custom element registry.
  * @public
@@ -40,7 +42,23 @@ export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition>
  * @public
  */
 export const fastElementRegistry: FASTElementRegistry = Object.freeze({
-    ...createTypeRegistry<FASTElementDefinition>(),
+    register(definition: FASTElementDefinition): boolean {
+        if (!typeRegistry.register(definition)) {
+            return false;
+        }
+
+        const registeredTypes = getRegisteredTypes(definition.registry);
+
+        if (!Object.prototype.hasOwnProperty.call(registeredTypes, definition.name)) {
+            Observable.defineProperty(registeredTypes, definition.name);
+        }
+
+        registeredTypes[definition.name] = definition.type;
+
+        return true;
+    },
+    getByType: typeRegistry.getByType,
+    getForInstance: typeRegistry.getForInstance,
     whenRegistered,
 });
 
