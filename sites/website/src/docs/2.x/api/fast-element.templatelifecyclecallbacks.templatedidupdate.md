@@ -15,7 +15,10 @@ navigationOptions:
 
 ## TemplateLifecycleCallbacks.templateDidUpdate() method
 
-Called after the template has been assigned to the definition
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
+Called after the template has been assigned to the definition.
 
 **Signature:**
 
@@ -60,3 +63,7 @@ string
 **Returns:**
 
 void
+
+## Remarks
+
+Alpha/experimental lifecycle hook. May change or be removed during major version updates.

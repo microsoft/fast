@@ -15,10 +15,17 @@ navigationOptions:
 
 ## FASTElementDefinition.lifecycleCallbacks property
 
-Lifecycle callbacks for template events.
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
+Experimental lifecycle callbacks for template events.
 
 **Signature:**
 
 ```typescript
 readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 ```
+
+## Remarks
+
+These hooks are alpha and may change or be removed during major version updates.

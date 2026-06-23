@@ -5,6 +5,7 @@ FAST.addMessages(debugMessages);
 
 export {
     type AttributeMapConfig,
+    type HydrationLifecycleCallbacks,
     ObserverMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,

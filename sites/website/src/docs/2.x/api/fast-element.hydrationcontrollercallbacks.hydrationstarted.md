@@ -15,6 +15,9 @@ navigationOptions:
 
 ## HydrationControllerCallbacks.hydrationStarted() method
 
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Called once when the first element enters the hydration pipeline. This is the earliest point at which we know a component has been async-defined with `defer-and-hydrate`<!-- -->, a template is pending via `<f-template>`<!-- -->, and the element has `needs-hydration`<!-- -->.
 
 **Signature:**
@@ -25,3 +28,7 @@ hydrationStarted?(): void;
 **Returns:**
 
 void
+
+## Remarks
+
+Alpha/experimental lifecycle hook. May change or be removed during major version updates.
