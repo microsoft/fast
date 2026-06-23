@@ -44,9 +44,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - if: ${{ github.event_name == 'pull_request' }}
+      - name: Fetch PR base branch
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: bash
         run: |
-          git fetch --no-tags --prune --depth=1 origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+          git fetch --no-tags --prune --depth=1 origin \
+            "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
         env:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
 
