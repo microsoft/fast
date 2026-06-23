@@ -44,9 +44,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - if: ${{ github.event_name == 'pull_request' }}
+      - name: Fetch PR base branch
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: bash
         run: |
-          git fetch --no-tags --prune --depth=1 origin "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
+          git fetch --no-tags --prune --depth=1 origin \
+            "+refs/heads/${BASE_REF}:refs/remotes/origin/${BASE_REF}"
         env:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
 
@@ -84,4 +87,4 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npx lage test:node test:playwright ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose
+        run: npx lage test:node test:playwright ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose --concurrency 1
