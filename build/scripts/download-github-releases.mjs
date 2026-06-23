@@ -39,6 +39,9 @@ import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
+const FAST_ELEMENT_PACKAGE = "@microsoft/fast-element";
+const rcDistTagPattern = /fast-element-v3-rc-(\d{8})/;
+const fastElementRcPattern = /^3\.0\.0-rc\.\d+$/;
 let skipCratesCache;
 if (!CHECK_ONLY) {
     console.error(
@@ -177,6 +180,66 @@ function setAzureOutput(name, value) {
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
+function deriveNpmDistTag(workspaces) {
+    const rcDates = new Set();
+    const missingRcSuffix = [];
+    const isFastElementV3RcBranch = currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH;
+
+    for (const { name, version } of workspaces) {
+        const match = rcDistTagPattern.exec(version);
+        if (match) {
+            rcDates.add(match[1]);
+            continue;
+        }
+
+        if (isFastElementV3RcBranch && name !== FAST_ELEMENT_PACKAGE) {
+            missingRcSuffix.push(`${name}@${version}`);
+        }
+    }
+
+    if (missingRcSuffix.length > 0) {
+        throw new Error(
+            `Cannot derive FAST Element v3 RC npm dist-tag because these undeployed companion package versions are missing a fast-element-v3-rc-YYYYMMDD suffix: ${missingRcSuffix.join(", ")}.`,
+        );
+    }
+
+    if (rcDates.size > 1) {
+        throw new Error(
+            `Cannot derive a single FAST Element v3 RC npm dist-tag from multiple dates: ${Array.from(
+                rcDates,
+            )
+                .map(date => `rc-${date}`)
+                .sort()
+                .join(", ")}.`,
+        );
+    }
+
+    if (rcDates.size === 1) {
+        return `rc-${Array.from(rcDates)[0]}`;
+    }
+
+    if (
+        workspaces.some(
+            ({ name, version }) =>
+                name === FAST_ELEMENT_PACKAGE && fastElementRcPattern.test(version),
+        )
+    ) {
+        return "rc";
+    }
+
+    return "latest";
+}
+
+function deriveFastElementNpmDistTag(workspaces, fallbackTag) {
+    const fastElement = workspaces.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
+
+    if (fastElementRcPattern.test(fastElement?.version ?? "")) {
+        return "rc";
+    }
+
+    return fallbackTag;
+}
+
 const allTags = listGitTags();
 const tagSet = new Set(allTags);
 const deployed = new Set(
@@ -191,11 +254,20 @@ const releaseCandidates = publishable
     .sort((a, b) => a.tag.localeCompare(b.tag));
 const undeployed = releaseCandidates.filter(({ tag }) => !deployed.has(tag));
 const undeployedTagSet = new Set(undeployed.map(({ tag }) => tag));
+const npmDistTag = deriveNpmDistTag(undeployed);
+const fastElementNpmDistTag = deriveFastElementNpmDistTag(undeployed, npmDistTag);
+const fastElement = undeployed.find(({ name }) => name === FAST_ELEMENT_PACKAGE);
+const shouldRetagFastElement =
+    fastElement !== undefined &&
+    undeployedTagSet.has(fastElement.tag) &&
+    fastElementNpmDistTag !== npmDistTag;
 
 console.log(`Publishable workspaces:    ${publishable.length}`);
 console.log(`Current release tags:      ${releaseCandidates.length}`);
 console.log(`Already deployed:          ${releaseCandidates.length - undeployed.length}`);
 console.log(`Undeployed:                ${undeployed.length}`);
+console.log(`npm dist-tag:              ${npmDistTag}`);
+console.log(`FAST Element npm dist-tag: ${fastElementNpmDistTag}`);
 
 if (undeployed.length > 0) {
     console.log("\nUndeployed tags:");
@@ -206,6 +278,12 @@ if (undeployed.length > 0) {
 
 setAzureOutput("needsDeployment", undeployed.length > 0 ? "true" : "false");
 setAzureOutput("undeployedTags", undeployed.map(({ tag }) => tag).join(","));
+setAzureOutput("npmDistTag", npmDistTag);
+setAzureOutput("fastElementNpmDistTag", fastElementNpmDistTag);
+setAzureOutput(
+    "fastElementNeedsNpmDistTagUpdate",
+    shouldRetagFastElement ? "true" : "false",
+);
 for (const workspace of publishable) {
     setAzureOutput(`${workspace.outputPrefix}ReleaseTag`, workspace.tag);
     setAzureOutput(
