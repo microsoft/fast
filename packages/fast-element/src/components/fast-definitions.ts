@@ -93,6 +93,24 @@ const lateAttributeLookups = new WeakMap<
     Record<string, AttributeDefinition>
 >();
 
+type TypeRegistrationState = {
+    promise: Promise<Function>;
+    resolve(value: Function): void;
+};
+
+const pendingTypeRegistrations = new WeakMap<Function, TypeRegistrationState>();
+
+type TypeHydrationState = {
+    promise: Promise<void>;
+    pendingCount: number;
+    resolve(): void;
+    resolveTimer: ReturnType<typeof setTimeout> | null;
+    resolved: boolean;
+};
+
+const typeHydrationStates = new WeakMap<Function, TypeHydrationState>();
+const observedHydrationTypes = new Set<Function>();
+
 function isFASTElementTemplateResolver<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
@@ -122,14 +140,7 @@ function getRegisteredTypes(
     return registeredTypes;
 }
 
-/**
- * Resolves when the named element is registered with the FAST element registry
- * or defined with the platform custom element registry.
- * @param name - The name of the custom element to wait for.
- * @param registry - The custom element registry to observe.
- * @public
- */
-export function whenRegistered(
+function waitForElementRegistration(
     name: string,
     registry: CustomElementRegistry = customElements,
 ): Promise<Function> {
@@ -198,6 +209,205 @@ export function whenRegistered(
             fail(error);
         }
     });
+}
+
+function createTypeRegistrationState(type: Function): TypeRegistrationState {
+    let resolve!: (value: Function) => void;
+    const promise = new Promise<Function>(settle => {
+        resolve = settle;
+    });
+    const state = { promise, resolve };
+    pendingTypeRegistrations.set(type, state);
+    return state;
+}
+
+function resolveTypeRegistration(type: Function): void {
+    const state = pendingTypeRegistrations.get(type);
+
+    if (state !== void 0) {
+        pendingTypeRegistrations.delete(type);
+        state.resolve(type);
+    }
+}
+
+function getRegistrationDefinition(
+    type: Function,
+): { name: string; registry: CustomElementRegistry } | null {
+    const definition = fastElementRegistry.getByType(type);
+
+    if (definition !== void 0) {
+        return {
+            name: definition.name,
+            registry: definition.registry,
+        };
+    }
+
+    const staticDefinition = (
+        type as { definition?: string | PartialFASTElementDefinition }
+    ).definition;
+
+    if (isString(staticDefinition)) {
+        return {
+            name: staticDefinition,
+            registry: customElements,
+        };
+    }
+
+    if (staticDefinition !== void 0) {
+        return {
+            name: staticDefinition.name,
+            registry: staticDefinition.registry ?? customElements,
+        };
+    }
+
+    return null;
+}
+
+/**
+ * Gets the promise used by FASTElement static `whenRegistered`.
+ * @internal
+ */
+export function getFASTElementTypeRegistration(type: Function): Promise<Function> {
+    if (fastElementRegistry.getByType(type) !== void 0) {
+        return Promise.resolve(type);
+    }
+
+    const registrationDefinition = getRegistrationDefinition(type);
+
+    if (registrationDefinition !== null) {
+        return waitForElementRegistration(
+            registrationDefinition.name,
+            registrationDefinition.registry,
+        ).then(registeredType => {
+            if (registeredType !== type) {
+                throw new Error(
+                    `The ${registrationDefinition.name} element was registered with a different type.`,
+                );
+            }
+
+            return registeredType;
+        });
+    }
+
+    return (pendingTypeRegistrations.get(type) ?? createTypeRegistrationState(type))
+        .promise;
+}
+
+function createTypeHydrationState(type: Function): TypeHydrationState {
+    let resolve!: () => void;
+    const promise = new Promise<void>(settle => {
+        resolve = settle;
+    });
+    const state = {
+        promise,
+        pendingCount: 0,
+        resolve,
+        resolveTimer: null,
+        resolved: false,
+    };
+
+    typeHydrationStates.set(type, state);
+    observedHydrationTypes.add(type);
+
+    return state;
+}
+
+function getTypeHydrationState(type: Function): TypeHydrationState {
+    return typeHydrationStates.get(type) ?? createTypeHydrationState(type);
+}
+
+function prepareTypeHydrationState(state: TypeHydrationState): void {
+    let resolve!: () => void;
+    state.promise = new Promise<void>(settle => {
+        resolve = settle;
+    });
+    state.resolve = resolve;
+    state.resolved = false;
+}
+
+function resolveTypeHydrationState(state: TypeHydrationState): void {
+    if (state.resolved) {
+        return;
+    }
+
+    if (state.resolveTimer !== null) {
+        clearTimeout(state.resolveTimer);
+        state.resolveTimer = null;
+    }
+
+    state.resolved = true;
+    state.resolve();
+}
+
+function scheduleTypeHydrationResolution(state: TypeHydrationState): void {
+    if (state.resolveTimer !== null) {
+        clearTimeout(state.resolveTimer);
+    }
+
+    state.resolveTimer = setTimeout(() => {
+        state.resolveTimer = null;
+
+        if (state.pendingCount === 0) {
+            resolveTypeHydrationState(state);
+        }
+    }, 0);
+}
+
+/**
+ * Gets the promise used by FASTElement static `whenHydrated`.
+ * @internal
+ */
+export function getFASTElementTypeHydration(type: Function): Promise<void> {
+    return getTypeHydrationState(type).promise;
+}
+
+/**
+ * Marks a FAST element type as pending hydration.
+ * @internal
+ */
+export function addFASTElementTypeHydration(type: Function): void {
+    const state = getTypeHydrationState(type);
+
+    if (state.resolveTimer !== null) {
+        clearTimeout(state.resolveTimer);
+        state.resolveTimer = null;
+    }
+
+    if (state.resolved) {
+        prepareTypeHydrationState(state);
+    }
+
+    state.pendingCount++;
+}
+
+/**
+ * Marks a FAST element type as no longer pending hydration.
+ * @internal
+ */
+export function removeFASTElementTypeHydration(type: Function): void {
+    const state = getTypeHydrationState(type);
+
+    if (state.pendingCount > 0) {
+        state.pendingCount--;
+    }
+
+    if (state.pendingCount === 0) {
+        scheduleTypeHydrationResolution(state);
+    }
+}
+
+/**
+ * Resolves all component-specific hydration promises that have no active work.
+ * @internal
+ */
+export function resolveFASTElementHydrationBatch(): void {
+    for (const type of observedHydrationTypes) {
+        const state = typeHydrationStates.get(type);
+
+        if (state !== void 0 && state.pendingCount === 0) {
+            resolveTypeHydrationState(state);
+        }
+    }
 }
 
 function finalizeResolvedTemplate<
@@ -629,6 +839,7 @@ export class FASTElementDefinition<
         }
 
         registeredTypes[this.name] = this.type;
+        resolveTypeRegistration(this.type);
     }
 
     /**
@@ -711,16 +922,6 @@ export class FASTElementDefinition<
      * @param instance - The custom element instance to retrieve the definition for.
      */
     static readonly getForInstance = fastElementRegistry.getForInstance;
-
-    /**
-     * Indicates when a custom elements definition has been registered with the fastElementRegistry.
-     * @param name - The name of the defined custom element.
-     * @alpha
-     */
-    public static register: (
-        name: string,
-        registry?: CustomElementRegistry,
-    ) => Promise<Function> = whenRegistered;
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

@@ -1,7 +1,7 @@
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { Observable, observable } from "@microsoft/fast-element/observable.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
 import { Updates } from "@microsoft/fast-element/updates.js";
@@ -496,8 +496,8 @@ class DeepMergeTestElement extends FASTElement {
     }
 }
 
-enableHydration();
-void whenHydrated.then(() => {
+const hydration = enableHydration();
+void hydration.whenHydrated.then(() => {
     (window as any).hydrationCompleted = true;
 });
 

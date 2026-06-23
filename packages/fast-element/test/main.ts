@@ -16,13 +16,9 @@ export {
     deferHydrationAttribute,
     enableHydration,
     StopHydration,
-    whenHydrated,
 } from "../src/components/enable-hydration.js";
 export type { FASTElementExtension } from "../src/components/fast-definitions.js";
-export {
-    FASTElementDefinition,
-    whenRegistered,
-} from "../src/components/fast-definitions.js";
+export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { customElement, FASTElement } from "../src/components/fast-element.js";
 export {
     HydrationMarkup,

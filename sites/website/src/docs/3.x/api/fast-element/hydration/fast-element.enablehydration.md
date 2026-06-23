@@ -20,7 +20,7 @@ Enables hydration support for prerendered FAST elements.
 **Signature:**
 
 ```typescript
-export declare function enableHydration(options?: HydrationOptions): void;
+export declare function enableHydration(options?: HydrationOptions): HydrationController;
 ```
 
 ## Parameters
@@ -61,13 +61,15 @@ _(Optional)_ Optional hydration behavior.
 
 **Returns:**
 
-void
+[HydrationController](../fast-element.hydrationcontroller/)
 
 ## Remarks
 
 Call this before any FAST elements connect to the DOM. Hydration logic is not active unless this function is called, keeping `FASTElement` lightweight for client-side-only applications.
 
-Safe to call multiple times — the hydration hook is installed once and subsequent calls merge their options into the shared tracker. By default, the hook stops hydrating new prerendered elements after the initial hydration batch completes. Set `stopHydration` to `StopHydration.never` for streaming scenarios that append hydratable Declarative Shadow DOM after the initial batch. Await `whenHydrated` to run code after the active hydration batch completes.
+Safe to call multiple times — the hydration hook is installed once and subsequent calls merge their options into the shared tracker. By default, the hook stops hydrating new prerendered elements after the initial hydration batch completes. Await the returned controller's `whenHydrated` promise to run code after the active hydration batch completes.
+
+Set `stopHydration` to `StopHydration.never` for streaming scenarios that append hydratable Declarative Shadow DOM after the initial batch. In this mode, `whenHydrated` intentionally remains pending because hydration never reaches a global completion point.
 
 Pass `debugger: hydrationDebugger()` to swap the default minimal hydration mismatch error message for a rich "Expected / Received" report including the SSR HTML snippet and structured `expected`<!-- -->/`received` fields on `HydrationBindingError` / `HydrationTargetElementError`<!-- -->. The debugger module is tree-shaken out of production hydration bundles unless explicitly imported.
 
@@ -75,17 +77,27 @@ Pass `debugger: hydrationDebugger()` to swap the default minimal hydration misma
 
 
 ```ts
-import { enableHydration, StopHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({
-    stopHydration: StopHydration.never,
-});
+const hydration = enableHydration();
 
-await whenHydrated;
+await hydration.whenHydrated;
 console.log("hydration complete");
 ```
 
 ## Example 2
+
+Streaming Declarative Shadow DOM
+
+```ts
+import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    stopHydration: StopHydration.never,
+});
+```
+
+## Example 3
 
 Rich hydration mismatch diagnostics
 

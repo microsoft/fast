@@ -93,8 +93,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static isRegistered: Record<string, Function>;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    // @alpha
-    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -159,9 +157,6 @@ export interface ValueConverter {
     fromView(value: any): any;
     toView(value: any): any;
 }
-
-// @public
-export function whenRegistered(name: string, registry?: CustomElementRegistry): Promise<Function>;
 
 // (No @packageDocumentation comment for this package)
 

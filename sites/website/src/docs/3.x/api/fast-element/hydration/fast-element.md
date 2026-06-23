@@ -55,7 +55,7 @@ The default execution context for template views.
 
 </td><td>
 
-Tracks prerendered elements through the hydration lifecycle and resolves `whenHydrated` at completion.
+Tracks prerendered elements through the hydration lifecycle and exposes the active global hydration completion promise.
 
 
 </td></tr>
@@ -296,6 +296,17 @@ Controls the lifecycle of an expression and provides relevant context.
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[HydrationController](../fast-element.hydrationcontroller/)
+
+
+</td><td>
+
+The controller returned by `enableHydration()`<!-- -->.
 
 
 </td></tr>
@@ -557,17 +568,6 @@ Describes how the source's lifetime relates to its controller's lifetime.
 </td><td>
 
 Describes when FAST should stop hydrating newly connected prerendered elements.
-
-
-</td></tr>
-<tr><td>
-
-[whenHydrated](../fast-element.whenhydrated/)
-
-
-</td><td>
-
-Resolves when the active hydration batch completes.
 
 
 </td></tr>

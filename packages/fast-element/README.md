@@ -189,17 +189,19 @@ object and `$c` for the execution context.
 Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
 
 ```typescript
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-enableHydration();
+const hydration = enableHydration();
 
-await whenHydrated;
+await hydration.whenHydrated;
 console.log("hydration complete");
 ```
 
 By default, hydration handles the initial prerendered batch and then no-ops
 after the active hydration batch completes. If your app streams Declarative
-Shadow DOM after the initial batch, keep the hydration hook active:
+Shadow DOM after the initial batch, keep the hydration hook active. In this
+mode, `enableHydration().whenHydrated` intentionally remains pending because
+hydration never reaches a global completion point.
 
 ```typescript
 import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";

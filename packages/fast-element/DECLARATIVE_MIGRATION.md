@@ -168,7 +168,7 @@ implementation is internal and is defined automatically by `declarativeTemplate(
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines the internal publisher in the target registry |
-| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `whenRegistered()` from `@microsoft/fast-element/registry.js` for registration waits, and `whenHydrated` from `@microsoft/fast-element/hydration.js` for hydration completion |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `MyElement.whenRegistered` for registration waits, `MyElement.whenHydrated` for component hydration waits, and `enableHydration().whenHydrated` for the active hydration batch |
 | `TemplateElement.options({ "my-el": { attributeMap, observerMap } })` | Define extensions: `MyElement.define(definition, [attributeMap(...), observerMap(...)])` |
 | `ElementOptions` / `ElementOptionsDictionary` | No replacement |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |

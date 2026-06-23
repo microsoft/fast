@@ -73,32 +73,6 @@ A constructed JSON schema from a template
 </td></tr>
 </tbody></table>
 
-## Functions
-
-<table><thead><tr><th>
-
-Function
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[whenRegistered(name, registry)](../fast-element.whenregistered/)
-
-
-</td><td>
-
-Resolves when the named element is registered with the FAST element registry or defined with the platform custom element registry.
-
-
-</td></tr>
-</tbody></table>
-
 ## Interfaces
 
 <table><thead><tr><th>

@@ -296,7 +296,6 @@ import {
     type JSONSchema,
 } from "@microsoft/fast-element/schema.js";
 import { type FASTElementExtension } from "@microsoft/fast-element";
-import { whenRegistered } from "@microsoft/fast-element/registry.js";
 import {
     attributeMap,
     type AttributeMapConfig,
@@ -620,11 +619,11 @@ sequenceDiagram
     participant FER as FASTElementDefinition
     participant FTE as internal f-template
     participant EC as ElementController
-    participant Registry as whenRegistered
-    participant Hydration as whenHydrated
+    participant Registry as MyElement.whenRegistered
+    participant Hydration as enableHydration().whenHydrated
 
-    App->>Hydration: enableHydration() [optional]
-    App->>Registry: whenRegistered('my-el') [optional]
+    App->>Hydration: const hydration = enableHydration() [optional]
+    App->>Registry: MyElement.whenRegistered [optional]
     App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
     FER->>Registry: resolve registration waiters
@@ -649,13 +648,16 @@ sequenceDiagram
 
 | Promise | Import path | Resolves when |
 |---|---|---|
-| `whenRegistered(name)` | `@microsoft/fast-element/registry.js` | The named element is registered with FAST's element registry or defined with the platform custom element registry. |
-| `whenHydrated` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
+| `MyElement.whenRegistered` | Static FAST element class API | The element type is registered with FAST's element registry or defined with the platform custom element registry. |
+| `MyElement.whenHydrated` | Static FAST element class API | Hydration work for that element type completes. |
+| `enableHydration().whenHydrated` | `@microsoft/fast-element/hydration.js` | The active hydration batch completes. |
 
 By default, hydration no-ops for later prerendered batches after the initial
 batch completes. Set
 `enableHydration({ stopHydration: StopHydration.never })` when Declarative Shadow
-DOM may be streamed into the page after the initial hydration batch.
+DOM may be streamed into the page after the initial hydration batch. In that
+mode, `enableHydration().whenHydrated` intentionally remains pending because
+there is no global completion point.
 
 For usage examples see
 [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md).
@@ -782,7 +784,7 @@ between `fast-build` and `webui` rendering:
 
 Fixtures that exercise prerendered output wait for hydration to complete before
 running assertions. Each `main.ts` calls `enableHydration()` and then awaits
-`whenHydrated` to set a global flag, and each spec file calls
+the returned controller's `whenHydrated` promise to set a global flag, and each spec file calls
 `page.waitForFunction()` after `page.goto()` to block until the flag is set.
 See [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
 for the implementation pattern.

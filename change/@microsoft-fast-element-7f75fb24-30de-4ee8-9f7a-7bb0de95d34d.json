@@ -1,6 +1,6 @@
 {
   "type": "major",
-  "comment": "Remove lifecycle callback APIs and add whenHydrated and whenRegistered promise APIs.",
+  "comment": "Remove lifecycle callback APIs and add component and hydration promise APIs.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "patch"

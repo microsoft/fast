@@ -1,34 +1,14 @@
 import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
-import { whenRegistered } from "@microsoft/fast-element/registry.js";
 
 export const promiseEvents: Array<{ promise: string; name?: string }> = [];
 
-const trackedElements = [
-    "simple-element",
-    "complex-element",
-    "nested-element",
-    "deferred-element",
-    "deferred-parent-element",
-    "deferred-child-element",
-];
-
-void Promise.all(
-    trackedElements.map(name =>
-        whenRegistered(name).then(() => {
-            promiseEvents.push({ promise: "whenRegistered", name });
-        }),
-    ),
-).then(() => {
-    (window as any).registrationsCompleted = true;
-});
-
-enableHydration();
-void whenHydrated.then(() => {
+const hydration = enableHydration();
+void hydration.whenHydrated.then(() => {
     promiseEvents.push({ promise: "whenHydrated" });
     (window as any).hydrationCompleted = true;
 });
@@ -123,6 +103,25 @@ class DeferredChildElement extends FASTElement {
 DeferredChildElement.define({
     name: "deferred-child-element",
     template: declarativeTemplate(),
+});
+
+const trackedElements = [
+    [SimpleElement, "simple-element"],
+    [ComplexElement, "complex-element"],
+    [NestedElement, "nested-element"],
+    [DeferredElement, "deferred-element"],
+    [DeferredParentElement, "deferred-parent-element"],
+    [DeferredChildElement, "deferred-child-element"],
+] as const;
+
+void Promise.all(
+    trackedElements.map(([type, name]) =>
+        type.whenRegistered.then(() => {
+            promiseEvents.push({ promise: "whenRegistered", name });
+        }),
+    ),
+).then(() => {
+    (window as any).registrationsCompleted = true;
 });
 
 (window as any).promiseEvents = promiseEvents;

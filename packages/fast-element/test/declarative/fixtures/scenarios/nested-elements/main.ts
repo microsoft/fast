@@ -2,29 +2,14 @@ import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { observable } from "@microsoft/fast-element/observable.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
-import { whenRegistered } from "@microsoft/fast-element/registry.js";
 
 (window as any).messages = [];
 
-const trackedElements = [
-    "test-element-repeat-event",
-    "test-when-in-repeat",
-    "parent-element",
-    "child-element",
-    "grand-child-element",
-];
-
-for (const name of trackedElements) {
-    void whenRegistered(name).then(() => {
-        (window as any).messages.push(`Element registered: ${name}`);
-    });
-}
-
-enableHydration();
-void whenHydrated.then(() => {
+const hydration = enableHydration();
+void hydration.whenHydrated.then(() => {
     (window as any).messages.push(`Hydration complete [${performance.now()}]`);
     (window as any).hydrationCompleted = true;
 });
@@ -203,3 +188,17 @@ GrandChildItem.define(
     },
     [observerMap()],
 );
+
+const trackedElements = [
+    [TestElementRepeatEvent, "test-element-repeat-event"],
+    [TestWhenInRepeat, "test-when-in-repeat"],
+    [ItemList, "parent-element"],
+    [Item, "child-element"],
+    [GrandChildItem, "grand-child-element"],
+] as const;
+
+for (const [type, name] of trackedElements) {
+    void type.whenRegistered.then(() => {
+        (window as any).messages.push(`Element registered: ${name}`);
+    });
+}

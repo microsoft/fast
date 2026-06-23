@@ -14,7 +14,7 @@
 performance.mark("todo-hydration-started");
 
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import type { TodoApp } from "./todo-app/todo-app.js";
 
 let resolveHydrationReady!: () => void;
@@ -22,8 +22,8 @@ const hydrationReady = new Promise<void>(resolve => {
     resolveHydrationReady = resolve;
 });
 
-enableHydration();
-void whenHydrated.then(() => {
+const hydration = enableHydration();
+void hydration.whenHydrated.then(() => {
     performance.measure("todo-hydration-completed", "todo-hydration-started");
     console.log("Hydration complete!");
     resolveHydrationReady();

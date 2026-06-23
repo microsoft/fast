@@ -129,7 +129,7 @@ Core FAST Element helpers are available from the root package export:
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines FAST's internal `<f-template>` publisher in the target registry |
-| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `whenRegistered()` from `@microsoft/fast-element/registry.js` for registration waits, and `whenHydrated` from `@microsoft/fast-element/hydration.js` for hydration completion |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `MyElement.whenRegistered` for registration waits, `MyElement.whenHydrated` for component hydration waits, and `enableHydration().whenHydrated` for the active hydration batch |
 | `TemplateElement.options(...)`, `ElementOptions`, `ElementOptionsDictionary` | Define extensions: `attributeMap(...)` and `observerMap(...)` passed as the second argument to `define()` |
 | `AttributeMap` / `ObserverMap` exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
@@ -176,11 +176,11 @@ Core FAST Element helpers are available from the root package export:
    `declarativeTemplate()` assigns it automatically, and `observerMap()` can
    take a manual schema with `observerMap({ schema })`.
 
-3. Replace `TemplateElement.config()` with `whenRegistered()` from
-   `@microsoft/fast-element/registry.js` for registration waits and
-   `whenHydrated` from `@microsoft/fast-element/hydration.js` for hydration
-   completion. Hydration is not installed by `declarative.js`; call
-   `enableHydration()` before elements connect when SSR content should hydrate.
+3. Replace `TemplateElement.config()` with `MyElement.whenRegistered` for
+   registration waits, `MyElement.whenHydrated` for component hydration waits,
+   and `enableHydration().whenHydrated` for the active hydration batch.
+   Hydration is not installed by `declarative.js`; call `enableHydration()`
+   before elements connect when SSR content should hydrate.
 
 ## Debug entrypoint explicit enablement (v3)
 
@@ -223,7 +223,7 @@ data source.
 | 2.x API | 3.x guidance |
 |---|---|
 | `HydratableElementController` | `ElementController` (prerendered path built in) |
-| `HydrationControllerCallbacks` | Call `enableHydration()` and await `whenHydrated` from `@microsoft/fast-element/hydration.js` |
+| `HydrationControllerCallbacks` | Call `enableHydration()` and await the returned controller's `whenHydrated` promise |
 | `needsHydrationAttribute` | No replacement. Existing shadow root detection sets `ElementController.isPrerendered`. |
 | Root `deferHydrationAttribute` export | Import `deferHydrationAttribute` from `@microsoft/fast-element/hydration.js` only if you still need the legacy attribute string. New server-rendered markup should omit `defer-hydration`. |
 

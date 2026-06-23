@@ -241,27 +241,6 @@ A map enabling lookup of attribute by associated property name.
 </td></tr>
 <tr><td>
 
-[register](../fast-element.fastelementdefinition.register/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-(name: string, registry?: CustomElementRegistry) =&gt; Promise&lt;Function&gt;
-
-
-</td><td>
-
-**_(ALPHA)_** Indicates when a custom elements definition has been registered with the fastElementRegistry.
-
-
-</td></tr>
-<tr><td>
-
 [registry](../fast-element.fastelementdefinition.registry/)
 
 

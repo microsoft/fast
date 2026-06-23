@@ -542,7 +542,11 @@ export interface FASTElementConstructor {
     define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>, extensions?: FASTElementExtension[]): Promise<TType>;
     from<TBase extends typeof HTMLElement>(BaseType: TBase): {
         new (): InstanceType<TBase> & FASTElement;
+        readonly whenRegistered: Promise<Function>;
+        readonly whenHydrated: Promise<void>;
     };
+    readonly whenHydrated: Promise<void>;
+    readonly whenRegistered: Promise<Function>;
 }
 
 // @public
@@ -558,8 +562,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static isRegistered: Record<string, Function>;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    // @alpha
-    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;

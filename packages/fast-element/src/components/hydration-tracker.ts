@@ -1,4 +1,10 @@
 import type { HydrationDebugger } from "../hydration/hydration-debugger.js";
+import {
+    addFASTElementTypeHydration,
+    FASTElementDefinition,
+    removeFASTElementTypeHydration,
+    resolveFASTElementHydrationBatch,
+} from "./fast-definitions.js";
 
 /**
  * Describes when FAST should stop hydrating newly connected prerendered elements.
@@ -20,45 +26,6 @@ export const StopHydration = Object.freeze({
  * @public
  */
 export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
-
-let currentWhenHydrated: Promise<void> = Promise.resolve();
-let resolveWhenHydrated: (() => void) | null = null;
-
-class HydrationCompletionPromise implements Promise<void> {
-    public readonly [Symbol.toStringTag] = "Promise";
-
-    // biome-ignore lint/suspicious/noThenProperty: `whenHydrated` intentionally acts as a stable Promise proxy.
-    public then<TResult1 = void, TResult2 = never>(
-        onfulfilled?: ((value: void) => TResult1 | PromiseLike<TResult1>) | null,
-        onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null,
-    ): Promise<TResult1 | TResult2> {
-        return currentWhenHydrated.then(onfulfilled, onrejected);
-    }
-
-    public catch<TResult = never>(
-        onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null,
-    ): Promise<void | TResult> {
-        return currentWhenHydrated.catch(onrejected);
-    }
-}
-
-/**
- * Resolves when the active hydration batch completes.
- * @public
- */
-export const whenHydrated: Promise<void> = new HydrationCompletionPromise();
-
-function prepareHydrationPromise(): void {
-    currentWhenHydrated = new Promise<void>(resolve => {
-        resolveWhenHydrated = resolve;
-    });
-}
-
-function resolveHydrationPromise(): void {
-    const resolve = resolveWhenHydrated;
-    resolveWhenHydrated = null;
-    resolve?.();
-}
 
 /**
  * Options for configuring hydration behavior.
@@ -84,21 +51,46 @@ export interface HydrationOptions {
 }
 
 /**
+ * The controller returned by `enableHydration()`.
+ * @public
+ */
+export interface HydrationController {
+    /**
+     * Resolves when the active hydration batch completes.
+     * @remarks
+     * If hydration is configured with `stopHydration: StopHydration.never`, this
+     * promise intentionally remains pending because hydration never reaches a
+     * global completion point.
+     */
+    readonly whenHydrated: Promise<void>;
+}
+
+/**
  * Tracks prerendered elements through the hydration lifecycle and
- * resolves `whenHydrated` at completion.
+ * exposes the active global hydration completion promise.
  *
  * @public
  */
-export class HydrationTracker {
+export class HydrationTracker implements HydrationController {
     private elements: Set<HTMLElement> = new Set();
+    private elementTypes: WeakMap<HTMLElement, Function> = new WeakMap();
     private started = false;
     private completed = false;
     private checkTimer: ReturnType<typeof setTimeout> | null = null;
     private stopHydration: StopHydration;
+    private _whenHydrated!: Promise<void>;
+    private resolveWhenHydrated: (() => void) | null = null;
 
     constructor(options: HydrationOptions) {
-        prepareHydrationPromise();
+        this.prepareHydrationPromise();
         this.stopHydration = options.stopHydration ?? StopHydration.hydrationComplete;
+    }
+
+    /**
+     * Resolves when the active hydration batch completes.
+     */
+    public get whenHydrated(): Promise<void> {
+        return this._whenHydrated;
     }
 
     /**
@@ -118,12 +110,20 @@ export class HydrationTracker {
         if (!this.started) {
             this.started = true;
 
-            if (resolveWhenHydrated === null) {
-                prepareHydrationPromise();
+            if (this.resolveWhenHydrated === null) {
+                this.prepareHydrationPromise();
             }
         }
 
-        this.elements.add(element);
+        if (!this.elements.has(element)) {
+            const type =
+                FASTElementDefinition.getForInstance(element)?.type ??
+                (element.constructor as Function);
+
+            this.elements.add(element);
+            this.elementTypes.set(element, type);
+            addFASTElementTypeHydration(type);
+        }
     }
 
     /**
@@ -131,7 +131,14 @@ export class HydrationTracker {
      * a debounced completion check.
      */
     public remove(element: HTMLElement): void {
-        this.elements.delete(element);
+        if (this.elements.delete(element)) {
+            const type = this.elementTypes.get(element);
+
+            if (type !== void 0) {
+                this.elementTypes.delete(element);
+                removeFASTElementTypeHydration(type);
+            }
+        }
 
         // Debounce: reset on every removal so we wait until no
         // new elements arrive before declaring complete.
@@ -144,9 +151,12 @@ export class HydrationTracker {
                 this.checkTimer = null;
 
                 if (this.elements.size === 0) {
-                    resolveHydrationPromise();
+                    if (this.stopHydration !== StopHydration.never) {
+                        this.resolveHydrationPromise();
+                        this.completed = true;
+                    }
+
                     this.started = false;
-                    this.completed = true;
                 }
             }, 0);
         }
@@ -158,6 +168,26 @@ export class HydrationTracker {
     public mergeOptions(incoming: HydrationOptions): void {
         if (incoming.stopHydration !== void 0) {
             this.stopHydration = incoming.stopHydration;
+
+            if (
+                incoming.stopHydration === StopHydration.never &&
+                this.resolveWhenHydrated === null
+            ) {
+                this.prepareHydrationPromise();
+            }
         }
+    }
+
+    private prepareHydrationPromise(): void {
+        this._whenHydrated = new Promise<void>(resolve => {
+            this.resolveWhenHydrated = resolve;
+        });
+    }
+
+    private resolveHydrationPromise(): void {
+        const resolve = this.resolveWhenHydrated;
+        this.resolveWhenHydrated = null;
+        resolve?.();
+        resolveFASTElementHydrationBatch();
     }
 }

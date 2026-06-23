@@ -72,13 +72,14 @@ hydration readiness points that are useful to application code.
 
 Hydration is opt-in. Call `enableHydration()` before FAST elements connect when
 you want prerendered Declarative Shadow DOM to be reused, then await
-`whenHydrated` when code needs to run after the active hydration batch:
+the returned controller's `whenHydrated` promise when code needs to run after
+the active hydration batch:
 
 ```typescript
-import { enableHydration, whenHydrated } from "@microsoft/fast-element/hydration.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-enableHydration();
-await whenHydrated;
+const hydration = enableHydration();
+await hydration.whenHydrated;
 ```
 
 The hydration hook no-ops for new prerendered elements after the initial
@@ -93,14 +94,15 @@ enableHydration({
 });
 ```
 
+When `StopHydration.never` is used, `enableHydration().whenHydrated`
+intentionally remains pending because hydration has no global completion point.
+
 To wait for an element class to be registered with the FAST registry or the
-platform custom element registry, use `whenRegistered` from the registry
-subpath:
+platform custom element registry, use the component's static `whenRegistered`
+promise:
 
 ```typescript
-import { whenRegistered } from "@microsoft/fast-element/registry.js";
-
-await whenRegistered("my-component");
+await MyComponent.whenRegistered;
 ```
 
 ## `observerMap`

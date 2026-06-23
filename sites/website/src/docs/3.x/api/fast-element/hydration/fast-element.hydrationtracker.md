@@ -15,13 +15,14 @@ navigationOptions:
 
 ## HydrationTracker class
 
-Tracks prerendered elements through the hydration lifecycle and resolves `whenHydrated` at completion.
+Tracks prerendered elements through the hydration lifecycle and exposes the active global hydration completion promise.
 
 **Signature:**
 
 ```typescript
-export declare class HydrationTracker
+export declare class HydrationTracker implements HydrationController
 ```
+**Implements:** [HydrationController](../fast-element.hydrationcontroller/)
 
 ## Constructors
 
@@ -98,6 +99,27 @@ boolean
 </td><td>
 
 Indicates whether the hydration hook should attempt to hydrate prerendered elements.
+
+
+</td></tr>
+<tr><td>
+
+[whenHydrated](../fast-element.hydrationtracker.whenhydrated/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Promise&lt;void&gt;
+
+
+</td><td>
+
+Resolves when the active hydration batch completes.
 
 
 </td></tr>

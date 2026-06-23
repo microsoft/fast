@@ -120,7 +120,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
-export function enableHydration(options?: HydrationOptions): void;
+export function enableHydration(options?: HydrationOptions): HydrationController;
 
 // @public
 export interface ExecutionContext<TParent = any> {
@@ -203,6 +203,11 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
+export interface HydrationController {
+    readonly whenHydrated: Promise<void>;
+}
+
+// @public
 export interface HydrationDebugger {
     readonly diagnostic: HydrationDiagnostic;
 }
@@ -248,12 +253,13 @@ export const HydrationStage: {
 };
 
 // @public
-export class HydrationTracker {
+export class HydrationTracker implements HydrationController {
     constructor(options: HydrationOptions);
     add(element: HTMLElement): void;
     mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
     get shouldHydrate(): boolean;
+    get whenHydrated(): Promise<void>;
 }
 
 // @beta
@@ -363,9 +369,6 @@ export interface ViewNodes {
     // (undocumented)
     last: Node;
 }
-
-// @public
-export const whenHydrated: Promise<void>;
 
 // (No @packageDocumentation comment for this package)
 

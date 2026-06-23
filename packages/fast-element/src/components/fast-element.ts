@@ -4,6 +4,8 @@ import {
     applyFASTElementExtensions,
     FASTElementDefinition,
     type FASTElementExtension,
+    getFASTElementTypeHydration,
+    getFASTElementTypeRegistration,
     type PartialFASTElementDefinition,
     resolveFASTElementTemplate,
 } from "./fast-definitions.js";
@@ -65,11 +67,25 @@ export interface FASTElement extends HTMLElement {
     ): void;
 }
 
+type FASTElementType<T extends typeof HTMLElement> = {
+    new (): InstanceType<T> & FASTElement;
+    readonly whenRegistered: Promise<Function>;
+    readonly whenHydrated: Promise<void>;
+};
+
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T,
-): { new (): InstanceType<T> & FASTElement } {
+): FASTElementType<T> {
     const type = class extends (BaseType as any) {
+        public static get whenRegistered(): Promise<Function> {
+            return getFASTElementTypeRegistration(this);
+        }
+
+        public static get whenHydrated(): Promise<void> {
+            return getFASTElementTypeHydration(this);
+        }
+
         public readonly $fastController!: ElementController;
 
         public constructor() {
@@ -167,6 +183,16 @@ export interface FASTElementConstructor {
     new (): FASTElement;
 
     /**
+     * Resolves when this FASTElement type has been registered.
+     */
+    readonly whenRegistered: Promise<Function>;
+
+    /**
+     * Resolves when hydration work for this FASTElement type completes.
+     */
+    readonly whenHydrated: Promise<void>;
+
+    /**
      * Defines a platform custom element based on the provided type and definition.
      * @param nameOrDef - The name of the element to define or a definition object.
      * @param extensions - Optional callbacks to run before registration.
@@ -195,7 +221,11 @@ export interface FASTElementConstructor {
      */
     from<TBase extends typeof HTMLElement>(
         BaseType: TBase,
-    ): { new (): InstanceType<TBase> & FASTElement };
+    ): {
+        new (): InstanceType<TBase> & FASTElement;
+        readonly whenRegistered: Promise<Function>;
+        readonly whenHydrated: Promise<void>;
+    };
 }
 
 /**

@@ -13,7 +13,6 @@ export {
     type ShadowRootOptions,
     type TypeDefinition,
     type TypeRegistry,
-    whenRegistered,
 } from "./components/fast-definitions.js";
 export type { Schema } from "./components/schema.js";
 export type { Constructable } from "./interfaces.js";
