@@ -171,7 +171,7 @@ function isMapOptionEnabled(
  * @remarks
  * Combines template lifecycle callbacks with hydration callbacks and adds
  * template-processing events. These hooks are alpha and may change or be
- * removed before the v3 stable release.
+ * removed during major version updates.
  * @alpha
  */
 export interface HydrationLifecycleCallbacks
@@ -179,14 +179,14 @@ export interface HydrationLifecycleCallbacks
         TemplateLifecycleCallbacks {
     /**
      * Called after the JS class definition has been registered.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     elementDidRegister?(name: string): void;
 
     /**
      * Called before the template has been evaluated and assigned.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     templateWillUpdate?(name: string): void;
@@ -244,7 +244,7 @@ class TemplateElement extends FASTElement {
      * Configure alpha lifecycle callbacks for hydration and template events.
      * @param callbacks - Alpha/experimental lifecycle callbacks to configure.
      * @remarks
-     * These hooks may change or be removed before the v3 stable release.
+     * These hooks may change or be removed during major version updates.
      * @alpha
      * @returns The {@link TemplateElement} class.
      */

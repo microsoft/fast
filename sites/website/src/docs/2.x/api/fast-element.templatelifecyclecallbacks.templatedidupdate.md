@@ -66,4 +66,4 @@ void
 
 ## Remarks
 
-Alpha/experimental lifecycle hook. May change before v3 stable.
+Alpha/experimental lifecycle hook. May change or be removed during major version updates.

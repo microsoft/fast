@@ -825,8 +825,7 @@ export const needsHydrationAttribute = "needs-hydration";
 /**
  * Experimental lifecycle callbacks for element hydration events.
  * @remarks
- * These hooks are alpha and may change or be removed before the v3 stable
- * release.
+ * These hooks are alpha and may change or be removed during major version updates.
  * @alpha
  */
 export interface HydrationControllerCallbacks<
@@ -837,28 +836,28 @@ export interface HydrationControllerCallbacks<
      * This is the earliest point at which we know a component has been
      * async-defined with `defer-and-hydrate`, a template is pending via
      * `<f-template>`, and the element has `needs-hydration`.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     hydrationStarted?(): void;
 
     /**
      * Called before an individual element's hydration begins.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     elementWillHydrate?(source: TElement): void;
 
     /**
      * Called after an individual element's hydration has finished.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     elementDidHydrate?(source: TElement): void;
 
     /**
      * Called after all elements have completed hydration.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     hydrationComplete?(): void;

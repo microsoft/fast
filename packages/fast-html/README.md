@@ -78,8 +78,8 @@ RenderableFASTElement(MyCustomElement).defineAsync({
 #### Lifecycle Callbacks
 
 FAST HTML currently exposes alpha/experimental lifecycle callbacks for template
-processing and element hydration. These hooks may change or be removed before the
-v3 stable release.
+processing and element hydration. These hooks may change or be removed during
+major version updates.
 
 ##### Available Callbacks
 

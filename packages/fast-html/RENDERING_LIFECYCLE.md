@@ -134,8 +134,8 @@ This coordinated lifecycle enables powerful scenarios like server-side rendering
 ## Lifecycle Callbacks
 
 FAST HTML currently exposes alpha/experimental lifecycle callbacks for the
-rendering and hydration process. These hooks may change or be removed before the
-v3 stable release.
+rendering and hydration process. These hooks may change or be removed during
+major version updates.
 
 ### Available Callbacks
 

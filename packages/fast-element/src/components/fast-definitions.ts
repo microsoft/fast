@@ -50,21 +50,20 @@ export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOpti
 /**
  * Experimental lifecycle callbacks for template events.
  * @remarks
- * These hooks are alpha and may change or be removed before the v3 stable
- * release.
+ * These hooks are alpha and may change or be removed during major version updates.
  * @alpha
  */
 export interface TemplateLifecycleCallbacks {
     /**
      * Called after the template has been assigned to the definition.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     templateDidUpdate?(name: string): void;
 
     /**
      * Called after the custom element has been defined.
-     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @remarks Alpha/experimental lifecycle hook. May change or be removed during major version updates.
      * @alpha
      */
     elementDidDefine?(name: string): void;
@@ -124,8 +123,7 @@ export interface PartialFASTElementDefinition {
     /**
      * Experimental lifecycle callbacks for template events.
      * @remarks
-     * These hooks are alpha and may change or be removed before the v3 stable
-     * release.
+     * These hooks are alpha and may change or be removed during major version updates.
      * @alpha
      */
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
@@ -206,8 +204,7 @@ export class FASTElementDefinition<
     /**
      * Experimental lifecycle callbacks for template events.
      * @remarks
-     * These hooks are alpha and may change or be removed before the v3 stable
-     * release.
+     * These hooks are alpha and may change or be removed during major version updates.
      * @alpha
      */
     public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;

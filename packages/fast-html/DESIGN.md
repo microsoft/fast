@@ -405,7 +405,7 @@ When using the `"none"` strategy, property names may contain dashes and must be 
 ## Lifecycle
 
 The lifecycle callback surface in this section is alpha/experimental and may
-change or be removed before the v3 stable release.
+change or be removed during major version updates.
 
 ```mermaid
 sequenceDiagram

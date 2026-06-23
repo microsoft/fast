@@ -28,4 +28,4 @@ readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 
 ## Remarks
 
-These hooks are alpha and may change or be removed before the v3 stable release.
+These hooks are alpha and may change or be removed during major version updates.
