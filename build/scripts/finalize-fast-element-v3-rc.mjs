@@ -207,6 +207,38 @@ function ensureChangeFilesExist() {
     }
 }
 
+const changeTypePriority = {
+    none: 0,
+    patch: 1,
+    minor: 2,
+    major: 3,
+    prerelease: 4,
+};
+
+function readChangeTypes() {
+    const changeDir = join(repoRoot, "change");
+    const changes = new Map();
+
+    for (const file of readdirSync(changeDir).filter(file => file.endsWith(".json"))) {
+        const change = readJson(join(changeDir, file));
+        if (!packageOrder.includes(change.packageName)) {
+            continue;
+        }
+
+        const priority = changeTypePriority[change.type];
+        if (priority === undefined) {
+            throw new Error(`Unsupported change type ${change.type} in ${file}.`);
+        }
+
+        const current = changes.get(change.packageName);
+        if (current === undefined || priority > changeTypePriority[current]) {
+            changes.set(change.packageName, change.type);
+        }
+    }
+
+    return changes;
+}
+
 function createTemporaryBeachballConfig() {
     const tempDir = mkdtempSync(join(tmpdir(), "fast-element-v3-rc-beachball-"));
     const configPath = join(tempDir, "beachball.config.cjs");
@@ -268,11 +300,59 @@ function appendSuffix(version) {
     return version.includes(RC_SUFFIX) ? version : `${version}-${RC_SUFFIX}`;
 }
 
-function computeFinalVersions() {
-    const rawVersions = Object.fromEntries(
-        packageOrder.map(packageName => [packageName, getPackage(packageName).version]),
-    );
+function stripSuffix(version) {
+    const suffix = `-${RC_SUFFIX}`;
+    return version.endsWith(suffix) ? version.slice(0, -suffix.length) : version;
+}
 
+function parseStableVersion(version) {
+    const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+    if (!match) {
+        throw new Error(
+            `Expected a stable semver version before applying the RC suffix, got ${version}.`,
+        );
+    }
+
+    return {
+        major: Number(match[1]),
+        minor: Number(match[2]),
+        patch: Number(match[3]),
+    };
+}
+
+function bumpStableVersion(version, changeType) {
+    switch (changeType) {
+        case undefined:
+        case "none":
+            return version;
+    }
+
+    const { major, minor, patch } = parseStableVersion(version);
+
+    switch (changeType) {
+        case "patch":
+            return `${major}.${minor}.${patch + 1}`;
+        case "minor":
+            return `${major}.${minor + 1}.0`;
+        case "major":
+            return `${major + 1}.0.0`;
+        default:
+            throw new Error(
+                `Change type ${changeType} is not supported for FAST Element v3 RC companion packages.`,
+            );
+    }
+}
+
+function computeCompanionVersion(packageName, baselineVersions, changeTypes) {
+    const baselineVersion = stripSuffix(baselineVersions[packageName]);
+    const bumpedVersion = bumpStableVersion(
+        baselineVersion,
+        changeTypes.get(packageName),
+    );
+    return appendSuffix(bumpedVersion);
+}
+
+function computeFinalVersions(baselineVersions, rawVersions, changeTypes) {
     const fastElementVersion = rawVersions["@microsoft/fast-element"];
     if (!/^3\.0\.0-rc\.\d+$/.test(fastElementVersion)) {
         throw new Error(
@@ -281,11 +361,21 @@ function computeFinalVersions() {
     }
 
     return {
-        "@microsoft/fast-build": appendSuffix(rawVersions["@microsoft/fast-build"]),
+        "@microsoft/fast-build": computeCompanionVersion(
+            "@microsoft/fast-build",
+            baselineVersions,
+            changeTypes,
+        ),
         "@microsoft/fast-element": fastElementVersion,
-        "@microsoft/fast-router": appendSuffix(rawVersions["@microsoft/fast-router"]),
-        "@microsoft/fast-test-harness": appendSuffix(
-            rawVersions["@microsoft/fast-test-harness"],
+        "@microsoft/fast-router": computeCompanionVersion(
+            "@microsoft/fast-router",
+            baselineVersions,
+            changeTypes,
+        ),
+        "@microsoft/fast-test-harness": computeCompanionVersion(
+            "@microsoft/fast-test-harness",
+            baselineVersions,
+            changeTypes,
         ),
     };
 }
@@ -443,8 +533,25 @@ function rewriteChangelogMd(packageName, finalVersions, rawVersions) {
     const rawVersion = rawVersions[packageName];
     const finalVersion = finalVersions[packageName];
     content = content.replace(`## ${rawVersion}\n`, `## ${finalVersion}\n`);
-    content = rewriteVersionReferences(content, finalVersions, rawVersions);
+    content = rewriteChangelogSection(content, finalVersion, section =>
+        rewriteVersionReferences(section, finalVersions, rawVersions),
+    );
     writeFileSync(path, content);
+}
+
+function rewriteChangelogSection(content, version, rewrite) {
+    const heading = `## ${version}\n`;
+    const start = content.indexOf(heading);
+    if (start === -1) {
+        throw new Error(`Could not find generated changelog heading ${heading.trim()}.`);
+    }
+
+    const nextHeading = content.indexOf("\n## ", start + heading.length);
+    const end = nextHeading === -1 ? content.length : nextHeading;
+
+    return (
+        content.slice(0, start) + rewrite(content.slice(start, end)) + content.slice(end)
+    );
 }
 
 function rewriteVersionReferences(input, finalVersions, rawVersions) {
@@ -548,6 +655,7 @@ function applyFinalizer() {
     const baselineVersions = Object.fromEntries(
         packageOrder.map(packageName => [packageName, getPackage(packageName).version]),
     );
+    const changeTypes = readChangeTypes();
     const initialCrateVersion = readCargoVersion();
 
     runBeachballBump();
@@ -559,7 +667,11 @@ function applyFinalizer() {
         baselineVersions["@microsoft/fast-element"],
         rawVersions["@microsoft/fast-element"],
     );
-    const finalVersions = computeFinalVersions();
+    const finalVersions = computeFinalVersions(
+        baselineVersions,
+        rawVersions,
+        changeTypes,
+    );
 
     rewritePackageVersions(finalVersions);
     rewritePrivateWorkspaceDependencies(finalVersions);
