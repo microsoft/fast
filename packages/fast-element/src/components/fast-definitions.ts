@@ -48,17 +48,24 @@ export const TemplateOptions = {
 export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
 
 /**
- * Lifecycle callbacks for template events.
- * @public
+ * Experimental lifecycle callbacks for template events.
+ * @remarks
+ * These hooks are alpha and may change or be removed before the v3 stable
+ * release.
+ * @alpha
  */
 export interface TemplateLifecycleCallbacks {
     /**
-     * Called after the template has been assigned to the definition
+     * Called after the template has been assigned to the definition.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     templateDidUpdate?(name: string): void;
 
     /**
-     * Called after the custom element has been defined
+     * Called after the custom element has been defined.
+     * @remarks Alpha/experimental lifecycle hook. May change before v3 stable.
+     * @alpha
      */
     elementDidDefine?(name: string): void;
 }
@@ -115,7 +122,11 @@ export interface PartialFASTElementDefinition {
     readonly registry?: CustomElementRegistry;
 
     /**
-     * Lifecycle callbacks for template events.
+     * Experimental lifecycle callbacks for template events.
+     * @remarks
+     * These hooks are alpha and may change or be removed before the v3 stable
+     * release.
+     * @alpha
      */
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 }
@@ -193,7 +204,11 @@ export class FASTElementDefinition<
     readonly registry: CustomElementRegistry;
 
     /**
-     * Lifecycle callbacks for template events.
+     * Experimental lifecycle callbacks for template events.
+     * @remarks
+     * These hooks are alpha and may change or be removed before the v3 stable
+     * release.
+     * @alpha
      */
     public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 

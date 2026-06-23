@@ -214,7 +214,7 @@ The definition has been registered to the FAST element registry.
 
 </td><td>
 
-_(Optional)_ Lifecycle callbacks for template events.
+**_(ALPHA)_** _(Optional)_ Experimental lifecycle callbacks for template events.
 
 
 </td></tr>

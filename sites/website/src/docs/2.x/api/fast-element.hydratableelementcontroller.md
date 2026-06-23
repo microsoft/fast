@@ -67,7 +67,7 @@ Description
 
 </td><td>
 
-**_(BETA)_** Lifecycle callbacks for hydration events
+**_(ALPHA)_** Experimental lifecycle callbacks for hydration events.
 
 
 </td></tr>
@@ -132,22 +132,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[config(callbacks)](../fast-element.hydratableelementcontroller.config/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-**_(BETA)_** Configure lifecycle callbacks for hydration events
-
-
-</td></tr>
-<tr><td>
 
 [connect()](../fast-element.hydratableelementcontroller.connect/)
 

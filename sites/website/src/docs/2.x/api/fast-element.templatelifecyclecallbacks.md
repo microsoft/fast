@@ -15,13 +15,20 @@ navigationOptions:
 
 ## TemplateLifecycleCallbacks interface
 
-Lifecycle callbacks for template events.
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
+Experimental lifecycle callbacks for template events.
 
 **Signature:**
 
 ```typescript
 export interface TemplateLifecycleCallbacks 
 ```
+
+## Remarks
+
+These hooks are alpha and may change or be removed before the v3 stable release.
 
 ## Methods
 
@@ -43,7 +50,7 @@ Description
 
 </td><td>
 
-_(Optional)_ Called after the custom element has been defined
+**_(ALPHA)_** _(Optional)_ Called after the custom element has been defined.
 
 
 </td></tr>
@@ -54,7 +61,7 @@ _(Optional)_ Called after the custom element has been defined
 
 </td><td>
 
-_(Optional)_ Called after the template has been assigned to the definition
+**_(ALPHA)_** _(Optional)_ Called after the template has been assigned to the definition.
 
 
 </td></tr>

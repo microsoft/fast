@@ -14,6 +14,12 @@ export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
 
+// @alpha
+export interface HydrationLifecycleCallbacks extends HydrationControllerCallbacks, TemplateLifecycleCallbacks {
+    elementDidRegister?(name: string): void;
+    templateWillUpdate?(name: string): void;
+}
+
 // @public
 export class ObserverMap {
     // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
@@ -46,7 +52,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(Base
 // @public
 export class TemplateElement extends FASTElement {
     constructor();
-    // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
+    // @alpha
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;

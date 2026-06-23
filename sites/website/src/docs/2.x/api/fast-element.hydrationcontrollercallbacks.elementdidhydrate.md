@@ -15,7 +15,10 @@ navigationOptions:
 
 ## HydrationControllerCallbacks.elementDidHydrate() method
 
-Called after an individual element's hydration has finished
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
+Called after an individual element's hydration has finished.
 
 **Signature:**
 
@@ -60,3 +63,7 @@ TElement
 **Returns:**
 
 void
+
+## Remarks
+
+Alpha/experimental lifecycle hook. May change before v3 stable.

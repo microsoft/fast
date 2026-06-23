@@ -404,6 +404,9 @@ When using the `"none"` strategy, property names may contain dashes and must be 
 
 ## Lifecycle
 
+The lifecycle callback surface in this section is alpha/experimental and may
+change or be removed before the v3 stable release.
+
 ```mermaid
 sequenceDiagram
     participant App as Application JS
@@ -431,6 +434,7 @@ sequenceDiagram
     FER->>Callbacks: elementDidDefine('my-el')
 
     DOM->>HEC: element instance connected with needs-hydration
+    HEC->>Callbacks: hydrationStarted()
     HEC->>Callbacks: elementWillHydrate('my-el')
     HEC->>HEC: hydrate DOM using fe-b markers
     HEC->>Callbacks: elementDidHydrate('my-el')
@@ -445,6 +449,7 @@ sequenceDiagram
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
 | `elementDidDefine(name)` | After `composeAsync` completes |
+| `hydrationStarted()` | Once, when the first element enters hydration |
 | `elementWillHydrate(name)` | Before `HydratableElementController` hydrates an instance |
 | `elementDidHydrate(name)` | After an instance is fully hydrated |
 | `hydrationComplete()` | Once, after all elements have completed hydration |

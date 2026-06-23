@@ -125,7 +125,7 @@ The lifecycle includes error handling for missing components:
 The asynchronous nature of the lifecycle provides several performance benefits:
 
 - **Progressive Enhancement**: Elements can be registered before templates are loaded
-- **Code Splitting**: Templates can be loaded separately from element definitions  
+- **Code Splitting**: Templates can be loaded separately from element definitions
 - **Reduced Blocking**: Template processing doesn't block element registration
 - **Hydration Optimization**: Server-side rendered content can be hydrated efficiently
 
@@ -133,7 +133,9 @@ This coordinated lifecycle enables powerful scenarios like server-side rendering
 
 ## Lifecycle Callbacks
 
-FAST HTML provides a set of lifecycle callbacks that allow you to hook into various stages of the rendering and hydration process. These callbacks are particularly useful for performance monitoring, debugging, analytics, and coordinating initialization sequences.
+FAST HTML currently exposes alpha/experimental lifecycle callbacks for the
+rendering and hydration process. These hooks may change or be removed before the
+v3 stable release.
 
 ### Available Callbacks
 
@@ -148,6 +150,7 @@ The lifecycle callbacks are organized into three categories:
 - `elementDidDefine(name: string)` - Called after the custom element has been fully defined with the platform
 
 **Hydration Callbacks:**
+- `hydrationStarted()` - Called once when the first element enters the hydration pipeline
 - `elementWillHydrate(name: string)` - Called before an element begins hydration
 - `elementDidHydrate(name: string)` - Called after an element completes hydration
 - `hydrationComplete()` - Called once after all elements have completed hydration
@@ -159,27 +162,29 @@ The callbacks execute in the following sequence for each element:
 ```
 Registration Phase:
   1. elementDidRegister(name)
-  
+
 Template Processing Phase (asynchronous):
   2. templateWillUpdate(name)
   3. [Template processing occurs]
   4. templateDidUpdate(name)
   5. elementDidDefine(name)
-  
+
 Hydration Phase:
-  6. elementWillHydrate(name)
-  7. [Hydration occurs]
-  8. elementDidHydrate(name)
-  
+  6. hydrationStarted()
+  7. elementWillHydrate(name)
+  8. [Hydration occurs]
+  9. elementDidHydrate(name)
+
 Completion (called once for all elements):
-  9. hydrationComplete()
+  10. hydrationComplete()
 ```
 
 **Important:** Template processing is asynchronous and happens independently for each element. When multiple elements are being processed, the template and hydration callbacks can be interleaved across different elements.
 
 ### Configuring Callbacks
 
-Configure callbacks using `TemplateElement.config()` before defining the template element:
+Configure alpha lifecycle callbacks using `TemplateElement.config()` before
+defining the template element:
 
 ```typescript
 import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-html";
@@ -196,6 +201,9 @@ TemplateElement.config({
     },
     elementDidDefine(name) {
         console.log(`${name} fully defined`);
+    },
+    hydrationStarted() {
+        console.log("Hydration started");
     },
     elementWillHydrate(name) {
         console.log(`${name} starting hydration`);
