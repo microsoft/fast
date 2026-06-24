@@ -111,9 +111,8 @@
       "default": "./dist/esm/dom-policy.js"
     },
     "./updates.js": {
-      "types": "./dist/dts/updates.d.ts",
-      "test": "./src/updates.ts",
-      "default": "./dist/esm/updates.js"
+      "types": "./dist/dts/observation/update-queue.d.ts",
+      "default": "./dist/esm/observation/update-queue.js"
     },
     "./arrays.js": {
       "types": "./dist/dts/arrays.d.ts",
@@ -141,9 +140,8 @@
       "default": "./dist/esm/volatile.js"
     },
     "./attr.js": {
-      "types": "./dist/dts/attr.d.ts",
-      "test": "./src/attr.ts",
-      "default": "./dist/esm/attr.js"
+      "types": "./dist/dts/components/attributes.d.ts",
+      "default": "./dist/esm/components/attributes.js"
     },
     "./css.js": {
       "types": "./dist/dts/css.d.ts",
@@ -161,24 +159,20 @@
       "default": "./dist/esm/templating.js"
     },
     "./children.js": {
-      "types": "./dist/dts/directives/children.d.ts",
-      "test": "./src/directives/children.ts",
-      "default": "./dist/esm/directives/children.js"
+      "types": "./dist/dts/templating/children.d.ts",
+      "default": "./dist/esm/templating/children.js"
     },
     "./node-observation.js": {
-      "types": "./dist/dts/directives/node-observation.d.ts",
-      "test": "./src/directives/node-observation.ts",
-      "default": "./dist/esm/directives/node-observation.js"
+      "types": "./dist/dts/templating/node-observation.d.ts",
+      "default": "./dist/esm/templating/node-observation.js"
     },
     "./ref.js": {
-      "types": "./dist/dts/directives/ref.d.ts",
-      "test": "./src/directives/ref.ts",
-      "default": "./dist/esm/directives/ref.js"
+      "types": "./dist/dts/templating/ref.d.ts",
+      "default": "./dist/esm/templating/ref.js"
     },
     "./slotted.js": {
-      "types": "./dist/dts/directives/slotted.d.ts",
-      "test": "./src/directives/slotted.ts",
-      "default": "./dist/esm/directives/slotted.js"
+      "types": "./dist/dts/templating/slotted.d.ts",
+      "default": "./dist/esm/templating/slotted.js"
     },
     "./when.js": {
       "types": "./dist/dts/directives/when.d.ts",
