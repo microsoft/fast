@@ -429,7 +429,7 @@ The parsing pipeline is split across two classes plus definition-scoped
 transforms:
 
 - **Internal `<f-template>` publisher** (`template.ts`) — Custom element
-  lifecycle, registry/name bridge registration, lifecycle callback dispatch, and
+  lifecycle, registry/name bridge registration, template publication, and
   schema-transform execution. It is a native `HTMLElement`, not a `FASTElement`.
 - **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser:
   converts declarative HTML into `strings`/`values` arrays for
@@ -780,7 +780,7 @@ between `fast-build` and `webui` rendering:
 
 Fixtures that exercise prerendered output wait for hydration to complete before
 running assertions. Each `main.ts` calls `enableHydration()` and then awaits
-the returned controller's `whenHydrated` promise to set a global flag, and each spec file calls
+the returned controller's `whenHydrated()` promise to set a global flag, and each spec file calls
 `page.waitForFunction()` after `page.goto()` to block until the flag is set.
 See [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
 for the implementation pattern.
@@ -799,9 +799,9 @@ for an example of a complex multi-feature fixture.
 
 | Document | Topic |
 |---|---|
-| [DECLARATIVE_HTML.md](./DECLARATIVE_HTML.md) | Installation, syntax reference, lifecycle callbacks, usage examples |
+| [DECLARATIVE_HTML.md](./DECLARATIVE_HTML.md) | Installation, syntax reference, hydration promises, usage examples |
 | [DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md) | Hydratable HTML format: comment markers, dataset attributes, directive markers |
-| [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md) | Phase-by-phase rendering lifecycle, callback ordering, performance notes |
+| [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md) | Phase-by-phase rendering lifecycle, hydration readiness, performance notes |
 | [DECLARATIVE_SCHEMA_OBSERVER_MAP.md](./DECLARATIVE_SCHEMA_OBSERVER_MAP.md) | Deep dive into Schema JSON structure, ObserverMap proxy system, debugging |
 | [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md) | Quick reference for fixture structure |
 | [test/declarative/fixtures/WRITING_FIXTURES.md](./test/declarative/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |

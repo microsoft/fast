@@ -223,7 +223,7 @@ data source.
 | 2.x API | 3.x guidance |
 |---|---|
 | `HydratableElementController` | `ElementController` (prerendered path built in) |
-| `HydrationControllerCallbacks` | Call `enableHydration()` and await the returned controller's `whenHydrated` promise |
+| `HydrationControllerCallbacks` | Call `enableHydration()` and await the returned controller's `whenHydrated()` promise |
 | `needsHydrationAttribute` | No replacement. Existing shadow root detection sets `ElementController.isPrerendered`. |
 | Root `deferHydrationAttribute` export | Import `deferHydrationAttribute` from `@microsoft/fast-element/hydration.js` only if you still need the legacy attribute string. New server-rendered markup should omit `defer-hydration`. |
 
