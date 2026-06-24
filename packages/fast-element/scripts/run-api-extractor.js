@@ -23,11 +23,6 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.di.json"),
     },
     {
-        path: "./hydration.js",
-        docsFolder: "hydration",
-        configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
-    },
-    {
         path: "./arrays.js",
         docsFolder: "arrays",
         configPath: path.resolve(__dirname, "../api-extractor.arrays.json"),

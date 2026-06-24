@@ -16,7 +16,7 @@ const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
 const packages = [
     {
         main: "fast-element",
-        exports: ["context", "declarative", "di", "hydration", "registry"],
+        exports: ["context", "declarative", "di"],
     },
 ];
 
