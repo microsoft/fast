@@ -190,10 +190,6 @@
     "test:ui:declarative": "concurrently -k -n tsc,playwright \"npm run dev\" \"npx playwright test --config=playwright.declarative.config.ts --ui\"",
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
-  "devDependencies": {
-    "@microsoft/fast-build": "0.8.1-fast-element-v3-rc-20260615",
-    "@microsoft/webui": "0.0.12"
-  },
   "files": [
     "dist",
     "CHANGELOG.md"
