@@ -21,8 +21,8 @@ const packageName = packageJson.name;
 
 const exportDescriptions = {
     ".": "Root implementation export for FAST Element APIs.",
-    "./arrays.js": "Array observation APIs.",
-    "./array-observer.js": "ArrayObserver class for observing array mutations.",
+    "./arrays.js":
+        "ArrayObserver class for observing array mutations, and array observation APIs.",
     "./attr.js": "Attribute decorator and attribute definition APIs.",
     "./attribute-map.js": "Schema-driven attribute map extension.",
     "./binding.js": "Binding directives and binding helpers.",

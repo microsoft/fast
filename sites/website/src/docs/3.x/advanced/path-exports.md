@@ -26,8 +26,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | Import path | Provides | Runtime target | Types |
 |---|---|---|---|
 | `@microsoft/fast-element` | Root implementation export for FAST Element APIs. | `./dist/esm/index.js` | `./dist/dts/index.d.ts` |
-| `@microsoft/fast-element/array-observer.js` | ArrayObserver class for observing array mutations. | `./dist/esm/observation/array-observer.js` | `./dist/dts/observation/array-observer.d.ts` |
-| `@microsoft/fast-element/arrays.js` | Array observation APIs. | `./dist/esm/observation/arrays.js` | `./dist/dts/observation/arrays.d.ts` |
+| `@microsoft/fast-element/arrays.js` | ArrayObserver class for observing array mutations, and array observation APIs. | `./dist/esm/observation/arrays.js` | `./dist/dts/observation/arrays.d.ts` |
 | `@microsoft/fast-element/attr.js` | Attribute decorator and attribute definition APIs. | `./dist/esm/components/attributes.js` | `./dist/dts/components/attributes.d.ts` |
 | `@microsoft/fast-element/attribute-map.js` | Schema-driven attribute map extension. | `./dist/esm/declarative/attribute-map.js` | `./dist/dts/declarative/attribute-map.d.ts` |
 | `@microsoft/fast-element/binding.js` | Binding directives and binding helpers. | `./dist/esm/binding/exports.js` | `./dist/dts/binding/exports.d.ts` |

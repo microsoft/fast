@@ -5,7 +5,7 @@
 // share a runtime singleton (Schema/schemaRegistry, ArrayObserver, the
 // observable engine) — that loads two copies of the module and breaks identity
 // and enable() state. Pull all such symbols from one side or the other.
-export { ArrayObserver } from "@microsoft/fast-element/array-observer.js";
+export { ArrayObserver } from "@microsoft/fast-element/arrays.js";
 export {
     AttributeMap,
     attributeMap,

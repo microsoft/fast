@@ -26,10 +26,6 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./array-observer.js": {
-      "types": "./dist/dts/observation/array-observer.d.ts",
-      "default": "./dist/esm/observation/array-observer.js"
-    },
     "./arrays.js": {
       "types": "./dist/dts/observation/arrays.d.ts",
       "default": "./dist/esm/observation/arrays.js"
@@ -199,7 +195,7 @@
     "@microsoft/webui": "0.0.12"
   },
   "files": [
-    "./dist",
+    "dist",
     "CHANGELOG.md"
   ]
 }
