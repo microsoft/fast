@@ -8,5 +8,5 @@ performance monitoring.
 |---|---|
 | `errors` | Error handling and edge cases in template rendering. |
 | `hydration-config` | Hydration configuration for Declarative Shadow DOM appended after the initial hydration batch. |
-| `lifecycle-callbacks` | Promise readiness coverage for `whenHydrated`. |
+| `lifecycle` | Promise readiness coverage for `whenHydrated`. |
 | `performance-metrics` | Performance monitoring and measurements using hydration readiness promises. |

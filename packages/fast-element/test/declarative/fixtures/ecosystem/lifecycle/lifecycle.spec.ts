@@ -5,7 +5,7 @@ async function waitForPromiseAPIs(page: import("@playwright/test").Page): Promis
         () => (window as any).hydrationCompleted === true,
     );
 
-    await page.goto("/fixtures/ecosystem/lifecycle-callbacks/");
+    await page.goto("/fixtures/ecosystem/lifecycle/");
     await hydrationCompleted;
 }
 
