@@ -20,7 +20,7 @@ Creates a new FASTElement base class inherited from the provided base type.
 **Signature:**
 
 ```typescript
-from<TBase extends typeof HTMLElement>(BaseType: TBase): TBase & FASTElementConstructor & {
+from<TBase extends typeof HTMLElement>(BaseType: TBase): {
         new (): InstanceType<TBase> & FASTElement;
     };
 ```
@@ -63,4 +63,4 @@ The base element type to inherit from.
 
 **Returns:**
 
-TBase &amp; [FASTElementConstructor](../fast-element.fastelementconstructor/) &amp; { new (): InstanceType&lt;TBase&gt; &amp; [FASTElement](../fast-element.fastelement/)<!-- -->; }
+{ new (): InstanceType&lt;TBase&gt; &amp; [FASTElement](../fast-element.fastelement/)<!-- -->; }

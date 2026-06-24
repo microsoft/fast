@@ -68,7 +68,7 @@ export interface FASTElement extends HTMLElement {
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T,
-): T & FASTElementConstructor & { new (): InstanceType<T> & FASTElement } {
+): { new (): InstanceType<T> & FASTElement } {
     const type = class extends (BaseType as any) {
         public readonly $fastController!: ElementController;
 
@@ -195,7 +195,7 @@ export interface FASTElementConstructor {
      */
     from<TBase extends typeof HTMLElement>(
         BaseType: TBase,
-    ): TBase & FASTElementConstructor & { new (): InstanceType<TBase> & FASTElement };
+    ): { new (): InstanceType<TBase> & FASTElement };
 }
 
 /**

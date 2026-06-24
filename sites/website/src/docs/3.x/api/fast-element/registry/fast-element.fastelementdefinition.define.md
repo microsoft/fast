@@ -64,7 +64,7 @@ extensions
 
 </td><td>
 
-[FASTElementExtension](../fast-element.fastelementextension/)<!-- -->\[\]
+FASTElementExtension\[\]
 
 
 </td><td>

@@ -29,45 +29,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeDefinition](../fast-element.attributedefinition/)
-
-
-</td><td>
-
-An implementation of [Accessor](../fast-element.accessor/) that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
-
-
-</td></tr>
-<tr><td>
-
-[ElementStyles](../fast-element.elementstyles/)
-
-
-</td><td>
-
-Represents styles that can be applied to a custom element.
-
-
-</td></tr>
-<tr><td>
-
 [FASTElementDefinition](../fast-element.fastelementdefinition/)
 
 
 </td><td>
 
 Defines metadata for a FASTElement.
-
-
-</td></tr>
-<tr><td>
-
-[Schema](../fast-element.schema/)
-
-
-</td><td>
-
-A constructed JSON schema from a template
 
 
 </td></tr>
@@ -88,56 +55,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[Accessor](../fast-element.accessor/)
-
-
-</td><td>
-
-Represents a getter/setter property accessor on an object.
-
-
-</td></tr>
-<tr><td>
-
-[ElementViewTemplate](../fast-element.elementviewtemplate/)
-
-
-</td><td>
-
-A template capable of creating views specifically for rendering custom elements.
-
-
-</td></tr>
-<tr><td>
-
 [FASTElementRegistry](../fast-element.fastelementregistry/)
 
 
 </td><td>
 
 The FAST custom element registry.
-
-
-</td></tr>
-<tr><td>
-
-[PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
-
-
-</td><td>
-
-Represents metadata configuration for a custom element.
-
-
-</td></tr>
-<tr><td>
-
-[ShadowRootOptions](../fast-element.shadowrootoptions/)
-
-
-</td><td>
-
-Shadow root initialization options.
 
 
 </td></tr>
@@ -163,17 +86,6 @@ A registry that stores definitions by type.
 
 
 </td></tr>
-<tr><td>
-
-[ValueConverter](../fast-element.valueconverter/)
-
-
-</td><td>
-
-Represents objects that can convert values to and from view or model representations.
-
-
-</td></tr>
 </tbody></table>
 
 ## Variables
@@ -191,104 +103,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeConfiguration](../fast-element.attributeconfiguration/)
-
-
-</td><td>
-
-Metadata used to configure a custom attribute's behavior.
-
-
-</td></tr>
-<tr><td>
-
 [fastElementRegistry](../fast-element.fastelementregistry/)
 
 
 </td><td>
 
 The FAST custom element registry.
-
-
-</td></tr>
-</tbody></table>
-
-## Type Aliases
-
-<table><thead><tr><th>
-
-Type Alias
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[AttributeConfiguration](../fast-element.attributeconfiguration/)
-
-
-</td><td>
-
-Metadata used to configure a custom attribute's behavior.
-
-
-</td></tr>
-<tr><td>
-
-[AttributeMode](../fast-element.attributemode/)
-
-
-</td><td>
-
-The mode that specifies the runtime behavior of the attribute.
-
-
-</td></tr>
-<tr><td>
-
-[ComposableStyles](../fast-element.composablestyles/)
-
-
-</td><td>
-
-Represents styles that can be composed into the ShadowDOM of a custom element.
-
-
-</td></tr>
-<tr><td>
-
-[Constructable](../fast-element.constructable/)
-
-
-</td><td>
-
-Represents a type which can be constructed with the new operator.
-
-
-</td></tr>
-<tr><td>
-
-[FASTElementExtension](../fast-element.fastelementextension/)
-
-
-</td><td>
-
-A callback that receives a FASTElementDefinition during element registration. Extensions are invoked before the element is registered with the platform, allowing plugins to inspect or act on the resolved definition.
-
-
-</td></tr>
-<tr><td>
-
-[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)
-
-
-</td><td>
-
-Resolves an element template from a composed definition.
 
 
 </td></tr>

@@ -64,7 +64,7 @@ nameOrDef
 
 </td><td>
 
-string \| [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)<!-- -->&lt;TType&gt;
+string \| PartialFASTElementDefinition&lt;TType&gt;
 
 
 </td><td>

@@ -4,87 +4,16 @@
 
 ```ts
 
-// @public
-export interface Accessor {
-    getValue(source: any): any;
-    name: string;
-    setValue(source: any, value: any): void;
-}
-
-// @public
-export type AttributeConfiguration = {
-    property: string;
-    attribute?: string;
-    mode?: AttributeMode;
-    converter?: ValueConverter;
-};
-
-// @public
-export const AttributeConfiguration: Readonly<{
-    locate: (target: {}) => AttributeConfiguration[];
-}>;
-
-// @public
-export class AttributeDefinition implements Accessor {
-    constructor(Owner: Function, name: string, attribute?: string, mode?: AttributeMode, converter?: ValueConverter);
-    readonly attribute: string;
-    // @internal
-    static collect(Owner: Function, ...attributeLists: (ReadonlyArray<string | AttributeConfiguration> | undefined)[]): ReadonlyArray<AttributeDefinition>;
-    readonly converter?: ValueConverter;
-    getValue(source: HTMLElement): any;
-    readonly mode: AttributeMode;
-    readonly name: string;
-    // @internal (undocumented)
-    onAttributeChangedCallback(element: HTMLElement, value: any): void;
-    readonly Owner: Function;
-    setValue(source: HTMLElement, newValue: any): void;
-}
-
-// @public
-export type AttributeMode = "reflect" | "boolean" | "fromView";
-
-// @public
-export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
-
-// @public
-export type Constructable<T = {}> = {
-    new (...args: any[]): T;
-};
-
-// @public
-export class ElementStyles {
-    constructor(styles: ReadonlyArray<ComposableStyles>);
-    // Warning: (ae-forgotten-export) The symbol "StyleTarget" needs to be exported by the entry point registry.d.ts
-    //
-    // @internal (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // @internal (undocumented)
-    isAttachedTo(target: StyleTarget): boolean;
-    static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
-    // @internal (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
-    // Warning: (ae-forgotten-export) The symbol "StyleStrategy" needs to be exported by the entry point registry.d.ts
-    get strategy(): StyleStrategy;
-    // (undocumented)
-    readonly styles: ReadonlyArray<ComposableStyles>;
-    static readonly supportsAdoptedStyleSheets: boolean;
-    // Warning: (ae-forgotten-export) The symbol "ConstructibleStyleStrategy" needs to be exported by the entry point registry.d.ts
-    withStrategy(Strategy: ConstructibleStyleStrategy): this;
-}
-
-// @public
-export interface ElementViewTemplate<TSource = any, TParent = any> {
-    // Warning: (ae-forgotten-export) The symbol "ElementView" needs to be exported by the entry point registry.d.ts
-    create(hostBindingTarget: Element): ElementView<TSource, TParent>;
-    render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
-}
-
+// Warning: (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point registry.d.ts
+//
 // @public
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
+    // Warning: (ae-forgotten-export) The symbol "AttributeDefinition" needs to be exported by the entry point registry.d.ts
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    // Warning: (ae-forgotten-export) The symbol "PartialFASTElementDefinition" needs to be exported by the entry point registry.d.ts
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
+    // Warning: (ae-forgotten-export) The symbol "FASTElementExtension" needs to be exported by the entry point registry.d.ts
     define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -96,15 +25,16 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
+    // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point registry.d.ts
     schema?: Schema;
+    // Warning: (ae-forgotten-export) The symbol "ShadowRootOptions" needs to be exported by the entry point registry.d.ts
     shadowOptions?: ShadowRootOptions;
+    // Warning: (ae-forgotten-export) The symbol "ElementStyles" needs to be exported by the entry point registry.d.ts
     readonly styles?: ElementStyles;
+    // Warning: (ae-forgotten-export) The symbol "ElementViewTemplate" needs to be exported by the entry point registry.d.ts
     template?: ElementViewTemplate<InstanceType<TType>>;
     readonly type: TType;
 }
-
-// @public
-export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // @public
 export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition> {
@@ -113,37 +43,6 @@ export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition>
 
 // @public
 export const fastElementRegistry: FASTElementRegistry;
-
-// @public
-export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
-
-// @public
-export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
-    readonly attributes?: (AttributeConfiguration | string)[];
-    readonly elementOptions?: ElementDefinitionOptions;
-    readonly name: string;
-    readonly registry?: CustomElementRegistry;
-    readonly schema?: Schema;
-    readonly shadowOptions?: Partial<ShadowRootOptions> | null;
-    readonly styles?: ComposableStyles | ComposableStyles[];
-    readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
-}
-
-// @public
-export class Schema {
-    constructor(name: string);
-    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point registry.d.ts
-    addPath(config: RegisterPathConfig): void;
-    getRootProperties(): IterableIterator<string>;
-    // Warning: (ae-forgotten-export) The symbol "JSONSchema" needs to be exported by the entry point registry.d.ts
-    getSchema(rootPropertyName: string): JSONSchema | null;
-}
-
-// @public
-export interface ShadowRootOptions extends ShadowRootInit {
-    // @beta
-    registry?: CustomElementRegistry;
-}
 
 // @public
 export interface TypeDefinition {
@@ -155,12 +54,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     getByType(key: Function): TDefinition | undefined;
     getForInstance(object: any): TDefinition | undefined;
     register(definition: TDefinition): boolean;
-}
-
-// @public
-export interface ValueConverter {
-    fromView(value: any): any;
-    toView(value: any): any;
 }
 
 // (No @packageDocumentation comment for this package)

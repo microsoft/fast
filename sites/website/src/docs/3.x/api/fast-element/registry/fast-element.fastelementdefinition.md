@@ -58,7 +58,7 @@ Description
 
 </td><td>
 
-Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+Record&lt;string, AttributeDefinition&gt;
 
 
 </td><td>
@@ -79,7 +79,7 @@ A map enabling lookup of property by associated attribute name.
 
 </td><td>
 
-ReadonlyArray&lt;[AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+ReadonlyArray&lt;AttributeDefinition&gt;
 
 
 </td><td>
@@ -123,7 +123,7 @@ Options controlling how the custom element is defined with the platform.
 
 </td><td>
 
-(key: Function) =&gt; [FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->&lt;[Constructable](../fast-element.constructable/)<!-- -->&lt;HTMLElement&gt;&gt; \| undefined
+(key: Function) =&gt; [FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->&lt;Constructable&lt;HTMLElement&gt;&gt; \| undefined
 
 
 </td><td>
@@ -146,7 +146,7 @@ Gets the element definition associated with the specified type.
 
 </td><td>
 
-(object: any) =&gt; [FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->&lt;[Constructable](../fast-element.constructable/)<!-- -->&lt;HTMLElement&gt;&gt; \| undefined
+(object: any) =&gt; [FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->&lt;Constructable&lt;HTMLElement&gt;&gt; \| undefined
 
 
 </td><td>
@@ -230,7 +230,7 @@ The name of the custom element.
 
 </td><td>
 
-Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-- -->&gt;
+Record&lt;string, AttributeDefinition&gt;
 
 
 </td><td>
@@ -270,7 +270,7 @@ The registry to register this component in by default.
 
 </td><td>
 
-[Schema](../fast-element.schema/)
+Schema
 
 
 </td><td>
@@ -289,7 +289,7 @@ _(Optional)_ The optional schema associated with the custom element definition. 
 
 </td><td>
 
-[ShadowRootOptions](../fast-element.shadowrootoptions/)
+ShadowRootOptions
 
 
 </td><td>
@@ -310,7 +310,7 @@ _(Optional)_ Options controlling the creation of the custom element's shadow DOM
 
 </td><td>
 
-[ElementStyles](../fast-element.elementstyles/)
+ElementStyles
 
 
 </td><td>
@@ -329,7 +329,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt;
+ElementViewTemplate&lt;InstanceType&lt;TType&gt;&gt;
 
 
 </td><td>
