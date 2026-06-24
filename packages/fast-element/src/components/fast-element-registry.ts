@@ -2,7 +2,7 @@ import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, type TypeRegistry } from "../platform.js";
 import type { FASTElementDefinition } from "./fast-definitions.js";
 
-export const globalFASTElementRegisteredTypes: Record<string, Function> = {};
+let globalRegisteredTypes: Record<string, Function> = {};
 
 const registeredTypesByRegistry = new WeakMap<
     CustomElementRegistry,
@@ -60,11 +60,17 @@ export const fastElementRegistry: FASTElementRegistry = Object.freeze({
  * Gets the observable custom-element registration map for a registry.
  * @internal
  */
-export function getRegisteredTypes(
+export function setFASTElementDefaultRegisteredTypes(
+    registeredTypes: Record<string, Function>,
+): void {
+    globalRegisteredTypes = registeredTypes;
+}
+
+function getRegisteredTypes(
     registry: CustomElementRegistry = customElements,
 ): Record<string, Function> {
     if (registry === customElements) {
-        return globalFASTElementRegisteredTypes;
+        return globalRegisteredTypes;
     }
 
     let registeredTypes = registeredTypesByRegistry.get(registry);
