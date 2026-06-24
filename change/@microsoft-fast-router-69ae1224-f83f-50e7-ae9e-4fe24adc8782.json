@@ -1,7 +1,7 @@
 {
   "packageName": "@microsoft/fast-router",
-  "type": "none",
-  "comment": "chore: include fast-router in the fast-element v3 RC prerelease train.",
+  "type": "prerelease",
+  "comment": "chore: align FAST Element peer and dev dependency ranges for v3 RC publish prep",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }

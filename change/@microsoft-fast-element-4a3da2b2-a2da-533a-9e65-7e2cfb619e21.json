@@ -1,0 +1,7 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "minor",
+  "comment": "Add schema-driven attributeMap and observerMap extension subpaths, optional definition schema, and observerMap schema configuration.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

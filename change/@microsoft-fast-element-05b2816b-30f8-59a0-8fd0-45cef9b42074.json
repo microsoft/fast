@@ -1,7 +1,7 @@
 {
   "packageName": "@microsoft/fast-element",
-  "type": "major",
-  "comment": "BREAKING: Remove FASTElement.compose from the public API.",
+  "type": "none",
+  "comment": "Add package export smoke coverage and docs sync checks.",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }

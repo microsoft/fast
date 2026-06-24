@@ -25,7 +25,7 @@
         "directory": "examples/ssr/webui-todo-app"
     },
     "dependencies": {
-        "@microsoft/fast-element": "3.0.0",
+        "@microsoft/fast-element": "^2.10.3",
         "@microsoft/fast-examples-design-system": "^1.0.0",
         "@microsoft/webui": "^0.0.12",
         "tslib": "^2.6.3"

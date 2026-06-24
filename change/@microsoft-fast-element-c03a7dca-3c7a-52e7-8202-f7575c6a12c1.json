@@ -1,7 +1,7 @@
 {
   "packageName": "@microsoft/fast-element",
   "type": "major",
-  "comment": "BREAKING: Remove FASTElement.compose from the public API.",
+  "comment": "Remove TemplateOptions from fast-element definitions and drop templateOptions-based connection/define waiting.",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }

@@ -1,7 +1,7 @@
 {
   "packageName": "@microsoft/fast-element",
-  "type": "major",
-  "comment": "BREAKING: Remove FASTElement.compose from the public API.",
+  "type": "patch",
+  "comment": "Allow duplicate f-template names to keep the first template assignment",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }
