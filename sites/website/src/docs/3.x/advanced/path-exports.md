@@ -55,7 +55,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | `@microsoft/fast-element/state.js` | State and watch helpers. | `./dist/esm/state/exports.js` | `./dist/dts/state/exports.d.ts` |
 | `@microsoft/fast-element/two-way.js` | Two-way binding helper. | `./dist/esm/binding/two-way.js` | `./dist/dts/binding/two-way.d.ts` |
 | `@microsoft/fast-element/updates.js` | DOM update queue APIs. | `./dist/esm/observation/update-queue.js` | `./dist/dts/observation/update-queue.d.ts` |
-| `@microsoft/fast-element/utilities.js` | DOM utility helpers. | `./dist/esm/utilities.js` | `./dist/dts/utilities.d.ts` |
+| `@microsoft/fast-element/utilities.js` | DOM and view behavior utility helpers. | `./dist/esm/utilities.js` | `./dist/dts/utilities.d.ts` |
 | `@microsoft/fast-element/volatile.js` | Volatile observable decorator. | `./dist/esm/observation/volatile.js` | `./dist/dts/observation/volatile.d.ts` |
 | `@microsoft/fast-element/when.js` | when directive. | `./dist/esm/templating/when.js` | `./dist/dts/templating/when.d.ts` |
 | `@microsoft/fast-element/package.json` | Package metadata. | `./package.json` | n/a |

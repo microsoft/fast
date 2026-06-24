@@ -52,7 +52,7 @@ const exportDescriptions = {
     "./state.js": "State and watch helpers.",
     "./two-way.js": "Two-way binding helper.",
     "./updates.js": "DOM update queue APIs.",
-    "./utilities.js": "DOM utility helpers.",
+    "./utilities.js": "DOM and view behavior utility helpers.",
     "./volatile.js": "Volatile observable decorator.",
     "./when.js": "when directive.",
 };
