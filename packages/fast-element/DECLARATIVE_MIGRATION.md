@@ -158,6 +158,30 @@ every discovered leaf binding.
 | `observerMap(ObserverMapOption.all)` | `observerMap()` |
 | `attributeMap(AttributeMapOption.all)` | `attributeMap()` |
 
+## Attribute name strategy default changed
+
+The default `attribute-name-strategy` for declarative attribute mapping is now
+`"camelCase"` instead of `"none"`. A binding key such as `{{firstName}}` maps to
+the `firstName` property and the `first-name` HTML attribute by default. If your
+templates depended on literal attribute names, opt back in to the old behavior:
+
+```ts
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap({ "attribute-name-strategy": "none" })],
+);
+```
+
+When using `@microsoft/fast-build`, keep the server and client settings aligned:
+
+```bash
+fast build --attribute-name-strategy=none
+```
 
 ## Declarative TemplateElement API removal
 

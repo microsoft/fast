@@ -23,6 +23,17 @@ Shadow DOM, and `requestAnimationFrame` are available.
 
 ## Breaking Changes
 
+### Browser `Window` runtime and native globals required
+
+FAST Element v3 no longer installs a `globalThis` polyfill and no longer
+installs or depends on a `requestIdleCallback` / `cancelIdleCallback` fallback.
+Load a `globalThis` polyfill before importing FAST only if you still support an
+older browser that lacks it. Do not run the FAST Element client runtime in
+workers or server-side JavaScript hosts.
+
+See the [package migration guide](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md)
+for the complete native globals and scheduler migration steps.
+
 ### `HydratableElementController` removed
 
 The `HydratableElementController` class has been removed. Its functionality is now built into `ElementController` via automatic prerendered content detection. When a component connects with an existing shadow root (from SSR or declarative shadow DOM), the system automatically hydrates the existing DOM.
@@ -167,6 +178,50 @@ constructor or element instance.
 
 Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
+### Optional helper imports moved to flat path exports
+
+FAST Element v3 adds focused flat path exports for optional helpers and removes
+older nested helper paths.
+
+| Before | After |
+|---|---|
+| `@microsoft/fast-element/binding/two-way.js` | `@microsoft/fast-element/two-way.js` |
+| `@microsoft/fast-element/binding/signal.js` | `@microsoft/fast-element/signal.js` |
+| Deep directive imports | `@microsoft/fast-element/children.js`, `@microsoft/fast-element/repeat.js`, `@microsoft/fast-element/when.js`, `@microsoft/fast-element/ref.js`, `@microsoft/fast-element/slotted.js`, or `@microsoft/fast-element/node-observation.js` |
+| Declarative map helpers | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` |
+
+Remove imports from deleted package exports such as
+`@microsoft/fast-element/metadata.js`, `@microsoft/fast-element/testing.js`, and
+`@microsoft/fast-element/pending-task.js`. Replace hydration side-effect imports
+with `enableHydration()` from `@microsoft/fast-element/hydration.js`.
+
+See the [Path Exports](./advanced/path-exports.md) reference and the
+[package migration guide](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md)
+for the full import migration table.
+
+### `attribute-name-strategy` now defaults to `camelCase`
+
+Declarative attribute mapping now defaults to `"camelCase"` instead of
+`"none"`. With the default strategy, `{{firstName}}` maps to the `firstName`
+property and the `first-name` HTML attribute. If you relied on v2 literal
+attribute names, configure both the client and server to use `"none"`:
+
+```ts
+import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap({ "attribute-name-strategy": "none" })],
+);
+```
+
+```bash
+fast build --attribute-name-strategy=none
+```
+
 ### Declarative `TemplateElement` API removed
 
 The `<f-template>` implementation is now internal and is defined automatically
@@ -256,6 +311,16 @@ await MyElement.define({
 });
 ```
 
+### `defineAsync()` and `composeAsync()` removed
+
+`FASTElement.defineAsync()` and `FASTElementDefinition.composeAsync()` have been
+removed. Use subclass `define()` instead; it now returns a `Promise` that
+resolves immediately for concrete templates and resolves after
+`declarativeTemplate()` receives matching `<f-template>` markup.
+
+See the [package migration guide](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md)
+for complete `define()`, `compose()`, and `register()` API mappings.
+
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
 The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.
@@ -276,6 +341,17 @@ MyComponent.define({
     name: "my-component",
 });
 ```
+
+### `TemplateOptions` removed
+
+`TemplateOptions`, `PartialFASTElementDefinition.templateOptions`, and
+`FASTElementDefinition.templateOptions` have been removed. Remove
+`templateOptions` from element definitions and use
+`template: declarativeTemplate()` when declarative markup should supply the
+template.
+
+See the [package migration guide](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md)
+for details on delayed template assignment behavior.
 
 ### Bare `e` removed from declarative event handlers
 
@@ -341,6 +417,16 @@ import { FAST } from "@microsoft/fast-element";
 FAST.addMessages({ ... });
 ```
 
+### `FAST.versions` and `fast-kernel` modes removed
+
+`FAST.versions` has been removed and multiple FAST versions on the same page are
+unsupported in v3. Remove runtime checks that read `FAST.versions` and fix
+duplicate FAST installs in your bundler or dependency graph instead.
+
+The `fast-kernel="share"`, `fast-kernel="share-v2"`, and
+`fast-kernel="isolate"` script attributes no longer affect FAST initialization.
+Remove them during migration.
+
 ### `FAST.getById()` removed
 
 The `FAST.getById(id, initializer)` slot registry has been removed. Kernel services (update queue, observable system, etc.) are resolved through standard ES module imports.
@@ -361,6 +447,17 @@ Update imports to:
 ```ts
 import { css, ElementStyles } from "@microsoft/fast-element";
 ```
+
+### Dynamic stylesheet behaviors removed
+
+`ElementStyles.withBehaviors()`, `ElementStyles.behaviors`, CSS bindings inside
+`css`, and behavior-producing CSS directives have been removed. Keep
+`ElementStyles` static, move runtime conditions into the element or controller
+lifecycle, and call `this.$fastController.addStyles()` /
+`this.$fastController.removeStyles()` as conditions change.
+
+See the [package migration guide](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md)
+for detailed dynamic stylesheet migration steps.
 
 ### `ArrayObserver` moved to `@microsoft/fast-element`
 

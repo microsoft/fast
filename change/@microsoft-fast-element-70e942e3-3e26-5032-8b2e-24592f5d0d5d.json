@@ -1,7 +1,7 @@
 {
   "packageName": "@microsoft/fast-element",
   "type": "minor",
-  "comment": "add function-based template resolver sequencing",
+  "comment": "Add function-based template resolver sequencing.",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
 }
