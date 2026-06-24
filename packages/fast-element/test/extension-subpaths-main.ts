@@ -1,10 +1,10 @@
-// This fixture deliberately imports via bare `@microsoft/fast-element/*`
-// specifiers so it resolves to the BUILT package (dist), exercising the public
-// `exports` map exactly as a consumer would. Do NOT combine it in a single test
-// with the source-resolved entries (main.ts / declarative-main.ts) when they
-// share a runtime singleton (Schema/schemaRegistry, ArrayObserver, the
-// observable engine) — that loads two copies of the module and breaks identity
-// and enable() state. Pull all such symbols from one side or the other.
+// This fixture imports via bare `@microsoft/fast-element/*` specifiers so it
+// resolves to the built package (dist), exercising the public `exports` map as
+// a consumer would. The source entries (main.ts, declarative-main.ts) resolve to
+// src instead, so importing the same singleton-bearing module (such as
+// Schema/schemaRegistry, ArrayObserver, or the observable engine) from both
+// sides loads two copies and breaks identity and enable() state. Import any such
+// shared symbol from one side only.
 export { ArrayObserver } from "@microsoft/fast-element/arrays.js";
 export {
     AttributeMap,
