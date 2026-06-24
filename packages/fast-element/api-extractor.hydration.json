@@ -1,7 +1,7 @@
 {
     "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
     "extends": "../../api-extractor.json",
-    "mainEntryPointFilePath": "./dist/dts/hydration.d.ts",
+    "mainEntryPointFilePath": "./dist/dts/hydration/exports.d.ts",
     "dtsRollup": { "enabled": false },
     "apiReport": {
         "enabled": true,
