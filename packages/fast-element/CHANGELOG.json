@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 24 Jun 2026 20:34:51 GMT",
+      "version": "2.10.5",
+      "tag": "@microsoft/fast-element_v2.10.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "165d5b2578238cf1c15094cb1a951c89b3d60907",
+            "comment": "fix: deprecate the compose APIs in favor of define() and update related docs and examples."
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 23 May 2026 00:13:09 GMT",
       "version": "2.10.4",
       "tag": "@microsoft/fast-element_v2.10.4",
