@@ -178,27 +178,6 @@ Indicates if this element has been defined in at least one registry.
 </td></tr>
 <tr><td>
 
-[isRegistered](../fast-element.fastelementdefinition.isregistered/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Record&lt;string, Function&gt;
-
-
-</td><td>
-
-The definition has been registered to the FAST element registry.
-
-
-</td></tr>
-<tr><td>
-
 [name](../fast-element.fastelementdefinition.name/)
 
 

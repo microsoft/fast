@@ -150,6 +150,21 @@ definition/controller types, and helper APIs from `@microsoft/fast-element`:
 | `when` | `@microsoft/fast-element` |
 | `repeat` | `@microsoft/fast-element` |
 
+### `FASTElementDefinition.isRegistered` removed
+
+The static `FASTElementDefinition.isRegistered` map is no longer public. Import
+`fastElementRegistry` from `@microsoft/fast-element/registry.js` instead:
+
+```ts
+import { fastElementRegistry } from "@microsoft/fast-element/registry.js";
+
+const definition = await fastElementRegistry.whenRegistered("my-element");
+```
+
+Use `fastElementRegistry.getByType(type)` or
+`fastElementRegistry.getForInstance(instance)` when you already have a
+constructor or element instance.
+
 Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
 ### Declarative `TemplateElement` API removed

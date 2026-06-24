@@ -120,6 +120,22 @@ Core FAST Element helpers are available from the root package export:
 3. If a template is supplied later, assign `FASTElementDefinition.template` (or
    use the declarative runtime that does so for you).
 
+## `FASTElementDefinition.isRegistered` removal (v3)
+
+### Removed APIs
+
+| Removed | Replacement |
+|---|---|
+| `FASTElementDefinition.isRegistered` | `fastElementRegistry.whenRegistered(tagName)`, `fastElementRegistry.getByType(type)`, or `fastElementRegistry.getForInstance(instance)` |
+
+### Migration steps
+
+1. Import `fastElementRegistry` from `@microsoft/fast-element/registry.js`.
+2. Use `fastElementRegistry.whenRegistered(tagName)` when code needs to wait for
+   a definition by tag name.
+3. Use `fastElementRegistry.getByType(type)` or
+   `fastElementRegistry.getForInstance(instance)` when code already has a
+   constructor or element instance.
 
 ## Declarative TemplateElement API removal (v3)
 
