@@ -1,5 +1,5 @@
 {
-  "type": "none",
+  "type": "patch",
   "comment": "Update imports to use the root @microsoft/fast-element entry instead of the removed and narrowed subpaths (templating.js, styles.js, html.js).",
   "packageName": "@microsoft/fast-router",
   "email": "863023+radium-v@users.noreply.github.com",
