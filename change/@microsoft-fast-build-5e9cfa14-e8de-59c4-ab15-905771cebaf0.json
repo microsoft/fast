@@ -1,7 +1,0 @@
-{
-  "packageName": "@microsoft/fast-build",
-  "type": "minor",
-  "comment": "Auto-escape code samples inside `<code>` elements during SSR — braces (`{`/`}`) everywhere and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) — so literal binding-like text and directive syntax render correctly while real HTML/custom elements inside `<code>` remain live DOM elements. Also expose a new `escape_code_samples(html)` WASM export so build-time tooling can apply the same escape to author HTML that is injected into a rendered page outside the normal render pipeline.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

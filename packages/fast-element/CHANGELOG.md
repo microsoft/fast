@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 24 Jun 2026 20:34:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.10.5
+
+Wed, 24 Jun 2026 20:34:51 GMT
+
+### Patches
+
+- fix: deprecate the compose APIs in favor of define() and update related docs and examples. (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.4
 
