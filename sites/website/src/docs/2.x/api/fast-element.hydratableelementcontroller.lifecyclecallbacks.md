@@ -15,10 +15,10 @@ navigationOptions:
 
 ## HydratableElementController.lifecycleCallbacks property
 
-> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
-Lifecycle callbacks for hydration events
+Experimental lifecycle callbacks for hydration events.
 
 **Signature:**
 

@@ -105,7 +105,7 @@ _(Optional)_ Options controlling how the custom element is defined with the plat
 
 </td><td>
 
-_(Optional)_ Lifecycle callbacks for template events.
+**_(ALPHA)_** _(Optional)_ Experimental lifecycle callbacks for template events.
 
 
 </td></tr>
