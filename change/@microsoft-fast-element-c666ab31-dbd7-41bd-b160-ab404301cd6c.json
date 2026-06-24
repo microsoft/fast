@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "Stabilize CI and hydration tests on the FAST Element v3 RC branch.",
+  "type": "major",
+  "comment": "Release FAST Element 3.0 with breaking API cleanup and declarative HTML updates: remove FASTGlobal version tracking and multi-kernel modes, require native globalThis, move optional helpers and declarative APIs to flat subpath exports, remove @microsoft/fast-html and legacy declarative TemplateElement configuration APIs, remove CSS style behaviors/CSS bindings and TemplateOptions, simplify SSR hydration markers, require explicit enableDebug(), and make define()/compose() return Promises. Also includes v3 declarativeTemplate, hydration lifecycle/debugging, schema extension helpers, registry lookup export, camelCase attribute-name default, code-sample escaping, shadowroot attribute propagation, and hydration mismatch recovery improvements.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

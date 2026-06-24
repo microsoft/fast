@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-test-harness",
-  "version": "0.4.1-fast-element-v3-rc-20260615",
+  "version": "0.4.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -71,15 +71,15 @@
     "*.d.ts"
   ],
   "devDependencies": {
-    "@microsoft/fast-build": "0.8.1-fast-element-v3-rc-20260615",
-    "@microsoft/fast-element": "3.0.0-rc.3"
+    "@microsoft/fast-build": "0.8.1",
+    "@microsoft/fast-element": "3.0.0"
   },
   "dependencies": {
     "cheerio": "1.2.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-build": "0.8.1-fast-element-v3-rc-20260615",
-    "@microsoft/fast-element": "3.0.0-rc.3",
+    "@microsoft/fast-build": "0.8.1",
+    "@microsoft/fast-element": "3.0.0",
     "@playwright/test": ">=1.40.0",
     "vite": ">=7.0.0"
   },

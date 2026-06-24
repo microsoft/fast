@@ -34,7 +34,6 @@
     "checkchange": "node build/scripts/check-publish-pipeline.mjs && node build/scripts/checkchange.mjs",
     "check": "beachball check ",
     "build:gh-pages": "npm run build -w @microsoft/fast-site",
-    "finalize:fast-element-v3-rc": "node build/scripts/finalize-fast-element-v3-rc.mjs",
     "publish": "beachball publish",
     "sync": "beachball sync",
     "test:diff:error": "echo \"Untracked files exist, try running npm run build to identify the culprit.\" && exit 1",

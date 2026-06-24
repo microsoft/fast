@@ -4,7 +4,7 @@
 
 <!-- Start content -->
 
-## 1.0.0-alpha.30-fast-element-v3-rc-20260615
+## 1.0.0-alpha.30
 
 Tue, 27 Jan 2026 17:28:54 GMT
 

@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "Stabilize CI and hydration tests on the FAST Element v3 RC branch.",
+  "type": "minor",
+  "comment": "Add simulated streaming output and SSR code-sample escaping for literal binding syntax and FAST directive tags, expose escape_code_samples(html), and handle browser-valid whitespace in f-template wrapper tags.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

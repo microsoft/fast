@@ -37,11 +37,7 @@
  *     release creation. Safe to run without `node_modules` populated.
  *
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation and
- * packaging. This is also enabled automatically on `releases/fast-element-v3-rc`,
- * whose RC publishes npm packages only.
- * TODO #7595: Remove this RC-only crate skip before merging
- * `releases/fast-element-v3-rc` back to `main` after FAST Element 3.x stable
- * has been released. See https://github.com/microsoft/fast/issues/7595.
+ * packaging.
  *
  * Authentication: the `gh` CLI reads `GH_TOKEN` from the environment.
  */
@@ -60,8 +56,6 @@ import { basename, join, resolve } from "node:path";
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
 const CHECK_ONLY = process.argv.includes("--check-only");
-const FAST_ELEMENT_V3_RC_BRANCH = "releases/fast-element-v3-rc";
-let skipCratesCache;
 
 function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
@@ -82,26 +76,8 @@ function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
 }
 
-function currentBranchName() {
-    if (process.env.GITHUB_REF_NAME) {
-        return process.env.GITHUB_REF_NAME;
-    }
-
-    try {
-        return run("git", ["rev-parse", "--abbrev-ref", "HEAD"]).trim();
-    } catch {
-        return "";
-    }
-}
-
 function shouldSkipCrates() {
-    if (skipCratesCache === undefined) {
-        skipCratesCache =
-            process.env.FAST_RELEASE_SKIP_CRATES === "true" ||
-            currentBranchName() === FAST_ELEMENT_V3_RC_BRANCH;
-    }
-
-    return skipCratesCache;
+    return process.env.FAST_RELEASE_SKIP_CRATES === "true";
 }
 
 function readCargoTomlVersion(cargoTomlPath) {

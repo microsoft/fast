@@ -1,6 +1,6 @@
 [package]
 name = "microsoft-fast-build"
-version = "0.7.0"
+version = "0.8.1"
 edition = "2021"
 description = "Server-side renderer for FAST declarative HTML templates — resolves bindings, evaluates conditionals, iterates repeats, and expands custom elements into Declarative Shadow DOM."
 license = "MIT"
