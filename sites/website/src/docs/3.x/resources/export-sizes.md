@@ -19,14 +19,14 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 79.35 KB | 23.79 KB | 21.04 KB |
+| CDN Rollup Bundle | 79.35 KB | 23.76 KB | 21.07 KB |
 | FASTElement (@microsoft/fast-element/fast-element.js) | 23.76 KB | 7.37 KB | 6.65 KB |
-| Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 288 B |
+| Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.77 KB | 2.52 KB | 2.24 KB |
 | observable (@microsoft/fast-element/observable.js) | 6.80 KB | 2.54 KB | 2.25 KB |
-| attr (@microsoft/fast-element/attr.js) | 477 B | 288 B | 244 B |
-| children (@microsoft/fast-element/children.js) | 4.87 KB | 1.88 KB | 1.65 KB |
-| ref (@microsoft/fast-element/ref.js) | 3.84 KB | 1.54 KB | 1.35 KB |
+| attr (@microsoft/fast-element/attr.js) | 477 B | 287 B | 244 B |
+| children (@microsoft/fast-element/children.js) | 4.87 KB | 1.88 KB | 1.66 KB |
+| ref (@microsoft/fast-element/ref.js) | 3.84 KB | 1.54 KB | 1.34 KB |
 | slotted (@microsoft/fast-element/slotted.js) | 4.66 KB | 1.81 KB | 1.59 KB |
 | volatile (@microsoft/fast-element/volatile.js) | 6.86 KB | 2.55 KB | 2.26 KB |
 | when (@microsoft/fast-element/when.js) | 1.88 KB | 731 B | 584 B |
