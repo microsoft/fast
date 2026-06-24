@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 08 Jun 2026 20:39:45 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 24 Jun 2026 20:34:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.55
+
+Wed, 24 Jun 2026 20:34:51 GMT
+
+### Changes
+
+- feat: auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags) (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.8.0
+- Bump @microsoft/fast-element to v2.10.5
 
 ## 1.0.0-alpha.54
 

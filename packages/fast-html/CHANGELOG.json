@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 24 Jun 2026 20:34:51 GMT",
+      "version": "1.0.0-alpha.55",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.55",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "5c533dd28151097d946959a84508afb4974217ab",
+            "comment": "feat: auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags)"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.8.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.5",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 Jun 2026 20:39:45 GMT",
       "version": "1.0.0-alpha.54",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.54",
