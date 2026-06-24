@@ -5,7 +5,7 @@ import {
     type ViewBehavior,
     type ViewBehaviorFactory,
     type ViewController,
-} from "@microsoft/fast-element/templating.js";
+} from "@microsoft/fast-element";
 import type {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,

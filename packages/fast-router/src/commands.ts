@@ -1,11 +1,11 @@
-import { FASTElementDefinition } from "@microsoft/fast-element";
-import { html } from "@microsoft/fast-element/html.js";
 import {
     type CompiledViewBehaviorFactory,
+    FASTElementDefinition,
     HTMLView,
+    html,
     type ViewBehaviorFactory,
     ViewTemplate,
-} from "@microsoft/fast-element/templating.js";
+} from "@microsoft/fast-element";
 import type { RouterConfiguration } from "./configuration.js";
 import { type NavigationContributor, navigationContributor } from "./contributors.js";
 import { Route } from "./navigation.js";
