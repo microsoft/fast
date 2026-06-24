@@ -1,9 +1,4 @@
-import {
-    type Disposable,
-    isFunction,
-    isString,
-    Message,
-} from "../interfaces.js";
+import { type Disposable, isFunction, isString, Message } from "../interfaces.js";
 import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
@@ -244,7 +239,6 @@ export const Observable = (() => {
         private propertyName: string | undefined = void 0;
         private notifier: Notifier | undefined = void 0;
         private next: SubscriptionRecord | undefined = void 0;
-        private controller: ExpressionController;
 
         constructor(
             private expression: Expression<TSource, TReturn>,
@@ -259,8 +253,6 @@ export const Observable = (() => {
         }
 
         public bind(controller: ExpressionController) {
-            this.controller = controller;
-
             const value = this.observe(controller.source, controller.context);
 
             if (!controller.isBound && this.requiresUnbind(controller)) {
@@ -335,11 +327,10 @@ export const Observable = (() => {
                     // Declaring the variable prior to assignment below circumvents
                     // a bug in Angular's optimization process causing infinite recursion
                     // of this watch() method. Details https://github.com/microsoft/fast/issues/4969
+                    // biome-ignore lint/style/useConst: see above
                     let prevValue;
                     watcher = void 0;
-                    /* eslint-disable-next-line */
                     prevValue = prev.propertySource[prev.propertyName];
-                    /* eslint-disable-next-line */
                     watcher = this;
 
                     if (propertySource === prevValue) {
@@ -494,26 +485,6 @@ export const Observable = (() => {
  */
 export function observable(target: {}, nameOrAccessor: string | Accessor): void {
     Observable.defineProperty(target, nameOrAccessor);
-}
-
-/**
- * Decorator: Marks a property getter as having volatile observable dependencies.
- * @param target - The target that the property is defined on.
- * @param name - The property name.
- * @param name - The existing descriptor.
- * @public
- */
-export function volatile(
-    target: {},
-    name: string | Accessor,
-    descriptor: PropertyDescriptor,
-): PropertyDescriptor {
-    return Object.assign({}, descriptor, {
-        get(this: any) {
-            Observable.trackVolatile();
-            return descriptor.get!.apply(this);
-        },
-    });
 }
 
 /**

@@ -6,5 +6,5 @@ export {
     Splice,
     SpliceStrategy,
     SpliceStrategySupport,
-} from "./observation/arrays.js";
-export type { Notifier, Subscriber, SubscriberSet } from "./observation/notifier.js";
+} from "./arrays.js";
+export type { Notifier, Subscriber, SubscriberSet } from "./notifier.js";
