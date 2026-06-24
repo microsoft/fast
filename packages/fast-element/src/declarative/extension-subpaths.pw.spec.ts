@@ -11,8 +11,8 @@ test.describe("extension subpaths", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const { AttributeMap, Schema, attributeMap, observerMap } = await import(
+                // @ts-expect-error: Client module.
                 "/extension-subpaths-main.js"
             );
 
@@ -36,8 +36,8 @@ test.describe("extension subpaths", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const { FASTElementDefinition, fastElementRegistry } = await import(
+                // @ts-expect-error: Client module.
                 "/extension-subpaths-main.js"
             );
 
@@ -119,10 +119,10 @@ test.describe("extension subpaths", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
-            const { ArrayObserver } = await import("/main.js");
-            // @ts-expect-error: Client module.
-            const { Schema, observerMap } = await import("/extension-subpaths-main.js");
+            const { ArrayObserver, Schema, observerMap } = await import(
+                // @ts-expect-error: Client module.
+                "/extension-subpaths-main.js"
+            );
 
             ArrayObserver.enable();
 

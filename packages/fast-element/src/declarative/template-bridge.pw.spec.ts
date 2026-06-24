@@ -276,13 +276,11 @@ test.describe("declarativeTemplate", () => {
             const {
                 FASTElement,
                 FASTElementDefinition,
+                attributeMap,
                 declarativeTemplate,
+                observerMap,
                 uniqueElementName,
             } = await import("/declarative-main.js");
-            // @ts-expect-error: Client module.
-            const { attributeMap, observerMap } = await import(
-                "/extension-subpaths-main.js"
-            );
 
             const elementName = uniqueElementName();
 
@@ -365,13 +363,11 @@ test.describe("declarativeTemplate", () => {
                 FASTElement,
                 FASTElementDefinition,
                 Schema,
+                attributeMap,
                 declarativeTemplate,
+                observerMap,
                 uniqueElementName,
             } = await import("/declarative-main.js");
-            // @ts-expect-error: Client module.
-            const { attributeMap, observerMap } = await import(
-                "/extension-subpaths-main.js"
-            );
 
             const elementName = uniqueElementName();
             const schema = new Schema(elementName);
