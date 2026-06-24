@@ -4,18 +4,12 @@ import type { TypeDefinition, TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
-import {
-    fastElementRegistry,
-    setFASTElementDefaultRegisteredTypes,
-} from "./fast-element-registry.js";
+import { fastElementRegistry } from "./fast-element-registry.js";
 import type { Schema } from "./schema.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
-const fastElementRegisteredTypes: Record<string, Function> = {};
-
-setFASTElementDefaultRegisteredTypes(fastElementRegisteredTypes);
 
 export type { TypeDefinition, TypeRegistry };
 
@@ -446,11 +440,6 @@ export class FASTElementDefinition<
      * Non-declarative callers can provide one for schema-driven extensions.
      */
     public schema?: Schema;
-
-    /**
-     * The definition has been registered to the FAST element registry.
-     */
-    public static isRegistered: Record<string, Function> = fastElementRegisteredTypes;
 
     private constructor(
         type: TType,

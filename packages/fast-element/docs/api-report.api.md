@@ -555,7 +555,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
-    static isRegistered: Record<string, Function>;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @internal
