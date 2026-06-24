@@ -1,12 +1,6 @@
 import { Observable } from "../observation/observable.js";
-import {
-    createTypeRegistry,
-    type TypeDefinition,
-    type TypeRegistry,
-} from "../platform.js";
+import { createTypeRegistry, type TypeRegistry } from "../platform.js";
 import type { FASTElementDefinition } from "./fast-definitions.js";
-
-export type { TypeDefinition, TypeRegistry };
 
 export const globalFASTElementRegisteredTypes: Record<string, Function> = {};
 
