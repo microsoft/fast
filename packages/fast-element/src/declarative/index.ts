@@ -1,16 +1,16 @@
-export type {
+export {
     AttributeConfiguration,
     AttributeDefinition,
-    AttributeMode,
-    ValueConverter,
+    type AttributeMode,
+    type ValueConverter,
 } from "../components/attributes.js";
-export type {
+export {
     FASTElementDefinition,
-    FASTElementExtension,
-    FASTElementTemplateResolver,
-    PartialFASTElementDefinition,
-    ShadowRootOptions,
-    TemplateLifecycleCallbacks,
+    type FASTElementExtension,
+    type FASTElementTemplateResolver,
+    type PartialFASTElementDefinition,
+    type ShadowRootOptions,
+    type TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 export {
     type AccessCachedPath,
@@ -28,7 +28,7 @@ export {
     Schema,
     schemaRegistry,
 } from "../components/schema.js";
-export type { DOMAspect, DOMSink } from "../dom.js";
+export { DOMAspect, type DOMSink } from "../dom.js";
 export {
     type DOMAspectGuards,
     type DOMElementGuards,
@@ -39,9 +39,9 @@ export {
 } from "../dom-policy.js";
 export type { Constructable, TrustedTypesPolicy } from "../interfaces.js";
 export type { Accessor } from "../observation/observable.js";
-export type {
-    ComposableStyles,
-    ConstructibleStyleStrategy,
+export {
+    type ComposableStyles,
+    type ConstructibleStyleStrategy,
     ElementStyles,
 } from "../styles/element-styles.js";
 export type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
@@ -49,14 +49,14 @@ export type {
     ViewBehavior,
     ViewBehaviorFactory,
 } from "../templating/html-directive.js";
-export type {
-    CaptureType,
-    ElementViewTemplate,
-    HTMLTemplateCompilationResult,
-    SyntheticViewTemplate,
-    TemplateValue,
+export {
+    type CaptureType,
+    type ElementViewTemplate,
+    type HTMLTemplateCompilationResult,
+    type SyntheticViewTemplate,
+    type TemplateValue,
     ViewTemplate,
 } from "../templating/template.js";
-export type { ElementView, HTMLView } from "../templating/view.js";
+export { type ElementView, HTMLView } from "../templating/view.js";
 export { declarativeTemplate } from "./template.js";
 export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";

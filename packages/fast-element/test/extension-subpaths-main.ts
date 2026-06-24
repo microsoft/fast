@@ -1,3 +1,11 @@
+// This fixture imports via bare `@microsoft/fast-element/*` specifiers so it
+// resolves to the built package (dist), exercising the public `exports` map as
+// a consumer would. The source entries (main.ts, declarative-main.ts) resolve to
+// src instead, so importing the same singleton-bearing module (such as
+// Schema/schemaRegistry, ArrayObserver, or the observable engine) from both
+// sides loads two copies and breaks identity and enable() state. Import any such
+// shared symbol from one side only.
+export { ArrayObserver } from "@microsoft/fast-element/arrays.js";
 export {
     AttributeMap,
     attributeMap,
@@ -10,4 +18,4 @@ export {
     FASTElementDefinition,
     fastElementRegistry,
 } from "@microsoft/fast-element/registry.js";
-export { Schema } from "../src/components/schema.js";
+export { Schema } from "@microsoft/fast-element/schema.js";

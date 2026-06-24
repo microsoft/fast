@@ -1,5 +1,4 @@
-import type { Constructable, FASTElement } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element/templating.js";
+import type { Constructable, FASTElement, ViewTemplate } from "@microsoft/fast-element";
 import { Ignore, type NavigationCommand, Redirect, Render } from "./commands.js";
 import type { RouterConfiguration } from "./configuration.js";
 import type { Route } from "./navigation.js";

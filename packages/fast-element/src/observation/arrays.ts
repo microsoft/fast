@@ -1077,3 +1077,5 @@ export function sortedCount<T>(array: readonly T[]): number {
     Observable.track(arrayObserver.sortObserver, "sorted");
     return (array as any).sorted;
 }
+
+export { type Notifier, type Subscriber, SubscriberSet } from "./notifier.js";

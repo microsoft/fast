@@ -22,7 +22,7 @@ const repeatImportPath = "@microsoft/fast-element/repeat.js";
 const cssImportPath = "@microsoft/fast-element/css.js";
 const declarativeImportPath = "@microsoft/fast-element/declarative.js";
 const hydrationImportPath = "@microsoft/fast-element/hydration.js";
-const arrayObserverImportPath = "@microsoft/fast-element/array-observer.js";
+const arrayObserverImportPath = "@microsoft/fast-element/arrays.js";
 const observerMapImportPath = "@microsoft/fast-element/observer-map.js";
 const attributeMapImportPath = "@microsoft/fast-element/attribute-map.js";
 

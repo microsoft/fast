@@ -3,20 +3,6 @@
  * @packageDocumentation
  */
 
-// Kernel
-
-// Components
-export {
-    AttributeConfiguration,
-    AttributeDefinition,
-    type AttributeMode,
-    attr,
-    booleanConverter,
-    type DecoratorAttributeConfiguration,
-    nullableBooleanConverter,
-    nullableNumberConverter,
-    type ValueConverter,
-} from "./attr.js";
 // Binding
 export { Binding, type BindingDirective } from "./binding/binding.js";
 export { normalizeBinding } from "./binding/normalize.js";
@@ -28,6 +14,18 @@ export {
     TwoWaySettings,
     twoWay,
 } from "./binding/two-way.js";
+// Components
+export {
+    AttributeConfiguration,
+    AttributeDefinition,
+    type AttributeMode,
+    attr,
+    booleanConverter,
+    type DecoratorAttributeConfiguration,
+    nullableBooleanConverter,
+    nullableNumberConverter,
+    type ValueConverter,
+} from "./components/attributes.js";
 export type { ElementControllerStrategy } from "./components/element-controller.js";
 export {
     ElementController,
@@ -52,33 +50,6 @@ export {
     type FASTElementConstructor,
 } from "./components/fast-element.js";
 export { enableDebug } from "./debug.js";
-// Directives
-export {
-    type ChildListDirectiveOptions,
-    ChildrenDirective,
-    type ChildrenDirectiveOptions,
-    children,
-    type SubtreeDirectiveOptions,
-} from "./directives/children.js";
-export {
-    type ElementsFilter,
-    elements,
-    type NodeBehaviorOptions,
-    NodeObservationDirective,
-} from "./directives/node-observation.js";
-export { RefDirective, ref } from "./directives/ref.js";
-export {
-    RepeatBehavior,
-    RepeatDirective,
-    type RepeatOptions,
-    repeat,
-} from "./directives/repeat.js";
-export {
-    SlottedDirective,
-    type SlottedDirectiveOptions,
-    slotted,
-} from "./directives/slotted.js";
-export { when } from "./directives/when.js";
 export { DOM, DOMAspect, type DOMSink } from "./dom.js";
 export {
     type DOMAspectGuards,
@@ -126,9 +97,9 @@ export {
     Observable,
     observable,
     SourceLifetime,
-    volatile,
 } from "./observation/observable.js";
 export { type UpdateQueue, Updates } from "./observation/update-queue.js";
+export { volatile } from "./observation/volatile.js";
 export { emptyArray, FAST } from "./platform.js";
 export {
     type AccessCachedPath,
@@ -161,6 +132,14 @@ export type {
 export { ElementStyles } from "./styles/element-styles.js";
 export type { HostBehavior, HostController } from "./styles/host.js";
 export type { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
+// Directives
+export {
+    type ChildListDirectiveOptions,
+    ChildrenDirective,
+    type ChildrenDirectiveOptions,
+    children,
+    type SubtreeDirectiveOptions,
+} from "./templating/children.js";
 // Templating
 export { type CompilationStrategy, Compiler } from "./templating/compiler.js";
 export {
@@ -183,7 +162,25 @@ export {
     type ViewController,
 } from "./templating/html-directive.js";
 export { Markup, Parser } from "./templating/markup.js";
+export {
+    type ElementsFilter,
+    elements,
+    type NodeBehaviorOptions,
+    NodeObservationDirective,
+} from "./templating/node-observation.js";
+export { RefDirective, ref } from "./templating/ref.js";
 export { RenderBehavior, RenderDirective, render } from "./templating/render.js";
+export {
+    RepeatBehavior,
+    RepeatDirective,
+    type RepeatOptions,
+    repeat,
+} from "./templating/repeat.js";
+export {
+    SlottedDirective,
+    type SlottedDirectiveOptions,
+    slotted,
+} from "./templating/slotted.js";
 export {
     type CaptureType,
     type ElementViewTemplate,
@@ -202,4 +199,5 @@ export {
     type SyntheticView,
     type View,
 } from "./templating/view.js";
+export { when } from "./templating/when.js";
 export * from "./utilities.js";

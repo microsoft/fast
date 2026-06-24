@@ -85,6 +85,8 @@ PropertyDescriptor
 
 </td><td>
 
+The existing descriptor.
+
 
 </td></tr>
 </tbody></table>
