@@ -170,9 +170,9 @@ If addressing multiple unrelated issues, prefer separate pull requests.
 When introducing breaking changes:
 
 1. Select `major` as the change type when running `npm run change`.
-2. Document the migration strategy in `packages/<package>/MIGRATION.md`.
+2. Document the migration strategy in `packages/<package>/docs/migration/<migration-name>.md`.
 
-Format for `MIGRATION.md`:
+Format for a migration document:
 
 ```md
 # Migrating from previous versions

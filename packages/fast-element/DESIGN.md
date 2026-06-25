@@ -717,7 +717,7 @@ The published export surface is guarded by scripts under `scripts/`.
 | [docs/architecture/updates.md](./docs/architecture/updates.md) | Updates queue, attribute and observable change batching |
 | [docs/declarative/design.md](./docs/declarative/design.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
 | [docs/template-bindings.md](./docs/template-bindings.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
-| [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
+| [docs/migration/fast-element-2.md](./docs/migration/fast-element-2.md) | Breaking changes from v1 to v2 |
 
 ---
 

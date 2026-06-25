@@ -14,7 +14,7 @@ The SSR output format for hydration markers has been simplified. If you have any
 
 The `@microsoft/fast-build` WASM binary emits the new markers automatically. Rebuild all fixtures and SSR output after upgrading.
 
-See the [`@microsoft/fast-element` MIGRATION.md](../../MIGRATION.md#hydration-marker-format-v3) for full details on API changes.
+See the [`@microsoft/fast-element` migration guide](./fast-element-3.md#hydration-marker-format-v3) for full details on API changes.
 
 ## Prerendered Content Optimization (v1-alpha → v1)
 
