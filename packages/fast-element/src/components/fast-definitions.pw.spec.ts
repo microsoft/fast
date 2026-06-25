@@ -343,24 +343,26 @@ test.describe("FASTElementDefinition", () => {
         });
     });
 
-    test.describe("register async", () => {
-        test("registers a new element when a partial definition is added", async ({
-            page,
-        }) => {
+    test.describe("registry promises", () => {
+        test("resolves when a partial definition is added", async ({ page }) => {
             await page.goto("/");
 
             const extendsHTMLElement = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { FASTElement, FASTElementDefinition, uniqueElementName } =
-                    await import("/main.js");
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    fastElementRegistry,
+                    uniqueElementName,
+                } = await import("/main.js");
 
                 const elName = uniqueElementName();
 
                 await FASTElementDefinition.compose(FASTElement, elName);
 
-                const registeredEl = await FASTElementDefinition.register(elName);
+                const definition = await fastElementRegistry.whenRegistered(elName);
 
-                return Reflect.getPrototypeOf(registeredEl) === FASTElement;
+                return Reflect.getPrototypeOf(definition.type) === FASTElement;
             });
 
             expect(extendsHTMLElement).toBe(true);

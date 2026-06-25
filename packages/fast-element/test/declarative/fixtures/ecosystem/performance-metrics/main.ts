@@ -4,17 +4,11 @@ import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { volatile } from "@microsoft/fast-element/volatile.js";
 
-let markSequence = 0;
-
-// Enable hydration with global start/complete callbacks
-enableHydration({
-    hydrationStarted(): void {
-        performance.mark("hydration:started", { detail: { sequence: markSequence++ } });
-    },
-    hydrationComplete(): void {
-        performance.measure("hydration:complete", "hydration:started");
-        (window as any).hydrationCompleted = true;
-    },
+performance.mark("hydration:started");
+const hydration = enableHydration();
+void hydration.whenHydrated().then(() => {
+    performance.measure("hydration:complete", "hydration:started");
+    (window as any).hydrationCompleted = true;
 });
 
 class FastCard extends FASTElement {
@@ -29,30 +23,5 @@ class FastCard extends FASTElement {
 
 FastCard.define({
     name: "fast-card",
-    template: declarativeTemplate({
-        templateWillUpdate(name: string) {
-            performance.mark(`template-update:${name}:start`, {
-                detail: { sequence: markSequence++ },
-            });
-        },
-
-        templateDidUpdate(name) {
-            performance.measure(
-                `template-update:${name}`,
-                `template-update:${name}:start`,
-            );
-        },
-
-        elementDidDefine(name) {
-            performance.mark(`element-define:${name}`, {
-                detail: { sequence: markSequence++ },
-            });
-        },
-
-        elementDidRegister(name) {
-            performance.mark(`element-register:${name}`, {
-                detail: { sequence: markSequence++ },
-            });
-        },
-    }),
+    template: declarativeTemplate(),
 });

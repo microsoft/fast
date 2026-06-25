@@ -14,9 +14,8 @@ BenchElement.define(
 
 performance.mark("bench-start");
 
-enableHydration({
-    hydrationComplete() {
-        performance.mark("bench-end");
-        signalDone();
-    },
+const hydration = enableHydration();
+void hydration.whenHydrated().then(() => {
+    performance.mark("bench-end");
+    signalDone();
 });

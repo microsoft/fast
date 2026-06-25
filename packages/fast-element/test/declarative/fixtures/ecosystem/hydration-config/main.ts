@@ -4,13 +4,8 @@ import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
 
 export const hydrationEvents: string[] = [];
-
-enableHydration({
+const hydration = enableHydration({
     stopHydration: StopHydration.never,
-    hydrationComplete(): void {
-        hydrationEvents.push("complete");
-        (window as any).hydrationCompletionCount = hydrationEvents.length;
-    },
 });
 
 export class HydrationOptionsElement extends FASTElement {
@@ -18,9 +13,12 @@ export class HydrationOptionsElement extends FASTElement {
     label: string = "Initial";
 }
 
+void hydration.whenHydrated("hydration-config-element").then(() => {
+    hydrationEvents.push("component-complete");
+    (window as any).hydrationCompleted = true;
+});
+
 HydrationOptionsElement.define({
     name: "hydration-config-element",
     template: declarativeTemplate(),
 });
-
-(window as any).hydrationEvents = hydrationEvents;

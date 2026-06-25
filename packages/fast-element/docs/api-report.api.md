@@ -555,12 +555,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
-    static isRegistered: Record<string, Function>;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    // @alpha
-    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -575,7 +571,12 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // @public
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
+export interface FASTElementRegistry extends TypeRegistry<FASTElementDefinition> {
+    whenRegistered(name: string, registry?: CustomElementRegistry): Promise<FASTElementDefinition>;
+}
+
+// @public
+export const fastElementRegistry: FASTElementRegistry;
 
 // @public
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
@@ -827,7 +828,6 @@ export const Parser: Readonly<{
 export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly schema?: Schema;
@@ -1138,16 +1138,6 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
     inline(): CaptureType<TSource, TParent>;
-}
-
-// @public
-export interface TemplateLifecycleCallbacks {
-    elementDidDefine?(name: string): void;
-    elementDidHydrate?(source: HTMLElement): void;
-    elementDidRegister?(name: string): void;
-    elementWillHydrate?(source: HTMLElement): void;
-    templateDidUpdate?(name: string): void;
-    templateWillUpdate?(name: string): void;
 }
 
 // @public

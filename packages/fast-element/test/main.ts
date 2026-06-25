@@ -20,6 +20,7 @@ export {
 export type { FASTElementExtension } from "../src/components/fast-definitions.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { customElement, FASTElement } from "../src/components/fast-element.js";
+export { fastElementRegistry } from "../src/components/fast-element-registry.js";
 export {
     HydrationMarkup,
     isHydratable,

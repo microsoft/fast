@@ -120,6 +120,22 @@ Core FAST Element helpers are available from the root package export:
 3. If a template is supplied later, assign `FASTElementDefinition.template` (or
    use the declarative runtime that does so for you).
 
+## `FASTElementDefinition.isRegistered` removal (v3)
+
+### Removed APIs
+
+| Removed | Replacement |
+|---|---|
+| `FASTElementDefinition.isRegistered` | `fastElementRegistry.whenRegistered(tagName)`, `fastElementRegistry.getByType(type)`, or `fastElementRegistry.getForInstance(instance)` |
+
+### Migration steps
+
+1. Import `fastElementRegistry` from `@microsoft/fast-element/registry.js`.
+2. Use `fastElementRegistry.whenRegistered(tagName)` when code needs to wait for
+   a definition by tag name.
+3. Use `fastElementRegistry.getByType(type)` or
+   `fastElementRegistry.getForInstance(instance)` when code already has a
+   constructor or element instance.
 
 ## Declarative TemplateElement API removal (v3)
 
@@ -129,7 +145,7 @@ Core FAST Element helpers are available from the root package export:
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines FAST's internal `<f-template>` publisher in the target registry |
-| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | Per-element callbacks via `declarativeTemplate(callbacks)` and global callbacks via `enableHydration(options)` |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | `enableHydration().whenHydrated(tagName)` for tag-specific hydration waits and `enableHydration().whenHydrated()` for the active hydration batch |
 | `TemplateElement.options(...)`, `ElementOptions`, `ElementOptionsDictionary` | Define extensions: `attributeMap(...)` and `observerMap(...)` passed as the second argument to `define()` |
 | `AttributeMap` / `ObserverMap` exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
 
@@ -176,10 +192,11 @@ Core FAST Element helpers are available from the root package export:
    `declarativeTemplate()` assigns it automatically, and `observerMap()` can
    take a manual schema with `observerMap({ schema })`.
 
-3. Replace `TemplateElement.config()` with `declarativeTemplate(callbacks)` for
-   per-element callbacks and `enableHydration(options)` for global hydration
-   callbacks. Hydration is not installed by `declarative.js`; call
-   `enableHydration()` before elements connect when SSR content should hydrate.
+3. Replace `TemplateElement.config()` with `enableHydration().whenHydrated(tagName)`
+   for tag-specific hydration waits and `enableHydration().whenHydrated()` for the
+   active hydration batch.
+   Hydration is not installed by `declarative.js`; call `enableHydration()`
+   before elements connect when SSR content should hydrate.
 
 ## Debug entrypoint explicit enablement (v3)
 
@@ -222,7 +239,7 @@ data source.
 | 2.x API | 3.x guidance |
 |---|---|
 | `HydratableElementController` | `ElementController` (prerendered path built in) |
-| `HydrationControllerCallbacks` | Global callbacks via `enableHydration(options)`; per-element callbacks via `declarativeTemplate(callbacks)` |
+| `HydrationControllerCallbacks` | Call `enableHydration()` and await the returned controller's `whenHydrated()` promise |
 | `needsHydrationAttribute` | No replacement. Existing shadow root detection sets `ElementController.isPrerendered`. |
 | Root `deferHydrationAttribute` export | Import `deferHydrationAttribute` from `@microsoft/fast-element/hydration.js` only if you still need the legacy attribute string. New server-rendered markup should omit `defer-hydration`. |
 

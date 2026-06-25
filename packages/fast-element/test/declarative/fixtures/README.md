@@ -28,8 +28,9 @@ Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a
 ## Hydration readiness
 
 Fixtures that exercise prerendered Declarative Shadow DOM should enable
-hydration explicitly and set a global flag in the `hydrationComplete()` callback
-so Playwright tests can wait for the element to be fully interactive before
+hydration explicitly and set a global flag after the hydration controller's
+`whenHydrated()` promise resolves so
+Playwright tests can wait for the element to be fully interactive before
 asserting. The standard pattern is:
 
 1. **In `main.ts`**, call `enableHydration()` before elements connect:
@@ -37,15 +38,13 @@ asserting. The standard pattern is:
     ```ts
     import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-    enableHydration({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
+    const hydration = enableHydration();
+    void hydration.whenHydrated().then(() => {
+        (window as any).hydrationCompleted = true;
     });
     ```
 
-    Per-element callbacks belong on `declarativeTemplate(callbacks)`. Map
-    behavior belongs in define extensions such as `attributeMap()` and
+    Map behavior belongs in define extensions such as `attributeMap()` and
     `observerMap()`.
 
 2. **In the spec file**, create the wait **before** navigation so the listener is registered before the page starts loading:

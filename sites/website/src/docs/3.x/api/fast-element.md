@@ -992,6 +992,17 @@ The FASTElement constructor and static registration helpers.
 </td></tr>
 <tr><td>
 
+[FASTElementRegistry](../fast-element.fastelementregistry/)
+
+
+</td><td>
+
+The FAST custom element registry.
+
+
+</td></tr>
+<tr><td>
+
 [HostBehavior](../fast-element.hostbehavior/)
 
 
@@ -1284,17 +1295,6 @@ A view representing a range of DOM nodes which can be added/removed ad hoc.
 </td><td>
 
 A template capable of rendering views not specifically connected to custom elements.
-
-
-</td></tr>
-<tr><td>
-
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for template events.
 
 
 </td></tr>

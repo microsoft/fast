@@ -88,7 +88,8 @@ The root `@microsoft/fast-element` entrypoint exports the FAST Element
 implementation APIs, including the element base class, kernel, controller,
 definition APIs, template APIs, binding helpers, directives, styles, and schema
 helpers. The FAST element registry is also available from
-`@microsoft/fast-element/registry.js` for focused definition lookups.
+`@microsoft/fast-element/registry.js` for focused definition lookups and
+`fastElementRegistry.whenRegistered(tagName)` registration promises.
 Declarative, hydration, context, and dependency injection APIs are available
 from their focused path exports.
 
@@ -191,16 +192,17 @@ Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@
 ```typescript
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({
-    hydrationComplete() {
-        console.log("hydration complete");
-    },
-});
+const hydration = enableHydration();
+
+await hydration.whenHydrated();
+console.log("hydration complete");
 ```
 
 By default, hydration handles the initial prerendered batch and then no-ops
-after `hydrationComplete` fires. If your app streams Declarative Shadow DOM
-after the initial batch, keep the hydration hook active:
+after the active hydration batch completes. If your app streams Declarative
+Shadow DOM after the initial batch, keep the hydration hook active. In this
+mode, `enableHydration().whenHydrated()` intentionally remains pending because
+hydration never reaches a global completion point.
 
 ```typescript
 import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
@@ -242,24 +244,6 @@ enableHydration({ debugger: hydrationDebugger() });
 
 The debugger module is tree-shaken out of production hydration bundles when
 not imported, so the rich diagnostic helpers only land in builds that opt in.
-
-Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
-
-```typescript
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
-
-MyComponent.define({
-    name: "my-component",
-    template: declarativeTemplate({
-        elementWillHydrate(source) {
-            console.log(`${source.localName} will hydrate`);
-        },
-        elementDidHydrate(source) {
-            console.log(`${source.localName} hydrated`);
-        },
-    }),
-});
-```
 
 Component authors can await both promises to distinguish prerendered content from successful hydration:
 

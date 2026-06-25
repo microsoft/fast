@@ -39,16 +39,16 @@ export type {
     TypeDefinition,
     TypeRegistry,
 } from "./components/fast-definitions.js";
-export {
-    FASTElementDefinition,
-    fastElementRegistry,
-    type TemplateLifecycleCallbacks,
-} from "./components/fast-definitions.js";
+export { FASTElementDefinition } from "./components/fast-definitions.js";
 export {
     customElement,
     FASTElement,
     type FASTElementConstructor,
 } from "./components/fast-element.js";
+export {
+    type FASTElementRegistry,
+    fastElementRegistry,
+} from "./components/fast-element-registry.js";
 export { enableDebug } from "./debug.js";
 export { DOM, DOMAspect, type DOMSink } from "./dom.js";
 export {

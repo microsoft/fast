@@ -162,9 +162,8 @@ The component definition file registers custom elements and configures the templ
 
 1. Define element classes extending `FASTElement`.
 2. Call `define()` on the element class with `template: declarativeTemplate()`.
-3. Use `declarativeTemplate(callbacks)` for per-element lifecycle callbacks,
-   `enableHydration()` for hydration callbacks, and define extensions such as
-   `attributeMap()` / `observerMap()` for schema behavior.
+3. Use `enableHydration().whenHydrated()` for hydration readiness, and define
+   extensions such as `attributeMap()` / `observerMap()` for schema behavior.
    `declarativeTemplate()` registers FAST's internal `<f-template>` publisher
    automatically.
 

@@ -8,34 +8,10 @@ import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 (window as any).messages = [];
 
-const lifecycleCallbacks = {
-    elementDidDefine(name: string) {
-        (window as any).messages.push(
-            `Element did define: ${name} [${performance.now()}]`,
-        );
-    },
-    elementDidRegister(name: string) {
-        (window as any).messages.push(
-            `Element did register: ${name} [${performance.now()}]`,
-        );
-    },
-    templateDidUpdate(name: string) {
-        (window as any).messages.push(
-            `Template did update: ${name} [${performance.now()}]`,
-        );
-    },
-    templateWillUpdate(name: string) {
-        (window as any).messages.push(
-            `Template will update: ${name} [${performance.now()}]`,
-        );
-    },
-};
-
-enableHydration({
-    hydrationComplete() {
-        (window as any).messages.push(`Hydration complete [${performance.now()}]`);
-        (window as any).hydrationCompleted = true;
-    },
+const hydration = enableHydration();
+void hydration.whenHydrated().then(() => {
+    (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+    (window as any).hydrationCompleted = true;
 });
 
 // Mock data sources - simulating fetched data
@@ -166,7 +142,7 @@ export class TestElementRepeatEvent extends FASTElement {
 }
 TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
-    template: declarativeTemplate(lifecycleCallbacks),
+    template: declarativeTemplate(),
 });
 
 export class TestWhenInRepeat extends FASTElement {
@@ -184,7 +160,7 @@ export class TestWhenInRepeat extends FASTElement {
 TestWhenInRepeat.define(
     {
         name: "test-when-in-repeat",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -192,7 +168,7 @@ TestWhenInRepeat.define(
 ItemList.define(
     {
         name: "parent-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -200,7 +176,7 @@ ItemList.define(
 Item.define(
     {
         name: "child-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -208,7 +184,7 @@ Item.define(
 GrandChildItem.define(
     {
         name: "grand-child-element",
-        template: declarativeTemplate(lifecycleCallbacks),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

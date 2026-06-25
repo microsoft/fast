@@ -1,28 +1,15 @@
 import { type Constructable, isFunction, isString } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import {
-    createTypeRegistry,
-    type TypeDefinition,
-    type TypeRegistry,
-} from "../platform.js";
+import type { TypeDefinition, TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
+import { fastElementRegistry } from "./fast-element-registry.js";
 import type { Schema } from "./schema.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
-
-/**
- * The FAST custom element registry.
- * @remarks
- * This registry stores FAST element definitions by constructor so consumers can
- * look up the `FASTElementDefinition` associated with an element type or instance.
- * @public
- */
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition> =
-    createTypeRegistry<FASTElementDefinition>();
 
 export type { TypeDefinition, TypeRegistry };
 
@@ -37,42 +24,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
      * @beta
      */
     registry?: CustomElementRegistry;
-}
-
-/**
- * Lifecycle callbacks for template events.
- * @public
- */
-export interface TemplateLifecycleCallbacks {
-    /**
-     * Called after the JS class definition has been registered.
-     */
-    elementDidRegister?(name: string): void;
-
-    /**
-     * Called before the template has been evaluated and assigned.
-     */
-    templateWillUpdate?(name: string): void;
-
-    /**
-     * Called after the template has been assigned to the definition.
-     */
-    templateDidUpdate?(name: string): void;
-
-    /**
-     * Called after the custom element has been defined.
-     */
-    elementDidDefine?(name: string): void;
-
-    /**
-     * Called before an individual element's hydration begins.
-     */
-    elementWillHydrate?(source: HTMLElement): void;
-
-    /**
-     * Called after an individual element's hydration has finished.
-     */
-    elementDidHydrate?(source: HTMLElement): void;
 }
 
 /**
@@ -114,11 +65,6 @@ const templateResolutionErrors = new WeakMap<
     unknown
 >();
 
-const registeredTypesByRegistry = new WeakMap<
-    CustomElementRegistry,
-    Record<string, Function>
->();
-
 const extensionRegistries = new WeakMap<
     FASTElementDefinition<Constructable<HTMLElement>>,
     WeakSet<CustomElementRegistry>
@@ -141,23 +87,6 @@ function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
     return typeof (value as PromiseLike<T> | undefined)?.then === "function";
 }
 
-function getRegisteredTypes(
-    registry: CustomElementRegistry = customElements,
-): Record<string, Function> {
-    if (registry === customElements) {
-        return FASTElementDefinition.isRegistered;
-    }
-
-    let registeredTypes = registeredTypesByRegistry.get(registry);
-
-    if (!registeredTypes) {
-        registeredTypes = {};
-        registeredTypesByRegistry.set(registry, registeredTypes);
-    }
-
-    return registeredTypes;
-}
-
 function finalizeResolvedTemplate<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
@@ -167,10 +96,8 @@ function finalizeResolvedTemplate<
     pendingTemplateResolutions.delete(
         definition as FASTElementDefinition<Constructable<HTMLElement>>,
     );
-
     if (definition.template === void 0 && template !== void 0) {
         definition.template = template;
-        definition.lifecycleCallbacks?.templateDidUpdate?.(definition.name);
     }
 
     if (definition.template !== void 0) {
@@ -434,11 +361,6 @@ export interface PartialFASTElementDefinition<
     readonly registry?: CustomElementRegistry;
 
     /**
-     * Lifecycle callbacks for template events.
-     */
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
-
-    /**
      * The optional schema associated with the custom element definition.
      * Declarative templates assign this automatically during template resolution.
      * Non-declarative callers can provide one for schema-driven extensions.
@@ -513,21 +435,11 @@ export class FASTElementDefinition<
     readonly registry: CustomElementRegistry;
 
     /**
-     * Lifecycle callbacks for template events.
-     */
-    public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
-
-    /**
      * The optional schema associated with the custom element definition.
      * Declarative templates assign this automatically during template resolution.
      * Non-declarative callers can provide one for schema-driven extensions.
      */
     public schema?: Schema;
-
-    /**
-     * The definition has been registered to the FAST element registry.
-     */
-    public static isRegistered: Record<string, Function> = {};
 
     private constructor(
         type: TType,
@@ -592,13 +504,6 @@ export class FASTElementDefinition<
         this.schema = nameOrConfig.schema;
 
         fastElementRegistry.register(this);
-        const registeredTypes = getRegisteredTypes(this.registry);
-
-        if (!Object.prototype.hasOwnProperty.call(registeredTypes, this.name)) {
-            Observable.defineProperty(registeredTypes, this.name);
-        }
-
-        registeredTypes[this.name] = this.type;
     }
 
     /**
@@ -625,7 +530,6 @@ export class FASTElementDefinition<
                         if (template !== void 0 && !registry.get(this.name)) {
                             this.platformDefined = true;
                             registry.define(this.name, type as any, this.elementOptions);
-                            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
                         }
                     })
                     .catch(error => {
@@ -635,10 +539,8 @@ export class FASTElementDefinition<
 
                 return this;
             }
-
             this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
-            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
         }
 
         return this;
@@ -684,45 +586,6 @@ export class FASTElementDefinition<
      * @param instance - The custom element instance to retrieve the definition for.
      */
     static readonly getForInstance = fastElementRegistry.getForInstance;
-
-    /**
-     * Indicates when a custom elements definition has been registered with the fastElementRegistry.
-     * @param name - The name of the defined custom element.
-     * @alpha
-     */
-    public static register = async (
-        name: string,
-        registry: CustomElementRegistry = customElements,
-    ): Promise<Function> => {
-        const registeredTypes = getRegisteredTypes(registry);
-
-        if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
-            Observable.defineProperty(registeredTypes, name);
-        }
-
-        return new Promise(resolve => {
-            if (registeredTypes[name]) {
-                resolve(registeredTypes[name]);
-                return;
-            }
-
-            const notifier = Observable.getNotifier(registeredTypes);
-            const subscriber = {
-                handleChange: () => {
-                    const value = registeredTypes[name];
-
-                    if (!value) {
-                        return;
-                    }
-
-                    notifier.unsubscribe(subscriber, name);
-                    resolve(value);
-                },
-            };
-
-            notifier.subscribe(subscriber, name);
-        });
-    };
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

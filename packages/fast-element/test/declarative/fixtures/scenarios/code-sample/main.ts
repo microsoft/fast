@@ -21,8 +21,7 @@ console.error = (...args: any[]) => {
     originalConsoleError.apply(console, args);
 };
 
-enableHydration({
-    hydrationComplete() {
-        (window as any).hydrationCompleted = true;
-    },
+const hydration = enableHydration();
+void hydration.whenHydrated().then(() => {
+    (window as any).hydrationCompleted = true;
 });

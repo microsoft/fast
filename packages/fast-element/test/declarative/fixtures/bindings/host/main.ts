@@ -225,8 +225,7 @@ HostAutofocus.define({
     template: declarativeTemplate(),
 });
 
-enableHydration({
-    hydrationComplete() {
-        (window as any).hydrationCompleted = true;
-    },
+const hydration = enableHydration();
+void hydration.whenHydrated().then(() => {
+    (window as any).hydrationCompleted = true;
 });

@@ -41,11 +41,9 @@ export class TodoApp extends FASTElement {
     };
 
     connectedCallback(): void {
-        super.connectedCallback();
         this.prepareItems();
-        this.connectFormEvents();
-        this.syncAddButton();
-        this.syncCounts();
+        super.connectedCallback();
+        this.syncFormControls();
     }
 
     syncFormControls(): void {
@@ -270,18 +268,7 @@ export class TodoApp extends FASTElement {
 export const todoAppDefinition = TodoApp.define(
     {
         name: "todo-app",
-        template: declarativeTemplate({
-            elementWillHydrate(source) {
-                if (source instanceof TodoApp) {
-                    source.prepareHydrationState();
-                }
-            },
-            elementDidHydrate(source) {
-                if (source instanceof TodoApp) {
-                    source.syncFormControls();
-                }
-            },
-        }),
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

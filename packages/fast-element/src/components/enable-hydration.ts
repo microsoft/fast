@@ -6,10 +6,14 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { HydratableElementViewTemplate } from "../templating/template.js";
 import { ElementController } from "./element-controller.js";
 import { isHydratable } from "./hydration.js";
-import { type HydrationOptions, HydrationTracker } from "./hydration-tracker.js";
+import {
+    type HydrationController,
+    type HydrationOptions,
+    HydrationTracker,
+} from "./hydration-tracker.js";
 
 export { StopHydration } from "./hydration-tracker.js";
-export type { HydrationOptions };
+export type { HydrationController, HydrationOptions };
 
 /**
  * No-op handler used during prerendered bind to discard the
@@ -31,9 +35,14 @@ let hookInstalled = false;
  * Safe to call multiple times — the hydration hook is installed once
  * and subsequent calls merge their options into the shared tracker.
  * By default, the hook stops hydrating new prerendered elements after
- * the global `hydrationComplete` callback. Set
- * `stopHydration` to `StopHydration.never` for streaming scenarios
+ * the initial hydration batch completes. Await the returned controller's
+ * `whenHydrated()` promise to run code after the active hydration batch
+ * completes.
+ *
+ * Set `stopHydration` to `StopHydration.never` for streaming scenarios
  * that append hydratable Declarative Shadow DOM after the initial batch.
+ * In this mode, `whenHydrated` intentionally remains pending because
+ * hydration never reaches a global completion point.
  *
  * Pass `debugger: hydrationDebugger()` to swap the default minimal
  * hydration mismatch error message for a rich "Expected / Received"
@@ -44,13 +53,20 @@ let hookInstalled = false;
  *
  * @example
  * ```ts
+ * import { enableHydration } from "@microsoft/fast-element/hydration.js";
+ *
+ * const hydration = enableHydration();
+ *
+ * await hydration.whenHydrated();
+ * console.log("hydration complete");
+ * ```
+ *
+ * @example Streaming Declarative Shadow DOM
+ * ```ts
  * import { enableHydration, StopHydration } from "@microsoft/fast-element/hydration.js";
  *
  * enableHydration({
  *     stopHydration: StopHydration.never,
- *     hydrationComplete() {
- *         console.log("hydration complete");
- *     },
  * });
  * ```
  *
@@ -61,10 +77,10 @@ let hookInstalled = false;
  * enableHydration({ debugger: hydrationDebugger() });
  * ```
  *
- * @param options - Optional global hydration callbacks and behavior.
+ * @param options - Optional hydration behavior.
  * @public
  */
-export function enableHydration(options?: HydrationOptions): void {
+export function enableHydration(options?: HydrationOptions): HydrationController {
     ensureHydrationRuntime();
 
     if (options?.debugger) {
@@ -81,16 +97,9 @@ export function enableHydration(options?: HydrationOptions): void {
                 return false;
             }
 
-            const callbacks = controller.definition.lifecycleCallbacks;
             activeTracker.add(element);
 
             try {
-                try {
-                    callbacks?.elementWillHydrate?.(element);
-                } catch {
-                    // A lifecycle callback must never prevent hydration.
-                }
-
                 const firstChild = host.firstChild!;
                 const lastChild = host.lastChild!;
 
@@ -118,12 +127,6 @@ export function enableHydration(options?: HydrationOptions): void {
                 (view as any as Mutable<ViewController>).sourceLifetime =
                     SourceLifetime.coupled;
                 (controller as any).hasExistingShadowRoot = false;
-
-                try {
-                    callbacks?.elementDidHydrate?.(element);
-                } catch {
-                    // A lifecycle callback must never prevent post-hydration work.
-                }
             } finally {
                 activeTracker.remove(element);
             }
@@ -134,6 +137,8 @@ export function enableHydration(options?: HydrationOptions): void {
         // Merge options into existing tracker for subsequent calls
         tracker.mergeOptions(options);
     }
+
+    return tracker!;
 }
 
 /**

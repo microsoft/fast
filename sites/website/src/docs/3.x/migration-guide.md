@@ -66,39 +66,31 @@ These attributes are no longer needed in server-rendered markup.
 </my-component>
 ```
 
-### `HydrationControllerCallbacks` replaced by `enableHydration` + `declarativeTemplate` callbacks
+### `HydrationControllerCallbacks` replaced by hydration promises
 
 2.x Example:
 ```ts
 import { HydratableElementController } from "@microsoft/fast-element";
 
 HydratableElementController.config({
-    hydrationComplete() { /* ... */ }
+    /* hydration callbacks */
 });
 ```
 
 3.x Example:
 ```ts
-import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
-// Global hydration callbacks
-enableHydration({
-    hydrationStarted() { /* ... */ },
-    hydrationComplete() { /* ... */ },
-});
-
-// Per-element hydration callbacks
-MyComponent.define({
-    name: "my-component",
-    template: declarativeTemplate({
-        elementWillHydrate(source: HTMLElement) { /* ... */ },
-        elementDidHydrate(source: HTMLElement) { /* ... */ },
-    }),
-});
+const hydration = enableHydration();
+await hydration.whenHydrated();
 ```
 
-Note: `elementWillHydrate` and `elementDidHydrate` now receive the `HTMLElement` instance instead of a string name.
+Use `enableHydration().whenHydrated("my-element")` when application code needs to
+wait for hydration work associated with a specific tag name. Use
+`enableHydration().whenHydrated()` for the active global hydration batch. When
+`stopHydration: StopHydration.never` is configured, the global promise
+intentionally remains pending because hydration never reaches a global
+completion point.
 
 ### `isPrerendered` and `isHydrated` split
 
@@ -148,6 +140,7 @@ definition/controller types, and helper APIs from `@microsoft/fast-element`:
 | `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
 | `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
 | `enableHydration`, `deferHydrationAttribute`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
+| `fastElementRegistry` | `@microsoft/fast-element/registry.js` |
 | `ArrayObserver` | `@microsoft/fast-element` |
 | `volatile` | `@microsoft/fast-element` |
 | `children` | `@microsoft/fast-element` |
@@ -156,6 +149,21 @@ definition/controller types, and helper APIs from `@microsoft/fast-element`:
 | `slotted` | `@microsoft/fast-element` |
 | `when` | `@microsoft/fast-element` |
 | `repeat` | `@microsoft/fast-element` |
+
+### `FASTElementDefinition.isRegistered` removed
+
+The static `FASTElementDefinition.isRegistered` map is no longer public. Import
+`fastElementRegistry` from `@microsoft/fast-element/registry.js` instead:
+
+```ts
+import { fastElementRegistry } from "@microsoft/fast-element/registry.js";
+
+const definition = await fastElementRegistry.whenRegistered("my-element");
+```
+
+Use `fastElementRegistry.getByType(type)` or
+`fastElementRegistry.getForInstance(instance)` when you already have a
+constructor or element instance.
 
 Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
@@ -168,7 +176,7 @@ when an element uses `template: declarativeTemplate()`.
 |---|---|
 | `TemplateElement` public export | `declarativeTemplate()` |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
-| `TemplateElement.config(callbacks)` | `declarativeTemplate(callbacks)` for per-element callbacks and `enableHydration(options)` for global hydration callbacks |
+| `TemplateElement.config(callbacks)` | `enableHydration().whenHydrated(tagName)` for tag-specific hydration waits and `enableHydration().whenHydrated()` for the active hydration batch |
 | `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
 | `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
 
@@ -181,15 +189,18 @@ import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
-enableHydration();
+const hydration = enableHydration();
 
-MyElement.define(
+await MyElement.define(
     {
         name: "my-element",
         template: declarativeTemplate(),
     },
     [attributeMap(), observerMap()],
 );
+
+await hydration.whenHydrated("my-element");
+await hydration.whenHydrated();
 ```
 
 `FASTElementDefinition.schema` is optional. Declarative templates assign it

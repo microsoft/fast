@@ -37,13 +37,8 @@ test.describe("duplicate f-template names", () => {
 
         const result = await page.evaluate(() => ({
             errors: (window as any).__duplicateTemplateErrors,
-            status: (window as any).__duplicateTemplateStatus,
         }));
 
         expect(result.errors).toEqual([]);
-        expect(result.status).toEqual({
-            templateDidUpdateCount: 1,
-            templateWillUpdateCount: 1,
-        });
     });
 });

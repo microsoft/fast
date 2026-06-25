@@ -178,48 +178,6 @@ Indicates if this element has been defined in at least one registry.
 </td></tr>
 <tr><td>
 
-[isRegistered](../fast-element.fastelementdefinition.isregistered/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Record&lt;string, Function&gt;
-
-
-</td><td>
-
-The definition has been registered to the FAST element registry.
-
-
-</td></tr>
-<tr><td>
-
-[lifecycleCallbacks?](../fast-element.fastelementdefinition.lifecyclecallbacks/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
-
-
-</td><td>
-
-_(Optional)_ Lifecycle callbacks for template events.
-
-
-</td></tr>
-<tr><td>
-
 [name](../fast-element.fastelementdefinition.name/)
 
 
@@ -257,27 +215,6 @@ Record&lt;string, [AttributeDefinition](../fast-element.attributedefinition/)<!-
 </td><td>
 
 A map enabling lookup of attribute by associated property name.
-
-
-</td></tr>
-<tr><td>
-
-[register](../fast-element.fastelementdefinition.register/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-(name: string, registry?: CustomElementRegistry) =&gt; Promise&lt;Function&gt;
-
-
-</td><td>
-
-**_(ALPHA)_** Indicates when a custom elements definition has been registered with the fastElementRegistry.
 
 
 </td></tr>

@@ -91,7 +91,7 @@ export type ConstructibleStyleStrategy = {
 };
 
 // @public
-export function declarativeTemplate<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver<TType>;
+export function declarativeTemplate<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(): FASTElementTemplateResolver<TType>;
 
 // @public
 export interface DefaultCachedPath extends CachedPathCommon {
@@ -207,12 +207,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
-    static isRegistered: Record<string, Function>;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
-    // @alpha
-    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -309,7 +305,6 @@ export interface JSONSchemaDefinition extends JSONSchemaCommon {
 export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
-    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly schema?: Schema;
@@ -377,16 +372,6 @@ export interface StyleTarget extends Pick<Node, "getRootNode"> {
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
     inline(): CaptureType<TSource, TParent>;
-}
-
-// @public
-export interface TemplateLifecycleCallbacks {
-    elementDidDefine?(name: string): void;
-    elementDidHydrate?(source: HTMLElement): void;
-    elementDidRegister?(name: string): void;
-    elementWillHydrate?(source: HTMLElement): void;
-    templateDidUpdate?(name: string): void;
-    templateWillUpdate?(name: string): void;
 }
 
 // @public

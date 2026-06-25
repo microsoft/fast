@@ -194,25 +194,20 @@ test.describe("The prerendered content optimization", () => {
             const events: string[] = [];
             const name = uniqueElementName();
 
-            enableHydration({
-                hydrationStarted() {
-                    events.push("start");
-                },
-                hydrationComplete() {
-                    events.push("complete");
-                },
+            const hydration = enableHydration();
+
+            class TestElement extends FASTElement {
+                static definition = {
+                    name,
+                    template: html`<span>hydrated</span>`,
+                };
+            }
+
+            const componentHydrated = hydration.whenHydrated(name).then(() => {
+                events.push("component-complete");
             });
 
-            (
-                await FASTElementDefinition.compose(
-                    class TestElement extends FASTElement {
-                        static definition = {
-                            name,
-                            template: html`<span>hydrated</span>`,
-                        };
-                    },
-                )
-            ).define();
+            (await FASTElementDefinition.compose(TestElement)).define();
 
             async function appendPrerenderedElement(includeServerMarker = false) {
                 const container = document.createElement("div");
@@ -232,18 +227,19 @@ test.describe("The prerendered content optimization", () => {
                 const serverMarker = element.shadowRoot
                     ?.querySelector("span")
                     ?.getAttribute("data-server-marker");
-                await new Promise(resolve => setTimeout(resolve, 0));
 
                 return { isHydrated, serverMarker };
             }
 
             const first = await appendPrerenderedElement();
+            await componentHydrated;
+            await hydration.whenHydrated().then(() => events.push("global-complete"));
             const second = await appendPrerenderedElement(true);
 
             return { events, first, second };
         });
 
-        expect(result.events).toEqual(["start", "complete"]);
+        expect(result.events).toEqual(["component-complete", "global-complete"]);
         expect(result.first.isHydrated).toBe(true);
         expect(result.second.isHydrated).toBe(false);
         expect(result.second.serverMarker).toBeNull();
@@ -267,29 +263,25 @@ test.describe("The prerendered content optimization", () => {
 
             const events: string[] = [];
             const name = uniqueElementName();
+            let globalHydrationResolved = false;
 
-            enableHydration({
+            const hydration = enableHydration({
                 stopHydration: StopHydration.never,
-                hydrationStarted() {
-                    events.push("start");
-                },
-                hydrationComplete() {
-                    events.push("complete");
-                },
+            });
+            hydration.whenHydrated().then(() => {
+                globalHydrationResolved = true;
             });
 
-            (
-                await FASTElementDefinition.compose(
-                    class TestElement extends FASTElement {
-                        static definition = {
-                            name,
-                            template: html`<span>hydrated</span>`,
-                        };
-                    },
-                )
-            ).define();
+            class TestElement extends FASTElement {
+                static definition = {
+                    name,
+                    template: html`<span>hydrated</span>`,
+                };
+            }
 
-            async function appendPrerenderedElement() {
+            (await FASTElementDefinition.compose(TestElement)).define();
+
+            async function appendPrerenderedElement(batch: string) {
                 const container = document.createElement("div");
                 document.body.appendChild(container);
                 (container as any).setHTMLUnsafe(
@@ -298,22 +290,27 @@ test.describe("The prerendered content optimization", () => {
 
                 const element = container.firstElementChild as any;
                 customElements.upgrade(container);
+                const componentHydrated = hydration.whenHydrated(name).then(() => {
+                    events.push(`${batch}-component-complete`);
+                });
                 for (let i = 0; element.$fastController === void 0 && i < 10; i++) {
                     await new Promise(resolve => requestAnimationFrame(resolve));
                 }
                 const isHydrated = await element.$fastController.isHydrated;
-                await new Promise(resolve => setTimeout(resolve, 0));
+                await componentHydrated;
 
                 return isHydrated;
             }
 
-            const first = await appendPrerenderedElement();
-            const second = await appendPrerenderedElement();
+            const first = await appendPrerenderedElement("first");
+            const second = await appendPrerenderedElement("second");
+            await new Promise(resolve => setTimeout(resolve, 20));
 
             return {
                 events,
                 first,
                 second,
+                globalHydrationResolved,
                 stopHydrationValues: {
                     hydrationComplete: StopHydration.hydrationComplete,
                     never: StopHydration.never,
@@ -321,9 +318,13 @@ test.describe("The prerendered content optimization", () => {
             };
         });
 
-        expect(result.events).toEqual(["start", "complete", "start", "complete"]);
+        expect(result.events).toEqual([
+            "first-component-complete",
+            "second-component-complete",
+        ]);
         expect(result.first).toBe(true);
         expect(result.second).toBe(true);
+        expect(result.globalHydrationResolved).toBe(false);
         expect(result.stopHydrationValues).toEqual({
             hydrationComplete: "hydration-complete",
             never: "never",
