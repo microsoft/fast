@@ -1,32 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Tue, 23 Jun 2026 03:06:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 24 Jun 2026 20:34:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
 
-## 0.8.1-fast-element-v3-rc-20260615
+## 0.8.0
 
-Tue, 23 Jun 2026 03:06:37 GMT
-
-### Patches
-
-- chore: include fast-build in the fast-element v3 RC prerelease train. (7559015+janechu@users.noreply.github.com)
-
-## 0.8.0-fast-element-v3-rc-20260615
-
-Fri, 19 Jun 2026 22:15:55 GMT
+Wed, 24 Jun 2026 20:34:51 GMT
 
 ### Minor changes
 
 - feat: auto-escape code samples inside `<code>` elements during SSR — braces (`{`/`}`) everywhere and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) — so literal binding-like text and directive syntax render correctly while real HTML/custom elements inside `<code>` remain live DOM elements. Also exposes a new `escape_code_samples(html)` WASM export so build-time tooling can apply the same escape to author HTML that is injected into a rendered page outside the normal render pipeline. (7559015+janechu@users.noreply.github.com)
-
-### Patches
-
-- Handle browser-valid whitespace in f-template wrapper tags (7559015+janechu@users.noreply.github.com)
-
-### Changes
-
-- feat: add simulated streaming output for fast-build (7559015+janechu@users.noreply.github.com)
 
 ## 0.7.0
 

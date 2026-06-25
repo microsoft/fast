@@ -100,4 +100,4 @@ npm start -w @microsoft/fast-webui-todo-app-example
 - [Examples design guide](./DESIGN.md)
 - [Examples design-system package](./design-system/README.md)
 - [FAST repository README](../README.md)
-- [FAST documentation](https://fast.design/docs/2.x/introduction/)
+- [FAST documentation](https://fast.design/docs/3.x/introduction/)

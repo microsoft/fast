@@ -30,7 +30,7 @@ For an in-depth explanation of FAST [see our docs introduction](https://fast.des
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
 
-The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/2.x/getting-started/quick-start/).
+The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/3.x/getting-started/quick-start/).
 
 ### `@fluentui/web-components`
 
@@ -48,9 +48,9 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I just want ready-made components!"
   * [Check out the FluentUI Web Components.](https://learn.microsoft.com/en-us/fluent-ui/web-components/)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](https://fast.design/docs/2.x/getting-started/quick-start/)
+  * [Jump to the fast-element docs.](https://fast.design/docs/3.x/getting-started/quick-start/)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](https://fast.design/docs/2.x/integrations/)
+  * [Jump to the integration docs.](https://fast.design/docs/3.x/integrations/)
 * "I want to look at a quick reference."
   * [Jump to the Cheat Sheet](https://fast.design/docs/1.x/resources/cheat-sheet) *(only available in 1.x)*
 

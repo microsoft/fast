@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-router",
   "description": "A web-components-based router.",
   "sideEffects": false,
-  "version": "1.0.0-alpha.30-fast-element-v3-rc-20260615",
+  "version": "1.0.0-alpha.30",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -38,10 +38,10 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "3.0.0-rc.3"
+    "@microsoft/fast-element": "^2.10.5"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "3.0.0-rc.3"
+    "@microsoft/fast-element": "^2.10.5"
   },
   "beachball": {
     "disallowedChangeTypes": [

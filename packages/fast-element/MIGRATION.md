@@ -94,6 +94,59 @@ Core FAST Element helpers are available from the root package export:
 4. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` when
    prerendered content should be hydrated.
 
+## Optional helper and removed path exports (v2 → v3)
+
+FAST Element v3 adds focused flat path exports for optional helpers and removes
+older nested or unused package exports. Root imports for core FAST Element APIs
+remain supported, but code that imports helper APIs from older nested paths must
+move to the flat path exports.
+
+### Import changes
+
+| Before | After |
+|---|---|
+| `@microsoft/fast-element/binding/two-way.js` | `@microsoft/fast-element/two-way.js` |
+| `@microsoft/fast-element/binding/signal.js` | `@microsoft/fast-element/signal.js` |
+| Deep directive imports | `@microsoft/fast-element/children.js`, `@microsoft/fast-element/repeat.js`, `@microsoft/fast-element/when.js`, `@microsoft/fast-element/ref.js`, `@microsoft/fast-element/slotted.js`, or `@microsoft/fast-element/node-observation.js` |
+| Declarative map helpers from old declarative surfaces | `@microsoft/fast-element/attribute-map.js` and `@microsoft/fast-element/observer-map.js` |
+
+### Removed package exports
+
+| Removed | Replacement |
+|---|---|
+| `@microsoft/fast-element/install-element-hydration.js` | No side-effect import. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` when SSR content should hydrate. |
+| `@microsoft/fast-element/install-hydratable-view-templates.js` | No side-effect import. `enableHydration()` installs hydratable template support. |
+| `@microsoft/fast-element/element-hydration.js` | `@microsoft/fast-element/hydration.js` for public hydration APIs. |
+| `@microsoft/fast-element/metadata.js` | No supported public replacement. |
+| `@microsoft/fast-element/testing.js` | No supported public replacement. |
+| `@microsoft/fast-element/pending-task.js` | No supported public replacement. |
+
+### Migration steps
+
+1. Replace older nested helper imports with the flat path exports shown above.
+2. Remove hydration side-effect imports and call `enableHydration()` before FAST
+   elements connect when SSR content should hydrate.
+3. Remove imports from deleted package exports. If your app depended on one of
+   those internals, move that usage into app-owned code or a supported public
+   API.
+
+## `attribute-name-strategy` default changed (v2 → v3)
+
+The declarative attribute map default changed from `"none"` to `"camelCase"`.
+With the default strategy, a binding key such as `{{firstName}}` maps to the
+`firstName` property and the `first-name` HTML attribute. In v2-style
+declarative templates that relied on literal attribute names, this can change
+which property receives data.
+
+### Migration steps
+
+1. Audit declarative templates for binding keys that contain hyphens or that
+   intentionally matched attribute names exactly.
+2. If you want the v2 behavior, configure the client definition extension with
+   `attributeMap({ "attribute-name-strategy": "none" })`.
+3. If server-rendered HTML is generated with `@microsoft/fast-build`, pass
+   `--attribute-name-strategy=none` so server and client mapping agree.
+
 ## `TemplateOptions` removal (v3)
 
 ### Removed APIs

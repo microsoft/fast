@@ -1,0 +1,8 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "patch",
+  "comment": "Align @attr({ mode: 'boolean' }) and booleanConverter with native HTML boolean attribute semantics.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none",
+  "commit": "8a6be9b30bc2d3403fb1f75b3852438686735462"
+}

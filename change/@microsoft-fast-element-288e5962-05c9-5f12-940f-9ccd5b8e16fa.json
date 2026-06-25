@@ -1,0 +1,8 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "none",
+  "comment": "Clean up fast-element API report surface.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none",
+  "commit": "218f8d35c1ec3ede4f2a7f8ca8b5556e2de18f2e"
+}

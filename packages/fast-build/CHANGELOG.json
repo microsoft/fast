@@ -2,46 +2,15 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
-      "date": "Tue, 23 Jun 2026 03:06:37 GMT",
-      "version": "0.8.1-fast-element-v3-rc-20260615",
-      "tag": "@microsoft/fast-build_v0.8.1-fast-element-v3-rc-20260615",
+      "date": "Wed, 24 Jun 2026 20:34:51 GMT",
+      "version": "0.8.0",
+      "tag": "@microsoft/fast-build_v0.8.0",
       "comments": {
-        "patch": [
-          {
-            "author": "7559015+janechu@users.noreply.github.com",
-            "package": "@microsoft/fast-build",
-            "commit": "d2021ef7456d8f4b7d227c8fd78df82aaec18590",
-            "comment": "chore: include fast-build in the fast-element v3 RC prerelease train."
-          }
-        ]
-      }
-    },
-    {
-      "date": "Fri, 19 Jun 2026 22:15:55 GMT",
-      "version": "0.8.0-fast-element-v3-rc-20260615",
-      "tag": "@microsoft/fast-build_v0.8.0-fast-element-v3-rc-20260615",
-      "comments": {
-        "prerelease": [
-          {
-            "author": "7559015+janechu@users.noreply.github.com",
-            "package": "@microsoft/fast-build",
-            "commit": "fecdf78b76616272df88775ad647a9a54f410891",
-            "comment": "feat: add simulated streaming output for fast-build"
-          }
-        ],
-        "patch": [
-          {
-            "author": "7559015+janechu@users.noreply.github.com",
-            "package": "@microsoft/fast-build",
-            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
-            "comment": "Handle browser-valid whitespace in f-template wrapper tags"
-          }
-        ],
         "minor": [
           {
             "author": "7559015+janechu@users.noreply.github.com",
             "package": "@microsoft/fast-build",
-            "commit": "0be252483e571f0615fadc11352c230e55b61f15",
+            "commit": "5c533dd28151097d946959a84508afb4974217ab",
             "comment": "feat: auto-escape code samples inside `<code>` elements during SSR — braces (`{`/`}`) everywhere and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) — so literal binding-like text and directive syntax render correctly while real HTML/custom elements inside `<code>` remain live DOM elements. Also exposes a new `escape_code_samples(html)` WASM export so build-time tooling can apply the same escape to author HTML that is injected into a rendered page outside the normal render pipeline."
           }
         ]

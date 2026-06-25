@@ -1,0 +1,8 @@
+{
+  "type": "prerelease",
+  "comment": "Update fast-router imports and package metadata for FAST Element v3 compatibility.",
+  "packageName": "@microsoft/fast-router",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none",
+  "commit": "b77e83f8d6dec276001746aca13557dd7cba706b"
+}

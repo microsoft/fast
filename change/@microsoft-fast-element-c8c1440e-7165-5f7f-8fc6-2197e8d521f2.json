@@ -1,0 +1,8 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "major",
+  "comment": "Remove the built-in globalThis polyfill; fast-element v3 now requires native globalThis.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none",
+  "commit": "54ea18bfa6685406aff20e1deec656876ca7875a"
+}

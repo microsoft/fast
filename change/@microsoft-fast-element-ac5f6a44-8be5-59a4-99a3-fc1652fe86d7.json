@@ -1,0 +1,8 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "major",
+  "comment": "Remove deprecated declarative event e support.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none",
+  "commit": "6ec4061ea32ac5c6ea21183331b7e05536582f82"
+}
