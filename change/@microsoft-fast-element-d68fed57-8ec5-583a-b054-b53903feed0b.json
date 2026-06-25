@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-element",
-  "type": "major",
-  "comment": "Remove the fast-kernel multi-kernel modes. FAST no longer supports configuring isolated or version-scoped kernels via the script attribute.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "dfbd53052ea328bd3d1c8abba449ed1f9e53d2ca"
-}

@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-build",
-  "type": "patch",
-  "comment": "Handle browser-valid whitespace in f-template wrapper tags.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "b77e83f8d6dec276001746aca13557dd7cba706b"
-}

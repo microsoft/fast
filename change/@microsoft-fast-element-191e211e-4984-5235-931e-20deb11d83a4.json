@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-element",
-  "type": "minor",
-  "comment": "Add a registry path export for FAST element definition lookups.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "a8b85c1a6abb844722f1625c85b5cba1a41d5c2b"
-}
