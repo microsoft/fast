@@ -80,7 +80,7 @@ enableDebug();
 
 ## Export Sizes
 
-Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/2.x/resources/export-sizes/) documentation page for the latest numbers.
+Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
 ## Root Imports and Path Exports
 
