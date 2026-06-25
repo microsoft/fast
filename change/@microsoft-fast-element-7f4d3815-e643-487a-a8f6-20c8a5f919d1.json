@@ -2,7 +2,7 @@
   "type": "major",
   "comment": "Normalize and clean up package export paths: relocate subpath targets to their feature modules, alphabetize the exports map, drop the styles/templating/node-observation subpaths, narrow css/html to their template tags, add a dedicated notifier subpath, and remove the test resolution condition.",
   "packageName": "@microsoft/fast-element",
-  "email": "7559015+janechu@users.noreply.github.com",
+  "email": "863023+radium-v@users.noreply.github.com",
   "dependentChangeType": "none",
   "commit": "3108a08cac0e4203b4990c135498798379d5959f"
 }
