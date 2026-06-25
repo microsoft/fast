@@ -5,6 +5,10 @@ module.exports = {
             dependsOn: ["^build"],
             outputs: ["dist/**", "wasm/**"],
         },
+        "@microsoft/fast-element#build": {
+            dependsOn: ["@microsoft/fast-build#build"],
+            outputs: ["dist/**"],
+        },
         "test:node": {
             dependsOn: ["build"],
             outputs: [],
