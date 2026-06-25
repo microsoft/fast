@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Wed, 24 Jun 2026 20:34:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Jun 2026 05:31:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 25 Jun 2026 05:31:59 GMT
+
+### Minor changes
+
+- Add simulated streaming output for fast-build. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Handle browser-valid whitespace in f-template wrapper tags. (7559015+janechu@users.noreply.github.com)
 
 ## 0.8.0
 

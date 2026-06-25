@@ -1,8 +1,0 @@
-{
-  "type": "none",
-  "comment": "Stabilize CI and hydration tests.",
-  "packageName": "@microsoft/fast-router",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "c2220eade91bd449f54e0171ce0618ec355c98ef"
-}

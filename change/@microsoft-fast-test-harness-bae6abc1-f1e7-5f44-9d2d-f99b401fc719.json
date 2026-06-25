@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-test-harness",
-  "type": "minor",
-  "comment": "Migrate build utilities to consume declarative HTML syntax from @microsoft/fast-element.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "8a24df4dc67b10cb11940d004f4697fe6f2f22e9"
-}

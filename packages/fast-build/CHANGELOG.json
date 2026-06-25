@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 05:31:59 GMT",
+      "version": "0.9.0",
+      "tag": "@microsoft/fast-build_v0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "fecdf78b76616272df88775ad647a9a54f410891",
+            "comment": "Add simulated streaming output for fast-build."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "Handle browser-valid whitespace in f-template wrapper tags."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 24 Jun 2026 20:34:51 GMT",
       "version": "0.8.0",
       "tag": "@microsoft/fast-build_v0.8.0",
