@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-element",
-  "type": "patch",
-  "comment": "Preserve view context when rebinding the same source.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "dd41435d6c28fb0f0fa67f2fe0a50c84f17c20b8"
-}

@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Thu, 25 Jun 2026 05:31:58 GMT",
+      "version": "1.0.0-alpha.31",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.31",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "c2220eade91bd449f54e0171ce0618ec355c98ef",
+            "comment": "Stabilize CI and hydration tests."
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "3108a08cac0e4203b4990c135498798379d5959f",
+            "comment": "Update imports to use the root @microsoft/fast-element entry instead of the removed and narrowed subpaths (templating.js, styles.js, html.js)."
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "b77e83f8d6dec276001746aca13557dd7cba706b",
+            "comment": "Update fast-router imports and package metadata for FAST Element v3 compatibility."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v3.0.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 May 2026 00:15:38 GMT",
       "version": "1.0.0-alpha.30",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.30",

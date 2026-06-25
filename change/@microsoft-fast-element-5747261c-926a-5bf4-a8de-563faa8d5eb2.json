@@ -1,8 +1,0 @@
-{
-  "packageName": "@microsoft/fast-element",
-  "type": "major",
-  "comment": "Move declarative HTML APIs into @microsoft/fast-element/declarative.js, expose schema map helpers from extension subpaths, and remove the @microsoft/fast-html package.",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none",
-  "commit": "04b9b2c74bc99dcccb5915ec466ea5cdaa7d2552"
-}
