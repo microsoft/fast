@@ -31,7 +31,7 @@ Load a `globalThis` polyfill before importing FAST only if you still support an
 older browser that lacks it. Do not run the FAST Element client runtime in
 workers or server-side JavaScript hosts.
 
-See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md)
+See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md)
 for the complete native globals and scheduler migration steps.
 
 ### `HydratableElementController` removed
@@ -196,7 +196,7 @@ Remove imports from deleted package exports such as
 with `enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
 See the [Path Exports](./advanced/path-exports.md) reference and the
-[package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md)
+[package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md)
 for the full import migration table.
 
 ### `attribute-name-strategy` now defaults to `camelCase`
@@ -318,7 +318,7 @@ removed. Use subclass `define()` instead; it now returns a `Promise` that
 resolves immediately for concrete templates and resolves after
 `declarativeTemplate()` receives matching `<f-template>` markup.
 
-See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md)
+See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md)
 for complete `define()`, `compose()`, and `register()` API mappings.
 
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
@@ -350,7 +350,7 @@ MyComponent.define({
 `template: declarativeTemplate()` when declarative markup should supply the
 template.
 
-See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md)
+See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md)
 for details on delayed template assignment behavior.
 
 ### Bare `e` removed from declarative event handlers
@@ -456,7 +456,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 lifecycle, and call `this.$fastController.addStyles()` /
 `this.$fastController.removeStyles()` as conditions change.
 
-See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md)
+See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md)
 for detailed dynamic stylesheet migration steps.
 
 ### `ArrayObserver` moved to `@microsoft/fast-element`
@@ -508,7 +508,7 @@ The SSR hydration markers have been simplified from verbose, index-embedded comm
 | `fe-eb$$end$$<elementId>$$fe-eb` | `fe:/e` |
 | `data-fe-b="0 1 2"` / `data-fe-b-0` / `data-fe-c-0-3` | `data-fe="N"` |
 
-The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBinding` → `parseAttributeBindingCount`) and no longer accept index/scope parameters. See the [package MIGRATION.md](https://github.com/microsoft/fast/blob/main/packages/fast-element/MIGRATION.md#hydration-marker-format-v3) for the complete API mapping.
+The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBinding` → `parseAttributeBindingCount`) and no longer accept index/scope parameters. See the [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md#hydration-marker-format-v3) for the complete API mapping.
 
 ### `booleanConverter` aligned with native HTML boolean attribute semantics
 
