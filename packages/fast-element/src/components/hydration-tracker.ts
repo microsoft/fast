@@ -51,18 +51,15 @@ export interface HydrationOptions {
  */
 export interface HydrationController {
     /**
-     * Resolves when the active hydration batch completes.
+     * Resolves when the active hydration batch completes, or when hydration work
+     * for the specified tag name completes.
+     * @param tagName - The optional custom element tag name to observe.
      * @remarks
-     * If hydration is configured with `stopHydration: StopHydration.never`, this
-     * promise intentionally remains pending because hydration never reaches a
-     * global completion point.
+     * If hydration is configured with `stopHydration: StopHydration.never`, the
+     * global promise intentionally remains pending because hydration never
+     * reaches a global completion point.
      */
-    whenHydrated(): Promise<void>;
-    /**
-     * Resolves when hydration work for the specified tag name completes.
-     * @param tagName - The custom element tag name to observe.
-     */
-    whenHydrated(tagName: string): Promise<void>;
+    whenHydrated(tagName?: string): Promise<void>;
 }
 
 type TagHydrationState = {
@@ -96,10 +93,9 @@ export class HydrationTracker implements HydrationController {
     }
 
     /**
-     * Resolves when the active hydration batch completes.
+     * Resolves when the active hydration batch completes, or when hydration work
+     * for the specified tag name completes.
      */
-    public whenHydrated(): Promise<void>;
-    public whenHydrated(tagName: string): Promise<void>;
     public whenHydrated(tagName?: string): Promise<void> {
         if (tagName !== void 0) {
             return this.getTagHydrationPromise(tagName);
