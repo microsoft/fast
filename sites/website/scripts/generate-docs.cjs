@@ -2,9 +2,9 @@ const path = require("node:path");
 const { createInterface } = require("node:readline");
 const { execFile } = require("node:child_process");
 const fs = require("fs-extra");
-const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
 // sites/website
+const packagesRoot = path.resolve(__dirname, "../../../packages");
 const projectRoot = path.resolve(__dirname, "../");
 const apiDocumenterPath = require.resolve("@microsoft/api-documenter/lib/start");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
@@ -72,10 +72,7 @@ function runApiDocumenter(inputDir, outputDir) {
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
-            path.resolve(
-                getPackageJsonDir(`@microsoft/${pkg.main}`),
-                `./dist/${pkg.main}.api.json`,
-            ),
+            path.resolve(packagesRoot, pkg.main, `./dist/${pkg.main}.api.json`),
             `${tempAPIDir}/${pkg.main}.api.json`,
         );
 
@@ -83,7 +80,8 @@ async function copyAPI() {
             for (const pkgExport of pkg.exports) {
                 await safeCopy(
                     path.resolve(
-                        getPackageJsonDir(`@microsoft/${pkg.main}`),
+                        packagesRoot,
+                        pkg.main,
                         `./dist/${pkgExport}/${pkgExport}.api.json`,
                     ),
                     `${tempAPIDir}/${pkg.main}/${pkgExport}/${pkgExport}.api.json`,
@@ -271,10 +269,7 @@ async function buildAPIMarkdown() {
 }
 
 async function buildSizesPage() {
-    const sizesSource = path.resolve(
-        getPackageJsonDir("@microsoft/fast-element"),
-        "SIZES.md",
-    );
+    const sizesSource = path.resolve(packagesRoot, "fast-element", "SIZES.md");
 
     if (!fs.existsSync(sizesSource)) {
         console.warn("SIZES.md not found, skipping export sizes page.");
