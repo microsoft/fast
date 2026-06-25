@@ -1,0 +1,7 @@
+{
+  "packageName": "@microsoft/fast-build",
+  "type": "minor",
+  "comment": "Add simulated streaming output for fast-build.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

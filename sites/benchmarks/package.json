@@ -10,7 +10,7 @@
     "bench": "vite build && node src/bench.ts"
   },
   "dependencies": {
-    "@microsoft/fast-build": "^0.9.0",
-    "@microsoft/fast-element": "^3.0.0"
+    "@microsoft/fast-build": "^0.8.0",
+    "@microsoft/fast-element": "^2.10.5"
   }
 }

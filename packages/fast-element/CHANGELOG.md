@@ -1,58 +1,8 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Thu, 25 Jun 2026 02:28:06 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 24 Jun 2026 20:34:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
-
-## 3.0.0
-
-Thu, 25 Jun 2026 02:28:06 GMT
-
-### Major changes
-
-- Move optional helpers to dedicated flat fast-element subpath exports such as @microsoft/fast-element/children.js, @microsoft/fast-element/repeat.js, @microsoft/fast-element/two-way.js, @microsoft/fast-element/signal.js, @microsoft/fast-element/attribute-map.js, and @microsoft/fast-element/observer-map.js while keeping controller and definition internals on the root entrypoint. (7559015+janechu@users.noreply.github.com)
-- Remove the fast-kernel multi-kernel modes. FAST no longer supports configuring isolated or version-scoped kernels via the script attribute. (7559015+janechu@users.noreply.github.com)
-- Remove defineAsync and composeAsync — define() and compose() now return Promises. (7559015+janechu@users.noreply.github.com)
-- Remove FASTGlobal version tracking. (7559015+janechu@users.noreply.github.com)
-- Remove deprecated declarative event e support. (7559015+janechu@users.noreply.github.com)
-- Make declarative runtime setup lazy and change @microsoft/fast-element/debug.js to require an explicit enableDebug() call. (7559015+janechu@users.noreply.github.com)
-- Remove hydration view template side effect and unused export paths. (7559015+janechu@users.noreply.github.com)
-- Remove TemplateOptions from fast-element definitions and drop templateOptions-based connection/define waiting. (7559015+janechu@users.noreply.github.com)
-- Remove FASTElement.compose from the public API. (7559015+janechu@users.noreply.github.com)
-- Remove the built-in globalThis polyfill; fast-element v3 now requires native globalThis. (7559015+janechu@users.noreply.github.com)
-- Simplify hydration markers to data-free sequential format (fe:b, fe:/b, fe:r, fe:/r, fe:e, fe:/e), replace regex parsing with string equality checks, and use a single data-fe attribute instead of the three old formats. SSR output format changed. (7559015+janechu@users.noreply.github.com)
-- Remove the public declarative TemplateElement configuration APIs and make declarative templates use an internal native f-template publisher with explicit hydration opt-in. (7559015+janechu@users.noreply.github.com)
-- Replace HydratableElementController with automatic prerendered content optimization. When a component connects with an existing shadow root, bindings skip attribute/booleanAttribute DOM updates during initial render while still setting up event listeners, observers, and dependency tracking. Added isPrerendered flag to ElementController and ViewController. Added template-pending guard for defineAsync flow. (7559015+janechu@users.noreply.github.com)
-- Normalize and clean up package export paths: relocate subpath targets to their feature modules, alphabetize the exports map, drop the styles/templating/node-observation subpaths, narrow css/html to their template tags, add a dedicated notifier subpath, and remove the test resolution condition. (7559015+janechu@users.noreply.github.com)
-- Remove lifecycle callback APIs and add registry and hydration promise APIs. (7559015+janechu@users.noreply.github.com)
-- Change default attribute-name-strategy from none to camelCase. (7559015+janechu@users.noreply.github.com)
-- Remove ElementStyles.withBehaviors, CSS style behaviors, and CSS bindings in fast-element. (7559015+janechu@users.noreply.github.com)
-- Move declarative HTML APIs into @microsoft/fast-element/declarative.js, expose schema map helpers from extension subpaths, and remove the @microsoft/fast-html package. (7559015+janechu@users.noreply.github.com)
-
-### Minor changes
-
-- Add declarativeTemplate for auto-resolving <f-template> markup. (7559015+janechu@users.noreply.github.com)
-- Improve hydration mismatch behaviour: render() falls back to client rendering when SSR view boundaries are empty, repeat() reconciles SSR/client item-count mismatches by creating missing client views or removing extra SSR ranges, and unrecoverable mismatches throw via a pluggable HydrationDiagnostic. Opt in to the rich 'Expected / Received' format with the SSR HTML snippet and structured expected/received fields on HydrationBindingError / HydrationTargetElementError by passing enableHydration({ debugger: hydrationDebugger() }) (hydrationDebugger is exported from '@microsoft/fast-element/hydration.js'). (7559015+janechu@users.noreply.github.com)
-- Auto-escape `{` and `}` inside `<code>` elements so binding-like syntax in code samples renders as literal text (mirrors webui-press and the server-side `escape_code_sample_elements` pass in `@microsoft/fast-build`, which additionally handles `<f-when>`/`<f-repeat>` directive tags). (7559015+janechu@users.noreply.github.com)
-- Add function-based template resolver sequencing. (7559015+janechu@users.noreply.github.com)
-- Warn when duplicate render instruction registrations replace existing entries. (7559015+janechu@users.noreply.github.com)
-- Expose declarative HTML syntax constants from declarative utilities. (7559015+janechu@users.noreply.github.com)
-- Propagate shadowroot attributes from f-template to declarative shadow DOM template. (7559015+janechu@users.noreply.github.com)
-- Modularize hydration and expose lifecycle callbacks via enableHydration() and declarativeTemplate(). (7559015+janechu@users.noreply.github.com)
-- Add a registry path export for FAST element definition lookups. (7559015+janechu@users.noreply.github.com)
-- Add extensions array argument to FASTElement.define() and FASTElementDefinition.define(). (7559015+janechu@users.noreply.github.com)
-- Add hydration configuration for streamed Declarative Shadow DOM. (7559015+janechu@users.noreply.github.com)
-- Add schema-driven attributeMap and observerMap extension subpaths, optional definition schema, and observerMap schema configuration. (7559015+janechu@users.noreply.github.com)
-
-### Patches
-
-- Allow duplicate f-template names to keep the first template assignment. (7559015+janechu@users.noreply.github.com)
-- Avoid mutating render template bindings. (7559015+janechu@users.noreply.github.com)
-- Preserve view context when rebinding the same source. (7559015+janechu@users.noreply.github.com)
-- Align @attr({ mode: 'boolean' }) and booleanConverter with native HTML boolean attribute semantics. (7559015+janechu@users.noreply.github.com)
-- Restore CaptureType generic type capture for template directives. (7559015+janechu@users.noreply.github.com)
-- Filter late attribute MutationObserver records. (7559015+janechu@users.noreply.github.com)
-- Harden DOM policy guard merging and unsafe URL filtering. (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.5
 

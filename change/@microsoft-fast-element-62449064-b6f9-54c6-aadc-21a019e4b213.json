@@ -1,0 +1,7 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "major",
+  "comment": "Simplify hydration markers to data-free sequential format (fe:b, fe:/b, fe:r, fe:/r, fe:e, fe:/e), replace regex parsing with string equality checks, and use a single data-fe attribute instead of the three old formats. SSR output format changed.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

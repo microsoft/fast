@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "Record the checked-in fast-router alpha release output for FAST Element v3 compatibility.",
+  "type": "prerelease",
+  "comment": "Update fast-router imports and package metadata for FAST Element v3 compatibility.",
   "packageName": "@microsoft/fast-router",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

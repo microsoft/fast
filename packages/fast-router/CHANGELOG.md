@@ -1,16 +1,8 @@
 # Change Log - @microsoft/fast-router
 
-<!-- This log was last generated on Thu, 25 Jun 2026 02:28:06 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 27 Jan 2026 17:28:54 GMT and should not be manually modified. -->
 
 <!-- Start content -->
-
-## 1.0.0-alpha.31
-
-Thu, 25 Jun 2026 02:28:06 GMT
-
-### Changes
-
-- Update fast-router imports and package metadata for FAST Element v3 compatibility. (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.30
 

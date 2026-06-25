@@ -1,0 +1,7 @@
+{
+  "packageName": "@microsoft/fast-element",
+  "type": "minor",
+  "comment": "Propagate shadowroot attributes from f-template to declarative shadow DOM template.",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
