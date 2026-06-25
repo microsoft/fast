@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Record the checked-in fast-test-harness release output for FAST Element v3 compatibility.",
+  "packageName": "@microsoft/fast-test-harness",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
