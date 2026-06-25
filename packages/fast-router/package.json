@@ -36,8 +36,8 @@
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
     "test:node": "tsgo -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test": "npm run lint && npm run doc:ci && npm run test:recognizer",
-    "test:ci": "npm run doc:ci && npm run test:recognizer"
+    "test": "npm run lint && npm run doc:ci && npm run test:node",
+    "test:ci": "npm run doc:ci && npm run test:node"
   },
   "dependencies": {
     "tslib": "^2.6.3"
