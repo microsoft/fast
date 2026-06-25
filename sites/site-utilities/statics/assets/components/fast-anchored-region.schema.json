@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-anchored-region",
+  "id": "fast-anchored-region",
+  "title": "Anchored region",
+  "description": "The FAST anchored region element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-anchored-region",
+  "properties": {
+    "anchor": {
+      "title": "Anchor ID",
+      "description": "The HTML ID of the element the region is positioned relative to",
+      "mapsToAttribute": "anchor",
+      "type": "string"
+    },
+    "viewport": {
+      "title": "Viewport ID",
+      "description": "The HTML ID of the viewport the region is positioned relative to",
+      "mapsToAttribute": "viewport",
+      "type": "string"
+    },
+    "horizontal-positioning-mode": {
+      "enum": [
+        "uncontrolled",
+        "locktodefault",
+        "dynamic"
+      ],
+      "default": "uncontrolled",
+      "title": "Horizontal positioning mode",
+      "description": "How the horizontal placement is determined",
+      "mapsToAttribute": "horizontal-positioning-mode",
+      "type": "string"
+    },
+    "horizontal-default-position": {
+      "enum": [
+        "start",
+        "end",
+        "left",
+        "right",
+        "unset",
+        "center"
+      ],
+      "default": "unset",
+      "title": "Horizontal default position",
+      "description": "The default horizontal position of the region relative to the configured 'Anchor ID'",
+      "mapsToAttribute": "horizontal-default-position",
+      "type": "string"
+    },
+    "horizontal-inset": {
+      "title": "Horizontal inset",
+      "description": "Determines whether the region should overlap the anchor on the horizontal axis",
+      "mapsToAttribute": "horizontal-inset",
+      "type": "boolean"
+    },
+    "horizontal-viewport-lock": {
+      "title": "Horizontal viewport lock",
+      "description": "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis",
+      "mapsToAttribute": "horizontal-viewport-lock",
+      "type": "boolean"
+    },
+    "horizontal-threshold": {
+      "title": "Horizontal threshold",
+      "description": "The space allocated to the default position before the widest area is selected for layout",
+      "mapsToAttribute": "horizontal-threshold",
+      "type": "number"
+    },
+    "horizontal-scaling": {
+      "enum": [
+        "anchor",
+        "fill",
+        "content"
+      ],
+      "default": "content",
+      "title": "Horizontal scaling",
+      "description": "Defines how the width of the region is calculated",
+      "mapsToAttribute": "horizontal-scaling",
+      "type": "string"
+    },
+    "vertical-positioning-mode": {
+      "enum": [
+        "uncontrolled",
+        "locktodefault",
+        "dynamic"
+      ],
+      "default": "uncontrolled",
+      "title": "Vertical positioning mode",
+      "description": "How the vertical placement is determined",
+      "mapsToAttribute": "vertical-positioning-mode",
+      "type": "string"
+    },
+    "vertical-default-position": {
+      "enum": [
+        "top",
+        "bottom",
+        "unset",
+        "center"
+      ],
+      "default": "unset",
+      "title": "Vertical default position",
+      "description": "The default vertical position of the region relative to the configured 'Anchor ID'",
+      "mapsToAttribute": "vertical-default-position",
+      "type": "string"
+    },
+    "vertical-inset": {
+      "title": "Vertical inset",
+      "description": "Determines whether the region should overlap the anchor on the vertical axis",
+      "mapsToAttribute": "vertical-inset",
+      "type": "boolean"
+    },
+    "vertical-viewport-lock": {
+      "title": "Vertical viewport lock",
+      "description": "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis",
+      "mapsToAttribute": "vertical-viewport-lock",
+      "type": "boolean"
+    },
+    "vertical-threshold": {
+      "title": "Vertical threshold",
+      "description": "The space allocated to the default position before the widest area is selected for layout",
+      "mapsToAttribute": "vertical-threshold",
+      "type": "number"
+    },
+    "vertical-scaling": {
+      "enum": [
+        "anchor",
+        "fill",
+        "content"
+      ],
+      "default": "content",
+      "title": "Vertical scaling",
+      "description": "Defines how the width of the region is calculated",
+      "mapsToAttribute": "vertical-scaling",
+      "type": "string"
+    },
+    "fixed-placement": {
+      "title": "Fixed placement",
+      "description": "Fixed placement allows the region to break out of parent containers",
+      "mapsToAttribute": "fixed-placement",
+      "type": "boolean"
+    },
+    "auto-update-mode": {
+      "enum": [
+        "anchor",
+        "auto"
+      ],
+      "default": "anchor",
+      "title": "Auto update mode",
+      "description": "Defines whether the component automatically updates its position",
+      "mapsToAttribute": "auto-update-mode",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the anchored region",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

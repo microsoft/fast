@@ -1,0 +1,424 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-design-system-provider",
+  "id": "fast-design-system-provider",
+  "title": "Design System",
+  "description": "The FAST design system provider element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-design-system-provider",
+  "properties": {
+    "no-paint": {
+      "title": "No paint",
+      "description": "Do not paint the background",
+      "mapsToAttribute": "no-paint",
+      "type": "boolean"
+    },
+    "fill-color": {
+      "default": "#181818",
+      "title": "Fill color",
+      "description": "The fill color used for backgrounds",
+      "mapsToAttribute": "fill-color",
+      "type": "string"
+    },
+    "accent-color": {
+      "default": "#DA1A5F",
+      "title": "Accent color",
+      "description": "The accent color",
+      "mapsToAttribute": "accent-color",
+      "type": "string"
+    },
+    "neutral-color": {
+      "default": "#808080",
+      "title": "Neutral color",
+      "description": "The neutral color",
+      "mapsToAttribute": "neutral-color",
+      "type": "string"
+    },
+    "density": {
+      "title": "Density",
+      "description": "The density offset",
+      "mapsToAttribute": "density",
+      "type": "number"
+    },
+    "design-unit": {
+      "default": 4,
+      "title": "Design unit",
+      "description": "UI dimension base unit",
+      "mapsToAttribute": "design-unit",
+      "type": "number"
+    },
+    "direction": {
+      "enum": [
+        "ltr",
+        "rtl"
+      ],
+      "default": "ltr",
+      "title": "Direction",
+      "description": "Support localized styles",
+      "mapsToAttribute": "direction",
+      "type": "string"
+    },
+    "base-height-multiplier": {
+      "default": 10,
+      "title": "Base height multiplier",
+      "description": "Height multiplier at base density",
+      "mapsToAttribute": "base-height-multiplier",
+      "type": "number"
+    },
+    "base-horizontal-spacing-multiplier": {
+      "default": 3,
+      "title": "Base horizontal spacing multiplier",
+      "description": "Horizontal spacing multiplier at the base density",
+      "mapsToAttribute": "base-horizontal-spacing-multiplier",
+      "type": "number"
+    },
+    "control-corner-radius": {
+      "default": 3,
+      "title": "Control Corner radius",
+      "description": "The corner radius value for control components",
+      "mapsToAttribute": "control-corner-radius",
+      "type": "number"
+    },
+    "stroke-width": {
+      "default": 1,
+      "title": "Stroke width",
+      "description": "The width of outline strokes",
+      "mapsToAttribute": "stroke-width",
+      "type": "number"
+    },
+    "focus-stroke-width": {
+      "default": 2,
+      "title": "Focus stroke width",
+      "description": "The width of focus outline strokes",
+      "mapsToAttribute": "focus-stroke-width",
+      "type": "number"
+    },
+    "disabled-opacity": {
+      "default": 0.3,
+      "title": "Disabled opacity",
+      "description": "The disabled opacity for elements",
+      "mapsToAttribute": "disabled-opacity",
+      "type": "number"
+    },
+    "type-ramp-minus-2-font-size": {
+      "default": "10px",
+      "title": "Font size (-2)",
+      "mapsToAttribute": "type-ramp-minus-2-font-size",
+      "type": "string"
+    },
+    "type-ramp-minus-2-line-height": {
+      "default": "16px",
+      "title": "Line height (-2)",
+      "mapsToAttribute": "type-ramp-minus-2-line-height",
+      "type": "string"
+    },
+    "type-ramp-minus-1-font-size": {
+      "default": "12px",
+      "title": "Font size (-1)",
+      "mapsToAttribute": "type-ramp-minus-1-font-size",
+      "type": "string"
+    },
+    "type-ramp-minus-1-line-height": {
+      "default": "16px",
+      "title": "Line height (-1)",
+      "mapsToAttribute": "type-ramp-minus-1-line-height",
+      "type": "string"
+    },
+    "type-ramp-base-font-size": {
+      "default": "14px",
+      "title": "Font size (base)",
+      "mapsToAttribute": "type-ramp-base-font-size",
+      "type": "string"
+    },
+    "type-ramp-base-line-height": {
+      "default": "20px",
+      "title": "Line height (base)",
+      "mapsToAttribute": "type-ramp-base-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-1-font-size": {
+      "default": "16px",
+      "title": "Font size (+1)",
+      "mapsToAttribute": "type-ramp-plus-1-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-1-line-height": {
+      "default": "24px",
+      "title": "Line height (+1)",
+      "mapsToAttribute": "type-ramp-plus-1-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-2-font-size": {
+      "default": "20px",
+      "title": "Font size (+2)",
+      "mapsToAttribute": "type-ramp-plus-2-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-2-line-height": {
+      "default": "28px",
+      "title": "Line height (+2)",
+      "mapsToAttribute": "type-ramp-plus-2-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-3-font-size": {
+      "default": "28px",
+      "title": "Font size (+3)",
+      "mapsToAttribute": "type-ramp-plus-3-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-3-line-height": {
+      "default": "36px",
+      "title": "Line height (+3)",
+      "mapsToAttribute": "type-ramp-plus-3-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-4-font-size": {
+      "default": "34px",
+      "title": "Font size (+4)",
+      "mapsToAttribute": "type-ramp-plus-4-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-4-line-height": {
+      "default": "44px",
+      "title": "Line height (+4)",
+      "mapsToAttribute": "type-ramp-plus-4-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-5-font-size": {
+      "default": "46px",
+      "title": "Font size (+5)",
+      "mapsToAttribute": "type-ramp-plus-5-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-5-line-height": {
+      "default": "56px",
+      "title": "Line height (+5)",
+      "mapsToAttribute": "type-ramp-plus-5-line-height",
+      "type": "string"
+    },
+    "type-ramp-plus-6-font-size": {
+      "default": "60px",
+      "title": "Font size (+6)",
+      "mapsToAttribute": "type-ramp-plus-6-font-size",
+      "type": "string"
+    },
+    "type-ramp-plus-6-line-height": {
+      "default": "72px",
+      "title": "Line height (+6)",
+      "mapsToAttribute": "type-ramp-plus-6-line-height",
+      "type": "string"
+    },
+    "accent-fill-rest-delta": {
+      "title": "Accent fill delta (rest)",
+      "mapsToAttribute": "accent-fill-rest-delta",
+      "type": "number"
+    },
+    "accent-fill-hover-delta": {
+      "default": 4,
+      "title": "Accent fill delta (hover)",
+      "mapsToAttribute": "accent-fill-hover-delta",
+      "type": "number"
+    },
+    "accent-fill-active-delta": {
+      "default": -5,
+      "title": "Accent fill delta (active)",
+      "mapsToAttribute": "accent-fill-active-delta",
+      "type": "number"
+    },
+    "accent-fill-focus-delta": {
+      "title": "Accent fill delta (focus)",
+      "mapsToAttribute": "accent-fill-focus-delta",
+      "type": "number"
+    },
+    "accent-foreground-rest-delta": {
+      "title": "Accent foreground delta (rest)",
+      "mapsToAttribute": "accent-foreground-rest-delta",
+      "type": "number"
+    },
+    "accent-foreground-hover-delta": {
+      "default": 6,
+      "title": "Accent foreground delta (hover)",
+      "mapsToAttribute": "accent-foreground-hover-delta",
+      "type": "number"
+    },
+    "accent-foreground-active-delta": {
+      "default": -4,
+      "title": "Accent foreground delta (active)",
+      "mapsToAttribute": "accent-foreground-active-delta",
+      "type": "number"
+    },
+    "accent-foreground-focus-delta": {
+      "title": "Accent foreground delta (focus)",
+      "mapsToAttribute": "accent-foreground-focus-delta",
+      "type": "number"
+    },
+    "neutral-fill-rest-delta": {
+      "default": 7,
+      "title": "Neutral fill delta (rest)",
+      "mapsToAttribute": "neutral-fill-rest-delta",
+      "type": "number"
+    },
+    "neutral-fill-hover-delta": {
+      "default": 10,
+      "title": "Neutral fill delta (hover)",
+      "mapsToAttribute": "neutral-fill-hover-delta",
+      "type": "number"
+    },
+    "neutral-fill-active-delta": {
+      "default": 5,
+      "title": "Neutral fill delta (active)",
+      "mapsToAttribute": "neutral-fill-active-delta",
+      "type": "number"
+    },
+    "neutral-fill-focus-delta": {
+      "title": "Neutral fill delta (focus)",
+      "mapsToAttribute": "neutral-fill-focus-delta",
+      "type": "number"
+    },
+    "neutral-fill-input-rest-delta": {
+      "title": "Neutral fill input delta (rest)",
+      "mapsToAttribute": "neutral-fill-input-rest-delta",
+      "type": "number"
+    },
+    "neutral-fill-input-hover-delta": {
+      "title": "Neutral fill input delta (hover)",
+      "mapsToAttribute": "neutral-fill-input-hover-delta",
+      "type": "number"
+    },
+    "neutral-fill-input-active-delta": {
+      "title": "Neutral fill input delta (active)",
+      "mapsToAttribute": "neutral-fill-input-active-delta",
+      "type": "number"
+    },
+    "neutral-fill-input-focus-delta": {
+      "title": "Neutral fill input delta (focus)",
+      "mapsToAttribute": "neutral-fill-input-focus-delta",
+      "type": "number"
+    },
+    "neutral-fill-stealth-rest-delta": {
+      "title": "Neutral fill stealth delta (rest)",
+      "mapsToAttribute": "neutral-fill-stealth-rest-delta",
+      "type": "number"
+    },
+    "neutral-fill-stealth-hover-delta": {
+      "default": 5,
+      "title": "Neutral fill stealth delta (hover)",
+      "mapsToAttribute": "neutral-fill-stealth-hover-delta",
+      "type": "number"
+    },
+    "neutral-fill-stealth-active-delta": {
+      "default": 3,
+      "title": "Neutral fill stealth delta (active)",
+      "mapsToAttribute": "neutral-fill-stealth-active-delta",
+      "type": "number"
+    },
+    "neutral-fill-stealth-focus-delta": {
+      "title": "Neutral fill stealth delta (focus)",
+      "mapsToAttribute": "neutral-fill-stealth-focus-delta",
+      "type": "number"
+    },
+    "neutral-fill-strong-hover-delta": {
+      "default": 8,
+      "title": "Neutral fill strong delta (hover)",
+      "mapsToAttribute": "neutral-fill-strong-hover-delta",
+      "type": "number"
+    },
+    "neutral-fill-strong-active-delta": {
+      "default": -5,
+      "title": "Neutral fill strong delta (active)",
+      "mapsToAttribute": "neutral-fill-strong-active-delta",
+      "type": "number"
+    },
+    "neutral-fill-strong-focus-delta": {
+      "title": "Neutral fill strong delta (focus)",
+      "mapsToAttribute": "neutral-fill-strong-focus-delta",
+      "type": "number"
+    },
+    "base-layer-luminance": {
+      "default": -1,
+      "title": "Base layer luminance",
+      "description": "When set to a number between 0 and 1, this values controls the output of layer and card recipes",
+      "mapsToAttribute": "base-layer-luminance",
+      "type": "number"
+    },
+    "neutral-fill-layer-rest-delta": {
+      "default": 3,
+      "title": "Layer background delta",
+      "mapsToAttribute": "neutral-fill-layer-rest-delta",
+      "type": "number"
+    },
+    "neutral-stroke-divider-rest-delta": {
+      "default": 8,
+      "title": "Neutral divider stroke delta",
+      "mapsToAttribute": "neutral-stroke-divider-rest-delta",
+      "type": "number"
+    },
+    "neutral-stroke-rest-delta": {
+      "default": 25,
+      "title": "Neutral stroke delta (rest)",
+      "mapsToAttribute": "neutral-stroke-rest-delta",
+      "type": "number"
+    },
+    "neutral-stroke-hover-delta": {
+      "default": 40,
+      "title": "Neutral stroke delta (hover)",
+      "mapsToAttribute": "neutral-stroke-hover-delta",
+      "type": "number"
+    },
+    "neutral-stroke-active-delta": {
+      "default": 16,
+      "title": "Neutral stroke delta (active)",
+      "mapsToAttribute": "neutral-stroke-active-delta",
+      "type": "number"
+    },
+    "neutral-stroke-focus-delta": {
+      "default": 25,
+      "title": "Neutral stroke delta (focus)",
+      "mapsToAttribute": "neutral-stroke-focus-delta",
+      "type": "number"
+    },
+    "neutral-contrast-fill-rest-delta": {
+      "title": "Neutral contrast fill delta (rest)",
+      "mapsToAttribute": "neutral-contrast-fill-rest-delta",
+      "type": "number"
+    },
+    "neutral-contrast-fill-hover-delta": {
+      "default": -3,
+      "title": "Neutral contrast fill delta (hover)",
+      "mapsToAttribute": "neutral-contrast-fill-hover-delta",
+      "type": "number"
+    },
+    "neutral-contrast-fill-active-delta": {
+      "default": 7,
+      "title": "Neutral contrast fill delta (active)",
+      "mapsToAttribute": "neutral-contrast-fill-active-delta",
+      "type": "number"
+    },
+    "neutral-contrast-fill-focus-delta": {
+      "title": "Neutral contrast fill delta (focus)",
+      "mapsToAttribute": "neutral-contrast-fill-focus-delta",
+      "type": "number"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

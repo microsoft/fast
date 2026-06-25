@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "removing readonly for Slider",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "olaf-k@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

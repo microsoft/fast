@@ -1,0 +1,161 @@
+{
+  "name": "@microsoft/fast-element",
+  "description": "A library for constructing Web Components",
+  "version": "2.0.0-beta.26",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-element"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "type": "module",
+  "main": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "production": "./dist/esm/index.js",
+      "development": "./dist/esm/index.debug.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./debug.js": {
+      "types": "./dist/dts/debug.d.ts",
+      "default": "./dist/esm/debug.js"
+    },
+    "./binding/two-way.js": {
+      "types": "./dist/dts/binding/two-way.d.ts",
+      "default": "./dist/esm/binding/two-way.js"
+    },
+    "./binding/signal.js": {
+      "types": "./dist/dts/binding/signal.d.ts",
+      "default": "./dist/esm/binding/signal.js"
+    },
+    "./render.js": {
+      "types": "./dist/dts/templating/render.d.ts",
+      "default": "./dist/esm/templating/render.js"
+    },
+    "./utilities.js": {
+      "types": "./dist/dts/utilities.d.ts",
+      "default": "./dist/esm/utilities.js"
+    },
+    "./state.js": {
+      "types": "./dist/dts/state/exports.d.ts",
+      "default": "./dist/esm/state/exports.js"
+    },
+    "./context.js": {
+      "types": "./dist/dts/context.d.ts",
+      "default": "./dist/esm/context.js"
+    },
+    "./metadata.js": {
+      "types": "./dist/dts/metadata.d.ts",
+      "default": "./dist/esm/metadata.js"
+    },
+    "./testing.js": {
+      "types": "./dist/dts/testing/exports.d.ts",
+      "default": "./dist/esm/testing/exports.js"
+    },
+    "./di.js": {
+      "types": "./dist/dts/di/di.d.ts",
+      "default": "./dist/esm/di/di.js"
+    },
+    "./element-hydration.js": {
+      "types": "./dist/dts/components/hydration.d.ts",
+      "default": "./dist/esm/components/hydration.js"
+    },
+    "./install-element-hydration.js": {
+      "types": "./dist/dts/components/install-hydration.d.ts",
+      "default": "./dist/esm/components/install-hydration.js"
+    },
+    "./pending-task.js": {
+      "types": "./dist/dts/pending-task.d.ts",
+      "default": "./dist/esm/pending-task.js"
+    },
+    "./dom-policy.js": {
+      "types": "./dist/dts/dom-policy.d.ts",
+      "default": "./dist/esm/dom-policy.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "unpkg": "dist/fast-element.min.js",
+  "sideEffects": [
+    "./dist/esm/debug.js",
+    "./dist/esm/polyfills.js",
+    "./dist/esm/components/install-hydration.js"
+  ],
+  "scripts": {
+    "benchmark": "yarn clean:dist && yarn build && node ./scripts/run-benchmarks",
+    "clean:dist": "node ../../../build/clean.js dist",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
+    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
+    "build:rollup": "rollup -c",
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "dev": "tsc -p ./tsconfig.json -w",
+    "tdd": "yarn dev & yarn test-chrome:watch",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "test": "yarn eslint && yarn test-chrome:verbose && yarn doc:ci",
+    "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+    "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
+    "test-chrome": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage",
+    "test-chrome:verbose": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage --reporter=mocha",
+    "test-chrome:watch": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --coverage --watch-extensions js",
+    "test-chrome:debugger": "karma start karma.conf.cjs --browsers=ChromeDebugging",
+    "test-chrome:verbose:watch": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
+    "test-chrome:verbose:debugger": "karma start karma.conf.cjs --browsers=ChromeDebugging --reporter=mocha",
+    "test-firefox": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage",
+    "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "7.24.2",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@tensile-perf/web-components": "^0.1.14",
+    "@types/chai": "^4.2.11",
+    "@types/chai-spies": "^1.0.3",
+    "@types/karma": "^6.3.3",
+    "@types/mocha": "^7.0.2",
+    "@types/webpack-env": "^1.15.2",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "esm": "^3.2.25",
+    "ignore-loader": "^0.1.2",
+    "istanbul": "^0.4.5",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage": "^2.0.2",
+    "karma-coverage-istanbul-reporter": "^3.0.0",
+    "karma-firefox-launcher": "^2.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-source-map-support": "^1.4.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^5.0.0",
+    "mocha": "^7.1.2",
+    "prettier": "2.8.8",
+    "rollup": "^2.71.1",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "source-map": "^0.7.3",
+    "source-map-loader": "^3.0.1",
+    "ts-loader": "^7.0.2",
+    "ts-node": "^8.9.1",
+    "tsconfig-paths": "^3.9.0",
+    "tslib": "^2.4.0",
+    "typescript": "~4.7.0"
+  }
+}

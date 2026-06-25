@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: allow tabs `setTabs` method to be extended",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "quic_scomeau@qualcomm.com",
+  "dependentChangeType": "prerelease"
+}

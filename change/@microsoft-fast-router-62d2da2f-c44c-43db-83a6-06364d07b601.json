@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: remove link handler in disconnect",
+  "packageName": "@microsoft/fast-router",
+  "email": "1222863+xuwaters@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

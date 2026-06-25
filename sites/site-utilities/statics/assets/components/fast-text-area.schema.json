@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-text-area",
+  "id": "fast-text-area",
+  "title": "Text area",
+  "description": "The FAST text-area element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-text-area",
+  "properties": {
+    "appearance": {
+      "enum": [
+        "outline",
+        "filled"
+      ],
+      "default": "outline",
+      "title": "Appearance",
+      "description": "The text area's visual treatment",
+      "mapsToAttribute": "appearance",
+      "type": "string"
+    },
+    "resize": {
+      "enum": [
+        "none",
+        "both",
+        "horizontal",
+        "vertical"
+      ],
+      "default": "none",
+      "title": "Resize",
+      "description": "The resize mode of the element",
+      "mapsToAttribute": "resize",
+      "type": "string"
+    },
+    "autofocus": {
+      "title": "Autofocus",
+      "description": "Determines if the element should receive document focus on page load",
+      "mapsToAttribute": "autofocus",
+      "type": "boolean"
+    },
+    "cols": {
+      "default": 20,
+      "title": "Columns",
+      "description": "Sizes the element vertically by a number of character columns",
+      "mapsToAttribute": "cols",
+      "type": "number"
+    },
+    "form": {
+      "description": "The form attribute",
+      "mapsToAttribute": "form",
+      "type": "string"
+    },
+    "list": {
+      "title": "List ID",
+      "description": "Allows associating a datalist to the component",
+      "mapsToAttribute": "list",
+      "type": "string"
+    },
+    "maxlength": {
+      "title": "Maximum length",
+      "description": "The maximum number of characters a user can enter",
+      "mapsToAttribute": "maxlength",
+      "type": "number"
+    },
+    "minlength": {
+      "title": "Minimum length",
+      "description": "The minimum number of characters a user can enter",
+      "mapsToAttribute": "minlength",
+      "type": "number"
+    },
+    "placeholder": {
+      "title": "Placeholder",
+      "description": "Sets the placeholder value of the element, generally used to provide a hint to the user",
+      "mapsToAttribute": "placeholder",
+      "type": "string"
+    },
+    "rows": {
+      "title": "Rows",
+      "description": "Sizes the element vertically by a number of character rows",
+      "mapsToAttribute": "rows",
+      "type": "number"
+    },
+    "spellcheck": {
+      "title": "Spellcheck",
+      "description": "Controls whether or not to enable spell checking for the input field, or if the default spell checking configuration should be used",
+      "mapsToAttribute": "spellcheck",
+      "type": "boolean"
+    },
+    "value": {
+      "title": "Value",
+      "description": "The HTML value attribute of the text area",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "description": "This element's value will be surfaced during form submission under the provided name",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "required": {
+      "title": "Required",
+      "description": "Require the field to be completed prior to form submission",
+      "mapsToAttribute": "required",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the text area",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "title": "Readonly",
+      "description": "When true, the control will be immutable by user interaction",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the text area represents its visual label",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

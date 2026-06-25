@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-radio-group",
+  "id": "fast-radio-group",
+  "title": "Radio group",
+  "description": "The FAST radio-group element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-radio-group",
+  "properties": {
+    "value": {
+      "title": "Value",
+      "description": "The value of the radio group",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "orientation": {
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "title": "Orientation",
+      "description": "The visual orientation of the group",
+      "mapsToAttribute": "orientation",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "description": "Setting this value will set the name value for all child radios",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Disables the radio group and child radios",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "title": "Readonly",
+      "description": "When true, the child radios will be immutable by user interaction",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "Supports fast-radio elements or elements with a role of 'radio'",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotLabel": {
+      "title": "Label slot",
+      "description": "The visual label for the group",
+      "mapsToSlot": "label",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
