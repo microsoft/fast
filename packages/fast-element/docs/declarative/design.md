@@ -374,7 +374,7 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 | `f-children="{prop}"` | Children attribute directive |
 | `f-ref="{prop}"` | Element ref attribute directive |
 
-For full syntax reference see [README.md](./README.md).
+For full syntax reference see [syntax.md](./syntax.md).
 
 ---
 
@@ -566,7 +566,7 @@ flowchart LR
 
 For a deep dive into the schema structure, context tracking, and proxy system
 see
-[DECLARATIVE_SCHEMA_OBSERVER_MAP.md](./DECLARATIVE_SCHEMA_OBSERVER_MAP.md).
+[schema-observer-map.md](./schema-observer-map.md).
 
 ### `$observe` flag on schema nodes
 
@@ -656,7 +656,7 @@ mode, `enableHydration().whenHydrated()` intentionally remains pending because
 there is no global completion point.
 
 For usage examples see
-[DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md).
+[lifecycle.md](./lifecycle.md).
 
 ---
 
@@ -722,7 +722,7 @@ With `declarativeTemplate()`, connection gating happens before platform registra
 ```
 
 For detailed examples see
-[DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
+[rendering.md](./rendering.md).
 
 ---
 
@@ -782,15 +782,15 @@ Fixtures that exercise prerendered output wait for hydration to complete before
 running assertions. Each `main.ts` calls `enableHydration()` and then awaits
 the returned controller's `whenHydrated()` promise to set a global flag, and each spec file calls
 `page.waitForFunction()` after `page.goto()` to block until the flag is set.
-See [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
+See [test/declarative/fixtures/README.md](../../test/declarative/fixtures/README.md)
 for the implementation pattern.
 
 See
-[test/declarative/fixtures/WRITING_FIXTURES.md](./test/declarative/fixtures/WRITING_FIXTURES.md)
+[test/declarative/fixtures/WRITING_FIXTURES.md](../../test/declarative/fixtures/WRITING_FIXTURES.md)
 for the complete fixture authoring guide,
-[test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
+[test/declarative/fixtures/README.md](../../test/declarative/fixtures/README.md)
 for a quick reference, and
-[test/declarative/fixtures/extensions/observer-map-deep-merge/README.md](./test/declarative/fixtures/extensions/observer-map-deep-merge/README.md)
+[test/declarative/fixtures/extensions/observer-map-deep-merge/README.md](../../test/declarative/fixtures/extensions/observer-map-deep-merge/README.md)
 for an example of a complex multi-feature fixture.
 
 ---
@@ -799,10 +799,10 @@ for an example of a complex multi-feature fixture.
 
 | Document | Topic |
 |---|---|
-| [DECLARATIVE_HTML.md](./DECLARATIVE_HTML.md) | Installation, syntax reference, hydration promises, usage examples |
-| [DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md) | Hydratable HTML format: comment markers, dataset attributes, directive markers |
-| [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md) | Phase-by-phase rendering lifecycle, hydration readiness, performance notes |
-| [DECLARATIVE_SCHEMA_OBSERVER_MAP.md](./DECLARATIVE_SCHEMA_OBSERVER_MAP.md) | Deep dive into Schema JSON structure, ObserverMap proxy system, debugging |
-| [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md) | Quick reference for fixture structure |
-| [test/declarative/fixtures/WRITING_FIXTURES.md](./test/declarative/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |
-| [test/declarative/fixtures/extensions/observer-map-deep-merge/README.md](./test/declarative/fixtures/extensions/observer-map-deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |
+| [syntax.md](./syntax.md) | Installation, syntax reference, hydration promises, usage examples |
+| [rendering.md](./rendering.md) | Hydratable HTML format: comment markers, dataset attributes, directive markers |
+| [lifecycle.md](./lifecycle.md) | Phase-by-phase rendering lifecycle, hydration readiness, performance notes |
+| [schema-observer-map.md](./schema-observer-map.md) | Deep dive into Schema JSON structure, ObserverMap proxy system, debugging |
+| [test/declarative/fixtures/README.md](../../test/declarative/fixtures/README.md) | Quick reference for fixture structure |
+| [test/declarative/fixtures/WRITING_FIXTURES.md](../../test/declarative/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |
+| [test/declarative/fixtures/extensions/observer-map-deep-merge/README.md](../../test/declarative/fixtures/extensions/observer-map-deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |

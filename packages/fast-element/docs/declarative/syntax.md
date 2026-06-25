@@ -12,8 +12,8 @@ binding configuration, syntax, and integration testing.
 
 For package installation, using `declarativeTemplate()`, extension setup, and
 the package-level hydration overview, see the
-[FAST Element README](./README.md#declarative-html) and
-[Prerendered Content Optimization](./README.md#prerendered-content-optimization).
+[FAST Element README](../../README.md#declarative-html) and
+[Prerendered Content Optimization](../../README.md#prerendered-content-optimization).
 For user-facing guides covering f-template syntax, element definition, and
 server-side rendering, see the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/).
@@ -63,7 +63,7 @@ server: custom element definition, hydration, client rendering, and reactive
 updates still run in the browser `Window`. The declarative runtime expects
 hydratable comment markers and datasets when prerendered content is generated.
 For the required marker format and initial-state application details, see
-[DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
+[rendering.md](./rendering.md).
 
 ## Hydration promise APIs
 
@@ -462,4 +462,4 @@ rendering differences between `fast-build` and `webui`. The
 `playwright.declarative.webui.config.ts` file sets
 `FAST_WEBUI_INTEGRATION=true`, and affected tests use `test.skip()` with a
 descriptive reason. See the WebUI Integration Tests section in
-[DECLARATIVE_DESIGN.md](./DECLARATIVE_DESIGN.md) for the full list.
+[design.md](./design.md) for the full list.
