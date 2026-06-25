@@ -3,5 +3,6 @@
   "comment": "Hoist @microsoft/webui dependency and remove devDependencies from fast-element.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "08032e9a704d3a24ebe3be205b4f80c62460497c"
 }

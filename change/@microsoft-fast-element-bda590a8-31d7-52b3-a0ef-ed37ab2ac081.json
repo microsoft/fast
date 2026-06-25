@@ -3,5 +3,6 @@
   "type": "patch",
   "comment": "Avoid mutating render template bindings.",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "7e433a8616bcbd71c30dac04586924e5214bf9ab"
 }

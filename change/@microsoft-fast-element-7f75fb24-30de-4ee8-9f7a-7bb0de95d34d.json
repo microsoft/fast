@@ -3,5 +3,6 @@
   "comment": "Remove lifecycle callback APIs and add registry and hydration promise APIs.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "def177e39b29352976b65f3b746c27f7d2ca546e"
 }

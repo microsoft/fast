@@ -3,5 +3,6 @@
   "comment": "Update imports to use the root @microsoft/fast-element entry instead of the removed and narrowed subpaths (templating.js, styles.js, html.js).",
   "packageName": "@microsoft/fast-router",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "3108a08cac0e4203b4990c135498798379d5959f"
 }

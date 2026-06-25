@@ -3,5 +3,6 @@
   "type": "minor",
   "comment": "Add extensions array argument to FASTElement.define() and FASTElementDefinition.define().",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "bc63faf6bfbac120bf174ad292708259e9ea6329"
 }

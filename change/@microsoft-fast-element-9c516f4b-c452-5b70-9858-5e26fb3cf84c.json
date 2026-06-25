@@ -3,5 +3,6 @@
   "type": "major",
   "comment": "Change default attribute-name-strategy from none to camelCase.",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "8a24df4dc67b10cb11940d004f4697fe6f2f22e9"
 }

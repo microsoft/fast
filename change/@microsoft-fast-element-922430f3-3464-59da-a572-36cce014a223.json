@@ -3,5 +3,6 @@
   "type": "minor",
   "comment": "Warn when duplicate render instruction registrations replace existing entries.",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
+  "dependentChangeType": "none",
+  "commit": "749367f0e9279bcfef97f3d4a40fc36f01059546"
 }
