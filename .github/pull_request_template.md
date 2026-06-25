@@ -49,6 +49,15 @@ Please provide a summary of the tests affected by this work and any unique strat
 - [ ] I have updated the project documentation to reflect my changes.
 - [ ] I have read the [CONTRIBUTING](https://github.com/microsoft/fast/blob/main/CONTRIBUTING.md) documentation and followed the [standards](https://github.com/microsoft/fast/blob/main/CODE_OF_CONDUCT.md#our-standards) for this project.
 
+### Agents
+
+<!--- Review the list and put an x in the boxes that apply. -->
+
+- [ ] I have linked to an existing issue in this project that this change addresses
+- [ ] I have read the skills
+- [ ] I have read the DESIGN.md file(s) in packages relevent to my changes
+- [ ] I have updated the DESIGN.md file(s) in packages relevent to my changes
+
 ## ⏭ Next Steps
 
 <!---
