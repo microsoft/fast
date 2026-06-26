@@ -126,6 +126,17 @@ npm run change
 
 This walks through the steps to create a change description file that is required for versioning and publishing. The CI gate `npm run checkchange` will fail if a change file is missing for a modified package.
 
+## Change comments
+
+Write the `comment` field as release-note text, not as a commit message. Use a
+concise sentence that starts with a capital letter and ends with a period. Do not
+prefix comments with conventional commit types such as `fix:`, `feat:`, or
+`chore:`.
+
+Beachball uses change-file comments to generate package changelogs and release
+notes. Sentence-style comments read cleanly in those user-facing outputs, while
+commit-style prefixes duplicate the separate change type metadata and add noise.
+
 ## Change types
 
 When prompted, select the appropriate change type:
