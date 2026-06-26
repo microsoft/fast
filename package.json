@@ -41,7 +41,7 @@
     "test:validation": "npm run test:diff",
     "test": "lage test:node test:playwright --verbose --concurrency 1",
     "test:chromium": "lage test:node test:chromium --verbose --concurrency 1",
-    "test:e2e": "npm run build -w @microsoft/fast-element && npm run test:e2e -w @microsoft/fast-examples-e2e",
+    "test:e2e": "lage build --to @microsoft/fast-element && npm run test:e2e -w @microsoft/fast-examples-e2e",
     "watch": "tsgo -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
     "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
