@@ -37,7 +37,7 @@ flowchart TD
     B --> D
     B --> E
     B --> F
-    C[bind observables by capturing the Custom Elements properties and setting the values from the bound observables on the Custom Element]
+    C[bind observables by capturing public own Custom Element properties and setting those values through the matching accessors]
     D[connect behaviors by call the <code>connectedCallback</code> on all behaviors]
     E[render template, execute an <code>ElementViewTemplate</code>'s render method]
     F[add styles either as an appended <code>StyleElement</code> node or an <code>adoptedStylesheet</code> which may include and attach behaviors]
@@ -66,3 +66,10 @@ flowchart TD
 ```
 
 These changes are observed and similar to the way `Observables` work, they utilize an `Accessor` pattern which has a `getValue` and `setValue` in which DOM updates are applied.
+
+Observable backing slots such as `_foo` are FAST-owned internal state. The
+controller's connection-time observable binding only replays public own
+properties that shadow prototype accessors; it does not normalize backing slots
+into public property assignments. This keeps attribute converter output in its
+already-converted model form while preserving pre-upgrade public property
+assignments and opt-in extension behavior.
