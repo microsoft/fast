@@ -290,6 +290,89 @@ test.describe("The ElementController", () => {
             expect(result.text).toBe("hello");
         });
 
+        test("preserves observable backing fields set on the instance", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    ElementController,
+                    Observable,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const changes: Array<{ oldValue: string; newValue: string }> = [];
+                const name = uniqueElementName();
+
+                class ControllerTest extends FASTElement {
+                    public _message = "hello";
+
+                    public messageChanged(oldValue: string, newValue: string) {
+                        changes.push({ oldValue, newValue });
+                    }
+                }
+
+                Observable.defineProperty(ControllerTest.prototype, "message");
+
+                (
+                    await FASTElementDefinition.compose(ControllerTest, {
+                        name,
+                        template: html<any>`<span>${x => x.message}</span>`,
+                    })
+                ).define();
+
+                const element = document.createElement(name) as any;
+                const controller = ElementController.forCustomElement(element);
+
+                controller.connect();
+
+                const initial = {
+                    hasOwnBackingField: Object.prototype.hasOwnProperty.call(
+                        element,
+                        "_message",
+                    ),
+                    hasOwnMessage: Object.prototype.hasOwnProperty.call(
+                        element,
+                        "message",
+                    ),
+                    message: element.message,
+                    text: element.shadowRoot?.textContent ?? "",
+                };
+
+                element.message = "updated";
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                const updated = {
+                    backingField: element._message,
+                    changes,
+                    message: element.message,
+                    text: element.shadowRoot?.textContent ?? "",
+                };
+
+                controller.disconnect();
+
+                return { initial, updated };
+            });
+
+            expect(result.initial).toEqual({
+                hasOwnBackingField: true,
+                hasOwnMessage: false,
+                message: "hello",
+                text: "hello",
+            });
+            expect(result.updated).toEqual({
+                backingField: "updated",
+                changes: [{ oldValue: "hello", newValue: "updated" }],
+                message: "updated",
+                text: "updated",
+            });
+        });
+
         test("renders nothing to shadow dom in shadow dom mode when there's no template", async ({
             page,
         }) => {
