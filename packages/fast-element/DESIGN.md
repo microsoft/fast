@@ -176,7 +176,7 @@ logging, telemetry, or a devtools panel.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by subclass `define()` calls or directly with `FASTElementDefinition.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. Consumers that need focused access to definition lookup can import `fastElementRegistry` from `@microsoft/fast-element/registry.js`; `fastElementRegistry.whenRegistered(tagName)` resolves with the matching definition once that tag name is registered. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. The subclass static `define()` method returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by subclass `define()` calls and registered globally via `fastElementRegistry`. Consumers that need focused access to definition lookup can import `fastElementRegistry` from `@microsoft/fast-element/registry.js`; `fastElementRegistry.whenRegistered(tagName)` resolves with the matching definition once that tag name is registered. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. The subclass static `define()` method returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition.
 
 #### Extensions
 
@@ -472,7 +472,7 @@ The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Run
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
 `enableHydration()` from `@microsoft/fast-element/hydration.js`. See
-[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+[`docs/declarative/design.md`](./docs/declarative/design.md) for the detailed
 architecture.
 
 ---
@@ -621,7 +621,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 **Authoring flow summary**:
 
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `MyElement.define({ name, template, styles })`.
-2. `MyElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
+2. `MyElement.define` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content) and hydration has been enabled via `enableHydration()`, the installed hydration hook uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
@@ -715,9 +715,9 @@ The published export surface is guarded by scripts under `scripts/`.
 | [docs/architecture/fastelement.md](./docs/architecture/fastelement.md) | FASTElement & ElementController lifecycle in detail |
 | [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) | `html` tag, directives, binding pre-processing |
 | [docs/architecture/updates.md](./docs/architecture/updates.md) | Updates queue, attribute and observable change batching |
-| [DECLARATIVE_DESIGN.md](./DECLARATIVE_DESIGN.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
+| [docs/declarative/design.md](./docs/declarative/design.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
 | [docs/template-bindings.md](./docs/template-bindings.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
-| [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
+| [docs/migration/fast-element-2.md](./docs/migration/fast-element-2.md) | Breaking changes from v1 to v2 |
 
 ---
 
