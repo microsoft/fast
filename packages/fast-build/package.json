@@ -16,6 +16,11 @@
   "bugs": {
     "url": "https://github.com/microsoft/fast/issues/new/choose"
   },
+  "exports": {
+    "./bin/fast.js": "./bin/fast.js",
+    "./wasm/microsoft_fast_build.js": "./wasm/microsoft_fast_build.js",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "fast": "./bin/fast.js"
   },
