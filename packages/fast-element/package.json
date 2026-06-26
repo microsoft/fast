@@ -193,5 +193,11 @@
   "files": [
     "dist",
     "CHANGELOG.md"
-  ]
+  ],
+  "beachball": {
+    "disallowedChangeTypes": [
+      "prerelease",
+      "major"
+    ]
+  }
 }
