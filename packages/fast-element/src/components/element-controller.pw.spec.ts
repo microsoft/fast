@@ -166,6 +166,130 @@ test.describe("The ElementController", () => {
     });
 
     test.describe("during connect", () => {
+        test("does not rebind converted attribute backing fields through converters", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, uniqueElementName } =
+                    await import("/main.js");
+
+                const calls: Array<{ type: string; value: string }> = [];
+                const json = '{"title":"hello"}';
+                const converter = {
+                    toView(value: any) {
+                        return JSON.stringify(value);
+                    },
+                    fromView(value: any) {
+                        calls.push({ type: typeof value, value: String(value) });
+                        return JSON.parse(value);
+                    },
+                };
+
+                const name = uniqueElementName();
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = {
+                                name,
+                                attributes: [{ property: "data", converter }],
+                            };
+                        },
+                    )
+                ).define();
+
+                const element = document.createElement(name) as any;
+                element.setAttribute("data", json);
+                document.body.appendChild(element);
+
+                const value = {
+                    calls,
+                    data: element.data,
+                };
+
+                document.body.removeChild(element);
+
+                return value;
+            });
+
+            expect(result.calls).toEqual([
+                { type: "string", value: '{"title":"hello"}' },
+            ]);
+            expect(result.data).toEqual({ title: "hello" });
+        });
+
+        test("rebinds public own observable properties before rendering", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    ElementController,
+                    Observable,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const changes: string[] = [];
+                const name = uniqueElementName();
+
+                class ControllerTest extends FASTElement {
+                    public messageChanged(
+                        _oldValue: string | undefined,
+                        newValue: string,
+                    ) {
+                        changes.push(newValue);
+                    }
+                }
+
+                Observable.defineProperty(ControllerTest.prototype, "message");
+
+                (
+                    await FASTElementDefinition.compose(ControllerTest, {
+                        name,
+                        template: html<any>`<span>${x => x.message}</span>`,
+                    })
+                ).define();
+
+                const element = document.createElement(name) as any;
+                const controller = ElementController.forCustomElement(element);
+
+                Object.defineProperty(element, "message", {
+                    configurable: true,
+                    enumerable: true,
+                    value: "hello",
+                    writable: true,
+                });
+
+                controller.connect();
+
+                const value = {
+                    changes,
+                    hasOwnMessage: Object.prototype.hasOwnProperty.call(
+                        element,
+                        "message",
+                    ),
+                    message: element.message,
+                    text: element.shadowRoot?.textContent ?? "",
+                };
+
+                controller.disconnect();
+
+                return value;
+            });
+
+            expect(result.changes).toEqual(["hello"]);
+            expect(result.hasOwnMessage).toBe(false);
+            expect(result.message).toBe("hello");
+            expect(result.text).toBe("hello");
+        });
+
         test("renders nothing to shadow dom in shadow dom mode when there's no template", async ({
             page,
         }) => {
