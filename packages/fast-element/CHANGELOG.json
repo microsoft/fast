@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 26 Jun 2026 21:42:49 GMT",
+      "version": "3.0.1",
+      "tag": "@microsoft/fast-element_v3.0.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "92e406be5f0588fb299fc0ca0cf8e3e9abe24203",
+            "comment": "Move markdown design docs into docs folders"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b4a9205f3c342995b10cbda89768e5e839b5a1ef",
+            "comment": "Update typescript skill file and fast element design doc"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a833e3df0debd4d4422b5393a6ace6b4936ce17c",
+            "comment": "Add beachball configs to all packages to prevent erroneous versions being published"
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6ad856f60ba509b82d65961e78285e9c89373a3f",
+            "comment": "Avoid rebinding internal attribute backing fields during connect."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jun 2026 05:31:58 GMT",
       "version": "3.0.0",
       "tag": "@microsoft/fast-element_v3.0.0",

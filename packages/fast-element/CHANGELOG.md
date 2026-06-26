@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Thu, 25 Jun 2026 05:31:58 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 26 Jun 2026 21:42:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.0.1
+
+Fri, 26 Jun 2026 21:42:49 GMT
+
+### Patches
+
+- Avoid rebinding internal attribute backing fields during connect. (7559015+janechu@users.noreply.github.com)
 
 ## 3.0.0
 

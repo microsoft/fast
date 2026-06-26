@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 26 Jun 2026 21:42:49 GMT",
+      "version": "0.9.0",
+      "tag": "@microsoft/fast-build_v0.9.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "a833e3df0debd4d4422b5393a6ace6b4936ce17c",
+            "comment": "Add beachball configs to all packages to prevent erroneous versions being published"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "92e406be5f0588fb299fc0ca0cf8e3e9abe24203",
+            "comment": "Move markdown design docs into docs folders"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "2675184e91f437c009a2aaf4e3e10fa407096709",
+            "comment": "Remove redundant package json scripts, normalize export paths"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jun 2026 05:31:59 GMT",
       "version": "0.9.0",
       "tag": "@microsoft/fast-build_v0.9.0",

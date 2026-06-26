@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Fri, 26 Jun 2026 21:42:49 GMT",
+      "version": "0.4.0",
+      "tag": "@microsoft/fast-test-harness_v0.4.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "a833e3df0debd4d4422b5393a6ace6b4936ce17c",
+            "comment": "Add beachball configs to all packages to prevent erroneous versions being published"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jun 2026 05:31:58 GMT",
       "version": "0.4.0",
       "tag": "@microsoft/fast-test-harness_v0.4.0",
