@@ -20,11 +20,38 @@ Sub-entry-points expose focused APIs through the `exports` map:
 ```ts
 import { twoWay } from "@microsoft/fast-element/two-way.js";
 import { reactive } from "@microsoft/fast-element/state.js";
-import { composedParent } from "@microsoft/fast-element/utilities.js";
 ```
 
 The barrel `index.ts` explicitly lists every re-export grouped by subsystem — no
 `export *` statements.
+
+Aside from the `index.ts` or `index.*.ts` files there should be no barrel exports.
+
+## Side Effects
+
+Do not add side effectful code and do not add `sideEffects` to `package.json` files.
+APIs added should import named exports.
+
+## Browser APIs
+
+### Do not use
+
+Our stance as a framework library is that certain browser APIs are best avoided by
+the framework. We may facilitate the use of them through our provided APIs.
+
+List of APIs to avoid implementing in FAST packages:
+- `requestIdleCallback`
+- `setTimeout`
+- `setInterval`
+
+### Avoid
+
+Some browser APIs can be used but should be avoided as a developer may encounter
+edge cases with task queuing or other logic their app is executing.
+
+List of APIs to avoid in FAST packages:
+- `requestAnimationFrame`
+- `queueMicrotask`
 
 ## Custom elements
 
@@ -33,6 +60,7 @@ Elements extend `FASTElement`. Do **not** use the `@customElement` decorator.
 Use `define()` for registration. `define()` returns a `Promise` that resolves
 immediately when a template is provided:
 
+Example define.ts (side-effect import):
 ```ts
 export class MyElement extends FASTElement {
     @observable items: string[] = [];
@@ -43,22 +71,6 @@ await MyElement.define({
     template,
     styles,
 });
-```
-
-Use `compose()` when registration should be deferred — downstream libraries like Fluent
-Web Components use this pattern with a design-system registry. `compose()` returns a
-`Promise<FASTElementDefinition>` that always resolves immediately:
-
-```ts
-// my-element.definition.ts
-export const definition = await MyElement.compose({
-    name: "my-element",
-    template,
-    styles,
-});
-
-// define.ts (side-effect import)
-definition.define();
 ```
 
 ## Templates
@@ -255,8 +267,7 @@ methods use `typeof` to carry overloaded signatures:
 export const FASTElement: {
     new (): FASTElement;
     define: typeof define;
-    compose: typeof compose;
-} = Object.assign(createFASTElement(HTMLElement), { define, compose });
+} = Object.assign(createFASTElement(HTMLElement), { define });
 ```
 
 ### Tagged template intersection types
