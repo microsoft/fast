@@ -119,6 +119,65 @@ test.describe("extension subpaths", () => {
         expect(result.replacedOriginal).toBe(true);
     });
 
+    test("observerMap proxies public own properties rebound on connect", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { Schema, observerMap } = await import("/extension-subpaths-main.js");
+            // @ts-expect-error: Client module.
+            const { FASTElement, uniqueElementName } = await import("/main.js");
+
+            const name = uniqueElementName();
+            const schema = new Schema(name);
+            schema.addPath({
+                rootPropertyName: "model",
+                pathConfig: {
+                    type: "default",
+                    path: "model.value",
+                    currentContext: null,
+                    parentContext: null,
+                },
+                childrenMap: null,
+            });
+
+            class ObserverMapElement extends FASTElement {
+                public model: any;
+            }
+
+            await ObserverMapElement.define({ name, schema }, [observerMap({ schema })]);
+
+            const element = document.createElement(name) as any;
+            const originalValue = { value: "before" };
+            Object.defineProperty(element, "model", {
+                configurable: true,
+                enumerable: true,
+                value: originalValue,
+                writable: true,
+            });
+
+            document.body.appendChild(element);
+
+            const value = {
+                hasOwnModel: Object.prototype.hasOwnProperty.call(element, "model"),
+                isProxy: element.model.$isProxy === true,
+                preservesValue: element.model.value === "before",
+                replacedOriginal: element.model !== originalValue,
+            };
+
+            document.body.removeChild(element);
+
+            return value;
+        });
+
+        expect(result.hasOwnModel).toBe(false);
+        expect(result.isProxy).toBe(true);
+        expect(result.preservesValue).toBe(true);
+        expect(result.replacedOriginal).toBe(true);
+    });
+
     test("observerMap observes items spliced into nested $defs arrays", async ({
         page,
     }) => {

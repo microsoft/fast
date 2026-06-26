@@ -478,7 +478,7 @@ Binds any observables that were set before upgrade.
 
 </td><td>
 
-Captures own-properties that shadow observable accessors on the prototype so they can be rebound through the accessor before rendering.
+Captures public own-properties that shadow observable accessors on the prototype so they can be rebound through the accessor before rendering.
 
 
 </td></tr>

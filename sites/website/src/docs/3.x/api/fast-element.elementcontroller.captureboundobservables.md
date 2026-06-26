@@ -15,7 +15,7 @@ navigationOptions:
 
 ## ElementController.captureBoundObservables() method
 
-Captures own-properties that shadow observable accessors on the prototype so they can be rebound through the accessor before rendering.
+Captures public own-properties that shadow observable accessors on the prototype so they can be rebound through the accessor before rendering.
 
 **Signature:**
 

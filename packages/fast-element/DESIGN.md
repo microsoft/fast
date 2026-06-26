@@ -101,7 +101,7 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
 - Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
-- On `connect()`: restores pre-upgrade observable values, synchronizes any late-defined attribute-map attributes and observes only those late attributes for future DOM changes, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
+- On `connect()`: restores public pre-upgrade observable values that were set as own properties, synchronizes any late-defined attribute-map attributes and observes only those late attributes for future DOM changes, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles. Internal observable backing slots such as `_foo` are not normalized into public `foo` assignments; they already represent FAST-owned model state. Opt-in extensions such as `observerMap()` perform any additional proxying through the public accessor paths they install.
 - Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
   - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the active `HydrationTracker`, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
@@ -210,6 +210,8 @@ MyComponent.define({ name: "my-component" }, [myPlugin()]);
 
 1. Stores the new value in a backing slot.
 2. Calls `Observable.getNotifier(this).notify(name)` to fan out to subscribers.
+
+Backing slots are internal implementation details. Lifecycle rebinding treats public own properties as pre-upgrade assignments that need to flow through the accessor, but it does not reinterpret FAST-owned backing slots as public property writes.
 
 `Observable.getNotifier(object)` returns the `PropertyChangeNotifier` for an object, creating one on demand. Notifiers are stored in a `WeakMap` so they don't prevent GC.
 
