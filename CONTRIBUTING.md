@@ -133,9 +133,9 @@ If you are merging a pull request, be sure to use the pull request title as the 
 
 ### Documenting breaking changes
 
-Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/fast-element/MIGRATION.md`.
+Make sure to document the migration strategy in a migration document in the package(s) that has breaking changes, eg. `packages/fast-element/docs/migration/fast-element-3.md`.
 
-Example of how to format `MIGRATION.md`:
+Example of how to format a migration document:
 
 ```md
 # Migrating from previous versions
