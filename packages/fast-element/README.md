@@ -178,7 +178,7 @@ mapping runs before observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative-utilities.js`. See
-[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
+[`docs/declarative/syntax.md`](./docs/declarative/syntax.md) for declarative implementation
 details and the
 [Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)
 for guides on writing f-templates, defining declarative elements, and
