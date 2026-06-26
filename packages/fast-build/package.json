@@ -38,5 +38,11 @@
   },
   "engines": {
     "node": ">=22.18.0"
+  },
+  "beachball": {
+    "disallowedChangeTypes": [
+      "prerelease",
+      "major"
+    ]
   }
 }
