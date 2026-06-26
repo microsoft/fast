@@ -17,8 +17,13 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
-  "main": "dist/esm/index.js",
-  "types": "dist/dts/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/esm/index.js",
+      "types": "./dist/dts/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "type": "module",
   "unpkg": "dist/fast-router.min.js",
   "scripts": {
