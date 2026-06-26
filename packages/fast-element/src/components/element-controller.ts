@@ -534,8 +534,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     /**
-     * Captures own-properties that shadow observable accessors on the prototype so
-     * they can be rebound through the accessor before rendering.
+     * Captures public own-properties that shadow observable accessors on the
+     * prototype so they can be rebound through the accessor before rendering.
      */
     protected captureBoundObservables() {
         const element = this.source;
@@ -564,35 +564,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
             const ownPropertyName = propertyNames[i];
-            const propertyName = (
-                ownPropertyName[0] === "_" ? ownPropertyName.slice(1) : ownPropertyName
-            ) as keyof TElement;
+            const propertyName = ownPropertyName as keyof TElement;
 
             if (!hasPrototypeAccessor(propertyName as string)) {
                 continue;
             }
 
             const value = (element as any)[propertyName];
-            const isBackingField = ownPropertyName !== propertyName;
-            const isRebindableObject =
-                value !== null &&
-                typeof value === "object" &&
-                !value?.$isProxy &&
-                !(Array.isArray(value) && (value as any)?.$fastController);
 
             if (value === void 0) {
-                if (!isBackingField) {
-                    delete element[ownPropertyName as keyof TElement];
-                }
+                delete element[propertyName];
 
                 continue;
             }
 
-            if (isBackingField && !isRebindableObject) {
-                continue;
-            }
-
-            delete element[ownPropertyName as keyof TElement];
+            delete element[propertyName];
             (boundObservables ??= this.boundObservables = Object.create(null))[
                 propertyName
             ] = value;
