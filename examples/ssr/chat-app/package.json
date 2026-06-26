@@ -23,7 +23,7 @@
     "directory": "examples/ssr/chat-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^3.0.0",
+    "@microsoft/fast-element": "^3.0.1",
     "@microsoft/fast-examples-design-system": "^1.0.0",
     "tslib": "^2.6.3"
   },
