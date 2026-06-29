@@ -79,7 +79,7 @@ Dynamic content is set via the `textContent` HTML property for security reasons.
 
 ### Content Bindings
 
-Content bindings are used to insert dynamic text or HTML content into the template. They are denoted by `${...}` interpolation, with an arrow function as the expression. FAST invokes the function with the current source (typically the component instance) and uses its return value as the bound content. Because the binding is a function, FAST can re-invoke it whenever an observable property it reads from changes.
+Content bindings are used to insert dynamic content into the template. They are denoted by `${...}` interpolation, with an arrow function as the expression. FAST invokes the function with the current source (typically the component instance) and uses its return value as the bound content. Because the binding is a function, FAST can re-invoke it whenever an observable property it reads from changes.
 
 ```ts
 import { FASTElement, html, observable } from "@microsoft/fast-element";
