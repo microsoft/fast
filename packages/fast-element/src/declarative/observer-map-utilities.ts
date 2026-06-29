@@ -12,15 +12,26 @@ interface ObservedTargetsAndProperties {
     rootProperty: string;
 }
 
+interface ArrayObserverRegistration {
+    target: any;
+    rootProperty: string;
+    schema: JSONSchema | JSONSchemaDefinition;
+    rootSchema: JSONSchema;
+    reachableArray: any;
+    subscriber: {
+        handleChange(subject: any, args: any[]): void;
+    };
+}
+
 /**
  * A map of proxied objects.
  */
 const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
 
 /**
- * A map of arrays being observed.
+ * A map of arrays to their owner-specific observer registrations.
  */
-const observedArraysMap = new WeakSet<object>();
+const observedArraysMap = new WeakMap<object, ArrayObserverRegistration[]>();
 
 type DataType = "array" | "object" | "primitive";
 
@@ -33,6 +44,10 @@ function getDataType(data: any): DataType {
     if (Array.isArray(data)) return "array";
     if (typeof data === "object" && data !== null) return "object";
     return "primitive";
+}
+
+function isObjectLike(value: any): value is object {
+    return typeof value === "object" && value !== null;
 }
 
 /**
@@ -104,7 +119,6 @@ function isSchemaExcluded(schema: any): boolean {
     return schema?.$observe === false && !hasObservedSchemaDescendant(schema);
 }
 
-
 function defineObservableProperty(
     targetObject: any,
     key: string,
@@ -156,6 +170,153 @@ function findArrayItemDef(schema: JSONSchema | JSONSchemaDefinition): string | n
     return findDef(schema) ?? (items === undefined ? null : findDef(items));
 }
 
+function isReachableFromRoot(root: any, value: any): boolean {
+    if (root === value) {
+        return true;
+    }
+
+    if (!isObjectLike(root) || !isObjectLike(value)) {
+        return false;
+    }
+
+    const seen = new WeakSet<object>();
+    const stack = [root];
+
+    while (stack.length > 0) {
+        const current = stack.pop();
+
+        if (current === value) {
+            return true;
+        }
+
+        if (!isObjectLike(current) || seen.has(current)) {
+            continue;
+        }
+
+        seen.add(current);
+
+        for (const key of Object.keys(current)) {
+            if (key === "$fastController") {
+                continue;
+            }
+
+            stack.push(current[key]);
+        }
+    }
+
+    return false;
+}
+
+function isArrayRegistrationReachable(
+    registration: ArrayObserverRegistration,
+    subject: any,
+): boolean {
+    const root = registration.target?.[registration.rootProperty];
+
+    return (
+        isReachableFromRoot(root, subject) ||
+        isReachableFromRoot(root, registration.reachableArray)
+    );
+}
+
+function isSameArrayObserverContext(
+    registration: ArrayObserverRegistration,
+    target: any,
+    rootProperty: string,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema,
+): boolean {
+    return (
+        registration.target === target &&
+        registration.rootProperty === rootProperty &&
+        registration.schema === schema &&
+        registration.rootSchema === rootSchema
+    );
+}
+
+function handleArrayChange(
+    registration: ArrayObserverRegistration,
+    subject: any,
+    args: any[],
+) {
+    if (!isArrayRegistrationReachable(registration, subject)) {
+        return;
+    }
+
+    const schemaProperties = getSchemaProperties(registration.schema);
+
+    args.forEach((arg: any) => {
+        if (arg.addedCount > 0) {
+            if (schemaProperties) {
+                for (let i = arg.addedCount - 1; i >= 0; i--) {
+                    const item = subject[arg.index + i];
+                    const originalItem = Object.assign({}, item);
+
+                    assignProxyToItemsInArray(
+                        item,
+                        originalItem,
+                        registration.schema,
+                        registration.rootSchema,
+                        registration.target,
+                        registration.rootProperty,
+                    );
+
+                    Object.assign(item, originalItem);
+                }
+            }
+
+            Observable.notify(registration.target, registration.rootProperty);
+        }
+    });
+}
+
+function observeArray(
+    data: any[],
+    reachableArray: any,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema,
+    target: any,
+    rootProperty: string,
+): void {
+    let registrations = observedArraysMap.get(data);
+
+    if (!registrations) {
+        registrations = [];
+        observedArraysMap.set(data, registrations);
+    }
+
+    const existingRegistration = registrations.find(registration =>
+        isSameArrayObserverContext(
+            registration,
+            target,
+            rootProperty,
+            schema,
+            rootSchema,
+        ),
+    );
+
+    if (existingRegistration) {
+        existingRegistration.reachableArray = reachableArray;
+        return;
+    }
+
+    const registration: ArrayObserverRegistration = {
+        target,
+        rootProperty,
+        schema,
+        rootSchema,
+        reachableArray,
+        subscriber: {
+            handleChange(subject, args) {
+                handleArrayChange(registration, subject, args);
+            },
+        },
+    };
+
+    registrations.push(registration);
+    Observable.getNotifier(data).subscribe(registration.subscriber);
+}
+
 /**
  * Assigns Observable properties to items in an array and sets up change notifications
  * @param proxiedData - The array data to make observable
@@ -193,40 +354,8 @@ function assignObservablesToArray(
           })
         : proxiedData;
 
-    if (!observedArraysMap.has(data)) {
-        observedArraysMap.add(data);
-
-        Observable.getNotifier(data).subscribe({
-            handleChange(subject, args) {
-                args.forEach((arg: any) => {
-                    if (arg.addedCount > 0) {
-                        if (schemaProperties) {
-                            for (let i = arg.addedCount - 1; i >= 0; i--) {
-                                const item = subject[arg.index + i];
-                                const originalItem = Object.assign({}, item);
-
-                                assignProxyToItemsInArray(
-                                    item,
-                                    originalItem,
-                                    schema,
-                                    rootSchema,
-                                    target,
-                                    rootProperty,
-                                );
-
-                                Object.assign(item, originalItem);
-                            }
-                        }
-
-                        // Notify observers of the target object's root property
-                        Observable.notify(target, rootProperty);
-                    }
-                });
-            },
-        });
-    }
-
     if (schemaProperties !== null) {
+        observeArray(data, data, schema, rootSchema, target, rootProperty);
         return data;
     }
 
@@ -236,7 +365,7 @@ function assignObservablesToArray(
     // their items are individually proxied, and FAST's own push/splice/etc.
     // already carry splice records — double-wrapping would produce duplicate
     // splice notifications.
-    return new Proxy(data, {
+    const primitiveArrayProxy = new Proxy(data, {
         set: (arr: any, prop: string | symbol, value: any) => {
             const idx = typeof prop === "string" ? Number(prop) : NaN;
 
@@ -251,6 +380,10 @@ function assignObservablesToArray(
             return true;
         },
     });
+
+    observeArray(data, primitiveArrayProxy, schema, rootSchema, target, rootProperty);
+
+    return primitiveArrayProxy;
 }
 
 /**
