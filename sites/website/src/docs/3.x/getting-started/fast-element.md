@@ -91,7 +91,7 @@ export class MyElement extends FASTElement {
 }
 ```
 
-This converter will convert the attribute value to a number when reading from the DOM, and convert the value back to a string when writing to the DOM. If the attribute is not present or cannot be converted to a number, the property will be set to `undefined`. Likewise, if the property is set to `undefined`, `null`, or `NaN`, the attribute will be removed from the DOM.
+This converter will convert the attribute value to a number when reading from the DOM, and convert the value back to a string when writing to the DOM. If the attribute is not present or cannot be converted to a number, the property will be set to `null`. Likewise, if the property is set to `undefined`, `null`, or `NaN`, the attribute will be removed from the DOM.
 
 :::tip
 Properties decorated with `@attr({ mode: "boolean" })` automatically utilize the `booleanConverter` converter, which treats the presence of the attribute as `true` and its absence as `false`.
@@ -269,7 +269,7 @@ protected disabledChanged() {
 }
 ```
 
-For other uses of the controller, such as dynamically swapping stylesheets at runtime, see [Working with Custom Elements](/docs/advanced/working-with-custom-elements/).
+For other uses of the controller, such as dynamically swapping stylesheets at runtime, see [Working with Custom Elements](../../advanced/working-with-custom-elements/).
 
 ### Custom events with `$emit()`
 

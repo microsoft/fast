@@ -322,7 +322,7 @@ const template = html<SlottedExample>`
 
 ### The `children` Directive
 
-The `children()` directive references the child elements of an element in your component's shadow DOM, so you can work with them from the component class.
+The `children()` directive references the child nodes of an element in your component's shadow DOM, so you can work with them from the component class.
 
 ```ts
 import { children, FASTElement, html, observable } from '@microsoft/fast-element';
@@ -337,10 +337,10 @@ const template = html<ChildrenExample>`
 
 class ChildrenExample extends FASTElement {
   @observable
-  listItems!: HTMLLIElement[];
+  listItems!: Node[];
 
-  listItemsChanged(oldValue: HTMLLIElement[], newValue: HTMLLIElement[]) {
-    console.log("The collection of child <li> elements has changed:", oldValue, newValue);
+  listItemsChanged(oldValue: Node[], newValue: Node[]) {
+    console.log("The collection of child nodes has changed:", oldValue, newValue);
   }
 
   connectedCallback() {
@@ -356,7 +356,7 @@ ChildrenExample.define({
 });
 ```
 
-In the example above, the `children("listItems")` directive creates a reference to the child `<li>` elements of the `<ul>` and maps them to the `listItems` property on the `ChildrenExample` class. The `listItemsChanged` method is called whenever the collection of child elements changes.
+In the example above, the `children("listItems")` directive creates a reference to the child nodes of the `<ul>` and maps them to the `listItems` property on the `ChildrenExample` class. The `listItemsChanged` method is called whenever the collection of child nodes changes.
 
 The `children()` directive works well with `repeat()` for dynamic lists: render the children with `repeat()`, then reference them through `children()`:
 
@@ -384,10 +384,10 @@ class TaskList extends FASTElement {
   ];
 
   @observable
-  listItems!: HTMLLIElement[];
+  listItems!: Node[];
 
   listItemsChanged() {
-    console.log(`The list now renders ${this.listItems.length} items.`);
+    console.log(`The list now renders ${this.listItems.length} nodes.`);
   }
 }
 
@@ -401,7 +401,7 @@ Here `repeat()` owns the rendering: it creates and updates the `<li>` elements a
 
 #### Filtering Child Elements
 
-Like `slotted()`, the `children()` directive accepts a configuration object in place of a property name. By default it observes every child node, including the text and comment nodes between elements. Add a `filter` to narrow the collection. The `elements()` filter keeps only element nodes, or only the elements that match a selector when you pass one:
+Like `slotted()`, the `children()` directive accepts a configuration object in place of a property name. By default, the directive observes every child node, including the text and comment nodes between elements. Add a `filter` to narrow the collection. The `elements()` filter keeps only element nodes, or only the elements that match a selector when you pass one:
 
 ```ts
 import { children, elements, html } from "@microsoft/fast-element";
