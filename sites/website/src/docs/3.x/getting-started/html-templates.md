@@ -74,7 +74,7 @@ A non-function value passed to `${...}` is treated as a one-time static value an
 :::
 
 :::important
-Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Property bindings](#property-bindings) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, which is blocked by the default DOMPolicy unless you configure an `innerHTML` guard. Follow the [DOMPolicy and Trusted Types guide](../advanced/dom-policy-and-trusted-types/) before rendering sanitized HTML.
+Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the [Property bindings](#property-bindings) section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`, which is blocked by the default DOMPolicy unless you configure an `innerHTML` guard. Follow the [DOMPolicy and Trusted Types guide](../../advanced/dom-policy-and-trusted-types/) before rendering sanitized HTML.
 :::
 
 ### Content Bindings

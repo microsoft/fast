@@ -228,7 +228,7 @@ class MP4Player extends FASTElement {
   video?: HTMLVideoElement;
 
   /**
-   * The `videoChanged()` method is called whenever the `video` property changes.\
+   * The `videoChanged()` method is called whenever the `video` property changes.
    * In this case, we want to play the video when it is assigned.
    */
   videoChanged(_prev?: HTMLVideoElement, next?: HTMLVideoElement) {
