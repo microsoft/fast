@@ -6,6 +6,7 @@ eleventyNavigation:
   key: fast-element3x
   parent: getting-started3x
   title: FASTElement
+  order: 2
 navigationOptions:
   activeKey: fast-element3x
 keywords:
@@ -13,276 +14,213 @@ keywords:
   - web components
 ---
 
-# FASTElement
+# The `FASTElement` Base Class
 
-The `FASTElement` class can be extended from for your custom component logic.
+Custom elements in the browser start by extending the `HTMLElement` class. FAST provides a base class called `FASTElement`, which itself extends `HTMLElement`, and adds reactive property observation, automatic change callbacks, and lifecycle management for building web components. By extending `FASTElement`, you can take advantage of these features while still having access to all the standard Web Component APIs.
 
-## Attribute Bindings
+To create a custom FAST element, define a class that extends `FASTElement`. This class will contain the properties, methods, and lifecycle callbacks that define the behavior of your custom element:
 
-Attributes are defined using the `@attr` decorator.
-
-**Example:**
 ```ts
-import { attr, FASTElement } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+
+export class MyElement extends FASTElement {
+  // component logic goes here
+}
+```
+
+## Declaring Attributes with the `@attr` Decorator
+
+Native custom elements can define attributes by implementing the `observedAttributes` static getter and handling changes in the `attributeChangedCallback`. FAST simplifies this process with the `@attr` decorator, which allows you to declare attributes directly on class properties.
+
+```ts
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 export class MyElement extends FASTElement {
   @attr
-  foo: string;
+  appearance?: string;
 }
 ```
 
-HTML file:
-```html
-<my-element foo="Hello"></my-element>
+In this example, the `@attr` decorator tells `FASTElement` to treat `appearance` as an observed attribute. This means that when you use `<my-element appearance="value">`, the `appearance` property on the class will be automatically updated to reflect the value of the attribute. You can also set the property in JavaScript, and it will update the corresponding attribute in the DOM.
+
+### Attribute Options
+
+The `@attr` decorator accepts an optional configuration object that allows you to customize how the attribute is bound to the property. For example, you can specify a different attribute name, a converter for type coercion, or whether the attribute should reflect back to the DOM.
+
+By default, decorated attribute properties use `mode: "reflect"`, which keeps the attribute and property in sync in both directions.
+
+#### Different Attribute Name
+
+Attributes in HTML are always case-insensitive, so FAST maps camelCase property names to lowercase attribute names by default. For example, a property named `myAttribute` would correspond to an attribute named `myattribute` in HTML.
+
+A common convention is to use kebab-case for attribute names, so you can specify a different attribute name using the `attribute` option:
+
+```ts
+@attr({ attribute: "my-attribute" })
+myAttribute?: string;
 ```
 
-An `@attr` can take a configuration with the following options:
+#### Boolean Attributes
 
-| Property | Description | Values | Default |
-|-|-|-|-|
-| attribute | The attribute name that is reflected in the DOM, this can be specified in cases where a different string is preferred. | `string` | The class property converted to lowercase |
-| mode | If the attribute is a boolean and the mode is set to "boolean" this allows `FASTElement` to add/remove the attribute from the element in the same way that [native boolean attributes on elements work](https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML). The "fromView" behavior only updates the property value based on changes in the DOM, but does not reflect property changes back. | `"reflect" \| "boolean" \| "fromView"` | "reflect" |
-| converter | This allows the value of the attribute to be converted when moving to and from the HTML template. | [See ValueConverter Interface](#converters) | |
+The `mode` property allows for specifying boolean attributes, which are considered `true` if the attribute is present on the element, regardless of its value, and `false` if the attribute is absent:
 
-Example with a custom attribute name and boolean mode:
 ```ts
-import { attr, FASTElement } from '@microsoft/fast-element';
+@attr({ mode: "boolean" })
+enabled?: boolean;
+```
+
+#### One-way Binding
+
+By default, attributes and properties are kept in sync in both directions. However, if you want to create a one-way binding where changes to the property do not reflect back to the DOM, you can set the `mode` to `"fromView"`:
+
+```ts
+@attr({ attribute: "initial-value", mode: "fromView" })
+initialValue?: string;
+```
+
+#### Value Converters
+
+If your property expects a type other than `string`, you can provide a converter object to specify how to convert between the attribute value and the property value. The most common use case for a custom converter is to handle attributes that represent numbers, so FAST provides a built-in `nullableNumberConverter` for this purpose:
+
+```ts
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 
 export class MyElement extends FASTElement {
-  @attr({
-    attribute: "foo-bar",
-    mode: "boolean"
-  })
-  foo: boolean;
+  @attr({ converter: nullableNumberConverter })
+  count?: number;
 }
 ```
 
-HTML file:
-```html
-<my-element foo-bar></my-element>
-```
+This converter will convert the attribute value to a number when reading from the DOM, and convert the value back to a string when writing to the DOM. If the attribute is not present or cannot be converted to a number, the property will be set to `undefined`. Likewise, if the property is set to `undefined`, `null`, or `NaN`, the attribute will be removed from the DOM.
 
 :::tip
-As a handy feature, attribute names are automatically converted to a lower-case version in HTML, so declaring `fooBar` as an `@attr` in `FASTElement` will in HTML convert to `foobar`. We include the configuration option of `attribute` to allow re-naming, and one of the most common use cases is adding dashes, so you can have `foo-bar` as in the example above.
+Properties decorated with `@attr({ mode: "boolean" })` automatically utilize the `booleanConverter` converter, which treats the presence of the attribute as `true` and its absence as `false`.
 :::
 
-:::important
-When the `mode` is set to `boolean`, a built-in `booleanConverter` is automatically used to ensure type correctness so that the manual configuration of the converter is not needed in this common scenario.
-:::
+## Property and Attribute Observation
 
-### Converters
+When declaring attributes via the platform's native `observedAttributes` API, you must also implement the `attributeChangedCallback` to respond to changes in those attributes. Similarly, if you want to observe changes to properties, you would need to implement getters and setters for those properties. FAST's `@attr` and `@observable` decorators enable observability callbacks without requiring you to implement these patterns directly.
 
-In addition to setting the `mode`, you can also supply a custom `ValueConverter` by setting the `converter` property of the attribute configuration. The converter must implement the following interface:
+For example, with `@attr`, you can define a callback method that will be called whenever an attribute-bound property changes:
 
 ```ts
-interface ValueConverter {
-    toView(value: any): string;
-    fromView(value: string): any;
-}
-```
+import { attr, FASTElement } from "@microsoft/fast-element";
 
-Here's how it works:
+export class MyElement extends FASTElement {
+  @attr
+  name?: string;
 
-* When the DOM attribute value changes, the converter's `fromView` method will be called, allowing custom code to coerce the value to the proper type expected by the property.
-* When the property value changes, the converter's `fromView` method will also be called, ensuring that the type is correct. After this, the `mode` will be determined. If the mode is set to `reflect` then the converter's `toView` method will be called to allow the type to be formatted before writing to the attribute using `setAttribute`.
-
-**Example: An Attribute in Reflect Mode with Custom Conversion**
-
-```ts
-import { attr, FASTElement, type ValueConverter } from '@microsoft/fast-element';
-
-const numberConverter: ValueConverter = {
-  toView(value: any): string {
-    // convert numbers to strings
-  },
-
-  fromView(value: string): any {
-    // convert strings to numbers
-  }
-};
-
-export class MyCounter extends FASTElement {
-  @attr({ converter: numberConverter }) count: number = 0;
-}
-
-MyCounter.define({
-  name: 'my-counter'
-});
-```
-
-A few commonly used converters are available as well:
-
-- [booleanConverter](/docs/3.x/api/fast-element/attr/fast-element.booleanconverter/)
-- [nullableBooleanConverter](/docs/3.x/api/fast-element/attr/fast-element.nullablebooleanconverter/)
-- [nullableNumberConverter](/docs/3.x/api/fast-element/attr/fast-element.nullablenumberconverter/)
-
-## Observables
-
-While `@attr` is used for primitive properties (string, boolean, and number), the `@observable` decorator is for all other properties. In addition to observing properties, the templating system can also observe arrays.
-
-These decorators are a means of meta-programming the properties on your class, such that they include all the implementation needed to support state tracking, observation, and reactivity. You can access any property within your template, but if it hasn't been decorated with one of these two decorators, its value will not update after the initial render.
-
-:::important
-Properties with only a getter, that function as a computed property over other observables, should not be decorated with `@attr` or `@observable`. However, they may need to be decorated with `@volatile`, depending on the internal logic.
-:::
-
-```ts
-import { FASTElement, observable } from '@microsoft/fast-element';
-
-export class MyComponent extends FASTElement {
-  @observable
-  someBoolean = false;
-
-  @observable
-  valueA = 0;
-
-  @observable
-  valueB = 42;
-}
-```
-
-A common use case for `@observable` is with slotted elements.
-
-**Example: Track changes to elements being added/removed to a slot**
-
-```ts
-import { FASTElement, observable } from '@microsoft/fast-element';
-
-class MyComponent extends FASTElement {
-  @observable
-  public slottedItems: HTMLElement[];
-
-  protected itemCount: number;
-
-  public slottedItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
-    if (this.$fastController.isConnected) {
-      this.itemCount = newValue.length;
-    }
+  nameChanged(oldValue?: string, newValue?: string) {
+    console.log(`Name changed from ${oldValue} to ${newValue}`);
   }
 }
 ```
 
-### Manually tracking observables
+Whenever the `name` property changes, whether through an attribute update in the DOM or by setting the property on an element instance in JavaScript, the `nameChanged` method will be called with the previous and new values. This allows you to react to changes in a declarative way without needing to manually implement attribute observation or property getters/setters.
 
-When `@attr` and `@observable` decorated properties are accessed during template rendering, they are tracked, allowing the engine to deeply understand the relationship between your model and view. These decorators serves to meta-program the property for you, injecting code to enable the observation system. However, if you do not like this approach, for `@observable`, you can always implement notification manually. This is especially useful if you need to do some additional logic inside a `getter` and `setter`. Here's what that would look like:
+### Property Observation with the `@observable` Decorator
 
-**Example: Manual Observer Implementation**
+The `@observable` decorator provides similar functionality for properties that are not necessarily tied to attributes. This is useful for internal state management within your component that doesn't need to be reflected in the DOM:
 
 ```ts
-import { Observable } from '@microsoft/fast-element';
+import { observable, FASTElement } from "@microsoft/fast-element";
+
+export class MyElement extends FASTElement {
+  @observable
+  count: number = 0;
+
+  countChanged(oldValue: number, newValue: number) {
+    console.log(`Count changed from ${oldValue} to ${newValue}`);
+  }
+}
+```
+
+In this example, the `count` property is decorated with `@observable`, which means that any changes to `count` will trigger the `countChanged` callback, allowing you to respond to changes in the internal state of your component.
+
+:::tip
+FAST's `Observable` API can be used independently of custom elements, so you can create observable objects and properties in any JavaScript class, not just those that extend `FASTElement`. Read the [Reactivity](../../advanced/reactivity/) section for more details on using observables in FAST.
+:::
+
+### Manually Tracking Observables
+
+The `@attr` and `@observable` decorators rewrite the decorated property into a getter/setter pair that calls into FAST's observation system. When a decorated property is accessed during template rendering, the engine tracks the access and establishes the relationship between the model and the view. The same notification behavior can be implemented manually, which is useful when a property requires additional logic in its getter or setter. The following example shows what that looks like:
+
+```ts
+import { Observable } from "@microsoft/fast-element";
 
 export class Person {
   private _name: string;
 
   get name() {
+    // Manually track the property access for reactivity
     Observable.track(this, 'name');
     return this._name;
   }
 
   set name(value: string) {
     this._name = value;
+    // Manually notify that the property has changed
     Observable.notify(this, 'name');
   }
 }
 ```
 
-## Emitting Events
+## Lifecycle Callbacks
 
-In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the `$emit` helper on `FASTElement`. It's a convenience method that creates an instance of `CustomEvent` and uses the `dispatchEvent` API on `FASTElement` with the `bubbles: true` and `composed: true` options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM.
-
-**Example: Custom Event Dispatch**
+Extending `HTMLElement` gives you access to the standard custom element lifecycle callbacks. `FASTElement` supports these callbacks and also provides additional lifecycle management features through its internal controller. When you override lifecycle methods like `connectedCallback` or `disconnectedCallback`, make sure to call `super` to ensure that the base class can perform necessary setup and teardown work.
 
 ```ts
-const template = html`
-  <input @change="${x => x.valueChanged()}" />
-`;
+import { FASTElement } from "@microsoft/fast-element";
 
-export class MyInput extends FASTElement {
-  @attr
-  value: string = '';
+export class MyElement extends FASTElement {
+  connectedCallback() {
+    super.connectedCallback();
+    console.log("Element connected to the DOM");
+  }
 
-  valueChanged() {
-    this.$emit('change', this.value);
+  disconnectedCallback() {
+    console.log("Element disconnected from the DOM");
+    super.disconnectedCallback();
+  }
+
+  attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
+    console.log(`Attribute ${name} changed from ${oldValue} to ${newValue}`);
+    super.attributeChangedCallback(name, oldValue, newValue);
   }
 }
 ```
 
-:::tip
-When emitting custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).
+:::note
+Overriding `connectedCallback` can affect the timing of when your template is bound and when behaviors run, so it's generally recommended to call `super.connectedCallback()` at the beginning of your override. Conversely, for `disconnectedCallback` and `attributeChangedCallback`, it's usually best to call the super method at the end of your override to ensure that your custom logic runs while the element is still in a consistent state.
 :::
 
-## Defining
+## Defining the Element
 
-`FASTElement` has a `define` method, this is the means by which a custom web component is registered with the browser.
+### `define()`
 
-**Example:**
+Autonomous custom elements must be registered with the browser using `customElements.define()`. FAST provides a static `define()` method on `FASTElement`-derived classes that wraps this registration process and also allows you to specify additional configuration such as observed attributes, styles, and templates.
+
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
+import { FASTElement, html, css } from "@microsoft/fast-element";
 
-export class MyElement extends FASTElement {}
-
-MyElement.define({
-  name: 'my-element'
-});
-```
-
-:::important
-Defining a web component creates [side effects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#import_a_module_for_its_side_effects_only). This is important to note as [tree shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking) may cause web components to be removed during transpile even if they are imported. Ensure that your build system accounts for this and does not tree shake out your web components.
-:::
-
-This configuration can take various options:
-
-| Property | Description | Values | Default | Required |
-|-|-|-|-|-|
-| name | The [name of the custom element](https://developer.mozilla.org/en-US/docs/Web/API/Web_Components/Using_custom_elements#name). | | | Yes |
-| template | The template to render for the custom element. Use the `html` tag template literal to create this template. | | | |
-| styles | The styles to associate with the custom element. Use the `css` tag template literal to create this template. | | | |
-| shadowOptions | Options controlling the creation of the custom element's shadow DOM. Provide null to render to the associated template to the light DOM instead. Example: `{ delegatesFocus: true }`, see the [ShadowRoot API](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot) for details. | | Defaults to an open shadow root. | |
-| elementOptions | [Options](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define#options) controlling how the custom element is defined with the platform. | | | |
-| registry | The registry to register this component in by default. | | If not provided, defaults to the global registry. | |
-
-A typical configuration will at least include `name`, `template`, and `styles`.
-
-**Example:**
-```ts
-import { attr, css, FASTElement, html } from "@microsoft/fast-element";
-
-const template = html`<span>Hello ${x => x.name}!</span>`
-
-const styles = css`
-    :host {
-      border: 1px solid blue;
-    }
-`;
-
-class HelloWorld extends FASTElement {
-  @attr
-  name: string;
+export class MyElement extends FASTElement {
+  // component logic
 }
 
-HelloWorld.define({
-  name: "hello-world",
-  template,
-  styles,
+MyElement.define({
+  name: "my-element",
+  template: html`<div>Hello, World!</div>`,
+  styles: css`
+    div {
+      color: blue;
+    }
+  `,
 });
 ```
 
-**Example: Defining with a custom registry**
-```ts
-export const FooRegistry = Object.freeze({
-  prefix: 'foo',
-  registry: customElements,
-});
+In this example, `MyElement.define()` registers the custom element with the name `my-element`, and provides a template and styles for the element. The template defines the structure of the element's Shadow DOM, while the styles are scoped to that Shadow DOM, ensuring that they do not affect other elements on the page.
 
-HelloWorld.define({
-  name: `${FooRegistry.prefix}-tab`,
-  template,
-  styles,
-  registry: FooRegistry.registry,
-});
-```
-
-### Define Extensions
+#### Definition Extensions
 
 `define()` accepts an optional second argument — an array of extension callbacks. Each extension is a function that receives the resolved `FASTElementDefinition` and is called **before** the element is registered with `customElements.define()`. This enables a plugin pattern for hooking into element registration.
 
@@ -290,9 +228,9 @@ HelloWorld.define({
 import type { FASTElementExtension } from "@microsoft/fast-element";
 
 function myPlugin(): FASTElementExtension {
-    return definition => {
-        console.log(`Defining: ${definition.name}`);
-    };
+  return definition => {
+    console.log(`Defining: ${definition.name}`);
+  };
 }
 
 MyComponent.define({
@@ -302,36 +240,49 @@ MyComponent.define({
 }, [myPlugin()]);
 ```
 
-## Lifecycle
-
-All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine. However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
-
-**Example: Tapping into the Custom Element Lifecycle**
+Extensions can also be used with the static call style:
 
 ```ts
-import { attr, FASTElement } from '@microsoft/fast-element';
+FASTElement.define(MyComponent, { name: "my-component" }, [myPlugin()]);
+```
 
-export class NameTag extends FASTElement {
-  @attr
-  greeting: string = 'Hello';
+For the full set of configuration options accepted by `define()`, see the [`PartialFASTElementDefinition`](/docs/3.x/api/fast-element.partialfastelementdefinition/) API reference.
 
-  greetingChanged() {
-    this.shadowRoot!.innerHTML = this.greeting;
+## Utilities, Helpers, and Additional Features
+
+In addition to the features described above, `FASTElement` provides a number of utilities and helpers for working with custom elements, such as methods for adding and removing styles, accessing the element's internal controller, working with the processing queue, and more.
+
+### Using the Element Controller via `$fastController`
+
+Every `FASTElement` instance exposes a `$fastController` property that references the internal `ElementController` driving the element's lifecycle and reactivity. Most components do not need to access it directly, but one member is commonly used inside `*Changed` callbacks: `isConnected`.
+
+The `isConnected` property on the controller reports `true` after FAST has connected the element, which happens during `super.connectedCallback()`. It is distinct from the platform's `Node.isConnected`, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already `true`, but FAST has not yet bound the template or wired up the reactivity system. Reading from `this.elementInternals` or dispatching events during that window can produce inconsistent results.
+
+For this reason, `*Changed` callbacks that touch the DOM typically guard against running before the controller has connected:
+
+```ts
+protected disabledChanged() {
+  if (!this.$fastController.isConnected) {
+    return;
   }
+  this.elementInternals.ariaDisabled = `${this.disabled}`;
+}
+```
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log('name-tag is now connected to the DOM');
+For other uses of the controller, such as dynamically swapping stylesheets at runtime, see [Working with Custom Elements](/docs/advanced/working-with-custom-elements/).
+
+### Custom events with `$emit()`
+
+`FASTElement` provides a helper method called `$emit()` for dispatching custom events from your component. This method simplifies the process of creating and dispatching events by providing a convenient API for specifying event details such as the event name, detail data, and options.
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+
+export class MyElement extends FASTElement {
+  handleClick() {
+    this.$emit("my-event", { some: "data" }, { bubbles: true, composed: true });
   }
 }
 ```
 
-The full list of available lifecycle callbacks is:
-
-| Callback | Description |
-| ------------- |-------------|
-| constructor | Runs when the element is created or upgraded. `FASTElement` will attach the shadow DOM at this time. |
-| connectedCallback | Runs when the element is inserted into the DOM. On first connect, `FASTElement` hydrates the HTML template, connects template bindings, and adds the styles. |
-| disconnectedCallback | Runs when the element is removed from the DOM. `FASTElement` will remove template bindings and clean up resources at this time. |
-| `<attribute>Changed(oldVal, newVal)` | Runs any time one of the element's custom attributes changes. `FASTElement` uses this to sync the attribute with its property. When the property updates, a render update is also queued, if there was a template dependency. The naming convention is to add "Changed" to the end of the attribute name, and that is the method that will get called. |
-| adoptedCallback | Runs if the element was moved from its current `document` into a new `document` via a call to the `adoptNode(...)` API. |
+In this example, the `handleClick` method dispatches a custom event named `my-event` with a detail object containing some data. The event is configured to bubble up through the DOM and to cross the shadow DOM boundary (if applicable) by setting `bubbles: true` and `composed: true` in the options.
