@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Move markdown design docs into docs folders",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
