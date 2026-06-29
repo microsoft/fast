@@ -240,6 +240,7 @@ function handleArrayChange(
     args: any[],
 ) {
     if (!isArrayRegistrationReachable(registration, subject)) {
+        removeArrayRegistration(subject, registration);
         return;
     }
 
@@ -267,6 +268,33 @@ function handleArrayChange(
 
             Observable.notify(registration.target, registration.rootProperty);
         }
+    });
+}
+
+function removeArrayRegistration(
+    data: any[],
+    registration: ArrayObserverRegistration,
+): void {
+    const registrations = observedArraysMap.get(data);
+
+    if (!registrations) {
+        return;
+    }
+
+    const registrationIndex = registrations.indexOf(registration);
+
+    if (registrationIndex === -1) {
+        return;
+    }
+
+    registrations.splice(registrationIndex, 1);
+
+    if (registrations.length === 0) {
+        observedArraysMap.delete(data);
+    }
+
+    Promise.resolve().then(() => {
+        Observable.getNotifier(data).unsubscribe(registration.subscriber);
     });
 }
 

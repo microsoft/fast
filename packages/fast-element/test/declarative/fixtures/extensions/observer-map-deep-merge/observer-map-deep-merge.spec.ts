@@ -381,11 +381,13 @@ test.describe("Deep Merge Test Fixture", () => {
 
         const result = await page
             .locator("deep-merge-test-element")
-            .evaluate((element: any) => element.mutateStaleNestedItemsAfterDeepMerge());
+            .evaluate((element: any) =>
+                element.mutateStaleNestedItemsAfterSecondDeepMerge(),
+            );
 
         expect(result.notifications).toBe(0);
         expect(result.currentItemCount).toBe(1);
-        expect(result.staleItemCount).toBe(3);
+        expect(result.staleItemCount).toBe(2);
     });
 
     test("should ignore stale root array mutations after direct property assignment", async ({

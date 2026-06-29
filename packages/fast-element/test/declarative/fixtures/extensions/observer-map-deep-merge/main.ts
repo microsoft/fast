@@ -437,8 +437,19 @@ class DeepMergeTestElement extends FASTElement {
         };
     }
 
-    public async mutateStaleNestedItemsAfterDeepMerge() {
+    public async mutateStaleNestedItemsAfterSecondDeepMerge() {
+        deepMerge(this.users[0], {
+            orders: [this.createOrder(901, "First replacement")],
+        });
+        await Updates.next();
+
         const oldItems = this.users[0].orders[0].items;
+
+        deepMerge(this.users[0], {
+            orders: [this.createOrder(902, "Second replacement")],
+        });
+        await Updates.next();
+
         let notifications = 0;
         const notifier = Observable.getNotifier(this);
         const subscriber = {
@@ -449,10 +460,6 @@ class DeepMergeTestElement extends FASTElement {
 
         notifier.subscribe(subscriber, "users");
 
-        this.updateUserOrders();
-        await Updates.next();
-
-        notifications = 0;
         oldItems.push(this.createProduct(9000, "Stale item"));
         await Updates.next();
 
