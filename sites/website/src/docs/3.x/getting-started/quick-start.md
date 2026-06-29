@@ -32,7 +32,7 @@ If you're publishing a reusable component library, you can install `@microsoft/f
 
 You may need to adjust your `tsconfig.json` to accommodate the conventions used throughout this guide. The following options are recommended:
 
-```json
+```jsonc
 {
   "compilerOptions": {
     "experimentalDecorators": true, // required for decorators (`@attr`, `@observable`, `@volatile`, etc.)
