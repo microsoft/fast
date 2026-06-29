@@ -1,0 +1,25 @@
+{# Derives prev/next from the eleventy-navigation tree for the current
+   collection. Requires `paginationCollection` to be set. #}
+{% set siblings = paginationCollection | eleventyNavigation | prevNext(page.url) %}
+{% set prevPage = siblings.prev %}
+{% set nextPage = siblings.next %}
+{% if prevPage or nextPage %}
+<nav class="pagination-nav" aria-label="Docs pages navigation">
+    {% if prevPage %}
+    <a class="pagination-nav__link pagination-nav__link--previous" href="{{ prevPage.url }}">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">«&nbsp;{{ prevPage.title }}</div>
+    </a>
+    {% else %}
+    <div></div>
+    {% endif %}
+    {% if nextPage %}
+    <a class="pagination-nav__link pagination-nav__link--next" href="{{ nextPage.url }}">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">{{ nextPage.title }}&nbsp;»</div>
+    </a>
+    {% else %}
+    <div></div>
+    {% endif %}
+</nav>
+{% endif %}
