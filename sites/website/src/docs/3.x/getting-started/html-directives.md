@@ -20,34 +20,217 @@ keywords:
 
 # HTML Directives
 
-FAST provides directives to aide in solving some common scenarios.
+When working with a custom element's shadow DOM, you often need references to structural pieces within the template. FAST Element provides directives that reference and manipulate elements in the template and control rendering based on conditions or data.
 
-## ref
+## Rendering Directives
 
-Sometimes you need a direct reference to a single DOM node from your template. This might be because you need the rendered dimensions of the node, you want to control the playback of a `video` element, use the drawing context of a `canvas` element, or pass an element to a 3rd party library. Whatever the reason, you can get a reference to the DOM node by using the `ref` directive.
+Rendering directives control what renders based on conditions or data. FAST Element provides two: `repeat` and `when`.
 
-**Example: Referencing an Element**
+### The `repeat` Directive
+
+The `repeat()` directive renders a list of items from an array, using a template to render each one. It accepts an expression which returns an array, an item template, and an optional configuration object.
+
+For a simple array, the item template renders each entry directly. Within the item template, the source (`x`) is the current item rather than the host component, so typing the template with `html<string>` makes `x` a `string`:
 
 ```ts
-import { attr, FASTElement, html, ref } from '@microsoft/fast-element';
+import { FASTElement, html, observable, repeat } from '@microsoft/fast-element';
 
-const template = html<MP4Player>`
-  <video ${ref('video')}>
-    <source src=${x => x.src} type="video/mp4">
-  </video>
+const template = html<TagList>`
+  <ul>
+    ${repeat(x => x.tags, html<string>`
+      <li>${x => x}</li>
+    `)}
+  </ul>
 `;
 
-export class MP4Player extends FASTElement {
-  @attr
-  src: string;
+class TagList extends FASTElement {
+  @observable
+  tags: string[] = ["new", "featured", "sale"];
+}
 
-  video: HTMLVideoElement;
+TagList.define({
+  name: "tag-list",
+  template,
+});
+```
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.video.play();
+The same pattern works for arrays of objects. Typing the item template with the item's type gives type-checked access to its properties:
+
+```ts
+import { FASTElement, html, observable, repeat } from '@microsoft/fast-element';
+
+interface Friend {
+  name: string;
+  age: number;
+}
+
+const template = html<FriendList>`
+  <ul>
+    ${repeat(x => x.friends, html<Friend>`
+      <li>${x => x.name} is ${x => x.age} years old.</li>
+    `)}
+  </ul>
+`;
+
+class FriendList extends FASTElement {
+  @observable
+  friends: Friend[] = [
+    { name: "Alice", age: 30 },
+    { name: "Bob", age: 25 },
+  ];
+}
+
+FriendList.define({
+  name: "friend-list",
+  template,
+});
+```
+
+Here `html<Friend>` makes `x` a `Friend`, so references like `x.name` and `x.age` are type-checked.
+
+#### Accessing the Parent Scope
+
+Within an item template's expressions, the source (`x`) is the current item, so it has no direct reference to the component the `repeat()` is declared in. The execution context (`c`) provides that reference: `c.parent` is the source the directive is bound to, and `c.parentContext` is that source's execution context. For a top-level `repeat()`, `c.parent` is the host component, so an item template can access the host's properties and methods.
+
+Typing the item template with `html<Friend, FriendList>` gives `c.parent` the host's type, so member access like `c.parent.removeFriend(x)` is type-checked:
+
+```ts
+import { FASTElement, html, observable, repeat } from '@microsoft/fast-element';
+
+interface Friend {
+  name: string;
+}
+
+const template = html<FriendList>`
+  <ul>
+    ${repeat(x => x.friends, html<Friend, FriendList>`
+      <li>
+        ${x => x.name}
+        <button @click=${(x, c) => c.parent.removeFriend(x)}>Remove</button>
+      </li>
+    `)}
+  </ul>
+`;
+
+class FriendList extends FASTElement {
+  @observable
+  friends: Friend[] = [{ name: "Alice" }, { name: "Bob" }];
+
+  removeFriend(friend: Friend) {
+    this.friends = this.friends.filter(f => f !== friend);
   }
 }
+
+FriendList.define({
+  name: "friend-list",
+  template,
+});
+```
+
+Here `c.parent` is the `FriendList` instance, so each item's button can call the `removeFriend()` method. When `repeat()` directives are nested, `c.parent` is the item from the enclosing `repeat()` and `c.parentContext` is its execution context, so an item template can reach the scopes that surround it.
+
+#### Positioning
+
+By default, an item template has access to its item but not its position in the list. To use position-dependent values, pass a configuration object as the third argument with the `positioning` property set to `true`. This adds `index` and `length` to the execution context, along with the derived `isFirst`, `isLast`, `isEven`, `isOdd`, and `isInMiddle` properties.
+
+```ts
+const template = html<FriendList>`
+  <ol>
+    ${repeat(
+      x => x.friends,
+      html<Friend>`
+        <li>${(x, c) => c.index + 1}. ${x => x.name}</li>
+      `,
+      { positioning: true }
+    )}
+  </ol>
+`;
+```
+
+Positioning is opt-in because it has a cost: when the list changes, FAST must update the context of the affected items to keep `index` and `length` current. Enable it only when an item template uses position-dependent values.
+
+#### Recycling Views
+
+When the list changes, `repeat()` reuses existing item views by default rather than creating new ones, which avoids unnecessary allocation. A reused view keeps the DOM from the item it previously displayed, then re-binds it to the new item. Any transient state that a binding does not control, such as scroll position or focus, can carry over.
+
+To give each item a fresh view instead, set `recycle: false`:
+
+```ts
+const template = html<FriendList>`
+  <ol>
+    ${repeat(
+      x => x.friends,
+      html<Friend>`
+        <li>${x => x.name}</li>
+      `,
+      { recycle: false }
+    )}
+  </ol>
+`;
+```
+
+Disabling recycling avoids stale state at the cost of recreating views, so reserve it for cases where reused DOM causes problems.
+
+### The `when` Directive
+
+The `when()` directive conditionally renders elements. It accepts a predicate function, a template to render when the predicate is true, and an optional template to render when it is false.
+
+```ts
+import { FASTElement, html, observable, when } from '@microsoft/fast-element';
+
+class WhenExample extends FASTElement {
+  @observable
+  showContent: boolean = true;
+}
+
+const template = html<WhenExample>`
+  <template>
+    ${when(
+      x => x.showContent,
+      html<WhenExample>`<span>This nested template is rendered when showContent is true.</span>`,
+      html<WhenExample>`<span>This nested template is rendered when showContent is false.</span>`,
+    )}
+  </template>
+`;
+
+WhenExample.define({
+  name: "when-example",
+  template,
+});
+```
+
+## Reference Directives
+
+Reference directives create references to elements in your template so you can manipulate them from your component's class. FAST Element provides three: `ref`, `slotted`, and `children`.
+
+### The `ref` Directive
+
+The `ref()` directive maps an element in the template to an observed property on the component class, so you can reach the element through the component instance.
+
+In the following example, the `ref()` directive maps the `<video>` element to the `video` property on the `MP4Player` class.
+
+```ts
+import { attr, FASTElement, html, observable, ref } from '@microsoft/fast-element';
+
+class MP4Player extends FASTElement {
+  @attr
+  src?: string;
+
+  @observable
+  video?: HTMLVideoElement;
+
+  videoChanged(_prev?: HTMLVideoElement, next?: HTMLVideoElement) {
+    next?.play();
+  }
+}
+
+const template = html<MP4Player>`
+  <template>
+    <video ${ref("video")}>
+      <source src="${x => x.src}" type="video/mp4">
+    </video>
+  </template>
+`;
 
 MP4Player.define({
   name: "mp4-player",
@@ -55,307 +238,189 @@ MP4Player.define({
 });
 ```
 
-Place the `ref` directive on the element you want to reference and provide it with a property name to assign the reference to. Once the `connectedCallback` lifecycle event runs, your property will be set to the reference, ready for use.
+### The `slotted` Directive
 
-:::tip
-If you provide a type for your HTML template, TypeScript will type check the property name you provide to ensure that it actually exists on your element.
-:::
-
-## slotted
-
-Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](/docs/advanced/working-with-custom-elements.md).)
+The `slotted()` directive references the elements assigned to a `<slot>` in your component's shadow DOM, so you can work with slotted content from the component class.
 
 ```ts
-import { FASTElement, html, slotted } from '@microsoft/fast-element';
+import { FASTElement, html, observable, slotted } from '@microsoft/fast-element';
 
-const template = html<MyElement>`
-  <div>
-    <slot ${slotted('slottedNodes')}></slot>
-  </div>
-`;
-
-export class MyElement extends FASTElement {
+class SlottedExample extends FASTElement {
   @observable
-  slottedNodes: Node[];
+  slottedElements!: HTMLElement[];
 
-  slottedNodesChanged() {
-    // respond to changes in slotted node
+  slottedElementsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]) {
+    console.log("The collection of slotted elements has changed:", oldValue, newValue);
   }
 }
-MyElement.define({
-  name: 'my-element',
+
+const template = html<SlottedExample>`
+  <template>
+    <slot ${slotted("slottedElements")}></slot>
+  </template>
+`;
+
+SlottedExample.define({
+  name: "slotted-example",
   template
 });
 ```
 
-Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify a customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
+In the example above, the `slotted("slottedElements")` directive creates a reference to the elements assigned to the `<slot>` and maps them to the `slottedElements` property on the `SlottedExample` class. The `slottedElementsChanged` method is called whenever the collection of slotted elements changes.
 
-:::tip
-It's best to leverage a change handler for slotted nodes rather than assuming that the nodes will be present in the `connectedCallback`.
-:::
+#### Filtering Slotted Elements
 
-## children
-
-Besides using `ref` to reference a single DOM node, you can use `children` to get references to all child nodes of a particular element.
-
-**Example: Referencing Child Nodes**
+The `slotted()` directive also accepts an optional configuration object to filter the assigned elements by tag name or CSS selector, so only matching assigned nodes reach the property:
 
 ```ts
-import { children, FASTElement, html, repeat } from '@microsoft/fast-element';
+import { elements, html, slotted } from "@microsoft/fast-element";
 
-const template = html<FriendList>`
-  <ul ${children('listItems')}>
-    ${repeat(x => x.friends, html<string>`
-      <li>${x => x}</li>
-    `)}
-  </ul>
-`;
-
-export class FriendList extends FASTElement {
-  @observable
-  listItems: Node[];
-
-  @observable
-  friends: string[] = [];
-
-  connectedCallback() {
-    super.connectedCallback();
-    console.log(this.listItems);
-  }
-}
-
-FriendList.define({
-  name: 'friend-list',
-  template
-});
-```
-
-In the example above, the `listItems` property will be populated with all child nodes of the `ul` element. If `listItems` is decorated with `@observable` then it will be updated dynamically as the child nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `children` directive to specify a customized configuration for the underlying [MutationObserver](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
-
-:::important
-Like `ref`, the child nodes are not available until the `connectedCallback` lifecycle event.
-:::
-
-:::tip
-Using the `children` directive on the `template` element will provide you with references to all Light DOM child nodes of your custom element, regardless of if or where they are slotted.
-:::
-
-You can also provide a `filter` function to control which child nodes are synchronized to your property. As a convenience, we provide an `elements` filter that lets you optionally specify a selector. Taking the above example, if we wanted to ensure that our `listItems` array only included `li` elements (and not any text nodes or other potential child nodes), we could author our template like this:
-
-**Example: HTML Template with Filtering Child Nodes**
-
-```ts
-const template = html<FriendList>`
-  <ul ${children({ property: 'listItems', filter: elements('li') })}>
-    ${repeat(x => x.friends, html<string>`
-      <li>${x => x}</li>
-    `)}
-  </ul>
-`;
-```
-
-If using the `subtree` option for `children` then a `selector` is *required* in place of a `filter`. This enables more efficient collection of the desired nodes in the presence of a potential large node quantity throughout the subtree.
-
-## when
-
-:::warning
-Use sparingly, this will have impacts on performance. If you find yourself using this directive a lot in a single component, consider creating multiple components instead.
-:::
-
-The `when` directive enables you to conditionally render blocks of HTML. When you provide an expression to `when` it will render the child template into the DOM when the expression evaluates to `true` and remove the child template when it evaluates to `false` (or if it is never `true`, the rendering will be skipped entirely).
-
-**Example: Conditional Rendering**
-
-```ts
-import { FASTElement, html, observable, when } from '@microsoft/fast-element';
-
-const template = html<MyApp>`
-  <h1>My App</h1>
-
-  ${when(x => !x.ready, html<MyApp>`
-    Loading...
-  `)}
-`;
-
-export class MyApp extends FASTElement {
-  @observable
-  ready: boolean = false;
-
-  @observable
-  data: any = null;
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.loadData();
-  }
-
-  async loadData() {
-    const response = await fetch('some/resource');
-    const data = await response.json();
-    
-    this.data = data;
-    this.ready = true;
-  }
-}
-
-MyApp.define({
-  name: 'my-app',
-  template
-});
-```
-
-:::note
-The `@observable` decorator creates a property that the template system can watch for changes. It is similar to `@attr`, but the property is not surfaced as an HTML attribute on the element itself.
-:::
-
-In addition to providing a template to conditionally render, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are conditionally rendering.
-
-**Example: HTML Template with Conditional Rendering and Dynamic Template**
-
-```ts
-const template = html<MyApp>`
-  <h1>My App</h1>
-
-  ${when(x => x.ready, x => x.dataTemplate)}
-`;
-```
-
-## repeat
-
-:::warning
-Use sparingly, this will have impacts on performance. Instead, use slots and compose your component using multiple nested elements, slotted elements may provide more performant and more maintainable solutions. See the [FASTElement documentation](./fast-element.md) for details.
-:::
-
-To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
-
-**Example: List Rendering**
-
-```ts
-import { FASTElement, html, observable, repeat } from '@microsoft/fast-element';
-
-const template = html<FriendList>`
-  <h1>Friends</h1>
-
-  <form @submit="${x => x.addFriend()}>"
-    <input type="text" :value="${x => x.name}" @input="${(x, c) => x.handleNameInput(c.event)}">
-    <button type="submit">Add Friend</button>
-  </form>
-  <ul>
-    ${repeat(x => x.friends, html<string>`
-      <li>${x => x}</li>
-    `)}
-  </ul>
-`;
-
-export class FriendList extends FASTElement {
-  @observable
-  friends: string[] = [];
-
-  @observable
-  name: string = '';
-
-  addFriend() {
-    if (!this.name) {
-      return;
-    }
-
-    this.friends.push(this.name);
-    this.name = '';
-  }
-
-  handleNameInput(event: Event) {
-    this.name = (event.target! as HTMLInputElement).value;
-  }
-}
-
-FriendList.define({
-  name: 'friend-list',
-  template
-})
-```
-
-Similar to event handlers, within a `repeat` block you have access to a special context object. Here is a list of the properties that are available on the context:
-
-* `event` - The event object when inside an event handler.
-* `parent` - The parent view-model when inside a `repeat` block.
-* `parentContext` - The parent `ExecutionContext` when inside a `repeat` block. This is useful when repeats are nested and the inner-most repeat needs access to the root view-model.
-* `index` - The index of the current item when inside a `repeat` block (opt-in).
-* `length` - The length of the array when inside a `repeat` block (opt-in).
-* `isEven` - True if the index of the current item is even when inside a `repeat` block (opt-in).
-* `isOdd` - True if the index of the current item is odd when inside a `repeat` block (opt-in).
-* `isFirst` - True if the current item is first in the array inside a `repeat` block (opt-in).
-* `isInMiddle` - True if the current item is somewhere in the middle of the array inside a `repeat` block (opt-in).
-* `isLast` - True if the current item is last in the array inside a `repeat` block (opt-in).
-
-Some context properties are opt-in because they are more costly to update. So, for performance reasons, they are not available by default. To opt into the positioning properties, pass options to the repeat directive, with the setting `positioning: true`. For example, here's how we would use the `index` in our friends template from above:
-
-**Example: HTMLTemplate with List Rendering and Item Index**
-
-```ts
-const template = html<FriendList>`
-  <ul>
-    ${repeat(x => x.friends, html<string>`
-      <li>${(x, c) => c.index} ${x => x}</li>
-    `, { positioning: true })}
-  </ul>
-`;
-```
-
-Whether or not a repeat directive re-uses item views can be controlled with the `recycle` option setting. When `recycle: true`, which is the default value, the repeat directive may reuse views rather than create new ones from the template.  When `recycle: false` 
-previously used views are always discarded and each item will always be assigned a new view. Recyling previously used views may improve performance in some situations but may also be "dirty" from the previously displayed item.
-
-**Example: HTML Template with List Rendering and without view recycling**
-
-```ts
-const template = html<FriendList>`
-  <ul>
-    ${repeat(
-      x => x.friends,
-      html<string>`<li>${(x, c) => c.index} ${x => x}</li>`,
-      { positioning: true, recycle: false }
-    )}
-  </ul>
-`;
-```
-
-In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items.
-
-## Host directives
-
-So far, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
-
-**Example: Host Directive Template**
-
-```ts
-const template = html<MyProgress>`
-  <template (Represents my-progress element)
-      role="progressbar"
-      aria-valuenow=${x => x.value}
-      aria-valuemin=${x => x.min}
-      aria-valuemax=${x => x.max}>
-    (template targeted at Shadow DOM here)
+const template = html<SlottedExample>`
+  <template>
+    <slot ${slotted({
+      property: "slottedElements",
+      filter: elements("div")
+    })}></slot>
   </template>
 `;
 ```
 
-**Example: DOM with Host Directive Output**
+#### Flattening
 
-```html
-<my-progress
-    min="0"              (from user)
-    max="100"            (from user)
-    value="50"           (from user)
-    role="progressbar"   (from host directive)
-    aria-valuenow="50"   (from host directive)
-    aria-valuemin="0"    (from host directive)
-    aria-valuemax="100"  (from host directive)>
-</my-progress>
+The configuration object also accepts a `flatten` option. By default, `slotted()` references the nodes directly assigned to the slot. Setting `flatten: true` references the slot's flattened assigned nodes instead, resolving any nested slots to their distributed content and falling back to the slot's default content when nothing is assigned. The option is passed through to the underlying [`assignedNodes()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) call.
+
+```ts
+import { html, slotted } from "@microsoft/fast-element";
+
+const template = html<SlottedExample>`
+  <template>
+    <slot ${slotted({
+      property: "slottedElements",
+      flatten: true
+    })}></slot>
+  </template>
+`;
 ```
 
-:::tip
-Using the `children` directive on the `template` element will provide you with references to all Light DOM child nodes of your custom element, regardless of if or where they are slotted.
-:::
+### The `children` Directive
 
-:::note
-If the same attributes are defined by the host directive and the user (in the above example role="progressbar"), then the attribute set by the user will take precedence.
-:::
+The `children()` directive references the child nodes of an element in your component's shadow DOM, so you can work with them from the component class.
+
+```ts
+import { children, FASTElement, html, observable } from '@microsoft/fast-element';
+
+const template = html<ChildrenExample>`
+  <ul ${children("listItems")}>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+`;
+
+class ChildrenExample extends FASTElement {
+  @observable
+  listItems!: Node[];
+
+  listItemsChanged(oldValue: Node[], newValue: Node[]) {
+    console.log("The collection of child nodes has changed:", oldValue, newValue);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    console.log(this.listItems);
+  }
+}
+
+ChildrenExample.define({
+  name: "children-example",
+  template
+});
+```
+
+In the example above, the `children("listItems")` directive creates a reference to the child nodes of the `<ul>` and maps them to the `listItems` property on the `ChildrenExample` class. The `listItemsChanged` method is called whenever the collection of child nodes changes.
+
+The `children()` directive works well with `repeat()` for dynamic lists: render the children with `repeat()`, then reference them through `children()`:
+
+```ts
+import { children, FASTElement, html, observable, repeat } from '@microsoft/fast-element';
+
+interface Task {
+  id: number;
+  label: string;
+}
+
+const template = html<TaskList>`
+  <ul ${children("listItems")}>
+    ${repeat(x => x.tasks, html<Task>`
+      <li>${x => x.label}</li>
+    `)}
+  </ul>
+`;
+
+class TaskList extends FASTElement {
+  @observable
+  tasks: Task[] = [
+    { id: 1, label: "Write docs" },
+    { id: 2, label: "Review PR" },
+  ];
+
+  @observable
+  listItems!: Node[];
+
+  listItemsChanged() {
+    console.log(`The list now renders ${this.listItems.length} nodes.`);
+  }
+}
+
+TaskList.define({
+  name: "task-list",
+  template,
+});
+```
+
+Here `repeat()` owns the rendering: it creates and updates the `<li>` elements as the `tasks` array changes. The `children("listItems")` directive observes the same `<ul>` and keeps `listItems` in sync with whatever `repeat()` produces. Each time the rendered set of children changes, `listItemsChanged` runs with the current collection. This lets one directive drive the DOM while the other gives the component a live reference to the result.
+
+#### Filtering Child Elements
+
+Like `slotted()`, the `children()` directive accepts a configuration object in place of a property name. By default, the directive observes every child node, including the text and comment nodes between elements. Add a `filter` to narrow the collection. The `elements()` filter keeps only element nodes, or only the elements that match a selector when you pass one:
+
+```ts
+import { children, elements, html } from "@microsoft/fast-element";
+
+const template = html<Menu>`
+  <div role="menu" ${children({
+    property: "menuItems",
+    filter: elements("[role=menuitem]")
+  })}>
+    <div role="menuitem">New</div>
+    <div role="menuitem">Open</div>
+    <div role="separator"></div>
+  </div>
+`;
+```
+
+In this example, `menuItems` is populated only with the children that match `[role=menuitem]`, and the separator is ignored.
+
+#### Observing the Subtree
+
+By default, `children()` observes only the direct children of the element it is placed on. To observe deeper descendants as well, set `subtree: true`. In subtree mode a `selector` is required, because a subtree can contain many unrelated nodes and the selector indicates which of them to assign to the property.
+
+```ts
+import { children, html } from "@microsoft/fast-element";
+
+const template = html<TreeView>`
+  <div role="tree" ${children({
+    property: "treeItems",
+    subtree: true,
+    selector: "[role=treeitem]"
+  })}>
+    <div role="group">
+      <div role="treeitem">Item 1</div>
+      <div role="treeitem">Item 2</div>
+    </div>
+  </div>
+`;
+```
+
+With `subtree: true` and a `selector` in place, `treeItems` is populated with every matching `[role=treeitem]` descendant at any depth, and updated whenever the matching set changes. In direct-child mode the `filter` option decides which children to keep; in subtree mode the `selector` takes over that role and matches descendants throughout the tree.
