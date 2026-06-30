@@ -25,13 +25,14 @@ import { render } from '@microsoft/fast-build';
 
 ## CLI usage
 
-Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with an optional JSON state file:
+Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with an optional JSON state file, or `convert` to convert a FAST declarative HTML template to another supported syntax:
 
 ```shell
 fast build [options]
+fast convert [options]
 ```
 
-### Options
+### Build options
 
 | Option | Default | Description |
 |---|---|---|
@@ -195,6 +196,42 @@ fast build --config=configs/my-build.json
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
 All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, and `stream`. Unknown keys produce an error. Values must be strings except `stream`, which must be a JSON boolean (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values, including `--stream=false` overriding `"stream": true`.
+
+## Convert
+
+`fast convert` converts one FAST declarative template file at a time using the converter WASM module in `wasm/convert/`.
+
+```shell
+fast convert --syntax=webui-prerelease --template=example.html
+fast convert --syntax=fast-v3-ts --template=example.html --output=../*.template.ts
+```
+
+### Convert options
+
+| Option | Default | Description |
+|---|---|---|
+| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease` or `fast-v3-ts` |
+| `--template="<path>"` | _(required)_ | Source FAST declarative template. The file must use the `.html` extension. |
+| `--output="<path>"` | Next to `--template` | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. |
+| `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
+| `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
+
+The source template must be `.html`. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory must already exist, and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used.
+
+### Convert configuration file
+
+`fast-convert.config.json` follows the same precedence and path-resolution rules as `fast-build.config.json`: CLI arguments override config values, and `template`/`output` paths from config are resolved relative to the config file directory.
+
+```json
+{
+    "syntax": "fast-v3-ts",
+    "template": "src/example.html",
+    "output": "generated/*.template.ts",
+    "overwrite": false
+}
+```
+
+Only `syntax`, `template`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean.
 
 ## Template syntax
 
