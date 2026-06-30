@@ -153,6 +153,80 @@ test.describe("generateWebuiTemplates", () => {
         assert.ok(!html.includes("shadowrootdelegatesfocus"));
     });
 
+    test("should convert f-when directives to webui if directives", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "conditional.template.js"),
+            `export const template = {
+                html: '<template><f-when value="{{count > 0}}"><span>{{label}}</span></f-when></template>',
+                factories: {}
+            };`,
+        );
+
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "fast" });
+
+        const html = await readFile(
+            join(distDir, "conditional.template-webui.html"),
+            "utf8",
+        );
+        assert.ok(
+            html.includes('<if condition="count > 0"><span>{{label}}</span></if>'),
+            `got: ${html}`,
+        );
+        assert.ok(!html.includes("f-when"), `got: ${html}`);
+    });
+
+    test("should convert f-repeat directives to webui for directives", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "list.template.js"),
+            `export const template = {
+                html: '<template><ul><f-repeat value="{{item in items}}" positioning="true" recycle="false"><li>{{item.name}}</li></f-repeat></ul></template>',
+                factories: {}
+            };`,
+        );
+
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "fast" });
+
+        const html = await readFile(join(distDir, "list.template-webui.html"), "utf8");
+        assert.ok(
+            html.includes('<for each="item in items"><li>{{item.name}}</li></for>'),
+            `got: ${html}`,
+        );
+        assert.ok(!html.includes("f-repeat"), `got: ${html}`);
+        assert.ok(!html.includes("positioning"), `got: ${html}`);
+        assert.ok(!html.includes("recycle"), `got: ${html}`);
+    });
+
+    test("should convert nested f-when and f-repeat directives", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "nested.template.js"),
+            `export const template = {
+                html: '<template><f-when value="{{show}}"><f-repeat value="{{item in items}}"><p>{{item}}</p></f-repeat></f-when></template>',
+                factories: {}
+            };`,
+        );
+
+        await generateWebuiTemplates({ cwd: tempDir, tagPrefix: "fast" });
+
+        const html = await readFile(join(distDir, "nested.template-webui.html"), "utf8");
+        assert.ok(
+            html.includes(
+                '<if condition="show"><for each="item in items"><p>{{item}}</p></for></if>',
+            ),
+            `got: ${html}`,
+        );
+        assert.ok(!html.includes("f-when"), `got: ${html}`);
+        assert.ok(!html.includes("f-repeat"), `got: ${html}`);
+    });
+
     test("should strip the {{styles}} marker from output", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
