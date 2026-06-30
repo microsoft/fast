@@ -10,6 +10,28 @@ import {
 } from "@microsoft/fast-test-harness/build/generate-templates.js";
 import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
 
+interface RepeatHost {
+    items: RepeatItem[];
+}
+
+interface RepeatChild {
+    name: string;
+}
+
+interface RepeatItem {
+    children: RepeatChild[];
+    label: string;
+    name: string;
+    visible: boolean;
+}
+
+interface WhenHost {
+    items: RepeatItem[];
+    label: string;
+    ready: boolean;
+    visible: boolean;
+}
+
 test.describe("convertTemplate", async () => {
     // Install the DOM shim before any tests — convertTemplate needs declarative
     // syntax constants which require a DOM environment, and FAST Element needs
@@ -18,7 +40,9 @@ test.describe("convertTemplate", async () => {
 
     // Dynamic import after the DOM shim is installed so FAST Element can
     // access `document`, `CSSStyleSheet`, etc.
-    const { html, ref, slotted, children } = await import("@microsoft/fast-element");
+    const { html, ref, slotted, children, elements, repeat, when } = await import(
+        "@microsoft/fast-element"
+    );
     test("should wrap a static template in f-template tags", () => {
         const template = html`<template><div>hello</div></template>`;
         const result = convertTemplate(template, "fast-test");
@@ -94,6 +118,34 @@ test.describe("convertTemplate", async () => {
         assert.ok(result.includes("slottedItems"), `got: ${result}`);
     });
 
+    test("should convert SlottedDirective factories with elements filter", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItems",
+            filter: elements(),
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-elements");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-slotted="{slottedItems filter elements()}"'),
+            `got: ${result}`,
+        );
+    });
+
+    test("should convert SlottedDirective factories with selector elements filter", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItems",
+            filter: elements("p, ol"),
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-elements-selector");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-slotted="{slottedItems filter elements(p, ol)}"'),
+            `got: ${result}`,
+        );
+    });
+
     test("should convert value bindings to {{expression}}", () => {
         const template = html`<template><span>${x => x.label}</span></template>`;
         const result = convertTemplate(template, "fast-binding");
@@ -136,6 +188,16 @@ test.describe("convertTemplate", async () => {
         assert.ok(result.includes("handleClick"), `got: ${result}`);
     });
 
+    test("should convert custom event bindings", () => {
+        const template = html`<template><test-child @value-change="${(x, c) => x.handleValueChange(c.event)}"></test-child></template>`;
+        const result = convertTemplate(template, "fast-custom-event");
+
+        assert.ok(result);
+        assert.ok(result.includes("@value-change="), `got: ${result}`);
+        assert.ok(result.includes("handleValueChange"), `got: ${result}`);
+        assert.ok(result.includes("$e"), `got: ${result}`);
+    });
+
     test("should convert property bindings to :prop expressions", () => {
         const template = html`<template><input :value="${x => x.currentValue}" /></template>`;
         const result = convertTemplate(template, "fast-prop");
@@ -143,6 +205,37 @@ test.describe("convertTemplate", async () => {
         assert.ok(result);
         assert.ok(result.includes(":value="), `got: ${result}`);
         assert.ok(result.includes("currentValue"), `got: ${result}`);
+    });
+
+    test("should convert plain innerHTML wrappers to unescaped content bindings", () => {
+        const template = html`<template><div :innerHTML="${x => x.html}"></div></template>`;
+        const result = convertTemplate(template, "fast-inner-html");
+
+        assert.ok(result);
+        assert.ok(result.includes("{{{html}}}"), `got: ${result}`);
+        assert.ok(!result.includes(":innerHTML"), `got: ${result}`);
+    });
+
+    test("should preserve innerHTML property bindings on divs with static attributes", () => {
+        const template = html`<template><div class="content" :innerHTML="${x => x.html}"></div></template>`;
+        const result = convertTemplate(template, "fast-inner-html-attrs");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('<div class="content" :innerHTML="{{html}}"></div>'),
+            `got: ${result}`,
+        );
+        assert.ok(!result.includes("{{{html}}}"), `got: ${result}`);
+    });
+
+    test("should preserve innerHTML property bindings on divs with other bindings", () => {
+        const template = html`<template><div :innerHTML="${x => x.html}" ?hidden="${x => x.hidden}"></div></template>`;
+        const result = convertTemplate(template, "fast-inner-html-bindings");
+
+        assert.ok(result);
+        assert.ok(result.includes(':innerHTML="{{html}}"'), `got: ${result}`);
+        assert.ok(result.includes('?hidden="{{hidden}}"'), `got: ${result}`);
+        assert.ok(!result.includes("{{{html}}}"), `got: ${result}`);
     });
 
     test("should handle multiple factories in a single template", () => {
@@ -161,6 +254,140 @@ test.describe("convertTemplate", async () => {
 
         assert.ok(result);
         assert.ok(result.includes("<svg>icon</svg>"), `got: ${result}`);
+    });
+
+    test("should convert RepeatDirective factories to f-repeat directives", () => {
+        const itemTemplate = html<RepeatItem>`<li>${x => x.label}</li>`;
+        const template = html<RepeatHost>`<template><ul>${repeat(
+            x => x.items,
+            itemTemplate,
+            {
+                positioning: true,
+                recycle: false,
+            },
+        )}</ul></template>`;
+        const result = convertTemplate(template, "fast-repeat");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes(
+                '<f-repeat value="{{item in items}}" positioning="true" recycle="false">',
+            ),
+            `got: ${result}`,
+        );
+        assert.ok(result.includes("<li>{{item.label}}</li>"), `got: ${result}`);
+        assert.ok(result.includes("</f-repeat>"), `got: ${result}`);
+        assert.ok(!result.includes("<!--fast-"), `got: ${result}`);
+    });
+
+    test("should convert RepeatDirective factories with inline templates", () => {
+        const template = html<RepeatHost>`<template><ul>${repeat(
+            x => x.items,
+            html<RepeatItem>`<li>${x => x.name}</li>`,
+        )}</ul></template>`;
+        const result = convertTemplate(template, "fast-repeat-inline");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('<f-repeat value="{{item in items}}">'),
+            `got: ${result}`,
+        );
+        assert.ok(result.includes("<li>{{item.name}}</li>"), `got: ${result}`);
+        assert.ok(result.includes("</f-repeat>"), `got: ${result}`);
+        assert.ok(!result.includes("<!--fast-"), `got: ${result}`);
+    });
+
+    test("should convert nested RepeatDirective factories", () => {
+        const childTemplate = html<RepeatChild>`<li>${x => x.name}</li>`;
+        const itemTemplate = html<RepeatItem>`<li>${x => x.label}<ol>${repeat(
+            x => x.children,
+            childTemplate,
+        )}</ol></li>`;
+        const template = html<RepeatHost>`<template><ul>${repeat(
+            x => x.items,
+            itemTemplate,
+        )}</ul></template>`;
+        const result = convertTemplate(template, "fast-repeat-nested");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('<f-repeat value="{{item in items}}">'),
+            `got: ${result}`,
+        );
+        assert.ok(
+            result.includes('<f-repeat value="{{item1 in item.children}}">'),
+            `got: ${result}`,
+        );
+        assert.ok(result.includes("{{item.label}}"), `got: ${result}`);
+        assert.ok(result.includes("{{item1.name}}"), `got: ${result}`);
+    });
+
+    test("should convert when bindings to f-when directives", () => {
+        const template = html<WhenHost>`<template>${when(
+            x => x.visible,
+            html<WhenHost>`<span>${x => x.label}</span>`,
+        )}</template>`;
+        const result = convertTemplate(template, "fast-when");
+
+        assert.ok(result);
+        assert.ok(result.includes('<f-when value="{{visible}}">'), `got: ${result}`);
+        assert.ok(result.includes("<span>{{label}}</span>"), `got: ${result}`);
+        assert.ok(result.includes("</f-when>"), `got: ${result}`);
+    });
+
+    test("should convert nested when bindings", () => {
+        const template = html<WhenHost>`<template>${when(
+            x => x.visible,
+            html<WhenHost>`${when(
+                x => x.ready,
+                html<WhenHost>`<span>${x => x.label}</span>`,
+            )}`,
+        )}</template>`;
+        const result = convertTemplate(template, "fast-when-nested");
+
+        assert.ok(result);
+        assert.ok(result.includes('<f-when value="{{visible}}">'), `got: ${result}`);
+        assert.ok(result.includes('<f-when value="{{ready}}">'), `got: ${result}`);
+        assert.ok(result.includes("<span>{{label}}</span>"), `got: ${result}`);
+    });
+
+    test("should convert when bindings inside repeat item templates", () => {
+        const itemTemplate = html<RepeatItem>`<li>${when(
+            x => x.visible,
+            html<RepeatItem>`<span>${x => x.label}</span>`,
+        )}</li>`;
+        const template = html<RepeatHost>`<template><ul>${repeat(
+            x => x.items,
+            itemTemplate,
+        )}</ul></template>`;
+        const result = convertTemplate(template, "fast-repeat-when");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('<f-repeat value="{{item in items}}">'),
+            `got: ${result}`,
+        );
+        assert.ok(result.includes('<f-when value="{{item.visible}}">'), `got: ${result}`);
+        assert.ok(result.includes("<span>{{item.label}}</span>"), `got: ${result}`);
+    });
+
+    test("should convert repeat directives inside when bindings", () => {
+        const template = html<WhenHost>`<template>${when(
+            x => x.visible,
+            html<WhenHost>`<ul>${repeat(
+                x => x.items,
+                html<RepeatItem>`<li>${x => x.name}</li>`,
+            )}</ul>`,
+        )}</template>`;
+        const result = convertTemplate(template, "fast-when-repeat");
+
+        assert.ok(result);
+        assert.ok(result.includes('<f-when value="{{visible}}">'), `got: ${result}`);
+        assert.ok(
+            result.includes('<f-repeat value="{{item in items}}">'),
+            `got: ${result}`,
+        );
+        assert.ok(result.includes("<li>{{item.name}}</li>"), `got: ${result}`);
     });
 });
 
