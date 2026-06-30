@@ -24,7 +24,7 @@ This document describes how to author styles with the `css` function, including 
 
 ## Defining Styles
 
-The `css` function is a tagged template that turns CSS into an `ElementStyles` object. The following example defines basic styles for a component:
+The `css` function is a tagged template that turns CSS into an `ElementStyles` object. The following example defines basic styles for a component:
 
 ```ts
 import { css, FASTElement, html } from "@microsoft/fast-element";
@@ -167,18 +167,38 @@ Because `css` templates are static, you do not change a component's styles by re
 This is most useful when a style depends on a value that can only be computed at runtime. In the following example, a component derives a custom property from a numeric attribute, then builds an `ElementStyles` object and applies it through the controller:
 
 ```ts
-import { attr, css, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import {
+  attr,
+  css,
+  type ElementStyles,
+  FASTElement,
+  nullableNumberConverter,
+} from "@microsoft/fast-element";
 
 class MyElement extends FASTElement {
-  @attr
-  ratio = 0;
+  @attr({ converter: nullableNumberConverter })
+  ratio?: number | null;
 
   private ratioStyles?: ElementStyles;
 
-  ratioChanged() {
-    if (this.ratioStyles) {
-      this.$fastController.removeStyles(this.ratioStyles);
+  connectedCallback() {
+    super.connectedCallback();
+    this.updateRatioStyles();
+  }
+
+  ratioChanged(prev?: number | null, next?: number | null) {
+    if (typeof next !== "number") {
+      this.ratio = 0;
+      return;
     }
+
+    if (this.$fastController.isConnected) {
+      this.updateRatioStyles();
+    }
+  }
+
+  protected updateRatioStyles() {
+    this.$fastController.removeStyles(this.ratioStyles);
 
     this.ratioStyles = css`
       :host {
@@ -191,7 +211,9 @@ class MyElement extends FASTElement {
 }
 ```
 
-Each time `ratio` changes, the component removes the previous stylesheet, builds a new one with the updated value, and adds it. The current stylesheet is held on a private field so it can be removed before the next one is applied. Because the styles are recomputed from a runtime value, a new `ElementStyles` object is created each time rather than reused.
+`updateRatioStyles()` removes the previous stylesheet, builds a new one from the current value, and adds it. The stylesheet is held on a private field so it can be removed before the new one is applied. Because the styles are recomputed from a runtime value, a new `ElementStyles` object is created each time rather than reused.
+
+`addStyles()` and `removeStyles()` act on the component's shadow root, which FAST creates during connection, so the update has to wait for the controller to connect. `ratioChanged()` guards on `this.$fastController.isConnected` and skips the update until then, while `connectedCallback()` runs it once after `super.connectedCallback()` to apply the initial value.
 
 Applying the value as a stylesheet, rather than writing it to the host's inline `style` attribute, keeps the computed value encapsulated in the component's own styles and leaves the host element's `style` attribute free for consumers.
 

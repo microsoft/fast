@@ -133,9 +133,17 @@ HelloWorld.define({
 Now that our custom element is defined, we can use it in our HTML like any other element. Here's the complete code for our `HelloWorld` component, along with an example of how to use it in an HTML page:
 
 ```ts
-import { attr, css, FASTElement, html } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { css } from "@microsoft/fast-element/css.js";
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { html } from "@microsoft/fast-element/html.js";
 
-const template = html`
+class HelloWorld extends FASTElement {
+    @attr
+    name?: string;
+}
+
+const template = html<HelloWorld>`
     <template>
         <span>Hello ${x => x.name}!</span>
     </template>
@@ -147,14 +155,9 @@ const styles = css`
     }
 
     span {
-        color: red;
+        color: green;
     }
 `;
-
-class HelloWorld extends FASTElement {
-    @attr
-    name?: string;
-}
 
 HelloWorld.define({
     name: "hello-world",

@@ -230,7 +230,7 @@ When rendered, the host element receives the `role` attribute:
 </my-element>
 ```
 
-If the consumer of the component sets the same attribute on the host directly, the consumer's value takes precedence over the value defined in the template.
+FAST applies this attribute to the host as a one-time binding when the template binds, during the element's connection. If the host already carries the attribute, for example because the consumer set it in markup, the template value overwrites it. The binding runs once, so attribute changes the consumer makes after connection are left in place.
 
 All of the bindings described in [Template Bindings](#template-bindings) (content, attribute, boolean attribute, property, and event) work on the `<template>` root. For example, a progress bar can mirror its state to ARIA attributes on the host:
 

@@ -87,7 +87,7 @@ import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-elem
 
 export class MyElement extends FASTElement {
   @attr({ converter: nullableNumberConverter })
-  count?: number;
+  count?: number | null;
 }
 ```
 
@@ -222,7 +222,7 @@ In this example, `MyElement.define()` registers the custom element with the name
 
 #### Definition Extensions
 
-`define()` accepts an optional second argument — an array of extension callbacks. Each extension is a function that receives the resolved `FASTElementDefinition` and is called **before** the element is registered with `customElements.define()`. This enables a plugin pattern for hooking into element registration.
+`define()` accepts an array of extension callbacks as an optional second argument. Each extension is a function that receives the resolved `FASTElementDefinition` and is called **before** the element is registered with `customElements.define()`. This enables a plugin pattern for hooking into element registration.
 
 ```ts
 import type { FASTElementExtension } from "@microsoft/fast-element";
@@ -286,3 +286,7 @@ export class MyElement extends FASTElement {
 ```
 
 In this example, the `handleClick` method dispatches a custom event named `my-event` with a detail object containing some data. The event is configured to bubble up through the DOM and to cross the shadow DOM boundary (if applicable) by setting `bubbles: true` and `composed: true` in the options.
+
+:::note
+`$emit()` only dispatches when the element is connected. Like the pre-connect lifecycle guidance above, this means a `$emit()` call during the parse-time window before the controller has connected is a no-op. If you need to emit an event in response to an early property change, guard on `this.$fastController.isConnected` and defer the dispatch until after the element has connected.
+:::

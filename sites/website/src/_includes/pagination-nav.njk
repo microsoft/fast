@@ -4,7 +4,7 @@
 {% set prevPage = siblings.prev %}
 {% set nextPage = siblings.next %}
 {% if prevPage or nextPage %}
-<nav class="pagination-nav" aria-label="Docs pages navigation">
+<nav class="pagination-nav" aria-label="Documentation page navigation">
     {% if prevPage %}
     <a class="pagination-nav__link pagination-nav__link--previous" href="{{ prevPage.url }}">
         <div class="pagination-nav__sublabel">Previous</div>

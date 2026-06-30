@@ -28,7 +28,7 @@ Rendering directives control what renders based on conditions or data. FAST Elem
 
 ### The `repeat` Directive
 
-The `repeat()` directive renders a list of items from an array, using a template to render each one. It accepts the array and an item template, plus an optional configuration object.
+The `repeat()` directive renders a list of items from an array, using a template to render each one. It accepts an expression which returns an array, an item template, and an optional configuration object.
 
 For a simple array, the item template renders each entry directly. Within the item template, the source (`x`) is the current item rather than the host component, so typing the template with `html<string>` makes `x` a `string`:
 
@@ -213,24 +213,12 @@ In the following example, the `ref()` directive maps the `<video>` element to th
 import { attr, FASTElement, html, observable, ref } from '@microsoft/fast-element';
 
 class MP4Player extends FASTElement {
-  /**
-   * The `src` attribute on the `<mp4-player>` element is
-   * mapped to this property using the `@attr` decorator.
-   */
   @attr
   src?: string;
 
-  /**
-   * The `<video>` element in the template is mapped to
-   * this property using the `ref()` directive.
-   */
   @observable
   video?: HTMLVideoElement;
 
-  /**
-   * The `videoChanged()` method is called whenever the `video` property changes.
-   * In this case, we want to play the video when it is assigned.
-   */
   videoChanged(_prev?: HTMLVideoElement, next?: HTMLVideoElement) {
     next?.play();
   }
@@ -258,15 +246,9 @@ The `slotted()` directive references the elements assigned to a `<slot>` in your
 import { FASTElement, html, observable, slotted } from '@microsoft/fast-element';
 
 class SlottedExample extends FASTElement {
-  /**
-   * The `slottedElements` property is an array of elements that are assigned to the `<slot>` in the template. The `@observable` decorator allows us to react to changes in this property.
-   */
   @observable
   slottedElements!: HTMLElement[];
 
-  /**
-   * The `slottedElementsChanged()` method is called whenever the collection assigned to the `slottedElements` property changes. In this case, we log the old and new values to the console.
-   */
   slottedElementsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]) {
     console.log("The collection of slotted elements has changed:", oldValue, newValue);
   }
@@ -288,7 +270,7 @@ In the example above, the `slotted("slottedElements")` directive creates a refer
 
 #### Filtering Slotted Elements
 
-The `slotted()` directive also accepts an optional configuration object to filter the assigned elements by tag name or CSS selector, so only matching element types reach the property:
+The `slotted()` directive also accepts an optional configuration object to filter the assigned elements by tag name or CSS selector, so only matching assigned nodes reach the property:
 
 ```ts
 import { elements, html, slotted } from "@microsoft/fast-element";
