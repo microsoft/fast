@@ -11,6 +11,14 @@ function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
 }
 
+const bundledCratesByPackage = new Map([
+    ["@microsoft/fast-build", ["microsoft-fast-build", "microsoft-fast-convert"]],
+]);
+
+function npmNameToCrateNames(npmName) {
+    return bundledCratesByPackage.get(npmName) ?? [npmNameToCrateName(npmName)];
+}
+
 /**
  * Rewrite the `version = "..."` line for a specific `[package]` or
  * `[[package]]` block (matched by the crate name) within Cargo TOML
@@ -66,8 +74,8 @@ function rewriteCargoVersion(content, crateName, newVersion, { manifest }) {
 }
 
 /**
- * Beachball `postbump` hook: when an npm package with a paired Rust
- * crate is bumped, rewrite the crate's `Cargo.toml` (and matching entry
+ * Beachball `postbump` hook: when an npm package with paired Rust
+ * crates is bumped, rewrite each crate's `Cargo.toml` (and matching entry
  * in `Cargo.lock`, if present) so the crate version stays in lock-step
  * with the npm version.
  *
@@ -75,32 +83,33 @@ function rewriteCargoVersion(content, crateName, newVersion, { manifest }) {
  * Cargo updates land in the same PR as the package.json bump.
  */
 function syncPairedCrateVersion(packagePath, name, version) {
-    const crateName = npmNameToCrateName(name);
-    const cargoTomlPath = join(__dirname, "crates", crateName, "Cargo.toml");
-    if (!existsSync(cargoTomlPath)) return;
+    for (const crateName of npmNameToCrateNames(name)) {
+        const cargoTomlPath = join(__dirname, "crates", crateName, "Cargo.toml");
+        if (!existsSync(cargoTomlPath)) continue;
 
-    const updatedToml = rewriteCargoVersion(
-        readFileSync(cargoTomlPath, "utf8"),
-        crateName,
-        version,
-        { manifest: true },
-    );
-    if (updatedToml !== null) {
-        writeFileSync(cargoTomlPath, updatedToml);
-        console.log(`[beachball] Synced ${cargoTomlPath} to ${version}`);
-    }
-
-    const cargoLockPath = join(__dirname, "crates", crateName, "Cargo.lock");
-    if (existsSync(cargoLockPath)) {
-        const updatedLock = rewriteCargoVersion(
-            readFileSync(cargoLockPath, "utf8"),
+        const updatedToml = rewriteCargoVersion(
+            readFileSync(cargoTomlPath, "utf8"),
             crateName,
             version,
-            { manifest: false },
+            { manifest: true },
         );
-        if (updatedLock !== null) {
-            writeFileSync(cargoLockPath, updatedLock);
-            console.log(`[beachball] Synced ${cargoLockPath} to ${version}`);
+        if (updatedToml !== null) {
+            writeFileSync(cargoTomlPath, updatedToml);
+            console.log(`[beachball] Synced ${cargoTomlPath} to ${version}`);
+        }
+
+        const cargoLockPath = join(__dirname, "crates", crateName, "Cargo.lock");
+        if (existsSync(cargoLockPath)) {
+            const updatedLock = rewriteCargoVersion(
+                readFileSync(cargoLockPath, "utf8"),
+                crateName,
+                version,
+                { manifest: false },
+            );
+            if (updatedLock !== null) {
+                writeFileSync(cargoLockPath, updatedLock);
+                console.log(`[beachball] Synced ${cargoLockPath} to ${version}`);
+            }
         }
     }
 }

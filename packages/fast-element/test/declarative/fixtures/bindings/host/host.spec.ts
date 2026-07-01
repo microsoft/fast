@@ -379,6 +379,11 @@ test.describe("Host Bindings Hydration", async () => {
         test("host-autofocus has author-provided autofocus and template-provided tabindex", async ({
             page,
         }) => {
+            test.skip(
+                !!process.env.FAST_WEBUI_INTEGRATION,
+                "WebUI does not propagate static inner <template> attributes to the host output",
+            );
+
             const hydrationCompleted = page.waitForFunction(
                 () => (window as any).hydrationCompleted === true,
             );
