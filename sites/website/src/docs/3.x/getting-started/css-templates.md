@@ -186,12 +186,7 @@ class MyElement extends FASTElement {
     this.updateRatioStyles();
   }
 
-  ratioChanged(prev?: number | null, next?: number | null) {
-    if (typeof next !== "number") {
-      this.ratio = 0;
-      return;
-    }
-
+  ratioChanged() {
     if (this.$fastController.isConnected) {
       this.updateRatioStyles();
     }
@@ -202,7 +197,7 @@ class MyElement extends FASTElement {
 
     this.ratioStyles = css`
       :host {
-        --fill: ${this.ratio * 100}%;
+        --fill: ${(this.ratio ?? 0) * 100}%;
       }
     `;
 
