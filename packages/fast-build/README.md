@@ -199,7 +199,7 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 
 ## Convert
 
-`fast convert` converts one FAST declarative template file at a time using the converter WASM module in `wasm/convert/`.
+`fast convert` converts one FAST declarative template file at a time using the converter WASM module in `wasm/convert/`. Supported syntax names, output extensions, and default output suffixes are read from the converter WASM metadata so the Rust converter remains the source of truth for syntax targets.
 
 ```shell
 fast convert --syntax=webui-prerelease --template=example.html

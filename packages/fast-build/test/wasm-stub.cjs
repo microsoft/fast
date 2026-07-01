@@ -60,6 +60,20 @@ const stub = {
 };
 
 const convertStub = {
+    convert_syntax_metadata() {
+        return JSON.stringify([
+            {
+                syntax: "webui-prerelease",
+                extension: ".html",
+                suffix: ".webui.html",
+            },
+            {
+                syntax: "fast-v3-ts",
+                extension: ".ts",
+                suffix: ".template.ts",
+            },
+        ]);
+    },
     convert_template(template, syntax) {
         calls.push({ name: "convert_template", template, syntax });
         return `converted:${syntax}:${template}`;

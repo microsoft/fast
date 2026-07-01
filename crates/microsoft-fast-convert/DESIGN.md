@@ -20,20 +20,22 @@ The implementation intentionally uses a small hand scanner instead of an HTML pa
 | Module | Role |
 | --- | --- |
 | `lib.rs` | Public Rust API and crate exports |
-| `wasm.rs` | `wasm-bindgen` export for Node (`convert_template`) |
+| `wasm.rs` | `wasm-bindgen` exports for Node (`convert_template`, `convert_syntax_metadata`) |
 | `error.rs` | `ConvertError` variants and context helpers |
 | `html.rs` | Tag, attribute, and `<f-template>` scanning utilities |
 | `expression.rs` | Limited declarative expression conversion for TypeScript output |
 | `converter.rs` | Syntax selection and dispatch after shared `<f-template>` validation |
-| `syntax/mod.rs` | Shared syntax-target helpers for directive values and attribute validation |
+| `syntax/mod.rs` | Shared syntax-target helpers and exported syntax metadata |
 | `syntax/webui.rs` | `webui-prerelease` conversion pass |
 | `syntax/fast_v3_ts.rs` | `fast-v3-ts` conversion pass |
 
 Syntax-specific conversion logic lives under `syntax/` so new targets can be added
 without growing `converter.rs`. To add a syntax target, create a new module under
 `syntax/`, expose a `convert(&str) -> Result<String, ConvertError>` function, add the
-accepted syntax value to `converter.rs`, and route the new `Syntax` variant to the
-module.
+target's metadata (`name`, output `extension`, and default `suffix`) in that module,
+add the accepted syntax value to `converter.rs`, and route the new `Syntax` variant
+to the module. The `@microsoft/fast-build` CLI reads the exported WASM metadata, so
+syntax names, output extensions, and default suffixes should be defined in Rust only.
 
 ## WebUI prerelease conversion
 

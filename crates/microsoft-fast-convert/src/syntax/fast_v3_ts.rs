@@ -7,6 +7,13 @@ use crate::html::{
     find_matching_close, find_tag_end, is_self_closing_tag, parse_attributes, read_tag_name,
     ParsedAttribute,
 };
+use crate::syntax::SyntaxMetadata;
+
+pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
+    name: "fast-v3-ts",
+    extension: ".ts",
+    suffix: ".template.ts",
+};
 
 pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
     let mut state = TsState::default();

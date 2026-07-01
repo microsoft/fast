@@ -4,6 +4,49 @@ pub(crate) mod webui;
 use crate::error::{template_context, ConvertError};
 use crate::html::parse_attributes;
 
+/// Metadata for a supported converter syntax target.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SyntaxMetadata {
+    /// Syntax value accepted by `convert_template`.
+    pub name: &'static str,
+    /// Required output extension for generated files.
+    pub extension: &'static str,
+    /// Default output suffix appended to the input basename.
+    pub suffix: &'static str,
+}
+
+const SYNTAX_METADATA: &[SyntaxMetadata] = &[webui::METADATA, fast_v3_ts::METADATA];
+
+pub fn syntax_metadata() -> &'static [SyntaxMetadata] {
+    SYNTAX_METADATA
+}
+
+pub(crate) fn accepted_syntax_names() -> String {
+    syntax_metadata()
+        .iter()
+        .map(|metadata| metadata.name)
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
+pub fn syntax_metadata_json() -> String {
+    let mut out = String::from("[");
+    for (index, metadata) in syntax_metadata().iter().enumerate() {
+        if index > 0 {
+            out.push(',');
+        }
+        out.push_str("{\"syntax\":\"");
+        out.push_str(metadata.name);
+        out.push_str("\",\"extension\":\"");
+        out.push_str(metadata.extension);
+        out.push_str("\",\"suffix\":\"");
+        out.push_str(metadata.suffix);
+        out.push_str("\"}");
+    }
+    out.push(']');
+    out
+}
+
 pub(crate) fn required_binding_value(
     open_tag: &str,
     tag: &str,

@@ -1,7 +1,24 @@
-use microsoft_fast_convert::convert_template;
+use microsoft_fast_convert::{convert_template, syntax_metadata, syntax_metadata_json};
 
 fn fast_template(inner: &str) -> String {
     format!(r#"<f-template name="my-element">{inner}</f-template>"#)
+}
+
+#[test]
+fn exposes_syntax_metadata() {
+    let metadata = syntax_metadata();
+
+    assert_eq!(metadata.len(), 2);
+    assert_eq!(metadata[0].name, "webui-prerelease");
+    assert_eq!(metadata[0].extension, ".html");
+    assert_eq!(metadata[0].suffix, ".webui.html");
+    assert_eq!(metadata[1].name, "fast-v3-ts");
+    assert_eq!(metadata[1].extension, ".ts");
+    assert_eq!(metadata[1].suffix, ".template.ts");
+    assert_eq!(
+        syntax_metadata_json(),
+        r#"[{"syntax":"webui-prerelease","extension":".html","suffix":".webui.html"},{"syntax":"fast-v3-ts","extension":".ts","suffix":".template.ts"}]"#
+    );
 }
 
 #[test]

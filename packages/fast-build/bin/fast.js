@@ -30,19 +30,9 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
 const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "template"]);
-const CONVERT_SYNTAX = Object.freeze({
-    "webui-prerelease": {
-        extension: ".html",
-        suffix: ".webui.html",
-    },
-    "fast-v3-ts": {
-        extension: ".ts",
-        suffix: ".template.ts",
-    },
-});
-const CONVERT_SYNTAX_LIST = Object.keys(CONVERT_SYNTAX).join(", ");
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
+/** @typedef {{ syntax: string, extension: string, suffix: string }} ConvertSyntaxMetadata */
 
 /**
  * Parse CLI arguments of the form --key="value", --key=value, or supported
@@ -383,14 +373,89 @@ function resolvePattern(pattern, wasm) {
 }
 
 /**
+ * Load the converter WASM module and validate its required exports.
+ * @returns {object}
+ */
+function loadConvertWasm() {
+    const wasm = require(CONVERT_WASM_MODULE);
+    if (typeof wasm.convert_template !== "function") {
+        process.stderr.write(
+            "Error: Converter WASM module must export convert_template.\n",
+        );
+        process.exit(1);
+    }
+    if (typeof wasm.convert_syntax_metadata !== "function") {
+        process.stderr.write(
+            "Error: Converter WASM module must export convert_syntax_metadata.\n",
+        );
+        process.exit(1);
+    }
+    return wasm;
+}
+
+/**
+ * Load syntax metadata from the converter WASM module.
+ * @param {object} wasm
+ * @returns {Record<string, ConvertSyntaxMetadata>}
+ */
+function loadConvertSyntaxMetadata(wasm) {
+    let parsed;
+    try {
+        parsed = JSON.parse(wasm.convert_syntax_metadata());
+    } catch (e) {
+        process.stderr.write(`Error: Failed to parse converter syntax metadata: ${e.message}\n`);
+        process.exit(1);
+    }
+
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+        process.stderr.write(
+            "Error: Converter syntax metadata must be a non-empty array.\n",
+        );
+        process.exit(1);
+    }
+
+    /** @type {Record<string, ConvertSyntaxMetadata>} */
+    const metadata = {};
+    for (const entry of parsed) {
+        if (
+            typeof entry !== "object" ||
+            entry === null ||
+            typeof entry.syntax !== "string" ||
+            typeof entry.extension !== "string" ||
+            typeof entry.suffix !== "string"
+        ) {
+            process.stderr.write(
+                "Error: Converter syntax metadata entries must include string syntax, extension, and suffix values.\n",
+            );
+            process.exit(1);
+        }
+        metadata[entry.syntax] = Object.freeze({
+            syntax: entry.syntax,
+            extension: entry.extension,
+            suffix: entry.suffix,
+        });
+    }
+    return Object.freeze(metadata);
+}
+
+/**
+ * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
+ * @returns {string}
+ */
+function convertSyntaxList(syntaxMetadata) {
+    return Object.keys(syntaxMetadata).join(", ");
+}
+
+/**
  * Build the converter output path from an optional pattern.
  * @param {string} template
  * @param {string} syntax
  * @param {string | undefined} outputPattern
+ * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
  * @returns {string}
  */
-function resolveConvertOutput(template, syntax, outputPattern) {
-    const syntaxOptions = CONVERT_SYNTAX[syntax];
+function resolveConvertOutput(template, syntax, outputPattern, syntaxMetadata) {
+    const syntaxOptions = syntaxMetadata[syntax];
     const basename = path.basename(template, path.extname(template));
 
     if (outputPattern === undefined) {
@@ -408,9 +473,10 @@ function resolveConvertOutput(template, syntax, outputPattern) {
  * @param {string} output
  * @param {string} syntax
  * @param {boolean} overwrite
+ * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
  */
-function validateConvertOutput(output, syntax, overwrite) {
-    const syntaxOptions = CONVERT_SYNTAX[syntax];
+function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
+    const syntaxOptions = syntaxMetadata[syntax];
 
     if (fs.existsSync(output) && fs.statSync(output).isDirectory()) {
         process.stderr.write(`Error: Output path "${output}" is a directory.\n`);
@@ -459,17 +525,20 @@ async function runConvert(args) {
     const template = resolveOption(args, config, configDir, "template");
     const outputArg = resolveOption(args, config, configDir, "output");
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
+    const wasm = loadConvertWasm();
+    const syntaxMetadata = loadConvertSyntaxMetadata(wasm);
+    const syntaxList = convertSyntaxList(syntaxMetadata);
 
     if (!syntax) {
         process.stderr.write(
-            `Error: Missing required --syntax. Expected one of: ${CONVERT_SYNTAX_LIST}.\n`,
+            `Error: Missing required --syntax. Expected one of: ${syntaxList}.\n`,
         );
         process.exit(1);
     }
 
-    if (!Object.prototype.hasOwnProperty.call(CONVERT_SYNTAX, syntax)) {
+    if (!Object.prototype.hasOwnProperty.call(syntaxMetadata, syntax)) {
         process.stderr.write(
-            `Error: Invalid --syntax "${syntax}". Expected one of: ${CONVERT_SYNTAX_LIST}.\n`,
+            `Error: Invalid --syntax "${syntax}". Expected one of: ${syntaxList}.\n`,
         );
         process.exit(1);
     }
@@ -496,16 +565,8 @@ async function runConvert(args) {
         process.exit(1);
     }
 
-    const output = resolveConvertOutput(template, syntax, outputArg);
-    validateConvertOutput(output, syntax, overwrite);
-
-    const wasm = require(CONVERT_WASM_MODULE);
-    if (typeof wasm.convert_template !== "function") {
-        process.stderr.write(
-            "Error: Converter WASM module must export convert_template.\n",
-        );
-        process.exit(1);
-    }
+    const output = resolveConvertOutput(template, syntax, outputArg, syntaxMetadata);
+    validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
 
     const converted = wasm.convert_template(fs.readFileSync(template, "utf8"), syntax);
     fs.writeFileSync(output, converted, "utf8");
@@ -685,15 +746,20 @@ function writeBuildUsage() {
 }
 
 function writeConvertUsage() {
+    const syntaxMetadata = loadConvertSyntaxMetadata(loadConvertWasm());
+    const syntaxList = convertSyntaxList(syntaxMetadata);
+    const defaultOutputs = Object.values(syntaxMetadata)
+        .map(metadata => `"*${metadata.suffix}" for ${metadata.syntax}`)
+        .join(" or\n                         ");
+
     process.stdout.write(
         "Usage: fast convert [options]\n\n" +
         "Options:\n" +
-        `  --syntax="${CONVERT_SYNTAX_LIST}"\n` +
+        `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
         '  --template="<path>"    Required source FAST declarative .html file.\n' +
         '  --output="<path>"      Output file path. Defaults next to --template\n' +
-        '                         as "*.webui.html" for webui-prerelease or\n' +
-        '                         "*.template.ts" for fast-v3-ts. Any "*" is\n' +
+        `                         as ${defaultOutputs}. Any "*" is\n` +
         "                         replaced by the template basename.\n" +
         "  --overwrite           Replace an existing output file.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +

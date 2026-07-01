@@ -2,6 +2,13 @@ use super::{is_supported_f_attribute, required_binding_value, validate_directive
 use crate::error::{template_context, ConvertError};
 use crate::expression::parse_repeat_expression;
 use crate::html::{find_matching_close, find_tag_end, parse_attributes, read_tag_name};
+use crate::syntax::SyntaxMetadata;
+
+pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
+    name: "webui-prerelease",
+    extension: ".html",
+    suffix: ".webui.html",
+};
 
 pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
     convert_segment(template)

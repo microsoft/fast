@@ -21,8 +21,8 @@ enum Syntax {
 impl Syntax {
     fn parse(value: &str) -> Result<Self, ConvertError> {
         match value {
-            "webui-prerelease" => Ok(Self::WebuiPrerelease),
-            "fast-v3-ts" => Ok(Self::FastV3Ts),
+            value if value == webui::METADATA.name => Ok(Self::WebuiPrerelease),
+            value if value == fast_v3_ts::METADATA.name => Ok(Self::FastV3Ts),
             _ => Err(ConvertError::UnsupportedSyntax {
                 syntax: value.to_string(),
             }),

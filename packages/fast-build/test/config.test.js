@@ -141,7 +141,7 @@ describe("CLI help", () => {
         assert.ok(stdout.includes("--entry"));
     });
 
-    it("prints convert command help without dispatching to WASM", () => {
+    it("prints convert command help from converter syntax metadata", () => {
         const stdout = runFast(["convert", "--help"], __dirname);
 
         assert.ok(stdout.includes("Usage: fast convert"));

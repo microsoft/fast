@@ -18,14 +18,20 @@ let ts = convert_template(source, "fast-v3-ts")?;
 
 The Rust API returns `Result<String, ConvertError>`.
 
+Syntax metadata is available through `syntax_metadata()`. The metadata includes each
+supported syntax name, required output extension, and default output suffix so package
+tooling can avoid duplicating target definitions.
+
 ## WASM usage
 
 When built with `wasm-pack --target nodejs`, the crate exports:
 
 ```ts
 convert_template(template: string, syntax: string): string
+convert_syntax_metadata(): string
 ```
 
+`convert_syntax_metadata()` returns JSON metadata for supported syntax targets.
 Errors are raised as JavaScript exceptions with the `ConvertError` message.
 
 ## Validation

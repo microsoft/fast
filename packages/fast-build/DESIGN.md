@@ -204,9 +204,10 @@ Before loading converter WASM, the CLI validates that:
   config contains `"overwrite": true`.
 
 The converter WASM contract is `convert_template(template: string, syntax:
-string): string`. Rust owns FAST declarative syntax validation and conversion
-semantics; the JavaScript layer only handles CLI/config merging, path rules, and
-file I/O.
+string): string` plus `convert_syntax_metadata(): string`. Rust owns FAST
+declarative syntax validation, conversion semantics, accepted syntax names, output
+extensions, and default suffixes. The JavaScript layer reads syntax metadata from
+WASM and only handles CLI/config merging, path rules, and file I/O.
 
 ---
 

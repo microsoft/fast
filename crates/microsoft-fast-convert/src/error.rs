@@ -1,7 +1,5 @@
 use std::fmt;
 
-pub(crate) const ACCEPTED_SYNTAXES: &[&str] = &["webui-prerelease", "fast-v3-ts"];
-
 /// An error encountered while converting a FAST declarative template.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConvertError {
@@ -61,7 +59,7 @@ impl fmt::Display for ConvertError {
             Self::UnsupportedSyntax { syntax } => write!(
                 f,
                 "unsupported syntax '{syntax}': accepted values are {}",
-                ACCEPTED_SYNTAXES.join(", ")
+                crate::syntax::accepted_syntax_names()
             ),
             Self::MissingFTemplate => write!(
                 f,
