@@ -46,12 +46,11 @@ export function discoverFixtures(fixturesDir) {
 
 /**
  * Extract `<f-template name="X">` elements from an HTML string.
- * Returns an array of `{ name, content }` objects where `content`
- * is the inner HTML of the `<template>` child. When the `<template>`
- * element carries host-binding attributes (e.g. `@click`, `?disabled`),
- * those are preserved by wrapping the content in a `<template>` tag.
+ * Returns an array of `{ name, content, source }` objects where `content`
+ * is the inner HTML of the `<template>` child and `source` is the full
+ * `<f-template>` element for conversion with `fast convert`.
  * @param {string} html - Raw HTML containing `<f-template>` elements.
- * @returns {{ name: string, content: string }[]}
+ * @returns {{ name: string, content: string, source: string }[]}
  */
 export function extractFTemplates(html) {
     const results = [];
@@ -62,40 +61,17 @@ export function extractFTemplates(html) {
         const name = match[1];
         const attrs = match[2].trim();
         const inner = match[3].trim();
+        const source = match[0];
 
         if (attrs.length > 0) {
             results.push({
                 name,
                 content: `<template ${attrs}>${inner}</template>`,
+                source,
             });
         } else {
-            results.push({ name, content: inner });
+            results.push({ name, content: inner, source });
         }
     }
     return results;
-}
-
-/**
- * Convert FAST template directives to webui syntax.
- *
- * - `<f-when value="{{expr}}">` → `<if condition="expr">`
- * - `</f-when>` → `</if>`
- * - `<f-repeat value="{{item in list}}" ...>` → `<for each="item in list" ...>`
- * - `</f-repeat>` → `</for>`
- *
- * @param {string} html - Template HTML using FAST directive syntax.
- * @returns {string} Template HTML using webui directive syntax.
- */
-export function convertToWebuiSyntax(html) {
-    return html
-        .replace(
-            /<f-when\s+value="{{([\s\S]*?)}}"\s*>/g,
-            (_, expr) => `<if condition="${expr.trim()}">`,
-        )
-        .replace(/<\/f-when>/g, "</if>")
-        .replace(
-            /<f-repeat\s+value="{{([\s\S]*?)}}"([^>]*)>/g,
-            (_, expr, rest) => `<for each="${expr.trim()}"${rest}>`,
-        )
-        .replace(/<\/f-repeat>/g, "</for>");
 }
