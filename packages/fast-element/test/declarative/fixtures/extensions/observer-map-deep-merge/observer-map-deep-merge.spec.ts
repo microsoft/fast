@@ -352,6 +352,121 @@ test.describe("Deep Merge Test Fixture", () => {
         expect(result.duplicateAccessors).toEqual([]);
     });
 
+    test("should ignore stale array mutations after replacing arrays with deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.mutateStaleOrdersAfterDeepMerge());
+
+        expect(result.notifications).toBe(0);
+        expect(result.currentOrderCount).toBe(1);
+        expect(result.staleOrderCount).toBe(3);
+    });
+
+    test("should ignore stale nested array mutations after replacing arrays with deepMerge", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) =>
+                element.mutateStaleNestedItemsAfterSecondDeepMerge(),
+            );
+
+        expect(result.notifications).toBe(0);
+        expect(result.currentItemCount).toBe(1);
+        expect(result.staleItemCount).toBe(2);
+    });
+
+    test("should ignore stale root array mutations after direct property assignment", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.mutateStaleUsersAfterDirectAssignment());
+
+        expect(result.notifications).toBe(0);
+        expect(result.currentUserCount).toBe(1);
+        expect(result.staleUserCount).toBe(3);
+    });
+
+    test("should ignore stale array mutations after proxy assignment replacement", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.mutateStaleOrdersAfterProxyAssignment());
+
+        expect(result.notifications).toBe(0);
+        expect(result.currentOrderCount).toBe(1);
+        expect(result.staleOrderCount).toBe(3);
+    });
+
+    test("should keep shared arrays notifying owners that still reference them", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testSharedArrayOwnerReplacement());
+
+        expect(result.ownerANotifications).toBe(0);
+        expect(result.ownerBNotifications).toBe(1);
+        expect(result.ownerAItems).toEqual(["replacement"]);
+        expect(result.ownerBItems).toEqual(["shared", "still owned by B"]);
+        expect(result.sharedItems).toEqual(["shared", "still owned by B"]);
+    });
+
+    test("should keep shared primitive array aliases notifying after another alias is replaced", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) =>
+                element.testSharedPrimitiveArrayAliasReplacement(),
+            );
+
+        expect(result.notifications).toBe(1);
+        expect(result.itemATags).toEqual(["shared", "still owned by A"]);
+        expect(result.itemBTags).toEqual(["replacement"]);
+        expect(result.sharedTags).toEqual(["shared", "still owned by A"]);
+    });
+
     test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
         page,
     }) => {

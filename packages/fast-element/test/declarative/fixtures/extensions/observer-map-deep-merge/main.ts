@@ -3,7 +3,7 @@ import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { Observable, observable } from "@microsoft/fast-element/observable.js";
-import { observerMap } from "@microsoft/fast-element/observer-map.js";
+import { observerMap, Schema } from "@microsoft/fast-element/observer-map.js";
 import { Updates } from "@microsoft/fast-element/updates.js";
 
 interface Product {
@@ -39,6 +39,10 @@ interface User {
         total: number;
         items: Product[];
     }>;
+}
+
+interface SharedArrayFixtureData {
+    items: string[];
 }
 
 class DeepMergeTestElement extends FASTElement {
@@ -362,6 +366,266 @@ class DeepMergeTestElement extends FASTElement {
         };
     }
 
+    private createProduct(id: number, name: string): Product {
+        return {
+            id,
+            name,
+            price: 10,
+            inStock: true,
+            tags: ["accessories"],
+            metadata: {
+                views: 1,
+                rating: 4,
+            },
+        };
+    }
+
+    private createOrder(id: number, name: string = "Replacement") {
+        return {
+            id,
+            date: "2024-06-01",
+            total: 10,
+            items: [this.createProduct(id * 10, name)],
+        };
+    }
+
+    private createUser(id: number, name: string): User {
+        return {
+            id,
+            name,
+            email: `${name.toLowerCase().replace(/ /g, ".")}@example.com`,
+            profile: {
+                age: 30,
+                location: {
+                    city: "Seattle",
+                    country: "USA",
+                },
+                preferences: {
+                    theme: "light",
+                    notifications: true,
+                },
+            },
+            orders: [this.createOrder(id * 100)],
+        };
+    }
+
+    public async mutateStaleOrdersAfterDeepMerge() {
+        const oldOrders = this.users[0].orders;
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        notifier.subscribe(subscriber, "users");
+
+        this.updateUserOrders();
+        await Updates.next();
+
+        notifications = 0;
+        oldOrders.push(this.createOrder(900, "Stale order"));
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            currentOrderCount: this.users[0].orders.length,
+            staleOrderCount: oldOrders.length,
+        };
+    }
+
+    public async mutateStaleNestedItemsAfterSecondDeepMerge() {
+        deepMerge(this.users[0], {
+            orders: [this.createOrder(901, "First replacement")],
+        });
+        await Updates.next();
+
+        const oldItems = this.users[0].orders[0].items;
+
+        deepMerge(this.users[0], {
+            orders: [this.createOrder(902, "Second replacement")],
+        });
+        await Updates.next();
+
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        notifier.subscribe(subscriber, "users");
+
+        oldItems.push(this.createProduct(9000, "Stale item"));
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            currentItemCount: this.users[0].orders[0].items.length,
+            staleItemCount: oldItems.length,
+        };
+    }
+
+    public async mutateStaleUsersAfterDirectAssignment() {
+        const oldUsers = this.users;
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        notifier.subscribe(subscriber, "users");
+
+        this.users = [this.createUser(30, "Replacement User")];
+        await Updates.next();
+
+        notifications = 0;
+        oldUsers.push(this.createUser(31, "Stale User"));
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            currentUserCount: this.users.length,
+            staleUserCount: oldUsers.length,
+        };
+    }
+
+    public async mutateStaleOrdersAfterProxyAssignment() {
+        const oldOrders = this.users[0].orders;
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        notifier.subscribe(subscriber, "users");
+
+        this.users[0].orders = [this.createOrder(901, "Replacement order")];
+        await Updates.next();
+
+        notifications = 0;
+        oldOrders.push(this.createOrder(902, "Stale proxy order"));
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            currentOrderCount: this.users[0].orders.length,
+            staleOrderCount: oldOrders.length,
+        };
+    }
+
+    public async testSharedArrayOwnerReplacement() {
+        const sharedItems = ["shared"];
+        const ownerA = document.createElement(
+            "shared-array-owner-element",
+        ) as SharedArrayOwnerElement;
+        const ownerB = document.createElement(
+            "shared-array-owner-element",
+        ) as SharedArrayOwnerElement;
+        let ownerANotifications = 0;
+        let ownerBNotifications = 0;
+        const ownerANotifier = Observable.getNotifier(ownerA);
+        const ownerBNotifier = Observable.getNotifier(ownerB);
+        const ownerASubscriber = {
+            handleChange() {
+                ownerANotifications++;
+            },
+        };
+        const ownerBSubscriber = {
+            handleChange() {
+                ownerBNotifications++;
+            },
+        };
+
+        document.body.append(ownerA, ownerB);
+        ownerA.data = {
+            items: [],
+        };
+        ownerB.data = {
+            items: [],
+        };
+        await Updates.next();
+
+        ownerANotifier.subscribe(ownerASubscriber, "data");
+        ownerBNotifier.subscribe(ownerBSubscriber, "data");
+
+        ownerA.data.items = sharedItems;
+        ownerB.data.items = sharedItems;
+        await Updates.next();
+
+        deepMerge(ownerA.data, {
+            items: ["replacement"],
+        });
+        await Updates.next();
+
+        ownerANotifications = 0;
+        ownerBNotifications = 0;
+
+        sharedItems.push("still owned by B");
+        await Updates.next();
+
+        ownerANotifier.unsubscribe(ownerASubscriber, "data");
+        ownerBNotifier.unsubscribe(ownerBSubscriber, "data");
+        ownerA.remove();
+        ownerB.remove();
+
+        return {
+            ownerANotifications,
+            ownerBNotifications,
+            ownerAItems: [...ownerA.data.items],
+            ownerBItems: [...ownerB.data.items],
+            sharedItems: [...sharedItems],
+        };
+    }
+
+    public async testSharedPrimitiveArrayAliasReplacement() {
+        const sharedTags = ["shared"];
+        const itemA = this.users[0].orders[0].items[0];
+        const itemB = this.users[0].orders[0].items[1];
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        itemA.tags = sharedTags;
+        itemB.tags = sharedTags;
+        await Updates.next();
+
+        itemB.tags = ["replacement"];
+        await Updates.next();
+
+        notifier.subscribe(subscriber, "users");
+
+        itemA.tags.push("still owned by A");
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            itemATags: [...itemA.tags],
+            itemBTags: [...itemB.tags],
+            sharedTags: [...sharedTags],
+        };
+    }
+
     public async replaceOrdersAndMutateNestedData() {
         this.updateUserOrders();
 
@@ -496,10 +760,36 @@ class DeepMergeTestElement extends FASTElement {
     }
 }
 
+class SharedArrayOwnerElement extends FASTElement {
+    public data: SharedArrayFixtureData = {
+        items: [],
+    };
+}
+
+const sharedArrayOwnerSchema = new Schema("shared-array-owner-element");
+sharedArrayOwnerSchema.addPath({
+    rootPropertyName: "data",
+    pathConfig: {
+        type: "repeat",
+        path: "data.items",
+        currentContext: "item",
+        parentContext: null,
+    },
+    childrenMap: null,
+});
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;
 });
+
+SharedArrayOwnerElement.define(
+    {
+        name: "shared-array-owner-element",
+        schema: sharedArrayOwnerSchema,
+    },
+    [observerMap({ schema: sharedArrayOwnerSchema })],
+);
 
 DeepMergeTestElement.define(
     {
