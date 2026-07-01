@@ -292,16 +292,28 @@ fn split_arguments(args: &str) -> Vec<&str> {
     let mut start = 0usize;
     let mut depth = 0usize;
     let mut quote: Option<u8> = None;
+    let mut escaped = false;
     let bytes = args.as_bytes();
     let mut i = 0usize;
 
     while i < bytes.len() {
+        if let Some(active_quote) = quote {
+            if escaped {
+                escaped = false;
+            } else if bytes[i] == b'\\' {
+                escaped = true;
+            } else if bytes[i] == active_quote {
+                quote = None;
+            }
+            i += 1;
+            continue;
+        }
+
         match bytes[i] {
-            c if quote == Some(c) => quote = None,
-            b'"' | b'\'' if quote.is_none() => quote = Some(bytes[i]),
-            b'(' if quote.is_none() => depth += 1,
-            b')' if quote.is_none() && depth > 0 => depth -= 1,
-            b',' if quote.is_none() && depth == 0 => {
+            b'"' | b'\'' => quote = Some(bytes[i]),
+            b'(' => depth += 1,
+            b')' if depth > 0 => depth -= 1,
+            b',' if depth == 0 => {
                 result.push(args[start..i].trim());
                 start = i + 1;
             }
@@ -321,17 +333,29 @@ fn find_top_level_operator<'a>(expr: &str, ops: &[&'a str]) -> Option<(usize, &'
     let bytes = expr.as_bytes();
     let mut depth = 0usize;
     let mut quote: Option<u8> = None;
+    let mut escaped = false;
     let mut i = 0usize;
 
     while i < bytes.len() {
+        if let Some(active_quote) = quote {
+            if escaped {
+                escaped = false;
+            } else if bytes[i] == b'\\' {
+                escaped = true;
+            } else if bytes[i] == active_quote {
+                quote = None;
+            }
+            i += 1;
+            continue;
+        }
+
         match bytes[i] {
-            c if quote == Some(c) => quote = None,
-            b'"' | b'\'' if quote.is_none() => quote = Some(bytes[i]),
-            b'(' if quote.is_none() => depth += 1,
-            b')' if quote.is_none() && depth > 0 => depth -= 1,
-            _ if quote.is_none() && depth == 0 => {
+            b'"' | b'\'' => quote = Some(bytes[i]),
+            b'(' => depth += 1,
+            b')' if depth > 0 => depth -= 1,
+            _ if depth == 0 => {
                 for op in ops {
-                    if expr[i..].starts_with(op) {
+                    if bytes[i..].starts_with(op.as_bytes()) {
                         return Some((i, *op));
                     }
                 }
@@ -352,13 +376,27 @@ fn strip_outer_parens(expr: &str) -> Option<&str> {
     let bytes = expr.as_bytes();
     let mut depth = 0usize;
     let mut quote: Option<u8> = None;
+    let mut escaped = false;
 
     for (i, byte) in bytes.iter().enumerate() {
+        if let Some(active_quote) = quote {
+            if escaped {
+                escaped = false;
+            } else if *byte == b'\\' {
+                escaped = true;
+            } else if *byte == active_quote {
+                quote = None;
+            }
+            continue;
+        }
+
         match *byte {
-            c if quote == Some(c) => quote = None,
-            b'"' | b'\'' if quote.is_none() => quote = Some(*byte),
-            b'(' if quote.is_none() => depth += 1,
-            b')' if quote.is_none() => {
+            b'"' | b'\'' => quote = Some(*byte),
+            b'(' => depth += 1,
+            b')' => {
+                if depth == 0 {
+                    return None;
+                }
                 depth -= 1;
                 if depth == 0 && i != bytes.len() - 1 {
                     return None;
@@ -440,5 +478,19 @@ mod tests {
             repeat_parent_context(3),
             "c.parentContext.parentContext.parent"
         );
+    }
+
+    #[test]
+    fn operators_ignore_escaped_quotes_inside_string_literals() {
+        let output = expression_to_arrow(r#""a \" || b" || enabled"#, &[], "", 0).unwrap();
+
+        assert_eq!(output, r#"x => "a \" || b" || x.enabled"#);
+    }
+
+    #[test]
+    fn non_ascii_expressions_return_errors_without_panicking() {
+        let error = expression_to_arrow("é", &[], "", 0).unwrap_err();
+
+        assert!(error.to_string().contains("unsupported expression"));
     }
 }
