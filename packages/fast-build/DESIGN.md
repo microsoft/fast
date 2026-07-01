@@ -212,8 +212,10 @@ file I/O.
 
 ## Converter fixture validation
 
-Converter fixture inputs live under `test/fixtures/convert/`. The committed
-`fast-convert.config.json` writes generated output to
+Converter fixture inputs live under `test/fixtures/convert/`. Each fixture
+directory includes a committed `fast-convert.config.json`, and the fixture tests
+run `fast convert` from those directories without `--config` to verify default
+config discovery. The fixture configs write generated output to
 `test/.fixture-output/`, which is created and removed by the fixture test so
 converted `.html` and `.ts` outputs are not checked in. The
 `test:fixtures:convert` package script runs the fixture-only validation, and

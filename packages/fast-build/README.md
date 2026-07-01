@@ -233,6 +233,20 @@ The source template must be `.html`. The output extension must match the selecte
 
 Only `syntax`, `template`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean.
 
+### Running converter fixtures locally
+
+Build the package WASM, then run the fixture validation:
+
+```shell
+npm run build -w @microsoft/fast-build
+npm run test:fixtures:convert -w @microsoft/fast-build
+```
+
+The fixture tests run `fast convert` from fixture directories that contain
+`fast-convert.config.json`, so they verify the same default config discovery used
+by `fast build`. Generated fixture output is written under
+`packages/fast-build/test/.fixture-output/` and removed by the tests.
+
 ## Template syntax
 
 Template syntax follows the FAST declarative HTML format. See the

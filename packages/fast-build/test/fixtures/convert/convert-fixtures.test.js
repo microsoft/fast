@@ -28,17 +28,17 @@ function outputDir(name) {
     return dir;
 }
 
-function runConvert(args) {
+function runConvert(args, cwd = packageDir) {
     return execFileSync(process.execPath, [fastBin, "convert", ...args], {
-        cwd: packageDir,
+        cwd,
         encoding: "utf8",
         stdio: ["pipe", "pipe", "pipe"],
     });
 }
 
-function runConvertWithStderr(args) {
+function runConvertWithStderr(args, cwd = packageDir) {
     try {
-        const stdout = runConvert(args);
+        const stdout = runConvert(args, cwd);
         return { stdout, stderr: "", exitCode: 0 };
     } catch (e) {
         return {
@@ -103,10 +103,10 @@ function assertFastV3TsOutput(output) {
 }
 
 describe("fast convert fixtures", () => {
-    it("loads fixture config and converts webui-prerelease output to a temp location", () => {
+    it("loads default fixture config and converts webui-prerelease output to a temp location", () => {
         const configOutputDir = outputDir("config");
 
-        runConvert([`--config=${fixtureConfig}`]);
+        runConvert([], fixturesDir);
 
         const outputPath = path.join(configOutputDir, "supported.html");
         const output = fs.readFileSync(outputPath, "utf8");
@@ -188,36 +188,36 @@ describe("fast convert fixtures", () => {
         assertIncludes(result.stderr, "not found");
     });
 
-    for (const { name, syntax, outputExtension, expectedMessage } of [
+    for (const { name, outputExtension, expectedMessage } of [
         {
             name: "invalid-repeat",
-            syntax: "webui-prerelease",
             outputExtension: ".html",
             expectedMessage: "invalid repeat expression",
         },
         {
             name: "unsupported-f-attribute",
-            syntax: "fast-v3-ts",
             outputExtension: ".ts",
             expectedMessage: "unsupported f-* attribute",
         },
         {
             name: "missing-inner-template",
-            syntax: "webui-prerelease",
             outputExtension: ".html",
             expectedMessage: "inner '<template>' element",
         },
     ]) {
-        it(`surfaces converter validation errors for ${name}`, () => {
+        it(`surfaces converter validation errors for ${name} using fixture config`, () => {
+            const fixtureDir = path.join(fixturesDir, "validation", name);
             const validationOutputDir = outputDir("validation");
-            const result = runConvertWithStderr([
-                `--syntax=${syntax}`,
-                `--template=${path.join(fixturesDir, "validation", `${name}.html`)}`,
-                `--output=${path.join(validationOutputDir, `${name}${outputExtension}`)}`,
-            ]);
+            const result = runConvertWithStderr([], fixtureDir);
 
             assert.equal(result.exitCode, 1);
             assertIncludes(result.stderr, expectedMessage);
+            assert.equal(
+                fs.existsSync(
+                    path.join(validationOutputDir, `${name}${outputExtension}`),
+                ),
+                false,
+            );
         });
     }
 });
