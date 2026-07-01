@@ -5,10 +5,15 @@
 const fs = require("fs");
 const path = require("path");
 
-const WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
-const DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
-const VALUELESS_CLI_FLAGS = new Set(["stream"]);
-const ALLOWED_CONFIG_KEYS = new Set([
+const BUILD_WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
+const CONVERT_WASM_MODULE = path.join(
+    __dirname,
+    "../wasm/convert/microsoft_fast_convert.js",
+);
+const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
+const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
+const VALUELESS_CLI_FLAGS = new Set(["stream", "overwrite"]);
+const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
@@ -16,8 +21,28 @@ const ALLOWED_CONFIG_KEYS = new Set([
     "attribute-name-strategy",
     "stream",
 ]);
+const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["stream"]);
+const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
+    "syntax",
+    "template",
+    "output",
+    "overwrite",
+]);
+const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
+const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "template"]);
+const CONVERT_SYNTAX = Object.freeze({
+    "webui-prerelease": {
+        extension: ".html",
+        suffix: ".webui.html",
+    },
+    "fast-v3-ts": {
+        extension: ".ts",
+        suffix: ".template.ts",
+    },
+});
+const CONVERT_SYNTAX_LIST = Object.keys(CONVERT_SYNTAX).join(", ");
 
-/** @typedef {Record<string, string | boolean>} FastBuildConfig */
+/** @typedef {Record<string, string | boolean>} FastConfig */
 
 /**
  * Parse CLI arguments of the form --key="value", --key=value, or supported
@@ -46,7 +71,7 @@ function parseArgs(argv) {
  * Resolve a boolean option, preferring CLI args over config values.
  * CLI values accept true, false, or an empty valueless flag.
  * @param {Record<string, string>} args - Parsed CLI arguments.
- * @param {FastBuildConfig} config - Parsed config file values.
+ * @param {FastConfig} config - Parsed config file values.
  * @param {string} key - The option key.
  * @returns {boolean}
  */
@@ -74,19 +99,46 @@ function resolveBooleanOption(args, config, key) {
 }
 
 /**
- * Load and validate a fast-build config file.
+ * Resolve a boolean option where CLI presence always means true.
+ * @param {Record<string, string>} args - Parsed CLI arguments.
+ * @param {FastConfig} config - Parsed config file values.
+ * @param {string} key - The option key.
+ * @returns {boolean}
+ */
+function resolvePresenceBooleanOption(args, config, key) {
+    if (Object.prototype.hasOwnProperty.call(args, key)) {
+        return true;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        return config[key] === true;
+    }
+
+    return false;
+}
+
+/**
+ * Load and validate a CLI config file.
  *
  * - If `configPath` is provided, the file must exist (error if missing).
- * - If `configPath` is not provided, looks for `fast-build.config.json` in CWD.
+ * - If `configPath` is not provided, looks for `defaultFilename` in CWD.
  *   Returns an empty object if the default file does not exist.
  *
  * File paths in the returned config are resolved relative to the config
  * file's directory so that the caller can use them directly.
  *
  * @param {string | undefined} configPath - Explicit path from --config, if any.
- * @returns {{ config: FastBuildConfig, configDir: string | null }}
+ * @param {string} defaultFilename - Default config file to look up in CWD.
+ * @param {Set<string>} allowedKeys - Config keys accepted by the subcommand.
+ * @param {Set<string>} booleanKeys - Config keys that must be booleans.
+ * @returns {{ config: FastConfig, configDir: string | null }}
  */
-function loadConfig(configPath) {
+function loadConfig(
+    configPath,
+    defaultFilename = BUILD_DEFAULT_CONFIG_FILENAME,
+    allowedKeys = BUILD_ALLOWED_CONFIG_KEYS,
+    booleanKeys = BUILD_BOOLEAN_CONFIG_KEYS,
+) {
     /** @type {string} */
     let resolvedPath;
     /** @type {boolean} */
@@ -96,7 +148,7 @@ function loadConfig(configPath) {
         resolvedPath = path.resolve(configPath);
         isExplicit = true;
     } else {
-        resolvedPath = path.resolve(DEFAULT_CONFIG_FILENAME);
+        resolvedPath = path.resolve(defaultFilename);
         isExplicit = false;
     }
 
@@ -128,13 +180,13 @@ function loadConfig(configPath) {
     }
 
     for (const key of Object.keys(raw)) {
-        if (!ALLOWED_CONFIG_KEYS.has(key)) {
+        if (!allowedKeys.has(key)) {
             process.stderr.write(
-                `Error: Unknown key "${key}" in config file "${resolvedPath}". Allowed keys: ${[...ALLOWED_CONFIG_KEYS].join(", ")}.\n`
+                `Error: Unknown key "${key}" in config file "${resolvedPath}". Allowed keys: ${[...allowedKeys].join(", ")}.\n`
             );
             process.exit(1);
         }
-        if (key === "stream") {
+        if (booleanKeys.has(key)) {
             if (typeof raw[key] !== "boolean") {
                 process.stderr.write(
                     `Error: Value for "${key}" in config file "${resolvedPath}" must be a boolean.\n`
@@ -162,7 +214,7 @@ function loadConfig(configPath) {
  * CLI-derived paths are resolved relative to CWD (the default behaviour).
  *
  * @param {Record<string, string>} args - Parsed CLI arguments.
- * @param {FastBuildConfig} config - Parsed config file values.
+ * @param {FastConfig} config - Parsed config file values.
  * @param {string | null} configDir - Directory of the config file, or null.
  * @param {string} key - The option key.
  * @param {string} [defaultValue] - Fallback when neither source provides a value.
@@ -177,7 +229,7 @@ function resolveOption(args, config, configDir, key, defaultValue) {
         if (typeof value !== "string") {
             return defaultValue;
         }
-        const isFilePath = key === "entry" || key === "state" || key === "output" || key === "templates";
+        const isFilePath = CONFIG_PATH_KEYS.has(key);
         if (isFilePath && configDir !== null) {
             return path.resolve(configDir, value);
         }
@@ -330,9 +382,142 @@ function resolvePattern(pattern, wasm) {
     return results;
 }
 
+/**
+ * Build the converter output path from an optional pattern.
+ * @param {string} template
+ * @param {string} syntax
+ * @param {string | undefined} outputPattern
+ * @returns {string}
+ */
+function resolveConvertOutput(template, syntax, outputPattern) {
+    const syntaxOptions = CONVERT_SYNTAX[syntax];
+    const basename = path.basename(template, path.extname(template));
+
+    if (outputPattern === undefined) {
+        return path.join(
+            path.dirname(template),
+            `${basename}${syntaxOptions.suffix}`,
+        );
+    }
+
+    return outputPattern.split("*").join(basename);
+}
+
+/**
+ * Validate the converter output path before writing.
+ * @param {string} output
+ * @param {string} syntax
+ * @param {boolean} overwrite
+ */
+function validateConvertOutput(output, syntax, overwrite) {
+    const syntaxOptions = CONVERT_SYNTAX[syntax];
+
+    if (fs.existsSync(output) && fs.statSync(output).isDirectory()) {
+        process.stderr.write(`Error: Output path "${output}" is a directory.\n`);
+        process.exit(1);
+    }
+
+    if (path.extname(output) !== syntaxOptions.extension) {
+        process.stderr.write(
+            `Error: Output file "${output}" must use the "${syntaxOptions.extension}" extension for syntax "${syntax}".\n`,
+        );
+        process.exit(1);
+    }
+
+    const outputParent = path.dirname(output) || ".";
+    if (!fs.existsSync(outputParent)) {
+        process.stderr.write(
+            `Error: Output parent directory "${outputParent}" not found.\n`,
+        );
+        process.exit(1);
+    }
+
+    if (!fs.statSync(outputParent).isDirectory()) {
+        process.stderr.write(
+            `Error: Output parent path "${outputParent}" is not a directory.\n`,
+        );
+        process.exit(1);
+    }
+
+    if (fs.existsSync(output) && !overwrite) {
+        process.stderr.write(
+            `Error: Output file "${output}" already exists. Use --overwrite to replace it.\n`,
+        );
+        process.exit(1);
+    }
+}
+
+async function runConvert(args) {
+    const { config, configDir } = loadConfig(
+        Object.prototype.hasOwnProperty.call(args, "config") ? args["config"] : undefined,
+        CONVERT_DEFAULT_CONFIG_FILENAME,
+        CONVERT_ALLOWED_CONFIG_KEYS,
+        CONVERT_BOOLEAN_CONFIG_KEYS,
+    );
+
+    const syntax = resolveOption(args, config, configDir, "syntax");
+    const template = resolveOption(args, config, configDir, "template");
+    const outputArg = resolveOption(args, config, configDir, "output");
+    const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
+
+    if (!syntax) {
+        process.stderr.write(
+            `Error: Missing required --syntax. Expected one of: ${CONVERT_SYNTAX_LIST}.\n`,
+        );
+        process.exit(1);
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(CONVERT_SYNTAX, syntax)) {
+        process.stderr.write(
+            `Error: Invalid --syntax "${syntax}". Expected one of: ${CONVERT_SYNTAX_LIST}.\n`,
+        );
+        process.exit(1);
+    }
+
+    if (!template) {
+        process.stderr.write("Error: Missing required --template.\n");
+        process.exit(1);
+    }
+
+    if (path.extname(template) !== ".html") {
+        process.stderr.write(
+            `Error: Template file "${template}" must use the ".html" extension.\n`,
+        );
+        process.exit(1);
+    }
+
+    if (!fs.existsSync(template)) {
+        process.stderr.write(`Error: Template file "${template}" not found.\n`);
+        process.exit(1);
+    }
+
+    if (!fs.statSync(template).isFile()) {
+        process.stderr.write(`Error: Template path "${template}" is not a file.\n`);
+        process.exit(1);
+    }
+
+    const output = resolveConvertOutput(template, syntax, outputArg);
+    validateConvertOutput(output, syntax, overwrite);
+
+    const wasm = require(CONVERT_WASM_MODULE);
+    if (typeof wasm.convert_template !== "function") {
+        process.stderr.write(
+            "Error: Converter WASM module must export convert_template.\n",
+        );
+        process.exit(1);
+    }
+
+    const converted = wasm.convert_template(fs.readFileSync(template, "utf8"), syntax);
+    fs.writeFileSync(output, converted, "utf8");
+    process.stdout.write(`Converted: ${output}\n`);
+}
+
 async function runBuild(args) {
     const { config, configDir } = loadConfig(
-        Object.prototype.hasOwnProperty.call(args, "config") ? args["config"] : undefined
+        Object.prototype.hasOwnProperty.call(args, "config") ? args["config"] : undefined,
+        BUILD_DEFAULT_CONFIG_FILENAME,
+        BUILD_ALLOWED_CONFIG_KEYS,
+        BUILD_BOOLEAN_CONFIG_KEYS,
     );
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
@@ -353,7 +538,7 @@ async function runBuild(args) {
     }
 
     // Load WASM module first — needed for both template parsing and rendering.
-    const wasm = require(WASM_MODULE);
+    const wasm = require(BUILD_WASM_MODULE);
 
     // Resolve template files
     const templatesMap = {};
@@ -465,41 +650,93 @@ async function runBuild(args) {
     process.stdout.write(`Built: ${output}\n`);
 }
 
+function writeGeneralUsage() {
+    process.stdout.write(
+        "Usage: fast <command> [options]\n\n" +
+        "Commands:\n" +
+        "  build     Render a FAST declarative HTML template.\n" +
+        "  convert   Convert a FAST declarative HTML template.\n\n" +
+        'Run "fast <command> --help" for command options.\n',
+    );
+}
+
+function writeBuildUsage() {
+    process.stdout.write(
+        "Usage: fast build [options]\n\n" +
+        "Options:\n" +
+        '  --templates="<glob>"   Glob pattern(s) for custom element template HTML files.\n' +
+        "                         Separate multiple patterns with commas.\n" +
+        '  --output="output.html" Output file path (default: output.html)\n' +
+        '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
+        '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
+        "                         an empty state object.\n" +
+        "  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n" +
+        "                         of writing an output file.\n" +
+        '  --attribute-name-strategy="camelCase"\n' +
+        "                         Strategy for mapping attribute names to property names.\n" +
+        '                         "camelCase" (default) or "none".\n' +
+        '  --config="<path>"      Path to a fast-build config JSON file.\n' +
+        '                         Defaults to "fast-build.config.json" in the\n' +
+        "                         current directory if it exists. File paths in\n" +
+        "                         the config are resolved relative to the config\n" +
+        "                         file's directory. CLI arguments take precedence\n" +
+        "                         over config file values.\n",
+    );
+}
+
+function writeConvertUsage() {
+    process.stdout.write(
+        "Usage: fast convert [options]\n\n" +
+        "Options:\n" +
+        `  --syntax="${CONVERT_SYNTAX_LIST}"\n` +
+        "                         Required target syntax.\n" +
+        '  --template="<path>"    Required source FAST declarative .html file.\n' +
+        '  --output="<path>"      Output file path. Defaults next to --template\n' +
+        '                         as "*.webui.html" for webui-prerelease or\n' +
+        '                         "*.template.ts" for fast-v3-ts. Any "*" is\n' +
+        "                         replaced by the template basename.\n" +
+        "  --overwrite           Replace an existing output file.\n" +
+        '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
+        '                         Defaults to "fast-convert.config.json" in the\n' +
+        "                         current directory if it exists. File paths in\n" +
+        "                         the config are resolved relative to the config\n" +
+        "                         file's directory. CLI arguments take precedence\n" +
+        "                         over config file values.\n",
+    );
+}
+
 async function main() {
     const argv = process.argv.slice(2);
     if (argv.length === 0 || argv[0] === "--help" || argv[0] === "-h") {
-        process.stdout.write(
-            "Usage: fast build [options]\n\n" +
-            "Options:\n" +
-            '  --templates="<glob>"   Glob pattern(s) for custom element template HTML files.\n' +
-            '                         Separate multiple patterns with commas.\n' +
-            '  --output="output.html" Output file path (default: output.html)\n' +
-            '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
-            '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
-            '                         an empty state object.\n' +
-            '  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n' +
-            '                         of writing an output file.\n' +
-            '  --attribute-name-strategy="camelCase"\n' +
-            '                         Strategy for mapping attribute names to property names.\n' +
-            '                         "camelCase" (default) or "none".\n' +
-            '  --config="<path>"      Path to a fast-build config JSON file.\n' +
-            '                         Defaults to "fast-build.config.json" in the\n' +
-            '                         current directory if it exists. File paths in\n' +
-            '                         the config are resolved relative to the config\n' +
-            '                         file\'s directory. CLI arguments take precedence\n' +
-            '                         over config file values.\n'
-        );
+        writeGeneralUsage();
         return;
     }
 
     const subcommand = argv[0];
-    if (subcommand !== "build") {
-        process.stderr.write(`Unknown subcommand: "${subcommand}". Expected "build".\n`);
-        process.exit(1);
+    if (subcommand === "build") {
+        if (argv[1] === "--help" || argv[1] === "-h") {
+            writeBuildUsage();
+            return;
+        }
+        const args = parseArgs(argv.slice(1));
+        await runBuild(args);
+        return;
     }
 
-    const args = parseArgs(argv.slice(1));
-    await runBuild(args);
+    if (subcommand === "convert") {
+        if (argv[1] === "--help" || argv[1] === "-h") {
+            writeConvertUsage();
+            return;
+        }
+        const args = parseArgs(argv.slice(1));
+        await runConvert(args);
+        return;
+    }
+
+    process.stderr.write(
+        `Unknown subcommand: "${subcommand}". Expected "build" or "convert".\n`,
+    );
+    process.exit(1);
 }
 
 main().catch((err) => {
