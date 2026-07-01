@@ -23,7 +23,18 @@ on:
 jobs:
   test_rust:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    name: test_rust (${{ matrix.crate }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - crate: microsoft-fast-build
+            manifest-path: crates/microsoft-fast-build/Cargo.toml
+            cache-workspace: crates/microsoft-fast-build
+          - crate: microsoft-fast-convert
+            manifest-path: crates/microsoft-fast-convert/Cargo.toml
+            cache-workspace: crates/microsoft-fast-convert
 
     steps:
     - uses: actions/checkout@v4
@@ -34,7 +45,7 @@ jobs:
     - name: Cache Rust build artifacts
       uses: Swatinem/rust-cache@v2
       with:
-        workspaces: crates/microsoft-fast-build
+        workspaces: ${{ matrix.cache-workspace }}
 
     - name: Run Rust tests
-      run: cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+      run: cargo test --manifest-path ${{ matrix.manifest-path }}
