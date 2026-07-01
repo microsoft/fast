@@ -24,7 +24,16 @@ The implementation intentionally uses a small hand scanner instead of an HTML pa
 | `error.rs` | `ConvertError` variants and context helpers |
 | `html.rs` | Tag, attribute, and `<f-template>` scanning utilities |
 | `expression.rs` | Limited declarative expression conversion for TypeScript output |
-| `converter.rs` | WebUI and FAST v3 TypeScript conversion passes |
+| `converter.rs` | Syntax selection and dispatch after shared `<f-template>` validation |
+| `syntax/mod.rs` | Shared syntax-target helpers for directive values and attribute validation |
+| `syntax/webui.rs` | `webui-prerelease` conversion pass |
+| `syntax/fast_v3_ts.rs` | `fast-v3-ts` conversion pass |
+
+Syntax-specific conversion logic lives under `syntax/` so new targets can be added
+without growing `converter.rs`. To add a syntax target, create a new module under
+`syntax/`, expose a `convert(&str) -> Result<String, ConvertError>` function, add the
+accepted syntax value to `converter.rs`, and route the new `Syntax` variant to the
+module.
 
 ## WebUI prerelease conversion
 
