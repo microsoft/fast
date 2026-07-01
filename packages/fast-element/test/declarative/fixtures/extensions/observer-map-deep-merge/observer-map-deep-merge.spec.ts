@@ -446,6 +446,27 @@ test.describe("Deep Merge Test Fixture", () => {
         expect(result.sharedItems).toEqual(["shared", "still owned by B"]);
     });
 
+    test("should keep shared primitive array aliases notifying after another alias is replaced", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) =>
+                element.testSharedPrimitiveArrayAliasReplacement(),
+            );
+
+        expect(result.notifications).toBe(1);
+        expect(result.itemATags).toEqual(["shared", "still owned by A"]);
+        expect(result.itemBTags).toEqual(["replacement"]);
+        expect(result.sharedTags).toEqual(["shared", "still owned by A"]);
+    });
+
     test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
         page,
     }) => {

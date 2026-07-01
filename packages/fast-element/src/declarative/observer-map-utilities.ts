@@ -17,7 +17,7 @@ interface ArrayObserverRegistration {
     rootProperty: string;
     schema: JSONSchema | JSONSchemaDefinition;
     rootSchema: JSONSchema;
-    reachableArray: any;
+    reachableArrays: any[];
     subscriber: {
         handleChange(subject: any, args: any[]): void;
     };
@@ -195,7 +195,12 @@ function isReachableFromRoot(root: any, value: any): boolean {
 
         seen.add(current);
 
-        for (const key of Object.keys(current)) {
+        const keys = new Set([
+            ...Object.getOwnPropertyNames(current),
+            ...Observable.getAccessors(current).map(accessor => accessor.name),
+        ]);
+
+        for (const key of keys) {
             if (key === "$fastController") {
                 continue;
             }
@@ -207,15 +212,49 @@ function isReachableFromRoot(root: any, value: any): boolean {
     return false;
 }
 
-function isArrayRegistrationReachable(
+function addReachableArray(
+    registration: ArrayObserverRegistration,
+    reachableArray: any,
+): void {
+    if (!registration.reachableArrays.includes(reachableArray)) {
+        registration.reachableArrays.push(reachableArray);
+    }
+}
+
+function refreshArrayRegistrationReachability(
     registration: ArrayObserverRegistration,
     subject: any,
 ): boolean {
-    const root = registration.target?.[registration.rootProperty];
+    const roots = getArrayRegistrationRoots(registration);
+    registration.reachableArrays = registration.reachableArrays.filter(reachableArray =>
+        roots.some(root => isReachableFromRoot(root, reachableArray)),
+    );
 
     return (
-        isReachableFromRoot(root, subject) ||
-        isReachableFromRoot(root, registration.reachableArray)
+        roots.some(root => isReachableFromRoot(root, subject)) ||
+        registration.reachableArrays.length > 0
+    );
+}
+
+function getArrayRegistrationRoots(registration: ArrayObserverRegistration): any[] {
+    const ownerTargets = getTargetsForObject(registration.target);
+
+    if (ownerTargets.length > 0) {
+        return ownerTargets.map(
+            targetItem => targetItem.target?.[targetItem.rootProperty],
+        );
+    }
+
+    return [registration.target?.[registration.rootProperty]];
+}
+
+function notifyArrayRegistration(registration: ArrayObserverRegistration): void {
+    Observable.notify(registration.target, registration.rootProperty);
+
+    getTargetsForObject(registration.target).forEach(
+        (targetItem: ObservedTargetsAndProperties) => {
+            Observable.notify(targetItem.target, targetItem.rootProperty);
+        },
     );
 }
 
@@ -239,7 +278,7 @@ function handleArrayChange(
     subject: any,
     args: any[],
 ) {
-    if (!isArrayRegistrationReachable(registration, subject)) {
+    if (!refreshArrayRegistrationReachability(registration, subject)) {
         removeArrayRegistration(subject, registration);
         return;
     }
@@ -266,7 +305,7 @@ function handleArrayChange(
                 }
             }
 
-            Observable.notify(registration.target, registration.rootProperty);
+            notifyArrayRegistration(registration);
         }
     });
 }
@@ -306,11 +345,13 @@ function observeArray(
     target: any,
     rootProperty: string,
 ): void {
-    let registrations = observedArraysMap.get(data);
+    const notifier = Observable.getNotifier(data);
+    const observedArray = notifier.subject as any[];
+    let registrations = observedArraysMap.get(observedArray);
 
     if (!registrations) {
         registrations = [];
-        observedArraysMap.set(data, registrations);
+        observedArraysMap.set(observedArray, registrations);
     }
 
     const existingRegistration = registrations.find(registration =>
@@ -324,7 +365,7 @@ function observeArray(
     );
 
     if (existingRegistration) {
-        existingRegistration.reachableArray = reachableArray;
+        addReachableArray(existingRegistration, reachableArray);
         return;
     }
 
@@ -333,7 +374,7 @@ function observeArray(
         rootProperty,
         schema,
         rootSchema,
-        reachableArray,
+        reachableArrays: [reachableArray],
         subscriber: {
             handleChange(subject, args) {
                 handleArrayChange(registration, subject, args);
@@ -342,7 +383,7 @@ function observeArray(
     };
 
     registrations.push(registration);
-    Observable.getNotifier(data).subscribe(registration.subscriber);
+    notifier.subscribe(registration.subscriber);
 }
 
 /**
@@ -576,6 +617,8 @@ function assignProxyToItemsInArray(
             rootProperty,
         );
     });
+
+    addTargetToObject(proxiableItem, target, rootProperty);
 }
 
 /**
@@ -683,7 +726,14 @@ function addTargetToObject(object: any, target: any, rootProperty: string): void
 
     const targets = objectTargetsMap.get(object) as ObservedTargetsAndProperties[];
 
-    targets.push({ target, rootProperty });
+    if (
+        !targets.some(
+            targetItem =>
+                targetItem.target === target && targetItem.rootProperty === rootProperty,
+        )
+    ) {
+        targets.push({ target, rootProperty });
+    }
 }
 
 /**
@@ -746,13 +796,15 @@ export function assignProxy(
                     return true;
                 }
 
-                obj[prop] = assignObservables(
-                    childSchema ?? schema,
-                    rootSchema,
-                    value,
-                    target,
-                    rootProperty,
-                );
+                obj[prop] = hasObservableAccessor(obj, propName)
+                    ? value
+                    : assignObservables(
+                          childSchema ?? schema,
+                          rootSchema,
+                          value,
+                          target,
+                          rootProperty,
+                      );
 
                 notifyObservables(proxy);
 

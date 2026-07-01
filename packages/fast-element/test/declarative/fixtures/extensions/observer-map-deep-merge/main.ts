@@ -592,6 +592,40 @@ class DeepMergeTestElement extends FASTElement {
         };
     }
 
+    public async testSharedPrimitiveArrayAliasReplacement() {
+        const sharedTags = ["shared"];
+        const itemA = this.users[0].orders[0].items[0];
+        const itemB = this.users[0].orders[0].items[1];
+        let notifications = 0;
+        const notifier = Observable.getNotifier(this);
+        const subscriber = {
+            handleChange() {
+                notifications++;
+            },
+        };
+
+        itemA.tags = sharedTags;
+        itemB.tags = sharedTags;
+        await Updates.next();
+
+        itemB.tags = ["replacement"];
+        await Updates.next();
+
+        notifier.subscribe(subscriber, "users");
+
+        itemA.tags.push("still owned by A");
+        await Updates.next();
+
+        notifier.unsubscribe(subscriber, "users");
+
+        return {
+            notifications,
+            itemATags: [...itemA.tags],
+            itemBTags: [...itemB.tags],
+            sharedTags: [...sharedTags],
+        };
+    }
+
     public async replaceOrdersAndMutateNestedData() {
         this.updateUserOrders();
 
