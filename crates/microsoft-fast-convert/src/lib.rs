@@ -9,6 +9,7 @@ mod converter;
 mod error;
 mod expression;
 mod html;
+mod syntax;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
