@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add FAST declarative template conversion to the fast CLI.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
