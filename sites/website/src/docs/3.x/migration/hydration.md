@@ -19,10 +19,11 @@ keywords:
 
 # Hydration and SSR migration
 
-Use this path if your v2 application server-rendered FAST components, used
-`@microsoft/fast-ssr`, emitted FAST hydration markers, imported hydration side-effect
-helpers, or inspected hydration controller APIs. Complete the
-[core migration](/docs/3.x/migration/) first, then update the SSR and
+Use this add-on path after the core migration if your v2 application
+server-rendered FAST components, used `@microsoft/fast-ssr`, emitted FAST
+hydration markers, imported hydration side-effect helpers, or inspected
+hydration controller APIs. Complete the
+[core migration](/docs/3.x/migration/core/) first, then update the SSR and
 hydration pipeline so the server output and browser runtime agree.
 
 ## What changed

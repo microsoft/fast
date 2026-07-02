@@ -1,32 +1,84 @@
 ---
-id: migration-general
-title: General Migration
+id: migration-core
+title: Core Migration from 2.x to 3.x
 layout: 3x
 eleventyNavigation:
-  key: migration-general3x
+  key: migration-core3x
   parent: migration3x
-  title: General
+  title: Core
   order: 1
 navigationOptions:
-  activeKey: migration-general3x
+  activeKey: migration-core3x
 keywords:
   - migrate
   - migration
 ---
 
-# Migrating from 2.x to 3.x
+# Core migration from 2.x to 3.x
 
 FAST Element 3.x focuses the client runtime on browser `Window` environments and
 removes several APIs that previously supported alternate registration,
-hydration, and declarative HTML flows. Start with this page for core
-component-authoring changes, then follow the child page that matches the extra
-functionality your application uses:
+hydration, and declarative HTML flows. Complete this core migration for every
+application, then follow the add-on migration path that matches the extra
+functionality your application uses.
 
 | Migration path | Use it when |
 |---|---|
 | Core FAST Element migration | You author components with `FASTElement`, `html`, `css`, `define()`, `compose()`, `@attr`, `FAST`, or `ElementStyles.withBehaviors()`. |
 | [Hydration and SSR migration](/docs/3.x/migration/hydration/) | You server-rendered FAST components, emitted FAST hydration markers, used `@microsoft/fast-ssr`, or installed FAST hydration helpers. |
 | [Declarative HTML migration](/docs/3.x/migration/declarative-html/) | You used the removed `@microsoft/fast-html` package, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, or declarative map options. |
+
+## Audit your application
+
+Start by searching your application for removed APIs, changed imports, and
+add-on migration triggers. Use your IDE search or run equivalent `rg` commands
+from your application root.
+
+```bash
+rg --fixed-strings \
+  -e "compose(" \
+  -e "defineAsync" \
+  -e "composeAsync" \
+  -e "registerAsync" \
+  -e "FAST.versions" \
+  -e "fast-kernel" \
+  -e "FAST.getById" \
+  -e "KernelServiceId" \
+  -e "ElementStyles.withBehaviors"
+
+rg --fixed-strings \
+  -e "@microsoft/fast-element/metadata.js" \
+  -e "@microsoft/fast-element/testing.js" \
+  -e "@microsoft/fast-element/pending-task.js" \
+  -e "@microsoft/fast-element/install-element-hydration.js" \
+  -e "@microsoft/fast-element/install-hydration.js" \
+  -e "@microsoft/fast-element/install-hydratable-view-templates.js" \
+  -e "@microsoft/fast-element/element-hydration.js"
+
+rg --fixed-strings \
+  -e "@microsoft/fast-ssr" \
+  -e "HydratableElementController" \
+  -e "defer-hydration" \
+  -e "needs-hydration" \
+  -e "@microsoft/fast-html" \
+  -e "RenderableFASTElement" \
+  -e "TemplateElement" \
+  -e "TemplateOptions" \
+  -e "templateOptions" \
+  -e "<f-template"
+
+rg '="false"' --glob '*.{html,js,jsx,ts,tsx}'
+```
+
+Matches in the first two commands are covered by this core page. Matches for
+SSR, hydration markers, or hydration side-effect imports mean you should also
+complete the [Hydration and SSR migration](/docs/3.x/migration/hydration/).
+Matches for `@microsoft/fast-html`, `<f-template>`, `TemplateElement`,
+`RenderableFASTElement`, or declarative map options mean you should also
+complete the
+[Declarative HTML migration](/docs/3.x/migration/declarative-html/). For
+`="false"` matches, inspect only FAST boolean-mode attributes; in 3.x, omit the
+attribute to represent `false`.
 
 ## Recommended upgrade order
 
