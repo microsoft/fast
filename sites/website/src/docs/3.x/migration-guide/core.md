@@ -112,7 +112,7 @@ MyElement.compose({
 }).define();
 
 // After
-await MyElement.define({
+MyElement.define({
     name: "my-element",
     template,
     styles,
@@ -122,9 +122,8 @@ await MyElement.define({
 ### `defineAsync()` and `composeAsync()` removed
 
 `FASTElement.defineAsync()` and `FASTElementDefinition.composeAsync()` have been
-removed. Use subclass `define()` instead. It now returns a `Promise` that
-resolves immediately for concrete templates and resolves after
-`declarativeTemplate()` receives matching `<f-template>` markup.
+removed. Use subclass `define()` instead. The returned `Promise` is available
+only for code that explicitly needs to observe registration completion.
 
 ```ts
 // Before
@@ -135,7 +134,7 @@ MyElement.defineAsync({
 });
 
 // After
-await MyElement.define({
+MyElement.define({
     name: "my-element",
     template,
     styles,
@@ -150,7 +149,7 @@ way:
 FASTElementDefinition.compose(MyElement, options).define();
 
 // After
-await MyElement.define(options);
+MyElement.define(options);
 ```
 
 If old code used `registerAsync()` only to wait for a custom element tag name to

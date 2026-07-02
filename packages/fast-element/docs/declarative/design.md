@@ -622,7 +622,7 @@ sequenceDiagram
     participant Hydration as enableHydration().whenHydrated()
 
     App->>Hydration: const hydration = enableHydration() [optional]
-    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
+    App->>FER: MyElement.define({name:'my-el', template: declarativeTemplate()}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
 
     DOM->>FTE: f-template connected to DOM

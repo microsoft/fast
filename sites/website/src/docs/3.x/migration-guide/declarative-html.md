@@ -98,15 +98,16 @@ RenderableFASTElement(MyComponent).defineAsync({
 // After
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-await MyComponent.define({
+MyComponent.define({
     name: "my-component",
     template: declarativeTemplate(),
 });
 ```
 
-`declarativeTemplate()` is the waiting behavior. It resolves the matching
-`<f-template>` before `define()` completes. If prerendered content exists in the
-DOM, call `enableHydration()` before elements connect to hydrate it.
+`declarativeTemplate()` coordinates template resolution. If code explicitly
+observes the Promise returned by `define()`, it resolves after the matching
+`<f-template>` supplies the concrete template. If prerendered content exists in
+the DOM, call `enableHydration()` before elements connect to hydrate it.
 
 ## Replace public `TemplateElement` setup
 
@@ -142,7 +143,7 @@ import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
-await MyElement.define(
+MyElement.define(
     {
         name: "my-element",
         template: declarativeTemplate(),
@@ -162,7 +163,7 @@ import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 const schema = new Schema("my-element");
 
-await MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
 ```
 
 ## Remove `TemplateOptions`
@@ -175,13 +176,13 @@ template.
 
 ```ts
 // Before
-await MyElement.define({
+MyElement.define({
     name: "my-element",
     templateOptions: "defer-and-hydrate",
 });
 
 // After
-await MyElement.define({
+MyElement.define({
     name: "my-element",
     template: declarativeTemplate(),
 });
@@ -202,7 +203,7 @@ attribute names, configure both the client and server to use `"none"`.
 import { attributeMap } from "@microsoft/fast-element/attribute-map.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-await MyElement.define(
+MyElement.define(
     {
         name: "my-element",
         template: declarativeTemplate(),
@@ -290,14 +291,14 @@ class MyCounter extends FASTElement {
     @attr count: number = 0;
 }
 
-await MyCounter.define({
+MyCounter.define({
     name: "my-counter",
     template: declarativeTemplate(),
 });
 ```
 
 Template-first and definition-first loading both work, but the custom element
-definition does not finish until the matching template is available. A common
+registration completes only after the matching template is available. A common
 pattern is to include `<f-template>` elements directly in the HTML page before
 the script module loads.
 

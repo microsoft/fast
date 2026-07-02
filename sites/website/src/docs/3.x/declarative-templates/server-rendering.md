@@ -422,8 +422,8 @@ offending marker.
 
 `declarativeTemplate()` waits for one connected `<f-template>` whose `name`
 matches the element definition. Template-first and definition-first loading both
-work, but the custom element definition does not finish until the matching
-template is available.
+work, but custom element registration completes only after the matching template
+is available.
 
 ```html
 <f-template name="user-card">
@@ -434,7 +434,7 @@ template is available.
 ```ts
 class UserCard extends FASTElement {}
 
-await UserCard.define({
+UserCard.define({
     name: "user-card",
     template: declarativeTemplate(),
 });
