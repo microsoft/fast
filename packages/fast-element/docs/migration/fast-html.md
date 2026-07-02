@@ -36,9 +36,9 @@ See the [`@microsoft/fast-element` migration guide](./fast-element-3.md#hydratio
 ### Migration steps
 
 1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with
-   `await MyComponent.define({...})` and use `declarativeTemplate()` for
-   declarative templates. `declarativeTemplate()` is the waiting behavior: it
-   resolves the matching `<f-template>` before `define()` completes.
+   `MyComponent.define({...})` and use `declarativeTemplate()` for declarative
+   templates. If code explicitly observes the Promise returned by `define()`,
+   it resolves after the matching `<f-template>` supplies the concrete template.
 
    ```typescript
    // Before
@@ -49,7 +49,7 @@ See the [`@microsoft/fast-element` migration guide](./fast-element-3.md#hydratio
    });
 
    // After
-   await MyComponent.define({
+   MyComponent.define({
        name: "my-component",
        template: declarativeTemplate(),
    });
