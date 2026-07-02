@@ -1,0 +1,6 @@
+{
+    "syntax": "webui-prerelease",
+    "template": "template.html",
+    "output": "../../../../.fixture-output/validation/missing-inner-template.html",
+    "overwrite": false
+}

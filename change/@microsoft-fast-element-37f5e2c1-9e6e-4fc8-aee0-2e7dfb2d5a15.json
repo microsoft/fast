@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update WebUI integration fixtures to generate templates with fast convert.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -1,0 +1,6 @@
+{
+    "syntax": "webui-prerelease",
+    "template": "template.html",
+    "output": "../../../../.fixture-output/validation/invalid-repeat.html",
+    "overwrite": false
+}
