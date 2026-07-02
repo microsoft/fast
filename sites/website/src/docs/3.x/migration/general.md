@@ -1,16 +1,17 @@
 ---
-id: migration-guide
-title: Migration Guide
+id: migration-general
+title: General Migration
 layout: 3x
 eleventyNavigation:
-  key: migration-guide3x
-  title: Migration Guide
+  key: migration-general3x
+  parent: migration3x
+  title: General
+  order: 1
 navigationOptions:
-  activeKey: migration-guide3x
+  activeKey: migration-general3x
 keywords:
   - migrate
   - migration
-  - web components
 ---
 
 # Migrating from 2.x to 3.x
@@ -24,23 +25,23 @@ functionality your application uses:
 | Migration path | Use it when |
 |---|---|
 | Core FAST Element migration | You author components with `FASTElement`, `html`, `css`, `define()`, `compose()`, `@attr`, `FAST`, or `ElementStyles.withBehaviors()`. |
-| [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/) | You server-rendered FAST components, emitted FAST hydration markers, used `fast-ssr`, or installed FAST hydration helpers. |
-| [Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/) | You used the removed `@microsoft/fast-html` package, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, or declarative map options. |
+| [Hydration and SSR migration](/docs/3.x/migration/hydration/) | You server-rendered FAST components, emitted FAST hydration markers, used `@microsoft/fast-ssr`, or installed FAST hydration helpers. |
+| [Declarative HTML migration](/docs/3.x/migration/declarative-html/) | You used the removed `@microsoft/fast-html` package, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, or declarative map options. |
 
 ## Recommended upgrade order
 
-1. Update your package versions so all FAST packages are on matching 3.x
+1. Replace `compose()`, `defineAsync()`, and `composeAsync()` registration flows
+   with subclass `define()`.
+2. Update imports and remove deleted package exports.
+3. Move dynamic stylesheet behavior out of `css` and into the element or
+   controller lifecycle.
+4. Update your package versions so all FAST packages are on matching 3.x
    versions. Do not mix old SSR output or declarative runtime code with the 3.x
    client.
-2. Update imports and remove deleted package exports.
-3. Replace `compose()`, `defineAsync()`, and `composeAsync()` registration flows
-   with subclass `define()`.
-4. Move dynamic stylesheet behavior out of `css` and into the element or
-   controller lifecycle.
 5. If you server-render or hydrate FAST components, complete the
-   [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
+   [Hydration and SSR migration](/docs/3.x/migration/hydration/).
 6. If you use declarative HTML, complete the
-   [Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/).
+   [Declarative HTML migration](/docs/3.x/migration/declarative-html/).
 7. Rebuild and manually verify the upgraded components in the browser.
 
 ## Runtime requirements
@@ -51,7 +52,7 @@ or other non-window hosts. Server rendering tools may emit HTML, but hydration
 and client rendering run in the browser window where DOM, Custom Elements,
 Shadow DOM, and `requestAnimationFrame` are available.
 
-FAST Element v3 also no longer installs a `globalThis` polyfill and no longer
+FAST Element 3.x also no longer installs a `globalThis` polyfill and no longer
 installs or depends on a `requestIdleCallback` / `cancelIdleCallback` fallback.
 Load a `globalThis` polyfill before importing FAST only if you still support an
 older browser that lacks it. You do not need to polyfill `requestIdleCallback`
@@ -87,7 +88,7 @@ Remove imports from deleted package exports such as
 `@microsoft/fast-element/metadata.js`, `@microsoft/fast-element/testing.js`,
 and `@microsoft/fast-element/pending-task.js`. Replace hydration side-effect
 imports with `enableHydration()` as described in the
-[Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
+[Hydration and SSR migration](/docs/3.x/migration/hydration/).
 
 See the [Path Exports](/docs/3.x/advanced/path-exports/) reference and the
 [package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md#optional-helper-and-removed-path-exports-v2--v3)
@@ -194,7 +195,7 @@ FAST.addMessages({ ... });
 ### `FAST.versions` and `fast-kernel` modes removed
 
 `FAST.versions` has been removed and multiple FAST versions on the same page are
-unsupported in v3. Remove runtime checks that read `FAST.versions` and fix
+unsupported in 3.x. Remove runtime checks that read `FAST.versions` and fix
 duplicate FAST installs in your bundler or dependency graph instead.
 
 The `fast-kernel="share"`, `fast-kernel="share-v2"`, and
@@ -301,7 +302,7 @@ treats native boolean attributes such as `disabled` and `required`:
 - Property to attribute uses `Boolean()` coercion: any JavaScript truthy value
   adds the attribute with value `""`; any falsy value removes it.
 
-The main v2 to v3 difference is that `setAttribute(name, "false")` now resolves
+The main 2.x to 3.x difference is that `setAttribute(name, "false")` now resolves
 to property `true`.
 
 ```html
@@ -352,6 +353,6 @@ Migration steps:
 | `fastElementRegistry` | `@microsoft/fast-element/registry.js` | Public registry lookup helper for registered FAST element definitions. |
 
 Hydration-specific exports are covered in the
-[Hydration and SSR migration](/docs/3.x/migration-guide/hydration/), and
+[Hydration and SSR migration](/docs/3.x/migration/hydration/), and
 declarative HTML exports are covered in the
-[Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/).
+[Declarative HTML migration](/docs/3.x/migration/declarative-html/).

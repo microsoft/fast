@@ -1,13 +1,14 @@
 ---
-id: migration-guide-hydration
+id: migration-hydration
 title: Hydration and SSR Migration
 layout: 3x
 eleventyNavigation:
-  key: migration-guide-hydration3x
-  parent: migration-guide3x
+  key: migration-hydration3x
+  parent: migration3x
   title: Hydration and SSR
+  order: 2
 navigationOptions:
-  activeKey: migration-guide-hydration3x
+  activeKey: migration-hydration3x
 keywords:
   - migrate
   - migration
@@ -19,9 +20,9 @@ keywords:
 # Hydration and SSR migration
 
 Use this path if your v2 application server-rendered FAST components, used
-`fast-ssr`, emitted FAST hydration markers, imported hydration side-effect
+`@microsoft/fast-ssr`, emitted FAST hydration markers, imported hydration side-effect
 helpers, or inspected hydration controller APIs. Complete the
-[core migration](/docs/3.x/migration-guide/) first, then update the SSR and
+[core migration](/docs/3.x/migration/) first, then update the SSR and
 hydration pipeline so the server output and browser runtime agree.
 
 ## What changed
@@ -195,7 +196,7 @@ The `HydrationMarkup` API methods have also changed.
 | `HydrationMarkup.parseElementBoundaryStartMarker(content)` | `HydrationMarkup.isElementBoundaryStartMarker(node)` |
 | `HydrationMarkup.parseElementBoundaryEndMarker(content)` | `HydrationMarkup.isElementBoundaryEndMarker(node)` |
 
-If you used `fast-ssr` or custom SSR tooling, update the renderer to emit the
+If you used `@microsoft/fast-ssr` or custom SSR tooling, update the renderer to emit the
 new marker format before loading the v3 client. If you use `@microsoft/fast-build`,
 upgrade it with `@microsoft/fast-element` and rebuild the output.
 
@@ -261,6 +262,6 @@ Hydration mismatch in <my-element>.
 5. Replace prerender checks with `isPrerendered` and `isHydrated`.
 6. Remove `needs-hydration` and `defer-hydration` from SSR markup unless
    compatibility code still explicitly needs the legacy attribute string.
-7. Update `fast-ssr`, `@microsoft/fast-build`, or custom SSR output to the v3
+7. Update `@microsoft/fast-ssr`, `@microsoft/fast-build`, or custom SSR output to the v3
    hydration marker format.
 8. Deploy matching renderer and client versions.
