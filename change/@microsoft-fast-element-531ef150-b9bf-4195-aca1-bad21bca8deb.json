@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update documentation around the necessity for await when using define",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
