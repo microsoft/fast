@@ -205,7 +205,11 @@ Reference directives create references to elements in your template so you can m
 
 ### The `ref` Directive
 
-The `ref()` directive maps an element in the template to an observed property on the component class, so you can reach the element through the component instance.
+The `ref()` directive assigns a template element to a property on the component class, so you can reach it through the component instance.
+
+:::tip
+FAST populates the property while binding the view, which the `FASTElement` base class does as part of connecting the element. The property is assigned synchronously during the `super.connectedCallback()` call, and may not be available until after the binding has run. Decorating the property with `@observable` and responding in its change callback is a reliable way to act on the element the moment it becomes available. Without the decorator, the property will still hold the reference once binding has run, but you won't be notified when that happens.
+:::
 
 In the following example, the `ref()` directive maps the `<video>` element to the `video` property on the `MP4Player` class.
 
@@ -247,16 +251,16 @@ import { FASTElement, html, observable, slotted } from '@microsoft/fast-element'
 
 class SlottedExample extends FASTElement {
   @observable
-  slottedElements!: HTMLElement[];
+  slottedNodes!: Node[];
 
-  slottedElementsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]) {
+  slottedNodesChanged(oldValue: Node[], newValue: Node[]) {
     console.log("The collection of slotted elements has changed:", oldValue, newValue);
   }
 }
 
 const template = html<SlottedExample>`
   <template>
-    <slot ${slotted("slottedElements")}></slot>
+    <slot ${slotted("slottedNodes")}></slot>
   </template>
 `;
 
@@ -266,7 +270,7 @@ SlottedExample.define({
 });
 ```
 
-In the example above, the `slotted("slottedElements")` directive creates a reference to the elements assigned to the `<slot>` and maps them to the `slottedElements` property on the `SlottedExample` class. The `slottedElementsChanged` method is called whenever the collection of slotted elements changes.
+In the example above, the `slotted("slottedNodes")` directive creates a reference to the elements assigned to the `<slot>` and maps them to the `slottedNodes` property on the `SlottedExample` class. The `slottedNodesChanged` method is called whenever the collection of slotted elements changes.
 
 #### Filtering Slotted Elements
 

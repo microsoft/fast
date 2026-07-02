@@ -232,20 +232,24 @@ When rendered, the host element receives the `role` attribute:
 
 FAST applies this attribute to the host as a one-time binding when the template binds, during the element's connection. If the host already carries the attribute, for example because the consumer set it in markup, the template value overwrites it. The binding runs once, so attribute changes the consumer makes after connection are left in place.
 
-All of the bindings described in [Template Bindings](#template-bindings) (content, attribute, boolean attribute, property, and event) work on the `<template>` root. For example, a progress bar can mirror its state to ARIA attributes on the host:
+Static attributes, attribute value bindings, property bindings, and event bindings can all be applied to the host through the `<template>` root:
 
 ```ts
 const template = html<ProgressBar>`
   <template
     role="progressbar"
-    aria-valuenow="${x => x.value}"
     aria-valuemin="${x => x.min}"
     aria-valuemax="${x => x.max}"
+    aria-valuenow="${x => x.value}"
   >
     ...
   </template>
 `;
 ```
+
+:::note
+While technically supported, property bindings (`:property="${x => x.prop}"`) on the `<template>` root are rarely meaningful. The `<template>` root is the host, which is the component instance itself, so a property binding would write back to the component's own property. Deriving host properties with `@attr` or a computed `@observable` is a more common pattern than binding directly to the host property via the template.
+:::
 
 ### Event Bindings on the Host
 
