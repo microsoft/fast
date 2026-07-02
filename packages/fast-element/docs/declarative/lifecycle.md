@@ -50,7 +50,7 @@ class MyComponent extends FASTElement {
 }
 
 // Register with the declarative template bridge
-await MyComponent.define({
+MyComponent.define({
     name: "my-component",
     template: declarativeTemplate(),
 });
