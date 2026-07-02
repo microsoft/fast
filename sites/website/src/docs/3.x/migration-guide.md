@@ -1,10 +1,10 @@
 ---
 layout: 3x
 eleventyNavigation:
-  key: migration3x
-  title: Migration
+  key: migration-guide3x
+  title: Migration Guide
   order: 8
 navigationOptions:
-  activeKey: migration3x
+  activeKey: migration-guide3x
 permalink: false
 ---

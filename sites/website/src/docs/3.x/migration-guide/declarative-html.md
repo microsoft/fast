@@ -1,14 +1,14 @@
 ---
-id: migration-declarative-html
+id: migration-guide-declarative-html
 title: Declarative HTML Migration
 layout: 3x
 eleventyNavigation:
-  key: migration-declarative-html3x
-  parent: migration3x
+  key: migration-guide-declarative-html3x
+  parent: migration-guide3x
   title: Declarative HTML
   order: 3
 navigationOptions:
-  activeKey: migration-declarative-html3x
+  activeKey: migration-guide-declarative-html3x
 keywords:
   - migrate
   - migration
@@ -25,9 +25,9 @@ Use this add-on path after the core migration if your v2 application used
 `@microsoft/fast-html`, `<f-template>`, `RenderableFASTElement`,
 `TemplateElement`, declarative `attributeMap` or `observerMap` options, or
 declarative event handlers. Complete the
-[core migration](/docs/3.x/migration/core/) first. If the declarative templates
+[core migration](/docs/3.x/migration-guide/core/) first. If the declarative templates
 were also server-rendered or hydrated, complete the
-[Hydration and SSR migration](/docs/3.x/migration/hydration/) as well.
+[Hydration and SSR migration](/docs/3.x/migration-guide/hydration/) as well.
 
 ## What changed
 
@@ -317,6 +317,6 @@ the script module loads.
 7. Replace bare `e` in event handlers with `$e`.
 8. Move `prepare()` logic to standard element lifecycle code.
 9. If declarative output is server-rendered, complete the
-   [Hydration and SSR migration](/docs/3.x/migration/hydration/).
+   [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
 
 {% endraw %}

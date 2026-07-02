@@ -1,14 +1,14 @@
 ---
-id: migration-hydration
+id: migration-guide-hydration
 title: Hydration and SSR Migration
 layout: 3x
 eleventyNavigation:
-  key: migration-hydration3x
-  parent: migration3x
+  key: migration-guide-hydration3x
+  parent: migration-guide3x
   title: Hydration and SSR
   order: 2
 navigationOptions:
-  activeKey: migration-hydration3x
+  activeKey: migration-guide-hydration3x
 keywords:
   - migrate
   - migration
@@ -23,7 +23,7 @@ Use this add-on path after the core migration if your v2 application
 server-rendered FAST components, used `@microsoft/fast-ssr`, emitted FAST
 hydration markers, imported hydration side-effect helpers, or inspected
 hydration controller APIs. Complete the
-[core migration](/docs/3.x/migration/core/) first, then update the SSR and
+[core migration](/docs/3.x/migration-guide/core/) first, then update the SSR and
 hydration pipeline so the server output and browser runtime agree.
 
 ## What changed

@@ -1,14 +1,14 @@
 ---
-id: migration-core
+id: migration-guide-core
 title: Core Migration from 2.x to 3.x
 layout: 3x
 eleventyNavigation:
-  key: migration-core3x
-  parent: migration3x
+  key: migration-guide-core3x
+  parent: migration-guide3x
   title: Core
   order: 1
 navigationOptions:
-  activeKey: migration-core3x
+  activeKey: migration-guide-core3x
 keywords:
   - migrate
   - migration
@@ -25,8 +25,8 @@ functionality your application uses.
 | Migration path | Use it when |
 |---|---|
 | Core FAST Element migration | You author components with `FASTElement`, `html`, `css`, `define()`, `compose()`, `@attr`, `FAST`, or `ElementStyles.withBehaviors()`. |
-| [Hydration and SSR migration](/docs/3.x/migration/hydration/) | You server-rendered FAST components, emitted FAST hydration markers, used `@microsoft/fast-ssr`, or installed FAST hydration helpers. |
-| [Declarative HTML migration](/docs/3.x/migration/declarative-html/) | You used the removed `@microsoft/fast-html` package, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, or declarative map options. |
+| [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/) | You server-rendered FAST components, emitted FAST hydration markers, used `@microsoft/fast-ssr`, or installed FAST hydration helpers. |
+| [Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/) | You used the removed `@microsoft/fast-html` package, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, or declarative map options. |
 
 ## Audit your application
 
@@ -39,8 +39,8 @@ and add-on migration triggers.
 | FAST global and kernel usage | `globalThis.FAST`, `FAST.versions`, `FAST.getById()`, `KernelServiceId`, or `fast-kernel` script attributes | Import FAST services directly from `@microsoft/fast-element` and remove runtime version/kernel configuration. |
 | Styles | `ElementStyles.withBehaviors()`, `ElementStyles.behaviors`, CSS bindings inside `css`, or behavior-producing CSS directives | Move runtime style decisions into element/controller lifecycle code and add or remove styles as state changes. |
 | Boolean attributes | FAST boolean-mode attributes that render literal string values such as `"false"`, or direct calls to `booleanConverter` | Omit boolean attributes to represent `false`. Review direct converter usage because 3.x follows native HTML boolean attribute semantics. |
-| Hydration and SSR | `@microsoft/fast-ssr`, `HydratableElementController`, hydration marker inspection, `defer-hydration`, `needs-hydration`, or hydration side-effect imports | Complete the [Hydration and SSR migration](/docs/3.x/migration/hydration/) after this core migration. |
-| Declarative HTML | `@microsoft/fast-html`, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, `TemplateOptions`, `templateOptions`, or declarative `attributeMap` / `observerMap` options | Complete the [Declarative HTML migration](/docs/3.x/migration/declarative-html/) after this core migration. |
+| Hydration and SSR | `@microsoft/fast-ssr`, `HydratableElementController`, hydration marker inspection, `defer-hydration`, `needs-hydration`, or hydration side-effect imports | Complete the [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/) after this core migration. |
+| Declarative HTML | `@microsoft/fast-html`, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, `TemplateOptions`, `templateOptions`, or declarative `attributeMap` / `observerMap` options | Complete the [Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/) after this core migration. |
 
 ## Recommended upgrade order
 
@@ -53,9 +53,9 @@ and add-on migration triggers.
    versions. Do not mix old SSR output or declarative runtime code with the 3.x
    client.
 5. If you server-render or hydrate FAST components, complete the
-   [Hydration and SSR migration](/docs/3.x/migration/hydration/).
+   [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
 6. If you use declarative HTML, complete the
-   [Declarative HTML migration](/docs/3.x/migration/declarative-html/).
+   [Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/).
 7. Rebuild and manually verify the upgraded components in the browser.
 
 ## Runtime requirements
@@ -354,6 +354,6 @@ Migration steps:
 | `fastElementRegistry` | `@microsoft/fast-element/registry.js` | Public registry lookup helper for registered FAST element definitions. |
 
 Hydration-specific exports are covered in the
-[Hydration and SSR migration](/docs/3.x/migration/hydration/), and
+[Hydration and SSR migration](/docs/3.x/migration-guide/hydration/), and
 declarative HTML exports are covered in the
-[Declarative HTML migration](/docs/3.x/migration/declarative-html/).
+[Declarative HTML migration](/docs/3.x/migration-guide/declarative-html/).
