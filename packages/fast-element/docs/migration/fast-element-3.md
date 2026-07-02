@@ -383,17 +383,17 @@ This is a **breaking change** for SSR output format. Any system that produces or
 
 | Removed | Replacement |
 |---|---|
-| `FASTElement.defineAsync()` | Subclass `define()` calls (now return `Promise<TType>`) |
+| `FASTElement.defineAsync()` | Subclass `define()` calls |
 | `FASTElement.compose()` and subclass `compose()` calls | Subclass `define()` calls |
 | `FASTElementDefinition.composeAsync()` | Subclass `define()` calls |
 | `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
 
 ### Changed behavior
 
-- Subclass **`define()`** calls now return `Promise<TType>`. When a concrete
-  template is provided at definition time, the Promise resolves immediately.
-  When `template: declarativeTemplate()` is used, the Promise resolves after
-  the matching `<f-template>` supplies the concrete template.
+- Subclass **`define()`** calls return `Promise<TType>` only for code that
+  explicitly needs to observe registration completion. When
+  `template: declarativeTemplate()` is used, that Promise resolves after the
+  matching `<f-template>` supplies the concrete template.
 - Subclass compose helpers are no longer part of the public authoring surface; use subclass `define()` for registration.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
 
@@ -409,7 +409,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
     });
 
     // After
-    await MyElement.define({
+    MyElement.define({
         name: "my-element",
         template: declarativeTemplate(),
     });
@@ -427,7 +427,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
     }).define();
 
     // After
-    await MyElement.define({
+    MyElement.define({
         name: "my-element",
         template,
         styles,
@@ -446,7 +446,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
    })).define();
 
    // After
-   await MyElement.define({
+   MyElement.define({
        name: "my-element",
        template,
        styles,
@@ -471,7 +471,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
     FASTElementDefinition.compose(MyElement, options).define();
 
     // After
-    await MyElement.define(options);
+    MyElement.define(options);
    ```
 
 ## Dynamic stylesheet behaviors (v3)
