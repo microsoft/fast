@@ -37,7 +37,6 @@ and add-on migration triggers.
 |---|---|---|
 | Element registration | `compose()`, `defineAsync()`, `composeAsync()`, `registerAsync()` | Replace owned element registration with subclass `define()`. Use `fastElementRegistry.whenRegistered()` only when code needs to wait for a tag name owned elsewhere. |
 | FAST global and kernel usage | `globalThis.FAST`, `FAST.versions`, `FAST.getById()`, `KernelServiceId`, or `fast-kernel` script attributes | Import FAST services directly from `@microsoft/fast-element` and remove runtime version/kernel configuration. |
-| Deleted package exports | Imports from `@microsoft/fast-element/metadata.js`, `testing.js`, `pending-task.js`, or old hydration side-effect paths | Remove deleted internals or replace them with supported public APIs. Hydration side-effect imports are covered by the Hydration and SSR migration. |
 | Styles | `ElementStyles.withBehaviors()`, `ElementStyles.behaviors`, CSS bindings inside `css`, or behavior-producing CSS directives | Move runtime style decisions into element/controller lifecycle code and add or remove styles as state changes. |
 | Boolean attributes | FAST boolean-mode attributes that render literal string values such as `"false"`, or direct calls to `booleanConverter` | Omit boolean attributes to represent `false`. Review direct converter usage because 3.x follows native HTML boolean attribute semantics. |
 | Hydration and SSR | `@microsoft/fast-ssr`, `HydratableElementController`, hydration marker inspection, `defer-hydration`, `needs-hydration`, or hydration side-effect imports | Complete the [Hydration and SSR migration](/docs/3.x/migration/hydration/) after this core migration. |
@@ -47,7 +46,7 @@ and add-on migration triggers.
 
 1. Replace `compose()`, `defineAsync()`, and `composeAsync()` registration flows
    with subclass `define()`.
-2. Update imports and remove deleted package exports.
+2. Update imports that moved to changed public package paths.
 3. Move dynamic stylesheet behavior out of `css` and into the element or
    controller lifecycle.
 4. Update your package versions so all FAST packages are on matching 3.x
@@ -79,35 +78,22 @@ for the complete native globals and scheduler migration steps.
 
 ## Package and path exports
 
-Root imports for core FAST Element authoring APIs remain supported. Focused path
-exports are available for optional helpers, while deleted internals must be
-removed.
+The root `@microsoft/fast-element` import remains supported. Update only the
+public imports that moved from older nested paths to focused package paths.
 
-| API | Import path |
-|---|---|
-| `FASTElement`, `FAST`, `ElementController`, definition/controller types | `@microsoft/fast-element` |
-| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element` |
-| `observable`, `Observable`, `volatile`, `Updates` | `@microsoft/fast-element` |
-| `html`, `css`, `ViewTemplate`, `HTMLView`, `ElementStyles` | `@microsoft/fast-element` |
-| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element` |
-| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element` |
-| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element` |
-| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element` |
-| `ArrayObserver` | `@microsoft/fast-element` |
-| `children`, `elements`, `ref`, `repeat`, `slotted`, `when` | `@microsoft/fast-element` |
-| `fastElementRegistry` | `@microsoft/fast-element/registry.js` |
-| `twoWay` | `@microsoft/fast-element/two-way.js` |
-| `signal` | `@microsoft/fast-element/signal.js` |
+| Look for | Use | Named exports |
+|---|---|---|
+| `@microsoft/fast-element/binding/two-way.js` | `@microsoft/fast-element/two-way.js` | `twoWay`, `TwoWayBindingOptions`, `TwoWaySettings` |
+| `@microsoft/fast-element/binding/signal.js` | `@microsoft/fast-element/signal.js` | `signal`, `Signal` |
+| Older nested `children` directive imports | `@microsoft/fast-element/children.js` | `children`, `ChildrenDirective`, `ChildListDirectiveOptions`, `ChildrenDirectiveOptions`, `SubtreeDirectiveOptions` |
+| Older nested `ref` directive imports | `@microsoft/fast-element/ref.js` | `ref`, `RefDirective` |
+| Older nested `repeat` directive imports | `@microsoft/fast-element/repeat.js` | `repeat`, `RepeatBehavior`, `RepeatDirective`, `RepeatOptions` |
+| Older nested `slotted` directive imports | `@microsoft/fast-element/slotted.js` | `slotted`, `SlottedDirective`, `SlottedDirectiveOptions` |
+| Older nested `when` directive imports | `@microsoft/fast-element/when.js` | `when` |
 
-Remove imports from deleted package exports such as
-`@microsoft/fast-element/metadata.js`, `@microsoft/fast-element/testing.js`,
-and `@microsoft/fast-element/pending-task.js`. Replace hydration side-effect
-imports with `enableHydration()` as described in the
-[Hydration and SSR migration](/docs/3.x/migration/hydration/).
-
-See the [Path Exports](/docs/3.x/advanced/path-exports/) reference and the
-[package migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-element/docs/migration/fast-element-3.md#optional-helper-and-removed-path-exports-v2--v3)
-for the full import migration table.
+Hydration and declarative HTML import changes are covered in their add-on
+migration pages. See the [Path Exports](/docs/3.x/advanced/path-exports/)
+reference for the full current package export list.
 
 ## Element registration
 
