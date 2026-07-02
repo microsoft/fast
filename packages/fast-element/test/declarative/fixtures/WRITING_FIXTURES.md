@@ -316,7 +316,7 @@ npm run build:fixtures:webui -w @microsoft/fast-element
 npm exec -w @microsoft/fast-element -- playwright test --config=playwright.declarative.webui.config.ts
 ```
 
-The webui build step (`scripts/build-fixtures-with-webui.js`) extracts `<f-template>` elements, builds each fixture with `webui build --plugin=fast`, renders the output with `state.json`, and writes the result to `temp/integrations/webui/fixtures/`. The existing Playwright specs then run against this output.
+The webui build step (`scripts/build-fixtures-with-webui.js`) extracts `<f-template>` elements, converts each component template with `fast convert --syntax=webui-prerelease`, builds each fixture with `webui build --plugin=fast`, renders the output with `state.json`, and writes the result to `temp/integrations/webui/fixtures/`. Fixtures that intentionally contain invalid FAST declarative templates are skipped because `fast convert` validates and rejects them before WebUI renders. The existing Playwright specs then run against this output.
 
 ---
 

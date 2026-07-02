@@ -27,6 +27,11 @@
  * versions plus matching release tags. This keeps historical bare beachball tags
  * from being treated as deployable releases while still working on a
  * freshly-cloned 1ES agent with no `node_modules` or cargo registry.
+ *
+ * Most workspaces map to at most one crate by name convention.
+ * `@microsoft/fast-build` intentionally maps to both `microsoft-fast-build`
+ * and `microsoft-fast-convert`, but still uses one npm package release tag
+ * and one Azure download task.
  */
 
 import { execFileSync } from "node:child_process";
@@ -62,6 +67,14 @@ function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
 }
 
+const bundledCratesByPackage = new Map([
+    ["@microsoft/fast-build", ["microsoft-fast-build", "microsoft-fast-convert"]],
+]);
+
+function npmNameToCrateNames(npmName) {
+    return bundledCratesByPackage.get(npmName) ?? [npmNameToCrateName(npmName)];
+}
+
 function shouldSkipCrates() {
     return process.env.FAST_RELEASE_SKIP_CRATES === "true";
 }
@@ -86,6 +99,24 @@ function readCargoTomlVersion(cargoTomlPath) {
         if (m) return m[1];
     }
     return null;
+}
+
+function validatePairedCrates(pkgName, pkgVersion) {
+    if (shouldSkipCrates()) return;
+
+    for (const crateName of npmNameToCrateNames(pkgName)) {
+        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
+        if (!existsSync(cargoTomlPath)) continue;
+
+        const crateVersion = readCargoTomlVersion(cargoTomlPath);
+        if (crateVersion !== pkgVersion) {
+            throw new Error(
+                `Version mismatch for ${pkgName}: package.json is ${pkgVersion} ` +
+                    `but ${cargoTomlPath} is ${crateVersion}. ` +
+                    "Update one to match the other.",
+            );
+        }
+    }
 }
 
 function listPublishableWorkspaces() {
@@ -115,18 +146,7 @@ function listPublishableWorkspaces() {
         if (pkg.private === true) continue;
         if (!pkg.name || !pkg.version) continue;
 
-        const crateName = npmNameToCrateName(pkg.name);
-        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        const hasCrate = existsSync(cargoTomlPath) && !shouldSkipCrates();
-
-        if (hasCrate) {
-            const crateVersion = readCargoTomlVersion(cargoTomlPath);
-            if (crateVersion !== pkg.version) {
-                throw new Error(
-                    `Version mismatch for ${pkg.name}: package.json is ${pkg.version} but ${cargoTomlPath} is ${crateVersion}. Update one to match the other.`,
-                );
-            }
-        }
+        validatePairedCrates(pkg.name, pkg.version);
 
         workspaces.push({
             location,

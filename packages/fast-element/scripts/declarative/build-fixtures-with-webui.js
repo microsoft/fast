@@ -13,6 +13,7 @@
  *      tests can run against the webui-rendered output via Vite.
  */
 
+import { execFileSync } from "node:child_process";
 import {
     copyFileSync,
     existsSync,
@@ -22,19 +23,22 @@ import {
     rmSync,
     writeFileSync,
 } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build, render } from "@microsoft/webui";
-import {
-    convertToWebuiSyntax,
-    discoverFixtures,
-    extractFTemplates,
-} from "./build-fixtures.utilities.js";
+import { discoverFixtures, extractFTemplates } from "./build-fixtures.utilities.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
+const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
+const fastBuildWasm = require(
+    require.resolve("@microsoft/fast-build/wasm/microsoft_fast_build.js"),
+);
 const fixturesDir = resolve(__dirname, "../../test/declarative/fixtures");
 const fixtures = discoverFixtures(fixturesDir);
 const outBase = resolve(__dirname, "../../temp/integrations/webui/fixtures");
+const skippedFixtures = new Set(["ecosystem/errors"]);
 
 // Files produced by the build or only needed for the build step.
 const buildOnlyFiles = new Set([
@@ -51,21 +55,44 @@ const buildOnlyFiles = new Set([
  */
 function buildFixture(fixtureName) {
     const fixtureDir = join(fixturesDir, fixtureName);
+    if (skippedFixtures.has(fixtureName)) {
+        process.stdout.write(
+            `Fixture "${fixtureName}" skipped for WebUI integration because it intentionally contains invalid FAST templates.\n`,
+        );
+        return;
+    }
+
     const buildDir = join(outBase, ".build", fixtureName);
+    const convertDir = join(outBase, ".convert", fixtureName);
     const buildOutDir = join(buildDir, "out");
     const fixtureOutDir = join(outBase, fixtureName);
 
     mkdirSync(buildDir, { recursive: true });
+    mkdirSync(convertDir, { recursive: true });
     mkdirSync(buildOutDir, { recursive: true });
     mkdirSync(fixtureOutDir, { recursive: true });
 
     // Extract individual component HTML files for webui discovery,
-    // converting FAST directives to webui syntax.
+    // converting FAST declarative syntax to webui syntax with fast convert.
     const templatesHtml = readFileSync(join(fixtureDir, "templates.html"), "utf8");
     const templates = extractFTemplates(templatesHtml);
 
-    for (const { name, content } of templates) {
-        writeFileSync(join(buildDir, `${name}.html`), convertToWebuiSyntax(content));
+    for (const { name, source } of templates) {
+        const convertInput = join(convertDir, `${name}.html`);
+        const convertOutput = join(buildDir, `${name}.html`);
+        writeFileSync(convertInput, fastBuildWasm.escape_code_samples(source));
+        execFileSync(
+            process.execPath,
+            [
+                fastBin,
+                "convert",
+                "--syntax=webui-prerelease",
+                `--template=${convertInput}`,
+                `--output=${convertOutput}`,
+                "--overwrite",
+            ],
+            { stdio: "inherit" },
+        );
     }
 
     // Prepare entry.html without script tags for webui build
@@ -129,6 +156,10 @@ function main() {
     const buildTmp = join(outBase, ".build");
     if (existsSync(buildTmp)) {
         rmSync(buildTmp, { recursive: true });
+    }
+    const convertTmp = join(outBase, ".convert");
+    if (existsSync(convertTmp)) {
+        rmSync(convertTmp, { recursive: true });
     }
 }
 

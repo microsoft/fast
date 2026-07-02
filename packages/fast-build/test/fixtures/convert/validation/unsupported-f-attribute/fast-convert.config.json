@@ -1,0 +1,6 @@
+{
+    "syntax": "fast-v3-ts",
+    "template": "template.html",
+    "output": "../../../../.fixture-output/validation/unsupported-f-attribute.ts",
+    "overwrite": false
+}

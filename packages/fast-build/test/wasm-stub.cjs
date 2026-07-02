@@ -3,11 +3,13 @@
 
 const fs = require("node:fs");
 const Module = require("node:module");
+const path = require("node:path");
 
 const wasmPath = process.env.FAST_BUILD_WASM_STUB_MODULE;
+const convertWasmPath = process.env.FAST_CONVERT_WASM_STUB_MODULE;
 const recordPath = process.env.FAST_BUILD_WASM_STUB_RECORD;
 
-if (!wasmPath || !recordPath) {
+if ((!wasmPath && !convertWasmPath) || !recordPath) {
     throw new Error("WASM stub requires module and record paths.");
 }
 
@@ -57,15 +59,49 @@ const stub = {
     },
 };
 
+const convertStub = {
+    convert_syntax_metadata() {
+        return JSON.stringify([
+            {
+                syntax: "webui-prerelease",
+                extension: ".html",
+                suffix: ".webui.html",
+            },
+            {
+                syntax: "fast-v3-ts",
+                extension: ".ts",
+                suffix: ".template.ts",
+            },
+        ]);
+    },
+    convert_template(template, syntax) {
+        calls.push({ name: "convert_template", template, syntax });
+        return `converted:${syntax}:${template}`;
+    },
+};
+
 process.on("exit", () => {
     fs.writeFileSync(recordPath, JSON.stringify(calls));
 });
 
 const originalLoad = Module._load;
 Module._load = function (request, parent, isMain) {
+    if (path.isAbsolute(request)) {
+        const resolvedRequest = path.resolve(request);
+        if (wasmPath && resolvedRequest === wasmPath) {
+            return stub;
+        }
+        if (convertWasmPath && resolvedRequest === convertWasmPath) {
+            return convertStub;
+        }
+    }
+
     const resolved = Module._resolveFilename(request, parent, isMain);
-    if (resolved === wasmPath) {
+    if (wasmPath && resolved === wasmPath) {
         return stub;
+    }
+    if (convertWasmPath && resolved === convertWasmPath) {
+        return convertStub;
     }
     return originalLoad.call(this, request, parent, isMain);
 };
