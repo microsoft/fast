@@ -30,55 +30,18 @@ functionality your application uses.
 
 ## Audit your application
 
-Start by searching your application for removed APIs, changed imports, and
-add-on migration triggers. Use your IDE search or run equivalent `rg` commands
-from your application root.
+Before changing code, review your application for removed APIs, changed imports,
+and add-on migration triggers.
 
-```bash
-rg --fixed-strings \
-  -e "compose(" \
-  -e "defineAsync" \
-  -e "composeAsync" \
-  -e "registerAsync" \
-  -e "FAST.versions" \
-  -e "fast-kernel" \
-  -e "FAST.getById" \
-  -e "KernelServiceId" \
-  -e "ElementStyles.withBehaviors"
-
-rg --fixed-strings \
-  -e "@microsoft/fast-element/metadata.js" \
-  -e "@microsoft/fast-element/testing.js" \
-  -e "@microsoft/fast-element/pending-task.js" \
-  -e "@microsoft/fast-element/install-element-hydration.js" \
-  -e "@microsoft/fast-element/install-hydration.js" \
-  -e "@microsoft/fast-element/install-hydratable-view-templates.js" \
-  -e "@microsoft/fast-element/element-hydration.js"
-
-rg --fixed-strings \
-  -e "@microsoft/fast-ssr" \
-  -e "HydratableElementController" \
-  -e "defer-hydration" \
-  -e "needs-hydration" \
-  -e "@microsoft/fast-html" \
-  -e "RenderableFASTElement" \
-  -e "TemplateElement" \
-  -e "TemplateOptions" \
-  -e "templateOptions" \
-  -e "<f-template"
-
-rg '="false"' --glob '*.{html,js,jsx,ts,tsx}'
-```
-
-Matches in the first two commands are covered by this core page. Matches for
-SSR, hydration markers, or hydration side-effect imports mean you should also
-complete the [Hydration and SSR migration](/docs/3.x/migration/hydration/).
-Matches for `@microsoft/fast-html`, `<f-template>`, `TemplateElement`,
-`RenderableFASTElement`, or declarative map options mean you should also
-complete the
-[Declarative HTML migration](/docs/3.x/migration/declarative-html/). For
-`="false"` matches, inspect only FAST boolean-mode attributes; in 3.x, omit the
-attribute to represent `false`.
+| Area | Look for | What to update |
+|---|---|---|
+| Element registration | `compose()`, `defineAsync()`, `composeAsync()`, `registerAsync()` | Replace owned element registration with subclass `define()`. Use `fastElementRegistry.whenRegistered()` only when code needs to wait for a tag name owned elsewhere. |
+| FAST global and kernel usage | `globalThis.FAST`, `FAST.versions`, `FAST.getById()`, `KernelServiceId`, or `fast-kernel` script attributes | Import FAST services directly from `@microsoft/fast-element` and remove runtime version/kernel configuration. |
+| Deleted package exports | Imports from `@microsoft/fast-element/metadata.js`, `testing.js`, `pending-task.js`, or old hydration side-effect paths | Remove deleted internals or replace them with supported public APIs. Hydration side-effect imports are covered by the Hydration and SSR migration. |
+| Styles | `ElementStyles.withBehaviors()`, `ElementStyles.behaviors`, CSS bindings inside `css`, or behavior-producing CSS directives | Move runtime style decisions into element/controller lifecycle code and add or remove styles as state changes. |
+| Boolean attributes | FAST boolean-mode attributes that render literal string values such as `"false"`, or direct calls to `booleanConverter` | Omit boolean attributes to represent `false`. Review direct converter usage because 3.x follows native HTML boolean attribute semantics. |
+| Hydration and SSR | `@microsoft/fast-ssr`, `HydratableElementController`, hydration marker inspection, `defer-hydration`, `needs-hydration`, or hydration side-effect imports | Complete the [Hydration and SSR migration](/docs/3.x/migration/hydration/) after this core migration. |
+| Declarative HTML | `@microsoft/fast-html`, `<f-template>`, `RenderableFASTElement`, `TemplateElement`, `TemplateOptions`, `templateOptions`, or declarative `attributeMap` / `observerMap` options | Complete the [Declarative HTML migration](/docs/3.x/migration/declarative-html/) after this core migration. |
 
 ## Recommended upgrade order
 
