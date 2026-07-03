@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("f-template errors", () => {
+    test.skip(
+        !!process.env.FAST_WEBUI_INTEGRATION,
+        "fast convert rejects invalid <f-template> fixtures before WebUI build",
+    );
+
     test.beforeEach(async ({ page }) => {
         await page.addInitScript(() => {
             (window as any).__errors = [];
@@ -14,10 +19,6 @@ test.describe("f-template errors", () => {
     });
 
     test("throws an error when no template element is present", async ({ page }) => {
-        test.skip(
-            !!process.env.FAST_WEBUI_INTEGRATION,
-            "WebUI does not render <f-template> without <template> child (see WEBUI_ISSUES.md #3)",
-        );
         await page.goto("/fixtures/ecosystem/errors/");
 
         await expect

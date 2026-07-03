@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-build",
   "version": "0.9.0",
-  "description": "CLI and Node.js API for server-side rendering of FAST declarative HTML templates.",
+  "description": "CLI and Node.js API for server-side rendering and converting FAST declarative HTML templates.",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -19,6 +19,7 @@
   "exports": {
     "./bin/fast.js": "./bin/fast.js",
     "./wasm/microsoft_fast_build.js": "./wasm/microsoft_fast_build.js",
+    "./wasm/convert/microsoft_fast_convert.js": "./wasm/convert/microsoft_fast_convert.js",
     "./package.json": "./package.json"
   },
   "bin": {
@@ -30,11 +31,16 @@
     "wasm/microsoft_fast_build.js",
     "wasm/microsoft_fast_build_bg.wasm",
     "wasm/microsoft_fast_build.d.ts",
-    "wasm/microsoft_fast_build_bg.wasm.d.ts"
+    "wasm/microsoft_fast_build_bg.wasm.d.ts",
+    "wasm/convert/microsoft_fast_convert.js",
+    "wasm/convert/microsoft_fast_convert_bg.wasm",
+    "wasm/convert/microsoft_fast_convert.d.ts",
+    "wasm/convert/microsoft_fast_convert_bg.wasm.d.ts"
   ],
   "scripts": {
-    "build": "cargo build --manifest-path ../../crates/microsoft-fast-build/Cargo.toml && wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm",
-    "test:node": "node --test test/config.test.js"
+    "build": "node build-wasm.cjs",
+    "test:node": "node --test test/config.test.js test/fixtures/convert/convert-fixtures.test.js",
+    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js"
   },
   "engines": {
     "node": ">=22.18.0"

@@ -4,6 +4,11 @@ test.describe("Hydration configuration", () => {
     test("hydrates declarative shadow DOM appended after completion", async ({
         page,
     }) => {
+        test.skip(
+            !!process.env.FAST_WEBUI_INTEGRATION,
+            "WebUI-rendered late Declarative Shadow DOM does not preserve this hydration marker attribute",
+        );
+
         await page.goto("/fixtures/ecosystem/hydration-config/");
         await page.waitForFunction(() => (window as any).hydrationCompleted === true);
 

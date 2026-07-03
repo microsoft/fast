@@ -106,6 +106,13 @@ or work items that should be addressed after merging this PR, such as updating d
 
 # Acceptance checklist
 
+Before making a change, if the change is addressing a bug make sure you write a test first and ensure that it is failing:
+
+```bash
+npm run build            # all packages build successfully
+npm run test             # test fails
+```
+
 Before finishing any change, run these commands from the monorepo root and confirm they pass:
 
 ```bash

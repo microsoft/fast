@@ -11,19 +11,20 @@
  *      workspace's `package.json` (no `node_modules` required, so the
  *      `--check-only` mode can run before `npm ci`).
  *   2. Skips workspaces whose package.json sets `private: true`.
- *   3. For each remaining workspace, looks for a paired Rust crate at
- *      `crates/<crate-name>/Cargo.toml`, where the crate name is derived
- *      from the npm name by dropping the leading `@` and replacing `/`
- *      with `-` (so `@microsoft/fast-build` -> `microsoft-fast-build`).
- *      When a pair exists, the script errors if the two versions are not
- *      identical, forcing the version-bump PR to keep them in sync.
+ *   3. For each remaining workspace, looks for paired Rust crates at
+ *      `crates/<crate-name>/Cargo.toml`. Most crate names are derived from
+ *      the npm name by dropping the leading `@` and replacing `/` with `-`;
+ *      `@microsoft/fast-build` bundles both `microsoft-fast-build` and
+ *      `microsoft-fast-convert` into the same release. When a pair exists,
+ *      the script errors if the two versions are not identical, forcing the
+ *      version-bump PR to keep them in sync.
  *   4. Computes `tag = ${name}_v${version}` (matching beachball's tag
  *      format) and skips the workspace if the git tag already exists
  *      (idempotent across re-runs).
  *   5. Otherwise (when not `--check-only`) packs the npm tarball into
  *      `publish_artifacts_npm/` with `npm pack`, optionally packs the
- *      paired crate into `publish_artifacts_crates/` with
- *      `cargo package`, and creates the GitHub release with both
+ *      paired crates into `publish_artifacts_crates/` with
+ *      `cargo package`, and creates the GitHub release with all
  *      assets attached (`gh release create --target <sha>`). The `gh`
  *      CLI creates the git tag atomically with the release, so the
  *      tag and the release exist if and only if each other does.
@@ -76,6 +77,14 @@ function npmNameToCrateName(npmName) {
     return npmName.replace(/^@/, "").replace(/\//g, "-");
 }
 
+const bundledCratesByPackage = new Map([
+    ["@microsoft/fast-build", ["microsoft-fast-build", "microsoft-fast-convert"]],
+]);
+
+function npmNameToCrateNames(npmName) {
+    return bundledCratesByPackage.get(npmName) ?? [npmNameToCrateName(npmName)];
+}
+
 function shouldSkipCrates() {
     return process.env.FAST_RELEASE_SKIP_CRATES === "true";
 }
@@ -94,6 +103,29 @@ function readCargoTomlVersion(cargoTomlPath) {
         if (m) return m[1];
     }
     return null;
+}
+
+function listPairedCrates(pkgName, pkgVersion) {
+    if (shouldSkipCrates()) return [];
+
+    const crates = [];
+    for (const crateName of npmNameToCrateNames(pkgName)) {
+        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
+        if (!existsSync(cargoTomlPath)) continue;
+
+        const crateVersion = readCargoTomlVersion(cargoTomlPath);
+        if (crateVersion !== pkgVersion) {
+            throw new Error(
+                `Version mismatch for ${pkgName}: package.json is ${pkgVersion} ` +
+                    `but ${cargoTomlPath} is ${crateVersion}. ` +
+                    "Update one to match the other.",
+            );
+        }
+
+        crates.push({ crateName, cargoTomlPath });
+    }
+
+    return crates;
 }
 
 function listPublishableWorkspaces() {
@@ -123,25 +155,13 @@ function listPublishableWorkspaces() {
         if (pkg.private === true) continue;
         if (!pkg.name || !pkg.version) continue;
 
-        const crateName = npmNameToCrateName(pkg.name);
-        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        const hasCrate = existsSync(cargoTomlPath) && !shouldSkipCrates();
-
-        if (hasCrate) {
-            const crateVersion = readCargoTomlVersion(cargoTomlPath);
-            if (crateVersion !== pkg.version) {
-                throw new Error(
-                    `Version mismatch for ${pkg.name}: package.json is ${pkg.version} but ${cargoTomlPath} is ${crateVersion}. Update one to match the other.`,
-                );
-            }
-        }
+        const crates = listPairedCrates(pkg.name, pkg.version);
 
         workspaces.push({
             location,
             name: pkg.name,
             version: pkg.version,
-            crateName: hasCrate ? crateName : null,
-            cargoTomlPath: hasCrate ? cargoTomlPath : null,
+            crates,
         });
     }
 
@@ -174,8 +194,11 @@ console.log(`Missing git tag / release: ${missing.length}`);
 
 if (missing.length > 0) {
     console.log("\nPackages that need a release:");
-    for (const { name, version, crateName } of missing) {
-        const suffix = crateName ? ` (+ crate ${crateName})` : "";
+    for (const { name, version, crates } of missing) {
+        const suffix =
+            crates.length > 0
+                ? ` (+ crates ${crates.map(crate => crate.crateName).join(", ")})`
+                : "";
         console.log(`  - ${name}@${version}${suffix}`);
     }
 }
@@ -201,7 +224,7 @@ mkdirSync(CRATES_DIR, { recursive: true });
 let created = 0;
 let hasErrors = false;
 
-for (const { name, version, location, crateName, cargoTomlPath } of missing) {
+for (const { name, version, location, crates } of missing) {
     const tag = `${name}_v${version}`;
     const assets = [];
 
@@ -216,7 +239,7 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
         ]);
         assets.push(join(NPM_DIR, JSON.parse(packJson)[0].filename));
 
-        if (cargoTomlPath) {
+        for (const { crateName, cargoTomlPath } of crates) {
             console.log(`Packaging crate ${crateName}@${version}...`);
             run(
                 "cargo",
@@ -251,7 +274,7 @@ for (const { name, version, location, crateName, cargoTomlPath } of missing) {
             "",
             "Version bumps were landed via a regular pull request. The attached",
             "assets will be downloaded and published to npm" +
-                (cargoTomlPath ? " and crates.io" : "") +
+                (crates.length > 0 ? " and crates.io" : "") +
                 " by the nightly Azure release pipeline.",
         ].join("\n");
 
