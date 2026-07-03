@@ -467,6 +467,26 @@ test.describe("Deep Merge Test Fixture", () => {
         expect(result.sharedTags).toEqual(["shared", "still owned by A"]);
     });
 
+    test("should reuse primitive array proxies assigned through observed aliases", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/extensions/observer-map-deep-merge/");
+        await hydrationCompleted;
+
+        const result = await page
+            .locator("deep-merge-test-element")
+            .evaluate((element: any) => element.testPrimitiveArrayProxyAliasReuse());
+
+        expect(result.notifications).toBe(1);
+        expect(result.itemATags).toEqual(["shared", "via B"]);
+        expect(result.itemBTags).toEqual(["shared", "via B"]);
+        expect(result.sameTagsReference).toBe(true);
+        expect(result.spliceRecords).toEqual([{ addedCount: 1, index: 1 }]);
+    });
+
     test("should avoid reentrant observerMap deepMerge array changes during notification", async ({
         page,
     }) => {

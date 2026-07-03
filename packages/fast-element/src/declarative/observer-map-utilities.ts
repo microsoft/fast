@@ -32,6 +32,8 @@ const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
  * A map of arrays to their owner-specific observer registrations.
  */
 const observedArraysMap = new WeakMap<object, ArrayObserverRegistration[]>();
+const primitiveArrayProxyMarker = Symbol("observerMapPrimitiveArrayProxy");
+const primitiveArrayProxyTarget = Symbol("observerMapPrimitiveArrayProxyTarget");
 
 type DataType = "array" | "object" | "primitive";
 
@@ -48,6 +50,14 @@ function getDataType(data: any): DataType {
 
 function isObjectLike(value: any): value is object {
     return typeof value === "object" && value !== null;
+}
+
+function isPrimitiveArrayProxy(value: any): boolean {
+    return value?.[primitiveArrayProxyMarker] === true;
+}
+
+function getPrimitiveArrayProxyTarget(value: any): any[] {
+    return value[primitiveArrayProxyTarget];
 }
 
 /**
@@ -428,6 +438,19 @@ function assignObservablesToArray(
         return data;
     }
 
+    if (isPrimitiveArrayProxy(data)) {
+        const primitiveArrayTarget = getPrimitiveArrayProxyTarget(data);
+        observeArray(
+            primitiveArrayTarget,
+            data,
+            schema,
+            rootSchema,
+            target,
+            rootProperty,
+        );
+        return data;
+    }
+
     // For primitive arrays, wrap in a Proxy so that direct index assignment
     // (e.g. arr[0] = value) triggers FAST's splice-based change tracking and
     // keeps repeat directives in sync. Object arrays are not wrapped because
@@ -435,6 +458,25 @@ function assignObservablesToArray(
     // already carry splice records — double-wrapping would produce duplicate
     // splice notifications.
     const primitiveArrayProxy = new Proxy(data, {
+        get: (arr: any, prop: string | symbol) => {
+            if (prop === primitiveArrayProxyMarker) {
+                return true;
+            }
+
+            if (prop === primitiveArrayProxyTarget) {
+                return arr;
+            }
+
+            const value = arr[prop];
+
+            if (typeof value === "function") {
+                // Native array methods already emit FAST splice records; only
+                // direct index assignment needs the proxy set trap below.
+                return value.bind(arr);
+            }
+
+            return value;
+        },
         set: (arr: any, prop: string | symbol, value: any) => {
             const idx = typeof prop === "string" ? Number(prop) : NaN;
 
