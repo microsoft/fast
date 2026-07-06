@@ -1,0 +1,19 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm",
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "strictPropertyInitialization": false,
+        "importsNotUsedAsValues": "error",
+        "target": "es2015",
+        "module": "ESNext",
+        "moduleResolution": "NodeNext",
+        "importHelpers": true,
+        "noImplicitAny": false,
+        "lib": ["DOM", "ES2015", "ES2016.Array.Include", "ES2017.Object"]
+    },
+    "include": ["src"]
+}

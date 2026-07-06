@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Declarative HTML Migration</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/github-markdown-dark.css">
+    <link rel="stylesheet" href="/css/github-markdown-overrides.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/version-banner.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/3.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/3.x/introduction">3.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/3.x/introduction">3.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        
+<div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item"><a href="/docs/3.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Getting Started</a><ul><li class="menu__list-item"><a href="/docs/3.x/getting-started/quick-start/" class="menu__link">Quick Start</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/fast-element/" class="menu__link">FASTElement</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-templates/" class="menu__link">HTML Templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/css-templates/" class="menu__link">CSS Templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-directives/" class="menu__link">HTML Directives</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Advanced Concepts</a><ul><li class="menu__list-item"><a href="/docs/3.x/advanced/dependency-injection/" class="menu__link">Dependency Injection</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/dom-policy-and-trusted-types/" class="menu__link">DOMPolicy and Trusted Types</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/path-exports/" class="menu__link">Path Exports</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/reactivity/" class="menu__link">Reactivity</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-with-custom-elements/" class="menu__link">Working with Custom Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-without-decorators/" class="menu__link">Working without Decorators</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Declarative HTML</a><ul><li class="menu__list-item"><a href="/docs/3.x/declarative-templates/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/f-templates/" class="menu__link">Writing f-templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/overview/" class="menu__link">Overview</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/server-rendering/" class="menu__link">Server-Side Rendering</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a href="/docs/3.x/api/overview/" class="menu__link">API Reference</a><ul><li class="menu__list-item"><a href="/docs/3.x/api/" class="menu__link">@microsoft/fast-element</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/context/" class="menu__link">@microsoft/fast-element/context.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/declarative/" class="menu__link">@microsoft/fast-element/declarative.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/di/" class="menu__link">@microsoft/fast-element/di.js</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Migration Guide</a><ul><li class="menu__list-item"><a href="/docs/3.x/migration-guide/core/" class="menu__link">Core</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/migration-guide/hydration/" class="menu__link">Hydration and SSR</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/3.x/migration-guide/declarative-html/" aria-current="page" class="menu__link menu__link--active">Declarative HTML</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community Contribution</a><ul><li class="menu__list-item"><a href="/docs/3.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/3.x/integrations/" class="menu__link">Integrations</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/3.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/export-sizes/" class="menu__link">Export Sizes</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main class="docs-main">
+    <div class="container padding-top--md padding-bottom--lg">
+        <div class="col doc-item">
+            <h1 id="declarative-html-migration">Declarative HTML migration</h1>
+<p>Use this add-on path after the core migration if your v2 application used
+<code>@microsoft/fast-html</code>, <code>&lt;f-template&gt;</code>, <code>RenderableFASTElement</code>,
+<code>TemplateElement</code>, declarative <code>attributeMap</code> or <code>observerMap</code> options, or
+declarative event handlers. Complete the
+<a href="/docs/3.x/migration-guide/core/">core migration</a> first. If the declarative templates
+were also server-rendered or hydrated, complete the
+<a href="/docs/3.x/migration-guide/hydration/">Hydration and SSR migration</a> as well.</p>
+<h2 id="what-changed">What changed</h2>
+<p>The <code>@microsoft/fast-html</code> package has been removed. Declarative HTML now ships
+from focused <code>@microsoft/fast-element</code> path exports and integrates with normal
+<code>FASTElement.define()</code> calls.</p>
+<p>Key migration points:</p>
+<ol>
+<li>Import declarative APIs from <code>@microsoft/fast-element</code> path exports.</li>
+<li>Replace <code>RenderableFASTElement(...).defineAsync()</code> with subclass <code>define()</code>.</li>
+<li>Replace public <code>TemplateElement</code> setup with <code>template: declarativeTemplate()</code>.</li>
+<li>Replace <code>TemplateElement.options()</code> with define extensions.</li>
+<li>Replace <code>prepare()</code> with standard element lifecycle code.</li>
+<li>Update declarative event handlers to use <code>$e</code> instead of bare <code>e</code>.</li>
+</ol>
+<h2 id="update-imports">Update imports</h2>
+<p>Import declarative HTML APIs from FAST Element path exports instead of
+<code>@microsoft/fast-html</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Before</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> TemplateElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-html"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> deepMerge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-html/utilities.js"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// After</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> deepMerge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative-utilities.js"</span><span class="token punctuation">;</span></code></pre>
+<p>Map helpers are define extensions with their own path exports.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attributeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/attribute-map.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> observerMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/observer-map.js"</span><span class="token punctuation">;</span></code></pre>
+<p>Keep importing core FAST Element APIs from the root package export.</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Import path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FASTElement</code>, <code>FAST</code>, <code>ElementController</code>, definition/controller types</td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>attr</code>, <code>AttributeDefinition</code>, converters, <code>ValueConverter</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>Observable</code>, <code>observable</code>, <code>volatile</code>, <code>Updates</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>html</code>, <code>css</code>, <code>ViewTemplate</code>, <code>HTMLView</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>Schema</code>, <code>schemaRegistry</code>, schema types</td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>Binding</code>, <code>oneWay</code>, <code>oneTime</code>, <code>listener</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>DOM</code>, <code>DOMAspect</code>, <code>DOMPolicy</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+<tr>
+<td><code>children</code>, <code>elements</code>, <code>ref</code>, <code>repeat</code>, <code>slotted</code>, <code>when</code></td>
+<td><code>@microsoft/fast-element</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="replace-renderablefastelement">Replace <code>RenderableFASTElement</code></h2>
+<p>The <code>RenderableFASTElement</code> mixin has been removed. Components extend
+<code>FASTElement</code> and call <code>define()</code> directly.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Before</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> RenderableFASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-html"</span><span class="token punctuation">;</span>
+
+<span class="token function">RenderableFASTElement</span><span class="token punctuation">(</span>MyComponent<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">defineAsync</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+    templateOptions<span class="token operator">:</span> <span class="token string">"defer-and-hydrate"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// After</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+
+MyComponent<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><code>declarativeTemplate()</code> coordinates template resolution. If code explicitly
+observes the Promise returned by <code>define()</code>, it resolves after the matching
+<code>&lt;f-template&gt;</code> supplies the concrete template. If prerendered content exists in
+the DOM, call <code>enableHydration()</code> before elements connect to hydrate it.</p>
+<h2 id="replace-public-templateelement-setup">Replace public <code>TemplateElement</code> setup</h2>
+<p>The <code>&lt;f-template&gt;</code> implementation is now internal and is defined automatically
+when an element uses <code>template: declarativeTemplate()</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Removed</th>
+<th>Replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TemplateElement</code> public export</td>
+<td><code>declarativeTemplate()</code></td>
+</tr>
+<tr>
+<td><code>TemplateElement.define({ name: &quot;f-template&quot; })</code></td>
+<td>No manual definition needed.</td>
+</tr>
+<tr>
+<td><code>TemplateElement.config(callbacks)</code></td>
+<td><code>enableHydration().whenHydrated(tagName)</code> for tag-specific hydration waits and <code>enableHydration().whenHydrated()</code> for the active hydration batch.</td>
+</tr>
+<tr>
+<td><code>TemplateElement.options(...)</code></td>
+<td><code>attributeMap()</code> and <code>observerMap()</code> define extensions.</td>
+</tr>
+<tr>
+<td><code>AttributeMap</code> / <code>ObserverMap</code> class exports from the old declarative public surface</td>
+<td><code>attributeMap()</code> / <code>observerMap()</code> helpers and config types.</td>
+</tr>
+</tbody>
+</table>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Before</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> TemplateElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-html"</span><span class="token punctuation">;</span>
+
+TemplateElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"f-template"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+TemplateElement<span class="token punctuation">.</span><span class="token function">options</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token string-property property">"my-element"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        attributeMap<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        observerMap<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"my-element"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// After</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> attributeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/attribute-map.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> observerMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/observer-map.js"</span><span class="token punctuation">;</span>
+
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span>
+    <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"my-element"</span><span class="token punctuation">,</span>
+        template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token function">attributeMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">observerMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><code>FASTElementDefinition.schema</code> is optional. Declarative templates assign it
+automatically during template resolution. Non-declarative users can provide a
+manual schema on the definition, or pass one directly to <code>observerMap({ schema })</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> Schema <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> observerMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/observer-map.js"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> schema <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Schema</span><span class="token punctuation">(</span><span class="token string">"my-element"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"my-element"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">observerMap</span><span class="token punctuation">(</span><span class="token punctuation">{</span> schema <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2 id="remove-templateoptions">Remove <code>TemplateOptions</code></h2>
+<p><code>TemplateOptions</code>, <code>PartialFASTElementDefinition.templateOptions</code>, and
+<code>FASTElementDefinition.templateOptions</code> have been removed. Remove
+<code>templateOptions</code> from element definitions and use
+<code>template: declarativeTemplate()</code> when declarative markup should supply the
+template.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Before</span>
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-element"</span><span class="token punctuation">,</span>
+    templateOptions<span class="token operator">:</span> <span class="token string">"defer-and-hydrate"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// After</span>
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-element"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Elements can still be defined before a template is attached. A later
+<code>FASTElementDefinition.template</code> update notifies connected elements so they can
+render or hydrate with the new template.</p>
+<h2 id="update-declarative-attribute-mapping">Update declarative attribute mapping</h2>
+<p>Declarative attribute mapping now defaults to <code>&quot;camelCase&quot;</code> instead of <code>&quot;none&quot;</code>.
+With the default strategy, <code>{{firstName}}</code> maps to the <code>firstName</code> property and
+the <code>first-name</code> HTML attribute. If your v2 templates relied on literal
+attribute names, configure both the client and server to use <code>&quot;none&quot;</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attributeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/attribute-map.js"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span>
+    <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token string">"my-element"</span><span class="token punctuation">,</span>
+        template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token function">attributeMap</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token string-property property">"attribute-name-strategy"</span><span class="token operator">:</span> <span class="token string">"none"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>If server-rendered HTML is generated with <code>@microsoft/fast-build</code>, pass the same
+strategy to the CLI:</p>
+<pre class="language-bash"><code class="language-bash">fast build --attribute-name-strategy<span class="token operator">=</span>none</code></pre>
+<h2 id="update-declarative-event-handlers">Update declarative event handlers</h2>
+<p>Declarative event handlers now reserve only <code>$e</code> for the DOM event and <code>$c</code> for
+the execution context. Bare <code>e</code> is no longer treated as the event object.</p>
+<pre class="language-html"><code class="language-html"><span class="token comment">&lt;!-- Before --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{handleClick(e)}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- After --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{handleClick($e)}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span></code></pre>
+<p>If you used <code>TemplateParser.hasDeprecatedEventSyntax</code> in custom tooling, remove
+that check as part of the migration.</p>
+<h2 id="replace-prepare-lifecycle-logic">Replace <code>prepare()</code> lifecycle logic</h2>
+<p>The <code>prepare()</code> hook from <code>@microsoft/fast-html</code> is no longer available. Move
+initialization logic to <code>connectedCallback()</code> or an application-owned async
+method that is called from <code>connectedCallback()</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// Before</span>
+<span class="token keyword">class</span> <span class="token class-name">MyComponent</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+    <span class="token keyword">async</span> <span class="token function">prepare</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// After</span>
+<span class="token keyword">class</span> <span class="token class-name">MyComponent</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+    <span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">loadData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">async</span> <span class="token function">loadData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>If <code>prepare()</code> previously guarded duplicate client fetches after SSR, use
+<code>this.$fastController.isPrerendered</code> and <code>this.$fastController.isHydrated</code> to
+decide whether client initialization should run.</p>
+<h2 id="verify-f-template-loading-order">Verify <code>&lt;f-template&gt;</code> loading order</h2>
+<p>A declarative FASTElement component requires a JavaScript class definition with
+<code>template: declarativeTemplate()</code> and an <code>&lt;f-template&gt;</code> whose <code>name</code> matches the
+custom element tag name.</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>f-template</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my-counter<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Count: {{count}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{increment()}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>f-template</span><span class="token punctuation">></span></span></code></pre>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attr<span class="token punctuation">,</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> declarativeTemplate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element/declarative.js"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">MyCounter</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+    <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> count<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MyCounter<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">"my-counter"</span><span class="token punctuation">,</span>
+    template<span class="token operator">:</span> <span class="token function">declarativeTemplate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Template-first and definition-first loading both work, but the custom element
+registration completes only after the matching template is available. A common
+pattern is to include <code>&lt;f-template&gt;</code> elements directly in the HTML page before
+the script module loads.</p>
+<h2 id="migration-checklist">Migration checklist</h2>
+<ol>
+<li>Replace <code>@microsoft/fast-html</code> imports with
+<code>@microsoft/fast-element/declarative.js</code> and
+<code>@microsoft/fast-element/declarative-utilities.js</code>.</li>
+<li>Replace <code>RenderableFASTElement(...).defineAsync()</code> with subclass <code>define()</code>.</li>
+<li>Remove manual <code>TemplateElement.define()</code> calls.</li>
+<li>Replace <code>TemplateElement.options()</code> with define extensions passed as the
+second argument to <code>define()</code>.</li>
+<li>Remove <code>templateOptions</code>; use <code>template: declarativeTemplate()</code> when
+declarative markup supplies the template.</li>
+<li>Configure <code>attributeMap({ &quot;attribute-name-strategy&quot;: &quot;none&quot; })</code> only if you
+need v2 literal attribute-name behavior, and align the server renderer option.</li>
+<li>Replace bare <code>e</code> in event handlers with <code>$e</code>.</li>
+<li>Move <code>prepare()</code> logic to standard element lifecycle code.</li>
+<li>If declarative output is server-rendered, complete the
+<a href="/docs/3.x/migration-guide/hydration/">Hydration and SSR migration</a>.</li>
+</ol>
+
+
+            
+            
+
+
+
+
+<nav class="pagination-nav" aria-label="Documentation page navigation">
+    
+    <a class="pagination-nav__link pagination-nav__link--previous" href="/docs/3.x/migration-guide/hydration/">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">«&nbsp;Hydration and SSR</div>
+    </a>
+    
+    
+    <a class="pagination-nav__link pagination-nav__link--next" href="/docs/3.x/community/issue-management/">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">Issue Management&nbsp;»</div>
+    </a>
+    
+</nav>
+
+
+        </div>
+    </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

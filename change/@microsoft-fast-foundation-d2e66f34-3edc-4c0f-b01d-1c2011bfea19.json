@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Adds token name to token resolution error when the name exists for a token",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

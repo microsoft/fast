@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>FASTElement</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/github-markdown-dark.css">
+    <link rel="stylesheet" href="/css/github-markdown-overrides.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/version-banner.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/3.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/3.x/introduction">3.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/3.x/introduction">3.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        
+<div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item"><a href="/docs/3.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Getting Started</a><ul><li class="menu__list-item"><a href="/docs/3.x/getting-started/quick-start/" class="menu__link">Quick Start</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/3.x/getting-started/fast-element/" aria-current="page" class="menu__link menu__link--active">FASTElement</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-templates/" class="menu__link">HTML Templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/css-templates/" class="menu__link">CSS Templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-directives/" class="menu__link">HTML Directives</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Advanced Concepts</a><ul><li class="menu__list-item"><a href="/docs/3.x/advanced/dependency-injection/" class="menu__link">Dependency Injection</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/dom-policy-and-trusted-types/" class="menu__link">DOMPolicy and Trusted Types</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/path-exports/" class="menu__link">Path Exports</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/reactivity/" class="menu__link">Reactivity</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-with-custom-elements/" class="menu__link">Working with Custom Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-without-decorators/" class="menu__link">Working without Decorators</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Declarative HTML</a><ul><li class="menu__list-item"><a href="/docs/3.x/declarative-templates/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/f-templates/" class="menu__link">Writing f-templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/overview/" class="menu__link">Overview</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/server-rendering/" class="menu__link">Server-Side Rendering</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a href="/docs/3.x/api/overview/" class="menu__link">API Reference</a><ul><li class="menu__list-item"><a href="/docs/3.x/api/" class="menu__link">@microsoft/fast-element</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/context/" class="menu__link">@microsoft/fast-element/context.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/declarative/" class="menu__link">@microsoft/fast-element/declarative.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/di/" class="menu__link">@microsoft/fast-element/di.js</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Migration Guide</a><ul><li class="menu__list-item"><a href="/docs/3.x/migration-guide/core/" class="menu__link">Core</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/migration-guide/hydration/" class="menu__link">Hydration and SSR</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/migration-guide/declarative-html/" class="menu__link">Declarative HTML</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community Contribution</a><ul><li class="menu__list-item"><a href="/docs/3.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/3.x/integrations/" class="menu__link">Integrations</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/3.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/export-sizes/" class="menu__link">Export Sizes</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main class="docs-main">
+    <div class="container padding-top--md padding-bottom--lg">
+        <div class="col doc-item">
+            <h1 id="the-fastelement-base-class">The <code>FASTElement</code> Base Class</h1>
+<p>Custom elements in the browser start by extending the <code>HTMLElement</code> class. FAST provides a base class called <code>FASTElement</code>, which itself extends <code>HTMLElement</code>, and adds reactive property observation, automatic change callbacks, and lifecycle management for building web components. By extending <code>FASTElement</code>, you can take advantage of these features while still having access to all the standard Web Component APIs.</p>
+<p>To create a custom FAST element, define a class that extends <code>FASTElement</code>. This class will contain the properties, methods, and lifecycle callbacks that define the behavior of your custom element:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token comment">// component logic goes here</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="declaring-attributes-with-the-attr-decorator">Declaring Attributes with the <code>@attr</code> Decorator</h2>
+<p>Native custom elements can define attributes by implementing the <code>observedAttributes</code> static getter and handling changes in the <code>attributeChangedCallback</code>. FAST simplifies this process with the <code>@attr</code> decorator, which allows you to declare attributes directly on class properties.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attr<span class="token punctuation">,</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span>
+  appearance<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In this example, the <code>@attr</code> decorator tells <code>FASTElement</code> to treat <code>appearance</code> as an observed attribute. This means that when you use <code>&lt;my-element appearance=&quot;value&quot;&gt;</code>, the <code>appearance</code> property on the class will be automatically updated to reflect the value of the attribute. You can also set the property in JavaScript, and it will update the corresponding attribute in the DOM.</p>
+<h3 id="attribute-options">Attribute Options</h3>
+<p>The <code>@attr</code> decorator accepts an optional configuration object that allows you to customize how the attribute is bound to the property. For example, you can specify a different attribute name, a converter for type coercion, or whether the attribute should reflect back to the DOM.</p>
+<p>By default, decorated attribute properties use <code>mode: &quot;reflect&quot;</code>, which keeps the attribute and property in sync in both directions.</p>
+<h4 id="different-attribute-name">Different Attribute Name</h4>
+<p>Attributes in HTML are always case-insensitive, so FAST maps camelCase property names to lowercase attribute names by default. For example, a property named <code>myAttribute</code> would correspond to an attribute named <code>myattribute</code> in HTML.</p>
+<p>A common convention is to use kebab-case for attribute names, so you can specify a different attribute name using the <code>attribute</code> option:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> attribute<span class="token operator">:</span> <span class="token string">"my-attribute"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+myAttribute<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span></code></pre>
+<h4 id="boolean-attributes">Boolean Attributes</h4>
+<p>The <code>mode</code> property allows for specifying boolean attributes, which are considered <code>true</code> if the attribute is present on the element, regardless of its value, and <code>false</code> if the attribute is absent:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">"boolean"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+enabled<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">;</span></code></pre>
+<h4 id="one-way-binding">One-way Binding</h4>
+<p>By default, attributes and properties are kept in sync in both directions. However, if you want to create a one-way binding where changes to the property do not reflect back to the DOM, you can set the <code>mode</code> to <code>&quot;fromView&quot;</code>:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> attribute<span class="token operator">:</span> <span class="token string">"initial-value"</span><span class="token punctuation">,</span> mode<span class="token operator">:</span> <span class="token string">"fromView"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+initialValue<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span></code></pre>
+<h4 id="value-converters">Value Converters</h4>
+<p>If your property expects a type other than <code>string</code>, you can provide a converter object to specify how to convert between the attribute value and the property value. The most common use case for a custom converter is to handle attributes that represent numbers, so FAST provides a built-in <code>nullableNumberConverter</code> for this purpose:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attr<span class="token punctuation">,</span> FASTElement<span class="token punctuation">,</span> nullableNumberConverter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> converter<span class="token operator">:</span> nullableNumberConverter <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  count<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This converter will convert the attribute value to a number when reading from the DOM, and convert the value back to a string when writing to the DOM. If the attribute is not present or cannot be converted to a number, the property will be set to <code>null</code>. Likewise, if the property is set to <code>undefined</code>, <code>null</code>, or <code>NaN</code>, the attribute will be removed from the DOM.</p>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>Properties decorated with <code>@attr({ mode: &quot;boolean&quot; })</code> automatically utilize the <code>booleanConverter</code> converter, which treats the presence of the attribute as <code>true</code> and its absence as <code>false</code>.</p></div>
+<h2 id="property-and-attribute-observation">Property and Attribute Observation</h2>
+<p>When declaring attributes via the platform's native <code>observedAttributes</code> API, you must also implement the <code>attributeChangedCallback</code> to respond to changes in those attributes. Similarly, if you want to observe changes to properties, you would need to implement getters and setters for those properties. FAST's <code>@attr</code> and <code>@observable</code> decorators enable observability callbacks without requiring you to implement these patterns directly.</p>
+<p>For example, with <code>@attr</code>, you can define a callback method that will be called whenever an attribute-bound property changes:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> attr<span class="token punctuation">,</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span>
+  name<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token function">nameChanged</span><span class="token punctuation">(</span>oldValue<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> newValue<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Name changed from </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>oldValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> to </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>newValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Whenever the <code>name</code> property changes, whether through an attribute update in the DOM or by setting the property on an element instance in JavaScript, the <code>nameChanged</code> method will be called with the previous and new values. This allows you to react to changes in a declarative way without needing to manually implement attribute observation or property getters/setters.</p>
+<h3 id="property-observation-with-the-observable-decorator">Property Observation with the <code>@observable</code> Decorator</h3>
+<p>The <code>@observable</code> decorator provides similar functionality for properties that are not necessarily tied to attributes. This is useful for internal state management within your component that doesn't need to be reflected in the DOM:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> observable<span class="token punctuation">,</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">observable</span></span>
+  count<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+  <span class="token function">countChanged</span><span class="token punctuation">(</span>oldValue<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span> newValue<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Count changed from </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>oldValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> to </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>newValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In this example, the <code>count</code> property is decorated with <code>@observable</code>, which means that any changes to <code>count</code> will trigger the <code>countChanged</code> callback, allowing you to respond to changes in the internal state of your component.</p>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>FAST's <code>Observable</code> API can be used independently of custom elements, so you can create observable objects and properties in any JavaScript class, not just those that extend <code>FASTElement</code>. Read the <a href="../../advanced/reactivity/">Reactivity</a> section for more details on using observables in FAST.</p></div>
+<h3 id="manually-tracking-observables">Manually Tracking Observables</h3>
+<p>The <code>@attr</code> and <code>@observable</code> decorators rewrite the decorated property into a getter/setter pair that calls into FAST's observation system. When a decorated property is accessed during template rendering, the engine tracks the access and establishes the relationship between the model and the view. The same notification behavior can be implemented manually, which is useful when a property requires additional logic in its getter or setter. The following example shows what that looks like:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> Observable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> _name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">get</span> <span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Manually track the property access for reactivity</span>
+    Observable<span class="token punctuation">.</span><span class="token function">track</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_name<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">set</span> <span class="token function">name</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_name <span class="token operator">=</span> value<span class="token punctuation">;</span>
+    <span class="token comment">// Manually notify that the property has changed</span>
+    Observable<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="lifecycle-callbacks">Lifecycle Callbacks</h2>
+<p>Extending <code>HTMLElement</code> gives you access to the standard custom element lifecycle callbacks. <code>FASTElement</code> supports these callbacks and also provides additional lifecycle management features through its internal controller. When you override lifecycle methods like <code>connectedCallback</code> or <code>disconnectedCallback</code>, make sure to call <code>super</code> to ensure that the base class can perform necessary setup and teardown work.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Element connected to the DOM"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">disconnectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Element disconnected from the DOM"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">disconnectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">attributeChangedCallback</span><span class="token punctuation">(</span>name<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> oldValue<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span> newValue<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Attribute </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> changed from </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>oldValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> to </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>newValue<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">attributeChangedCallback</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> oldValue<span class="token punctuation">,</span> newValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>Overriding <code>connectedCallback</code> can affect the timing of when your template is bound and when behaviors run, so it's generally recommended to call <code>super.connectedCallback()</code> at the beginning of your override. Conversely, for <code>disconnectedCallback</code> and <code>attributeChangedCallback</code>, it's usually best to call the super method at the end of your override to ensure that your custom logic runs while the element is still in a consistent state.</p></div>
+<h2 id="defining-the-element">Defining the Element</h2>
+<h3 id="define"><code>define()</code></h3>
+<p>Autonomous custom elements must be registered with the browser using <code>customElements.define()</code>. FAST provides a static <code>define()</code> method on <code>FASTElement</code>-derived classes that wraps this registration process and also allows you to specify additional configuration such as observed attributes, styles, and templates.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> html<span class="token punctuation">,</span> css <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token comment">// component logic</span>
+<span class="token punctuation">}</span>
+
+MyElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"my-element"</span><span class="token punctuation">,</span>
+  template<span class="token operator">:</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;div>Hello, World!&lt;/div></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+  styles<span class="token operator">:</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+    div {
+      color: blue;
+    }
+  </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In this example, <code>MyElement.define()</code> registers the custom element with the name <code>my-element</code>, and provides a template and styles for the element. The template defines the structure of the element's Shadow DOM, while the styles are scoped to that Shadow DOM, ensuring that they do not affect other elements on the page.</p>
+<h4 id="definition-extensions">Definition Extensions</h4>
+<p><code>define()</code> accepts an array of extension callbacks as an optional second argument. Each extension is a function that receives the resolved <code>FASTElementDefinition</code> and is called <strong>before</strong> the element is registered with <code>customElements.define()</code>. This enables a plugin pattern for hooking into element registration.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> FASTElementExtension <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">myPlugin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> FASTElementExtension <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> definition <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Defining: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>definition<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MyComponent<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"my-component"</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  styles<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">myPlugin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Extensions can also be used with the static call style:</p>
+<pre class="language-ts"><code class="language-ts">FASTElement<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span>MyComponent<span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"my-component"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">myPlugin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>For the full set of configuration options accepted by <code>define()</code>, see the <a href="/docs/3.x/api/fast-element.partialfastelementdefinition/"><code>PartialFASTElementDefinition</code></a> API reference.</p>
+<h2 id="utilities-helpers-and-additional-features">Utilities, Helpers, and Additional Features</h2>
+<p>In addition to the features described above, <code>FASTElement</code> provides a number of utilities and helpers for working with custom elements, such as methods for adding and removing styles, accessing the element's internal controller, working with the processing queue, and more.</p>
+<h3 id="using-the-element-controller-via-fastcontroller">Using the Element Controller via <code>$fastController</code></h3>
+<p>Every <code>FASTElement</code> instance exposes a <code>$fastController</code> property that references the internal <code>ElementController</code> driving the element's lifecycle and reactivity. Most components do not need to access it directly, but one member is commonly used inside <code>*Changed</code> callbacks: <code>isConnected</code>.</p>
+<p>The <code>isConnected</code> property on the controller reports <code>true</code> after FAST has connected the element, which happens during <code>super.connectedCallback()</code>. It is distinct from the platform's <code>Node.isConnected</code>, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already <code>true</code>, but FAST has not yet bound the template or wired up the reactivity system. Reading from <code>this.elementInternals</code> or dispatching events during that window can produce inconsistent results.</p>
+<p>For this reason, <code>*Changed</code> callbacks that touch the DOM typically guard against running before the controller has connected:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">protected</span> <span class="token function">disabledChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>$fastController<span class="token punctuation">.</span>isConnected<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>elementInternals<span class="token punctuation">.</span>ariaDisabled <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>disabled<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>For other uses of the controller, such as dynamically swapping stylesheets at runtime, see <a href="../../advanced/working-with-custom-elements/">Working with Custom Elements</a>.</p>
+<h3 id="custom-events-with-emit">Custom events with <code>$emit()</code></h3>
+<p><code>FASTElement</code> provides a helper method called <code>$emit()</code> for dispatching custom events from your component. This method simplifies the process of creating and dispatching events by providing a convenient API for specifying event details such as the event name, detail data, and options.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token function">handleClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">"my-event"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> some<span class="token operator">:</span> <span class="token string">"data"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> bubbles<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> composed<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In this example, the <code>handleClick</code> method dispatches a custom event named <code>my-event</code> with a detail object containing some data. The event is configured to bubble up through the DOM and to cross the shadow DOM boundary (if applicable) by setting <code>bubbles: true</code> and <code>composed: true</code> in the options.</p>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p><code>$emit()</code> only dispatches when the element is connected. Like the pre-connect lifecycle guidance above, this means a <code>$emit()</code> call during the parse-time window before the controller has connected is a no-op. If you need to emit an event in response to an early property change, guard on <code>this.$fastController.isConnected</code> and defer the dispatch until after the element has connected.</p></div>
+
+
+            
+            
+
+
+
+
+<nav class="pagination-nav" aria-label="Documentation page navigation">
+    
+    <a class="pagination-nav__link pagination-nav__link--previous" href="/docs/3.x/getting-started/quick-start/">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">«&nbsp;Quick Start</div>
+    </a>
+    
+    
+    <a class="pagination-nav__link pagination-nav__link--next" href="/docs/3.x/getting-started/html-templates/">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">HTML Templates&nbsp;»</div>
+    </a>
+    
+</nav>
+
+
+        </div>
+    </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

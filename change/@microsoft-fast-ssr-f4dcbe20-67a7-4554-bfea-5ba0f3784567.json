@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "upgrade playwright to 1.41",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

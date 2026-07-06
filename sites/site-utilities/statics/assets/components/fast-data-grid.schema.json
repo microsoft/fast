@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-data-grid",
+  "id": "fast-data-grid",
+  "title": "Data grid",
+  "description": "The FAST data grid element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-data-grid",
+  "properties": {
+    "generate-header": {
+      "enum": [
+        "none",
+        "default",
+        "sticky"
+      ],
+      "title": "Generate header",
+      "description": "Whether the grid should auto generate a header row",
+      "mapsToAttribute": "generate-header",
+      "type": "string"
+    },
+    "grid-template-columns": {
+      "title": "Grid template columns",
+      "description": "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
+      "mapsToAttribute": "grid-template-columns",
+      "type": "string"
+    },
+    "no-tabbing": {
+      "title": "Disable tabbing",
+      "description": "When true the component will not add itself or its children to the tab queue",
+      "mapsToAttribute": "no-tabbing",
+      "type": "boolean"
+    },
+    "page-size": {
+      "title": "Page size",
+      "description": "The number of rows to move selection on page up/down keystrokes.",
+      "mapsToAttribute": "page-size",
+      "type": "number"
+    },
+    "selection-mode": {
+      "enum": [
+        "none",
+        "single-row",
+        "multi-row"
+      ],
+      "title": "Selection mode",
+      "description": "Defines how the grid handles row or cell selection.",
+      "mapsToAttribute": "selection-mode",
+      "type": "string"
+    },
+    "click-select": {
+      "title": "Click select",
+      "description": "Determines if clicks can automatically select when selection is enabled.",
+      "mapsToAttribute": "click-select",
+      "type": "boolean"
+    },
+    "initial-row-selection": {
+      "title": "Initial row selection",
+      "description": "The initially selected rows, the format should be a comma delimited list of row indexes. ie. '1,3,5'",
+      "mapsToAttribute": "initial-row-selection",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content as data grid rows",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

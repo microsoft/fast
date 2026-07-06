@@ -1,0 +1,54 @@
+.version-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.version-banner__message {
+    margin: 0;
+}
+
+.version-banner__link {
+    margin-left: 8px;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Legacy — muted gray to indicate an older version */
+.version-banner--legacy {
+    background-color: #3a3a3a;
+    color: #d4d4d4;
+    border-bottom: 2px solid #555;
+}
+
+.version-banner--legacy .version-banner__link {
+    color: #8bb4e0;
+}
+
+/* Stable — green to indicate the current release */
+.version-banner--stable {
+    background-color: #1a3a2a;
+    color: #a3d9b1;
+    border-bottom: 2px solid #2d6a4f;
+}
+
+.version-banner--stable .version-banner__link {
+    color: #6dd895;
+}
+
+/* Prerelease — amber/orange to indicate pre-release software */
+.version-banner--prerelease {
+    background-color: #3a2e1a;
+    color: #e8c96d;
+    border-bottom: 2px solid #b8860b;
+}
+
+.version-banner--prerelease .version-banner__link {
+    color: #f0d77b;
+}

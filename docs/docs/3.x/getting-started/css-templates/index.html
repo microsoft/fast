@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>CSS Templates</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/github-markdown-dark.css">
+    <link rel="stylesheet" href="/css/github-markdown-overrides.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/version-banner.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/3.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/3.x/introduction">3.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/3.x/introduction">3.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        
+<div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item"><a href="/docs/3.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Getting Started</a><ul><li class="menu__list-item"><a href="/docs/3.x/getting-started/quick-start/" class="menu__link">Quick Start</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/fast-element/" class="menu__link">FASTElement</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-templates/" class="menu__link">HTML Templates</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/3.x/getting-started/css-templates/" aria-current="page" class="menu__link menu__link--active">CSS Templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/getting-started/html-directives/" class="menu__link">HTML Directives</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Advanced Concepts</a><ul><li class="menu__list-item"><a href="/docs/3.x/advanced/dependency-injection/" class="menu__link">Dependency Injection</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/dom-policy-and-trusted-types/" class="menu__link">DOMPolicy and Trusted Types</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/path-exports/" class="menu__link">Path Exports</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/reactivity/" class="menu__link">Reactivity</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-with-custom-elements/" class="menu__link">Working with Custom Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/advanced/working-without-decorators/" class="menu__link">Working without Decorators</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Declarative HTML</a><ul><li class="menu__list-item"><a href="/docs/3.x/declarative-templates/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/f-templates/" class="menu__link">Writing f-templates</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/overview/" class="menu__link">Overview</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/declarative-templates/server-rendering/" class="menu__link">Server-Side Rendering</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a href="/docs/3.x/api/overview/" class="menu__link">API Reference</a><ul><li class="menu__list-item"><a href="/docs/3.x/api/" class="menu__link">@microsoft/fast-element</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/context/" class="menu__link">@microsoft/fast-element/context.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/declarative/" class="menu__link">@microsoft/fast-element/declarative.js</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/api/fast-element/di/" class="menu__link">@microsoft/fast-element/di.js</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Migration Guide</a><ul><li class="menu__list-item"><a href="/docs/3.x/migration-guide/core/" class="menu__link">Core</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/migration-guide/hydration/" class="menu__link">Hydration and SSR</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/migration-guide/declarative-html/" class="menu__link">Declarative HTML</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community Contribution</a><ul><li class="menu__list-item"><a href="/docs/3.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/3.x/integrations/" class="menu__link">Integrations</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/3.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/export-sizes/" class="menu__link">Export Sizes</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/3.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main class="docs-main">
+    <div class="container padding-top--md padding-bottom--lg">
+        <div class="col doc-item">
+            <h1 id="css-templates">CSS Templates</h1>
+<p>Custom elements are typically styled by attaching a <code>&lt;style&gt;</code> element to their shadow root or by adopting a constructable stylesheet. FAST provides a tagged template function called <code>css</code>, which lets you author a component's styles in JavaScript and associate them with its definition.</p>
+<p>Styles created with <code>css</code> produce an <code>ElementStyles</code> object that FAST applies to the component's shadow root. Because the Shadow DOM encapsulates style scope, selectors authored there match only elements within the component's shadow tree, so the styles do not affect the rest of the document. When the same styles are used across many instances of a component, FAST reuses a single underlying constructable stylesheet rather than duplicating it. Unlike HTML templates, <code>css</code> templates are static and do not support binding expressions.</p>
+<p>This document describes how to author styles with the <code>css</code> function, including composing styles, partial CSS fragments, CSS directives, and changing styles at runtime.</p>
+<h2 id="defining-styles">Defining Styles</h2>
+<p>The <code>css</code> function is a tagged template that turns CSS into an <code>ElementStyles</code> object. The following example defines basic styles for a component:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> css<span class="token punctuation">,</span> FASTElement<span class="token punctuation">,</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">HelloWorld</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>HelloWorld<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  &lt;template>
+    &lt;span>Hello World!&lt;/span>
+  &lt;/template>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    border: 1px solid blue;
+  }
+
+  span {
+    color: green;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+HelloWorld<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"hello-world"</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  styles<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The example above defines a <code>HelloWorld</code> component with a <code>span</code> element that displays a greeting. The component's stylesheet is provided via the <code>styles</code> property in the <code>define()</code> call. When a <code>&lt;hello-world&gt;</code> element is added to the page, it will have a blue border and the text inside the <code>span</code> will be green.</p>
+<h2 id="composing-styles">Composing Styles</h2>
+<p><code>ElementStyles</code> objects created with <code>css</code> can be composed into other styles. When you interpolate one <code>ElementStyles</code> object into another <code>css</code> template, FAST includes it as a complete, reusable stylesheet rather than copying its text. This lets you share common styles across components. For example:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> baseStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    display: block;
+    padding: 10px;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> helloStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>baseStyles<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+
+  :host {
+    border: 1px solid blue;
+  }
+
+  span {
+    color: green;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>This example defines a <code>baseStyles</code> fragment that sets common styles for the host element. <code>helloStyles</code> interpolates <code>baseStyles</code> and adds rules of its own, so a component styled with <code>helloStyles</code> receives both sets of styles.</p>
+<h3 id="mixing-style-sources">Mixing Style Sources</h3>
+<p>The <code>styles</code> property of the <code>define()</code> method accepts an array of <code>ElementStyles</code> objects, <code>CSSStyleSheet</code> instances, and raw CSS strings, letting you combine styles from different sources in a single component. For example:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> resetSheet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CSSStyleSheet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+resetSheet<span class="token punctuation">.</span><span class="token function">replaceSync</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">:host { box-sizing: border-box; }</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> sharedText <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">span { font-family: sans-serif; }</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+HelloWorld<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"hello-world"</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  styles<span class="token operator">:</span> <span class="token punctuation">[</span>
+    resetSheet<span class="token punctuation">,</span>                     <span class="token comment">// a CSSStyleSheet, adopted as-is</span>
+    sharedText<span class="token punctuation">,</span>                     <span class="token comment">// a raw CSS string, parsed into its own stylesheet</span>
+    css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">:host { color: green; }</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>   <span class="token comment">// ElementStyles via the css function</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The example above combines three kinds of styles. <code>resetSheet</code> is a <code>CSSStyleSheet</code> that is adopted directly, <code>sharedText</code> is a raw CSS string that FAST parses into its own stylesheet, and the <code>css</code> function produces an <code>ElementStyles</code> object. Each is applied to the component's shadow root as a separate stylesheet.</p>
+<h3 id="partial-css">Partial CSS</h3>
+<p>The <code>css.partial</code> function creates a reusable fragment of CSS. Unlike a full <code>ElementStyles</code> object, which composes as a separate stylesheet, a partial is inlined into the <code>css</code> template that interpolates it. This means a partial can appear anywhere in a template, including inside a selector, which lets you share rules, declarations, or selector fragments across components.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> css <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// A partial CSS fragment that matches checked states</span>
+<span class="token keyword">const</span> checkedState <span class="token operator">=</span> css<span class="token punctuation">.</span>partial<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">:is([state--checked], :state(checked))</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> checkboxStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>checkedState<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">) {
+    font-weight: bold;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>In this example, <code>checkedState</code> is a partial CSS fragment that matches elements with a <code>state--checked</code> attribute or a <code>checked</code> state. The <code>checkboxStyles</code> stylesheet includes this fragment in its selector, allowing it to apply styles to the host element when it is in the checked state.</p>
+<h3 id="css-directives">CSS Directives</h3>
+<p>A CSS directive is the general mechanism for contributing computed styles to a <code>css</code> template. The <code>css.partial</code> function described above is one built-in example. A directive is any object with a <code>createCSS()</code> method, registered with <code>CSSDirective.define()</code>. When the directive is interpolated into a <code>css</code> template, FAST calls <code>createCSS()</code> and incorporates the returned value into the stylesheet.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> css<span class="token punctuation">,</span> CSSDirective <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Elevation</span> <span class="token keyword">implements</span> <span class="token class-name">CSSDirective</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> level<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token function">createCSS</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> blur <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">box-shadow: 0 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>level<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">px </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>blur<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">px rgba(0, 0, 0, 0.2);</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+CSSDirective<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span>Elevation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> cardStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">new</span> <span class="token class-name">Elevation</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>The <code>Elevation</code> directive in the example above returns a <code>box-shadow</code> declaration derived from its <code>level</code>. Calling <code>CSSDirective.define()</code> registers the class so FAST recognizes its instances during composition; without registration, the interpolated object would be stringified. When <code>cardStyles</code> is composed, FAST calls <code>createCSS()</code> and concatenates the result into the <code>:host</code> rule.</p>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>A <code>cssDirective()</code> decorator is also available and is equivalent to <code>CSSDirective.define()</code>. Annotating the class with <code>@cssDirective()</code> registers it the same way.</p></div>
+<p>The value returned from <code>createCSS()</code> follows the same composition rules as any interpolated value. A string is concatenated inline into the surrounding CSS, while an <code>ElementStyles</code> or <code>CSSStyleSheet</code> is composed as a separate stylesheet.</p>
+<p>A directive runs once, when the template is composed, and its output is fixed in the resulting <code>ElementStyles</code>. Because <code>css</code> templates are static, a directive cannot respond to component state or produce different styles per instance. Use one to encapsulate reusable style logic that is computed a single time, such as mapping a value to a set of declarations.</p>
+<h2 id="changing-styles-at-runtime">Changing Styles at Runtime</h2>
+<p>Because <code>css</code> templates are static, you do not change a component's styles by re-evaluating its template. Instead, you add, remove, or replace <code>ElementStyles</code> through the component's controller, available as <code>this.$fastController</code>.</p>
+<p>This is most useful when a style depends on a value that can only be computed at runtime. In the following example, a component derives a custom property from a numeric attribute, then builds an <code>ElementStyles</code> object and applies it through the controller:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  attr<span class="token punctuation">,</span>
+  css<span class="token punctuation">,</span>
+  <span class="token keyword">type</span> <span class="token class-name">ElementStyles</span><span class="token punctuation">,</span>
+  FASTElement<span class="token punctuation">,</span>
+  nullableNumberConverter<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> converter<span class="token operator">:</span> nullableNumberConverter <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  ratio<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">private</span> ratioStyles<span class="token operator">?</span><span class="token operator">:</span> ElementStyles<span class="token punctuation">;</span>
+
+  <span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">connectedCallback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateRatioStyles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">ratioChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$fastController<span class="token punctuation">.</span>isConnected<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">updateRatioStyles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">protected</span> <span class="token function">updateRatioStyles</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>$fastController<span class="token punctuation">.</span><span class="token function">removeStyles</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>ratioStyles<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>ratioStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+      :host {
+        --fill: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>ratio <span class="token operator">??</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">%;
+      }
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>$fastController<span class="token punctuation">.</span><span class="token function">addStyles</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>ratioStyles<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p><code>updateRatioStyles()</code> removes the previous stylesheet, builds a new one from the current value, and adds it. The stylesheet is held on a private field so it can be removed before the new one is applied. Because the styles are recomputed from a runtime value, a new <code>ElementStyles</code> object is created each time rather than reused.</p>
+<p><code>addStyles()</code> and <code>removeStyles()</code> act on the component's shadow root, which FAST creates during connection, so the update has to wait for the controller to connect. <code>ratioChanged()</code> guards on <code>this.$fastController.isConnected</code> and skips the update until then, while <code>connectedCallback()</code> runs it once after <code>super.connectedCallback()</code> to apply the initial value.</p>
+<p>Applying the value as a stylesheet, rather than writing it to the host's inline <code>style</code> attribute, keeps the computed value encapsulated in the component's own styles and leaves the host element's <code>style</code> attribute free for consumers.</p>
+<p>To replace the component's primary stylesheet rather than layer on top of it, assign a new <code>ElementStyles</code> object to the controller's <code>mainStyles</code> property. This removes the previous main styles and applies the new set.</p>
+<p>For styling that can be expressed declaratively, prefer CSS custom properties and state selectors over runtime changes. Use the controller when a style depends on a value the static template cannot express. See the <a href="../../advanced/working-with-custom-elements/">working with custom elements</a> guide for more on the element controller.</p>
+<h2 id="selectors-and-custom-properties">Selectors and Custom Properties</h2>
+<p>Styling a component's shadow DOM uses standard CSS, but a few selectors are specific to custom elements and shadow trees:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:host"><code>:host</code></a> targets the component's host element. Its functional form, <code>:host(selector)</code>, targets the host only when it matches a selector, such as <code>:host([disabled])</code> or <code>:host(${checkedState})</code>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::slotted"><code>::slotted(selector)</code></a> targets light DOM content projected through a <code>&lt;slot&gt;</code>. It matches only the top-level slotted nodes, not their descendants.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::part"><code>::part(name)</code></a> targets an element the component exposes through the <code>part</code> attribute, allowing consumers to style it from outside the shadow boundary.</li>
+</ul>
+<p>Although selectors are scoped to the shadow tree, CSS custom properties inherit through the shadow boundary. This makes them the primary mechanism for customizing a component from the outside. A component reads a custom property with <code>var()</code>, supplying a fallback for when it is not set, and a consumer sets the property from the surrounding document.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    color: var(--accent-color, blue);
+  }
+
+  :host([disabled]) {
+    opacity: 0.5;
+  }
+
+  ::slotted(strong) {
+    color: var(--accent-color, blue);
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>A consumer customizes the component by setting the custom property outside the shadow boundary:</p>
+<pre class="language-css"><code class="language-css"><span class="token selector">my-element</span> <span class="token punctuation">{</span>
+  <span class="token property">--accent-color</span><span class="token punctuation">:</span> rebeccapurple<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Because the property inherits into the shadow tree, the component picks up the consumer's value wherever it reads <code>var(--accent-color)</code>. Design token systems build on this behavior, exposing a component's customizable values as custom properties.</p>
+
+
+            
+            
+
+
+
+
+<nav class="pagination-nav" aria-label="Documentation page navigation">
+    
+    <a class="pagination-nav__link pagination-nav__link--previous" href="/docs/3.x/getting-started/html-templates/">
+        <div class="pagination-nav__sublabel">Previous</div>
+        <div class="pagination-nav__label">«&nbsp;HTML Templates</div>
+    </a>
+    
+    
+    <a class="pagination-nav__link pagination-nav__link--next" href="/docs/3.x/getting-started/html-directives/">
+        <div class="pagination-nav__sublabel">Next</div>
+        <div class="pagination-nav__label">HTML Directives&nbsp;»</div>
+    </a>
+    
+</nav>
+
+
+        </div>
+    </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

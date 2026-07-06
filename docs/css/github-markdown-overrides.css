@@ -1,0 +1,95 @@
+/**
+ * Neutralize the blue-gray surfaces in github-markdown-dark.css so the docs
+ * body blends with the site's neutral `#1b1b1d` background.
+ *
+ * GitHub palette → site-neutral mapping:
+ *   #0d1117 (page bg)               → transparent (inherit site bg)
+ *   #151b23 (raised surfaces)       → #242426
+ *   #3d444d / #3d444db3 (borders)   → #3a3a3d / #3a3a3db3
+ *   #9198a1 (muted text)            → #9a9a9d
+ */
+
+.markdown-body {
+    background-color: transparent;
+    font-family: var(--ifm-font-family-base);
+}
+
+/* Links — follow the site's link color (Infima `--ifm-link-color`) */
+.markdown-body a {
+    color: var(--ifm-link-color);
+    text-decoration: var(--ifm-link-decoration);
+}
+
+.markdown-body a:hover {
+    color: var(--ifm-link-hover-color);
+    text-decoration: var(--ifm-link-hover-decoration);
+}
+
+/* Headings — bottom rule under h1/h2 */
+.markdown-body h1,
+.markdown-body h2 {
+    border-bottom-color: #3a3a3db3;
+}
+
+/* Inline <code>, <samp>, <kbd>-adjacent surfaces */
+.markdown-body code,
+.markdown-body tt {
+    background-color: #2e2e30;
+}
+
+/* <kbd> */
+.markdown-body kbd {
+    background-color: #242426;
+    border-color: #3a3a3d;
+    border-bottom-color: #3a3a3d;
+    box-shadow: inset 0 -1px 0 #3a3a3d;
+}
+
+/* Code blocks (<pre>) and highlight wrappers */
+.markdown-body pre,
+.markdown-body .highlight pre {
+    background-color: #242426;
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+    color: #9a9a9d;
+    border-left-color: #3a3a3d;
+}
+
+/* Horizontal rules */
+.markdown-body hr {
+    background-color: #3a3a3d;
+}
+
+/* Tables */
+.markdown-body table tr {
+    background-color: transparent;
+    border-top-color: #3a3a3db3;
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: #1f1f21;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+    border-color: #3a3a3d;
+}
+
+/* Details / summary */
+.markdown-body summary {
+    color: inherit;
+}
+
+/* Muted text used in things like footnote labels */
+.markdown-body .color-fg-muted,
+.markdown-body .pl-c {
+    color: #9a9a9d;
+}
+
+/* Diff backgrounds (kept tinted, just slightly desaturated) */
+.markdown-body .highlight .mark,
+.markdown-body .highlight .mh {
+    background-color: transparent;
+}

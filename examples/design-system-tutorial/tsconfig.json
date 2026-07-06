@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "pretty": true,
+    "target": "ES2015",
+    "module": "ES2015",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "preserveConstEnums": true,
+    "stripInternal": true,
+    "strict": true,
+    "outDir": "dist/build",
+    "rootDir": "src",
+    "lib": [
+      "dom",
+      "esnext"
+    ]
+  },
+  "include": [
+    "src"
+  ]
+}
