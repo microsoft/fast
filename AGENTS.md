@@ -1,9 +1,3 @@
----
-name: FAST Instructions
-description: This file describes the general instructions for working with the FAST monorepo, including repository structure, code style, tooling, and contribution guidelines.
-applyTo: '**/*'
----
-
 # Instructions for FAST
 
 ## General
@@ -44,14 +38,14 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 These contain domain-specific guidance. Read when performing related tasks:
 
-- [TypeScript](./skills/typescript/SKILL.md) — compiler constraints, import/export conventions, decorator usage, testing patterns.
-- [Rust](./skills/rust/SKILL.md) — general guidance on performing updates between the crate and package.
-- [Shipping](./skills/shipping/SKILL.md) — pull request format, change file generation, documentation updates.
-- [Pull Request](./skills/fast-pull-request/SKILL.md) — generate a pull request description from the branch diff.
-- [Bug Report](./skills/fast-bug-report/SKILL.md) — generate a bug report issue from conversation context.
-- [Feature Request](./skills/fast-feature-request/SKILL.md) — generate a feature request issue from conversation context.
-- [Testing](./skills/testing/SKILL.md) — running tests locally and in CI, writing Playwright fixture tests.
-- [Documentation](./skills/documentation/SKILL.md) — adding documentation in code, markdown files in each package/crate, and the website.
+- [TypeScript](./.agents/skills/typescript/SKILL.md) — compiler constraints, import/export conventions, decorator usage, testing patterns.
+- [Rust](./.agents/skills/rust/SKILL.md) — general guidance on performing updates between the crate and package.
+- [Shipping](./.agents/skills/shipping/SKILL.md) — pull request format, change file generation, documentation updates.
+- [Pull Request](./.agents/skills/fast-pull-request/SKILL.md) — generate a pull request description from the branch diff.
+- [Bug Report](./.agents/skills/fast-bug-report/SKILL.md) — generate a bug report issue from conversation context.
+- [Feature Request](./.agents/skills/fast-feature-request/SKILL.md) — generate a feature request issue from conversation context.
+- [Testing](./.agents/skills/testing/SKILL.md) — running tests locally and in CI, writing Playwright fixture tests.
+- [Documentation](./.agents/skills/documentation/SKILL.md) — adding documentation in code, markdown files in each package/crate, and the website.
 
 ## Commands
 
@@ -111,7 +105,7 @@ packages/<package>/
 - Import ordering enforced via `organizeImports`.
 - No `I` prefix on interfaces.
 - `any` is permitted (`noExplicitAny: off`).
-- Config: [`biome.jsonc`](../biome.jsonc).
+- Config: [`biome.jsonc`](./biome.jsonc).
 
 ### Naming Conventions
 
@@ -127,7 +121,7 @@ packages/<package>/
 
 ### TypeScript
 
-Key constraints (details in [TypeScript skill](./skills/typescript/SKILL.md)):
+Key constraints (details in [TypeScript skill](./.agents/skills/typescript/SKILL.md)):
 
 - ESM only (`"type": "module"`) — imports use `.js` extensions.
 - `import type { ... }` required for type-only imports (`verbatimModuleSyntax`).
@@ -160,4 +154,4 @@ Before finishing any change, run these commands from the monorepo root and confi
 - [ ] `npm run biome:check` — Biome linting and formatting pass
 - [ ] `npm run checkchange` — beachball change files exist for any `packages/*` changes
 
-Read the [shipping skill](./skills/shipping/SKILL.md) and ensure you have updated everything outlined in that file.
+Read the [shipping skill](./.agents/skills/shipping/SKILL.md) and ensure you have updated everything outlined in that file.
