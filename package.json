@@ -54,7 +54,7 @@
   "devDependencies": {
     "@ast-grep/cli": "0.37.0",
     "@biomejs/biome": "2.4.8",
-    "@microsoft/api-extractor": "7.58.1",
+    "@microsoft/api-extractor": "7.58.9",
     "@microsoft/webui": "0.0.12",
     "@playwright/test": "1.56.1",
     "@rollup/plugin-node-resolve": "16.0.3",
@@ -69,5 +69,9 @@
     "rollup": "4.59.0",
     "typescript": "5.5.4",
     "vite": "7.3.5"
+  },
+  "overrides": {
+    "esbuild": "0.28.1",
+    "js-yaml": "3.15.0 || 4.2.0"
   }
 }
