@@ -9,7 +9,7 @@ generating the markdown content for a pull request description based on the prov
 
 Based on the conversation context, generate a pull request description as a markdown code
 block using the template located at
-[../../pull_request_template.md](../../pull_request_template.md).
+[../../../.github/pull_request_template.md](../../../.github/pull_request_template.md).
 
 Use the Pull Request Template to generate a markdown code block for the most
 relevant work on this git branch, compared to `main`.

@@ -9,7 +9,7 @@ generating the markdown content for a new issue based on the provided template.
 
 Based on the conversation context, generate a feature request as a markdown code
 block using the template located at
-[../../ISSUE_TEMPLATE/feature-request.md](../../ISSUE_TEMPLATE/feature-request.md).
+[../../../.github/ISSUE_TEMPLATE/feature-request.md](../../../.github/ISSUE_TEMPLATE/feature-request.md).
 
 The summary should clearly state what the feature is and why it matters, focusing
 on user value rather than implementation details.
