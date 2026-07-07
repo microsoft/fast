@@ -24,7 +24,7 @@ You may prepare all of these (e.g., draft a PR description, generate change file
 
 Read these documents for additional context when needed:
 
-- [`.github/pull_request_template.md`](../../pull_request_template.md) — PR description template (source of truth for PR structure).
+- [`.github/pull_request_template.md`](../../../.github/pull_request_template.md) — PR description template (source of truth for PR structure).
 - [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) — Full contributor guide (machine setup, branching, governance).
 - [`BRANCH_GUIDE.md`](../../../BRANCH_GUIDE.md) — Branch management conventions.
 - [`beachball.config.js`](../../../beachball.config.js) — Beachball configuration (ignored patterns, publish settings).
@@ -54,7 +54,7 @@ Examples:
 
 # Pull requests
 
-Use the repository's PR template at [`.github/pull_request_template.md`](../../pull_request_template.md) as the basis for all pull request descriptions.
+Use the repository's PR template at [`.github/pull_request_template.md`](../../../.github/pull_request_template.md) as the basis for all pull request descriptions.
 
 Provide the markdown code block only, without any additional commentary or explanation.
 
@@ -159,7 +159,8 @@ When prompted, select the appropriate change type:
 
 The Beachball config ([`beachball.config.js`](../../../beachball.config.js)) ignores these paths — changes limited to them do not need change files:
 
-- `.github/` — CI configs, templates, skills
+- `.github/` — CI configs, templates
+- `.agents/skills/` — agent skills
 - Test files (`src/e2e/`, `src/tests/`, `src/fixtures/`)
 - `package-lock.json`
 - `.vscode/`, `.prettierrc`
