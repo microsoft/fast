@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "run npm pkg fix command",
+  "packageName": "@microsoft/fast-test-harness",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
