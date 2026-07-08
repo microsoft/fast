@@ -1,6 +1,7 @@
 import { attr, DOM, observable } from "@ni/fast-element";
 import { Direction, eventResize, eventScroll } from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { closestAncestorDialog } from "../utilities/composed-parent.js";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
@@ -404,6 +405,8 @@ export class AnchoredRegion extends FoundationElement {
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
     private updateThreshold: number = 0.5;
 
+    private ancestorDialog: HTMLDialogElement | null = null;
+
     private static intersectionService: IntersectionService = new IntersectionService();
 
     /**
@@ -411,6 +414,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     connectedCallback() {
         super.connectedCallback();
+        this.ancestorDialog = closestAncestorDialog(this);
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
@@ -422,6 +426,7 @@ export class AnchoredRegion extends FoundationElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.ancestorDialog = null;
         if (this.autoUpdateMode === "auto") {
             this.stopAutoUpdateEventListeners();
         }
@@ -1314,8 +1319,9 @@ export class AnchoredRegion extends FoundationElement {
      * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.update, { passive: true });
-        window.addEventListener(eventScroll, this.update, {
+        const eventTarget = this.ancestorDialog ?? window;
+        eventTarget.addEventListener(eventResize, this.update, { passive: true });
+        eventTarget.addEventListener(eventScroll, this.update, {
             passive: true,
             capture: true,
         });
@@ -1328,8 +1334,9 @@ export class AnchoredRegion extends FoundationElement {
      * stops event listeners that can trigger auto updating
      */
     private stopAutoUpdateEventListeners = (): void => {
-        window.removeEventListener(eventResize, this.update);
-        window.removeEventListener(eventScroll, this.update);
+        const eventTarget = this.ancestorDialog ?? window;
+        eventTarget.removeEventListener(eventResize, this.update);
+        eventTarget.removeEventListener(eventScroll, this.update);
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }

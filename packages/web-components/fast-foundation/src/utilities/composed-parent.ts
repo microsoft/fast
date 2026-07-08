@@ -7,19 +7,32 @@
  *
  * @public
  */
-export function composedParent<T extends HTMLElement>(element: T): HTMLElement | null {
-    const parentNode = element.parentElement;
-
-    if (parentNode) {
-        return parentNode;
-    } else {
-        const rootNode = element.getRootNode();
-
-        if ((rootNode as ShadowRoot).host instanceof HTMLElement) {
-            // this is shadow-root
-            return (rootNode as ShadowRoot).host as HTMLElement;
-        }
+export function composedParent<T extends HTMLElement>(element: T, asSlotted = false): HTMLElement | null {
+    if (asSlotted && element.assignedSlot) {
+        return element.assignedSlot;
     }
 
+    return element.parentElement ?? shadowDomHost(element);
+}
+
+function shadowDomHost(element: HTMLElement): HTMLElement | null {
+    const rootNode = element.getRootNode();
+
+    if ((rootNode as ShadowRoot).host instanceof HTMLElement) {
+        // this is shadow-root
+        return (rootNode as ShadowRoot).host as HTMLElement;
+    }
+
+    return null;
+}
+
+export function closestAncestorDialog(element: HTMLElement): HTMLDialogElement | null {
+    let node: HTMLElement | null = composedParent(element, true);
+    while (node) {
+        if (node instanceof HTMLDialogElement) {
+            return node;
+        }
+        node = composedParent(node, true);
+    }
     return null;
 }
