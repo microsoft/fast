@@ -7,6 +7,7 @@
  * different wrapper:
  * - `<template shadowrootmode="open">` instead of `<f-template name="...">`
  * - No `{{styles}}` placeholder (styles are linked externally)
+ * - `<f-when>` / `<f-repeat>` are converted to WebUI `<if>` / `<for>` blocks
  * - Shadow options (e.g. `shadowrootdelegatesfocus`) propagated from the
  *   companion `*.definition-async.js` module
  *
@@ -40,6 +41,155 @@ const escapedStylesMarker = new RegExp(
     stylesMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
     "g",
 );
+
+function isTagBoundary(char: string): boolean {
+    return char === "" || /[\s>/]/.test(char);
+}
+
+function startsWithTag(html: string, index: number, tagName: string): boolean {
+    return (
+        html.startsWith(`<${tagName}`, index) &&
+        isTagBoundary(html[index + tagName.length + 1] ?? "")
+    );
+}
+
+function findTagEnd(html: string, start: number): number {
+    let quote: string | null = null;
+
+    for (let index = start; index < html.length; index++) {
+        const char = html[index];
+        if (quote) {
+            if (char === quote) {
+                quote = null;
+            }
+            continue;
+        }
+
+        if (char === '"' || char === "'") {
+            quote = char;
+            continue;
+        }
+
+        if (char === ">") {
+            return index;
+        }
+    }
+
+    return -1;
+}
+
+function extractQuotedAttribute(tag: string, name: string): string | null {
+    let index = 1;
+
+    while (index < tag.length) {
+        while (index < tag.length && /\s/.test(tag[index])) {
+            index++;
+        }
+
+        if (tag[index] === ">" || tag[index] === "/") {
+            break;
+        }
+
+        const nameStart = index;
+        while (index < tag.length && !/[\s=>/]/.test(tag[index])) {
+            index++;
+        }
+        const attrName = tag.slice(nameStart, index);
+
+        while (index < tag.length && /\s/.test(tag[index])) {
+            index++;
+        }
+
+        if (tag[index] !== "=") {
+            continue;
+        }
+
+        index++;
+        while (index < tag.length && /\s/.test(tag[index])) {
+            index++;
+        }
+
+        const quote = tag[index];
+        if (quote !== '"' && quote !== "'") {
+            continue;
+        }
+
+        const valueStart = index + 1;
+        const valueEnd = tag.indexOf(quote, valueStart);
+        if (valueEnd === -1) {
+            return null;
+        }
+
+        if (attrName === name) {
+            return tag.slice(valueStart, valueEnd);
+        }
+
+        index = valueEnd + 1;
+    }
+
+    return null;
+}
+
+function unwrapDefaultExpression(value: string): string | null {
+    const trimmed = value.trim();
+    if (!trimmed.startsWith(openExpression) || !trimmed.endsWith(closeExpression)) {
+        return null;
+    }
+
+    return trimmed.slice(openExpression.length, -closeExpression.length).trim();
+}
+
+function convertFastDirectivesToWebui(html: string): string {
+    let result = "";
+    let index = 0;
+
+    while (index < html.length) {
+        if (html.startsWith("</f-when>", index)) {
+            result += "</if>";
+            index += "</f-when>".length;
+            continue;
+        }
+
+        if (html.startsWith("</f-repeat>", index)) {
+            result += "</for>";
+            index += "</f-repeat>".length;
+            continue;
+        }
+
+        if (startsWithTag(html, index, "f-when")) {
+            const tagEnd = findTagEnd(html, index);
+            if (tagEnd !== -1) {
+                const tag = html.slice(index, tagEnd + 1);
+                const value = extractQuotedAttribute(tag, "value");
+                const expression = value ? unwrapDefaultExpression(value) : null;
+                if (expression !== null) {
+                    result += `<if condition="${expression}">`;
+                    index = tagEnd + 1;
+                    continue;
+                }
+            }
+        }
+
+        if (startsWithTag(html, index, "f-repeat")) {
+            const tagEnd = findTagEnd(html, index);
+            if (tagEnd !== -1) {
+                const tag = html.slice(index, tagEnd + 1);
+                const value = extractQuotedAttribute(tag, "value");
+                const expression = value ? unwrapDefaultExpression(value) : null;
+                if (expression !== null) {
+                    result += `<for each="${expression}">`;
+                    index = tagEnd + 1;
+                    continue;
+                }
+            }
+        }
+
+        result += html[index];
+        index++;
+    }
+
+    return result;
+}
 
 export interface GenerateWebuiTemplatesOptions {
     /**
@@ -121,6 +271,9 @@ function fTemplateToWebui(
 
     // Remove {{styles}} placeholder.
     inner = inner.replace(escapedStylesMarker, "");
+
+    // Convert FAST declarative template directives to WebUI template directives.
+    inner = convertFastDirectivesToWebui(inner);
 
     // Replace the opening <template> tag with one that includes shadow attributes.
     const extraAttrs = Object.entries(shadowAttrs)
