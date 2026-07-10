@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Ignore stale observer map array notifications after replacement.",
+  "packageName": "@microsoft/fast-element",
+  "email": "pradeepramolaa@gmail.com",
+  "dependentChangeType": "none"
+}
