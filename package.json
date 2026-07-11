@@ -69,5 +69,10 @@
     "rollup": "4.59.0",
     "typescript": "5.5.4",
     "vite": "7.3.6"
+  },
+  "overrides": {
+    "@microsoft/api-documenter": {
+      "js-yaml": "4.3.0"
+    }
   }
 }
