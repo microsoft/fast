@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Fix package manifest formatting with `npm pkg fix`.",
+  "packageName": "@microsoft/fast-build",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -17,7 +17,7 @@
   },
   "type": "module",
   "bin": {
-    "fast-test-harness": "./start.mjs"
+    "fast-test-harness": "start.mjs"
   },
   "exports": {
     ".": {

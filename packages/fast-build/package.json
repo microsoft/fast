@@ -23,7 +23,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "fast": "./bin/fast.js"
+    "fast": "bin/fast.js"
   },
   "files": [
     "bin",
