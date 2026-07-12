@@ -116,6 +116,29 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
 }
 
 // @beta (undocumented)
+export class DefaultRoutingEventSink implements RoutingEventSink {
+    // (undocumented)
+    onNavigationBegin(router: Router, route: RecognizedRoute, command: NavigationCommand): void;
+    // (undocumented)
+    onNavigationEnd(router: Router, route: RecognizedRoute, command: NavigationCommand): void;
+    // (undocumented)
+    onPhaseBegin(phase: NavigationPhase): void;
+    // (undocumented)
+    onPhaseEnd(phase: NavigationPhase): void;
+    // (undocumented)
+    onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void;
+}
+
+// @beta (undocumented)
+export class DefaultTitleBuilder implements TitleBuilder {
+    constructor(segmentSeparator?: string, fragmentSeparator?: string);
+    // (undocumented)
+    buildTitle(rootTitle: string, routeTitles: string[][]): string;
+    // (undocumented)
+    joinTitles(parentTitle: string, childTitle: string): string;
+}
+
+// @beta (undocumented)
 export type DefinitionCallback = () => Promise<FallbackRouteDefinition> | FallbackRouteDefinition;
 
 // @beta (undocumented)
@@ -531,8 +554,6 @@ export abstract class RouterConfiguration<TSettings = any> {
     construct<T>(Type: Constructable<T>): T;
     // (undocumented)
     readonly contributors: NavigationContributor<TSettings>[];
-    // Warning: (ae-forgotten-export) The symbol "RoutingEventSink" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     createEventSink(): RoutingEventSink;
     // (undocumented)
@@ -543,8 +564,6 @@ export abstract class RouterConfiguration<TSettings = any> {
     createNavigationQueue(): NavigationQueue;
     // (undocumented)
     createRouteRecognizer(): RouteRecognizer<TSettings>;
-    // Warning: (ae-forgotten-export) The symbol "TitleBuilder" needs to be exported by the entry point index.d.ts
-    //
     // (undocumented)
     createTitleBuilder(): TitleBuilder;
     // (undocumented)
@@ -609,6 +628,20 @@ export interface RouteView {
 }
 
 // @beta (undocumented)
+export interface RoutingEventSink {
+    // (undocumented)
+    onNavigationBegin(router: Router, route: RecognizedRoute, command: NavigationCommand): void;
+    // (undocumented)
+    onNavigationEnd(router: Router, route: RecognizedRoute, command: NavigationCommand): void;
+    // (undocumented)
+    onPhaseBegin(phase: NavigationPhase): void;
+    // (undocumented)
+    onPhaseEnd(phase: NavigationPhase): void;
+    // (undocumented)
+    onUnhandledNavigationMessage(router: Router, message: NavigationMessage): void;
+}
+
+// @beta (undocumented)
 export type SupportsSettings<TSettings = any> = {
     settings?: TSettings;
 };
@@ -618,6 +651,14 @@ export type TemplateFallbackRouteDefinition<TSettings = any> = LayoutAndTransiti
 
 // @beta (undocumented)
 export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<TSettings> & HasTemplate;
+
+// @beta (undocumented)
+export interface TitleBuilder {
+    // (undocumented)
+    buildTitle(rootTitle: string, routeTitles: string[][]): string;
+    // (undocumented)
+    joinTitles(parentTitle: string, childTitle: string): string;
+}
 
 // @beta (undocumented)
 export interface Transition {
