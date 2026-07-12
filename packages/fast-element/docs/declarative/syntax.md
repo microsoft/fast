@@ -322,7 +322,9 @@ You can pass the DOM event object, the execution context, literal values, or bin
 </f-repeat>
 ```
 
-Argument lists are parsed strictly. Malformed handler syntax — a missing or unbalanced call, an invalid handler name, trailing text after the call, an unclosed string, a trailing comma, an empty argument slot, or an invalid path token — throws while the template is being parsed rather than being silently normalized.
+String literals support the `\0`, `\b`, `\f`, `\n`, `\r`, `\t`, `\v`, `\\`, `\'` and `\"` escape sequences.
+
+Argument lists are parsed strictly. Malformed handler syntax — a missing or unbalanced call, an invalid handler name, trailing text after the call, an unclosed string, an unknown escape sequence, a trailing comma, an empty argument slot, or an invalid path token — throws while the template is being parsed rather than being silently normalized.
 
 Use `$e` for the DOM event object.
 

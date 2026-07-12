@@ -192,6 +192,18 @@ export interface ParsedEventHandler {
 
 const eventArgPathPattern = /^\$?[a-zA-Z_][a-zA-Z0-9_]*(\.[$a-zA-Z_][a-zA-Z0-9_]*)*$/;
 const eventArgNumberPattern = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?$/;
+const eventArgEscapes: Record<string, string> = {
+    "0": "\0",
+    "\\": "\\",
+    "'": "'",
+    '"': '"',
+    b: "\b",
+    f: "\f",
+    n: "\n",
+    r: "\r",
+    t: "\t",
+    v: "\v",
+};
 
 /**
  * Splits an event argument list on the commas that sit outside of string
@@ -248,8 +260,16 @@ function parseEventArgStringLiteral(arg: string, quote: string): string {
     for (let i = 1; i < arg.length; i++) {
         const char = arg[i];
 
-        if (char === "\\" && i + 1 < arg.length) {
-            value += arg[++i];
+        if (char === "\\") {
+            const escaped = eventArgEscapes[arg[++i]];
+
+            if (escaped === undefined) {
+                throw new Error(
+                    `Invalid escape sequence "\\${arg[i]}" in event argument "${arg}".`,
+                );
+            }
+
+            value += escaped;
             continue;
         }
 

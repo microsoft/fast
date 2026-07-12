@@ -1000,6 +1000,14 @@ test.describe("utilities", async () => {
                 { type: "string", value: "it's" },
             ]);
         });
+        test("should decode escape sequences inside a string literal", async () => {
+            expect(parseEventArgs(String.raw`'a\nb\tc\rd\\e\'f\"g'`)).toEqual([
+                { type: "string", value: "a\nb\tc\rd\\e'f\"g" },
+            ]);
+        });
+        test("should throw for an unknown escape sequence", async () => {
+            expect(() => parseEventArgs(String.raw`'a\qb'`)).toThrow();
+        });
         test("should parse number literals", async () => {
             expect(parseEventArgs("1, -2, 1.5, 1e3")).toEqual([
                 { type: "number", value: 1 },
