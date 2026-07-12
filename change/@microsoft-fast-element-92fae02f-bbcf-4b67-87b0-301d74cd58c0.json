@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: reconcile prerendered content that a content binding does not adopt while hydrating, so content inside a when() whose condition has not resolved is no longer left in the DOM unowned and then duplicated once it does.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

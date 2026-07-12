@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "test: add a hydration fixture covering a deferred child rendered inside a conditional content binding.",
+  "packageName": "@microsoft/fast-html",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

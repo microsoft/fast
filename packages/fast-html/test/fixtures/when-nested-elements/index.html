@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>When Nested Elements Hydration Tests</title>
+    </head>
+    <body>
+        <when-parent><template shadowrootmode="open" shadowroot="open"><div class="container">
+            <!--fe-b$$start$$0$$when-0$$fe-b-->
+                <deferred-child text="Hello" data-fe-c-0-1><template shadowrootmode="open" shadowroot="open"><span class="text"><!--fe-b$$start$$0$$text-0$$fe-b-->Hello<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></deferred-child>
+            <!--fe-b$$end$$0$$when-0$$fe-b-->
+        </div></template></when-parent>
+        <repeat-parent><template shadowrootmode="open" shadowroot="open"><div class="container">
+            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                <deferred-child text="Hello" data-fe-c-0-1><template shadowrootmode="open" shadowroot="open"><span class="text"><!--fe-b$$start$$0$$text-0$$fe-b-->Hello<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></deferred-child>
+            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+        </div></template></repeat-parent>
+        <when-stale-parent><template shadowrootmode="open" shadowroot="open"><div class="container">
+            <!--fe-b$$start$$0$$when-0$$fe-b-->
+                <deferred-child text="Hello" data-fe-c-0-1><template shadowrootmode="open" shadowroot="open"><span class="text"><!--fe-b$$start$$0$$text-0$$fe-b-->Hello<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></deferred-child>
+            <!--fe-b$$end$$0$$when-0$$fe-b-->
+        </div></template></when-stale-parent>
+        <repeat-stale-parent><template shadowrootmode="open" shadowroot="open"><div class="container">
+            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                <deferred-child text="Hello" data-fe-c-0-1><template shadowrootmode="open" shadowroot="open"><span class="text"><!--fe-b$$start$$0$$text-0$$fe-b-->Hello<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></deferred-child>
+            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+        </div></template></repeat-stale-parent>
+<f-template name="deferred-child">
+    <template>
+        <span class="text">{{text}}</span>
+    </template>
+</f-template>
+<f-template name="when-parent">
+    <template>
+        <div class="container">
+            <f-when value="{{show}}">
+                <deferred-child text="{{text}}"></deferred-child>
+            </f-when>
+        </div>
+    </template>
+</f-template>
+<f-template name="repeat-parent">
+    <template>
+        <div class="container">
+            <f-repeat value="{{item in items}}">
+                <deferred-child text="{{item.text}}"></deferred-child>
+            </f-repeat>
+        </div>
+    </template>
+</f-template>
+<f-template name="when-stale-parent">
+    <template>
+        <div class="container">
+            <f-when value="{{show}}">
+                <deferred-child text="{{text}}"></deferred-child>
+            </f-when>
+        </div>
+    </template>
+</f-template>
+<f-template name="repeat-stale-parent">
+    <template>
+        <div class="container">
+            <f-repeat value="{{item in items}}">
+                <deferred-child text="{{item.text}}"></deferred-child>
+            </f-repeat>
+        </div>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

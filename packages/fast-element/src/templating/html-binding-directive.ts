@@ -92,6 +92,59 @@ function isContentTemplate(value: any): value is ContentTemplate {
 }
 
 /**
+ * Discards the prerendered nodes of a content binding that the binding did not adopt.
+ *
+ * A content binding hydrates by adopting the nodes the server rendered between its
+ * boundary markers. When it cannot adopt them - because the value is no longer a
+ * template, or because the view has already hydrated - those nodes must be reconciled
+ * away, just as `repeat` discards the prerendered item views it does not adopt.
+ *
+ * Left in place they are owned by no view, so nothing ever binds them: their bindings
+ * are never wired to the source, and once the value does resolve, a second,
+ * client-rendered copy is composed alongside them.
+ *
+ * The boundary is consumed, so a range is discarded at most once.
+ */
+function discardUnadoptedContent(
+    directive: HTMLBindingDirective,
+    controller: ViewController,
+): void {
+    if (!isHydratable(controller)) {
+        return;
+    }
+
+    const viewNodes = controller.bindingViewBoundaries[directive.targetNodeId];
+
+    if (viewNodes === undefined) {
+        return;
+    }
+
+    delete controller.bindingViewBoundaries[directive.targetNodeId];
+
+    const { first, last } = viewNodes;
+    const parent = first.parentNode;
+
+    if (parent === null) {
+        return;
+    }
+
+    let current: Node | null = first;
+
+    while (current !== null) {
+        const next: Node | null = current.nextSibling;
+        const isLast = current === last;
+
+        parent.removeChild(current);
+
+        if (isLast) {
+            return;
+        }
+
+        current = next;
+    }
+}
+
+/**
  * Sink function for DOMAspect.content bindings (text content interpolation).
  * Handles two cases:
  * - If the value is a ContentTemplate (has a create() method), it composes a child
@@ -127,8 +180,12 @@ function updateContent(
                 controller.hydrationStage !== HydrationStage.hydrated
             ) {
                 const viewNodes = controller.bindingViewBoundaries[this.targetNodeId];
+                delete controller.bindingViewBoundaries[this.targetNodeId];
                 view = value.hydrate(viewNodes.first, viewNodes.last);
             } else {
+                // The prerendered nodes cannot be adopted, so reconcile them away
+                // before rendering the value on the client.
+                discardUnadoptedContent(this, controller);
                 view = value.create();
             }
         } else {
@@ -163,15 +220,23 @@ function updateContent(
 
         // If there is a view and it's currently composed into
         // the DOM, then we need to remove it.
-        if (view !== void 0 && view.isComposed) {
-            view.isComposed = false;
-            view.remove();
+        if (view !== void 0) {
+            if (view.isComposed) {
+                view.isComposed = false;
+                view.remove();
 
-            if (view.needsBindOnly) {
-                view.needsBindOnly = false;
-            } else {
-                view.unbind();
+                if (view.needsBindOnly) {
+                    view.needsBindOnly = false;
+                } else {
+                    view.unbind();
+                }
             }
+        } else {
+            // No view ever composed this target, so any prerendered nodes between the
+            // binding's boundary markers are owned by nothing. This happens when the
+            // value is falsy on hydration but the server rendered content for it -
+            // a `when` whose condition has not resolved yet, for instance.
+            discardUnadoptedContent(this, controller);
         }
 
         target.textContent = value;
