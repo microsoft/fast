@@ -1,0 +1,41 @@
+<f-template name="deferred-child">
+    <template>
+        <span class="text">{{text}}</span>
+    </template>
+</f-template>
+<f-template name="when-parent">
+    <template>
+        <div class="container">
+            <f-when value="{{show}}">
+                <deferred-child text="{{text}}"></deferred-child>
+            </f-when>
+        </div>
+    </template>
+</f-template>
+<f-template name="repeat-parent">
+    <template>
+        <div class="container">
+            <f-repeat value="{{item in items}}">
+                <deferred-child text="{{item.text}}"></deferred-child>
+            </f-repeat>
+        </div>
+    </template>
+</f-template>
+<f-template name="when-stale-parent">
+    <template>
+        <div class="container">
+            <f-when value="{{show}}">
+                <deferred-child text="{{text}}"></deferred-child>
+            </f-when>
+        </div>
+    </template>
+</f-template>
+<f-template name="repeat-stale-parent">
+    <template>
+        <div class="container">
+            <f-repeat value="{{item in items}}">
+                <deferred-child text="{{item.text}}"></deferred-child>
+            </f-repeat>
+        </div>
+    </template>
+</f-template>
