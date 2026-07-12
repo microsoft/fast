@@ -7,8 +7,6 @@
         "experimentalDecorators": true,
         "types": ["node"],
         "useUnknownInCatchVariables": false,
-        "noImplicitAny": false,
-        "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "NodeNext",
         "importHelpers": true,

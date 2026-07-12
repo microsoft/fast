@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Enable noImplicitAny and strictPropertyInitialization for fast-router.",
+  "packageName": "@microsoft/fast-router",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
