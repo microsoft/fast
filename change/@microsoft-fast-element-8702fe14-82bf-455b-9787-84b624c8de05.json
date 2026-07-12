@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Only treat an f- tag as a when or repeat directive when its tag name ends at a name boundary, so elements such as f-whenever and f-repeater are no longer mis-parsed as directives.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

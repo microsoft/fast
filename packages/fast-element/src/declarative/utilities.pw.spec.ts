@@ -44,6 +44,28 @@ test.describe("utilities", async () => {
                 (templateResult as ContentDataBindingBehaviorConfig)?.closingEndIndex,
             ).toEqual(8);
         });
+        test("get the next content binding preceded by unescaped angle brackets", async () => {
+            for (const innerHTML of [
+                "<span>5 > 3</span>{{text}}",
+                "<span>a < b</span>{{text}}",
+            ]) {
+                const templateResult = getNextBehavior(innerHTML);
+
+                expect(
+                    (templateResult as ContentDataBindingBehaviorConfig)?.subtype,
+                    innerHTML,
+                ).toEqual("content");
+                expect(
+                    (templateResult as ContentDataBindingBehaviorConfig)
+                        ?.openingStartIndex,
+                    innerHTML,
+                ).toEqual(18);
+                expect(
+                    (templateResult as ContentDataBindingBehaviorConfig)?.closingEndIndex,
+                    innerHTML,
+                ).toEqual(26);
+            }
+        });
     });
 
     test.describe("attributes", async () => {
@@ -246,6 +268,56 @@ test.describe("utilities", async () => {
             expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual(
                 "attribute",
             );
+        });
+        test("should not treat an unknown f- tag which extends a directive tag name as a directive", async () => {
+            for (const innerHTML of [
+                '<f-whenever value="{{show}}">Hello</f-whenever>',
+                '<f-when-modal value="{{show}}">Hello</f-when-modal>',
+                '<f-repeater value="{{item in items}}">Hello</f-repeater>',
+                '<f-repeat-item value="{{item in items}}">Hello</f-repeat-item>',
+            ]) {
+                const templateResult = getNextBehavior(innerHTML);
+
+                expect(templateResult?.type, innerHTML).toEqual("dataBinding");
+                expect(
+                    (templateResult as ContentDataBindingBehaviorConfig)?.subtype,
+                    innerHTML,
+                ).toEqual("attribute");
+            }
+        });
+        test("when directive containing a tag which extends its tag name", async () => {
+            const innerHTML =
+                '<f-when value="{{show}}"><f-whenever>Hello</f-whenever></f-when>';
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("templateDirective");
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex,
+            ).toEqual(25);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex,
+            ).toEqual(55);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex,
+            ).toEqual(64);
+        });
+        test("when directive with a newline between the tag name and its attribute", async () => {
+            const innerHTML = '<f-when\n  value="{{show}}">Hello</f-when>';
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("templateDirective");
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex,
+            ).toEqual(0);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex,
+            ).toEqual(27);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex,
+            ).toEqual(32);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex,
+            ).toEqual(41);
         });
     });
 
