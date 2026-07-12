@@ -23,7 +23,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -51,7 +51,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name, shadowOptions: { mode: "open" } };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -81,7 +81,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name, shadowOptions: null };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -111,7 +111,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name, shadowOptions: { mode: "closed" } };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -139,7 +139,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -177,7 +177,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -218,7 +218,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name, shadowOptions: null };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -264,7 +264,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -276,7 +276,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -313,7 +313,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -325,7 +325,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -361,7 +361,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -376,7 +376,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -413,7 +413,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -428,7 +428,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -466,7 +466,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `;
                             }
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -478,7 +478,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -516,7 +516,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `;
                             }
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -528,7 +528,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -566,7 +566,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `;
                             }
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -581,7 +581,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -619,7 +619,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `;
                             }
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -634,7 +634,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -667,7 +667,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition.compose(
                         class ControllerTest extends FASTElement {
                             static definition = { name };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -724,7 +724,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition.compose(
                         class ControllerTest extends FASTElement {
                             static definition = { name, styles: stylesA };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -782,7 +782,7 @@ test.describe("The ElementController", () => {
                         FASTElementDefinition.compose(
                             class ControllerTest extends FASTElement {
                                 static definition = { name, styles: stylesA };
-                            }
+                            },
                         ).define();
 
                         const element = document.createElement(name);
@@ -803,7 +803,7 @@ test.describe("The ElementController", () => {
                             cssText,
                         };
                     },
-                    { cssA, cssB }
+                    { cssA, cssB },
                 );
 
             if (supportsAdoptedStyleSheets) {
@@ -846,7 +846,7 @@ test.describe("The ElementController", () => {
                             resolveStyles() {
                                 return stylesA;
                             }
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -907,7 +907,7 @@ test.describe("The ElementController", () => {
                                 resolveStyles() {
                                     return stylesA;
                                 }
-                            }
+                            },
                         ).define();
 
                         const element = document.createElement(name);
@@ -928,7 +928,7 @@ test.describe("The ElementController", () => {
                             cssText,
                         };
                     },
-                    { cssA, cssB }
+                    { cssA, cssB },
                 );
 
             if (supportsAdoptedStyleSheets) {
@@ -970,7 +970,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -986,7 +986,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect, afterChange };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -1026,7 +1026,7 @@ test.describe("The ElementController", () => {
                                     ${templateA}
                                 `,
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -1042,7 +1042,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect, afterChange };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -1092,7 +1092,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition.compose(
                         class ControllerTest extends FASTElement {
                             static definition = { name, styles: stylesA };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name);
@@ -1118,7 +1118,7 @@ test.describe("The ElementController", () => {
                         lengthAfterChange,
                     };
                 },
-                { cssA, cssB }
+                { cssA, cssB },
             );
 
             if (supportsAdoptedStyleSheets) {
@@ -1147,7 +1147,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class ControllerTest extends FASTElement {
                     static definition = { name };
-                }
+                },
             ).define();
 
             const element = document.createElement(name);
@@ -1178,7 +1178,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -1199,7 +1199,7 @@ test.describe("The ElementController", () => {
                 const afterRemove = attached;
 
                 return { initialAttached, afterAppend, afterRemove };
-            }
+            },
         );
 
         expect(initialAttached).toBe(false);
@@ -1223,7 +1223,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class ControllerTest extends FASTElement {
                     static definition = { name };
-                }
+                },
             ).define();
 
             const element = document.createElement(name);
@@ -1259,7 +1259,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class ControllerTest extends FASTElement {
                     static definition = { name };
-                }
+                },
             ).define();
 
             const element = document.createElement(name);
@@ -1295,7 +1295,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class ControllerTest extends FASTElement {
                     static definition = { name };
-                }
+                },
             ).define();
 
             const element = document.createElement(name);
@@ -1341,7 +1341,7 @@ test.describe("The ElementController", () => {
                                 ${templateA}
                             `,
                         };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name);
@@ -1358,7 +1358,7 @@ test.describe("The ElementController", () => {
 
                 return { beforeAdd, afterAdd, afterRemove };
             },
-            templateA
+            templateA,
         );
 
         expect(beforeAdd).toBe(false);
@@ -1382,7 +1382,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class ControllerTest extends FASTElement {
                     static definition = { name };
-                }
+                },
             ).define();
 
             const element = document.createElement(name);
@@ -1418,16 +1418,40 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
                 const controller = ElementController.forCustomElement(element);
 
                 const behaviors = [
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
                 ];
                 behaviors.forEach(x => controller.addBehavior(x));
 
@@ -1462,7 +1486,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1506,7 +1530,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1554,7 +1578,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1562,8 +1586,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1608,7 +1636,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1616,8 +1644,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1657,7 +1689,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition.compose(
                         class ControllerTest extends FASTElement {
                             static definition = { name };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name) as any;
@@ -1666,8 +1698,12 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
                     controller.addStyles(css``.withBehaviors(behavior));
@@ -1678,8 +1714,11 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
-                }
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
+                },
             );
 
             expect(connectedCalled).toBe(true);
@@ -1707,8 +1746,12 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
                     FASTElementDefinition.compose(
@@ -1717,7 +1760,7 @@ test.describe("The ElementController", () => {
                                 name,
                                 styles: css``.withBehaviors(behavior),
                             };
-                        }
+                        },
                     ).define();
 
                     const element = document.createElement(name) as any;
@@ -1729,8 +1772,11 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
-                }
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
+                },
             );
 
             expect(connectedCalled).toBe(true);
@@ -1767,8 +1813,12 @@ test.describe("The ElementController", () => {
                 let connectCount = 0;
                 let disconnectCount = 0;
                 const behavior = {
-                    connectedCallback() { connectCount++; },
-                    disconnectedCallback() { disconnectCount++; },
+                    connectedCallback() {
+                        connectCount++;
+                    },
+                    disconnectedCallback() {
+                        disconnectCount++;
+                    },
                 };
 
                 FASTElementDefinition.compose(
@@ -1777,7 +1827,7 @@ test.describe("The ElementController", () => {
                             name,
                             styles: css``.withBehaviors(behavior),
                         };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1827,7 +1877,7 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
                         static definition = { name };
-                    }
+                    },
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1836,8 +1886,12 @@ test.describe("The ElementController", () => {
                 let addedCalled = false;
                 let removedCalled = false;
                 const behavior = {
-                    addedCallback() { addedCalled = true; },
-                    removedCallback() { removedCalled = true; },
+                    addedCallback() {
+                        addedCalled = true;
+                    },
+                    removedCallback() {
+                        removedCalled = true;
+                    },
                 };
 
                 const styles = css``.withBehaviors(behavior);
@@ -1861,12 +1915,8 @@ test.describe("The ElementController", () => {
 
             const innerHTML = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    html,
-                    uniqueElementName,
-                } = await import("/main.js");
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
 
                 const name = uniqueElementName();
                 const element = document.createElement(name);
@@ -1881,7 +1931,7 @@ test.describe("The ElementController", () => {
                             name,
                             template: html`Test 2`,
                         };
-                    }
+                    },
                 ).define();
 
                 const result = root.innerHTML;
@@ -1890,6 +1940,121 @@ test.describe("The ElementController", () => {
             });
 
             expect(innerHTML).toBe("Test 2");
+        });
+    });
+
+    test.describe("when observables are set before upgrade", () => {
+        test("should make a property reactive when it was set to undefined before upgrade", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    Observable,
+                    Updates,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const name = uniqueElementName();
+                const element = document.createElement(name) as any;
+                document.body.appendChild(element);
+
+                // The binding engine writes the parent's uninitialized property
+                // to the not-yet-upgraded child.
+                element.value = undefined;
+
+                const shadowedBeforeUpgrade = Object.prototype.hasOwnProperty.call(
+                    element,
+                    "value",
+                );
+
+                class Test extends FASTElement {
+                    static definition = {
+                        name,
+                        template: html`${(x: any) => x.value}`,
+                    };
+                }
+
+                Observable.defineProperty(Test.prototype, "value");
+                FASTElementDefinition.compose(Test).define();
+
+                await Updates.next();
+
+                element.value = "updated";
+
+                await Updates.next();
+
+                const text = element.shadowRoot?.textContent ?? "";
+                document.body.removeChild(element);
+
+                return {
+                    shadowedBeforeUpgrade,
+                    shadowedAfterUpgrade: Object.prototype.hasOwnProperty.call(
+                        element,
+                        "value",
+                    ),
+                    text,
+                };
+            });
+
+            expect(result.shadowedBeforeUpgrade).toBe(true);
+            expect(result.shadowedAfterUpgrade).toBe(false);
+            expect(result.text).toBe("updated");
+        });
+
+        test("should replay a property that was set to a defined value before upgrade", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    Observable,
+                    Updates,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const name = uniqueElementName();
+                const element = document.createElement(name) as any;
+                document.body.appendChild(element);
+
+                element.value = "initial";
+
+                class Test extends FASTElement {
+                    static definition = {
+                        name,
+                        template: html`${(x: any) => x.value}`,
+                    };
+                }
+
+                Observable.defineProperty(Test.prototype, "value");
+                FASTElementDefinition.compose(Test).define();
+
+                await Updates.next();
+
+                const initialText = element.shadowRoot?.textContent ?? "";
+
+                element.value = "updated";
+
+                await Updates.next();
+
+                const updatedText = element.shadowRoot?.textContent ?? "";
+                document.body.removeChild(element);
+
+                return { initialText, updatedText };
+            });
+
+            expect(result.initialText).toBe("initial");
+            expect(result.updatedText).toBe("updated");
         });
     });
 
@@ -1940,7 +2105,7 @@ test.describe("The ElementController", () => {
             FASTElementDefinition.compose(
                 class extends Test {
                     static definition = { name, template };
-                }
+                },
             ).define();
 
             const element = document.createElement(name) as any;
@@ -1948,12 +2113,10 @@ test.describe("The ElementController", () => {
             Observable.getNotifier(controller).subscribe(
                 {
                     handleChange() {
-                        orderLog.push(
-                            `isConnected set ${controller.isConnected}`
-                        );
+                        orderLog.push(`isConnected set ${controller.isConnected}`);
                     },
                 },
-                "isConnected"
+                "isConnected",
             );
             controller.addBehavior({
                 connectedCallback() {
@@ -1995,41 +2158,39 @@ test.describe("The HydratableElementController", () => {
     }) => {
         await page.goto("/");
 
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
+        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                ElementController,
+                HydratableElementController,
+                needsHydrationAttribute,
+                deferHydrationAttribute,
+                uniqueElementName,
+            } = await import("/main.js");
 
-                HydratableElementController.install();
+            HydratableElementController.install();
 
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
-                ).define();
+            const name = uniqueElementName();
+            FASTElementDefinition.compose(
+                class ControllerTest extends FASTElement {
+                    static definition = { name };
+                },
+            ).define();
 
-                const element = document.createElement(name) as any;
-                element.setAttribute("needs-hydration", "");
-                ElementController.forCustomElement(element);
+            const element = document.createElement(name) as any;
+            element.setAttribute("needs-hydration", "");
+            ElementController.forCustomElement(element);
 
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
+            const result = {
+                hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
+                hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
+            };
 
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
+            ElementController.setStrategy(ElementController);
+            return result;
+        });
 
         expect(hasDeferHydration).toBe(false);
         expect(hasNeedsHydration).toBe(true);
@@ -2040,48 +2201,46 @@ test.describe("The HydratableElementController", () => {
     }) => {
         await page.goto("/");
 
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
+        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                ElementController,
+                HydratableElementController,
+                needsHydrationAttribute,
+                deferHydrationAttribute,
+                uniqueElementName,
+            } = await import("/main.js");
 
-                ElementController.setStrategy(HydratableElementController);
+            ElementController.setStrategy(HydratableElementController);
 
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            shadowOptions: null,
-                            template: undefined,
-                            templateOptions: "defer-and-hydrate",
-                        };
-                    }
-                ).define();
+            const name = uniqueElementName();
+            FASTElementDefinition.compose(
+                class ControllerTest extends FASTElement {
+                    static definition = {
+                        name,
+                        shadowOptions: null,
+                        template: undefined,
+                        templateOptions: "defer-and-hydrate",
+                    };
+                },
+            ).define();
 
-                const element = document.createElement(name) as any;
-                const controller = ElementController.forCustomElement(element);
-                controller.connect();
+            const element = document.createElement(name) as any;
+            const controller = ElementController.forCustomElement(element);
+            controller.connect();
 
-                controller.shadowOptions = { mode: "open" };
+            controller.shadowOptions = { mode: "open" };
 
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
+            const result = {
+                hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
+                hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
+            };
 
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
+            ElementController.setStrategy(ElementController);
+            return result;
+        });
 
         expect(hasDeferHydration).toBe(true);
         expect(hasNeedsHydration).toBe(true);
