@@ -241,6 +241,178 @@ test.describe("extension subpaths", () => {
         expect(result.hasObservableName).toBe(true);
     });
 
+    test("observerMap skips reprocessing when the same array reference is assigned", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            const { ArrayObserver, Observable, Schema, observerMap } = await import(
+                // @ts-expect-error: Client module.
+                "/extension-subpaths-main.js"
+            );
+
+            ArrayObserver.enable();
+
+            class ManualElement {
+                public someData: any;
+            }
+
+            const schema = new Schema("manual-same-reference");
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "repeat",
+                    path: "someData.users",
+                    currentContext: "user",
+                    parentContext: null,
+                },
+                childrenMap: null,
+            });
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "repeat",
+                    path: "user.orders",
+                    currentContext: "order",
+                    parentContext: "user",
+                },
+                childrenMap: null,
+            });
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "default",
+                    path: "order.id",
+                    currentContext: "order",
+                    parentContext: "user",
+                },
+                childrenMap: null,
+            });
+
+            observerMap({ schema })({ type: ManualElement } as any);
+
+            const instance = new ManualElement();
+            instance.someData = {
+                users: [{ orders: [{ id: "first" }] }],
+            };
+
+            const user = instance.someData.users[0];
+            const orders = user.orders;
+
+            let notifyCount = 0;
+            Observable.getNotifier(user).subscribe(
+                {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                },
+                "orders",
+            );
+
+            user.orders = orders;
+
+            user.orders.push({ id: "second" });
+            await new Promise(resolve =>
+                requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            );
+
+            return {
+                notifyCount,
+                preservesReference: user.orders === orders,
+                hasObservableIdOnPushedItem:
+                    typeof Object.getOwnPropertyDescriptor(user.orders[1], "id")?.get ===
+                    "function",
+            };
+        });
+
+        expect(result.notifyCount).toBe(0);
+        expect(result.preservesReference).toBe(true);
+        expect(result.hasObservableIdOnPushedItem).toBe(true);
+    });
+
+    test("observerMap processes a replacement array assigned to a nested property", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            const { ArrayObserver, Observable, Schema, observerMap } = await import(
+                // @ts-expect-error: Client module.
+                "/extension-subpaths-main.js"
+            );
+
+            ArrayObserver.enable();
+
+            class ManualElement {
+                public someData: any;
+            }
+
+            const schema = new Schema("manual-replacement-array");
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "repeat",
+                    path: "someData.users",
+                    currentContext: "user",
+                    parentContext: null,
+                },
+                childrenMap: null,
+            });
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "repeat",
+                    path: "user.orders",
+                    currentContext: "order",
+                    parentContext: "user",
+                },
+                childrenMap: null,
+            });
+            schema.addPath({
+                rootPropertyName: "someData",
+                pathConfig: {
+                    type: "default",
+                    path: "order.id",
+                    currentContext: "order",
+                    parentContext: "user",
+                },
+                childrenMap: null,
+            });
+
+            observerMap({ schema })({ type: ManualElement } as any);
+
+            const instance = new ManualElement();
+            instance.someData = {
+                users: [{ orders: [{ id: "first" }] }],
+            };
+
+            const user = instance.someData.users[0];
+
+            let notifyCount = 0;
+            Observable.getNotifier(user).subscribe(
+                {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                },
+                "orders",
+            );
+
+            user.orders = [{ id: "second" }];
+
+            return {
+                notifyCount,
+                hasObservableIdOnReplacementItem:
+                    typeof Object.getOwnPropertyDescriptor(user.orders[0], "id")?.get ===
+                    "function",
+            };
+        });
+
+        expect(result.notifyCount).toBe(1);
+        expect(result.hasObservableIdOnReplacementItem).toBe(true);
+    });
+
     test("observerMap reports missing schemas for non-declarative definitions", async ({
         page,
     }) => {
