@@ -44,6 +44,19 @@ export const elements = (selector?: string): ElementsFilter =>
         : selectElements;
 
 /**
+ * Filters out text nodes that contain only whitespace, such as the indentation
+ * between elements in markup. Note that a node containing only non-breaking
+ * spaces is considered whitespace and is filtered out as well.
+ * @public
+ * @example
+ * ```ts
+ * html`<slot ${slotted({ property: "nodes", filter: whitespaceFilter })}></slot>`
+ * ```
+ */
+export const whitespaceFilter: ElementsFilter = value =>
+    value.nodeType !== 3 || !!value.nodeValue?.trim().length;
+
+/**
  * A base class for node observation.
  * @public
  * @remarks
