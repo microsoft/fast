@@ -296,6 +296,20 @@ No DOM nodes are created at this point; compilation is deferred.
 
 See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) for more detail on directives and the `Markup`/`Parser` helpers.
 
+#### svg Tagged Template Literal
+
+Each tagged template literal is parsed into its own `DocumentFragment`, so a template nested inside an `svg` element through a directive (for example the item template of a `repeat`) has no SVG parsing context and its elements would be created in the HTML namespace, where they never render. The `svg` tag builds the same `ViewTemplate` but marks it so that `compile()` parses its html inside a temporary `svg` element, which puts the resulting nodes in the SVG namespace:
+
+```typescript
+const template = html<MyElement>`
+  <svg viewBox="0 0 100 100">
+    ${repeat(x => x.points, svg`<circle cx="${x => x.x}" cy="${x => x.y}" r="2"></circle>`)}
+  </svg>
+`;
+```
+
+The template must not include the `svg` element itself. Elements written directly inside an `svg` element in the same `html` template need no special handling.
+
 ---
 
 ### ViewTemplate & Compiler
@@ -656,7 +670,7 @@ src/
 │   ├── one-time.ts        # oneTime
 │   └── normalize.ts       # normalizeBinding helper
 ├── templating/
-│   ├── template.ts        # ViewTemplate, html tag, InlineTemplateDirective
+│   ├── template.ts        # ViewTemplate, html/svg tags, InlineTemplateDirective
 │   ├── compiler.ts        # Compiler, CompilationContext
 │   ├── view.ts            # HTMLView, ElementView, SyntheticView
 │   ├── html-directive.ts  # HTMLDirective, ViewBehavior, ViewBehaviorFactory

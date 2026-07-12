@@ -189,6 +189,7 @@ export {
     html,
     InlineTemplateDirective,
     type SyntheticViewTemplate,
+    svg,
     type TemplateValue,
     ViewTemplate,
 } from "./templating/template.js";

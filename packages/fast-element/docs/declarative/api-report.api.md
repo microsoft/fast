@@ -414,11 +414,11 @@ export interface ViewBehaviorFactory {
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
-    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined, isSVG?: boolean);
     // @internal (undocumented)
     compile(): HTMLTemplateCompilationResult<TSource, TParent>;
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy, isSVG?: boolean): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;

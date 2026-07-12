@@ -1514,3 +1514,214 @@ test.describe("The ViewTemplate", () => {
         expect(result).toBe(true);
     });
 });
+
+test.describe("The svg tag template helper", () => {
+    test("creates elements in the SVG namespace when used as a repeat item template", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { html, svg, repeat, Updates } = await import("/main.js");
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const template = html`
+                <svg viewBox="0 0 100 100" width="100" height="100">
+                    ${repeat(
+                        x => x.items,
+                        svg`
+                            <text x="0" y="20">${x => x.label}</text>
+                        `,
+                    )}
+                </svg>
+            `;
+
+            template.render({ items: [{ label: "hello" }] }, host);
+            await Updates.next();
+
+            const text = host.querySelector("text")!;
+            const result = {
+                namespaceURI: text.namespaceURI,
+                isSVGElement: text instanceof SVGElement,
+                isRendered:
+                    text instanceof SVGGraphicsElement && text.getBBox().width > 0,
+            };
+
+            host.remove();
+            return result;
+        });
+
+        expect(result).toEqual({
+            namespaceURI: "http://www.w3.org/2000/svg",
+            isSVGElement: true,
+            isRendered: true,
+        });
+    });
+
+    test("binds attributes on SVG elements", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { html, svg, repeat, Observable, Updates } = await import("/main.js");
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const item: { cx: number } = {} as any;
+            Observable.defineProperty(item, "cx");
+            item.cx = 10;
+            const source = { items: [item] };
+
+            const template = html`
+                <svg viewBox="0 0 100 100">
+                    ${repeat(
+                        x => x.items,
+                        svg`
+                            <circle cx="${x => x.cx}" cy="10" r="5"></circle>
+                        `,
+                    )}
+                </svg>
+            `;
+
+            template.render(source, host);
+            await Updates.next();
+
+            const circle = host.querySelector("circle")!;
+            const initial = circle.getAttribute("cx");
+
+            item.cx = 42;
+            await Updates.next();
+
+            const result = { initial, updated: circle.getAttribute("cx") };
+            host.remove();
+            return result;
+        });
+
+        expect(result).toEqual({ initial: "10", updated: "42" });
+    });
+
+    test("creates foreignObject children in the HTML namespace", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { html, svg, repeat, Updates } = await import("/main.js");
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const template = html`
+                <svg viewBox="0 0 100 100">
+                    ${repeat(
+                        x => x.items,
+                        svg`
+                            <foreignObject width="100" height="100">
+                                <div>${x => x.label}</div>
+                            </foreignObject>
+                        `,
+                    )}
+                </svg>
+            `;
+
+            template.render({ items: [{ label: "hello" }] }, host);
+            await Updates.next();
+
+            const result = {
+                foreignObject: host.querySelector("foreignObject")!.namespaceURI,
+                div: host.querySelector("div")!.namespaceURI,
+            };
+
+            host.remove();
+            return result;
+        });
+
+        expect(result).toEqual({
+            foreignObject: "http://www.w3.org/2000/svg",
+            div: "http://www.w3.org/1999/xhtml",
+        });
+    });
+
+    test("creates elements in the SVG namespace for nested directives", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { html, svg, repeat, when, Updates } = await import("/main.js");
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const template = html`
+                <svg viewBox="0 0 100 100">
+                    ${repeat(
+                        x => x.items,
+                        svg`
+                            <g>
+                                ${when(
+                                    x => x.visible,
+                                    svg`
+                                        <circle cx="10" cy="10" r="5"></circle>
+                                    `,
+                                )}
+                            </g>
+                        `,
+                    )}
+                </svg>
+            `;
+
+            template.render({ items: [{ visible: true }] }, host);
+            await Updates.next();
+
+            const result = {
+                g: host.querySelector("g")!.namespaceURI,
+                circle: host.querySelector("circle")!.namespaceURI,
+            };
+
+            host.remove();
+            return result;
+        });
+
+        expect(result).toEqual({
+            g: "http://www.w3.org/2000/svg",
+            circle: "http://www.w3.org/2000/svg",
+        });
+    });
+
+    test("does not change the namespace of elements created by the html tag", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { html, repeat, Updates } = await import("/main.js");
+
+            const host = document.createElement("div");
+            document.body.appendChild(host);
+
+            const template = html`
+                ${repeat(
+                    x => x.items,
+                    html`
+                        <span>${x => x.label}</span>
+                    `,
+                )}
+            `;
+
+            template.render({ items: [{ label: "hello" }] }, host);
+            await Updates.next();
+
+            const result = host.querySelector("span")!.namespaceURI;
+            host.remove();
+            return result;
+        });
+
+        expect(result).toBe("http://www.w3.org/1999/xhtml");
+    });
+});

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add the svg tagged template literal, which creates template content in the SVG namespace so that SVG elements authored in nested templates, such as a repeat item template, render correctly.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
