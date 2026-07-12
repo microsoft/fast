@@ -160,7 +160,14 @@ export {
  * The type of a parsed event handler argument.
  * @public
  */
-export type EventArgType = "event" | "context" | "binding";
+export type EventArgType =
+    | "event"
+    | "context"
+    | "binding"
+    | "string"
+    | "number"
+    | "boolean"
+    | "null";
 
 /**
  * A parsed event handler argument descriptor.
@@ -170,42 +177,231 @@ export interface ParsedEventArg {
     type: EventArgType;
     /** The raw argument string, present only when `type` is `"binding"`. */
     rawArg?: string;
+    /** The literal value, present only for `"string"`, `"number"`, `"boolean"` and `"null"`. */
+    value?: string | number | boolean | null;
+}
+
+/**
+ * A parsed event handler binding.
+ * @public
+ */
+export interface ParsedEventHandler {
+    name: string;
+    args: ParsedEventArg[];
+}
+
+const eventArgPathPattern = /^\$?[a-zA-Z_][a-zA-Z0-9_]*(\.[$a-zA-Z_][a-zA-Z0-9_]*)*$/;
+const eventArgNumberPattern = /^-?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][+-]?[0-9]+)?$/;
+
+/**
+ * Splits an event argument list on the commas that sit outside of string
+ * literals, so that a literal such as `'a,b'` remains a single argument.
+ * @param argsString - The raw arguments string from between the parentheses.
+ * @returns The untrimmed argument tokens.
+ */
+function splitEventArgs(argsString: string): string[] {
+    const args: string[] = [];
+    let current = "";
+    let quote = "";
+
+    for (let i = 0; i < argsString.length; i++) {
+        const char = argsString[i];
+
+        if (quote !== "") {
+            if (char === "\\" && i + 1 < argsString.length) {
+                current += char + argsString[++i];
+                continue;
+            }
+
+            if (char === quote) {
+                quote = "";
+            }
+        } else if (char === "'" || char === '"') {
+            quote = char;
+        } else if (char === ",") {
+            args.push(current);
+            current = "";
+            continue;
+        }
+
+        current += char;
+    }
+
+    if (quote !== "") {
+        throw new Error(`Unclosed string literal in event arguments "${argsString}".`);
+    }
+
+    args.push(current);
+
+    return args;
+}
+
+/**
+ * Unescapes a quoted string literal token and rejects any trailing characters.
+ * @param arg - The trimmed argument token, starting with `quote`.
+ * @param quote - The opening quote character.
+ * @returns The literal string value.
+ */
+function parseEventArgStringLiteral(arg: string, quote: string): string {
+    let value = "";
+
+    for (let i = 1; i < arg.length; i++) {
+        const char = arg[i];
+
+        if (char === "\\" && i + 1 < arg.length) {
+            value += arg[++i];
+            continue;
+        }
+
+        if (char === quote) {
+            if (i !== arg.length - 1) {
+                throw new Error(
+                    `Unexpected text after the string literal in event argument "${arg}".`,
+                );
+            }
+
+            return value;
+        }
+
+        value += char;
+    }
+
+    throw new Error(`Unclosed string literal in event argument "${arg}".`);
+}
+
+/**
+ * Resolves a single event argument token to its descriptor.
+ * @param arg - The trimmed argument token.
+ * @returns A {@link ParsedEventArg} descriptor.
+ */
+function parseEventArg(arg: string): ParsedEventArg {
+    switch (arg) {
+        case eventArgAccessor:
+            return { type: "event" };
+        case executionContextAccessor:
+            return { type: "context" };
+        case "true":
+            return { type: "boolean", value: true };
+        case "false":
+            return { type: "boolean", value: false };
+        case "null":
+            return { type: "null", value: null };
+    }
+
+    const quote = arg[0];
+
+    if (quote === "'" || quote === '"') {
+        return { type: "string", value: parseEventArgStringLiteral(arg, quote) };
+    }
+
+    if (eventArgNumberPattern.test(arg)) {
+        return { type: "number", value: Number(arg) };
+    }
+
+    if (eventArgPathPattern.test(arg)) {
+        return { type: "binding", rawArg: arg };
+    }
+
+    throw new Error(`Invalid event argument "${arg}".`);
 }
 
 /**
  * Parses the arguments string of an event handler binding into an array of
- * typed argument descriptors. Unrecognised tokens are returned as `"binding"`
- * type with their raw string preserved.
+ * typed argument descriptors. Malformed argument lists are rejected rather than
+ * normalised.
  *
  * Special arguments:
  * - `$e` — resolves to the DOM event object
  * - `$c` — resolves to the full execution context object
  *
- * Any other token is treated as a binding path and resolved against the current
- * data source.
+ * Quoted tokens are string literals, and `true`, `false`, `null` and numeric
+ * tokens are their respective literals. Any other token is treated as a binding
+ * path and resolved against the current data source.
  *
  * @param argsString - The raw arguments string from between the parentheses,
- *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
+ *   e.g. `""`, `"$e"`, `"$c"`, or `"item.id, 'static', 1, true, null, $e"`.
  * @returns An array of {@link ParsedEventArg} descriptors.
  * @public
  */
 export function parseEventArgs(argsString: string): ParsedEventArg[] {
     if (argsString.trim() === "") return [];
 
-    return argsString
-        .split(",")
-        .map(arg => arg.trim())
-        .filter(arg => arg !== "")
-        .map((arg): ParsedEventArg => {
-            switch (arg) {
-                case eventArgAccessor:
-                    return { type: "event" };
-                case executionContextAccessor:
-                    return { type: "context" };
-                default:
-                    return { type: "binding", rawArg: arg };
+    return splitEventArgs(argsString).map(arg => {
+        const trimmed = arg.trim();
+
+        if (trimmed === "") {
+            throw new Error(`Empty event argument in "${argsString}".`);
+        }
+
+        return parseEventArg(trimmed);
+    });
+}
+
+/**
+ * Finds the index of the parenthesis closing the call opened at
+ * `openingParenthesis`, ignoring parentheses inside string literals.
+ * @param binding - The trimmed event binding expression.
+ * @param openingParenthesis - The index of the opening parenthesis.
+ * @returns The index of the closing parenthesis.
+ */
+function findEventArgsClose(binding: string, openingParenthesis: number): number {
+    let quote = "";
+
+    for (let i = openingParenthesis + 1; i < binding.length; i++) {
+        const char = binding[i];
+
+        if (quote !== "") {
+            if (char === "\\") {
+                i++;
+            } else if (char === quote) {
+                quote = "";
             }
-        });
+        } else if (char === "'" || char === '"') {
+            quote = char;
+        } else if (char === ")") {
+            return i;
+        }
+    }
+
+    throw new Error(`Event binding "${binding}" is missing a closing parenthesis.`);
+}
+
+/**
+ * Parses an event handler binding expression, e.g.
+ * `$c.parent.selectItem(item.id, 'from-list', $e)`, into the handler path and
+ * its typed argument descriptors. Handler calls that are malformed — a missing
+ * or unbalanced call, an invalid handler name, or trailing text — are rejected.
+ *
+ * @param bindingHTML - The event binding expression from between the braces.
+ * @returns A {@link ParsedEventHandler}.
+ * @public
+ */
+export function parseEventHandler(bindingHTML: string): ParsedEventHandler {
+    const binding = bindingHTML.trim();
+    const openingParenthesis = binding.indexOf("(");
+
+    if (openingParenthesis === -1) {
+        throw new Error(`Event binding "${bindingHTML}" is missing a function call.`);
+    }
+
+    const closingParenthesis = findEventArgsClose(binding, openingParenthesis);
+
+    if (binding.slice(closingParenthesis + 1).trim() !== "") {
+        throw new Error(
+            `Unexpected text after the event handler call in "${bindingHTML}".`,
+        );
+    }
+
+    const name = binding.slice(0, openingParenthesis).trim();
+
+    if (!eventArgPathPattern.test(name)) {
+        throw new Error(`Invalid event handler name "${name}".`);
+    }
+
+    return {
+        name,
+        args: parseEventArgs(binding.slice(openingParenthesis + 1, closingParenthesis)),
+    };
 }
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;

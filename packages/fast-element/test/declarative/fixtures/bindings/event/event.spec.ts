@@ -98,4 +98,42 @@ test.describe("f-template", async () => {
 
         expect(message).toEqual("click");
     });
+    test("create an event attribute with literal arguments", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/bindings/event/");
+        await hydrationCompleted;
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(6).click();
+
+        expect(message).toEqual("a,b)c,string,1.5,number,true,boolean,null,click");
+    });
+    test("create an event attribute with repeat scope and literal arguments", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/bindings/event/");
+        await hydrationCompleted;
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(7).click();
+
+        expect(message).toEqual("id-1,from-list,click");
+
+        await customElement.locator("button").nth(8).click();
+
+        expect(message).toEqual("id-2,from-list,click");
+    });
 });

@@ -14,5 +14,13 @@
         <button type="button" @click="{handleContextEventArgClick($c.event)}">
             context event argument ($c.event)
         </button>
+        <button type="button" @click="{handleLiteralArgsClick('a,b)c', 1.5, true, null, $e)}">
+            literal arguments
+        </button>
+        <f-repeat value="{{item in items}}">
+            <button type="button" @click="{$c.parent.handleRepeatArgsClick(item.id, 'from-list', $e)}">
+                {{item.name}}
+            </button>
+        </f-repeat>
     </template>
 </f-template>

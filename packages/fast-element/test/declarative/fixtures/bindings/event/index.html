@@ -18,7 +18,19 @@
         </button>
         <button type="button" data-fe="1">
             context event argument ($c.event)
-        </button></template></test-element>
+        </button>
+        <button type="button" data-fe="1">
+            literal arguments
+        </button>
+        <!--fe:b--><!--fe:r-->
+            <button type="button" data-fe="1">
+                <!--fe:b-->Item 1<!--fe:/b-->
+            </button>
+        <!--fe:/r--><!--fe:r-->
+            <button type="button" data-fe="1">
+                <!--fe:b-->Item 2<!--fe:/b-->
+            </button>
+        <!--fe:/r--><!--fe:/b--></template></test-element>
 <f-template name="test-element">
     <template>
         <button type="button" @click="{handleNoArgsClick()}">No arguments</button>
@@ -35,6 +47,14 @@
         <button type="button" @click="{handleContextEventArgClick($c.event)}">
             context event argument ($c.event)
         </button>
+        <button type="button" @click="{handleLiteralArgsClick('a,b)c', 1.5, true, null, $e)}">
+            literal arguments
+        </button>
+        <f-repeat value="{{item in items}}">
+            <button type="button" @click="{$c.parent.handleRepeatArgsClick(item.id, 'from-list', $e)}">
+                {{item.name}}
+            </button>
+        </f-repeat>
     </template>
 </f-template>
 

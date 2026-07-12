@@ -13,6 +13,7 @@ import {
     getIndexOfNextMatchingTag,
     getNextBehavior,
     parseEventArgs,
+    parseEventHandler,
     pathResolver,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
@@ -974,6 +975,120 @@ test.describe("utilities", async () => {
                 { type: "event" },
                 { type: "binding", rawArg: "foo" },
             ]);
+        });
+        test("should parse a single quoted string literal", async () => {
+            expect(parseEventArgs("'static'")).toEqual([
+                { type: "string", value: "static" },
+            ]);
+        });
+        test("should parse a double quoted string literal", async () => {
+            expect(parseEventArgs('"static"')).toEqual([
+                { type: "string", value: "static" },
+            ]);
+        });
+        test("should parse an empty string literal", async () => {
+            expect(parseEventArgs("''")).toEqual([{ type: "string", value: "" }]);
+        });
+        test("should treat a comma inside a string literal as content", async () => {
+            expect(parseEventArgs("'a,b'")).toEqual([{ type: "string", value: "a,b" }]);
+        });
+        test("should treat a parenthesis inside a string literal as content", async () => {
+            expect(parseEventArgs("'a)b'")).toEqual([{ type: "string", value: "a)b" }]);
+        });
+        test("should parse an escaped quote inside a string literal", async () => {
+            expect(parseEventArgs("'it\\'s'")).toEqual([
+                { type: "string", value: "it's" },
+            ]);
+        });
+        test("should parse number literals", async () => {
+            expect(parseEventArgs("1, -2, 1.5, 1e3")).toEqual([
+                { type: "number", value: 1 },
+                { type: "number", value: -2 },
+                { type: "number", value: 1.5 },
+                { type: "number", value: 1000 },
+            ]);
+        });
+        test("should parse boolean literals", async () => {
+            expect(parseEventArgs("true, false")).toEqual([
+                { type: "boolean", value: true },
+                { type: "boolean", value: false },
+            ]);
+        });
+        test("should parse a null literal", async () => {
+            expect(parseEventArgs("null")).toEqual([{ type: "null", value: null }]);
+        });
+        test("should parse a mixed list of literals, paths and accessors", async () => {
+            expect(parseEventArgs("item.id, 'static', 1, true, null, $e")).toEqual([
+                { type: "binding", rawArg: "item.id" },
+                { type: "string", value: "static" },
+                { type: "number", value: 1 },
+                { type: "boolean", value: true },
+                { type: "null", value: null },
+                { type: "event" },
+            ]);
+        });
+        test("should tolerate surrounding whitespace", async () => {
+            expect(parseEventArgs("  $e ,  'a b'  ")).toEqual([
+                { type: "event" },
+                { type: "string", value: "a b" },
+            ]);
+        });
+        test("should throw for a trailing comma", async () => {
+            expect(() => parseEventArgs("$e,")).toThrow();
+        });
+        test("should throw for an empty argument slot", async () => {
+            expect(() => parseEventArgs("$e,,$c")).toThrow();
+        });
+        test("should throw for an unclosed string literal", async () => {
+            expect(() => parseEventArgs("'unclosed")).toThrow();
+        });
+        test("should throw for text after a string literal", async () => {
+            expect(() => parseEventArgs("'a'b")).toThrow();
+        });
+        test("should throw for an invalid path token", async () => {
+            expect(() => parseEventArgs("foo bar")).toThrow();
+        });
+        test("should throw for a malformed number", async () => {
+            expect(() => parseEventArgs("1abc")).toThrow();
+        });
+    });
+
+    test.describe("parseEventHandler", async () => {
+        test("should parse a handler without arguments", async () => {
+            expect(parseEventHandler("handleClick()")).toEqual({
+                name: "handleClick",
+                args: [],
+            });
+        });
+        test("should parse a context path handler with arguments", async () => {
+            expect(
+                parseEventHandler("$c.parent.selectItem(item.id, 'from-list', $e)"),
+            ).toEqual({
+                name: "$c.parent.selectItem",
+                args: [
+                    { type: "binding", rawArg: "item.id" },
+                    { type: "string", value: "from-list" },
+                    { type: "event" },
+                ],
+            });
+        });
+        test("should find the closing parenthesis outside of a string literal", async () => {
+            expect(parseEventHandler("handleClick('a)b', $e)")).toEqual({
+                name: "handleClick",
+                args: [{ type: "string", value: "a)b" }, { type: "event" }],
+            });
+        });
+        test("should throw when the function call is missing", async () => {
+            expect(() => parseEventHandler("handleClick")).toThrow();
+        });
+        test("should throw when the closing parenthesis is missing", async () => {
+            expect(() => parseEventHandler("handleClick($e")).toThrow();
+        });
+        test("should throw when there is text after the function call", async () => {
+            expect(() => parseEventHandler("handleClick() junk")).toThrow();
+        });
+        test("should throw for an invalid handler name", async () => {
+            expect(() => parseEventHandler("handle-click()")).toThrow();
         });
     });
 });

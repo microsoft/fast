@@ -286,7 +286,7 @@ Event bindings must include the `()` as well as being preceeded by `@` in keepin
 <button @click="{handleClick()}"></button>
 ```
 
-You can pass the DOM event object, the execution context, or both as arguments. Any other argument is treated as a binding expression and resolved against the current data source.
+You can pass the DOM event object, the execution context, literal values, or binding paths as arguments.
 
 **`$e` — DOM event object (preferred):**
 ```html
@@ -308,10 +308,21 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 <button @click="{handleClick($e, $c)}"></button>
 ```
 
-**Arbitrary binding expressions** — any token that is not `$e` or `$c` is resolved as a binding path on the data source:
+**Binding paths** — any unquoted token that is not `$e`, `$c` or a literal is resolved as a binding path on the data source. Inside an `<f-repeat>` the path resolves against the repeat scope:
 ```html
 <button @click="{handleClick(user.id)}"></button>
 ```
+
+**Literals** — quoted strings (single or double quotes), numbers, `true`, `false` and `null` are passed through as values:
+```html
+<f-repeat value="{{item in items}}">
+    <button @click="{$c.parent.selectItem(item.id, 'from-list', 1, true, null, $e)}">
+        {{item.name}}
+    </button>
+</f-repeat>
+```
+
+Argument lists are parsed strictly. Malformed handler syntax — a missing or unbalanced call, an invalid handler name, trailing text after the call, an unclosed string, a trailing comma, an empty argument slot, or an invalid path token — throws while the template is being parsed rather than being silently normalized.
 
 Use `$e` for the DOM event object.
 
