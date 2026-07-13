@@ -106,7 +106,7 @@ Handles changes in the array, its items, and the repeat template.
 </td></tr>
 <tr><td>
 
-[unbind()](../fast-element.repeatbehavior.unbind/)
+[unbind(controller)](../fast-element.repeatbehavior.unbind/)
 
 
 </td><td>

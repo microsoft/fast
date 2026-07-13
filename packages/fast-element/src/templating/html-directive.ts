@@ -34,6 +34,14 @@ export interface ViewController<TSource = any, TParent = any>
     readonly _skipAttrUpdates?: boolean;
 
     /**
+     * When true, the controller is being torn down rather than
+     * rebound to a new source. Behaviors that own DOM or child
+     * views use this to know when those resources can be released.
+     * @internal
+     */
+    readonly isUnbinding?: boolean;
+
+    /**
      * Resolves `true` when the view's host element had prerendered
      * content (existing shadow root).
      */

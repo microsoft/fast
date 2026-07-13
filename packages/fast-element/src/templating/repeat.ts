@@ -136,6 +136,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
 
+    /**
+     * Indicates that unbind() moved the views' nodes out of the DOM, so the
+     * next refresh must put them back before reusing them.
+     */
+    private viewsAreDetached: boolean = false;
+
     /** @internal */
     public views: SyntheticView[] = [];
 
@@ -176,6 +182,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             isHydratable(controller) &&
             controller.hydrationStage !== HydrationStage.hydrated
         ) {
+            this.viewsAreDetached = false;
             this.hydrateViews(this.template);
         } else {
             this.refreshAllViews();
@@ -186,13 +193,39 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
     /**
      * Unbinds this behavior.
+     * @param controller - The view controller that manages the lifecycle of this behavior.
      */
-    public unbind(): void {
+    public unbind(controller: ViewController): void {
         if (this.itemsObserver !== null) {
             this.itemsObserver.unsubscribe(this);
+            this.itemsObserver = null;
         }
 
         this.unbindAllViews();
+
+        // A recycled view is unbound and immediately rebound to a new item, so
+        // its views must survive. When the controller is going away instead, they
+        // must not: leaving them in the DOM lets the next bind() resurrect the
+        // pre-disconnect views and then tear them down again from inside the
+        // host's connectedCallback.
+        // https://github.com/microsoft/fast/issues/7144
+        //
+        // A disposing view removes its nodes before it unbinds, so when the
+        // location has no parent an ancestor has already taken this repeat's DOM
+        // and there is nothing left to detach.
+        if (
+            controller.isUnbinding &&
+            !this.viewsAreDetached &&
+            this.location.parentNode !== null
+        ) {
+            const views = this.views;
+
+            for (let i = 0, ii = views.length; i < ii; ++i) {
+                views[i].remove();
+            }
+
+            this.viewsAreDetached = true;
+        }
     }
 
     /**
@@ -201,6 +234,18 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param args - The details about what was changed.
      */
     public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
+        // An items observer whose source lifetime is coupled to the controller's
+        // does not register itself for unbind, so it keeps its subscription to the
+        // source while this behavior is unbound. Evaluating the expression here
+        // would run it against the controller's nulled-out source and throw.
+        // The same guard, for the same reason, is applied in
+        // HTMLBindingDirective.handleChange and RenderBehavior.handleChange.
+        // https://github.com/microsoft/fast/issues/7144
+        // This guard will be reconsidered in the next major version.
+        if (!this.controller.isBound) {
+            return;
+        }
+
         if (args === this.itemsBindingObserver) {
             this.items = this.itemsBindingObserver.bind(this.controller);
             this.observeItems();
@@ -335,13 +380,25 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const location = this.location;
         const bindView = this.bindView;
         const controller = this.controller;
+        // unbind() takes the views out of the DOM, so they are neither contiguous
+        // nor attached until this refresh puts them back.
+        const detached = this.viewsAreDetached;
         let itemsLength = items.length;
         let views = this.views;
         let viewsLength = views.length;
 
+        this.viewsAreDetached = false;
+
         if (itemsLength === 0 || templateChanged || !this.directive.options.recycle) {
             // all views need to be removed
-            HTMLView.disposeContiguousBatch(views);
+            if (detached) {
+                for (let i = 0; i < viewsLength; ++i) {
+                    views[i].dispose();
+                }
+            } else {
+                HTMLView.disposeContiguousBatch(views);
+            }
+
             viewsLength = 0;
         }
 
@@ -384,6 +441,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                         );
                     }
                     bindView(view, items, i, controller);
+
+                    if (detached) {
+                        view.insertBefore(location);
+                    }
                 } else {
                     const view = template.create();
                     bindView(view, items, i, controller);

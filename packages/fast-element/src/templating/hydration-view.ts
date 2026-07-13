@@ -109,6 +109,14 @@ export class HydrationView<TSource = any, TParent = any>
     public context: ExecutionContext<any> = this;
     public source: TSource | null = null;
     public isBound = false;
+
+    /**
+     * Indicates that the view is being torn down rather than rebound to a new
+     * source. Behaviors that own DOM or child views consult this to know when
+     * those resources can be released.
+     * @internal
+     */
+    public isUnbinding = false;
     public get hydrationStage() {
         return this._hydrationStage;
     }
@@ -300,7 +308,9 @@ export class HydrationView<TSource = any, TParent = any>
             return;
         }
 
+        this.isUnbinding = true;
         this.evaluateUnbindables();
+        this.isUnbinding = false;
 
         this.source = null;
         this.context = this;

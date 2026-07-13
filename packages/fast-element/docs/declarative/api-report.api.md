@@ -251,6 +251,8 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     isBound: boolean;
     isHydrated: Promise<boolean>;
     isPrerendered: Promise<boolean>;
+    // @internal
+    isUnbinding: boolean;
     lastChild: Node;
     // (undocumented)
     onUnbind(behavior: {

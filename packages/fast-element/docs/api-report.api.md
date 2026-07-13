@@ -671,6 +671,8 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     isBound: boolean;
     isHydrated: Promise<boolean>;
     isPrerendered: Promise<boolean>;
+    // @internal
+    isUnbinding: boolean;
     lastChild: Node;
     // (undocumented)
     onUnbind(behavior: {
@@ -917,7 +919,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RepeatDirective);
     bind(controller: ViewController): void;
     handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void;
-    unbind(): void;
+    unbind(controller: ViewController): void;
     // @internal (undocumented)
     views: SyntheticView[];
 }
@@ -1252,6 +1254,8 @@ export type ViewBehaviorTargets = {
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
     readonly isHydrated?: Promise<boolean>;
     readonly isPrerendered?: Promise<boolean>;
+    // @internal
+    readonly isUnbinding?: boolean;
     // @internal
     readonly _skipAttrUpdates?: boolean;
     readonly targets: ViewBehaviorTargets;

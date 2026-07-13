@@ -20,8 +20,45 @@ Unbinds this behavior.
 **Signature:**
 
 ```typescript
-unbind(): void;
+unbind(controller: ViewController): void;
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+controller
+
+
+</td><td>
+
+[ViewController](../fast-element.viewcontroller/)
+
+
+</td><td>
+
+The view controller that manages the lifecycle of this behavior.
+
+
+</td></tr>
+</tbody></table>
+
 **Returns:**
 
 void
