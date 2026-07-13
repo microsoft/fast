@@ -26,5 +26,10 @@ module.exports = {
         outputGlob: ["dist/**", "wasm/**"],
         environmentGlob: ["package.json", "tsconfig.json", "lage.config.js"],
     },
-    ignore: ["change/**", "*.md", ".github/**"],
+    // Paths that belong to no package. Anything not listed here but outside every
+    // workspace makes workspace-tools fall back to "changed everything", so LICENSE
+    // is called out explicitly: no build script reads it. Kept in sync with
+    // build/scripts/classify-changed-files.mjs, which CI uses to decide whether
+    // `lage build --since` would do any work at all.
+    ignore: ["change/**", "*.md", ".github/**", "LICENSE"],
 };

@@ -6,5 +6,8 @@
   "bin": {
     "clean": "clean.mjs",
     "biome-changed": "biome-changed.mjs"
+  },
+  "scripts": {
+    "test:node": "node --test test/classify-changed-files.test.mjs"
   }
 }

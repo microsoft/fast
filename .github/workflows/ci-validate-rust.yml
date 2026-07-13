@@ -21,8 +21,46 @@ on:
     - ready_for_review
 
 jobs:
-  test_rust:
+  # Same gate as ci-validate-platforms.yml, for the same reason: a workflow that a
+  # path filter skips never reports a conclusion, a job skipped by an `if:` reports
+  # success. #7339 does not name this workflow — it predates it — but a markdown
+  # pull request has no more business installing a Rust toolchain and running
+  # `cargo test` than it has running Playwright.
+  classify:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    outputs:
+      docs_only: ${{ steps.changes.outputs.docs_only }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - name: Classify changed files
+      id: changes
+      shell: bash
+      env:
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
+        EVENT_NAME: ${{ github.event_name }}
+      run: |
+        FILES=""
+        if [ "$EVENT_NAME" = "pull_request" ] && [ -n "${BASE_REF:-}" ]; then
+          MERGE_BASE="$(git merge-base "origin/${BASE_REF}" HEAD)"
+          FILES="$(git diff --name-only "$MERGE_BASE" HEAD)"
+        fi
+        # Anything the classifier cannot see runs the full pipeline.
+        printf '%s\n' "$FILES" | node build/scripts/classify-changed-files.mjs
+
+  test_rust:
+    needs: classify
+    if: >-
+      (github.event_name != 'pull_request' || !github.event.pull_request.draft)
+      && needs.classify.outputs.docs_only != 'true'
     name: test_rust (${{ matrix.crate }})
     runs-on: ubuntu-latest
     strategy:

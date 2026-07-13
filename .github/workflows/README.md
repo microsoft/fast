@@ -11,6 +11,26 @@ All CI workflows that run against pull requests are configured to skip draft PRs
 - **GitHub Actions** (`ci-validate-pr.yml`, `ci-validate-platforms.yml`, `ci-validate-rust.yml`): The `pull_request` trigger includes `ready_for_review` in its event types, and each job has a condition that skips execution when the PR is a draft. When a draft PR is marked as ready for review, the workflows will automatically trigger.
 - **Azure Pipelines** (`azure-pipelines-bench.yml`, `azure-pipelines-ci.yml`): The `pr` trigger uses `drafts: false` to prevent pipeline runs on draft PRs.
 
+## Documentation-only Pull Requests
+
+A pull request that only edits prose cannot change a build or test outcome, so CI skips the expensive work for it. [`build/scripts/classify-changed-files.mjs`](../../build/scripts/classify-changed-files.mjs) is the single source of truth for that decision. It reads the pull request's changed files and emits two flags, both inverted so that anything it cannot classify runs the full pipeline:
+
+| Flag | Meaning |
+| --- | --- |
+| `docs_only` | Every changed file is prose: markdown, `LICENSE`, or a beachball change file. There is nothing to test. |
+| `lage_noop` | Every changed file is also ignored by `lage.config.js`, so `lage build --since` would map them to no package and build nothing. Implies `docs_only`. |
+
+Two rules keep this honest, and both are covered by `npm run test:node -w @microsoft/fast-build-tools`:
+
+- **Generated markdown is not prose.** `*.api.md`, `SIZES.md`, `export-sizes.md`, `path-exports.md`, `CHANGELOG.md` and `sites/website/src/docs/<N>.x/api/**` are machine-written. Only `lage build` followed by `test:validation` can prove they are current, so a pull request that touches one runs the full pipeline.
+- **Prose inside a workspace still builds.** `lage.config.js` ignores root-level `*.md` only, so markdown under `packages/<name>/docs` or `sites/website` still maps to a package. Those pull requests skip the tests but keep the build and `test:validation`, which is what proves the 11ty site and the generated API docs still build.
+
+The three pipelines gate on the result at different levels, and the level is not a matter of taste:
+
+- **`ci-validate-pr.yml`** — always runs, and gates individual steps. `checkchange` and `biome:ci` must run on every pull request, including a documentation change inside a package, which still needs a change file.
+- **`ci-validate-platforms.yml`**, **`ci-validate-rust.yml`** — a `classify` job gates the real job with `needs` + `if`. Neither runs `checkchange`, so both are safe to skip outright, but they are *not* skipped with `paths-ignore`: [a workflow that a path filter skips never reports a conclusion](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks), so if either is a required check, `paths-ignore` would leave it pending and the documentation pull request could never merge. A job skipped by an `if:` condition reports success instead, so gating one level down takes the whole saving with no such trap.
+- **`azure-pipelines-ci.yml`** — `paths.exclude` under the `pr` trigger, so the pipeline does not run at all. Azure Pipelines *does* [post a neutral status back to GitHub](https://learn.microsoft.com/en-us/azure/devops/pipelines/repos/github#paths) when a path exclusion skips a validation build, so it has none of the required-check problem above.
+
 ## Continuous Deployment
 
 Nightly publishing is split into two coordinated jobs so that npm credentials never leave the Azure environment. GitHub Releases are the source of truth, and `deployed/<tag>` git marker tags track which releases have already been published.
