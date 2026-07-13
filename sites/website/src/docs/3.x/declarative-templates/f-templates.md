@@ -275,13 +275,16 @@ The `f-slotted` attribute directive observes elements assigned to a `<slot>`:
         <slot f-slotted="{slottedItems}"></slot>
         <slot f-slotted="{slottedItems filter elements()}"></slot>
         <slot f-slotted="{slottedItems filter elements(div, p)}"></slot>
+        <slot f-slotted="{slottedItem single filter elements()}"></slot>
     </template>
 </f-template>
 ```
 
+The `single` token assigns the first matching node itself rather than an array of nodes, and `null` when nothing matches. See [Selecting a Single Slotted Node](../../getting-started/html-directives/#selecting-a-single-slotted-node) for the full semantics.
+
 ### Children (`f-children`)
 
-The `f-children` attribute directive observes child elements:
+The `f-children` attribute directive observes child elements. It accepts the same `single` and `filter` options as `f-slotted`, with the same [semantics](../../getting-started/html-directives/#selecting-a-single-child-node):
 
 ```html
 <f-template name="item-list">
@@ -291,6 +294,7 @@ The `f-children` attribute directive observes child elements:
                 <li>{{item}}</li>
             </f-repeat>
         </ul>
+        <ul f-children="{firstItem single filter elements(li)}"></ul>
     </template>
 </f-template>
 ```

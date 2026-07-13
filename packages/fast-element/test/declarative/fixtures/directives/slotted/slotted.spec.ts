@@ -30,4 +30,24 @@ test.describe("f-template", () => {
     test("slotted nodes are filtered by elements() with query", async () => {
         await expect(element).toHaveJSProperty("slottedBarNodes.length", 1);
     });
+
+    test("a single slotted node is assigned when the single option is used", async () => {
+        const result = await element.evaluate((node: any) => ({
+            isArray: Array.isArray(node.slottedSingleNode),
+            tagName: node.slottedSingleNode ? node.slottedSingleNode.tagName : null,
+        }));
+
+        expect(result.isArray).toBe(false);
+        expect(result.tagName).toBe("BUTTON");
+    });
+
+    test("an empty slot assigns null and notifies when the single option is used", async () => {
+        const result = await element.evaluate((node: any) => ({
+            isNull: node.slottedEmptyNode === null,
+            notified: (window as any).slottedEmptyNodeNotified === true,
+        }));
+
+        expect(result.isNull).toBe(true);
+        expect(result.notified).toBe(true);
+    });
 });

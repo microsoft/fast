@@ -9,6 +9,23 @@ class TestElement extends FASTElement {
 
     @observable
     list: Array<string> = ["Foo", "Bar"];
+
+    @observable
+    firstItem: Element | null;
+
+    // `{trailingSingle filter elements() single}` — the `single` flag written
+    // after the filter clause rather than before it.
+    @observable
+    trailingSingle: Element | null;
+
+    // Left uninitialized so the empty-children bind transitions undefined -> null,
+    // which is the only way the change notification can be observed.
+    @observable
+    emptyItem: Element | null;
+
+    emptyItemChanged() {
+        (window as any).emptyItemNotified = true;
+    }
 }
 TestElement.define({
     name: "test-element",

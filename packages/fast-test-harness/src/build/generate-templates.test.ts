@@ -146,6 +146,32 @@ test.describe("convertTemplate", async () => {
         );
     });
 
+    test("should convert SlottedDirective factories with the single option", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItem",
+            single: true,
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-single");
+
+        assert.ok(result);
+        assert.ok(result.includes('f-slotted="{slottedItem single}"'), `got: ${result}`);
+    });
+
+    test("should convert SlottedDirective factories with single and a filter", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItem",
+            filter: elements(),
+            single: true,
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-single-elements");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-slotted="{slottedItem single filter elements()}"'),
+            `got: ${result}`,
+        );
+    });
+
     test("should convert value bindings to {{expression}}", () => {
         const template = html`<template><span>${x => x.label}</span></template>`;
         const result = convertTemplate(template, "fast-binding");
@@ -177,6 +203,87 @@ test.describe("convertTemplate", async () => {
         assert.ok(result);
         assert.ok(result.includes("f-children="), `got: ${result}`);
         assert.ok(result.includes("childItems"), `got: ${result}`);
+    });
+
+    test("should convert ChildrenDirective factories with an elements filter", () => {
+        const template = html`<template><div ${children({
+            property: "childItems",
+            filter: elements("li"),
+        })}></div></template>`;
+        const result = convertTemplate(template, "fast-children-elements");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-children="{childItems filter elements(li)}"'),
+            `got: ${result}`,
+        );
+    });
+
+    test("should convert ChildrenDirective factories with the single option", () => {
+        const template = html`<template><div ${children({
+            property: "childItem",
+            filter: elements(),
+            single: true,
+        })}></div></template>`;
+        const result = convertTemplate(template, "fast-children-single");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-children="{childItem single filter elements()}"'),
+            `got: ${result}`,
+        );
+    });
+
+    test("should convert an inline element-only filter to elements()", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItems",
+            filter: (node: Node) => node.nodeType === 1,
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-inline-elements");
+
+        assert.ok(result);
+        assert.ok(
+            result.includes('f-slotted="{slottedItems filter elements()}"'),
+            `got: ${result}`,
+        );
+    });
+
+    test("should not fabricate an elements() filter for an undecodable slotted filter", () => {
+        const template = html`<template><slot ${slotted({
+            property: "slottedItems",
+            // Throws on the element probe: no textContent on the probe object.
+            filter: (node: Node) => node.textContent!.length > 0,
+        })}></slot></template>`;
+        const result = convertTemplate(template, "fast-slotted-custom-filter");
+
+        assert.ok(result);
+        assert.ok(result.includes('f-slotted="{slottedItems}"'), `got: ${result}`);
+        assert.ok(!result.includes("filter elements("), `got: ${result}`);
+    });
+
+    test("should not fabricate an elements() filter for an undecodable children filter", () => {
+        const template = html`<template><div ${children({
+            property: "childItems",
+            // Text nodes only — the inverse of elements(); not representable.
+            filter: (node: Node) => node.nodeType === 3,
+        })}></div></template>`;
+        const result = convertTemplate(template, "fast-children-custom-filter");
+
+        assert.ok(result);
+        assert.ok(result.includes('f-children="{childItems}"'), `got: ${result}`);
+        assert.ok(!result.includes("filter elements("), `got: ${result}`);
+    });
+
+    test("should not fabricate an elements() filter for a pass-through filter", () => {
+        const template = html`<template><div ${children({
+            property: "childItems",
+            filter: () => true,
+        })}></div></template>`;
+        const result = convertTemplate(template, "fast-children-passthrough-filter");
+
+        assert.ok(result);
+        assert.ok(result.includes('f-children="{childItems}"'), `got: ${result}`);
+        assert.ok(!result.includes("filter elements("), `got: ${result}`);
     });
 
     test("should convert event bindings to @event expressions", () => {

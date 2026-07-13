@@ -306,6 +306,49 @@ const template = html<SlottedExample>`
 `;
 ```
 
+#### Selecting a Single Slotted Node
+
+Slots that are meant to hold one thing — a logo, an icon, a heading — still produce an array, forcing every use site through `this.logo[0]` and a length check. Set `single: true` and the directive assigns the node itself instead of an array.
+
+```ts
+import { elements, FASTElement, html, observable, slotted } from "@microsoft/fast-element";
+
+class Card extends FASTElement {
+  @observable
+  logo: HTMLElement | null;
+
+  logoChanged() {
+    console.log("The slotted logo is now:", this.logo);
+  }
+}
+
+const template = html<Card>`
+  <template>
+    <slot name="logo" ${slotted({
+      property: "logo",
+      filter: elements(),
+      single: true
+    })}></slot>
+  </template>
+`;
+```
+
+Five things to know about `single`:
+
+* It assigns the **first** match in document order. It does not assert that only one node matches — a slot with three assigned elements assigns the first and ignores the rest.
+* When nothing matches, `null` is assigned — never `undefined`, never an empty array. The property is also cleared to `null` when the view unbinds.
+* Without `filter: elements()`, you will usually get the **whitespace text node** between your tags rather than the element you meant, because `slotted()` observes text nodes too. Pair `single` with a filter.
+* With `flatten: true`, an empty slot resolves to the slot's *default content*, so the property receives the first default content node rather than `null`.
+* **Do not initialize the property to `null`.** Observable properties only notify when the value actually changes, so a property that already holds `null` and is then bound against an empty slot will *not* fire its change callback. Leave it uninitialized (as above) and the empty-slot bind transitions `undefined` → `null`, so `logoChanged` runs. This does not apply to the array form, which always assigns a fresh array.
+
+Because the property now holds a stable node reference rather than a freshly allocated array, it only notifies when the selected node actually changes. Appending a second element to the slot leaves the first match — and therefore the property — untouched.
+
+The same `single` option is available in declarative templates:
+
+```html
+<slot name="logo" f-slotted="{logo single filter elements()}"></slot>
+```
+
 ### The `children` Directive
 
 The `children()` directive references the child nodes of an element in your component's shadow DOM, so you can work with them from the component class.
@@ -428,3 +471,24 @@ const template = html<TreeView>`
 ```
 
 With `subtree: true` and a `selector` in place, `treeItems` is populated with every matching `[role=treeitem]` descendant at any depth, and updated whenever the matching set changes. In direct-child mode the `filter` option decides which children to keep; in subtree mode the `selector` takes over that role and matches descendants throughout the tree.
+
+#### Selecting a Single Child Node
+
+Like `slotted()`, `children()` accepts a `single` option that assigns the first matching node itself rather than an array of nodes. It composes with both `filter` and `subtree`/`selector`:
+
+```ts
+import { children, elements, html } from "@microsoft/fast-element";
+
+const template = html<Menu>`
+  <div role="menu" ${children({
+    property: "activeItem",
+    filter: elements("[aria-current]"),
+    single: true
+  })}>
+    <div role="menuitem">New</div>
+    <div role="menuitem" aria-current="true">Open</div>
+  </div>
+`;
+```
+
+The semantics are the same as for `slotted()`, including the note above about not pre-initializing the property to `null`: the first match in document order, `null` when nothing matches or when the view unbinds, and the whitespace text nodes between elements unless you add `filter: elements()`. In declarative templates, use `f-children="{activeItem single filter elements([aria-current])}"`.

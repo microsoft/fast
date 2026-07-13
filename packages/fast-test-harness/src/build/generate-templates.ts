@@ -234,6 +234,12 @@ function extractBindingExpression(
 /**
  * Extract the `filter elements(...)` suffix for a slotted or children
  * directive.
+ *
+ * @remarks
+ * The declarative grammar can only express `elements()` and `elements(selector)`.
+ * A filter that is not one of those is not representable, so it is dropped with a
+ * warning rather than replaced by a fabricated `elements()` — the latter would
+ * silently narrow the observed set to elements the author never asked to select.
  */
 function extractSlottedFilter(factory: Factory): string {
     const filter = factory.options?.filter;
@@ -246,23 +252,66 @@ function extractSlottedFilter(factory: Factory): string {
     }
 
     let selector: string | null = null;
+    let acceptsElements = false;
+    let acceptsText = false;
+
     try {
-        filter({
-            nodeType: 1,
-            matches(s: string) {
-                selector = s;
-                return true;
-            },
-        });
+        acceptsElements =
+            filter({
+                nodeType: 1,
+                matches(s: string) {
+                    selector = s;
+                    return true;
+                },
+            }) === true;
+        acceptsText =
+            filter({
+                nodeType: 3,
+                matches: () => true,
+            }) === true;
     } catch {
-        // If extraction fails, fall back to no-arg elements().
+        // A filter that cannot survive the probes is not an elements() filter.
+        return warnUndecodableFilter(factory);
     }
 
-    if (selector) {
-        return ` filter elements(${selector})`;
+    // `elements()` and `elements(selector)` accept elements and reject text nodes.
+    // Anything else — text-node filters, pass-through filters, filters keying off
+    // properties the probes do not carry — cannot be reconstructed.
+    if (!acceptsElements || acceptsText) {
+        return warnUndecodableFilter(factory);
     }
 
-    return " filter elements()";
+    return selector ? ` filter elements(${selector})` : " filter elements()";
+}
+
+/**
+ * Report a filter that cannot be expressed in the declarative grammar and emit no
+ * filter suffix, leaving the generated directive observing all nodes.
+ */
+function warnUndecodableFilter(factory: Factory): string {
+    const options = factory.options;
+    const property = typeof options === "string" ? options : options?.property;
+
+    console.warn(
+        styleText(["yellow", "bold"], "⚠"),
+        `Cannot express the custom filter on "${property}" in declarative template syntax.`,
+        "The generated directive will observe all nodes.",
+        "Use elements() or elements(selector) to preserve filtering.",
+    );
+
+    return "";
+}
+
+/**
+ * Reconstruct the expression body of an `f-slotted` or `f-children` attribute
+ * from a node observation factory: `property [single] [filter elements(...)]`.
+ */
+function extractNodeObservationExpression(factory: Factory): string {
+    const options = factory.options;
+    const property = typeof options === "string" ? options : options?.property;
+    const single = options?.single ? " single" : "";
+
+    return `${property}${single}${extractSlottedFilter(factory)}`;
 }
 
 /**
@@ -523,19 +572,16 @@ function convertTemplateHTML(
             return attributeDirective("ref", prop);
         }
         if (factory.constructor.name === "SlottedDirective") {
-            const prop =
-                typeof factory.options === "string"
-                    ? factory.options
-                    : factory.options?.property;
-            const filterStr = extractSlottedFilter(factory);
-            return attributeDirective("slotted", `${prop}${filterStr}`);
+            return attributeDirective(
+                "slotted",
+                extractNodeObservationExpression(factory),
+            );
         }
         if (factory.constructor.name === "ChildrenDirective") {
-            const prop =
-                typeof factory.options === "string"
-                    ? factory.options
-                    : factory.options?.property;
-            return attributeDirective("children", prop);
+            return attributeDirective(
+                "children",
+                extractNodeObservationExpression(factory),
+            );
         }
         return match;
     });

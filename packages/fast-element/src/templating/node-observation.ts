@@ -22,6 +22,27 @@ export interface NodeBehaviorOptions<T = any> {
      * @param array - The Node array that is being filtered.
      */
     filter?: ElementsFilter;
+
+    /**
+     * Assigns a single node to the property instead of an array of nodes.
+     * @remarks
+     * The node assigned is the first match in document order after `filter` is
+     * applied; `single` does not assert that only one node matches. When nothing
+     * matches, `null` is assigned.
+     *
+     * Because node observation includes text nodes by default, pair this with
+     * `filter: elements()` or the whitespace text node between tags is usually
+     * what gets assigned.
+     *
+     * When combined with `flatten: true` on `slotted`, an empty slot resolves to
+     * the slot's default content, so the first default content node is assigned
+     * rather than `null`.
+     *
+     * Do not pre-initialize the target property to `null`. Observables only notify
+     * on a change, so a property already holding `null` that binds against an empty
+     * slot or an empty child list will not run its change callback.
+     */
+    single?: boolean;
 }
 
 /**
@@ -112,9 +133,12 @@ export abstract class NodeObservationDirective<
      * Updates the source property with the computed nodes.
      * @param source - The source object to assign the nodes property to.
      * @param value - The nodes to assign to the source object property.
+     * @remarks
+     * When the `single` option is set, the first node is assigned instead of the
+     * array, or `null` when there is no first node.
      */
     protected updateTarget(source: any, value: ReadonlyArray<any>): void {
-        source[this.options.property] = value;
+        source[this.options.property] = this.options.single ? (value[0] ?? null) : value;
     }
 
     /**

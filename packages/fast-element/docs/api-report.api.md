@@ -748,6 +748,7 @@ export const Markup: Readonly<{
 export interface NodeBehaviorOptions<T = any> {
     filter?: ElementsFilter;
     property: T;
+    single?: boolean;
 }
 
 // @public

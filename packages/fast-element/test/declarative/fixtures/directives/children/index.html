@@ -5,9 +5,9 @@
         <title></title>
     </head>
     <body>
-        <test-element><template shadowrootmode="open" shadowroot="open"><ul data-fe="1"><!--fe:b--><!--fe:r--><li><!--fe:b-->Foo<!--fe:/b--></li><!--fe:/r--><!--fe:r--><li><!--fe:b-->Bar<!--fe:/b--></li><!--fe:/r--><!--fe:/b--></ul></template></test-element>
+        <test-element><template shadowrootmode="open" shadowroot="open"><ul data-fe="1"><!--fe:b--><!--fe:r--><li><!--fe:b-->Foo<!--fe:/b--></li><!--fe:/r--><!--fe:r--><li><!--fe:b-->Bar<!--fe:/b--></li><!--fe:/r--><!--fe:/b--></ul><div data-fe="1"><i>Skip</i><b>Pick</b></div><div data-fe="1"><span>Alpha</span></div><div data-fe="1"></div></template></test-element>
 <f-template name="test-element">
-    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
+    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul><div f-children="{firstItem single filter elements(b)}"><i>Skip</i><b>Pick</b></div><div f-children="{trailingSingle filter elements() single}"><span>Alpha</span></div><div f-children="{emptyItem single filter elements()}"></div></template>
 </f-template>
 
         <script type="module" src="./main.ts"></script>
