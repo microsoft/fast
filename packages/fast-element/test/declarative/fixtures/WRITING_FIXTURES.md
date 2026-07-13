@@ -54,7 +54,7 @@ Fixtures are auto-discovered by scanning category directories for subdirectories
 
 Use fixtures for changes to declarative syntax, directive parsing, template generation, hydration behavior, or other behavior that users express in `entry.html` or `templates.html`. Fixture coverage runs the generated template in a browser and catches integration issues that parser-only tests can miss.
 
-Source-level parser tests may still be useful for very narrow edge cases, but they should supplement fixture coverage rather than replace it. For directive syntax changes, add or update the matching fixture under `directives/` (for example, `directives/children` for `f-children`) and assert the behavior from the fixture's Playwright spec.
+Source-level parser tests may still be useful for very narrow edge cases, but they should supplement fixture coverage rather than replace it. Use the local README files in this directory and each fixture category to choose the right fixture type, then add or update the matching fixture and assert the behavior from the fixture's Playwright spec.
 
 ---
 
