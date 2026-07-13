@@ -54,7 +54,12 @@ export interface ObservationRecord {
     propertyName: string;
 }
 
-interface SubscriptionRecord extends ObservationRecord {
+interface SubscriptionRecord extends Omit<ObservationRecord, "propertyName"> {
+    /**
+     * Undefined for the fallback subscription to the source itself,
+     * which watches every observable property rather than a single one.
+     */
+    propertyName: string | undefined;
     notifier: Notifier;
     next: SubscriptionRecord | undefined;
 }
@@ -144,8 +149,12 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
     observe(source: TSource, context?: ExecutionContext): TReturn;
 
     /**
-     * Gets {@link ObservationRecord|ObservationRecords} that the {@link ExpressionNotifier}
-     * is observing.
+     * Gets {@link ObservationRecord|ObservationRecords} for the observable properties
+     * that the {@link ExpressionNotifier} is observing.
+     * @remarks
+     * An expression that short-circuits before reading any observable property
+     * observes its source as a whole rather than a property of it, and yields no
+     * records.
      */
     records(): IterableIterator<ObservationRecord>;
 
@@ -186,6 +195,26 @@ export const Observable = (() => {
         }
 
         return found;
+    }
+
+    /**
+     * Gets the notifier used to watch a source in its entirety, or undefined
+     * when the source cannot be watched.
+     * @remarks
+     * Primitives and null are not valid WeakMap keys, and an array would have to
+     * be given an array observer, which is only available when array observation
+     * is enabled. Every other source gets a notifier, creating one if needed: an
+     * observable property that has never been written has no notifier yet either,
+     * so requiring an existing one would leave the expression permanently unable
+     * to re-evaluate, based on nothing more than whether some other property of
+     * the source happened to be written or observed first.
+     */
+    function getSubjectNotifier(source: any): Notifier | undefined {
+        return source === null ||
+            (typeof source !== "object" && typeof source !== "function") ||
+            Array.isArray(source)
+            ? void 0
+            : getNotifier(source);
     }
 
     const getAccessors = createMetadataLocator<Accessor>();
@@ -266,6 +295,12 @@ export const Observable = (() => {
             return (
                 controller.sourceLifetime !== SourceLifetime.coupled ||
                 this.first !== this.last ||
+                // A single property record on a coupled source is left subscribed,
+                // because it is torn down with the source. The fallback record is a
+                // subscription to *every* observable on the source, so it is worth
+                // disposing: an unbound view should not keep re-evaluating the
+                // expression on every change to the source it used to be bound to.
+                this.first.propertyName === void 0 ||
                 this.first.propertySource !== controller.source
             );
         }
@@ -279,14 +314,28 @@ export const Observable = (() => {
                 this.dispose();
             }
 
+            const isTracking = this.needsRefresh;
             const previousWatcher = watcher;
-            watcher = this.needsRefresh ? this : void 0;
+            watcher = isTracking ? this : void 0;
             this.needsRefresh = this.isVolatileBinding;
             let result;
             try {
                 result = this.expression(source, context);
             } finally {
                 watcher = previousWatcher;
+            }
+
+            // A volatile expression can short-circuit (&&, ||, ?., ternary) before
+            // reading any observable, which would leave the expression with zero
+            // subscriptions and therefore no way to ever be evaluated again. Watch
+            // the source itself instead, so that any observable change on it
+            // re-evaluates the expression.
+            if (this.last === null && isTracking && this.needsRefresh) {
+                const notifier = getSubjectNotifier(source);
+
+                if (notifier !== void 0) {
+                    this.watchSubject(source, notifier);
+                }
             }
 
             return result;
@@ -307,8 +356,31 @@ export const Observable = (() => {
                 }
 
                 this.last = null;
-                this.needsRefresh = this.needsQueue = this.isAsync;
+                // There are no subscriptions left, so the next evaluation must track again.
+                this.needsRefresh = true;
+                this.needsQueue = this.isAsync;
             }
+        }
+
+        /**
+         * Subscribes to every observable change on the source.
+         * @remarks
+         * Only called when the expression tracked no dependencies, so the record
+         * always reuses `first` and no record is allocated. The source is given a
+         * notifier if it does not have one, which is the only allocation on this
+         * path and happens at most once per source.
+         */
+        private watchSubject(propertySource: unknown, notifier: Notifier): void {
+            const current = this.first;
+
+            current.propertySource = propertySource;
+            current.propertyName = void 0;
+            current.notifier = notifier;
+            current.next = void 0;
+
+            notifier.subscribe(this);
+
+            this.last = current;
         }
 
         public watch(propertySource: unknown, propertyName: string): void {
@@ -322,7 +394,10 @@ export const Observable = (() => {
 
             notifier.subscribe(this, propertyName);
 
-            if (prev !== null) {
+            if (prev === null) {
+                // Drop the records left behind by a previous, longer evaluation.
+                current.next = void 0;
+            } else {
                 if (!this.needsRefresh) {
                     // Declaring the variable prior to assignment below circumvents
                     // a bug in Angular's optimization process causing infinite recursion
@@ -330,7 +405,8 @@ export const Observable = (() => {
                     // biome-ignore lint/style/useConst: see above
                     let prevValue;
                     watcher = void 0;
-                    prevValue = prev.propertySource[prev.propertyName];
+                    // prev is a property record: the subject record is always last.
+                    prevValue = prev.propertySource[prev.propertyName!];
                     watcher = this;
 
                     if (propertySource === prevValue) {
@@ -361,11 +437,22 @@ export const Observable = (() => {
         }
 
         public *records(): IterableIterator<ObservationRecord> {
-            let next = this.first;
+            // With no subscriptions, `first` holds either uninitialized fields
+            // or the leftovers of an evaluation that has since been disposed.
+            if (this.last === null) {
+                return;
+            }
+
+            let next: SubscriptionRecord | undefined = this.first;
 
             while (next !== void 0) {
-                yield next;
-                next = next.next!;
+                // The fallback subscription to the source is not a property
+                // observation, and ObservationRecord.propertyName is a string.
+                if (next.propertyName !== void 0) {
+                    yield next as ObservationRecord;
+                }
+
+                next = next.next;
             }
         }
     }

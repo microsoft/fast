@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix bindings that short-circuit before reading any observable, which left them with no dependencies and unable to ever update again, and stop repeat from re-evaluating its bindings against an unbound view.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

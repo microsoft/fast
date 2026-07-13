@@ -348,7 +348,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -438,7 +438,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -551,7 +551,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -675,7 +675,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -759,7 +759,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -858,7 +858,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -972,7 +972,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1076,7 +1076,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1179,7 +1179,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1281,7 +1281,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1400,7 +1400,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1506,7 +1506,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1630,7 +1630,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1736,7 +1736,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1844,7 +1844,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -1963,7 +1963,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2071,7 +2071,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2162,7 +2162,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2274,7 +2274,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2378,7 +2378,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2482,7 +2482,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2587,7 +2587,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2691,7 +2691,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2795,7 +2795,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -2896,7 +2896,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -3000,7 +3000,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -3105,7 +3105,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -3210,7 +3210,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -3321,7 +3321,7 @@ test.describe("The repeat", () => {
                     function createController(source, targets) {
                         const unbindables = [];
                         return {
-                            isBound: false,
+                            isBound: true,
                             context: Fake.executionContext(),
                             onUnbind(object) {
                                 unbindables.push(object);
@@ -3365,5 +3365,346 @@ test.describe("The repeat", () => {
                 expect(result).toBe(true);
             });
         }
+    });
+    test.describe("with a short-circuited item binding", () => {
+        test("renders primitive items without throwing", async ({ page }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    html,
+                    observable,
+                    repeat,
+                    uniqueElementName,
+                    Updates,
+                } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {
+                    items!: any[];
+                }
+
+                observable(TestElement.prototype, "items");
+
+                const name = uniqueElementName();
+                await TestElement.define({
+                    name,
+                    template: html`
+                        ${repeat(
+                            (x: any) => x.items,
+                            html`
+                                <span class="${(x: any) => (x.selected ? "danger" : "")}">
+                                    ${(x: any) => x}
+                                </span>
+                            `,
+                        )}
+                    `,
+                });
+
+                const element = document.createElement(name) as any;
+                element.items = ["a", 1, true];
+                document.body.appendChild(element);
+
+                let error: string | null = null;
+
+                try {
+                    await Updates.next();
+                } catch (e: any) {
+                    error = e.message;
+                }
+
+                const text = element.shadowRoot.textContent.replace(/\s+/g, " ").trim();
+
+                element.remove();
+
+                return { error, text };
+            });
+
+            expect(result.error).toBe(null);
+            expect(result.text).toBe("a 1 true");
+        });
+
+        test("renders array items without observing them", async ({ page }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    html,
+                    observable,
+                    repeat,
+                    uniqueElementName,
+                    Updates,
+                } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {
+                    items!: any[];
+                }
+
+                observable(TestElement.prototype, "items");
+
+                const name = uniqueElementName();
+                await TestElement.define({
+                    name,
+                    template: html`
+                        ${repeat(
+                            (x: any) => x.items,
+                            html`
+                                <span class="${(x: any) => (x.selected ? "danger" : "")}">
+                                    ${(x: any) => x.length}
+                                </span>
+                            `,
+                        )}
+                    `,
+                });
+
+                const element = document.createElement(name) as any;
+                const items = [
+                    [1, 2],
+                    [3, 4, 5],
+                ];
+                element.items = items;
+                document.body.appendChild(element);
+
+                let error: string | null = null;
+
+                try {
+                    await Updates.next();
+                } catch (e: any) {
+                    error = e.message;
+                }
+
+                const text = element.shadowRoot.textContent.replace(/\s+/g, " ").trim();
+                const itemsWereObserved = items.some(x => "$fastController" in x);
+
+                element.remove();
+
+                return { error, text, itemsWereObserved };
+            });
+
+            expect(result.error).toBe(null);
+            expect(result.text).toBe("2 3");
+            expect(result.itemsWereObserved).toBe(false);
+        });
+
+        test("renders primitive items with a context-only binding", async ({ page }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    html,
+                    observable,
+                    repeat,
+                    uniqueElementName,
+                    Updates,
+                } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {
+                    items!: any[];
+                }
+
+                observable(TestElement.prototype, "items");
+
+                const name = uniqueElementName();
+                await TestElement.define({
+                    name,
+                    template: html`
+                        ${repeat(
+                            (x: any) => x.items,
+                            html`
+                                <span>
+                                    ${(x: any, c: any) => (c.isFirst && x ? "first" : "rest")}
+                                </span>
+                            `,
+                            { positioning: true },
+                        )}
+                    `,
+                });
+
+                const element = document.createElement(name) as any;
+                element.items = ["a", "b"];
+                document.body.appendChild(element);
+
+                let error: string | null = null;
+
+                try {
+                    await Updates.next();
+                } catch (e: any) {
+                    error = e.message;
+                }
+
+                const text = element.shadowRoot.textContent.replace(/\s+/g, " ").trim();
+
+                element.remove();
+
+                return { error, text };
+            });
+
+            expect(result.error).toBe(null);
+            expect(result.text).toBe("first rest");
+        });
+    });
+
+    test.describe("with a short-circuited items binding", () => {
+        test("does not evaluate the items binding against an unbound view", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    html,
+                    observable,
+                    repeat,
+                    uniqueElementName,
+                    Updates,
+                } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {
+                    // a plain field: reading it tracks nothing
+                    showList = true;
+                    items!: any[];
+                }
+
+                observable(TestElement.prototype, "items");
+
+                const name = uniqueElementName();
+                await TestElement.define({
+                    name,
+                    template: html`
+                        ${repeat(
+                            (x: any) => x.showList && x.items,
+                            html`
+                                <span>${(x: any) => x}</span>
+                            `,
+                        )}
+                    `,
+                });
+
+                const element = document.createElement(name) as any;
+                element.items = ["a"];
+                document.body.appendChild(element);
+                await Updates.next();
+
+                // connect, disconnect and reconnect so that the items binding is
+                // re-bound with a coupled source lifetime and a single dependency,
+                // which is the shape that is not registered as an unbindable.
+                element.remove();
+                await Updates.next();
+                document.body.appendChild(element);
+                await Updates.next();
+
+                const errors: string[] = [];
+                const handler = (event: ErrorEvent) => {
+                    event.preventDefault();
+                    errors.push(event.error?.message ?? String(event.message));
+                };
+                window.addEventListener("error", handler);
+
+                try {
+                    // the guard goes falsy, so the items binding now tracks
+                    // no dependencies and falls back to watching the source.
+                    element.showList = false;
+                    element.items = ["b"];
+                    await Updates.next();
+
+                    const textWhileHidden = element.shadowRoot.textContent
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+                    // disconnecting notifies isConnected, which reaches the fallback
+                    // subscription, before the view unbinds.
+                    element.remove();
+                    await Updates.next();
+                    // let any asynchronously rethrown queue error surface.
+                    await new Promise(resolve => setTimeout(resolve, 0));
+
+                    return { errors, textWhileHidden };
+                } finally {
+                    window.removeEventListener("error", handler);
+                }
+            });
+
+            expect(result.errors).toEqual([]);
+            expect(result.textWhileHidden).toBe("");
+        });
+
+        test("renders again after the guard turns back on", async ({ page }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    html,
+                    observable,
+                    repeat,
+                    uniqueElementName,
+                    Updates,
+                } =
+                    // @ts-expect-error: Client module.
+                    await import("/main.js");
+
+                class TestElement extends FASTElement {
+                    showList = false;
+                    items!: any[];
+                }
+
+                observable(TestElement.prototype, "items");
+
+                const name = uniqueElementName();
+                await TestElement.define({
+                    name,
+                    template: html`
+                        ${repeat(
+                            (x: any) => x.showList && x.items,
+                            html`
+                                <span>${(x: any) => x}</span>
+                            `,
+                        )}
+                    `,
+                });
+
+                const element = document.createElement(name) as any;
+                element.items = ["a"];
+                document.body.appendChild(element);
+                await Updates.next();
+
+                const initialText = element.shadowRoot.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                // the items binding short-circuited on the plain guard, so only a
+                // change to an observable on the source can wake it back up.
+                element.showList = true;
+                element.items = ["a", "b"];
+                await Updates.next();
+
+                const textAfterShow = element.shadowRoot.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                element.remove();
+
+                return { initialText, textAfterShow };
+            });
+
+            expect(result.initialText).toBe("");
+            expect(result.textAfterShow).toBe("a b");
+        });
     });
 });

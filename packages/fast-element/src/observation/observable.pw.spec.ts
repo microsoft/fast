@@ -949,6 +949,569 @@ test.describe("The Observable", () => {
         });
     });
 
+    test.describe("BindingObserver with short-circuited dependencies", () => {
+        test.beforeEach(async ({ page }) => {
+            await page.goto("/");
+        });
+
+        test("notifies when an observable short-circuited by && changes", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                const model: any = { plainGuard: false };
+                Observable.defineProperty(model, "value");
+                model.value = 0;
+
+                const binding = (x: any) => x.plainGuard && x.value;
+
+                let notifyCount = 0;
+                const observer = Observable.binding(binding, {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                });
+
+                const initialValue = observer.observe(model, Fake.executionContext());
+                const initialRecordCount = [...observer.records()].length;
+
+                model.value = 1;
+                await Updates.next();
+
+                const notifyCountAfterValue = notifyCount;
+
+                model.plainGuard = true;
+                model.value = 2;
+                await Updates.next();
+
+                const valueAfterGuard = observer.observe(model, Fake.executionContext());
+                const recordCountAfterGuard = [...observer.records()].length;
+
+                return {
+                    initialValue,
+                    initialRecordCount,
+                    notifyCountAfterValue,
+                    valueAfterGuard,
+                    recordCountAfterGuard,
+                };
+            });
+
+            expect(result.initialValue).toBe(false);
+            expect(result.initialRecordCount).toBe(0);
+            expect(result.notifyCountAfterValue).toBe(1);
+            expect(result.valueAfterGuard).toBe(2);
+            expect(result.recordCountAfterGuard).toBe(1);
+        });
+
+        test("recovers when a healthy binding evaluates to zero dependencies", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                const model: any = { plainGuard: true };
+                Observable.defineProperty(model, "a");
+                Observable.defineProperty(model, "b");
+                model.a = 1;
+                model.b = 2;
+
+                const binding = (x: any) => (x.plainGuard ? x.a + x.b : 0);
+
+                let notifyCount = 0;
+                const observer = Observable.binding(binding, {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                });
+
+                observer.observe(model, Fake.executionContext());
+                const healthyRecordCount = [...observer.records()].length;
+
+                model.plainGuard = false;
+                observer.observe(model, Fake.executionContext());
+                const deadRecordCount = [...observer.records()].length;
+
+                model.a = 10;
+                await Updates.next();
+
+                const notifyCountAfterA = notifyCount;
+
+                model.plainGuard = true;
+                const valueAfterRecovery = observer.observe(
+                    model,
+                    Fake.executionContext(),
+                );
+
+                notifyCount = 0;
+                model.b = 20;
+                await Updates.next();
+
+                return {
+                    healthyRecordCount,
+                    deadRecordCount,
+                    notifyCountAfterA,
+                    valueAfterRecovery,
+                    notifyCountAfterRecovery: notifyCount,
+                };
+            });
+
+            expect(result.healthyRecordCount).toBe(2);
+            expect(result.deadRecordCount).toBe(0);
+            expect(result.notifyCountAfterA).toBe(1);
+            expect(result.valueAfterRecovery).toBe(12);
+            expect(result.notifyCountAfterRecovery).toBe(1);
+        });
+
+        test("drops records left behind by a longer previous evaluation", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake } = await import("/main.js");
+
+                const model: any = { plainGuard: true };
+                Observable.defineProperty(model, "a");
+                Observable.defineProperty(model, "b");
+                model.a = 1;
+                model.b = 2;
+
+                const binding = (x: any) => (x.plainGuard ? x.a + x.b : x.a);
+                const observer = Observable.binding(binding);
+
+                observer.observe(model, Fake.executionContext());
+                const twoDepRecords = [...observer.records()].map(
+                    (r: any) => r.propertyName,
+                );
+
+                model.plainGuard = false;
+                observer.observe(model, Fake.executionContext());
+                const oneDepRecords = [...observer.records()].map(
+                    (r: any) => r.propertyName,
+                );
+
+                return { twoDepRecords, oneDepRecords };
+            });
+
+            expect(result.twoDepRecords).toEqual(["a", "b"]);
+            expect(result.oneDepRecords).toEqual(["a"]);
+        });
+
+        test("does not subject-watch a binding that collected a dependency", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                const model: any = { plainGuard: "yes" };
+                Observable.defineProperty(model, "value");
+                model.value = 1;
+
+                const binding = (x: any) => x.value && x.plainGuard;
+
+                let notifyCount = 0;
+                const observer = Observable.binding(binding, {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                });
+
+                const value = observer.observe(model, Fake.executionContext());
+                const records = [...observer.records()].map((r: any) => r.propertyName);
+                const notifier: any = Observable.getNotifier(model);
+                const hasSubjectSubscribers = notifier.subjectSubscribers !== null;
+
+                model.value = 2;
+                await Updates.next();
+
+                return {
+                    value,
+                    records,
+                    hasSubjectSubscribers,
+                    notifyCount,
+                };
+            });
+
+            expect(result.value).toBe("yes");
+            expect(result.records).toEqual(["value"]);
+            expect(result.hasSubjectSubscribers).toBe(false);
+            expect(result.notifyCount).toBe(1);
+        });
+
+        test("notifies for ||, ternary and optional chaining short-circuits", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                async function observeZeroDep(binding: any) {
+                    const model: any = { plainGuard: true, maybeNull: null };
+                    Observable.defineProperty(model, "value");
+                    model.value = 0;
+
+                    let notifyCount = 0;
+                    const observer = Observable.binding(binding, {
+                        handleChange() {
+                            notifyCount++;
+                        },
+                    });
+
+                    observer.observe(model, Fake.executionContext());
+                    const recordCount = [...observer.records()].length;
+
+                    model.value = 1;
+                    await Updates.next();
+
+                    return { recordCount, notifyCount };
+                }
+
+                return {
+                    or: await observeZeroDep((x: any) => x.plainGuard || x.value),
+                    ternary: await observeZeroDep((x: any) =>
+                        x.plainGuard ? 1 : x.value,
+                    ),
+                    optional: await observeZeroDep((x: any) => x.maybeNull?.value),
+                };
+            });
+
+            expect(result.or).toEqual({ recordCount: 0, notifyCount: 1 });
+            expect(result.ternary).toEqual({ recordCount: 0, notifyCount: 1 });
+            expect(result.optional).toEqual({ recordCount: 0, notifyCount: 1 });
+        });
+
+        test("notifies when a trackVolatile getter reads no observables", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                const model: any = { plainGuard: false };
+                Observable.defineProperty(model, "value");
+                model.value = 0;
+                Object.defineProperty(model, "guarded", {
+                    get(this: any) {
+                        Observable.trackVolatile();
+                        return this.plainGuard ? this.value : 42;
+                    },
+                });
+
+                const binding = (x: any) => x.guarded;
+
+                let notifyCount = 0;
+                const observer = Observable.binding(binding, {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                });
+
+                const isVolatileBinding = Observable.isVolatileBinding(binding);
+                const initialValue = observer.observe(model, Fake.executionContext());
+                const recordCount = [...observer.records()].length;
+
+                model.value = 1;
+                await Updates.next();
+
+                return {
+                    isVolatileBinding,
+                    initialValue,
+                    recordCount,
+                    notifyCount,
+                };
+            });
+
+            expect(result.isVolatileBinding).toBe(false);
+            expect(result.initialValue).toBe(42);
+            expect(result.recordCount).toBe(0);
+            expect(result.notifyCount).toBe(1);
+        });
+
+        test("does not subscribe non-volatile bindings that read no observables", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                async function observeConstant(binding: any) {
+                    const model: any = { plainField: "plain" };
+                    Observable.defineProperty(model, "value");
+                    model.value = 0;
+
+                    let notifyCount = 0;
+                    const observer = Observable.binding(binding, {
+                        handleChange() {
+                            notifyCount++;
+                        },
+                    });
+
+                    observer.observe(model, Fake.executionContext());
+                    const notifier: any = Observable.getNotifier(model);
+
+                    model.value = 1;
+                    await Updates.next();
+
+                    return {
+                        recordCount: [...observer.records()].length,
+                        hasSubjectSubscribers: notifier.subjectSubscribers !== null,
+                        notifyCount,
+                    };
+                }
+
+                return {
+                    text: await observeConstant(() => "hello"),
+                    number: await observeConstant(() => 42),
+                    field: await observeConstant((x: any) => x.plainField),
+                };
+            });
+
+            const expected = {
+                recordCount: 0,
+                hasSubjectSubscribers: false,
+                notifyCount: 0,
+            };
+
+            expect(result.text).toEqual(expected);
+            expect(result.number).toEqual(expected);
+            expect(result.field).toEqual(expected);
+        });
+
+        test("watches an object source that does not have a notifier yet", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake } = await import("/main.js");
+
+                const binding = (x: any) => (x.selected ? "danger" : "");
+
+                const plainSource: any = { selected: false };
+                const plainObserver = Observable.binding(binding);
+                plainObserver.observe(plainSource, Fake.executionContext());
+
+                const plainNotifier: any = Observable.getNotifier(plainSource);
+
+                const notifiedSource: any = { selected: false };
+                Observable.defineProperty(notifiedSource, "value");
+                notifiedSource.value = 0;
+
+                const notifiedObserver = Observable.binding(binding);
+                notifiedObserver.observe(notifiedSource, Fake.executionContext());
+
+                const notifiedNotifier: any = Observable.getNotifier(notifiedSource);
+
+                return {
+                    plainHasController: "$fastController" in plainSource,
+                    plainIsSubscribed:
+                        plainNotifier.subjectSubscribers.has(plainObserver),
+                    notifiedIsSubscribed:
+                        notifiedNotifier.subjectSubscribers.has(notifiedObserver),
+                };
+            });
+
+            expect(result.plainHasController).toBe(false);
+            expect(result.plainIsSubscribed).toBe(true);
+            expect(result.notifiedIsSubscribed).toBe(true);
+        });
+
+        test("notifies for an observable that was never written before binding", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                // an observable that is declared but never assigned has no
+                // notifier: the accessor creates one on the first write.
+                class Item {
+                    // a plain field, so the expression below short-circuits
+                    // before it ever reads the observable.
+                    isVisible = false;
+                }
+
+                Observable.defineProperty(Item.prototype, "selected");
+
+                const item: any = new Item();
+
+                let notifyCount = 0;
+                const observer = Observable.binding(
+                    (x: any) => x.isVisible && x.selected,
+                    {
+                        handleChange() {
+                            notifyCount++;
+                        },
+                    },
+                );
+
+                const initialValue = observer.observe(item, Fake.executionContext());
+
+                // the first write is what creates the notifier for the item.
+                item.selected = true;
+                await Updates.next();
+
+                const notifyCountAfterWrite = notifyCount;
+
+                item.isVisible = true;
+                const valueAfterWrite = observer.observe(item, Fake.executionContext());
+
+                return { initialValue, notifyCountAfterWrite, valueAfterWrite };
+            });
+
+            expect(result.initialValue).toBe(false);
+            expect(result.notifyCountAfterWrite).toBe(1);
+            expect(result.valueAfterWrite).toBe(true);
+        });
+
+        test("does not throw or mutate when the source is an array", async ({ page }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake } = await import("/main.js");
+
+                let arrayObservationEnabled = true;
+
+                try {
+                    Observable.getNotifier([]);
+                } catch {
+                    arrayObservationEnabled = false;
+                }
+
+                const source: any = [1, 2, 3];
+                const observer = Observable.binding((x: any) =>
+                    x[0] ? "first" : "none",
+                );
+
+                let error: string | null = null;
+                let value: any;
+
+                try {
+                    value = observer.observe(source, Fake.executionContext());
+                } catch (e: any) {
+                    error = e.message;
+                }
+
+                return {
+                    arrayObservationEnabled,
+                    error,
+                    value,
+                    hasController: "$fastController" in source,
+                    recordCount: [...observer.records()].length,
+                };
+            });
+
+            expect(result.arrayObservationEnabled).toBe(false);
+            expect(result.error).toBe(null);
+            expect(result.value).toBe("first");
+            expect(result.hasController).toBe(false);
+            expect(result.recordCount).toBe(0);
+        });
+
+        test("does not throw for primitive, null or function sources", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake } = await import("/main.js");
+
+                const observer = Observable.binding((x: any, c: any) =>
+                    c.isFirst && x ? "yes" : "no",
+                );
+
+                const sources = ["a", 1, true, null, void 0, () => "fn"];
+                const errors: string[] = [];
+
+                for (const source of sources) {
+                    try {
+                        observer.observe(source, Fake.executionContext());
+                    } catch (e: any) {
+                        errors.push(`${String(source)}: ${e.message}`);
+                    }
+                }
+
+                return { errors, recordCount: [...observer.records()].length };
+            });
+
+            expect(result.errors).toEqual([]);
+            expect(result.recordCount).toBe(0);
+        });
+
+        test("does not accumulate subject subscribers across evaluations", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake } = await import("/main.js");
+
+                const model: any = { plainGuard: false };
+                Observable.defineProperty(model, "value");
+                model.value = 0;
+
+                const observer = Observable.binding((x: any) => x.plainGuard && x.value);
+
+                for (let i = 0; i < 10; i++) {
+                    observer.observe(model, Fake.executionContext());
+                }
+
+                const subscribers: any = (Observable.getNotifier(model) as any)
+                    .subjectSubscribers;
+
+                if (subscribers === null) {
+                    return { subscriberCount: 0, isSubscribed: false };
+                }
+
+                const subscriberCount = subscribers.spillover
+                    ? subscribers.spillover.length
+                    : (subscribers.sub1 ? 1 : 0) + (subscribers.sub2 ? 1 : 0);
+
+                return { subscriberCount, isSubscribed: subscribers.has(observer) };
+            });
+
+            expect(result.subscriberCount).toBe(1);
+            expect(result.isSubscribed).toBe(true);
+        });
+
+        test("stops notifying a zero dependency binding once disposed", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { Observable, Fake, Updates } = await import("/main.js");
+
+                const model: any = { plainGuard: false };
+                Observable.defineProperty(model, "value");
+                model.value = 0;
+
+                let notifyCount = 0;
+                const observer = Observable.binding((x: any) => x.plainGuard && x.value, {
+                    handleChange() {
+                        notifyCount++;
+                    },
+                });
+
+                observer.observe(model, Fake.executionContext());
+                observer.dispose();
+
+                model.value = 1;
+                await Updates.next();
+
+                const subscribers: any = (Observable.getNotifier(model) as any)
+                    .subjectSubscribers;
+
+                return {
+                    notifyCount,
+                    isSubscribed:
+                        subscribers === null ? false : subscribers.has(observer),
+                };
+            });
+
+            expect(result.notifyCount).toBe(0);
+            expect(result.isSubscribed).toBe(false);
+        });
+    });
+
     test.describe("DefaultObservableAccessor", () => {
         test("calls its own change callback", () => {
             const model = new Model();

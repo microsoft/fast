@@ -2707,6 +2707,70 @@ test.describe("The HTML binding directive", () => {
                 expect(didNotThrow).toBe(true);
             });
         }
+
+        test("skips the view=>model update when the expression short-circuits", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    HTMLBindingDirective,
+                    HTMLDirective,
+                    Observable,
+                    Fake,
+                    DOM,
+                    nextId,
+                    twoWay,
+                    Updates,
+                } = await import("/main.js");
+
+                class Model {
+                    constructor(value: any) {
+                        this.value = value;
+                    }
+                    value: any;
+                    missing: any = null;
+                }
+
+                Observable.defineProperty(Model.prototype, "value");
+
+                // Volatile (?.) and short-circuits before reading any observable,
+                // so the observer collects no property records at all.
+                const directive = new HTMLBindingDirective(
+                    twoWay((x: any) => x.missing?.value, {}),
+                );
+                HTMLDirective.assignAspect(directive, ":value");
+
+                const node = document.createElement("div");
+                directive.id = nextId();
+                directive.targetNodeId = "r";
+                directive.targetTagName = node.tagName ?? null;
+                directive.policy = DOM.policy;
+
+                const targets = { r: node };
+                const behavior = directive.createBehavior();
+                const parentNode = document.createElement("div");
+                parentNode.appendChild(node);
+
+                const model = new Model("original");
+                const controller = Fake.viewController(targets, behavior);
+                controller.bind(model);
+
+                (node as any).value = "typed-by-user";
+                node.dispatchEvent(new CustomEvent("change"));
+                await Updates.next();
+
+                return {
+                    // The view=>model write must be skipped, not aimed at a
+                    // property named "undefined".
+                    hasUndefinedProperty: Object.hasOwn(model, "undefined"),
+                    value: model.value,
+                };
+            });
+
+            expect(result.hasUndefinedProperty).toBe(false);
+            expect(result.value).toBe("original");
+        });
     });
 
     test.describe("when binding events", () => {
