@@ -9,7 +9,7 @@ generating the markdown content for a new issue based on the provided template.
 
 Based on the conversation context, generate a bug report as a markdown code
 block using the template located at
-[../../ISSUE_TEMPLATE/bug-report.md](../../ISSUE_TEMPLATE/bug-report.md).
+[../../../.github/ISSUE_TEMPLATE/bug-report.md](../../../.github/ISSUE_TEMPLATE/bug-report.md).
 
 The summary should clearly state what the bug is and which part of the system
 is affected.
