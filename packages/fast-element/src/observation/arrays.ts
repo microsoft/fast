@@ -95,6 +95,13 @@ export type SpliceStrategySupport =
 
 /**
  * An approach to tracking changes in an array.
+ * @remarks
+ * Implementations must record splices whose `addedCount - removed.length` equals the
+ * true length delta of the operation being tracked. Array observation sums that delta
+ * across the queued splices to detect mutations it cannot track, such as
+ * `array.length = 0`. A strategy that records splices as mere markers, without an
+ * accurate delta, makes every mutation look like an untracked one and forces a reset
+ * on every flush.
  * @public
  */
 export interface SpliceStrategy {
@@ -108,6 +115,13 @@ export interface SpliceStrategy {
      * @param previous - The previous version of the array if a reset has taken place.
      * @param current - The current version of the array.
      * @param changes - The set of changes tracked against the array.
+     * @remarks
+     * A defined `previous` always means "deliver a reset", but its contents are only
+     * the array's previous version when the reset came from
+     * {@link (ArrayObserver:interface).reset}. When array observation detects an
+     * untracked mutation it has no record of the previous contents and passes a frozen,
+     * empty sentinel array instead. Treat a defined `previous` as the reset signal, do
+     * not assume it holds the previous items, and never write to it.
      */
     normalize(
         previous: unknown[] | undefined,
@@ -855,6 +869,7 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
     private splices: Splice[] | undefined = void 0;
     private sorts: Sort[] | undefined = void 0;
     private needsQueue: boolean = true;
+    private lastKnownLength: number = 0;
     private _strategy: SpliceStrategy | null = null;
     private _lengthObserver: LengthObserver | undefined = void 0;
     private _sortObserver: SortObserver | undefined = void 0;
@@ -913,6 +928,7 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
 
     constructor(subject: any[]) {
         super(subject);
+        this.lastKnownLength = subject.length;
         setNonEnumerable(subject, "$fastController", this);
     }
 
@@ -960,15 +976,47 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.sorts = void 0;
         this.oldCollection = void 0;
 
+        const subject = this.subject;
+        const actualLength = subject.length;
+        const lastKnownLength = this.lastKnownLength;
+        const strategy = this._strategy ?? defaultMutationStrategy;
+
+        // Recorded before notify() because a subscriber may mutate the array from
+        // inside handleChange, and those mutations queue their own splices. The next
+        // flush must not count them against this flush's baseline.
+        this.lastKnownLength = actualLength;
+
+        if (oldCollection === void 0) {
+            // An array's length is a non-configurable own property, so it cannot be
+            // trapped, and array observation deliberately avoids a Proxy, which would
+            // change the identity of the developer's own array. Untracked mutations
+            // such as `array.length = 0` therefore record no splices. Rather than
+            // deliver splices that are provably inconsistent with the array's real
+            // contents, compare the length the queued changes predict against the
+            // length the array actually has and fall back to a reset on a mismatch.
+            // Costs O(queued splices), never O(array length).
+            let predictedLength = lastKnownLength;
+
+            if (splices !== void 0) {
+                for (let i = 0, ii = splices.length; i < ii; ++i) {
+                    const splice = splices[i];
+                    predictedLength += splice.addedCount - splice.removed.length;
+                }
+            }
+
+            if (predictedLength !== actualLength) {
+                // Routed through the strategy rather than notifying resetSplices
+                // directly, so that a custom SpliceStrategy still owns its reset
+                // payload. A defined previous makes the default strategy return
+                // resetSplices, and emptyArray is a shared frozen const.
+                this.notify(strategy.normalize(emptyArray as any, subject, void 0));
+                return;
+            }
+        }
+
         sorts !== void 0
             ? this.notify(sorts)
-            : this.notify(
-                  (this._strategy ?? defaultMutationStrategy).normalize(
-                      oldCollection,
-                      this.subject,
-                      splices,
-                  ),
-              );
+            : this.notify(strategy.normalize(oldCollection, subject, splices));
     }
 
     private enqueue(): void {
