@@ -109,14 +109,7 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 
 Fixture tests in `@microsoft/fast-element/test/declarative/fixtures` are the primary way to verify declarative template features. Each fixture is a self-contained test case with its own HTML, state, templates, and component definitions.
 
-When changing declarative syntax, directive parsing, template generation,
-hydration behavior, or other user-authored template behavior, add or update a
-declarative fixture and exercise it in browser. Source-level parser tests may
-supplement narrow parsing edge cases, but they should not be the only coverage
-for syntax that users write in `entry.html` or `templates.html`. For directive
-syntax, start with the fixtures under
-`packages/fast-element/test/declarative/fixtures/directives/`; for example,
-`directives/children` covers `f-children`.
+When changing declarative syntax, directive parsing, template generation, hydration behavior, or other user-authored template behavior, add or update a declarative fixture and exercise it in browser. Source-level parser tests may supplement narrow parsing edge cases, but they should not be the only coverage for syntax that users write in `entry.html` or `templates.html`. For directive syntax, start with the fixtures under `packages/fast-element/test/declarative/fixtures/directives/`; for example, `directives/children` covers `f-children`.
 
 For a complete guide on creating fixtures — including how to write `entry.html`, `state.json`, `templates.html`, `main.ts`, and spec files — see:
 
