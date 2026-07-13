@@ -50,6 +50,21 @@ Fixtures are auto-discovered by scanning category directories for subdirectories
 
 ---
 
+## When to add or update a fixture
+
+Use fixtures for changes to declarative syntax, directive parsing, template
+generation, hydration behavior, or other behavior that users express in
+`entry.html` or `templates.html`. Fixture coverage runs the generated template
+in a browser and catches integration issues that parser-only tests can miss.
+
+Source-level parser tests may still be useful for very narrow edge cases, but
+they should supplement fixture coverage rather than replace it. For directive
+syntax changes, add or update the matching fixture under `directives/` (for
+example, `directives/children` for `f-children`) and assert the behavior from
+the fixture's Playwright spec.
+
+---
+
 ## fast-build.config.json
 
 Each fixture must include a `fast-build.config.json` file that tells the `@microsoft/fast-build` CLI where to find the fixture's source files and how to build them. The build script passes `--config=<path>` to the CLI for each fixture.
