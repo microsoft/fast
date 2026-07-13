@@ -19,6 +19,7 @@ export type ConstructibleStyleStrategy = {
 };
 
 let DefaultStyleStrategy: ConstructibleStyleStrategy | undefined;
+let styleNonce: string | null = null;
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>,
@@ -101,6 +102,30 @@ export class ElementStyles {
     }
 
     /**
+     * The nonce to apply to style elements created when styles are applied
+     * with a style element based strategy. Set this to the nonce of the page's
+     * Content Security Policy to allow the styles under a strict `style-src`
+     * that does not include `'unsafe-inline'`. Styles applied with adopted
+     * style sheets are not subject to `style-src` and are unaffected.
+     *
+     * @remarks
+     * The nonce is read each time styles are applied, so it can be configured
+     * after styles have been created. This matters because `css` tagged
+     * templates are typically evaluated at module scope, long before an
+     * application has a chance to set the nonce.
+     */
+    public static get styleNonce(): string | null {
+        return styleNonce;
+    }
+
+    public static set styleNonce(value: string | null) {
+        // Normalized so that a nonce sourced from the DOM by a JS consumer, eg.
+        // document.querySelector("meta[name=csp-nonce]")?.content, cannot leave
+        // undefined behind for the getter to hand back.
+        styleNonce = value ?? null;
+    }
+
+    /**
      * Normalizes a set of composable style options.
      * @param styles - The style options to normalize.
      * @returns A singular ElementStyles instance or undefined.
@@ -179,11 +204,17 @@ function createStyleElementStrategy(): ConstructibleStyleStrategy {
 
         addStylesTo(target: StyleTarget): void {
             const t = target === (document as any) ? document.body : target;
+            const nonce = styleNonce;
 
             for (let i = 0; i < this.styles.length; i++) {
                 const element = document.createElement("style");
                 element.innerHTML = this.styles[i];
                 element.className = this.styleClass;
+
+                if (nonce) {
+                    element.setAttribute("nonce", nonce);
+                }
+
                 (t as any).append(element);
             }
         }

@@ -434,6 +434,8 @@ export class ElementStyles {
     removeStylesFrom(target: StyleTarget): void;
     static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
     get strategy(): StyleStrategy;
+    static get styleNonce(): string | null;
+    static set styleNonce(value: string | null);
     // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
@@ -543,6 +545,7 @@ export interface FASTElementConstructor {
     from<TBase extends typeof HTMLElement>(BaseType: TBase): {
         new (): InstanceType<TBase> & FASTElement;
     };
+    styleNonce: string | null;
 }
 
 // @public

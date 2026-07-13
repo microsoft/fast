@@ -23,6 +23,50 @@ The FASTElement constructor and static registration helpers.
 export interface FASTElementConstructor
 ```
 
+## Properties
+
+<table><thead><tr><th>
+
+Property
+
+
+</th><th>
+
+Modifiers
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[styleNonce](../fast-element.fastelementconstructor.stylenonce/)
+
+
+</td><td>
+
+
+</td><td>
+
+string \| null
+
+
+</td><td>
+
+The nonce to apply to style elements created when styles are applied with a style element based strategy. An alias of [ElementStyles.styleNonce](../fast-element.elementstyles.stylenonce/)<!-- -->.
+
+
+</td></tr>
+</tbody></table>
+
 ## Methods
 
 <table><thead><tr><th>

@@ -1,4 +1,5 @@
 import { type Constructable, isFunction } from "../interfaces.js";
+import { ElementStyles } from "../styles/element-styles.js";
 import { ElementController } from "./element-controller.js";
 import {
     applyFASTElementExtensions,
@@ -196,6 +197,12 @@ export interface FASTElementConstructor {
     from<TBase extends typeof HTMLElement>(
         BaseType: TBase,
     ): { new (): InstanceType<TBase> & FASTElement };
+
+    /**
+     * The nonce to apply to style elements created when styles are applied with
+     * a style element based strategy. An alias of {@link ElementStyles.styleNonce}.
+     */
+    styleNonce: string | null;
 }
 
 /**
@@ -203,9 +210,8 @@ export interface FASTElementConstructor {
  * static helpers for working with FASTElements.
  * @public
  */
-export const FASTElement: FASTElementConstructor = Object.assign(
-    createFASTElement(HTMLElement),
-    {
+export const FASTElement: FASTElementConstructor = Object.defineProperty(
+    Object.assign(createFASTElement(HTMLElement), {
         /**
          * Creates a new FASTElement base class inherited from the
          * provided base type.
@@ -220,8 +226,17 @@ export const FASTElement: FASTElementConstructor = Object.assign(
          * that describes the element to define.
          */
         define,
+    }),
+    // Defined as an accessor that forwards to ElementStyles so that the nonce has
+    // a single source of truth. Object.assign would copy the value, not the accessor.
+    "styleNonce",
+    {
+        get: (): string | null => ElementStyles.styleNonce,
+        set: (value: string | null) => {
+            ElementStyles.styleNonce = value;
+        },
     },
-);
+) as FASTElementConstructor;
 
 /**
  * Decorator: Defines a platform custom element based on `FASTElement`.

@@ -1002,3 +1002,375 @@ test.describe("cssPartial", () => {
         expect(isElementStyles).toBe(true);
     });
 });
+
+test.describe("ElementStyles.styleNonce", () => {
+    test("should not set a nonce attribute when no nonce is configured", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const hasNonce = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { StyleElementStrategy } = await import("/main.js");
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+
+            return (shadowRoot.childNodes[0] as HTMLStyleElement).hasAttribute("nonce");
+        });
+
+        expect(hasNonce).toBe(false);
+    });
+
+    test("should apply a nonce configured after the ElementStyles are constructed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const { attribute, property } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            // The styles are constructed *before* the nonce is configured, which
+            // is what happens when a `css` tagged template is evaluated at module
+            // scope. The nonce must therefore be read when the styles are applied.
+            const elementStyles = new ElementStyles([":host{color:red}"]).withStrategy(
+                StyleElementStrategy,
+            );
+
+            ElementStyles.styleNonce = "test-nonce";
+
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            elementStyles.addStylesTo(shadowRoot);
+
+            const element = shadowRoot.childNodes[0] as HTMLStyleElement;
+
+            return {
+                attribute: element.getAttribute("nonce"),
+                property: element.nonce,
+            };
+        });
+
+        expect(attribute).toBe("test-nonce");
+        expect(property).toBe("test-nonce");
+    });
+
+    test("should apply a nonce to styles created by the css tagged template", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const nonce = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { css, ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            const styles = css`
+                :host {
+                    color: red;
+                }
+            `.withStrategy(StyleElementStrategy);
+
+            ElementStyles.styleNonce = "css-nonce";
+
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            styles.addStylesTo(shadowRoot);
+
+            return (shadowRoot.childNodes[0] as HTMLStyleElement).getAttribute("nonce");
+        });
+
+        expect(nonce).toBe("css-nonce");
+    });
+
+    test("should apply the nonce to every style element that is created", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const nonces = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            ElementStyles.styleNonce = "multi-nonce";
+
+            const strategy = new StyleElementStrategy([
+                "body{color:red;}",
+                "body{color:green;}",
+            ]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+
+            return Array.from(shadowRoot.querySelectorAll("style")).map(x =>
+                x.getAttribute("nonce"),
+            );
+        });
+
+        expect(nonces).toEqual(["multi-nonce", "multi-nonce"]);
+    });
+
+    test("should read the nonce on every application rather than caching it", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const { first, second } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const createShadowRoot = () =>
+                document.createElement("div").attachShadow({ mode: "open" });
+
+            ElementStyles.styleNonce = "first-nonce";
+            const firstTarget = createShadowRoot();
+            strategy.addStylesTo(firstTarget);
+
+            ElementStyles.styleNonce = "second-nonce";
+            const secondTarget = createShadowRoot();
+            strategy.addStylesTo(secondTarget);
+
+            return {
+                first: (firstTarget.childNodes[0] as HTMLStyleElement).getAttribute(
+                    "nonce",
+                ),
+                second: (secondTarget.childNodes[0] as HTMLStyleElement).getAttribute(
+                    "nonce",
+                ),
+            };
+        });
+
+        expect(first).toBe("first-nonce");
+        expect(second).toBe("second-nonce");
+    });
+
+    test("should stop applying a nonce when the nonce is reset to null", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const { withNonce, afterReset } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const createShadowRoot = () =>
+                document.createElement("div").attachShadow({ mode: "open" });
+
+            ElementStyles.styleNonce = "temporary-nonce";
+            const withNonceTarget = createShadowRoot();
+            strategy.addStylesTo(withNonceTarget);
+
+            ElementStyles.styleNonce = null;
+            const afterResetTarget = createShadowRoot();
+            strategy.addStylesTo(afterResetTarget);
+
+            return {
+                withNonce: (
+                    withNonceTarget.childNodes[0] as HTMLStyleElement
+                ).hasAttribute("nonce"),
+                afterReset: (
+                    afterResetTarget.childNodes[0] as HTMLStyleElement
+                ).hasAttribute("nonce"),
+            };
+        });
+
+        expect(withNonce).toBe(true);
+        expect(afterReset).toBe(false);
+    });
+
+    test("should default to a null nonce", async ({ page }) => {
+        await page.goto("/");
+
+        const nonce = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles } = await import("/main.js");
+
+            return ElementStyles.styleNonce;
+        });
+
+        expect(nonce).toBe(null);
+    });
+
+    test("should still remove nonced style elements from a target", async ({ page }) => {
+        await page.goto("/");
+
+        const afterRemoveLength = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            ElementStyles.styleNonce = "remove-nonce";
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+            strategy.removeStylesFrom(shadowRoot);
+
+            return shadowRoot.childNodes.length;
+        });
+
+        expect(afterRemoveLength).toBe(0);
+    });
+
+    test("should apply the nonce to styles applied to a FASTElement shadow root", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const nonce = await page.evaluate(async () => {
+            const {
+                css,
+                ElementStyles,
+                FASTElement,
+                html,
+                StyleElementStrategy,
+                uniqueElementName,
+            } =
+                // @ts-expect-error: Client module.
+                await import("/main.js");
+
+            const styles = css`
+                :host {
+                    color: red;
+                }
+            `.withStrategy(StyleElementStrategy);
+
+            ElementStyles.styleNonce = "element-nonce";
+
+            const name = uniqueElementName();
+
+            await FASTElement.define({
+                name,
+                template: html`
+                    <p></p>
+                `,
+                styles,
+            });
+
+            const element = document.createElement(name);
+            document.body.appendChild(element);
+
+            const style = element.shadowRoot!.querySelector("style")!;
+            const result = style.getAttribute("nonce");
+
+            document.body.removeChild(element);
+
+            return result;
+        });
+
+        expect(nonce).toBe("element-nonce");
+    });
+
+    test("should be mirrored by FASTElement.styleNonce", async ({ page }) => {
+        await page.goto("/");
+
+        const { fromFASTElement, fromElementStyles } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, FASTElement } = await import("/main.js");
+
+            FASTElement.styleNonce = "mirrored-nonce";
+            const fromElementStyles = ElementStyles.styleNonce;
+
+            ElementStyles.styleNonce = "reverse-nonce";
+            const fromFASTElement = FASTElement.styleNonce;
+
+            return { fromFASTElement, fromElementStyles };
+        });
+
+        expect(fromElementStyles).toBe("mirrored-nonce");
+        expect(fromFASTElement).toBe("reverse-nonce");
+    });
+
+    test("should not create style elements when there are no styles", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const childCount = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            ElementStyles.styleNonce = "empty-nonce";
+
+            const strategy = new StyleElementStrategy([]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+
+            return shadowRoot.childNodes.length;
+        });
+
+        expect(childCount).toBe(0);
+    });
+    test("should not set a nonce attribute when the nonce is undefined", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const { hasNonce, nonce } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            // A JS consumer sourcing the nonce from the DOM gets undefined when
+            // the element is missing, eg. document.querySelector(...)?.content
+            ElementStyles.styleNonce = undefined;
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+
+            return {
+                hasNonce: (shadowRoot.childNodes[0] as HTMLStyleElement).hasAttribute(
+                    "nonce",
+                ),
+                nonce: ElementStyles.styleNonce,
+            };
+        });
+
+        expect(hasNonce).toBe(false);
+        expect(nonce).toBe(null);
+    });
+
+    test("should not set a nonce attribute when the nonce is an empty string", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const hasNonce = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ElementStyles, StyleElementStrategy } = await import("/main.js");
+
+            ElementStyles.styleNonce = "";
+
+            const strategy = new StyleElementStrategy([":host{color:red}"]);
+            const shadowRoot = document
+                .createElement("div")
+                .attachShadow({ mode: "open" });
+
+            strategy.addStylesTo(shadowRoot);
+
+            return (shadowRoot.childNodes[0] as HTMLStyleElement).hasAttribute("nonce");
+        });
+
+        expect(hasNonce).toBe(false);
+    });
+});
