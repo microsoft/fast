@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Document the component lifecycle and pin the @attr initialization contract with tests.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

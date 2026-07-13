@@ -163,6 +163,169 @@ test.describe("The ElementController", () => {
 
             expect(childCount).toBe(0);
         });
+
+        test("completes the constructor before connectedCallback runs", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const order = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, uniqueElementName } =
+                    await import("/main.js");
+
+                const order: string[] = [];
+                const name = uniqueElementName();
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+
+                            constructor() {
+                                super();
+                                order.push("constructor-start");
+                                order.push("constructor-end");
+                            }
+
+                            connectedCallback() {
+                                super.connectedCallback();
+                                order.push("connected");
+                            }
+                        },
+                    )
+                ).define();
+
+                // Upgrading an element that is already in the tree is the only path
+                // that could interleave the two: the constructor and the
+                // connectedCallback run back to back, as upgrade reactions.
+                const host = document.createElement("div");
+                document.body.append(host);
+                host.innerHTML = `<${name}></${name}>`;
+
+                return order;
+            });
+
+            expect(order).toEqual(["constructor-start", "constructor-end", "connected"]);
+        });
+
+        test("reports isConnected from the constructor based on where the element is created", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, uniqueElementName } =
+                    await import("/main.js");
+
+                const observed: boolean[] = [];
+                const name = uniqueElementName();
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+
+                            constructor() {
+                                super();
+                                observed.push(this.isConnected);
+                            }
+                        },
+                    )
+                ).define();
+
+                document.createElement(name);
+
+                // `innerHTML` runs the HTML *fragment* parsing algorithm, which does
+                // not execute script, so the element is created in the "undefined"
+                // custom element state and only upgraded when it is inserted - by
+                // which time it is already in a connected tree.
+                const host = document.createElement("div");
+                document.body.append(host);
+                host.innerHTML = `<${name}></${name}>`;
+
+                return { detached: observed[0], upgradedInTree: observed[1] };
+            });
+
+            expect(result.detached).toBe(false);
+            expect(result.upgradedInTree).toBe(true);
+        });
+
+        test("is not connected in the constructor when the document parser creates the element from an already-registered definition", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const done = new Promise<any>(resolve => {
+                    (window as any).__parserResult = resolve;
+                });
+
+                // A same-origin frame gives us a document whose real HTML parser we
+                // can drive. `document.write()` parses with scripting enabled, unlike
+                // `innerHTML`, so the custom element is constructed as the parser
+                // creates it - before it is inserted into the tree.
+                const frame = document.createElement("iframe");
+                frame.src = "/";
+                document.body.append(frame);
+
+                await new Promise(resolve =>
+                    frame.addEventListener("load", resolve, { once: true }),
+                );
+
+                const frameDocument = frame.contentDocument!;
+                const script = frameDocument.createElement("script");
+                script.type = "module";
+                script.textContent = `
+                    try {
+                        const { FASTElement, FASTElementDefinition, uniqueElementName } =
+                            await import("/main.js");
+
+                        const observed = [];
+                        const name = uniqueElementName();
+
+                        (await FASTElementDefinition.compose(
+                            class ParserTest extends FASTElement {
+                                static definition = { name };
+
+                                constructor() {
+                                    super();
+                                    observed.push(this.isConnected);
+                                }
+                            },
+                        )).define();
+
+                        // The definition is registered before the parser reaches the
+                        // tag, so the parser constructs the element at creation time.
+                        document.open();
+                        document.write("<" + name + "></" + name + ">");
+                        document.close();
+
+                        parent.__parserResult({
+                            observed: observed.slice(),
+                            connectedAfterParse:
+                                document.querySelector(name).isConnected,
+                        });
+                    } catch (error) {
+                        parent.__parserResult({ error: String(error) });
+                    }
+                `;
+                frameDocument.head.append(script);
+
+                const raw = await done;
+
+                return {
+                    error: raw.error ?? null,
+                    observed: raw.observed ? Array.from(raw.observed, Boolean) : null,
+                    connectedAfterParse: raw.connectedAfterParse ?? null,
+                };
+            });
+
+            expect(result.error).toBe(null);
+            // The constructor runs before insertion, so `isConnected` is `false` even
+            // though the element is being parsed straight into a connected document.
+            expect(result.observed).toEqual([false]);
+            expect(result.connectedAfterParse).toBe(true);
+        });
     });
 
     test.describe("during connect", () => {

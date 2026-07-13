@@ -194,6 +194,8 @@ export class MyElement extends FASTElement {
 Overriding `connectedCallback` can affect the timing of when your template is bound and when behaviors run, so it's generally recommended to call `super.connectedCallback()` at the beginning of your override. Conversely, for `disconnectedCallback` and `attributeChangedCallback`, it's usually best to call the super method at the end of your override to ensure that your custom logic runs while the element is still in a consistent state.
 :::
 
+The `attributeChangedCallback` above is the *native* one, and the `oldValue` it logs is `null` on the first change. The `fooChanged` callback that FAST generates for an `@attr foo` is a **different** callback with different semantics: its first `oldValue` is `undefined`, not `null`, and its values have already been through the attribute's converter rather than being raw strings. It can also fire more than once before the element is ever connected. See [Component Lifecycle](../../advanced/component-lifecycle/) for the full contract.
+
 ## Defining the Element
 
 ### `define()`
