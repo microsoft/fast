@@ -24,11 +24,14 @@ import {
     clientSideOpenExpression,
     closeExpression,
     eventArgAccessor,
+    executionContextAccessor,
     openExpression,
 } from "@microsoft/fast-element/declarative-utilities.js";
 import { installDomShim } from "./dom-shim.js";
 
 const stylesMarker = `${openExpression}styles${closeExpression}`;
+const unescapedOpenExpression = "{{{";
+const unescapedCloseExpression = "}}}";
 const templateOpenTagPattern = /<template(?:\s[^>]*)?\s*\/?>/i;
 const templateWrapperTagPattern = /<template(?:\s[^>]*)?\s*\/?>|<\/template\s*>/gi;
 
@@ -38,6 +41,10 @@ function wrapClientExpression(expression: string): string {
 
 function wrapDefaultExpression(expression: string): string {
     return `${openExpression}${expression}${closeExpression}`;
+}
+
+function wrapUnescapedExpression(expression: string): string {
+    return `${unescapedOpenExpression}${expression}${unescapedCloseExpression}`;
 }
 
 function attributeDirective(name: string, value: string): string {
@@ -143,25 +150,85 @@ interface Factory {
     dataBinding?: {
         evaluate: (...args: any[]) => any;
     };
+    templateBinding?: {
+        evaluate: (...args: any[]) => any;
+    };
+}
+
+interface ConvertTemplateOptions {
+    sourcePrefix?: string;
+    repeatDepth?: number;
+}
+
+interface ConditionalTrace {
+    paths: string[];
+    usedPrimitive: boolean;
+}
+
+interface ConditionalTraceResult extends ConditionalTrace {
+    template: ViewTemplate | null;
+}
+
+function stripTemplateWrapper(html: string): string {
+    return html.replace(templateWrapperTagPattern, "").trim();
+}
+
+function getRepeatItemName(repeatDepth: number): string {
+    return repeatDepth === 0 ? "item" : `item${repeatDepth}`;
+}
+
+function convertInnerHTMLWrappers(html: string): string {
+    return html.replace(
+        /<div\s+:innerHTML="\{\{([^"{}]+)\}\}"\s*>\s*<\/div>/g,
+        (_match: string, expression: string) => wrapUnescapedExpression(expression),
+    );
+}
+
+function normalizeBindingExpression(
+    expression: string,
+    options: ConvertTemplateOptions = {},
+): string {
+    let normalized = expression
+        .replace(/\bc\.event\b/g, eventArgAccessor)
+        .replace(/\bc\./g, `${executionContextAccessor}.`)
+        .replace(/\bc\b/g, executionContextAccessor);
+
+    if (options.sourcePrefix) {
+        normalized = normalized
+            .replace(/\bx\./g, `${options.sourcePrefix}.`)
+            .replace(/\bx\b/g, options.sourcePrefix);
+    } else {
+        normalized = normalized.replace(/\bx\./g, "");
+    }
+
+    return normalized;
+}
+
+function extractExpression(
+    expression: (...args: any[]) => any,
+    options: ConvertTemplateOptions = {},
+): string {
+    const fnStr = expression.toString();
+    const arrowMatch = fnStr.match(/=>\s*(.+)$/s);
+    if (arrowMatch) {
+        return normalizeBindingExpression(arrowMatch[1].trim(), options);
+    }
+
+    return fnStr;
 }
 
 /**
  * Extract a readable binding expression from a factory's evaluate function.
  */
-function extractBindingExpression(factory: Factory): string {
+function extractBindingExpression(
+    factory: Factory,
+    options: ConvertTemplateOptions = {},
+): string {
     if (!factory?.dataBinding?.evaluate) {
         return "";
     }
 
-    const fnStr = factory.dataBinding.evaluate.toString();
-    const arrowMatch = fnStr.match(/=>\s*(.+)$/s);
-    if (arrowMatch) {
-        let expr = arrowMatch[1].trim();
-        expr = expr.replace(/\bx\./g, "").replace(/c\.event\b/g, eventArgAccessor);
-        return expr;
-    }
-
-    return fnStr;
+    return extractExpression(factory.dataBinding.evaluate, options);
 }
 
 /**
@@ -226,14 +293,181 @@ function tryInlineStaticTemplate(factory: Factory): string | null {
     return null;
 }
 
-/**
- * Convert a ViewTemplate's html string and factories into an
- * f-template HTML string.
- */
-export function convertTemplate(
-    viewTemplate: ViewTemplate,
-    componentName: string,
+function resolveStaticTemplate(
+    binding: ((...args: any[]) => any) | undefined,
+): ViewTemplate | null {
+    if (!binding) {
+        return null;
+    }
+
+    try {
+        const result = binding({}, {});
+        if (result && typeof result === "object" && "html" in result) {
+            return result as ViewTemplate;
+        }
+    } catch {
+        // Dynamic template bindings cannot be reconstructed statically.
+    }
+
+    return null;
+}
+
+function isViewTemplate(value: unknown): value is ViewTemplate {
+    return !!value && typeof value === "object" && "html" in value;
+}
+
+function createTraceValue(path: string, trace: ConditionalTrace): any {
+    return new Proxy(Object.create(null), {
+        get(_target, property) {
+            if (property === Symbol.toPrimitive) {
+                return () => {
+                    trace.usedPrimitive = true;
+                    return 1;
+                };
+            }
+
+            if (property === "valueOf") {
+                return () => {
+                    trace.usedPrimitive = true;
+                    return 1;
+                };
+            }
+
+            if (property === "toString") {
+                return () => path;
+            }
+
+            if (typeof property === "symbol") {
+                return undefined;
+            }
+
+            const nestedPath = `${path}.${property}`;
+            trace.paths.push(nestedPath);
+            return createTraceValue(nestedPath, trace);
+        },
+    });
+}
+
+function createTraceRoot(
+    trace: ConditionalTrace,
+    rootPrefix: string | undefined,
+    propertiesAreFalsy: boolean,
+): any {
+    return new Proxy(Object.create(null), {
+        get(_target, property) {
+            if (typeof property === "symbol") {
+                return undefined;
+            }
+
+            const path = rootPrefix ? `${rootPrefix}.${property}` : String(property);
+            trace.paths.push(path);
+
+            if (propertiesAreFalsy) {
+                return false;
+            }
+
+            return createTraceValue(path, trace);
+        },
+    });
+}
+
+function getSingleTracePath(trace: ConditionalTrace): string | null {
+    const leafPaths = trace.paths.filter(
+        path =>
+            !trace.paths.some(other => other !== path && other.startsWith(`${path}.`)),
+    );
+
+    return leafPaths.length === 1 ? leafPaths[0] : null;
+}
+
+function evaluateConditionalTrace(
+    factory: Factory,
+    options: ConvertTemplateOptions,
+    propertiesAreFalsy: boolean,
+): ConditionalTraceResult {
+    const trace: ConditionalTrace = { paths: [], usedPrimitive: false };
+    const source = createTraceRoot(trace, options.sourcePrefix, propertiesAreFalsy);
+    const context = createTraceRoot(trace, executionContextAccessor, propertiesAreFalsy);
+
+    try {
+        const result = factory.dataBinding?.evaluate(source, context);
+        return {
+            ...trace,
+            template: isViewTemplate(result) ? result : null,
+        };
+    } catch {
+        return { ...trace, template: null };
+    }
+}
+
+function convertRepeatDirective(
+    factory: Factory,
+    options: ConvertTemplateOptions,
 ): string | null {
+    if (factory.constructor.name !== "RepeatDirective") {
+        return null;
+    }
+
+    const itemsExpression = extractBindingExpression(factory, options);
+    const itemTemplate = resolveStaticTemplate(factory.templateBinding?.evaluate);
+    if (!itemTemplate) {
+        return null;
+    }
+
+    const repeatOptions = factory.options ?? {};
+    const repeatDepth = options.repeatDepth ?? 0;
+    const itemName = getRepeatItemName(repeatDepth);
+    const positioningAttr = repeatOptions.positioning ? ' positioning="true"' : "";
+    const recycleAttr = repeatOptions.recycle === false ? ' recycle="false"' : "";
+    const content = stripTemplateWrapper(
+        convertTemplateHTML(itemTemplate, {
+            ...options,
+            sourcePrefix: itemName,
+            repeatDepth: repeatDepth + 1,
+        }),
+    );
+
+    return `<f-repeat value="${wrapDefaultExpression(`${itemName} in ${itemsExpression}`)}"${positioningAttr}${recycleAttr}>${content}</f-repeat>`;
+}
+
+function convertWhenDirective(
+    factory: Factory,
+    options: ConvertTemplateOptions,
+): string | null {
+    if (factory.constructor.name !== "HTMLBindingDirective") {
+        return null;
+    }
+
+    const truthyTrace = evaluateConditionalTrace(factory, options, false);
+    const truthyPath = getSingleTracePath(truthyTrace);
+
+    if (truthyTrace.template && truthyPath && !truthyTrace.usedPrimitive) {
+        const falsyTrace = evaluateConditionalTrace(factory, options, true);
+        if (!falsyTrace.template && getSingleTracePath(falsyTrace) === truthyPath) {
+            const content = stripTemplateWrapper(
+                convertTemplateHTML(truthyTrace.template, options),
+            );
+            return `<f-when value="${wrapDefaultExpression(truthyPath)}">${content}</f-when>`;
+        }
+    }
+
+    const falsyTrace = evaluateConditionalTrace(factory, options, true);
+    const falsyPath = getSingleTracePath(falsyTrace);
+
+    if (falsyTrace.template && falsyPath && !falsyTrace.usedPrimitive) {
+        const content = stripTemplateWrapper(
+            convertTemplateHTML(falsyTrace.template, options),
+        );
+        return `<f-when value="${wrapDefaultExpression(`!${falsyPath}`)}">${content}</f-when>`;
+    }
+
+    return null;
+}
+
+function convertTemplateHTML(
+    viewTemplate: ViewTemplate,
+    options: ConvertTemplateOptions = {},
+): string {
     const { factories } = viewTemplate;
     const html =
         typeof viewTemplate.html === "string"
@@ -242,9 +476,7 @@ export function convertTemplate(
 
     const factoryEntries = Object.entries(factories);
     if (factoryEntries.length === 0) {
-        // No factories — pure static template.
-        const content = html.replace(templateWrapperTagPattern, "").trim();
-        return `<f-template name="${componentName}" shadowrootmode="open"><template>${stylesMarker}${content}</template></f-template>\n`;
+        return stripTemplateWrapper(html);
     }
 
     // Derive the binding marker prefix from the first factory key.
@@ -258,6 +490,20 @@ export function convertTemplate(
     }
 
     let fContent = html;
+
+    // Structural repeat markers are emitted as comment nodes.
+    const repeatBindingRe = new RegExp(
+        `<!--${prefix}\\{(${prefix}-\\d+)\\}${prefix}-->`,
+        "g",
+    );
+    fContent = fContent.replace(repeatBindingRe, (match: string, factoryId: string) => {
+        const factory = factoryMap.get(factoryId);
+        if (!factory) {
+            return match;
+        }
+
+        return convertRepeatDirective(factory, options) ?? match;
+    });
 
     // Attribute-position markers → f-ref / f-slotted / f-children
     const attrBindingRe = new RegExp(
@@ -289,15 +535,14 @@ export function convertTemplate(
                 typeof factory.options === "string"
                     ? factory.options
                     : factory.options?.property;
-            const filterStr = extractSlottedFilter(factory);
-            return attributeDirective("children", `${prop}${filterStr}`);
+            return attributeDirective("children", prop);
         }
         return match;
     });
 
     // Event bindings → @event="{handler(e)}"
     const eventBindingRe = new RegExp(
-        `(@[a-z]+)="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
+        `(@[^\\s=]+)="${prefix}\\{(${prefix}-\\d+)\\}${prefix}"`,
         "g",
     );
     fContent = fContent.replace(
@@ -307,7 +552,7 @@ export function convertTemplate(
             if (!factory) {
                 return match;
             }
-            const evalStr = extractBindingExpression(factory);
+            const evalStr = extractBindingExpression(factory, options);
             return `${aspect}="${wrapClientExpression(evalStr)}"`;
         },
     );
@@ -324,10 +569,12 @@ export function convertTemplate(
             if (!factory) {
                 return match;
             }
-            const evalStr = extractBindingExpression(factory);
+            const evalStr = extractBindingExpression(factory, options);
             return `${aspect}="${wrapDefaultExpression(evalStr)}"`;
         },
     );
+
+    fContent = convertInnerHTMLWrappers(fContent);
 
     // Attribute-value and content bindings → attr="{{propName}}" or inline HTML
     const valBindingRe = new RegExp(`${prefix}\\{(${prefix}-\\d+)\\}${prefix}`, "g");
@@ -337,14 +584,45 @@ export function convertTemplate(
             return match;
         }
 
+        const whenDirective = convertWhenDirective(factory, options);
+        if (whenDirective !== null) {
+            return whenDirective;
+        }
+
         const inlined = tryInlineStaticTemplate(factory);
         if (inlined !== null) {
             return inlined;
         }
 
-        const evalStr = extractBindingExpression(factory);
+        const evalStr = extractBindingExpression(factory, options);
         return wrapDefaultExpression(evalStr);
     });
+
+    return fContent;
+}
+
+/**
+ * Convert a ViewTemplate's html string and factories into an
+ * f-template HTML string.
+ */
+export function convertTemplate(
+    viewTemplate: ViewTemplate,
+    componentName: string,
+): string | null {
+    const { factories } = viewTemplate;
+    const html =
+        typeof viewTemplate.html === "string"
+            ? viewTemplate.html
+            : viewTemplate.html.innerHTML;
+
+    const factoryEntries = Object.entries(factories);
+    if (factoryEntries.length === 0) {
+        // No factories — pure static template.
+        const content = html.replace(templateWrapperTagPattern, "").trim();
+        return `<f-template name="${componentName}" shadowrootmode="open"><template>${stylesMarker}${content}</template></f-template>\n`;
+    }
+
+    const fContent = convertTemplateHTML(viewTemplate);
 
     let fInner = fContent.trim();
     if (!templateOpenTagPattern.test(fInner)) {
