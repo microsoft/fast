@@ -2,6 +2,26 @@ pr:
   branches:
     include:
     - main
+  # This pipeline only installs and builds. No build script reads markdown or the
+  # license, so neither can change its outcome. Unlike a GitHub Actions workflow
+  # skipped by `paths-ignore`, Azure Pipelines posts a neutral status back to
+  # GitHub when a path exclusion rule skips a validation build, so a path filter
+  # here cannot leave a required check pending — which is why this pipeline can be
+  # skipped outright while the GitHub workflows gate a job instead. See
+  # .github/workflows/README.md > Documentation-only pull requests.
+  #
+  # The other documentation paths named in #7339 need no rule of their own:
+  # `specs`, `.github/ISSUE_TEMPLATE` and `.github/skills` hold markdown and
+  # nothing else, so `**/*.md` already covers them.
+  #
+  # This also skips a pull request that touches nothing but generated markdown
+  # (`SIZES.md`, `*.api.md`, ...). That is safe: this pipeline never asserts those
+  # files are current. `test:validation` in ci-validate-pr.yml does, that workflow
+  # always runs, and its classifier deliberately treats generated markdown as code.
+  paths:
+    exclude:
+    - '**/*.md'
+    - LICENSE
   drafts: false
 
 # The `resources` specify the location and version of the 1ES PT.

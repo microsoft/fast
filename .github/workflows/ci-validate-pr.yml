@@ -32,6 +32,27 @@ jobs:
       with:
         node-version: 22
 
+    # This workflow always runs, because `checkchange` and `biome:ci` must run on
+    # every pull request; the expensive steps below are gated instead. See
+    # .github/workflows/README.md > Documentation-only pull requests.
+    - name: Classify changed files
+      id: changes
+      shell: bash
+      env:
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
+        EVENT_NAME: ${{ github.event_name }}
+      run: |
+        FILES=""
+        if [ "$EVENT_NAME" = "pull_request" ] && [ -n "${BASE_REF:-}" ]; then
+          # Works whether HEAD is the pull request's merge commit (what
+          # actions/checkout resolves for a pull_request event) or its head
+          # commit. Needs the full history that `fetch-depth: 0` above fetches.
+          MERGE_BASE="$(git merge-base "origin/${BASE_REF}" HEAD)"
+          FILES="$(git diff --name-only "$MERGE_BASE" HEAD)"
+        fi
+        # Anything the classifier cannot see runs the full pipeline.
+        printf '%s\n' "$FILES" | node build/scripts/classify-changed-files.mjs
+
     - name: Cache multiple paths
       uses: actions/cache@v4
       env:
@@ -56,20 +77,28 @@ jobs:
       run: npm run biome:ci
 
     - name: Install wasm-pack
+      if: steps.changes.outputs.lage_noop != 'true'
       run: cargo install wasm-pack
 
     - name: Build workspaces
+      if: steps.changes.outputs.lage_noop != 'true'
       run: npx lage build ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose
 
     - name: Install playwright dependencies and browsers
+      if: steps.changes.outputs.docs_only != 'true'
       run: |
         npx playwright install --with-deps
 
     - name: Testing unit tests
+      if: steps.changes.outputs.docs_only != 'true'
       run: npx lage test:node test:chromium ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }} --allow-no-target-runs --verbose --concurrency 1
 
     - name: End-to-end tests for example apps
+      if: steps.changes.outputs.docs_only != 'true'
       run: npm run test:e2e
 
+    # `test:validation` only asserts that the build left no tracked file dirty, so
+    # it is meaningless when the build did not run: gate it on the same flag.
     - name: Testing final validation
+      if: steps.changes.outputs.lage_noop != 'true'
       run: npm run test:validation
