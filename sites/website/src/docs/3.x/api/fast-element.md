@@ -1742,6 +1742,17 @@ Bridges between ViewBehaviors and HostBehaviors, enabling a host to control View
 
 
 </td></tr>
+<tr><td>
+
+[whitespaceFilter](../fast-element.whitespacefilter/)
+
+
+</td><td>
+
+Filters out text nodes that contain only whitespace, such as the indentation between elements in markup. Note that a node containing only non-breaking spaces is considered whitespace and is filtered out as well.
+
+
+</td></tr>
 </tbody></table>
 
 ## Type Aliases

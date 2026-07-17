@@ -289,6 +289,21 @@ const template = html<SlottedExample>`
 `;
 ```
 
+Because a `<slot>` is assigned text nodes as well as elements, the indentation between elements arrives as whitespace-only text nodes. Use `whitespaceFilter` to drop those while keeping elements and meaningful text:
+
+```ts
+import { html, slotted, whitespaceFilter } from "@microsoft/fast-element";
+
+const template = html<SlottedExample>`
+  <template>
+    <slot ${slotted({
+      property: "slottedNodes",
+      filter: whitespaceFilter
+    })}></slot>
+  </template>
+`;
+```
+
 #### Flattening
 
 The configuration object also accepts a `flatten` option. By default, `slotted()` references the nodes directly assigned to the slot. Setting `flatten: true` references the slot's flattened assigned nodes instead, resolving any nested slots to their distributed content and falling back to the slot's default content when nothing is assigned. The option is passed through to the underlying [`assignedNodes()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) call.

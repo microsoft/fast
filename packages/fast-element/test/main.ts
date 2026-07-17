@@ -90,7 +90,7 @@ export { Compiler } from "../src/templating/compiler.js";
 export { HTMLBindingDirective } from "../src/templating/html-binding-directive.js";
 export { HTMLDirective, htmlDirective } from "../src/templating/html-directive.js";
 export { Markup, nextId, Parser } from "../src/templating/markup.js";
-export { elements } from "../src/templating/node-observation.js";
+export { elements, whitespaceFilter } from "../src/templating/node-observation.js";
 export {
     NodeTemplate,
     RenderBehavior,

@@ -172,6 +172,64 @@ test.describe("The slotted", () => {
             expect(result).toBe(true);
         });
 
+        test("gathers nodes from a slot with the whitespace filter", async ({ page }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { SlottedDirective, Observable, Fake, Updates, whitespaceFilter } =
+                    await import("/main.js");
+
+                class Model {
+                    nodes;
+                    reference;
+                }
+                Observable.defineProperty(Model.prototype, "nodes");
+
+                const host = document.createElement("div");
+                const slot = document.createElement("slot");
+                const shadowRoot = host.attachShadow({ mode: "open" });
+                const nodeId = "r";
+                const targets = { [nodeId]: slot };
+                shadowRoot.appendChild(slot);
+
+                host.appendChild(document.createTextNode("\n    "));
+                host.appendChild(document.createElement("foo-bar"));
+                host.appendChild(document.createTextNode("hello"));
+                host.appendChild(document.createTextNode("\n"));
+
+                const behavior = new SlottedDirective({
+                    property: "nodes",
+                    filter: whitespaceFilter,
+                });
+                behavior.targetNodeId = nodeId;
+                const model = new Model();
+                const controller = {
+                    source: model,
+                    targets,
+                    context: Fake.executionContext(),
+                    isBound: false,
+                    onUnbind() {},
+                };
+
+                behavior.bind(controller);
+
+                const describe = nodes =>
+                    nodes.map(x => (x.nodeType === 1 ? x.tagName : x.nodeValue));
+                const bound = describe(model.nodes);
+
+                host.appendChild(document.createTextNode("  \t"));
+                host.appendChild(document.createElement("foo-bar"));
+
+                await Updates.next();
+
+                return { bound, updated: describe(model.nodes) };
+            });
+
+            expect(result.bound).toEqual(["FOO-BAR", "hello"]);
+            expect(result.updated).toEqual(["FOO-BAR", "hello", "FOO-BAR"]);
+        });
+
         test("updates when slotted nodes change", async ({ page }) => {
             await page.goto("/");
 

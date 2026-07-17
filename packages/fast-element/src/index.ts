@@ -167,6 +167,7 @@ export {
     elements,
     type NodeBehaviorOptions,
     NodeObservationDirective,
+    whitespaceFilter,
 } from "./templating/node-observation.js";
 export { RefDirective, ref } from "./templating/ref.js";
 export { RenderBehavior, RenderDirective, render } from "./templating/render.js";

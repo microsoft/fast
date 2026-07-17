@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add whitespaceFilter, an ElementsFilter that removes whitespace-only text nodes from slotted and children node collections.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

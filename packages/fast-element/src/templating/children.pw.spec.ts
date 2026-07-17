@@ -29,7 +29,7 @@ test.describe("The children", () => {
                     typeof ChildrenDirective
                 >;
                 const behavior = directive.createBehavior();
-                return behavior === behavior;
+                return behavior === directive;
             });
 
             expect(isSame).toBe(true);
@@ -141,6 +141,46 @@ test.describe("The children", () => {
 
             expect(result.nodesLength).toBe(result.filteredLength);
             expect(result.allMatch).toBe(true);
+        });
+
+        test("gathers child nodes with the whitespace filter", async ({ page }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, whitespaceFilter } =
+                    await import("/main.js");
+
+                class Model {
+                    nodes: any;
+                    reference: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "nodes");
+
+                const host = document.createElement("div");
+                host.appendChild(document.createTextNode("\n    "));
+                host.appendChild(document.createElement("foo-bar"));
+                host.appendChild(document.createTextNode("hello"));
+                host.appendChild(document.createTextNode(""));
+
+                const nodeId = "r";
+                const targets = { [nodeId]: host };
+
+                const behavior = new ChildrenDirective({
+                    property: "nodes",
+                    filter: whitespaceFilter,
+                });
+                behavior.targetNodeId = nodeId;
+                const model = new Model();
+                const controller = Fake.viewController(targets, behavior);
+
+                controller.bind(model);
+
+                return model.nodes.map((x: Node) =>
+                    x.nodeType === 1 ? (x as Element).tagName : x.nodeValue,
+                );
+            });
+
+            expect(result).toEqual(["FOO-BAR", "hello"]);
         });
 
         test("updates child nodes when they change", async ({ page }) => {
