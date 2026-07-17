@@ -224,3 +224,22 @@ for (const record of bindingObserver.records()) {
   console.log(record.propertySource, record.propertyName)
 }
 ```
+
+### Short-circuited bindings
+
+A volatile binding re-collects its dependencies every time it is evaluated, and it can short-circuit before it reads any observable at all:
+
+```ts
+class MyClass {
+  isEditing = false; // not observable
+  @observable value: string;
+}
+
+// while isEditing is false, `value` is never read, so it is never observed
+const binding = (x: MyClass) => x.isEditing && x.value;
+```
+
+A binding in this state has no observable dependencies, so nothing could ever cause it to be evaluated again. Instead of leaving it stranded, the binding observer subscribes to the source itself, and any observable change on that source re-evaluates the binding. Two things follow from this:
+
+* `records()` yields nothing for such a binding, because it is not observing a specific property.
+* The subscription is coarse: the binding is re-evaluated on every observable change on the source, not just on the changes it would depend on once it stops short-circuiting. Where that matters, keep the guard observable (`@observable isEditing = false`) so the binding tracks it directly.

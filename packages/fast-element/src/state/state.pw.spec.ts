@@ -398,4 +398,39 @@ test.describe("ComputedState", () => {
         expect(shutdown).toBe(2);
         expect(calledCount).toBe(2);
     });
+    test("updates a volatile computation whose dependencies change", () => {
+        const useFirst = state(true);
+        const first = state(1);
+        const second = state(2);
+        const sut = computedState(() => () => (useFirst() ? first() : second()));
+
+        expect(sut()).toBe(1);
+
+        first.set(10);
+
+        expect(sut()).toBe(10);
+
+        useFirst.set(false);
+
+        expect(sut()).toBe(2);
+
+        second.set(20);
+
+        expect(sut()).toBe(20);
+
+        useFirst.set(true);
+
+        expect(sut()).toBe(10);
+    });
+
+    test("does not throw when a volatile computation reads no state", () => {
+        let flag = true;
+        const sut = computedState(() => () => (flag ? "on" : "off"));
+
+        expect(sut()).toBe("on");
+
+        flag = false;
+
+        expect(sut()).toBe("on");
+    });
 });

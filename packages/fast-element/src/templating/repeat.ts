@@ -199,8 +199,19 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * Handles changes in the array, its items, and the repeat template.
      * @param source - The source of the change.
      * @param args - The details about what was changed.
+     * @remarks
+     * Guards against stale notifications. An observer with a coupled source lifetime
+     * and a single dependency is not registered as an unbindable, so it can still
+     * hold subscriptions after the view unbinds. Re-binding it here would evaluate
+     * the expression against the unbound view's null source.
      */
     public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
+        // https://github.com/microsoft/fast/issues/7444
+        // This guard will be reconsidered in the next major version.
+        if (!this.controller.isBound) {
+            return;
+        }
+
         if (args === this.itemsBindingObserver) {
             this.items = this.itemsBindingObserver.bind(this.controller);
             this.observeItems();

@@ -230,6 +230,18 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 This gives FAST automatic, fine-grained dependency tracking without explicit declarations.
 
+#### The zero-dependency fallback
+
+Fine-grained tracking only works if the expression actually reads an observable. A _volatile_ expression re-collects its dependencies on every pass, and it can short-circuit (`&&`, `||`, `?.`, `?:`) before reaching one — `x => x.plainField && x.observableField` collects nothing at all while `plainField` is falsy. With no subscriptions there is nothing left to wake the expression, and the binding is dead for the rest of its life.
+
+So when a tracking pass ends with zero records, the `ExpressionNotifier` falls back to a coarse subscription: it subscribes to the _source itself_ rather than to a property of it, via `Notifier.subscribe(subscriber)` with no property name (`PropertyChangeNotifier.subjectSubscribers`). Any observable change on the source then re-evaluates the expression, which either collects real dependencies again (the fallback is dropped) or re-arms the fallback.
+
+Consequences to be aware of:
+
+-   Only sources that can hold a notifier are watched. Primitives, `null` and arrays are skipped, so an expression that short-circuits over a primitive repeat item stays dead — but such an item cannot notify anyone in the first place.
+-   The subscription is deliberately coarse. A binding parked on the fallback re-evaluates on _every_ observable change on its source, including the `isConnected` notification that `ElementController` fires on connect and disconnect. This is bounded (async updates coalesce per microtask) and only affects expressions that track no dependencies, which today can never update at all — but expressions that are static _by design_ (`when(true, template)`, `x => x.plainField ? a : b`) pay for it too.
+-   The fallback record is not a property observation, so it is not yielded by `ExpressionNotifier.records()`, and `twoWay` bindings reject it (there is no property to write back to).
+
 ---
 
 ### Bindings

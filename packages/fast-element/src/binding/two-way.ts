@@ -110,9 +110,14 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
         const bindingSource = this.directive;
         const target = event.currentTarget as HTMLElement;
         const notifier = this.notifier;
-        const last = (notifier as any).last as ObservationRecord; // using internal API!!!
+        // using internal API!!!
+        const last = (notifier as any).last as Partial<ObservationRecord> | null;
 
-        if (!last) {
+        // `last` is null when the expression observed nothing at all. It carries no
+        // propertyName when the expression short-circuited before reading an
+        // observable and the observer fell back to watching the source itself.
+        // Neither case identifies a property that the view can write back to.
+        if (!last || last.propertyName === void 0) {
             FAST.warn(Message.twoWayBindingRequiresObservables);
             return;
         }
