@@ -12,6 +12,8 @@ keywords:
   - css
   - template
   - web components
+  - content security policy
+  - nonce
 ---
 
 # CSS Templates
@@ -20,7 +22,7 @@ Custom elements are typically styled by attaching a `<style>` element to their s
 
 Styles created with `css` produce an `ElementStyles` object that FAST applies to the component's shadow root. Because the Shadow DOM encapsulates style scope, selectors authored there match only elements within the component's shadow tree, so the styles do not affect the rest of the document. When the same styles are used across many instances of a component, FAST reuses a single underlying constructable stylesheet rather than duplicating it. Unlike HTML templates, `css` templates are static and do not support binding expressions.
 
-This document describes how to author styles with the `css` function, including composing styles, partial CSS fragments, CSS directives, and changing styles at runtime.
+This document describes how to author styles with the `css` function, including composing styles, partial CSS fragments, CSS directives, changing styles at runtime, and applying styles under a Content Security Policy.
 
 ## Defining Styles
 
@@ -251,3 +253,19 @@ my-element {
 ```
 
 Because the property inherits into the shadow tree, the component picks up the consumer's value wherever it reads `var(--accent-color)`. Design token systems build on this behavior, exposing a component's customizable values as custom properties.
+
+## Styles and Content Security Policy
+
+Where the browser supports [adopted stylesheets](https://developer.mozilla.org/docs/Web/API/Document/adoptedStyleSheets) — every browser FAST supports — `ElementStyles` are applied by adopting constructed stylesheets. Those are not inline styles, so a page's [`style-src`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src) Content Security Policy directive does not apply to them, and the default path needs no configuration.
+
+A style-element strategy — selected with `withStrategy()` or `setDefaultStrategy()`, or used automatically as a fallback where adopted stylesheets are absent — creates `<style>` elements instead. Under a strict policy, a `style-src` without `'unsafe-inline'`, the browser blocks those elements unless they carry the policy's nonce. Set `ElementStyles.styleNonce` to the nonce your server emits, and FAST applies it to every `<style>` element it creates:
+
+```ts
+import { ElementStyles } from "@microsoft/fast-element";
+
+ElementStyles.styleNonce = "{nonce}";
+```
+
+`FASTElement.styleNonce` is an alias of the same value, so either may be used.
+
+The nonce is read each time styles are applied rather than when they are created. Because `css` tagged templates are usually evaluated at module scope, the nonce can be configured after those styles exist — it only needs to be set before the elements using them are connected. Setting it once at application startup is enough.

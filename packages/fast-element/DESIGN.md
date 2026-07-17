@@ -390,6 +390,15 @@ CSS during template composition, but runtime CSS bindings and style-attached
 through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles`
 itself is a static container.
 
+When styles are applied through a style-element strategy, each created
+`<style>` node is stamped with the nonce from `ElementStyles.styleNonce`
+(aliased as `FASTElement.styleNonce`), allowing those styles to load under a
+strict Content Security Policy `style-src` that omits `'unsafe-inline'`. The
+nonce is read when styles are applied — not when the `ElementStyles` is
+constructed — so an application can set it at startup even though module-scope
+`css` templates have already been evaluated. Adopted stylesheets are not
+subject to `style-src` and are unaffected.
+
 ---
 
 ### Dependency Injection (DI)
