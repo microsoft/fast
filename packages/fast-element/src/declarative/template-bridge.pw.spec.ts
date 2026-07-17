@@ -476,6 +476,83 @@ test.describe("declarativeTemplate", () => {
         expect(result.hasFastDefinition).toBe(false);
     });
 
+    test("does not render the <f-template> element", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><span>hidden</span></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {}
+
+            await TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            });
+
+            const templateElement = document.querySelector(
+                `f-template[name="${elementName}"]`,
+            )!;
+            const bounds = templateElement.getBoundingClientRect();
+
+            return {
+                display: getComputedStyle(templateElement).display,
+                height: bounds.height,
+                width: bounds.width,
+            };
+        });
+
+        expect(result.display).toBe("none");
+        expect(result.height).toBe(0);
+        expect(result.width).toBe(0);
+    });
+
+    test("does not render an <f-template> element inside a shadow root", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+            const host = document.createElement("div");
+            const shadowRoot = host.attachShadow({ mode: "open" });
+
+            shadowRoot.innerHTML = `<f-template name="${elementName}"><template><span>shadowed</span></template></f-template>`;
+            document.body.appendChild(host);
+
+            class TestElement extends FASTElement {}
+
+            await TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            });
+
+            const templateElement = shadowRoot.querySelector("f-template")!;
+
+            return {
+                display: getComputedStyle(templateElement).display,
+                height: templateElement.getBoundingClientRect().height,
+            };
+        });
+
+        expect(result.display).toBe("none");
+        expect(result.height).toBe(0);
+    });
+
     test("allows nested templates inside the authored template", async ({ page }) => {
         await page.goto("/");
 

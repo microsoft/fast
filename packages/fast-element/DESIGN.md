@@ -458,7 +458,9 @@ the imperative `html` API:
   `ViewTemplate` instances through the registry-aware declarative template
   bridge. If duplicate connected publishers share a name, the first connected
   publisher supplies the definition template and later duplicates do not
-  reassign it.
+  reassign it. Connecting an `<f-template>` adopts a `display: none` stylesheet
+  into its root node, so the authoring wrapper never generates a layout box in
+  the document or in a shadow tree.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories

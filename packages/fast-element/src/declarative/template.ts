@@ -6,6 +6,8 @@ import type {
 import { Schema } from "../components/schema.js";
 import type { Constructable } from "../interfaces.js";
 import { FAST } from "../platform.js";
+import { ElementStyles } from "../styles/element-styles.js";
+import type { StyleTarget } from "../styles/style-strategy.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
@@ -16,6 +18,8 @@ import { escapeBracesInCodeElements, transformInnerHTML } from "./utilities.js";
 const templateElementName = "f-template";
 
 const ensuredTemplateElements = new WeakMap<CustomElementRegistry, Promise<void>>();
+
+const templateElementStyles = new ElementStyles([`${templateElementName}{display:none}`]);
 
 function isTemplateElementConstructor(
     value: CustomElementConstructor | undefined,
@@ -102,6 +106,12 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
     }
 
     public connectedCallback(): void {
+        const root = this.getRootNode() as unknown as StyleTarget;
+
+        if (!templateElementStyles.isAttachedTo(root)) {
+            templateElementStyles.addStylesTo(root);
+        }
+
         declarativeTemplateBridge.registerPublisher(this.registry, this.name, this);
     }
 
