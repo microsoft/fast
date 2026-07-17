@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Export the events and titles modules so RoutingEventSink, DefaultRoutingEventSink, TitleBuilder and DefaultTitleBuilder can be used from the package entry point.",
+  "packageName": "@microsoft/fast-router",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
