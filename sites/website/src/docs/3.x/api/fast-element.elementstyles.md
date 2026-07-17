@@ -103,6 +103,27 @@ Gets the StyleStrategy associated with these element styles.
 </td></tr>
 <tr><td>
 
+[styleNonce](../fast-element.elementstyles.stylenonce/)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+string \| null
+
+
+</td><td>
+
+The nonce to apply to style elements created when styles are applied with a style element based strategy. Set this to the nonce of the page's Content Security Policy to allow the styles under a strict `style-src` that does not include `'unsafe-inline'`<!-- -->. Styles applied with adopted style sheets are not subject to `style-src` and are unaffected.
+
+
+</td></tr>
+<tr><td>
+
 [styles](../fast-element.elementstyles.styles/)
 
 

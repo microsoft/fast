@@ -1006,11 +1006,21 @@ export class StyleElementStrategy implements StyleStrategy {
 
         const styles = this.styles;
         const styleClass = this.styleClass;
+        // Read the nonce here rather than in the constructor, since styles are
+        // usually created at module scope, before an app can configure a nonce.
+        const nonce = ElementStyles.styleNonce;
 
         for (let i = 0; i < styles.length; i++) {
             const element = document.createElement("style");
             element.innerHTML = styles[i];
             element.className = styleClass;
+
+            if (nonce) {
+                // Must be set before the element is appended, since that is when
+                // the Content Security Policy is evaluated against it.
+                element.setAttribute("nonce", nonce);
+            }
+
             target.append(element);
         }
     }

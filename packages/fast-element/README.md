@@ -279,3 +279,27 @@ class MyComponent extends FASTElement {
 MyComponent.define({ name: "my-component", template, styles }, [logger()]);
 ```
 Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
+
+## Security
+
+### Content Security Policy
+
+Where the browser supports [adopted stylesheets](https://developer.mozilla.org/docs/Web/API/Document/adoptedStyleSheets), FAST Element applies component styles by adopting constructed stylesheets. Those are not inline styles, so they are not subject to the `style-src` directive and need no additional configuration.
+
+When adopted stylesheets are unavailable, styles are applied by injecting `<style>` elements instead. Under a strict Content Security Policy — a `style-src` without `'unsafe-inline'` — those elements are blocked unless they carry the policy's nonce. Set `ElementStyles.styleNonce` to the nonce your server emits and it will be applied to every `<style>` element FAST Element creates:
+
+```ts
+import { ElementStyles } from "@microsoft/fast-element";
+
+ElementStyles.styleNonce = "{nonce}";
+```
+
+`FASTElement.styleNonce` is an alias of the same value, so either may be used:
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+
+FASTElement.styleNonce = "{nonce}";
+```
+
+The nonce is read each time styles are applied rather than when they are created. Because `css` tagged templates are usually evaluated at module scope, the nonce can be configured after those styles exist — it only needs to be set before the elements using them are connected.
