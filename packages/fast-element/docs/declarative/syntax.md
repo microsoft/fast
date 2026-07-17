@@ -329,14 +329,20 @@ Attribute directives include:
     <slot f-slotted="{slottedNodes}"></slot>
     <slot f-slotted="{slottedNodes filter elements()}"></slot>
     <slot f-slotted="{slottedNodes filter elements(div, p)}"></slot>
+    <slot f-slotted="{slottedNode single filter elements()}"></slot>
     ```
+
+    The `single` token assigns the first matching node itself instead of an array, or `null` when nothing matches.
 
 - **children**
 
     Example:
     ```html
     <ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+    <ul f-children="{firstItem single filter elements(li)}"></ul>
     ```
+
+    `f-children` accepts the same `single` and `filter` options as `f-slotted`.
 
 - **ref**
 

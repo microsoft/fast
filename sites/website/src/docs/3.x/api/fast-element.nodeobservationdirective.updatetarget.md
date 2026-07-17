@@ -78,3 +78,7 @@ The nodes to assign to the source object property.
 **Returns:**
 
 void
+
+## Remarks
+
+When the `single` option is set, the first node is assigned instead of the array, or `null` when there is no first node.

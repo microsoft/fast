@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Round-trip the single and filter options of slotted and children directives through convertTemplate, and warn and drop filters the declarative grammar cannot express instead of substituting elements().",
+  "packageName": "@microsoft/fast-test-harness",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

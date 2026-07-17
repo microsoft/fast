@@ -84,4 +84,23 @@ The property to assign the observed nodes to.
 
 
 </td></tr>
+<tr><td>
+
+[single?](../fast-element.nodebehavioroptions.single/)
+
+
+</td><td>
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Assigns a single node to the property instead of an array of nodes.
+
+
+</td></tr>
 </tbody></table>

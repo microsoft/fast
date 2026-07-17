@@ -1,6 +1,6 @@
 import type { Schema } from "../components/schema.js";
 import { children } from "../templating/children.js";
-import { elements } from "../templating/node-observation.js";
+import { elements, type NodeBehaviorOptions } from "../templating/node-observation.js";
 import { ref } from "../templating/ref.js";
 import { repeat } from "../templating/repeat.js";
 import { slotted } from "../templating/slotted.js";
@@ -66,6 +66,40 @@ class StringsAccumulator {
     get previousString(): string {
         return this._previousString;
     }
+}
+
+/**
+ * Parses the option grammar shared by the `f-slotted` and `f-children` attribute
+ * directives: `{property [single] [filter elements(selector)]}`.
+ * @param expression - The directive expression, without its surrounding braces.
+ * @remarks
+ * Flags are accepted on either side of the `filter` clause, so
+ * `{logo single filter elements()}` and `{logo filter elements() single}` are
+ * equivalent.
+ */
+function parseNodeObservationOptions(expression: string): NodeBehaviorOptions {
+    const parts = expression.trim().split(" filter ");
+    const [property, ...flags] = parts[0].trim().split(/\s+/);
+    const options: NodeBehaviorOptions = { property };
+    const filterClause = parts[1];
+
+    if (filterClause?.startsWith("elements(")) {
+        const params = filterClause.replace("elements(", "");
+        const closeIndex = params.lastIndexOf(")");
+        options.filter = elements(params.substring(0, closeIndex) || undefined);
+
+        const trailing = params.substring(closeIndex + 1).trim();
+
+        if (trailing) {
+            flags.push(...trailing.split(/\s+/));
+        }
+    }
+
+    if (flags.includes("single")) {
+        options.single = true;
+    }
+
+    return options;
 }
 
 /**
@@ -232,27 +266,12 @@ export class TemplateParser {
     ): void {
         switch (name) {
             case "children": {
-                externalValues.push(children(propName));
+                externalValues.push(children(parseNodeObservationOptions(propName)));
 
                 break;
             }
             case "slotted": {
-                const parts = propName.trim().split(" filter ");
-                const slottedOption = {
-                    property: parts[0],
-                };
-
-                if (parts[1]) {
-                    if (parts[1].startsWith("elements(")) {
-                        let params = parts[1].replace("elements(", "");
-                        params = params.substring(0, params.lastIndexOf(")"));
-                        Object.assign(slottedOption, {
-                            filter: elements(params || undefined),
-                        });
-                    }
-                }
-
-                externalValues.push(slotted(slottedOption));
+                externalValues.push(slotted(parseNodeObservationOptions(propName)));
 
                 break;
             }

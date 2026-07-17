@@ -16,6 +16,18 @@ class TestElement extends FASTElement {
 
     @observable
     slottedBarNodes: Node[] = [];
+
+    @observable
+    slottedSingleNode: Element | null;
+
+    // Left uninitialized so the empty-slot bind transitions undefined -> null,
+    // which is the only way the change notification can be observed.
+    @observable
+    slottedEmptyNode: Element | null;
+
+    slottedEmptyNodeChanged() {
+        (window as any).slottedEmptyNodeNotified = true;
+    }
 }
 TestElement.define({
     name: "test-element",

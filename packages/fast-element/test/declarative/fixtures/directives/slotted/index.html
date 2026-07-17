@@ -7,18 +7,23 @@
     <body>
         <test-element><template shadowrootmode="open" shadowroot="open"><slot data-fe="1"></slot>
         <slot name="foo" data-fe="1"></slot>
-        <slot name="bar" data-fe="1"></slot></template>
+        <slot name="bar" data-fe="1"></slot>
+        <slot name="single" data-fe="1"></slot>
+        <slot name="empty" data-fe="1"></slot></template>
             <div>Slotted</div>
             Not slotted
             <ul slot="foo"><li>Item 1</li><li>Item 2</li></ul>
             <div slot="bar"></div>
             <p slot="bar"></p>
+            <button type="button" slot="single">Single</button>
         </test-element>
 <f-template name="test-element">
     <template>
         <slot f-slotted="{slottedNodes filter elements()}"></slot>
         <slot name="foo" f-slotted="{slottedFooNodes}"></slot>
         <slot name="bar" f-slotted="{slottedBarNodes filter elements(p, ol)}"></slot>
+        <slot name="single" f-slotted="{slottedSingleNode single filter elements()}"></slot>
+        <slot name="empty" f-slotted="{slottedEmptyNode single filter elements()}"></slot>
     </template>
 </f-template>
 

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add a single option to the slotted and children directives, assigning the first matching node instead of an array.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

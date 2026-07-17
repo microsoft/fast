@@ -29,7 +29,7 @@ test.describe("The children", () => {
                     typeof ChildrenDirective
                 >;
                 const behavior = directive.createBehavior();
-                return behavior === behavior;
+                return behavior === directive;
             });
 
             expect(isSame).toBe(true);
@@ -561,6 +561,292 @@ test.describe("The children", () => {
             expect(result.elementsIncludesText).toBe(false);
             expect(result.textIncludesText).toBe(true);
             expect(result.textIncludesElement).toBe(false);
+        });
+    });
+
+    test.describe("behavior with the single option", () => {
+        test("assigns a single child node rather than an array", async ({ page }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, elements } = await import(
+                    "/main.js"
+                );
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                const host = document.createElement("div");
+                const child = document.createElement("div");
+                host.appendChild(child);
+                host.appendChild(document.createElement("div"));
+
+                const behavior = new ChildrenDirective({
+                    property: "node",
+                    filter: elements(),
+                    single: true,
+                });
+                behavior.targetNodeId = "r";
+                const model = new Model();
+                const controller = Fake.viewController({ r: host }, behavior);
+
+                let didThrow = false;
+                try {
+                    controller.bind(model);
+                } catch {
+                    didThrow = true;
+                }
+
+                return {
+                    didThrow,
+                    isArray: Array.isArray(model.node),
+                    isFirstChild: model.node === child,
+                };
+            });
+
+            // `single` rides along into MutationObserver.observe(target, this.options).
+            expect(result.didThrow).toBe(false);
+            expect(result.isArray).toBe(false);
+            expect(result.isFirstChild).toBe(true);
+        });
+
+        test("assigns null and notifies when there are no children", async ({ page }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, elements } = await import(
+                    "/main.js"
+                );
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                const host = document.createElement("div");
+
+                const behavior = new ChildrenDirective({
+                    property: "node",
+                    filter: elements(),
+                    single: true,
+                });
+                behavior.targetNodeId = "r";
+                const model = new Model();
+                const controller = Fake.viewController({ r: host }, behavior);
+
+                let notifyCount = 0;
+                Observable.getNotifier(model).subscribe(
+                    { handleChange: () => notifyCount++ },
+                    "node",
+                );
+
+                controller.bind(model);
+
+                return {
+                    isNull: model.node === null,
+                    isUndefined: model.node === undefined,
+                    notifyCount,
+                };
+            });
+
+            expect(result.isNull).toBe(true);
+            expect(result.isUndefined).toBe(false);
+            expect(result.notifyCount).toBe(1);
+        });
+
+        test("assigns the first matching descendant with subtree and selector", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake } = await import("/main.js");
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                const host = document.createElement("div");
+                const wrapper = document.createElement("div");
+                host.appendChild(wrapper);
+
+                const first = document.createElement("div");
+                first.className = "item";
+                const second = document.createElement("div");
+                second.className = "item";
+                wrapper.appendChild(first);
+                wrapper.appendChild(second);
+
+                const behavior = new ChildrenDirective({
+                    property: "node",
+                    subtree: true,
+                    selector: ".item",
+                    single: true,
+                });
+                behavior.targetNodeId = "r";
+                const model = new Model();
+                const controller = Fake.viewController({ r: host }, behavior);
+
+                controller.bind(model);
+
+                return {
+                    isArray: Array.isArray(model.node),
+                    isFirst: model.node === first,
+                };
+            });
+
+            expect(result.isArray).toBe(false);
+            expect(result.isFirst).toBe(true);
+        });
+
+        test("tracks the first match across mutations without re-notifying", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, Updates, elements } =
+                    await import("/main.js");
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                const host = document.createElement("div");
+                host.appendChild(document.createElement("div"));
+
+                const behavior = new ChildrenDirective({
+                    property: "node",
+                    filter: elements(),
+                    single: true,
+                });
+                behavior.targetNodeId = "r";
+                const model = new Model();
+                const controller = Fake.viewController({ r: host }, behavior);
+
+                controller.bind(model);
+
+                let notifyCount = 0;
+                Observable.getNotifier(model).subscribe(
+                    { handleChange: () => notifyCount++ },
+                    "node",
+                );
+
+                host.appendChild(document.createElement("div"));
+
+                await Updates.next();
+
+                const afterAppend = notifyCount;
+
+                const prepended = document.createElement("div");
+                host.insertBefore(prepended, host.firstChild);
+
+                await Updates.next();
+
+                return {
+                    afterAppend,
+                    afterPrepend: notifyCount - afterAppend,
+                    isPrepended: model.node === prepended,
+                };
+            });
+
+            expect(result.afterAppend).toBe(0);
+            expect(result.afterPrepend).toBe(1);
+            expect(result.isPrepended).toBe(true);
+        });
+
+        test("treats a false or undefined single option as absent", async ({ page }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, children } = await import(
+                    "/main.js"
+                );
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                function bind(behavior: any) {
+                    const host = document.createElement("div");
+                    host.appendChild(document.createElement("div"));
+
+                    behavior.targetNodeId = "r";
+                    const model = new Model();
+                    Fake.viewController({ r: host }, behavior).bind(model);
+                    return model;
+                }
+
+                return {
+                    explicitFalse: Array.isArray(
+                        bind(new ChildrenDirective({ property: "node", single: false }))
+                            .node,
+                    ),
+                    explicitUndefined: Array.isArray(
+                        bind(
+                            new ChildrenDirective({
+                                property: "node",
+                                single: undefined,
+                            }),
+                        ).node,
+                    ),
+                    shorthand: Array.isArray(bind(children("node")).node),
+                };
+            });
+
+            expect(result.explicitFalse).toBe(true);
+            expect(result.explicitUndefined).toBe(true);
+            expect(result.shorthand).toBe(true);
+        });
+
+        test("clears to null when unbound and repopulates when rebound", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { ChildrenDirective, Observable, Fake, elements } = await import(
+                    "/main.js"
+                );
+
+                class Model {
+                    node: any;
+                }
+
+                Observable.defineProperty(Model.prototype, "node");
+
+                const host = document.createElement("div");
+                const child = document.createElement("div");
+                host.appendChild(child);
+
+                const behavior = new ChildrenDirective({
+                    property: "node",
+                    filter: elements(),
+                    single: true,
+                });
+                behavior.targetNodeId = "r";
+                const model = new Model();
+                const controller = Fake.viewController({ r: host }, behavior);
+
+                controller.bind(model);
+                const bound = model.node === child;
+
+                behavior.unbind(controller);
+                const unbound = model.node === null;
+
+                behavior.bind(controller);
+                const rebound = model.node === child;
+
+                return { bound, unbound, rebound };
+            });
+
+            expect(result.bound).toBe(true);
+            expect(result.unbound).toBe(true);
+            expect(result.rebound).toBe(true);
         });
     });
 });

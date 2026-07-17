@@ -1,3 +1,3 @@
 <f-template name="test-element">
-    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
+    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul><div f-children="{firstItem single filter elements(b)}"><i>Skip</i><b>Pick</b></div><div f-children="{trailingSingle filter elements() single}"><span>Alpha</span></div><div f-children="{emptyItem single filter elements()}"></div></template>
 </f-template>
