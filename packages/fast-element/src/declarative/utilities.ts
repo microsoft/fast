@@ -265,6 +265,30 @@ export const Operator = {
  */
 export type Operator = (typeof Operator)[keyof typeof Operator];
 
+const tagNameBoundary = /[\s/>]/;
+
+/**
+ * Get the index of the next opening tag
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param openingTag - The opening tag string
+ * @returns index
+ */
+function getIndexOfNextOpeningTag(innerHTML: string, openingTag: string): number {
+    const openingTagLength = openingTag.length;
+    let index = innerHTML.indexOf(openingTag);
+
+    // a tag name is only complete when the next character terminates it,
+    // otherwise "<f-when" matches "<f-whenever"
+    while (
+        index !== -1 &&
+        !tagNameBoundary.test(innerHTML.charAt(index + openingTagLength))
+    ) {
+        index = innerHTML.indexOf(openingTag, index + openingTagLength);
+    }
+
+    return index;
+}
+
 /**
  * Get the index of the next matching tag
  * @param openingTagStartSlice - The slice starting from the opening tag
@@ -285,7 +309,7 @@ export function getIndexOfNextMatchingTag(
     const openingTagLength = openingTag.length;
     const closingTagLength = closingTag.length;
     let nextSlice = openingTagStartSlice.slice(openingTagLength);
-    let nextOpenTag = nextSlice.indexOf(openingTag);
+    let nextOpenTag = getIndexOfNextOpeningTag(nextSlice, openingTag);
     let nextCloseTag = nextSlice.indexOf(closingTag);
     let tagOffset = openingTagStartIndex + openingTagLength;
 
@@ -301,13 +325,13 @@ export function getIndexOfNextMatchingTag(
 
             tagOffset += nextCloseTag + closingTagLength;
             nextSlice = nextSlice.slice(nextCloseTag + closingTagLength);
-            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextOpenTag = getIndexOfNextOpeningTag(nextSlice, openingTag);
             nextCloseTag = nextSlice.indexOf(closingTag);
         } else if (nextOpenTag !== -1) {
             tagCount++;
             tagOffset += nextOpenTag + openingTagLength;
             nextSlice = nextSlice.slice(nextOpenTag + openingTagLength);
-            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextOpenTag = getIndexOfNextOpeningTag(nextSlice, openingTag);
             nextCloseTag = nextSlice.indexOf(closingTag);
         }
 
@@ -326,8 +350,8 @@ export function getIndexOfNextMatchingTag(
  * @returns DirectiveBehaviorConfig - A configuration object
  */
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
-    const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
-    const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+    const whenIndex = getIndexOfNextOpeningTag(innerHTML, whenDirectiveOpen);
+    const repeatIndex = getIndexOfNextOpeningTag(innerHTML, repeatDirectiveOpen);
 
     const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
 
@@ -550,8 +574,14 @@ export function getNextBehavior(
         const currentSlice = innerHTML.slice(offset);
         // client side binding will capture all bindings starting with "{"
         const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
-        const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
-        const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
+        const whenDirectiveIndex = getIndexOfNextOpeningTag(
+            currentSlice,
+            whenDirectiveOpen,
+        );
+        const repeatDirectiveIndex = getIndexOfNextOpeningTag(
+            currentSlice,
+            repeatDirectiveOpen,
+        );
         const directiveBindingOpen =
             whenDirectiveIndex === -1
                 ? repeatDirectiveIndex
