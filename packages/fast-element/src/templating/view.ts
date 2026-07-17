@@ -230,6 +230,14 @@ export class HTMLView<TSource = any, TParent = any>
     public isBound = false;
 
     /**
+     * Indicates that the view is being torn down rather than rebound to a new
+     * source. Behaviors that own DOM or child views consult this to know when
+     * those resources can be released.
+     * @internal
+     */
+    public isUnbinding = false;
+
+    /**
      * Indicates how the source's lifetime relates to the controller's lifetime.
      */
     readonly sourceLifetime: SourceLifetime = SourceLifetime.unknown;
@@ -413,7 +421,10 @@ export class HTMLView<TSource = any, TParent = any>
             return;
         }
 
+        this.isUnbinding = true;
         this.evaluateUnbindables();
+        this.isUnbinding = false;
+
         this.source = null;
         this.context = this;
         this.isBound = false;

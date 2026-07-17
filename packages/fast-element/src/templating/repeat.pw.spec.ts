@@ -355,8 +355,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -370,6 +374,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     return removeWhitespace(toHTML(parent)) === createOutput(s);
                 }, size);
@@ -445,8 +450,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -472,6 +481,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const posCorrect = expectViewPositionToBeCorrect(behavior);
                     const htmlCorrect =
@@ -558,8 +568,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -572,6 +586,7 @@ test.describe("The repeat", () => {
                     const controller = createController(data, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const before =
                         removeWhitespace(toHTML(parent)) ===
@@ -682,8 +697,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -696,6 +715,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
                     vm.items.push({ name: "newitem" });
 
                     await Updates.next();
@@ -766,8 +786,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -780,6 +804,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
                     vm.items.reverse();
 
                     await Updates.next();
@@ -865,8 +890,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -879,6 +908,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
                     const sortAlgo = (a, b) => b.index - a.index;
                     vm.items.sort(sortAlgo);
 
@@ -979,8 +1009,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -993,6 +1027,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const index = s - 1;
                     vm.items.splice(index, 1);
@@ -1083,8 +1118,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1097,6 +1136,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.splice(0, 1);
 
@@ -1186,8 +1226,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1200,6 +1244,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const index = s - 1;
                     vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
@@ -1288,8 +1333,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1314,6 +1363,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
                     const posBefore = expectViewPositionToBeCorrect(behavior);
 
                     const index = s - 1;
@@ -1407,8 +1457,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1421,6 +1475,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const mid = Math.floor(vm.items.length / 2);
                     vm.items.splice(mid, 1, { name: "newitem1" });
@@ -1513,8 +1568,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1539,6 +1598,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
                     const posBefore = expectViewPositionToBeCorrect(behavior);
 
                     const mid = Math.floor(vm.items.length / 2);
@@ -1637,8 +1697,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1651,6 +1715,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const mid = Math.floor(vm.items.length / 2);
                     vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
@@ -1743,8 +1808,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1759,6 +1828,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const mid = Math.floor(vm.items.length / 2);
                     vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
@@ -1851,8 +1921,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1876,6 +1950,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const pos1 = expectViewPositionToBeCorrect(behavior);
 
@@ -1970,8 +2045,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -1984,6 +2063,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.splice(0, 1, { name: "newitem1" }, { name: "newitem2" });
 
@@ -2078,8 +2158,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2095,6 +2179,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const before = removeWhitespace(toHTML(parent)) === createOutput(s);
 
@@ -2169,8 +2254,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2193,6 +2282,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     const text = removeWhitespace(toHTML(parent));
 
@@ -2281,8 +2371,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2295,6 +2389,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.shift();
                     vm.items.unshift({ name: "shift" });
@@ -2385,8 +2480,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2399,6 +2498,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.shift();
                     vm.items.unshift({ name: "shift" }, { name: "shift" });
@@ -2489,8 +2589,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2503,6 +2607,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.shift();
                     vm.items.unshift({ name: "shift1" }, { name: "shift2" });
@@ -2594,8 +2699,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2608,6 +2717,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.shift();
                     vm.items.push({ name: "shift3" });
@@ -2698,8 +2808,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2712,6 +2826,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.push({ name: "shift3" });
                     vm.items.shift();
@@ -2802,8 +2917,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2816,6 +2935,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.push({ name: "shift3" });
                     vm.items.pop();
@@ -2903,8 +3023,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -2917,6 +3041,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.pop();
                     vm.items.push({ name: "shift3" });
@@ -3007,8 +3132,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -3021,6 +3150,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.pop();
                     vm.items.push({ name: "shift3" });
@@ -3112,8 +3242,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -3126,6 +3260,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.push({ name: "shift3" });
                     vm.items.pop();
@@ -3217,8 +3352,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -3231,6 +3370,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     vm.items.shift();
                     vm.items.shift();
@@ -3328,8 +3468,12 @@ test.describe("The repeat", () => {
                             },
                             source,
                             targets,
+                            isUnbinding: false,
                             unbind() {
+                                this.isUnbinding = true;
                                 unbindables.forEach(x => x.unbind(this));
+                                this.isUnbinding = false;
+                                this.isBound = false;
                             },
                         };
                     }
@@ -3342,6 +3486,7 @@ test.describe("The repeat", () => {
                     const controller = createController(vm, targets);
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     await Updates.next();
 
@@ -3350,6 +3495,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     behavior.bind(controller);
+                    controller.isBound = true;
 
                     await Updates.next();
 
