@@ -94,3 +94,7 @@ The set of changes tracked against the array.
 **Returns:**
 
 readonly [Splice](../fast-element.splice/)<!-- -->\[\]
+
+## Remarks
+
+A defined `previous` always means "deliver a reset", but its contents are only the array's previous version when the reset came from [ArrayObserver.reset()](../fast-element.arrayobserver.reset/)<!-- -->. When array observation detects an untracked mutation it has no record of the previous contents and passes a frozen, empty sentinel array instead. Treat a defined `previous` as the reset signal, do not assume it holds the previous items, and never write to it.

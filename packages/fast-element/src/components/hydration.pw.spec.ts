@@ -634,6 +634,159 @@ test.describe("The prerendered content optimization", () => {
         expect(result.spanCount).toBe(1);
     });
 
+    test("should hydrate a repeat whose array has a pending untracked length change", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const errors: string[] = [];
+        page.on("pageerror", error => errors.push(error.message));
+
+        const element = await page.evaluateHandle(async () => {
+            const {
+                ArrayObserver,
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                Observable,
+                repeat,
+                uniqueElementName,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            enableHydration();
+            ArrayObserver.enable();
+            const name = uniqueElementName();
+
+            const items = ["one", "two", "three"];
+
+            class TestElement extends FASTElement {
+                items = items;
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat((x: { items: any }) => x.items, html<string>`<span>${(x: any) => x}</span>`)}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            // Leave a drift pending against the array before the repeat ever binds.
+            // RepeatBehavior.bind() -> observeItems(true) -> subscribe() -> flush()
+            // drains it while the repeat is still outside the subscriber set, so the
+            // repeat must survive on what hydrateViews() finds in the DOM alone.
+            Observable.getNotifier(items);
+            items.length = 0;
+            items.push("only");
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span><!--fe:b-->server-one<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span><!--fe:b-->server-two<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span><!--fe:b-->server-three<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            return container.firstElementChild;
+        });
+
+        const result = await element.evaluate(async (element: any) => {
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+            };
+        });
+
+        expect(errors).toEqual([]);
+        expect(result.text).toBe("only");
+        expect(result.spanCount).toBe(1);
+    });
+
+    test("should not reset prerendered repeat views for a tracked mutation", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const element = await page.evaluateHandle(async () => {
+            const {
+                enableHydration,
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                repeat,
+                uniqueElementName,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            enableHydration();
+            const name = uniqueElementName();
+
+            class TestElement extends FASTElement {
+                items = ["one", "two", "three"];
+
+                static definition = {
+                    name,
+                    template: html<TestElement>`
+                        ${repeat(
+                            (x: { items: any }) => x.items,
+                            html<string>`<span>${(x: any) => x}</span>`,
+                            // recycle: false forces refreshAllViews() to dispose every
+                            // view and rebuild it from the template. Under the default
+                            // (recycle: true) a reset of a non-empty array quietly
+                            // rebinds the existing views in place, so the prerendered
+                            // nodes would survive a reset and the assertions below
+                            // could not tell a reset from an incremental splice.
+                            { recycle: false },
+                        )}
+                    `,
+                };
+            }
+
+            await (await FASTElementDefinition.compose(TestElement)).define();
+
+            const container = document.createElement("div");
+            document.body.appendChild(container);
+            // The prerendered spans carry an attribute the template never renders, so
+            // it survives only for as long as the original DOM does.
+            (container as any).setHTMLUnsafe(
+                `<${name}><template shadowrootmode="open"><!--fe:b--><!--fe:r--><span data-ssr><!--fe:b-->one<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span data-ssr><!--fe:b-->two<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span data-ssr><!--fe:b-->three<!--fe:/b--></span><!--fe:/r--><!--fe:/b--></template></${name}>`,
+            );
+
+            return container.firstElementChild;
+        });
+
+        const result = await element.evaluate(async (element: any) => {
+            await element.$fastController.isHydrated;
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            // A tracked mutation. It queues a splice, so the flush runs the length
+            // compare for real: the predicted length (3 + 1) has to match the actual
+            // length (4) or drift detection wrongly reports a reset. A reset would run
+            // refreshAllViews(), and with recycle: false that disposes all three
+            // prerendered views and rebuilds four fresh ones from the template —
+            // dropping every data-ssr attribute. An incremental splice creates exactly
+            // one new view and leaves the prerendered DOM alone.
+            element.items.push("four");
+
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                text: element.shadowRoot?.textContent?.replace(/\s+/g, "") ?? "",
+                spanCount: element.shadowRoot?.querySelectorAll("span").length ?? 0,
+                prerenderedCount:
+                    element.shadowRoot?.querySelectorAll("span[data-ssr]").length ?? 0,
+            };
+        });
+
+        expect(result.text).toBe("onetwothreefour");
+        expect(result.spanCount).toBe(4);
+        expect(result.prerenderedCount).toBe(3);
+    });
+
     test("HydrationBindingError emits a minimal message when the debugger is not installed", async ({
         page,
     }) => {

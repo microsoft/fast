@@ -71,16 +71,33 @@ export const conditionalTimeout = function (
         }, 5);
     });
 };
+export const recordArrayChanges = function (target: string[], changes: any[]): void {
+    for (const change of changes) {
+        target.push(
+            change.reset
+                ? "RESET"
+                : change.sorted
+                  ? "SORT"
+                  : `spl(i=${change.index},-${change.removed.length},+${change.addedCount})`,
+        );
+    }
+};
 export { Binding } from "../src/binding/binding.js";
 export { oneTime } from "../src/binding/one-time.js";
 export { listener, oneWay } from "../src/binding/one-way.js";
 export { Signal, signal } from "../src/binding/signal.js";
 export { twoWay } from "../src/binding/two-way.js";
-export { Schema } from "../src/components/schema.js";
+export { defsPropertyName, Schema, schemaRegistry } from "../src/components/schema.js";
 export { AttributeMap } from "../src/declarative/attribute-map.js";
+export { ObserverMap } from "../src/declarative/observer-map.js";
 export { isString } from "../src/interfaces.js";
 export { Metadata } from "../src/metadata.js";
-export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
+export {
+    ArrayObserver,
+    lengthOf,
+    Splice,
+    SpliceStrategy,
+} from "../src/observation/arrays.js";
 export { ExecutionContext } from "../src/observation/observable.js";
 export { emptyArray, FAST } from "../src/platform.js";
 export { ownedState, reactive, state, watch } from "../src/state/exports.js";

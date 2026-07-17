@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Deliver an array reset when an array's length is changed without a tracked mutation (e.g. `array.length = 0`), so repeat no longer renders stale items, and react to reset splices in the observer map so items added during such a change are still made observable.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

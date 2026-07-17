@@ -630,6 +630,982 @@ test.describe("The ArrayObserver", () => {
     });
 });
 
+// An array's `length` is a non-configurable own property, so array observation cannot
+// trap it. Mutations such as `array.length = 0` therefore record no splices. The
+// observer detects the resulting length drift at flush time and converts the whole
+// change set into a reset.
+test.describe("The ArrayObserver with untracked length changes", () => {
+    test("delivers a reset when the array is cleared with length = 0 and then refilled", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 0;
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("delivers a reset when an untracked truncation follows a tracked mutation", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const { notifications, length } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                lengthOf,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.push("new");
+            array.length = 0;
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return { notifications, length: lengthOf(array) };
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+        expect(length).toBe(0);
+    });
+
+    test("delivers a reset when length is truncated to a non-zero value", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 2;
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("delivers a reset when length grows, creating holes", async ({ page }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 5;
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("delivers a reset for an out-of-bounds index write", async ({ page }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array[10] = "x";
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("delivers a reset rather than a sort when a sort accompanies drift", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [3, 1, 2];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 1;
+            array.sort();
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("delivers exactly one reset for several untracked and tracked changes in a tick", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 3;
+            array.push("a");
+            array.length = 1;
+            array.push("b");
+            array.unshift("c");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET"]);
+    });
+
+    test("returns to incremental splices on the ticks following a reset", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            // Tick one: drift, so a reset.
+            array.length = 1;
+            array.push("a");
+            await Updates.next();
+
+            // Tick two: a plain tracked mutation, so an incremental splice. A broken
+            // implementation leaves the baseline stale here and resets forever.
+            array.push("b");
+            await Updates.next();
+
+            // Tick three: likewise.
+            array.pop();
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 2),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET", "spl(i=2,-0,+1)", "spl(i=2,-1,+0)"]);
+    });
+
+    test("routes the reset through a custom SpliceStrategy's normalize", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                Splice,
+                SpliceStrategy,
+                Updates,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            // A strategy that owns its own reset payload. `support: reset` strategies
+            // are free to record splices purely as bookkeeping markers, so the drift
+            // path must hand the reset back to normalize() rather than short-circuit
+            // to the built-in reset splices.
+            const customReset = new Splice(0, [], 0);
+            customReset.reset = true;
+            (customReset as any).customMarker = true;
+
+            SpliceStrategy.setDefaultStrategy({
+                support: 1,
+                normalize(previous: any, current: any, changes: any) {
+                    return previous === void 0 ? (changes ?? []) : [customReset];
+                },
+                pop: (array: any, o: any, pop: any, args: any) => pop.apply(array, args),
+                push(array: any, observer: any, push: any, args: any) {
+                    const result = push.apply(array, args);
+                    observer.addSplice(
+                        new Splice(array.length - args.length, [], args.length),
+                    );
+                    return result;
+                },
+                reverse: (array: any, o: any, reverse: any, args: any) =>
+                    reverse.apply(array, args),
+                shift: (array: any, o: any, shift: any, args: any) =>
+                    shift.apply(array, args),
+                sort: (array: any, o: any, sort: any, args: any) =>
+                    sort.apply(array, args),
+                splice: (array: any, o: any, splice: any, args: any) =>
+                    splice.apply(array, args),
+                unshift: (array: any, o: any, unshift: any, args: any) =>
+                    unshift.apply(array, args),
+            });
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            let delivered: any;
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    delivered = args;
+                },
+            });
+
+            array.length = 0;
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(delivered !== void 0),
+            ]);
+
+            return {
+                count: delivered?.length ?? 0,
+                isCustom: delivered?.[0]?.customMarker === true,
+                isReset: delivered?.[0]?.reset === true,
+            };
+        });
+
+        expect(result).toEqual({ count: 1, isCustom: true, isReset: true });
+    });
+
+    test("delivers a pending drift reset synchronously when lengthOf first subscribes", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, lengthOf, Observable, recordArrayChanges } =
+                await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.length = 0;
+            array.push("new");
+
+            // The lengthObserver getter subscribes, and DefaultArrayObserver.subscribe
+            // flushes synchronously — so the pending drift is drained here, inside what
+            // would be a binding evaluation.
+            const length = lengthOf(array);
+
+            return { notifications, length };
+        });
+
+        expect(result.notifications).toEqual(["RESET"]);
+        expect(result.length).toBe(1);
+    });
+
+    test("does not reset when a subscriber mutates the array from handleChange", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+
+                    // Re-entrant mutation: queues its own splice against the next flush.
+                    // The baseline must already account for it or this looks like drift.
+                    if (notifications.length === 1) {
+                        array.push("re-entrant");
+                    }
+                },
+            });
+
+            array.push("first");
+
+            await Updates.next();
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 1),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["spl(i=3,-0,+1)", "spl(i=4,-0,+1)"]);
+    });
+
+    test("does not reset for an untracked change made before the observer existed", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3];
+            array.length = 0;
+
+            // The baseline is captured here, so the clear above is ancient history.
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["spl(i=0,-0,+1)"]);
+    });
+
+    test("does not reset when an observer is created on an empty array", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array: any[] = [];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            array.push("new");
+
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["spl(i=0,-0,+1)"]);
+    });
+
+    test("delivers the same single reset to every subscriber", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3, 4, 5];
+            const observer = Observable.getNotifier(array);
+            const first: string[] = [];
+            const second: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(first, args);
+                },
+            });
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(second, args);
+                },
+            });
+
+            array.length = 0;
+            array.push("new");
+
+            await Promise.race([Updates.next(), conditionalTimeout(first.length > 0)]);
+
+            return { first, second };
+        });
+
+        expect(result.first).toEqual(["RESET"]);
+        expect(result.second).toEqual(["RESET"]);
+    });
+
+    test("skips drift detection for an explicit reset but still refreshes the baseline", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array = [1, 2, 3];
+            const observer = Observable.getNotifier(array) as any;
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            // An explicit reset already routes through normalize(); drift must not
+            // hijack it, and the baseline must still be brought up to date.
+            array.length = 1;
+            observer.reset([1, 2, 3]);
+            await Updates.next();
+
+            // A plain tracked mutation now — proof the baseline was refreshed.
+            array.push("b");
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 1),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["RESET", "spl(i=1,-0,+1)"]);
+    });
+
+    // A false-positive drift is far more damaging than a missed one: it forces
+    // repeat to tear down and rebuild every view. Every tracked mutation the default
+    // strategy records must predict the array's real length exactly.
+    for (const scenario of [
+        { title: "a push", method: "push", args: [6] },
+        { title: "a push with no arguments", method: "push", args: [] },
+        { title: "a pop", method: "pop", args: [] },
+        { title: "a shift", method: "shift", args: [] },
+        { title: "an unshift", method: "unshift", args: [0] },
+        { title: "a splice", method: "splice", args: [1, 2, "a"] },
+        {
+            title: "a splice with a deleteCount past the end",
+            method: "splice",
+            args: [1, 999],
+        },
+        {
+            title: "a splice with a negative index",
+            method: "splice",
+            args: [-2, 1, "a", "b"],
+        },
+        { title: "a splice with no arguments", method: "splice", args: [] },
+    ]) {
+        test(`does not reset for ${scenario.title}`, async ({ page }) => {
+            await page.goto("/");
+
+            const notifications = await page.evaluate(
+                async ({ method, args }) => {
+                    // @ts-expect-error: Client module.
+                    const {
+                        ArrayObserver,
+                        conditionalTimeout,
+                        Observable,
+                        recordArrayChanges,
+                        Updates,
+                    } = await import("/main.js");
+
+                    ArrayObserver.enable();
+
+                    const array: any[] = [1, 2, 3, 4, 5];
+                    const observer = Observable.getNotifier(array);
+                    const notifications: string[] = [];
+
+                    observer.subscribe({
+                        handleChange(source: any, args: any) {
+                            recordArrayChanges(notifications, args);
+                        },
+                    });
+
+                    (array as any)[method](...args);
+
+                    await Promise.race([
+                        Updates.next(),
+                        conditionalTimeout(notifications.length > 0),
+                    ]);
+
+                    return notifications;
+                },
+                { method: scenario.method, args: scenario.args },
+            );
+
+            expect(notifications).not.toContain("RESET");
+        });
+    }
+
+    for (const scenario of [
+        { title: "a sort", method: "sort", args: [] },
+        { title: "a reverse", method: "reverse", args: [] },
+    ]) {
+        test(`still delivers a sort, not a reset, for ${scenario.title}`, async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const notifications = await page.evaluate(
+                async ({ method, args }) => {
+                    // @ts-expect-error: Client module.
+                    const {
+                        ArrayObserver,
+                        conditionalTimeout,
+                        Observable,
+                        recordArrayChanges,
+                        Updates,
+                    } = await import("/main.js");
+
+                    ArrayObserver.enable();
+
+                    const array: any[] = [3, 1, 2];
+                    const observer = Observable.getNotifier(array);
+                    const notifications: string[] = [];
+
+                    observer.subscribe({
+                        handleChange(source: any, args: any) {
+                            recordArrayChanges(notifications, args);
+                        },
+                    });
+
+                    (array as any)[method](...args);
+
+                    await Promise.race([
+                        Updates.next(),
+                        conditionalTimeout(notifications.length > 0),
+                    ]);
+
+                    return notifications;
+                },
+                { method: scenario.method, args: scenario.args },
+            );
+
+            expect(notifications).toEqual(["SORT"]);
+        });
+    }
+
+    test("does not notify or drift when popping and shifting an empty array", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const notifications = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                ArrayObserver,
+                conditionalTimeout,
+                Observable,
+                recordArrayChanges,
+                Updates,
+            } = await import("/main.js");
+
+            ArrayObserver.enable();
+
+            const array: any[] = [];
+            const observer = Observable.getNotifier(array);
+            const notifications: string[] = [];
+
+            observer.subscribe({
+                handleChange(source: any, args: any) {
+                    recordArrayChanges(notifications, args);
+                },
+            });
+
+            // The strategy records no splice at all for these, so nothing enqueues.
+            array.pop();
+            array.shift();
+            await Updates.next();
+
+            // The next real mutation must still be an ordinary splice.
+            array.push("new");
+            await Promise.race([
+                Updates.next(),
+                conditionalTimeout(notifications.length > 0),
+            ]);
+
+            return notifications;
+        });
+
+        expect(notifications).toEqual(["spl(i=0,-0,+1)"]);
+    });
+
+    // Length-drift detection recovers the cases it can see: a mutation that changes
+    // the array's length by an amount the queued splices do not account for. These
+    // tests pin the cases it deliberately cannot see, so that the boundary is a
+    // decision on record rather than an accident. Closing any of them requires a Proxy
+    // or more method patching, and would turn one of these red.
+    test.describe("the limits of length-drift detection", () => {
+        test("stays silent for an untracked length change with nothing else queued", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const notifications = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    ArrayObserver,
+                    conditionalTimeout,
+                    Observable,
+                    recordArrayChanges,
+                    Updates,
+                } = await import("/main.js");
+
+                ArrayObserver.enable();
+
+                const array = [1, 2, 3, 4, 5];
+                const observer = Observable.getNotifier(array);
+                const notifications: string[] = [];
+
+                observer.subscribe({
+                    handleChange(source: any, args: any) {
+                        recordArrayChanges(notifications, args);
+                    },
+                });
+
+                // Assigning length records no splice, so nothing enqueues a flush and
+                // the length compare never gets to run. Drift is only ever noticed on
+                // a flush some other, tracked mutation asked for.
+                array.length = 0;
+
+                await Promise.race([
+                    Updates.next(),
+                    conditionalTimeout(notifications.length > 0),
+                ]);
+
+                return notifications;
+            });
+
+            expect(notifications).toEqual([]);
+        });
+
+        test("delivers the tracked splice when untracked length changes cancel out in a tick", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const notifications = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    ArrayObserver,
+                    conditionalTimeout,
+                    Observable,
+                    recordArrayChanges,
+                    Updates,
+                } = await import("/main.js");
+
+                ArrayObserver.enable();
+
+                const array = [1, 2, 3, 4, 5];
+                const observer = Observable.getNotifier(array);
+                const notifications: string[] = [];
+
+                observer.subscribe({
+                    handleChange(source: any, args: any) {
+                        recordArrayChanges(notifications, args);
+                    },
+                });
+
+                // The truncation and the regrowth cancel out, so the array's length
+                // still matches what the queued push predicts and no drift is seen.
+                // The five original items are gone — replaced by holes — but the
+                // subscriber is told only about the push.
+                array.length = 0;
+                array.length = 5;
+                array.push("x");
+
+                await Promise.race([
+                    Updates.next(),
+                    conditionalTimeout(notifications.length > 0),
+                ]);
+
+                return notifications;
+            });
+
+            expect(notifications).toEqual(["spl(i=5,-0,+1)"]);
+        });
+
+        test("stays silent for delete, in-bounds index writes, and fill", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const notifications = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    ArrayObserver,
+                    conditionalTimeout,
+                    Observable,
+                    recordArrayChanges,
+                    Updates,
+                } = await import("/main.js");
+
+                ArrayObserver.enable();
+
+                const array = [1, 2, 3, 4, 5];
+                const observer = Observable.getNotifier(array);
+                const notifications: string[] = [];
+
+                observer.subscribe({
+                    handleChange(source: any, args: any) {
+                        recordArrayChanges(notifications, args);
+                    },
+                });
+
+                // None of these are patched methods and none of them change the
+                // array's length, so there is no splice to queue and no drift to see.
+                delete array[1];
+                array[0] = "x";
+                array.fill(0);
+
+                await Promise.race([
+                    Updates.next(),
+                    conditionalTimeout(notifications.length > 0),
+                ]);
+
+                return notifications;
+            });
+
+            expect(notifications).toEqual([]);
+        });
+    });
+});
+
 test.describe("The array length observer", () => {
     class Model {
         items: any[];

@@ -283,6 +283,29 @@ function isSameArrayObserverContext(
     );
 }
 
+function proxyArrayItemRange(
+    registration: ArrayObserverRegistration,
+    subject: any,
+    startIndex: number,
+    endIndex: number,
+): void {
+    for (let i = endIndex - 1; i >= startIndex; i--) {
+        const item = subject[i];
+        const originalItem = Object.assign({}, item);
+
+        assignProxyToItemsInArray(
+            item,
+            originalItem,
+            registration.schema,
+            registration.rootSchema,
+            registration.target,
+            registration.rootProperty,
+        );
+
+        Object.assign(item, originalItem);
+    }
+}
+
 function handleArrayChange(
     registration: ArrayObserverRegistration,
     subject: any,
@@ -296,23 +319,24 @@ function handleArrayChange(
     const schemaProperties = getSchemaProperties(registration.schema);
 
     args.forEach((arg: any) => {
-        if (arg.addedCount > 0) {
+        if (arg.reset) {
+            // A reset carries no index or addedCount: the array observer is telling
+            // us it cannot describe what changed, so every item has to be treated as
+            // new. Skipping this leaves items added during the resetting tick without
+            // observable accessors, and later edits to them go unnoticed.
             if (schemaProperties) {
-                for (let i = arg.addedCount - 1; i >= 0; i--) {
-                    const item = subject[arg.index + i];
-                    const originalItem = Object.assign({}, item);
+                proxyArrayItemRange(registration, subject, 0, subject.length);
+            }
 
-                    assignProxyToItemsInArray(
-                        item,
-                        originalItem,
-                        registration.schema,
-                        registration.rootSchema,
-                        registration.target,
-                        registration.rootProperty,
-                    );
-
-                    Object.assign(item, originalItem);
-                }
+            notifyArrayRegistration(registration);
+        } else if (arg.addedCount > 0) {
+            if (schemaProperties) {
+                proxyArrayItemRange(
+                    registration,
+                    subject,
+                    arg.index,
+                    arg.index + arg.addedCount,
+                );
             }
 
             notifyArrayRegistration(registration);

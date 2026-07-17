@@ -709,6 +709,73 @@ test.describe("The repeat", () => {
             });
         }
 
+        test("removes rendered HTML for items dropped by setting length to zero", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                const {
+                    Fake,
+                    html,
+                    Observable,
+                    removeWhitespace,
+                    repeat,
+                    toHTML,
+                    Updates,
+                    // @ts-expect-error: Client module.
+                } = await import("/main.js");
+
+                const itemTemplate = html`
+                    ${x => x.name}
+                `;
+
+                class ViewModel {
+                    items = [{ name: "item1" }, { name: "item2" }, { name: "item3" }];
+                }
+                Observable.defineProperty(ViewModel.prototype, "items");
+
+                const parent = document.createElement("div");
+                const location = document.createComment("");
+                const nodeId = "r";
+                const targets = { [nodeId]: location };
+                parent.appendChild(location);
+
+                const unbindables: any[] = [];
+                const vm = new ViewModel();
+                const controller = {
+                    isBound: false,
+                    context: Fake.executionContext(),
+                    onUnbind(object: any) {
+                        unbindables.push(object);
+                    },
+                    source: vm,
+                    targets,
+                    unbind() {
+                        unbindables.forEach(x => x.unbind(this));
+                    },
+                };
+
+                const directive = repeat((x: any) => x.items, itemTemplate);
+                directive.targetNodeId = nodeId;
+                const behavior = directive.createBehavior();
+
+                behavior.bind(controller);
+
+                // The mainstream idiom for clearing an array. `length` cannot be
+                // trapped, so this records no splice; the push is what enqueues the
+                // flush that has to notice the array shrank.
+                vm.items.length = 0;
+                vm.items.push({ name: "newitem" });
+
+                await Updates.next();
+
+                return removeWhitespace(toHTML(parent));
+            });
+
+            expect(result).toBe("newitem");
+        });
+
         for (const size of oneThroughTen) {
             test(`updates rendered HTML when items are reversed in an array of size ${size}`, async ({
                 page,
