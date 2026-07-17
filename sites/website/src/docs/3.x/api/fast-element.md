@@ -647,6 +647,17 @@ Enables observing the sorted property of an array.
 </td></tr>
 <tr><td>
 
+[svg(strings, values)](../fast-element.svg/)
+
+
+</td><td>
+
+Transforms a template literal string into a ViewTemplate whose content is created in the SVG namespace.
+
+
+</td></tr>
+<tr><td>
+
 [twoWay(expression, optionsOrChangeEvent, policy, isBindingVolatile)](../fast-element.twoway/)
 
 

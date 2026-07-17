@@ -26,7 +26,7 @@ Aspect detection happens here too: the `lastAttributeNameRegex` checks whether t
 **Signature:**
 
 ```typescript
-static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
+static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy, isSVG?: boolean): ViewTemplate<TSource, TParent>;
 ```
 
 ## Parameters
@@ -92,6 +92,22 @@ policy
 </td><td>
 
 _(Optional)_ The DOMPolicy to associated with the template.
+
+
+</td></tr>
+<tr><td>
+
+isSVG
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_ Whether the template's html must be parsed in the SVG namespace.
 
 
 </td></tr>

@@ -20,7 +20,7 @@ Creates an instance of ViewTemplate.
 **Signature:**
 
 ```typescript
-constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
+constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined, isSVG?: boolean);
 ```
 
 ## Parameters
@@ -86,6 +86,22 @@ policy
 </td><td>
 
 _(Optional)_ The security policy to use when compiling this template.
+
+
+</td></tr>
+<tr><td>
+
+isSVG
+
+
+</td><td>
+
+boolean
+
+
+</td><td>
+
+_(Optional)_
 
 
 </td></tr>

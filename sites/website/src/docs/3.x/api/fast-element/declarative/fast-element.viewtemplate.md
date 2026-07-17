@@ -44,7 +44,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)(html, factories, policy)](../fast-element.viewtemplate._constructor_/)
+[(constructor)(html, factories, policy, isSVG)](../fast-element.viewtemplate._constructor_/)
 
 
 </td><td>
@@ -159,7 +159,7 @@ Creates an HTMLView instance based on this template definition.
 </td></tr>
 <tr><td>
 
-[create(strings, values, policy)](../fast-element.viewtemplate.create/)
+[create(strings, values, policy, isSVG)](../fast-element.viewtemplate.create/)
 
 
 </td><td>

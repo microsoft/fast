@@ -52,7 +52,7 @@ export { volatile } from "../src/observation/volatile.js";
 export { css } from "../src/styles/css.js";
 export { ElementStyles } from "../src/styles/element-styles.js";
 export { ref } from "../src/templating/ref.js";
-export { html } from "../src/templating/template.js";
+export { html, svg } from "../src/templating/template.js";
 export { Fake } from "../src/testing/fakes.js";
 export { uniqueElementName } from "../src/testing/fixture.js";
 export { ChildModel, DerivedModel, Model } from "../src/testing/models.js";

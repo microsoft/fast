@@ -1,6 +1,7 @@
 import { Binding } from "../binding/binding.js";
 import { oneTime } from "../binding/one-time.js";
 import { oneWay } from "../binding/one-way.js";
+import { DOM } from "../dom.js";
 import type { DOMPolicy } from "../dom-policy.js";
 import { isFunction, isString, Message } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
@@ -121,6 +122,27 @@ export type TemplateValue<TSource, TParent = any> =
 const noFactories = Object.create(null);
 
 /**
+ * Parses html in the SVG namespace by round-tripping it through an svg element,
+ * which the HTML fragment parser uses to switch namespaces. The parsed nodes keep
+ * their namespace when the wrapper is removed.
+ */
+function createSVGTemplateElement(html: string, policy: DOMPolicy): HTMLTemplateElement {
+    const template = document.createElement("template");
+    template.innerHTML = policy.createHTML(`<svg>${html}</svg>`);
+
+    const content = template.content;
+    const wrapper = content.firstElementChild!;
+
+    while (wrapper.firstChild) {
+        content.insertBefore(wrapper.firstChild, wrapper);
+    }
+
+    content.removeChild(wrapper);
+
+    return template;
+}
+
+/**
  * Inlines a template into another template.
  * @public
  */
@@ -203,6 +225,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         html: string | HTMLTemplateElement,
         factories: Record<string, ViewBehaviorFactory> = {},
         private policy?: DOMPolicy,
+        private isSVG: boolean = false,
     ) {
         this.html = html;
         this.factories = factories;
@@ -214,7 +237,9 @@ export class ViewTemplate<TSource = any, TParent = any>
     public compile() {
         if (this.result === null) {
             this.result = Compiler.compile<TSource, TParent>(
-                this.html,
+                this.isSVG && isString(this.html)
+                    ? createSVGTemplateElement(this.html, this.policy ?? DOM.policy)
+                    : this.html,
                 this.factories,
                 this.policy,
             );
@@ -303,6 +328,7 @@ export class ViewTemplate<TSource = any, TParent = any>
      * @param strings - The static strings to create the template with.
      * @param values - The dynamic values to create the template with.
      * @param policy - The DOMPolicy to associated with the template.
+     * @param isSVG - Whether the template's html must be parsed in the SVG namespace.
      * @returns A ViewTemplate.
      * @remarks
      * This API should not be used directly under normal circumstances because constructing
@@ -315,6 +341,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         strings: string[],
         values: TemplateValue<TSource, TParent>[],
         policy?: DOMPolicy,
+        isSVG: boolean = false,
     ): ViewTemplate<TSource, TParent> {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
@@ -354,6 +381,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             html + strings[strings.length - 1],
             factories,
             policy,
+            isSVG,
         );
     }
 }
@@ -403,4 +431,31 @@ export const html: HTMLTemplateTag = (<TSource = any, TParent = any>(
 
 html.partial = (html: string): InlineTemplateDirective => {
     return new InlineTemplateDirective(html);
+};
+
+/**
+ * Transforms a template literal string into a ViewTemplate whose content is
+ * created in the SVG namespace.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * Use this in place of the html helper for any template whose root nodes are SVG
+ * elements rendered inside an `svg` element, such as the item template of a repeat
+ * directive. The template must not include the `svg` element itself.
+ * @public
+ */
+export const svg = <TSource = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TSource, TParent>[]
+): ViewTemplate<TSource, TParent> => {
+    if (Array.isArray(strings) && Array.isArray(strings.raw)) {
+        return ViewTemplate.create(
+            strings as any as string[],
+            values,
+            undefined,
+            /* isSVG */ true,
+        );
+    }
+
+    throw FAST.error(Message.directCallToHTMLTagNotAllowed);
 };
