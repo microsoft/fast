@@ -10,6 +10,7 @@ export {
     AttributeMap,
     attributeMap,
 } from "@microsoft/fast-element/attribute-map.js";
+export { Observable } from "@microsoft/fast-element/observable.js";
 export {
     ObserverMap,
     observerMap,
