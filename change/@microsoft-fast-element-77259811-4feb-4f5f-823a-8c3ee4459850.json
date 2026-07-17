@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add strict, quote-aware event argument parsing with string, number, boolean and null literal support to declarative event bindings.",
+  "packageName": "@microsoft/fast-element",
+  "email": "144495202+AKnassa@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

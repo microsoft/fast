@@ -18,7 +18,7 @@ import {
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    parseEventArgs,
+    parseEventHandler,
     type TemplateDirectiveBehaviorConfig,
 } from "./utilities.js";
 
@@ -318,14 +318,7 @@ export class TemplateParser {
             behaviorConfig.openingEndIndex,
             behaviorConfig.closingStartIndex,
         );
-        const openingParenthesis = bindingHTML.indexOf("(");
-        const closingParenthesis = bindingHTML.indexOf(")");
-        const propName = innerHTML.slice(
-            behaviorConfig.openingEndIndex,
-            behaviorConfig.closingStartIndex -
-                (closingParenthesis - openingParenthesis) -
-                1,
-        );
+        const { name: propName, args: parsedArgs } = parseEventHandler(bindingHTML);
         const type = "event";
         rootPropertyName = getRootPropertyName(
             rootPropertyName,
@@ -333,7 +326,6 @@ export class TemplateParser {
             context.parentContext,
             type,
         );
-        const argsString = bindingHTML.slice(openingParenthesis + 1, closingParenthesis);
         const previousString = strings.previousString;
         const resolved = bindingResolver(
             previousString,
@@ -353,8 +345,6 @@ export class TemplateParser {
               }
             : (x: any, _c: any) => x;
 
-        const parsedArgs = parseEventArgs(argsString);
-
         const argResolvers = parsedArgs.map((parsedArg): ((x: any, c: any) => any) => {
             switch (parsedArg.type) {
                 case "event":
@@ -372,6 +362,10 @@ export class TemplateParser {
                         context.parentContext,
                         context.level,
                     );
+                default: {
+                    const { value } = parsedArg;
+                    return () => value;
+                }
             }
         });
 
