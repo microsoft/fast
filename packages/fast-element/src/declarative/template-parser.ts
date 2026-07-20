@@ -220,6 +220,29 @@ export class TemplateParser {
     }
 
     /**
+     * Parses a directive attribute value that may include a " filter elements(...)" suffix.
+     * Returns an options object with `property` and, when a filter is specified, `filter`.
+     * Shared by the `children` and `slotted` directive cases.
+     */
+    private parseNodeDirectiveOptions(propName: string): {
+        property: string;
+        filter?: ReturnType<typeof elements>;
+    } {
+        const parts = propName.trim().split(" filter ");
+        const options: { property: string; filter?: ReturnType<typeof elements> } = {
+            property: parts[0],
+        };
+
+        if (parts[1]?.startsWith("elements(")) {
+            const inner = parts[1].slice("elements(".length);
+            const params = inner.substring(0, inner.lastIndexOf(")"));
+            options.filter = elements(params || undefined);
+        }
+
+        return options;
+    }
+
+    /**
      * Resolve an attribute directive (children/slotted/ref).
      * @param name - The name of the directive.
      * @param propName - The property name to pass to the directive.
@@ -232,27 +255,17 @@ export class TemplateParser {
     ): void {
         switch (name) {
             case "children": {
-                externalValues.push(children(propName));
+                const options = this.parseNodeDirectiveOptions(propName);
+                externalValues.push(
+                    options.filter !== undefined
+                        ? children(options)
+                        : children(options.property),
+                );
 
                 break;
             }
             case "slotted": {
-                const parts = propName.trim().split(" filter ");
-                const slottedOption = {
-                    property: parts[0],
-                };
-
-                if (parts[1]) {
-                    if (parts[1].startsWith("elements(")) {
-                        let params = parts[1].replace("elements(", "");
-                        params = params.substring(0, params.lastIndexOf(")"));
-                        Object.assign(slottedOption, {
-                            filter: elements(params || undefined),
-                        });
-                    }
-                }
-
-                externalValues.push(slotted(slottedOption));
+                externalValues.push(slotted(this.parseNodeDirectiveOptions(propName)));
 
                 break;
             }
