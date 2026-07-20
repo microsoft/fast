@@ -678,6 +678,49 @@ test.describe("declarativeTemplate", () => {
         expect(result.shadowText).toContain("reconnected");
     });
 
+    test("applies element filters to declarative f-children directives", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+
+            const elementName = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${elementName}"><template><ul f-children="{allChildren filter elements()}">Text node<f-repeat value="{{item in items}}"><li>{{item}}</li></f-repeat></ul><div f-children="{filteredChildren filter elements(span)}"><span>Included</span><button>Ignored</button>Text node</div></template></f-template>`,
+            );
+
+            class TestElement extends FASTElement {
+                public items = ["Foo", "Bar"];
+                public allChildren: Node[] = [];
+                public filteredChildren: Node[] = [];
+            }
+
+            await TestElement.define({
+                name: elementName,
+                template: declarativeTemplate(),
+            });
+
+            const element = document.createElement(elementName) as TestElement;
+            document.body.appendChild(element);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+
+            return {
+                allChildrenTags: element.allChildren.map(node => node.nodeName),
+                filteredChildrenTags: element.filteredChildren.map(node => node.nodeName),
+            };
+        });
+
+        expect(result.allChildrenTags).toEqual(["LI", "LI"]);
+        expect(result.filteredChildrenTags).toEqual(["SPAN"]);
+    });
+
     test("does not reassign a resolved template for duplicate f-template names", async ({
         page,
     }) => {
