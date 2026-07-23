@@ -3,7 +3,10 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
-import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
+import {
+    fTemplateToWebui,
+    generateWebuiTemplates,
+} from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
 
 test.describe("generateWebuiTemplates", () => {
     let tempDir: string;
@@ -358,5 +361,80 @@ test.describe("generateWebuiTemplates", () => {
         const html = await readFile(join(sub, "alert.template-webui.html"), "utf8");
         assert.ok(html.includes("role="), `got: ${html}`);
         assert.ok(html.includes("alert"), `got: ${html}`);
+    });
+});
+
+test.describe("fTemplateToWebui", () => {
+    test("should preserve root template attributes and event bindings", () => {
+        const fTemplate = [
+            '<f-template name="contoso-button" shadowrootmode="open">',
+            '    <template @click="{clickHandler($e)}" @keypress="{keypressHandler($e)}">',
+            "        {{styles}}",
+            '        <slot name="start" f-ref="{start}"></slot>',
+            "        <slot></slot>",
+            "    </template>",
+            "</f-template>",
+        ].join("\n");
+
+        const webui = fTemplateToWebui(fTemplate, {});
+
+        assert.ok(
+            webui.includes('shadowrootmode="open"'),
+            `should apply shadowrootmode, got: ${webui}`,
+        );
+        assert.ok(
+            webui.includes('@click="{clickHandler($e)}"'),
+            `should preserve @click binding, got: ${webui}`,
+        );
+        assert.ok(
+            webui.includes('@keypress="{keypressHandler($e)}"'),
+            `should preserve @keypress binding, got: ${webui}`,
+        );
+        assert.ok(!webui.includes("<f-template"), `got: ${webui}`);
+        assert.ok(!webui.includes("{{styles}}"), `got: ${webui}`);
+    });
+
+    test("should merge shadow attributes with preserved bindings", () => {
+        const fTemplate =
+            '<f-template name="contoso-input" shadowrootmode="open"><template @change="{onChange($e)}">{{styles}}<slot></slot></template></f-template>';
+
+        const webui = fTemplateToWebui(fTemplate, { shadowrootdelegatesfocus: "" });
+
+        assert.ok(webui.includes("shadowrootdelegatesfocus"), `got: ${webui}`);
+        assert.ok(webui.includes('shadowrootmode="open"'), `got: ${webui}`);
+        assert.ok(webui.includes('@change="{onChange($e)}"'), `got: ${webui}`);
+    });
+
+    test("should emit a plain template when the root has no attributes", () => {
+        const fTemplate =
+            '<f-template name="contoso-badge" shadowrootmode="open"><template>{{styles}}<slot></slot></template></f-template>';
+
+        const webui = fTemplateToWebui(fTemplate, {});
+
+        assert.ok(webui.includes('<template shadowrootmode="open">'), `got: ${webui}`);
+    });
+
+    test("should adopt shadowrootmode from the f-template wrapper", () => {
+        const fTemplate =
+            '<f-template name="contoso-panel" shadowrootmode="closed"><template>{{styles}}<slot></slot></template></f-template>';
+
+        const webui = fTemplateToWebui(fTemplate, {});
+
+        assert.ok(
+            webui.includes('<template shadowrootmode="closed">'),
+            `should mirror the wrapper's shadowrootmode, got: ${webui}`,
+        );
+    });
+
+    test("should default shadowrootmode to open when the wrapper omits it", () => {
+        const fTemplate =
+            '<f-template name="contoso-panel"><template>{{styles}}<slot></slot></template></f-template>';
+
+        const webui = fTemplateToWebui(fTemplate, {});
+
+        assert.ok(
+            webui.includes('<template shadowrootmode="open">'),
+            `should default to open, got: ${webui}`,
+        );
     });
 });

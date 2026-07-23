@@ -245,10 +245,15 @@ export interface GenerateWebuiTemplatesOptions {
 
 /**
  * Transform an f-template string into a webui template by replacing the
- * `<f-template>` wrapper with `<template shadowrootmode="open">` and
- * removing the `{{styles}}` placeholder.
+ * `<f-template>` wrapper with a declarative shadow DOM `<template>` and
+ * removing the `{{styles}}` placeholder. The `shadowrootmode` is adopted from
+ * the `<f-template>` wrapper (defaulting to `"open"` when absent), and the
+ * inner `<template>`'s own attributes (FAST event bindings, `f-ref`, etc.)
+ * are preserved.
+ *
+ * Exported for unit testing.
  */
-function fTemplateToWebui(
+export function fTemplateToWebui(
     fTemplateHtml: string,
     shadowAttrs: Record<string, string>,
 ): string {
@@ -267,6 +272,12 @@ function fTemplateToWebui(
         return fTemplateHtml;
     }
 
+    // Adopt the shadow root mode declared on the <f-template> wrapper rather
+    // than hard-coding it, so the webui <template> stays in sync with the
+    // f-template. Defaults to "open" when the wrapper omits it.
+    const fOpenTag = fTemplateHtml.slice(fOpenStart, fOpenEnd + 1);
+    const shadowRootMode = extractQuotedAttribute(fOpenTag, "shadowrootmode") ?? "open";
+
     let inner = fTemplateHtml.slice(fOpenEnd + 1, fCloseStart).trim();
 
     // Remove {{styles}} placeholder.
@@ -275,15 +286,25 @@ function fTemplateToWebui(
     // Convert FAST declarative template directives to WebUI template directives.
     inner = convertFastDirectivesToWebui(inner);
 
-    // Replace the opening <template> tag with one that includes shadow attributes.
+    // Rewrite the opening <template> tag: apply the f-template's shadow root
+    // mode, add the shadow-root attributes, and preserve the template's own
+    // attributes (FAST event bindings like @click, f-ref, etc.). Only the
+    // wrapping <f-template> carries shadowrootmode, so the inner <template>
+    // never already has it.
     const extraAttrs = Object.entries(shadowAttrs)
         .map(([k, v]) => (v ? ` ${k}="${v}"` : ` ${k}`))
         .join("");
 
-    inner = inner.replace(
-        /^<template[^>]*>/,
-        `<template shadowrootmode="open"${extraAttrs}>`,
-    );
+    const openTagEnd = findTagEnd(inner, 0);
+    if (openTagEnd !== -1 && startsWithTag(inner, 0, "template")) {
+        const openTag = inner.slice(0, openTagEnd + 1);
+        const rest = inner.slice(openTagEnd + 1);
+        // Strip `<template` and the trailing `>`, leaving the raw attribute
+        // text to carry over verbatim.
+        const rawAttrs = openTag.slice("<template".length, -1).trim();
+        const preservedAttrs = rawAttrs ? ` ${rawAttrs}` : "";
+        inner = `<template shadowrootmode="${shadowRootMode}"${extraAttrs}${preservedAttrs}>${rest}`;
+    }
 
     return inner;
 }
