@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Remove the vulnerable concurrently dependency and update transitive tooling dependencies with security fixes.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

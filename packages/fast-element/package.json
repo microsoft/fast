@@ -173,7 +173,7 @@
     "build:sizes": "node scripts/measure-sizes.js",
     "build:tsc": "tsgo -p ./tsconfig.json",
     "dev": "tsgo -p ./tsconfig.json -w",
-    "dev:declarative": "concurrently -k -n tsc,server \"npm run dev\" \"npm run test-server:declarative\"",
+    "dev:declarative": "node scripts/run-npm-scripts.js dev test-server:declarative",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
@@ -187,7 +187,8 @@
     "test-server:declarative:webui": "npx vite temp/integrations/webui --clearScreen false --port 5174 --strictPort",
     "test": "npm run lint && npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:playwright",
     "test:ci": "npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:playwright",
-    "test:ui:declarative": "concurrently -k -n tsc,playwright \"npm run dev\" \"npx playwright test --config=playwright.declarative.config.ts --ui\"",
+    "test:ui:declarative": "node scripts/run-npm-scripts.js dev test:ui:declarative:runner",
+    "test:ui:declarative:runner": "playwright test --config=playwright.declarative.config.ts --ui",
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
   "files": [
