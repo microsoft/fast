@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fix: preserve attributes on inner template in f-template to webui conversion",
+  "comment": "Preserve attributes on inner template in f-template to webui conversion.",
   "packageName": "@microsoft/fast-test-harness",
   "email": "863023+radium-v@users.noreply.github.com",
   "dependentChangeType": "none"
