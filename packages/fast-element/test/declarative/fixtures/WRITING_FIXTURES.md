@@ -306,10 +306,7 @@ npm run build:fixtures -w @microsoft/fast-element
 
 This invokes `@microsoft/fast-build` for each auto-discovered fixture with `--config` pointing to the fixture's `fast-build.config.json`. The CLI reads the config file to locate the entry template, state, template definitions, and output path, then renders the output. The build script then injects the `<f-template>` declarations from `templates.html` before the `<script>` tag in the generated output. Fixtures are discovered automatically by scanning category subdirectories for directories that contain `entry.html`, `templates.html`, `state.json`, and `fast-build.config.json`.
 
-> **Tip:** If you're iterating on a fixture, use
-> `npm run dev:declarative -w @microsoft/fast-element` to start the Vite dev
-> server with file watching. But remember to run `build:fixtures` before
-> committing — the Vite dev server uses the generated `index.html`.
+> **Tip:** If you're iterating on a fixture, use `npm run dev:declarative -w @microsoft/fast-element` to start Vite in source mode with file watching. But remember to run `build:fixtures` before committing — the Vite dev server uses the generated `index.html`.
 
 ### WebUI integration
 
