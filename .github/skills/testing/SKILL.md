@@ -39,14 +39,14 @@ For FAST declarative tests in `@microsoft/fast-element`, these additional script
 |---|---|
 | Playwright UI mode | `npm run test:ui:declarative -w @microsoft/fast-element` |
 | Start Vite dev server only | `npm run test-server:declarative -w @microsoft/fast-element` |
-| Dev mode (watch + server) | `npm run dev:declarative -w @microsoft/fast-element` |
+| Dev mode (source server) | `npm run dev:declarative -w @microsoft/fast-element` |
 | Rebuild fixtures | `npm run build:fixtures -w @microsoft/fast-element` |
 | Build fixtures with webui | `npm run build:fixtures:webui -w @microsoft/fast-element` |
 | Run webui integration tests | `npm run test:webui-integration -w @microsoft/fast-element` |
 
 **Playwright UI mode** (`test:ui`) starts a visual test runner where you can select and debug individual tests, view traces, and inspect DOM snapshots.
 
-**Dev mode** (`dev`) runs the TypeScript compiler in watch mode alongside the Vite dev server, so changes are reflected immediately in the browser.
+**Interactive declarative modes** resolve `@microsoft/fast-element` package imports directly to `src` and let Vite transpile TypeScript on demand, so source changes are reflected immediately without a separate compiler watcher. Vite does not type-check these modules; the package build remains responsible for type checking.
 
 ### Through GitHub Actions
 
