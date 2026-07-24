@@ -1,7 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const isSourceMode = process.env.npm_lifecycle_event === "test:ui:declarative";
-
 export default defineConfig({
     testDir: "./test/declarative/fixtures",
     testMatch: "**/*.spec.ts",
@@ -21,9 +19,7 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: isSourceMode
-            ? "npm run dev:declarative"
-            : "npm run test-server:declarative",
+        command: "npm run test-server:declarative",
         port: 5174,
         reuseExistingServer: true,
     },

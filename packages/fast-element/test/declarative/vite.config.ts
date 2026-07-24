@@ -57,28 +57,26 @@ function discoverFixtureInputs(): Record<string, string> {
     return inputs;
 }
 
-export default defineConfig(({ mode }) => {
-    return {
-        plugins: [
-            ...(mode === "source" ? [fastElementSource()] : []),
-            {
-                name: "html-toc",
-                transformIndexHtml(html) {
-                    const inputs = discoverFixtureInputs();
-                    const toc = Object.keys(inputs)
-                        .filter(key => key !== "index")
-                        .sort()
-                        .map(key => `<li><a href="/fixtures/${key}/">${key}</a></li>`)
-                        .join("");
+export default defineConfig({
+    plugins: [
+        fastElementSource(),
+        {
+            name: "html-toc",
+            transformIndexHtml(html) {
+                const inputs = discoverFixtureInputs();
+                const toc = Object.keys(inputs)
+                    .filter(key => key !== "index")
+                    .sort()
+                    .map(key => `<li><a href="/fixtures/${key}/">${key}</a></li>`)
+                    .join("");
 
-                    return html.replace("<!--TOC-->", toc);
-                },
-            },
-        ],
-        build: {
-            rollupOptions: {
-                input: discoverFixtureInputs(),
+                return html.replace("<!--TOC-->", toc);
             },
         },
-    };
+    ],
+    build: {
+        rollupOptions: {
+            input: discoverFixtureInputs(),
+        },
+    },
 });

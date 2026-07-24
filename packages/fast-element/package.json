@@ -173,7 +173,6 @@
     "build:sizes": "node scripts/measure-sizes.js",
     "build:tsc": "tsgo -p ./tsconfig.json",
     "dev": "tsgo -p ./tsconfig.json -w",
-    "dev:declarative": "npm run test-server:declarative -- --mode source",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
