@@ -336,6 +336,8 @@ Attribute directives include:
     Example:
     ```html
     <ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+    <ul f-children="{listItems filter elements()}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+    <ul f-children="{listItems filter elements(li)}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
 - **ref**
