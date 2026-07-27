@@ -107,6 +107,27 @@ test.describe("generateStylesheets", () => {
         assert.ok(css.includes("span { font-size: 14px; }"));
     });
 
+    test("should not assume CSS custom states are supported", async () => {
+        const distDir = join(tempDir, "dist");
+        await mkdir(distDir, { recursive: true });
+
+        await writeFile(
+            join(distDir, "state.styles.js"),
+            `const stateSelector = CSS.supports("selector(:state(checked))")
+                ? ":state(checked)"
+                : "[state--checked]";
+            export const styles = {
+                styles: [\`:host(\${stateSelector}) { color: green; }\`]
+            };`,
+        );
+
+        await generateStylesheets({ cwd: tempDir });
+
+        const css = await readFile(join(distDir, "state.styles.css"), "utf8");
+        assert.ok(css.includes(":host([state--checked])"));
+        assert.ok(!css.includes(":state(checked)"));
+    });
+
     test("should skip modules without a styles export", async () => {
         const distDir = join(tempDir, "dist");
         await mkdir(distDir, { recursive: true });
