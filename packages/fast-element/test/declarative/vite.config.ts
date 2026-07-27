@@ -1,10 +1,14 @@
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig, normalizePath } from "vite";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturesDir = join(__dirname, "fixtures");
+const packageName = "@microsoft/fast-element";
+const packageRoot = join(__dirname, "../..");
+const distRoot = `${normalizePath(join(packageRoot, "dist/esm"))}/`;
+const sourceRoot = `${normalizePath(join(packageRoot, "src"))}/`;
 
 function discoverFixtureInputs(): Record<string, string> {
     const inputs: Record<string, string> = {
@@ -33,6 +37,28 @@ function discoverFixtureInputs(): Record<string, string> {
 
 export default defineConfig({
     plugins: [
+        {
+            name: "fast-element-source",
+            enforce: "pre",
+            async resolveId(id, importer) {
+                if (id !== packageName && !id.startsWith(`${packageName}/`)) {
+                    return;
+                }
+
+                const resolved = await this.resolve(id, importer, { skipSelf: true });
+                const resolvedPath = resolved && normalizePath(resolved.id);
+
+                if (
+                    !resolvedPath?.startsWith(distRoot) ||
+                    !resolvedPath.endsWith(".js")
+                ) {
+                    return;
+                }
+
+                const sourcePath = resolvedPath.slice(distRoot.length, -".js".length);
+                return `${sourceRoot}${sourcePath}.ts`;
+            },
+        },
         {
             name: "html-toc",
             transformIndexHtml(html) {
