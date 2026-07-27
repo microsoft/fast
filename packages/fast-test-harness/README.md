@@ -244,6 +244,10 @@ CLI flags take precedence over environment variables.
 static wrappers even when the opening or closing tag includes ASCII whitespace
 before `>`.
 
+`generate-stylesheets` evaluates compiled style modules with CSS feature detection
+disabled by default, so generated CSS uses compatibility fallbacks instead of
+assuming target environments support features such as `ElementInternals` custom states.
+
 | Environment variable | Default | Description |
 | -------------------- | ------- | ----------- |
 | `PORT` | `3278` | Server port (overridden by `--port`) |

@@ -2,6 +2,8 @@
  * Minimal DOM shim for running FAST Element's `css` and `html` tagged
  * templates in Node.js. Provides just enough of the DOM API to resolve
  * `ElementStyles.toString()` and compile `html` templates.
+ * CSS feature detection defaults to unsupported so generated artifacts
+ * do not assume capabilities that may be unavailable in their target runtime.
  *
  * This module is idempotent — if `globalThis.window` is already defined,
  * no shims are applied.
@@ -153,5 +155,5 @@ export function installDomShim(): void {
     (globalThis as any).customElements = new ShimCustomElementRegistry();
     (globalThis as any).window = globalThis;
 
-    (globalThis as any).CSS ??= { supports: () => true };
+    (globalThis as any).CSS ??= { supports: () => false };
 }

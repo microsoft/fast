@@ -68,10 +68,13 @@ test.describe("installDomShim", () => {
         assert.strictEqual((globalThis as any).window, globalThis);
     });
 
-    test("should provide CSS.supports that returns true", async () => {
+    test("should not assume CSS features are supported", async () => {
         await loadShim();
 
-        assert.strictEqual((globalThis as any).CSS.supports("display", "flex"), true);
+        assert.strictEqual(
+            (globalThis as any).CSS.supports("selector(:state(checked))"),
+            false,
+        );
     });
 
     test("should not overwrite an existing CSS global", async () => {
