@@ -2,6 +2,53 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 29 Jul 2026 19:34:55 GMT",
+      "version": "3.0.2",
+      "tag": "@microsoft/fast-element_v3.0.2",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "febeabc2a244df71de8f3d4f35f5fccfc4fc5e7b",
+            "comment": "Update documentation around the necessity for await when using define"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8681f2b8e548535ddfa172f9ce75307f6247a105",
+            "comment": "Document declarative fixture testing guidance."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "443b8a1316eb80467808053e0fe6d5369690d218",
+            "comment": "Update WebUI integration fixtures to generate templates with fast convert."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "27a4304bdfa69433b8532bff192d8ac747aef79f",
+            "comment": "Remove the vulnerable concurrently dependency by serving declarative fixtures from source, and update transitive tooling dependencies with security fixes."
+          }
+        ],
+        "patch": [
+          {
+            "author": "pradeepramolaa@gmail.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6be5bb6643458101400494e3efa6b0fdd78acc85",
+            "comment": "Ignore stale observer map array notifications after replacement."
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "582df1842d9d8e2bebf9a325fc3088aabb29240f",
+            "comment": "Prevent stale server-rendered structural views from being duplicated during hydration."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Jun 2026 21:42:49 GMT",
       "version": "3.0.1",
       "tag": "@microsoft/fast-element_v3.0.1",

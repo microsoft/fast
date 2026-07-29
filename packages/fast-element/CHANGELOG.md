@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 26 Jun 2026 21:42:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.0.2
+
+Wed, 29 Jul 2026 19:34:55 GMT
+
+### Patches
+
+- Ignore stale observer map array notifications after replacement. (pradeepramolaa@gmail.com)
+- Prevent stale server-rendered structural views from being duplicated during hydration. (863023+radium-v@users.noreply.github.com)
 
 ## 3.0.1
 

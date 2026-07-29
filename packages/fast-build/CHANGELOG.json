@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Wed, 29 Jul 2026 19:34:55 GMT",
+      "version": "0.10.0",
+      "tag": "@microsoft/fast-build_v0.10.0",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "9c0092c45d5cc6283ceba05470783c290d6270b5",
+            "comment": "Fix package manifest formatting with `npm pkg fix`."
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "443b8a1316eb80467808053e0fe6d5369690d218",
+            "comment": "Add FAST declarative template conversion to the fast CLI."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Jun 2026 21:42:49 GMT",
       "version": "0.9.0",
       "tag": "@microsoft/fast-build_v0.9.0",
