@@ -66,6 +66,20 @@
                 </li>
             <!--fe:/r--><!--fe:/b-->
         </ul></template></test-when-in-repeat>
+        <parent-binding-host><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
+            <parent-bound-child appearance="full-page" data-fe="2"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->
+            <!--fe:b-->
+                <div class="progress"><!--fe:b-->20<!--fe:/b-->%</div>
+            <!--fe:/b-->
+            <!--fe:b-->
+                <!--fe:b--><!--fe:r-->
+                    <button class="action" type="button"><!--fe:b-->Pause<!--fe:/b--></button>
+                <!--fe:/r--><!--fe:r-->
+                    <button class="action" type="button"><!--fe:b-->Cancel<!--fe:/b--></button>
+                <!--fe:/r--><!--fe:/b-->
+            <!--fe:/b-->
+        <!--fe:/b--></template></parent-bound-child>
+        <!--fe:/r--><!--fe:/b--></template></parent-binding-host>
 <f-template name="test-element-repeat-event">
     <template>
         <ul>
@@ -88,6 +102,31 @@
                 </li>
             </f-repeat>
         </ul>
+    </template>
+</f-template>
+<f-template name="parent-bound-child">
+    <template>
+        <f-when value="{{appearance == 'full-page'}}">
+            <f-when value="{{progress}}">
+                <div class="progress">{{progress.percent}}%</div>
+            </f-when>
+            <f-when value="{{actions && actions.trailing}}">
+                <f-repeat value="{{action in actions.trailing}}">
+                    <button class="action" type="button">{{action.label}}</button>
+                </f-repeat>
+            </f-when>
+        </f-when>
+    </template>
+</f-template>
+<f-template name="parent-binding-host">
+    <template>
+        <f-repeat value="{{item in parentBoundItems}}">
+            <parent-bound-child
+                appearance="full-page"
+                :actions="{{item.actions}}"
+                :progress="{{item.progress}}"
+            ></parent-bound-child>
+        </f-repeat>
     </template>
 </f-template>
 <f-template name="grand-child-element">

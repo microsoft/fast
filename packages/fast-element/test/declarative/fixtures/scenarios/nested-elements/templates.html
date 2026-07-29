@@ -22,6 +22,31 @@
         </ul>
     </template>
 </f-template>
+<f-template name="parent-bound-child">
+    <template>
+        <f-when value="{{appearance == 'full-page'}}">
+            <f-when value="{{progress}}">
+                <div class="progress">{{progress.percent}}%</div>
+            </f-when>
+            <f-when value="{{actions && actions.trailing}}">
+                <f-repeat value="{{action in actions.trailing}}">
+                    <button class="action" type="button">{{action.label}}</button>
+                </f-repeat>
+            </f-when>
+        </f-when>
+    </template>
+</f-template>
+<f-template name="parent-binding-host">
+    <template>
+        <f-repeat value="{{item in parentBoundItems}}">
+            <parent-bound-child
+                appearance="full-page"
+                :actions="{{item.actions}}"
+                :progress="{{item.progress}}"
+            ></parent-bound-child>
+        </f-repeat>
+    </template>
+</f-template>
 <f-template name="grand-child-element">
     <template>
         <span class="category">{{category}}</span>

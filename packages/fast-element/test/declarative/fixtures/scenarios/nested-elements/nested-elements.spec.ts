@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
-import type { ItemList, TestElementRepeatEvent, TestWhenInRepeat } from "./main.js";
+import type {
+    ItemList,
+    ParentBindingHost,
+    ParentBoundChild,
+    TestElementRepeatEvent,
+    TestWhenInRepeat,
+} from "./main.js";
 
 test.describe("Nested Elements Hydration", () => {
     test("should render nested elements correctly", async ({ page }) => {
@@ -58,6 +64,46 @@ test.describe("Nested Elements Hydration", () => {
             const categoryText = grandChildren.nth(i).locator(".category");
             await expect(categoryText).toHaveText("Updated");
         }
+    });
+
+    test("should not duplicate child structural views when parent property bindings hydrate", async ({
+        page,
+    }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
+        await page.goto("/fixtures/scenarios/nested-elements/");
+        await hydrationCompleted;
+
+        const child = page.locator("parent-bound-child");
+        const result = await child.evaluate(async (node: ParentBoundChild) => {
+            const root = node.getRootNode() as ShadowRoot;
+            const parent = root.host as ParentBindingHost;
+
+            return {
+                hydrated: {
+                    actionButtons:
+                        node.shadowRoot!.querySelectorAll("button.action").length,
+                    childHydrated: await node.$fastController.isHydrated,
+                    parentHydrated: await parent.$fastController.isHydrated,
+                    progressViews: node.shadowRoot!.querySelectorAll(".progress").length,
+                },
+                ssr: (window as any).parentBoundChildSsrCounts,
+            };
+        });
+
+        expect(result).toEqual({
+            hydrated: {
+                actionButtons: 2,
+                childHydrated: true,
+                parentHydrated: true,
+                progressViews: 1,
+            },
+            ssr: {
+                actionButtons: 2,
+                progressViews: 1,
+            },
+        });
     });
 });
 

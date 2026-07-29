@@ -6,5 +6,13 @@
     "category": "General",
     "repeatEventItems": [],
     "whenRepeatItems": [{ "name": "Alpha" }, { "name": "Beta" }],
-    "showNames": true
+    "showNames": true,
+    "parentBoundItems": [
+        {
+            "actions": {
+                "trailing": [{ "label": "Pause" }, { "label": "Cancel" }]
+            },
+            "progress": { "percent": 20 }
+        }
+    ]
 }
