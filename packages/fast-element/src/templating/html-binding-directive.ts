@@ -19,6 +19,7 @@ import {
 } from "./html-directive.js";
 import { HydrationStage } from "./hydration-view.js";
 import { Markup } from "./markup.js";
+import { removeNodeSequence } from "./view.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -176,6 +177,19 @@ function updateContent(
                 view.needsBindOnly = false;
             } else {
                 view.unbind();
+            }
+        }
+
+        if (
+            view === void 0 &&
+            isHydratable(controller) &&
+            controller.hydrationStage !== HydrationStage.hydrated
+        ) {
+            const viewNodes = controller.bindingViewBoundaries[this.targetNodeId];
+
+            if (viewNodes !== void 0) {
+                removeNodeSequence(viewNodes.first, viewNodes.last);
+                delete controller.bindingViewBoundaries[this.targetNodeId];
             }
         }
 
