@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Thu, 25 Jun 2026 05:31:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.10.0
+
+Wed, 29 Jul 2026 19:34:55 GMT
+
+### Minor changes
+
+- Add FAST declarative template conversion to the fast CLI. (7559015+janechu@users.noreply.github.com)
 
 ## 0.9.0
 

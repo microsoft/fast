@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Thu, 25 Jun 2026 05:31:58 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.1
+
+Wed, 29 Jul 2026 19:34:55 GMT
+
+### Patches
+
+- Add support for repeat and when directives. (863023+radium-v@users.noreply.github.com)
+- Preserve attributes on inner template in f-template to webui conversion. (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.10.0
+- Bump @microsoft/fast-element to v3.0.2
 
 ## 0.4.0
 

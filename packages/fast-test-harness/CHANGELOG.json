@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Wed, 29 Jul 2026 19:34:55 GMT",
+      "version": "0.4.1",
+      "tag": "@microsoft/fast-test-harness_v0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "47402d1bd9eb4a3d21c97c4d0ebdeaf9efc02b8a",
+            "comment": "Add support for repeat and when directives."
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "b661b9eb3c88fb54c61f13b05db90cef75cb7de2",
+            "comment": "Preserve attributes on inner template in f-template to webui conversion."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.10.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-element to v3.0.2",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "9c0092c45d5cc6283ceba05470783c290d6270b5",
+            "comment": "Fix package manifest formatting with `npm pkg fix`."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Jun 2026 21:42:49 GMT",
       "version": "0.4.0",
       "tag": "@microsoft/fast-test-harness_v0.4.0",
