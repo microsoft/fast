@@ -8,6 +8,14 @@ import { observerMap } from "@microsoft/fast-element/observer-map.js";
 
 (window as any).messages = [];
 
+const parentBindingHost = document.querySelector("parent-binding-host");
+const parentBoundChild =
+    parentBindingHost?.shadowRoot?.querySelector("parent-bound-child");
+(window as any).parentBoundChildSsrCounts = {
+    actionButtons: parentBoundChild?.shadowRoot?.querySelectorAll("button.action").length,
+    progressViews: parentBoundChild?.shadowRoot?.querySelectorAll(".progress").length,
+};
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).messages.push(`Hydration complete [${performance.now()}]`);
@@ -160,6 +168,55 @@ export class TestWhenInRepeat extends FASTElement {
 TestWhenInRepeat.define(
     {
         name: "test-when-in-repeat",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);
+
+interface ParentBoundAction {
+    label: string;
+}
+
+interface ParentBoundActionConfig {
+    trailing: ParentBoundAction[];
+}
+
+interface ParentBoundProgress {
+    percent: number;
+}
+
+interface ParentBoundItem {
+    actions: ParentBoundActionConfig;
+    progress: ParentBoundProgress;
+}
+
+export class ParentBoundChild extends FASTElement {
+    @attr appearance = "";
+    @observable actions?: ParentBoundActionConfig;
+    @observable progress?: ParentBoundProgress;
+}
+ParentBoundChild.define(
+    {
+        name: "parent-bound-child",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);
+
+export class ParentBindingHost extends FASTElement {
+    @observable
+    parentBoundItems: ParentBoundItem[] = [
+        {
+            actions: {
+                trailing: [{ label: "Pause" }, { label: "Cancel" }],
+            },
+            progress: { percent: 20 },
+        },
+    ];
+}
+ParentBindingHost.define(
+    {
+        name: "parent-binding-host",
         template: declarativeTemplate(),
     },
     [observerMap()],
