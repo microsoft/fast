@@ -1,6 +1,6 @@
 [package]
 name = "microsoft-fast-convert"
-version = "0.9.0"
+version = "0.10.0"
 edition = "2021"
 description = "Converter for FAST declarative HTML templates into WebUI prerelease HTML or FAST v3 TypeScript templates."
 license = "MIT"
