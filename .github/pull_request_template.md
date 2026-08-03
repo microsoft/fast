@@ -55,8 +55,8 @@ Please provide a summary of the tests affected by this work and any unique strat
 
 - [ ] I have linked to an existing issue in this project that this change addresses
 - [ ] I have read the skills
-- [ ] I have read the DESIGN.md file(s) in packages relevent to my changes
-- [ ] I have updated the DESIGN.md file(s) in packages relevent to my changes
+- [ ] I have read the DESIGN.md file(s) in packages relevant to my changes
+- [ ] I have updated the DESIGN.md file(s) in packages relevant to my changes
 
 ## ⏭ Next Steps
 
