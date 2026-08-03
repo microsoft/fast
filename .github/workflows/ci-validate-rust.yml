@@ -21,13 +21,6 @@ jobs:
   test_rust:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - crate: microsoft-fast-build
-            manifest-path: crates/microsoft-fast-build/Cargo.toml
-          - crate: microsoft-fast-convert
-            manifest-path: crates/microsoft-fast-convert/Cargo.toml
 
     steps:
     - uses: actions/checkout@v4
@@ -37,5 +30,8 @@ jobs:
     - name: Install Rust stable toolchain
       uses: dtolnay/rust-toolchain@stable
 
-    - name: Run Rust tests
-      run: cargo test --manifest-path ${{ matrix.manifest-path }}
+    - name: Run Rust microsoft-fast-build tests
+      run: cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+
+    - name: Run Rust microsoft-fast-build tests
+      run: cargo test --manifest-path crates/microsoft-fast-convert/Cargo.toml
