@@ -148,7 +148,7 @@ Example of how to format a migration document:
 
 ### Publishing
 
-Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, the [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) workflow attaches the freshly-packed tarballs to a GitHub release per package, and the nightly Azure pipeline ([`azure-pipelines-cd.yml`](azure-pipelines-cd.yml)) downloads those assets and publishes them to npm and crates.io. The detailed CD design is documented in [`.github/workflows/README.md`](.github/workflows/README.md).
+Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, two Azure Pipelines under [`.ado/pipelines/`](.ado/pipelines/) own the rest: `azure-pipelines-build.yml` (**`FAST CD Build`**) packs the freshly-bumped npm tarballs and paired Rust crates for every package whose release tag doesn't exist yet, and `azure-pipelines-cd.yml` (**`FAST CD`**) signs those artifacts, publishes to npm and crates.io, and then creates the GitHub release and git tag per package. The detailed CD design is documented in [`.github/workflows/README.md`](.github/workflows/README.md).
 
 This section covers the maintainer workflow for opening the bump PR.
 
@@ -186,10 +186,10 @@ No commit, push, npm publish, or git tag is made by `npm run bump`.
 ```bash
 git status
 git diff
-node build/scripts/create-github-releases.mjs --check-only
+node build/scripts/pack-pending-releases.mjs --check-only
 ```
 
-The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` tag is not present in the local git tag list. Run `git fetch --tags --prune origin` beforehand if you want the preview to reflect the current state on `origin` rather than your stale local refs — though for a fresh bump that hasn't been pushed yet, your local tag list is the source of truth anyway.
+The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` tag is not present on `origin` (it queries `origin` directly via `git ls-remote`, so it reflects the real remote state — no need to `git fetch --tags` first).
 
 A typical bump PR touches:
 
@@ -210,14 +210,14 @@ gh pr create --fill --base main
 The bump PR goes through normal review. `npm run checkchange` will pass because the branch name matches `publish_<timestamp>` and the actor has admin on the repo (see [Manual version bumps](#manual-version-bumps)); the PR itself does **not** publish anything.
 
 :::note
-Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`create-github-releases.mjs`](build/scripts/create-github-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`pack-pending-releases.mjs`](build/scripts/pack-pending-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
 
 A narrow exception exists for the **manual version bump** flow described in [the next section](#manual-version-bumps) — hotfix overrides, paired Rust/npm sync recovery, or scripted version pins. Those edits are tolerated by `npm run checkchange` only on a `publish_<timestamp>` branch whose actor has the `admin` role on `microsoft/fast`.
 :::
 
 #### 6. After merge
 
-After merge, [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) runs on its nightly cron (`0 8 * * *` UTC, ~12am PST) — or you can trigger it immediately via `gh workflow run cd-github-releases.yml` if you don't want to wait. Its `detect` job notices the new `${name}_v${version}` tags don't yet exist; the `release` job packs each `.tgz` (and any paired `.crate`) and atomically creates one GitHub release per bumped package. The next nightly run of [`azure-pipelines-cd.yml`](azure-pipelines-cd.yml) (scheduled ~1 hour later at 09:00 UTC) downloads those assets, hands off to `FAST.Release.PipelineTemplate` for the actual `npm publish` / `cargo publish`, and on success pushes `deployed/<tag>` marker tags so the publish is never repeated.
+After merge, the [`FAST CD Build`](.ado/pipelines/azure-pipelines-build.yml) pipeline triggers automatically on the push to `main`. Its `PrepareRelease` stage notices the new `${name}_v${version}` tags don't yet exist on `origin`; `BuildArtifacts` builds the repo and packs each pending package's `.tgz` (and any paired `.crate`) into pipeline artifacts. Completion of that stage on `main` triggers [`FAST CD`](.ado/pipelines/azure-pipelines-cd.yml), which signs the artifacts, publishes to npm and crates.io via `FAST.Release.PipelineTemplate` first, and only then creates the git tag and GitHub release per bumped package. Publishing is deliberately ordered before tagging: the tag is what marks a package as "released" for future `FAST CD Build` runs, so a publish failure never leaves a tag behind, and the very next run automatically retries that package. Idempotency is enforced purely through the `${name}_v${version}` git tags — no separate marker tags are needed. See [`.github/workflows/README.md`](.github/workflows/README.md) for the full rationale.
 
 #### Hotfix or single-package bump
 

@@ -13,46 +13,72 @@ All CI workflows that run against pull requests are configured to skip draft PRs
 
 ## Continuous Deployment
 
-Nightly publishing is split into two coordinated jobs so that npm credentials never leave the Azure environment. GitHub Releases are the source of truth, and `deployed/<tag>` git marker tags track which releases have already been published.
+Release publishing is owned entirely by two Azure Pipelines under [`.ado/pipelines/`](../../.ado/pipelines/) — `azure-pipelines-build.yml` (registered as **`FAST CD Build`**) and `azure-pipelines-cd.yml` (registered as **`FAST CD`**) — so release credentials never leave the Azure environment. There is no GitHub Actions release workflow: GitHub Releases are created by Azure, not by CI running on `pull_request`/`push` GitHub Actions triggers.
 
-- **`cd-github-releases.yml`** (GitHub Actions) runs nightly via cron (`0 8 * * *` UTC, ~12am PST) and on `workflow_dispatch`. It does **not** bump versions or push source changes to `main` — version bumps land on `main` through ordinary human-authored pull requests (for example, by running `npm run bump` locally and opening a PR). The cron is scheduled ~1 hour before the Azure CD pipeline (09:00 UTC) so any GitHub releases this job creates are picked up by that same night's publish run. The workflow has two jobs:
-  1. **`detect`** — checks out `main` with `fetch-depth: 0` and runs [`build/scripts/create-github-releases.mjs --check-only`](../../build/scripts/create-github-releases.mjs). The script walks the workspaces tree (no `npm ci` required), computes `${name}_v${version}` for every non-private workspace, and emits `hasMissingReleases=true` if any of those git tags do not yet exist.
-  2. **`release`** runs only when missing releases exist. Installs Node, the Rust toolchain (for `cargo package`), and the npm workspace dependencies, builds the repo, then runs the script in default mode. For every missing release the script: packs the npm tarball into `publish_artifacts_npm/`, packs any paired Rust crates into `publish_artifacts_crates/`, and creates the GitHub release with all assets attached via `gh release create --target <sha>`. `@microsoft/fast-build` is a bundled release: it uses one npm package, one tag, and one GitHub release containing both `microsoft-fast-build` and `microsoft-fast-convert` crate assets. The `gh` CLI creates the git tag atomically with the release, so "tag exists" and "release exists" are always the same fact — a failed release is safely retried on the next workflow run, with no orphan tag stranded behind. The script errors if a paired crate's version does not match the npm package's version — but this is purely a safety net: the [`postbump` hook in `beachball.config.js`](../../beachball.config.js) rewrites each crate's `Cargo.toml` (and the matching entry in `Cargo.lock`) automatically whenever `npm run bump` bumps the paired npm package, so they stay in sync from the same commit.
-- **`azure-pipelines-cd.yml`** (Azure Pipelines) runs every night at **1am PST (`0 9 * * *` UTC)** with `always: true` so it still runs on no-op nights (it is checking external GitHub state, not repo commits). It is split into two stages so the heavy publish work is skipped on no-op nights:
-  1. **`Check`** — runs [`build/scripts/download-github-releases.mjs --check-only`](../../build/scripts/download-github-releases.mjs). The script walks the current publishable workspaces, keeps only workspaces whose current `${name}_v${version}` release tag exists, filters out tags that already have a `deployed/<tag>` counterpart, and emits Azure Pipelines output variables for the overall deployment decision, npm dist-tag, and each package-specific release tag. No network calls to GitHub, npm, or crates.io are needed.
-  2. **`Package`** — depends on `Check` and runs only when `needsDeployment == 'true'`. Conditional `DownloadGitHubRelease@0` tasks download undeployed release assets through the `fast` GitHub service connection, a shell step sorts them into `publish_artifacts_npm/` (`.tgz`) and `publish_artifacts_crates/` (`.crate`), configures npm to publish companion packages with the detected dist-tag, then `FAST.Release.PipelineTemplate.yml@fastPipelines` performs the actual `npm publish` / `cargo publish`. On success, the pipeline pushes a `deployed/<tag>` git marker tag for each release that was just published. The next nightly run will see those markers and skip the corresponding releases.
+FAST is multi-package: unlike a single workspace-wide release version, each publishable npm workspace gets its own `${name}_v${version}` git tag (matching beachball's tag format), and "pending" is decided per package rather than for one selected version. A workspace is pending when its tag does not yet exist on `origin`.
 
-Both scripts are thin Node.js wrappers around existing CLI tools and repository metadata — no extra npm dependencies and no custom GitHub API client. Idempotency is enforced entirely through git tags (`${name}_v${version}` on the GitHub side, `deployed/${name}_v${version}` on the Azure side), so neither side needs to talk to npm.org or crates.io to decide whether work is required.
+- **`FAST CD Build`** (`azure-pipelines-build.yml`) triggers on every push to `main`.
+  1. **`PrepareRelease`** runs [`build/scripts/pack-pending-releases.mjs --check-only`](../../build/scripts/pack-pending-releases.mjs), which walks the workspaces tree (no `npm ci` required), computes `${name}_v${version}` for every non-private workspace, and emits `shouldBuild=true` if any of those git tags do not yet exist on `origin`.
+  2. **`BuildArtifacts`** (real releases, `validationMode: false`) or **`ValidateArtifacts`** (`validationMode: true`) runs only when `shouldBuild == 'true'`, using the shared [`templates/pack-release-steps.yml`](../../.ado/pipelines/templates/pack-release-steps.yml) step template. It installs Node, the Rust toolchain and `wasm-pack` (needed by `@microsoft/fast-build`'s WASM build step), installs npm workspace dependencies, builds the repo (`npm run build`), then runs the same script in its default mode. For every pending workspace the script packs the npm tarball into `publish_artifacts_npm/`, packs any paired Rust crates into `publish_artifacts_crates/`, and writes `publish_artifacts_meta/release-manifest.json` describing exactly what was packed (name, version, tag, and asset filenames). If a release batch has no crate assets at all, the script writes a `.no-crates-packed` placeholder file into `publish_artifacts_crates/` so publishing and downloading that otherwise-empty pipeline artifact stays robust. `@microsoft/fast-build` is a bundled release: one npm package, one tag, and both `microsoft-fast-build` and `microsoft-fast-convert` crate assets. The script errors if a paired crate's version does not match the npm package's version — a safety net, since the [`postbump` hook in `beachball.config.js`](../../beachball.config.js) keeps them in sync automatically whenever `npm run bump` runs. The stage publishes `unsigned_npm_packages`, `unsigned_crate_packages`, and `release-metadata` (the manifest plus the `validationMode` used) as pipeline artifacts.
+
+     `BuildArtifacts` and `ValidateArtifacts` are two distinct stage *names* (chosen at compile time via `${{ if eq(parameters.validationMode, ...) }}`), not one stage gated by a runtime condition. `FAST CD`'s pipeline-resource trigger only fires when a stage literally named `BuildArtifacts` completes on `main`, so a `validationMode: true` run — which always executes under `ValidateArtifacts` instead — can never auto-trigger a real `FAST CD` run. A skipped stage (e.g. nothing pending) does not fire that trigger either, since Azure Pipelines only triggers on stages that actually complete.
+- **`FAST CD`** (`azure-pipelines-cd.yml`) is an 1ES Official pipeline triggered automatically when `FAST CD Build`'s `BuildArtifacts` stage completes on `main` (it can also be queued manually). It extends `1ES.Official.PipelineTemplate.yml` and runs:
+  1. **`SignArtifacts`** — downloads the build pipeline's artifacts, reads `release-manifest.json` via [`build/scripts/read-release-manifest.mjs`](../../build/scripts/read-release-manifest.mjs) (emitting one `<prefix>NeedsRelease` / `<prefix>ReleaseTag` / `<prefix>ReleaseVersion` output per currently-publishable workspace, plus a shared `releaseCommit`), stages the npm/crate assets, and runs `FAST.Sign.PipelineTemplate.yml@fastPipelines` so every release asset flows through the same SDL-compliant path (FAST has no NuGet or native assets to ESRP-sign today, so this stage is a no-op for those asset types).
+  2. **`PublishRelease`** (skipped when `validationMode: true`) — a single stage with two ordered jobs, deliberately publishing before tagging/releasing:
+     - **`Publish`** downloads both artifact folders, removes whichever one is empty (stripping the `.no-crates-packed` placeholder first), then hands both to a single invocation of `FAST.Release.PipelineTemplate.yml@fastPipelines`, which performs the actual `npm publish` / `cargo publish` for whichever asset types are present. Calling the release template once for both asset types (rather than in two parallel jobs, one per asset type, as an earlier version of this pipeline did) means one destination succeeding while the other fails can never leave a package half-published without the whole job failing as one unit.
+     - **`PublishGitHub`** (`dependsOn: Publish`, `condition: succeeded()`) runs strictly after `Publish` succeeds. It first runs [`build/scripts/check-release-tags.mjs`](../../build/scripts/check-release-tags.mjs), which freshly checks (via `git ls-remote origin`) whether each package's tag already exists — independent of the `NeedsRelease` variables computed earlier by `SignArtifacts`, since those only reflect the state before `Publish` ran. It then runs one `GitHubRelease@1` per package, conditioned on both that package's `NeedsRelease` variable *and* its tag not already existing (`releaseTagCheck.<prefix>ReleaseTagExists == 'false'`), using `tagSource: userSpecifiedTag` so the task itself creates the tag as part of creating the release.
+
+  This publish-then-tag ordering is the key fix for the release tag's dual role: `pack-pending-releases.mjs` treats a workspace as "pending" purely based on whether its `${name}_v${version}` tag exists on `origin`, so whichever step creates that tag also makes the package invisible to every future release-prep run. An earlier version of this pipeline created the tag *before* publishing (via a dedicated `TagRelease` stage); a publish failure then left the tag behind, permanently stranding that package with no automatic retry. Creating the tag only after `Publish` succeeds means a publish failure never leaves the tag behind, so the very next `FAST CD Build` run retries that package automatically — and the `releaseTagCheck` guard means rerunning a job that failed partway through `PublishGitHub` (Azure Pipelines reruns every task in a failed job, including ones that already succeeded) is also safe, since already-created releases are skipped rather than recreated.
+
+  Residual risk: if `Publish` succeeds but `PublishGitHub` fails outright for a package (rather than a rerunnable partial failure), that package's tag still won't exist, so the next `FAST CD Build` run will try to republish it — which fails loudly since it's already published (existing, documented idempotency behavior; see below). That is a bounded, always manually-recoverable state (a maintainer creates the missing tag/GitHub release directly), never a silent or permanent one, and was judged the safest trade-off achievable within a single `PublishRelease` stage.
+
+Idempotency is enforced entirely through git tags (`${name}_v${version}`), so nothing needs to talk to npm.org or crates.io to decide whether work is required — republishing an already-published version simply fails loudly at the `npm publish` / `cargo publish` step, the same as a manual retry would.
+
+The queue-time `validationMode` parameter (both pipelines) defaults to `false`; setting it to `true` treats every publishable workspace as pending so its artifact contract can be rebuilt and validated through `SignArtifacts`, without creating tags or publishing anywhere.
+
+> **Note:** `FAST.Sign.PipelineTemplate.yml` and `FAST.Release.PipelineTemplate.yml` live in the internal `open-source/FASTPipelineTemplates` Azure DevOps repository, which is not accessible from GitHub tooling. Their exact parameter contracts (in particular how they handle an absent artifact directory) could not be independently verified while authoring this pipeline; the empty-directory removal step in the `Publish` job is a defense-in-depth measure taken because that contract could not be confirmed.
 
 ### Adding a publishable package
 
-`cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
+`pack-pending-releases.mjs` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `.ado/pipelines/azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `GitHubRelease@1` tasks dynamically from the runtime manifest.
 
-The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching Azure CD variables and a conditional `DownloadGitHubRelease@0` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
+The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching `PublishRelease` stage variables and a conditional `GitHubRelease@1` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
 
 When adding a new non-private workspace that should publish through CD:
 
 1. Ensure the workspace is included in the root `package.json` `workspaces` list and has a `name` and `version`.
 2. If the package has paired crate assets, place each crate at `crates/<crate-name>/Cargo.toml`. By default, `<crate-name>` is the npm package name with the leading `@` removed and `/` replaced by `-`. `@microsoft/fast-build` is the special bundled release and pairs with both `crates/microsoft-fast-build/Cargo.toml` and `crates/microsoft-fast-convert/Cargo.toml`.
-3. Add package-specific output variables to the `Package` stage in `azure-pipelines-cd.yml`. The output prefix is generated from the npm package name by converting `@microsoft/<name>` to camel case. For example, `@microsoft/fast-foo` emits `fastFooNeedsDeployment` and `fastFooReleaseTag`.
-4. Add a conditional `DownloadGitHubRelease@0` task for the package using the `fast` GitHub service connection, `defaultVersionType: 'specificTag'`, and the package's `$(<prefix>ReleaseTag)` variable.
-5. Confirm the artifact sorting step still covers the package assets. Packages should attach `.tgz` assets, and paired crates should also attach `.crate` assets.
+3. Add package-specific output variables to the `PublishRelease` stage in `.ado/pipelines/azure-pipelines-cd.yml`. The output prefix is generated from the npm package name by converting `@microsoft/<name>` to camel case. For example, `@microsoft/fast-foo` emits `fastFooNeedsRelease`, `fastFooReleaseTag`, and `fastFooReleaseVersion`.
+4. Add a conditional `GitHubRelease@1` task for the package in the `PublishGitHub` job, using the `fast` GitHub service connection, `repositoryName: microsoft/fast`, `tagSource: userSpecifiedTag`, and the package's `$(<prefix>ReleaseTag)` variable. The condition must include the `releaseTagCheck.<prefix>ReleaseTagExists` clause (in addition to `<prefix>NeedsRelease`) so rerunning the job after a partial failure is safe — see `check-release-tags.mjs`.
+5. Confirm the task's `assets` globs use the exact versioned filename per asset (`$(<prefix>ReleaseVersion)`, not a prefix wildcard) for the package's npm tarball and any paired crate archives, to avoid picking up a stale tarball left over from a previous packing attempt.
 
 Example Azure additions for `@microsoft/fast-foo`:
 
 ```yml
 variables:
-  fastFooNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastFooNeedsDeployment'] ]
-  fastFooReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastFooReleaseTag'] ]
+  fastFooNeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastFooNeedsRelease'] ]
+  fastFooReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastFooReleaseTag'] ]
+  fastFooReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastFooReleaseVersion'] ]
 
 steps:
-- task: DownloadGitHubRelease@0
-  displayName: "Download @microsoft/fast-foo release assets"
-  condition: and(succeeded(), eq(variables['fastFooNeedsDeployment'], 'true'))
+- task: GitHubRelease@1
+  displayName: "Create @microsoft/fast-foo GitHub Release"
+  condition: and(succeeded(), eq(variables['fastFooNeedsRelease'], 'true'), eq(variables['releaseTagCheck.fastFooReleaseTagExists'], 'false'))
   inputs:
-    connection: fast
-    userRepository: microsoft/fast
-    defaultVersionType: 'specificTag'
-    version: '$(fastFooReleaseTag)'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    gitHubConnection: fast
+    repositoryName: microsoft/fast
+    action: create
+    target: $(releaseCommit)
+    tagSource: userSpecifiedTag
+    tag: $(fastFooReleaseTag)
+    title: $(fastFooReleaseTag)
+    releaseNotesSource: inline
+    releaseNotesInline: "Automated FAST release for @microsoft/fast-foo@$(fastFooReleaseVersion)."
+    addChangeLog: false
+    assets: |
+      $(Build.SourcesDirectory)/publish_artifacts_npm/microsoft-fast-foo-$(fastFooReleaseVersion).tgz
+    assetUploadMode: replace
+    isDraft: false
+    isPreRelease: false
+    makeLatest: legacy
 ```
