@@ -1,5 +1,5 @@
 # Register this YAML in Azure DevOps with the exact pipeline definition name
-# "FAST CD Build". .ado/pipelines/azure-pipelines-cd.yml references that
+# "FAST - CD Build". .ado/pipelines/azure-pipelines-cd.yml references that
 # definition name as a pipeline resource, watching specifically for the
 # `BuildArtifacts` stage (see the comment above that stage for why
 # `ValidateArtifacts` is a separate stage rather than a condition on the
@@ -56,16 +56,16 @@ stages:
         ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
 
 # Two stage NAMES (not one stage gated by a `validationMode` condition) are
-# used deliberately. `FAST CD`'s `releaseBuild` pipeline resource trigger
+# used deliberately. `FAST - CD`'s `releaseBuild` pipeline resource trigger
 # fires when a stage literally named `BuildArtifacts` completes on `main` —
 # it has no way to also check which queue-time parameter values that run
 # used. If validation runs reused the `BuildArtifacts` name, queuing this
 # pipeline with `validationMode: true` (e.g. to test the artifact contract
-# after changing this file) would auto-trigger a real `FAST CD` run, which
+# after changing this file) would auto-trigger a real `FAST - CD` run, which
 # would then fail loudly on the `validationMode` mismatch check in
 # `read-release-manifest.mjs` — a confusing red run for what was only ever
 # meant to be a local contract check. Giving the validation path its own
-# stage name (`ValidateArtifacts`) means `FAST CD` is structurally unable to
+# stage name (`ValidateArtifacts`) means `FAST - CD` is structurally unable to
 # hear about it, with no reliance on that downstream check as the only
 # safety net. (A skipped stage does not fire a pipeline resource trigger
 # either — Azure Pipelines only triggers on `stages` that actually

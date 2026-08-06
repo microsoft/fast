@@ -2,8 +2,8 @@
 /**
  * Enumerate FAST's publishable npm workspaces and, for every workspace whose
  * `${name}_v${version}` tag does not yet exist on `origin`, pack its npm
- * tarball (and any paired Rust crates) so the Azure `FAST CD Build` pipeline
- * can hand the packed assets to the `FAST CD` pipeline for signing and
+ * tarball (and any paired Rust crates) so the Azure `FAST - CD Build` pipeline
+ * can hand the packed assets to the `FAST - CD` pipeline for signing and
  * publishing.
  *
  * This script does NOT create GitHub releases, git tags, or npm/crates.io
@@ -152,7 +152,7 @@ if (pending.length === 0) {
     // zero pending workspaces means every previously-pending workspace's
     // release tag appeared on `origin` in the window between that check
     // and this pack step. That is almost always a concurrent release run
-    // (another `FAST CD Build`/`FAST CD` execution) winning the race, not a
+    // (another `FAST - CD Build`/`FAST - CD` execution) winning the race, not a
     // normal "nothing to do" outcome, so fail loudly here instead of
     // silently exiting without writing `release-manifest.json` (which would
     // otherwise surface later as a confusing "file not found" error when the
@@ -161,7 +161,7 @@ if (pending.length === 0) {
         "No packages are pending release, but pack-pending-releases.mjs was invoked " +
             "in packing mode after an earlier check found pending packages. This " +
             "indicates a concurrent release run already tagged every previously-pending " +
-            "workspace between the check-only step and this pack step. Re-run 'FAST CD " +
+            "workspace between the check-only step and this pack step. Re-run 'FAST - CD " +
             "Build' if packages are still expected to be pending.",
     );
     process.exit(1);

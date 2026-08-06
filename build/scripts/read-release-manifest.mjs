@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
  * Read `release-manifest.json` (written by `pack-pending-releases.mjs` in
- * the `FAST CD Build` pipeline's `BuildArtifacts` stage) and cross-reference
+ * the `FAST - CD Build` pipeline's `BuildArtifacts` stage) and cross-reference
  * it against the workspaces that are publishable right now — from a fresh
- * `checkout: self` in the `FAST CD` pipeline — to emit one set of Azure
+ * `checkout: self` in the `FAST - CD` pipeline — to emit one set of Azure
  * Pipelines output variables per currently-publishable workspace:
  *
  *   - `<prefix>NeedsRelease`   - `"true"` when the workspace was packed by

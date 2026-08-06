@@ -55,7 +55,7 @@ steps:
     # every workspace whose release tag does not yet exist, and writes
     # `publish_artifacts_meta/release-manifest.json` describing exactly
     # what was packed. No GitHub release, git tag, or publish happens
-    # here — those are owned by the `FAST CD` pipeline.
+    # here — those are owned by the `FAST - CD` pipeline.
     script: |
       set -euo pipefail
       node build/scripts/pack-pending-releases.mjs

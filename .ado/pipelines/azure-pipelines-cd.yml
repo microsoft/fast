@@ -1,5 +1,5 @@
 # Register this YAML in Azure DevOps with the exact pipeline definition name
-# "FAST CD".
+# "FAST - CD".
 trigger: none
 pr: none
 
@@ -15,7 +15,7 @@ parameters:
 resources:
   pipelines:
   - pipeline: releaseBuild
-    source: FAST CD Build
+    source: FAST - CD Build
     # Manual Run Pipeline selection may intentionally override this default.
     branch: refs/heads/main
     trigger:
@@ -24,11 +24,11 @@ resources:
         - main
       # Only a stage literally named `BuildArtifacts` fires this trigger, and
       # only when that stage actually completes (a skipped stage — e.g. a
-      # `FAST CD Build` run with nothing pending — never fires it either).
+      # `FAST - CD Build` run with nothing pending — never fires it either).
       # `azure-pipelines-build.yml`'s `validationMode: true` path runs under
       # the separate `ValidateArtifacts` stage name specifically so those
       # validation-only runs can never reach this trigger and pull a real
-      # `FAST CD` run into an unwanted (and confusingly red) execution. See
+      # `FAST - CD` run into an unwanted (and confusingly red) execution. See
       # the comment above that stage in `azure-pipelines-build.yml` for the
       # full rationale.
       stages:
@@ -160,19 +160,19 @@ extends:
       #      and GitHub release per package, LAST.
       #
       # This ordering is deliberate. `pack-pending-releases.mjs` (run by the
-      # `FAST CD Build` pipeline) treats a workspace as "pending" purely
+      # `FAST - CD Build` pipeline) treats a workspace as "pending" purely
       # based on whether its `${name}_v${version}` tag exists on `origin` —
       # so whichever action creates that tag is also, structurally, the
       # action that makes a package invisible to every future release-prep
       # run. Creating the tag *before* the npm/crates publish step (as an
       # earlier version of this pipeline did, via a dedicated `TagRelease`
       # stage) meant a publish failure left the tag behind anyway: the next
-      # `FAST CD Build` run would see the tag, treat the package as already
+      # `FAST - CD Build` run would see the tag, treat the package as already
       # released, and never repack or retry it — permanently stranding the
       # publish for that package with no automatic recovery path. Creating
       # the tag only *after* `Publish` succeeds means a publish failure
       # never leaves that tag behind, so the package stays "pending" and the
-      # very next `FAST CD Build` run retries it automatically.
+      # very next `FAST - CD Build` run retries it automatically.
       #
       # `GitHubRelease@1` (`tagSource: userSpecifiedTag`, `action: create`)
       # creates the tag itself as part of creating the release when the tag
@@ -182,7 +182,7 @@ extends:
       # Residual risk: if `Publish` succeeds but `PublishGitHub` fails for a
       # package (rather than the whole job failing outright, which
       # `releaseTagCheck` below makes safe to just rerun), that package's
-      # tag still won't exist, so the next `FAST CD Build` run will try to
+      # tag still won't exist, so the next `FAST - CD Build` run will try to
       # republish it — and since it was already published, `npm publish` /
       # `cargo publish` fails loudly (the existing, documented idempotency
       # behavior for republishing an already-published version). That
