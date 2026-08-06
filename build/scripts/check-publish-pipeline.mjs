@@ -2,73 +2,22 @@
 /**
  * Guardrail for Azure CD coverage.
  *
- * `cd-github-releases.yml` discovers publishable workspaces dynamically, but
- * `azure-pipelines-cd.yml` must declare one `DownloadGitHubRelease@0` task per
- * package because Azure Pipelines cannot create tasks from runtime output. This
- * script keeps those surfaces in sync.
+ * `pack-pending-releases.mjs` discovers publishable workspaces dynamically,
+ * but `.ado/pipelines/azure-pipelines-cd.yml` must declare one static
+ * `GitHubRelease@1` task (plus matching `PublishRelease` stage variables)
+ * per package, because Azure Pipelines cannot create tasks from runtime
+ * manifest content. This script keeps those surfaces in sync.
  */
 
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import {
+    listPublishableWorkspaces,
+    repoRoot,
+    VersionDriftError,
+} from "./lib/publishable-workspaces.mjs";
 
-const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const pipelinePath = join(repoRoot, "azure-pipelines-cd.yml");
-
-function readJson(relativePath) {
-    return JSON.parse(readFileSync(join(repoRoot, relativePath), "utf8"));
-}
-
-function npmNameToCrateName(npmName) {
-    return npmName.replace(/^@/, "").replace(/\//g, "-");
-}
-
-function npmNameToOutputPrefix(npmName) {
-    return npmNameToCrateName(npmName)
-        .replace(/^microsoft-/, "")
-        .replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
-}
-
-function listWorkspaceLocations() {
-    const rootPkg = readJson("package.json");
-    const locations = new Set();
-
-    for (const pattern of rootPkg.workspaces || []) {
-        if (pattern.endsWith("/*")) {
-            const parent = pattern.slice(0, -2);
-            const parentPath = join(repoRoot, parent);
-            if (!existsSync(parentPath)) continue;
-            for (const entry of readdirSync(parentPath, { withFileTypes: true })) {
-                if (entry.isDirectory()) {
-                    locations.add(join(parent, entry.name));
-                }
-            }
-        } else {
-            locations.add(pattern);
-        }
-    }
-
-    return [...locations].sort();
-}
-
-function listPublishableWorkspaces() {
-    return listWorkspaceLocations()
-        .map(location => {
-            const pkgPath = join(location, "package.json");
-            const absolutePkgPath = join(repoRoot, pkgPath);
-            if (!existsSync(absolutePkgPath)) return null;
-
-            const pkg = readJson(pkgPath);
-            if (pkg.private === true || !pkg.name || !pkg.version) return null;
-
-            return {
-                location,
-                name: pkg.name,
-                outputPrefix: npmNameToOutputPrefix(pkg.name),
-            };
-        })
-        .filter(Boolean);
-}
+const pipelinePath = join(repoRoot, ".ado", "pipelines", "azure-pipelines-cd.yml");
 
 function getStepBlocks(pipeline, stepHeader) {
     const lines = pipeline.split(/\r?\n/);
@@ -84,7 +33,9 @@ function getStepBlocks(pipeline, stepHeader) {
         const block = [];
         for (let j = i; j < lines.length; j++) {
             const current = lines[j];
-            const nextStep = current.match(/^(\s*)- (checkout|script|task|template):/);
+            const nextStep = current.match(
+                /^(\s*)- (checkout|script|task|template|download):/,
+            );
             if (j > i && nextStep && nextStep[1].length === indent) {
                 break;
             }
@@ -101,13 +52,13 @@ function validateUniquePrefixes(workspaces) {
     const failures = [];
 
     for (const workspace of workspaces) {
-        const previous = seen.get(workspace.outputPrefix);
+        const previous = seen.get(workspace.prefix);
         if (previous) {
             failures.push(
-                `${workspace.name} and ${previous.name} both map to Azure output prefix '${workspace.outputPrefix}'. Rename one package or update the prefix mapping.`,
+                `${workspace.name} and ${previous.name} both map to Azure output prefix '${workspace.prefix}'. Rename one package or update the prefix mapping.`,
             );
         } else {
-            seen.set(workspace.outputPrefix, workspace);
+            seen.set(workspace.prefix, workspace);
         }
     }
 
@@ -115,37 +66,63 @@ function validateUniquePrefixes(workspaces) {
 }
 
 const pipeline = readFileSync(pipelinePath, "utf8");
-const publishable = listPublishableWorkspaces();
-const downloadBlocks = getStepBlocks(pipeline, "- task: DownloadGitHubRelease@0");
+
+let publishable;
+try {
+    publishable = listPublishableWorkspaces();
+} catch (error) {
+    if (error instanceof VersionDriftError) {
+        console.error("[check-publish-pipeline] " + error.message);
+        process.exit(1);
+    }
+    throw error;
+}
+
+const releaseBlocks = getStepBlocks(pipeline, "- task: GitHubRelease@1");
 const failures = validateUniquePrefixes(publishable);
 
-for (const { name, outputPrefix } of publishable) {
-    const needsVariable = `${outputPrefix}NeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.${outputPrefix}NeedsDeployment'] ]`;
-    const tagVariable = `${outputPrefix}ReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.${outputPrefix}ReleaseTag'] ]`;
-    const condition = `condition: and(succeeded(), eq(variables['${outputPrefix}NeedsDeployment'], 'true'))`;
-    const version = `version: '$(${outputPrefix}ReleaseTag)'`;
+for (const { name, prefix } of publishable) {
+    const needsVariable = `${prefix}NeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}NeedsRelease'] ]`;
+    const tagVariable = `${prefix}ReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}ReleaseTag'] ]`;
+    const versionVariable = `${prefix}ReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}ReleaseVersion'] ]`;
+    // The release-tag-exists clause is what makes rerunning a partially
+    // failed `PublishGitHub` job safe (see that job's comments in
+    // azure-pipelines-cd.yml): it must be present alongside the
+    // `NeedsRelease` check on every task, not just some of them.
+    const condition = `condition: and(succeeded(), eq(variables['${prefix}NeedsRelease'], 'true'), eq(variables['releaseTagCheck.${prefix}ReleaseTagExists'], 'false'))`;
+    const tag = `tag: $(${prefix}ReleaseTag)`;
 
     if (!pipeline.includes(needsVariable)) {
-        failures.push(`Missing Package stage variable for ${name}: ${needsVariable}`);
+        failures.push(
+            `Missing PublishRelease stage variable for ${name}: ${needsVariable}`,
+        );
     }
 
     if (!pipeline.includes(tagVariable)) {
-        failures.push(`Missing Package stage variable for ${name}: ${tagVariable}`);
+        failures.push(
+            `Missing PublishRelease stage variable for ${name}: ${tagVariable}`,
+        );
     }
 
-    const hasDownloadTask = downloadBlocks.some(
+    if (!pipeline.includes(versionVariable)) {
+        failures.push(
+            `Missing PublishRelease stage variable for ${name}: ${versionVariable}`,
+        );
+    }
+
+    const hasReleaseTask = releaseBlocks.some(
         block =>
-            block.includes(`Download ${name} release assets`) &&
+            block.includes(`Create ${name} GitHub Release`) &&
             block.includes(condition) &&
-            block.includes("connection: fast") &&
-            block.includes("userRepository: microsoft/fast") &&
-            block.includes("defaultVersionType: 'specificTag'") &&
-            block.includes(version),
+            block.includes("gitHubConnection: fast") &&
+            block.includes("repositoryName: microsoft/fast") &&
+            block.includes("tagSource: userSpecifiedTag") &&
+            block.includes(tag),
     );
 
-    if (!hasDownloadTask) {
+    if (!hasReleaseTask) {
         failures.push(
-            `Missing DownloadGitHubRelease@0 task for ${name}. Add a task conditioned on '${outputPrefix}NeedsDeployment' and using '$(${outputPrefix}ReleaseTag)'.`,
+            `Missing GitHubRelease@1 task for ${name}. Add a task conditioned on '${prefix}NeedsRelease' and using '$(${prefix}ReleaseTag)'.`,
         );
     }
 }
@@ -153,7 +130,7 @@ for (const { name, outputPrefix } of publishable) {
 if (failures.length > 0) {
     console.error("[check-publish-pipeline] Azure CD publish coverage is incomplete.");
     console.error(
-        "Every non-private workspace must be represented in azure-pipelines-cd.yml. See .github/workflows/README.md > Adding a publishable package.",
+        "Every non-private workspace must be represented in .ado/pipelines/azure-pipelines-cd.yml. See .github/workflows/README.md > Adding a publishable package.",
     );
     for (const failure of failures) {
         console.error(`- ${failure}`);
