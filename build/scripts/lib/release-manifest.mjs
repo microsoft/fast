@@ -83,6 +83,10 @@ export function validateReleaseManifestStructure(manifest) {
             fail(`package name is duplicated: ${pkg.name}`);
         }
         packageNames.add(pkg.name);
+        const expectedTag = `${pkg.name}_v${pkg.version}`;
+        if (pkg.tag !== expectedTag) {
+            fail(`${description}.tag must be ${expectedTag}, got ${pkg.tag}.`);
+        }
 
         validateAsset(pkg.npmAsset, `${description}.npmAsset`, assetNames);
         if (!Array.isArray(pkg.crateAssets)) {

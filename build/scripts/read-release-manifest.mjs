@@ -10,11 +10,13 @@
  *     the build pipeline, `"false"` otherwise.
  *   - `<prefix>ReleaseTag`     - the workspace's `${name}_v${version}` tag.
  *   - `<prefix>ReleaseVersion` - the workspace's version.
+ *   - `releaseTags`            - the validated manifest tags as a strict
+ *     comma-separated list.
  *
- * `.ado/pipelines/azure-pipelines-cd.yml` declares one static tagging task
- * and one `GitHubRelease@1` task per known publishable workspace (Azure
- * Pipelines cannot create tasks dynamically from manifest content), each
- * conditioned on that workspace's `<prefix>NeedsRelease` variable.
+ * `.ado/pipelines/azure-pipelines-cd.yml` creates tags from the generic
+ * `releaseTags` list. It still declares one `GitHubRelease@1` task per known
+ * publishable workspace because Azure Pipelines cannot create tasks
+ * dynamically from manifest content.
  *
  * Before emitting outputs, validates the manifest and downloaded artifact
  * directories against the selected pipeline resource metadata supplied in
@@ -27,6 +29,7 @@ import { readFileSync } from "node:fs";
 import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
 import { listPublishableWorkspaces } from "./lib/publishable-workspaces.mjs";
 import { validateReleaseArtifacts } from "./lib/release-manifest.mjs";
+import { formatSelectedReleaseTags } from "./lib/selected-release-tags.mjs";
 
 const manifestPath = process.argv[2];
 if (!manifestPath) {
@@ -54,6 +57,7 @@ try {
     process.exit(1);
 }
 const selectedPackages = manifest.packages || [];
+setAzureOutput("releaseTags", formatSelectedReleaseTags(selectedPackages));
 
 const buildId = process.env.BUILD_BUILDID || "local";
 console.log(

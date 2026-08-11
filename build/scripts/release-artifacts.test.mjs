@@ -144,6 +144,15 @@ test("rejects empty package lists, duplicate packages, and malformed hashes", ()
     );
 });
 
+test("rejects package tags that do not match the package name and version", () => {
+    const mismatch = fixture("mismatched-tag");
+    mismatch.manifest.packages[0].tag = "@microsoft/package_v2.0.0";
+    assert.throws(
+        () => validateReleaseManifestStructure(mismatch.manifest),
+        /tag must be @microsoft\/package_v1\.0\.0/,
+    );
+});
+
 test("rejects unsafe, duplicate, and placeholder asset names", () => {
     for (const fileName of [
         "../package.tgz",

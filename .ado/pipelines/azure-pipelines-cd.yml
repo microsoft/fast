@@ -130,14 +130,7 @@ extends:
         dependsOn: PrepareRelease
         variables:
           releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
-          fastBuildNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildNeedsRelease'] ]
-          fastBuildReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseTag'] ]
-          fastElementNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementNeedsRelease'] ]
-          fastElementReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementReleaseTag'] ]
-          fastRouterNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterNeedsRelease'] ]
-          fastRouterReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterReleaseTag'] ]
-          fastTestHarnessNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessNeedsRelease'] ]
-          fastTestHarnessReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessReleaseTag'] ]
+          releaseTags: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseTags'] ]
         jobs:
         - job: Tag
           displayName: Create annotated release tags
@@ -147,148 +140,46 @@ extends:
             fetchDepth: 0
             persistCredentials: true
 
-          # Each task is independently idempotent. If another run wins the
-          # push race, the task succeeds only when that tag resolves to the
-          # validated release commit.
           - task: Bash@3
-            displayName: "Tag @microsoft/fast-build release"
-            condition: and(succeeded(), eq(variables['fastBuildNeedsRelease'], 'true'))
+            displayName: Create annotated release tags
             inputs:
               targetType: inline
               script: |
                 set -euo pipefail
-                remote_ref="refs/azure-release-tags/${RELEASE_TAG}"
-                git fetch --no-tags origin "$RELEASE_COMMIT"
-                if git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}" 2>/dev/null; then
-                  existing_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]${RELEASE_TAG} points to ${existing_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
-                  fi
-                  echo "${RELEASE_TAG} already points to ${RELEASE_COMMIT}."
-                  exit 0
-                fi
-                git config user.name "Azure Pipelines"
-                git config user.email "azure-pipelines@microsoft.com"
-                git tag -a "$RELEASE_TAG" "$RELEASE_COMMIT" -m "Release ${RELEASE_TAG}"
-                if git push origin "refs/tags/${RELEASE_TAG}"; then
-                  exit 0
-                fi
-                git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}"
-                raced_commit=$(git rev-parse "${remote_ref}^{}")
-                if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                  echo "##vso[task.logissue type=error]Concurrent tag ${RELEASE_TAG} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                  exit 1
-                fi
-                echo "Concurrent release run created ${RELEASE_TAG} at the expected commit."
-            env:
-              RELEASE_TAG: $(fastBuildReleaseTag)
-              RELEASE_COMMIT: $(releaseCommit)
 
-          - task: Bash@3
-            displayName: "Tag @microsoft/fast-element release"
-            condition: and(succeeded(), eq(variables['fastElementNeedsRelease'], 'true'))
-            inputs:
-              targetType: inline
-              script: |
-                set -euo pipefail
-                remote_ref="refs/azure-release-tags/${RELEASE_TAG}"
                 git fetch --no-tags origin "$RELEASE_COMMIT"
-                if git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}" 2>/dev/null; then
-                  existing_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]${RELEASE_TAG} points to ${existing_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
-                  fi
-                  echo "${RELEASE_TAG} already points to ${RELEASE_COMMIT}."
-                  exit 0
-                fi
                 git config user.name "Azure Pipelines"
                 git config user.email "azure-pipelines@microsoft.com"
-                git tag -a "$RELEASE_TAG" "$RELEASE_COMMIT" -m "Release ${RELEASE_TAG}"
-                if git push origin "refs/tags/${RELEASE_TAG}"; then
-                  exit 0
-                fi
-                git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}"
-                raced_commit=$(git rev-parse "${remote_ref}^{}")
-                if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                  echo "##vso[task.logissue type=error]Concurrent tag ${RELEASE_TAG} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                  exit 1
-                fi
-                echo "Concurrent release run created ${RELEASE_TAG} at the expected commit."
-            env:
-              RELEASE_TAG: $(fastElementReleaseTag)
-              RELEASE_COMMIT: $(releaseCommit)
 
-          - task: Bash@3
-            displayName: "Tag @microsoft/fast-router release"
-            condition: and(succeeded(), eq(variables['fastRouterNeedsRelease'], 'true'))
-            inputs:
-              targetType: inline
-              script: |
-                set -euo pipefail
-                remote_ref="refs/azure-release-tags/${RELEASE_TAG}"
-                git fetch --no-tags origin "$RELEASE_COMMIT"
-                if git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}" 2>/dev/null; then
-                  existing_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]${RELEASE_TAG} points to ${existing_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
+                IFS=',' read -ra tags <<< "$RELEASE_TAGS"
+                for release_tag in "${tags[@]}"; do
+                  remote_ref="refs/azure-release-tags/${release_tag}"
+                  if git fetch --force origin "refs/tags/${release_tag}:${remote_ref}" 2>/dev/null; then
+                    existing_commit=$(git rev-parse "${remote_ref}^{}")
+                    if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
+                      echo "##vso[task.logissue type=error]${release_tag} points to ${existing_commit}, not ${RELEASE_COMMIT}."
+                      exit 1
+                    fi
+                    echo "${release_tag} already points to ${RELEASE_COMMIT}."
+                    continue
                   fi
-                  echo "${RELEASE_TAG} already points to ${RELEASE_COMMIT}."
-                  exit 0
-                fi
-                git config user.name "Azure Pipelines"
-                git config user.email "azure-pipelines@microsoft.com"
-                git tag -a "$RELEASE_TAG" "$RELEASE_COMMIT" -m "Release ${RELEASE_TAG}"
-                if git push origin "refs/tags/${RELEASE_TAG}"; then
-                  exit 0
-                fi
-                git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}"
-                raced_commit=$(git rev-parse "${remote_ref}^{}")
-                if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                  echo "##vso[task.logissue type=error]Concurrent tag ${RELEASE_TAG} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                  exit 1
-                fi
-                echo "Concurrent release run created ${RELEASE_TAG} at the expected commit."
-            env:
-              RELEASE_TAG: $(fastRouterReleaseTag)
-              RELEASE_COMMIT: $(releaseCommit)
 
-          - task: Bash@3
-            displayName: "Tag @microsoft/fast-test-harness release"
-            condition: and(succeeded(), eq(variables['fastTestHarnessNeedsRelease'], 'true'))
-            inputs:
-              targetType: inline
-              script: |
-                set -euo pipefail
-                remote_ref="refs/azure-release-tags/${RELEASE_TAG}"
-                git fetch --no-tags origin "$RELEASE_COMMIT"
-                if git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}" 2>/dev/null; then
-                  existing_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]${RELEASE_TAG} points to ${existing_commit}, not ${RELEASE_COMMIT}."
+                  git tag -a "$release_tag" "$RELEASE_COMMIT" -m "Release ${release_tag}"
+                  if git push origin "refs/tags/${release_tag}"; then
+                    continue
+                  fi
+
+                  git fetch --force origin "refs/tags/${release_tag}:${remote_ref}"
+                  raced_commit=$(git rev-parse "${remote_ref}^{}")
+                  if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
+                    echo "##vso[task.logissue type=error]Concurrent tag ${release_tag} points to ${raced_commit}, not ${RELEASE_COMMIT}."
                     exit 1
                   fi
-                  echo "${RELEASE_TAG} already points to ${RELEASE_COMMIT}."
-                  exit 0
-                fi
-                git config user.name "Azure Pipelines"
-                git config user.email "azure-pipelines@microsoft.com"
-                git tag -a "$RELEASE_TAG" "$RELEASE_COMMIT" -m "Release ${RELEASE_TAG}"
-                if git push origin "refs/tags/${RELEASE_TAG}"; then
-                  exit 0
-                fi
-                git fetch --force origin "refs/tags/${RELEASE_TAG}:${remote_ref}"
-                raced_commit=$(git rev-parse "${remote_ref}^{}")
-                if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                  echo "##vso[task.logissue type=error]Concurrent tag ${RELEASE_TAG} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                  exit 1
-                fi
-                echo "Concurrent release run created ${RELEASE_TAG} at the expected commit."
+                  echo "Concurrent release run created ${release_tag} at the expected commit."
+                done
             env:
-              RELEASE_TAG: $(fastTestHarnessReleaseTag)
               RELEASE_COMMIT: $(releaseCommit)
+              RELEASE_TAGS: $(releaseTags)
 
       - stage: PublishRelease
         displayName: Publish npm, crates.io, and GitHub releases

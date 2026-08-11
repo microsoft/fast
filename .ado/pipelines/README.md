@@ -92,9 +92,10 @@ markers, or create GitHub Releases.
 
 ## Publication, markers, and reruns
 
-Normal CD runs create annotated release tags at the validated commit before registry
-publication. Existing or concurrently-created tags are accepted only when they resolve
-to that commit. The publish job passes both npm and crate directories to one
+Normal CD runs create annotated release tags from the validated manifest's
+comma-separated tag list at the validated commit before registry publication. Existing
+or concurrently-created tags are accepted only when they resolve to that commit. The
+publish job passes both npm and crate directories to one
 `FAST.Release.PipelineTemplate.yml@fastPipelines` invocation.
 
 After registry publication succeeds, the separate `MarkDeployed` job creates
@@ -119,12 +120,10 @@ Workspace and crate discovery is automatic, but Azure cannot generate tag and
    the leading `@` and replaces `/` with `-`; add an explicit bundle mapping in
    [`publishable-workspaces.mjs`](../../build/scripts/lib/publishable-workspaces.mjs)
    when one npm package owns multiple crates.
-3. Add `<prefix>NeedsRelease` and `<prefix>ReleaseTag` variables and an idempotent
-   annotated-tag task to `TagRelease`.
-4. Add `<prefix>NeedsRelease`, `<prefix>ReleaseTag`, and
+3. Add `<prefix>NeedsRelease`, `<prefix>ReleaseTag`, and
    `<prefix>ReleaseVersion` variables to `PublishRelease`, plus the corresponding
    deployment-marker call.
-5. Add a conditional `GitHubRelease@1` task using the **`fast`** GitHub service
+4. Add a conditional `GitHubRelease@1` task using the **`fast`** GitHub service
    connection, `repositoryName: microsoft/fast`, the pre-created release tag, and exact
    versioned npm/crate asset filenames.
 
