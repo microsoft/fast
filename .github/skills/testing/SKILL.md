@@ -90,7 +90,7 @@ To trigger WebUI integration tests for your changes:
 2. Push the branch — the workflow runs automatically.
 3. Alternatively, trigger the workflow manually from the Actions tab using `workflow_dispatch`.
 
-#### Azure Pipelines (azure-pipelines-ci.yml)
+#### Azure Pipelines (.ado/pipelines/azure-pipelines-ci.yml)
 
 The repository also has an Azure DevOps pipeline that runs on PRs to `main`. This pipeline runs in a 1ES-managed environment and includes SDL compliance checks in addition to building and testing.
 
