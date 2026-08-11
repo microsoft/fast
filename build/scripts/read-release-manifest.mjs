@@ -16,11 +16,17 @@
  * Pipelines cannot create tasks dynamically from manifest content), each
  * conditioned on that workspace's `<prefix>NeedsRelease` variable.
  *
+ * Before emitting outputs, validates the manifest and downloaded artifact
+ * directories against the selected pipeline resource metadata supplied in
+ * the environment.
+ *
  * Usage: node build/scripts/read-release-manifest.mjs <path-to-manifest.json>
  */
 
 import { readFileSync } from "node:fs";
+import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
 import { listPublishableWorkspaces } from "./lib/publishable-workspaces.mjs";
+import { validateReleaseArtifacts } from "./lib/release-manifest.mjs";
 
 const manifestPath = process.argv[2];
 if (!manifestPath) {
@@ -33,15 +39,32 @@ function setAzureOutput(name, value) {
 }
 
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-
-if (!/^[0-9a-f]{40}$/.test(manifest.releaseCommit || "")) {
-    console.error(
-        `##vso[task.logissue type=error]Invalid release commit in manifest: ${manifest.releaseCommit}`,
-    );
+try {
+    validateReleaseArtifacts({
+        manifest,
+        expectedReleaseCommit: process.env.RELEASE_BUILD_SOURCE_COMMIT,
+        sourceBranch: process.env.RELEASE_BUILD_SOURCE_BRANCH,
+        validationMode: process.env.VALIDATION_MODE,
+        npmDirectory: process.env.NPM_ARTIFACT_DIR,
+        crateDirectory: process.env.CRATE_ARTIFACT_DIR,
+    });
+} catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`##vso[task.logissue type=error]${message}`);
     process.exit(1);
 }
+const selectedPackages = manifest.packages || [];
 
-const packagesByName = new Map((manifest.packages || []).map(pkg => [pkg.name, pkg]));
+const buildId = process.env.BUILD_BUILDID || "local";
+console.log(
+    `##vso[build.updatebuildnumber]${formatAzureBuildNumber(
+        selectedPackages.length,
+        "cd",
+        buildId,
+    )}`,
+);
+
+const packagesByName = new Map(selectedPackages.map(pkg => [pkg.name, pkg]));
 const publishable = listPublishableWorkspaces();
 const publishableNames = new Set(publishable.map(workspace => workspace.name));
 let pendingCount = 0;
@@ -62,7 +85,7 @@ for (const workspace of publishable) {
 setAzureOutput("releaseCommit", manifest.releaseCommit);
 console.log(`Pending releases: ${pendingCount}/${publishable.length}`);
 
-for (const pkg of manifest.packages || []) {
+for (const pkg of selectedPackages) {
     if (!publishableNames.has(pkg.name)) {
         console.log(
             `##vso[task.logissue type=warning]${pkg.name} was packed but is no longer a publishable workspace on this commit.`,

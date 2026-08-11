@@ -46,21 +46,27 @@
  *     `publish_artifacts_npm/`, packs any paired Rust crates into
  *     `publish_artifacts_crates/`, and writes
  *     `publish_artifacts_meta/release-manifest.json` describing exactly
- *     what was packed (name, version, tag, npm tarball filename, crate
- *     filenames) for the downstream `read-release-manifest.mjs` step.
+ *     what was packed (schema version, name, version, tag, and SHA-256 for
+ *     every npm/crate asset) for the downstream
+ *     `read-release-manifest.mjs` step.
  *
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation
  * and packaging.
  */
 
 import { execFileSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
+import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
 import {
     gitTagExistsOnRemote,
     listPublishableWorkspaces,
     VersionDriftError,
 } from "./lib/publishable-workspaces.mjs";
+import {
+    createReleaseAsset,
+    releaseManifestSchemaVersion,
+} from "./lib/release-manifest.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
@@ -111,12 +117,6 @@ if (ALLOW_EXISTING_RELEASE) {
     );
 }
 
-if (publishable.length === 0) {
-    console.log("No publishable workspaces found.");
-    setAzureOutput("shouldBuild", "false");
-    process.exit(0);
-}
-
 const pending = publishable.filter(isPending);
 
 console.log(`Publishable workspaces: ${publishable.length}`);
@@ -133,14 +133,29 @@ if (pending.length > 0) {
     }
 }
 
-if (process.env.TF_BUILD) {
-    console.log(
-        `##vso[build.updatebuildnumber]release-prep-${process.env.BUILD_BUILDID || "local"}`,
-    );
-}
 setAzureOutput("shouldBuild", pending.length > 0 ? "true" : "false");
 
 if (CHECK_ONLY) {
+    // Emit build number only once during the initial check-only selection phase,
+    // not again during the later packing phase. This prevents the build name from
+    // changing if new tags appear on origin between the check and pack stages.
+    // This happens even with zero publishable workspaces to ensure the build name
+    // is always set consistently.
+    if (process.env.TF_BUILD) {
+        const buildId = process.env.BUILD_BUILDID || "local";
+        console.log(
+            `##vso[build.updatebuildnumber]${formatAzureBuildNumber(
+                pending.length,
+                "build",
+                buildId,
+            )}`,
+        );
+    }
+    process.exit(0);
+}
+
+if (publishable.length === 0) {
+    console.log("No publishable workspaces found.");
     process.exit(0);
 }
 
@@ -166,9 +181,10 @@ if (pending.length === 0) {
     process.exit(1);
 }
 
-mkdirSync(NPM_DIR, { recursive: true });
-mkdirSync(CRATES_DIR, { recursive: true });
-mkdirSync(META_DIR, { recursive: true });
+for (const directory of [NPM_DIR, CRATES_DIR, META_DIR]) {
+    rmSync(directory, { force: true, recursive: true });
+    mkdirSync(directory, { recursive: true });
+}
 
 const manifestPackages = [];
 let hasErrors = false;
@@ -184,8 +200,9 @@ for (const { name, version, tag, prefix, location, crates } of pending) {
             `--pack-destination=${resolve(NPM_DIR)}`,
         ]);
         const npmTarball = JSON.parse(packJson)[0].filename;
+        const npmAsset = createReleaseAsset(npmTarball, join(NPM_DIR, npmTarball));
 
-        const crateFiles = [];
+        const crateAssets = [];
         for (const { crateName, cargoTomlPath } of crates) {
             console.log(`Packaging crate ${crateName}@${version}...`);
             run(
@@ -212,11 +229,11 @@ for (const { name, version, tag, prefix, location, crates } of pending) {
             }
             const destCrate = join(CRATES_DIR, basename(srcCrate));
             copyFileSync(srcCrate, destCrate);
-            crateFiles.push(basename(srcCrate));
+            crateAssets.push(createReleaseAsset(basename(srcCrate), destCrate));
         }
 
-        manifestPackages.push({ name, version, tag, prefix, npmTarball, crateFiles });
-        console.log(`Packed ${name}@${version} (${1 + crateFiles.length} asset(s))`);
+        manifestPackages.push({ name, version, tag, prefix, npmAsset, crateAssets });
+        console.log(`Packed ${name}@${version} (${1 + crateAssets.length} asset(s))`);
     } catch (error) {
         hasErrors = true;
         const message = error instanceof Error ? error.message : String(error);
@@ -224,7 +241,7 @@ for (const { name, version, tag, prefix, location, crates } of pending) {
     }
 }
 
-if (manifestPackages.every(pkg => pkg.crateFiles.length === 0)) {
+if (manifestPackages.every(pkg => pkg.crateAssets.length === 0)) {
     // Guarantee `publish_artifacts_crates` always has at least one file so
     // `PublishPipelineArtifact@1` (and any downstream `DownloadPipelineArtifact@2`)
     // never has to handle a truly-empty directory. The `PublishRelease`
@@ -240,7 +257,15 @@ const releaseCommit = (
 
 writeFileSync(
     MANIFEST_PATH,
-    `${JSON.stringify({ releaseCommit, packages: manifestPackages }, null, 4)}\n`,
+    `${JSON.stringify(
+        {
+            schemaVersion: releaseManifestSchemaVersion,
+            releaseCommit,
+            packages: manifestPackages,
+        },
+        null,
+        4,
+    )}\n`,
 );
 
 console.log(`\nPacked: ${manifestPackages.length}/${pending.length}`);

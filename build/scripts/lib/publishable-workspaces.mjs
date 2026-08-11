@@ -3,10 +3,9 @@
  * paired Rust crates.
  *
  * Used by the Azure release pipeline scripts (`pack-pending-releases.mjs`
- * and `read-release-manifest.mjs`) and by `check-publish-pipeline.mjs`, so
- * that "what is publishable" and "how does
- * an npm name map to a crate name / Azure variable prefix" are defined in
- * exactly one place.
+ * and `read-release-manifest.mjs`) so that "what is publishable" and "how
+ * does an npm name map to a crate name / Azure variable prefix" are defined
+ * in exactly one place.
  */
 
 import { execFileSync } from "node:child_process";

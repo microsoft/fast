@@ -68,16 +68,17 @@ extends:
         - checkout: self
           clean: true
 
-        - task: Bash@3
-          displayName: Set release build number
-          inputs:
-            targetType: inline
-            script: |
-              echo "##vso[build.updatebuildnumber]release-cd-$(Build.BuildId)"
-
         - download: releaseBuild
           artifact: release-metadata
           displayName: Download release metadata
+
+        - download: releaseBuild
+          artifact: npm_packages
+          displayName: Download npm packages
+
+        - download: releaseBuild
+          artifact: crate_packages
+          displayName: Download crate packages
 
         - task: UseNode@1
           displayName: Install Node.js
@@ -94,7 +95,12 @@ extends:
             # source of truth for which packages are pending. This emits
             # one `<prefix>NeedsRelease` / `<prefix>ReleaseTag` /
             # `<prefix>ReleaseVersion` output per currently-publishable
-            # workspace, plus a shared `releaseCommit`.
+            # workspace, plus a shared `releaseCommit`. Before emitting
+            # outputs it verifies the schema, binds `releaseCommit` to the
+            # selected pipeline resource's source commit, requires main for
+            # production releases, and validates every downloaded asset's
+            # filename and SHA-256 with no unexpected files. It also names
+            # this run from the manifest's selected package count.
             script: |
               set -euo pipefail
               metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
@@ -109,14 +115,11 @@ extends:
           env:
             METADATA_INPUT_DIR: $(Pipeline.Workspace)/releaseBuild/release-metadata
             EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
-
-        - download: releaseBuild
-          artifact: npm_packages
-          displayName: Download npm packages
-
-        - download: releaseBuild
-          artifact: crate_packages
-          displayName: Download crate packages
+            VALIDATION_MODE: ${{ parameters.validationMode }}
+            RELEASE_BUILD_SOURCE_COMMIT: $(resources.pipeline.releaseBuild.sourceCommit)
+            RELEASE_BUILD_SOURCE_BRANCH: $(resources.pipeline.releaseBuild.sourceBranch)
+            NPM_ARTIFACT_DIR: $(Pipeline.Workspace)/releaseBuild/npm_packages
+            CRATE_ARTIFACT_DIR: $(Pipeline.Workspace)/releaseBuild/crate_packages
 
     - ${{ if eq(parameters.validationMode, 'false') }}:
       # Create every package tag before external publication. A failed

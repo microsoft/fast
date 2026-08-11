@@ -53,9 +53,10 @@ steps:
     targetType: inline
     # Packs the npm tarball (and any paired Rust crate archives) for
     # every workspace whose release tag does not yet exist, and writes
-    # `publish_artifacts_meta/release-manifest.json` describing exactly
-    # what was packed. No GitHub release, git tag, or publish happens
-    # here — those are owned by the `FAST - CD` pipeline.
+    # schema-versioned `publish_artifacts_meta/release-manifest.json`
+    # describing exactly what was packed, including each asset's filename
+    # and SHA-256. No GitHub release, git tag, or publish happens here —
+    # those are owned by the `FAST - CD` pipeline.
     script: |
       set -euo pipefail
       node build/scripts/pack-pending-releases.mjs
