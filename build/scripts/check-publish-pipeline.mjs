@@ -4,9 +4,10 @@
  *
  * `pack-pending-releases.mjs` discovers publishable workspaces dynamically,
  * but `.ado/pipelines/azure-pipelines-cd.yml` must declare one static
- * annotated-tag task and one `GitHubRelease@1` task (plus matching stage
- * variables) per package, because Azure Pipelines cannot create tasks from
- * runtime manifest content. This script keeps those surfaces in sync.
+ * annotated-tag task, deployment-marker coverage, and one `GitHubRelease@1`
+ * task (plus matching stage variables) per package, because Azure Pipelines
+ * cannot create tasks from runtime manifest content. This script keeps those
+ * surfaces in sync.
  */
 
 import { readFileSync } from "node:fs";
@@ -18,6 +19,12 @@ import {
 } from "./lib/publishable-workspaces.mjs";
 
 const pipelinePath = join(repoRoot, ".ado", "pipelines", "azure-pipelines-cd.yml");
+const releasePackingScriptPath = join(
+    repoRoot,
+    "build",
+    "scripts",
+    "pack-pending-releases.mjs",
+);
 
 function getStepBlocks(pipeline, stepHeader) {
     const lines = pipeline.split(/\r?\n/);
@@ -65,7 +72,12 @@ function validateUniquePrefixes(workspaces) {
     return failures;
 }
 
+function toEnvironmentPrefix(prefix) {
+    return prefix.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toUpperCase();
+}
+
 const pipeline = readFileSync(pipelinePath, "utf8");
+const releasePackingScript = readFileSync(releasePackingScriptPath, "utf8");
 
 let publishable;
 try {
@@ -81,6 +93,9 @@ try {
 const releaseBlocks = getStepBlocks(pipeline, "- task: GitHubRelease@1");
 const bashBlocks = getStepBlocks(pipeline, "- task: Bash@3");
 const failures = validateUniquePrefixes(publishable);
+const deploymentMarkerBlock = bashBlocks.find(block =>
+    block.includes("displayName: Mark published releases as deployed"),
+);
 
 for (const { name, prefix } of publishable) {
     const needsVariable = `${prefix}NeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.${prefix}NeedsRelease'] ]`;
@@ -122,6 +137,24 @@ for (const { name, prefix } of publishable) {
         failures.push(`Missing idempotent annotated-tag task for ${name} in TagRelease.`);
     }
 
+    const environmentPrefix = toEnvironmentPrefix(prefix);
+    const hasDeploymentMarker =
+        deploymentMarkerBlock?.includes(
+            `${environmentPrefix}_NEEDS_RELEASE: $(${prefix}NeedsRelease)`,
+        ) &&
+        deploymentMarkerBlock.includes(
+            `${environmentPrefix}_RELEASE_TAG: $(${prefix}ReleaseTag)`,
+        ) &&
+        deploymentMarkerBlock.includes(
+            `mark_if_needed "$${environmentPrefix}_NEEDS_RELEASE" "$${environmentPrefix}_RELEASE_TAG"`,
+        );
+
+    if (!hasDeploymentMarker) {
+        failures.push(
+            `Missing deployment-marker coverage for ${name} in the post-publication marker task.`,
+        );
+    }
+
     const hasReleaseTask = releaseBlocks.some(
         block =>
             block.includes(`Create ${name} GitHub Release`) &&
@@ -140,6 +173,80 @@ for (const { name, prefix } of publishable) {
             `Missing or incomplete GitHubRelease@1 task for ${name}. Must be conditioned on both '${prefix}NeedsRelease' and '${prefix}GitHubReleaseExists' check.`,
         );
     }
+}
+
+if (
+    !pipeline.includes('echo "##vso[build.updatebuildnumber]release-cd-$(Build.BuildId)"')
+) {
+    failures.push(
+        "FAST - CD must use the neutral release-cd-$(Build.BuildId) build number.",
+    );
+}
+
+if (
+    !releasePackingScript.includes(
+        "##vso[build.updatebuildnumber]release-prep-${process.env.BUILD_BUILDID",
+    )
+) {
+    failures.push("FAST - CD Build must retain the release-prep-<BuildId> build number.");
+}
+
+if (
+    !deploymentMarkerBlock?.includes('local deploy_tag="deployed/${release_tag}"') ||
+    !deploymentMarkerBlock.includes("condition: succeeded()") ||
+    !deploymentMarkerBlock.includes('if [[ "$needs_release" != "true" ]]') ||
+    !deploymentMarkerBlock.includes("RELEASE_COMMIT: $(releaseCommit)") ||
+    !deploymentMarkerBlock.includes(
+        'git fetch --force origin "refs/tags/${deploy_tag}:${remote_ref}"',
+    ) ||
+    !deploymentMarkerBlock.includes('git tag -d "$deploy_tag"') ||
+    !deploymentMarkerBlock.includes('git tag "$deploy_tag" "$RELEASE_COMMIT"') ||
+    !deploymentMarkerBlock.includes('git push origin "refs/tags/${deploy_tag}"') ||
+    !deploymentMarkerBlock.includes('"${remote_ref}^{}"')
+) {
+    failures.push(
+        "Publish must create idempotent deployed/<release-tag> markers at releaseCommit after registry publication.",
+    );
+}
+
+const releaseTemplateIndex = pipeline.indexOf(
+    "- template: FAST.Release.PipelineTemplate.yml@fastPipelines",
+);
+const deploymentMarkerIndex = pipeline.indexOf(
+    "displayName: Mark published releases as deployed",
+);
+const publishGitHubIndex = pipeline.indexOf("- job: PublishGitHub");
+const markDeployedJobIndex = pipeline.indexOf("- job: MarkDeployed");
+if (
+    releaseTemplateIndex === -1 ||
+    deploymentMarkerIndex === -1 ||
+    deploymentMarkerIndex < releaseTemplateIndex ||
+    markDeployedJobIndex === -1 ||
+    deploymentMarkerIndex < markDeployedJobIndex ||
+    publishGitHubIndex === -1 ||
+    deploymentMarkerIndex > publishGitHubIndex
+) {
+    failures.push(
+        "Deployment markers must be created only after FAST.Release.PipelineTemplate.yml completes.",
+    );
+}
+
+const markDeployedJob = pipeline.slice(markDeployedJobIndex, publishGitHubIndex);
+if (
+    !markDeployedJob.includes("dependsOn: Publish") ||
+    !markDeployedJob.includes("condition: succeeded()") ||
+    !markDeployedJob.includes("fetchDepth: 0") ||
+    !markDeployedJob.includes("fetchTags: false") ||
+    !markDeployedJob.includes("persistCredentials: true")
+) {
+    failures.push(
+        "MarkDeployed must depend on Publish and check out full history with push credentials without eagerly fetching tags.",
+    );
+}
+
+const publishGitHubJob = pipeline.slice(publishGitHubIndex);
+if (!publishGitHubJob.includes("dependsOn: MarkDeployed")) {
+    failures.push("PublishGitHub must wait for deployment markers to be validated.");
 }
 
 if (
