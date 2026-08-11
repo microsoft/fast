@@ -7,13 +7,15 @@ parameters:
 - name: validationMode
   type: string
   default: 'false'
+- name: selectedReleaseTags
+  type: string
 
 steps:
 - checkout: self
   clean: true
-  # `pack-pending-releases.mjs` calls `git ls-remote origin` (via
-  # `gitTagExistsOnRemote`) to decide which workspaces are pending, which
-  # needs an authenticated remote when the repository is private/rate
+  # Production packing re-checks every selected tag on `origin` immediately
+  # before packing so a concurrent release cannot silently shrink the batch.
+  # This needs an authenticated remote when the repository is private/rate
   # limited.
   persistCredentials: true
 
@@ -51,8 +53,8 @@ steps:
   displayName: Pack pending release assets
   inputs:
     targetType: inline
-    # Packs the npm tarball (and any paired Rust crate archives) for
-    # every workspace whose release tag does not yet exist, and writes
+    # Packs the npm tarball (and any paired Rust crate archives) for exactly
+    # the tags selected by PrepareRelease, and writes
     # schema-versioned `publish_artifacts_meta/release-manifest.json`
     # describing exactly what was packed, including each asset's filename
     # and SHA-256. No GitHub release, git tag, or publish happens here —
@@ -62,6 +64,7 @@ steps:
       node build/scripts/pack-pending-releases.mjs
   env:
     ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
+    SELECTED_RELEASE_TAGS: ${{ parameters.selectedReleaseTags }}
 
 - task: Bash@3
   displayName: Write release metadata

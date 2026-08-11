@@ -48,7 +48,8 @@ stages:
         # `${name}_v${version}` tag, so "pending" is a per-package list
         # rather than one selected version. `pack-pending-releases.mjs
         # --check-only` walks the workspaces tree (no `npm ci` required)
-        # and reports whether any workspace's tag is missing from `origin`.
+        # and reports whether any workspace's tag is missing from `origin`,
+        # along with the exact selected tag list for the packing stage.
         script: |
           set -euo pipefail
           node build/scripts/pack-pending-releases.mjs --check-only
@@ -87,10 +88,13 @@ stages:
     jobs:
     - job: PackReleases
       displayName: Build and pack pending releases
+      variables:
+        selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
       steps:
       - template: templates/pack-release-steps.yml
         parameters:
           validationMode: ${{ parameters.validationMode }}
+          selectedReleaseTags: $(selectedReleaseTags)
 
 - ${{ if eq(parameters.validationMode, 'true') }}:
   - stage: ValidateArtifacts
@@ -108,7 +112,10 @@ stages:
     jobs:
     - job: PackReleases
       displayName: Build and pack every workspace for validation
+      variables:
+        selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
       steps:
       - template: templates/pack-release-steps.yml
         parameters:
           validationMode: ${{ parameters.validationMode }}
+          selectedReleaseTags: $(selectedReleaseTags)

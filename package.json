@@ -38,7 +38,7 @@
     "sync": "beachball sync",
     "test:diff:error": "echo \"Untracked files exist, try running npm run build to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
-    "test:scripts": "node --test build/scripts/lib/azure-build-number.test.mjs build/scripts/lib/release-manifest.test.mjs",
+    "test:scripts": "node --test build/scripts/lib/azure-build-number.test.mjs build/scripts/lib/release-manifest.test.mjs build/scripts/lib/selected-release-tags.test.mjs",
     "test:validation": "npm run test:scripts && npm run test:diff",
     "test": "lage test:node test:playwright --verbose --concurrency 1",
     "test:chromium": "lage test:node test:chromium --verbose --concurrency 1",

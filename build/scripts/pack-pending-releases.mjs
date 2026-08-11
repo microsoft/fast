@@ -29,20 +29,21 @@
  *      crate-name mapping, including the `@microsoft/fast-build` bundle).
  *      Errors if a paired crate's version does not match the npm package's
  *      version.
- *   4. A workspace is "pending" when its `${name}_v${version}` tag does not
- *      yet exist on `origin` — or, when `ALLOW_EXISTING_RELEASE=true`
- *      (driven by the pipelines' `validationMode` parameter), every
- *      publishable workspace is treated as pending so its artifact contract
- *      can be rebuilt and validated without publishing.
+ *   4. In `--check-only`, a workspace is selected when its
+ *      `${name}_v${version}` tag does not yet exist on `origin` — or, when
+ *      `ALLOW_EXISTING_RELEASE=true` (driven by the pipelines'
+ *      `validationMode` parameter), every publishable workspace is selected.
+ *      The exact selected tag list is handed to the later packing stage.
  *
  * Modes:
  *
- *   - `--check-only`: only enumerate pending workspaces and emit Azure
- *     Pipelines outputs (`##vso[task.setvariable ...]`) when running under
- *     Azure Pipelines (`$TF_BUILD` set). Performs no packing. Safe to run
- *     without `node_modules` populated. Also used for the local
+ *   - `--check-only`: enumerate selected workspaces and emit Azure Pipelines
+ *     outputs (`shouldBuild` and the JSON `selectedReleaseTags`) when running
+ *     under Azure Pipelines (`$TF_BUILD` set). Performs no packing. Safe to
+ *     run without `node_modules` populated. Also used for the local
  *     `CONTRIBUTING.md` "preview what CD will publish" step.
- *   - default: packs the npm tarball for every pending workspace into
+ *   - default: requires `SELECTED_RELEASE_TAGS` and packs exactly those
+ *     workspaces into
  *     `publish_artifacts_npm/`, packs any paired Rust crates into
  *     `publish_artifacts_crates/`, and writes
  *     `publish_artifacts_meta/release-manifest.json` describing exactly
@@ -67,6 +68,11 @@ import {
     createReleaseAsset,
     releaseManifestSchemaVersion,
 } from "./lib/release-manifest.mjs";
+import {
+    assertSelectedTagsAreUnreleased,
+    resolveSelectedReleaseWorkspaces,
+    serializeSelectedReleaseTags,
+} from "./lib/selected-release-tags.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
@@ -84,7 +90,7 @@ function setAzureOutput(name, value) {
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
-function isPending(workspace) {
+function isSelected(workspace) {
     if (ALLOW_EXISTING_RELEASE) return true;
     return !gitTagExistsOnRemote(workspace.tag);
 }
@@ -110,21 +116,43 @@ try {
 if (process.env.FAST_RELEASE_SKIP_CRATES === "true") {
     console.log("Paired Rust crate assets are skipped for this release run.");
 }
-if (ALLOW_EXISTING_RELEASE) {
+if (ALLOW_EXISTING_RELEASE && CHECK_ONLY) {
     console.log(
-        "Validation mode: every publishable workspace is treated as pending, " +
+        "Validation mode: every publishable workspace is selected, " +
             "regardless of whether its release tag already exists.",
     );
 }
 
-const pending = publishable.filter(isPending);
+let selected;
+if (CHECK_ONLY) {
+    selected = publishable.filter(isSelected);
+} else {
+    try {
+        selected = resolveSelectedReleaseWorkspaces(
+            process.env.SELECTED_RELEASE_TAGS,
+            publishable,
+        );
+    } catch (error) {
+        logError(error instanceof Error ? error.message : String(error));
+        process.exit(1);
+    }
+
+    if (!ALLOW_EXISTING_RELEASE) {
+        try {
+            assertSelectedTagsAreUnreleased(selected, gitTagExistsOnRemote);
+        } catch (error) {
+            logError(error instanceof Error ? error.message : String(error));
+            process.exit(1);
+        }
+    }
+}
 
 console.log(`Publishable workspaces: ${publishable.length}`);
-console.log(`Pending release:        ${pending.length}`);
+console.log(`Selected release:       ${selected.length}`);
 
-if (pending.length > 0) {
-    console.log("\nPackages pending release:");
-    for (const { name, version, tag, crates } of pending) {
+if (selected.length > 0) {
+    console.log("\nPackages selected for release:");
+    for (const { name, version, tag, crates } of selected) {
         const suffix =
             crates.length > 0
                 ? ` (+ crates ${crates.map(crate => crate.crateName).join(", ")})`
@@ -133,9 +161,10 @@ if (pending.length > 0) {
     }
 }
 
-setAzureOutput("shouldBuild", pending.length > 0 ? "true" : "false");
-
 if (CHECK_ONLY) {
+    setAzureOutput("shouldBuild", selected.length > 0 ? "true" : "false");
+    setAzureOutput("selectedReleaseTags", serializeSelectedReleaseTags(selected));
+
     // Emit build number only once during the initial check-only selection phase,
     // not again during the later packing phase. This prevents the build name from
     // changing if new tags appear on origin between the check and pack stages.
@@ -145,40 +174,13 @@ if (CHECK_ONLY) {
         const buildId = process.env.BUILD_BUILDID || "local";
         console.log(
             `##vso[build.updatebuildnumber]${formatAzureBuildNumber(
-                pending.length,
+                selected.length,
                 "build",
                 buildId,
             )}`,
         );
     }
     process.exit(0);
-}
-
-if (publishable.length === 0) {
-    console.log("No publishable workspaces found.");
-    process.exit(0);
-}
-
-if (pending.length === 0) {
-    // This mode only runs once the earlier `--check-only` step already
-    // observed at least one pending workspace and gated the `BuildArtifacts`
-    // stage on it (`shouldBuild == 'true'`) — so reaching this point with
-    // zero pending workspaces means every previously-pending workspace's
-    // release tag appeared on `origin` in the window between that check
-    // and this pack step. That is almost always a concurrent release run
-    // (another `FAST - CD Build`/`FAST - CD` execution) winning the race, not a
-    // normal "nothing to do" outcome, so fail loudly here instead of
-    // silently exiting without writing `release-manifest.json` (which would
-    // otherwise surface later as a confusing "file not found" error when the
-    // pipeline tries to copy that manifest out of this job).
-    logError(
-        "No packages are pending release, but pack-pending-releases.mjs was invoked " +
-            "in packing mode after an earlier check found pending packages. This " +
-            "indicates a concurrent release run already tagged every previously-pending " +
-            "workspace between the check-only step and this pack step. Re-run 'FAST - CD " +
-            "Build' if packages are still expected to be pending.",
-    );
-    process.exit(1);
 }
 
 for (const directory of [NPM_DIR, CRATES_DIR, META_DIR]) {
@@ -189,7 +191,7 @@ for (const directory of [NPM_DIR, CRATES_DIR, META_DIR]) {
 const manifestPackages = [];
 let hasErrors = false;
 
-for (const { name, version, tag, prefix, location, crates } of pending) {
+for (const { name, version, tag, prefix, location, crates } of selected) {
     try {
         console.log(`\nPacking ${name}@${version} from ${location}...`);
         const packJson = run("npm", [
@@ -268,7 +270,7 @@ writeFileSync(
     )}\n`,
 );
 
-console.log(`\nPacked: ${manifestPackages.length}/${pending.length}`);
+console.log(`\nPacked: ${manifestPackages.length}/${selected.length}`);
 console.log(`Manifest written to ${MANIFEST_PATH}`);
 
 if (hasErrors) {
