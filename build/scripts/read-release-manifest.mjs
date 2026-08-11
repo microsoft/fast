@@ -11,12 +11,10 @@
  *   - `<prefix>ReleaseTag`     - the workspace's `${name}_v${version}` tag.
  *   - `<prefix>ReleaseVersion` - the workspace's version.
  *
- * `.ado/pipelines/azure-pipelines-cd.yml`'s `PublishRelease` stage declares
- * one static `GitHubRelease@1` task per known publishable workspace
- * (Azure Pipelines cannot create tasks dynamically from manifest content),
- * each conditioned on that workspace's `<prefix>NeedsRelease` variable.
- * `check-publish-pipeline.mjs` verifies every current publishable workspace
- * has matching coverage there.
+ * `.ado/pipelines/azure-pipelines-cd.yml` declares one static tagging task
+ * and one `GitHubRelease@1` task per known publishable workspace (Azure
+ * Pipelines cannot create tasks dynamically from manifest content), each
+ * conditioned on that workspace's `<prefix>NeedsRelease` variable.
  *
  * Usage: node build/scripts/read-release-manifest.mjs <path-to-manifest.json>
  */

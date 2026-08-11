@@ -47,8 +47,7 @@
  *     `publish_artifacts_crates/`, and writes
  *     `publish_artifacts_meta/release-manifest.json` describing exactly
  *     what was packed (name, version, tag, npm tarball filename, crate
- *     filenames) for the downstream `read-release-manifest.mjs` and
- *     `check-release-tags.mjs` steps.
+ *     filenames) for the downstream `read-release-manifest.mjs` step.
  *
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation
  * and packaging.

@@ -2,9 +2,9 @@
  * Shared helpers for enumerating FAST's publishable npm workspaces and their
  * paired Rust crates.
  *
- * Used by the Azure release pipeline scripts (`pack-pending-releases.mjs`,
- * `read-release-manifest.mjs`, `check-release-tags.mjs`) and by
- * `check-publish-pipeline.mjs`, so that "what is publishable" and "how does
+ * Used by the Azure release pipeline scripts (`pack-pending-releases.mjs`
+ * and `read-release-manifest.mjs`) and by `check-publish-pipeline.mjs`, so
+ * that "what is publishable" and "how does
  * an npm name map to a crate name / Azure variable prefix" are defined in
  * exactly one place.
  */

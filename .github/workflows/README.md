@@ -24,13 +24,12 @@ FAST is multi-package: unlike a single workspace-wide release version, each publ
      `BuildArtifacts` and `ValidateArtifacts` are two distinct stage *names* (chosen at compile time via `${{ if eq(parameters.validationMode, ...) }}`), not one stage gated by a runtime condition. `FAST - CD`'s pipeline-resource trigger only fires when a stage literally named `BuildArtifacts` completes on `main`, so a `validationMode: true` run — which always executes under `ValidateArtifacts` instead — can never auto-trigger a real `FAST - CD` run. A skipped stage (e.g. nothing pending) does not fire that trigger either, since Azure Pipelines only triggers on stages that actually complete.
 - **`FAST - CD`** (`azure-pipelines-cd.yml`) is an 1ES Official pipeline triggered automatically when `FAST - CD Build`'s `BuildArtifacts` stage completes on `main` (it can also be queued manually). It extends `1ES.Official.PipelineTemplate.yml` and runs:
   1. **`PrepareRelease`** — downloads the build pipeline's metadata and npm/crate artifacts, verifies that the metadata's `validationMode` matches the queued pipeline, and reads `release-manifest.json` via [`build/scripts/read-release-manifest.mjs`](../../build/scripts/read-release-manifest.mjs). The script emits one `<prefix>NeedsRelease` / `<prefix>ReleaseTag` / `<prefix>ReleaseVersion` output per currently-publishable workspace, plus a shared `releaseCommit`.
-  2. **`PublishRelease`** (skipped when `validationMode: true`) — a single stage with two ordered jobs, deliberately publishing before tagging/releasing:
-     - **`Publish`** downloads both artifact folders, removes whichever one is empty (stripping the `.no-crates-packed` placeholder first), then hands both to a single invocation of `FAST.Release.PipelineTemplate.yml@fastPipelines`, which performs the actual `npm publish` / `cargo publish` for whichever asset types are present. Calling the release template once for both asset types (rather than in two parallel jobs, one per asset type, as an earlier version of this pipeline did) means one destination succeeding while the other fails can never leave a package half-published without the whole job failing as one unit.
-     - **`PublishGitHub`** (`dependsOn: Publish`, `condition: succeeded()`) runs strictly after `Publish` succeeds. It first runs [`build/scripts/check-release-tags.mjs`](../../build/scripts/check-release-tags.mjs), which freshly checks (via `git ls-remote origin`) whether each package's tag already exists — independent of the `NeedsRelease` variables computed earlier by `PrepareRelease`, since those only reflect the state before `Publish` ran. It then runs one `GitHubRelease@1` per package, conditioned on both that package's `NeedsRelease` variable *and* its tag not already existing (`releaseTagCheck.<prefix>ReleaseTagExists == 'false'`), using `tagSource: userSpecifiedTag` so the task itself creates the tag as part of creating the release.
+  2. **`TagRelease`** (skipped when `validationMode: true`) — creates an annotated `${name}_v${version}` tag at the manifest's validated `releaseCommit` for every package whose `<prefix>NeedsRelease` output is true. Each package task first fetches the remote tag: an existing tag is accepted only when it resolves to the expected commit. If a concurrent run wins the push race, the task fetches and validates the winner before succeeding.
+  3. **`PublishRelease`** (skipped when `validationMode: true`) — depends directly on both `PrepareRelease` and `TagRelease`, then runs two ordered jobs:
+     - **`Publish`** downloads both artifact folders, removes whichever one is empty (stripping the `.no-crates-packed` placeholder first), then hands both to a single invocation of `FAST.Release.PipelineTemplate.yml@fastPipelines`, which performs the actual `npm publish` / `cargo publish` for whichever asset types are present. Calling the release template once for both asset types means one destination succeeding while the other fails can never leave a package half-published without the whole job failing as one unit.
+     - **`PublishGitHub`** (`dependsOn: Publish`, `condition: succeeded()`) runs only after registry publication succeeds. It first downloads the release metadata and runs [`build/scripts/check-github-releases.mjs`](../../build/scripts/check-github-releases.mjs), which freshly checks (via Node 22's global `fetch` against the public GitHub REST API `/repos/microsoft/fast/releases/tags/{tag}`) whether each package's GitHub Release already exists on `microsoft/fast` — independent of the `NeedsRelease` variables computed earlier, since those only reflect the state before `Publish` ran. HTTP 200 means release exists; 404 means not found; any other status/network/JSON error fails loudly. If `PublishGitHub` partially fails (e.g. one package's `GitHubRelease@1` task succeeds before another fails) and a maintainer reruns the failed job, Azure Pipelines reruns every task in the job, including those that already succeeded; the release-existence check lets each per-package `GitHubRelease@1` task skip packages whose release already exists on GitHub, so rerunning is safe. The tasks then create releases and attach assets to the pre-existing tags created by `TagRelease`, conditioned on both `NeedsRelease` and the GitHub release not already existing.
 
-  This publish-then-tag ordering is the key fix for the release tag's dual role: `pack-pending-releases.mjs` treats a workspace as "pending" purely based on whether its `${name}_v${version}` tag exists on `origin`, so whichever step creates that tag also makes the package invisible to every future release-prep run. An earlier version of this pipeline created the tag *before* publishing (via a dedicated `TagRelease` stage); a publish failure then left the tag behind, permanently stranding that package with no automatic retry. Creating the tag only after `Publish` succeeds means a publish failure never leaves the tag behind, so the very next `FAST - CD Build` run retries that package automatically — and the `releaseTagCheck` guard means rerunning a job that failed partway through `PublishGitHub` (Azure Pipelines reruns every task in a failed job, including ones that already succeeded) is also safe, since already-created releases are skipped rather than recreated.
-
-  Residual risk: if `Publish` succeeds but `PublishGitHub` fails outright for a package (rather than a rerunnable partial failure), that package's tag still won't exist, so the next `FAST - CD Build` run will try to republish it — which fails loudly since it's already published (existing, documented idempotency behavior; see below). That is a bounded, always manually-recoverable state (a maintainer creates the missing tag/GitHub release directly), never a silent or permanent one, and was judged the safest trade-off achievable within a single `PublishRelease` stage.
+  Because tags are the release-state marker, a registry publish failure leaves the affected package tagged and therefore no longer pending. After diagnosing the failure, a maintainer must manually delete the affected remote tag before rebuilding and retrying that version. This intentional operational model prevents concurrent publishing attempts and matches the WebUI pre-publish tagging architecture. A partial failure of the `PublishGitHub` job (one package's release successfully created before another failed) is recoverable by rerunning the job: already-created releases are skipped, and failed releases are retried. If `PublishGitHub` fails outright and no GitHub releases were created (e.g. a network error before any `GitHubRelease@1` tasks ran), the affected packages retain their tags but have no GitHub releases; a maintainer must diagnose the failure, clean up the tags if necessary, and retry.
 
 Idempotency is enforced entirely through git tags (`${name}_v${version}`), so nothing needs to talk to npm.org or crates.io to decide whether work is required — republishing an already-published version simply fails loudly at the `npm publish` / `cargo publish` step, the same as a manual retry would.
 
@@ -42,17 +41,34 @@ The queue-time `validationMode` parameter (both pipelines) defaults to `false`; 
 
 `pack-pending-releases.mjs` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `.ado/pipelines/azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `GitHubRelease@1` tasks dynamically from the runtime manifest.
 
-The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching `PublishRelease` stage variables and a conditional `GitHubRelease@1` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
+The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching `TagRelease` and `PublishRelease` variables, an idempotent annotated-tag task, and a conditional `GitHubRelease@1` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
 
 When adding a new non-private workspace that should publish through CD:
 
 1. Ensure the workspace is included in the root `package.json` `workspaces` list and has a `name` and `version`.
 2. If the package has paired crate assets, place each crate at `crates/<crate-name>/Cargo.toml`. By default, `<crate-name>` is the npm package name with the leading `@` removed and `/` replaced by `-`. `@microsoft/fast-build` is the special bundled release and pairs with both `crates/microsoft-fast-build/Cargo.toml` and `crates/microsoft-fast-convert/Cargo.toml`.
-3. Add package-specific output variables to the `PublishRelease` stage in `.ado/pipelines/azure-pipelines-cd.yml`. The output prefix is generated from the npm package name by converting `@microsoft/<name>` to camel case. For example, `@microsoft/fast-foo` emits `fastFooNeedsRelease`, `fastFooReleaseTag`, and `fastFooReleaseVersion`.
-4. Add a conditional `GitHubRelease@1` task for the package in the `PublishGitHub` job, using the `fast` GitHub service connection, `repositoryName: microsoft/fast`, `tagSource: userSpecifiedTag`, and the package's `$(<prefix>ReleaseTag)` variable. The condition must include the `releaseTagCheck.<prefix>ReleaseTagExists` clause (in addition to `<prefix>NeedsRelease`) so rerunning the job after a partial failure is safe — see `check-release-tags.mjs`.
-5. Confirm the task's `assets` globs use the exact versioned filename per asset (`$(<prefix>ReleaseVersion)`, not a prefix wildcard) for the package's npm tarball and any paired crate archives, to avoid picking up a stale tarball left over from a previous packing attempt.
+3. Add the package's `NeedsRelease` and `ReleaseTag` output variables to `TagRelease`, plus a conditional annotated-tag task using the same fetch/validate/push/race handling as the existing package tasks. The output prefix is generated from the npm package name by converting `@microsoft/<name>` to camel case.
+4. Add package-specific `NeedsRelease`, `ReleaseTag`, and `ReleaseVersion` output variables to `PublishRelease`.
+5. Add a conditional `GitHubRelease@1` task for the package in the `PublishGitHub` job, using the `fast` GitHub service connection, `repositoryName: microsoft/fast`, `tagSource: userSpecifiedTag`, and the package's `$(<prefix>ReleaseTag)` variable. The task consumes the tag already created by `TagRelease` and is conditioned on both the package's `<prefix>NeedsRelease` and `releaseCheck.<prefix>GitHubReleaseExists` variables, so rerunning `PublishGitHub` after a partial failure skips packages whose releases already exist on GitHub.
+6. Confirm the task's `assets` globs use the exact versioned filename per asset (`$(<prefix>ReleaseVersion)`, not a prefix wildcard) for the package's npm tarball and any paired crate archives, to avoid picking up a stale tarball left over from a previous packing attempt.
 
 Example Azure additions for `@microsoft/fast-foo`:
+
+TagRelease variables and task:
+
+```yml
+variables:
+  fastFooNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastFooNeedsRelease'] ]
+  fastFooReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastFooReleaseTag'] ]
+
+- task: Bash@3
+  displayName: "Tag @microsoft/fast-foo release"
+  condition: and(succeeded(), eq(variables['fastFooNeedsRelease'], 'true'))
+  # Copy the complete idempotent annotated-tag implementation from an
+  # existing package task in azure-pipelines-cd.yml.
+```
+
+PublishRelease variables and task:
 
 ```yml
 variables:
@@ -63,7 +79,7 @@ variables:
 steps:
 - task: GitHubRelease@1
   displayName: "Create @microsoft/fast-foo GitHub Release"
-  condition: and(succeeded(), eq(variables['fastFooNeedsRelease'], 'true'), eq(variables['releaseTagCheck.fastFooReleaseTagExists'], 'false'))
+  condition: and(succeeded(), eq(variables['fastFooNeedsRelease'], 'true'), eq(variables['releaseCheck.fastFooGitHubReleaseExists'], 'false'))
   inputs:
     gitHubConnection: fast
     repositoryName: microsoft/fast
