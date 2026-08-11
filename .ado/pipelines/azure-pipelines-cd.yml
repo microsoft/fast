@@ -83,7 +83,7 @@ extends:
         - task: UseNode@1
           displayName: Install Node.js
           inputs:
-            version: "22.x"
+            version: "24.x"
 
         - task: Bash@3
           name: release
@@ -299,7 +299,7 @@ extends:
           releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
           # When adding a new publishable package, add its package-specific
           # variables here and a matching GitHubRelease@1 task below. See
-          # .github/workflows/README.md > Continuous Deployment.
+          # .ado/pipelines/README.md > Adding a publishable package.
           fastBuildNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildNeedsRelease'] ]
           fastBuildReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseTag'] ]
           fastBuildReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseVersion'] ]
@@ -499,7 +499,7 @@ extends:
           - task: UseNode@1
             displayName: Install Node.js
             inputs:
-              version: "22.x"
+              version: "24.x"
 
           - task: Bash@3
             name: releaseCheck

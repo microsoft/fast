@@ -16,7 +16,7 @@
  * `GitHubRelease@1` task's condition skip packages whose release is already
  * on GitHub, so rerunning the job is safe.
  *
- * Uses Node 22's global fetch to query the public GitHub REST API, avoiding
+ * Uses Node 24's global fetch to query the public GitHub REST API, avoiding
  * authentication requirements and gh CLI dependencies.
  *
  * Usage: node build/scripts/check-github-releases.mjs <path-to-manifest.json>

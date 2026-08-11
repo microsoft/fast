@@ -22,7 +22,7 @@ steps:
 - task: UseNode@1
   displayName: Install Node.js
   inputs:
-    version: "22.x"
+    version: "24.x"
 
 - task: Cache@2
   displayName: Cache npm

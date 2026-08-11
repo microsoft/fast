@@ -1,9 +1,41 @@
 /**
- * Serialize the exact package release tags selected by the check-only phase.
- * JSON preserves tag boundaries when the value is handed between Azure stages.
+ * Format the exact package release tags selected by the check-only phase for
+ * the comma-separated Azure stage output.
  */
-export function serializeSelectedReleaseTags(workspaces) {
-    return JSON.stringify(workspaces.map(workspace => workspace.tag));
+export function formatSelectedReleaseTags(workspaces) {
+    const tags = workspaces.map(workspace => workspace.tag);
+    const commaTag = tags.find(tag => tag.includes(","));
+    if (commaTag !== undefined) {
+        throw new Error(`Release tags cannot contain commas: ${commaTag}.`);
+    }
+    return tags.join(",");
+}
+
+/**
+ * Parse the comma-separated selection handed to the packing stage without
+ * trimming or otherwise changing tag boundaries.
+ */
+export function parseSelectedReleaseTags(value) {
+    if (typeof value !== "string" || value === "") {
+        throw new Error(
+            "SELECTED_RELEASE_TAGS is required in packing mode and must be a non-empty comma-separated string.",
+        );
+    }
+
+    const tags = value.split(",");
+    const invalidIndexes = [];
+    for (const [index, tag] of tags.entries()) {
+        if (tag.length === 0 || tag !== tag.trim()) {
+            invalidIndexes.push(index);
+        }
+    }
+    if (invalidIndexes.length > 0) {
+        throw new Error(
+            "SELECTED_RELEASE_TAGS contains empty tags or surrounding whitespace " +
+                `at indexes: ${invalidIndexes.join(", ")}.`,
+        );
+    }
+    return tags;
 }
 
 /**
@@ -12,51 +44,26 @@ export function serializeSelectedReleaseTags(workspaces) {
  * between the selection and packing stages.
  */
 export function resolveSelectedReleaseWorkspaces(value, publishable) {
-    if (typeof value !== "string" || value.trim() === "") {
-        throw new Error(
-            "SELECTED_RELEASE_TAGS is required in packing mode and must be a non-empty JSON array.",
-        );
-    }
-
-    let tags;
-    try {
-        tags = JSON.parse(value);
-    } catch {
-        throw new Error("SELECTED_RELEASE_TAGS must be valid JSON.");
-    }
-
-    if (!Array.isArray(tags)) {
-        throw new Error("SELECTED_RELEASE_TAGS must be a JSON array.");
-    }
-    if (tags.length === 0) {
-        throw new Error("SELECTED_RELEASE_TAGS must contain at least one release tag.");
-    }
-
-    const emptyIndexes = [];
+    const tags = parseSelectedReleaseTags(value);
     const duplicates = [];
     const seen = new Set();
-    for (const [index, tag] of tags.entries()) {
-        if (typeof tag !== "string" || tag.trim().length === 0) {
-            emptyIndexes.push(index);
-            continue;
-        }
+    for (const tag of tags) {
         if (seen.has(tag)) {
             duplicates.push(tag);
         }
         seen.add(tag);
     }
 
-    if (emptyIndexes.length > 0) {
-        throw new Error(
-            `SELECTED_RELEASE_TAGS contains empty or non-string tags at indexes: ${emptyIndexes.join(", ")}.`,
-        );
-    }
     if (duplicates.length > 0) {
         throw new Error(
             `SELECTED_RELEASE_TAGS contains duplicate tags: ${[...new Set(duplicates)].join(", ")}.`,
         );
     }
 
+    const commaTag = publishable.find(workspace => workspace.tag.includes(","))?.tag;
+    if (commaTag !== undefined) {
+        throw new Error(`Release tags cannot contain commas: ${commaTag}.`);
+    }
     const byTag = new Map(publishable.map(workspace => [workspace.tag, workspace]));
     const unknown = tags.filter(tag => !byTag.has(tag));
     if (unknown.length > 0) {

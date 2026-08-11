@@ -38,10 +38,10 @@
  * Modes:
  *
  *   - `--check-only`: enumerate selected workspaces and emit Azure Pipelines
- *     outputs (`shouldBuild` and the JSON `selectedReleaseTags`) when running
- *     under Azure Pipelines (`$TF_BUILD` set). Performs no packing. Safe to
- *     run without `node_modules` populated. Also used for the local
- *     `CONTRIBUTING.md` "preview what CD will publish" step.
+ *     outputs (`shouldBuild` and the comma-separated `selectedReleaseTags`)
+ *     when running under Azure Pipelines (`$TF_BUILD` set). Performs no
+ *     packing. Safe to run without `node_modules` populated. Also used for
+ *     the local `CONTRIBUTING.md` "preview what CD will publish" step.
  *   - default: requires `SELECTED_RELEASE_TAGS` and packs exactly those
  *     workspaces into
  *     `publish_artifacts_npm/`, packs any paired Rust crates into
@@ -70,8 +70,8 @@ import {
 } from "./lib/release-manifest.mjs";
 import {
     assertSelectedTagsAreUnreleased,
+    formatSelectedReleaseTags,
     resolveSelectedReleaseWorkspaces,
-    serializeSelectedReleaseTags,
 } from "./lib/selected-release-tags.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
@@ -163,7 +163,7 @@ if (selected.length > 0) {
 
 if (CHECK_ONLY) {
     setAzureOutput("shouldBuild", selected.length > 0 ? "true" : "false");
-    setAzureOutput("selectedReleaseTags", serializeSelectedReleaseTags(selected));
+    setAzureOutput("selectedReleaseTags", formatSelectedReleaseTags(selected));
 
     // Emit build number only once during the initial check-only selection phase,
     // not again during the later packing phase. This prevents the build name from

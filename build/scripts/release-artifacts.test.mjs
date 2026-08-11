@@ -1,17 +1,28 @@
 import assert from "node:assert/strict";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import test from "node:test";
+import { test } from "node:test";
+import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
 import {
     createReleaseAsset,
     noCratesPlaceholder,
     releaseManifestSchemaVersion,
     validateReleaseArtifacts,
     validateReleaseManifestStructure,
-} from "./release-manifest.mjs";
+} from "./lib/release-manifest.mjs";
+import {
+    assertSelectedTagsAreUnreleased,
+    formatSelectedReleaseTags,
+    parseSelectedReleaseTags,
+    resolveSelectedReleaseWorkspaces,
+} from "./lib/selected-release-tags.mjs";
 
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);
+const workspaces = [
+    { name: "@microsoft/a", tag: "@microsoft/a_v1.0.0" },
+    { name: "@microsoft/b", tag: "@microsoft/b_v2.0.0" },
+];
 
 function fixture(name, { withCrate = true } = {}) {
     const root = join(scratchRoot, name);
@@ -63,6 +74,16 @@ function validate(values, overrides = {}) {
 }
 
 test.after(() => rmSync(scratchRoot, { force: true, recursive: true }));
+
+test("formats build pipeline names from the selected package count", () => {
+    assert.equal(formatAzureBuildNumber(0, "build", "123"), "0-build-123");
+    assert.equal(formatAzureBuildNumber(4, "build", "456"), "4-build-456");
+});
+
+test("formats CD pipeline names from the manifest package count", () => {
+    assert.equal(formatAzureBuildNumber(0, "cd", "789"), "0-cd-789");
+    assert.equal(formatAzureBuildNumber(2, "cd", "789"), "2-cd-789");
+});
 
 test("validates exact npm and crate assets", () => {
     const values = fixture("valid");
@@ -197,4 +218,90 @@ test("binds releases to the selected pipeline resource commit and production bra
         }),
         values.manifest,
     );
+});
+
+test("formats, parses, and resolves the exact selected tag order", () => {
+    const value = formatSelectedReleaseTags([workspaces[1], workspaces[0]]);
+
+    assert.equal(value, "@microsoft/b_v2.0.0,@microsoft/a_v1.0.0");
+    assert.deepEqual(parseSelectedReleaseTags(value), [
+        "@microsoft/b_v2.0.0",
+        "@microsoft/a_v1.0.0",
+    ]);
+    assert.deepEqual(resolveSelectedReleaseWorkspaces(value, workspaces), [
+        workspaces[1],
+        workspaces[0],
+    ]);
+    assert.throws(
+        () => formatSelectedReleaseTags([{ tag: "@microsoft/a_v1.0.0,bad" }]),
+        /cannot contain commas/,
+    );
+});
+
+test("rejects a missing, empty, or structurally altered selection", () => {
+    assert.throws(
+        () => resolveSelectedReleaseWorkspaces(undefined, workspaces),
+        /is required/,
+    );
+    assert.throws(() => resolveSelectedReleaseWorkspaces("", workspaces), /is required/);
+    assert.throws(
+        () =>
+            resolveSelectedReleaseWorkspaces(
+                "@microsoft/a_v1.0.0, @microsoft/b_v2.0.0",
+                workspaces,
+            ),
+        /surrounding whitespace.*indexes: 1/,
+    );
+    assert.throws(
+        () =>
+            resolveSelectedReleaseWorkspaces(
+                "@microsoft/a_v1.0.0,@microsoft/b_v2.0.0,",
+                workspaces,
+            ),
+        /empty tags.*indexes: 2/,
+    );
+    assert.throws(
+        () => resolveSelectedReleaseWorkspaces(" @microsoft/a_v1.0.0", workspaces),
+        /surrounding whitespace.*indexes: 0/,
+    );
+});
+
+test("rejects duplicate, unknown, and comma-containing publishable tags", () => {
+    assert.throws(
+        () =>
+            resolveSelectedReleaseWorkspaces(
+                "@microsoft/a_v1.0.0,@microsoft/a_v1.0.0",
+                workspaces,
+            ),
+        /duplicate tags: @microsoft\/a_v1\.0\.0/,
+    );
+    assert.throws(
+        () =>
+            resolveSelectedReleaseWorkspaces(
+                "@microsoft/a_v1.0.0,@microsoft/unknown_v1.0.0",
+                workspaces,
+            ),
+        /unknown release tags: @microsoft\/unknown_v1\.0\.0/,
+    );
+    assert.throws(
+        () =>
+            resolveSelectedReleaseWorkspaces("@microsoft/a_v1.0.0", [
+                ...workspaces,
+                { tag: "@microsoft/comma_v1.0.0,bad" },
+            ]),
+        /cannot contain commas/,
+    );
+});
+
+test("reports every selected tag that appeared on the remote", () => {
+    assert.throws(
+        () => assertSelectedTagsAreUnreleased(workspaces, () => true),
+        new RegExp(
+            "Concurrent release detected.*" +
+                "@microsoft/a_v1\\.0\\.0, @microsoft/b_v2\\.0\\.0.*" +
+                "Refusing to shrink or alter",
+        ),
+    );
+
+    assert.doesNotThrow(() => assertSelectedTagsAreUnreleased(workspaces, () => false));
 });

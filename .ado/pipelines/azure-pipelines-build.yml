@@ -36,7 +36,7 @@ stages:
     - task: UseNode@1
       displayName: Install Node.js
       inputs:
-        version: "22.x"
+        version: "24.x"
 
     - task: Bash@3
       displayName: Resolve pending package releases
