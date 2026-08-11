@@ -3,7 +3,7 @@
  * For every package recorded in `release-manifest.json`, freshly check (via
  * `git ls-remote origin`) whether its `${name}_v${version}` release tag
  * already exists on `origin` — independent of whatever
- * `read-release-manifest.mjs` observed earlier in the `SignArtifacts` stage.
+ * `read-release-manifest.mjs` observed earlier in the `PrepareRelease` stage.
  *
  * `.ado/pipelines/azure-pipelines-cd.yml`'s `PublishGitHub` job runs
  * `GitHubRelease@1` with `action: create` and `tagSource: userSpecifiedTag`,

@@ -76,13 +76,13 @@ steps:
     VALIDATION_MODE: ${{ parameters.validationMode }}
 
 - task: PublishPipelineArtifact@1
-  displayName: Upload unsigned npm packages
+  displayName: Upload npm packages
   inputs:
     targetPath: '$(Build.SourcesDirectory)/publish_artifacts_npm'
-    artifactName: unsigned_npm_packages
+    artifactName: npm_packages
 
 - task: PublishPipelineArtifact@1
-  displayName: Upload unsigned crate packages
+  displayName: Upload crate packages
   inputs:
     # `pack-pending-releases.mjs` writes a `.no-crates-packed` placeholder
     # into this directory when no pending package has a paired Rust crate,
@@ -92,7 +92,7 @@ steps:
     # placeholder back out before invoking the release template, so an
     # all-npm batch is still treated as having no crate assets to publish.
     targetPath: '$(Build.SourcesDirectory)/publish_artifacts_crates'
-    artifactName: unsigned_crate_packages
+    artifactName: crate_packages
 
 - task: PublishPipelineArtifact@1
   displayName: Upload release metadata

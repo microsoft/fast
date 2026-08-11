@@ -5,7 +5,7 @@ pr: none
 
 parameters:
 - name: validationMode
-  displayName: Generate signed artifacts without external publication
+  displayName: Validate release artifacts without external publication
   type: string
   default: 'false'
   values:
@@ -59,21 +59,11 @@ extends:
     settings:
       networkIsolationPolicy: Permissive
     stages:
-    - stage: SignArtifacts
-      displayName: Sign release artifacts
+    - stage: PrepareRelease
+      displayName: Validate release artifacts
       jobs:
-      - job: Sign
-        displayName: Sign release artifacts
-        templateContext:
-          outputs:
-          - output: pipelineArtifact
-            targetPath: '$(Build.SourcesDirectory)/publish_artifacts_npm'
-            artifactName: unsigned_npm_packages
-            displayName: Publish unsigned npm packages
-          - output: pipelineArtifact
-            targetPath: '$(Build.SourcesDirectory)/publish_artifacts_crates'
-            artifactName: unsigned_crate_packages
-            displayName: Publish unsigned crate packages
+      - job: Validate
+        displayName: Validate release artifacts
         steps:
         - checkout: self
           clean: true
@@ -114,42 +104,12 @@ extends:
             EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
 
         - download: releaseBuild
-          artifact: unsigned_npm_packages
-          displayName: Download unsigned npm packages
+          artifact: npm_packages
+          displayName: Download npm packages
 
         - download: releaseBuild
-          artifact: unsigned_crate_packages
-          displayName: Download unsigned crate packages
-
-        - task: CopyFiles@2
-          displayName: Stage npm packages
-          inputs:
-            SourceFolder: $(Pipeline.Workspace)/releaseBuild/unsigned_npm_packages
-            Contents: '**'
-            TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_npm
-            CleanTargetFolder: true
-
-        - task: CopyFiles@2
-          displayName: Stage crate packages
-          inputs:
-            SourceFolder: $(Pipeline.Workspace)/releaseBuild/unsigned_crate_packages
-            Contents: '**'
-            TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_crates
-            CleanTargetFolder: true
-
-        # FAST has no NuGet or native/standalone assets to ESRP-sign today,
-        # so this stage is a no-op for those asset types — the template
-        # still runs so npm/crate assets flow through the same
-        # SDL-compliant signing and publication path as any future
-        # signable asset type.
-        #
-        # Risk: this repository cannot access `FASTPipelineTemplates` to
-        # confirm `FAST.Sign.PipelineTemplate.yml`'s exact parameter
-        # contract (it is an internal Azure DevOps repository, not
-        # accessible from here). This zero-parameter invocation matches the
-        # only pattern this pipeline has ever used for it; if the template
-        # requires explicit inputs, this call site needs a follow-up.
-        - template: FAST.Sign.PipelineTemplate.yml@fastPipelines
+          artifact: crate_packages
+          displayName: Download crate packages
 
     - ${{ if eq(parameters.validationMode, 'false') }}:
       # A single `PublishRelease` stage (rather than a separate tagging
@@ -192,24 +152,24 @@ extends:
       # state.
       - stage: PublishRelease
         displayName: Publish npm, crates.io, and GitHub releases
-        dependsOn: SignArtifacts
+        dependsOn: PrepareRelease
         variables:
-          releaseCommit: $[ stageDependencies.SignArtifacts.Sign.outputs['release.releaseCommit'] ]
+          releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
           # When adding a new publishable package, add its package-specific
           # variables here and a matching GitHubRelease@1 task below. See
           # .github/workflows/README.md > Continuous Deployment.
-          fastBuildNeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastBuildNeedsRelease'] ]
-          fastBuildReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastBuildReleaseTag'] ]
-          fastBuildReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastBuildReleaseVersion'] ]
-          fastElementNeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastElementNeedsRelease'] ]
-          fastElementReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastElementReleaseTag'] ]
-          fastElementReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastElementReleaseVersion'] ]
-          fastRouterNeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastRouterNeedsRelease'] ]
-          fastRouterReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastRouterReleaseTag'] ]
-          fastRouterReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastRouterReleaseVersion'] ]
-          fastTestHarnessNeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastTestHarnessNeedsRelease'] ]
-          fastTestHarnessReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastTestHarnessReleaseTag'] ]
-          fastTestHarnessReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.fastTestHarnessReleaseVersion'] ]
+          fastBuildNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildNeedsRelease'] ]
+          fastBuildReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseTag'] ]
+          fastBuildReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseVersion'] ]
+          fastElementNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementNeedsRelease'] ]
+          fastElementReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementReleaseTag'] ]
+          fastElementReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementReleaseVersion'] ]
+          fastRouterNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterNeedsRelease'] ]
+          fastRouterReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterReleaseTag'] ]
+          fastRouterReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterReleaseVersion'] ]
+          fastTestHarnessNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessNeedsRelease'] ]
+          fastTestHarnessReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessReleaseTag'] ]
+          fastTestHarnessReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessReleaseVersion'] ]
         jobs:
         - job: Publish
           displayName: Publish npm and crates.io packages
@@ -217,19 +177,29 @@ extends:
           - checkout: self
             clean: true
 
-          - task: DownloadPipelineArtifact@2
+          - download: releaseBuild
+            artifact: npm_packages
             displayName: Download npm packages
-            inputs:
-              buildType: current
-              artifactName: unsigned_npm_packages
-              targetPath: $(Build.SourcesDirectory)/publish_artifacts_npm
 
-          - task: DownloadPipelineArtifact@2
+          - download: releaseBuild
+            artifact: crate_packages
             displayName: Download crate packages
+
+          - task: CopyFiles@2
+            displayName: Stage npm packages
             inputs:
-              buildType: current
-              artifactName: unsigned_crate_packages
-              targetPath: $(Build.SourcesDirectory)/publish_artifacts_crates
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/npm_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_npm
+              CleanTargetFolder: true
+
+          - task: CopyFiles@2
+            displayName: Stage crate packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/crate_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_crates
+              CleanTargetFolder: true
 
           - task: Bash@3
             displayName: Remove empty artifact directories
@@ -286,19 +256,29 @@ extends:
             artifact: release-metadata
             displayName: Download release metadata
 
-          - task: DownloadPipelineArtifact@2
+          - download: releaseBuild
+            artifact: npm_packages
             displayName: Download npm packages
-            inputs:
-              buildType: current
-              artifactName: unsigned_npm_packages
-              targetPath: $(Build.SourcesDirectory)/publish_artifacts_npm
 
-          - task: DownloadPipelineArtifact@2
+          - download: releaseBuild
+            artifact: crate_packages
             displayName: Download crate packages
+
+          - task: CopyFiles@2
+            displayName: Stage npm packages
             inputs:
-              buildType: current
-              artifactName: unsigned_crate_packages
-              targetPath: $(Build.SourcesDirectory)/publish_artifacts_crates
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/npm_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_npm
+              CleanTargetFolder: true
+
+          - task: CopyFiles@2
+            displayName: Stage crate packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/crate_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_crates
+              CleanTargetFolder: true
 
           - task: UseNode@1
             displayName: Install Node.js
@@ -306,7 +286,7 @@ extends:
               version: "22.x"
 
           # Fresh, per-package check (independent of the `NeedsRelease`
-          # variables above, which only reflect what `SignArtifacts` saw
+          # variables above, which only reflect what `PrepareRelease` saw
           # before `Publish` ran) so rerunning this job after a partial
           # failure is safe: `GitHubRelease@1` below is skipped for any
           # package whose tag was already created by an earlier attempt of

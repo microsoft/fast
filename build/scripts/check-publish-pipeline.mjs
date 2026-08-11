@@ -82,9 +82,9 @@ const releaseBlocks = getStepBlocks(pipeline, "- task: GitHubRelease@1");
 const failures = validateUniquePrefixes(publishable);
 
 for (const { name, prefix } of publishable) {
-    const needsVariable = `${prefix}NeedsRelease: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}NeedsRelease'] ]`;
-    const tagVariable = `${prefix}ReleaseTag: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}ReleaseTag'] ]`;
-    const versionVariable = `${prefix}ReleaseVersion: $[ stageDependencies.SignArtifacts.Sign.outputs['release.${prefix}ReleaseVersion'] ]`;
+    const needsVariable = `${prefix}NeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.${prefix}NeedsRelease'] ]`;
+    const tagVariable = `${prefix}ReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.${prefix}ReleaseTag'] ]`;
+    const versionVariable = `${prefix}ReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.${prefix}ReleaseVersion'] ]`;
     // The release-tag-exists clause is what makes rerunning a partially
     // failed `PublishGitHub` job safe (see that job's comments in
     // azure-pipelines-cd.yml): it must be present alongside the
