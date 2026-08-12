@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -23,6 +24,7 @@ import {
     parseSelectedReleaseTags,
     resolveSelectedReleaseWorkspaces,
 } from "./selected-release-tags.mjs";
+import { runValidation } from "./validate-release-artifacts.mjs";
 
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);
@@ -761,10 +763,23 @@ test("covers every publishable workspace with one GitHub release task", () => {
         "utf8",
     );
     const publishable = listPublishableWorkspaces();
+    const outputPrefixes = publishable.map(workspace => workspace.outputPrefix);
+    const publishReleaseStart = pipeline.indexOf("- stage: PublishRelease");
+    const publishReleaseJobsStart = pipeline.indexOf(
+        "\n        jobs:",
+        publishReleaseStart,
+    );
+    const publishReleaseVariables = pipeline.slice(
+        publishReleaseStart,
+        publishReleaseJobsStart,
+    );
     const taskPackages = [
         ...pipeline.matchAll(/displayName: "Create (.+) GitHub Release"/g),
     ].map(match => match[1]);
 
+    assert.ok(publishReleaseStart >= 0);
+    assert.ok(publishReleaseJobsStart > publishReleaseStart);
+    assert.equal(new Set(outputPrefixes).size, outputPrefixes.length);
     assert.deepEqual(
         taskPackages.sort(),
         publishable.map(workspace => workspace.name).sort(),
@@ -772,6 +787,15 @@ test("covers every publishable workspace with one GitHub release task", () => {
 
     for (const workspace of publishable) {
         const { name, outputPrefix, crates } = workspace;
+        for (const suffix of ["Included", "ReleaseTag", "ReleaseVersion"]) {
+            const variableName = `${outputPrefix}${suffix}`;
+            assert.ok(
+                publishReleaseVariables.includes(
+                    `${variableName}: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.${variableName}'] ]`,
+                ),
+                `PublishRelease.variables must bind ${variableName} to its validation output.`,
+            );
+        }
         const taskStart = pipeline.indexOf(
             `displayName: "Create ${name} GitHub Release"`,
         );
@@ -806,4 +830,45 @@ test("covers every publishable workspace with one GitHub release task", () => {
             );
         }
     }
+});
+
+test("reports manifest setup failures as Azure task errors", () => {
+    mkdirSync(scratchRoot, { recursive: true });
+    const malformedManifest = join(scratchRoot, "malformed-manifest.json");
+    writeFileSync(malformedManifest, "{");
+
+    for (const manifestPath of [
+        join(scratchRoot, "missing-manifest.json"),
+        malformedManifest,
+    ]) {
+        const result = spawnSync(
+            process.execPath,
+            ["build/scripts/validate-release-artifacts.mjs", manifestPath],
+            {
+                cwd: process.cwd(),
+                encoding: "utf8",
+                env: process.env,
+            },
+        );
+
+        assert.equal(result.status, 1);
+        assert.match(result.stderr, /##vso\[task\.logissue type=error\]/);
+    }
+});
+
+test("reports workspace discovery failures as Azure task errors", () => {
+    const errors = [];
+    const status = runValidation({
+        manifestPath: "release-manifest.json",
+        readManifest: () => manifestFor(),
+        listWorkspaces: () => {
+            throw new Error("Workspace discovery failed.");
+        },
+        logError: message => errors.push(message),
+    });
+
+    assert.equal(status, 1);
+    assert.deepEqual(errors, [
+        "##vso[task.logissue type=error]Workspace discovery failed.",
+    ]);
 });

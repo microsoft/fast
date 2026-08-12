@@ -27,68 +27,85 @@
  */
 
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { updateAzureBuildNumber } from "./azure-build-number.mjs";
 import { validateReleaseArtifacts } from "./release-manifest.mjs";
 import { listPublishableWorkspaces } from "./release-workspaces.mjs";
 import { formatSelectedReleaseTags } from "./selected-release-tags.mjs";
 
-const manifestPath = process.argv[2];
-if (!manifestPath) {
-    console.error("Usage: validate-release-artifacts.mjs <path-to-manifest.json>");
-    process.exit(1);
-}
-
 function setAzureOutput(name, value) {
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
-const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-const publishable = listPublishableWorkspaces();
-try {
-    validateReleaseArtifacts({
-        manifest,
-        expectedSourceCommit: process.env.RELEASE_BUILD_SOURCE_COMMIT,
-        expectedSourceBranch: process.env.RELEASE_BUILD_SOURCE_BRANCH,
-        expectedValidationMode: process.env.EXPECTED_VALIDATION_MODE,
-        workspaces: publishable,
-        npmDirectory: process.env.NPM_ARTIFACT_DIR,
-        crateDirectory: process.env.CRATE_ARTIFACT_DIR,
-    });
-} catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(`##vso[task.logissue type=error]${message}`);
-    process.exit(1);
+export function runValidation({
+    manifestPath,
+    environment = process.env,
+    listWorkspaces = listPublishableWorkspaces,
+    log = console.log,
+    logError = console.error,
+    readManifest = path => JSON.parse(readFileSync(path, "utf8")),
+    setOutput = setAzureOutput,
+    updateBuildNumber = updateAzureBuildNumber,
+} = {}) {
+    if (!manifestPath) {
+        logError("Usage: validate-release-artifacts.mjs <path-to-manifest.json>");
+        return 1;
+    }
+
+    try {
+        const manifest = readManifest(manifestPath);
+        const publishable = listWorkspaces();
+        validateReleaseArtifacts({
+            manifest,
+            expectedSourceCommit: environment.RELEASE_BUILD_SOURCE_COMMIT,
+            expectedSourceBranch: environment.RELEASE_BUILD_SOURCE_BRANCH,
+            expectedValidationMode: environment.EXPECTED_VALIDATION_MODE,
+            workspaces: publishable,
+            npmDirectory: environment.NPM_ARTIFACT_DIR,
+            crateDirectory: environment.CRATE_ARTIFACT_DIR,
+        });
+
+        const selectedPackages = manifest.packages || [];
+        setOutput("releaseTags", formatSelectedReleaseTags(selectedPackages));
+        updateBuildNumber(selectedPackages.length, "cd");
+
+        const packagesByName = new Map(selectedPackages.map(pkg => [pkg.name, pkg]));
+        let pendingCount = 0;
+
+        for (const workspace of publishable) {
+            const packed = packagesByName.get(workspace.name);
+            const included = Boolean(packed);
+            if (included) pendingCount += 1;
+
+            setOutput(`${workspace.outputPrefix}Included`, included ? "true" : "false");
+            setOutput(
+                `${workspace.outputPrefix}ReleaseTag`,
+                packed ? packed.tag : workspace.tag,
+            );
+            setOutput(
+                `${workspace.outputPrefix}ReleaseVersion`,
+                packed ? packed.version : workspace.version,
+            );
+        }
+
+        setOutput("releaseCommit", manifest.sourceCommit);
+        log(`Pending releases: ${pendingCount}/${publishable.length}`);
+
+        if (pendingCount === 0) {
+            throw new Error(
+                "No packages are pending release, but the CD pipeline was triggered.",
+            );
+        }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        logError(`##vso[task.logissue type=error]${message}`);
+        return 1;
+    }
+
+    return 0;
 }
-const selectedPackages = manifest.packages || [];
-setAzureOutput("releaseTags", formatSelectedReleaseTags(selectedPackages));
 
-updateAzureBuildNumber(selectedPackages.length, "cd");
-
-const packagesByName = new Map(selectedPackages.map(pkg => [pkg.name, pkg]));
-let pendingCount = 0;
-
-for (const workspace of publishable) {
-    const packed = packagesByName.get(workspace.name);
-    const included = Boolean(packed);
-    if (included) pendingCount += 1;
-
-    setAzureOutput(`${workspace.outputPrefix}Included`, included ? "true" : "false");
-    setAzureOutput(
-        `${workspace.outputPrefix}ReleaseTag`,
-        packed ? packed.tag : workspace.tag,
-    );
-    setAzureOutput(
-        `${workspace.outputPrefix}ReleaseVersion`,
-        packed ? packed.version : workspace.version,
-    );
-}
-
-setAzureOutput("releaseCommit", manifest.sourceCommit);
-console.log(`Pending releases: ${pendingCount}/${publishable.length}`);
-
-if (pendingCount === 0) {
-    console.log(
-        "##vso[task.logissue type=error]No packages are pending release, but the CD pipeline was triggered.",
-    );
-    process.exit(1);
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+    process.exitCode = runValidation({ manifestPath: process.argv[2] });
 }
