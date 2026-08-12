@@ -47,8 +47,9 @@
  *     `publish_artifacts_npm/`, packs any paired Rust crates into
  *     `publish_artifacts_crates/`, and writes
  *     `publish_artifacts_meta/release-manifest.json` describing exactly
- *     what was packed (schema version, validation mode, name, version, tag,
- *     and SHA-256 for every npm/crate asset) for the downstream
+ *     what was packed (schema version, source commit and branch, validation
+ *     mode, name, version, tag, output prefix, and SHA-256 for every npm/crate
+ *     asset) for the downstream
  *     `validate-release-artifacts.mjs` step.
  *
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation

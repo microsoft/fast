@@ -6,11 +6,12 @@
  * `checkout: self` in the `FAST - CD` pipeline — to emit one set of Azure
  * Pipelines output variables per currently-publishable workspace:
  *
- *   - `<prefix>Included`       - `"true"` when the workspace was packed by
- *     the build pipeline, `"false"` otherwise.
- *   - `<prefix>ReleaseTag`     - the workspace's `${name}_v${version}` tag.
- *   - `<prefix>ReleaseVersion` - the workspace's version.
- *   - `releaseTags`            - the validated manifest tags as a strict
+ *   - `<outputPrefix>Included`       - `"true"` when the workspace was packed
+ *     by the build pipeline, `"false"` otherwise.
+ *   - `<outputPrefix>ReleaseTag`     - the workspace's `${name}_v${version}`
+ *     tag.
+ *   - `<outputPrefix>ReleaseVersion` - the workspace's version.
+ *   - `releaseTags`                  - the validated manifest tags as a strict
  *     comma-separated list.
  *
  * `.ado/pipelines/azure-pipelines-cd.yml` creates tags from the generic

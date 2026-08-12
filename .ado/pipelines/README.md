@@ -34,6 +34,10 @@ when that tag does not exist on `origin`.
    This prevents a race from silently shrinking the batch. Validation mode permits
    existing tags while still packing exactly the handed-off selection.
 
+Packing attempts every selected package and reports all npm or crate failures. The
+diagnostic manifest contains only assets that were packed and hashed successfully, and
+the packing step fails afterward so Azure does not upload or publish a partial batch.
+
 The pipeline uses distinct compile-time stage names: normal mode runs
 `BuildArtifacts`; validation mode runs `ValidateArtifacts`. Only a completed
 `BuildArtifacts` stage on `main` triggers `FAST - CD`. A validation build or a skipped
@@ -130,8 +134,8 @@ non-private workspace:
    the leading `@` and replaces `/` with `-`; add an explicit bundle mapping in
    [`release-workspaces.mjs`](../../build/scripts/release-workspaces.mjs)
    when one npm package owns multiple crates.
-3. Add `<prefix>Included`, `<prefix>ReleaseTag`, and
-   `<prefix>ReleaseVersion` variables to `PublishRelease`.
+3. Add `<outputPrefix>Included`, `<outputPrefix>ReleaseTag`, and
+   `<outputPrefix>ReleaseVersion` variables to `PublishRelease`.
 4. Add a conditional `GitHubRelease@1` task using the **`fast`** GitHub service
    connection, `repositoryName: microsoft/fast`, the pre-created release tag, and exact
    versioned npm/crate asset filenames.

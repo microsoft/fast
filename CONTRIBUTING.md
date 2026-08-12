@@ -148,7 +148,7 @@ Example of how to format a migration document:
 
 ### Publishing
 
-Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, two Azure Pipelines under [`.ado/pipelines/`](.ado/pipelines/) own the rest: `azure-pipelines-build.yml` (**`FAST - CD Build`**) packs the freshly-bumped npm tarballs and paired Rust crates for every package whose release tag doesn't exist yet, and `azure-pipelines-cd.yml` (**`FAST - CD`**) validates those artifacts, publishes to npm and crates.io, and then creates the GitHub release and git tag per package. The detailed CD design is documented in [`.ado/pipelines/README.md`](.ado/pipelines/README.md).
+Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, two Azure Pipelines under [`.ado/pipelines/`](.ado/pipelines/) own the rest: `azure-pipelines-build.yml` (**`FAST - CD Build`**) packs the freshly-bumped npm tarballs and paired Rust crates for every package whose release tag doesn't exist yet, and `azure-pipelines-cd.yml` (**`FAST - CD`**) validates those artifacts, creates the package release tags, publishes to npm and crates.io, records successful publication with deployment-marker tags, and then creates the GitHub Releases. The detailed CD design is documented in [`.ado/pipelines/README.md`](.ado/pipelines/README.md).
 
 This section covers the maintainer workflow for opening the bump PR.
 

@@ -95,14 +95,15 @@ extends:
             # FAST has no single workspace-wide release version, so the
             # manifest (rather than a single `release-version.txt`) is the
             # source of truth for which packages are pending. This emits
-            # one `<prefix>Included` / `<prefix>ReleaseTag` /
-            # `<prefix>ReleaseVersion` output per currently-publishable
-            # workspace, plus a shared `releaseCommit`. Before emitting
-            # outputs it verifies the schema, binds `releaseCommit` to the
-            # selected pipeline resource's source commit, requires main for
-            # production releases, and validates every downloaded asset's
-            # filename and SHA-256 with no unexpected files. It also names
-            # this run from the manifest's selected package count.
+            # one `<outputPrefix>Included` / `<outputPrefix>ReleaseTag` /
+            # `<outputPrefix>ReleaseVersion` output per currently-publishable
+            # workspace, plus a shared `releaseCommit` derived from the
+            # manifest's `sourceCommit`. Before emitting outputs it verifies
+            # the exact schema, binds `sourceCommit` and `sourceBranch` to the
+            # selected pipeline resource, requires main for production
+            # releases, and validates every downloaded asset's filename and
+            # SHA-256 with no unexpected files. It also names this run from
+            # the manifest's selected package count.
             script: |
               set -euo pipefail
               metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
