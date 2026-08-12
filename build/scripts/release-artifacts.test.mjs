@@ -2,13 +2,12 @@ import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
-import { formatAzureBuildNumber } from "./azure-build-number.mjs";
+import { formatAzureBuildNumber, updateAzureBuildNumber } from "./azure-build-number.mjs";
 import {
     checkGitHubReleases,
     githubReleaseExists,
     selectedReleaseChecks,
 } from "./check-github-releases.mjs";
-import { createReleaseTags, markReleaseTagsDeployed } from "./manage-release-tags.mjs";
 import {
     createReleaseAsset,
     noCratesPlaceholder,
@@ -26,8 +25,8 @@ import {
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);
 const workspaces = [
-    { name: "@microsoft/a", prefix: "a", tag: "@microsoft/a_v1.0.0" },
-    { name: "@microsoft/b", prefix: "b", tag: "@microsoft/b_v2.0.0" },
+    { name: "@microsoft/a", outputPrefix: "a", tag: "@microsoft/a_v1.0.0" },
+    { name: "@microsoft/b", outputPrefix: "b", tag: "@microsoft/b_v2.0.0" },
 ];
 
 function fixture(name, { withCrate = true } = {}) {
@@ -58,7 +57,7 @@ function fixture(name, { withCrate = true } = {}) {
                 name: "@microsoft/package",
                 version: "1.0.0",
                 tag: "@microsoft/package_v1.0.0",
-                prefix: "package",
+                outputPrefix: "package",
                 npmAsset: createReleaseAsset("package.tgz", npmFile),
                 crateAssets,
             },
@@ -77,7 +76,7 @@ function validate(values, overrides = {}) {
         workspaces: [
             {
                 name: "@microsoft/package",
-                prefix: "package",
+                outputPrefix: "package",
                 tag: "@microsoft/package_v1.0.0",
                 version: "1.0.0",
             },
@@ -88,81 +87,55 @@ function validate(values, overrides = {}) {
     });
 }
 
-function createGitHarness(initialRemoteTags = {}, raceOnPush = {}) {
-    const commands = [];
-    const localRefs = new Map();
-    const localTags = new Map();
-    const remoteTags = new Map(Object.entries(initialRemoteTags));
-    const racedTags = new Set();
-
-    function git(args, { allowMissing = false } = {}) {
-        commands.push(args);
-        const [command, ...rest] = args;
-
-        if (command === "check-ref-format" || command === "config") {
-            return "";
-        }
-        if (command === "ls-remote") {
-            const tag = rest[2].replace("refs/tags/", "");
-            if (remoteTags.has(tag)) {
-                return `${remoteTags.get(tag)}\trefs/tags/${tag}\n`;
-            }
-            if (allowMissing) {
-                return null;
-            }
-            throw new Error(`Missing remote tag ${tag}`);
-        }
-        if (command === "fetch" && rest[0] === "--no-tags") {
-            return "";
-        }
-        if (command === "fetch" && rest[0] === "--force") {
-            const [source, destination] = rest[2].split(":");
-            const tag = source.replace("refs/tags/", "");
-            localRefs.set(destination, remoteTags.get(tag));
-            return "";
-        }
-        if (command === "rev-parse") {
-            const ref = rest[0].replace(/\^\{\}$/, "");
-            return `${localRefs.get(ref) ?? localTags.get(ref)}\n`;
-        }
-        if (command === "tag") {
-            if (rest[0] === "-a") {
-                localTags.set(`refs/tags/${rest[1]}`, rest[2]);
-            } else {
-                localTags.set(
-                    `refs/tags/${rest[0]}`,
-                    localRefs.get(rest[1]) ?? localTags.get(rest[1]),
-                );
-            }
-            return "";
-        }
-        if (command === "push") {
-            const tag = rest[1].replace("refs/tags/", "");
-            if (raceOnPush[tag] && !racedTags.has(tag)) {
-                remoteTags.set(tag, raceOnPush[tag]);
-                racedTags.add(tag);
-                throw new Error(`Push race for ${tag}`);
-            }
-            remoteTags.set(tag, localTags.get(rest[1]));
-            return "";
-        }
-
-        throw new Error(`Unexpected git command: ${args.join(" ")}`);
-    }
-
-    return { commands, git, remoteTags };
-}
-
 test.after(() => rmSync(scratchRoot, { force: true, recursive: true }));
 
 test("formats build pipeline names from the selected package count", () => {
     assert.equal(formatAzureBuildNumber(0, "build", "123"), "0-build-123");
     assert.equal(formatAzureBuildNumber(4, "build", "456"), "4-build-456");
+    assert.throws(
+        () => formatAzureBuildNumber(-1, "build", "123"),
+        /Invalid package count/,
+    );
+    assert.throws(
+        () => formatAzureBuildNumber(1, "cd", "not-an-id"),
+        /Invalid Azure Build\.BuildId/,
+    );
 });
 
 test("formats CD pipeline names from the manifest package count", () => {
     assert.equal(formatAzureBuildNumber(0, "cd", "789"), "0-cd-789");
     assert.equal(formatAzureBuildNumber(2, "cd", "789"), "2-cd-789");
+});
+
+test("updates Azure build numbers only inside Azure Pipelines", () => {
+    const previousTfBuild = process.env.TF_BUILD;
+    const previousBuildId = process.env.AZURE_BUILD_ID;
+    const previousLog = console.log;
+    const updates = [];
+
+    try {
+        delete process.env.TF_BUILD;
+        delete process.env.AZURE_BUILD_ID;
+        assert.doesNotThrow(() => updateAzureBuildNumber(2, "build"));
+
+        process.env.TF_BUILD = "True";
+        process.env.AZURE_BUILD_ID = "456";
+        console.log = value => updates.push(value);
+        updateAzureBuildNumber(2, "build");
+        assert.deepEqual(updates, ["##vso[build.updatebuildnumber]2-build-456"]);
+    } finally {
+        console.log = previousLog;
+        if (previousTfBuild === undefined) {
+            delete process.env.TF_BUILD;
+        } else {
+            process.env.TF_BUILD = previousTfBuild;
+        }
+        if (previousBuildId === undefined) {
+            delete process.env.AZURE_BUILD_ID;
+        } else {
+            process.env.AZURE_BUILD_ID = previousBuildId;
+        }
+    }
 });
 
 test("validates exact npm and crate assets", () => {
@@ -334,7 +307,7 @@ test("binds manifest packages to current publishable workspaces", () => {
                 workspaces: [
                     {
                         name: "@microsoft/package",
-                        prefix: "different",
+                        outputPrefix: "different",
                         tag: "@microsoft/package_v1.0.0",
                         version: "1.0.0",
                     },
@@ -358,7 +331,7 @@ test("formats, parses, and resolves the exact selected tag order", () => {
     ]);
     assert.throws(
         () => formatSelectedReleaseTags([{ tag: "@microsoft/a_v1.0.0,bad" }]),
-        /cannot contain commas/,
+        /Invalid release tags/,
     );
 });
 
@@ -397,7 +370,7 @@ test("rejects duplicate, unknown, and comma-containing publishable tags", () => 
                 "@microsoft/a_v1.0.0,@microsoft/a_v1.0.0",
                 workspaces,
             ),
-        /duplicate tags: @microsoft\/a_v1\.0\.0/,
+        /duplicate release tags: @microsoft\/a_v1\.0\.0/,
     );
     assert.throws(
         () =>
@@ -413,7 +386,7 @@ test("rejects duplicate, unknown, and comma-containing publishable tags", () => 
                 ...workspaces,
                 { tag: "@microsoft/comma_v1.0.0,bad" },
             ]),
-        /cannot contain commas/,
+        /Invalid publishable release tags/,
     );
 });
 
@@ -471,7 +444,7 @@ test("rejects unknown packages and mismatched tags during GitHub release checks"
                 { packages: [{ name: workspaces[0].name, tag: workspaces[1].tag }] },
                 workspaces,
             ),
-        /does not match the workspace/,
+        /does not match current workspace tag/,
     );
 });
 
@@ -562,97 +535,6 @@ test("fails explicitly when the GitHub release API fails", async () => {
             },
         }),
         /Failed to query GitHub Release.*network down/,
-    );
-});
-
-test("creates release tags from the validated tag list", () => {
-    const harness = createGitHarness();
-    const messages = [];
-
-    createReleaseTags({
-        releaseTags: workspaces.map(workspace => workspace.tag).join(","),
-        releaseCommit: commit,
-        git: harness.git,
-        log: message => messages.push(message),
-    });
-
-    assert.equal(harness.remoteTags.get(workspaces[0].tag), commit);
-    assert.equal(harness.remoteTags.get(workspaces[1].tag), commit);
-    assert.deepEqual(messages, []);
-});
-
-test("accepts existing release tags only at the validated commit", () => {
-    const valid = createGitHarness({ [workspaces[0].tag]: commit });
-    assert.doesNotThrow(() =>
-        createReleaseTags({
-            releaseTags: workspaces[0].tag,
-            releaseCommit: commit,
-            git: valid.git,
-            log() {},
-        }),
-    );
-
-    const invalid = createGitHarness({ [workspaces[0].tag]: "b".repeat(40) });
-    assert.throws(
-        () =>
-            createReleaseTags({
-                releaseTags: workspaces[0].tag,
-                releaseCommit: commit,
-                git: invalid.git,
-                log() {},
-            }),
-        /points to .* not/,
-    );
-});
-
-test("accepts a concurrent release tag push at the validated commit", () => {
-    const harness = createGitHarness({}, { [workspaces[0].tag]: commit });
-    const messages = [];
-
-    createReleaseTags({
-        releaseTags: workspaces[0].tag,
-        releaseCommit: commit,
-        git: harness.git,
-        log: message => messages.push(message),
-    });
-
-    assert.equal(harness.remoteTags.get(workspaces[0].tag), commit);
-    assert.deepEqual(messages, [
-        `Concurrent release run created ${workspaces[0].tag} at the expected commit.`,
-    ]);
-});
-
-test("creates deployment markers from verified release tags", () => {
-    const harness = createGitHarness({
-        [workspaces[0].tag]: commit,
-        [workspaces[1].tag]: commit,
-    });
-
-    markReleaseTagsDeployed({
-        releaseTags: workspaces.map(workspace => workspace.tag).join(","),
-        releaseCommit: commit,
-        git: harness.git,
-        log() {},
-    });
-
-    assert.equal(harness.remoteTags.get(`deployed/${workspaces[0].tag}`), commit);
-    assert.equal(harness.remoteTags.get(`deployed/${workspaces[1].tag}`), commit);
-});
-
-test("rejects deployment markers when their release tag moved", () => {
-    const harness = createGitHarness({
-        [workspaces[0].tag]: "b".repeat(40),
-    });
-
-    assert.throws(
-        () =>
-            markReleaseTagsDeployed({
-                releaseTags: workspaces[0].tag,
-                releaseCommit: commit,
-                git: harness.git,
-                log() {},
-            }),
-        /points to .* not/,
     );
 });
 

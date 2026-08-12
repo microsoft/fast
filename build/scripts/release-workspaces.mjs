@@ -22,6 +22,50 @@ import { fileURLToPath } from "node:url";
  */
 export const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export function expandWorkspacePattern(pattern, root) {
+    const segments = pattern.split(/[\\/]+/).filter(Boolean);
+    let paths = ["."];
+
+    for (const segment of segments) {
+        const nextPaths = [];
+        const hasWildcard = segment.includes("*");
+        const matcher = hasWildcard
+            ? new RegExp(
+                  `^${segment
+                      .split("*")
+                      .map(part => escapeRegExp(part))
+                      .join(".*")}$`,
+              )
+            : null;
+
+        for (const currentPath of paths) {
+            const absolutePath = join(root, currentPath);
+            if (!existsSync(absolutePath)) {
+                continue;
+            }
+
+            if (!hasWildcard) {
+                nextPaths.push(join(currentPath, segment));
+                continue;
+            }
+
+            for (const entry of readdirSync(absolutePath, { withFileTypes: true })) {
+                if (entry.isDirectory() && matcher.test(entry.name)) {
+                    nextPaths.push(join(currentPath, entry.name));
+                }
+            }
+        }
+
+        paths = nextPaths;
+    }
+
+    return paths;
+}
+
 /**
  * Thrown when a publishable npm workspace's `package.json` version disagrees
  * with a paired Rust crate's `Cargo.toml` version. Callers should catch this
@@ -55,9 +99,11 @@ export function npmNameToCrateNames(npmName) {
 /** Convert an npm package name into a camelCase Azure Pipelines variable
  * prefix, e.g. `@microsoft/fast-build` -> `fastBuild`. */
 export function npmNameToOutputPrefix(npmName) {
-    return npmNameToCrateName(npmName)
+    return npmName
+        .replace(/^@/, "")
+        .replace(/\//g, "-")
         .replace(/^microsoft-/, "")
-        .replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
+        .replace(/[^a-zA-Z0-9]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
 }
 
 export function shouldSkipCrates() {
@@ -87,12 +133,12 @@ export function readCargoTomlVersion(cargoTomlPath) {
  * enumerating many workspaces can report every version-drift problem in one
  * pass rather than stopping at the first one.
  */
-export function listPairedCrates(pkgName, pkgVersion, mismatches = []) {
+export function listPairedCrates(pkgName, pkgVersion, mismatches = [], root = repoRoot) {
     if (shouldSkipCrates()) return [];
 
     const crates = [];
     for (const crateName of npmNameToCrateNames(pkgName)) {
-        const cargoTomlPath = join(repoRoot, "crates", crateName, "Cargo.toml");
+        const cargoTomlPath = join(root, "crates", crateName, "Cargo.toml");
         if (!existsSync(cargoTomlPath)) continue;
 
         const crateVersion = readCargoTomlVersion(cargoTomlPath);
@@ -124,42 +170,32 @@ export function listPairedCrates(pkgName, pkgVersion, mismatches = []) {
  * found across all workspaces is collected and reported together, rather
  * than throwing (and hiding subsequent mismatches) at the first one found.
  */
-export function listPublishableWorkspaces() {
-    const rootPkg = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf8"));
-    const patterns = rootPkg.workspaces || [];
-    const locations = new Set();
-
-    for (const pattern of patterns) {
-        if (pattern.endsWith("/*")) {
-            const parent = join(repoRoot, pattern.slice(0, -2));
-            if (!existsSync(parent)) continue;
-            for (const entry of readdirSync(parent, { withFileTypes: true })) {
-                if (entry.isDirectory()) {
-                    locations.add(join(parent, entry.name));
-                }
-            }
-        } else {
-            locations.add(join(repoRoot, pattern));
-        }
-    }
+export function listPublishableWorkspaces(root = repoRoot) {
+    const rootPkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+    const patterns = Array.isArray(rootPkg.workspaces)
+        ? rootPkg.workspaces
+        : (rootPkg.workspaces?.packages ?? []);
+    const locations = new Set(
+        patterns.flatMap(pattern => expandWorkspacePattern(pattern, root)),
+    );
 
     const mismatches = [];
     const workspaces = [];
     for (const location of locations) {
-        const pkgPath = join(location, "package.json");
+        const pkgPath = join(root, location, "package.json");
         if (!existsSync(pkgPath)) continue;
         const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
         if (pkg.private === true) continue;
         if (!pkg.name || !pkg.version) continue;
 
-        const crates = listPairedCrates(pkg.name, pkg.version, mismatches);
+        const crates = listPairedCrates(pkg.name, pkg.version, mismatches, root);
 
         workspaces.push({
             location,
             name: pkg.name,
             version: pkg.version,
             tag: `${pkg.name}_v${pkg.version}`,
-            prefix: npmNameToOutputPrefix(pkg.name),
+            outputPrefix: npmNameToOutputPrefix(pkg.name),
             crates,
         });
     }
@@ -177,7 +213,12 @@ export function listPublishableWorkspaces() {
 }
 
 function run(file, args, opts = {}) {
-    return execFileSync(file, args, { encoding: "utf8", cwd: repoRoot, ...opts });
+    return execFileSync(file, args, {
+        encoding: "utf8",
+        cwd: repoRoot,
+        env: { ...process.env, GIT_TERMINAL_PROMPT: "0" },
+        ...opts,
+    });
 }
 
 /**

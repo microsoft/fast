@@ -31,7 +31,7 @@
  *      version.
  *   4. In `--check-only`, a workspace is selected when its
  *      `${name}_v${version}` tag does not yet exist on `origin` — or, when
- *      `ALLOW_EXISTING_RELEASE=true` (driven by the pipelines'
+ *      `VALIDATION_MODE=true` (driven by the pipelines'
  *      `validationMode` parameter), every publishable workspace is selected.
  *      The exact selected tag list is handed to the later packing stage.
  *
@@ -58,11 +58,12 @@
 import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
-import { formatAzureBuildNumber } from "./azure-build-number.mjs";
+import { updateAzureBuildNumber } from "./azure-build-number.mjs";
 import { createReleaseAsset, releaseManifestSchemaVersion } from "./release-manifest.mjs";
 import {
     gitTagExistsOnRemote,
     listPublishableWorkspaces,
+    repoRoot,
     VersionDriftError,
 } from "./release-workspaces.mjs";
 import {
@@ -71,15 +72,31 @@ import {
     resolveSelectedReleaseWorkspaces,
 } from "./selected-release-tags.mjs";
 
-const NPM_DIR = "publish_artifacts_npm";
-const CRATES_DIR = "publish_artifacts_crates";
-const META_DIR = "publish_artifacts_meta";
+const NPM_DIR = join(repoRoot, "publish_artifacts_npm");
+const CRATES_DIR = join(repoRoot, "publish_artifacts_crates");
+const META_DIR = join(repoRoot, "publish_artifacts_meta");
 const MANIFEST_PATH = join(META_DIR, "release-manifest.json");
 const CHECK_ONLY = process.argv.includes("--check-only");
-const ALLOW_EXISTING_RELEASE = process.env.ALLOW_EXISTING_RELEASE === "true";
+const VALIDATION_MODE = process.env.VALIDATION_MODE === "true";
+
+function command(name) {
+    return process.platform === "win32" && name === "npm" ? "npm.cmd" : name;
+}
 
 function run(file, args, opts = {}) {
-    return execFileSync(file, args, { encoding: "utf8", ...opts });
+    return execFileSync(command(file), args, {
+        cwd: repoRoot,
+        encoding: "utf8",
+        ...opts,
+    });
+}
+
+function parsePackOutput(output) {
+    const packages = JSON.parse(output);
+    if (!Array.isArray(packages) || packages.length === 0 || !packages[0].filename) {
+        throw new Error(`Unexpected npm pack output: ${output}`);
+    }
+    return packages[0].filename;
 }
 
 function setAzureOutput(name, value) {
@@ -88,7 +105,7 @@ function setAzureOutput(name, value) {
 }
 
 function isSelected(workspace) {
-    if (ALLOW_EXISTING_RELEASE) return true;
+    if (VALIDATION_MODE) return true;
     return !gitTagExistsOnRemote(workspace.tag);
 }
 
@@ -113,7 +130,7 @@ try {
 if (process.env.FAST_RELEASE_SKIP_CRATES === "true") {
     console.log("Paired Rust crate assets are skipped for this release run.");
 }
-if (ALLOW_EXISTING_RELEASE && CHECK_ONLY) {
+if (VALIDATION_MODE && CHECK_ONLY) {
     console.log(
         "Validation mode: every publishable workspace is selected, " +
             "regardless of whether its release tag already exists.",
@@ -134,7 +151,7 @@ if (CHECK_ONLY) {
         process.exit(1);
     }
 
-    if (!ALLOW_EXISTING_RELEASE) {
+    if (!VALIDATION_MODE) {
         try {
             assertSelectedTagsAreUnreleased(selected, gitTagExistsOnRemote);
         } catch (error) {
@@ -167,16 +184,7 @@ if (CHECK_ONLY) {
     // changing if new tags appear on origin between the check and pack stages.
     // This happens even with zero publishable workspaces to ensure the build name
     // is always set consistently.
-    if (process.env.TF_BUILD) {
-        const buildId = process.env.BUILD_BUILDID || "local";
-        console.log(
-            `##vso[build.updatebuildnumber]${formatAzureBuildNumber(
-                selected.length,
-                "build",
-                buildId,
-            )}`,
-        );
-    }
+    updateAzureBuildNumber(selected.length, "build");
     process.exit(0);
 }
 
@@ -188,7 +196,7 @@ for (const directory of [NPM_DIR, CRATES_DIR, META_DIR]) {
 const manifestPackages = [];
 let hasErrors = false;
 
-for (const { name, version, tag, prefix, location, crates } of selected) {
+for (const { name, version, tag, outputPrefix, location, crates } of selected) {
     try {
         console.log(`\nPacking ${name}@${version} from ${location}...`);
         const packJson = run("npm", [
@@ -198,7 +206,7 @@ for (const { name, version, tag, prefix, location, crates } of selected) {
             `--workspace=${location}`,
             `--pack-destination=${resolve(NPM_DIR)}`,
         ]);
-        const npmTarball = JSON.parse(packJson)[0].filename;
+        const npmTarball = parsePackOutput(packJson);
         const npmAsset = createReleaseAsset(npmTarball, join(NPM_DIR, npmTarball));
 
         const crateAssets = [];
@@ -231,7 +239,14 @@ for (const { name, version, tag, prefix, location, crates } of selected) {
             crateAssets.push(createReleaseAsset(basename(srcCrate), destCrate));
         }
 
-        manifestPackages.push({ name, version, tag, prefix, npmAsset, crateAssets });
+        manifestPackages.push({
+            name,
+            version,
+            tag,
+            outputPrefix,
+            npmAsset,
+            crateAssets,
+        });
         console.log(`Packed ${name}@${version} (${1 + crateAssets.length} asset(s))`);
     } catch (error) {
         hasErrors = true;
@@ -253,6 +268,9 @@ if (manifestPackages.every(pkg => pkg.crateAssets.length === 0)) {
 const releaseCommit = (
     process.env.BUILD_SOURCEVERSION || run("git", ["rev-parse", "HEAD"])
 ).trim();
+if (!/^[0-9a-f]{40}$/.test(releaseCommit)) {
+    throw new Error(`Invalid release commit: ${releaseCommit}`);
+}
 
 writeFileSync(
     MANIFEST_PATH,
@@ -260,7 +278,7 @@ writeFileSync(
         {
             schemaVersion: releaseManifestSchemaVersion,
             releaseCommit,
-            validationMode: ALLOW_EXISTING_RELEASE,
+            validationMode: VALIDATION_MODE,
             packages: manifestPackages,
         },
         null,

@@ -50,8 +50,8 @@ selected releases. It publishes:
 - `release-metadata`, containing `release-manifest.json`
 
 Manifest schema version 1 records the full release commit, validation mode, and each
-selected package's name, version, release tag, Azure output prefix, npm asset filename
-and SHA-256, and paired crate asset filenames and SHA-256 values. The
+selected package's name, version, release tag, `outputPrefix`, npm asset filename and
+SHA-256, and paired crate asset filenames and SHA-256 values. The
 [`validate-release-artifacts.mjs`](../../build/scripts/validate-release-artifacts.mjs)
 validator
 accepts only the supported schema, requires safe unique basenames, verifies every

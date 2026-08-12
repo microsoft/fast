@@ -26,7 +26,7 @@
  */
 
 import { readFileSync } from "node:fs";
-import { formatAzureBuildNumber } from "./azure-build-number.mjs";
+import { updateAzureBuildNumber } from "./azure-build-number.mjs";
 import { validateReleaseArtifacts } from "./release-manifest.mjs";
 import { listPublishableWorkspaces } from "./release-workspaces.mjs";
 import { formatSelectedReleaseTags } from "./selected-release-tags.mjs";
@@ -61,14 +61,7 @@ try {
 const selectedPackages = manifest.packages || [];
 setAzureOutput("releaseTags", formatSelectedReleaseTags(selectedPackages));
 
-const buildId = process.env.BUILD_BUILDID || "local";
-console.log(
-    `##vso[build.updatebuildnumber]${formatAzureBuildNumber(
-        selectedPackages.length,
-        "cd",
-        buildId,
-    )}`,
-);
+updateAzureBuildNumber(selectedPackages.length, "cd");
 
 const packagesByName = new Map(selectedPackages.map(pkg => [pkg.name, pkg]));
 let pendingCount = 0;
@@ -78,10 +71,13 @@ for (const workspace of publishable) {
     const included = Boolean(packed);
     if (included) pendingCount += 1;
 
-    setAzureOutput(`${workspace.prefix}Included`, included ? "true" : "false");
-    setAzureOutput(`${workspace.prefix}ReleaseTag`, packed ? packed.tag : workspace.tag);
+    setAzureOutput(`${workspace.outputPrefix}Included`, included ? "true" : "false");
     setAzureOutput(
-        `${workspace.prefix}ReleaseVersion`,
+        `${workspace.outputPrefix}ReleaseTag`,
+        packed ? packed.tag : workspace.tag,
+    );
+    setAzureOutput(
+        `${workspace.outputPrefix}ReleaseVersion`,
         packed ? packed.version : workspace.version,
     );
 }

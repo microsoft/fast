@@ -1,14 +1,14 @@
+import { formatReleaseTagCsv, parseReleaseTagCsv } from "./release-tag-csv.mjs";
+
 /**
  * Format the exact package release tags selected by the check-only phase for
  * the comma-separated Azure stage output.
  */
 export function formatSelectedReleaseTags(workspaces) {
-    const tags = workspaces.map(workspace => workspace.tag);
-    const commaTag = tags.find(tag => tag.includes(","));
-    if (commaTag !== undefined) {
-        throw new Error(`Release tags cannot contain commas: ${commaTag}.`);
-    }
-    return tags.join(",");
+    return formatReleaseTagCsv(
+        workspaces.map(workspace => workspace.tag),
+        "release tags",
+    );
 }
 
 /**
@@ -16,43 +16,7 @@ export function formatSelectedReleaseTags(workspaces) {
  * trimming or otherwise changing tag boundaries.
  */
 export function parseReleaseTags(value, variableName) {
-    if (typeof value !== "string" || value === "") {
-        throw new Error(
-            `${variableName} is required and must be a non-empty comma-separated string.`,
-        );
-    }
-
-    const tags = value.split(",");
-    const invalidIndexes = [];
-    for (const [index, tag] of tags.entries()) {
-        if (tag.length === 0 || tag !== tag.trim()) {
-            invalidIndexes.push(index);
-        }
-    }
-    if (invalidIndexes.length > 0) {
-        throw new Error(
-            `${variableName} contains empty tags or surrounding whitespace ` +
-                `at indexes: ${invalidIndexes.join(", ")}.`,
-        );
-    }
-
-    const duplicates = [];
-    const seen = new Set();
-    for (const tag of tags) {
-        if (seen.has(tag)) {
-            duplicates.push(tag);
-        }
-        seen.add(tag);
-    }
-    if (duplicates.length > 0) {
-        throw new Error(
-            `${variableName} contains duplicate tags: ${[...new Set(duplicates)].join(
-                ", ",
-            )}.`,
-        );
-    }
-
-    return tags;
+    return parseReleaseTagCsv(value, variableName);
 }
 
 export function parseSelectedReleaseTags(value) {
@@ -66,10 +30,10 @@ export function parseSelectedReleaseTags(value) {
  */
 export function resolveSelectedReleaseWorkspaces(value, publishable) {
     const tags = parseSelectedReleaseTags(value);
-    const commaTag = publishable.find(workspace => workspace.tag.includes(","))?.tag;
-    if (commaTag !== undefined) {
-        throw new Error(`Release tags cannot contain commas: ${commaTag}.`);
-    }
+    formatReleaseTagCsv(
+        publishable.map(workspace => workspace.tag),
+        "publishable release tags",
+    );
     const byTag = new Map(publishable.map(workspace => [workspace.tag, workspace]));
     const unknown = tags.filter(tag => !byTag.has(tag));
     if (unknown.length > 0) {

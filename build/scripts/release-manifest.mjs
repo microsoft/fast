@@ -79,7 +79,7 @@ export function validateReleaseManifestStructure(manifest) {
         if (!pkg || typeof pkg !== "object" || Array.isArray(pkg)) {
             fail(`${description} must be an object.`);
         }
-        for (const field of ["name", "version", "tag", "prefix"]) {
+        for (const field of ["name", "version", "tag", "outputPrefix"]) {
             requireString(pkg[field], `${description}.${field}`);
         }
         if (packageNames.has(pkg.name)) {
@@ -158,7 +158,7 @@ export function validateReleaseArtifacts({
         if (
             pkg.version !== workspace.version ||
             pkg.tag !== workspace.tag ||
-            pkg.prefix !== workspace.prefix
+            pkg.outputPrefix !== workspace.outputPrefix
         ) {
             fail(`${pkg.name} does not match the current workspace definition.`);
         }

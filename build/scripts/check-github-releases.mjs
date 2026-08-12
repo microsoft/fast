@@ -22,15 +22,19 @@ function selectedReleaseChecks(manifest, workspaces) {
         if (!workspace) {
             throw new Error(`Release manifest references unknown package ${pkg?.name}.`);
         }
+        if (typeof pkg.tag !== "string" || pkg.tag.length === 0) {
+            throw new Error(`Release manifest for ${workspace.name} has an invalid tag.`);
+        }
         if (pkg.tag !== workspace.tag) {
             throw new Error(
-                `Release manifest tag for ${workspace.name} does not match the workspace.`,
+                `Release manifest tag ${pkg.tag} does not match current workspace ` +
+                    `tag ${workspace.tag}.`,
             );
         }
 
         return {
             name: workspace.name,
-            outputName: `${workspace.prefix}GitHubReleaseExists`,
+            outputName: `${workspace.outputPrefix}GitHubReleaseExists`,
             tag: pkg.tag,
         };
     });

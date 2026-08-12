@@ -63,8 +63,8 @@ steps:
       set -euo pipefail
       node build/scripts/prepare-release-artifacts.mjs
   env:
-    ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
     SELECTED_RELEASE_TAGS: ${{ parameters.selectedReleaseTags }}
+    VALIDATION_MODE: ${{ parameters.validationMode }}
 
 - task: PublishPipelineArtifact@1
   displayName: Upload npm packages

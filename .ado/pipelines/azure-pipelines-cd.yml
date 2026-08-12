@@ -106,6 +106,7 @@ extends:
               metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
               node build/scripts/validate-release-artifacts.mjs "$metadata_dir/release-manifest.json"
           env:
+            AZURE_BUILD_ID: $(Build.BuildId)
             METADATA_INPUT_DIR: $(Pipeline.Workspace)/releaseBuild/release-metadata
             EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
             RELEASE_BUILD_SOURCE_COMMIT: $(resources.pipeline.releaseBuild.sourceCommit)

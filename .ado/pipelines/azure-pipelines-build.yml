@@ -54,7 +54,8 @@ stages:
           set -euo pipefail
           node build/scripts/prepare-release-artifacts.mjs --check-only
       env:
-        ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
+        AZURE_BUILD_ID: $(Build.BuildId)
+        VALIDATION_MODE: ${{ parameters.validationMode }}
 
 # Two stage NAMES (not one stage gated by a `validationMode` condition) are
 # used deliberately. `FAST - CD`'s `releaseBuild` pipeline resource trigger
