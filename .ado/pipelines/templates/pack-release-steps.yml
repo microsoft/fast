@@ -61,7 +61,7 @@ steps:
     # those are owned by the `FAST - CD` pipeline.
     script: |
       set -euo pipefail
-      node build/scripts/pack-pending-releases.mjs
+      node build/scripts/prepare-release-artifacts.mjs
   env:
     ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
     SELECTED_RELEASE_TAGS: ${{ parameters.selectedReleaseTags }}
@@ -75,7 +75,7 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: Upload crate packages
   inputs:
-    # `pack-pending-releases.mjs` writes a `.no-crates-packed` placeholder
+    # `prepare-release-artifacts.mjs` writes a `.no-crates-packed` placeholder
     # into this directory when no pending package has a paired Rust crate,
     # so this publish step always has at least one file to upload — some
     # agent/task combinations treat publishing a truly empty directory as a

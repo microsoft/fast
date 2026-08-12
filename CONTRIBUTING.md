@@ -186,7 +186,7 @@ No commit, push, npm publish, or git tag is made by `npm run bump`.
 ```bash
 git status
 git diff
-node build/scripts/pack-pending-releases.mjs --check-only
+node build/scripts/prepare-release-artifacts.mjs --check-only
 ```
 
 The third command previews exactly which workspaces the post-merge CD will publish, by listing every workspace whose freshly-bumped `${name}_v${version}` tag is not present on `origin` (it queries `origin` directly via `git ls-remote`, so it reflects the real remote state — no need to `git fetch --tags` first).
@@ -210,7 +210,7 @@ gh pr create --fill --base main
 The bump PR goes through normal review. `npm run checkchange` will pass because the branch name matches `publish_<timestamp>` and the actor has admin on the repo (see [Manual version bumps](#manual-version-bumps)); the PR itself does **not** publish anything.
 
 :::note
-Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`pack-pending-releases.mjs`](build/scripts/pack-pending-releases.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
+Do not edit `package.json` or `Cargo.toml` versions by hand as part of a normal feature/fix PR. Let `npm run bump` and the postbump hook do it. [`prepare-release-artifacts.mjs`](build/scripts/prepare-release-artifacts.mjs) refuses to release a workspace whose npm version and paired crate version disagree.
 
 A narrow exception exists for the **manual version bump** flow described in [the next section](#manual-version-bumps) — hotfix overrides, paired Rust/npm sync recovery, or scripted version pins. Those edits are tolerated by `npm run checkchange` only on a `publish_<timestamp>` branch whose actor has the `admin` role on `microsoft/fast`.
 :::

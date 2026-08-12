@@ -104,7 +104,7 @@ extends:
             script: |
               set -euo pipefail
               metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
-              node build/scripts/read-release-manifest.mjs "$metadata_dir/release-manifest.json"
+              node build/scripts/validate-release-artifacts.mjs "$metadata_dir/release-manifest.json"
           env:
             METADATA_INPUT_DIR: $(Pipeline.Workspace)/releaseBuild/release-metadata
             EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
@@ -206,7 +206,7 @@ extends:
             displayName: Remove empty artifact directories
             inputs:
               targetType: inline
-              # `pack-pending-releases.mjs` writes a `.no-crates-packed`
+              # `prepare-release-artifacts.mjs` writes a `.no-crates-packed`
               # placeholder file into `publish_artifacts_crates` when this
               # release batch has no crate assets, purely so publishing and
               # downloading that (otherwise empty) pipeline artifact along

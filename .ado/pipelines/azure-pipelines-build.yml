@@ -29,7 +29,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
-      # `pack-pending-releases.mjs --check-only` calls `git ls-remote origin`
+      # `prepare-release-artifacts.mjs --check-only` calls `git ls-remote origin`
       # (via `gitTagExistsOnRemote`) to decide which workspaces are pending.
       persistCredentials: true
 
@@ -46,13 +46,13 @@ stages:
         # FAST is multi-package: unlike a single workspace-wide release
         # version, each publishable npm workspace gets its own
         # `${name}_v${version}` tag, so "pending" is a per-package list
-        # rather than one selected version. `pack-pending-releases.mjs
+        # rather than one selected version. `prepare-release-artifacts.mjs
         # --check-only` walks the workspaces tree (no `npm ci` required)
         # and reports whether any workspace's tag is missing from `origin`,
         # along with the exact selected tag list for the packing stage.
         script: |
           set -euo pipefail
-          node build/scripts/pack-pending-releases.mjs --check-only
+          node build/scripts/prepare-release-artifacts.mjs --check-only
       env:
         ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
 
@@ -64,7 +64,7 @@ stages:
 # pipeline with `validationMode: true` (e.g. to test the artifact contract
 # after changing this file) would auto-trigger a real `FAST - CD` run, which
 # would then fail loudly on the `validationMode` mismatch check in
-# `read-release-manifest.mjs` — a confusing red run for what was only ever
+# `validate-release-artifacts.mjs` — a confusing red run for what was only ever
 # meant to be a local contract check. Giving the validation path its own
 # stage name (`ValidateArtifacts`) means `FAST - CD` is structurally unable to
 # hear about it, with no reliance on that downstream check as the only

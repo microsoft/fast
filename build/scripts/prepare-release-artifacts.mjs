@@ -25,7 +25,7 @@
  *   2. Skips workspaces whose package.json sets `private: true`.
  *   3. For each remaining workspace, looks for paired Rust crates at
  *      `crates/<crate-name>/Cargo.toml` (see
- *      `build/scripts/lib/publishable-workspaces.mjs` for the npm-name ->
+ *      `build/scripts/release-workspaces.mjs` for the npm-name ->
  *      crate-name mapping, including the `@microsoft/fast-build` bundle).
  *      Errors if a paired crate's version does not match the npm package's
  *      version.
@@ -49,7 +49,7 @@
  *     `publish_artifacts_meta/release-manifest.json` describing exactly
  *     what was packed (schema version, validation mode, name, version, tag,
  *     and SHA-256 for every npm/crate asset) for the downstream
- *     `read-release-manifest.mjs` step.
+ *     `validate-release-artifacts.mjs` step.
  *
  * Set `FAST_RELEASE_SKIP_CRATES=true` to skip paired Rust crate validation
  * and packaging.
@@ -58,21 +58,18 @@
 import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
-import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
+import { formatAzureBuildNumber } from "./azure-build-number.mjs";
+import { createReleaseAsset, releaseManifestSchemaVersion } from "./release-manifest.mjs";
 import {
     gitTagExistsOnRemote,
     listPublishableWorkspaces,
     VersionDriftError,
-} from "./lib/publishable-workspaces.mjs";
-import {
-    createReleaseAsset,
-    releaseManifestSchemaVersion,
-} from "./lib/release-manifest.mjs";
+} from "./release-workspaces.mjs";
 import {
     assertSelectedTagsAreUnreleased,
     formatSelectedReleaseTags,
     resolveSelectedReleaseWorkspaces,
-} from "./lib/selected-release-tags.mjs";
+} from "./selected-release-tags.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";

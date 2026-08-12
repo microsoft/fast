@@ -2,8 +2,8 @@
  * Shared helpers for enumerating FAST's publishable npm workspaces and their
  * paired Rust crates.
  *
- * Used by the Azure release pipeline scripts (`pack-pending-releases.mjs`
- * and `read-release-manifest.mjs`) so that "what is publishable" and "how
+ * Used by the Azure release pipeline scripts (`prepare-release-artifacts.mjs`
+ * and `validate-release-artifacts.mjs`) so that "what is publishable" and "how
  * does an npm name map to a crate name / Azure variable prefix" are defined
  * in exactly one place.
  */
@@ -15,12 +15,12 @@ import { fileURLToPath } from "node:url";
 
 /**
  * Absolute path to the repository root, resolved from this file's own
- * location (`build/scripts/lib/`) rather than `process.cwd()`. Every
+ * location (`build/scripts/`) rather than `process.cwd()`. Every
  * filesystem lookup in this module is anchored here so `listPublishableWorkspaces()`
  * behaves identically no matter which directory the calling script (or a
  * test) happens to be invoked from.
  */
-export const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
+export const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 
 /**
  * Thrown when a publishable npm workspace's `package.json` version disagrees

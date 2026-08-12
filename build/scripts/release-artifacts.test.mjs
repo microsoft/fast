@@ -2,26 +2,26 @@ import assert from "node:assert/strict";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
+import { formatAzureBuildNumber } from "./azure-build-number.mjs";
 import {
     checkGitHubReleases,
     githubReleaseExists,
     selectedReleaseChecks,
 } from "./check-github-releases.mjs";
-import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
+import { createReleaseTags, markReleaseTagsDeployed } from "./manage-release-tags.mjs";
 import {
     createReleaseAsset,
     noCratesPlaceholder,
     releaseManifestSchemaVersion,
     validateReleaseArtifacts,
     validateReleaseManifestStructure,
-} from "./lib/release-manifest.mjs";
+} from "./release-manifest.mjs";
 import {
     assertSelectedTagsAreUnreleased,
     formatSelectedReleaseTags,
     parseSelectedReleaseTags,
     resolveSelectedReleaseWorkspaces,
-} from "./lib/selected-release-tags.mjs";
-import { createReleaseTags, markReleaseTagsDeployed } from "./manage-release-tags.mjs";
+} from "./selected-release-tags.mjs";
 
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);

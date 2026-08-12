@@ -3,7 +3,7 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseReleaseTags } from "./lib/selected-release-tags.mjs";
+import { parseReleaseTags } from "./selected-release-tags.mjs";
 
 function runGit(args, { allowMissing = false } = {}) {
     try {

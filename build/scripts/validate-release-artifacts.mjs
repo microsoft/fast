@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Read `release-manifest.json` (written by `pack-pending-releases.mjs` in
+ * Read `release-manifest.json` (written by `prepare-release-artifacts.mjs` in
  * the `FAST - CD Build` pipeline's `BuildArtifacts` stage) and cross-reference
  * it against the workspaces that are publishable right now — from a fresh
  * `checkout: self` in the `FAST - CD` pipeline — to emit one set of Azure
@@ -22,18 +22,18 @@
  * directories against the selected pipeline resource metadata supplied in
  * the environment.
  *
- * Usage: node build/scripts/read-release-manifest.mjs <path-to-manifest.json>
+ * Usage: node build/scripts/validate-release-artifacts.mjs <path-to-manifest.json>
  */
 
 import { readFileSync } from "node:fs";
-import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
-import { listPublishableWorkspaces } from "./lib/publishable-workspaces.mjs";
-import { validateReleaseArtifacts } from "./lib/release-manifest.mjs";
-import { formatSelectedReleaseTags } from "./lib/selected-release-tags.mjs";
+import { formatAzureBuildNumber } from "./azure-build-number.mjs";
+import { validateReleaseArtifacts } from "./release-manifest.mjs";
+import { listPublishableWorkspaces } from "./release-workspaces.mjs";
+import { formatSelectedReleaseTags } from "./selected-release-tags.mjs";
 
 const manifestPath = process.argv[2];
 if (!manifestPath) {
-    console.error("Usage: read-release-manifest.mjs <path-to-manifest.json>");
+    console.error("Usage: validate-release-artifacts.mjs <path-to-manifest.json>");
     process.exit(1);
 }
 

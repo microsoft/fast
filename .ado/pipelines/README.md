@@ -22,7 +22,7 @@ when that tag does not exist on `origin`.
 `FAST - CD Build` runs on pushes to `main`:
 
 1. `PrepareRelease` runs
-   [`pack-pending-releases.mjs --check-only`](../../build/scripts/pack-pending-releases.mjs)
+   [`prepare-release-artifacts.mjs --check-only`](../../build/scripts/prepare-release-artifacts.mjs)
    without requiring `npm ci`. It emits `shouldBuild` and the exact selected tags as a
    strict comma-separated `selectedReleaseTags` value.
 2. Azure passes that value to the packing stage as `SELECTED_RELEASE_TAGS`. Packing
@@ -52,7 +52,8 @@ selected releases. It publishes:
 Manifest schema version 1 records the full release commit, validation mode, and each
 selected package's name, version, release tag, Azure output prefix, npm asset filename
 and SHA-256, and paired crate asset filenames and SHA-256 values. The
-[`read-release-manifest.mjs`](../../build/scripts/read-release-manifest.mjs) validator
+[`validate-release-artifacts.mjs`](../../build/scripts/validate-release-artifacts.mjs)
+validator
 accepts only the supported schema, requires safe unique basenames, verifies every
 required file's exact hash, and rejects missing, modified, unexpected, or nested files.
 It also requires the manifest commit to match the selected pipeline resource's
@@ -122,7 +123,7 @@ non-private workspace:
 1. Add it to the root `package.json` workspaces and provide `name` and `version`.
 2. Put paired crates in `crates/<crate-name>/Cargo.toml`. The default crate name removes
    the leading `@` and replaces `/` with `-`; add an explicit bundle mapping in
-   [`publishable-workspaces.mjs`](../../build/scripts/lib/publishable-workspaces.mjs)
+   [`release-workspaces.mjs`](../../build/scripts/release-workspaces.mjs)
    when one npm package owns multiple crates.
 3. Add `<prefix>Included`, `<prefix>ReleaseTag`, and
    `<prefix>ReleaseVersion` variables to `PublishRelease`.

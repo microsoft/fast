@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { listPublishableWorkspaces } from "./lib/publishable-workspaces.mjs";
+import { listPublishableWorkspaces } from "./release-workspaces.mjs";
 
 const defaultRepository = "microsoft/fast";
 const apiTimeoutMs = 10000;
