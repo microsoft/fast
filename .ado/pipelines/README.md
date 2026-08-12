@@ -99,11 +99,12 @@ publish job passes both npm and crate directories to one
 `FAST.Release.PipelineTemplate.yml@fastPipelines` invocation.
 
 After registry publication succeeds, the separate `MarkDeployed` job creates
-`deployed/${name}_v${version}` marker tags at the same commit. Keeping markers in a
-dependent job allows marker retries without repeating registry publication. A registry
-failure leaves the release tag but no deployment marker; after diagnosing the failure,
-a maintainer must delete the affected release tag before rebuilding and retrying that
-version.
+`deployed/${name}_v${version}` marker tags from the same validated tag list. Before
+creating each marker, it verifies that the release tag resolves to the validated commit.
+Keeping markers in a dependent job allows marker retries without repeating registry
+publication. A registry failure leaves the release tag but no deployment marker; after
+diagnosing the failure, a maintainer must delete the affected release tag before
+rebuilding and retrying that version.
 
 `PublishGitHub` runs only after deployment markers succeed. It calls
 [`check-github-releases.mjs`](../../build/scripts/check-github-releases.mjs) before the
@@ -121,8 +122,7 @@ Workspace and crate discovery is automatic, but Azure cannot generate tag and
    [`publishable-workspaces.mjs`](../../build/scripts/lib/publishable-workspaces.mjs)
    when one npm package owns multiple crates.
 3. Add `<prefix>NeedsRelease`, `<prefix>ReleaseTag`, and
-   `<prefix>ReleaseVersion` variables to `PublishRelease`, plus the corresponding
-   deployment-marker call.
+   `<prefix>ReleaseVersion` variables to `PublishRelease`.
 4. Add a conditional `GitHubRelease@1` task using the **`fast`** GitHub service
    connection, `repositoryName: microsoft/fast`, the pre-created release tag, and exact
    versioned npm/crate asset filenames.

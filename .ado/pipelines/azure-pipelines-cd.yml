@@ -188,6 +188,7 @@ extends:
         - TagRelease
         variables:
           releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
+          releaseTags: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseTags'] ]
           # When adding a new publishable package, add its package-specific
           # variables here and a matching GitHubRelease@1 task below. See
           # .ado/pipelines/README.md > Adding a publishable package.
@@ -282,74 +283,55 @@ extends:
           - checkout: self
             clean: true
             fetchDepth: 0
-            fetchTags: false
+            fetchTags: true
             persistCredentials: true
 
-          # The release tags reserve each package/version before publication.
-          # These lightweight marker tags record that the combined npm/crate
-          # template completed successfully. Keep this in a separate dependent
-          # job so marker retries never rerun registry publication.
           - task: Bash@3
             displayName: Mark published releases as deployed
-            condition: succeeded()
             inputs:
               targetType: inline
               script: |
                 set -euo pipefail
 
-                mark_if_needed() {
-                  local needs_release="$1"
-                  local release_tag="$2"
+                IFS=',' read -ra tags <<< "$RELEASE_TAGS"
+                for release_tag in "${tags[@]}"; do
+                  [[ -z "$release_tag" ]] && continue
+                  deployed_tag="deployed/${release_tag}"
+                  remote_ref="refs/azure-deployment-tags/${release_tag}"
 
-                  if [[ "$needs_release" != "true" ]]; then
-                    return
-                  fi
-
-                  local deploy_tag="deployed/${release_tag}"
-                  local remote_ref="refs/azure-deployment-tags/${release_tag}"
-
-                  git fetch --no-tags origin "$RELEASE_COMMIT"
                   if git fetch --force origin "refs/tags/${deploy_tag}:${remote_ref}" 2>/dev/null; then
-                    local existing_commit
                     existing_commit=$(git rev-parse "${remote_ref}^{}")
                     if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
                       echo "##vso[task.logissue type=error]${deploy_tag} points to ${existing_commit}, not ${RELEASE_COMMIT}."
                       exit 1
                     fi
-                    echo "${deploy_tag} already points to ${RELEASE_COMMIT}."
-                    return
+                    echo "${deploy_tag} already marks the expected release."
+                    continue
                   fi
 
-                  git tag -d "$deploy_tag" >/dev/null 2>&1 || true
-                  git tag "$deploy_tag" "$RELEASE_COMMIT"
+                  git fetch --force origin "refs/tags/${release_tag}:refs/tags/${release_tag}"
+                  release_commit=$(git rev-parse "refs/tags/${release_tag}^{}")
+                  if [[ "$release_commit" != "$RELEASE_COMMIT" ]]; then
+                    echo "##vso[task.logissue type=error]${release_tag} points to ${release_commit}, not ${RELEASE_COMMIT}."
+                    exit 1
+                  fi
+
+                  git tag "$deploy_tag" "refs/tags/${release_tag}"
                   if git push origin "refs/tags/${deploy_tag}"; then
-                    return
+                    continue
                   fi
 
                   git fetch --force origin "refs/tags/${deploy_tag}:${remote_ref}"
-                  local raced_commit
                   raced_commit=$(git rev-parse "${remote_ref}^{}")
                   if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
                     echo "##vso[task.logissue type=error]Concurrent marker ${deploy_tag} points to ${raced_commit}, not ${RELEASE_COMMIT}."
                     exit 1
                   fi
                   echo "Concurrent release run created ${deploy_tag} at the expected commit."
-                }
-
-                mark_if_needed "$FAST_BUILD_NEEDS_RELEASE" "$FAST_BUILD_RELEASE_TAG"
-                mark_if_needed "$FAST_ELEMENT_NEEDS_RELEASE" "$FAST_ELEMENT_RELEASE_TAG"
-                mark_if_needed "$FAST_ROUTER_NEEDS_RELEASE" "$FAST_ROUTER_RELEASE_TAG"
-                mark_if_needed "$FAST_TEST_HARNESS_NEEDS_RELEASE" "$FAST_TEST_HARNESS_RELEASE_TAG"
+                done
             env:
               RELEASE_COMMIT: $(releaseCommit)
-              FAST_BUILD_NEEDS_RELEASE: $(fastBuildNeedsRelease)
-              FAST_BUILD_RELEASE_TAG: $(fastBuildReleaseTag)
-              FAST_ELEMENT_NEEDS_RELEASE: $(fastElementNeedsRelease)
-              FAST_ELEMENT_RELEASE_TAG: $(fastElementReleaseTag)
-              FAST_ROUTER_NEEDS_RELEASE: $(fastRouterNeedsRelease)
-              FAST_ROUTER_RELEASE_TAG: $(fastRouterReleaseTag)
-              FAST_TEST_HARNESS_NEEDS_RELEASE: $(fastTestHarnessNeedsRelease)
-              FAST_TEST_HARNESS_RELEASE_TAG: $(fastTestHarnessReleaseTag)
+              RELEASE_TAGS: $(releaseTags)
 
         - job: PublishGitHub
           displayName: Publish GitHub Releases
