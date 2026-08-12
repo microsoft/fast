@@ -46,9 +46,9 @@ const publishable = listPublishableWorkspaces();
 try {
     validateReleaseArtifacts({
         manifest,
-        expectedReleaseCommit: process.env.RELEASE_BUILD_SOURCE_COMMIT,
+        expectedSourceCommit: process.env.RELEASE_BUILD_SOURCE_COMMIT,
+        expectedSourceBranch: process.env.RELEASE_BUILD_SOURCE_BRANCH,
         expectedValidationMode: process.env.EXPECTED_VALIDATION_MODE,
-        sourceBranch: process.env.RELEASE_BUILD_SOURCE_BRANCH,
         workspaces: publishable,
         npmDirectory: process.env.NPM_ARTIFACT_DIR,
         crateDirectory: process.env.CRATE_ARTIFACT_DIR,
@@ -82,7 +82,7 @@ for (const workspace of publishable) {
     );
 }
 
-setAzureOutput("releaseCommit", manifest.releaseCommit);
+setAzureOutput("releaseCommit", manifest.sourceCommit);
 console.log(`Pending releases: ${pendingCount}/${publishable.length}`);
 
 if (pendingCount === 0) {

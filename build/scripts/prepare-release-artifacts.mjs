@@ -59,7 +59,7 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { updateAzureBuildNumber } from "./azure-build-number.mjs";
-import { createReleaseAsset, releaseManifestSchemaVersion } from "./release-manifest.mjs";
+import { createReleaseAsset, createReleaseManifest } from "./release-manifest.mjs";
 import {
     gitTagExistsOnRemote,
     listPublishableWorkspaces,
@@ -265,22 +265,26 @@ if (manifestPackages.every(pkg => pkg.crateAssets.length === 0)) {
     writeFileSync(join(CRATES_DIR, ".no-crates-packed"), "");
 }
 
-const releaseCommit = (
+const sourceCommit = (
     process.env.BUILD_SOURCEVERSION || run("git", ["rev-parse", "HEAD"])
 ).trim();
-if (!/^[0-9a-f]{40}$/.test(releaseCommit)) {
-    throw new Error(`Invalid release commit: ${releaseCommit}`);
+if (!/^[0-9a-f]{40}$/.test(sourceCommit)) {
+    throw new Error(`Invalid source commit: ${sourceCommit}`);
 }
+const sourceBranch = (
+    process.env.BUILD_SOURCEBRANCH ||
+    run("git", ["rev-parse", "--symbolic-full-name", "HEAD"])
+).trim();
 
 writeFileSync(
     MANIFEST_PATH,
     `${JSON.stringify(
-        {
-            schemaVersion: releaseManifestSchemaVersion,
-            releaseCommit,
-            validationMode: VALIDATION_MODE,
+        createReleaseManifest({
             packages: manifestPackages,
-        },
+            sourceBranch,
+            sourceCommit,
+            validationMode: VALIDATION_MODE,
+        }),
         null,
         4,
     )}\n`,

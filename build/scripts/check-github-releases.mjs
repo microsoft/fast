@@ -3,38 +3,19 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateReleaseManifestPackages } from "./release-manifest.mjs";
 import { listPublishableWorkspaces } from "./release-workspaces.mjs";
 
 const defaultRepository = "microsoft/fast";
 const apiTimeoutMs = 10000;
 
 function selectedReleaseChecks(manifest, workspaces) {
-    if (!Array.isArray(manifest?.packages) || manifest.packages.length === 0) {
-        throw new Error("Release manifest contains no packages.");
-    }
-
-    const workspaceByName = new Map(
-        workspaces.map(workspace => [workspace.name, workspace]),
-    );
+    validateReleaseManifestPackages(manifest, workspaces);
 
     return manifest.packages.map(pkg => {
-        const workspace = workspaceByName.get(pkg?.name);
-        if (!workspace) {
-            throw new Error(`Release manifest references unknown package ${pkg?.name}.`);
-        }
-        if (typeof pkg.tag !== "string" || pkg.tag.length === 0) {
-            throw new Error(`Release manifest for ${workspace.name} has an invalid tag.`);
-        }
-        if (pkg.tag !== workspace.tag) {
-            throw new Error(
-                `Release manifest tag ${pkg.tag} does not match current workspace ` +
-                    `tag ${workspace.tag}.`,
-            );
-        }
-
         return {
-            name: workspace.name,
-            outputName: `${workspace.outputPrefix}GitHubReleaseExists`,
+            name: pkg.name,
+            outputName: `${pkg.outputPrefix}GitHubReleaseExists`,
             tag: pkg.tag,
         };
     });

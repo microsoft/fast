@@ -25,9 +25,39 @@ import {
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);
 const workspaces = [
-    { name: "@microsoft/a", outputPrefix: "a", tag: "@microsoft/a_v1.0.0" },
-    { name: "@microsoft/b", outputPrefix: "b", tag: "@microsoft/b_v2.0.0" },
+    {
+        name: "@microsoft/a",
+        outputPrefix: "a",
+        tag: "@microsoft/a_v1.0.0",
+        version: "1.0.0",
+    },
+    {
+        name: "@microsoft/b",
+        outputPrefix: "b",
+        tag: "@microsoft/b_v2.0.0",
+        version: "2.0.0",
+    },
 ];
+
+function manifestFor(selected = workspaces) {
+    return {
+        schemaVersion: releaseManifestSchemaVersion,
+        sourceCommit: commit,
+        sourceBranch: "refs/heads/main",
+        validationMode: false,
+        packages: selected.map(workspace => ({
+            name: workspace.name,
+            version: workspace.version,
+            tag: workspace.tag,
+            outputPrefix: workspace.outputPrefix,
+            npmAsset: {
+                fileName: `${workspace.outputPrefix}.tgz`,
+                sha256: "a".repeat(64),
+            },
+            crateAssets: [],
+        })),
+    };
+}
 
 function fixture(name, { withCrate = true } = {}) {
     const root = join(scratchRoot, name);
@@ -50,7 +80,8 @@ function fixture(name, { withCrate = true } = {}) {
 
     const manifest = {
         schemaVersion: releaseManifestSchemaVersion,
-        releaseCommit: commit,
+        sourceCommit: commit,
+        sourceBranch: "refs/heads/main",
         validationMode: false,
         packages: [
             {
@@ -70,9 +101,9 @@ function fixture(name, { withCrate = true } = {}) {
 function validate(values, overrides = {}) {
     return validateReleaseArtifacts({
         manifest: values.manifest,
-        expectedReleaseCommit: commit,
+        expectedSourceCommit: commit,
+        expectedSourceBranch: "refs/heads/main",
         expectedValidationMode: "false",
-        sourceBranch: "refs/heads/main",
         workspaces: [
             {
                 name: "@microsoft/package",
@@ -168,9 +199,9 @@ test("rejects unsupported schemas and malformed commits", () => {
         () =>
             validateReleaseManifestStructure({
                 ...values.manifest,
-                releaseCommit: "not-a-sha",
+                sourceCommit: "not-a-sha",
             }),
-        /releaseCommit/,
+        /sourceCommit/,
     );
     assert.throws(
         () =>
@@ -182,13 +213,11 @@ test("rejects unsupported schemas and malformed commits", () => {
     );
 });
 
-test("rejects empty package lists, duplicate packages, and malformed hashes", () => {
+test("rejects empty release batches, duplicate packages, and malformed hashes", () => {
     const empty = fixture("empty");
     empty.manifest.packages = [];
-    assert.throws(
-        () => validateReleaseManifestStructure(empty.manifest),
-        /non-empty array/,
-    );
+    assert.equal(validateReleaseManifestStructure(empty.manifest), empty.manifest);
+    assert.throws(() => validate(empty), /non-empty array/);
 
     const duplicate = fixture("duplicate-package");
     duplicate.manifest.packages.push(structuredClone(duplicate.manifest.packages[0]));
@@ -224,12 +253,14 @@ test("rejects unsafe, duplicate, and placeholder asset names", () => {
         values.manifest.packages[0].npmAsset.fileName = fileName;
         assert.throws(
             () => validateReleaseManifestStructure(values.manifest),
-            /safe basename/,
+            /unsafe or has the wrong extension/,
         );
     }
 
     const duplicate = fixture("duplicate");
-    duplicate.manifest.packages[0].crateAssets[0].fileName = "package.tgz";
+    duplicate.manifest.packages[0].crateAssets.push(
+        structuredClone(duplicate.manifest.packages[0].crateAssets[0]),
+    );
     assert.throws(
         () => validateReleaseManifestStructure(duplicate.manifest),
         /filename is duplicated/,
@@ -239,7 +270,28 @@ test("rejects unsafe, duplicate, and placeholder asset names", () => {
     placeholder.manifest.packages[0].npmAsset.fileName = noCratesPlaceholder;
     assert.throws(
         () => validateReleaseManifestStructure(placeholder.manifest),
-        /cannot be a manifest asset/,
+        /unsafe or has the wrong extension/,
+    );
+});
+
+test("rejects unknown manifest fields and duplicate output contracts", () => {
+    const extra = fixture("extra-field");
+    extra.manifest.unexpected = true;
+    assert.throws(
+        () => validateReleaseManifestStructure(extra.manifest),
+        /root must contain exactly/,
+    );
+
+    const duplicate = fixture("duplicate-output");
+    const second = structuredClone(duplicate.manifest.packages[0]);
+    second.name = "@microsoft/other";
+    second.tag = "@microsoft/other_v1.0.0";
+    second.npmAsset.fileName = "other.tgz";
+    second.crateAssets = [];
+    duplicate.manifest.packages.push(second);
+    assert.throws(
+        () => validateReleaseManifestStructure(duplicate.manifest),
+        /outputPrefix is duplicated/,
     );
 });
 
@@ -270,13 +322,19 @@ test("rejects the no-crates placeholder when crate assets are expected", () => {
 test("binds releases to the selected pipeline resource commit and production branch", () => {
     const values = fixture("source");
     assert.throws(
-        () => validate(values, { expectedReleaseCommit: "b".repeat(40) }),
+        () => validate(values, { expectedSourceCommit: "b".repeat(40) }),
         /does not match selected pipeline resource sourceCommit/,
     );
     assert.throws(
-        () => validate(values, { sourceBranch: "refs/heads/feature" }),
+        () => validate(values, { expectedSourceBranch: "refs/heads/feature" }),
+        /does not match selected pipeline resource sourceBranch/,
+    );
+    values.manifest.sourceBranch = "refs/heads/feature";
+    assert.throws(
+        () => validate(values, { expectedSourceBranch: "refs/heads/feature" }),
         /production releases require sourceBranch refs\/heads\/main/,
     );
+    values.manifest.sourceBranch = "refs/heads/main";
     assert.throws(
         () => validate(values, { expectedValidationMode: "yes" }),
         /expectedValidationMode must be "true" or "false"/,
@@ -286,9 +344,10 @@ test("binds releases to the selected pipeline resource commit and production bra
         /manifest validationMode false does not match expectedValidationMode true/,
     );
     values.manifest.validationMode = true;
+    values.manifest.sourceBranch = "refs/heads/feature";
     assert.equal(
         validate(values, {
-            sourceBranch: "refs/heads/feature",
+            expectedSourceBranch: "refs/heads/feature",
             expectedValidationMode: "true",
         }),
         values.manifest,
@@ -405,15 +464,7 @@ test("reports every selected tag that appeared on the remote", () => {
 
 test("maps selected manifest packages to GitHub release output names", () => {
     assert.deepEqual(
-        selectedReleaseChecks(
-            {
-                packages: [
-                    { name: workspaces[1].name, tag: workspaces[1].tag },
-                    { name: workspaces[0].name, tag: workspaces[0].tag },
-                ],
-            },
-            workspaces,
-        ),
+        selectedReleaseChecks(manifestFor([workspaces[1], workspaces[0]]), workspaces),
         [
             {
                 name: workspaces[1].name,
@@ -430,44 +481,37 @@ test("maps selected manifest packages to GitHub release output names", () => {
 });
 
 test("rejects unknown packages and mismatched tags during GitHub release checks", () => {
+    const unknown = {
+        name: "@microsoft/unknown",
+        outputPrefix: "unknown",
+        tag: "@microsoft/unknown_v1.0.0",
+        version: "1.0.0",
+    };
     assert.throws(
-        () =>
-            selectedReleaseChecks(
-                { packages: [{ name: "@microsoft/unknown", tag: "unknown_v1.0.0" }] },
-                workspaces,
-            ),
-        /unknown package/,
+        () => selectedReleaseChecks(manifestFor([unknown]), workspaces),
+        /unknown publishable workspace/,
     );
+    const mismatched = manifestFor([workspaces[0]]);
+    mismatched.packages[0].version = "2.0.0";
+    mismatched.packages[0].tag = "@microsoft/a_v2.0.0";
     assert.throws(
-        () =>
-            selectedReleaseChecks(
-                { packages: [{ name: workspaces[0].name, tag: workspaces[1].tag }] },
-                workspaces,
-            ),
-        /does not match current workspace tag/,
+        () => selectedReleaseChecks(mismatched, workspaces),
+        /does not match the current workspace definition/,
     );
 });
 
 test("emits existing and missing GitHub release outputs", async () => {
     const outputs = [];
     const queried = [];
-    const results = await checkGitHubReleases(
-        {
-            packages: [
-                { name: workspaces[0].name, tag: workspaces[0].tag },
-                { name: workspaces[1].name, tag: workspaces[1].tag },
-            ],
+    const results = await checkGitHubReleases(manifestFor(), {
+        workspaces,
+        releaseExists: async tag => {
+            queried.push(tag);
+            return tag === workspaces[0].tag;
         },
-        {
-            workspaces,
-            releaseExists: async tag => {
-                queried.push(tag);
-                return tag === workspaces[0].tag;
-            },
-            emitOutput: (name, value) => outputs.push([name, value]),
-            log() {},
-        },
-    );
+        emitOutput: (name, value) => outputs.push([name, value]),
+        log() {},
+    });
 
     assert.deepEqual(queried, [workspaces[0].tag, workspaces[1].tag]);
     assert.deepEqual(outputs, [

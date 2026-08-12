@@ -49,15 +49,15 @@ selected releases. It publishes:
 - `crate_packages` from `publish_artifacts_crates/`
 - `release-metadata`, containing `release-manifest.json`
 
-Manifest schema version 1 records the full release commit, validation mode, and each
-selected package's name, version, release tag, `outputPrefix`, npm asset filename and
-SHA-256, and paired crate asset filenames and SHA-256 values. The
+Manifest schema version 1 records `sourceCommit`, `sourceBranch`, validation mode, and
+each selected package's name, version, release tag, `outputPrefix`, npm asset filename
+and SHA-256, and paired crate asset filenames and SHA-256 values. The
 [`validate-release-artifacts.mjs`](../../build/scripts/validate-release-artifacts.mjs)
 validator
-accepts only the supported schema, requires safe unique basenames, verifies every
-required file's exact hash, and rejects missing, modified, unexpected, or nested files.
-It also requires the manifest commit to match the selected pipeline resource's
-`sourceCommit`; production runs require that resource's `sourceBranch` to be
+accepts only the exact supported schema, requires safe unique filenames and output
+prefixes, verifies every required file's exact hash, and rejects missing, modified,
+unexpected, or nested files. It also requires the manifest's source commit and branch
+to match the selected pipeline resource; production runs require `sourceBranch` to be
 `refs/heads/main`.
 
 When a batch has no crate assets, the build writes `.no-crates-packed` so Azure can
@@ -66,6 +66,11 @@ removed before publication. `@microsoft/fast-build` remains one npm release and 
 with the paired `microsoft-fast-build` and `microsoft-fast-convert` crate assets.
 Packing rejects npm/crate version drift; the beachball `postbump` hook normally keeps
 those versions synchronized.
+
+Pipeline checkouts are clean and shallow with automatic tag fetching disabled.
+Credentials persist only where selection, packing, release-tag creation, or
+deployment-marker creation must query or update remote refs. Those operations use
+exact remote queries and targeted fetches instead of downloading full tag history.
 
 ## Run-number count
 

@@ -1,9 +1,16 @@
 import { createHash } from "node:crypto";
 import { lstatSync, readdirSync, readFileSync } from "node:fs";
-import { basename, join } from "node:path";
+import { join } from "node:path";
 
 export const releaseManifestSchemaVersion = 1;
 export const noCratesPlaceholder = ".no-crates-packed";
+
+const commitPattern = /^[0-9a-f]{40}$/;
+const hashPattern = /^[0-9a-f]{64}$/;
+const sourceBranchPattern = /^refs\/heads\/[^\s]+$/;
+const outputPrefixPattern = /^[a-z][A-Za-z0-9]*$/;
+const npmFileNamePattern = /^[A-Za-z0-9][A-Za-z0-9._+-]*\.tgz$/;
+const crateFileNamePattern = /^[A-Za-z0-9][A-Za-z0-9._+-]*\.crate$/;
 
 export function sha256File(path) {
     return createHash("sha256").update(readFileSync(path)).digest("hex");
@@ -20,30 +27,34 @@ function fail(message) {
     throw new Error(`Invalid release manifest: ${message}`);
 }
 
+function requireExactKeys(value, expectedKeys, description) {
+    const actualKeys = Object.keys(value).sort();
+    const sortedExpectedKeys = [...expectedKeys].sort();
+    if (
+        actualKeys.length !== sortedExpectedKeys.length ||
+        actualKeys.some((key, index) => key !== sortedExpectedKeys[index])
+    ) {
+        fail(`${description} must contain exactly: ${sortedExpectedKeys.join(", ")}.`);
+    }
+}
+
 function requireString(value, description) {
     if (typeof value !== "string" || value.length === 0) {
         fail(`${description} must be a non-empty string.`);
     }
 }
 
-function validateAsset(asset, description, assetNames) {
+function validateAsset(asset, description, assetNames, fileNamePattern) {
     if (!asset || typeof asset !== "object" || Array.isArray(asset)) {
         fail(`${description} must be an object.`);
     }
+    requireExactKeys(asset, ["fileName", "sha256"], description);
 
     requireString(asset.fileName, `${description}.fileName`);
-    if (asset.fileName === noCratesPlaceholder) {
-        fail(`${noCratesPlaceholder} cannot be a manifest asset.`);
+    if (asset.fileName === noCratesPlaceholder || !fileNamePattern.test(asset.fileName)) {
+        fail(`${description}.fileName is unsafe or has the wrong extension.`);
     }
-    if (
-        asset.fileName === "." ||
-        asset.fileName === ".." ||
-        basename(asset.fileName) !== asset.fileName ||
-        !/^[A-Za-z0-9][A-Za-z0-9._+-]*$/.test(asset.fileName)
-    ) {
-        fail(`${description}.fileName must be a safe basename: ${asset.fileName}`);
-    }
-    if (!/^[0-9a-f]{64}$/.test(asset.sha256 || "")) {
+    if (!hashPattern.test(asset.sha256 || "")) {
         fail(`${description}.sha256 must be a lowercase SHA-256 hash.`);
     }
     if (assetNames.has(asset.fileName)) {
@@ -56,50 +67,127 @@ export function validateReleaseManifestStructure(manifest) {
     if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
         fail("root must be an object.");
     }
+    requireExactKeys(
+        manifest,
+        ["schemaVersion", "sourceCommit", "sourceBranch", "validationMode", "packages"],
+        "root",
+    );
     if (manifest.schemaVersion !== releaseManifestSchemaVersion) {
         fail(
             `unsupported schemaVersion ${JSON.stringify(manifest.schemaVersion)}; ` +
                 `expected ${releaseManifestSchemaVersion}.`,
         );
     }
-    if (!/^[0-9a-f]{40}$/.test(manifest.releaseCommit || "")) {
-        fail(`releaseCommit must be a lowercase 40-character Git SHA.`);
+    if (!commitPattern.test(manifest.sourceCommit || "")) {
+        fail("sourceCommit must be a lowercase 40-character Git SHA.");
+    }
+    if (!sourceBranchPattern.test(manifest.sourceBranch || "")) {
+        fail("sourceBranch must be a full refs/heads/* branch ref.");
     }
     if (typeof manifest.validationMode !== "boolean") {
         fail("validationMode must be a boolean.");
     }
-    if (!Array.isArray(manifest.packages) || manifest.packages.length === 0) {
-        fail("packages must be a non-empty array.");
+    if (!Array.isArray(manifest.packages)) {
+        fail("packages must be an array.");
     }
 
     const packageNames = new Set();
+    const tags = new Set();
+    const outputPrefixes = new Set();
     const assetNames = new Set();
     for (const [index, pkg] of manifest.packages.entries()) {
         const description = `packages[${index}]`;
         if (!pkg || typeof pkg !== "object" || Array.isArray(pkg)) {
             fail(`${description} must be an object.`);
         }
+        requireExactKeys(
+            pkg,
+            ["name", "version", "tag", "outputPrefix", "npmAsset", "crateAssets"],
+            description,
+        );
         for (const field of ["name", "version", "tag", "outputPrefix"]) {
             requireString(pkg[field], `${description}.${field}`);
+        }
+        if (!outputPrefixPattern.test(pkg.outputPrefix)) {
+            fail(`${description}.outputPrefix is invalid.`);
         }
         if (packageNames.has(pkg.name)) {
             fail(`package name is duplicated: ${pkg.name}`);
         }
+        if (tags.has(pkg.tag)) {
+            fail(`package tag is duplicated: ${pkg.tag}`);
+        }
+        if (outputPrefixes.has(pkg.outputPrefix)) {
+            fail(`package outputPrefix is duplicated: ${pkg.outputPrefix}`);
+        }
         packageNames.add(pkg.name);
+        tags.add(pkg.tag);
+        outputPrefixes.add(pkg.outputPrefix);
+
         const expectedTag = `${pkg.name}_v${pkg.version}`;
         if (pkg.tag !== expectedTag) {
             fail(`${description}.tag must be ${expectedTag}, got ${pkg.tag}.`);
         }
 
-        validateAsset(pkg.npmAsset, `${description}.npmAsset`, assetNames);
+        validateAsset(
+            pkg.npmAsset,
+            `${description}.npmAsset`,
+            assetNames,
+            npmFileNamePattern,
+        );
         if (!Array.isArray(pkg.crateAssets)) {
             fail(`${description}.crateAssets must be an array.`);
         }
         for (const [assetIndex, asset] of pkg.crateAssets.entries()) {
-            validateAsset(asset, `${description}.crateAssets[${assetIndex}]`, assetNames);
+            validateAsset(
+                asset,
+                `${description}.crateAssets[${assetIndex}]`,
+                assetNames,
+                crateFileNamePattern,
+            );
         }
     }
 
+    return manifest;
+}
+
+export function createReleaseManifest({
+    packages,
+    sourceBranch,
+    sourceCommit,
+    validationMode,
+}) {
+    return validateReleaseManifestStructure({
+        schemaVersion: releaseManifestSchemaVersion,
+        sourceCommit,
+        sourceBranch,
+        validationMode,
+        packages,
+    });
+}
+
+export function validateReleaseManifestPackages(manifest, workspaces) {
+    validateReleaseManifestStructure(manifest);
+    if (manifest.packages.length === 0) {
+        fail("packages must be a non-empty array.");
+    }
+
+    const workspaceByName = new Map(
+        workspaces.map(workspace => [workspace.name, workspace]),
+    );
+    for (const pkg of manifest.packages) {
+        const workspace = workspaceByName.get(pkg.name);
+        if (!workspace) {
+            fail(`unknown publishable workspace: ${pkg.name}.`);
+        }
+        if (
+            pkg.version !== workspace.version ||
+            pkg.tag !== workspace.tag ||
+            pkg.outputPrefix !== workspace.outputPrefix
+        ) {
+            fail(`${pkg.name} does not match the current workspace definition.`);
+        }
+    }
     return manifest;
 }
 
@@ -138,39 +226,31 @@ function validateArtifactDirectory(directory, expectedAssets, allowPlaceholder) 
 
 export function validateReleaseArtifacts({
     manifest,
-    expectedReleaseCommit,
+    expectedSourceCommit,
+    expectedSourceBranch,
     expectedValidationMode,
-    sourceBranch,
     workspaces,
     npmDirectory,
     crateDirectory,
 }) {
-    validateReleaseManifestStructure(manifest);
+    validateReleaseManifestPackages(manifest, workspaces);
 
-    const workspaceByName = new Map(
-        workspaces.map(workspace => [workspace.name, workspace]),
-    );
-    for (const pkg of manifest.packages) {
-        const workspace = workspaceByName.get(pkg.name);
-        if (!workspace) {
-            fail(`unknown publishable workspace: ${pkg.name}.`);
-        }
-        if (
-            pkg.version !== workspace.version ||
-            pkg.tag !== workspace.tag ||
-            pkg.outputPrefix !== workspace.outputPrefix
-        ) {
-            fail(`${pkg.name} does not match the current workspace definition.`);
-        }
-    }
-
-    if (!/^[0-9a-f]{40}$/.test(expectedReleaseCommit || "")) {
+    if (!commitPattern.test(expectedSourceCommit || "")) {
         fail("the selected pipeline resource sourceCommit is not a valid Git SHA.");
     }
-    if (manifest.releaseCommit !== expectedReleaseCommit) {
+    if (!sourceBranchPattern.test(expectedSourceBranch || "")) {
+        fail("the selected pipeline resource sourceBranch is not a branch ref.");
+    }
+    if (manifest.sourceCommit !== expectedSourceCommit) {
         fail(
-            `releaseCommit ${manifest.releaseCommit} does not match selected pipeline ` +
-                `resource sourceCommit ${expectedReleaseCommit}.`,
+            `sourceCommit ${manifest.sourceCommit} does not match selected pipeline ` +
+                `resource sourceCommit ${expectedSourceCommit}.`,
+        );
+    }
+    if (manifest.sourceBranch !== expectedSourceBranch) {
+        fail(
+            `sourceBranch ${manifest.sourceBranch} does not match selected pipeline ` +
+                `resource sourceBranch ${expectedSourceBranch}.`,
         );
     }
     if (expectedValidationMode !== "true" && expectedValidationMode !== "false") {
@@ -185,10 +265,10 @@ export function validateReleaseArtifacts({
                 `expectedValidationMode ${expectedValidationMode}.`,
         );
     }
-    if (!manifest.validationMode && sourceBranch !== "refs/heads/main") {
+    if (!manifest.validationMode && manifest.sourceBranch !== "refs/heads/main") {
         fail(
             `production releases require sourceBranch refs/heads/main, got ` +
-                `${JSON.stringify(sourceBranch)}.`,
+                `${JSON.stringify(manifest.sourceBranch)}.`,
         );
     }
 

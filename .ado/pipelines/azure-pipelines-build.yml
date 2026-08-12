@@ -29,6 +29,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
+      clean: true
       fetchDepth: 1
       fetchTags: false
       # `prepare-release-artifacts.mjs --check-only` calls `git ls-remote origin`
@@ -84,15 +85,14 @@ stages:
         succeeded(),
         eq(dependencies.PrepareRelease.outputs['SelectRelease.release.shouldBuild'], 'true')
       )
-    pool:
-      vmImage: ubuntu-latest
     variables:
       npm_config_cache: $(Pipeline.Workspace)/.npm
+      selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
     jobs:
-    - job: PackReleases
+    - job: BuildAndPack
       displayName: Build and pack npm and crate packages
-      variables:
-        selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
+      pool:
+        vmImage: ubuntu-latest
       steps:
       - template: templates/pack-release-steps.yml
         parameters:
@@ -108,15 +108,14 @@ stages:
         succeeded(),
         eq(dependencies.PrepareRelease.outputs['SelectRelease.release.shouldBuild'], 'true')
       )
-    pool:
-      vmImage: ubuntu-latest
     variables:
       npm_config_cache: $(Pipeline.Workspace)/.npm
+      selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
     jobs:
-    - job: PackReleases
+    - job: BuildAndPack
       displayName: Build and pack npm and crate packages for validation
-      variables:
-        selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
+      pool:
+        vmImage: ubuntu-latest
       steps:
       - template: templates/pack-release-steps.yml
         parameters:

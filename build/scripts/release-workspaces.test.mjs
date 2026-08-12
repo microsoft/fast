@@ -65,6 +65,27 @@ test("expandWorkspacePattern expands wildcards across nested segments", () => {
     });
 });
 
+test("expandWorkspacePattern accepts slash and backslash separators", () => {
+    withFixture(root => {
+        const expected = [
+            join("packages", "alpha", "plugins", "first"),
+            join("packages", "beta", "plugins", "second"),
+        ];
+        for (const path of expected) {
+            createDirectory(root, path);
+        }
+
+        assert.deepEqual(
+            expandWorkspacePattern("packages/*/plugins/*", root).sort(),
+            expected,
+        );
+        assert.deepEqual(
+            expandWorkspacePattern("packages\\*\\plugins\\*", root).sort(),
+            expected,
+        );
+    });
+});
+
 test("listPublishableWorkspaces supports object workspaces and filters packages", () => {
     withFixture(root => {
         writePackage(root, ".", {

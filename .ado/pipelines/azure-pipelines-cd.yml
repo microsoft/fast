@@ -70,6 +70,11 @@ extends:
           fetchDepth: 1
           fetchTags: false
 
+        - task: UseNode@1
+          displayName: Install Node.js
+          inputs:
+            version: "24.x"
+
         - download: releaseBuild
           artifact: release-metadata
           displayName: Download release metadata
@@ -81,11 +86,6 @@ extends:
         - download: releaseBuild
           artifact: crate_packages
           displayName: Download crate packages
-
-        - task: UseNode@1
-          displayName: Install Node.js
-          inputs:
-            version: "24.x"
 
         - task: Bash@3
           name: release
