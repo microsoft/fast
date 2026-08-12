@@ -731,8 +731,37 @@ test("keeps the Azure publication sequence and shared tag scripts wired", () => 
     assert.match(pipeline, /fastBuildIncluded/);
     assert.match(pipeline, /displayName: Create release tags/);
     assert.match(pipeline, /displayName: Mark releases as deployed/);
-    assert.match(pipeline, /displayName: Check existing GitHub Releases/);
     assert.doesNotMatch(pipeline, /NeedsRelease/);
+});
+
+test("keeps the GitHub release-check producer step wired", () => {
+    const pipeline = readFileSync(
+        new URL("../../.ado/pipelines/azure-pipelines-cd.yml", import.meta.url),
+        "utf8",
+    );
+    const producerNames = [...pipeline.matchAll(/^\s+name: releaseCheck$/gm)];
+
+    assert.equal(producerNames.length, 1);
+
+    const producerNameIndex = producerNames[0].index;
+    const producerStart = pipeline.lastIndexOf("\n          - task:", producerNameIndex);
+    const producerEnd = pipeline.indexOf("\n          - task:", producerNameIndex);
+    const producer = pipeline.slice(
+        producerStart + 1,
+        producerEnd === -1 ? pipeline.length : producerEnd,
+    );
+
+    assert.match(producer, /^ {10}- task: Bash@3$/m);
+    assert.match(producer, /^ {12}name: releaseCheck$/m);
+    assert.match(producer, /^ {14}targetType: inline$/m);
+    assert.match(
+        producer,
+        /^ {16}node build\/scripts\/check-github-releases\.mjs "\$\{MANIFEST_PATH\}"$/m,
+    );
+    assert.match(
+        producer,
+        /^ {14}MANIFEST_PATH: \$\(Pipeline\.Workspace\)\/releaseBuild\/release-metadata\/release-manifest\.json$/m,
+    );
 });
 
 test("uses shallow tag-free Azure pipeline checkouts", () => {
