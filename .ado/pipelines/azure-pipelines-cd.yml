@@ -5,7 +5,7 @@ pr: none
 
 parameters:
 - name: validationMode
-  displayName: Validate release artifacts without external publication
+  displayName: Validate artifacts without external publication
   type: string
   default: 'false'
   values:
@@ -89,7 +89,7 @@ extends:
 
         - task: Bash@3
           name: release
-          displayName: Read release metadata
+          displayName: Validate release metadata and packages
           inputs:
             targetType: inline
             # FAST has no single workspace-wide release version, so the
@@ -128,7 +128,7 @@ extends:
           releaseTags: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseTags'] ]
         jobs:
         - job: Tag
-          displayName: Create annotated release tags
+          displayName: Create release tags
           steps:
           - checkout: self
             clean: true
@@ -265,7 +265,7 @@ extends:
               version: "24.x"
 
           - task: Bash@3
-            displayName: Mark published releases as deployed
+            displayName: Mark releases as deployed
             inputs:
               targetType: inline
               script: |
@@ -320,7 +320,7 @@ extends:
 
           - task: Bash@3
             name: releaseCheck
-            displayName: Check GitHub releases
+            displayName: Check existing GitHub Releases
             inputs:
               targetType: inline
               # For each package, check whether its GitHub Release already

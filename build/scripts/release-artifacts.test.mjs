@@ -555,6 +555,9 @@ test("keeps the Azure publication sequence and shared tag scripts wired", () => 
     assert.match(pipeline, /manage-release-tags\.mjs create/);
     assert.match(pipeline, /manage-release-tags\.mjs mark-deployed/);
     assert.match(pipeline, /fastBuildIncluded/);
+    assert.match(pipeline, /displayName: Create release tags/);
+    assert.match(pipeline, /displayName: Mark releases as deployed/);
+    assert.match(pipeline, /displayName: Check existing GitHub Releases/);
     assert.doesNotMatch(pipeline, /NeedsRelease/);
 });
 

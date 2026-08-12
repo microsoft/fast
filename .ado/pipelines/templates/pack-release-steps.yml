@@ -52,7 +52,7 @@ steps:
   displayName: Build workspaces
 
 - task: Bash@3
-  displayName: Pack pending release assets
+  displayName: Pack release artifacts and metadata
   inputs:
     targetType: inline
     # Packs the npm tarball (and any paired Rust crate archives) for exactly

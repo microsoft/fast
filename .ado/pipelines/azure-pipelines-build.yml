@@ -12,7 +12,7 @@ pr: none
 
 parameters:
 - name: validationMode
-  displayName: Rebuild every publishable workspace for artifact validation
+  displayName: Rebuild existing releases for artifact validation
   type: string
   default: 'false'
   values:
@@ -24,7 +24,7 @@ stages:
   displayName: Prepare release
   jobs:
   - job: SelectRelease
-    displayName: Select pending package releases
+    displayName: Select releases
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -41,7 +41,7 @@ stages:
         version: "24.x"
 
     - task: Bash@3
-      displayName: Resolve pending package releases
+      displayName: Detect package versions without release tags
       name: release
       inputs:
         targetType: inline
@@ -90,7 +90,7 @@ stages:
       npm_config_cache: $(Pipeline.Workspace)/.npm
     jobs:
     - job: PackReleases
-      displayName: Build and pack pending releases
+      displayName: Build and pack npm and crate packages
       variables:
         selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
       steps:
@@ -101,7 +101,7 @@ stages:
 
 - ${{ if eq(parameters.validationMode, 'true') }}:
   - stage: ValidateArtifacts
-    displayName: Validate release artifacts (no CD trigger)
+    displayName: Build artifacts for validation
     dependsOn: PrepareRelease
     condition: |
       and(
@@ -114,7 +114,7 @@ stages:
       npm_config_cache: $(Pipeline.Workspace)/.npm
     jobs:
     - job: PackReleases
-      displayName: Build and pack every workspace for validation
+      displayName: Build and pack npm and crate packages for validation
       variables:
         selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
       steps:
