@@ -120,8 +120,11 @@ rebuilding and retrying that version.
 
 `PublishGitHub` runs only after deployment markers succeed. It calls
 [`check-github-releases.mjs`](../../build/scripts/check-github-releases.mjs) before the
-per-package `GitHubRelease@1` tasks. On a partial job failure, rerunning the job skips
-GitHub Releases that already exist and retries only the missing releases.
+per-package `GitHubRelease@1` tasks. The check uses bounded retry/backoff for transient
+GitHub failures and considers a release complete only when every npm and crate filename
+from the validated manifest is present. An incomplete or malformed release fails
+explicitly for maintainer repair; on a partial job failure, rerunning the job skips only
+complete GitHub Releases and retries missing releases.
 
 ## Adding a publishable package
 

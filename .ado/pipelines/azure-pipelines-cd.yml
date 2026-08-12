@@ -328,10 +328,9 @@ extends:
               # exists on microsoft/fast. This is independent of the
               # Included variables computed earlier in ValidateArtifacts,
               # since those only reflect the state before PublishRelease ran.
-              # Each GitHubRelease@1 task's condition can then skip packages
-              # whose release already exists, so rerunning PublishGitHub after
-              # a partial failure is safe (the rerun will skip already-created
-              # releases rather than attempting to recreate them).
+              # A release is complete only when every manifest asset is
+              # present. Transient GitHub failures are retried; malformed or
+              # incomplete releases fail explicitly instead of being skipped.
               script: |
                 set -euo pipefail
                 node build/scripts/check-github-releases.mjs "${MANIFEST_PATH}"
@@ -341,8 +340,8 @@ extends:
           # TagRelease already created and validated these tags. These tasks
           # only create GitHub Releases and attach the packed assets.
           # Each task is conditioned on both Included and the absence of
-          # an existing GitHub Release, so partial failures can be safely
-          # rerun without attempting to recreate releases.
+          # a complete existing GitHub Release, so partial failures can be
+          # rerun without attempting to recreate completed releases.
           - task: GitHubRelease@1
             displayName: "Create @microsoft/fast-build GitHub Release"
             condition: and(succeeded(), eq(variables['fastBuildIncluded'], 'true'), eq(variables['releaseCheck.fastBuildGitHubReleaseExists'], 'false'))

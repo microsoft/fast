@@ -60,6 +60,7 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { updateAzureBuildNumber } from "./azure-build-number.mjs";
+import { parsePackOutput } from "./npm-pack-output.mjs";
 import { createReleaseAsset, createReleaseManifest } from "./release-manifest.mjs";
 import {
     gitTagExistsOnRemote,
@@ -90,14 +91,6 @@ function run(file, args, opts = {}) {
         encoding: "utf8",
         ...opts,
     });
-}
-
-function parsePackOutput(output) {
-    const packages = JSON.parse(output);
-    if (!Array.isArray(packages) || packages.length === 0 || !packages[0].filename) {
-        throw new Error(`Unexpected npm pack output: ${output}`);
-    }
-    return packages[0].filename;
 }
 
 function setAzureOutput(name, value) {
@@ -207,7 +200,7 @@ for (const { name, version, tag, outputPrefix, location, crates } of selected) {
             `--workspace=${location}`,
             `--pack-destination=${resolve(NPM_DIR)}`,
         ]);
-        const npmTarball = parsePackOutput(packJson);
+        const npmTarball = parsePackOutput(packJson, name, version);
         const npmAsset = createReleaseAsset(npmTarball, join(NPM_DIR, npmTarball));
 
         const crateAssets = [];

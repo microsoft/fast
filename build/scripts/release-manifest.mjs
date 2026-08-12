@@ -23,6 +23,13 @@ export function createReleaseAsset(fileName, path) {
     };
 }
 
+export function validateNpmAssetFileName(fileName) {
+    if (typeof fileName !== "string" || !npmFileNamePattern.test(fileName)) {
+        throw new Error(`Unsafe npm asset fileName: ${String(fileName)}.`);
+    }
+    return fileName;
+}
+
 function fail(message) {
     throw new Error(`Invalid release manifest: ${message}`);
 }

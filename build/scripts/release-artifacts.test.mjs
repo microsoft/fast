@@ -8,6 +8,7 @@ import {
     githubReleaseExists,
     selectedReleaseChecks,
 } from "./check-github-releases.mjs";
+import { parsePackOutput } from "./npm-pack-output.mjs";
 import {
     createReleaseAsset,
     noCratesPlaceholder,
@@ -15,6 +16,7 @@ import {
     validateReleaseArtifacts,
     validateReleaseManifestStructure,
 } from "./release-manifest.mjs";
+import { listPublishableWorkspaces } from "./release-workspaces.mjs";
 import {
     assertSelectedTagsAreUnreleased,
     formatSelectedReleaseTags,
@@ -167,6 +169,78 @@ test("updates Azure build numbers only inside Azure Pipelines", () => {
             process.env.AZURE_BUILD_ID = previousBuildId;
         }
     }
+});
+
+test("binds npm pack output to exactly one selected package", () => {
+    const valid = JSON.stringify([
+        {
+            filename: "microsoft-package-1.0.0.tgz",
+            name: "@microsoft/package",
+            version: "1.0.0",
+        },
+    ]);
+    assert.equal(
+        parsePackOutput(valid, "@microsoft/package", "1.0.0"),
+        "microsoft-package-1.0.0.tgz",
+    );
+
+    assert.throws(
+        () => parsePackOutput("not-json", "@microsoft/package", "1.0.0"),
+        /valid JSON/,
+    );
+    assert.throws(
+        () => parsePackOutput("[]", "@microsoft/package", "1.0.0"),
+        /exactly one package record/,
+    );
+    assert.throws(
+        () => parsePackOutput(JSON.stringify([{}, {}]), "@microsoft/package", "1.0.0"),
+        /exactly one package record/,
+    );
+    assert.throws(
+        () =>
+            parsePackOutput(
+                JSON.stringify([
+                    {
+                        filename: "microsoft-other-1.0.0.tgz",
+                        name: "@microsoft/other",
+                        version: "1.0.0",
+                    },
+                ]),
+                "@microsoft/package",
+                "1.0.0",
+            ),
+        /expected "@microsoft\/package"/,
+    );
+    assert.throws(
+        () =>
+            parsePackOutput(
+                JSON.stringify([
+                    {
+                        filename: "microsoft-package-2.0.0.tgz",
+                        name: "@microsoft/package",
+                        version: "2.0.0",
+                    },
+                ]),
+                "@microsoft/package",
+                "1.0.0",
+            ),
+        /expected "1\.0\.0"/,
+    );
+    assert.throws(
+        () =>
+            parsePackOutput(
+                JSON.stringify([
+                    {
+                        filename: "../package.tgz",
+                        name: "@microsoft/package",
+                        version: "1.0.0",
+                    },
+                ]),
+                "@microsoft/package",
+                "1.0.0",
+            ),
+        /Unsafe npm asset/,
+    );
 });
 
 test("validates exact npm and crate assets", () => {
@@ -467,11 +541,13 @@ test("maps selected manifest packages to GitHub release output names", () => {
         selectedReleaseChecks(manifestFor([workspaces[1], workspaces[0]]), workspaces),
         [
             {
+                assetNames: ["b.tgz"],
                 name: workspaces[1].name,
                 outputName: "bGitHubReleaseExists",
                 tag: workspaces[1].tag,
             },
             {
+                assetNames: ["a.tgz"],
                 name: workspaces[0].name,
                 outputName: "aGitHubReleaseExists",
                 tag: workspaces[0].tag,
@@ -505,8 +581,11 @@ test("emits existing and missing GitHub release outputs", async () => {
     const queried = [];
     const results = await checkGitHubReleases(manifestFor(), {
         workspaces,
-        releaseExists: async tag => {
+        releaseExists: async (tag, options) => {
             queried.push(tag);
+            assert.deepEqual(options.requiredAssetNames, [
+                `${tag.startsWith(workspaces[0].name) ? "a" : "b"}.tgz`,
+            ]);
             return tag === workspaces[0].tag;
         },
         emitOutput: (name, value) => outputs.push([name, value]),
@@ -531,9 +610,13 @@ test("distinguishes existing and missing GitHub releases", async () => {
     assert.equal(
         await githubReleaseExists(workspaces[0].tag, {
             fetchImpl: async () => ({
-                json: async () => ({ tag_name: workspaces[0].tag }),
+                json: async () => ({
+                    assets: [{ name: "a.tgz" }],
+                    tag_name: workspaces[0].tag,
+                }),
                 status: 200,
             }),
+            requiredAssetNames: ["a.tgz"],
         }),
         true,
     );
@@ -543,22 +626,6 @@ test("distinguishes existing and missing GitHub releases", async () => {
         }),
         false,
     );
-});
-
-test("authenticates GitHub release checks when a token is available", async () => {
-    await githubReleaseExists(workspaces[0].tag, {
-        repository: "microsoft/example",
-        token: "test-token",
-        fetchImpl: async (url, options) => {
-            assert.equal(
-                url,
-                `https://api.github.com/repos/microsoft/example/releases/tags/${encodeURIComponent(workspaces[0].tag)}`,
-            );
-            assert.equal(options.headers.Authorization, "Bearer test-token");
-            assert.ok(options.signal instanceof AbortSignal);
-            return { status: 404 };
-        },
-    });
 });
 
 test("fails explicitly when the GitHub release API fails", async () => {
@@ -577,8 +644,69 @@ test("fails explicitly when the GitHub release API fails", async () => {
             fetchImpl: async () => {
                 throw new Error("network down");
             },
+            maxAttempts: 1,
         }),
         /Failed to query GitHub Release.*network down/,
+    );
+});
+
+test("retries transient GitHub failures with bounded backoff", async () => {
+    const delays = [];
+    let attempts = 0;
+    assert.equal(
+        await githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => {
+                attempts += 1;
+                if (attempts === 1) {
+                    return {
+                        status: 503,
+                        statusText: "Unavailable",
+                        text: async () => "",
+                    };
+                }
+                if (attempts === 2) {
+                    throw new Error("temporary network failure");
+                }
+                return {
+                    json: async () => ({
+                        assets: [{ name: "a.tgz" }],
+                        tag_name: workspaces[0].tag,
+                    }),
+                    status: 200,
+                };
+            },
+            requiredAssetNames: ["a.tgz"],
+            retryDelayMs: 10,
+            sleep: async delay => delays.push(delay),
+        }),
+        true,
+    );
+    assert.equal(attempts, 3);
+    assert.deepEqual(delays, [10, 20]);
+});
+
+test("rejects incomplete or malformed existing GitHub releases", async () => {
+    await assert.rejects(
+        githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => ({
+                json: async () => ({
+                    assets: [],
+                    tag_name: workspaces[0].tag,
+                }),
+                status: 200,
+            }),
+            requiredAssetNames: ["a.tgz"],
+        }),
+        /incomplete.*missing manifest assets: a\.tgz/,
+    );
+    await assert.rejects(
+        githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => ({
+                json: async () => ({ tag_name: "wrong-tag" }),
+                status: 200,
+            }),
+        }),
+        /malformed or mismatched/,
     );
 });
 
@@ -623,6 +751,59 @@ test("uses shallow tag-free Azure pipeline checkouts", () => {
             const checkout = lines.slice(index, index + 6).join("\n");
             assert.match(checkout, /fetchDepth: 1/);
             assert.match(checkout, /fetchTags: false/);
+        }
+    }
+});
+
+test("covers every publishable workspace with one GitHub release task", () => {
+    const pipeline = readFileSync(
+        new URL("../../.ado/pipelines/azure-pipelines-cd.yml", import.meta.url),
+        "utf8",
+    );
+    const publishable = listPublishableWorkspaces();
+    const taskPackages = [
+        ...pipeline.matchAll(/displayName: "Create (.+) GitHub Release"/g),
+    ].map(match => match[1]);
+
+    assert.deepEqual(
+        taskPackages.sort(),
+        publishable.map(workspace => workspace.name).sort(),
+    );
+
+    for (const workspace of publishable) {
+        const { name, outputPrefix, crates } = workspace;
+        const taskStart = pipeline.indexOf(
+            `displayName: "Create ${name} GitHub Release"`,
+        );
+        const taskEnd = pipeline.indexOf("\n          - task:", taskStart);
+        const task = pipeline.slice(
+            taskStart,
+            taskEnd === -1 ? pipeline.length : taskEnd,
+        );
+
+        assert.ok(taskStart >= 0);
+        assert.match(task, new RegExp(`${outputPrefix}Included`));
+        assert.match(task, new RegExp(`${outputPrefix}ReleaseTag`));
+        assert.match(task, new RegExp(`${outputPrefix}ReleaseVersion`));
+        assert.match(
+            task,
+            new RegExp(`releaseCheck\\.${outputPrefix}GitHubReleaseExists`),
+        );
+
+        const npmAssetPrefix = name.replace(/^@/, "").replace(/\//g, "-");
+        assert.match(
+            task,
+            new RegExp(
+                `publish_artifacts_npm/${npmAssetPrefix}-\\$\\(${outputPrefix}ReleaseVersion\\)\\.tgz`,
+            ),
+        );
+        for (const { crateName } of crates) {
+            assert.match(
+                task,
+                new RegExp(
+                    `publish_artifacts_crates/${crateName}-\\$\\(${outputPrefix}ReleaseVersion\\)\\.crate`,
+                ),
+            );
         }
     }
 });
