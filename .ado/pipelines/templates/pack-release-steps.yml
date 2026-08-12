@@ -13,6 +13,8 @@ parameters:
 steps:
 - checkout: self
   clean: true
+  fetchDepth: 1
+  fetchTags: false
   # Production packing re-checks every selected tag on `origin` immediately
   # before packing so a concurrent release cannot silently shrink the batch.
   # This needs an authenticated remote when the repository is private/rate

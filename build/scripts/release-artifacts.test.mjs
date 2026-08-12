@@ -557,3 +557,25 @@ test("keeps the Azure publication sequence and shared tag scripts wired", () => 
     assert.match(pipeline, /fastBuildIncluded/);
     assert.doesNotMatch(pipeline, /NeedsRelease/);
 });
+
+test("uses shallow tag-free Azure pipeline checkouts", () => {
+    const pipelinePaths = [
+        "../../.ado/pipelines/azure-pipelines-build.yml",
+        "../../.ado/pipelines/azure-pipelines-cd.yml",
+        "../../.ado/pipelines/azure-pipelines-ci.yml",
+        "../../.ado/pipelines/templates/pack-release-steps.yml",
+    ];
+
+    for (const path of pipelinePaths) {
+        const pipeline = readFileSync(new URL(path, import.meta.url), "utf8");
+        const lines = pipeline.split("\n");
+        for (const [index, line] of lines.entries()) {
+            if (!line.includes("- checkout: self")) {
+                continue;
+            }
+            const checkout = lines.slice(index, index + 6).join("\n");
+            assert.match(checkout, /fetchDepth: 1/);
+            assert.match(checkout, /fetchTags: false/);
+        }
+    }
+});

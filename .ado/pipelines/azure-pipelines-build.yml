@@ -29,6 +29,8 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
+      fetchDepth: 1
+      fetchTags: false
       # `prepare-release-artifacts.mjs --check-only` calls `git ls-remote origin`
       # (via `gitTagExistsOnRemote`) to decide which workspaces are pending.
       persistCredentials: true

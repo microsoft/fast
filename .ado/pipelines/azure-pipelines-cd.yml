@@ -67,6 +67,8 @@ extends:
         steps:
         - checkout: self
           clean: true
+          fetchDepth: 1
+          fetchTags: false
 
         - download: releaseBuild
           artifact: release-metadata
@@ -130,7 +132,8 @@ extends:
           steps:
           - checkout: self
             clean: true
-            fetchDepth: 0
+            fetchDepth: 1
+            fetchTags: false
             persistCredentials: true
 
           - task: UseNode@1
@@ -178,6 +181,8 @@ extends:
           steps:
           - checkout: self
             clean: true
+            fetchDepth: 1
+            fetchTags: false
 
           - download: releaseBuild
             artifact: npm_packages
@@ -250,7 +255,8 @@ extends:
           steps:
           - checkout: self
             clean: true
-            fetchDepth: 0
+            fetchDepth: 1
+            fetchTags: false
             persistCredentials: true
 
           - task: UseNode@1
@@ -276,6 +282,8 @@ extends:
           steps:
           - checkout: self
             clean: true
+            fetchDepth: 1
+            fetchTags: false
 
           - download: releaseBuild
             artifact: npm_packages

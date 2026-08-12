@@ -47,6 +47,8 @@ extends:
 
         steps:
           - checkout: self
+            fetchDepth: 1
+            fetchTags: false
             persistCredentials: "true"
 
           - task: UseNode@1
