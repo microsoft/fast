@@ -66,19 +66,6 @@ steps:
     ALLOW_EXISTING_RELEASE: ${{ parameters.validationMode }}
     SELECTED_RELEASE_TAGS: ${{ parameters.selectedReleaseTags }}
 
-- task: Bash@3
-  displayName: Write release metadata
-  inputs:
-    targetType: inline
-    script: |
-      set -euo pipefail
-      mkdir -p "$METADATA_OUTPUT_DIR"
-      cp publish_artifacts_meta/release-manifest.json "$METADATA_OUTPUT_DIR/release-manifest.json"
-      printf '%s\n' "$VALIDATION_MODE" > "$METADATA_OUTPUT_DIR/validation-mode.txt"
-  env:
-    METADATA_OUTPUT_DIR: $(Build.ArtifactStagingDirectory)/release-metadata
-    VALIDATION_MODE: ${{ parameters.validationMode }}
-
 - task: PublishPipelineArtifact@1
   displayName: Upload npm packages
   inputs:
@@ -101,5 +88,5 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: Upload release metadata
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/release-metadata'
+    targetPath: '$(Build.SourcesDirectory)/publish_artifacts_meta'
     artifactName: release-metadata

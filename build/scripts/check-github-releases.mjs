@@ -1,112 +1,153 @@
 #!/usr/bin/env node
-/**
- * For every package recorded in `release-manifest.json`, check whether its
- * GitHub Release already exists on `microsoft/fast`, independent of the
- * `NeedsRelease` variable computed earlier.
- *
- * `.ado/pipelines/azure-pipelines-cd.yml`'s `PublishGitHub` job runs
- * `GitHubRelease@1` with `action: create` and `tagSource: userSpecifiedTag`.
- * If that job partially fails (e.g. one package's `GitHubRelease@1` task
- * succeeds after another already succeeded) and a maintainer reruns the
- * failed job, Azure Pipelines reruns every task in the job, including the
- * `GitHubRelease@1` tasks that already succeeded — which would fail trying
- * to recreate a release that already exists.
- *
- * This script's `${prefix}GitHubReleaseExists` output lets each
- * `GitHubRelease@1` task's condition skip packages whose release is already
- * on GitHub, so rerunning the job is safe.
- *
- * Uses Node 24's global fetch to query the public GitHub REST API, avoiding
- * authentication requirements and gh CLI dependencies.
- *
- * Usage: node build/scripts/check-github-releases.mjs <path-to-manifest.json>
- */
 
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { listPublishableWorkspaces } from "./lib/publishable-workspaces.mjs";
 
-const manifestPath = process.argv[2];
-if (!manifestPath) {
-    console.error("Usage: check-github-releases.mjs <path-to-manifest.json>");
-    process.exit(1);
+const defaultRepository = "microsoft/fast";
+const apiTimeoutMs = 10000;
+
+function selectedReleaseChecks(manifest, workspaces) {
+    if (!Array.isArray(manifest?.packages) || manifest.packages.length === 0) {
+        throw new Error("Release manifest contains no packages.");
+    }
+
+    const workspaceByName = new Map(
+        workspaces.map(workspace => [workspace.name, workspace]),
+    );
+
+    return manifest.packages.map(pkg => {
+        const workspace = workspaceByName.get(pkg?.name);
+        if (!workspace) {
+            throw new Error(`Release manifest references unknown package ${pkg?.name}.`);
+        }
+        if (pkg.tag !== workspace.tag) {
+            throw new Error(
+                `Release manifest tag for ${workspace.name} does not match the workspace.`,
+            );
+        }
+
+        return {
+            name: workspace.name,
+            outputName: `${workspace.prefix}GitHubReleaseExists`,
+            tag: pkg.tag,
+        };
+    });
+}
+
+async function githubReleaseExists(
+    tag,
+    {
+        fetchImpl = globalThis.fetch,
+        repository = defaultRepository,
+        token = process.env.GITHUB_TOKEN?.trim() || process.env.GH_TOKEN?.trim(),
+        timeoutMs = apiTimeoutMs,
+    } = {},
+) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const headers = {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "FAST-CD-Pipeline",
+        "X-GitHub-Api-Version": "2022-11-28",
+    };
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    try {
+        const response = await fetchImpl(
+            `https://api.github.com/repos/${repository}/releases/tags/${encodeURIComponent(tag)}`,
+            {
+                headers,
+                method: "GET",
+                signal: controller.signal,
+            },
+        );
+
+        if (response.status === 200) {
+            const release = await response.json();
+            if (!release || typeof release !== "object") {
+                throw new Error("response was not a GitHub Release object");
+            }
+            return true;
+        }
+        if (response.status === 404) {
+            return false;
+        }
+
+        const detail = await response.text().catch(() => "");
+        throw new Error(
+            `GitHub API returned HTTP ${response.status}` +
+                `${response.statusText ? ` ${response.statusText}` : ""}` +
+                `${detail ? `: ${detail}` : ""}`,
+        );
+    } catch (error) {
+        throw new Error(
+            `Failed to query GitHub Release for ${tag}: ${
+                error instanceof Error ? error.message : String(error)
+            }`,
+            { cause: error },
+        );
+    } finally {
+        clearTimeout(timeoutId);
+    }
 }
 
 function setAzureOutput(name, value) {
     console.log(`##vso[task.setvariable variable=${name};isOutput=true]${value}`);
 }
 
-async function githubReleaseExists(tag) {
-    const encodedTag = encodeURIComponent(tag);
-    const url = `https://api.github.com/repos/microsoft/fast/releases/tags/${encodedTag}`;
-
-    try {
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                Accept: "application/vnd.github+json",
-                "User-Agent": "FAST-CD-Pipeline",
-            },
-        });
-
-        // 200 = release exists
-        if (response.status === 200) {
-            try {
-                const data = await response.json();
-                if (!data || typeof data !== "object") {
-                    throw new Error("Response is not a valid release object");
-                }
-                return true;
-            } catch (parseError) {
-                console.error(
-                    `##vso[task.logissue type=error]Failed to parse GitHub API response for ${tag}: ${parseError.message}`,
-                );
-                process.exit(1);
-            }
-        }
-
-        // 404 = release does not exist
-        if (response.status === 404) {
-            return false;
-        }
-
-        // Rate limiting or other API error
-        if (response.status === 403) {
-            const remaining = response.headers.get("x-ratelimit-remaining");
-            const reset = response.headers.get("x-ratelimit-reset");
-            const resetDate = reset ? new Date(parseInt(reset, 10) * 1000) : "unknown";
-            console.error(
-                `##vso[task.logissue type=error]GitHub API rate limit exceeded. Remaining: ${remaining}, resets at: ${resetDate}`,
-            );
-            process.exit(1);
-        }
-
-        // Any other HTTP error
-        const errorText = await response.text().catch(() => "(empty response)");
-        console.error(
-            `##vso[task.logissue type=error]GitHub API error (${response.status}) for ${tag}: ${errorText}`,
+async function checkGitHubReleases(
+    manifest,
+    {
+        workspaces,
+        releaseExists = githubReleaseExists,
+        emitOutput = setAzureOutput,
+        log = console.log,
+    },
+) {
+    const results = [];
+    for (const release of selectedReleaseChecks(manifest, workspaces)) {
+        const exists = await releaseExists(release.tag);
+        emitOutput(release.outputName, exists ? "true" : "false");
+        log(
+            `${release.name}: ${release.tag} ${
+                exists ? "already has a GitHub Release" : "does not have a GitHub Release"
+            }.`,
         );
-        process.exit(1);
-    } catch (error) {
-        // Network error, timeout, or fetch failure
-        console.error(
-            `##vso[task.logissue type=error]Failed to check GitHub release ${tag}: ${error.message}`,
-        );
-        process.exit(1);
+        results.push({ ...release, exists });
     }
+    return results;
 }
 
 async function main() {
-    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-
-    for (const { name, tag, prefix } of manifest.packages || []) {
-        const exists = await githubReleaseExists(tag);
-        console.log(
-            `${name}: ${tag} ${exists ? "already has GitHub Release" : "GitHub Release not yet created"}`,
+    const manifestPath = process.env.RELEASE_MANIFEST_PATH ?? process.argv[2];
+    if (!manifestPath) {
+        throw new Error(
+            "RELEASE_MANIFEST_PATH or a release manifest path argument is required.",
         );
-        setAzureOutput(`${prefix}GitHubReleaseExists`, exists ? "true" : "false");
     }
+
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    await checkGitHubReleases(manifest, {
+        workspaces: listPublishableWorkspaces(),
+    });
 }
 
-main().catch(error => {
-    console.error(`##vso[task.logissue type=error]Unexpected error: ${error.message}`);
-    process.exit(1);
-});
+const invokedDirectly =
+    process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
+
+if (invokedDirectly) {
+    main().catch(error => {
+        console.error(
+            `##vso[task.logissue type=error]${
+                error instanceof Error ? error.message : String(error)
+            }`,
+        );
+        process.exit(1);
+    });
+}
+
+export { checkGitHubReleases, githubReleaseExists, selectedReleaseChecks };

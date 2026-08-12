@@ -6,7 +6,7 @@
  * `checkout: self` in the `FAST - CD` pipeline — to emit one set of Azure
  * Pipelines output variables per currently-publishable workspace:
  *
- *   - `<prefix>NeedsRelease`   - `"true"` when the workspace was packed by
+ *   - `<prefix>Included`       - `"true"` when the workspace was packed by
  *     the build pipeline, `"false"` otherwise.
  *   - `<prefix>ReleaseTag`     - the workspace's `${name}_v${version}` tag.
  *   - `<prefix>ReleaseVersion` - the workspace's version.
@@ -42,12 +42,14 @@ function setAzureOutput(name, value) {
 }
 
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+const publishable = listPublishableWorkspaces();
 try {
     validateReleaseArtifacts({
         manifest,
         expectedReleaseCommit: process.env.RELEASE_BUILD_SOURCE_COMMIT,
+        expectedValidationMode: process.env.EXPECTED_VALIDATION_MODE,
         sourceBranch: process.env.RELEASE_BUILD_SOURCE_BRANCH,
-        validationMode: process.env.VALIDATION_MODE,
+        workspaces: publishable,
         npmDirectory: process.env.NPM_ARTIFACT_DIR,
         crateDirectory: process.env.CRATE_ARTIFACT_DIR,
     });
@@ -69,16 +71,14 @@ console.log(
 );
 
 const packagesByName = new Map(selectedPackages.map(pkg => [pkg.name, pkg]));
-const publishable = listPublishableWorkspaces();
-const publishableNames = new Set(publishable.map(workspace => workspace.name));
 let pendingCount = 0;
 
 for (const workspace of publishable) {
     const packed = packagesByName.get(workspace.name);
-    const needsRelease = Boolean(packed);
-    if (needsRelease) pendingCount += 1;
+    const included = Boolean(packed);
+    if (included) pendingCount += 1;
 
-    setAzureOutput(`${workspace.prefix}NeedsRelease`, needsRelease ? "true" : "false");
+    setAzureOutput(`${workspace.prefix}Included`, included ? "true" : "false");
     setAzureOutput(`${workspace.prefix}ReleaseTag`, packed ? packed.tag : workspace.tag);
     setAzureOutput(
         `${workspace.prefix}ReleaseVersion`,
@@ -88,14 +88,6 @@ for (const workspace of publishable) {
 
 setAzureOutput("releaseCommit", manifest.releaseCommit);
 console.log(`Pending releases: ${pendingCount}/${publishable.length}`);
-
-for (const pkg of selectedPackages) {
-    if (!publishableNames.has(pkg.name)) {
-        console.log(
-            `##vso[task.logissue type=warning]${pkg.name} was packed but is no longer a publishable workspace on this commit.`,
-        );
-    }
-}
 
 if (pendingCount === 0) {
     console.log(

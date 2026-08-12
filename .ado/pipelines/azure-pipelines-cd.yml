@@ -59,7 +59,7 @@ extends:
     settings:
       networkIsolationPolicy: Permissive
     stages:
-    - stage: PrepareRelease
+    - stage: ValidateArtifacts
       displayName: Validate release artifacts
       jobs:
       - job: Validate
@@ -93,7 +93,7 @@ extends:
             # FAST has no single workspace-wide release version, so the
             # manifest (rather than a single `release-version.txt`) is the
             # source of truth for which packages are pending. This emits
-            # one `<prefix>NeedsRelease` / `<prefix>ReleaseTag` /
+            # one `<prefix>Included` / `<prefix>ReleaseTag` /
             # `<prefix>ReleaseVersion` output per currently-publishable
             # workspace, plus a shared `releaseCommit`. Before emitting
             # outputs it verifies the schema, binds `releaseCommit` to the
@@ -104,18 +104,10 @@ extends:
             script: |
               set -euo pipefail
               metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
-              validation_mode=$(<"$metadata_dir/validation-mode.txt")
-
-              if [[ "$validation_mode" != "$EXPECTED_VALIDATION_MODE" ]]; then
-                echo "##vso[task.logissue type=error]Release metadata validation mode does not match this pipeline's validationMode parameter."
-                exit 1
-              fi
-
               node build/scripts/read-release-manifest.mjs "$metadata_dir/release-manifest.json"
           env:
             METADATA_INPUT_DIR: $(Pipeline.Workspace)/releaseBuild/release-metadata
             EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
-            VALIDATION_MODE: ${{ parameters.validationMode }}
             RELEASE_BUILD_SOURCE_COMMIT: $(resources.pipeline.releaseBuild.sourceCommit)
             RELEASE_BUILD_SOURCE_BRANCH: $(resources.pipeline.releaseBuild.sourceBranch)
             NPM_ARTIFACT_DIR: $(Pipeline.Workspace)/releaseBuild/npm_packages
@@ -127,10 +119,10 @@ extends:
       # affected tag before rebuilding/retrying that version.
       - stage: TagRelease
         displayName: Tag releases
-        dependsOn: PrepareRelease
+        dependsOn: ValidateArtifacts
         variables:
-          releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
-          releaseTags: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseTags'] ]
+          releaseCommit: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseCommit'] ]
+          releaseTags: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseTags'] ]
         jobs:
         - job: Tag
           displayName: Create annotated release tags
@@ -140,43 +132,18 @@ extends:
             fetchDepth: 0
             persistCredentials: true
 
+          - task: UseNode@1
+            displayName: Install Node.js
+            inputs:
+              version: "24.x"
+
           - task: Bash@3
             displayName: Create annotated release tags
             inputs:
               targetType: inline
               script: |
                 set -euo pipefail
-
-                git fetch --no-tags origin "$RELEASE_COMMIT"
-                git config user.name "Azure Pipelines"
-                git config user.email "azure-pipelines@microsoft.com"
-
-                IFS=',' read -ra tags <<< "$RELEASE_TAGS"
-                for release_tag in "${tags[@]}"; do
-                  remote_ref="refs/azure-release-tags/${release_tag}"
-                  if git fetch --force origin "refs/tags/${release_tag}:${remote_ref}" 2>/dev/null; then
-                    existing_commit=$(git rev-parse "${remote_ref}^{}")
-                    if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                      echo "##vso[task.logissue type=error]${release_tag} points to ${existing_commit}, not ${RELEASE_COMMIT}."
-                      exit 1
-                    fi
-                    echo "${release_tag} already points to ${RELEASE_COMMIT}."
-                    continue
-                  fi
-
-                  git tag -a "$release_tag" "$RELEASE_COMMIT" -m "Release ${release_tag}"
-                  if git push origin "refs/tags/${release_tag}"; then
-                    continue
-                  fi
-
-                  git fetch --force origin "refs/tags/${release_tag}:${remote_ref}"
-                  raced_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]Concurrent tag ${release_tag} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
-                  fi
-                  echo "Concurrent release run created ${release_tag} at the expected commit."
-                done
+                node build/scripts/manage-release-tags.mjs create
             env:
               RELEASE_COMMIT: $(releaseCommit)
               RELEASE_TAGS: $(releaseTags)
@@ -184,26 +151,26 @@ extends:
       - stage: PublishRelease
         displayName: Publish npm, crates.io, and GitHub releases
         dependsOn:
-        - PrepareRelease
+        - ValidateArtifacts
         - TagRelease
         variables:
-          releaseCommit: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseCommit'] ]
-          releaseTags: $[ stageDependencies.PrepareRelease.Validate.outputs['release.releaseTags'] ]
+          releaseCommit: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseCommit'] ]
+          releaseTags: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseTags'] ]
           # When adding a new publishable package, add its package-specific
           # variables here and a matching GitHubRelease@1 task below. See
           # .ado/pipelines/README.md > Adding a publishable package.
-          fastBuildNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildNeedsRelease'] ]
-          fastBuildReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseTag'] ]
-          fastBuildReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastBuildReleaseVersion'] ]
-          fastElementNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementNeedsRelease'] ]
-          fastElementReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementReleaseTag'] ]
-          fastElementReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastElementReleaseVersion'] ]
-          fastRouterNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterNeedsRelease'] ]
-          fastRouterReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterReleaseTag'] ]
-          fastRouterReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastRouterReleaseVersion'] ]
-          fastTestHarnessNeedsRelease: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessNeedsRelease'] ]
-          fastTestHarnessReleaseTag: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessReleaseTag'] ]
-          fastTestHarnessReleaseVersion: $[ stageDependencies.PrepareRelease.Validate.outputs['release.fastTestHarnessReleaseVersion'] ]
+          fastBuildIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildIncluded'] ]
+          fastBuildReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildReleaseTag'] ]
+          fastBuildReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildReleaseVersion'] ]
+          fastElementIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementIncluded'] ]
+          fastElementReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementReleaseTag'] ]
+          fastElementReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementReleaseVersion'] ]
+          fastRouterIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterIncluded'] ]
+          fastRouterReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterReleaseTag'] ]
+          fastRouterReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterReleaseVersion'] ]
+          fastTestHarnessIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessIncluded'] ]
+          fastTestHarnessReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessReleaseTag'] ]
+          fastTestHarnessReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessReleaseVersion'] ]
         jobs:
         - job: Publish
           displayName: Publish npm and crates.io packages
@@ -283,8 +250,12 @@ extends:
           - checkout: self
             clean: true
             fetchDepth: 0
-            fetchTags: true
             persistCredentials: true
+
+          - task: UseNode@1
+            displayName: Install Node.js
+            inputs:
+              version: "24.x"
 
           - task: Bash@3
             displayName: Mark published releases as deployed
@@ -292,43 +263,7 @@ extends:
               targetType: inline
               script: |
                 set -euo pipefail
-
-                IFS=',' read -ra tags <<< "$RELEASE_TAGS"
-                for release_tag in "${tags[@]}"; do
-                  [[ -z "$release_tag" ]] && continue
-                  deployed_tag="deployed/${release_tag}"
-                  remote_ref="refs/azure-deployment-tags/${release_tag}"
-
-                  if git fetch --force origin "refs/tags/${deploy_tag}:${remote_ref}" 2>/dev/null; then
-                    existing_commit=$(git rev-parse "${remote_ref}^{}")
-                    if [[ "$existing_commit" != "$RELEASE_COMMIT" ]]; then
-                      echo "##vso[task.logissue type=error]${deploy_tag} points to ${existing_commit}, not ${RELEASE_COMMIT}."
-                      exit 1
-                    fi
-                    echo "${deploy_tag} already marks the expected release."
-                    continue
-                  fi
-
-                  git fetch --force origin "refs/tags/${release_tag}:refs/tags/${release_tag}"
-                  release_commit=$(git rev-parse "refs/tags/${release_tag}^{}")
-                  if [[ "$release_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]${release_tag} points to ${release_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
-                  fi
-
-                  git tag "$deploy_tag" "refs/tags/${release_tag}"
-                  if git push origin "refs/tags/${deploy_tag}"; then
-                    continue
-                  fi
-
-                  git fetch --force origin "refs/tags/${deploy_tag}:${remote_ref}"
-                  raced_commit=$(git rev-parse "${remote_ref}^{}")
-                  if [[ "$raced_commit" != "$RELEASE_COMMIT" ]]; then
-                    echo "##vso[task.logissue type=error]Concurrent marker ${deploy_tag} points to ${raced_commit}, not ${RELEASE_COMMIT}."
-                    exit 1
-                  fi
-                  echo "Concurrent release run created ${deploy_tag} at the expected commit."
-                done
+                node build/scripts/manage-release-tags.mjs mark-deployed
             env:
               RELEASE_COMMIT: $(releaseCommit)
               RELEASE_TAGS: $(releaseTags)
@@ -381,7 +316,7 @@ extends:
               targetType: inline
               # For each package, check whether its GitHub Release already
               # exists on microsoft/fast. This is independent of the
-              # NeedsRelease variables computed earlier in PrepareRelease,
+              # Included variables computed earlier in ValidateArtifacts,
               # since those only reflect the state before PublishRelease ran.
               # Each GitHubRelease@1 task's condition can then skip packages
               # whose release already exists, so rerunning PublishGitHub after
@@ -395,12 +330,12 @@ extends:
 
           # TagRelease already created and validated these tags. These tasks
           # only create GitHub Releases and attach the packed assets.
-          # Each task is conditioned on both NeedsRelease and the absence of
+          # Each task is conditioned on both Included and the absence of
           # an existing GitHub Release, so partial failures can be safely
           # rerun without attempting to recreate releases.
           - task: GitHubRelease@1
             displayName: "Create @microsoft/fast-build GitHub Release"
-            condition: and(succeeded(), eq(variables['fastBuildNeedsRelease'], 'true'), eq(variables['releaseCheck.fastBuildGitHubReleaseExists'], 'false'))
+            condition: and(succeeded(), eq(variables['fastBuildIncluded'], 'true'), eq(variables['releaseCheck.fastBuildGitHubReleaseExists'], 'false'))
             inputs:
               gitHubConnection: fast
               repositoryName: microsoft/fast
@@ -423,7 +358,7 @@ extends:
 
           - task: GitHubRelease@1
             displayName: "Create @microsoft/fast-element GitHub Release"
-            condition: and(succeeded(), eq(variables['fastElementNeedsRelease'], 'true'), eq(variables['releaseCheck.fastElementGitHubReleaseExists'], 'false'))
+            condition: and(succeeded(), eq(variables['fastElementIncluded'], 'true'), eq(variables['releaseCheck.fastElementGitHubReleaseExists'], 'false'))
             inputs:
               gitHubConnection: fast
               repositoryName: microsoft/fast
@@ -444,7 +379,7 @@ extends:
 
           - task: GitHubRelease@1
             displayName: "Create @microsoft/fast-router GitHub Release"
-            condition: and(succeeded(), eq(variables['fastRouterNeedsRelease'], 'true'), eq(variables['releaseCheck.fastRouterGitHubReleaseExists'], 'false'))
+            condition: and(succeeded(), eq(variables['fastRouterIncluded'], 'true'), eq(variables['releaseCheck.fastRouterGitHubReleaseExists'], 'false'))
             inputs:
               gitHubConnection: fast
               repositoryName: microsoft/fast
@@ -465,7 +400,7 @@ extends:
 
           - task: GitHubRelease@1
             displayName: "Create @microsoft/fast-test-harness GitHub Release"
-            condition: and(succeeded(), eq(variables['fastTestHarnessNeedsRelease'], 'true'), eq(variables['releaseCheck.fastTestHarnessGitHubReleaseExists'], 'false'))
+            condition: and(succeeded(), eq(variables['fastTestHarnessIncluded'], 'true'), eq(variables['releaseCheck.fastTestHarnessGitHubReleaseExists'], 'false'))
             inputs:
               gitHubConnection: fast
               repositoryName: microsoft/fast

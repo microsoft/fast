@@ -65,6 +65,9 @@ export function validateReleaseManifestStructure(manifest) {
     if (!/^[0-9a-f]{40}$/.test(manifest.releaseCommit || "")) {
         fail(`releaseCommit must be a lowercase 40-character Git SHA.`);
     }
+    if (typeof manifest.validationMode !== "boolean") {
+        fail("validationMode must be a boolean.");
+    }
     if (!Array.isArray(manifest.packages) || manifest.packages.length === 0) {
         fail("packages must be a non-empty array.");
     }
@@ -136,12 +139,30 @@ function validateArtifactDirectory(directory, expectedAssets, allowPlaceholder) 
 export function validateReleaseArtifacts({
     manifest,
     expectedReleaseCommit,
+    expectedValidationMode,
     sourceBranch,
-    validationMode,
+    workspaces,
     npmDirectory,
     crateDirectory,
 }) {
     validateReleaseManifestStructure(manifest);
+
+    const workspaceByName = new Map(
+        workspaces.map(workspace => [workspace.name, workspace]),
+    );
+    for (const pkg of manifest.packages) {
+        const workspace = workspaceByName.get(pkg.name);
+        if (!workspace) {
+            fail(`unknown publishable workspace: ${pkg.name}.`);
+        }
+        if (
+            pkg.version !== workspace.version ||
+            pkg.tag !== workspace.tag ||
+            pkg.prefix !== workspace.prefix
+        ) {
+            fail(`${pkg.name} does not match the current workspace definition.`);
+        }
+    }
 
     if (!/^[0-9a-f]{40}$/.test(expectedReleaseCommit || "")) {
         fail("the selected pipeline resource sourceCommit is not a valid Git SHA.");
@@ -152,12 +173,19 @@ export function validateReleaseArtifacts({
                 `resource sourceCommit ${expectedReleaseCommit}.`,
         );
     }
-    if (validationMode !== "true" && validationMode !== "false") {
+    if (expectedValidationMode !== "true" && expectedValidationMode !== "false") {
         fail(
-            `validationMode must be "true" or "false", got ${JSON.stringify(validationMode)}.`,
+            'expectedValidationMode must be "true" or "false", got ' +
+                `${JSON.stringify(expectedValidationMode)}.`,
         );
     }
-    if (validationMode === "false" && sourceBranch !== "refs/heads/main") {
+    if (manifest.validationMode !== (expectedValidationMode === "true")) {
+        fail(
+            `manifest validationMode ${manifest.validationMode} does not match ` +
+                `expectedValidationMode ${expectedValidationMode}.`,
+        );
+    }
+    if (!manifest.validationMode && sourceBranch !== "refs/heads/main") {
         fail(
             `production releases require sourceBranch refs/heads/main, got ` +
                 `${JSON.stringify(sourceBranch)}.`,

@@ -15,10 +15,10 @@ export function formatSelectedReleaseTags(workspaces) {
  * Parse the comma-separated selection handed to the packing stage without
  * trimming or otherwise changing tag boundaries.
  */
-export function parseSelectedReleaseTags(value) {
+export function parseReleaseTags(value, variableName) {
     if (typeof value !== "string" || value === "") {
         throw new Error(
-            "SELECTED_RELEASE_TAGS is required in packing mode and must be a non-empty comma-separated string.",
+            `${variableName} is required and must be a non-empty comma-separated string.`,
         );
     }
 
@@ -31,11 +31,32 @@ export function parseSelectedReleaseTags(value) {
     }
     if (invalidIndexes.length > 0) {
         throw new Error(
-            "SELECTED_RELEASE_TAGS contains empty tags or surrounding whitespace " +
+            `${variableName} contains empty tags or surrounding whitespace ` +
                 `at indexes: ${invalidIndexes.join(", ")}.`,
         );
     }
+
+    const duplicates = [];
+    const seen = new Set();
+    for (const tag of tags) {
+        if (seen.has(tag)) {
+            duplicates.push(tag);
+        }
+        seen.add(tag);
+    }
+    if (duplicates.length > 0) {
+        throw new Error(
+            `${variableName} contains duplicate tags: ${[...new Set(duplicates)].join(
+                ", ",
+            )}.`,
+        );
+    }
+
     return tags;
+}
+
+export function parseSelectedReleaseTags(value) {
+    return parseReleaseTags(value, "SELECTED_RELEASE_TAGS");
 }
 
 /**
@@ -45,21 +66,6 @@ export function parseSelectedReleaseTags(value) {
  */
 export function resolveSelectedReleaseWorkspaces(value, publishable) {
     const tags = parseSelectedReleaseTags(value);
-    const duplicates = [];
-    const seen = new Set();
-    for (const tag of tags) {
-        if (seen.has(tag)) {
-            duplicates.push(tag);
-        }
-        seen.add(tag);
-    }
-
-    if (duplicates.length > 0) {
-        throw new Error(
-            `SELECTED_RELEASE_TAGS contains duplicate tags: ${[...new Set(duplicates)].join(", ")}.`,
-        );
-    }
-
     const commaTag = publishable.find(workspace => workspace.tag.includes(","))?.tag;
     if (commaTag !== undefined) {
         throw new Error(`Release tags cannot contain commas: ${commaTag}.`);

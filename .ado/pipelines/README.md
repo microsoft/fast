@@ -47,11 +47,11 @@ selected releases. It publishes:
 
 - `npm_packages` from `publish_artifacts_npm/`
 - `crate_packages` from `publish_artifacts_crates/`
-- `release-metadata`, containing `release-manifest.json` and `validation-mode.txt`
+- `release-metadata`, containing `release-manifest.json`
 
-Manifest schema version 1 records the full release commit and each selected package's
-name, version, release tag, Azure output prefix, npm asset filename and SHA-256, and
-paired crate asset filenames and SHA-256 values. The
+Manifest schema version 1 records the full release commit, validation mode, and each
+selected package's name, version, release tag, Azure output prefix, npm asset filename
+and SHA-256, and paired crate asset filenames and SHA-256 values. The
 [`read-release-manifest.mjs`](../../build/scripts/read-release-manifest.mjs) validator
 accepts only the supported schema, requires safe unique basenames, verifies every
 required file's exact hash, and rejects missing, modified, unexpected, or nested files.
@@ -94,8 +94,10 @@ markers, or create GitHub Releases.
 
 Normal CD runs create annotated release tags from the validated manifest's
 comma-separated tag list at the validated commit before registry publication. Existing
-or concurrently-created tags are accepted only when they resolve to that commit. The
-publish job passes both npm and crate directories to one
+or concurrently-created tags are accepted only when they resolve to that commit.
+[`manage-release-tags.mjs`](../../build/scripts/manage-release-tags.mjs) owns the shared
+release-tag and deployment-marker operations. The publish job passes both npm and crate
+directories to one
 `FAST.Release.PipelineTemplate.yml@fastPipelines` invocation.
 
 After registry publication succeeds, the separate `MarkDeployed` job creates
@@ -113,15 +115,16 @@ GitHub Releases that already exist and retries only the missing releases.
 
 ## Adding a publishable package
 
-Workspace and crate discovery is automatic, but Azure cannot generate tag and
-`GitHubRelease@1` tasks from runtime metadata. For each new non-private workspace:
+Workspace and crate discovery, release tagging, and deployment markers are automatic,
+but Azure cannot generate `GitHubRelease@1` tasks from runtime metadata. For each new
+non-private workspace:
 
 1. Add it to the root `package.json` workspaces and provide `name` and `version`.
 2. Put paired crates in `crates/<crate-name>/Cargo.toml`. The default crate name removes
    the leading `@` and replaces `/` with `-`; add an explicit bundle mapping in
    [`publishable-workspaces.mjs`](../../build/scripts/lib/publishable-workspaces.mjs)
    when one npm package owns multiple crates.
-3. Add `<prefix>NeedsRelease`, `<prefix>ReleaseTag`, and
+3. Add `<prefix>Included`, `<prefix>ReleaseTag`, and
    `<prefix>ReleaseVersion` variables to `PublishRelease`.
 4. Add a conditional `GitHubRelease@1` task using the **`fast`** GitHub service
    connection, `repositoryName: microsoft/fast`, the pre-created release tag, and exact

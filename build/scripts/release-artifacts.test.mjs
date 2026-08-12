@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
+import {
+    checkGitHubReleases,
+    githubReleaseExists,
+    selectedReleaseChecks,
+} from "./check-github-releases.mjs";
 import { formatAzureBuildNumber } from "./lib/azure-build-number.mjs";
 import {
     createReleaseAsset,
@@ -16,12 +21,13 @@ import {
     parseSelectedReleaseTags,
     resolveSelectedReleaseWorkspaces,
 } from "./lib/selected-release-tags.mjs";
+import { createReleaseTags, markReleaseTagsDeployed } from "./manage-release-tags.mjs";
 
 const scratchRoot = join(process.cwd(), "build", "scripts", ".release-manifest-tests");
 const commit = "a".repeat(40);
 const workspaces = [
-    { name: "@microsoft/a", tag: "@microsoft/a_v1.0.0" },
-    { name: "@microsoft/b", tag: "@microsoft/b_v2.0.0" },
+    { name: "@microsoft/a", prefix: "a", tag: "@microsoft/a_v1.0.0" },
+    { name: "@microsoft/b", prefix: "b", tag: "@microsoft/b_v2.0.0" },
 ];
 
 function fixture(name, { withCrate = true } = {}) {
@@ -46,6 +52,7 @@ function fixture(name, { withCrate = true } = {}) {
     const manifest = {
         schemaVersion: releaseManifestSchemaVersion,
         releaseCommit: commit,
+        validationMode: false,
         packages: [
             {
                 name: "@microsoft/package",
@@ -65,12 +72,85 @@ function validate(values, overrides = {}) {
     return validateReleaseArtifacts({
         manifest: values.manifest,
         expectedReleaseCommit: commit,
+        expectedValidationMode: "false",
         sourceBranch: "refs/heads/main",
-        validationMode: "false",
+        workspaces: [
+            {
+                name: "@microsoft/package",
+                prefix: "package",
+                tag: "@microsoft/package_v1.0.0",
+                version: "1.0.0",
+            },
+        ],
         npmDirectory: values.npmDirectory,
         crateDirectory: values.crateDirectory,
         ...overrides,
     });
+}
+
+function createGitHarness(initialRemoteTags = {}, raceOnPush = {}) {
+    const commands = [];
+    const localRefs = new Map();
+    const localTags = new Map();
+    const remoteTags = new Map(Object.entries(initialRemoteTags));
+    const racedTags = new Set();
+
+    function git(args, { allowMissing = false } = {}) {
+        commands.push(args);
+        const [command, ...rest] = args;
+
+        if (command === "check-ref-format" || command === "config") {
+            return "";
+        }
+        if (command === "ls-remote") {
+            const tag = rest[2].replace("refs/tags/", "");
+            if (remoteTags.has(tag)) {
+                return `${remoteTags.get(tag)}\trefs/tags/${tag}\n`;
+            }
+            if (allowMissing) {
+                return null;
+            }
+            throw new Error(`Missing remote tag ${tag}`);
+        }
+        if (command === "fetch" && rest[0] === "--no-tags") {
+            return "";
+        }
+        if (command === "fetch" && rest[0] === "--force") {
+            const [source, destination] = rest[2].split(":");
+            const tag = source.replace("refs/tags/", "");
+            localRefs.set(destination, remoteTags.get(tag));
+            return "";
+        }
+        if (command === "rev-parse") {
+            const ref = rest[0].replace(/\^\{\}$/, "");
+            return `${localRefs.get(ref) ?? localTags.get(ref)}\n`;
+        }
+        if (command === "tag") {
+            if (rest[0] === "-a") {
+                localTags.set(`refs/tags/${rest[1]}`, rest[2]);
+            } else {
+                localTags.set(
+                    `refs/tags/${rest[0]}`,
+                    localRefs.get(rest[1]) ?? localTags.get(rest[1]),
+                );
+            }
+            return "";
+        }
+        if (command === "push") {
+            const tag = rest[1].replace("refs/tags/", "");
+            if (raceOnPush[tag] && !racedTags.has(tag)) {
+                remoteTags.set(tag, raceOnPush[tag]);
+                racedTags.add(tag);
+                throw new Error(`Push race for ${tag}`);
+            }
+            remoteTags.set(tag, localTags.get(rest[1]));
+            return "";
+        }
+
+        throw new Error(`Unexpected git command: ${args.join(" ")}`);
+    }
+
+    return { commands, git, remoteTags };
 }
 
 test.after(() => rmSync(scratchRoot, { force: true, recursive: true }));
@@ -118,6 +198,14 @@ test("rejects unsupported schemas and malformed commits", () => {
                 releaseCommit: "not-a-sha",
             }),
         /releaseCommit/,
+    );
+    assert.throws(
+        () =>
+            validateReleaseManifestStructure({
+                ...values.manifest,
+                validationMode: "false",
+            }),
+        /validationMode must be a boolean/,
     );
 });
 
@@ -217,15 +305,42 @@ test("binds releases to the selected pipeline resource commit and production bra
         /production releases require sourceBranch refs\/heads\/main/,
     );
     assert.throws(
-        () => validate(values, { validationMode: "yes" }),
-        /validationMode must be "true" or "false"/,
+        () => validate(values, { expectedValidationMode: "yes" }),
+        /expectedValidationMode must be "true" or "false"/,
     );
+    assert.throws(
+        () => validate(values, { expectedValidationMode: "true" }),
+        /manifest validationMode false does not match expectedValidationMode true/,
+    );
+    values.manifest.validationMode = true;
     assert.equal(
         validate(values, {
             sourceBranch: "refs/heads/feature",
-            validationMode: "true",
+            expectedValidationMode: "true",
         }),
         values.manifest,
+    );
+});
+
+test("binds manifest packages to current publishable workspaces", () => {
+    const values = fixture("workspaces");
+    assert.throws(
+        () => validate(values, { workspaces: [] }),
+        /unknown publishable workspace/,
+    );
+    assert.throws(
+        () =>
+            validate(values, {
+                workspaces: [
+                    {
+                        name: "@microsoft/package",
+                        prefix: "different",
+                        tag: "@microsoft/package_v1.0.0",
+                        version: "1.0.0",
+                    },
+                ],
+            }),
+        /does not match the current workspace definition/,
     );
 });
 
@@ -313,4 +428,250 @@ test("reports every selected tag that appeared on the remote", () => {
     );
 
     assert.doesNotThrow(() => assertSelectedTagsAreUnreleased(workspaces, () => false));
+});
+
+test("maps selected manifest packages to GitHub release output names", () => {
+    assert.deepEqual(
+        selectedReleaseChecks(
+            {
+                packages: [
+                    { name: workspaces[1].name, tag: workspaces[1].tag },
+                    { name: workspaces[0].name, tag: workspaces[0].tag },
+                ],
+            },
+            workspaces,
+        ),
+        [
+            {
+                name: workspaces[1].name,
+                outputName: "bGitHubReleaseExists",
+                tag: workspaces[1].tag,
+            },
+            {
+                name: workspaces[0].name,
+                outputName: "aGitHubReleaseExists",
+                tag: workspaces[0].tag,
+            },
+        ],
+    );
+});
+
+test("rejects unknown packages and mismatched tags during GitHub release checks", () => {
+    assert.throws(
+        () =>
+            selectedReleaseChecks(
+                { packages: [{ name: "@microsoft/unknown", tag: "unknown_v1.0.0" }] },
+                workspaces,
+            ),
+        /unknown package/,
+    );
+    assert.throws(
+        () =>
+            selectedReleaseChecks(
+                { packages: [{ name: workspaces[0].name, tag: workspaces[1].tag }] },
+                workspaces,
+            ),
+        /does not match the workspace/,
+    );
+});
+
+test("emits existing and missing GitHub release outputs", async () => {
+    const outputs = [];
+    const queried = [];
+    const results = await checkGitHubReleases(
+        {
+            packages: [
+                { name: workspaces[0].name, tag: workspaces[0].tag },
+                { name: workspaces[1].name, tag: workspaces[1].tag },
+            ],
+        },
+        {
+            workspaces,
+            releaseExists: async tag => {
+                queried.push(tag);
+                return tag === workspaces[0].tag;
+            },
+            emitOutput: (name, value) => outputs.push([name, value]),
+            log() {},
+        },
+    );
+
+    assert.deepEqual(queried, [workspaces[0].tag, workspaces[1].tag]);
+    assert.deepEqual(outputs, [
+        ["aGitHubReleaseExists", "true"],
+        ["bGitHubReleaseExists", "false"],
+    ]);
+    assert.deepEqual(
+        results.map(({ tag, exists }) => ({ tag, exists })),
+        [
+            { tag: workspaces[0].tag, exists: true },
+            { tag: workspaces[1].tag, exists: false },
+        ],
+    );
+});
+
+test("distinguishes existing and missing GitHub releases", async () => {
+    assert.equal(
+        await githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => ({
+                json: async () => ({ tag_name: workspaces[0].tag }),
+                status: 200,
+            }),
+        }),
+        true,
+    );
+    assert.equal(
+        await githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => ({ status: 404 }),
+        }),
+        false,
+    );
+});
+
+test("authenticates GitHub release checks when a token is available", async () => {
+    await githubReleaseExists(workspaces[0].tag, {
+        repository: "microsoft/example",
+        token: "test-token",
+        fetchImpl: async (url, options) => {
+            assert.equal(
+                url,
+                `https://api.github.com/repos/microsoft/example/releases/tags/${encodeURIComponent(workspaces[0].tag)}`,
+            );
+            assert.equal(options.headers.Authorization, "Bearer test-token");
+            assert.ok(options.signal instanceof AbortSignal);
+            return { status: 404 };
+        },
+    });
+});
+
+test("fails explicitly when the GitHub release API fails", async () => {
+    await assert.rejects(
+        githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => ({
+                status: 403,
+                statusText: "Forbidden",
+                text: async () => "rate limited",
+            }),
+        }),
+        /Failed to query GitHub Release.*HTTP 403 Forbidden: rate limited/,
+    );
+    await assert.rejects(
+        githubReleaseExists(workspaces[0].tag, {
+            fetchImpl: async () => {
+                throw new Error("network down");
+            },
+        }),
+        /Failed to query GitHub Release.*network down/,
+    );
+});
+
+test("creates release tags from the validated tag list", () => {
+    const harness = createGitHarness();
+    const messages = [];
+
+    createReleaseTags({
+        releaseTags: workspaces.map(workspace => workspace.tag).join(","),
+        releaseCommit: commit,
+        git: harness.git,
+        log: message => messages.push(message),
+    });
+
+    assert.equal(harness.remoteTags.get(workspaces[0].tag), commit);
+    assert.equal(harness.remoteTags.get(workspaces[1].tag), commit);
+    assert.deepEqual(messages, []);
+});
+
+test("accepts existing release tags only at the validated commit", () => {
+    const valid = createGitHarness({ [workspaces[0].tag]: commit });
+    assert.doesNotThrow(() =>
+        createReleaseTags({
+            releaseTags: workspaces[0].tag,
+            releaseCommit: commit,
+            git: valid.git,
+            log() {},
+        }),
+    );
+
+    const invalid = createGitHarness({ [workspaces[0].tag]: "b".repeat(40) });
+    assert.throws(
+        () =>
+            createReleaseTags({
+                releaseTags: workspaces[0].tag,
+                releaseCommit: commit,
+                git: invalid.git,
+                log() {},
+            }),
+        /points to .* not/,
+    );
+});
+
+test("accepts a concurrent release tag push at the validated commit", () => {
+    const harness = createGitHarness({}, { [workspaces[0].tag]: commit });
+    const messages = [];
+
+    createReleaseTags({
+        releaseTags: workspaces[0].tag,
+        releaseCommit: commit,
+        git: harness.git,
+        log: message => messages.push(message),
+    });
+
+    assert.equal(harness.remoteTags.get(workspaces[0].tag), commit);
+    assert.deepEqual(messages, [
+        `Concurrent release run created ${workspaces[0].tag} at the expected commit.`,
+    ]);
+});
+
+test("creates deployment markers from verified release tags", () => {
+    const harness = createGitHarness({
+        [workspaces[0].tag]: commit,
+        [workspaces[1].tag]: commit,
+    });
+
+    markReleaseTagsDeployed({
+        releaseTags: workspaces.map(workspace => workspace.tag).join(","),
+        releaseCommit: commit,
+        git: harness.git,
+        log() {},
+    });
+
+    assert.equal(harness.remoteTags.get(`deployed/${workspaces[0].tag}`), commit);
+    assert.equal(harness.remoteTags.get(`deployed/${workspaces[1].tag}`), commit);
+});
+
+test("rejects deployment markers when their release tag moved", () => {
+    const harness = createGitHarness({
+        [workspaces[0].tag]: "b".repeat(40),
+    });
+
+    assert.throws(
+        () =>
+            markReleaseTagsDeployed({
+                releaseTags: workspaces[0].tag,
+                releaseCommit: commit,
+                git: harness.git,
+                log() {},
+            }),
+        /points to .* not/,
+    );
+});
+
+test("keeps the Azure publication sequence and shared tag scripts wired", () => {
+    const pipeline = readFileSync(
+        new URL("../../.ado/pipelines/azure-pipelines-cd.yml", import.meta.url),
+        "utf8",
+    );
+    const publish = pipeline.indexOf("- job: Publish");
+    const markDeployed = pipeline.indexOf("- job: MarkDeployed");
+    const publishGitHub = pipeline.indexOf("- job: PublishGitHub");
+
+    assert.ok(publish > 0);
+    assert.ok(publish < markDeployed);
+    assert.ok(markDeployed < publishGitHub);
+    assert.match(pipeline, /- stage: ValidateArtifacts/);
+    assert.doesNotMatch(pipeline, /- stage: PrepareRelease/);
+    assert.match(pipeline, /manage-release-tags\.mjs create/);
+    assert.match(pipeline, /manage-release-tags\.mjs mark-deployed/);
+    assert.match(pipeline, /fastBuildIncluded/);
+    assert.doesNotMatch(pipeline, /NeedsRelease/);
 });
