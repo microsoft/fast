@@ -106,8 +106,6 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 
 ### Choosing a test location
 
-In `@microsoft/fast-element`, choose the test location based on the behavior under test:
-
 - Use a co-located `src/**/*.pw.spec.ts` test for implementation APIs and their lifecycle,
   attachment, or integration behavior.
 - Use the matching fixture under `test/fixtures/<category>/<feature>/<feature>.spec.ts` for
