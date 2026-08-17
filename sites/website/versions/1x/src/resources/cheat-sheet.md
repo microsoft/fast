@@ -734,8 +734,9 @@ yarn start
 ### [Contributing to documentation](../community/writing-documentation.md)
 
 ```shell
-cd sites/website
-yarn start
+cd sites/website/docs
+npm start
 ```
 
-[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`.
+[Eleventy](https://www.11ty.dev/) will open the documentation site at
+`http://localhost:8080/`.

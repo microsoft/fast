@@ -1,6 +1,12 @@
 # Website
 
-This website is built using [11ty](https://www.11ty.dev/), a modern static website generator.
+The private `@microsoft/fast-site` package is the shared shell for the versioned FAST
+documentation website. It is built using [11ty](https://www.11ty.dev/).
+
+The packages under `../versions/{1x,2x,3x}` own their documentation sources and publish
+at `/docs/{1.x,2.x,3.x}`. A full build copies the shared source in `src` and each
+version package's `src` directory into `tmp/src`. API documentation is generated only
+in the staged 3.x tree, so version package sources are not modified.
 
 ## Installation
 
@@ -8,22 +14,35 @@ Run the following commands in the **root directory**:
 
 ```sh
 npm ci
-npm run build
+npm run build -w @microsoft/fast-site
 ```
 
 ## Local Development
 
 ```sh
-npm start
+npm run start -w @microsoft/fast-site
 ```
 
 ## Build
 
 ```sh
-npm run build
+npm run build -w @microsoft/fast-site
 ```
 
-This command generates static content into the `build` directory and can be served using any static content hosting service.
+This command generates static content into `sites/website/docs/build`. The version
+packages retain the public URL structure `/docs/1.x`, `/docs/2.x`, and `/docs/3.x`.
+
+Each version can also be built independently:
+
+```sh
+npm run build -w @microsoft/fast-site-1x
+npm run build -w @microsoft/fast-site-2x
+npm run build -w @microsoft/fast-site-3x
+```
+
+These commands write only the corresponding `build/docs/{public-version}` subtree in
+the version workspace. They reuse this package's Eleventy configuration, layouts, and
+scripts without modifying tracked source files.
 
 ## Version Banners
 
