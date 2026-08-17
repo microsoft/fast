@@ -1,0 +1,123 @@
+# Register this YAML in Azure DevOps with the exact pipeline definition name
+# "FAST - CD Build". .ado/pipelines/azure-pipelines-cd.yml references that
+# definition name as a pipeline resource, watching specifically for the
+# `BuildArtifacts` stage (see the comment above that stage for why
+# `ValidateArtifacts` is a separate stage rather than a condition on the
+# same stage).
+trigger:
+  branches:
+    include:
+    - main
+pr: none
+
+parameters:
+- name: validationMode
+  displayName: Rebuild existing releases for artifact validation
+  type: string
+  default: 'false'
+  values:
+  - 'false'
+  - 'true'
+
+stages:
+- stage: PrepareRelease
+  displayName: Prepare release
+  jobs:
+  - job: SelectRelease
+    displayName: Select releases
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - checkout: self
+      clean: true
+      fetchDepth: 1
+      fetchTags: false
+      # `prepare-release-artifacts.mjs --check-only` calls `git ls-remote origin`
+      # (via `gitTagExistsOnRemote`) to decide which workspaces are pending.
+      persistCredentials: true
+
+    - task: UseNode@1
+      displayName: Install Node.js
+      inputs:
+        version: "24.x"
+
+    - task: Bash@3
+      displayName: Detect package versions without release tags
+      name: release
+      inputs:
+        targetType: inline
+        # FAST is multi-package: unlike a single workspace-wide release
+        # version, each publishable npm workspace gets its own
+        # `${name}_v${version}` tag, so "pending" is a per-package list
+        # rather than one selected version. `prepare-release-artifacts.mjs
+        # --check-only` walks the workspaces tree (no `npm ci` required)
+        # and reports whether any workspace's tag is missing from `origin`,
+        # along with the exact selected tag list for the packing stage.
+        script: |
+          set -euo pipefail
+          node build/scripts/prepare-release-artifacts.mjs --check-only
+      env:
+        AZURE_BUILD_ID: $(Build.BuildId)
+        VALIDATION_MODE: ${{ parameters.validationMode }}
+
+# Two stage NAMES (not one stage gated by a `validationMode` condition) are
+# used deliberately. `FAST - CD`'s `releaseBuild` pipeline resource trigger
+# fires when a stage literally named `BuildArtifacts` completes on `main` —
+# it has no way to also check which queue-time parameter values that run
+# used. If validation runs reused the `BuildArtifacts` name, queuing this
+# pipeline with `validationMode: true` (e.g. to test the artifact contract
+# after changing this file) would auto-trigger a real `FAST - CD` run, which
+# would then fail loudly on the `validationMode` mismatch check in
+# `validate-release-artifacts.mjs` — a confusing red run for what was only ever
+# meant to be a local contract check. Giving the validation path its own
+# stage name (`ValidateArtifacts`) means `FAST - CD` is structurally unable to
+# hear about it, with no reliance on that downstream check as the only
+# safety net. (A skipped stage does not fire a pipeline resource trigger
+# either — Azure Pipelines only triggers on `stages` that actually
+# complete — so a `PrepareRelease` run with nothing pending, which skips
+# `BuildArtifacts` entirely, is equally safe by that same default.)
+- ${{ if eq(parameters.validationMode, 'false') }}:
+  - stage: BuildArtifacts
+    displayName: Build release artifacts
+    dependsOn: PrepareRelease
+    condition: |
+      and(
+        succeeded(),
+        eq(dependencies.PrepareRelease.outputs['SelectRelease.release.shouldBuild'], 'true')
+      )
+    variables:
+      npm_config_cache: $(Pipeline.Workspace)/.npm
+      selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
+    jobs:
+    - job: BuildAndPack
+      displayName: Build and pack npm and crate packages
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - template: templates/pack-release-steps.yml
+        parameters:
+          validationMode: ${{ parameters.validationMode }}
+          selectedReleaseTags: $(selectedReleaseTags)
+
+- ${{ if eq(parameters.validationMode, 'true') }}:
+  - stage: ValidateArtifacts
+    displayName: Build artifacts for validation
+    dependsOn: PrepareRelease
+    condition: |
+      and(
+        succeeded(),
+        eq(dependencies.PrepareRelease.outputs['SelectRelease.release.shouldBuild'], 'true')
+      )
+    variables:
+      npm_config_cache: $(Pipeline.Workspace)/.npm
+      selectedReleaseTags: $[ stageDependencies.PrepareRelease.SelectRelease.outputs['release.selectedReleaseTags'] ]
+    jobs:
+    - job: BuildAndPack
+      displayName: Build and pack npm and crate packages for validation
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - template: templates/pack-release-steps.yml
+        parameters:
+          validationMode: ${{ parameters.validationMode }}
+          selectedReleaseTags: $(selectedReleaseTags)

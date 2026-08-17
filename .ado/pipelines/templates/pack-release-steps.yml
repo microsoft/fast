@@ -1,0 +1,94 @@
+# Shared step list for building and packing pending releases, used by both
+# the real `BuildArtifacts` stage and the `ValidateArtifacts` stage in
+# `.ado/pipelines/azure-pipelines-build.yml`. Kept in one template so the two
+# stages (which must have different names — see the comment above those
+# stages for why) never drift out of sync with each other.
+parameters:
+- name: validationMode
+  type: string
+  default: 'false'
+- name: selectedReleaseTags
+  type: string
+
+steps:
+- checkout: self
+  clean: true
+  fetchDepth: 1
+  fetchTags: false
+  # Production packing re-checks every selected tag on `origin` immediately
+  # before packing so a concurrent release cannot silently shrink the batch.
+  # This needs an authenticated remote when the repository is private/rate
+  # limited.
+  persistCredentials: true
+
+- task: UseNode@1
+  displayName: Install Node.js
+  inputs:
+    version: "24.x"
+
+- task: Cache@2
+  displayName: Cache npm
+  inputs:
+    key: 'npm | "$(Agent.OS)" | package-lock.json'
+    restoreKeys: |
+      npm | "$(Agent.OS)"
+    path: $(npm_config_cache)
+
+- script: |
+    npm ci
+  displayName: Install package dependencies
+
+- script: |
+    set -euo pipefail
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+    export PATH="$HOME/.cargo/bin:$PATH"
+    echo "##vso[task.prependpath]$HOME/.cargo/bin"
+    rustup target add wasm32-unknown-unknown
+    cargo install wasm-pack
+  displayName: Install Rust and wasm-pack
+
+- script: |
+    npm run build
+  displayName: Build workspaces
+
+- task: Bash@3
+  displayName: Pack release artifacts and metadata
+  inputs:
+    targetType: inline
+    # Packs the npm tarball (and any paired Rust crate archives) for exactly
+    # the tags selected by PrepareRelease, and writes
+    # schema-versioned `publish_artifacts_meta/release-manifest.json`
+    # describing exactly what was packed, including each asset's filename
+    # and SHA-256. No GitHub release, git tag, or publish happens here —
+    # those are owned by the `FAST - CD` pipeline.
+    script: |
+      set -euo pipefail
+      node build/scripts/prepare-release-artifacts.mjs
+  env:
+    SELECTED_RELEASE_TAGS: ${{ parameters.selectedReleaseTags }}
+    VALIDATION_MODE: ${{ parameters.validationMode }}
+
+- task: PublishPipelineArtifact@1
+  displayName: Upload npm packages
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/publish_artifacts_npm'
+    artifactName: npm_packages
+
+- task: PublishPipelineArtifact@1
+  displayName: Upload crate packages
+  inputs:
+    # `prepare-release-artifacts.mjs` writes a `.no-crates-packed` placeholder
+    # into this directory when no pending package has a paired Rust crate,
+    # so this publish step always has at least one file to upload — some
+    # agent/task combinations treat publishing a truly empty directory as a
+    # failure. The `PublishRelease` stage's `Publish` job strips that
+    # placeholder back out before invoking the release template, so an
+    # all-npm batch is still treated as having no crate assets to publish.
+    targetPath: '$(Build.SourcesDirectory)/publish_artifacts_crates'
+    artifactName: crate_packages
+
+- task: PublishPipelineArtifact@1
+  displayName: Upload release metadata
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/publish_artifacts_meta'
+    artifactName: release-metadata

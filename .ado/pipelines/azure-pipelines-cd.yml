@@ -1,0 +1,429 @@
+# Register this YAML in Azure DevOps with the exact pipeline definition name
+# "FAST - CD".
+trigger: none
+pr: none
+
+parameters:
+- name: validationMode
+  displayName: Validate artifacts without external publication
+  type: string
+  default: 'false'
+  values:
+  - 'false'
+  - 'true'
+
+resources:
+  pipelines:
+  - pipeline: releaseBuild
+    source: FAST - CD Build
+    # Manual Run Pipeline selection may intentionally override this default.
+    branch: refs/heads/main
+    trigger:
+      branches:
+        include:
+        - main
+      # Only a stage literally named `BuildArtifacts` fires this trigger, and
+      # only when that stage actually completes (a skipped stage — e.g. a
+      # `FAST - CD Build` run with nothing pending — never fires it either).
+      # `azure-pipelines-build.yml`'s `validationMode: true` path runs under
+      # the separate `ValidateArtifacts` stage name specifically so those
+      # validation-only runs can never reach this trigger and pull a real
+      # `FAST - CD` run into an unwanted (and confusingly red) execution. See
+      # the comment above that stage in `azure-pipelines-build.yml` for the
+      # full rationale.
+      stages:
+      - BuildArtifacts
+  repositories:
+  - repository: fastPipelines
+    type: git
+    name: open-source/FASTPipelineTemplates
+    ref: main
+  - repository: 1esPipelines
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+
+extends:
+  # The pipeline extends the 1ES PT, which injects SDL and compliance tasks.
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    pool:
+      name: OneESPool
+      image: HostedPoolLinuxImage
+      os: linux
+    sdl:
+      sourceAnalysisPool:
+        name: OneESPool
+        image: HostedPoolWindowsImage
+        os: windows
+    settings:
+      networkIsolationPolicy: Permissive
+    stages:
+    - stage: ValidateArtifacts
+      displayName: Validate release artifacts
+      jobs:
+      - job: Validate
+        displayName: Validate release artifacts
+        steps:
+        - checkout: self
+          clean: true
+          fetchDepth: 1
+          fetchTags: false
+
+        - task: UseNode@1
+          displayName: Install Node.js
+          inputs:
+            version: "24.x"
+
+        - download: releaseBuild
+          artifact: release-metadata
+          displayName: Download release metadata
+
+        - download: releaseBuild
+          artifact: npm_packages
+          displayName: Download npm packages
+
+        - download: releaseBuild
+          artifact: crate_packages
+          displayName: Download crate packages
+
+        - task: Bash@3
+          name: release
+          displayName: Validate release metadata and packages
+          inputs:
+            targetType: inline
+            # FAST has no single workspace-wide release version, so the
+            # manifest (rather than a single `release-version.txt`) is the
+            # source of truth for which packages are pending. This emits
+            # one `<outputPrefix>Included` / `<outputPrefix>ReleaseTag` /
+            # `<outputPrefix>ReleaseVersion` output per currently-publishable
+            # workspace, plus a shared `releaseCommit` derived from the
+            # manifest's `sourceCommit`. Before emitting outputs it verifies
+            # the exact schema, binds `sourceCommit` and `sourceBranch` to the
+            # selected pipeline resource, requires main for production
+            # releases, and validates every downloaded asset's filename and
+            # SHA-256 with no unexpected files. It also names this run from
+            # the manifest's selected package count.
+            script: |
+              set -euo pipefail
+              metadata_dir="${METADATA_INPUT_DIR:?METADATA_INPUT_DIR is required}"
+              node build/scripts/validate-release-artifacts.mjs "$metadata_dir/release-manifest.json"
+          env:
+            AZURE_BUILD_ID: $(Build.BuildId)
+            METADATA_INPUT_DIR: $(Pipeline.Workspace)/releaseBuild/release-metadata
+            EXPECTED_VALIDATION_MODE: ${{ parameters.validationMode }}
+            RELEASE_BUILD_SOURCE_COMMIT: $(resources.pipeline.releaseBuild.sourceCommit)
+            RELEASE_BUILD_SOURCE_BRANCH: $(resources.pipeline.releaseBuild.sourceBranch)
+            NPM_ARTIFACT_DIR: $(Pipeline.Workspace)/releaseBuild/npm_packages
+            CRATE_ARTIFACT_DIR: $(Pipeline.Workspace)/releaseBuild/crate_packages
+
+    - ${{ if eq(parameters.validationMode, 'false') }}:
+      # Create every package tag before external publication. A failed
+      # registry publish therefore requires maintainers to delete the
+      # affected tag before rebuilding/retrying that version.
+      - stage: TagRelease
+        displayName: Tag releases
+        dependsOn: ValidateArtifacts
+        variables:
+          releaseCommit: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseCommit'] ]
+          releaseTags: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseTags'] ]
+        jobs:
+        - job: Tag
+          displayName: Create release tags
+          steps:
+          - checkout: self
+            clean: true
+            fetchDepth: 1
+            fetchTags: false
+            persistCredentials: true
+
+          - task: UseNode@1
+            displayName: Install Node.js
+            inputs:
+              version: "24.x"
+
+          - task: Bash@3
+            displayName: Create annotated release tags
+            inputs:
+              targetType: inline
+              script: |
+                set -euo pipefail
+                node build/scripts/manage-release-tags.mjs create
+            env:
+              RELEASE_COMMIT: $(releaseCommit)
+              RELEASE_TAGS: $(releaseTags)
+
+      - stage: PublishRelease
+        displayName: Publish npm, crates.io, and GitHub releases
+        dependsOn:
+        - ValidateArtifacts
+        - TagRelease
+        variables:
+          releaseCommit: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseCommit'] ]
+          releaseTags: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.releaseTags'] ]
+          # When adding a new publishable package, add its package-specific
+          # variables here and a matching GitHubRelease@1 task below. See
+          # .ado/pipelines/README.md > Adding a publishable package.
+          fastBuildIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildIncluded'] ]
+          fastBuildReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildReleaseTag'] ]
+          fastBuildReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastBuildReleaseVersion'] ]
+          fastElementIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementIncluded'] ]
+          fastElementReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementReleaseTag'] ]
+          fastElementReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastElementReleaseVersion'] ]
+          fastRouterIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterIncluded'] ]
+          fastRouterReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterReleaseTag'] ]
+          fastRouterReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastRouterReleaseVersion'] ]
+          fastTestHarnessIncluded: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessIncluded'] ]
+          fastTestHarnessReleaseTag: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessReleaseTag'] ]
+          fastTestHarnessReleaseVersion: $[ stageDependencies.ValidateArtifacts.Validate.outputs['release.fastTestHarnessReleaseVersion'] ]
+        jobs:
+        - job: Publish
+          displayName: Publish npm and crates.io packages
+          steps:
+          - checkout: self
+            clean: true
+            fetchDepth: 1
+            fetchTags: false
+
+          - download: releaseBuild
+            artifact: npm_packages
+            displayName: Download npm packages
+
+          - download: releaseBuild
+            artifact: crate_packages
+            displayName: Download crate packages
+
+          - task: CopyFiles@2
+            displayName: Stage npm packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/npm_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_npm
+              CleanTargetFolder: true
+
+          - task: CopyFiles@2
+            displayName: Stage crate packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/crate_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_crates
+              CleanTargetFolder: true
+
+          - task: Bash@3
+            displayName: Remove empty artifact directories
+            inputs:
+              targetType: inline
+              # `prepare-release-artifacts.mjs` writes a `.no-crates-packed`
+              # placeholder file into `publish_artifacts_crates` when this
+              # release batch has no crate assets, purely so publishing and
+              # downloading that (otherwise empty) pipeline artifact along
+              # the way is robust. Strip any directory down to nothing here
+              # — after the placeholder (and any other non-package file)
+              # is discounted — so the release template sees a genuinely
+              # *absent* directory for whichever asset type this batch
+              # doesn't have, matching its documented "skips absent
+              # directories" contract precisely instead of an empty one.
+              script: |
+                set -euo pipefail
+                for dir in "$(Build.SourcesDirectory)/publish_artifacts_npm" "$(Build.SourcesDirectory)/publish_artifacts_crates"; do
+                  if [ -d "$dir" ]; then
+                    real_file=$(find "$dir" -mindepth 1 -type f ! -name '.no-crates-packed' -print -quit)
+                    if [ -z "$real_file" ]; then
+                      echo "Removing empty artifact directory: $dir"
+                      rm -rf "$dir"
+                    fi
+                  fi
+                done
+
+          - script: |
+              printf '\ntag=latest\n' >> .npmrc
+            displayName: "Configure npm publish dist-tag"
+
+          # Both npm and crate assets are handed to a single invocation of
+          # the release template — rather than two parallel jobs each
+          # calling it separately with only one asset type downloaded —
+          # so one destination succeeding while the other fails can never
+          # leave a package half-published without the whole job failing as
+          # one unit. The template skips whichever of
+          # `publish_artifacts_npm` / `publish_artifacts_crates` is absent
+          # (removed above when empty).
+          - template: FAST.Release.PipelineTemplate.yml@fastPipelines
+
+        - job: MarkDeployed
+          displayName: Mark registry publication complete
+          dependsOn: Publish
+          condition: succeeded()
+          steps:
+          - checkout: self
+            clean: true
+            fetchDepth: 1
+            fetchTags: false
+            persistCredentials: true
+
+          - task: UseNode@1
+            displayName: Install Node.js
+            inputs:
+              version: "24.x"
+
+          - task: Bash@3
+            displayName: Mark releases as deployed
+            inputs:
+              targetType: inline
+              script: |
+                set -euo pipefail
+                node build/scripts/manage-release-tags.mjs mark-deployed
+            env:
+              RELEASE_COMMIT: $(releaseCommit)
+              RELEASE_TAGS: $(releaseTags)
+
+        - job: PublishGitHub
+          displayName: Publish GitHub Releases
+          dependsOn: MarkDeployed
+          condition: succeeded()
+          steps:
+          - checkout: self
+            clean: true
+            fetchDepth: 1
+            fetchTags: false
+
+          - download: releaseBuild
+            artifact: npm_packages
+            displayName: Download npm packages
+
+          - download: releaseBuild
+            artifact: crate_packages
+            displayName: Download crate packages
+
+          - task: CopyFiles@2
+            displayName: Stage npm packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/npm_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_npm
+              CleanTargetFolder: true
+
+          - task: CopyFiles@2
+            displayName: Stage crate packages
+            inputs:
+              SourceFolder: $(Pipeline.Workspace)/releaseBuild/crate_packages
+              Contents: '**'
+              TargetFolder: $(Build.SourcesDirectory)/publish_artifacts_crates
+              CleanTargetFolder: true
+
+          - download: releaseBuild
+            artifact: release-metadata
+            displayName: Download release metadata
+
+          - task: UseNode@1
+            displayName: Install Node.js
+            inputs:
+              version: "24.x"
+
+          - task: Bash@3
+            name: releaseCheck
+            displayName: Check existing GitHub Releases
+            inputs:
+              targetType: inline
+              # For each package, check whether its GitHub Release already
+              # exists on microsoft/fast. This is independent of the
+              # Included variables computed earlier in ValidateArtifacts,
+              # since those only reflect the state before PublishRelease ran.
+              # A release is complete only when every manifest asset is
+              # present. Transient GitHub failures are retried; malformed or
+              # incomplete releases fail explicitly instead of being skipped.
+              script: |
+                set -euo pipefail
+                node build/scripts/check-github-releases.mjs "${MANIFEST_PATH}"
+            env:
+              MANIFEST_PATH: $(Pipeline.Workspace)/releaseBuild/release-metadata/release-manifest.json
+
+          # TagRelease already created and validated these tags. These tasks
+          # only create GitHub Releases and attach the packed assets.
+          # Each task is conditioned on both Included and the absence of
+          # a complete existing GitHub Release, so partial failures can be
+          # rerun without attempting to recreate completed releases.
+          - task: GitHubRelease@1
+            displayName: "Create @microsoft/fast-build GitHub Release"
+            condition: and(succeeded(), eq(variables['fastBuildIncluded'], 'true'), eq(variables['releaseCheck.fastBuildGitHubReleaseExists'], 'false'))
+            inputs:
+              gitHubConnection: fast
+              repositoryName: microsoft/fast
+              action: create
+              target: $(releaseCommit)
+              tagSource: userSpecifiedTag
+              tag: $(fastBuildReleaseTag)
+              title: $(fastBuildReleaseTag)
+              releaseNotesSource: inline
+              releaseNotesInline: "Automated FAST release for @microsoft/fast-build@$(fastBuildReleaseVersion)."
+              addChangeLog: false
+              assets: |
+                $(Build.SourcesDirectory)/publish_artifacts_npm/microsoft-fast-build-$(fastBuildReleaseVersion).tgz
+                $(Build.SourcesDirectory)/publish_artifacts_crates/microsoft-fast-build-$(fastBuildReleaseVersion).crate
+                $(Build.SourcesDirectory)/publish_artifacts_crates/microsoft-fast-convert-$(fastBuildReleaseVersion).crate
+              assetUploadMode: replace
+              isDraft: false
+              isPreRelease: false
+              makeLatest: legacy
+
+          - task: GitHubRelease@1
+            displayName: "Create @microsoft/fast-element GitHub Release"
+            condition: and(succeeded(), eq(variables['fastElementIncluded'], 'true'), eq(variables['releaseCheck.fastElementGitHubReleaseExists'], 'false'))
+            inputs:
+              gitHubConnection: fast
+              repositoryName: microsoft/fast
+              action: create
+              target: $(releaseCommit)
+              tagSource: userSpecifiedTag
+              tag: $(fastElementReleaseTag)
+              title: $(fastElementReleaseTag)
+              releaseNotesSource: inline
+              releaseNotesInline: "Automated FAST release for @microsoft/fast-element@$(fastElementReleaseVersion)."
+              addChangeLog: false
+              assets: |
+                $(Build.SourcesDirectory)/publish_artifacts_npm/microsoft-fast-element-$(fastElementReleaseVersion).tgz
+              assetUploadMode: replace
+              isDraft: false
+              isPreRelease: false
+              makeLatest: legacy
+
+          - task: GitHubRelease@1
+            displayName: "Create @microsoft/fast-router GitHub Release"
+            condition: and(succeeded(), eq(variables['fastRouterIncluded'], 'true'), eq(variables['releaseCheck.fastRouterGitHubReleaseExists'], 'false'))
+            inputs:
+              gitHubConnection: fast
+              repositoryName: microsoft/fast
+              action: create
+              target: $(releaseCommit)
+              tagSource: userSpecifiedTag
+              tag: $(fastRouterReleaseTag)
+              title: $(fastRouterReleaseTag)
+              releaseNotesSource: inline
+              releaseNotesInline: "Automated FAST release for @microsoft/fast-router@$(fastRouterReleaseVersion)."
+              addChangeLog: false
+              assets: |
+                $(Build.SourcesDirectory)/publish_artifacts_npm/microsoft-fast-router-$(fastRouterReleaseVersion).tgz
+              assetUploadMode: replace
+              isDraft: false
+              isPreRelease: false
+              makeLatest: legacy
+
+          - task: GitHubRelease@1
+            displayName: "Create @microsoft/fast-test-harness GitHub Release"
+            condition: and(succeeded(), eq(variables['fastTestHarnessIncluded'], 'true'), eq(variables['releaseCheck.fastTestHarnessGitHubReleaseExists'], 'false'))
+            inputs:
+              gitHubConnection: fast
+              repositoryName: microsoft/fast
+              action: create
+              target: $(releaseCommit)
+              tagSource: userSpecifiedTag
+              tag: $(fastTestHarnessReleaseTag)
+              title: $(fastTestHarnessReleaseTag)
+              releaseNotesSource: inline
+              releaseNotesInline: "Automated FAST release for @microsoft/fast-test-harness@$(fastTestHarnessReleaseVersion)."
+              addChangeLog: false
+              assets: |
+                $(Build.SourcesDirectory)/publish_artifacts_npm/microsoft-fast-test-harness-$(fastTestHarnessReleaseVersion).tgz
+              assetUploadMode: replace
+              isDraft: false
+              isPreRelease: false
+              makeLatest: legacy
