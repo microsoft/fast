@@ -104,6 +104,22 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 - Fixture tests live inside their fixture directory: `test/fixtures/<category>/<feature>/<feature>.spec.ts`.
 - Source-level tests are co-located next to the code they test: `src/<feature>/<feature>.pw.spec.ts`.
 
+### Choosing a FAST Element test location
+
+In `@microsoft/fast-element`, choose the test location based on the behavior under test:
+
+- Use a co-located `src/**/*.pw.spec.ts` test for implementation APIs and their lifecycle,
+  attachment, or integration behavior.
+- Use the matching fixture under `packages/fast-element/test/declarative/fixtures/` for
+  declarative markup or directive behavior that a developer authors in `entry.html` or
+  `templates.html`.
+
+Do not inject an `<f-template>` from JavaScript into a source-level test solely to exercise
+declarative markup behavior. For example, tests for `f-children` belong in
+`test/declarative/fixtures/directives/children`, while
+`src/declarative/template-bridge.pw.spec.ts` is reserved for the lifecycle and attachment
+behavior of `declarativeTemplate()` and `DeclarativeTemplateBridge`.
+
 ### Writing declarative fixture tests
 
 Fixture tests in `@microsoft/fast-element/test/declarative/fixtures` are the primary way to verify declarative template features. Each fixture is a self-contained test case with its own HTML, state, templates, and component definitions.
