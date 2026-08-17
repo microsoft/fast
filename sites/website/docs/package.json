@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "clean": "clean build tmp",
-    "prebuild": "npm run clean && node scripts/generate-docs.cjs 3",
-    "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
-    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve --incremental",
+    "clean": "node scripts/clean.cjs",
+    "prepare:docs": "node scripts/prepare-docs.cjs",
+    "generate:docs": "node scripts/generate-docs.cjs --version 3 --destination tmp/src/docs/3.x",
+    "prebuild": "npm run clean && npm run prepare:docs && npm run generate:docs",
+    "build": "npx @11ty/eleventy --output=build --input=tmp/src",
+    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=tmp/src --serve --incremental",
     "help": "npx @11ty/eleventy --help"
   },
   "browserslist": {

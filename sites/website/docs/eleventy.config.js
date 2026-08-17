@@ -9,32 +9,61 @@ const require = createRequire(import.meta.url);
 const githubMarkdownCssDir = path.dirname(
     require.resolve("github-markdown-css/package.json"),
 );
+const stagingSourceDir = process.env.FAST_SITE_STAGING_SOURCE ?? "tmp/src";
+const versionOnly = process.env.FAST_SITE_VERSION_ONLY;
 
 export default function (eleventyConfig) {
-    /**
-     * Styles
-     */
-    eleventyConfig.addPassthroughCopy("src/css");
-    eleventyConfig.addPassthroughCopy({
-        [path.join(githubMarkdownCssDir, "github-markdown-dark.css")]:
-            "css/github-markdown-dark.css",
-    });
+    eleventyConfig.setUseGitIgnore(false);
 
-    /**
-     * Scripts
-     */
-    eleventyConfig.addPassthroughCopy("src/js");
+    if (!versionOnly) {
+        /**
+         * Styles
+         */
+        eleventyConfig.addPassthroughCopy({
+            [path.join(stagingSourceDir, "css")]: "css",
+        });
+        eleventyConfig.addPassthroughCopy({
+            [path.join(githubMarkdownCssDir, "github-markdown-dark.css")]:
+                "css/github-markdown-dark.css",
+        });
 
-    /**
-     * Assets
-     */
-    eleventyConfig.addPassthroughCopy("src/static");
+        /**
+         * Scripts
+         */
+        eleventyConfig.addPassthroughCopy({
+            [path.join(stagingSourceDir, "js")]: "js",
+        });
+
+        /**
+         * Assets
+         */
+        eleventyConfig.addPassthroughCopy({
+            [path.join(stagingSourceDir, "static")]: "static",
+        });
+    }
 
     /**
      * Plugins
      */
     eleventyConfig.addPlugin(eleventyNavigationPlugin);
-    eleventyConfig.addPlugin(syntaxHighlight);
+    eleventyConfig.addPlugin(syntaxHighlight, {
+        languages: [
+            "bash",
+            "csharp",
+            "css",
+            "html",
+            "javascript",
+            "json",
+            "jsonc",
+            "jsx",
+            "markdown",
+            "mermaid",
+            "shell",
+            "text",
+            "typescript",
+            "yaml",
+        ],
+    });
     eleventyConfig.addPlugin(IdAttributePlugin);
 
     /**
