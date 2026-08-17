@@ -205,12 +205,12 @@ If the breaking change is significant or requires multiple PRs, open a [discussi
 
 # Documentation
 
-After any changes ensure that the documentation is up to date, this includes the files DESIGN.md and README.md files for any packages/crates that have been modified. If your changes update or add to the public API, update the sites/website/src/docs/ files. Only update the latest version, these are denoted by major versions in their folder names inside the docs folder, 1.x, 2.x, etc., find the latest version of the docs and modify them if necessary.
+After any changes ensure that the documentation is up to date, this includes the files DESIGN.md and README.md files for any packages/crates that have been modified. If your changes update or add to the public API, update the latest version under `sites/website/versions/` (currently `sites/website/versions/3x/src`, published at `/docs/3.x`).
 
 When adding or modifying exported APIs, run the website prebuild script to regenerate API documentation from the api-extractor output:
 
 ```bash
-npm run prebuild -w sites/website
+npm run prebuild -w @microsoft/fast-site
 ```
 
-This runs [`sites/website/scripts/generate-docs.cjs`](../../../sites/website/scripts/generate-docs.cjs), which copies API documentation from each package's extracted API reports into the website source. Run this after building packages to ensure generated documentation stays in sync with the codebase.
+This runs [`sites/website/docs/scripts/generate-docs.cjs`](../../../sites/website/docs/scripts/generate-docs.cjs), which copies API documentation from each package's extracted API reports into the generated website staging tree. Run this after building packages to ensure generated documentation stays in sync with the codebase.

@@ -29,7 +29,8 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 | Package | Status | Purpose |
 |---|---|---|
-| `sites/website` | Private (not published as a package) | Documentation website source |
+| `sites/website/docs` | Private (not published as a package) | Shared documentation website shell (`@microsoft/fast-site`) |
+| `sites/website/versions/{1x,2x,3x}` | Private (not published as packages) | Independently buildable version documentation source |
 | `sites/benchmarks` | Private (not published as a package) | Benchmarking site |
 
 ### Example projects
