@@ -101,8 +101,10 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 ### Test file conventions
 
 - Test files use the `*.spec.ts` suffix (specifically `*.pw.spec.ts` for package `src/` tests).
-- Fixture tests live inside their fixture directory: `test/fixtures/<category>/<feature>/<feature>.spec.ts`.
-- Source-level tests are co-located next to the code they test: `src/<feature>/<feature>.pw.spec.ts`.
+- Tests for developer-authored declarative markup and directives live in the matching
+  `test/declarative/fixtures/<category>/<feature>/<feature>.spec.ts` fixture.
+- Tests for implementation APIs and lifecycle behavior are co-located with their source as
+  `src/<feature>/<feature>.pw.spec.ts`.
 
 ### Writing declarative fixture tests
 
