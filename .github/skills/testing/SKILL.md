@@ -114,12 +114,6 @@ In `@microsoft/fast-element`, choose the test location based on the behavior und
   declarative markup or directive behavior that a developer authors in `entry.html` or
   `templates.html`.
 
-Do not inject an `<f-template>` from JavaScript into a source-level test solely to exercise
-declarative markup behavior. For example, tests for `f-children` belong in
-`test/declarative/fixtures/directives/children`, while
-`src/declarative/template-bridge.pw.spec.ts` is reserved for the lifecycle and attachment
-behavior of `declarativeTemplate()` and `DeclarativeTemplateBridge`.
-
 ### Writing declarative fixture tests
 
 Fixture tests in `@microsoft/fast-element/test/declarative/fixtures` are the primary way to verify declarative template features. Each fixture is a self-contained test case with its own HTML, state, templates, and component definitions.
