@@ -13,11 +13,15 @@ async function createTestRoot(workspace: string, name: string) {
     await Promise.all([
         writeFile(
             resolve(root, "index.html"),
-            `<!doctype html><title>${name}</title><a href="/@vite/client">Vite</a><script type="module" src="/src/main.js"></script>`,
+            `<!doctype html><title>${name}</title><a href="/@vite/client">Vite</a><a href="/${name}/fixture">Fixture</a><script type="module" src="/src/main.js"></script>`,
         ),
         writeFile(
             resolve(root, "ssr.html"),
             `<!doctype html><title><!--fixturetitle--></title><!--stylespreload--><body><!--fixture--><!--templates--><script type="module" src="/src/entry-client.js"></script></body>`,
+        ),
+        writeFile(
+            resolve(root, "asset.svg"),
+            `<svg xmlns="http://www.w3.org/2000/svg"><title>${name}</title></svg>`,
         ),
         writeFile(resolve(source, "main.js"), `export const route = "${name}";`),
         writeFile(resolve(source, "entry-client.js"), "export {};"),
@@ -63,9 +67,16 @@ test("serves independent CSR and SSR roots under separate routes", async t => {
     assert.match(firstHtml, /<title>first<\/title>/);
     assert.match(firstHtml, /href="\/@vite\/client"/);
     assert.doesNotMatch(firstHtml, /href="\/first\/@vite\/client"/);
+    assert.match(firstHtml, /href="\/first\/fixture"/);
+    assert.doesNotMatch(firstHtml, /href="\/first\/first\/fixture"/);
     assert.match(firstHtml, /src="\/first\/src\/main\.js"/);
     assert.equal(secondPage.status, 200);
     assert.match(await secondPage.text(), /<title>second<\/title>/);
+
+    const firstAsset = await fetch(`${origin}/first/asset.svg`);
+    assert.equal(firstAsset.status, 200);
+    assert.equal(firstAsset.headers.get("content-type"), "image/svg+xml");
+    assert.match(await firstAsset.text(), /<title>first<\/title>/);
 
     for (const route of ["first", "second"]) {
         const generated = await fetch(`${origin}/${route}/generate-fixture`, {

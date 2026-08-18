@@ -58,8 +58,7 @@ function htmlResponse(res, statusCode, html) {
 /**
  * Try to serve a static file from `root`. Returns true if served.
  */
-async function tryServeStatic(req, res, root) {
-    const urlPath = new URL(req.url, "http://localhost").pathname;
+async function tryServeStatic(res, root, urlPath) {
     const filePath = resolve(root, `.${urlPath}`);
 
     // Prevent path traversal — reject if the resolved path escapes root.
@@ -136,7 +135,8 @@ function scopeRootRelativeUrls(html, base) {
             if (
                 value?.startsWith("/") &&
                 !value.startsWith("//") &&
-                !value.startsWith("/@")
+                !value.startsWith("/@") &&
+                !value.startsWith(base)
             ) {
                 $(element).attr(attribute, `${base}${value.slice(1)}`);
             }
@@ -445,7 +445,7 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
         if (
             !configuredRoutes?.length &&
             req.method === "GET" &&
-            (await tryServeStatic(req, res, cwd))
+            (await tryServeStatic(res, cwd, pathname))
         ) {
             return;
         }
@@ -454,6 +454,14 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
         // Vite handles its own routes; for anything left over, serve
         // the HTML shell for navigation requests.
         vite.middlewares(req, res, async () => {
+            if (
+                req.method === "GET" &&
+                route &&
+                (await tryServeStatic(res, route.root, `/${routePath}`))
+            ) {
+                return;
+            }
+
             if (!accept.includes("text/html")) {
                 res.writeHead(404).end();
                 return;
