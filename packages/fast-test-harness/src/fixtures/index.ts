@@ -5,7 +5,12 @@ import { SSRFixture } from "./ssr-fixture.js";
 
 const isSSR = process.env.PLAYWRIGHT_TEST_SSR === "true";
 
-type FixtureOptions = {
+export type TestOptions = {
+    /**
+     * The base path of the test page and fixture generation endpoint.
+     */
+    base: string;
+
     /**
      * Additional HTML to insert into the element.
      */
@@ -31,7 +36,12 @@ export type Fixtures = {
     fastPage: CSRFixture | SSRFixture;
 };
 
-export const test = baseTest.extend<Fixtures & FixtureOptions>({
+export const test = baseTest.extend<Fixtures & TestOptions>({
+    /**
+     * The base path of the test page and fixture generation endpoint.
+     */
+    base: ["/", { option: true }],
+
     /**
      * The inner HTML to set on the fixture's custom element. This can be used
      * to provide slotted content or otherwise customize the fixture's template.
@@ -59,7 +69,7 @@ export const test = baseTest.extend<Fixtures & FixtureOptions>({
     ssr: [!!isSSR, { option: true }],
 
     async fastPage(
-        { page, innerHTML, ssr, tagName, waitFor },
+        { base, page, innerHTML, ssr, tagName, waitFor },
         use,
         testInfo,
     ): Promise<void> {
@@ -71,8 +81,8 @@ export const test = baseTest.extend<Fixtures & FixtureOptions>({
         const testTitle = ssr ? `${testInfo.titlePath.join(" › ")}` : undefined;
 
         const fastPage = ssr
-            ? new SSRFixture(page, tagName, innerHTML, waitFor, testId, testTitle)
-            : new CSRFixture(page, tagName, innerHTML, waitFor);
+            ? new SSRFixture(page, tagName, innerHTML, waitFor, testId, testTitle, base)
+            : new CSRFixture(page, tagName, innerHTML, waitFor, base);
 
         if (!ssr) {
             await fastPage.goto();
