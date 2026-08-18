@@ -91,7 +91,7 @@ The `test.extend` call in `src/fixtures/index.ts` adds five configurable options
 
 | Option | Type | Default | Description |
 | -------- | ------ | --------- | ------------- |
-| `base` | `string` | `"/"` | Base path for the test page and fixture generation endpoint |
+| `base` | `string` | `"/"` | Base path for the test page and fixture generation endpoint, it must end in "/" |
 | `tagName` | `string` | `""` | Custom element tag name used to build the default template and locate the element |
 | `innerHTML` | `string` | `""` | Default inner HTML inserted into the element |
 | `waitFor` | `string[]` | `[]` | Additional custom element tag names to wait for before the test runs |
