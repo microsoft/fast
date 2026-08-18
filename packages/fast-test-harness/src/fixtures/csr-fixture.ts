@@ -1,5 +1,10 @@
 import type { Locator, Page } from "@playwright/test";
 
+function normalizeBase(base: string): string {
+    const withLeadingSlash = base.startsWith("/") ? base : `/${base}`;
+    return withLeadingSlash.endsWith("/") ? withLeadingSlash : `${withLeadingSlash}/`;
+}
+
 export type ThemeTokens = Record<string, string | number | boolean>;
 
 /**
@@ -77,23 +82,31 @@ export class CSRFixture {
     protected readonly waitFor: string[];
 
     /**
+     * The base path for the fixture page.
+     */
+    protected readonly base: string;
+
+    /**
      * Creates an instance of the CSRFixture.
      *
      * @param page - The Playwright page object.
      * @param tagName - The tag name of the custom element.
      * @param innerHTML - The inner HTML of the custom element.
      * @param waitFor - Additional custom elements to wait for.
+     * @param base - The base path for the fixture page.
      */
     constructor(
         public readonly page: Page,
         tagName: string,
         innerHTML: string,
         waitFor: string[] = [],
+        base: string = "/",
     ) {
         this.tagName = tagName;
         this.innerHTML = innerHTML;
         this.element = this.page.locator(this.tagName);
         this.waitFor = waitFor;
+        this.base = normalizeBase(base);
     }
 
     /**
@@ -109,9 +122,9 @@ export class CSRFixture {
     /**
      * Navigates to the specified URL.
      *
-     * @param url - The URL to navigate to. Defaults to "/".
+     * @param url - The URL to navigate to. Defaults to the fixture's base path.
      */
-    async goto(url: string = "/") {
+    async goto(url: string = this.base) {
         await this.page.goto(url);
     }
 
