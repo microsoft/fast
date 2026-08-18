@@ -11,7 +11,11 @@
   "workspaces": [
     "build",
     "packages/*",
-    "sites/*",
+    "sites/benchmarks",
+    "sites/website/docs",
+    "sites/website/versions/1x",
+    "sites/website/versions/2x",
+    "sites/website/versions/3x",
     "examples/*",
     "examples/csr/*",
     "examples/ssr/*"
