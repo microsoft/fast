@@ -81,7 +81,8 @@ await expect(element).toHaveCustomState("checked");
 ## Fixture options
 
 | Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
+| `base` | `string` | `"/"` | Base path for the test page and SSR endpoint |
 | `tagName` | `string` | `""` | Custom element tag name |
 | `innerHTML` | `string` | `""` | Default inner HTML |
 | `waitFor` | `string[]` | `[]` | Additional elements to wait for before testing |
@@ -208,6 +209,20 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts", {
 });
 ```
 
+One server can host several test directories at separate paths. Set the matching
+`base` fixture option for each test group.
+
+```ts
+await startServer(process.cwd(), process.cwd(), "./vite.config.ts", {
+    routes: [
+        { base: "/button/", root: "./packages/button/test" },
+        { base: "/dialog/", root: "./packages/dialog/test" },
+    ],
+});
+
+test.use({ base: "/button/", tagName: "my-button" });
+```
+
 | Parameter | Default | Description |
 | --------- | ------- | ----------- |
 | `cwd` | `process.cwd()` | Static file serving root |
@@ -216,6 +231,7 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts", {
 | `options.port` | `3278` | Server port |
 | `options.base` | `/` | Base URL path |
 | `options.debug` | `false` | Write SSR fixtures to `temp/` for inspection |
+| `options.routes` | Single route from `root` and `base` | Test roots keyed by URL base path |
 
 ### CLI flags
 
@@ -256,7 +272,7 @@ before `>`.
 **`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to parse f-templates and render them into declarative shadow DOM, including wrapper tags whose opening or closing `>` is preceded by ASCII whitespace.
 
 | Option | Type | Description |
-|--------|------|-------------|
+| -------- | ------ | ------------- |
 | `tagPrefix` | `string` | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
@@ -266,7 +282,7 @@ before `>`.
 ## Exports
 
 | Specifier | Contents |
-|-----------|----------|
+| ----------- | ---------- |
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `toHaveCustomState`, `installDomShim`, `createSSRRenderer` |
 | `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
