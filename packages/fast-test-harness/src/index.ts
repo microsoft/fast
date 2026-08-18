@@ -9,7 +9,7 @@ export {
     type TemplateOrOptions,
     type ThemeTokens,
 } from "./fixtures/csr-fixture.js";
-export { expect, type Fixtures, test } from "./fixtures/index.js";
+export { expect, type Fixtures, type TestOptions, test } from "./fixtures/index.js";
 export { SSRFixture } from "./fixtures/ssr-fixture.js";
 export {
     type ComponentRegistration,
