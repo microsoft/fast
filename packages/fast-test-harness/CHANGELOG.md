@@ -1,12 +1,12 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Wed, 19 Aug 2026 18:18:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 19 Aug 2026 18:40:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
 
-## 0.6.0
+## 0.5.0
 
-Wed, 19 Aug 2026 18:18:30 GMT
+Wed, 19 Aug 2026 18:40:05 GMT
 
 ### Minor changes
 
