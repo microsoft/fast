@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 19 Aug 2026 18:18:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.6.0
+
+Wed, 19 Aug 2026 18:18:30 GMT
+
+### Minor changes
+
+- Add multi-route support (863023+radium-v@users.noreply.github.com)
 
 ## 0.4.1
 
