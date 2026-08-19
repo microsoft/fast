@@ -23,6 +23,10 @@ npm run build -w @microsoft/fast-site
 npm run start -w @microsoft/fast-site
 ```
 
+The development server watches the shared source and all version package sources. Changes
+under `../versions/{1x,2x,3x}/src` are synchronized into the staging tree before the
+browser reloads.
+
 ## Build
 
 ```sh

@@ -6,6 +6,10 @@ import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import { admonitionPlugin } from "./plugins/admonitions.js";
 
 const require = createRequire(import.meta.url);
+const {
+    createDocumentationSync,
+    documentationMappings,
+} = require("./scripts/watch-docs.cjs");
 const githubMarkdownCssDir = path.dirname(
     require.resolve("github-markdown-css/package.json"),
 );
@@ -16,6 +20,15 @@ export default function (eleventyConfig) {
     eleventyConfig.setUseGitIgnore(false);
 
     if (!versionOnly) {
+        for (const mapping of documentationMappings) {
+            eleventyConfig.addWatchTarget(mapping.sourceRoot);
+        }
+
+        eleventyConfig.on(
+            "eleventy.beforeWatch",
+            createDocumentationSync(documentationMappings),
+        );
+
         /**
          * Styles
          */

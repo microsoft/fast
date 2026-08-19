@@ -9,7 +9,8 @@
     "generate:docs": "node scripts/generate-docs.cjs --version 3 --destination tmp/src/docs/3.x",
     "prebuild": "npm run clean && npm run prepare:docs && npm run generate:docs",
     "build": "npx @11ty/eleventy --output=build --input=tmp/src",
-    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=tmp/src --serve --incremental",
+    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=tmp/src --serve",
+    "test:node": "node --test scripts/*.spec.cjs",
     "help": "npx @11ty/eleventy --help"
   },
   "browserslist": {
