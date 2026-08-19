@@ -93,6 +93,9 @@ extends:
         fastTestHarnessReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessReleaseTag'] ]
       jobs:
       - job: Deploy
+        templateContext:
+          type: releaseJob
+          isProduction: true
         steps:
           - checkout: self
             persistCredentials: "true"
