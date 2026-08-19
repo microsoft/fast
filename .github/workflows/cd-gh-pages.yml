@@ -2,16 +2,96 @@ name: Deploy GitHub Pages
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+    - main
+    paths:
+    - .github/workflows/cd-gh-pages.yml
+    - lage.config.js
+    - package-lock.json
+    - package.json
+    - packages/fast-build/**
+    - packages/fast-element/**
+    - sites/website/docs/**
+    - sites/website/versions/**
 
-env:
-  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
-  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
+concurrency:
+  group: fast-documentation-pages
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.changes.outputs.full }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+      versions: ${{ steps.changes.outputs.versions }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - id: changes
+      name: Select documentation builds
+      shell: bash
+      run: |
+        full=false
+        selected_1x=false
+        selected_2x=false
+        selected_3x=false
+
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          full=true
+        else
+          before="${{ github.event.before }}"
+
+          if [[ -z "$before" || "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}"; then
+            full=true
+          else
+            mapfile -t changed_files < <(git diff --name-only "$before" "${{ github.sha }}")
+
+            for file in "${changed_files[@]}"; do
+              case "$file" in
+                .github/workflows/cd-gh-pages.yml|lage.config.js|package.json|package-lock.json|sites/website/docs/*)
+                  full=true
+                  ;;
+                packages/fast-build/*|packages/fast-element/*|sites/website/versions/3x/*)
+                  selected_3x=true
+                  ;;
+                sites/website/versions/1x/*)
+                  selected_1x=true
+                  ;;
+                sites/website/versions/2x/*)
+                  selected_2x=true
+                  ;;
+              esac
+            done
+          fi
+        fi
+
+        versions=()
+        if [[ "$full" != "true" ]]; then
+          [[ "$selected_1x" == "true" ]] && versions+=("1x")
+          [[ "$selected_2x" == "true" ]] && versions+=("2x")
+          [[ "$selected_3x" == "true" ]] && versions+=("3x")
+        fi
+
+        has_changes=false
+        if [[ "$full" == "true" || ${#versions[@]} -gt 0 ]]; then
+          has_changes=true
+        fi
+
+        echo "full=$full" >> "$GITHUB_OUTPUT"
+        echo "has_changes=$has_changes" >> "$GITHUB_OUTPUT"
+        echo "versions=${versions[*]}" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: detect
+    if: needs.detect.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -22,41 +102,80 @@ jobs:
     - uses: actions/setup-node@v6
       with:
         node-version: 22
-
-    - name: Set Git User
-      run: |
-        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
-        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
-
-    - name: Cache multiple paths
-      uses: actions/cache@v4
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+        cache: npm
 
     - name: Install package dependencies
       run: npm ci
 
-    - name: Install wasm-pack
+    - if: needs.detect.outputs.full == 'true' || contains(needs.detect.outputs.versions, '3x')
+      name: Install wasm-pack
       run: cargo install wasm-pack
 
-    - name: Build workspaces
-      run: npm run build
+    - name: Build documentation
+      env:
+        FULL_BUILD: ${{ needs.detect.outputs.full }}
+        VERSIONS: ${{ needs.detect.outputs.versions }}
+      shell: bash
+      run: |
+        if [[ "$FULL_BUILD" == "true" ]]; then
+          npx lage build --to @microsoft/fast-site --verbose
+        else
+          scopes=()
+          for version in $VERSIONS; do
+            scopes+=("@microsoft/fast-site-$version")
+          done
+          npx lage build --to "${scopes[@]}" --verbose
+        fi
 
-    - name: Build GitHub Pages
-      run: npm run build:gh-pages
-
-    - name: Deploy GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
+    - uses: actions/checkout@v4
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: sites/website/build # The folder the action should deploy.
-        target-folder: docs # The folder on the branch to deploy to.
-        clean: true # Remove old files to clean up unique hash files.
-        single-commit: true # Only use a single commit to keep the branch free from git history.
+        fetch-depth: 1
+        path: .gh-pages
+        ref: gh-pages
+
+    - name: Update GitHub Pages content
+      env:
+        FULL_BUILD: ${{ needs.detect.outputs.full }}
+        VERSIONS: ${{ needs.detect.outputs.versions }}
+      shell: bash
+      run: |
+        if [[ "$FULL_BUILD" == "true" ]]; then
+          mkdir -p .gh-pages/docs
+          rsync -a --delete \
+            --exclude='.nojekyll' \
+            --exclude='CNAME' \
+            sites/website/docs/build/ .gh-pages/docs/
+        else
+          for version in $VERSIONS; do
+            public_version="${version%x}.x"
+            source="sites/website/versions/$version/build/docs/$public_version"
+            destination=".gh-pages/docs/docs/$public_version"
+
+            mkdir -p "$destination"
+            rsync -a --delete "$source/" "$destination/"
+          done
+        fi
+
+    - name: Commit GitHub Pages content
+      env:
+        FULL_BUILD: ${{ needs.detect.outputs.full }}
+        VERSIONS: ${{ needs.detect.outputs.versions }}
+      shell: bash
+      run: |
+        cd .gh-pages
+        git config user.name "Microsoft FAST Builds"
+        git config user.email "fastsvc@microsoft.com"
+        git add --all
+
+        if git diff --cached --quiet; then
+          echo "GitHub Pages content is already current."
+          exit 0
+        fi
+
+        target="$VERSIONS"
+        if [[ "$FULL_BUILD" == "true" ]]; then
+          target="full site"
+        fi
+
+        git commit -m "docs: deploy $target from $GITHUB_SHA"
+        git push origin HEAD:gh-pages
