@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Wed, 19 Aug 2026 18:18:30 GMT",
+      "version": "0.6.0",
+      "tag": "@microsoft/fast-test-harness_v0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "53567575355047635fa7d025691ca2ead291d681",
+            "comment": "Add multi-route support"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Jul 2026 19:34:55 GMT",
       "version": "0.4.1",
       "tag": "@microsoft/fast-test-harness_v0.4.1",
