@@ -34,6 +34,7 @@ export class SSRFixture extends CSRFixture {
      * @param waitFor - Additional custom elements to wait for.
      * @param testId - The test ID for the SSR fixture.
      * @param testTitle - The test title for the SSR fixture.
+     * @param base - The base path for the fixture page.
      */
     constructor(
         page: Page,
@@ -42,8 +43,9 @@ export class SSRFixture extends CSRFixture {
         waitFor: string[] = [],
         private readonly testId?: string,
         private readonly testTitle?: string,
+        base: string = "/",
     ) {
-        super(page, tagName, innerHTML, waitFor);
+        super(page, tagName, innerHTML, waitFor, base);
     }
 
     /**
@@ -122,7 +124,7 @@ export class SSRFixture extends CSRFixture {
             );
         }
 
-        const response = await this.page.request.post("/generate-fixture", {
+        const response = await this.page.request.post(`${this.base}generate-fixture`, {
             data: body,
         });
 

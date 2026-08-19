@@ -63,7 +63,7 @@ flowchart TD
 ## Module Map
 
 | File | Role |
-|------|------|
+| ------ | ------ |
 | `src/index.ts` | Package barrel — re-exports fixtures, assertions, build utilities, and SSR renderer |
 | `src/fixtures/index.ts` | Extends Playwright's `test` with `fastPage` fixture and `expect` with custom assertions |
 | `src/fixtures/csr-fixture.ts` | `CSRFixture` class — client-side rendering fixture |
@@ -87,10 +87,11 @@ flowchart TD
 
 ### FixtureOptions
 
-The `test.extend` call in `src/fixtures/index.ts` adds four configurable options to every test:
+The `test.extend` call in `src/fixtures/index.ts` adds five configurable options to every test:
 
 | Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
+| `base` | `string` | `"/"` | Base path for the test page and fixture generation endpoint, it must end in "/" |
 | `tagName` | `string` | `""` | Custom element tag name used to build the default template and locate the element |
 | `innerHTML` | `string` | `""` | Default inner HTML inserted into the element |
 | `waitFor` | `string[]` | `[]` | Additional custom element tag names to wait for before the test runs |
@@ -99,18 +100,18 @@ The `test.extend` call in `src/fixtures/index.ts` adds four configurable options
 These are configured per test suite with `test.use()`:
 
 ```ts
-test.use({ tagName: "my-button", innerHTML: "Click me" });
+test.use({ base: "/button/", tagName: "my-button", innerHTML: "Click me" });
 ```
 
-The `fastPage` fixture factory reads these options and instantiates either `CSRFixture` or `SSRFixture`. For CSR, it also navigates to `/`, emulates reduced motion, and waits for custom element definitions before handing control to the test.
+The `fastPage` fixture factory reads these options and instantiates either `CSRFixture` or `SSRFixture`. For CSR, it navigates to `base`, emulates reduced motion, and waits for custom element definitions before handing control to the test.
 
 ### CSRFixture
 
 `CSRFixture` is the base class for interacting with a component on a Playwright page.
 
 | Method | Description |
-|--------|-------------|
-| `goto(url)` | Navigates to a URL (defaults to `"/"`) |
+| -------- | ------------- |
+| `goto(url)` | Navigates to a URL (defaults to the fixture `base`) |
 | `setTemplate(templateOrOptions?)` | Injects HTML into `<body>`. Accepts a raw HTML string, an options object (`{ attributes, innerHTML }`), or no argument (uses defaults from `tagName`/`innerHTML`). Waits for stability after injection. |
 | `updateTemplate(locator, options)` | Modifies attributes and/or innerHTML of an already-rendered element in place. Boolean `true` sets the attribute, `false` removes it, strings set the value. |
 | `waitForCustomElement(...tagNames)` | Blocks until all specified elements are defined in `customElements` |
@@ -128,16 +129,16 @@ The `fastPage` fixture factory reads these options and instantiates either `CSRF
 | Override | Description |
 |----------|-------------|
 | `addStyleTag` | Buffers style options into `pendingStyles` until `setTemplate` is called. Only `{ content }` options are preserved — the content strings are serialized into the SSR generation request. Style options using `path` or `url` are not included in the SSR output. After `setTemplate`, calls pass through to the page directly. |
-| `setTemplate` | Builds a request body from the template options, posts it to `/generate-fixture`, navigates to the returned URL, and waits for stability. |
+| `setTemplate` | Builds a request body from the template options, posts it to `<base>/generate-fixture`, navigates to the returned URL, and waits for stability. |
 
 | Property | Description |
 |----------|-------------|
-| `url` | Read-only getter exposing the generated SSR fixture URL after `setTemplate` resolves (e.g. `/ssr-<testId>.html`). `undefined` before the first `setTemplate` call. |
+| `url` | Read-only getter exposing the generated SSR fixture URL after `setTemplate` resolves (e.g. `/button/ssr-<testId>.html`). `undefined` before the first `setTemplate` call. |
 
 **SSR request body construction**: The `setTemplate` override constructs a JSON body with these fields:
 
 | Field | Source |
-|-------|--------|
+| ------- | -------- |
 | `testId` | Derived from `testInfo.titlePath` — sanitized to `[a-z0-9_-]` |
 | `testTitle` | Formatted from the test title path |
 | `tagName` | From fixture options (when not using raw HTML) |
@@ -175,7 +176,7 @@ The server (`server.mjs`) is a plain Node.js HTTP server (using `node:http`) wit
 The harness does **not** contain the SSR entry files itself — they live in the consuming project's test directory. By default, `startServer` looks for files under `<cwd>/test/`:
 
 | File | Owner | Purpose |
-|------|-------|---------|
+| ------ | ------- | --------- |
 | `test/index.html` | Consumer | CSR entry page — loads the component registration script |
 | `test/ssr.html` | Consumer | SSR template with comment placeholders (`<!--fixture-->`, `<!--templates-->`, etc.) |
 | `test/src/entry-server.ts` | Consumer | Exports a `render(queryObj)` function that returns `{ template, fixture, preloadLinks }` |
@@ -185,18 +186,18 @@ The harness does **not** contain the SSR entry files itself — they live in the
 The `startServer(cwd, root, configFile)` function accepts overrides for each path:
 
 | Parameter | Default | Description |
-|-----------|---------|-------------|
+| ----------- | --------- | ------------- |
 | `cwd` | `process.cwd()` | Static file serving root |
 | `root` | `<cwd>/test` | Vite root (contains `index.html`, `ssr.html`) |
 | `configFile` | Vite auto-discovery | Vite config path |
 
 ### Startup
 
-`startServer(cwd, root, configFile, options)` accepts an `options` object with `port`, `base`, and `debug` properties (falling back to `PORT`, `BASE`, and `FAST_DEBUG` environment variables, then defaults). It initializes:
+`startServer(cwd, root, configFile, options)` accepts `port`, `base`, `debug`, and `routes`. The environment variables `PORT`, `BASE`, and `FAST_DEBUG` provide defaults. Each route maps a URL base to a test root. Without `routes`, the server creates one route from `base` and `root`.
 
-1. A Vite dev server in middleware mode, configured to ignore the temp directory and with a `fast-test-harness:resolve-css-links` plugin that resolves bare package CSS specifiers in `<link>` tags to `/@fs/` URLs
-2. A Node.js HTTP server with this request handling order: route handlers (`/generate-fixture`, `/ssr-*.html`) → static file serving from `cwd` → Vite middleware → HTML catch-all
-3. When `debug` is enabled: a `temp/` directory under `root` for writing SSR fixture HTML files (cleaned on startup, useful for post-failure inspection)
+1. One Vite dev server in middleware mode for all routes
+2. Route-scoped CSR shells, SSR endpoints, and `entry-server.ts` modules
+3. A `temp/` directory under each route root when `debug` is enabled
 
 The server listens on `port` (default `3278`).
 
@@ -205,16 +206,16 @@ The server listens on `port` (default `3278`).
 After Vite's middleware processes module transforms and HMR, a fallback handler serves the Vite-transformed `index.html` for navigation requests (those with `Accept: text/html`). The transformed HTML is cached after the first request. Non-HTML requests that Vite doesn't handle receive a 404.
 
 ```
-Browser GET /
+Browser GET <base>/
     → catch-all handler
-    → fs.readFile("index.html")
+    → fs.readFile("<route root>/index.html")
     → vite.transformIndexHtml(url, html)
-    → cache and respond with 200
+    → cache by base path and respond with 200
 ```
 
 ### SSR Request Flow
 
-The `/generate-fixture` POST endpoint handles SSR fixture generation:
+The `<base>/generate-fixture` POST endpoint handles SSR fixture generation:
 
 ```mermaid
 sequenceDiagram
@@ -223,11 +224,11 @@ sequenceDiagram
     participant V as Vite
     participant E as entry-server.ts
 
-    B->>S: POST /generate-fixture { testId, tagName, … }
+    B->>S: POST &lt;base&gt;/generate-fixture { testId, tagName, … }
     S->>S: Validate testId, parse attributes & styles
     S->>S: Check pendingGenerations (dedup)
     S->>S: Read ssr.html template
-    S->>V: ssrLoadModule("/src/entry-server.js")
+    S->>V: ssrLoadModule("&lt;base&gt;/src/entry-server.js")
     V-->>S: entry-server module
     S->>E: render(body)
     E-->>S: { template, fixture, preloadLinks }
@@ -235,8 +236,8 @@ sequenceDiagram
     S->>V: transformIndexHtml(url, assembled)
     V-->>S: Transformed HTML
     S->>S: Cache in fixtureCache
-    S-->>B: { url: "/ssr-testId.html" }
-    B->>S: GET /ssr-testId.html
+    S-->>B: { url: "&lt;base&gt;/ssr-testId.html" }
+    B->>S: GET &lt;base&gt;/ssr-testId.html
     S-->>B: Cached fixture HTML
 ```
 
@@ -245,10 +246,10 @@ When `debug` is enabled, the server also writes fixtures to `temp/ssr-<testId>.h
 ### Caching and Deduplication
 
 | Cache | Purpose |
-|-------|---------|
-| `cachedIndexHtml` | Caches the Vite-transformed `index.html` for CSR — avoids re-reading and re-transforming on every navigation |
-| `fixtureCache` | Maps SSR fixture URLs to their rendered HTML — serves fixtures from memory without filesystem reads |
-| `pendingGenerations` | Deduplicates concurrent SSR generation requests for the same `testId` — if a generation is already in progress, subsequent requests await the same promise. This guards against retries of the same test dispatching overlapping requests before the first completes. |
+| ------- | --------- |
+| `cachedIndexHtml` | Caches one transformed `index.html` per base path |
+| `fixtureCache` | Maps route-scoped SSR fixture URLs to rendered HTML |
+| `pendingGenerations` | Deduplicates concurrent SSR generation requests by route-scoped fixture URL |
 
 ---
 
@@ -263,7 +264,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 **Options:**
 
 | Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `tagPrefix` | `string` | — | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | — | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | — | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
@@ -304,7 +305,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 `playwright.config.ts` provides a shared Playwright configuration for consumers:
 
 | Setting | Value |
-|---------|-------|
+| --------- | ------- |
 | `retries` | `3` in CI, `1` locally |
 | `timeout` | `10_000` in CI, `5_000` locally |
 | `fullyParallel` | `true` locally, `false` in CI |
@@ -320,7 +321,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 `vite.config.mjs` provides a shared Vite configuration:
 
 | Setting | Value |
-|---------|-------|
+| --------- | ------- |
 | `clearScreen` | `false` |
 | `resolve.conditions` | `["test"]` — enables the `test` condition in `package.json` exports maps, allowing packages to expose source files (`.ts`) directly to Vite instead of compiled output |
 | `server.port` | `3278` (from `PORT` env var) |
@@ -333,7 +334,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 ## Exports
 
 | Specifier | Contents |
-|-----------|----------|
+| ----------- | ---------- |
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, build utilities (`installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`) |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
