@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add multi-route support",
-  "packageName": "@microsoft/fast-test-harness",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
