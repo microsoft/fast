@@ -38,15 +38,14 @@ For FAST declarative tests in `@microsoft/fast-element`, these additional script
 | Task | Command |
 |---|---|
 | Playwright UI mode | `npm run test:ui:declarative -w @microsoft/fast-element` |
-| Start Vite dev server only | `npm run test-server:declarative -w @microsoft/fast-element` |
-| Dev mode (watch + server) | `npm run dev:declarative -w @microsoft/fast-element` |
+| Start declarative source server | `npm run test-server:declarative -w @microsoft/fast-element` |
 | Rebuild fixtures | `npm run build:fixtures -w @microsoft/fast-element` |
 | Build fixtures with webui | `npm run build:fixtures:webui -w @microsoft/fast-element` |
 | Run webui integration tests | `npm run test:webui-integration -w @microsoft/fast-element` |
 
 **Playwright UI mode** (`test:ui`) starts a visual test runner where you can select and debug individual tests, view traces, and inspect DOM snapshots.
 
-**Dev mode** (`dev`) runs the TypeScript compiler in watch mode alongside the Vite dev server, so changes are reflected immediately in the browser.
+**Declarative browser workflows** resolve `@microsoft/fast-element` package imports directly to `src` and let Vite transpile TypeScript on demand. Vite does not type-check these modules; the package build remains responsible for type checking, while `test:exports` imports every emitted package export.
 
 ### Through GitHub Actions
 
@@ -102,8 +101,10 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 ### Test file conventions
 
 - Test files use the `*.spec.ts` suffix (specifically `*.pw.spec.ts` for package `src/` tests).
-- Fixture tests live inside their fixture directory: `test/fixtures/<category>/<feature>/<feature>.spec.ts`.
-- Source-level tests are co-located next to the code they test: `src/<feature>/<feature>.pw.spec.ts`.
+- Tests for developer-authored declarative markup and directives live in the matching
+  `test/declarative/fixtures/<category>/<feature>/<feature>.spec.ts` fixture.
+- Tests for implementation APIs and lifecycle behavior are co-located with their source as
+  `src/<feature>/<feature>.pw.spec.ts`.
 
 ### Writing declarative fixture tests
 
