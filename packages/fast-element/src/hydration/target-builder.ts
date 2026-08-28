@@ -74,12 +74,18 @@ export interface ViewBehaviorBoundaries {
 }
 
 function isComment(node: Node): node is Comment {
-    return node.nodeType === Node.COMMENT_NODE;
+    return node.nodeType === 8;
 }
 
 function isText(node: Node): node is Text {
-    return node.nodeType === Node.TEXT_NODE;
+    return node.nodeType === 3;
 }
+
+function getNodeLength(node: Node): number {
+    return isComment(node) || isText(node) ? node.data.length : node.childNodes.length;
+}
+
+const hydrationNodeMask = 133;
 
 /**
  * Returns a range object inclusive of all nodes including and between the
@@ -94,11 +100,93 @@ export function createRangeForNodes(first: Node, last: Node): Range {
 
     // The lastIndex should be inclusive of the end of the lastChild. Obtain offset based
     // on usageNotes:  https://developer.mozilla.org/en-US/docs/Web/API/Range/setEnd#usage_notes
-    range.setEnd(
-        last,
-        isComment(last) || isText(last) ? last.data.length : last.childNodes.length,
-    );
+    range.setEnd(last, getNodeLength(last));
     return range;
+}
+
+type HydrationMove = (sibling?: boolean) => Node | null;
+
+function createHydrationTraversal(
+    firstNode: Node,
+    lastNode: Node,
+): [HydrationMove, () => void] {
+    const range = createRangeForNodes(firstNode, lastNode);
+    let walker =
+        range.startContainer === firstNode
+            ? document.createTreeWalker(range.commonAncestorContainer, hydrationNodeMask)
+            : null;
+    let hasReachedLastNode = lastNode.contains(firstNode);
+    let mutationMode = false;
+
+    if (walker !== null) {
+        walker.currentNode = firstNode;
+    }
+
+    function move(sibling?: boolean): Node | null {
+        if (
+            walker === null ||
+            (!mutationMode && sibling && walker.currentNode.contains(lastNode))
+        ) {
+            return null;
+        }
+
+        const current = walker.currentNode;
+        const candidate = sibling ? walker.nextSibling() : walker.nextNode();
+
+        if (mutationMode || !hasReachedLastNode || lastNode.contains(candidate)) {
+            if (candidate === lastNode) {
+                hasReachedLastNode = true;
+            }
+
+            return candidate;
+        }
+
+        walker.currentNode = current;
+        return null;
+    }
+
+    return [
+        move,
+        () => {
+            if (
+                walker !== null &&
+                !mutationMode &&
+                (range.startContainer !== firstNode ||
+                    range.endContainer !== lastNode ||
+                    range.endOffset !== getNodeLength(lastNode) ||
+                    !range.intersectsNode(walker.currentNode))
+            ) {
+                const current = walker.currentNode;
+                walker = document.createTreeWalker(walker.root, walker.whatToShow, {
+                    acceptNode: node =>
+                        range.comparePoint(node, 0) === 0
+                            ? NodeFilter.FILTER_ACCEPT
+                            : NodeFilter.FILTER_REJECT,
+                });
+                walker.currentNode = current;
+                mutationMode = true;
+            }
+        },
+    ];
+}
+
+function throwHydrationError(
+    node: Node,
+    factories: CompiledViewBehaviorFactory[],
+    expected: string,
+): never {
+    const result = getHydrationDiagnostic().formatStructuralError(
+        node,
+        getHostName(node),
+        expected,
+    );
+    throw new HydrationTargetElementError(
+        result.message,
+        factories,
+        node,
+        result.expected,
+        result.received,
+    );
 }
 
 /**
@@ -130,19 +218,7 @@ export function buildViewBindingTargets(
     lastNode: Node,
     factories: CompiledViewBehaviorFactory[],
 ): { targets: ViewBehaviorTargets; boundaries: ViewBehaviorBoundaries } {
-    const range = createRangeForNodes(firstNode, lastNode);
-    const treeRoot = range.commonAncestorContainer;
-    const walker = document.createTreeWalker(
-        treeRoot,
-        NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_TEXT,
-        {
-            acceptNode(node) {
-                return range.comparePoint(node, 0) === 0
-                    ? NodeFilter.FILTER_ACCEPT
-                    : NodeFilter.FILTER_REJECT;
-            },
-        },
-    );
+    const [move, update] = createHydrationTraversal(firstNode, lastNode);
 
     const targets: ViewBehaviorTargets = {};
     const boundaries: ViewBehaviorBoundaries = {};
@@ -151,11 +227,11 @@ export function buildViewBindingTargets(
     const hydrationIndexOffset = getHydrationIndexOffset(factories);
     let factoryPointer = hydrationIndexOffset;
 
-    let node: Node | null = (walker.currentNode = firstNode);
+    let node: Node | null = firstNode;
 
     while (node !== null) {
         switch (node.nodeType) {
-            case Node.ELEMENT_NODE: {
+            case 1: {
                 const element = node as Element;
                 const legacyIndices =
                     HydrationMarkup.parseLegacyAttributeBindingIndices(element);
@@ -165,20 +241,10 @@ export function buildViewBindingTargets(
                         const factoryIndex = index + hydrationIndexOffset;
                         const factory = factories[factoryIndex];
                         if (!factory) {
-                            const expected = formatNoMoreAttributeBindings(
-                                factories.length,
-                            );
-                            const result = getHydrationDiagnostic().formatStructuralError(
+                            throwHydrationError(
                                 node,
-                                getHostName(node),
-                                expected,
-                            );
-                            throw new HydrationTargetElementError(
-                                result.message,
                                 factories,
-                                element,
-                                result.expected,
-                                result.received,
+                                formatNoMoreAttributeBindings(factories.length),
                             );
                         }
 
@@ -187,6 +253,7 @@ export function buildViewBindingTargets(
                     }
 
                     HydrationMarkup.removeLegacyAttributeBindingMarkers(element);
+                    update();
                     break;
                 }
 
@@ -195,35 +262,26 @@ export function buildViewBindingTargets(
                     for (let i = 0; i < count; i++) {
                         const factory = factories[factoryPointer++];
                         if (!factory) {
-                            const expected = formatNoMoreAttributeBindings(
-                                factories.length,
-                            );
-                            const result = getHydrationDiagnostic().formatStructuralError(
+                            throwHydrationError(
                                 node,
-                                getHostName(node),
-                                expected,
-                            );
-                            throw new HydrationTargetElementError(
-                                result.message,
                                 factories,
-                                node as Element,
-                                result.expected,
-                                result.received,
+                                formatNoMoreAttributeBindings(factories.length),
                             );
                         }
                         targetFactory(factory, node, targets);
                     }
                     element.removeAttribute(HydrationMarkup.attributeMarkerName);
+                    update();
                 }
                 break;
             }
 
-            case Node.COMMENT_NODE: {
+            case 8: {
                 const data = (node as Comment).data;
                 if (HydrationMarkup.isElementBoundaryStartMarker(node)) {
                     // Element boundary — clear start marker and skip subtree
                     (node as Comment).data = "";
-                    skipToElementBoundaryEnd(walker, factories, node);
+                    skipToElementBoundaryEnd(move, factories, node);
                 } else if (HydrationMarkup.isContentBindingStartMarker(data)) {
                     // Content binding — consume next factory
                     const legacyIndex =
@@ -236,23 +294,15 @@ export function buildViewBindingTargets(
                     factoryPointer = Math.max(factoryPointer, factoryIndex + 1);
 
                     if (!factory) {
-                        const expected = formatNoMoreContentBindings(factories.length);
-                        const result = getHydrationDiagnostic().formatStructuralError(
+                        throwHydrationError(
                             node,
-                            getHostName(node),
-                            expected,
-                        );
-                        throw new HydrationTargetElementError(
-                            result.message,
                             factories,
-                            node,
-                            result.expected,
-                            result.received,
+                            formatNoMoreContentBindings(factories.length),
                         );
                     }
                     targetContentBinding(
                         node as Comment,
-                        walker,
+                        move,
                         factory,
                         factories,
                         targets,
@@ -263,39 +313,25 @@ export function buildViewBindingTargets(
             }
         }
 
-        node = walker.nextNode();
+        node = move();
     }
 
-    range.detach();
     return { targets, boundaries };
 }
 
 function targetContentBinding(
     node: Comment,
-    walker: TreeWalker,
+    move: HydrationMove,
     factory: CompiledViewBehaviorFactory,
     factories: CompiledViewBehaviorFactory[],
     targets: ViewBehaviorTargets,
     boundaries: ViewBehaviorBoundaries,
 ) {
-    const nodes: Node[] = [];
-    let current: Node | null = walker.nextSibling();
+    let current: Node | null = move(true);
     node.data = "";
 
     if (current === null) {
-        const expected = expectedContentAfterStartMarker;
-        const result = getHydrationDiagnostic().formatStructuralError(
-            node,
-            getHostName(node),
-            expected,
-        );
-        throw new HydrationTargetElementError(
-            result.message,
-            factories,
-            node,
-            result.expected,
-            result.received,
-        );
+        throwHydrationError(node, factories, expectedContentAfterStartMarker);
     }
 
     const first = current;
@@ -311,30 +347,17 @@ function targetContentBinding(
                 depth--;
             }
         }
-        nodes.push(current);
-        current = walker.nextSibling();
+        current = move(true);
     }
 
     if (current === null) {
-        const expected = expectedContentEndMarker;
-        const result = getHydrationDiagnostic().formatStructuralError(
-            node,
-            getHostName(node),
-            expected,
-        );
-        throw new HydrationTargetElementError(
-            result.message,
-            factories,
-            node,
-            result.expected,
-            result.received,
-        );
+        throwHydrationError(node, factories, expectedContentEndMarker);
     }
 
     (current as Comment).data = "";
 
-    if (nodes.length === 1 && isText(nodes[0])) {
-        targetFactory(factory, nodes[0], targets);
+    if (isText(first) && first.nextSibling === current) {
+        targetFactory(factory, first, targets);
     } else {
         // If current === first, it means there is no content in
         // the view. This happens when a `when` directive evaluates false,
@@ -346,11 +369,11 @@ function targetContentBinding(
             };
         }
         // Insert a text node so text content binding targets it
-        const dummyTextNode = current.parentNode!.insertBefore(
-            document.createTextNode(""),
-            current,
+        targetFactory(
+            factory,
+            current.parentNode!.insertBefore(document.createTextNode(""), current),
+            targets,
         );
-        targetFactory(factory, dummyTextNode, targets);
     }
 }
 
@@ -359,42 +382,28 @@ function targetContentBinding(
  * depth counting to handle nested element boundaries correctly.
  */
 function skipToElementBoundaryEnd(
-    walker: TreeWalker,
+    move: HydrationMove,
     factories: CompiledViewBehaviorFactory[],
     startNode: Node,
 ) {
     let depth = 0;
-    let current = walker.nextSibling();
+    let current = move(true);
     while (current !== null) {
         if (isComment(current)) {
             if (HydrationMarkup.isElementBoundaryStartMarker(current)) {
                 current.data = "";
                 depth++;
             } else if (HydrationMarkup.isElementBoundaryEndMarker(current)) {
-                if (depth === 0) {
-                    current.data = "";
+                current.data = "";
+                if (depth-- === 0) {
                     return;
                 }
-                current.data = "";
-                depth--;
             }
         }
-        current = walker.nextSibling();
+        current = move(true);
     }
 
-    const expected = expectedElementBoundaryEndMarker;
-    const result = getHydrationDiagnostic().formatStructuralError(
-        startNode,
-        getHostName(startNode),
-        expected,
-    );
-    throw new HydrationTargetElementError(
-        result.message,
-        factories,
-        startNode,
-        result.expected,
-        result.received,
-    );
+    throwHydrationError(startNode, factories, expectedElementBoundaryEndMarker);
 }
 
 /**
@@ -405,12 +414,8 @@ function skipToElementBoundaryEnd(
 function getHydrationIndexOffset(factories: CompiledViewBehaviorFactory[]): number {
     let offset = 0;
 
-    for (let i = 0, ii = factories.length; i < ii; ++i) {
-        if (factories[i].targetNodeId === "h") {
-            offset++;
-        } else {
-            break;
-        }
+    while (offset < factories.length && factories[offset].targetNodeId === "h") {
+        offset++;
     }
 
     return offset;
@@ -421,10 +426,11 @@ export function targetFactory(
     node: Node,
     targets: ViewBehaviorTargets,
 ): void {
-    if (factory.targetNodeId === undefined) {
+    const id = factory.targetNodeId;
+    if (id === undefined) {
         // Dev error, this shouldn't ever be thrown
         throw new Error("Factory could not be target to the node");
     }
 
-    targets[factory.targetNodeId] = node;
+    targets[id] = node;
 }
