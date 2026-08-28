@@ -100,10 +100,7 @@ test.describe("buildViewBindingTargets", () => {
             afterMarker: "1",
             lastChildMarker: null,
         });
-        expect(result.comparePointCalls).toBeGreaterThan(0);
-        expect(result.comparePointCalls).toBeLessThanOrEqual(
-            result.markerProcessingEvents,
-        );
+        expect(result.comparePointCalls).toBe(0);
         expect(result.comparePointCalls).toBeLessThan(result.candidateCount / 10);
     });
 
@@ -318,7 +315,7 @@ test.describe("buildViewBindingTargets", () => {
         });
     });
 
-    test("fails closed when attribute removal synchronously removes or moves the endpoint", async ({
+    test("matches a live Range when attribute removal mutates an endpoint", async ({
         page,
     }) => {
         const result = await page.evaluate(async () => {
@@ -339,19 +336,26 @@ test.describe("buildViewBindingTargets", () => {
                         return;
                     }
 
-                    const endpoint = this.parentElement!.querySelector("[data-endpoint]");
+                    const root = this.parentElement!;
+
+                    if (this.dataset.mutation === "move-first") {
+                        root.append(this);
+                        return;
+                    }
+
+                    const endpoint = root.querySelector("[data-endpoint]");
 
                     if (this.dataset.mutation === "remove") {
                         endpoint!.remove();
                     } else {
-                        this.parentElement!.append(endpoint!);
+                        root.append(endpoint!);
                     }
                 }
             }
 
             customElements.define("endpoint-mutator", EndpointMutator);
 
-            function createRoot(mutation: "remove" | "move") {
+            function createRoot(mutation: "remove" | "move" | "move-first") {
                 const root = document.createElement("div");
                 root.innerHTML = `
                     <endpoint-mutator
@@ -366,7 +370,7 @@ test.describe("buildViewBindingTargets", () => {
                 return root;
             }
 
-            function walkLegacy(mutation: "remove" | "move") {
+            function walkLegacy(mutation: "remove" | "move" | "move-first") {
                 const root = createRoot(mutation);
                 const first = root.querySelector("#first")!;
                 const last = root.querySelector("#last")!;
@@ -396,7 +400,7 @@ test.describe("buildViewBindingTargets", () => {
                 return visited;
             }
 
-            function build(mutation: "remove" | "move") {
+            function build(mutation: "remove" | "move" | "move-first") {
                 const root = createRoot(mutation);
 
                 const { targets } = buildViewBindingTargets(
@@ -417,9 +421,11 @@ test.describe("buildViewBindingTargets", () => {
                 legacy: {
                     remove: walkLegacy("remove"),
                     move: walkLegacy("move"),
+                    moveFirst: walkLegacy("move-first"),
                 },
                 remove: build("remove"),
                 move: build("move"),
+                moveFirst: build("move-first"),
             };
         });
 
@@ -427,6 +433,7 @@ test.describe("buildViewBindingTargets", () => {
             legacy: {
                 remove: ["first", "middle"],
                 move: ["first", "middle"],
+                moveFirst: ["first"],
             },
             remove: {
                 targets: ["first", "middle"],
@@ -434,6 +441,10 @@ test.describe("buildViewBindingTargets", () => {
             },
             move: {
                 targets: ["first", "middle"],
+                afterMarker: "1",
+            },
+            moveFirst: {
+                targets: ["first"],
                 afterMarker: "1",
             },
         });
@@ -1284,8 +1295,115 @@ test.describe("buildViewBindingTargets", () => {
             targets: ["first", "middle"],
             appendedMarker: "1",
         });
-        expect(result.current.comparePointCalls).toBeGreaterThan(0);
         expect(result.current.comparePointCalls).toBeLessThanOrEqual(5);
+    });
+
+    test("excludes children synchronously appended to the last endpoint", async ({
+        page,
+    }) => {
+        const result = await page.evaluate(async () => {
+            const {
+                buildViewBindingTargets,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            class LastEndpointAppender extends HTMLElement {
+                static observedAttributes = ["data-fe"];
+
+                attributeChangedCallback(
+                    _name: string,
+                    oldValue: string | null,
+                    newValue: string | null,
+                ) {
+                    if (oldValue === null || newValue !== null) {
+                        return;
+                    }
+
+                    const appended = document.createElement("b");
+                    appended.id = "appended";
+                    appended.setAttribute("data-fe", "1");
+                    this.parentElement!.querySelector("#last")!.append(appended);
+                }
+            }
+
+            customElements.define("last-endpoint-appender", LastEndpointAppender);
+
+            function createRoot() {
+                const root = document.createElement("div");
+                root.innerHTML = `
+                    <last-endpoint-appender
+                        id="first"
+                        data-fe="1"
+                    ></last-endpoint-appender>
+                    <i id="last" data-fe="1">
+                        <u id="original-child" data-fe="1"></u>
+                    </i>
+                `;
+                return root;
+            }
+
+            function walkLegacy() {
+                const root = createRoot();
+                const first = root.querySelector("#first")!;
+                const last = root.querySelector("#last")!;
+                const range = document.createRange();
+                range.setStart(first, 0);
+                range.setEnd(last, last.childNodes.length);
+                const walker = document.createTreeWalker(
+                    range.commonAncestorContainer,
+                    NodeFilter.SHOW_ELEMENT,
+                    {
+                        acceptNode(node) {
+                            return range.comparePoint(node, 0) === 0
+                                ? NodeFilter.FILTER_ACCEPT
+                                : NodeFilter.FILTER_REJECT;
+                        },
+                    },
+                );
+                const visited: string[] = [];
+                let node: Node | null = (walker.currentNode = first);
+
+                while (node !== null) {
+                    const element = node as Element;
+                    visited.push(element.id);
+                    element.removeAttribute("data-fe");
+                    node = walker.nextNode();
+                }
+
+                range.detach();
+                return {
+                    visited,
+                    appendedMarker: root
+                        .querySelector("#appended")!
+                        .getAttribute("data-fe"),
+                };
+            }
+
+            const root = createRoot();
+            const { targets } = buildViewBindingTargets(
+                root.querySelector("#first")!,
+                root.querySelector("#last")!,
+                ["first", "last", "originalChild", "appended"].map(targetNodeId => ({
+                    targetNodeId,
+                })),
+            );
+
+            return {
+                legacy: walkLegacy(),
+                current: {
+                    visited: Object.values(targets).map(node => (node as Element).id),
+                    appendedMarker: root
+                        .querySelector("#appended")!
+                        .getAttribute("data-fe"),
+                },
+            };
+        });
+
+        expect(result.legacy).toEqual({
+            visited: ["first", "last", "original-child"],
+            appendedMarker: "1",
+        });
+        expect(result.current).toEqual(result.legacy);
     });
 
     test("supports ordered endpoints in detached fragments and shadow roots", async ({
