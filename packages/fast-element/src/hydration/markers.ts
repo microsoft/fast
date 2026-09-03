@@ -26,9 +26,6 @@ export interface HydrationMarkerResolution {
  * @internal
  */
 export interface HydrationMarkerStrategy extends HydrationMarkers {
-    expectedContentAfterStartMarker: string;
-    expectedContentEndMarker: string;
-    expectedElementBoundaryEndMarker: string;
     resolveAttributeBindings(
         node: Element,
         factoryPointer: number,
@@ -104,11 +101,6 @@ function parseAttributeBindingCount(node: Element): number | null {
  */
 export const HydrationMarkup = createHydrationMarkers({
     attributeMarkerName: "data-fe",
-    expectedContentAfterStartMarker:
-        "content following `<!--fe:b-->` content binding marker",
-    expectedContentEndMarker: "matching `<!--fe:/b-->` content binding close marker",
-    expectedElementBoundaryEndMarker:
-        "matching `<!--fe:/e-->` element boundary close marker",
 
     contentBindingStartMarker(): string {
         return "fe:b";

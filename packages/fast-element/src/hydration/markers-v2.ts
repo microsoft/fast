@@ -111,12 +111,6 @@ function removeAttributeBindingMarkers(node: Element): void {
  * @public
  */
 export const markers_v2: HydrationMarkers = createHydrationMarkers({
-    expectedContentAfterStartMarker:
-        "content following a `fe-b$$start$$...$$fe-b` content binding marker",
-    expectedContentEndMarker:
-        "matching `fe-b$$end$$...$$fe-b` content binding close marker",
-    expectedElementBoundaryEndMarker:
-        "matching `fe-eb$$end$$...$$fe-eb` element boundary close marker",
     resolveAttributeBindings(
         node: Element,
         factoryPointer: number,

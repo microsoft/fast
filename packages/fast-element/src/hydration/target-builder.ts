@@ -11,6 +11,9 @@ import {
 } from "./diagnostics.js";
 import { getHydrationMarkers, type HydrationMarkerStrategy } from "./markers.js";
 import {
+    expectedContentAfterStartMarker,
+    expectedContentEndMarker,
+    expectedElementBoundaryEndMarker,
     formatNoMoreAttributeBindings,
     formatNoMoreContentBindings,
 } from "./messages.js";
@@ -257,11 +260,10 @@ function targetContentBinding(
     node.data = "";
 
     if (current === null) {
-        const expected = markers.expectedContentAfterStartMarker;
         const result = getHydrationDiagnostic().formatStructuralError(
             node,
             getHostName(node),
-            expected,
+            expectedContentAfterStartMarker,
         );
         throw new HydrationTargetElementError(
             result.message,
@@ -290,11 +292,10 @@ function targetContentBinding(
     }
 
     if (current === null) {
-        const expected = markers.expectedContentEndMarker;
         const result = getHydrationDiagnostic().formatStructuralError(
             node,
             getHostName(node),
-            expected,
+            expectedContentEndMarker,
         );
         throw new HydrationTargetElementError(
             result.message,
@@ -357,11 +358,10 @@ function skipToElementBoundaryEnd(
         current = walker.nextSibling();
     }
 
-    const expected = markers.expectedElementBoundaryEndMarker;
     const result = getHydrationDiagnostic().formatStructuralError(
         startNode,
         getHostName(startNode),
-        expected,
+        expectedElementBoundaryEndMarker,
     );
     throw new HydrationTargetElementError(
         result.message,

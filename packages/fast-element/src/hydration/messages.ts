@@ -16,6 +16,13 @@
  */
 export const unknownHostName = "unknown";
 
+// -- Structural expectations -------------------------------------------------
+
+export const expectedContentAfterStartMarker =
+    "content following the content binding start marker";
+export const expectedContentEndMarker = "a matching content binding end marker";
+export const expectedElementBoundaryEndMarker = "a matching element boundary end marker";
+
 // -- Aspect labels (consumed by the opt-in hydrationDebugger) ----------------
 
 export const aspectLabelAttribute = "attribute";
