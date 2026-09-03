@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "Remove support for legacy indexed hydration markers.",
+  "type": "minor",
+  "comment": "Add opt-in hydration support for FAST Element 2.x indexed markers.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
