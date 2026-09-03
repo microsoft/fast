@@ -20,7 +20,7 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 fast build [options]
         │
         ▼
-  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy, --config, --stream
+  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy, --markers_v2, --config, --stream
         │
         ├─ loadConfig(configPath)             ← load fast-build.config.json
         │       │
@@ -48,11 +48,11 @@ fast build [options]
         ▼
   stream?
      ├─ false
-     │    ├─ templates loaded → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy)
+     │    ├─ templates loaded → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, false, markers_v2)
      │    └─ no templates     → wasm.render(entry, state?)
      │              ▼
      │        fs.writeFileSync(output, rendered)
-     └─ true  → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, true)
+     └─ true  → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, true, markers_v2)
                     ▼
               JSON.parse(chunksJson) → process.stdout.write(chunk)
 ```
@@ -113,7 +113,7 @@ CLI-provided paths are resolved relative to the current working directory (the d
 
 ### Validation
 
-The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, or `stream`; `stream` must be a JSON boolean and other values must be strings. Convert config keys must be one of `syntax`, `template`, `output`, or `overwrite`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
+The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, `markers_v2`, or `stream`; `markers_v2` and `stream` must be JSON booleans and other values must be strings. Convert config keys must be one of `syntax`, `template`, `output`, or `overwrite`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
 
 ### Helpers
 
@@ -232,8 +232,8 @@ The build WASM module exposes four functions; the CLI uses the entry renderer wh
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
-| `wasm.render_with_templates(entry, templatesJson, state?, strategy)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. |
-| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. |
+| `wasm.render_with_templates(entry, templatesJson, state?, strategy, markers_v2?)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
+| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?, markers_v2?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>`, any forwarded `shadowrootAttributes`, and a `hostAttributes` array carrying the attributes declared on the inner `<template>` element. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>` and merging `hostAttributes` onto the rendered host element opening tag (author host attributes win on conflicts; client-only attrs and `{{expr}}` / `?name="{{expr}}"` bindings are handled by the WASM renderer — see the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details). It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.

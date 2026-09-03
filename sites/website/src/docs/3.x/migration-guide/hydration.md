@@ -40,8 +40,8 @@ Key migration points:
 3. `needs-hydration` and `defer-hydration` are no longer required in rendered
    markup.
 4. Hydration callbacks are replaced by hydration promises.
-5. SSR hydration marker syntax changed; server and client FAST versions must
-   match.
+5. SSR hydration marker syntax changed. FAST Element 3.x markers are used by
+   default, with an explicit compatibility option for 2.x server output.
 
 ## Install hydration explicitly
 
@@ -201,14 +201,35 @@ If you used `@microsoft/fast-ssr` or custom SSR tooling, update the renderer to 
 new marker format before loading the v3 client. If you use `@microsoft/fast-build`,
 upgrade it with `@microsoft/fast-element` and rebuild the output.
 
+For a staged migration where the server still emits FAST Element 2.x indexed
+markers, configure the v3 client explicitly:
+
+```ts
+import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ markers: markers_v2 });
+```
+
+Configure `@microsoft/fast-build` with the matching marker option:
+
+```json
+{
+    "markers_v2": true
+}
+```
+
+The v2 reader accepts the old indexed comment and attribute marker formats. It
+does not make a FAST Element 2.x client understand 3.x output, and it does not
+provide compatibility for unrelated template or runtime differences.
+
 ## Keep renderer and client versions in sync
 
 Hydration succeeds when the HTML produced by the server matches the template and
 data that the client runtime sees during the element's first render. The
-renderer and client both rely on the same depth-first binding order and marker
-syntax. Deploy server-rendered output and client bundles together so old marker
-output is not hydrated by the v3 client, and the v3 marker output is not loaded
-with an older client.
+renderer and client both rely on compatible binding order and marker syntax.
+Deploy server-rendered output and client bundles together. When a staged
+migration requires a v3 client to hydrate v2 marker output, select
+`enableHydration({ markers: markers_v2 })`; the default reader expects v3 markers.
 
 Do not minify or sanitize away FAST comments or `data-fe` attributes before the
 client loads. A missing `fe:/b` marker, an invalid `data-fe` count, or a changed
@@ -252,6 +273,8 @@ Hydration mismatch in <my-element>.
 | `deferHydrationAttribute` | `@microsoft/fast-element/hydration.js` | Legacy `defer-hydration` attribute string for compatibility code. |
 | `HydrationTracker` | `@microsoft/fast-element/hydration.js` | Standalone hydration lifecycle tracker class. |
 | `HydrationOptions` | `@microsoft/fast-element/hydration.js` | Type for hydration configuration options. |
+| `HydrationMarkers` | `@microsoft/fast-element/hydration.js` | Contract for selecting a hydration marker reader. |
+| `markers_v2` | `@microsoft/fast-element/hydration.js` | Opt-in reader for FAST Element 2.x indexed hydration markers. |
 
 ## Migration checklist
 

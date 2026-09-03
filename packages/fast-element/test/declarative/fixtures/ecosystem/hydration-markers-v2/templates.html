@@ -1,0 +1,9 @@
+<f-template name="hydration-markers-v2-element">
+    <template>
+        <input data-server-node="input" f-ref="{input}">
+        <button ?disabled="{{disabled}}" @click="{increment()}">Increment</button>
+        <f-repeat value="{{item in items}}">
+            <span>{{item}}</span>
+        </f-repeat>
+    </template>
+</f-template>
