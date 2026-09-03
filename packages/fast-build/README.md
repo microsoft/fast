@@ -41,6 +41,7 @@ fast convert [options]
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided in non-streaming mode or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
+| `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
 | `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
 | `--stream[=true/false]` | `false` | Write rendered HTML chunks directly to stdout instead of writing `--output`. Valueless `--stream` is treated as `true`. |
 
@@ -181,7 +182,8 @@ Instead of passing every option on the command line, you can place a `fast-build
     "entry": "index.html",
     "state": "state.json",
     "output": "output.html",
-    "templates": "./components/**/*.html"
+    "templates": "./components/**/*.html",
+    "markers_v2": true
 }
 ```
 
@@ -195,7 +197,7 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, and `stream`. Unknown keys produce an error. Values must be strings except `stream`, which must be a JSON boolean (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values, including `--stream=false` overriding `"stream": true`.
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, `markers_v2`, and `stream`. Unknown keys produce an error. Values must be strings except `markers_v2` and `stream`, which must be JSON booleans (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values, including `--stream=false` overriding `"stream": true`.
 
 ## Convert
 

@@ -95,11 +95,11 @@ pub fn render_when(
         })?;
 
     let output = if let Some(hy) = hydration {
-        hy.next_binding();
-        let start = hy.content_start_marker();
-        let end = hy.content_end_marker();
+        let index = hy.next_binding();
+        let start = hy.content_start_marker(index);
+        let end = hy.content_end_marker(index);
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = HydrationScope::new();
+            let mut child_scope = HydrationScope::new(config.markers_v2);
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false, config)?
         } else {
             String::new()
@@ -169,17 +169,19 @@ fn render_repeat_items(
 ) -> Result<String, RenderError> {
     match hydration {
         Some(hy) => {
-            hy.next_binding();
-            let outer_start = hy.content_start_marker();
-            let outer_end = hy.content_end_marker();
+            let binding_index = hy.next_binding();
+            let outer_start = hy.content_start_marker(binding_index);
+            let outer_end = hy.content_end_marker(binding_index);
             let mut parts: Vec<String> = Vec::with_capacity(items.len());
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                let mut item_scope = HydrationScope::new();
+                let mut item_scope = HydrationScope::new(config.markers_v2);
                 let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false, config)?;
                 parts.push(format!(
-                    "<!--fe:r-->{}<!--fe:/r-->",
-                    rendered
+                    "{}{}{}",
+                    hy.repeat_start_marker(i),
+                    rendered,
+                    hy.repeat_end_marker(i)
                 ));
             }
             Ok(format!("{}{}{}", outer_start, parts.concat(), outer_end))
@@ -269,7 +271,7 @@ pub fn render_custom_element(
     let child_root = child_root_owned.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
-    let mut shadow_scope = HydrationScope::new();
+    let mut shadow_scope = HydrationScope::new(config.markers_v2);
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
     let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false, config)?;
     let shadowroot_attributes = build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
@@ -686,8 +688,8 @@ pub(crate) fn build_element_open_tag(
     let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
-            hy.binding_idx += total_attr;
-            format!("{} data-fe=\"{}\">", stripped, total_attr)
+            let marker = hy.attribute_marker(total_attr);
+            format!("{} {}>", stripped, marker)
         }
         None => format!("{}>", stripped),
     }

@@ -1,6 +1,8 @@
 mod common;
 use common::make_locator;
-use microsoft_fast_build::{render_with_locator, JsonValue};
+use microsoft_fast_build::{
+    render_stream_with_locator, render_with_locator, JsonValue, RenderConfig,
+};
 use std::collections::HashMap;
 
 fn hand_root(entries: Vec<(&str, JsonValue)>) -> JsonValue {
@@ -15,6 +17,51 @@ fn str_val(s: &str) -> JsonValue { JsonValue::String(s.to_string()) }
 fn bool_val(b: bool) -> JsonValue { JsonValue::Bool(b) }
 fn arr_val(items: Vec<JsonValue>) -> JsonValue { JsonValue::Array(items) }
 fn empty() -> JsonValue { hand_root(vec![]) }
+
+#[test]
+fn test_hydration_markers_v2() {
+    let locator = make_locator(&[(
+        "test-element",
+        r#"
+            <input f-ref="{input}">
+            <button ?disabled="{{disabled}}" @click="{increment()}">Increment</button>
+            <f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>
+        "#,
+    )]);
+    let root = hand_root(vec![
+        ("disabled", bool_val(false)),
+        ("items", arr_val(vec![str_val("one"), str_val("two")])),
+    ]);
+    let config = RenderConfig::new().with_markers_v2(true);
+    let result = render_with_locator(
+        "<test-element></test-element>",
+        &root,
+        &locator,
+        Some(&config),
+    ).unwrap();
+    let streamed = render_stream_with_locator(
+        "<test-element></test-element>",
+        &root,
+        &locator,
+        Some(&config),
+    ).unwrap().concat();
+
+    assert_eq!(streamed, result);
+    assert!(result.contains("data-fe-b-0"), "single attribute marker: {result}");
+    assert!(result.contains("data-fe-c-1-2"), "compact attribute marker: {result}");
+    assert!(
+        result.contains("<!--fe-b$$start$$3$$fast-build$$fe-b-->"),
+        "repeat content marker: {result}"
+    );
+    assert!(
+        result.contains("<!--fe-repeat$$start$$0$$fe-repeat-->"),
+        "repeat item marker: {result}"
+    );
+    assert!(
+        result.contains("<!--fe-b$$start$$0$$fast-build$$fe-b-->one"),
+        "repeat item content marker: {result}"
+    );
+}
 
 // ── Content bindings ──────────────────────────────────────────────────────────
 
