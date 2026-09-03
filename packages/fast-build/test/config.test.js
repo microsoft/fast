@@ -538,6 +538,54 @@ describe("config file loading", () => {
         run(["--config=sub/fast-build.config.json"], dir);
         assert.ok(fs.existsSync(path.join(subDir, "out.html")));
     });
+
+    it("forwards markers_v2 from config to the renderer", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                templates: "templates.html",
+                markers_v2: true,
+            },
+        });
+        fs.writeFileSync(
+            path.join(dir, "templates.html"),
+            '<f-template name="my-el"><template>{{text}}</template></f-template>',
+        );
+
+        const { calls } = runWithStubbedWasm([], dir);
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+
+        assert.ok(renderCall);
+        assert.equal(renderCall.markersV2, true);
+    });
+
+    it("lets the valueless --markers_v2 option override config", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                templates: "templates.html",
+                markers_v2: false,
+            },
+        });
+        fs.writeFileSync(
+            path.join(dir, "templates.html"),
+            '<f-template name="my-el"><template>{{text}}</template></f-template>',
+        );
+
+        const { calls } = runWithStubbedWasm(["--markers_v2"], dir);
+        const renderCall = calls.find(
+            call => call.name === "render_entry_with_templates",
+        );
+
+        assert.ok(renderCall);
+        assert.equal(renderCall.markersV2, true);
+    });
 });
 
 describe("config validation", () => {
@@ -596,6 +644,21 @@ describe("config validation", () => {
         const result = runWithStderr([], dir);
         assert.equal(result.exitCode, 1);
         assert.ok(result.stderr.includes('Value for "stream"'));
+        assert.ok(result.stderr.includes("must be a boolean"));
+    });
+
+    it("rejects non-boolean markers_v2 config values", () => {
+        writeFixture(dir, {
+            config: {
+                entry: "entry.html",
+                state: "state.json",
+                output: "out.html",
+                markers_v2: "true",
+            },
+        });
+        const result = runWithStderr([], dir);
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes('Value for "markers_v2"'));
         assert.ok(result.stderr.includes("must be a boolean"));
     });
 });

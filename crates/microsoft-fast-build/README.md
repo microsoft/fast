@@ -535,7 +535,8 @@ The `camelCase` strategy only applies to "plain" attributes. It does **not** aff
 use microsoft_fast_build::{RenderConfig, AttributeNameStrategy, render_template_with_locator};
 
 let config = RenderConfig::new()
-    .with_attribute_name_strategy(AttributeNameStrategy::CamelCase);
+    .with_attribute_name_strategy(AttributeNameStrategy::CamelCase)
+    .with_markers_v2(true);
 
 let result = render_template_with_locator(
     r#"<my-el foo-bar="hello"></my-el>"#,
@@ -554,7 +555,8 @@ const html = render_entry_with_templates(
     templatesJson,
     stateJson,
     "camelCase", // or "none"
-    false        // optional stream flag
+    false,       // optional stream flag
+    true         // optional markers_v2 flag
 );
 
 const chunksJson = render_entry_with_templates(
@@ -562,11 +564,12 @@ const chunksJson = render_entry_with_templates(
     templatesJson,
     stateJson,
     "camelCase",
+    true,
     true
 );
 ```
 
-Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering. Passing `true` as the optional fifth argument switches `render_entry_with_templates` to stream mode and returns a JSON array string of HTML chunks; omitted or `false` returns normal HTML.
+Use `render_with_templates` for the original non-entry template-rendering semantics; use `render_entry_with_templates` for top-level entry HTML rendering. Passing `true` as the optional fifth argument switches `render_entry_with_templates` to stream mode and returns a JSON array string of HTML chunks; omitted or `false` returns normal HTML. Passing `true` as the optional sixth `markers_v2` argument emits FAST Element 2.x indexed hydration markers.
 
 Passing `"none"` or `""` as the strategy uses the default behaviour.
 
@@ -575,6 +578,11 @@ Passing `"none"` or `""` as the strategy uses the default behaviour.
 ## Hydration Markers
 
 When a custom element's shadow template is rendered, the renderer emits **hydration markers** so the FAST client runtime can efficiently locate and patch DOM nodes without a full diff.
+
+FAST Element 3.x data-free markers are emitted by default. Set
+`RenderConfig::with_markers_v2(true)` in Rust, or pass the `markers_v2` WASM/CLI
+option, to emit FAST Element 2.x indexed markers for a client configured with
+`enableHydration({ markers: markers_v2 })`.
 
 ### Content binding markers
 

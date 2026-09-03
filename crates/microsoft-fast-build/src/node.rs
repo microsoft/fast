@@ -7,7 +7,7 @@ use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 use crate::attribute::{
     find_next_plain_html_tag, count_tag_attribute_bindings,
-    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_count_marker, find_tag_end,
+    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_hydration_marker, find_tag_end,
 };
 
 /// Recursively render a template fragment against root state and loop variables.
@@ -100,10 +100,10 @@ fn process_plain_html_tags(
                     // Allocate binding indices for this tag's bindings, resolve {{expr}}
                     // attribute values, strip client-only attrs, then inject the
                     // hydration marker `data-fe="N"`.
-                    hy.binding_idx += total;
                     let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
                     let stripped = strip_client_only_attrs(&resolved);
-                    result.push_str(&inject_count_marker(&stripped, total));
+                    let marker = hy.attribute_marker(total);
+                    result.push_str(&inject_hydration_marker(&stripped, &marker));
                 } else {
                     // No bindings — still strip client-only attrs but no marker needed.
                     result.push_str(&strip_client_only_attrs(tag_str));
@@ -162,12 +162,12 @@ fn wrap_content_binding(
     match hydration {
         None => out,
         Some(hy) => {
-            hy.next_binding();
+            let index = hy.next_binding();
             format!(
                 "{}{}{}",
-                hy.content_start_marker(),
+                hy.content_start_marker(index),
                 out,
-                hy.content_end_marker()
+                hy.content_end_marker(index)
             )
         }
     }
