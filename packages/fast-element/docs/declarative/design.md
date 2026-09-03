@@ -256,7 +256,7 @@ packages/fast-element/
 │       └── syntax.ts          # Syntax delimiter constants
 │   └── hydration/
 │       ├── markers.ts         # Default 3.x marker reader and marker strategy contract
-│       └── markers_v2.ts      # Opt-in 2.x indexed marker reader
+│       └── markers-v2.ts      # Opt-in 2.x indexed marker reader
 ├── scripts/
 │   └── declarative/           # Fixture build + webui integration scripts
 └── test/

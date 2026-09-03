@@ -69,7 +69,7 @@ export type {
 export type { HydrationDebugger } from "./hydration-debugger.js";
 export { hydrationDebugger } from "./hydration-debugger.js";
 export type { HydrationMarkers } from "./markers.js";
-export { v2 } from "./markers_v2.js";
+export { v2 } from "./markers-v2.js";
 export type {
     ViewBehaviorBoundaries,
     ViewBoundaries,
