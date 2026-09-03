@@ -157,39 +157,6 @@ export function buildViewBindingTargets(
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
                 const element = node as Element;
-                const legacyIndices =
-                    HydrationMarkup.parseLegacyAttributeBindingIndices(element);
-
-                if (legacyIndices !== null) {
-                    for (const index of legacyIndices) {
-                        const factoryIndex = index + hydrationIndexOffset;
-                        const factory = factories[factoryIndex];
-                        if (!factory) {
-                            const expected = formatNoMoreAttributeBindings(
-                                factories.length,
-                            );
-                            const result = getHydrationDiagnostic().formatStructuralError(
-                                node,
-                                getHostName(node),
-                                expected,
-                            );
-                            throw new HydrationTargetElementError(
-                                result.message,
-                                factories,
-                                element,
-                                result.expected,
-                                result.received,
-                            );
-                        }
-
-                        targetFactory(factory, node, targets);
-                        factoryPointer = Math.max(factoryPointer, factoryIndex + 1);
-                    }
-
-                    HydrationMarkup.removeLegacyAttributeBindingMarkers(element);
-                    break;
-                }
-
                 const count = HydrationMarkup.parseAttributeBindingCount(element);
                 if (count !== null) {
                     for (let i = 0; i < count; i++) {
@@ -226,14 +193,7 @@ export function buildViewBindingTargets(
                     skipToElementBoundaryEnd(walker, factories, node);
                 } else if (HydrationMarkup.isContentBindingStartMarker(data)) {
                     // Content binding — consume next factory
-                    const legacyIndex =
-                        HydrationMarkup.parseLegacyContentBindingStartIndex(data);
-                    const factoryIndex =
-                        legacyIndex === null
-                            ? factoryPointer++
-                            : legacyIndex + hydrationIndexOffset;
-                    const factory = factories[factoryIndex];
-                    factoryPointer = Math.max(factoryPointer, factoryIndex + 1);
+                    const factory = factories[factoryPointer++];
 
                     if (!factory) {
                         const expected = formatNoMoreContentBindings(factories.length);
