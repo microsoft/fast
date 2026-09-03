@@ -212,6 +212,16 @@ enableHydration({
 });
 ```
 
+FAST Element 3.x data-free hydration markers are used by default. To hydrate
+server output that still contains FAST Element 2.x indexed markers, opt into the
+legacy marker reader:
+
+```typescript
+import { enableHydration, v2 } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({ markers: v2 });
+```
+
 When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. Two properties on the controller let you inspect the result:
 
 - **`isPrerendered: Promise<boolean>`** — resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.

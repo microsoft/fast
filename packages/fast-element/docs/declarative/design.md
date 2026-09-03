@@ -242,7 +242,7 @@ packages/fast-element/
 │   ├── components/
 │   │   ├── schema.ts          # Shared Schema class + schemaRegistry
 │   │   └── definition-schema-transforms.ts # Definition-scoped schema transform storage
-│   └── declarative/
+│   ├── declarative/
 │       ├── index.ts           # Public declarative entrypoint implementation
 │       ├── interfaces.ts      # Message enum (error codes)
 │       ├── debug.ts           # Human-readable declarative debug messages
@@ -254,6 +254,9 @@ packages/fast-element/
 │       ├── observer-map-utilities.ts # Shared observer-map helpers
 │       ├── utilities.ts       # Declarative parsing helpers
 │       └── syntax.ts          # Syntax delimiter constants
+│   └── hydration/
+│       ├── markers.ts         # Default 3.x marker reader and marker strategy contract
+│       └── markers-v2.ts      # Opt-in 2.x indexed marker reader
 ├── scripts/
 │   └── declarative/           # Fixture build + webui integration scripts
 └── test/
@@ -319,6 +322,11 @@ Primary declarative exports intended for application code:
 | `TemplateParser` | `@microsoft/fast-element/declarative.js` standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `Schema` | `@microsoft/fast-element/schema.js` JSON schema builder that records binding paths discovered during template parsing. Each instance owns its own schema map and registers itself in the `schemaRegistry` for cross-element `$ref` resolution. |
 | `schemaRegistry` | `@microsoft/fast-element/schema.js` module-level `Map<string, Map<string, JSONSchema>>` that indexes schemas by custom element name. Used for cross-element lookups (e.g. nested component `$ref` resolution). |
+
+Hydration marker selection is available from
+`@microsoft/fast-element/hydration.js`. FAST Element 3.x data-free markers are
+the default; `enableHydration({ markers: v2 })` opts into the FAST Element 2.x
+indexed marker reader for staged server/client migrations.
 
 Primary map extension exports:
 
@@ -700,6 +708,12 @@ When declarative templates are used, the server must render:
 With `declarativeTemplate()`, connection gating happens before platform registration: the resolver waits for the matching `<f-template>` and keeps the definition concrete before elements can connect. Hydration can therefore start immediately when `ElementController.connect()` runs. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
 
 ### Hydration marker formats
+
+`enableHydration()` uses the FAST Element 3.x data-free marker reader by
+default. The marker strategy is shared by target discovery and nested repeat
+hydration so a view uses one consistent format throughout its hydration walk.
+The optional `v2` strategy contains the legacy indexed-marker parsing logic and
+is selected with `enableHydration({ markers: v2 })`.
 
 **Content bindings** use HTML comments (data-free, matched by string equality):
 
