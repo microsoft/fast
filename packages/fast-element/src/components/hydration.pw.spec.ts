@@ -451,7 +451,96 @@ test.describe("The prerendered content optimization", () => {
         expect(result.spanCount).toBe(3);
     });
 
-    test("should hydrate legacy indexed repeat markers", async ({ page }) => {
+    test("uses v3 markers by default and recognizes v2 markers only through the v2 reader", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            const {
+                HydrationMarkup,
+                v2,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            const defaultElement = document.createElement("div");
+            defaultElement.setAttribute("data-fe-b", "0 1");
+            defaultElement.setAttribute("data-fe-b-2", "");
+            defaultElement.setAttribute("data-fe-c-3-2", "");
+
+            const v2Element = document.createElement("div");
+            v2Element.setAttribute("data-fe-b", "0 1");
+            const v2Attributes = v2.resolveAttributeBindings(v2Element, 2, 2);
+            v2Attributes?.cleanup?.();
+
+            return {
+                defaults: {
+                    attributeCount:
+                        HydrationMarkup.parseAttributeBindingCount(defaultElement),
+                    contentEnd: HydrationMarkup.isContentBindingEndMarker(
+                        "fe-b$$end$$0$$scope$$fe-b",
+                    ),
+                    contentStart: HydrationMarkup.isContentBindingStartMarker(
+                        "fe-b$$start$$0$$scope$$fe-b",
+                    ),
+                    elementEnd: HydrationMarkup.isElementBoundaryEndMarker(
+                        document.createComment("fe-eb$$end$$element$$fe-eb"),
+                    ),
+                    elementStart: HydrationMarkup.isElementBoundaryStartMarker(
+                        document.createComment("fe-eb$$start$$element$$fe-eb"),
+                    ),
+                    repeatEnd: HydrationMarkup.isRepeatViewEndMarker(
+                        "fe-repeat$$end$$0$$fe-repeat",
+                    ),
+                    repeatStart: HydrationMarkup.isRepeatViewStartMarker(
+                        "fe-repeat$$start$$0$$fe-repeat",
+                    ),
+                },
+                v2: {
+                    attributeIndices: v2Attributes?.factoryIndices,
+                    attributeMarkersRemoved: v2Element.getAttributeNames().length === 0,
+                    contentEnd: v2.isContentBindingEndMarker("fe-b$$end$$0$$scope$$fe-b"),
+                    contentStart: v2.isContentBindingStartMarker(
+                        "fe-b$$start$$0$$scope$$fe-b",
+                    ),
+                    elementEnd: v2.isElementBoundaryEndMarker(
+                        document.createComment("fe-eb$$end$$element$$fe-eb"),
+                    ),
+                    elementStart: v2.isElementBoundaryStartMarker(
+                        document.createComment("fe-eb$$start$$element$$fe-eb"),
+                    ),
+                    repeatEnd: v2.isRepeatViewEndMarker("fe-repeat$$end$$0$$fe-repeat"),
+                    repeatStart: v2.isRepeatViewStartMarker(
+                        "fe-repeat$$start$$0$$fe-repeat",
+                    ),
+                },
+            };
+        });
+
+        expect(result).toEqual({
+            defaults: {
+                attributeCount: null,
+                contentEnd: false,
+                contentStart: false,
+                elementEnd: false,
+                elementStart: false,
+                repeatEnd: false,
+                repeatStart: false,
+            },
+            v2: {
+                attributeIndices: [2, 3],
+                attributeMarkersRemoved: true,
+                contentEnd: true,
+                contentStart: true,
+                elementEnd: true,
+                elementStart: true,
+                repeatEnd: true,
+                repeatStart: true,
+            },
+        });
+    });
+
+    test("hydrates legacy indexed repeat markers when configured", async ({ page }) => {
         await page.goto("/");
 
         const element = await page.evaluateHandle(async () => {
@@ -462,10 +551,11 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 repeat,
                 uniqueElementName,
+                v2,
                 // @ts-expect-error: Client module.
             } = await import("/main.js");
 
-            enableHydration();
+            enableHydration({ markers: v2 });
             const name = uniqueElementName();
 
             class TestElement extends FASTElement {
@@ -490,10 +580,6 @@ test.describe("The prerendered content optimization", () => {
             return container.firstElementChild;
         });
 
-        expect(await element.evaluate((x: any) => x.$fastController)).toEqual(
-            expect.anything(),
-        );
-
         const result = await element.evaluate(async (element: any) => {
             await element.$fastController.isHydrated;
             await new Promise(resolve => requestAnimationFrame(resolve));
@@ -508,7 +594,9 @@ test.describe("The prerendered content optimization", () => {
         expect(result.spanCount).toBe(2);
     });
 
-    test("should hydrate legacy indexed attribute markers", async ({ page }) => {
+    test("hydrates legacy indexed attribute markers when configured", async ({
+        page,
+    }) => {
         await page.goto("/");
 
         const element = await page.evaluateHandle(async () => {
@@ -519,10 +607,11 @@ test.describe("The prerendered content optimization", () => {
                 html,
                 ref,
                 uniqueElementName,
+                v2,
                 // @ts-expect-error: Client module.
             } = await import("/main.js");
 
-            enableHydration();
+            enableHydration({ markers: v2 });
             const name = uniqueElementName();
 
             class TestElement extends FASTElement {
@@ -554,10 +643,6 @@ test.describe("The prerendered content optimization", () => {
 
             return container.firstElementChild;
         });
-
-        expect(await element.evaluate((x: any) => x.$fastController)).toEqual(
-            expect.anything(),
-        );
 
         const result = await element.evaluate(async (element: any) => {
             await element.$fastController.isHydrated;
