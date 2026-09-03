@@ -325,7 +325,7 @@ Primary declarative exports intended for application code:
 
 Hydration marker selection is available from
 `@microsoft/fast-element/hydration.js`. FAST Element 3.x data-free markers are
-the default; `enableHydration({ markers: v2 })` opts into the FAST Element 2.x
+the default; `enableHydration({ markers: markers_v2 })` opts into the FAST Element 2.x
 indexed marker reader for staged server/client migrations.
 
 Primary map extension exports:
@@ -712,8 +712,8 @@ With `declarativeTemplate()`, connection gating happens before platform registra
 `enableHydration()` uses the FAST Element 3.x data-free marker reader by
 default. The marker strategy is shared by target discovery and nested repeat
 hydration so a view uses one consistent format throughout its hydration walk.
-The optional `v2` strategy contains the legacy indexed-marker parsing logic and
-is selected with `enableHydration({ markers: v2 })`.
+The optional `markers_v2` strategy contains the legacy indexed-marker parsing logic and
+is selected with `enableHydration({ markers: markers_v2 })`.
 
 **Content bindings** use HTML comments (data-free, matched by string equality):
 

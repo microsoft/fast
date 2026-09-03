@@ -48,10 +48,10 @@ render_template(template, state_str)
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
-| `config.rs` | `RenderConfig` struct and `AttributeNameStrategy` enum — rendering configuration options |
+| `config.rs` | `RenderConfig` struct, `AttributeNameStrategy` enum, and `markers_v2` option — rendering configuration options |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
-| `hydration.rs` | `HydrationScope` — binding index tracking and data-free marker generation per template scope |
+| `hydration.rs` | `HydrationScope` — binding index tracking and v3 data-free or opt-in v2 indexed marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
 | `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
@@ -83,7 +83,7 @@ The loop works like a cursor:
 2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
 3. If nothing is found, append `template[pos..]` to output and break.
 4. Otherwise, append the literal text from `pos` up to the directive's start.
-5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` markers.
+5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in the configured v3 data-free or v2 indexed markers.
 6. Append `chunk` and advance `pos` to `next_pos`.
 7. Repeat.
 
@@ -374,10 +374,10 @@ All render functions accept `config: Option<&RenderConfig>` as their last parame
 - `render_entry_template_stream_with_locator(template, state_str, locator, config)`
 - `render_entry_template_stream_with_locator_without_state(template, locator, config)`
 
-The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`), and `render_entry_with_templates` accepts an optional fifth `stream` boolean:
+The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`) and an optional `markers_v2` boolean. `render_entry_with_templates` also accepts an optional `stream` boolean:
 
-- `render_with_templates(entry, templates_json, state?, attribute_name_strategy?)`
-- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?)`
+- `render_with_templates(entry, templates_json, state?, attribute_name_strategy?, markers_v2?)`
+- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?, markers_v2?)`
 
 ---
 
@@ -542,8 +542,8 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 | Export | Signature | Description |
 |--------|-----------|-------------|
 | `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
-| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
-| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}`. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
+| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool, markers_v2?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
 
 ### `parse_f_templates`
@@ -649,7 +649,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**Data-free hydration markers.** Comment markers carry only a type indicator and start/end flag (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). The FAST client pairs them by balanced depth counting and derives factory-to-node mappings from DFS traversal order. `HydrationScope` only tracks `binding_idx` for attribute binding counts; it does not carry marker names or scope IDs.
+**Hydration marker formats.** Comment markers are data-free by default (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). When `RenderConfig.markers_v2` is enabled, `HydrationScope` emits FAST Element 2.x indexed comment markers and `data-fe-b-N` / `data-fe-c-START-COUNT` attribute markers instead.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 

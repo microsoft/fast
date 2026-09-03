@@ -52,7 +52,7 @@ let hookInstalled = false;
  * `HydrationTargetElementError`. The debugger module is tree-shaken
  * out of production hydration bundles unless explicitly imported.
  *
- * Pass `markers: v2` when hydrating server output that still uses FAST
+ * Pass `markers: markers_v2` when hydrating server output that still uses FAST
  * Element 2.x indexed hydration markers. FAST Element 3.x data-free markers
  * remain the default.
  *
@@ -84,9 +84,9 @@ let hookInstalled = false;
  *
  * @example FAST Element 2.x hydration markers
  * ```ts
- * import { enableHydration, v2 } from "@microsoft/fast-element/hydration.js";
+ * import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
  *
- * enableHydration({ markers: v2 });
+ * enableHydration({ markers: markers_v2 });
  * ```
  *
  * @param options - Optional hydration behavior.

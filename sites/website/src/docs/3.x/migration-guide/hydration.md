@@ -205,9 +205,17 @@ For a staged migration where the server still emits FAST Element 2.x indexed
 markers, configure the v3 client explicitly:
 
 ```ts
-import { enableHydration, v2 } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({ markers: v2 });
+enableHydration({ markers: markers_v2 });
+```
+
+Configure `@microsoft/fast-build` with the matching marker option:
+
+```json
+{
+    "markers_v2": true
+}
 ```
 
 The v2 reader accepts the old indexed comment and attribute marker formats. It
@@ -221,7 +229,7 @@ data that the client runtime sees during the element's first render. The
 renderer and client both rely on compatible binding order and marker syntax.
 Deploy server-rendered output and client bundles together. When a staged
 migration requires a v3 client to hydrate v2 marker output, select
-`enableHydration({ markers: v2 })`; the default reader expects v3 markers.
+`enableHydration({ markers: markers_v2 })`; the default reader expects v3 markers.
 
 Do not minify or sanitize away FAST comments or `data-fe` attributes before the
 client loads. A missing `fe:/b` marker, an invalid `data-fe` count, or a changed
@@ -266,7 +274,7 @@ Hydration mismatch in <my-element>.
 | `HydrationTracker` | `@microsoft/fast-element/hydration.js` | Standalone hydration lifecycle tracker class. |
 | `HydrationOptions` | `@microsoft/fast-element/hydration.js` | Type for hydration configuration options. |
 | `HydrationMarkers` | `@microsoft/fast-element/hydration.js` | Contract for selecting a hydration marker reader. |
-| `v2` | `@microsoft/fast-element/hydration.js` | Opt-in reader for FAST Element 2.x indexed hydration markers. |
+| `markers_v2` | `@microsoft/fast-element/hydration.js` | Opt-in reader for FAST Element 2.x indexed hydration markers. |
 
 ## Migration checklist
 

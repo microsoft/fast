@@ -1,6 +1,6 @@
 use crate::attribute::{
     count_tag_attribute_bindings, extract_directive_content, extract_directive_expr,
-    find_next_plain_html_tag, find_tag_end, inject_count_marker, parse_element_attributes,
+    find_next_plain_html_tag, find_tag_end, inject_hydration_marker, parse_element_attributes,
     read_tag_name, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
 };
 use crate::config::RenderConfig;
@@ -106,10 +106,10 @@ fn process_plain_html_tags(
         match hydration.as_mut() {
             Some(hy) => {
                 if total > 0 {
-                    hy.binding_idx += total;
                     let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
                     let stripped = strip_client_only_attrs(&resolved);
-                    result.push_str(&inject_count_marker(&stripped, total));
+                    let marker = hy.attribute_marker(total);
+                    result.push_str(&inject_hydration_marker(&stripped, &marker));
                 } else {
                     result.push_str(&strip_client_only_attrs(tag_str));
                 }
@@ -187,9 +187,9 @@ fn stream_when(
         })?;
 
     let chunks = if let Some(hy) = hydration {
-        hy.next_binding();
+        let index = hy.next_binding();
         let inner_chunks = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = HydrationScope::new();
+            let mut child_scope = HydrationScope::new(config.markers_v2);
             stream_node(
                 &inner,
                 root,
@@ -204,8 +204,8 @@ fn stream_when(
         };
         wrap_chunks_with_markers(
             inner_chunks,
-            hy.content_start_marker(),
-            hy.content_end_marker(),
+            &hy.content_start_marker(index),
+            &hy.content_end_marker(index),
         )
     } else if evaluate(&expr, root, loop_vars) {
         stream_node(&inner, root, loop_vars, locator, None, false, config)?
@@ -279,14 +279,12 @@ fn stream_repeat_items(
 ) -> Result<Vec<String>, RenderError> {
     match hydration {
         Some(hy) => {
-            hy.next_binding();
+            let binding_index = hy.next_binding();
             let mut chunks = Vec::new();
-            let repeat_start = hy.repeat_start_marker();
-            let repeat_end = hy.repeat_end_marker();
 
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                let mut item_scope = HydrationScope::new();
+                let mut item_scope = HydrationScope::new(config.markers_v2);
                 let item_chunks = stream_node(
                     inner,
                     root,
@@ -298,14 +296,18 @@ fn stream_repeat_items(
                 )?;
                 extend_non_empty(
                     &mut chunks,
-                    wrap_chunks_with_markers(item_chunks, repeat_start, repeat_end),
+                    wrap_chunks_with_markers(
+                        item_chunks,
+                        &hy.repeat_start_marker(i),
+                        &hy.repeat_end_marker(i),
+                    ),
                 );
             }
 
             Ok(wrap_chunks_with_markers(
                 chunks,
-                hy.content_start_marker(),
-                hy.content_end_marker(),
+                &hy.content_start_marker(binding_index),
+                &hy.content_end_marker(binding_index),
             ))
         }
         None => {
@@ -352,7 +354,7 @@ fn stream_custom_element(
         build_custom_element_child_root(&attrs, root, loop_vars, config.attribute_name_strategy);
     let child_root = child_root_owned.as_ref().unwrap_or(root);
 
-    let mut shadow_scope = HydrationScope::new();
+    let mut shadow_scope = HydrationScope::new(config.markers_v2);
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
     let rendered_shadow = render_node(
         element_template,
@@ -429,12 +431,12 @@ fn wrap_content_binding(out: String, hydration: Option<&mut HydrationScope>) -> 
     match hydration {
         None => out,
         Some(hy) => {
-            hy.next_binding();
+            let index = hy.next_binding();
             format!(
                 "{}{}{}",
-                hy.content_start_marker(),
+                hy.content_start_marker(index),
                 out,
-                hy.content_end_marker()
+                hy.content_end_marker(index)
             )
         }
     }

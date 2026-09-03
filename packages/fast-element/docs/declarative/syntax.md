@@ -102,10 +102,13 @@ server output that uses FAST Element 2.x indexed markers can be hydrated by
 selecting the v2 marker reader:
 
 ```typescript
-import { enableHydration, v2 } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({ markers: v2 });
+enableHydration({ markers: markers_v2 });
 ```
+
+Set `"markers_v2": true` in the matching `@microsoft/fast-build`
+configuration so the generated HTML uses the same marker format.
 
 ## `observerMap`
 

@@ -217,10 +217,13 @@ server output that still contains FAST Element 2.x indexed markers, opt into the
 legacy marker reader:
 
 ```typescript
-import { enableHydration, v2 } from "@microsoft/fast-element/hydration.js";
+import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
 
-enableHydration({ markers: v2 });
+enableHydration({ markers: markers_v2 });
 ```
+
+When using `@microsoft/fast-build`, set `"markers_v2": true` in
+`fast-build.config.json` so the renderer and client use the same format.
 
 When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. Two properties on the controller let you inspect the result:
 

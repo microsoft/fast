@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add opt-in hydration support for FAST Element 2.x indexed markers.",
+  "comment": "Add an opt-in markers_v2 reader for FAST Element 2.x indexed hydration markers.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
