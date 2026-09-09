@@ -67,6 +67,10 @@ extends:
             displayName: "Cache npm"
 
           - template: FAST.CFS.PipelineTemplate.yml@fastPipelines
+            parameters:
+              installRust: true
+              rustVersion: "1.93"
+              additionalRustTargets: wasm32-unknown-unknown
 
           - script: |
               npm ci
@@ -74,14 +78,12 @@ extends:
 
           - script: |
               set -euo pipefail
-              rustup show active-toolchain
               rustc --version
               cargo --version
               export PATH="$CARGO_HOME/bin:$PATH"
               echo "##vso[task.prependpath]$CARGO_HOME/bin"
-              rustup target add wasm32-unknown-unknown
               cargo install wasm-pack
-            displayName: "Configure Rust and install wasm-pack"
+            displayName: "Install wasm-pack"
 
           - script: |
               npm run build
