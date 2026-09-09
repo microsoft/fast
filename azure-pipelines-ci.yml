@@ -82,7 +82,7 @@ extends:
               cargo --version
               export PATH="$CARGO_HOME/bin:$PATH"
               echo "##vso[task.prependpath]$CARGO_HOME/bin"
-              cargo install wasm-pack
+              cargo install --registry openSource_PublicPackages wasm-pack
             displayName: "Install wasm-pack"
 
           - script: |
