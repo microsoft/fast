@@ -33,7 +33,7 @@ extends:
         image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
         os: windows  # OS of the image. Allowed values: windows, linux, macOS
     settings:
-      networkIsolationPolicy: Permissive,CFSClean
+      networkIsolationPolicy: CFSClean
     stages:
     - stage: Stage
       jobs:
@@ -67,18 +67,23 @@ extends:
             displayName: "Cache npm"
 
           - template: FAST.CFS.PipelineTemplate.yml@fastPipelines
+            parameters:
+              installRust: true
+              rustVersion: "1.93"
+              additionalRustTargets: wasm32-unknown-unknown
 
           - script: |
               npm ci
             displayName: "Install package dependencies"
 
           - script: |
-              curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+              set -euo pipefail
+              rustc --version
+              cargo --version
               export PATH="$CARGO_HOME/bin:$PATH"
               echo "##vso[task.prependpath]$CARGO_HOME/bin"
-              rustup target add wasm32-unknown-unknown
-              cargo install wasm-pack
-            displayName: "Install Rust and wasm-pack"
+              cargo install --registry openSource_PublicPackages wasm-pack
+            displayName: "Install wasm-pack"
 
           - script: |
               npm run build
