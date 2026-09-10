@@ -19,7 +19,7 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | repeat (@microsoft/fast-element/repeat.js) | 31.80 KB | 10.00 KB | 9.03 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
 | enableHydration (@microsoft/fast-element/hydration.js) | 46.71 KB | 13.94 KB | 12.51 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 62.33 KB | 19.50 KB | 17.48 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 62.44 KB | 19.52 KB | 17.47 KB |
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.55 KB | 4.46 KB | 4.03 KB |
 | observerMap (@microsoft/fast-element/observer-map.js) | 21.96 KB | 7.73 KB | 6.97 KB |
 | attributeMap (@microsoft/fast-element/attribute-map.js) | 15.31 KB | 5.41 KB | 4.88 KB |
