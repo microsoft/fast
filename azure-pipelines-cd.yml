@@ -92,24 +92,15 @@ extends:
         fastTestHarnessNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessNeedsDeployment'] ]
         fastTestHarnessReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessReleaseTag'] ]
       jobs:
-      - job: Deploy
+      - job: PrepareReleaseInputs
+        displayName: Prepare governed release inputs
         templateContext:
-          type: releaseJob
-          isProduction: true
+          outputs:
+          - output: pipelineArtifact
+            targetPath: $(Build.ArtifactStagingDirectory)/fast-release-inputs
+            artifactName: fast-release-inputs
         steps:
-          - checkout: self
-            persistCredentials: "true"
-            fetchTags: true
-
-          - script: |
-              git config --global user.email fastsvc@microsoft.com
-              git config --global user.name "Microsoft FAST Builds"
-            displayName: "Configure git for tag push"
-
-          - task: UseNode@1
-            inputs:
-              version: "22.x"
-            displayName: "Install Node.js"
+          - checkout: none
 
           - task: DownloadGitHubRelease@0
             displayName: "Download @microsoft/fast-build release assets"
@@ -153,26 +144,27 @@ extends:
 
           - script: |
               set -euo pipefail
-              rm -rf publish_artifacts_npm publish_artifacts_crates publish_artifacts_meta
-              mkdir -p publish_artifacts_meta
+              ROOT="$(Build.ArtifactStagingDirectory)/fast-release-inputs"
+              rm -rf "$ROOT"
+              mkdir -p "$ROOT/publish_artifacts_meta"
 
               if find "$(System.ArtifactsDirectory)" -name "*.tgz" -print -quit | grep -q .; then
-                mkdir -p publish_artifacts_npm
-                find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} publish_artifacts_npm/ \;
+                mkdir -p "$ROOT/publish_artifacts_npm"
+                find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} "$ROOT/publish_artifacts_npm/" \;
               fi
 
               if find "$(System.ArtifactsDirectory)" -name "*.crate" -print -quit | grep -q .; then
-                mkdir -p publish_artifacts_crates
-                find "$(System.ArtifactsDirectory)" -name "*.crate" -exec cp {} publish_artifacts_crates/ \;
+                mkdir -p "$ROOT/publish_artifacts_crates"
+                find "$(System.ArtifactsDirectory)" -name "*.crate" -exec cp {} "$ROOT/publish_artifacts_crates/" \;
               fi
 
-              printf '%s\n' "$(undeployedTags)" | tr ',' '\n' | sed '/^$/d' > publish_artifacts_meta/undeployed-tags.txt
+              printf '%s\n' "$(undeployedTags)" | tr ',' '\n' | sed '/^$/d' > "$ROOT/publish_artifacts_meta/undeployed-tags.txt"
 
               has_assets=false
-              if [ -d publish_artifacts_npm ] && find publish_artifacts_npm -maxdepth 1 -type f -print -quit | grep -q .; then
+              if [ -d "$ROOT/publish_artifacts_npm" ] && find "$ROOT/publish_artifacts_npm" -maxdepth 1 -type f -print -quit | grep -q .; then
                 has_assets=true
               fi
-              if [ -d publish_artifacts_crates ] && find publish_artifacts_crates -maxdepth 1 -type f -print -quit | grep -q .; then
+              if [ -d "$ROOT/publish_artifacts_crates" ] && find "$ROOT/publish_artifacts_crates" -maxdepth 1 -type f -print -quit | grep -q .; then
                 has_assets=true
               fi
               if [ "$has_assets" != "true" ]; then
@@ -181,49 +173,81 @@ extends:
               fi
 
               echo "npm artifacts:"
-              if [ -d publish_artifacts_npm ]; then
-                find publish_artifacts_npm -maxdepth 1 -type f -print | sort
+              if [ -d "$ROOT/publish_artifacts_npm" ]; then
+                find "$ROOT/publish_artifacts_npm" -maxdepth 1 -type f -print | sort
               else
                 echo "none"
               fi
 
               echo "crate artifacts:"
-              if [ -d publish_artifacts_crates ]; then
-                find publish_artifacts_crates -maxdepth 1 -type f -print | sort
+              if [ -d "$ROOT/publish_artifacts_crates" ]; then
+                find "$ROOT/publish_artifacts_crates" -maxdepth 1 -type f -print | sort
               else
                 echo "none"
               fi
 
               echo "deployment markers:"
-              cat publish_artifacts_meta/undeployed-tags.txt
-            displayName: "Separate release artifacts"
+              cat "$ROOT/publish_artifacts_meta/undeployed-tags.txt"
+            displayName: "Prepare release input artifact"
 
           - script: |
               set -euo pipefail
+              ROOT="$(Build.ArtifactStagingDirectory)/fast-release-inputs"
               if [ -z "$(npm_config_tag)" ]; then
                 echo "npm_config_tag was not provided by deployment detection."
                 exit 1
               fi
               echo "Publishing npm artifacts with dist-tag: $(npm_config_tag)"
-              printf '\ntag=%s\n' "$(npm_config_tag)" >> .npmrc
-              printf '%s\n' "$(npm_config_tag)" > publish_artifacts_meta/npm-dist-tag.txt
+              printf '\ntag=%s\n' "$(npm_config_tag)" > "$ROOT/.npmrc"
+              printf '%s\n' "$(npm_config_tag)" > "$ROOT/publish_artifacts_meta/npm-dist-tag.txt"
             displayName: "Configure npm publish dist-tag"
+
+      - job: Deploy
+        displayName: Publish packages
+        dependsOn: PrepareReleaseInputs
+        templateContext:
+          type: releaseJob
+          isProduction: true
+          inputs:
+          - input: pipelineArtifact
+            artifactName: fast-release-inputs
+            targetPath: $(System.DefaultWorkingDirectory)
+        steps:
+          - checkout: none
+
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+            displayName: "Install Node.js"
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
 
+      - job: MarkDeployed
+        displayName: Mark releases as deployed
+        dependsOn: Deploy
+        condition: succeeded()
+        steps:
+          - checkout: self
+            persistCredentials: "true"
+            fetchTags: true
+
+          - script: |
+              git config --global user.email fastsvc@microsoft.com
+              git config --global user.name "Microsoft FAST Builds"
+            displayName: "Configure git for tag push"
+
           # Push a `deployed/<tag>` marker tag for each release that was just
           # published so that the next nightly Check stage sees it and skips
-          # the release. Reads the list of tags prepared before publishing.
+          # the release. Reads the list of tags detected before publishing.
           # Idempotent: a marker tag that already exists locally (i.e. fetched
           # from origin via `fetchTags: true`) is left alone instead of failing.
           - script: |
               set -euo pipefail
-              META_FILE=publish_artifacts_meta/undeployed-tags.txt
-              if [ ! -s "$META_FILE" ]; then
+              if [ -z "$(undeployedTags)" ]; then
                 echo "No tags to mark as deployed."
                 exit 0
               fi
-              while IFS= read -r tag; do
+              printf '%s\n' "$(undeployedTags)" | tr ',' '\n' | sed '/^$/d' | while IFS= read -r tag; do
                 [ -z "$tag" ] && continue
                 DEPLOY_TAG="deployed/${tag}"
                 if git rev-parse --verify --quiet "refs/tags/${DEPLOY_TAG}" >/dev/null; then
@@ -236,5 +260,5 @@ extends:
                 # if the pipeline is re-run from a later commit.
                 git tag "${DEPLOY_TAG}" "refs/tags/${tag}"
                 git push origin "${DEPLOY_TAG}"
-              done < "$META_FILE"
+              done
             displayName: "Mark releases as deployed"
