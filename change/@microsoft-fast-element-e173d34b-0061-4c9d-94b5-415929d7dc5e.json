@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Support element filters for declarative f-children directives.",
+  "packageName": "@microsoft/fast-element",
+  "email": "pradeepramolaa@gmail.com",
+  "dependentChangeType": "none"
+}

@@ -1,3 +1,7 @@
 <f-template name="test-element">
-    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
+    <template>
+        <ul data-testid="list-items" f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+        <ul f-children="{allChildren filter elements()}">Text node<f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+        <div f-children="{filteredChildren filter elements(span)}"><span>Included</span><button type="button">Ignored</button>Text node</div>
+    </template>
 </f-template>
