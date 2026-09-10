@@ -16,6 +16,13 @@
  */
 export const unknownHostName = "unknown";
 
+// -- Structural expectations -------------------------------------------------
+
+export const expectedContentAfterStartMarker =
+    "content following the content binding start marker";
+export const expectedContentEndMarker = "a matching content binding end marker";
+export const expectedElementBoundaryEndMarker = "a matching element boundary end marker";
+
 // -- Aspect labels (consumed by the opt-in hydrationDebugger) ----------------
 
 export const aspectLabelAttribute = "attribute";
@@ -41,10 +48,7 @@ export function formatAspect(label: string, sourceAspect: string | undefined): s
  * `"<span> with content binding"` or `"content binding"` when no tag is
  * associated with the binding factory.
  */
-export function formatExpectedTarget(
-    tagName: string | null,
-    aspect: string,
-): string {
+export function formatExpectedTarget(tagName: string | null, aspect: string): string {
     return tagName
         ? `<${tagName.toLowerCase()}> with ${aspect} binding`
         : `${aspect} binding`;
@@ -83,17 +87,6 @@ export function formatRichMismatchMessage(
         `  Received: ${receivedHtml}`
     );
 }
-
-// -- Structural expectations (used by target-builder.ts throw sites) ---------
-
-export const expectedContentAfterStartMarker =
-    "content following `<!--fe:b-->` content binding marker";
-
-export const expectedContentEndMarker =
-    "matching `<!--fe:/b-->` content binding close marker";
-
-export const expectedElementBoundaryEndMarker =
-    "matching `<!--fe:/e-->` element boundary close marker";
 
 /**
  * Builds the "no more attribute bindings" structural expectation message

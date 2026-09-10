@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>FAST Element 2.x Hydration Markers</title>
+    </head>
+    <body>
+        <hydration-markers-v2-element><template shadowrootmode="open" shadowroot="open"><input data-server-node="input" data-fe-b-0>
+        <button data-fe-c-1-2>Increment</button>
+        <!--fe-b$$start$$3$$fast-build$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+            <span><!--fe-b$$start$$0$$fast-build$$fe-b-->server-one<!--fe-b$$end$$0$$fast-build$$fe-b--></span>
+        <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$3$$fast-build$$fe-b--></template></hydration-markers-v2-element>
+<f-template name="hydration-markers-v2-element">
+    <template>
+        <input data-server-node="input" f-ref="{input}">
+        <button ?disabled="{{disabled}}" @click="{increment()}">Increment</button>
+        <f-repeat value="{{item in items}}">
+            <span>{{item}}</span>
+        </f-repeat>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

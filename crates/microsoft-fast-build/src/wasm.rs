@@ -32,6 +32,7 @@ pub fn render(entry: &str, state: Option<String>) -> Result<String, JsValue> {
 /// e.g. `{"my-button": "<template>...</template>"}`, or template metadata objects.
 /// `attribute_name_strategy` controls attribute-to-property mapping: `"camelCase"` (default)
 /// or `"none"`. Pass an empty string for the default.
+/// Set `markers_v2` to emit FAST Element 2.x indexed hydration markers.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
 pub fn render_with_templates(
@@ -39,10 +40,11 @@ pub fn render_with_templates(
     templates_json: &str,
     state: Option<String>,
     attribute_name_strategy: Option<String>,
+    markers_v2: Option<bool>,
 ) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_template_definitions(templates);
-    let config = build_config(attribute_name_strategy.as_deref())?;
+    let config = build_config(attribute_name_strategy.as_deref(), markers_v2.unwrap_or(false))?;
     match state {
         Some(state) => render_template_with_locator(entry, &state, &locator, config.as_ref()),
         None => render_template_with_locator_without_state(entry, &locator, config.as_ref()),
@@ -64,6 +66,7 @@ pub fn render_with_templates(
 /// Pass `stream: true` to return a JSON array string of stream chunks; in
 /// stream mode, `templates_json` may be `{}`. Omitted or `false` stream
 /// preserves the rendered HTML behavior.
+/// Set `markers_v2` to emit FAST Element 2.x indexed hydration markers.
 #[wasm_bindgen]
 pub fn render_entry_with_templates(
     entry: &str,
@@ -71,10 +74,11 @@ pub fn render_entry_with_templates(
     state: Option<String>,
     attribute_name_strategy: Option<String>,
     stream: Option<bool>,
+    markers_v2: Option<bool>,
 ) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_template_definitions(templates);
-    let config = build_config(attribute_name_strategy.as_deref())?;
+    let config = build_config(attribute_name_strategy.as_deref(), markers_v2.unwrap_or(false))?;
 
     if stream.unwrap_or(false) {
         let chunks = match state {
@@ -357,18 +361,26 @@ mod tests {
     }
 }
 
-/// Build an `Option<RenderConfig>` from the optional strategy string.
-/// Returns `None` for omitted, `""`, or `"camelCase"`; `Some(config)` for `"none"`.
-fn build_config(strategy: Option<&str>) -> Result<Option<RenderConfig>, JsValue> {
+/// Build an `Option<RenderConfig>` from the optional renderer settings.
+/// Returns `None` when both settings use their defaults.
+fn build_config(strategy: Option<&str>, markers_v2: bool) -> Result<Option<RenderConfig>, JsValue> {
     let strategy = strategy.unwrap_or("");
-    match strategy {
-        "" | "camelCase" => Ok(None),
-        "none" => Ok(Some(
-            RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::None),
-        )),
-        _ => Err(JsValue::from_str(&format!(
+    let attribute_name_strategy = match strategy {
+        "" | "camelCase" => AttributeNameStrategy::CamelCase,
+        "none" => AttributeNameStrategy::None,
+        _ => return Err(JsValue::from_str(&format!(
             "Invalid attribute-name-strategy '{}': expected 'none' or 'camelCase'",
             strategy
         ))),
+    };
+
+    if attribute_name_strategy == AttributeNameStrategy::CamelCase && !markers_v2 {
+        return Ok(None);
     }
+
+    Ok(Some(
+        RenderConfig::new()
+            .with_attribute_name_strategy(attribute_name_strategy)
+            .with_markers_v2(markers_v2),
+    ))
 }

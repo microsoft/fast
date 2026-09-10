@@ -409,10 +409,9 @@ pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
     out
 }
 
-/// Insert `data-fe="N"` as an attribute just before the closing `>` or `/>`.
-/// N is the count of attribute binding factories targeting this element.
-pub(crate) fn inject_count_marker(tag: &str, count: usize) -> String {
-    let marker = format!(" data-fe=\"{}\"", count);
+/// Insert a hydration marker attribute just before the closing `>` or `/>`.
+pub(crate) fn inject_hydration_marker(tag: &str, marker: &str) -> String {
+    let marker = format!(" {}", marker);
     let trimmed = tag.trim_end();
     if trimmed.ends_with("/>") {
         let base = trimmed[..trimmed.len() - 2].trim_end();
