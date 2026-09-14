@@ -45,6 +45,11 @@ interface TemplateResolutionContext {
     schema: Schema;
 }
 
+interface NodeDirectiveOptions {
+    property: string;
+    filter?: ReturnType<typeof elements>;
+}
+
 /**
  * Tracks string segments accumulated during template parsing and maintains
  * a running concatenation so that `bindingResolver` can receive the full
@@ -232,27 +237,12 @@ export class TemplateParser {
     ): void {
         switch (name) {
             case "children": {
-                externalValues.push(children(propName));
+                externalValues.push(children(this.resolveNodeDirectiveOptions(propName)));
 
                 break;
             }
             case "slotted": {
-                const parts = propName.trim().split(" filter ");
-                const slottedOption = {
-                    property: parts[0],
-                };
-
-                if (parts[1]) {
-                    if (parts[1].startsWith("elements(")) {
-                        let params = parts[1].replace("elements(", "");
-                        params = params.substring(0, params.lastIndexOf(")"));
-                        Object.assign(slottedOption, {
-                            filter: elements(params || undefined),
-                        });
-                    }
-                }
-
-                externalValues.push(slotted(slottedOption));
+                externalValues.push(slotted(this.resolveNodeDirectiveOptions(propName)));
 
                 break;
             }
@@ -262,6 +252,21 @@ export class TemplateParser {
                 break;
             }
         }
+    }
+
+    private resolveNodeDirectiveOptions(propName: string): NodeDirectiveOptions {
+        const parts = propName.trim().split(" filter ");
+        const options: NodeDirectiveOptions = {
+            property: parts[0],
+        };
+
+        if (parts[1]?.startsWith("elements(")) {
+            let params = parts[1].replace("elements(", "");
+            params = params.substring(0, params.lastIndexOf(")"));
+            options.filter = elements(params || undefined);
+        }
+
+        return options;
     }
 
     /**

@@ -8,6 +8,12 @@ class TestElement extends FASTElement {
     listItems: Node[] = [];
 
     @observable
+    allChildren: Node[] = [];
+
+    @observable
+    filteredChildren: Node[] = [];
+
+    @observable
     list: Array<string> = ["Foo", "Bar"];
 }
 TestElement.define({
