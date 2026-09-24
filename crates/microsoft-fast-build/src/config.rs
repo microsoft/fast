@@ -24,6 +24,9 @@ pub enum AttributeNameStrategy {
 pub struct RenderConfig {
     /// Strategy for mapping HTML attribute names to state property names.
     pub attribute_name_strategy: AttributeNameStrategy,
+    /// Emit FAST Element 2.x indexed hydration markers instead of the
+    /// default FAST Element 3.x data-free markers.
+    pub markers_v2: bool,
 }
 
 impl RenderConfig {
@@ -35,6 +38,12 @@ impl RenderConfig {
     /// Set the attribute name strategy.
     pub fn with_attribute_name_strategy(mut self, strategy: AttributeNameStrategy) -> Self {
         self.attribute_name_strategy = strategy;
+        self
+    }
+
+    /// Configure whether FAST Element 2.x indexed hydration markers are emitted.
+    pub fn with_markers_v2(mut self, markers_v2: bool) -> Self {
+        self.markers_v2 = markers_v2;
         self
     }
 }
