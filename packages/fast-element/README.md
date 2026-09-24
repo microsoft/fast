@@ -212,18 +212,20 @@ enableHydration({
 });
 ```
 
-FAST Element 3.x data-free hydration markers are used by default. As an
-enhancement for interoperability with backend systems that have not yet
-adopted the data-free format, the default reader also accepts legacy FAST
-Element 2.x indexed markers as a fallback. To restrict hydration to only the
-last major version's indexed markers, opt into that reader on its dedicated
-export path:
+FAST Element 3.x data-free hydration markers are the only format recognized
+by default. Server output that still emits the legacy FAST Element 2.x
+indexed markers will fail to hydrate unless you opt into that reader on its
+dedicated export path — an interoperability enhancement for backend systems
+that have not yet adopted the data-free format:
 
 ```typescript
 import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
 
 enableHydration({ markers: markers_v2 });
 ```
+
+Because `markers_v2` is only referenced when explicitly imported, its legacy
+parsing logic is tree-shaken out of the bundle for consumers who don't use it.
 
 When using `@microsoft/fast-build`, set `"markers_v2": true` in
 `fast-build.config.json` so the renderer and client use the same format.

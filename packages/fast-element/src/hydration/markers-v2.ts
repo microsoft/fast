@@ -17,11 +17,13 @@ import {
 /**
  * FAST Element 2.x indexed hydration markers.
  *
- * This strategy accepts only the legacy indexed marker format. Use it when
- * hydrating server output that exclusively emits FAST Element 2.x markers.
- * The default `HydrationMarkup` strategy already accepts these markers as a
- * fallback alongside FAST Element 3.x data-free markers, so `markers_v2` is
- * only required when a client must reject the newer data-free format.
+ * The default `HydrationMarkup` strategy only recognizes FAST Element 3.x
+ * data-free markers; server output that emits the legacy 2.x indexed marker
+ * format will fail to hydrate unless this strategy is explicitly installed.
+ * Import and pass `markers_v2` to `enableHydration` for interoperability with
+ * backend systems that still emit that legacy format. Because this module is
+ * only referenced when explicitly imported, the legacy parsing logic is
+ * tree-shaken out of the bundle for consumers who don't use it.
  *
  * @example
  * ```ts

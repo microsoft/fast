@@ -52,13 +52,15 @@ let hookInstalled = false;
  * `HydrationTargetElementError`. The debugger module is tree-shaken
  * out of production hydration bundles unless explicitly imported.
  *
- * As an interoperability enhancement for backend systems that have not yet
- * adopted the FAST Element 3.x data-free marker format, the default marker
- * reader already accepts both FAST Element 3.x data-free markers and legacy
- * FAST Element 2.x indexed markers, so existing server-rendered output
- * continues to hydrate without configuration. Pass `markers: markers_v2`,
- * exported from `@microsoft/fast-element/hydration.js`, to instead restrict
- * hydration parsing to only the legacy FAST Element 2.x indexed markers.
+ * The default marker reader only recognizes FAST Element 3.x data-free
+ * markers. Server-rendered output that still emits the legacy FAST Element
+ * 2.x indexed marker format will fail to hydrate unless `markers: markers_v2`
+ * is passed, using the `markers_v2` strategy exported from
+ * `@microsoft/fast-element/hydration.js`. This opt-in is an interoperability
+ * path for backend systems that have not yet adopted the data-free marker
+ * format; because it's only referenced when explicitly imported, the legacy
+ * parsing logic is tree-shaken out of production hydration bundles for
+ * consumers who don't use it.
  *
  * @example
  * ```ts

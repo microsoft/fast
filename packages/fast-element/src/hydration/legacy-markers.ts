@@ -6,9 +6,10 @@ import type { HydrationMarkerResolution } from "./markers.js";
  * FAST Element 2.x indexed hydration marker patterns.
  *
  * WebUI versions that predate the data-free marker format still emit these
- * indexed markers. They are parsed both by the default `HydrationMarkup`
- * strategy (as a fallback, so existing WebUI SSR output continues to
- * hydrate) and by the strict, opt-in `markers_v2` strategy.
+ * indexed markers. They are parsed only by the strict, opt-in `markers_v2`
+ * strategy — the default `HydrationMarkup` strategy does not reference this
+ * module, so this parsing logic is tree-shaken out of the bundle unless
+ * `markers_v2` is explicitly imported.
  * @internal
  */
 export const legacyBindingStartMarker = /fe-b\$\$start\$\$(\d+)\$\$(.+)\$\$fe-b/;

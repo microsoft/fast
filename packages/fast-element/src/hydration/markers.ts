@@ -1,14 +1,5 @@
 import { Message } from "../interfaces.js";
 import { FAST } from "../platform.js";
-import {
-    legacyBindingEndMarker,
-    legacyElementBoundaryEndMarker,
-    legacyElementBoundaryStartMarker,
-    legacyRepeatViewEndMarker,
-    legacyRepeatViewStartMarker,
-    resolveLegacyAttributeBindings,
-    resolveLegacyContentBinding,
-} from "./legacy-markers.js";
 
 const hydrationMarkersBrand: unique symbol = Symbol();
 
@@ -107,12 +98,13 @@ function parseAttributeBindingCount(node: Element): number | null {
 /**
  * Data-free sequential hydration markers used by FAST Element 3.x.
  *
- * WebUI versions that predate the data-free marker format still emit the
- * FAST Element 2.x indexed markers. As an interoperability enhancement for
- * backend systems that have not yet adopted the data-free format, this
- * default strategy falls back to parsing those legacy indexed markers so
- * existing SSR output continues to hydrate without requiring the opt-in
- * `markers_v2` strategy exported from `@microsoft/fast-element/hydration.js`.
+ * This is the only marker format recognized by default. Server output that
+ * predates the data-free format (FAST Element 2.x indexed markers) is not
+ * recognized here and will fail to hydrate; opt in to the
+ * `markers_v2` strategy exported from `@microsoft/fast-element/hydration.js`
+ * for interoperability with backend systems that still emit that legacy
+ * format. Keeping the legacy reader out of this default strategy allows it
+ * to be tree-shaken out of the bundle for consumers who don't need it.
  * @internal
  */
 export const HydrationMarkup = createHydrationMarkers({
@@ -156,7 +148,7 @@ export const HydrationMarkup = createHydrationMarkers({
             };
         }
 
-        return resolveLegacyAttributeBindings(node, factoryPointer, hydrationIndexOffset);
+        return null;
     },
     resolveContentBinding(
         data: string,
@@ -170,31 +162,25 @@ export const HydrationMarkup = createHydrationMarkers({
             };
         }
 
-        return resolveLegacyContentBinding(data, factoryPointer, hydrationIndexOffset);
+        return null;
     },
     isContentBindingStartMarker(data: string): boolean {
-        return data === "fe:b" || resolveLegacyContentBinding(data, 0, 0) !== null;
+        return data === "fe:b";
     },
     isContentBindingEndMarker(data: string): boolean {
-        return data === "fe:/b" || legacyBindingEndMarker.test(data);
+        return data === "fe:/b";
     },
     isRepeatViewStartMarker(data: string): boolean {
-        return data === "fe:r" || legacyRepeatViewStartMarker.test(data);
+        return data === "fe:r";
     },
     isRepeatViewEndMarker(data: string): boolean {
-        return data === "fe:/r" || legacyRepeatViewEndMarker.test(data);
+        return data === "fe:/r";
     },
     isElementBoundaryStartMarker(node: Node): boolean {
-        return (
-            isComment(node) &&
-            (node.data === "fe:e" || legacyElementBoundaryStartMarker.test(node.data))
-        );
+        return isComment(node) && node.data === "fe:e";
     },
     isElementBoundaryEndMarker(node: Node): boolean {
-        return (
-            isComment(node) &&
-            (node.data === "fe:/e" || legacyElementBoundaryEndMarker.test(node.data))
-        );
+        return isComment(node) && node.data === "fe:/e";
     },
 });
 
