@@ -212,9 +212,12 @@ enableHydration({
 });
 ```
 
-FAST Element 3.x data-free hydration markers are used by default. To hydrate
-server output that still contains FAST Element 2.x indexed markers, opt into the
-legacy marker reader:
+FAST Element 3.x data-free hydration markers are used by default. As an
+enhancement for interoperability with backend systems that have not yet
+adopted the data-free format, the default reader also accepts legacy FAST
+Element 2.x indexed markers as a fallback. To restrict hydration to only the
+last major version's indexed markers, opt into that reader on its dedicated
+export path:
 
 ```typescript
 import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";

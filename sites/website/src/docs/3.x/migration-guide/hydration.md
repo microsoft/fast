@@ -201,8 +201,16 @@ If you used `@microsoft/fast-ssr` or custom SSR tooling, update the renderer to 
 new marker format before loading the v3 client. If you use `@microsoft/fast-build`,
 upgrade it with `@microsoft/fast-element` and rebuild the output.
 
-For a staged migration where the server still emits FAST Element 2.x indexed
-markers, configure the v3 client explicitly:
+As an enhancement for interoperability with backend systems that have not yet
+adopted the FAST Element 3.x data-free marker format, the default v3 client
+already accepts both the data-free and the legacy FAST Element 2.x indexed
+marker formats. Existing server-rendered output that still emits indexed
+markers continues to hydrate without any configuration change.
+
+For a staged migration that requires a v3 client to reject the newer
+data-free format and hydrate only FAST Element 2.x indexed markers, the last
+major version's default markers are available on an opt-in export path,
+`markers_v2`, from `@microsoft/fast-element/hydration.js`:
 
 ```ts
 import { enableHydration, markers_v2 } from "@microsoft/fast-element/hydration.js";
@@ -218,18 +226,21 @@ Configure `@microsoft/fast-build` with the matching marker option:
 }
 ```
 
-The v2 reader accepts the old indexed comment and attribute marker formats. It
-does not make a FAST Element 2.x client understand 3.x output, and it does not
-provide compatibility for unrelated template or runtime differences.
+The v2 reader accepts only the old indexed comment and attribute marker
+formats. It does not make a FAST Element 2.x client understand 3.x output, and
+it does not provide compatibility for unrelated template or runtime
+differences.
 
 ## Keep renderer and client versions in sync
 
 Hydration succeeds when the HTML produced by the server matches the template and
 data that the client runtime sees during the element's first render. The
 renderer and client both rely on compatible binding order and marker syntax.
-Deploy server-rendered output and client bundles together. When a staged
-migration requires a v3 client to hydrate v2 marker output, select
-`enableHydration({ markers: markers_v2 })`; the default reader expects v3 markers.
+Deploy server-rendered output and client bundles together. The default reader
+already accepts both v3 and legacy v2 marker output for interoperability, so
+most staged migrations require no client configuration. Select
+`enableHydration({ markers: markers_v2 })` only when a client must reject v3
+data-free markers and hydrate exclusively against v2 indexed output.
 
 Do not minify or sanitize away FAST comments or `data-fe` attributes before the
 client loads. A missing `fe:/b` marker, an invalid `data-fe` count, or a changed
