@@ -36,6 +36,7 @@ const stub = {
         state,
         attributeNameStrategy,
         stream,
+        markersV2,
     ) {
         calls.push({
             name: "render_entry_with_templates",
@@ -44,6 +45,7 @@ const stub = {
             state,
             attributeNameStrategy,
             stream,
+            markersV2,
         });
         if (!stream) {
             return "<my-el>Non-stream</my-el>";
