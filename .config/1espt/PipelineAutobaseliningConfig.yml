@@ -24,11 +24,11 @@ pipelines:
     retail:
       source:
         eslint:
-          lastModifiedDate: 2026-02-25
+          lastModifiedDate: 2026-09-24
         psscriptanalyzer:
-          lastModifiedDate: 2026-02-25
+          lastModifiedDate: 2026-09-24
         armory:
-          lastModifiedDate: 2026-02-25
+          lastModifiedDate: 2026-09-24
   133:
     retail:
       source:
