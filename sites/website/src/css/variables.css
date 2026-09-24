@@ -265,6 +265,15 @@ article {
     --ifm-link-decoration: underline;
 }
 
+.doc-item a:not(.pagination-nav__link) {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+}
+
+.doc-item a:not(.pagination-nav__link):is(:hover, :focus-visible) {
+    text-decoration-style: double;
+}
+
 html[data-theme="dark"] {
     --ifm-link-color: #fb356d;
     --ifm-color-primary: var(--ifm-link-color);

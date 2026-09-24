@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 10 Sep 2026 02:52:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.0.3
+
+Thu, 10 Sep 2026 02:52:27 GMT
+
+### Patches
+
+- Restore the built-in Trusted Types policy name to `fast-html`. (7559015+janechu@users.noreply.github.com)
 
 ## 3.0.2
 

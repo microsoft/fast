@@ -11,7 +11,7 @@ test.describe("the dom policy helper", () => {
             };
 
             return globalThis.trustedTypes
-                ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
+                ? globalThis.trustedTypes.createPolicy("app-fast-html", { createHTML })
                 : { createHTML };
         }
 
@@ -19,6 +19,44 @@ test.describe("the dom policy helper", () => {
         policy.createHTML("Hello world");
 
         expect(invoked).toBe(true);
+    });
+
+    test("uses the fast-html trusted types policy name by default", async ({ page }) => {
+        await page.addInitScript(() => {
+            const policyNames: string[] = [];
+            const trustedTypes = globalThis.trustedTypes;
+            const createPolicy = (name: string, rules: TrustedTypePolicyOptions) => {
+                policyNames.push(name);
+                return rules;
+            };
+
+            Object.defineProperty(globalThis, "fastPolicyNames", {
+                value: policyNames,
+            });
+
+            if (trustedTypes) {
+                Object.defineProperty(trustedTypes, "createPolicy", {
+                    value: createPolicy,
+                });
+            } else {
+                Object.defineProperty(globalThis, "trustedTypes", {
+                    value: { createPolicy },
+                });
+            }
+        });
+        await page.goto("/");
+
+        const policyNames = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOMPolicy } = await import("./main.js");
+            const names = Reflect.get(globalThis, "fastPolicyNames");
+
+            DOMPolicy.create();
+
+            return names;
+        });
+
+        expect(policyNames).toEqual(["fast-html", "fast-html"]);
     });
 
     test("can create a policy with custom element guards", async ({ page }) => {

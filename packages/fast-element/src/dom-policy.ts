@@ -477,7 +477,7 @@ function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGu
 function createTrustedType() {
     const createHTML = html => html;
     return globalThis.trustedTypes
-        ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
+        ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
         : { createHTML };
 }
 

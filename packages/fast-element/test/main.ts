@@ -47,6 +47,7 @@ export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
 export { hydrationDebugger } from "../src/hydration/hydration-debugger.js";
 export { markers_v2 } from "../src/hydration/markers-v2.js";
+export { buildViewBindingTargets } from "../src/hydration/target-builder.js";
 export { Observable, observable } from "../src/observation/observable.js";
 export { Updates } from "../src/observation/update-queue.js";
 export { volatile } from "../src/observation/volatile.js";

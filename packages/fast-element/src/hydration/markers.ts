@@ -1,5 +1,14 @@
 import { Message } from "../interfaces.js";
 import { FAST } from "../platform.js";
+import {
+    legacyBindingEndMarker,
+    legacyElementBoundaryEndMarker,
+    legacyElementBoundaryStartMarker,
+    legacyRepeatViewEndMarker,
+    legacyRepeatViewStartMarker,
+    resolveLegacyAttributeBindings,
+    resolveLegacyContentBinding,
+} from "./legacy-markers.js";
 
 const hydrationMarkersBrand: unique symbol = Symbol();
 
@@ -97,6 +106,13 @@ function parseAttributeBindingCount(node: Element): number | null {
 
 /**
  * Data-free sequential hydration markers used by FAST Element 3.x.
+ *
+ * WebUI versions that predate the data-free marker format still emit the
+ * FAST Element 2.x indexed markers. As an interoperability enhancement for
+ * backend systems that have not yet adopted the data-free format, this
+ * default strategy falls back to parsing those legacy indexed markers so
+ * existing SSR output continues to hydrate without requiring the opt-in
+ * `markers_v2` strategy exported from `@microsoft/fast-element/hydration.js`.
  * @internal
  */
 export const HydrationMarkup = createHydrationMarkers({
@@ -124,55 +140,61 @@ export const HydrationMarkup = createHydrationMarkers({
     resolveAttributeBindings(
         node: Element,
         factoryPointer: number,
-        _hydrationIndexOffset: number,
+        hydrationIndexOffset: number,
     ): HydrationMarkerResolution | null {
         const count = parseAttributeBindingCount(node);
-        if (count === null) {
-            return null;
+        if (count !== null) {
+            const factoryIndices = Array.from(
+                { length: count },
+                (_, index) => factoryPointer + index,
+            );
+
+            return {
+                factoryIndices,
+                nextFactoryPointer: factoryPointer + count,
+                cleanup: () => node.removeAttribute("data-fe"),
+            };
         }
 
-        const factoryIndices = Array.from(
-            { length: count },
-            (_, index) => factoryPointer + index,
-        );
-
-        return {
-            factoryIndices,
-            nextFactoryPointer: factoryPointer + count,
-            cleanup: () => node.removeAttribute("data-fe"),
-        };
+        return resolveLegacyAttributeBindings(node, factoryPointer, hydrationIndexOffset);
     },
     resolveContentBinding(
         data: string,
         factoryPointer: number,
-        _hydrationIndexOffset: number,
+        hydrationIndexOffset: number,
     ): HydrationMarkerResolution | null {
-        if (data !== "fe:b") {
-            return null;
+        if (data === "fe:b") {
+            return {
+                factoryIndices: [factoryPointer],
+                nextFactoryPointer: factoryPointer + 1,
+            };
         }
 
-        return {
-            factoryIndices: [factoryPointer],
-            nextFactoryPointer: factoryPointer + 1,
-        };
+        return resolveLegacyContentBinding(data, factoryPointer, hydrationIndexOffset);
     },
     isContentBindingStartMarker(data: string): boolean {
-        return data === "fe:b";
+        return data === "fe:b" || resolveLegacyContentBinding(data, 0, 0) !== null;
     },
     isContentBindingEndMarker(data: string): boolean {
-        return data === "fe:/b";
+        return data === "fe:/b" || legacyBindingEndMarker.test(data);
     },
     isRepeatViewStartMarker(data: string): boolean {
-        return data === "fe:r";
+        return data === "fe:r" || legacyRepeatViewStartMarker.test(data);
     },
     isRepeatViewEndMarker(data: string): boolean {
-        return data === "fe:/r";
+        return data === "fe:/r" || legacyRepeatViewEndMarker.test(data);
     },
     isElementBoundaryStartMarker(node: Node): boolean {
-        return isComment(node) && node.data === "fe:e";
+        return (
+            isComment(node) &&
+            (node.data === "fe:e" || legacyElementBoundaryStartMarker.test(node.data))
+        );
     },
     isElementBoundaryEndMarker(node: Node): boolean {
-        return isComment(node) && node.data === "fe:/e";
+        return (
+            isComment(node) &&
+            (node.data === "fe:/e" || legacyElementBoundaryEndMarker.test(node.data))
+        );
     },
 });
 
