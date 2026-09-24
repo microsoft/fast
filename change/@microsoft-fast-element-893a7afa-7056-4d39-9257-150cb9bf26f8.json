@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Preserve hydration target traversal behavior without performing per-node Range membership checks.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
