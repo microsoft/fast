@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-menu",
+  "id": "fast-menu",
+  "title": "Menu",
+  "description": "The FAST menu element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-menu",
+  "properties": {
+    "Slot": {
+      "title": "Default slot",
+      "description": "Supports fast-menu-item elements or elements with a role of 'menuitem', 'menuitemcheckbox', and 'menuitemradio'",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

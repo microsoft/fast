@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-progress-ring",
+  "id": "fast-progress-ring",
+  "title": "Progress ring",
+  "description": "The FAST progress-ring element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-progress-ring",
+  "properties": {
+    "value": {
+      "title": "Value",
+      "description": "Value between 1 and 100 to represent the progress visually and to assistive technologies",
+      "mapsToAttribute": "value",
+      "type": "number"
+    },
+    "min": {
+      "title": "Minimum",
+      "description": "The minimum value",
+      "mapsToAttribute": "min",
+      "type": "number"
+    },
+    "max": {
+      "default": 100,
+      "title": "Maximum",
+      "description": "The maximum value",
+      "mapsToAttribute": "max",
+      "type": "number"
+    },
+    "paused": {
+      "title": "Paused",
+      "description": "Sets the paused state of the progress component",
+      "mapsToAttribute": "paused",
+      "type": "boolean"
+    },
+    "SlotDeterminate": {
+      "title": "Determinate slot",
+      "description": "Slot to provide custom visual representations of the determinate progress ring",
+      "mapsToSlot": "determinate",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotIndeterminate": {
+      "title": "Indeterminate slot",
+      "description": "Slot to provide custom visual representations of the indeterminate progress ring",
+      "mapsToSlot": "indeterminate",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

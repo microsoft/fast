@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Foundation: Update Accordion template element naming (https://github.com/microsoft/fast/pull/6796)",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

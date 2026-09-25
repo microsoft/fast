@@ -1,0 +1,36 @@
+name: Deploy CDN
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  deploy_linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Branch
+      uses: actions/checkout@master
+
+    - name: Upload static assets to CDN
+      uses: lauchacarro/Azure-Storage-Action@master
+      with:
+        folder: 'sites/site-utilities/statics/assets'
+        connection-string: ${{ secrets.AZURE_CONNECTION_STRING_STORAGE }}
+        public-access-policy: Blob
+        blob-container-name: 'assets'
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy_linux
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps CDN Bot'
+        message: 'Deployment has completed to CDN on https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml'

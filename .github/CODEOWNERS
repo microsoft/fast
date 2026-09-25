@@ -1,0 +1,39 @@
+# Approval for at least one *code owner* is required all packages.
+
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more *code owners*.
+# The last matching pattern has the most precendence.
+
+# These *code owners* will be the default owners for everything in the repository.
+* @chrisdholt @janechu @nicholasrice @radium-v
+
+# File type specific owners
+# Markdown specific files
+*.md @awentzel @chrisdholt @falkicon
+/docs/ @awentzel @chrisdholt @falkicon
+
+# GitHub management
+.github/ @awentzel @janechu @chrisdholt @nicholasrice
+.github/workflows/ @awentzel @chrisdholt @nicholasrice
+
+# Build scripts
+*.yml @awentzel @janechu @nicholasrice @chrisdholt
+build/ @janechu @nicholasrice @chrisdholt @awentzel
+
+# Specifications
+/specs/ @chrisdholt @janechu @nicholasrice
+
+# Sites
+/sites/website/ @awentzel @chrisdholt @falkicon
+
+# Package specific owners
+
+# Utilities
+/packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
+
+# Web components
+/packages/web-components/fast-element/ @chrisdholt @janechu @nicholasrice
+/packages/web-components/fast-foundation/ @chrisdholt @bheston @scomea @radium-v @kingoftac
+
+# the change directory has no owners
+/change/

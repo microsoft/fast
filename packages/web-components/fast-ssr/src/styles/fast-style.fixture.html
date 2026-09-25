@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+
+    <body
+        style="
+            background-color: var(--fill-color);
+            --body-font: aktiv-grotesk, 'Segoe UI', Arial, Helvetica, sans-serif;
+            --base-height-multiplier: 10;
+            --base-horizontal-spacing-multiplier: 3;
+            --control-corner-radius: 4;
+            --density: 0;
+            --design-unit: 4;
+            --direction: ltr;
+            --disabled-opacity: 0.3;
+            --stroke-width: 1;
+            --focus-stroke-width: 2;
+            --type-ramp-base-font-size: 14px;
+            --type-ramp-base-line-height: 20px;
+            --type-ramp-minus-1-font-size: 12px;
+            --type-ramp-minus-1-line-height: 16px;
+            --type-ramp-minus-2-font-size: 10px;
+            --type-ramp-minus-2-line-height: 16px;
+            --type-ramp-plus-1-font-size: 16px;
+            --type-ramp-plus-1-line-height: 24px;
+            --type-ramp-plus-2-font-size: 20px;
+            --type-ramp-plus-2-line-height: 28px;
+            --type-ramp-plus-3-font-size: 28px;
+            --type-ramp-plus-3-line-height: 36px;
+            --type-ramp-plus-4-font-size: 34px;
+            --type-ramp-plus-4-line-height: 44px;
+            --type-ramp-plus-5-font-size: 46px;
+            --type-ramp-plus-5-line-height: 56px;
+            --type-ramp-plus-6-font-size: 60px;
+            --type-ramp-plus-6-line-height: 72px;
+            --accent-fill-rest-delta: 0;
+            --accent-fill-hover-delta: 4;
+            --accent-fill-active-delta: -5;
+            --accent-fill-focus-delta: 0;
+            --accent-foreground-rest-delta: 0;
+            --accent-foreground-hover-delta: 6;
+            --accent-foreground-active-delta: -4;
+            --accent-foreground-focus-delta: 0;
+            --neutral-fill-rest-delta: 7;
+            --neutral-fill-hover-delta: 10;
+            --neutral-fill-active-delta: 5;
+            --neutral-fill-focus-delta: 0;
+            --neutral-fill-input-rest-delta: 0;
+            --neutral-fill-input-hover-delta: 0;
+            --neutral-fill-input-active-delta: 0;
+            --neutral-fill-input-focus-delta: 0;
+            --neutral-fill-stealth-rest-delta: 0;
+            --neutral-fill-stealth-hover-delta: 5;
+            --neutral-fill-stealth-active-delta: 3;
+            --neutral-fill-stealth-focus-delta: 0;
+            --neutral-fill-strong-rest-delta: 0;
+            --neutral-fill-strong-hover-delta: 8;
+            --neutral-fill-strong-active-delta: -5;
+            --neutral-fill-strong-focus-delta: 0;
+            --neutral-fill-layer-rest-delta: 3;
+            --neutral-stroke-rest-delta: 25;
+            --neutral-stroke-hover-delta: 40;
+            --neutral-stroke-active-delta: 16;
+            --neutral-stroke-focus-delta: 25;
+            --neutral-stroke-divider-rest-delta: 8;
+            --base-layer-luminance: 0.1;
+            --neutral-layer-card-container: #101010;
+            --neutral-layer-floating: #292929;
+            --neutral-layer-1: #181818;
+            --neutral-layer-2: #101010;
+            --neutral-layer-3: #000000;
+            --neutral-layer-4: #000000;
+            --fill-color: #1a1a1a;
+            --accent-fill-rest: #c01754;
+            --accent-fill-hover: #da1a5f;
+            --accent-fill-active: #a01346;
+            --accent-fill-focus: #c01754;
+            --accent-foreground-rest: #e1477e;
+            --accent-foreground-hover: #e55e8e;
+            --accent-foreground-active: #df3874;
+            --accent-foreground-focus: #e1477e;
+            --neutral-fill-rest: #2b2b2b;
+            --neutral-fill-hover: #333333;
+            --neutral-fill-active: #262626;
+            --neutral-fill-focus: #181818;
+            --neutral-fill-input-rest: #181818;
+            --neutral-fill-input-hover: #181818;
+            --neutral-fill-input-active: #181818;
+            --neutral-fill-input-focus: #181818;
+            --neutral-fill-stealth-rest: #181818;
+            --neutral-fill-stealth-hover: #262626;
+            --neutral-fill-stealth-active: #212121;
+            --neutral-fill-stealth-focus: #181818;
+            --neutral-fill-strong-rest: #828282;
+            --neutral-fill-strong-hover: #979797;
+            --neutral-fill-strong-active: #757575;
+            --neutral-fill-strong-focus: #828282;
+            --neutral-fill-layer-rest: #212121;
+            --focus-stroke-outer: #707070;
+            --focus-stroke-inner: #350617;
+            --neutral-foreground-hint: #828282;
+            --neutral-foreground-rest: #e8e8e8;
+            --neutral-stroke-rest: #595959;
+            --neutral-stroke-hover: #808080;
+            --neutral-stroke-active: #424242;
+            --neutral-stroke-focus: #595959;
+            --neutral-stroke-divider-rest: #2e2e2e;
+            --tree-item-expand-collapse-hover: #333333;
+            --tree-item-expand-collapse-selected-hover: #383838;
+            --foreground-on-accent-rest: #ffffff;
+            --foreground-on-accent-rest-large: #000000;
+            --foreground-on-accent-hover: #ffffff;
+            --foreground-on-accent-hover-large: #000000;
+            --foreground-on-accent-active: #ffffff;
+            --foreground-on-accent-active-large: #ffffff;
+            --foreground-on-accent-focus: #ffffff;
+            --foreground-on-accent-focus-large: #000000;
+            display: flex;
+        "
+    >
+        <script type="module" src="/fast-style.js"></script>
+        <fast-card style="width: 300px">
+            <!-- shadowroots must remain open for testing contained elements -->
+            <template shadowrootmode="open">
+                <fast-style
+                    style-id="fast-card"
+                    css=":host {
+                    --elevation: 4;
+                    display: block;
+                    contain: content;
+                    height: var(--card-height, 100%);
+                    width: var(--card-width, 100%);
+                    box-sizing: border-box;
+                    background: var(--fill-color);
+                    border-radius: calc(var(--control-corner-radius) * 1px);
+                    box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(0.11 * (2 - var(--background-luminance, 1)))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(0.13 * (2 - var(--background-luminance, 1))));}"
+                ></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style
+                                style-id="fast-button"
+                                css=":host {
+                                font-family: var(--body-font);
+                                outline: none;
+                                font-size: var(--type-ramp-base-font-size);
+                                line-height: var(--type-ramp-base-line-height);
+                                height: calc((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px);
+                                min-width: calc((var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px);
+                                background-color: var(--neutral-fill-rest);
+                                color: var(--neutral-foreground-rest);
+                                border-radius: calc(var(--control-corner-radius) * 1px);
+                                fill: currentcolor;
+                                cursor: pointer;
+                            }
+                            .control {
+                                background: transparent;
+                                background: red;
+                                height: inherit;
+                                flex-grow: 1;
+                                box-sizing: border-box;
+                                display: inline-flex;
+                                justify-content: center;
+                                align-items: center;
+                                padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
+                                white-space: nowrap;
+                                outline: none;
+                                text-decoration: none;
+                                border: calc(var(--stroke-width) * 1px) solid transparent;
+                                color: inherit;
+                                border-radius: inherit;
+                                fill: inherit;
+                                cursor: inherit;
+                                font-family: inherit;
+                                font-size: inherit;
+                                line-height: inherit;
+                            }"
+                            ></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+        <fast-card style="width: 300px">
+            <template shadowrootmode="open">
+                <fast-style style-id="fast-card"></fast-style>
+                <img src="/placeholder.png" />
+                <div style="padding: 0 10px 10px; color: var(--neutral-foreground-rest)">
+                    <h2>Heading</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Maurisscelerisque varius ornare. Etiam convallis sollicitudin
+                        scelerisque.Maecenas in velit vehicula, aliquet orci et, consequat
+                        purus. Donec egetsodales lectus, vel sollicitudin ligula.
+                        Suspendisse volutpat auctor diam,vel mattis lorem venenatis in.
+                    </p>
+                    <fast-button>
+                        <template shadowrootmode="open">
+                            <fast-style style-id="fast-button"></fast-style>
+                            <button class="control">
+                                <span>Button</span>
+                            </button>
+                        </template>
+                    </fast-button>
+                </div>
+            </template>
+        </fast-card>
+    </body>
+</html>

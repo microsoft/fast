@@ -1,0 +1,53 @@
+/**
+ * This prevents elements that have not been defined from displaying, preventing
+ * a flash of un-styled content.
+ */
+:not(:defined) {
+    display: none;
+}
+
+body,
+html {
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    --top-offset: calc(var(--design-unit) * 28px);
+}
+body {
+    background-color: var(--fill-color);
+    color: var(--neutral-foreground-rest);
+    font-family: var(--body-font);
+}
+
+#root {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: calc(var(--design-unit) * 1px);
+}
+
+.canvas {
+    padding-right: calc(var(--design-unit) * 2px);
+    margin-top: var(--top-offset);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+demo-navigation fast-tree-view {
+    margin-top: calc(var(--top-offset) + (var(--design-unit) * 2px));
+}
+
+fast-demo-card {
+    grid-row: 2;
+}
+
+fast-demo-card:first-child {
+    grid-column: 2;
+}
+
+fast-demo-card:nth-of-type(2) {
+    grid-column: 3;
+}

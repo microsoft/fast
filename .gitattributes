@@ -1,0 +1,5 @@
+# Set the default behavior, in case contributors don't have core.autocrlf set.
+* text=auto
+
+# prevent Github from including yarn source
+.yarn/releases/*.cjs linguist-vendored

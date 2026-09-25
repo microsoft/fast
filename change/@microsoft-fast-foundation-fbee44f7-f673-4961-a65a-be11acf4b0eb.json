@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat(text-field): reset value on type change",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "43081j@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

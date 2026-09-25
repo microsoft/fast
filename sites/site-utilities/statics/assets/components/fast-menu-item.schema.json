@@ -1,0 +1,192 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-menu-item",
+  "id": "fast-menu-item",
+  "title": "Menu item",
+  "description": "The FAST menu item element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-menu-item",
+  "properties": {
+    "disabled": {
+      "default": true,
+      "title": "Disabled",
+      "description": "Sets the disabled state of the item",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "expanded": {
+      "default": true,
+      "title": "Expanded",
+      "description": "The expanded state of the item",
+      "mapsToAttribute": "expanded",
+      "type": "boolean"
+    },
+    "role": {
+      "enum": [
+        "menuitem",
+        "menuitemcheckbox",
+        "menuitemradio"
+      ],
+      "default": "menuitem",
+      "title": "Role",
+      "description": "The ARIA role of the menu item",
+      "mapsToAttribute": "role",
+      "type": "string"
+    },
+    "checked": {
+      "default": true,
+      "title": "Checked",
+      "description": "The checked state for elements with a role of menuitemradio or menuitemcheckbox",
+      "mapsToAttribute": "checked",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the menu item",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the item content",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the item content",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotSubmenu": {
+      "title": "Sub menu slot",
+      "description": "The submenu slot",
+      "mapsToSlot": "submenu",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotCheckboxIndicator": {
+      "title": "Checkbox indicator",
+      "description": "The checkbox indicator slot",
+      "mapsToSlot": "checkbox-indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotRadioIndicator": {
+      "title": "Radio indicator",
+      "description": "The radio indicator slot",
+      "mapsToSlot": "radio-indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotExpandCollapseIndicator": {
+      "title": "Expand/collapse indicator",
+      "description": "The expand/collapse indicator slot",
+      "mapsToSlot": "expand-collapse-indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

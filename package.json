@@ -1,0 +1,128 @@
+{
+  "name": "@microsoft/fast",
+  "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
+  "version": "1.8.0",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/utilities/*",
+      "packages/web-components/*",
+      "sites/*",
+      "examples/todo-app",
+      "examples/ssr"
+    ],
+    "nohoist": [
+      "**/@microsoft/api-extractor",
+      "**/@types/chai",
+      "**/@types/jest",
+      "**/@types/karma",
+      "**/@types/mocha",
+      "**/@types/node",
+      "**/@types/react",
+      "**/@types/ws",
+      "**/chai",
+      "**/html-minifier-terser",
+      "**/react",
+      "**/react/**",
+      "**/react-dom",
+      "**/react-syntax-highlighter",
+      "**/typescript"
+    ]
+  },
+  "engines": {
+    "yarn": ">=1.13 <2",
+    "node": ">15.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+    "bump": "beachball bump",
+    "change": "beachball change",
+    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+    "check": "beachball check ",
+    "publish": "beachball publish",
+    "publish-ci": "beachball publish -y --access public",
+    "prepare": "lerna run prepare",
+    "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
+    "test:validation": "yarn test:diff",
+    "test": "yarn eslint \"/**/*.{ts}\" ",
+    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
+    "format:check": "lerna run prettier:diff",
+    "format": "lerna run prettier"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,html}": [
+      "prettier --write"
+    ]
+  },
+  "resolutions": {
+    "@microsoft/fast-tooling": "^0.37.7",
+    "@types/karma": "^6.3.3",
+    "@types/react": "^16.14.0",
+    "browserslist": "^4.16.5",
+    "clean-css": "^4.2.3",
+    "css-select": "^4.2.1",
+    "dns-packet": "^1.3.4",
+    "d3-color": "^3.1.0",
+    "favicons/colors": "1.4.0",
+    "glob-parent": "^5.1.2",
+    "immer": "^9.0.6",
+    "is-svg": "^4.2.2",
+    "jimp": "^0.16.1",
+    "jpeg-js": "^0.4.4",
+    "js-yaml": "^3.13.1",
+    "karma/colors": "1.4.0",
+    "lodash": "^4.17.21",
+    "nanoid": "^3.1.31",
+    "node-notifier": "^9.0.0",
+    "node-gyp": "^9.0.0",
+    "trim-newlines": "^4.0.2",
+    "trim": "^0.0.3",
+    "ua-parser-js": "^0.7.28",
+    "xmlhttprequest-ssl": "^1.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@octokit/rest": "^18.0.6",
+    "@types/jest": "^25.2.1",
+    "@types/lodash-es": "^4.17.4",
+    "@types/node": "^15.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "beachball": "^2.31.2",
+    "chalk": "^2.4.2",
+    "copyfiles": "^2.4.1",
+    "docusaurus-init": "^1.11.0",
+    "dotenv": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-import": "^2.25.0",
+    "glob": "^7.1.2",
+    "husky": "^4.2.5",
+    "jest-mock": "29.5.0",
+    "lerna": "^5.5.2",
+    "lint-staged": "^10.1.2",
+    "markdown-it": "^12.3.2",
+    "prettier": "2.8.8",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.8.2",
+    "typescript": "^4.7.0",
+    "yargs": "^16.2.0"
+  }
+}

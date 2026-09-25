@@ -1,0 +1,73 @@
+{
+  "name": "@microsoft/fast-ssr",
+  "version": "1.0.0-beta.32",
+  "type": "module",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-ssr"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+    "clean": "tsc -b --clean src",
+    "build": "tsc -b src && yarn doc",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
+    "prepare": "yarn run clean && yarn run build",
+    "build-server": "tsc -b server",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "pretest": "npm run build-server && npm run build",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
+    "test": "playwright test --config=playwright.config.cjs",
+    "test:watch": "chokidar '**/*.spec.ts' -c 'npm run build && npm run test'",
+    "test-server": "node server/dist/server.js",
+    "install-playwright-browsers": "yarn playwright install"
+  },
+  "description": "A package for rendering FAST Web Components outside the browser.",
+  "main": "dist/esm/exports.js",
+  "types": "dist/dts/exports.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/dts/exports.d.ts",
+      "default": "./dist/esm/exports.js"
+    },
+    "./install-dom-shim.js": "./dist/esm/install-dom-shim.js",
+    "./dom-shim": {
+      "types": "./dist/dts/dom-shim.d.ts",
+      "default": "./dist/esm/dom-shim.js"
+    },
+    "./request-storage.js": {
+      "types": "./dist/dts/request-storage.d.ts",
+      "default": "./dist/esm/request-storage.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "parse5": "^6.0.1",
+    "tslib": "2.4.0"
+  },
+  "peerDependencies": {
+    "@microsoft/fast-element": "^2.0.0-beta.26"
+  },
+  "devDependencies": {
+    "@microsoft/fast-element": "^2.0.0-beta.26",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.32",
+    "@microsoft/api-extractor": "7.24.2",
+    "@playwright/test": "^1.41.2",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.17",
+    "chokidar-cli": "^3.0.0",
+    "express": "^4.17.1",
+    "typescript": "^4.7.0"
+  }
+}

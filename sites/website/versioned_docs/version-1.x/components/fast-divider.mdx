@@ -1,0 +1,98 @@
+---
+id: divider
+title: fast-divider
+sidebar_label: divider
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/components/fast-divider.mdx
+description: fast-divider is a web component implementation of a horizontal rule.
+keywords:
+    - fast-divider
+---
+
+A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
+
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastDivider
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastDivider()
+    );
+```
+
+## Usage
+
+```html live
+<fast-divider></fast-divider>
+```
+
+##  Create your own design
+
+```ts
+import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation";
+import { dividerStyles as styles } from "./my-divider.styles";
+
+export const myDivider = Divider.compose({
+    baseName: "divider",
+    template,
+    styles,
+});
+```
+
+## API
+
+
+
+### Variables
+
+| Name          | Description   | Type                                                        |
+| ------------- | ------------- | ----------------------------------------------------------- |
+| `DividerRole` | Divider roles | `{ separator: "separator", presentation: "presentation", }` |
+
+<hr/>
+
+
+
+### class: `Divider`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `role`          | public  | `DividerRole`                         |         | The role of the element.                                                                                                                                                            |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the divider.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `role`        | role        |                |
+| `orientation` | orientation |                |
+
+<hr/>
+
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-divider)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/divider.spec.md)
