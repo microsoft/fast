@@ -244,7 +244,7 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
     results
 }
 
-fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Option<usize> {
+pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Option<usize> {
     let bytes = html.as_bytes();
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
@@ -270,7 +270,7 @@ fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Option<usize>
     None
 }
 
-fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Option<(usize, usize)> {
+pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Option<(usize, usize)> {
     let bytes = html.as_bytes();
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
@@ -297,7 +297,7 @@ fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Option<(usize, 
     None
 }
 
-fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8]) -> bool {
+pub(crate) fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8]) -> bool {
     let end = start + expected.len();
 
     if end > bytes.len() {
@@ -310,7 +310,7 @@ fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8
         .all(|(actual, expected)| actual.eq_ignore_ascii_case(expected))
 }
 
-fn is_html_tag_name_boundary(byte: Option<u8>) -> bool {
+pub(crate) fn is_html_tag_name_boundary(byte: Option<u8>) -> bool {
     matches!(byte, Some(b'>') | Some(b'/'))
         || byte
             .map(|byte| byte.is_ascii_whitespace())

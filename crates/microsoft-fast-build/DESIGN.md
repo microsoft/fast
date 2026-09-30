@@ -56,7 +56,8 @@ render_template(template, state_str)
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
 | `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
+| `f_template.rs` | `compose_f_template_styles` — in-memory insertion of a `<style>` element into an `<f-template>` definition's inner `<template>`, with no filesystem requirement |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, `compose_f_template_styles`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
 
 ---
 
@@ -535,9 +536,27 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ---
 
+## In-memory `<f-template>` CSS composition — `f_template.rs`
+
+`compose_f_template_styles(template_html, css)` inserts `<style>{css}</style>` as the first child of the inner `<template>` element of a single `<f-template>` definition, entirely in memory — no filesystem access, no `Locator` construction.
+
+### Validation
+
+1. `find_style_terminator(css)` rejects `css` containing a case-insensitive `</style` raw-text terminator sequence — the same HTML tag-name-boundary check used elsewhere in this crate (reusing `locator::is_html_tag_name_boundary` / `locator::starts_with_ascii_case_insensitive`), so that safe CSS content such as `content: "</stylesheet>"` is **not** falsely rejected. A match is only a real terminator when the byte after `style` is end-of-string, ASCII whitespace, `/`, or `>`.
+2. `require_single_tag` (a small local helper built on `locator::find_html_start_tag`) verifies `template_html` contains exactly one `<f-template>` element — zero → `RenderError::MissingFTemplate`, more than one → `RenderError::MultipleFTemplates { count }`.
+3. The same helper, bounded to the region between the outer tag's `>` and its matching `</f-template>` (found via `locator::find_html_end_tag`), verifies exactly one inner `<template>` element — zero → `RenderError::MissingInnerTemplate`, more than one → `RenderError::MultipleInnerTemplates { count }`.
+
+### Composition
+
+Once validated, the function locates the byte offset of the inner `<template>` tag's closing `>` (via `attribute::find_tag_end`) and builds the output by string concatenation: `template_html[..inner_tag_end]` + `"<style>"` + `css` + `"</style>"` + `template_html[inner_tag_end..]`. No re-serialization occurs, so the outer wrapper's attributes, the inner `<template>`'s attributes, any existing inner content, and any surrounding document content are preserved byte-for-byte.
+
+The resulting string is valid `<f-template>` source: it can be written to a file and discovered by `Locator::from_patterns`, or fed directly to `locator::parse_f_templates`, and rendered through the normal `render_*_with_locator` pipeline like any other template definition.
+
+---
+
 ## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes four functions to JavaScript via `wasm-bindgen`:
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes five functions to JavaScript via `wasm-bindgen`:
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -545,6 +564,7 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}` |
 | `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+| `compose_f_template_styles` | `(template_html: &str, css: &str) → String` (throws on error) | Insert `<style>{css}</style>` as the first child of the inner `<template>` of a single `<f-template>` definition; throws a JS error (the `RenderError` display message) on any validation failure |
 
 ### `parse_f_templates`
 
@@ -624,7 +644,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 ## Error handling — `error.rs`
 
-`RenderError` is a non-exhaustive enum with 11 variants. Every variant carries at least one descriptive field. Every error message includes a **template context snippet** — a ±20-character window around the error site — to help developers pinpoint the problem.
+`RenderError` is a non-exhaustive enum with 16 variants. Every variant carries at least one descriptive field. Every error message includes a **template context snippet** — a ±20-character window around the error site — to help developers pinpoint the problem.
 
 `template_context(template, at)` takes care to:
 - Walk backwards up to 20 bytes (to a UTF-8 character boundary) for pre-error context.
