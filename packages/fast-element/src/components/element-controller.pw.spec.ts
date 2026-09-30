@@ -1669,8 +1669,8 @@ test.describe("The ElementController", () => {
         expect(didThrow).toBe(false);
     });
 
-    test.describe("when the definition's template changes", () => {
-        test("registers a single subscriber per definition regardless of element count, and it does not grow after a template change", async ({
+    test.describe("when the definition's template resolves", () => {
+        test("registers a single subscriber per definition while pending, regardless of element count, and unsubscribes once the template resolves", async ({
             page,
         }) => {
             await page.goto("/");
@@ -1686,14 +1686,11 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
+                // definition.template only ever transitions undefined → defined,
+                // once, so compose without a template to exercise the pending path.
                 const definition = await FASTElementDefinition.compose(
                     class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            template: html`
-                                ${templateA}
-                            `,
-                        };
+                        static definition = { name };
                     },
                 );
                 definition.define();
@@ -1731,17 +1728,17 @@ test.describe("The ElementController", () => {
                 const afterCreate = countTemplateSubscribers();
 
                 definition.template = html`
-                    change-1
+                    ${templateA}
                 `;
                 await new Promise(resolve => requestAnimationFrame(resolve));
-                const afterChange = countTemplateSubscribers();
+                const afterResolve = countTemplateSubscribers();
 
                 elements.forEach(element => document.body.removeChild(element));
 
-                return { afterCreate, afterChange };
+                return { afterCreate, afterResolve };
             }, templateA);
 
-            expect(subscriberCounts).toEqual({ afterCreate: 1, afterChange: 1 });
+            expect(subscriberCounts).toEqual({ afterCreate: 1, afterResolve: 0 });
         });
     });
 

@@ -857,27 +857,34 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        // Register a single subscription per definition rather than one per element.
-        // Elements are tracked (with WeakRefs, via the element registry) so the
-        // definition (a per-tag singleton that lives for the page's lifetime) never
-        // strongly retains its instances. trackFASTElementInstance reports whether
-        // this is the definition's first tracked instance, which doubles as a
-        // one-time-per-definition signal for the subscription below.
-        if (trackFASTElementInstance(definition, element)) {
-            Observable.getNotifier(definition).subscribe(
-                {
-                    handleChange: () => {
-                        trackedFASTElementInstances(definition, tracked => {
-                            ElementController.forCustomElement(
-                                tracked as FASTElement,
-                                true,
-                            );
-                            (tracked as FASTElement).$fastController.connect();
-                        });
-                    },
+        // definition.template only ever transitions undefined → defined, once.
+        // Elements constructed after that resolution already receive the
+        // resolved template directly (see resolveFASTElementTemplate), so
+        // there is nothing to track or subscribe to for them; only elements
+        // constructed while the template is still pending need to be tracked
+        // (with WeakRefs, via the element registry) so the definition (a
+        // per-tag singleton that outlives every instance) never strongly
+        // retains them. trackFASTElementInstance reports whether this is the
+        // definition's first tracked instance, which doubles as a one-time
+        // signal for the subscription below. The subscriber unsubscribes
+        // itself once the one-time resolution fires (mirroring
+        // fastElementRegistry.whenRegistered's self-unsubscribing pattern).
+        if (
+            definition.template === void 0 &&
+            trackFASTElementInstance(definition, element)
+        ) {
+            const notifier = Observable.getNotifier(definition);
+            const subscriber = {
+                handleChange: () => {
+                    notifier.unsubscribe(subscriber, "template");
+                    trackedFASTElementInstances(definition, tracked => {
+                        ElementController.forCustomElement(tracked as FASTElement, true);
+                        (tracked as FASTElement).$fastController.connect();
+                    });
                 },
-                "template",
-            );
+            };
+
+            notifier.subscribe(subscriber, "template");
         }
 
         return ((element as any).$fastController = new elementControllerStrategy(

@@ -18,9 +18,11 @@ const typeRegistry = createTypeRegistry<FASTElementDefinition>();
 type TrackedInstanceRef = WeakRef<object> & { owner: Set<TrackedInstanceRef> };
 
 /**
- * Elements awaiting a template change, held weakly and keyed by their definition.
- * A definition outlives every element it describes, so tracking them strongly here
- * would keep each one alive for the lifetime of the page.
+ * Elements awaiting a definition's one-time `undefined → defined` template
+ * resolution, held weakly and keyed by their definition. `definition.template`
+ * only ever makes that single transition, so callers only need to track
+ * instances while a definition's template is still unresolved, and can forget
+ * them for good as soon as it resolves (see {@link trackedFASTElementInstances}).
  */
 const definitionInstances = new WeakMap<FASTElementDefinition, Set<TrackedInstanceRef>>();
 
@@ -32,12 +34,14 @@ const instanceRefs = new WeakMap<object, TrackedInstanceRef>();
 
 /**
  * Prunes a definition's tracked instance once it is actually garbage collected.
- * This keeps long-lived definitions (in particular declarative ones, whose template
- * is set once and never notifies again) from accumulating dead refs indefinitely as
- * elements are created and discarded over the page's life. Pruning is intentionally
- * not tied to element disconnection, since a disconnected element can be reconnected
- * later (e.g. pooled/virtualized rows) without being tracked again, and would then
- * be wrongly dropped from future template updates.
+ * Elements are only tracked while their definition's template is still
+ * unresolved, so this only needs to bound memory for that window (e.g. elements
+ * created and discarded, such as in a virtualized list, while a declarative
+ * template is still resolving) rather than for the page's entire lifetime.
+ * Pruning is intentionally not tied to element disconnection, since a
+ * disconnected element can be reconnected later (e.g. pooled/virtualized rows)
+ * without being tracked again, and would then be wrongly dropped from the
+ * eventual template resolution.
  */
 const instanceCleanupRegistry = new FinalizationRegistry<TrackedInstanceRef>(ref =>
     ref.owner.delete(ref),
@@ -186,7 +190,9 @@ export function trackFASTElementInstance(
 /**
  * Invokes the callback once for every currently live element instance tracked
  * against the specified definition, pruning any dead references encountered along
- * the way.
+ * the way, then forgets the definition entirely. This is safe because
+ * `definition.template` only ever transitions `undefined → defined` once, so a
+ * definition's tracked instances are only ever enumerated a single time.
  * @param definition - The definition to enumerate tracked instances for.
  * @param callback - Invoked once per live instance.
  * @internal
@@ -201,14 +207,13 @@ export function trackedFASTElementInstances(
         return;
     }
 
-    for (const ref of Array.from(instances)) {
+    definitionInstances.delete(definition);
+
+    for (const ref of instances) {
         const instance = ref.deref();
 
-        if (instance === void 0) {
-            instances.delete(ref);
-            continue;
+        if (instance !== void 0) {
+            callback(instance);
         }
-
-        callback(instance);
     }
 }
