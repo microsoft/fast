@@ -23,6 +23,22 @@ pub fn convert_template(template: &str, syntax: &str) -> Result<String, ConvertE
     converter::convert(template, syntax)
 }
 
+/// Convert a CSS stylesheet string to the requested syntax, exporting it as
+/// `export_name`.
+///
+/// Only `fast-v3-ts` supports CSS conversion. `export_name` must be a valid
+/// TypeScript/JavaScript identifier (no dotted paths). The generated module
+/// imports `css` from `@microsoft/fast-element` and exports `export_name` as a
+/// `css` tagged template, with the stylesheet content escaped for safe
+/// embedding in a TypeScript template literal.
+pub fn convert_stylesheet(
+    stylesheet: &str,
+    syntax: &str,
+    export_name: &str,
+) -> Result<String, ConvertError> {
+    converter::convert_stylesheet(stylesheet, syntax, export_name)
+}
+
 /// Metadata for all supported converter syntax targets.
 pub fn syntax_metadata() -> &'static [SyntaxMetadata] {
     syntax::syntax_metadata()
