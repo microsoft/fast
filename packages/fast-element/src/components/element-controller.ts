@@ -20,6 +20,10 @@ import {
     type ShadowRootOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
+import {
+    trackedFASTElementInstances,
+    trackFASTElementInstance,
+} from "./fast-element-registry.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -853,25 +857,28 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
+        // Register a single subscription per definition rather than one per element.
+        // Elements are tracked (with WeakRefs, via the element registry) so the
+        // definition (a per-tag singleton that lives for the page's lifetime) never
+        // strongly retains its instances. trackFASTElementInstance reports whether
+        // this is the definition's first tracked instance, which doubles as a
+        // one-time-per-definition signal for the subscription below.
+        if (trackFASTElementInstance(definition, element)) {
+            Observable.getNotifier(definition).subscribe(
+                {
+                    handleChange: () => {
+                        trackedFASTElementInstances(definition, tracked => {
+                            ElementController.forCustomElement(
+                                tracked as FASTElement,
+                                true,
+                            );
+                            (tracked as FASTElement).$fastController.connect();
+                        });
+                    },
                 },
-            },
-            "template",
-        );
-
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
-                },
-            },
-            "shadowOptions",
-        );
+                "template",
+            );
+        }
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
