@@ -20,6 +20,10 @@ import {
     type ShadowRootOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
+import {
+    forEachTrackedFASTElementInstance,
+    trackFASTElementInstance,
+} from "./fast-element-registry.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -33,31 +37,12 @@ const shadowRoots = new WeakMap<Element, ShadowRoot>();
 const lateAttributeObserver = Symbol("fast-late-attribute-observer");
 
 /**
- * A WeakRef tagged with the Set it belongs to, so the single shared
- * FinalizationRegistry below can remove it without a second lookup structure.
+ * Guards against subscribing to a definition's template changes more than once.
+ * A definition is a per-tag singleton that lives for the page's lifetime, so this
+ * subscription is shared by every element constructed from it rather than created
+ * per element.
  */
-type TrackedElementRef = WeakRef<FASTElement> & { owner: Set<TrackedElementRef> };
-
-/**
- * Elements awaiting a template change, held weakly and keyed by their definition.
- * A definition outlives every element it describes, so tracking them strongly here
- * would keep each one alive for the lifetime of the page.
- */
-const definitionElements = new WeakMap<FASTElementDefinition, Set<TrackedElementRef>>();
-const trackedElements = new WeakSet<HTMLElement>();
-
-/**
- * Prunes a definition's tracked WeakRef once the element it points to is actually
- * garbage collected. This keeps long-lived definitions (in particular declarative
- * ones, whose template is set once and never notifies again) from accumulating dead
- * WeakRefs indefinitely as elements are created and discarded over the page's life.
- * Pruning is intentionally not tied to disconnect(), since a disconnected element can
- * be reconnected later (e.g. pooled/virtualized rows) without re-running its
- * constructor, and would then wrongly be dropped from future template updates.
- */
-const elementCleanupRegistry = new FinalizationRegistry<TrackedElementRef>(ref =>
-    ref.owner.delete(ref),
-);
+const subscribedDefinitions = new WeakSet<FASTElementDefinition>();
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
@@ -881,42 +866,29 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         // Register a single subscription per definition rather than one per element.
-        // Elements are tracked with WeakRefs so the definition (a per-tag singleton
-        // that lives for the page's lifetime) never strongly retains its instances.
-        let elements = definitionElements.get(definition);
-
-        if (elements === void 0) {
-            elements = new Set<TrackedElementRef>();
-            definitionElements.set(definition, elements);
+        // Elements are tracked (with WeakRefs, via the element registry) so the
+        // definition (a per-tag singleton that lives for the page's lifetime) never
+        // strongly retains its instances.
+        if (!subscribedDefinitions.has(definition)) {
+            subscribedDefinitions.add(definition);
 
             Observable.getNotifier(definition).subscribe(
                 {
                     handleChange: () => {
-                        for (const reference of Array.from(elements!)) {
-                            const tracked = reference.deref();
-
-                            if (tracked === void 0) {
-                                elements!.delete(reference);
-                                continue;
-                            }
-
-                            ElementController.forCustomElement(tracked, true);
-                            tracked.$fastController.connect();
-                        }
+                        forEachTrackedFASTElementInstance(definition, tracked => {
+                            ElementController.forCustomElement(
+                                tracked as FASTElement,
+                                true,
+                            );
+                            (tracked as FASTElement).$fastController.connect();
+                        });
                     },
                 },
                 "template",
             );
         }
 
-        if (!trackedElements.has(element)) {
-            trackedElements.add(element);
-
-            const ref = new WeakRef(element as FASTElement) as TrackedElementRef;
-            ref.owner = elements;
-            elements.add(ref);
-            elementCleanupRegistry.register(element, ref, ref);
-        }
+        trackFASTElementInstance(definition, element);
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
