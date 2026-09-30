@@ -25,6 +25,16 @@ pub enum RenderError {
     DuplicateTemplate { element: String, paths: Vec<String> },
     /// A template file could not be read from the filesystem.
     TemplateReadError { path: String, message: String },
+    /// `compose_f_template_styles` input has no `<f-template>` element.
+    MissingFTemplate,
+    /// `compose_f_template_styles` input has more than one `<f-template>` element.
+    MultipleFTemplates { count: usize },
+    /// `compose_f_template_styles` input's `<f-template>` has no inner `<template>` element.
+    MissingInnerTemplate,
+    /// `compose_f_template_styles` input's `<f-template>` has more than one inner `<template>` element.
+    MultipleInnerTemplates { count: usize },
+    /// `compose_f_template_styles` CSS contains a case-insensitive `</style` raw-text terminator.
+    UnsafeStyleContent { context: String },
 }
 
 impl fmt::Display for RenderError {
@@ -91,6 +101,27 @@ impl fmt::Display for RenderError {
             Self::TemplateReadError { path, message } => write!(
                 f,
                 "template read error: could not read '{path}': {message}"
+            ),
+            Self::MissingFTemplate => write!(
+                f,
+                "template validation error: expected exactly one '<f-template>' element"
+            ),
+            Self::MultipleFTemplates { count } => write!(
+                f,
+                "template validation error: expected exactly one '<f-template>' element, found {count}"
+            ),
+            Self::MissingInnerTemplate => write!(
+                f,
+                "template validation error: '<f-template>' must contain exactly one inner '<template>' element"
+            ),
+            Self::MultipleInnerTemplates { count } => write!(
+                f,
+                "template validation error: '<f-template>' must contain exactly one inner '<template>' element, found {count}"
+            ),
+            Self::UnsafeStyleContent { context } => write!(
+                f,
+                "unsafe style content: css contains a '</style' raw-text terminator sequence \
+                 — css: \"{context}\""
             ),
         }
     }
