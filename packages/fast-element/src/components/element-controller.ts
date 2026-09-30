@@ -20,6 +20,10 @@ import {
     type ShadowRootOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
+import {
+    forEachTrackedFASTElementInstance,
+    trackFASTElementInstance,
+} from "./fast-element-registry.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -31,6 +35,14 @@ const isConnectedPropertyName = "isConnected";
 
 const shadowRoots = new WeakMap<Element, ShadowRoot>();
 const lateAttributeObserver = Symbol("fast-late-attribute-observer");
+
+/**
+ * Guards against subscribing to a definition's template changes more than once.
+ * A definition is a per-tag singleton that lives for the page's lifetime, so this
+ * subscription is shared by every element constructed from it rather than created
+ * per element.
+ */
+const subscribedDefinitions = new WeakSet<FASTElementDefinition>();
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
@@ -853,25 +865,30 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
-                },
-            },
-            "template",
-        );
+        // Register a single subscription per definition rather than one per element.
+        // Elements are tracked (with WeakRefs, via the element registry) so the
+        // definition (a per-tag singleton that lives for the page's lifetime) never
+        // strongly retains its instances.
+        if (!subscribedDefinitions.has(definition)) {
+            subscribedDefinitions.add(definition);
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
+            Observable.getNotifier(definition).subscribe(
+                {
+                    handleChange: () => {
+                        forEachTrackedFASTElementInstance(definition, tracked => {
+                            ElementController.forCustomElement(
+                                tracked as FASTElement,
+                                true,
+                            );
+                            (tracked as FASTElement).$fastController.connect();
+                        });
+                    },
                 },
-            },
-            "shadowOptions",
-        );
+                "template",
+            );
+        }
+
+        trackFASTElementInstance(definition, element);
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
