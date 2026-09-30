@@ -199,11 +199,11 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 
 ## Convert
 
-`fast convert` converts one FAST declarative template file at a time using the converter WASM module in `wasm/convert/`. Supported syntax names, output extensions, and default output suffixes are read from the converter WASM metadata so the Rust converter remains the source of truth for syntax targets.
+`fast convert` converts FAST declarative template files using the converter WASM module in `wasm/convert/`. Supported syntax names, output extensions, and default output suffixes are read from the converter WASM metadata so the Rust converter remains the source of truth for syntax targets.
 
 ```shell
-fast convert --syntax=webui-prerelease --template=example.html
-fast convert --syntax=fast-v3-ts --template=example.html --output=../*.template.ts
+fast convert --syntax=webui-prerelease --templates=example.html
+fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template.ts
 fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
 ```
 
@@ -212,28 +212,16 @@ fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/
 | Option | Default | Description |
 |---|---|---|
 | `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease` or `fast-v3-ts` |
-| `--template="<path>"` | _(required unless `--templates` is used)_ | Source FAST declarative template. The file must use the `.html` extension. Cannot be combined with `--templates`. |
-| `--templates="<glob>"` | _(required unless `--template` is used)_ | Comma-separated glob pattern(s) matching multiple `.html` templates to convert in a single invocation, loading the converter WASM module once. Cannot be combined with `--template`. |
-| `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. With `--templates`, every matched file is written under `--output`'s directory (or next to its source if `--output` is omitted). |
+| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates to convert. An exact single file path is also accepted. Loads the converter WASM module once for the whole batch. |
+| `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
-The source template must be `.html`. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When `--templates` matches zero files for a given pattern, a warning is printed but the command does not fail.
+Only matched `.html` files are converted; non-`.html` files and directories are never matched. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When a `--templates` pattern matches zero files, a warning is printed but the command does not fail unless every pattern matches zero files.
 
 ### Convert configuration file
 
-`fast-convert.config.json` follows the same precedence and path-resolution rules as `fast-build.config.json`: CLI arguments override config values, and `template`/`templates`/`output` paths from config are resolved relative to the config file directory.
-
-```json
-{
-    "syntax": "fast-v3-ts",
-    "template": "src/example.html",
-    "output": "generated/*.template.ts",
-    "overwrite": false
-}
-```
-
-Or, for batch conversion:
+`fast-convert.config.json` follows the same precedence and path-resolution rules as `fast-build.config.json`: CLI arguments override config values, and `templates`/`output` paths from config are resolved relative to the config file directory.
 
 ```json
 {
@@ -244,7 +232,7 @@ Or, for batch conversion:
 }
 ```
 
-Only `syntax`, `template`, `templates`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean. `template` and `templates` are mutually exclusive.
+Only `syntax`, `templates`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean.
 
 ### Running converter fixtures locally
 

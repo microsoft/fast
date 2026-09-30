@@ -128,7 +128,7 @@ describe("fast convert fixtures", () => {
         runConvert([
             `--config=${fixtureConfig}`,
             "--syntax=fast-v3-ts",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${path.join(cliOutputDir, "*.template.ts")}`,
         ]);
 
@@ -168,7 +168,7 @@ describe("fast convert fixtures", () => {
 
         const blocked = runConvertWithStderr([
             "--syntax=webui-prerelease",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${outputPath}`,
         ]);
 
@@ -178,7 +178,7 @@ describe("fast convert fixtures", () => {
 
         runConvert([
             "--syntax=webui-prerelease",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${outputPath}`,
             "--overwrite",
         ]);
@@ -190,7 +190,7 @@ describe("fast convert fixtures", () => {
         const extensionOutputDir = outputDir("extension");
         const result = runConvertWithStderr([
             "--syntax=fast-v3-ts",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${path.join(extensionOutputDir, "wrong.html")}`,
         ]);
 
@@ -207,7 +207,7 @@ describe("fast convert fixtures", () => {
         );
         runConvert([
             "--syntax=webui-prerelease",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${nestedOutput}`,
         ]);
 

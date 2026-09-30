@@ -24,13 +24,12 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
 const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["stream"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "syntax",
-    "template",
     "templates",
     "output",
     "overwrite",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
-const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "template"]);
+const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
 /** @typedef {{ syntax: string, extension: string, suffix: string }} ConvertSyntaxMetadata */
@@ -590,7 +589,6 @@ async function runConvert(args) {
     );
 
     const syntax = resolveOption(args, config, configDir, "syntax");
-    const template = resolveOption(args, config, configDir, "template");
     const templatesArg = resolveOption(args, config, configDir, "templates");
     const outputArg = resolveOption(args, config, configDir, "output");
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
@@ -612,46 +610,12 @@ async function runConvert(args) {
         process.exit(1);
     }
 
-    if (template && templatesArg) {
-        process.stderr.write(
-            "Error: Cannot use both --template and --templates. Use --template to convert a single file or --templates to convert a glob pattern of files.\n",
-        );
+    if (!templatesArg) {
+        process.stderr.write("Error: Missing required --templates.\n");
         process.exit(1);
     }
 
-    if (templatesArg) {
-        runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata);
-        return;
-    }
-
-    if (!template) {
-        process.stderr.write("Error: Missing required --template or --templates.\n");
-        process.exit(1);
-    }
-
-    if (path.extname(template) !== ".html") {
-        process.stderr.write(
-            `Error: Template file "${template}" must use the ".html" extension.\n`,
-        );
-        process.exit(1);
-    }
-
-    if (!fs.existsSync(template)) {
-        process.stderr.write(`Error: Template file "${template}" not found.\n`);
-        process.exit(1);
-    }
-
-    if (!fs.statSync(template).isFile()) {
-        process.stderr.write(`Error: Template path "${template}" is not a file.\n`);
-        process.exit(1);
-    }
-
-    const output = resolveConvertOutput(template, syntax, outputArg, syntaxMetadata);
-    validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
-
-    const converted = wasm.convert_template(fs.readFileSync(template, "utf8"), syntax);
-    fs.writeFileSync(output, converted, "utf8");
-    process.stdout.write(`Converted: ${output}\n`);
+    runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata);
 }
 
 async function runBuild(args) {
@@ -838,13 +802,11 @@ function writeConvertUsage() {
         "Options:\n" +
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
-        '  --template="<path>"    Source FAST declarative .html file. Required\n' +
-        "                         unless --templates is used.\n" +
-        '  --templates="<glob>"   Glob pattern(s) for FAST declarative .html files\n' +
-        "                         to convert in one pass. Separate multiple\n" +
-        "                         patterns with commas. Loads the converter WASM\n" +
-        "                         module once for the whole batch. Cannot be\n" +
-        "                         combined with --template.\n" +
+        '  --templates="<glob>"   Required. Glob pattern(s) for FAST declarative\n' +
+        "                         .html files to convert in one pass. Separate\n" +
+        "                         multiple patterns with commas. Loads the\n" +
+        "                         converter WASM module once for the whole\n" +
+        "                         batch. A single exact path is also accepted.\n" +
         '  --output="<path>"      Output file path. Defaults next to each source\n' +
         `                         file as ${defaultOutputs}. Any "*" is\n` +
         "                         replaced by the source file's basename. The\n" +

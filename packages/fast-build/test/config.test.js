@@ -193,12 +193,12 @@ describe("convert CLI", () => {
         );
 
         const { stdout, calls } = runConvertWithStubbedWasm(
-            ["--syntax=webui-prerelease", "--template=example.html"],
+            ["--syntax=webui-prerelease", "--templates=example.html"],
             dir,
         );
         const output = fs.readFileSync(path.join(dir, "example.webui.html"), "utf8");
 
-        assert.equal(stdout, "Converted: example.webui.html\n");
+        assert.equal(stdout, "Converted: example.webui.html\nConverted 1 template(s).\n");
         assert.equal(
             output,
             'converted:webui-prerelease:<f-template name="my-el"><template>Hello</template></f-template>',
@@ -225,13 +225,13 @@ describe("convert CLI", () => {
             [
                 "convert",
                 "--syntax=webui-prerelease",
-                "--template=example.html",
+                "--templates=example.html",
                 "--output=actual.html",
             ],
             dir,
         );
 
-        assert.equal(stdout, "Converted: actual.html\n");
+        assert.equal(stdout, "Converted: actual.html\nConverted 1 template(s).\n");
         assert.equal(
             fs.readFileSync(path.join(dir, "actual.html"), "utf8"),
             "<template>Hello</template>",
@@ -249,13 +249,16 @@ describe("convert CLI", () => {
         const { stdout } = runConvertWithStubbedWasm(
             [
                 "--syntax=fast-v3-ts",
-                "--template=templates/card.html",
+                "--templates=templates/card.html",
                 "--output=generated/*.template.ts",
             ],
             dir,
         );
 
-        assert.equal(stdout, "Converted: generated/card.template.ts\n");
+        assert.equal(
+            stdout,
+            "Converted: generated/card.template.ts\nConverted 1 template(s).\n",
+        );
         assert.ok(fs.existsSync(path.join(dir, "generated", "card.template.ts")));
     });
 
@@ -270,7 +273,7 @@ describe("convert CLI", () => {
             path.join(projectDir, "fast-convert.config.json"),
             JSON.stringify({
                 syntax: "webui-prerelease",
-                template: "template.html",
+                templates: "template.html",
                 output: "out/*.html",
             }),
         );
@@ -294,7 +297,7 @@ describe("convert CLI", () => {
             path.join(dir, "fast-convert.config.json"),
             JSON.stringify({
                 syntax: "webui-prerelease",
-                template: "config.html",
+                templates: "config.html",
                 output: "config.webui.html",
             }),
         );
@@ -302,7 +305,7 @@ describe("convert CLI", () => {
         runConvertWithStubbedWasm(
             [
                 "--syntax=fast-v3-ts",
-                "--template=cli.html",
+                "--templates=cli.html",
                 "--output=generated/*.template.ts",
             ],
             dir,
@@ -320,7 +323,7 @@ describe("convert CLI", () => {
         fs.writeFileSync(path.join(dir, "example.webui.html"), "old");
 
         const result = runConvertWithStderr(
-            ["--syntax=webui-prerelease", "--template=example.html"],
+            ["--syntax=webui-prerelease", "--templates=example.html"],
             dir,
         );
 
@@ -342,7 +345,7 @@ describe("convert CLI", () => {
             path.join(dir, "fast-convert.config.json"),
             JSON.stringify({
                 syntax: "webui-prerelease",
-                template: "example.html",
+                templates: "example.html",
                 overwrite: false,
             }),
         );
@@ -461,30 +464,11 @@ describe("convert --templates glob", () => {
         assert.ok(result.stderr.includes("No template files were converted"));
     });
 
-    it("rejects using --template and --templates together", () => {
-        fs.writeFileSync(
-            path.join(dir, "example.html"),
-            '<f-template name="my-el"><template>Hello</template></f-template>',
-        );
-
-        const result = runConvertWithStderr(
-            [
-                "--syntax=webui-prerelease",
-                "--template=example.html",
-                "--templates=*.html",
-            ],
-            dir,
-        );
-
-        assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("Cannot use both --template and --templates"));
-    });
-
-    it("requires either --template or --templates", () => {
+    it("requires --templates", () => {
         const result = runConvertWithStderr(["--syntax=webui-prerelease"], dir);
 
         assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("Missing required --template or --templates"));
+        assert.ok(result.stderr.includes("Missing required --templates"));
     });
 
     it("loads templates glob patterns from config, resolved relative to the config directory", () => {
@@ -521,7 +505,7 @@ describe("convert validation", () => {
     });
 
     it("requires syntax", () => {
-        const result = runConvertWithStderr(["--template=example.html"], dir);
+        const result = runConvertWithStderr(["--templates=example.html"], dir);
 
         assert.equal(result.exitCode, 1);
         assert.ok(result.stderr.includes("Missing required --syntax"));
@@ -530,7 +514,7 @@ describe("convert validation", () => {
     it("rejects invalid syntax", () => {
         fs.writeFileSync(path.join(dir, "example.html"), "<template></template>");
         const result = runConvertWithStderr(
-            ["--syntax=unknown", "--template=example.html"],
+            ["--syntax=unknown", "--templates=example.html"],
             dir,
         );
 
@@ -540,50 +524,60 @@ describe("convert validation", () => {
         assert.ok(result.stderr.includes("fast-v3-ts"));
     });
 
-    it("requires template", () => {
+    it("requires templates", () => {
         const result = runConvertWithStderr(["--syntax=webui-prerelease"], dir);
 
         assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("Missing required --template"));
+        assert.ok(result.stderr.includes("Missing required --templates"));
     });
 
-    it("requires an existing template file", () => {
-        const result = runConvertWithStderr(
-            ["--syntax=webui-prerelease", "--template=missing.html"],
+    it("warns instead of erroring when a template pattern matches nothing", () => {
+        const result = runConvertCapture(
+            ["--syntax=webui-prerelease", "--templates=missing.html"],
             dir,
+            true,
         );
 
-        assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("Template file"));
-        assert.ok(result.stderr.includes("not found"));
+        assert.equal(result.exitCode, 0);
+        assert.ok(
+            result.stderr.includes('No template files found for pattern "missing.html"'),
+        );
     });
 
-    it("requires an html template extension", () => {
+    it("ignores non-html files alongside an html glob pattern", () => {
+        fs.writeFileSync(path.join(dir, "example.html"), "<template></template>");
         fs.writeFileSync(path.join(dir, "example.txt"), "text");
-        const result = runConvertWithStderr(
-            ["--syntax=webui-prerelease", "--template=example.txt"],
+
+        const { calls } = runConvertWithStubbedWasm(
+            ["--syntax=webui-prerelease", "--templates=*.html"],
             dir,
         );
 
-        assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes('must use the ".html" extension'));
+        assert.equal(calls.filter(call => call.name === "convert_template").length, 1);
+        assert.equal(fs.existsSync(path.join(dir, "example.txt.webui.html")), false);
     });
 
-    it("rejects template directory paths", () => {
+    it("does not match a directory with an html-like name", () => {
         fs.mkdirSync(path.join(dir, "directory.html"));
-        const result = runConvertWithStderr(
-            ["--syntax=webui-prerelease", "--template=directory.html"],
+
+        const result = runConvertCapture(
+            ["--syntax=webui-prerelease", "--templates=directory.html"],
             dir,
+            true,
         );
 
-        assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("is not a file"));
+        assert.equal(result.exitCode, 0);
+        assert.ok(
+            result.stderr.includes(
+                'No template files found for pattern "directory.html"',
+            ),
+        );
     });
 
     it("requires the output extension for the selected syntax", () => {
         fs.writeFileSync(path.join(dir, "example.html"), "<template></template>");
         const result = runConvertWithStderr(
-            ["--syntax=fast-v3-ts", "--template=example.html", "--output=example.html"],
+            ["--syntax=fast-v3-ts", "--templates=example.html", "--output=example.html"],
             dir,
         );
 
@@ -596,7 +590,7 @@ describe("convert validation", () => {
         runConvertWithStubbedWasm(
             [
                 "--syntax=webui-prerelease",
-                "--template=example.html",
+                "--templates=example.html",
                 "--output=missing/nested/example.html",
             ],
             dir,
@@ -611,7 +605,7 @@ describe("convert validation", () => {
         const result = runConvertWithStderr(
             [
                 "--syntax=webui-prerelease",
-                "--template=example.html",
+                "--templates=example.html",
                 "--output=output.html",
             ],
             dir,
