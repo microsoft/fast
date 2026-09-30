@@ -857,18 +857,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        // definition.template only ever transitions undefined → defined, once.
-        // Elements constructed after that resolution already receive the
-        // resolved template directly (see resolveFASTElementTemplate), so
-        // there is nothing to track or subscribe to for them; only elements
-        // constructed while the template is still pending need to be tracked
-        // (with WeakRefs, via the element registry) so the definition (a
-        // per-tag singleton that outlives every instance) never strongly
-        // retains them. trackFASTElementInstance reports whether this is the
-        // definition's first tracked instance, which doubles as a one-time
-        // signal for the subscription below. The subscriber unsubscribes
-        // itself once the one-time resolution fires (mirroring
-        // fastElementRegistry.whenRegistered's self-unsubscribing pattern).
+        // template only transitions undefined → defined, once, so only track
+        // instances while it's still pending (see trackFASTElementInstance).
+        // The subscriber unsubscribes itself once that fires, mirroring
+        // fastElementRegistry.whenRegistered.
         if (
             definition.template === void 0 &&
             trackFASTElementInstance(definition, element)
