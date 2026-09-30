@@ -51,6 +51,12 @@ pub enum ConvertError {
         reason: String,
         context: String,
     },
+    /// `type_source` was supplied for a syntax that does not support it.
+    TypeSourceUnsupportedForSyntax { syntax: String },
+    /// `type_source` is not a valid dotted TypeScript identifier.
+    InvalidTypeSource { value: String },
+    /// `type_source_import` was supplied without `type_source`.
+    TypeSourceImportRequiresTypeSource,
 }
 
 impl fmt::Display for ConvertError {
@@ -131,6 +137,18 @@ impl fmt::Display for ConvertError {
             Self::UnsupportedEventHandler { value, reason, context } => write!(
                 f,
                 "unsupported event handler '{{{value}}}': {reason} — template: \"{context}\""
+            ),
+            Self::TypeSourceUnsupportedForSyntax { syntax } => write!(
+                f,
+                "type-source is only supported for syntax 'fast-v3-ts', not '{syntax}'"
+            ),
+            Self::InvalidTypeSource { value } => write!(
+                f,
+                "invalid type-source '{value}': expected a dotted TypeScript identifier such as 'MyElement' or 'Namespace.MyElement'"
+            ),
+            Self::TypeSourceImportRequiresTypeSource => write!(
+                f,
+                "type-source-import requires type-source: provide the type name to import alongside the import module"
             ),
         }
     }
