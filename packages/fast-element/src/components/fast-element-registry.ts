@@ -148,22 +148,26 @@ function whenRegistered(
 
 /**
  * Tracks a live element instance against its definition, so
- * {@link forEachTrackedFASTElementInstance} can later enumerate it. Tracking the
+ * {@link trackedFASTElementInstances} can later enumerate it. Tracking the
  * same instance more than once for the same definition is a no-op. The instance is
  * held weakly and is automatically untracked once it is garbage collected.
  * @param definition - The definition the instance was constructed from.
  * @param instance - The element instance to track.
+ * @returns `true` if this is the first instance ever tracked for the definition,
+ * which callers can use as a one-time-per-definition signal (e.g. to subscribe to
+ * the definition exactly once) instead of maintaining a separate guard.
  * @internal
  */
 export function trackFASTElementInstance(
     definition: FASTElementDefinition,
     instance: object,
-): void {
+): boolean {
     if (instanceRefs.has(instance)) {
-        return;
+        return false;
     }
 
     let instances = definitionInstances.get(definition);
+    const isFirstInstance = instances === void 0;
 
     if (instances === void 0) {
         instances = new Set<TrackedInstanceRef>();
@@ -175,6 +179,8 @@ export function trackFASTElementInstance(
     instances.add(ref);
     instanceRefs.set(instance, ref);
     instanceCleanupRegistry.register(instance, ref, ref);
+
+    return isFirstInstance;
 }
 
 /**
@@ -185,7 +191,7 @@ export function trackFASTElementInstance(
  * @param callback - Invoked once per live instance.
  * @internal
  */
-export function forEachTrackedFASTElementInstance(
+export function trackedFASTElementInstances(
     definition: FASTElementDefinition,
     callback: (instance: any) => void,
 ): void {
