@@ -204,6 +204,8 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 ```shell
 fast convert --syntax=webui-prerelease --template=example.html
 fast convert --syntax=fast-v3-ts --template=example.html --output=../*.template.ts
+fast convert --syntax=fast-v3-ts --template=example.html \
+    --type-source=MyElement --type-source-import=./my-element.js
 ```
 
 ### Convert options
@@ -214,9 +216,18 @@ fast convert --syntax=fast-v3-ts --template=example.html --output=../*.template.
 | `--template="<path>"` | _(required)_ | Source FAST declarative template. The file must use the `.html` extension. |
 | `--output="<path>"` | Next to `--template` | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
+| `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
+| `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
 The source template must be `.html`. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory must already exist, and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used.
+
+`--type-source` exists so templates that combine more than one differently-named
+`ref`/`children`/`slotted` directive (which otherwise fail to type-check once a
+real `TSource` is supplied, because `html<TSource, TParent>` infers a single
+`TSource` for the whole tagged template) can be generated already type-checked
+against a concrete element type. See
+[`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic).
 
 ### Convert configuration file
 
@@ -227,11 +238,15 @@ The source template must be `.html`. The output extension must match the selecte
     "syntax": "fast-v3-ts",
     "template": "src/example.html",
     "output": "generated/*.template.ts",
-    "overwrite": false
+    "overwrite": false,
+    "type-source": "MyElement",
+    "type-source-import": "./my-element.js"
 }
 ```
 
-Only `syntax`, `template`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean.
+Only `syntax`, `template`, `output`, `overwrite`, `type-source`, and
+`type-source-import` are allowed. Values must be strings except `overwrite`, which
+must be a JSON boolean.
 
 ### Running converter fixtures locally
 
@@ -246,6 +261,9 @@ The fixture tests run `fast convert` from fixture directories that contain
 `fast-convert.config.json`, so they verify the same default config discovery used
 by `fast build`. Generated fixture output is written under
 `packages/fast-build/test/.fixture-output/` and removed by the tests.
+`test/fixtures/convert/type-source.test.js` additionally type-checks
+`--type-source` output with the TypeScript compiler API against a companion
+element type, using a separate `test/.fixture-output-type-source/` directory.
 
 ## Template syntax
 

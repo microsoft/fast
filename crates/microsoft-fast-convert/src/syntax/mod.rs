@@ -103,6 +103,26 @@ pub(crate) fn is_supported_f_attribute(name: &str) -> bool {
     matches!(name, "f-ref" | "f-children" | "f-slotted")
 }
 
+/// Validate a `type_source` value before it is embedded as `html<TypeSource>`.
+///
+/// Accepts simple dotted identifiers such as `MyElement` or
+/// `Namespace.MyElement`; rejects generic parameters, whitespace, and other
+/// characters that could break the generated TypeScript source.
+pub(crate) fn is_valid_type_source(value: &str) -> bool {
+    if value.is_empty() {
+        return false;
+    }
+
+    value.split('.').all(|segment| {
+        let mut chars = segment.chars();
+        match chars.next() {
+            Some(first) if first.is_ascii_alphabetic() || first == '_' || first == '$' => {}
+            _ => return false,
+        }
+        chars.all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '$')
+    })
+}
+
 pub(crate) fn strip_single_brace(value: &str) -> Option<&str> {
     let trimmed = value.trim();
     if trimmed.starts_with('{')
