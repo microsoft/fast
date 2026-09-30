@@ -33,14 +33,17 @@ const shadowRoots = new WeakMap<Element, ShadowRoot>();
 const lateAttributeObserver = Symbol("fast-late-attribute-observer");
 
 /**
+ * A WeakRef tagged with the Set it belongs to, so the single shared
+ * FinalizationRegistry below can remove it without a second lookup structure.
+ */
+type TrackedElementRef = WeakRef<FASTElement> & { owner: Set<TrackedElementRef> };
+
+/**
  * Elements awaiting a template change, held weakly and keyed by their definition.
  * A definition outlives every element it describes, so tracking them strongly here
  * would keep each one alive for the lifetime of the page.
  */
-const definitionElements = new WeakMap<
-    FASTElementDefinition,
-    Set<WeakRef<FASTElement>>
->();
+const definitionElements = new WeakMap<FASTElementDefinition, Set<TrackedElementRef>>();
 const trackedElements = new WeakSet<HTMLElement>();
 
 /**
@@ -52,12 +55,9 @@ const trackedElements = new WeakSet<HTMLElement>();
  * be reconnected later (e.g. pooled/virtualized rows) without re-running its
  * constructor, and would then wrongly be dropped from future template updates.
  */
-const elementCleanupRegistry = new FinalizationRegistry<{
-    definition: FASTElementDefinition;
-    ref: WeakRef<FASTElement>;
-}>(({ definition, ref }) => {
-    definitionElements.get(definition)?.delete(ref);
-});
+const elementCleanupRegistry = new FinalizationRegistry<TrackedElementRef>(ref =>
+    ref.owner.delete(ref),
+);
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
@@ -886,7 +886,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         let elements = definitionElements.get(definition);
 
         if (elements === void 0) {
-            elements = new Set<WeakRef<FASTElement>>();
+            elements = new Set<TrackedElementRef>();
             definitionElements.set(definition, elements);
 
             Observable.getNotifier(definition).subscribe(
@@ -912,9 +912,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (!trackedElements.has(element)) {
             trackedElements.add(element);
 
-            const ref = new WeakRef(element as FASTElement);
+            const ref = new WeakRef(element as FASTElement) as TrackedElementRef;
+            ref.owner = elements;
             elements.add(ref);
-            elementCleanupRegistry.register(element, { definition, ref }, ref);
+            elementCleanupRegistry.register(element, ref, ref);
         }
 
         return ((element as any).$fastController = new elementControllerStrategy(
