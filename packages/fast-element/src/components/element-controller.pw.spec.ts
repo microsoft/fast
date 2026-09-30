@@ -1740,6 +1740,41 @@ test.describe("The ElementController", () => {
 
             expect(subscriberCounts).toEqual({ afterCreate: 1, afterResolve: 0 });
         });
+
+        test("does not connect an element that is detached when the template resolves", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async templateA => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
+
+                const name = uniqueElementName();
+                const definition = await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                );
+                definition.define();
+
+                // Never inserted into the document.
+                const element = document.createElement(name);
+
+                definition.template = html`
+                    ${templateA}
+                `;
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                return {
+                    isConnected: element.isConnected,
+                    fastIsConnected: element.$fastController.isConnected,
+                };
+            }, templateA);
+
+            expect(result).toEqual({ isConnected: false, fastIsConnected: false });
+        });
     });
 
     test.describe("with behaviors", () => {

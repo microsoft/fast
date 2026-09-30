@@ -870,8 +870,15 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 handleChange: () => {
                     notifier.unsubscribe(subscriber, "template");
                     trackedFASTElementInstances(definition, tracked => {
-                        ElementController.forCustomElement(tracked as FASTElement, true);
-                        (tracked as FASTElement).$fastController.connect();
+                        const trackedElement = tracked as FASTElement;
+                        ElementController.forCustomElement(trackedElement, true);
+
+                        // Only run connect() for elements actually in the
+                        // document; detached elements get connected normally
+                        // by their own connectedCallback later.
+                        if (trackedElement.isConnected) {
+                            trackedElement.$fastController.connect();
+                        }
                     });
                 },
             };
