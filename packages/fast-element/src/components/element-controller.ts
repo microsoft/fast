@@ -32,6 +32,33 @@ const isConnectedPropertyName = "isConnected";
 const shadowRoots = new WeakMap<Element, ShadowRoot>();
 const lateAttributeObserver = Symbol("fast-late-attribute-observer");
 
+/**
+ * Elements awaiting a template change, held weakly and keyed by their definition.
+ * A definition outlives every element it describes, so tracking them strongly here
+ * would keep each one alive for the lifetime of the page.
+ */
+const definitionElements = new WeakMap<
+    FASTElementDefinition,
+    Set<WeakRef<FASTElement>>
+>();
+const trackedElements = new WeakSet<HTMLElement>();
+
+/**
+ * Prunes a definition's tracked WeakRef once the element it points to is actually
+ * garbage collected. This keeps long-lived definitions (in particular declarative
+ * ones, whose template is set once and never notifies again) from accumulating dead
+ * WeakRefs indefinitely as elements are created and discarded over the page's life.
+ * Pruning is intentionally not tied to disconnect(), since a disconnected element can
+ * be reconnected later (e.g. pooled/virtualized rows) without re-running its
+ * constructor, and would then wrongly be dropped from future template updates.
+ */
+const elementCleanupRegistry = new FinalizationRegistry<{
+    definition: FASTElementDefinition;
+    ref: WeakRef<FASTElement>;
+}>(({ definition, ref }) => {
+    definitionElements.get(definition)?.delete(ref);
+});
+
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
@@ -853,25 +880,42 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
-                },
-            },
-            "template",
-        );
+        // Register a single subscription per definition rather than one per element.
+        // Elements are tracked with WeakRefs so the definition (a per-tag singleton
+        // that lives for the page's lifetime) never strongly retains its instances.
+        let elements = definitionElements.get(definition);
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
+        if (elements === void 0) {
+            elements = new Set<WeakRef<FASTElement>>();
+            definitionElements.set(definition, elements);
+
+            Observable.getNotifier(definition).subscribe(
+                {
+                    handleChange: () => {
+                        for (const reference of Array.from(elements!)) {
+                            const tracked = reference.deref();
+
+                            if (tracked === void 0) {
+                                elements!.delete(reference);
+                                continue;
+                            }
+
+                            ElementController.forCustomElement(tracked, true);
+                            tracked.$fastController.connect();
+                        }
+                    },
                 },
-            },
-            "shadowOptions",
-        );
+                "template",
+            );
+        }
+
+        if (!trackedElements.has(element)) {
+            trackedElements.add(element);
+
+            const ref = new WeakRef(element as FASTElement);
+            elements.add(ref);
+            elementCleanupRegistry.register(element, { definition, ref }, ref);
+        }
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
