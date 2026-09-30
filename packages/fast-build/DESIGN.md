@@ -63,16 +63,23 @@ fast build [options]
 fast convert [options]
         │
         ▼
-  parseArgs(argv)        ← --syntax, --template, --output, --overwrite, --config
+  parseArgs(argv)        ← --syntax, --template, --templates, --output, --overwrite, --config
         │
         ├─ loadConfig(configPath)             ← load fast-convert.config.json
         ├─ resolveOption(args, config, …)     ← CLI args override config values
         ├─ resolvePresenceBooleanOption(args, config, "overwrite")
-        ├─ validate syntax/template/output paths and extensions
-        ├─ wasm = require(CONVERT_WASM_MODULE) ← load wasm/convert/microsoft_fast_convert.js
-        ├─ wasm.convert_template(templateHtml, syntax)
+        ├─ error if both --template and --templates are provided
+        ├─ wasm = require(CONVERT_WASM_MODULE) ← load wasm/convert/microsoft_fast_convert.js (once, even for a batch)
+        │
+        ├─ --templates → runConvertBatch: resolveTemplateFiles(pattern) per comma-separated
+        │                 pattern, dedupe matches, warn (not error) on zero matches, then for
+        │                 each matched file: validate syntax/output paths and extensions,
+        │                 wasm.convert_template(templateHtml, syntax), write output
+        │
+        └─ --template  → validate syntax/template/output paths and extensions,
+                          wasm.convert_template(templateHtml, syntax)
         ▼
-  fs.writeFileSync(output, converted)
+  fs.writeFileSync(output, converted)   ← output parent directory is created (mkdir -p) if missing
 ```
 
 ---
@@ -113,7 +120,7 @@ CLI-provided paths are resolved relative to the current working directory (the d
 
 ### Validation
 
-The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, or `stream`; `stream` must be a JSON boolean and other values must be strings. Convert config keys must be one of `syntax`, `template`, `output`, or `overwrite`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
+The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, or `stream`; `stream` must be a JSON boolean and other values must be strings. Convert config keys must be one of `syntax`, `template`, `templates`, `output`, or `overwrite`; `overwrite` must be a JSON boolean and other values must be strings. `template` and `templates` are mutually exclusive. Unknown keys and invalid value types produce an error referencing the config file path.
 
 ### Helpers
 
@@ -179,35 +186,49 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## Converter output rules
 
-`fast convert` accepts a required source `template` and required target `syntax`.
-The source template path must exist, be a file, and use `.html`.
+`fast convert` accepts a required target `syntax` and a required source: either
+a single `template` (one file) or `templates` (a comma-separated glob pattern
+list matching multiple files), but not both. Batch mode loads the converter
+WASM module once and converts every matched file in the same process.
+The source template path(s) must exist, be a file, and use `.html`.
+`templates` is resolved with `resolveTemplateFiles`, which reuses the same
+`staticPrefixDir`/`walkHtmlFiles`/`globMatch` primitives as `fast build`'s
+`resolvePattern`, but returns whole matched file paths without any
+`<f-template>` parsing, since convert operates on entire files.
 
 | Syntax | Output extension | Default suffix |
 |--------|------------------|----------------|
 | `webui-prerelease` | `.html` | `.webui.html` |
 | `fast-v3-ts` | `.ts` | `.template.ts` |
 
-When `output` is omitted, the CLI writes next to the input template using the
-default suffix. When `output` is provided, every `*` is replaced with the input
-basename without its `.html` extension. CLI-provided `template`/`output` paths
-use normal current-working-directory resolution; config-provided paths are
-resolved relative to the config file before the default suffix or `*`
-replacement is applied.
+When `output` is omitted, the CLI writes next to each input template using the
+default suffix. When `output` is provided, every `*` is replaced with each
+input's basename without its `.html` extension, so the same `--output`
+pattern can target a batch of files. CLI-provided `template`/`templates`/
+`output` paths use normal current-working-directory resolution; config-provided
+paths are resolved relative to the config file before the default suffix or
+`*` replacement is applied.
 
 Before loading converter WASM, the CLI validates that:
 
 - The selected syntax is supported.
+- Exactly one of `template`/`templates` is provided.
 - The output extension matches the selected syntax.
 - The output path is not a directory.
-- The output parent directory exists and is a directory.
 - An existing output file is only replaced when `--overwrite` is present or
   config contains `"overwrite": true`.
+
+The output parent directory is created automatically (`mkdir -p` semantics) if
+it does not exist; only an existing non-directory at that path is rejected. In
+batch mode, a glob pattern that matches zero files produces a warning (not an
+error) naming the pattern, and the command only fails if every pattern
+produces zero matches across the whole invocation.
 
 The converter WASM contract is `convert_template(template: string, syntax:
 string): string` plus `convert_syntax_metadata(): string`. Rust owns FAST
 declarative syntax validation, conversion semantics, accepted syntax names, output
 extensions, and default suffixes. The JavaScript layer reads syntax metadata from
-WASM and only handles CLI/config merging, path rules, and file I/O.
+WASM and only handles CLI/config merging, path rules, file discovery, and file I/O.
 
 ---
 
@@ -221,7 +242,8 @@ config discovery. The fixture configs write generated output to
 converted `.html` and `.ts` outputs are not checked in. The
 `test:fixtures:convert` package script runs the fixture-only validation, and
 `test:node` includes it so CI validates both `webui-prerelease` and
-`fast-v3-ts` through the real `fast convert` CLI.
+`fast-v3-ts` through the real `fast convert` CLI, including a `--templates`
+batch conversion against the real converter WASM.
 
 ---
 

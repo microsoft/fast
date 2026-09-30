@@ -2,7 +2,7 @@
 
 const { describe, it, beforeEach, afterEach, after } = require("node:test");
 const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
+const { execFileSync, spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -110,6 +110,31 @@ function runConvertWithStderr(args, cwd, stubWasm = false) {
 
     const { preload, env } = writeConvertWasmStub(cwd);
     return runFastWithStderr(["convert", ...args], cwd, ["--require", preload], env);
+}
+
+/**
+ * Run `fast convert` and always capture stdout/stderr, even on success — unlike
+ * `runConvertWithStderr`, which only captures stderr when the process exits
+ * non-zero. Useful for asserting on warnings printed alongside a 0 exit code.
+ */
+function runConvertCapture(args, cwd, stubWasm = false) {
+    const nodeArgs = [];
+    let env = process.env;
+    if (stubWasm) {
+        const stub = writeConvertWasmStub(cwd);
+        nodeArgs.push("--require", stub.preload);
+        env = stub.env;
+    }
+    const result = spawnSync(
+        process.execPath,
+        [...nodeArgs, FAST_BIN, "convert", ...args],
+        { cwd, encoding: "utf8", env },
+    );
+    return {
+        stdout: result.stdout || "",
+        stderr: result.stderr || "",
+        exitCode: result.status,
+    };
 }
 
 function writeFixture(dir, { entry, state, output, config, configName }) {
@@ -331,6 +356,158 @@ describe("convert CLI", () => {
     });
 });
 
+describe("convert --templates glob", () => {
+    /** @type {string} */
+    let dir;
+
+    beforeEach(() => {
+        dir = tmpDir();
+    });
+
+    afterEach(() => {
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("converts every file matched by a glob pattern, writing next to each source", () => {
+        fs.mkdirSync(path.join(dir, "components"));
+        fs.writeFileSync(
+            path.join(dir, "components", "card.html"),
+            '<f-template name="card"><template>Card</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(dir, "components", "header.html"),
+            '<f-template name="header"><template>Header</template></f-template>',
+        );
+
+        const { stdout, calls } = runConvertWithStubbedWasm(
+            ["--syntax=webui-prerelease", "--templates=components/*.html"],
+            dir,
+        );
+
+        assert.ok(fs.existsSync(path.join(dir, "components", "card.webui.html")));
+        assert.ok(fs.existsSync(path.join(dir, "components", "header.webui.html")));
+        assert.ok(stdout.includes("Converted 2 template(s)."));
+
+        const convertCalls = calls.filter(call => call.name === "convert_template");
+        assert.equal(convertCalls.length, 2);
+        assert.ok(convertCalls.every(call => call.syntax === "webui-prerelease"));
+    });
+
+    it("replaces * per-file under --output's directory", () => {
+        fs.mkdirSync(path.join(dir, "components"));
+        fs.mkdirSync(path.join(dir, "generated"));
+        fs.writeFileSync(
+            path.join(dir, "components", "card.html"),
+            '<f-template name="card"><template>Card</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(dir, "components", "header.html"),
+            '<f-template name="header"><template>Header</template></f-template>',
+        );
+
+        runConvertWithStubbedWasm(
+            [
+                "--syntax=fast-v3-ts",
+                "--templates=components/*.html",
+                "--output=generated/*.template.ts",
+            ],
+            dir,
+        );
+
+        assert.ok(fs.existsSync(path.join(dir, "generated", "card.template.ts")));
+        assert.ok(fs.existsSync(path.join(dir, "generated", "header.template.ts")));
+        assert.equal(
+            fs.existsSync(path.join(dir, "components", "card.webui.html")),
+            false,
+        );
+    });
+
+    it("supports comma-separated glob patterns and de-duplicates overlapping matches", () => {
+        fs.mkdirSync(path.join(dir, "a"));
+        fs.mkdirSync(path.join(dir, "b"));
+        fs.writeFileSync(
+            path.join(dir, "a", "one.html"),
+            '<f-template name="one"><template>One</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(dir, "b", "two.html"),
+            '<f-template name="two"><template>Two</template></f-template>',
+        );
+
+        const { calls } = runConvertWithStubbedWasm(
+            ["--syntax=webui-prerelease", "--templates=a/*.html,b/*.html,a/*.html"],
+            dir,
+        );
+
+        const convertCalls = calls.filter(call => call.name === "convert_template");
+        assert.equal(convertCalls.length, 2);
+        assert.ok(fs.existsSync(path.join(dir, "a", "one.webui.html")));
+        assert.ok(fs.existsSync(path.join(dir, "b", "two.webui.html")));
+    });
+
+    it("warns but does not error when a pattern matches no files", () => {
+        const result = runConvertCapture(
+            ["--syntax=webui-prerelease", "--templates=missing/*.html"],
+            dir,
+            true,
+        );
+
+        assert.equal(result.exitCode, 0);
+        assert.ok(
+            result.stderr.includes(
+                'No template files found for pattern "missing/*.html"',
+            ),
+        );
+        assert.ok(result.stderr.includes("No template files were converted"));
+    });
+
+    it("rejects using --template and --templates together", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const result = runConvertWithStderr(
+            [
+                "--syntax=webui-prerelease",
+                "--template=example.html",
+                "--templates=*.html",
+            ],
+            dir,
+        );
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("Cannot use both --template and --templates"));
+    });
+
+    it("requires either --template or --templates", () => {
+        const result = runConvertWithStderr(["--syntax=webui-prerelease"], dir);
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("Missing required --template or --templates"));
+    });
+
+    it("loads templates glob patterns from config, resolved relative to the config directory", () => {
+        const projectDir = path.join(dir, "project");
+        fs.mkdirSync(path.join(projectDir, "components"), { recursive: true });
+        fs.writeFileSync(
+            path.join(projectDir, "components", "card.html"),
+            '<f-template name="card"><template>Card</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(projectDir, "fast-convert.config.json"),
+            JSON.stringify({
+                syntax: "webui-prerelease",
+                templates: "components/*.html",
+            }),
+        );
+
+        runConvertWithStubbedWasm(["--config=project/fast-convert.config.json"], dir);
+
+        assert.ok(fs.existsSync(path.join(projectDir, "components", "card.webui.html")));
+    });
+});
+
 describe("convert validation", () => {
     /** @type {string} */
     let dir;
@@ -414,20 +591,18 @@ describe("convert validation", () => {
         assert.ok(result.stderr.includes('must use the ".ts" extension'));
     });
 
-    it("requires the output parent directory to exist", () => {
+    it("creates a missing output parent directory (mkdir -p semantics)", () => {
         fs.writeFileSync(path.join(dir, "example.html"), "<template></template>");
-        const result = runConvertWithStderr(
+        runConvertWithStubbedWasm(
             [
                 "--syntax=webui-prerelease",
                 "--template=example.html",
-                "--output=missing/example.html",
+                "--output=missing/nested/example.html",
             ],
             dir,
         );
 
-        assert.equal(result.exitCode, 1);
-        assert.ok(result.stderr.includes("Output parent directory"));
-        assert.ok(result.stderr.includes("not found"));
+        assert.ok(fs.existsSync(path.join(dir, "missing", "nested", "example.html")));
     });
 
     it("rejects output directory paths", () => {
