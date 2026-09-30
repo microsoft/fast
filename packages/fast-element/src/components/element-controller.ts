@@ -20,6 +20,10 @@ import {
     type ShadowRootOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
+import {
+    trackedFASTElementInstances,
+    trackFASTElementInstance,
+} from "./fast-element-registry.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -853,25 +857,27 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        Observable.getNotifier(definition).subscribe(
-            {
+        // template only transitions undefined → defined, once, so only track
+        // instances while it's still pending (see trackFASTElementInstance).
+        // The subscriber unsubscribes itself once that fires, mirroring
+        // fastElementRegistry.whenRegistered.
+        if (
+            definition.template === void 0 &&
+            trackFASTElementInstance(definition, element)
+        ) {
+            const notifier = Observable.getNotifier(definition);
+            const subscriber = {
                 handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
+                    notifier.unsubscribe(subscriber, "template");
+                    trackedFASTElementInstances(definition, tracked => {
+                        ElementController.forCustomElement(tracked as FASTElement, true);
+                        (tracked as FASTElement).$fastController.connect();
+                    });
                 },
-            },
-            "template",
-        );
+            };
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
-                },
-            },
-            "shadowOptions",
-        );
+            notifier.subscribe(subscriber, "template");
+        }
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,

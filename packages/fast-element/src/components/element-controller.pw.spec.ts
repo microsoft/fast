@@ -1669,6 +1669,79 @@ test.describe("The ElementController", () => {
         expect(didThrow).toBe(false);
     });
 
+    test.describe("when the definition's template resolves", () => {
+        test("registers a single subscriber per definition while pending, regardless of element count, and unsubscribes once the template resolves", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const subscriberCounts = await page.evaluate(async templateA => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    Observable,
+                    html,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                const name = uniqueElementName();
+                // definition.template only ever transitions undefined → defined,
+                // once, so compose without a template to exercise the pending path.
+                const definition = await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                );
+                definition.define();
+
+                // Counts subscribers registered for the definition's "template"
+                // property by reaching into the internal SubscriberSet. A leaking
+                // subscription doubles this count on every template change.
+                function countTemplateSubscribers(): number {
+                    const notifier = Observable.getNotifier(definition) as any;
+                    const set = notifier.subscribers?.template;
+
+                    if (set === undefined) {
+                        return 0;
+                    }
+
+                    if (set.spillover !== undefined) {
+                        return set.spillover.length;
+                    }
+
+                    return (
+                        (set.sub1 !== undefined ? 1 : 0) +
+                        (set.sub2 !== undefined ? 1 : 0)
+                    );
+                }
+
+                // Three elements sharing the same definition should still only
+                // register one subscriber, not one per element.
+                const elements = [
+                    document.createElement(name),
+                    document.createElement(name),
+                    document.createElement(name),
+                ];
+                elements.forEach(element => document.body.appendChild(element));
+
+                const afterCreate = countTemplateSubscribers();
+
+                definition.template = html`
+                    ${templateA}
+                `;
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                const afterResolve = countTemplateSubscribers();
+
+                elements.forEach(element => document.body.removeChild(element));
+
+                return { afterCreate, afterResolve };
+            }, templateA);
+
+            expect(subscriberCounts).toEqual({ afterCreate: 1, afterResolve: 0 });
+        });
+    });
+
     test.describe("with behaviors", () => {
         test("should bind all behaviors added prior to connection, during connection", async ({
             page,

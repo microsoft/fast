@@ -12,6 +12,18 @@ const registeredTypesByRegistry = new WeakMap<
 const typeRegistry = createTypeRegistry<FASTElementDefinition>();
 
 /**
+ * Elements awaiting a definition's one-time template resolution, held weakly
+ * and keyed by their definition. See {@link trackedFASTElementInstances}.
+ */
+const definitionInstances = new WeakMap<FASTElementDefinition, Set<WeakRef<object>>>();
+
+/**
+ * Guards against tracking the same instance twice, and gives constant-time
+ * access to an instance's own ref.
+ */
+const instanceRefs = new WeakMap<object, WeakRef<object>>();
+
+/**
  * The FAST custom element registry.
  * @public
  */
@@ -112,4 +124,65 @@ function whenRegistered(
 
         notifier.subscribe(subscriber, name);
     });
+}
+
+/**
+ * Tracks a live instance against its definition for later enumeration by
+ * {@link trackedFASTElementInstances}. A no-op if already tracked; weakly
+ * held, so it doesn't retain the instance past its own lifetime.
+ * @param definition - The definition the instance was constructed from.
+ * @param instance - The element instance to track.
+ * @returns `true` if this is the definition's first tracked instance.
+ * @internal
+ */
+export function trackFASTElementInstance(
+    definition: FASTElementDefinition,
+    instance: object,
+): boolean {
+    if (instanceRefs.has(instance)) {
+        return false;
+    }
+
+    let instances = definitionInstances.get(definition);
+    const isFirstInstance = instances === void 0;
+
+    if (instances === void 0) {
+        instances = new Set<WeakRef<object>>();
+        definitionInstances.set(definition, instances);
+    }
+
+    const ref = new WeakRef(instance);
+    instances.add(ref);
+    instanceRefs.set(instance, ref);
+
+    return isFirstInstance;
+}
+
+/**
+ * Invokes the callback for every live instance tracked against the
+ * definition, then forgets the definition entirely — safe since a
+ * definition's template only resolves once.
+ * @param definition - The definition to enumerate tracked instances for.
+ * @param callback - Invoked once per live instance.
+ * @internal
+ */
+export function trackedFASTElementInstances(
+    definition: FASTElementDefinition,
+    callback: (instance: any) => void,
+): void {
+    const instances = definitionInstances.get(definition);
+
+    if (instances === void 0) {
+        return;
+    }
+
+    definitionInstances.delete(definition);
+
+    for (const ref of instances) {
+        const instance = ref.deref();
+
+        if (instance !== void 0) {
+            callback(instance);
+        }
+    }
 }
