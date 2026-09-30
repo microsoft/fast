@@ -629,6 +629,10 @@ Below is a conceptual map of the major subsystems and their relationships:
 2. `MyElement.define` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content) and hydration has been enabled via `enableHydration()`, the installed hydration hook uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
+
+   > **Avoiding retention through the definition**: `FASTElementDefinition` is a per-tag singleton that lives for the page's lifetime, so `ElementController.forCustomElement` registers a single shared subscriber per definition (not one per element) to react to `definition.template` changes, tracking elements with `WeakRef`s in a `Set`. This lets a definition outlive elements without strongly retaining every instance ever created; dead references are pruned the next time the template changes.
+
+
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
 6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. In the supported browser `Window` runtime, the next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
