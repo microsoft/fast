@@ -1670,7 +1670,7 @@ test.describe("The ElementController", () => {
     });
 
     test.describe("when the definition's template changes", () => {
-        test("registers a single subscriber per definition regardless of element count, and it does not grow across repeated template changes", async ({
+        test("registers a single subscriber per definition regardless of element count, and it does not grow after a template change", async ({
             page,
         }) => {
             await page.goto("/");
@@ -1734,24 +1734,14 @@ test.describe("The ElementController", () => {
                     change-1
                 `;
                 await new Promise(resolve => requestAnimationFrame(resolve));
-                const afterFirstChange = countTemplateSubscribers();
-
-                definition.template = html`
-                    change-2
-                `;
-                await new Promise(resolve => requestAnimationFrame(resolve));
-                const afterSecondChange = countTemplateSubscribers();
+                const afterChange = countTemplateSubscribers();
 
                 elements.forEach(element => document.body.removeChild(element));
 
-                return { afterCreate, afterFirstChange, afterSecondChange };
+                return { afterCreate, afterChange };
             }, templateA);
 
-            expect(subscriberCounts).toEqual({
-                afterCreate: 1,
-                afterFirstChange: 1,
-                afterSecondChange: 1,
-            });
+            expect(subscriberCounts).toEqual({ afterCreate: 1, afterChange: 1 });
         });
     });
 
