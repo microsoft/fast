@@ -31,9 +31,16 @@ jobs:
       versions: ${{ steps.changes.outputs.versions }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 0
+
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      continue-on-error: true
+      with:
+        fetch-depth: 1
+        path: .gh-pages
+        ref: gh-pages
 
     - id: changes
       name: Select documentation builds
@@ -47,7 +54,21 @@ jobs:
         if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           full=true
         else
-          before="${{ github.event.before }}"
+          # Diff from the last successfully deployed commit rather than just
+          # github.event.before, so a run replaced in the concurrency queue
+          # (cancel-in-progress: false only keeps one run queued at a time)
+          # never causes its changes to be skipped by the run that supersedes it.
+          before=""
+          if [[ -f .gh-pages/.deployed-sha ]]; then
+            deployed_sha="$(cat .gh-pages/.deployed-sha)"
+            if git cat-file -e "$deployed_sha^{commit}" 2>/dev/null; then
+              before="$deployed_sha"
+            fi
+          fi
+
+          if [[ -z "$before" ]]; then
+            before="${{ github.event.before }}"
+          fi
 
           if [[ -z "$before" || "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}"; then
             full=true
@@ -95,11 +116,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-node@v6
+    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
       with:
         node-version: 22
         cache: npm
@@ -127,7 +148,7 @@ jobs:
           npx lage build --to "${scopes[@]}" --verbose
         fi
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 1
         path: .gh-pages
@@ -155,6 +176,8 @@ jobs:
             rsync -a --delete "$source/" "$destination/"
           done
         fi
+
+        echo -n "$GITHUB_SHA" > .gh-pages/.deployed-sha
 
     - name: Commit GitHub Pages content
       env:

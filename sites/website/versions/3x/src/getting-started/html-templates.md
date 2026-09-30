@@ -211,6 +211,10 @@ handleClick(event: MouseEvent) {
 
 By default, the content of a template is rendered into the shadow DOM of the component. To apply attributes, properties, or event listeners to the host element itself, use a `<template>` element as the root of the template. The `<template>` represents the host, and any binding placed on it is applied to the host element rather than to the shadow DOM. Content placed inside the `<template>` is still rendered into the shadow DOM as usual.
 
+:::note
+Reflecting regular non-binding attributes such as `tabindex="0"`/`presentation="role"`/etc. on the `<template>` creates difficulties for streaming and performance and is therefore not supported by SSR solutions such as `@microsoft/webui` or `@microsoft/fast-build`. A component using those systems should opt for adding the attribute after the component has been instantiated.
+:::
+
 The simplest case is a static attribute on the host:
 
 ```ts

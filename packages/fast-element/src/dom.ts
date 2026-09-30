@@ -68,7 +68,7 @@ export interface DOMPolicy extends DOMPolicyDefinition {}
 
 const createHTML = html => html;
 const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
+    ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
     : { createHTML };
 
 let defaultPolicy: DOMPolicyDefinition = Object.freeze({

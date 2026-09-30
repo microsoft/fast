@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 10 Sep 2026 02:52:27 GMT",
+      "version": "3.0.3",
+      "tag": "@microsoft/fast-element_v3.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "896537217c159fecb97f4761645dad8fc31798bb",
+            "comment": "Restore the built-in Trusted Types policy name to `fast-html`."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Jul 2026 19:34:55 GMT",
       "version": "3.0.2",
       "tag": "@microsoft/fast-element_v3.0.2",

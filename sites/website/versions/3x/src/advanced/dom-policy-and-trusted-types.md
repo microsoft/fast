@@ -46,7 +46,7 @@ const trustedType = globalThis.trustedTypes?.createPolicy("app-fast-html", {
 DOM.setPolicy(DOMPolicy.create({ trustedType }));
 ```
 
-If your Content Security Policy uses a `trusted-types` directive, the policy name you create must be allowed by that directive. If you rely on FAST's built-in Trusted Types policy, allow the `fast-element` policy name.
+If your Content Security Policy uses a `trusted-types` directive, the policy name you create must be allowed by that directive. If you rely on FAST's built-in Trusted Types policy, allow the `fast-html` policy name.
 
 :::important
 Application owners should configure the global policy. Reusable component libraries should not call `DOM.setPolicy()` because doing so would prevent the host application from installing its own policy.
@@ -61,7 +61,7 @@ Application owners should configure the global policy. Reusable component librar
 | `createHTML(value)` | Converts the HTML string passed to template compilation into trusted HTML before FAST assigns it to a `<template>` element's `innerHTML`. |
 | `protect(tagName, aspect, aspectName, sink)` | Returns the DOM sink FAST should use when a binding writes to an attribute, property, content node, token list, or event. |
 
-By default, `DOMPolicy.create()` creates a Trusted Types policy named `fast-element` when `globalThis.trustedTypes` is available. It also installs guard rules for common dangerous sinks, including inline event attributes, `innerHTML`, selected URL attributes/properties, script text, and `iframe[srcdoc]`.
+By default, `DOMPolicy.create()` creates a Trusted Types policy named `fast-html` when `globalThis.trustedTypes` is available. It also installs guard rules for common dangerous sinks, including inline event attributes, `innerHTML`, selected URL attributes/properties, script text, and `iframe[srcdoc]`.
 
 You can extend or replace guards for your own application requirements. The guard receives the sink FAST would normally call and returns the sink FAST should call instead.
 
