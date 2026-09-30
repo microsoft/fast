@@ -25,6 +25,7 @@ const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["stream"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "syntax",
     "template",
+    "templates",
     "output",
     "overwrite",
 ]);
@@ -373,6 +374,25 @@ function resolvePattern(pattern, wasm) {
 }
 
 /**
+ * Resolve all `.html` files matching a glob pattern, with no `<f-template>`
+ * parsing — used by `fast convert --templates` to find whole files to
+ * convert (as opposed to `fast build --templates`, which extracts individual
+ * `<f-template>` elements from each matched file).
+ * Warns (but does not error) if the base directory does not exist.
+ * @param {string} pattern
+ * @returns {string[]}
+ */
+function resolveTemplateFiles(pattern) {
+    const baseDir = staticPrefixDir(pattern);
+    if (!fs.existsSync(baseDir)) {
+        return [];
+    }
+    const allFiles = [];
+    walkHtmlFiles(baseDir, allFiles);
+    return allFiles.filter((file) => globMatch(pattern, file));
+}
+
+/**
  * Load the converter WASM module and validate its required exports.
  * @returns {object}
  */
@@ -469,7 +489,8 @@ function resolveConvertOutput(template, syntax, outputPattern, syntaxMetadata) {
 }
 
 /**
- * Validate the converter output path before writing.
+ * Validate the converter output path before writing, creating the output
+ * parent directory (mkdir -p semantics) if it does not already exist.
  * @param {string} output
  * @param {string} syntax
  * @param {boolean} overwrite
@@ -491,18 +512,15 @@ function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
     }
 
     const outputParent = path.dirname(output) || ".";
-    if (!fs.existsSync(outputParent)) {
-        process.stderr.write(
-            `Error: Output parent directory "${outputParent}" not found.\n`,
-        );
-        process.exit(1);
-    }
-
-    if (!fs.statSync(outputParent).isDirectory()) {
-        process.stderr.write(
-            `Error: Output parent path "${outputParent}" is not a directory.\n`,
-        );
-        process.exit(1);
+    if (fs.existsSync(outputParent)) {
+        if (!fs.statSync(outputParent).isDirectory()) {
+            process.stderr.write(
+                `Error: Output parent path "${outputParent}" is not a directory.\n`,
+            );
+            process.exit(1);
+        }
+    } else {
+        fs.mkdirSync(outputParent, { recursive: true });
     }
 
     if (fs.existsSync(output) && !overwrite) {
@@ -511,6 +529,56 @@ function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
         );
         process.exit(1);
     }
+}
+
+/**
+ * Convert every `.html` file matching `templatesArg`'s glob pattern(s).
+ * Loads the WASM converter module once for the whole batch rather than
+ * re-instantiating it per file. Writes each output next to its source file,
+ * or under `outputArg`'s directory with any "*" replaced with the source's
+ * basename — mirroring the single-file `--output` behaviour.
+ * @param {string} templatesArg
+ * @param {string} syntax
+ * @param {string | undefined} outputArg
+ * @param {boolean} overwrite
+ * @param {object} wasm
+ * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
+ */
+function runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata) {
+    const patterns = templatesArg.split(",").map((p) => p.trim());
+    const seen = new Set();
+    const files = [];
+    for (const pattern of patterns) {
+        const matches = resolveTemplateFiles(pattern);
+        if (matches.length === 0) {
+            process.stderr.write(
+                `Warning: No template files found for pattern "${pattern}".\n`,
+            );
+        }
+        for (const file of matches) {
+            if (!seen.has(file)) {
+                seen.add(file);
+                files.push(file);
+            }
+        }
+    }
+
+    let convertedCount = 0;
+    for (const file of files) {
+        const output = resolveConvertOutput(file, syntax, outputArg, syntaxMetadata);
+        validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
+        const converted = wasm.convert_template(fs.readFileSync(file, "utf8"), syntax);
+        fs.writeFileSync(output, converted, "utf8");
+        process.stdout.write(`Converted: ${output}\n`);
+        convertedCount++;
+    }
+
+    if (convertedCount === 0) {
+        process.stderr.write("Warning: No template files were converted.\n");
+        return;
+    }
+
+    process.stdout.write(`Converted ${convertedCount} template(s).\n`);
 }
 
 async function runConvert(args) {
@@ -523,6 +591,7 @@ async function runConvert(args) {
 
     const syntax = resolveOption(args, config, configDir, "syntax");
     const template = resolveOption(args, config, configDir, "template");
+    const templatesArg = resolveOption(args, config, configDir, "templates");
     const outputArg = resolveOption(args, config, configDir, "output");
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
     const wasm = loadConvertWasm();
@@ -543,8 +612,20 @@ async function runConvert(args) {
         process.exit(1);
     }
 
+    if (template && templatesArg) {
+        process.stderr.write(
+            "Error: Cannot use both --template and --templates. Use --template to convert a single file or --templates to convert a glob pattern of files.\n",
+        );
+        process.exit(1);
+    }
+
+    if (templatesArg) {
+        runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata);
+        return;
+    }
+
     if (!template) {
-        process.stderr.write("Error: Missing required --template.\n");
+        process.stderr.write("Error: Missing required --template or --templates.\n");
         process.exit(1);
     }
 
@@ -757,10 +838,17 @@ function writeConvertUsage() {
         "Options:\n" +
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
-        '  --template="<path>"    Required source FAST declarative .html file.\n' +
-        '  --output="<path>"      Output file path. Defaults next to --template\n' +
-        `                         as ${defaultOutputs}. Any "*" is\n` +
-        "                         replaced by the template basename.\n" +
+        '  --template="<path>"    Source FAST declarative .html file. Required\n' +
+        "                         unless --templates is used.\n" +
+        '  --templates="<glob>"   Glob pattern(s) for FAST declarative .html files\n' +
+        "                         to convert in one pass. Separate multiple\n" +
+        "                         patterns with commas. Loads the converter WASM\n" +
+        "                         module once for the whole batch. Cannot be\n" +
+        "                         combined with --template.\n" +
+        '  --output="<path>"      Output file path. Defaults next to each source\n' +
+        `                         file as ${defaultOutputs}. Any "*" is\n` +
+        "                         replaced by the source file's basename. The\n" +
+        "                         output directory is created if missing.\n" +
         "  --overwrite           Replace an existing output file.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
         '                         Defaults to "fast-convert.config.json" in the\n' +

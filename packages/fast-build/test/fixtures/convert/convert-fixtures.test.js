@@ -139,6 +139,28 @@ describe("fast convert fixtures", () => {
         );
     });
 
+    it("converts every file matched by --templates using the real converter WASM", () => {
+        const batchDir = outputDir("batch-source");
+        const generatedDir = outputDir("batch-generated");
+        const source = fs.readFileSync(supportedTemplate, "utf8");
+        fs.writeFileSync(path.join(batchDir, "card.html"), source);
+        fs.writeFileSync(path.join(batchDir, "header.html"), source);
+
+        const stdout = runConvert([
+            "--syntax=fast-v3-ts",
+            `--templates=${path.join(batchDir, "*.html")}`,
+            `--output=${path.join(generatedDir, "*.template.ts")}`,
+        ]);
+
+        assert.ok(stdout.includes("Converted 2 template(s)."));
+        assertFastV3TsOutput(
+            fs.readFileSync(path.join(generatedDir, "card.template.ts"), "utf8"),
+        );
+        assertFastV3TsOutput(
+            fs.readFileSync(path.join(generatedDir, "header.template.ts"), "utf8"),
+        );
+    });
+
     it("validates overwrite before replacing generated fixture output", () => {
         const overwriteOutputDir = outputDir("overwrite");
         const outputPath = path.join(overwriteOutputDir, "supported.html");
@@ -176,16 +198,20 @@ describe("fast convert fixtures", () => {
         assertIncludes(result.stderr, 'must use the ".ts" extension');
     });
 
-    it("validates missing output parent directories for fixture conversion", () => {
-        const result = runConvertWithStderr([
+    it("creates a missing output parent directory for fixture conversion", () => {
+        const nestedOutput = path.join(
+            outputRoot,
+            "missing-parent",
+            "nested",
+            "supported.html",
+        );
+        runConvert([
             "--syntax=webui-prerelease",
             `--template=${supportedTemplate}`,
-            `--output=${path.join(outputRoot, "missing-parent", "supported.html")}`,
+            `--output=${nestedOutput}`,
         ]);
 
-        assert.equal(result.exitCode, 1);
-        assertIncludes(result.stderr, "Output parent directory");
-        assertIncludes(result.stderr, "not found");
+        assertWebuiOutput(fs.readFileSync(nestedOutput, "utf8"));
     });
 
     for (const { name, outputExtension, expectedMessage } of [
