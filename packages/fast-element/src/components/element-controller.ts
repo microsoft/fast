@@ -43,6 +43,22 @@ const definitionElements = new WeakMap<
 >();
 const trackedElements = new WeakSet<HTMLElement>();
 
+/**
+ * Prunes a definition's tracked WeakRef once the element it points to is actually
+ * garbage collected. This keeps long-lived definitions (in particular declarative
+ * ones, whose template is set once and never notifies again) from accumulating dead
+ * WeakRefs indefinitely as elements are created and discarded over the page's life.
+ * Pruning is intentionally not tied to disconnect(), since a disconnected element can
+ * be reconnected later (e.g. pooled/virtualized rows) without re-running its
+ * constructor, and would then wrongly be dropped from future template updates.
+ */
+const elementCleanupRegistry = new FinalizationRegistry<{
+    definition: FASTElementDefinition;
+    ref: WeakRef<FASTElement>;
+}>(({ definition, ref }) => {
+    definitionElements.get(definition)?.delete(ref);
+});
+
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
@@ -895,7 +911,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         if (!trackedElements.has(element)) {
             trackedElements.add(element);
-            elements.add(new WeakRef(element as FASTElement));
+
+            const ref = new WeakRef(element as FASTElement);
+            elements.add(ref);
+            elementCleanupRegistry.register(element, { definition, ref }, ref);
         }
 
         return ((element as any).$fastController = new elementControllerStrategy(
