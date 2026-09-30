@@ -12,31 +12,16 @@ const registeredTypesByRegistry = new WeakMap<
 const typeRegistry = createTypeRegistry<FASTElementDefinition>();
 
 /**
- * A WeakRef tagged with its owning Set, so the shared FinalizationRegistry
- * can remove it without a second lookup.
- */
-type TrackedInstanceRef = WeakRef<object> & { owner: Set<TrackedInstanceRef> };
-
-/**
  * Elements awaiting a definition's one-time template resolution, held weakly
  * and keyed by their definition. See {@link trackedFASTElementInstances}.
  */
-const definitionInstances = new WeakMap<FASTElementDefinition, Set<TrackedInstanceRef>>();
+const definitionInstances = new WeakMap<FASTElementDefinition, Set<WeakRef<object>>>();
 
 /**
  * Guards against tracking the same instance twice, and gives constant-time
  * access to an instance's own ref.
  */
-const instanceRefs = new WeakMap<object, TrackedInstanceRef>();
-
-/**
- * Prunes a tracked instance once it is garbage collected. Not tied to
- * disconnection, since a pooled/virtualized element can reconnect without
- * being tracked again.
- */
-const instanceCleanupRegistry = new FinalizationRegistry<TrackedInstanceRef>(ref =>
-    ref.owner.delete(ref),
-);
+const instanceRefs = new WeakMap<object, WeakRef<object>>();
 
 /**
  * The FAST custom element registry.
@@ -144,7 +129,7 @@ function whenRegistered(
 /**
  * Tracks a live instance against its definition for later enumeration by
  * {@link trackedFASTElementInstances}. A no-op if already tracked; weakly
- * held, and auto-untracked on GC.
+ * held, so it doesn't retain the instance past its own lifetime.
  * @param definition - The definition the instance was constructed from.
  * @param instance - The element instance to track.
  * @returns `true` if this is the definition's first tracked instance.
@@ -162,15 +147,13 @@ export function trackFASTElementInstance(
     const isFirstInstance = instances === void 0;
 
     if (instances === void 0) {
-        instances = new Set<TrackedInstanceRef>();
+        instances = new Set<WeakRef<object>>();
         definitionInstances.set(definition, instances);
     }
 
-    const ref = new WeakRef(instance) as TrackedInstanceRef;
-    ref.owner = instances;
+    const ref = new WeakRef(instance);
     instances.add(ref);
     instanceRefs.set(instance, ref);
-    instanceCleanupRegistry.register(instance, ref, ref);
 
     return isFirstInstance;
 }
