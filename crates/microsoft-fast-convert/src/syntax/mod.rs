@@ -103,6 +103,19 @@ pub(crate) fn is_supported_f_attribute(name: &str) -> bool {
     matches!(name, "f-ref" | "f-children" | "f-slotted")
 }
 
+/// Returns `true` when `value` is a valid TypeScript/JavaScript identifier:
+/// starts with an ASCII letter, `_`, or `$`, followed by any number of ASCII
+/// alphanumeric characters, `_`, or `$`. Does not accept dotted paths.
+pub(crate) fn is_valid_identifier(value: &str) -> bool {
+    let mut chars = value.chars();
+    match chars.next() {
+        Some(ch) if ch.is_ascii_alphabetic() || ch == '_' || ch == '$' => {}
+        _ => return false,
+    }
+
+    chars.all(|ch| ch.is_ascii_alphanumeric() || ch == '_' || ch == '$')
+}
+
 pub(crate) fn strip_single_brace(value: &str) -> Option<&str> {
     let trimmed = value.trim();
     if trimmed.starts_with('{')
