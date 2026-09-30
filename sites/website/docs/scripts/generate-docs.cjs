@@ -1,17 +1,52 @@
 const path = require("node:path");
 const { createInterface } = require("node:readline");
 const { execFile } = require("node:child_process");
-const fs = require("fs-extra");
+const fs = require("node:fs");
+const fsp = require("node:fs/promises");
+const { versions } = require("./site-paths.cjs");
 
-// sites/website
-const packagesRoot = path.resolve(__dirname, "../../../packages");
-const projectRoot = path.resolve(__dirname, "../");
+const repositoryRoot = path.resolve(__dirname, "../../../..");
+const packagesRoot = path.join(repositoryRoot, "packages");
+const projectRoot = path.resolve(__dirname, "..");
 const apiDocumenterPath = require.resolve("@microsoft/api-documenter/lib/start");
-const tempAPIDir = path.resolve(projectRoot, "tmp");
-const majorVersion = process.argv[2] || "3";
+const options = parseArguments(process.argv.slice(2));
+const majorVersion = options.version;
 const currentVersion = `${majorVersion}x`;
 const versionDir = `${majorVersion}.x`;
-const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
+const version = versions.find(item => item.publicVersion === versionDir);
+const destinationRoot = path.resolve(
+    projectRoot,
+    options.destination ?? `tmp/src/docs/${versionDir}`,
+);
+const markdownAPIDir = path.join(destinationRoot, "api");
+
+if (!version) {
+    throw new Error(`Unsupported documentation version: ${versionDir}`);
+}
+
+const allowedDestinationRoots = [
+    path.resolve(projectRoot, "tmp", "src", "docs", versionDir),
+    path.resolve(
+        projectRoot,
+        "../versions",
+        version.packageDirectory,
+        "tmp",
+        "src",
+        "docs",
+        versionDir,
+    ),
+];
+
+if (!allowedDestinationRoots.includes(destinationRoot)) {
+    const allowedDestinations = allowedDestinationRoots.join(", ");
+
+    throw new Error(
+        `Documentation destination must be an allowed ${versionDir} staging directory: ${allowedDestinations}`,
+    );
+}
+
+const stagingWorkspaceRoot = path.resolve(destinationRoot, "../../../..");
+const tempAPIDir = path.join(stagingWorkspaceRoot, "tmp", "api", versionDir);
 
 const packages = [
     {
@@ -19,6 +54,35 @@ const packages = [
         exports: ["context", "declarative", "di"],
     },
 ];
+
+function parseArguments(args) {
+    const parsed = {
+        version: "3",
+        destination: undefined,
+    };
+
+    for (let index = 0; index < args.length; index++) {
+        const argument = args[index];
+
+        if (argument === "--version") {
+            parsed.version = args[++index];
+        } else if (argument === "--destination") {
+            parsed.destination = args[++index];
+        } else {
+            throw new Error(`Unknown argument: ${argument}`);
+        }
+    }
+
+    if (!parsed.version || !/^\d+$/.test(parsed.version)) {
+        throw new Error("--version must be a major version number.");
+    }
+
+    if (args.includes("--destination") && !parsed.destination) {
+        throw new Error("--destination requires a path.");
+    }
+
+    return parsed;
+}
 
 function yamlString(value) {
     return JSON.stringify(value);
@@ -28,26 +92,20 @@ function escapeRegExp(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-async function safeCopy(source, dest) {
+async function copyRequiredFile(source, destination) {
     if (!fs.existsSync(source)) {
-        return;
+        throw new Error(
+            `Required API report is missing: ${source}. Build the package before generating documentation.`,
+        );
     }
 
-    if (fs.existsSync(dest)) {
-        await fs.copyFile(source, dest);
-    } else {
-        await fs.mkdir(path.dirname(dest), { recursive: true });
-        await fs.copyFile(source, dest);
-    }
+    await fsp.mkdir(path.dirname(destination), { recursive: true });
+    await fsp.copyFile(source, destination);
 }
 
-async function safeWrite(dest, content) {
-    if (fs.existsSync(dest)) {
-        await fs.writeFile(dest, content);
-    } else {
-        await fs.mkdir(path.dirname(dest), { recursive: true });
-        await fs.writeFile(dest, content);
-    }
+async function safeWrite(destination, content) {
+    await fsp.mkdir(path.dirname(destination), { recursive: true });
+    await fsp.writeFile(destination, content);
 }
 
 function runApiDocumenter(inputDir, outputDir) {
@@ -55,11 +113,25 @@ function runApiDocumenter(inputDir, outputDir) {
         execFile(
             process.execPath,
             [apiDocumenterPath, "markdown", "-i", inputDir, "-o", outputDir],
+            { cwd: projectRoot },
             (err, stdout, stderr) => {
-                console.log(stdout);
-                console.error(stderr);
+                if (stdout) {
+                    process.stdout.write(stdout);
+                }
+
+                if (stderr) {
+                    process.stderr.write(stderr);
+                }
+
                 if (err) {
-                    return reject(err);
+                    return reject(
+                        new Error(
+                            `API documenter failed for ${inputDir}: ${err.message}`,
+                            {
+                                cause: err,
+                            },
+                        ),
+                    );
                 }
 
                 return resolve();
@@ -70,15 +142,17 @@ function runApiDocumenter(inputDir, outputDir) {
 
 // Copy the api.json files from the packages.
 async function copyAPI() {
+    await fsp.rm(tempAPIDir, { recursive: true, force: true });
+
     for (const pkg of packages) {
-        await safeCopy(
+        await copyRequiredFile(
             path.resolve(packagesRoot, pkg.main, `./dist/${pkg.main}.api.json`),
             `${tempAPIDir}/${pkg.main}.api.json`,
         );
 
         if (Array.isArray(pkg.exports)) {
             for (const pkgExport of pkg.exports) {
-                await safeCopy(
+                await copyRequiredFile(
                     path.resolve(
                         packagesRoot,
                         pkg.main,
@@ -229,14 +303,15 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 
                 await safeWrite(docPath, header.concat(output).join("\n"));
             }
-        } catch (err) {
-            console.error(`Could not process ${docFile}: ${err}`);
+        } catch (error) {
+            throw new Error(`Could not process ${docFile}.`, { cause: error });
         }
     }
 }
 
 async function buildAPIMarkdown() {
     await copyAPI();
+    await fsp.rm(markdownAPIDir, { recursive: true, force: true });
 
     await runApiDocumenter(tempAPIDir, markdownAPIDir);
 
@@ -249,14 +324,14 @@ async function buildAPIMarkdown() {
         }
     }
 
-    const docFiles = await fs.readdir(markdownAPIDir);
+    const docFiles = await fsp.readdir(markdownAPIDir);
 
     await convertDocFiles(markdownAPIDir, docFiles);
 
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
             const exportDir = `${markdownAPIDir}/${pkg.main}/${pkgExport}`;
-            const exportDocFiles = await fs.readdir(exportDir);
+            const exportDocFiles = await fsp.readdir(exportDir);
 
             await convertDocFiles(
                 exportDir,
@@ -276,7 +351,7 @@ async function buildSizesPage() {
         return;
     }
 
-    const sizesContent = fs.readFileSync(sizesSource, "utf-8");
+    const sizesContent = await fsp.readFile(sizesSource, "utf8");
     // Strip the heading from SIZES.md since we add our own via frontmatter
     const body = sizesContent.replace(/^# .*\n*/m, "");
 
@@ -301,16 +376,30 @@ async function buildSizesPage() {
         "",
     ].join("\n");
 
-    const dest = path.resolve(
-        projectRoot,
-        `src/docs/${versionDir}/resources/export-sizes.md`,
-    );
+    const dest = path.join(destinationRoot, "resources", "export-sizes.md");
     await safeWrite(dest, frontmatter + body);
     console.log("Export sizes page generated.");
 }
 
 async function main() {
+    const destinationStats = await fsp.stat(destinationRoot).catch(error => {
+        throw new Error(
+            `Documentation destination is missing: ${destinationRoot}. Prepare the staging tree first.`,
+            { cause: error },
+        );
+    });
+
+    if (!destinationStats.isDirectory()) {
+        throw new Error(
+            `Documentation destination is not a directory: ${destinationRoot}`,
+        );
+    }
+
     await Promise.all([buildAPIMarkdown(), buildSizesPage()]);
 }
 
-main();
+main().catch(error => {
+    console.error("Failed to generate API documentation.");
+    console.error(error);
+    process.exitCode = 1;
+});
