@@ -27,6 +27,8 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "templates",
     "output",
     "overwrite",
+    "type-source",
+    "type-source-import",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
 const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
@@ -403,6 +405,12 @@ function loadConvertWasm() {
         );
         process.exit(1);
     }
+    if (typeof wasm.convert_template_with_options !== "function") {
+        process.stderr.write(
+            "Error: Converter WASM module must export convert_template_with_options.\n",
+        );
+        process.exit(1);
+    }
     if (typeof wasm.convert_syntax_metadata !== "function") {
         process.stderr.write(
             "Error: Converter WASM module must export convert_syntax_metadata.\n",
@@ -542,8 +550,19 @@ function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
  * @param {boolean} overwrite
  * @param {object} wasm
  * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
+ * @param {string | undefined} typeSource
+ * @param {string | undefined} typeSourceImport
  */
-function runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata) {
+function runConvertBatch(
+    templatesArg,
+    syntax,
+    outputArg,
+    overwrite,
+    wasm,
+    syntaxMetadata,
+    typeSource,
+    typeSourceImport,
+) {
     const patterns = templatesArg.split(",").map((p) => p.trim());
     const seen = new Set();
     const files = [];
@@ -566,7 +585,12 @@ function runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, synta
     for (const file of files) {
         const output = resolveConvertOutput(file, syntax, outputArg, syntaxMetadata);
         validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
-        const converted = wasm.convert_template(fs.readFileSync(file, "utf8"), syntax);
+        const converted = wasm.convert_template_with_options(
+            fs.readFileSync(file, "utf8"),
+            syntax,
+            typeSource,
+            typeSourceImport,
+        );
         fs.writeFileSync(output, converted, "utf8");
         process.stdout.write(`Converted: ${output}\n`);
         convertedCount++;
@@ -592,6 +616,8 @@ async function runConvert(args) {
     const templatesArg = resolveOption(args, config, configDir, "templates");
     const outputArg = resolveOption(args, config, configDir, "output");
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
+    const typeSource = resolveOption(args, config, configDir, "type-source");
+    const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
     const wasm = loadConvertWasm();
     const syntaxMetadata = loadConvertSyntaxMetadata(wasm);
     const syntaxList = convertSyntaxList(syntaxMetadata);
@@ -615,7 +641,16 @@ async function runConvert(args) {
         process.exit(1);
     }
 
-    runConvertBatch(templatesArg, syntax, outputArg, overwrite, wasm, syntaxMetadata);
+    runConvertBatch(
+        templatesArg,
+        syntax,
+        outputArg,
+        overwrite,
+        wasm,
+        syntaxMetadata,
+        typeSource,
+        typeSourceImport,
+    );
 }
 
 async function runBuild(args) {
@@ -812,6 +847,14 @@ function writeConvertUsage() {
         "                         replaced by the source file's basename. The\n" +
         "                         output directory is created if missing.\n" +
         "  --overwrite           Replace an existing output file.\n" +
+        '  --type-source="<Name>" TSource type emitted as "html<Name>" in\n' +
+        "                         fast-v3-ts output. Only valid with\n" +
+        '                         --syntax="fast-v3-ts". Must be a dotted\n' +
+        '                         identifier (e.g. "MyElement" or\n' +
+        '                         "Namespace.MyElement").\n' +
+        '  --type-source-import="<module>"\n' +
+        "                         Module specifier for an `import type` statement\n" +
+        "                         for --type-source. Requires --type-source.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
         '                         Defaults to "fast-convert.config.json" in the\n' +
         "                         current directory if it exists. File paths in\n" +

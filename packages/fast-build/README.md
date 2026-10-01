@@ -205,6 +205,8 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 fast convert --syntax=webui-prerelease --templates=example.html
 fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template.ts
 fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
+fast convert --syntax=fast-v3-ts --templates=example.html \
+    --type-source=MyElement --type-source-import=./my-element.js
 ```
 
 ### Convert options
@@ -215,9 +217,18 @@ fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/
 | `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates to convert. An exact single file path is also accepted. Loads the converter WASM module once for the whole batch. |
 | `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
+| `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
+| `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
 Only matched `.html` files are converted; non-`.html` files and directories are never matched. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When a `--templates` pattern matches zero files, a warning is printed but the command does not fail unless every pattern matches zero files.
+
+`--type-source` exists so templates that combine more than one differently-named
+`ref`/`children`/`slotted` directive (which otherwise fail to type-check once a
+real `TSource` is supplied, because `html<TSource, TParent>` infers a single
+`TSource` for the whole tagged template) can be generated already type-checked
+against a concrete element type. See
+[`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic).
 
 ### Convert configuration file
 
@@ -228,11 +239,15 @@ Only matched `.html` files are converted; non-`.html` files and directories are 
     "syntax": "fast-v3-ts",
     "templates": "src/**/*.html",
     "output": "generated/*.template.ts",
-    "overwrite": false
+    "overwrite": false,
+    "type-source": "MyElement",
+    "type-source-import": "./my-element.js"
 }
 ```
 
-Only `syntax`, `templates`, `output`, and `overwrite` are allowed. Values must be strings except `overwrite`, which must be a JSON boolean.
+Only `syntax`, `templates`, `output`, `overwrite`, `type-source`, and
+`type-source-import` are allowed. Values must be strings except `overwrite`, which
+must be a JSON boolean.
 
 ### Running converter fixtures locally
 
@@ -247,6 +262,9 @@ The fixture tests run `fast convert` from fixture directories that contain
 `fast-convert.config.json`, so they verify the same default config discovery used
 by `fast build`. Generated fixture output is written under
 `packages/fast-build/test/.fixture-output/` and removed by the tests.
+`test/fixtures/convert/type-source.test.js` additionally type-checks
+`--type-source` output with the TypeScript compiler API against a companion
+element type, using a separate `test/.fixture-output-type-source/` directory.
 
 ## Template syntax
 

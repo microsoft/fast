@@ -205,7 +205,7 @@ describe("convert CLI", () => {
         );
         assert.deepEqual(calls, [
             {
-                name: "convert_template",
+                name: "convert_template_with_options",
                 template:
                     '<f-template name="my-el"><template>Hello</template></f-template>',
                 syntax: "webui-prerelease",
@@ -357,6 +357,128 @@ describe("convert CLI", () => {
             "old",
         );
     });
+
+    it("passes --type-source and --type-source-import through to the converter", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const { calls } = runConvertWithStubbedWasm(
+            [
+                "--syntax=fast-v3-ts",
+                "--templates=example.html",
+                "--type-source=MyElement",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+        );
+
+        assert.deepEqual(calls, [
+            {
+                name: "convert_template_with_options",
+                template:
+                    '<f-template name="my-el"><template>Hello</template></f-template>',
+                syntax: "fast-v3-ts",
+                typeSource: "MyElement",
+                typeSourceImport: "./my-element.js",
+            },
+        ]);
+    });
+
+    it("reads --type-source and --type-source-import from config", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(dir, "fast-convert.config.json"),
+            JSON.stringify({
+                syntax: "fast-v3-ts",
+                templates: "example.html",
+                "type-source": "MyElement",
+                "type-source-import": "./my-element.js",
+            }),
+        );
+
+        const { calls } = runConvertWithStubbedWasm([], dir);
+
+        assert.deepEqual(calls, [
+            {
+                name: "convert_template_with_options",
+                template:
+                    '<f-template name="my-el"><template>Hello</template></f-template>',
+                syntax: "fast-v3-ts",
+                typeSource: "MyElement",
+                typeSourceImport: "./my-element.js",
+            },
+        ]);
+    });
+
+    it("surfaces a converter error when --type-source is used with webui-prerelease", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const result = runConvertWithStderr(
+            [
+                "--syntax=webui-prerelease",
+                "--templates=example.html",
+                "--type-source=MyElement",
+            ],
+            dir,
+            true,
+        );
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("type-source is only supported"));
+    });
+
+    it("surfaces a converter error when --type-source-import is used without --type-source", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const result = runConvertWithStderr(
+            [
+                "--syntax=fast-v3-ts",
+                "--templates=example.html",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+            true,
+        );
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("type-source-import requires type-source"));
+    });
+
+    it("emits an explicit TSource generic using the generated converter WASM when available", {
+        skip: !fs.existsSync(CONVERT_WASM_MODULE),
+    }, () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template><h1 title="{{title}}"></h1></template></f-template>',
+        );
+
+        runFast(
+            [
+                "convert",
+                "--syntax=fast-v3-ts",
+                "--templates=example.html",
+                "--output=actual.ts",
+                "--type-source=MyElement",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+        );
+
+        const output = fs.readFileSync(path.join(dir, "actual.ts"), "utf8");
+        assert.ok(output.includes('import type { MyElement } from "./my-element.js";'));
+        assert.ok(output.includes("export const template = html<MyElement>`"));
+    });
 });
 
 describe("convert --templates glob", () => {
@@ -391,7 +513,9 @@ describe("convert --templates glob", () => {
         assert.ok(fs.existsSync(path.join(dir, "components", "header.webui.html")));
         assert.ok(stdout.includes("Converted 2 template(s)."));
 
-        const convertCalls = calls.filter(call => call.name === "convert_template");
+        const convertCalls = calls.filter(
+            call => call.name === "convert_template_with_options",
+        );
         assert.equal(convertCalls.length, 2);
         assert.ok(convertCalls.every(call => call.syntax === "webui-prerelease"));
     });
@@ -442,7 +566,9 @@ describe("convert --templates glob", () => {
             dir,
         );
 
-        const convertCalls = calls.filter(call => call.name === "convert_template");
+        const convertCalls = calls.filter(
+            call => call.name === "convert_template_with_options",
+        );
         assert.equal(convertCalls.length, 2);
         assert.ok(fs.existsSync(path.join(dir, "a", "one.webui.html")));
         assert.ok(fs.existsSync(path.join(dir, "b", "two.webui.html")));
@@ -553,7 +679,10 @@ describe("convert validation", () => {
             dir,
         );
 
-        assert.equal(calls.filter(call => call.name === "convert_template").length, 1);
+        assert.equal(
+            calls.filter(call => call.name === "convert_template_with_options").length,
+            1,
+        );
         assert.equal(fs.existsSync(path.join(dir, "example.txt.webui.html")), false);
     });
 
