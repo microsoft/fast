@@ -1,7 +1,7 @@
-const fs = require("node:fs/promises");
 const path = require("node:path");
 const { versions } = require("./site-paths.cjs");
 const { writeVersionEntryPoint } = require("./write-version-entry.cjs");
+const { synchronizePath } = require("./fs-utils.cjs");
 
 const packageRoot = path.resolve(__dirname, "..");
 const stagingSource = path.join(packageRoot, "tmp", "src");
@@ -39,29 +39,6 @@ function findMapping(changedFile, mappings) {
                 source: absoluteFile,
             };
         }
-    }
-}
-
-async function synchronizePath(source, destination) {
-    let stats;
-
-    try {
-        stats = await fs.stat(source);
-    } catch (error) {
-        if (error.code === "ENOENT") {
-            await fs.rm(destination, { recursive: true, force: true });
-            return;
-        }
-
-        throw error;
-    }
-
-    await fs.mkdir(path.dirname(destination), { recursive: true });
-
-    if (stats.isDirectory()) {
-        await fs.cp(source, destination, { recursive: true });
-    } else {
-        await fs.copyFile(source, destination);
     }
 }
 

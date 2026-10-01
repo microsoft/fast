@@ -4,24 +4,10 @@ const { spawn } = require("node:child_process");
 const { Eleventy } = require("@11ty/eleventy");
 const { getVersionByPackageRoot } = require("./site-paths.cjs");
 const { writeVersionEntryPoint } = require("./write-version-entry.cjs");
+const { copyDirectory } = require("./fs-utils.cjs");
 
 const packageRoot = path.resolve(process.cwd());
 const sharedRoot = path.resolve(__dirname, "..");
-
-async function copyDirectory(source, destination) {
-    const stats = await fs.stat(source).catch(error => {
-        throw new Error(`Required documentation directory is missing: ${source}`, {
-            cause: error,
-        });
-    });
-
-    if (!stats.isDirectory()) {
-        throw new Error(`Documentation source is not a directory: ${source}`);
-    }
-
-    await fs.mkdir(path.dirname(destination), { recursive: true });
-    await fs.cp(source, destination, { recursive: true });
-}
 
 function runCommand(command, args) {
     return new Promise((resolve, reject) => {
