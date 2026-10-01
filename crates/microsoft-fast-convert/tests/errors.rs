@@ -1,4 +1,6 @@
-use microsoft_fast_convert::{convert_template, ConvertError};
+use microsoft_fast_convert::{
+    convert_template, convert_template_with_options, ConvertError, ConvertOptions,
+};
 
 fn fast_template(inner: &str) -> String {
     format!(r#"<f-template name="my-element">{inner}</f-template>"#)
@@ -96,4 +98,44 @@ fn root_binding_inside_repeat_is_rejected() {
     );
     let err = convert_template(&input, "fast-v3-ts").unwrap_err();
     assert!(matches!(err, ConvertError::UnsupportedExpression { .. }));
+}
+
+#[test]
+fn type_source_is_rejected_for_webui_syntax() {
+    let input = fast_template(r#"<template><span></span></template>"#);
+    let options = ConvertOptions {
+        type_source: Some("MyElement".to_string()),
+        type_source_import: None,
+    };
+    let err = convert_template_with_options(&input, "webui-prerelease", &options).unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::TypeSourceUnsupportedForSyntax { .. }
+    ));
+    assert!(err.to_string().contains("webui-prerelease"));
+}
+
+#[test]
+fn type_source_import_without_type_source_is_rejected() {
+    let input = fast_template(r#"<template><span></span></template>"#);
+    let options = ConvertOptions {
+        type_source: None,
+        type_source_import: Some("./my-element.js".to_string()),
+    };
+    let err = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::TypeSourceImportRequiresTypeSource
+    ));
+}
+
+#[test]
+fn invalid_type_source_is_rejected() {
+    let input = fast_template(r#"<template><span></span></template>"#);
+    let options = ConvertOptions {
+        type_source: Some("My Element<T>".to_string()),
+        type_source_import: None,
+    };
+    let err = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap_err();
+    assert!(matches!(err, ConvertError::InvalidTypeSource { .. }));
 }

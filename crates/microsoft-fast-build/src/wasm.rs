@@ -155,6 +155,20 @@ pub fn parse_f_templates(html: &str) -> String {
     format!("[{}]", parts.join(","))
 }
 
+/// Compose `css` into the single `<f-template>` element in `template_html`.
+///
+/// Inserts `<style>{css}</style>` as the first child of the inner
+/// `<template>` element, preserving all existing attributes and content
+/// byte-for-byte. Has no filesystem requirement. Returns a JS error when
+/// `template_html` does not contain exactly one `<f-template>` element with
+/// exactly one inner `<template>` element, or when `css` contains a
+/// case-insensitive `</style` raw-text terminator sequence.
+#[wasm_bindgen]
+pub fn compose_f_template_styles(template_html: &str, css: &str) -> Result<String, JsValue> {
+    crate::f_template::compose_f_template_styles(template_html, css)
+        .map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
 fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {
     let mut parts = Vec::with_capacity(attrs.len());
     for (name, value) in attrs {

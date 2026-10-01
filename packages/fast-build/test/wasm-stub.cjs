@@ -80,6 +80,33 @@ const convertStub = {
         calls.push({ name: "convert_template", template, syntax });
         return `converted:${syntax}:${template}`;
     },
+    convert_template_with_options(template, syntax, typeSource, typeSourceImport) {
+        calls.push({
+            name: "convert_template_with_options",
+            template,
+            syntax,
+            typeSource,
+            typeSourceImport,
+        });
+        if (typeSourceImport && !typeSource) {
+            throw new Error(
+                "type-source-import requires type-source: provide the type name to import alongside the import module",
+            );
+        }
+        if (typeSource && syntax !== "fast-v3-ts") {
+            throw new Error(
+                `type-source is only supported for syntax 'fast-v3-ts', not '${syntax}'`,
+            );
+        }
+        let suffix = "";
+        if (typeSource) {
+            suffix += `:type-source=${typeSource}`;
+        }
+        if (typeSourceImport) {
+            suffix += `:type-source-import=${typeSourceImport}`;
+        }
+        return `converted:${syntax}:${template}${suffix}`;
+    },
 };
 
 process.on("exit", () => {

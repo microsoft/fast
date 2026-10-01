@@ -28,6 +28,8 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "template",
     "output",
     "overwrite",
+    "type-source",
+    "type-source-import",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
 const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "template"]);
@@ -385,6 +387,12 @@ function loadConvertWasm() {
         );
         process.exit(1);
     }
+    if (typeof wasm.convert_template_with_options !== "function") {
+        process.stderr.write(
+            "Error: Converter WASM module must export convert_template_with_options.\n",
+        );
+        process.exit(1);
+    }
     if (typeof wasm.convert_syntax_metadata !== "function") {
         process.stderr.write(
             "Error: Converter WASM module must export convert_syntax_metadata.\n",
@@ -526,6 +534,8 @@ async function runConvert(args) {
     const template = resolveOption(args, config, configDir, "template");
     const outputArg = resolveOption(args, config, configDir, "output");
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
+    const typeSource = resolveOption(args, config, configDir, "type-source");
+    const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
     const wasm = loadConvertWasm();
     const syntaxMetadata = loadConvertSyntaxMetadata(wasm);
     const syntaxList = convertSyntaxList(syntaxMetadata);
@@ -569,7 +579,12 @@ async function runConvert(args) {
     const output = resolveConvertOutput(template, syntax, outputArg, syntaxMetadata);
     validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
 
-    const converted = wasm.convert_template(fs.readFileSync(template, "utf8"), syntax);
+    const converted = wasm.convert_template_with_options(
+        fs.readFileSync(template, "utf8"),
+        syntax,
+        typeSource,
+        typeSourceImport,
+    );
     fs.writeFileSync(output, converted, "utf8");
     process.stdout.write(`Converted: ${output}\n`);
 }
@@ -769,6 +784,14 @@ function writeConvertUsage() {
         `                         as ${defaultOutputs}. Any "*" is\n` +
         "                         replaced by the template basename.\n" +
         "  --overwrite           Replace an existing output file.\n" +
+        '  --type-source="<Name>" TSource type emitted as "html<Name>" in\n' +
+        "                         fast-v3-ts output. Only valid with\n" +
+        '                         --syntax="fast-v3-ts". Must be a dotted\n' +
+        '                         identifier (e.g. "MyElement" or\n' +
+        '                         "Namespace.MyElement").\n' +
+        '  --type-source-import="<module>"\n' +
+        "                         Module specifier for an `import type` statement\n" +
+        "                         for --type-source. Requires --type-source.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
         '                         Defaults to "fast-convert.config.json" in the\n' +
         "                         current directory if it exists. File paths in\n" +

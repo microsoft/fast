@@ -180,7 +180,7 @@ describe("convert CLI", () => {
         );
         assert.deepEqual(calls, [
             {
-                name: "convert_template",
+                name: "convert_template_with_options",
                 template:
                     '<f-template name="my-el"><template>Hello</template></f-template>',
                 syntax: "webui-prerelease",
@@ -328,6 +328,128 @@ describe("convert CLI", () => {
             fs.readFileSync(path.join(dir, "example.webui.html"), "utf8"),
             "old",
         );
+    });
+
+    it("passes --type-source and --type-source-import through to the converter", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const { calls } = runConvertWithStubbedWasm(
+            [
+                "--syntax=fast-v3-ts",
+                "--template=example.html",
+                "--type-source=MyElement",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+        );
+
+        assert.deepEqual(calls, [
+            {
+                name: "convert_template_with_options",
+                template:
+                    '<f-template name="my-el"><template>Hello</template></f-template>',
+                syntax: "fast-v3-ts",
+                typeSource: "MyElement",
+                typeSourceImport: "./my-element.js",
+            },
+        ]);
+    });
+
+    it("reads --type-source and --type-source-import from config", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+        fs.writeFileSync(
+            path.join(dir, "fast-convert.config.json"),
+            JSON.stringify({
+                syntax: "fast-v3-ts",
+                template: "example.html",
+                "type-source": "MyElement",
+                "type-source-import": "./my-element.js",
+            }),
+        );
+
+        const { calls } = runConvertWithStubbedWasm([], dir);
+
+        assert.deepEqual(calls, [
+            {
+                name: "convert_template_with_options",
+                template:
+                    '<f-template name="my-el"><template>Hello</template></f-template>',
+                syntax: "fast-v3-ts",
+                typeSource: "MyElement",
+                typeSourceImport: "./my-element.js",
+            },
+        ]);
+    });
+
+    it("surfaces a converter error when --type-source is used with webui-prerelease", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const result = runConvertWithStderr(
+            [
+                "--syntax=webui-prerelease",
+                "--template=example.html",
+                "--type-source=MyElement",
+            ],
+            dir,
+            true,
+        );
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("type-source is only supported"));
+    });
+
+    it("surfaces a converter error when --type-source-import is used without --type-source", () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template>Hello</template></f-template>',
+        );
+
+        const result = runConvertWithStderr(
+            [
+                "--syntax=fast-v3-ts",
+                "--template=example.html",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+            true,
+        );
+
+        assert.equal(result.exitCode, 1);
+        assert.ok(result.stderr.includes("type-source-import requires type-source"));
+    });
+
+    it("emits an explicit TSource generic using the generated converter WASM when available", {
+        skip: !fs.existsSync(CONVERT_WASM_MODULE),
+    }, () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template><h1 title="{{title}}"></h1></template></f-template>',
+        );
+
+        runFast(
+            [
+                "convert",
+                "--syntax=fast-v3-ts",
+                "--template=example.html",
+                "--output=actual.ts",
+                "--type-source=MyElement",
+                "--type-source-import=./my-element.js",
+            ],
+            dir,
+        );
+
+        const output = fs.readFileSync(path.join(dir, "actual.ts"), "utf8");
+        assert.ok(output.includes('import type { MyElement } from "./my-element.js";'));
+        assert.ok(output.includes("export const template = html<MyElement>`"));
     });
 });
 

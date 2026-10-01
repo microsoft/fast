@@ -18,6 +18,25 @@ let ts = convert_template(source, "fast-v3-ts")?;
 
 The Rust API returns `Result<String, ConvertError>`.
 
+`fast-v3-ts` output can optionally include an explicit `TSource` generic parameter
+(`html<TypeSource>` instead of bare `html`) via `convert_template_with_options` and
+`ConvertOptions`:
+
+```rust
+use microsoft_fast_convert::{convert_template_with_options, ConvertOptions};
+
+let options = ConvertOptions {
+    type_source: Some("MyElement".to_string()),
+    type_source_import: Some("./my-element.js".to_string()),
+};
+let ts = convert_template_with_options(source, "fast-v3-ts", &options)?;
+```
+
+`type_source` must be a dotted TypeScript identifier (e.g. `MyElement` or
+`Namespace.MyElement`); `type_source_import`, when provided, also emits a matching
+`import type { <type_source> } from "<type_source_import>";` statement. `type_source`
+is only supported for `fast-v3-ts`; `type_source_import` requires `type_source`.
+
 Syntax metadata is available through `syntax_metadata()`. The metadata includes each
 supported syntax name, required output extension, and default output suffix so package
 tooling can avoid duplicating target definitions.
@@ -28,6 +47,12 @@ When built with `wasm-pack --target nodejs`, the crate exports:
 
 ```ts
 convert_template(template: string, syntax: string): string
+convert_template_with_options(
+    template: string,
+    syntax: string,
+    typeSource?: string,
+    typeSourceImport?: string,
+): string
 convert_syntax_metadata(): string
 ```
 
@@ -36,4 +61,4 @@ Errors are raised as JavaScript exceptions with the `ConvertError` message.
 
 ## Validation
 
-The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output.
+The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output. It also validates that `type_source` is a dotted identifier, that `type_source` is only supplied for `fast-v3-ts`, and that `type_source_import` is only supplied alongside `type_source`.
