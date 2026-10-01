@@ -1,0 +1,13 @@
+{
+    "name": "@microsoft/fast-site-1x",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "clean": "node ../../docs/scripts/clean.cjs --workspace-root .",
+        "build": "node ../../docs/scripts/build-version.cjs"
+    },
+    "devDependencies": {
+        "@microsoft/fast-site": "0.6.2"
+    }
+}

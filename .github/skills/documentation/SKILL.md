@@ -9,7 +9,7 @@ Design/architectural documentation such as DESIGN.md should always be kept up-to
 
 The website captures the documentation primarily for the `@microsoft/fast-element` package. Other packages are treated as tangential, so testing packages or other utilities should have their own sections.
 
-The website has been written in 11ty and primarily consists of markdown files. When making changes, ensure that the website has been scanned on whichever latest major version is available. These are organized by folder, so if 1.x/2.x/3.x folders are available, you will update the documentation in the 3.x folder.
+The website has been written in 11ty and primarily consists of markdown files. When making changes, use the latest major version available. Version package directories omit the dot, so update `sites/website/versions/3x` for the public `/docs/3.x` content.
 
 If you are making a breaking change, ensure the migration document has been updated.
 
