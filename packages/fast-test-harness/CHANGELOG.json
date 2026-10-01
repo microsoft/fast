@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Thu, 01 Oct 2026 05:10:35 GMT",
+      "version": "0.5.1",
+      "tag": "@microsoft/fast-test-harness_v0.5.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.11.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-element to v3.0.4",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 19 Aug 2026 18:40:05 GMT",
       "version": "0.5.0",
       "tag": "@microsoft/fast-test-harness_v0.5.0",
