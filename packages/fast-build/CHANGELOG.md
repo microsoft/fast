@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Wed, 29 Jul 2026 19:34:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 01 Oct 2026 05:10:34 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.11.0
+
+Thu, 01 Oct 2026 05:10:34 GMT
+
+### Minor changes
+
+- Add compose_f_template_styles for in-memory CSS composition into f-template definitions (7559015+janechu@users.noreply.github.com)
+- Support an optional explicit TSource generic (--type-source / --type-source-import) for fast convert --syntax=fast-v3-ts output. (7559015+janechu@users.noreply.github.com)
+- Bundle microsoft-fast-convert's new convert_stylesheet API (CSS to FAST v3 TypeScript conversion). (7559015+janechu@users.noreply.github.com)
+- Add --templates glob support to fast convert, mirroring fast build; auto-create missing output directories (mkdir -p semantics). Removes the single-file --template flag/config key in favor of --templates (prerelease, no backwards compatibility). (7559015+janechu@users.noreply.github.com)
 
 ## 0.10.0
 
