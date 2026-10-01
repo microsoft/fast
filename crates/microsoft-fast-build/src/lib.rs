@@ -56,6 +56,7 @@
 //! | `hydration` | `HydrationScope` — binding index tracking and marker generation |
 //! | `json` | Hand-rolled JSON parser producing [`JsonValue`] |
 //! | `locator` | [`Locator`] — maps element names to template strings; glob scanner |
+//! | `f_template` | [`compose_f_template_styles`] — in-memory `<f-template>` CSS composition, no filesystem requirement |
 //! | `error` | [`RenderError`] enum with `Display` impl and helpers |
 //! | `wasm` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) |
 //!
@@ -77,6 +78,7 @@ mod renderer;
 mod streaming;
 mod error;
 mod locator;
+mod f_template;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
@@ -84,6 +86,7 @@ pub use json::{JsonValue, JsonError};
 pub use error::RenderError;
 pub use locator::Locator;
 pub use config::{RenderConfig, AttributeNameStrategy};
+pub use f_template::compose_f_template_styles;
 
 fn empty_state() -> JsonValue {
     JsonValue::Object(std::collections::HashMap::new())
