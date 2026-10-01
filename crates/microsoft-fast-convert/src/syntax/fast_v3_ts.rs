@@ -8,6 +8,7 @@ use crate::html::{
     ParsedAttribute,
 };
 use crate::syntax::SyntaxMetadata;
+use crate::ConvertOptions;
 
 pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
     name: "fast-v3-ts",
@@ -15,7 +16,7 @@ pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
     suffix: ".template.ts",
 };
 
-pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
+pub(crate) fn convert(template: &str, options: &ConvertOptions) -> Result<String, ConvertError> {
     let mut state = TsState::default();
     let body = convert_segment(template, &mut state, &[])?;
 
@@ -36,7 +37,22 @@ pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
     if state.slotted {
         output.push_str("import { slotted } from \"@microsoft/fast-element/slotted.js\";\n");
     }
-    output.push_str("\nexport const template = html`");
+    if let (Some(type_source), Some(type_source_import)) = (
+        options.type_source.as_deref(),
+        options.type_source_import.as_deref(),
+    ) {
+        output.push_str(&format!(
+            "import type {{ {type_source} }} from \"{}\";\n",
+            escape_js_string(type_source_import)
+        ));
+    }
+    output.push_str("\nexport const template = html");
+    if let Some(type_source) = options.type_source.as_deref() {
+        output.push('<');
+        output.push_str(type_source);
+        output.push('>');
+    }
+    output.push('`');
     output.push_str(&body);
     output.push_str("`;\n");
 

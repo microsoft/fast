@@ -53,3 +53,21 @@ The TypeScript target always emits `export const template = html\`…\`;` and im
 Repeat bodies use the same local alias mapping as FAST declarative templates: `{{item.name}}` inside `item in items` becomes `x => x.name`. Event handlers inside repeats map root handlers through FAST's repeat context chain (`c.parent`, `c.parentContext.parent`, and so on).
 
 Literal template content is escaped for TypeScript template literals by escaping backticks, literal `${` sequences, and backslashes.
+
+### Explicit `TSource` generic
+
+`ConvertOptions` (`convert_template_with_options`) carries optional `type_source` and
+`type_source_import` fields, honored only by `fast-v3-ts`:
+
+- `type_source` emits `export const template = html<TypeSource>\`…\`;` instead of the
+  untyped `html` call. It must be a dotted identifier (`MyElement`,
+  `Namespace.MyElement`); other syntax targets or malformed values are rejected in
+  `converter::validate_options` before the template is walked.
+- `type_source_import`, when combined with `type_source`, additionally emits
+  `import type { <type_source> } from "<type_source_import>";` immediately after the
+  helper imports. It is rejected on its own, since there is no type name to import.
+
+This exists so `fast convert` output for templates combining multiple
+differently-named `ref`/`children`/`slotted` directives (e.g. `packages/fast-build/test/fixtures/convert/supported.html`)
+type-checks standalone once a concrete element type is supplied, instead of requiring
+callers to hand-add the generic parameter after every conversion.
