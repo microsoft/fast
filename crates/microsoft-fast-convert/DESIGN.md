@@ -26,7 +26,7 @@ The implementation intentionally uses a small hand scanner instead of an HTML pa
 | Module | Role |
 | --- | --- |
 | `lib.rs` | Public Rust API and crate exports |
-| `wasm.rs` | `wasm-bindgen` exports for Node (`convert_template`, `convert_stylesheet`, `convert_syntax_metadata`) |
+| `wasm.rs` | `wasm-bindgen` exports for Node (`convert_template`, `convert_template_with_options`, `convert_stylesheet`, `convert_syntax_metadata`) |
 | `error.rs` | `ConvertError` variants and context helpers |
 | `html.rs` | Tag, attribute, and `<f-template>` scanning utilities |
 | `expression.rs` | Limited declarative expression conversion for TypeScript output |
@@ -90,3 +90,20 @@ carriage returns (`\r`, which may be present from `\r\n` line endings read off
 disk). This reuses the same escaping approach as `fast_v3_ts::convert`'s
 literal-content escaping, with an added carriage-return case.
 
+### Explicit `TSource` generic
+
+`ConvertOptions` (`convert_template_with_options`) carries optional `type_source` and
+`type_source_import` fields, honored only by `fast-v3-ts`:
+
+- `type_source` emits `export const template = html<TypeSource>\`…\`;` instead of the
+  untyped `html` call. It must be a dotted identifier (`MyElement`,
+  `Namespace.MyElement`); other syntax targets or malformed values are rejected in
+  `converter::validate_options` before the template is walked.
+- `type_source_import`, when combined with `type_source`, additionally emits
+  `import type { <type_source> } from "<type_source_import>";` immediately after the
+  helper imports. It is rejected on its own, since there is no type name to import.
+
+This exists so `fast convert` output for templates combining multiple
+differently-named `ref`/`children`/`slotted` directives (e.g. `packages/fast-build/test/fixtures/convert/supported.html`)
+type-checks standalone once a concrete element type is supplied, instead of requiring
+callers to hand-add the generic parameter after every conversion.

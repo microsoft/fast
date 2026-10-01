@@ -355,6 +355,38 @@ If an `<f-template>` element is missing a `name` attribute, a warning is emitted
 
 Any `shadowroot*` attributes on `<f-template>` are copied to the rendered Declarative Shadow DOM `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
+### Composing CSS into an `<f-template>` — `compose_f_template_styles`
+
+`compose_f_template_styles` inserts a `<style>` element as the first child of an `<f-template>` definition's inner `<template>`, entirely in memory:
+
+```rust
+use microsoft_fast_build::compose_f_template_styles;
+
+let template_html = r#"
+    <f-template name="my-button">
+        <template>
+            <button>{{label}}</button>
+        </template>
+    </f-template>
+"#;
+
+let composed = compose_f_template_styles(
+    template_html,
+    ":host { display: inline-block; }",
+)?;
+// composed now has <style>:host { display: inline-block; }</style> as the
+// first child of the inner <template>, with every other byte preserved.
+```
+
+This has no filesystem requirement — `template_html` and `css` can come from any source (a build pipeline, a bundler plugin, generated CSS). The result is ordinary `<f-template>` source: write it to a file for `Locator::from_patterns` to discover, or pass it to `locator::parse_f_templates` directly.
+
+Validation:
+
+- `template_html` must contain exactly one `<f-template>` element, and that element must contain exactly one inner `<template>` element, or the call returns an error (`MissingFTemplate`, `MultipleFTemplates`, `MissingInnerTemplate`, `MultipleInnerTemplates`).
+- `css` must not contain a case-insensitive `</style` raw-text terminator sequence (e.g. `</style>`, `</STYLE >`, `</style/`) — this would prematurely close the inserted `<style>` element. Content like `content: "</stylesheet>"` is not affected, since `style` must be followed by whitespace, `/`, `>`, or end of string to count as a terminator.
+
+The WASM build exposes the same function as `compose_f_template_styles(templateHtml, css)`, throwing a JS error on any validation failure.
+
 ### Rendering with a Locator
 
 ```rust
@@ -653,6 +685,11 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `DuplicateTemplate` | Two or more files contain an `<f-template>` with the same name attribute |
 | `TemplateReadError` | A matched template file could not be read |
 | `JsonParse` | Invalid JSON passed to `render_template` |
+| `MissingFTemplate` | `compose_f_template_styles` input has no `<f-template>` element |
+| `MultipleFTemplates` | `compose_f_template_styles` input has more than one `<f-template>` element |
+| `MissingInnerTemplate` | `compose_f_template_styles` input's `<f-template>` has no inner `<template>` element |
+| `MultipleInnerTemplates` | `compose_f_template_styles` input's `<f-template>` has more than one inner `<template>` element |
+| `UnsafeStyleContent` | `compose_f_template_styles` CSS contains a case-insensitive `</style` raw-text terminator |
 
 Every error message includes a description of the problem and a snippet of the template near the error site to aid debugging:
 

@@ -55,6 +55,12 @@ pub enum ConvertError {
     StylesheetUnsupportedForSyntax { syntax: String },
     /// `convert_stylesheet`'s export name is not a valid TypeScript identifier.
     InvalidExportName { name: String },
+    /// `type_source` was supplied for a syntax that does not support it.
+    TypeSourceUnsupportedForSyntax { syntax: String },
+    /// `type_source` is not a valid dotted TypeScript identifier.
+    InvalidTypeSource { value: String },
+    /// `type_source_import` was supplied without `type_source`.
+    TypeSourceImportRequiresTypeSource,
 }
 
 impl fmt::Display for ConvertError {
@@ -144,6 +150,18 @@ impl fmt::Display for ConvertError {
             Self::InvalidExportName { name } => write!(
                 f,
                 "invalid export name '{name}': expected a valid TypeScript identifier"
+            ),
+            Self::TypeSourceUnsupportedForSyntax { syntax } => write!(
+                f,
+                "type-source is only supported for syntax 'fast-v3-ts', not '{syntax}'"
+            ),
+            Self::InvalidTypeSource { value } => write!(
+                f,
+                "invalid type-source '{value}': expected a dotted TypeScript identifier such as 'MyElement' or 'Namespace.MyElement'"
+            ),
+            Self::TypeSourceImportRequiresTypeSource => write!(
+                f,
+                "type-source-import requires type-source: provide the type name to import alongside the import module"
             ),
         }
     }

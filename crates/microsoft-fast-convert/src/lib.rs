@@ -16,11 +16,39 @@ mod wasm;
 pub use error::ConvertError;
 pub use syntax::SyntaxMetadata;
 
+/// Options that adjust the shape of converted output.
+///
+/// `type_source` and `type_source_import` are only meaningful for the
+/// `fast-v3-ts` syntax target; supplying either for another syntax is a
+/// [`ConvertError::TypeSourceUnsupportedForSyntax`] error.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ConvertOptions {
+    /// Explicit `TSource` type name emitted as `html<TypeSource>` in
+    /// `fast-v3-ts` output. Must be a simple dotted identifier
+    /// (e.g. `MyElement` or `Namespace.MyElement`).
+    pub type_source: Option<String>,
+    /// Module specifier for an `import type { <type_source> } from "…";`
+    /// statement emitted alongside `type_source`. Requires `type_source`.
+    pub type_source_import: Option<String>,
+}
+
 /// Convert a FAST declarative template string to the requested syntax.
 ///
 /// Supported syntax values are `webui-prerelease` and `fast-v3-ts`.
 pub fn convert_template(template: &str, syntax: &str) -> Result<String, ConvertError> {
-    converter::convert(template, syntax)
+    convert_template_with_options(template, syntax, &ConvertOptions::default())
+}
+
+/// Convert a FAST declarative template string to the requested syntax, with
+/// additional output options.
+///
+/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`.
+pub fn convert_template_with_options(
+    template: &str,
+    syntax: &str,
+    options: &ConvertOptions,
+) -> Result<String, ConvertError> {
+    converter::convert(template, syntax, options)
 }
 
 /// Convert a CSS stylesheet string to the requested syntax, exporting it as
