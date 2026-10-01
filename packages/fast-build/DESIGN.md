@@ -63,16 +63,21 @@ fast build [options]
 fast convert [options]
         │
         ▼
-  parseArgs(argv)        ← --syntax, --template, --output, --overwrite, --config
+  parseArgs(argv)        ← --syntax, --templates, --output, --overwrite,
+        │                  --type-source, --type-source-import, --config
         │
         ├─ loadConfig(configPath)             ← load fast-convert.config.json
         ├─ resolveOption(args, config, …)     ← CLI args override config values
         ├─ resolvePresenceBooleanOption(args, config, "overwrite")
-        ├─ validate syntax/template/output paths and extensions
-        ├─ wasm = require(CONVERT_WASM_MODULE) ← load wasm/convert/microsoft_fast_convert.js
-        ├─ wasm.convert_template(templateHtml, syntax)
+        ├─ error if --templates is missing
+        ├─ wasm = require(CONVERT_WASM_MODULE) ← load wasm/convert/microsoft_fast_convert.js (once, even for a single file)
+        │
+        └─ runConvertBatch: resolveTemplateFiles(pattern) per comma-separated
+                  pattern, dedupe matches, warn (not error) on zero matches, then for
+                  each matched file: validate syntax/output paths and extensions,
+                  wasm.convert_template_with_options(templateHtml, syntax, typeSource, typeSourceImport), write output
         ▼
-  fs.writeFileSync(output, converted)
+  fs.writeFileSync(output, converted)   ← output parent directory is created (mkdir -p) if missing
 ```
 
 ---
@@ -107,13 +112,13 @@ When a value is not provided by either source, built-in defaults apply (`index.h
 
 ### Path resolution
 
-File paths read from the config file (`entry`, `state`, `output`, `templates`, and converter `template`) are resolved relative to the **config file's directory**, not the current working directory. This ensures configs work correctly regardless of where the CLI is invoked from.
+File paths read from the config file (`entry`, `state`, `output`, and `templates`) are resolved relative to the **config file's directory**, not the current working directory. This ensures configs work correctly regardless of where the CLI is invoked from.
 
 CLI-provided paths are resolved relative to the current working directory (the default Node.js behaviour).
 
 ### Validation
 
-The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, or `stream`; `stream` must be a JSON boolean and other values must be strings. Convert config keys must be one of `syntax`, `template`, `output`, or `overwrite`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
+The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, or `stream`; `stream` must be a JSON boolean and other values must be strings. Convert config keys must be one of `syntax`, `templates`, `output`, `overwrite`, `type-source`, or `type-source-import`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
 
 ### Helpers
 
@@ -179,17 +184,27 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## Converter output rules
 
-`fast convert` accepts a required source `template` and required target `syntax`.
-The source template path must exist, be a file, and use `.html`.
+`fast convert` accepts a required target `syntax` and a required `templates`
+source: a comma-separated glob pattern list (an exact single file path is also
+accepted, since it is just a pattern with no wildcard). The converter WASM
+module is loaded once and every matched file is converted in the same process,
+whether `templates` resolves to one file or many. `templates` is resolved with
+`resolveTemplateFiles`, which reuses the same
+`staticPrefixDir`/`walkHtmlFiles`/`globMatch` primitives as `fast build`'s
+`resolvePattern`, but returns whole matched file paths without any
+`<f-template>` parsing, since convert operates on entire files. Only `.html`
+files are ever matched — non-`.html` files and directories are silently
+excluded by `walkHtmlFiles`, not rejected with a validation error.
 
 | Syntax | Output extension | Default suffix |
 |--------|------------------|----------------|
 | `webui-prerelease` | `.html` | `.webui.html` |
 | `fast-v3-ts` | `.ts` | `.template.ts` |
 
-When `output` is omitted, the CLI writes next to the input template using the
-default suffix. When `output` is provided, every `*` is replaced with the input
-basename without its `.html` extension. CLI-provided `template`/`output` paths
+When `output` is omitted, the CLI writes next to each input template using the
+default suffix. When `output` is provided, every `*` is replaced with each
+input's basename without its `.html` extension, so the same `--output`
+pattern can target a batch of files. CLI-provided `templates`/`output` paths
 use normal current-working-directory resolution; config-provided paths are
 resolved relative to the config file before the default suffix or `*`
 replacement is applied.
@@ -197,17 +212,32 @@ replacement is applied.
 Before loading converter WASM, the CLI validates that:
 
 - The selected syntax is supported.
+- `templates` is provided.
 - The output extension matches the selected syntax.
 - The output path is not a directory.
-- The output parent directory exists and is a directory.
 - An existing output file is only replaced when `--overwrite` is present or
   config contains `"overwrite": true`.
 
+The output parent directory is created automatically (`mkdir -p` semantics) if
+it does not exist; only an existing non-directory at that path is rejected. A
+glob pattern that matches zero files produces a warning (not an error) naming
+the pattern, and the command only fails if every pattern produces zero matches
+across the whole invocation.
+
 The converter WASM contract is `convert_template(template: string, syntax:
-string): string` plus `convert_syntax_metadata(): string`. Rust owns FAST
+string): string` plus `convert_template_with_options(template: string, syntax:
+string, typeSource?: string, typeSourceImport?: string): string` and
+`convert_syntax_metadata(): string`. The CLI always calls
+`convert_template_with_options`, passing through `--type-source` /
+`--type-source-import` (or their config equivalents) as `typeSource` /
+`typeSourceImport`, which are `undefined` when not provided. Rust owns FAST
 declarative syntax validation, conversion semantics, accepted syntax names, output
-extensions, and default suffixes. The JavaScript layer reads syntax metadata from
-WASM and only handles CLI/config merging, path rules, and file I/O.
+extensions, default suffixes, and `type-source`/`type-source-import` validation
+(only valid for `fast-v3-ts`; `type-source-import` requires `type-source`). The
+JavaScript layer reads syntax metadata from WASM and only handles CLI/config
+merging, path rules, file discovery, and file I/O — it does not duplicate that
+validation, so converter errors surface through the WASM call and the
+top-level `main().catch()` handler.
 
 ---
 
@@ -221,7 +251,22 @@ config discovery. The fixture configs write generated output to
 converted `.html` and `.ts` outputs are not checked in. The
 `test:fixtures:convert` package script runs the fixture-only validation, and
 `test:node` includes it so CI validates both `webui-prerelease` and
-`fast-v3-ts` through the real `fast convert` CLI.
+`fast-v3-ts` through the real `fast convert` CLI, including a `--templates`
+batch conversion against the real converter WASM.
+
+`test/fixtures/convert/type-source.test.js` covers `--type-source` /
+`--type-source-import` against `supported.html`, which combines multiple
+differently-named `f-ref`/`f-children`/`f-slotted` directives — the exact shape
+that broke standalone type-checking once a real `TSource` is supplied (see
+[`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic)).
+It writes a companion `fixture-card.ts` element type and type-checks the
+generated `.template.ts` output against it with the TypeScript compiler API
+(`typescript.createProgram` / `getPreEmitDiagnostics`), asserting zero
+diagnostics, plus a negative case asserting a mismatched directive property name
+does fail to type-check. This test uses its own `test/.fixture-output-type-source/`
+directory — separate from `test/.fixture-output/` — because Node's test runner
+runs test files concurrently and `convert-fixtures.test.js` clears the shared
+`.fixture-output/` directory between its own tests.
 
 ---
 
@@ -241,10 +286,13 @@ The build WASM module exposes four functions; the CLI uses the entry renderer wh
 See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
 
 The converter WASM module is loaded from
-`wasm/convert/microsoft_fast_convert.js` and must export
-`convert_template(template, syntax)`. It receives the source `.html` template
-contents and the selected syntax (`webui-prerelease` or `fast-v3-ts`) and returns
-the converted file contents, throwing on conversion or validation errors.
+`wasm/convert/microsoft_fast_convert.js` and must export `convert_template(template,
+syntax)`, `convert_template_with_options(template, syntax, typeSource?,
+typeSourceImport?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
+receives the source `.html` template contents, the selected syntax
+(`webui-prerelease` or `fast-v3-ts`), and optional `typeSource` /
+`typeSourceImport` strings, returning the converted file contents and throwing on
+conversion or validation errors (including `type-source` misuse).
 
 ---
 
@@ -285,12 +333,15 @@ simulated streaming rather than a lazy Node.js `ReadableStream`.
 | `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
 | `--stream` value is not `true`, `false`, or empty | Print error to stderr; exit code 1 |
 | Convert `--syntax` omitted or unsupported | Print error with supported syntaxes to stderr; exit code 1 |
-| Convert `--template` omitted | Print error to stderr; exit code 1 |
-| Convert template missing, not a file, or not `.html` | Print error to stderr; exit code 1 |
+| Convert `--templates` omitted | Print error to stderr; exit code 1 |
+| Convert `--templates` pattern matches no files | Warning to stderr; pattern is skipped, not an error |
 | Convert output extension does not match syntax | Print error to stderr; exit code 1 |
-| Convert output parent directory missing or not a directory | Print error to stderr; exit code 1 |
+| Convert output parent directory missing | Created automatically (`mkdir -p` semantics) |
 | Convert output path is a directory | Print error to stderr; exit code 1 |
 | Convert output exists without overwrite | Print error to stderr; exit code 1 |
+| Convert `--type-source` used with a syntax other than `fast-v3-ts` | Converter WASM throws; printed to stderr; exit code 1 |
+| Convert `--type-source-import` used without `--type-source` | Converter WASM throws; printed to stderr; exit code 1 |
+| Convert `--type-source` is not a dotted identifier | Converter WASM throws; printed to stderr; exit code 1 |
 | Converter WASM export missing | Print error to stderr; exit code 1 |
 | Converter WASM throws | Print error to stderr; exit code 1 |
 | Pattern matches no files | Warning to stderr; pattern is skipped |

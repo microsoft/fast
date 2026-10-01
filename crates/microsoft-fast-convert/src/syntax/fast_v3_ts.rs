@@ -8,6 +8,7 @@ use crate::html::{
     ParsedAttribute,
 };
 use crate::syntax::SyntaxMetadata;
+use crate::ConvertOptions;
 
 pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
     name: "fast-v3-ts",
@@ -15,7 +16,7 @@ pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
     suffix: ".template.ts",
 };
 
-pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
+pub(crate) fn convert(template: &str, options: &ConvertOptions) -> Result<String, ConvertError> {
     let mut state = TsState::default();
     let body = convert_segment(template, &mut state, &[])?;
 
@@ -36,11 +37,43 @@ pub(crate) fn convert(template: &str) -> Result<String, ConvertError> {
     if state.slotted {
         output.push_str("import { slotted } from \"@microsoft/fast-element/slotted.js\";\n");
     }
-    output.push_str("\nexport const template = html`");
+    if let (Some(type_source), Some(type_source_import)) = (
+        options.type_source.as_deref(),
+        options.type_source_import.as_deref(),
+    ) {
+        output.push_str(&format!(
+            "import type {{ {type_source} }} from \"{}\";\n",
+            escape_js_string(type_source_import)
+        ));
+    }
+    output.push_str("\nexport const template = html");
+    if let Some(type_source) = options.type_source.as_deref() {
+        output.push('<');
+        output.push_str(type_source);
+        output.push('>');
+    }
+    output.push('`');
     output.push_str(&body);
     output.push_str("`;\n");
 
     Ok(output)
+}
+
+/// Convert a CSS stylesheet string into FAST v3 TypeScript source that imports
+/// `css` and exports `export_name` as a `css` tagged template.
+///
+/// `export_name` must already be a validated TypeScript identifier — validation
+/// is performed by the caller (`converter::convert_stylesheet`) so error
+/// messages stay centralized alongside the other `ConvertError` variants.
+pub(crate) fn convert_stylesheet(stylesheet: &str, export_name: &str) -> String {
+    let mut output = String::new();
+    output.push_str("import { css } from \"@microsoft/fast-element/css.js\";\n\n");
+    output.push_str("export const ");
+    output.push_str(export_name);
+    output.push_str(" = css`");
+    output.push_str(&escape_ts_literal_with_carriage_returns(stylesheet));
+    output.push_str("`;\n");
+    output
 }
 
 #[derive(Default)]
@@ -395,6 +428,29 @@ fn escape_ts_literal(value: &str) -> String {
         match ch {
             '`' => out.push_str("\\`"),
             '\\' => out.push_str("\\\\"),
+            '$' if chars.peek() == Some(&'{') => {
+                out.push_str("\\${");
+                chars.next();
+            }
+            _ => out.push(ch),
+        }
+    }
+
+    out
+}
+
+/// Escape a string for a TypeScript template literal, additionally escaping
+/// carriage returns (`\r`) as the two-character sequence `\r`. Used for CSS
+/// stylesheet content, which may retain `\r\n` line endings from disk.
+fn escape_ts_literal_with_carriage_returns(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    let mut chars = value.chars().peekable();
+
+    while let Some(ch) = chars.next() {
+        match ch {
+            '`' => out.push_str("\\`"),
+            '\\' => out.push_str("\\\\"),
+            '\r' => out.push_str("\\r"),
             '$' if chars.peek() == Some(&'{') => {
                 out.push_str("\\${");
                 chars.next();

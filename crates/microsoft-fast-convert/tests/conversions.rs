@@ -1,4 +1,7 @@
-use microsoft_fast_convert::{convert_template, syntax_metadata, syntax_metadata_json};
+use microsoft_fast_convert::{
+    convert_template, convert_template_with_options, syntax_metadata, syntax_metadata_json,
+    ConvertOptions,
+};
 
 fn fast_template(inner: &str) -> String {
     format!(r#"<f-template name="my-element">{inner}</f-template>"#)
@@ -142,4 +145,46 @@ fn fast_v3_ts_converts_aspected_attribute_bindings() {
         output,
         "import { html } from \"@microsoft/fast-element/html.js\";\n\nexport const template = html`<template><input ?disabled=\"${x => x.disabled}\" :value=\"${x => x.value}\" /></template>`;\n"
     );
+}
+
+#[test]
+fn fast_v3_ts_emits_type_source_generic_without_import() {
+    let input = fast_template(r#"<template><h1 title="{{title}}"></h1></template>"#);
+    let options = ConvertOptions {
+        type_source: Some("MyElement".to_string()),
+        type_source_import: None,
+    };
+    let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
+
+    assert_eq!(
+        output,
+        "import { html } from \"@microsoft/fast-element/html.js\";\n\nexport const template = html<MyElement>`<template><h1 title=\"${x => x.title}\"></h1></template>`;\n"
+    );
+}
+
+#[test]
+fn fast_v3_ts_emits_type_source_generic_with_import() {
+    let input = fast_template(r#"<template><h1 title="{{title}}"></h1></template>"#);
+    let options = ConvertOptions {
+        type_source: Some("MyElement".to_string()),
+        type_source_import: Some("./my-element.js".to_string()),
+    };
+    let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
+
+    assert_eq!(
+        output,
+        "import { html } from \"@microsoft/fast-element/html.js\";\nimport type { MyElement } from \"./my-element.js\";\n\nexport const template = html<MyElement>`<template><h1 title=\"${x => x.title}\"></h1></template>`;\n"
+    );
+}
+
+#[test]
+fn fast_v3_ts_accepts_dotted_type_source() {
+    let input = fast_template(r#"<template><span></span></template>"#);
+    let options = ConvertOptions {
+        type_source: Some("Namespace.MyElement".to_string()),
+        type_source_import: None,
+    };
+    let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
+
+    assert!(output.contains("html<Namespace.MyElement>`"));
 }

@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 01 Oct 2026 05:10:34 GMT",
+      "version": "3.0.4",
+      "tag": "@microsoft/fast-element_v3.0.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b0a4f22377c6bcbb4e17a5845563a040b6f373ca",
+            "comment": "Fixed a memory leak in ElementController where a subscriber was created per element instead of per definition, causing every created element to be retained for the lifetime of the page."
+          },
+          {
+            "author": "pradeepramolaa@gmail.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6f97b2ea4ce5e7cf3d52c5b91f426fd60b805ecb",
+            "comment": "Support element filters for declarative f-children directives."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "bfabb30b51912c3b2dd834604579702fe21c106e",
+            "comment": "Preserve hydration target traversal behavior without performing per-node Range membership checks."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Sep 2026 02:52:27 GMT",
       "version": "3.0.3",
       "tag": "@microsoft/fast-element_v3.0.3",

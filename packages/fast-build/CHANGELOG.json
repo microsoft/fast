@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Thu, 01 Oct 2026 05:10:34 GMT",
+      "version": "0.11.0",
+      "tag": "@microsoft/fast-build_v0.11.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "523ab771fdb82b9c0717fde3c08615a5ae4127a3",
+            "comment": "Add compose_f_template_styles for in-memory CSS composition into f-template definitions"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "e77a185880f22ff7197273ce498818d3f21d7f5a",
+            "comment": "Support an optional explicit TSource generic (--type-source / --type-source-import) for fast convert --syntax=fast-v3-ts output."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "2b92f1ae9364f275dd7930abc6cb348a836c276e",
+            "comment": "Bundle microsoft-fast-convert's new convert_stylesheet API (CSS to FAST v3 TypeScript conversion)."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "03e8c284cccf46f8afa8e82db8ff77875539d657",
+            "comment": "Add --templates glob support to fast convert, mirroring fast build; auto-create missing output directories (mkdir -p semantics). Removes the single-file --template flag/config key in favor of --templates (prerelease, no backwards compatibility)."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 29 Jul 2026 19:34:55 GMT",
       "version": "0.10.0",
       "tag": "@microsoft/fast-build_v0.10.0",

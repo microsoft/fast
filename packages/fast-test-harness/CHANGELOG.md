@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Wed, 19 Aug 2026 18:40:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 01 Oct 2026 05:10:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.5.1
+
+Thu, 01 Oct 2026 05:10:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-build to v0.11.0
+- Bump @microsoft/fast-element to v3.0.4
 
 ## 0.5.0
 
