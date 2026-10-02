@@ -1,0 +1,39 @@
+{
+  "name": "@microsoft/fast-site",
+  "version": "0.6.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "node scripts/clean.cjs",
+    "prepare:docs": "node scripts/prepare-docs.cjs",
+    "generate:docs": "node scripts/generate-docs.cjs --version 3 --destination tmp/src/docs/3.x",
+    "prebuild": "npm run clean && npm run prepare:docs && npm run generate:docs",
+    "build": "npx @11ty/eleventy --output=build --input=tmp/src",
+    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=tmp/src --serve",
+    "test:node": "node --test scripts/*.spec.cjs",
+    "help": "npx @11ty/eleventy --help"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-navigation": "^1.0.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "@microsoft/api-documenter": "7.29.7",
+    "github-markdown-css": "5.9.0"
+  },
+  "devDependencies": {
+    "@microsoft/fast-build": "^0.11.0",
+    "@microsoft/fast-element": "^3.0.4"
+  }
+}

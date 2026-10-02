@@ -50,12 +50,11 @@ storybook-static
 .tmp/
 temp/
 
-# Docusaurus files to ignore
-sites/website/build/
-sites/website/docs/
-sites/website/src/docs/api/
-sites/website/node_modules
-sites/website/i18n/
+# Documentation website generated files
+sites/website/docs/build/
+sites/website/docs/tmp/
+sites/website/versions/*/build/
+sites/website/versions/*/tmp/
 
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json
