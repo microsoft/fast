@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><meta charset="UTF-8"><title>Event options</title></head>
+    <body>
+        <test-event-options id="ssr"><template shadowrootmode="open" shadowroot="open"><div id="capture" data-fe="1">
+            <!--fe:b--><!--fe:r-->
+                <button type="button" class="repeat-target"><!--fe:b-->first<!--fe:/b--></button>
+            <!--fe:/r--><!--fe:/b-->
+        </div>
+        <button type="button" id="once" data-fe="1">Once</button>
+        <div id="passive" data-fe="1">Passive</div>
+        <div id="combined" data-fe="1">
+            <button type="button">Combined</button>
+        </div>
+        <div id="phases" data-fe="2">
+            <button type="button">Phases</button>
+        </div>
+        <button type="button" id="ordinary" data-fe="1">Ordinary</button></template></test-event-options>
+<f-template name="test-event-options">
+    <template>
+        <div id="capture" @pointerenter.capture="{handleCapture($e)}">
+            <f-repeat value="{{item in items}}">
+                <button type="button" class="repeat-target">{{item}}</button>
+            </f-repeat>
+        </div>
+        <button type="button" id="once" @click.once="{handleOnce()}">Once</button>
+        <div id="passive" @wheel.passive="{handlePassive($e)}">Passive</div>
+        <div id="combined" @pointerenter.capture.passive.once="{handleCombined($e)}">
+            <button type="button">Combined</button>
+        </div>
+        <div id="phases" @click.capture="{handlePhase($e)}" @click="{handlePhase($e)}">
+            <button type="button">Phases</button>
+        </div>
+        <button type="button" id="ordinary" @click="{handleOrdinary()}">Ordinary</button>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

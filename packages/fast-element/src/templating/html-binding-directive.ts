@@ -393,6 +393,7 @@ export class HTMLBindingDirective
         switch (this.aspectType) {
             case DOMAspect.event:
                 target[this.data] = controller;
+                controller.onUnbind(this);
                 target.addEventListener(
                     this.targetAspect,
                     this,
@@ -435,6 +436,11 @@ export class HTMLBindingDirective
     /** @internal */
     unbind(controller: ViewController): void {
         const target = controller.targets[this.targetNodeId] as ContentTarget;
+        if (this.aspectType === DOMAspect.event) {
+            target.removeEventListener(this.targetAspect, this, this.dataBinding.options);
+            target[this.data] = void 0;
+            return;
+        }
         const view = target.$fastView as ComposableView;
 
         if (view !== void 0 && view.isComposed) {
@@ -462,7 +468,7 @@ export class HTMLBindingDirective
             );
             ExecutionContext.setEvent(null);
 
-            if (result !== true) {
+            if (result !== true && !this.dataBinding.options?.passive) {
                 event.preventDefault();
             }
         }

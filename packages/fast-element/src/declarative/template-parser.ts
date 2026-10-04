@@ -1,5 +1,7 @@
 import type { Schema } from "../components/schema.js";
+import { DOMAspect } from "../dom.js";
 import { children } from "../templating/children.js";
+import { HTMLBindingDirective } from "../templating/html-binding-directive.js";
 import { elements } from "../templating/node-observation.js";
 import { ref } from "../templating/ref.js";
 import { repeat } from "../templating/repeat.js";
@@ -109,7 +111,47 @@ export class TemplateParser {
         values: Array<any>,
     ): ViewTemplate<any, any> {
         ensureDeclarativeRuntime();
-        return ViewTemplate.create(strings, values);
+        const template = ViewTemplate.create(strings, values);
+
+        for (const id of Object.keys(template.factories)) {
+            const factory = template.factories[id];
+            if (
+                !(factory instanceof HTMLBindingDirective) ||
+                factory.aspectType !== DOMAspect.event
+            ) {
+                continue;
+            }
+
+            const [eventName, ...modifiers] = factory.targetAspect.split(".");
+            if (modifiers.length === 0) {
+                continue;
+            }
+            if (!eventName) {
+                throw new Error(
+                    `Event binding "${factory.sourceAspect}" must specify an event name.`,
+                );
+            }
+
+            const options: AddEventListenerOptions = {};
+            for (const modifier of modifiers) {
+                if (
+                    modifier !== "capture" &&
+                    modifier !== "passive" &&
+                    modifier !== "once"
+                ) {
+                    throw new Error(
+                        `Unknown event modifier "${modifier}" in "${factory.sourceAspect}".`,
+                    );
+                }
+                options[modifier] = true;
+            }
+
+            // Keep distinct source attributes so capture and bubble bindings can coexist.
+            factory.targetAspect = eventName;
+            factory.dataBinding.options = options;
+        }
+
+        return template;
     }
 
     /**

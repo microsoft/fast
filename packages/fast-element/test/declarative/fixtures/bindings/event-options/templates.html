@@ -1,0 +1,18 @@
+<f-template name="test-event-options">
+    <template>
+        <div id="capture" @pointerenter.capture="{handleCapture($e)}">
+            <f-repeat value="{{item in items}}">
+                <button type="button" class="repeat-target">{{item}}</button>
+            </f-repeat>
+        </div>
+        <button type="button" id="once" @click.once="{handleOnce()}">Once</button>
+        <div id="passive" @wheel.passive="{handlePassive($e)}">Passive</div>
+        <div id="combined" @pointerenter.capture.passive.once="{handleCombined($e)}">
+            <button type="button">Combined</button>
+        </div>
+        <div id="phases" @click.capture="{handlePhase($e)}" @click="{handlePhase($e)}">
+            <button type="button">Phases</button>
+        </div>
+        <button type="button" id="ordinary" @click="{handleOrdinary()}">Ordinary</button>
+    </template>
+</f-template>

@@ -249,6 +249,14 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
 
+Declarative event modifiers are resolved by `TemplateParser.createTemplate()`
+after factories have been created and before compilation. Source attributes keep
+their modifier suffixes so capture and bubble bindings for one event do not
+collapse into a duplicate HTML attribute. The event factory receives the base
+event name and static listener options. Event bindings register for unbind,
+remove the listener with its capture option, and release their controller
+reference. Passive bindings do not automatically prevent the default action.
+
 ---
 
 ### DOM Policy

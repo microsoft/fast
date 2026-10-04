@@ -121,6 +121,10 @@ controller when styles need to change.
 
 ## Declarative HTML
 
+Declarative event attributes support static `.capture`, `.passive`, and `.once`
+modifiers, including combinations. See [listener options](./docs/declarative/syntax.md#listener-options)
+for syntax and binding lifecycle behavior.
+
 FAST Element publishes its declarative HTML runtime from
 `@microsoft/fast-element/declarative.js`. This entrypoint exports the
 functional APIs for declarative templates: `declarativeTemplate()`,

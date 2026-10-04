@@ -315,6 +315,30 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 
 Use `$e` for the DOM event object.
 
+#### Listener options
+
+Add static `.capture`, `.passive`, or `.once` modifiers to an event attribute:
+
+```html
+<div @pointerenter.capture="{handlePointerEnter($e)}"></div>
+<div @wheel.capture.passive="{handleWheel($e)}"></div>
+<button @click.once="{handleClick()}">Once</button>
+```
+
+Modifiers may be combined in any order. `capture` observes events during the
+capture phase, including non-bubbling events from descendants. `passive` prevents
+the listener from canceling the default action; FAST does not automatically call
+`preventDefault()` for a passive listener. `once` runs once per binding and is
+rearmed when the view is rebound.
+
+FAST removes listeners when their view unbinds, using the same capture option.
+These options work for both client rendering and hydration. Separate `@click`
+and `@click.capture` attributes on one element remain separate listeners.
+
+Dots in declarative event attribute names separate modifiers. Unknown modifiers,
+including `signal`, produce a template error. For literal event names containing
+dots or an `AbortSignal`, use an imperative `html` template with `listener()`.
+
 ### Directives
 
 Directives are assumed to be either an attribute directive or a directive that also serves a template. Both are prepended by `f-`. The logic of these directives and what their use cases are is explained in the [FAST html documentation](https://fast.design/docs/getting-started/html-directives).

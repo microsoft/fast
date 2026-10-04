@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Support static capture, passive, and once modifiers in declarative event bindings.",
+  "packageName": "@microsoft/fast-element",
+  "email": "163576506+minwookshin@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

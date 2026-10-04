@@ -115,6 +115,27 @@ Event bindings use the `@` prefix and single curly braces (client-only). The han
 </f-template>
 ```
 
+### Listener Options
+
+Use static `.capture`, `.passive`, and `.once` modifiers, individually or together:
+
+```html
+<div @pointerenter.capture="{handlePointerEnter($e)}"></div>
+<div @wheel.capture.passive="{handleWheel($e)}"></div>
+<button @click.once="{handleClick()}">Once</button>
+```
+
+`capture` observes the capture phase, including non-bubbling events from
+descendants. `passive` prevents cancellation of the default action, including
+FAST's automatic `preventDefault()`. `once` runs once per binding and rearms
+when the view is rebound. Modifier order does not matter.
+
+FAST removes listeners when the view unbinds. The same options work with client
+rendering and hydration, and `@click` and `@click.capture` can coexist on one
+element. Unknown modifiers produce a template error. Dots separate modifiers in
+declarative event names; use an imperative `html` template with `listener()` for
+literal dotted event names or an `AbortSignal`.
+
 ### Event Arguments
 
 You can pass special arguments to event handlers:

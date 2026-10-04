@@ -79,6 +79,7 @@ export { Signal, signal } from "../src/binding/signal.js";
 export { twoWay } from "../src/binding/two-way.js";
 export { Schema } from "../src/components/schema.js";
 export { AttributeMap } from "../src/declarative/attribute-map.js";
+export { TemplateParser } from "../src/declarative/template-parser.js";
 export { isString } from "../src/interfaces.js";
 export { Metadata } from "../src/metadata.js";
 export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
