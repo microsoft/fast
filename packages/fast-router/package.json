@@ -36,8 +36,10 @@
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
     "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test": "npm run lint && npm run doc:ci && npm run test:node",
-    "test:ci": "npm run doc:ci && npm run test:node"
+    "test": "npm run lint && npm run doc:ci && npm run test:node && npm run test:playwright",
+    "test:ci": "npm run doc:ci && npm run test:node && npm run test:playwright",
+    "test:playwright": "playwright test",
+    "test-server": "vite test/ --clearScreen false --port 5175 --strictPort"
   },
   "dependencies": {
     "tslib": "^2.6.3"

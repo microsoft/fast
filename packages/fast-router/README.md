@@ -20,6 +20,14 @@ import { FASTRouter } from '@microsoft/fast-router';
 
 Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](https://fast.design/docs/integrations/introduction).
 
+## Browser tests
+
+From the repository root, run `npm run build` and then
+`npm run test:playwright -w @microsoft/fast-router` to exercise navigation in
+Chromium, Firefox, and WebKit. The suite starts its Vite fixture server on port
+5175 and covers history navigation, route rendering, redirects, and link handling.
+It also runs as part of the root `npm run test` command.
+
 ## Configuration at a Glance
 
 The router is currently in `alpha` while we address a few bugs, finish up some final polish, and write the full documentation. Below is a quick sample of how to configure the router, to help get you going while we complete the full documentation.
