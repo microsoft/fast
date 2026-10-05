@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -171,8 +171,8 @@
     "build:fixtures:webui": "node scripts/declarative/build-fixtures-with-webui.js",
     "build:rollup": "rollup -c",
     "build:sizes": "node scripts/measure-sizes.js",
-    "build:tsc": "tsgo -p ./tsconfig.json",
-    "dev": "tsgo -p ./tsconfig.json -w",
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "dev": "tsc -p ./tsconfig.json -w",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",

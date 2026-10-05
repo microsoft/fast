@@ -26,11 +26,11 @@
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-navigation": "^1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
-    "@microsoft/api-documenter": "7.29.7",
+    "@microsoft/api-documenter": "7.30.17",
     "github-markdown-css": "5.9.0"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "^0.10.0",
-    "@microsoft/fast-element": "^3.0.3"
+    "@microsoft/fast-build": "^0.11.0",
+    "@microsoft/fast-element": "^3.0.4"
   }
 }

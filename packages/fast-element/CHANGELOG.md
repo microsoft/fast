@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Thu, 10 Sep 2026 02:52:27 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 01 Oct 2026 05:10:34 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.0.4
+
+Thu, 01 Oct 2026 05:10:34 GMT
+
+### Patches
+
+- Fixed a memory leak in ElementController where a subscriber was created per element instead of per definition, causing every created element to be retained for the lifetime of the page. (7559015+janechu@users.noreply.github.com)
+- Support element filters for declarative f-children directives. (pradeepramolaa@gmail.com)
+- Preserve hydration target traversal behavior without performing per-node Range membership checks. (7559015+janechu@users.noreply.github.com)
 
 ## 3.0.3
 

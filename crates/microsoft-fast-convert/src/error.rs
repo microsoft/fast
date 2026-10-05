@@ -51,6 +51,10 @@ pub enum ConvertError {
         reason: String,
         context: String,
     },
+    /// `convert_stylesheet` was called with a syntax that does not support CSS conversion.
+    StylesheetUnsupportedForSyntax { syntax: String },
+    /// `convert_stylesheet`'s export name is not a valid TypeScript identifier.
+    InvalidExportName { name: String },
     /// `type_source` was supplied for a syntax that does not support it.
     TypeSourceUnsupportedForSyntax { syntax: String },
     /// `type_source` is not a valid dotted TypeScript identifier.
@@ -137,6 +141,15 @@ impl fmt::Display for ConvertError {
             Self::UnsupportedEventHandler { value, reason, context } => write!(
                 f,
                 "unsupported event handler '{{{value}}}': {reason} — template: \"{context}\""
+            ),
+            Self::StylesheetUnsupportedForSyntax { syntax } => write!(
+                f,
+                "stylesheet conversion is not supported for syntax '{syntax}': only '{}' is supported",
+                crate::syntax::fast_v3_ts::METADATA.name
+            ),
+            Self::InvalidExportName { name } => write!(
+                f,
+                "invalid export name '{name}': expected a valid TypeScript identifier"
             ),
             Self::TypeSourceUnsupportedForSyntax { syntax } => write!(
                 f,

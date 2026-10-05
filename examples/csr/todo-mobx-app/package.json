@@ -6,7 +6,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsgo -p tsconfig.json && vite build",
+    "build": "tsc -p tsconfig.json && vite build",
     "start": "vite",
     "test": "npm run build"
   },
@@ -22,7 +22,7 @@
     "directory": "examples/csr/todo-mobx-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^3.0.3",
+    "@microsoft/fast-element": "^3.0.4",
     "@microsoft/fast-examples-design-system": "^1.0.0",
     "mobx": "^6.13.5",
     "tslib": "^2.6.3"

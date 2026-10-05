@@ -101,7 +101,7 @@ describe("fast convert --type-source", () => {
 
         runConvert([
             "--syntax=fast-v3-ts",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${outputPath}`,
             "--type-source=FixtureCard",
             "--type-source-import=./fixture-card.js",
@@ -130,7 +130,7 @@ describe("fast convert --type-source", () => {
 
         runConvert([
             "--syntax=fast-v3-ts",
-            `--template=${supportedTemplate}`,
+            `--templates=${supportedTemplate}`,
             `--output=${outputPath}`,
             "--type-source=FixtureCard",
             "--type-source-import=./fixture-card.js",

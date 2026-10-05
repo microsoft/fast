@@ -101,7 +101,12 @@ export {
     render,
     renderWith,
 } from "../src/templating/render.js";
-export { RepeatBehavior, RepeatDirective, repeat } from "../src/templating/repeat.js";
+export {
+    HydrationRepeatError,
+    RepeatBehavior,
+    RepeatDirective,
+    repeat,
+} from "../src/templating/repeat.js";
 export { SlottedDirective, slotted } from "../src/templating/slotted.js";
 export { ViewTemplate } from "../src/templating/template.js";
 export { HTMLView } from "../src/templating/view.js";
