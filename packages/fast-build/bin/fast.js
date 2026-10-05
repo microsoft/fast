@@ -12,16 +12,17 @@ const CONVERT_WASM_MODULE = path.join(
 );
 const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
 const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
-const VALUELESS_CLI_FLAGS = new Set(["stream", "overwrite"]);
+const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite"]);
 const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
     "templates",
     "attribute-name-strategy",
+    "markers_v2",
     "stream",
 ]);
-const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["stream"]);
+const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["markers_v2", "stream"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "syntax",
     "templates",
@@ -669,6 +670,7 @@ async function runBuild(args) {
         Object.prototype.hasOwnProperty.call(args, "state") ||
         Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
+    const markersV2 = resolveBooleanOption(args, config, "markers_v2");
     const stream = resolveBooleanOption(args, config, "stream");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
@@ -745,6 +747,7 @@ async function runBuild(args) {
             stateContent,
             attributeNameStrategy || "",
             true,
+            markersV2,
         );
 
         /** @type {unknown} */
@@ -781,6 +784,8 @@ async function runBuild(args) {
             JSON.stringify(templatesMap),
             stateContent,
             attributeNameStrategy || "",
+            false,
+            markersV2,
         );
     } else {
         rendered = wasm.render(entryContent, stateContent);
@@ -816,6 +821,8 @@ function writeBuildUsage() {
         '  --attribute-name-strategy="camelCase"\n' +
         "                         Strategy for mapping attribute names to property names.\n" +
         '                         "camelCase" (default) or "none".\n' +
+        "  --markers_v2[=true|false]\n" +
+        "                         Emit FAST Element 2.x indexed hydration markers.\n" +
         '  --config="<path>"      Path to a fast-build config JSON file.\n' +
         '                         Defaults to "fast-build.config.json" in the\n' +
         "                         current directory if it exists. File paths in\n" +

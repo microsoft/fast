@@ -1,4 +1,5 @@
 import type { HydrationDebugger } from "../hydration/hydration-debugger.js";
+import type { HydrationMarkers } from "../hydration/markers.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
 
 /**
@@ -27,6 +28,15 @@ export type StopHydration = (typeof StopHydration)[keyof typeof StopHydration];
  * @public
  */
 export interface HydrationOptions {
+    /**
+     * The marker format used by the server-rendered HTML.
+     * The selected format applies to all subsequent hydration on the page;
+     * later calls that omit this option retain the current selection.
+     *
+     * @defaultValue FAST Element 3.x data-free markers
+     */
+    markers?: HydrationMarkers;
+
     /**
      * Indicates when the hydration hook should stop handling new
      * prerendered elements.
