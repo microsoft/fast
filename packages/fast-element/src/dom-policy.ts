@@ -214,6 +214,7 @@ const defaultDOMElementGuards = {
     iframe: {
         [DOMAspect.attribute]: {
             src: safeURL,
+            srcdoc: block,
         },
         [DOMAspect.property]: {
             src: safeURL,
