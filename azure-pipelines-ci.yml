@@ -19,6 +19,9 @@ pool:
 
 variables:
   npm_config_cache: $(Pipeline.Workspace)/.npm
+  # Temporary: unblocks Drift Management enforcement while the pipeline's non-production
+  # classification sync propagates. Remove once drift checks confirm the classification.
+  ONEES_DRIFTBREAKGLASS: Reclassified as non-production in Product Catalog; pending Drift Management sync
 
 steps:
   - checkout: self
