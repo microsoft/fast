@@ -55,7 +55,7 @@
   "scripts": {
     "clean": "clean dist temp test-results test/temp",
     "build": "npm run build:tsc",
-    "build:tsc": "tsgo -p tsconfig.build.json",
+    "build:tsc": "tsc -p tsconfig.build.json",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
     "prepublishOnly": "npm run clean && npm run build",

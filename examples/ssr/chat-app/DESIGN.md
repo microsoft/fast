@@ -58,7 +58,7 @@ This example follows the same top-level shape as `examples/csr/todo-app/` and ad
    - runs the `@microsoft/fast-build` CLI against `fast-build.config.json`
    - renders `entry.html` + `state.json` + `templates.html` into `index.html`
    - injects the raw `<f-template>` definitions before the module script so the `<f-template>` runtime can resolve them during hydration
-2. `tsgo -p tsconfig.json`
+2. `tsc -p tsconfig.json`
    - type-checks and emits the TypeScript source into `dist/`
 3. `vite build`
    - bundles the hydrated browser entry into `www/`
