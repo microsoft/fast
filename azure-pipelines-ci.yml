@@ -4,16 +4,7 @@ pr:
     - main
   drafts: false
 
-# CI validates untrusted (including fork) PRs, so unlike the CD/release pipeline it does not
-# extend the 1ES PT. 1ES PT compliance/SDL overhead (and the private CFS feed authentication
-# that comes with it) is only required for production/release pipelines.
-resources:
-  repositories:
-  - repository: fastPipelines
-    type: git
-    name: open-source/FASTPipelineTemplates
-    ref: main
-
+# All package installs use the default public registries directly.
 pool:
   vmImage: "ubuntu-latest"
 
@@ -39,11 +30,11 @@ steps:
       path: $(npm_config_cache)
     displayName: "Cache npm"
 
-  - template: FAST.CFS.PipelineTemplate.yml@fastPipelines
-    parameters:
-      installRust: true
-      rustVersion: "1.93"
-      additionalRustTargets: wasm32-unknown-unknown
+  - task: RustInstaller@1
+    displayName: "Install Rust toolchain"
+    inputs:
+      rustVersion: stable
+      additionalTargets: wasm32-unknown-unknown
 
   - script: |
       npm ci
@@ -53,9 +44,7 @@ steps:
       set -euo pipefail
       rustc --version
       cargo --version
-      export PATH="$CARGO_HOME/bin:$PATH"
-      echo "##vso[task.prependpath]$CARGO_HOME/bin"
-      cargo install --registry openSource_PublicPackages wasm-pack
+      cargo install wasm-pack
     displayName: "Install wasm-pack"
 
   - script: |
