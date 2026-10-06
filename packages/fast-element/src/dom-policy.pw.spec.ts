@@ -251,6 +251,52 @@ test.describe("the dom policy helper", () => {
         });
     });
 
+    test("blocks iframe srcdoc attributes and properties", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+            const policy = DOMPolicy.create();
+
+            function setProperty(node, name, value) {
+                node[name] = value;
+            }
+
+            let attributeBlocked = false;
+            let propertyBlocked = false;
+
+            try {
+                policy.protect(
+                    "iframe",
+                    DOMAspect.attribute,
+                    "srcdoc",
+                    DOM.setAttribute,
+                );
+            } catch {
+                attributeBlocked = true;
+            }
+
+            try {
+                policy.protect(
+                    "iframe",
+                    DOMAspect.property,
+                    "srcdoc",
+                    setProperty,
+                );
+            } catch {
+                propertyBlocked = true;
+            }
+
+            return { attributeBlocked, propertyBlocked };
+        });
+
+        expect(result).toEqual({
+            attributeBlocked: true,
+            propertyBlocked: true,
+        });
+    });
+
     test("filters unsafe URL protocols with case, whitespace, controls, and encoding", async ({
         page,
     }) => {
