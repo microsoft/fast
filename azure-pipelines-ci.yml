@@ -30,11 +30,11 @@ steps:
       path: $(npm_config_cache)
     displayName: "Cache npm"
 
-  - task: RustInstaller@1
+  - bash: |
+      set -euo pipefail
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown
+      echo "##vso[task.prependpath]$HOME/.cargo/bin"
     displayName: "Install Rust toolchain"
-    inputs:
-      rustVersion: stable
-      additionalTargets: wasm32-unknown-unknown
 
   - script: |
       npm ci
