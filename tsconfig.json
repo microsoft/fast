@@ -7,8 +7,7 @@
         "noImplicitAny": true,
         "strictPropertyInitialization": true,
         "module": "ES6",
-        "moduleResolution": "node",
-        "target": "ES6",
-        "ignoreDeprecations": "5.0"
+        "moduleResolution": "bundler",
+        "target": "ES6"
     }
 }
