@@ -61,6 +61,11 @@ Build and test commands are powered by [Lage](https://microsoft.github.io/lage/)
 lage build --since origin/main
 ```
 
+FAST uses the stable TypeScript 7 `tsc` binary for package compilation, declaration
+emission, and watch commands. The root `typescript` package is the official TypeScript 6
+compatibility API used by Rollup tooling, while API Extractor uses its supported bundled
+compiler engine.
+
 ### Testing
 
 To run all tests for all packages, use the following command:
