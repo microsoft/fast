@@ -4,9 +4,7 @@ pr:
     - main
   drafts: false
 
-# CI is classified non-production, so it does not extend the 1ES PT and does not need
-# the private CFS package feed (both are scoped to production pipelines). All package
-# installs use the default public registries directly.
+# All package installs use the default public registries directly.
 pool:
   vmImage: "ubuntu-latest"
 
