@@ -2302,7 +2302,7 @@ html[data-theme="dark"] {
     display: grid;
     font-size: var(--type-ramp-base-font-size);
     grid-auto-rows: minmax(0, auto);
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     line-height: var(--type-ramp-base-line-height);
     margin: 0;
     padding: 20px;
@@ -2318,12 +2318,16 @@ html[data-theme="dark"] {
     display: flex;
     flex-flow: row wrap;
     flex-direction: column;
-    grid-column: span 2;
+    grid-column: 1 / -1;
     justify-content: center;
     margin: var(--section-height-spacing-mobile);
     padding: 20px 0;
     text-align: center;
     width: 100%;
+}
+
+.section > pre {
+    max-width: 100%;
 }
 
 .section > svg {
@@ -2368,7 +2372,7 @@ html[data-theme="dark"] {
     border: none;
     display: flex;
     flex-direction: column;
-    grid-column: span 2;
+    grid-column: 1 / -1;
     height: 58px;
     justify-content: space-between;
     margin: calc(var(--design-unit) * 5px) calc(50% - 1.5px);

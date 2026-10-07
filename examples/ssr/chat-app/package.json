@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build:markup": "node ./build-markup.mjs",
-    "build": "npm run build:markup && tsgo -p tsconfig.json && vite build",
+    "build": "npm run build:markup && tsc -p tsconfig.json && vite build",
     "start": "npm run build:markup && vite",
     "test": "npm run build"
   },
