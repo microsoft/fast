@@ -4,7 +4,7 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 78.94 KB | 23.64 KB | 21.00 KB |
+| CDN Rollup Bundle | 78.95 KB | 23.65 KB | 21.02 KB |
 | FASTElement (@microsoft/fast-element/fast-element.js) | 23.38 KB | 7.24 KB | 6.52 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.75 KB | 2.51 KB | 2.23 KB |
