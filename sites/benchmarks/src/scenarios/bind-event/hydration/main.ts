@@ -3,15 +3,15 @@ import { enableHydration } from "@microsoft/fast-element/hydration.js";
 import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
-BenchElement.define({
-    name: "bind-event-bench-element",
-    template: declarativeTemplate(),
-});
-
 performance.mark("bench-start");
 
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     performance.mark("bench-end");
     signalDone();
+});
+
+BenchElement.define({
+    name: "bind-event-bench-element",
+    template: declarativeTemplate(),
 });
