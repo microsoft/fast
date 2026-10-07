@@ -219,6 +219,33 @@ strategy to the CLI:
 fast build --attribute-name-strategy=none
 ```
 
+## Re-read arrays after `deepMerge`
+
+`deepMerge` replaces an array when its contents change instead of mutating it
+in place. This applies to `observerMap()`-managed data and to direct consumers
+of the exported helper. Deeply equal arrays keep their existing reference.
+
+Avoid holding an array reference across a merge:
+
+```ts
+import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
+
+const user = { orders: [{ id: 101 }] };
+const oldOrders = user.orders;
+
+deepMerge(user, { orders: [{ id: 103 }] });
+
+// oldOrders still contains order 101. Mutating it does not update user.orders.
+// Read the replacement array from its owner instead.
+user.orders.push({ id: 104 });
+```
+
+For `observerMap()`-managed properties, `f-repeat` observes the replacement
+array automatically when the owning property is notified. You do not need to
+recreate the repeat binding. The exported `deepMerge` helper does not make
+plain objects observable, so direct consumers must still arrange their own
+change notifications.
+
 ## Update declarative event handlers
 
 Declarative event handlers now reserve only `$e` for the DOM event and `$c` for

@@ -94,6 +94,33 @@ Core FAST Element helpers are available from the root package export:
 4. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` when
    prerendered content should be hydrated.
 
+## `deepMerge` array replacement
+
+When an array's contents change, `deepMerge` replaces the owning property's
+array rather than mutating the existing array in place. This affects both
+`observerMap()`-managed data and direct consumers of the exported helper.
+Previously captured array references retain the old data; mutating them no
+longer updates the owning object. Deeply equal arrays are left unchanged.
+
+Re-read the array from its owner after merging:
+
+```ts
+import { deepMerge } from "@microsoft/fast-element/declarative-utilities.js";
+
+const user = { orders: [{ id: 101 }] };
+const oldOrders = user.orders;
+
+deepMerge(user, { orders: [{ id: 103 }] });
+
+// oldOrders still contains order 101 and is disconnected from user.orders.
+user.orders.push({ id: 104 });
+```
+
+For `observerMap()`-managed properties, the owning property's notification
+causes `f-repeat` bindings to observe the replacement array automatically.
+Direct `deepMerge` consumers must still arrange their own change notifications;
+the helper does not make plain objects observable.
+
 ## Optional helper and removed path exports (v2 → v3)
 
 FAST Element v3 adds focused flat path exports for optional helpers and removes
