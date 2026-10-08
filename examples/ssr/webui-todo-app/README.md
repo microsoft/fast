@@ -100,7 +100,9 @@ Each component uses co-located files:
 
 Bootstraps hydration by:
 
-1. Enabling hydration with `enableHydration()`
+1. Enabling hydration with `enableHydration({ markers: markers_v2 })` — the
+   `markers_v2` reader is required because the `webui --plugin=fast` server
+   still emits FAST Element 2.x indexed hydration markers
 2. Importing components, which register themselves via subclass `define()` calls
    using `declarativeTemplate()` and `observerMap()`
 3. Resolving matching `<f-template>` definitions to hydrate prerendered shadow DOM
