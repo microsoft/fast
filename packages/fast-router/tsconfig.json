@@ -15,5 +15,6 @@
         "moduleResolution": "NodeNext",
         "lib": ["DOM", "ES2015"]
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["src/**/*.pw.spec.ts"]
 }

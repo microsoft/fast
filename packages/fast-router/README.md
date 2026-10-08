@@ -22,11 +22,14 @@ Looking for a setup that integrates with a particular front-end framework or bun
 
 ## Browser tests
 
-From the repository root, run `npm run build` and then
-`npm run test:playwright -w @microsoft/fast-router` to exercise navigation in
-Chromium, Firefox, and WebKit. The suite starts its Vite fixture server on port
-5175 and covers history navigation, route rendering, redirects, and link handling.
-It also runs as part of the root `npm run test` command.
+From the repository root, run `npm run build -- --to @microsoft/fast-element` once
+to prepare FAST Element and its workspace dependencies, then run
+`npm run test:playwright -w @microsoft/fast-router`. The fixture loads the router
+directly from source, but resolves FAST Element through its package exports.
+
+The suite covers history navigation, route rendering, redirects, and link handling
+in Chromium, Firefox, and WebKit. Its Playwright config selects port 5175 for the
+Vite fixture server. It also runs as part of the root `npm run test` command.
 
 ## Configuration at a Glance
 

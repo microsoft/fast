@@ -106,7 +106,7 @@ test("redirects replace the intermediate history entry", async ({ page }) => {
         const { Route } = await import("/main.ts");
         Route.path.push("/old-home");
     });
-    await expect(page).toHaveURL("http://localhost:5175/");
+    await expect(page).toHaveURL("/");
     await expect(page.getByRole("heading", { name: "Home", exact: true })).toBeVisible();
     await page.goBack();
     await expect(page.getByRole("heading", { name: "Item 7" })).toBeVisible();
@@ -163,7 +163,7 @@ for (const { name, attributes } of ignoredLinks) {
             "data-intercepted",
             "false",
         );
-        await expect(page).toHaveURL("http://localhost:5175/");
+        await expect(page).toHaveURL("/");
     });
 }
 
@@ -190,6 +190,6 @@ for (const modifier of ["Alt", "Control", "Meta", "Shift"] as const) {
             "data-intercepted",
             "false",
         );
-        await expect(page).toHaveURL("http://localhost:5175/");
+        await expect(page).toHaveURL("/");
     });
 }
