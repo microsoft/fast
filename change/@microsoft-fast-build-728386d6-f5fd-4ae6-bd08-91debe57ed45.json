@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add a markers_v2 option for emitting FAST Element 2.x indexed hydration markers.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

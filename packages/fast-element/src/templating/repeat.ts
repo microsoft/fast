@@ -1,6 +1,7 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
-import { HydrationMarkup, isHydratable } from "../components/hydration.js";
+import { isHydratable } from "../components/hydration.js";
+import { getHydrationMarkers } from "../hydration/markers.js";
 import { ArrayObserver, type Sort, type Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
@@ -433,6 +434,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const items = this.items;
         const itemCount = items.length;
         const views = (this.views = new Array(itemCount));
+        const markers = getHydrationMarkers();
 
         // First pass: collect all repeat marker pairs by walking backward.
         // Each entry tracks both the item content range and its SSR markers.
@@ -440,10 +442,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         let current: Node | null = this.location.previousSibling;
 
         while (current !== null) {
-            if (
-                !isCommentNode(current) ||
-                !HydrationMarkup.isRepeatViewEndMarker(current.data)
-            ) {
+            if (!isCommentNode(current) || !markers.isRepeatViewEndMarker(current.data)) {
                 current = current.previousSibling;
                 continue;
             }
@@ -464,9 +463,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             let depth = 0;
             while (start !== null) {
                 if (isCommentNode(start)) {
-                    if (HydrationMarkup.isRepeatViewEndMarker(start.data)) {
+                    if (markers.isRepeatViewEndMarker(start.data)) {
                         depth++;
-                    } else if (HydrationMarkup.isRepeatViewStartMarker(start.data)) {
+                    } else if (markers.isRepeatViewStartMarker(start.data)) {
                         if (depth === 0) {
                             const startMarker = start;
                             startMarker.data = "";
