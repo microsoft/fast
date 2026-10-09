@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Cover repeat hydration error diagnostics during refresh and unbind.",
-  "packageName": "@microsoft/fast-element",
-  "email": "163576506+minwookshin@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

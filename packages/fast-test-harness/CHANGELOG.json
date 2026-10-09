@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Fri, 09 Oct 2026 21:33:43 GMT",
+      "version": "0.5.1",
+      "tag": "@microsoft/fast-test-harness_v0.5.1",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "28d1e78c6819d85758e8723dc5d9249df5a4582d",
+            "comment": "chore: upadate to typescript 6 and use typescript 7 for compilation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Oct 2026 05:10:35 GMT",
       "version": "0.5.1",
       "tag": "@microsoft/fast-test-harness_v0.5.1",

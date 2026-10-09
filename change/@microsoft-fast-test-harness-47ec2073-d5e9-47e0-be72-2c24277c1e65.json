@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: upadate to typescript 6 and use typescript 7 for compilation",
-  "packageName": "@microsoft/fast-test-harness",
-  "email": "13071055+chrisdholt@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

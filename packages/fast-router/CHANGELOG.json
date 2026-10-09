@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 09 Oct 2026 21:33:43 GMT",
+      "version": "1.0.0-alpha.31",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.31",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "28d1e78c6819d85758e8723dc5d9249df5a4582d",
+            "comment": "chore: upadate to typescript 6 and use typescript 7 for compilation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Jun 2026 21:42:49 GMT",
       "version": "1.0.0-alpha.31",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.31",
