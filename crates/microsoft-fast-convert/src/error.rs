@@ -61,6 +61,29 @@ pub enum ConvertError {
     InvalidTypeSource { value: String },
     /// `type_source_import` was supplied without `type_source`.
     TypeSourceImportRequiresTypeSource,
+    /// A FAST directive has no native WebUI equivalent (`f-slotted`, `f-children`).
+    UnsupportedNativeWebUIDirective { directive: String, context: String },
+    /// A FAST event context token has no native WebUI equivalent (`$c`, or
+    /// unsupported traversal such as `$c.parent`).
+    UnsupportedNativeWebUIEventContext { value: String, context: String },
+    /// The outer `<f-template>` and inner `<template>` declare conflicting
+    /// shadow-root attribute values for the native `webui` target.
+    ConflictingShadowRootMode {
+        publisher: String,
+        inner: String,
+        context: String,
+    },
+    /// The outer `<f-template>` wrapper declares an attribute (other than
+    /// `name` or a `shadowroot`-prefixed attribute) that the native `webui`
+    /// target does not know how to transfer onto the inner `<template>`.
+    UnsupportedPublisherAttribute { attribute: String, context: String },
+    /// An attribute value is not in the expected braced form for the native
+    /// `webui` target (e.g. `f-ref` must be a single-braced `{expr}`).
+    InvalidAttributeValue {
+        attribute: String,
+        value: Option<String>,
+        context: String,
+    },
 }
 
 impl fmt::Display for ConvertError {
@@ -163,6 +186,29 @@ impl fmt::Display for ConvertError {
                 f,
                 "type-source-import requires type-source: provide the type name to import alongside the import module"
             ),
+            Self::UnsupportedNativeWebUIDirective { directive, context } => write!(
+                f,
+                "'{directive}' has no native WebUI mapping: adapt this directive before invoking the native 'webui' target — template: \"{context}\""
+            ),
+            Self::UnsupportedNativeWebUIEventContext { value, context } => write!(
+                f,
+                "FAST event context '{value}' has no native WebUI mapping — template: \"{context}\""
+            ),
+            Self::ConflictingShadowRootMode { publisher, inner, context } => write!(
+                f,
+                "conflicting shadow-root attributes: outer '<f-template>' declares '{publisher}' but inner '<template>' already declares '{inner}' — template: \"{context}\""
+            ),
+            Self::UnsupportedPublisherAttribute { attribute, context } => write!(
+                f,
+                "unsupported publisher attribute '{attribute}' on '<f-template>': the native 'webui' target only transfers 'name' and 'shadowroot'-prefixed attributes — template: \"{context}\""
+            ),
+            Self::InvalidAttributeValue { attribute, value, context } => {
+                let value = value.as_deref().unwrap_or("");
+                write!(
+                    f,
+                    "invalid value '{value}' for attribute '{attribute}' — template: \"{context}\""
+                )
+            }
         }
     }
 }
