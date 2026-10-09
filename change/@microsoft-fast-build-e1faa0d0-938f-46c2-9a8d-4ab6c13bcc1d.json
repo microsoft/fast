@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add fast convert --syntax=webui-framework-prerelease, which converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax: it transfers Shadow/Light DOM attributes from the outer <f-template> onto the inner <template>, requires a braced f-ref (converted to w-ref), and rewrites FAST's $e event argument to e. Unsupported f-slotted/f-children directives are stripped from the output with a printed warning instead of being preserved verbatim, and $c event context errors. convert_template/convert_template_with_options (Rust, WASM, and the fast convert CLI) now also report these warnings alongside the converted output. The existing webui-prerelease and fast-v3-ts targets are unchanged.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

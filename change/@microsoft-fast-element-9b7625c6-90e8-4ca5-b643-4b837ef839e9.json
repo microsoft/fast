@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Block iframe srcdoc attribute bindings in the default DOM policy.",
-  "packageName": "@microsoft/fast-element",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "none"
-}
