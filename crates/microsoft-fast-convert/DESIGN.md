@@ -83,8 +83,8 @@ Note that the target's name reflects the WebUI Framework *project's* own current
 prerelease status, not the stability of this target's implementation. Because
 the WebUI Framework runtime has no equivalent for some FAST directives, this
 target rejects non-isomorphic constructs instead of preserving them — callers
-(e.g. CAPI) are expected to adapt the FAST source to WebUI Framework idioms
-before invoking this target. `webui-prerelease` and `fast-v3-ts` output are
+are expected to adapt the FAST source to WebUI Framework idioms before
+invoking this target. `webui-prerelease` and `fast-v3-ts` output are
 unaffected by this target.
 
 ### Publisher wrapper and Shadow/Light DOM
@@ -142,9 +142,9 @@ observation, and FAST Convert does not invent lifecycle behavior to emulate one;
 treating only these two directives as warnings (rather than every unsupported
 construct) lets a batch conversion surface every directive a caller needs to
 rewrite in one pass instead of stopping at the first one. A caller that needs
-slotted/children behavior (e.g. CAPI) should rewrite the directive to a WebUI
-Framework idiom — such as a `w-ref` combined with a `@slotchange` handler — in
-the FAST source, either before or after conversion.
+slotted/children behavior should rewrite the directive to a WebUI Framework
+idiom — such as a `w-ref` combined with a `@slotchange` handler — in the FAST
+source, either before or after conversion.
 
 ### Passthrough bindings
 
