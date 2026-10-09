@@ -139,3 +139,118 @@ fn invalid_type_source_is_rejected() {
     let err = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap_err();
     assert!(matches!(err, ConvertError::InvalidTypeSource { .. }));
 }
+
+// ---------------------------------------------------------------------------
+// Native `webui` target
+// ---------------------------------------------------------------------------
+
+#[test]
+fn webui_native_unsupported_publisher_attribute_is_rejected() {
+    let input = r#"<f-template name="my-element" data-extra="value"><template><span></span></template></f-template>"#.to_string();
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedPublisherAttribute { ref attribute, .. } if attribute == "data-extra"
+    ));
+}
+
+#[test]
+fn webui_native_conflicting_shadow_root_mode_is_rejected() {
+    let input = r#"<f-template name="my-element" shadowrootmode="open"><template shadowrootmode="closed"><span></span></template></f-template>"#.to_string();
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::ConflictingShadowRootMode { .. }
+    ));
+}
+
+#[test]
+fn webui_native_non_braced_f_ref_is_rejected() {
+    let input = fast_template(r#"<template><input f-ref="input" /></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::InvalidAttributeValue { ref attribute, .. } if attribute == "f-ref"
+    ));
+}
+
+#[test]
+fn webui_native_event_context_c_is_rejected() {
+    let input = fast_template(r#"<template><button @click="{select($c)}"></button></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedNativeWebUIEventContext { ref value, .. } if value == "$c"
+    ));
+}
+
+#[test]
+fn webui_native_event_context_traversal_is_rejected() {
+    let input =
+        fast_template(r#"<template><button @click="{select($c.parent)}"></button></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedNativeWebUIEventContext { ref value, .. } if value == "$c.parent"
+    ));
+
+    let input =
+        fast_template(r#"<template><button @click="{select($e.target)}"></button></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedNativeWebUIEventContext { ref value, .. } if value == "$e.target"
+    ));
+}
+
+#[test]
+fn webui_native_f_slotted_is_rejected() {
+    let input = fast_template(r#"<template><slot f-slotted="{x}"></slot></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedNativeWebUIDirective { ref directive, .. } if directive == "f-slotted"
+    ));
+    assert!(err.to_string().contains("adapt"));
+}
+
+#[test]
+fn webui_native_f_children_is_rejected() {
+    let input = fast_template(r#"<template><div f-children="{x}"></div></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedNativeWebUIDirective { ref directive, .. } if directive == "f-children"
+    ));
+}
+
+#[test]
+fn webui_native_unknown_f_element_is_rejected() {
+    let input = fast_template(r#"<template><f-mystery></f-mystery></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(err, ConvertError::UnsupportedFElement { ref tag, .. } if tag == "f-mystery"));
+}
+
+#[test]
+fn webui_native_unknown_f_attribute_is_rejected() {
+    let input = fast_template(r#"<template><span f-unknown="value"></span></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(
+        err,
+        ConvertError::UnsupportedFAttribute { ref attribute, .. } if attribute == "f-unknown"
+    ));
+}
+
+#[test]
+fn webui_native_unclosed_binding_is_rejected() {
+    let input = fast_template(r#"<template><span>{{title</span></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(err, ConvertError::UnclosedBinding { .. }));
+}
+
+#[test]
+fn webui_native_empty_binding_is_rejected() {
+    let input = fast_template(r#"<template><span>{{}}</span></template>"#);
+    let err = convert_template(&input, "webui").unwrap_err();
+    assert!(matches!(err, ConvertError::EmptyBinding { .. }));
+}

@@ -5,6 +5,7 @@
 ## Supported targets
 
 - `webui-prerelease` — unwraps the outer `<f-template>` and emits a WebUI prerelease `<template>` string. It converts `<f-repeat>` to `<for>` and `<f-when>` to `<if>` while preserving other FAST attribute syntax that WebUI's FAST plugin expects.
+- `webui` — emits native WebUI Framework HTML accepted by WebUI's native `webui` parser plugin, transferring Shadow/Light DOM policy from the outer `<f-template>` onto the inner `<template>` and rejecting FAST directives (`f-slotted`, `f-children`, `$c`) that have no native equivalent.
 - `fast-v3-ts` — emits TypeScript source that imports FAST helpers and exports `template` as an `html` tagged template.
 
 ## Rust usage
@@ -73,5 +74,7 @@ Errors are raised as JavaScript exceptions with the `ConvertError` message.
 ## Validation
 
 The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output. It also validates that `type_source` is a dotted identifier, that `type_source` is only supplied for `fast-v3-ts`, and that `type_source_import` is only supplied alongside `type_source`.
+
+The `webui` target additionally validates that outer `<f-template>` attributes (other than `name`) are `shadowroot`-prefixed (`ConvertError::UnsupportedPublisherAttribute` otherwise), that a `shadowroot`-prefixed outer attribute doesn't conflict with a differently-valued attribute already on the inner `<template>` (`ConvertError::ConflictingShadowRootMode`), that `f-ref` values are single-braced (`ConvertError::InvalidAttributeValue`), and that event arguments don't use FAST's repeat-context tokens such as `$c` (`ConvertError::UnsupportedNativeWebUIEventContext`). `f-slotted` and `f-children` are always rejected for this target with `ConvertError::UnsupportedNativeWebUIDirective`.
 
 `convert_stylesheet` validates that `syntax` is `fast-v3-ts` (CSS conversion is not supported for `webui-prerelease`) and that `export_name` is a valid TypeScript/JavaScript identifier. Stylesheet content is escaped for safe embedding in a TypeScript template literal: backslashes, backticks, literal `${` sequences, and carriage returns are all escaped.

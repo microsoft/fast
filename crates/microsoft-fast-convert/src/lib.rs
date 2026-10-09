@@ -1,9 +1,9 @@
 //! # microsoft-fast-convert
 //!
-//! Converts one FAST declarative HTML `<f-template>` string into either WebUI
-//! prerelease template HTML or FAST v3 TypeScript template source. The converter
-//! uses a focused hand scanner rather than constructing a DOM or depending on an
-//! HTML parser.
+//! Converts one FAST declarative HTML `<f-template>` string into WebUI
+//! prerelease template HTML, native WebUI Framework HTML, or FAST v3
+//! TypeScript template source. The converter uses a focused hand scanner
+//! rather than constructing a DOM or depending on an HTML parser.
 
 mod converter;
 mod error;
