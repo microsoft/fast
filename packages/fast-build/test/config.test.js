@@ -238,6 +238,32 @@ describe("convert CLI", () => {
         );
     });
 
+    it("strips unsupported f-slotted/f-children directives and prints a warning", {
+        skip: !fs.existsSync(CONVERT_WASM_MODULE),
+    }, () => {
+        fs.writeFileSync(
+            path.join(dir, "example.html"),
+            '<f-template name="my-el"><template><slot f-slotted="{x}"></slot></template></f-template>',
+        );
+
+        const result = runConvertCapture(
+            [
+                "--syntax=webui-prerelease",
+                "--templates=example.html",
+                "--output=actual.html",
+            ],
+            dir,
+        );
+
+        assert.equal(result.exitCode, 0);
+        assert.ok(result.stderr.includes("Warning:"));
+        assert.ok(result.stderr.includes("f-slotted"));
+        assert.equal(
+            fs.readFileSync(path.join(dir, "actual.html"), "utf8"),
+            "<template><slot></slot></template>",
+        );
+    });
+
     it("replaces * in output paths with the input basename", () => {
         fs.mkdirSync(path.join(dir, "templates"));
         fs.mkdirSync(path.join(dir, "generated"));

@@ -42,8 +42,8 @@ export class FixtureCard {
         count: number;
         children: { label: string; id: string }[];
     }[];
-    handleRoot(e: Event, c: unknown): void {}
-    handleChild(e: Event, c: unknown, id: string): void {}
+    handleRoot(e: Event): void {}
+    handleChild(e: Event, id: string): void {}
 }
 `;
 

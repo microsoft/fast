@@ -99,10 +99,6 @@ pub(crate) fn validate_directive_attrs(
     Ok(())
 }
 
-pub(crate) fn is_supported_f_attribute(name: &str) -> bool {
-    matches!(name, "f-ref" | "f-children" | "f-slotted")
-}
-
 /// Returns `true` when `value` is a valid TypeScript/JavaScript identifier:
 /// starts with an ASCII letter, `_`, or `$`, followed by any number of ASCII
 /// alphanumeric characters, `_`, or `$`. Does not accept dotted paths.

@@ -1,20 +1,22 @@
 use crate::error::ConvertError;
 use crate::html::parse_template_document;
 use crate::syntax::{fast_v3_ts, is_valid_identifier, is_valid_type_source, webui};
-use crate::ConvertOptions;
+use crate::{ConvertOptions, ConvertOutput};
 
 pub(crate) fn convert(
     template: &str,
     syntax: &str,
     options: &ConvertOptions,
-) -> Result<String, ConvertError> {
+) -> Result<ConvertOutput, ConvertError> {
     let syntax_kind = Syntax::parse(syntax)?;
     validate_options(syntax, syntax_kind, options)?;
     let parsed = parse_template_document(template)?;
 
     match syntax_kind {
-        Syntax::WebuiPrerelease => webui::convert(&parsed.template),
-        Syntax::FastV3Ts => fast_v3_ts::convert(&parsed.template, options),
+        Syntax::WebuiPrerelease => webui::convert(&parsed),
+        Syntax::FastV3Ts => {
+            fast_v3_ts::convert(&parsed.template, options).map(ConvertOutput::without_warnings)
+        }
     }
 }
 

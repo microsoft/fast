@@ -291,8 +291,12 @@ syntax)`, `convert_template_with_options(template, syntax, typeSource?,
 typeSourceImport?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
 receives the source `.html` template contents, the selected syntax
 (`webui-prerelease` or `fast-v3-ts`), and optional `typeSource` /
-`typeSourceImport` strings, returning the converted file contents and throwing on
-conversion or validation errors (including `type-source` misuse).
+`typeSourceImport` strings, returning a `{ output, warnings }` object (`output` the
+converted file contents, `warnings` an array of warning message strings — currently
+only populated when `webui-prerelease` strips an unsupported `f-slotted`/`f-children`
+directive) and throwing on conversion or validation errors (including `type-source`
+misuse). The CLI writes `output` to the resolved output file and prints each
+`warnings` entry to stderr as `Warning: <message>` without failing the command.
 
 ---
 

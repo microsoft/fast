@@ -1,20 +1,29 @@
 //! # microsoft-fast-convert
 //!
-//! Converts one FAST declarative HTML `<f-template>` string into either WebUI
-//! prerelease template HTML or FAST v3 TypeScript template source. The converter
-//! uses a focused hand scanner rather than constructing a DOM or depending on an
-//! HTML parser.
+//! Converts one FAST declarative HTML `<f-template>` string into WebUI
+//! prerelease template HTML, or FAST v3 TypeScript template source. The
+//! converter uses a focused hand scanner rather than constructing a DOM or
+//! depending on an HTML parser.
+//!
+//! The `webui-prerelease` target emits HTML for WebUI's native shadow-DOM
+//! runtime — note that the WebUI Framework itself is currently a prerelease,
+//! hence the target's name. FAST directives with no WebUI equivalent
+//! (`f-slotted`, `f-children`) are stripped from the output rather than
+//! causing conversion to fail; [`ConvertOutput::warnings`] reports each one
+//! that was removed.
 
 mod converter;
 mod error;
 mod expression;
 mod html;
 mod syntax;
+mod warning;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
 pub use error::ConvertError;
 pub use syntax::SyntaxMetadata;
+pub use warning::{ConvertOutput, ConvertWarning};
 
 /// Options that adjust the shape of converted output.
 ///
@@ -34,20 +43,24 @@ pub struct ConvertOptions {
 
 /// Convert a FAST declarative template string to the requested syntax.
 ///
-/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`.
-pub fn convert_template(template: &str, syntax: &str) -> Result<String, ConvertError> {
+/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`. Returns
+/// the converted output alongside any non-fatal [`ConvertWarning`]s, such as
+/// a stripped `f-slotted`/`f-children` directive.
+pub fn convert_template(template: &str, syntax: &str) -> Result<ConvertOutput, ConvertError> {
     convert_template_with_options(template, syntax, &ConvertOptions::default())
 }
 
 /// Convert a FAST declarative template string to the requested syntax, with
 /// additional output options.
 ///
-/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`.
+/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`. Returns
+/// the converted output alongside any non-fatal [`ConvertWarning`]s, such as
+/// a stripped `f-slotted`/`f-children` directive.
 pub fn convert_template_with_options(
     template: &str,
     syntax: &str,
     options: &ConvertOptions,
-) -> Result<String, ConvertError> {
+) -> Result<ConvertOutput, ConvertError> {
     converter::convert(template, syntax, options)
 }
 
