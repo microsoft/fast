@@ -61,6 +61,27 @@ pub enum ConvertError {
     InvalidTypeSource { value: String },
     /// `type_source_import` was supplied without `type_source`.
     TypeSourceImportRequiresTypeSource,
+    /// A FAST event context token has no WebUI equivalent (`$c`, or
+    /// unsupported traversal such as `$c.parent`).
+    UnsupportedEventContext { value: String, context: String },
+    /// The outer `<f-template>` and inner `<template>` declare conflicting
+    /// shadow-root attribute values.
+    ConflictingShadowRootMode {
+        publisher: String,
+        inner: String,
+        context: String,
+    },
+    /// The outer `<f-template>` wrapper declares an attribute (other than
+    /// `name` or a `shadowroot`-prefixed attribute) that the converter does
+    /// not know how to transfer onto the inner `<template>`.
+    UnsupportedPublisherAttribute { attribute: String, context: String },
+    /// An attribute value is not in the expected braced form (e.g. `f-ref`
+    /// must be a single-braced `{expr}`).
+    InvalidAttributeValue {
+        attribute: String,
+        value: Option<String>,
+        context: String,
+    },
 }
 
 impl fmt::Display for ConvertError {
@@ -163,6 +184,25 @@ impl fmt::Display for ConvertError {
                 f,
                 "type-source-import requires type-source: provide the type name to import alongside the import module"
             ),
+            Self::UnsupportedEventContext { value, context } => write!(
+                f,
+                "FAST event context '{value}' has no WebUI mapping — template: \"{context}\""
+            ),
+            Self::ConflictingShadowRootMode { publisher, inner, context } => write!(
+                f,
+                "conflicting shadow-root attributes: outer '<f-template>' declares '{publisher}' but inner '<template>' already declares '{inner}' — template: \"{context}\""
+            ),
+            Self::UnsupportedPublisherAttribute { attribute, context } => write!(
+                f,
+                "unsupported publisher attribute '{attribute}' on '<f-template>': only 'name' and 'shadowroot'-prefixed attributes are transferred — template: \"{context}\""
+            ),
+            Self::InvalidAttributeValue { attribute, value, context } => {
+                let value = value.as_deref().unwrap_or("");
+                write!(
+                    f,
+                    "invalid value '{value}' for attribute '{attribute}' — template: \"{context}\""
+                )
+            }
         }
     }
 }

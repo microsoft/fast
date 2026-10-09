@@ -287,7 +287,7 @@ fn repeat_parent_context(depth: usize) -> String {
     out
 }
 
-fn split_arguments(args: &str) -> Vec<&str> {
+pub(crate) fn split_arguments(args: &str) -> Vec<&str> {
     let mut result = Vec::new();
     let mut start = 0usize;
     let mut depth = 0usize;
