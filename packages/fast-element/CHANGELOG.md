@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Thu, 01 Oct 2026 05:10:34 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 09 Oct 2026 21:33:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.1.0
+
+Fri, 09 Oct 2026 21:33:43 GMT
+
+### Minor changes
+
+- Add an opt-in markers_v2 export providing the last major version's FAST Element 2.x indexed hydration markers, for interoperability with backend systems that have not yet adopted the FAST Element 3.x data-free marker format. The default reader continues to recognize only 3.x data-free markers; markers_v2 must be explicitly installed to hydrate against legacy 2.x indexed marker output, and its parsing logic is tree-shaken out of the bundle unless imported. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Block iframe srcdoc attribute bindings in the default DOM policy. (jes@microsoft.com)
 
 ## 3.0.4
 

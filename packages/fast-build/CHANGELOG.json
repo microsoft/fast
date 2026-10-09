@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 09 Oct 2026 21:33:43 GMT",
+      "version": "0.12.0",
+      "tag": "@microsoft/fast-build_v0.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4c20475a4d2284175ba30c8aec74b66ddc181444",
+            "comment": "Add fast convert --syntax=webui-framework-prerelease, which converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax: it transfers Shadow/Light DOM attributes from the outer <f-template> onto the inner <template>, requires a braced f-ref (converted to w-ref), and rewrites FAST's $e event argument to e. Unsupported f-slotted/f-children directives are stripped from the output with a printed warning instead of being preserved verbatim, and $c event context errors. convert_template/convert_template_with_options (Rust, WASM, and the fast convert CLI) now also report these warnings alongside the converted output. The existing webui-prerelease and fast-v3-ts targets are unchanged."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "c31cde075f64a8b108d426a11e0b54f2ebb3a82d",
+            "comment": "Add a markers_v2 option for emitting FAST Element 2.x indexed hydration markers."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Oct 2026 05:10:34 GMT",
       "version": "0.11.0",
       "tag": "@microsoft/fast-build_v0.11.0",

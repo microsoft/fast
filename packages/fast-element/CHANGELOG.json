@@ -2,6 +2,49 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 09 Oct 2026 21:33:43 GMT",
+      "version": "3.1.0",
+      "tag": "@microsoft/fast-element_v3.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c31cde075f64a8b108d426a11e0b54f2ebb3a82d",
+            "comment": "Add an opt-in markers_v2 export providing the last major version's FAST Element 2.x indexed hydration markers, for interoperability with backend systems that have not yet adopted the FAST Element 3.x data-free marker format. The default reader continues to recognize only 3.x data-free markers; markers_v2 must be explicitly installed to hydrate against legacy 2.x indexed marker output, and its parsing logic is tree-shaken out of the bundle unless imported."
+          }
+        ],
+        "patch": [
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c05d0d79637ac313cf67f09820c2aec8ad755c24",
+            "comment": "Block iframe srcdoc attribute bindings in the default DOM policy."
+          }
+        ],
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "28d1e78c6819d85758e8723dc5d9249df5a4582d",
+            "comment": "chore: upadate to typescript 6 and use typescript 7 for compilation"
+          },
+          {
+            "author": "163576506+minwookshin@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "da3b472f58dfbfef6a9290819d70f6f2b3f544e7",
+            "comment": "Document array reference replacement when using deepMerge."
+          },
+          {
+            "author": "163576506+minwookshin@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6515f93bb3eb0f8fde4f87fb0960d37288cf3341",
+            "comment": "Cover repeat hydration error diagnostics during refresh and unbind."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 01 Oct 2026 05:10:34 GMT",
       "version": "3.0.4",
       "tag": "@microsoft/fast-element_v3.0.4",
