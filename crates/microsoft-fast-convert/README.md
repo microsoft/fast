@@ -4,7 +4,8 @@
 
 ## Supported targets
 
-- `webui-prerelease` — unwraps the outer `<f-template>` and emits a WebUI prerelease `<template>` string. It converts `<f-repeat>` to `<for>` and `<f-when>` to `<if>` while preserving other FAST attribute syntax that WebUI's FAST plugin expects.
+- `webui-prerelease` — unwraps the outer `<f-template>` and emits HTML for WebUI's FAST parser plugin, converting only `<f-repeat>` to `<for>` and `<f-when>` to `<if>`. Other supported FAST attributes (`@click`, `:prop`, `?bool`, `f-ref`, `f-children`, `f-slotted`) pass through unchanged.
+- `webui-framework-prerelease` — converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (transferring Shadow/Light DOM policy from the outer `<f-template>` onto the inner `<template>`). It converts `<f-repeat>` to `<for>`, `<f-when>` to `<if>`, `f-ref` to a braced `w-ref`, and FAST's `$e` event argument to bare `e`. `f-slotted`/`f-children` are stripped from the output with a warning, since WebUI Framework has no equivalent; every other unsupported construct (unknown `f-*`, `$c` event context, non-braced `f-ref`, conflicting shadow-root modes) remains a hard error. The target's name reflects the WebUI Framework project's own current prerelease status, not the stability of this target's implementation.
 - `fast-v3-ts` — emits TypeScript source that imports FAST helpers and exports `template` as an `html` tagged template.
 
 ## Rust usage
@@ -13,13 +14,21 @@
 use microsoft_fast_convert::{convert_template, convert_stylesheet};
 
 let source = r#"<f-template name="my-element"><template>{{title}}</template></f-template>"#;
-let ts = convert_template(source, "fast-v3-ts")?;
+let result = convert_template(source, "fast-v3-ts")?;
+let ts = result.output;
 
 let css = ":host { display: block; }";
 let styles = convert_stylesheet(css, "fast-v3-ts", "styles")?;
 ```
 
-The Rust API returns `Result<String, ConvertError>`.
+`convert_template`/`convert_template_with_options` return
+`Result<ConvertOutput, ConvertError>`, where `ConvertOutput { output: String,
+warnings: Vec<ConvertWarning> }`. `warnings` reports non-fatal issues — such as a
+stripped `f-slotted`/`f-children` directive, produced only by
+`webui-framework-prerelease` — that didn't stop conversion;
+`webui-prerelease` and `fast-v3-ts` output always have an empty `warnings`
+vector, since neither strips anything. `convert_stylesheet` is unaffected and
+still returns `Result<String, ConvertError>`.
 
 `convert_stylesheet(stylesheet, syntax, export_name)` converts a CSS source string
 into a TypeScript module that imports `css` from `@microsoft/fast-element` and
@@ -39,7 +48,7 @@ let options = ConvertOptions {
     type_source: Some("MyElement".to_string()),
     type_source_import: Some("./my-element.js".to_string()),
 };
-let ts = convert_template_with_options(source, "fast-v3-ts", &options)?;
+let ts = convert_template_with_options(source, "fast-v3-ts", &options)?.output;
 ```
 
 `type_source` must be a dotted TypeScript identifier (e.g. `MyElement` or
@@ -56,13 +65,18 @@ tooling can avoid duplicating target definitions.
 When built with `wasm-pack --target nodejs`, the crate exports:
 
 ```ts
-convert_template(template: string, syntax: string): string
+interface ConvertResult {
+    readonly output: string;
+    readonly warnings: string[];
+}
+
+convert_template(template: string, syntax: string): ConvertResult
 convert_template_with_options(
     template: string,
     syntax: string,
     typeSource?: string,
     typeSourceImport?: string,
-): string
+): ConvertResult
 convert_stylesheet(stylesheet: string, syntax: string, export_name: string): string
 convert_syntax_metadata(): string
 ```
@@ -74,4 +88,6 @@ Errors are raised as JavaScript exceptions with the `ConvertError` message.
 
 The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output. It also validates that `type_source` is a dotted identifier, that `type_source` is only supplied for `fast-v3-ts`, and that `type_source_import` is only supplied alongside `type_source`.
 
-`convert_stylesheet` validates that `syntax` is `fast-v3-ts` (CSS conversion is not supported for `webui-prerelease`) and that `export_name` is a valid TypeScript/JavaScript identifier. Stylesheet content is escaped for safe embedding in a TypeScript template literal: backslashes, backticks, literal `${` sequences, and carriage returns are all escaped.
+The `webui-framework-prerelease` target additionally validates that outer `<f-template>` attributes (other than `name`) are `shadowroot`-prefixed (`ConvertError::UnsupportedPublisherAttribute` otherwise), that a `shadowroot`-prefixed outer attribute doesn't conflict with a differently-valued attribute already on the inner `<template>` (`ConvertError::ConflictingShadowRootMode`), that `f-ref` values are single-braced (`ConvertError::InvalidAttributeValue`), and that event arguments don't use FAST's repeat-context tokens such as `$c` (`ConvertError::UnsupportedEventContext`). `f-slotted` and `f-children` are the one exception to this target's otherwise strict validation: rather than erroring, they are stripped from the output and reported via `ConvertOutput::warnings` as a `ConvertWarning::StrippedUnsupportedDirective`.
+
+`convert_stylesheet` validates that `syntax` is `fast-v3-ts` (CSS conversion is not supported for `webui-prerelease`/`webui-framework-prerelease`) and that `export_name` is a valid TypeScript/JavaScript identifier. Stylesheet content is escaped for safe embedding in a TypeScript template literal: backslashes, backticks, literal `${` sequences, and carriage returns are all escaped.

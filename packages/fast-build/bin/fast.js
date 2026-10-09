@@ -586,13 +586,16 @@ function runConvertBatch(
     for (const file of files) {
         const output = resolveConvertOutput(file, syntax, outputArg, syntaxMetadata);
         validateConvertOutput(output, syntax, overwrite, syntaxMetadata);
-        const converted = wasm.convert_template_with_options(
+        const result = wasm.convert_template_with_options(
             fs.readFileSync(file, "utf8"),
             syntax,
             typeSource,
             typeSourceImport,
         );
-        fs.writeFileSync(output, converted, "utf8");
+        for (const warning of result.warnings) {
+            process.stderr.write(`Warning: ${warning}\n`);
+        }
+        fs.writeFileSync(output, result.output, "utf8");
         process.stdout.write(`Converted: ${output}\n`);
         convertedCount++;
     }
