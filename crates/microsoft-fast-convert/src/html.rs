@@ -4,6 +4,11 @@ use crate::error::{template_context, ConvertError};
 pub(crate) struct ParsedTemplate {
     pub(crate) _name: String,
     pub(crate) template: String,
+    /// Attributes present on the outer `<f-template>` wrapper, excluding `name`.
+    /// `webui-prerelease` and `fast-v3-ts` ignore these; the native `webui`
+    /// target uses them to transfer Shadow/Light DOM policy onto the inner
+    /// `<template>`.
+    pub(crate) publisher_attributes: Vec<ParsedAttribute>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -57,9 +62,15 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
             }
         })?;
 
+    let publisher_attributes = parse_attributes(f_template_tag)
+        .into_iter()
+        .filter(|attr| attr.name != "name")
+        .collect();
+
     Ok(ParsedTemplate {
         _name: name.to_string(),
         template: body[inner_start..inner_close_end].to_string(),
+        publisher_attributes,
     })
 }
 
