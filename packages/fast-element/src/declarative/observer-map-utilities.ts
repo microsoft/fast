@@ -137,6 +137,10 @@ function defineObservableProperty(
     target: any,
     rootProperty: string,
 ): void {
+    // Observer-map item objects are expected to be plain objects. Treat any
+    // existing accessor with this name, including inherited accessors, as already
+    // installed. Supporting class instances would require an explicit marker for
+    // observer-map-owned accessors rather than inferring ownership from closures.
     if (!Observable.getAccessors(targetObject).some(accessor => accessor.name === key)) {
         const field = `_${key}`;
         const callback = `${key}Changed`;
