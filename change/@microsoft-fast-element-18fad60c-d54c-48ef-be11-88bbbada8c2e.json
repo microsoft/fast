@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add an opt-in markers_v2 export providing the last major version's FAST Element 2.x indexed hydration markers, for interoperability with backend systems that have not yet adopted the FAST Element 3.x data-free marker format. The default reader continues to recognize only 3.x data-free markers; markers_v2 must be explicitly installed to hydrate against legacy 2.x indexed marker output, and its parsing logic is tree-shaken out of the bundle unless imported.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

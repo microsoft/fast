@@ -1704,7 +1704,7 @@ test.describe("buildViewBindingTargets", () => {
         });
     });
 
-    test("preserves current and representative legacy marker targeting", async ({
+    test("does not resolve legacy markers with the default v3-only reader", async ({
         page,
     }) => {
         const result = await page.evaluate(async () => {
@@ -1723,7 +1723,7 @@ test.describe("buildViewBindingTargets", () => {
             const { targets } = buildViewBindingTargets(
                 root.firstChild!,
                 root.lastChild!,
-                ["current", "legacyOne", "legacyTwo", "content"].map(targetNodeId => ({
+                ["current"].map(targetNodeId => ({
                     targetNodeId,
                 })),
             );
@@ -1748,12 +1748,48 @@ test.describe("buildViewBindingTargets", () => {
         expect(result).toEqual({
             targets: {
                 current: "current",
-                legacyOne: "legacy",
-                legacyTwo: "legacy",
-                content: "legacy content",
             },
             currentMarker: null,
-            legacyMarkers: [],
+            legacyMarkers: ["data-fe-c-1-2"],
+        });
+    });
+
+    test("resolves legacy markers directly via the opt-in markers_v2 strategy", async ({
+        page,
+    }) => {
+        const result = await page.evaluate(async () => {
+            const {
+                markers_v2,
+                // @ts-expect-error: Client module.
+            } = await import("/main.js");
+
+            const legacy = document.createElement("div");
+            legacy.setAttribute("data-fe-c-0-2", "");
+
+            const attributeResolution = markers_v2.resolveAttributeBindings(legacy, 0, 0);
+            const contentResolution = markers_v2.resolveContentBinding(
+                "fe-b$$start$$2$$content$$fe-b",
+                0,
+                0,
+            );
+
+            return {
+                attributeFactoryIndices: attributeResolution?.factoryIndices ?? null,
+                contentFactoryIndices: contentResolution?.factoryIndices ?? null,
+                isContentStartMarker: markers_v2.isContentBindingStartMarker(
+                    "fe-b$$start$$2$$content$$fe-b",
+                ),
+                isContentEndMarker: markers_v2.isContentBindingEndMarker(
+                    "fe-b$$end$$2$$content$$fe-b",
+                ),
+            };
+        });
+
+        expect(result).toEqual({
+            attributeFactoryIndices: [0, 1],
+            contentFactoryIndices: [2],
+            isContentStartMarker: true,
+            isContentEndMarker: true,
         });
     });
 });
