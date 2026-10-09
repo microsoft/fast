@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add a stable native WebUI Framework HTML conversion target (`webui`) to the FAST Convert CLI, alongside the existing `webui-prerelease` and `fast-v3-ts` targets.",
+  "comment": "BREAKING: fast convert --syntax=webui-prerelease now transfers Shadow/Light DOM attributes from the outer <f-template> onto the inner <template>, requires a braced f-ref (converted to w-ref), and rewrites FAST's $e event argument to e. Unsupported f-slotted/f-children directives are now stripped from the output with a printed warning instead of being preserved verbatim, and $c event context now errors. convert_template/convert_template_with_options (Rust, WASM, and the fast convert CLI) now also report these warnings alongside the converted output.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

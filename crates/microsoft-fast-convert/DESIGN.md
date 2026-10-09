@@ -1,16 +1,17 @@
 # Design — microsoft-fast-convert
 
-`microsoft-fast-convert` converts from FAST declarative syntax only. It accepts one FAST `<f-template>` string, validates the supported subset, and emits WebUI prerelease HTML, native WebUI HTML, or FAST v3 TypeScript source. It also converts standalone CSS stylesheet strings into FAST v3 TypeScript `css` modules.
+`microsoft-fast-convert` converts from FAST declarative syntax only. It accepts one FAST `<f-template>` string, validates the supported subset, and emits WebUI prerelease HTML or FAST v3 TypeScript source. It also converts standalone CSS stylesheet strings into FAST v3 TypeScript `css` modules.
 
 ## Pipeline
 
 ```text
 convert_template(template, syntax)
         │
-        ├─ parse syntax (`webui-prerelease` | `fast-v3-ts` | `webui`)
+        ├─ parse syntax (`webui-prerelease` | `fast-v3-ts`)
         ├─ validate one outer `<f-template name="…">`
-        ├─ extract exactly one inner `<template>` (plus other outer attributes, for `webui`)
-        └─ target converter
+        ├─ extract exactly one inner `<template>` (plus other outer attributes,
+        │  for `webui-prerelease`)
+        └─ target converter → `ConvertOutput { output, warnings }`
 
 convert_stylesheet(stylesheet, syntax, export_name)
         │
@@ -21,53 +22,52 @@ convert_stylesheet(stylesheet, syntax, export_name)
 
 The implementation intentionally uses a small hand scanner instead of an HTML parser, matching the dependency style of `microsoft-fast-build`.
 
+A successful `convert_template`/`convert_template_with_options` call returns
+`ConvertOutput { output: String, warnings: Vec<ConvertWarning> }` rather than a bare
+string. `warnings` reports non-fatal issues — currently only a stripped
+`f-slotted`/`f-children` directive — that do not abort conversion; `convert_stylesheet`
+is unaffected and still returns a plain `String`, since it has no construct this
+applies to.
+
 ## Modules
 
 | Module | Role |
 | --- | --- |
 | `lib.rs` | Public Rust API and crate exports |
 | `wasm.rs` | `wasm-bindgen` exports for Node (`convert_template`, `convert_template_with_options`, `convert_stylesheet`, `convert_syntax_metadata`) |
+| `warning.rs` | `ConvertOutput`/`ConvertWarning` — the non-fatal counterpart to `ConvertError` |
 | `error.rs` | `ConvertError` variants and context helpers |
 | `html.rs` | Tag, attribute, and `<f-template>` scanning utilities |
 | `expression.rs` | Limited declarative expression conversion for TypeScript output |
 | `converter.rs` | Syntax selection and dispatch after shared `<f-template>` validation |
 | `syntax/mod.rs` | Shared syntax-target helpers and exported syntax metadata |
 | `syntax/webui.rs` | `webui-prerelease` conversion pass |
-| `syntax/webui_native.rs` | `webui` (native WebUI Framework) conversion pass |
 | `syntax/fast_v3_ts.rs` | `fast-v3-ts` conversion pass (templates and stylesheets) |
 
 Syntax-specific conversion logic lives under `syntax/` so new targets can be added
 without growing `converter.rs`. To add a syntax target, create a new module under
-`syntax/`, expose a `convert(&str) -> Result<String, ConvertError>` function, add the
-target's metadata (`name`, output `extension`, and default `suffix`) in that module,
-add the accepted syntax value to `converter.rs`, and route the new `Syntax` variant
-to the module. The `@microsoft/fast-build` CLI reads the exported WASM metadata, so
-syntax names, output extensions, and default suffixes should be defined in Rust only.
+`syntax/`, expose a `convert(...) -> Result<ConvertOutput, ConvertError>` function
+(or a plain `Result<String, ConvertError>` wrapped with `ConvertOutput::without_warnings`
+if the target never produces warnings), add the target's metadata (`name`, output
+`extension`, and default `suffix`) in that module, add the accepted syntax value to
+`converter.rs`, and route the new `Syntax` variant to the module. The
+`@microsoft/fast-build` CLI reads the exported WASM metadata, so syntax names,
+output extensions, and default suffixes should be defined in Rust only.
 
 ## WebUI prerelease conversion
 
-The WebUI target unwraps the outer `<f-template>` and preserves the inner `<template>` element. It rewrites only structural FAST directives:
-
-- `<f-repeat value="{{item in items}}">` → `<for each="item in items">`
-- `<f-when value="{{condition}}">` → `<if condition="condition">`
-
-Other supported FAST attributes such as `@click`, `:prop`, `?bool`, `f-ref`, `f-children`, and `f-slotted` are preserved.
-
-## Native WebUI conversion
-
-The `webui` target emits source accepted by WebUI Framework's native `webui` parser
-plugin, as distinct from `webui-prerelease`'s output for WebUI's FAST parser plugin.
-Because native WebUI has no equivalent for some FAST directives, this target rejects
-non-isomorphic constructs instead of preserving them — callers (e.g. CAPI) are
-expected to adapt the FAST source to native WebUI idioms before invoking this target.
-`webui-prerelease` and `fast-v3-ts` output are unchanged by this target's addition.
+The `webui-prerelease` target emits HTML for WebUI's declarative shadow-DOM runtime.
+Note that the target's name reflects WebUI Framework's own current prerelease
+status, not the stability of this target's implementation. The outer
+`<f-template>` wrapper is removed; the inner `<template>` element (adjusted per
+below) is the sole output.
 
 ### Publisher wrapper and Shadow/Light DOM
 
 `html::parse_template_document` captures every attribute on the outer
 `<f-template>` other than `name` as `ParsedTemplate.publisher_attributes`
-(`webui-prerelease` and `fast-v3-ts` ignore this field). The `webui` target uses it
-to decide the inner `<template>`'s Shadow/Light DOM policy:
+(`fast-v3-ts` ignores this field). The `webui-prerelease` target uses it to decide
+the inner `<template>`'s Shadow/Light DOM policy:
 
 - The outer `<f-template name="…">` wrapper is always removed; only the inner
   `<template>` element remains in the output.
@@ -85,8 +85,6 @@ to decide the inner `<template>`'s Shadow/Light DOM policy:
 
 ### Directive mappings
 
-Structural directives map the same way as `webui-prerelease`:
-
 - `<f-repeat value="{{item in items}}">` → `<for each="item in items">`
 - `<f-when value="{{condition}}">` → `<if condition="condition">`
 
@@ -96,23 +94,28 @@ Structural directives map the same way as `webui-prerelease`:
   expression (`{expr}`); a value that isn't wrapped in single braces is rejected
   with `ConvertError::InvalidAttributeValue`.
 - Event handler values such as `@click="{select($e)}"` are preserved as handler
-  calls, with FAST's `$e` event argument rewritten to bare `e` (native WebUI's
-  event parameter name). Ordinary arguments — identifiers, dotted paths, and other
+  calls, with FAST's `$e` event argument rewritten to bare `e` (WebUI's event
+  parameter name). Ordinary arguments — identifiers, dotted paths, and other
   literals — pass through unchanged.
 - `$c` (and any other `$`-prefixed token, including traversals such as
-  `$c.parent`) has no native WebUI equivalent, since native WebUI has no concept
-  of FAST's repeat context chain. These are rejected with
-  `ConvertError::UnsupportedNativeWebUIEventContext`.
+  `$c.parent`) has no WebUI equivalent, since WebUI has no concept of FAST's
+  repeat context chain. These are rejected with `ConvertError::UnsupportedEventContext`.
 
-### `f-slotted` and `f-children`: no automatic equivalent
+### `f-slotted` and `f-children`: stripped with a warning
 
-`f-slotted` and `f-children` are always rejected with
-`ConvertError::UnsupportedNativeWebUIDirective`, regardless of context. Native WebUI
-has no built-in lifecycle equivalent to FAST's slotted/children observation, and
-FAST Convert does not invent TypeScript lifecycle behavior to emulate one. Per the
-caller-adaptation contract, a caller that needs this behavior (e.g. CAPI) must
-rewrite these directives to native WebUI idioms — such as a `w-ref` combined with a
-`@slotchange` handler — in the FAST source before invoking the `webui` target.
+Unlike every other unsupported construct in this target (unknown `f-*` elements
+and attributes, non-braced `f-ref`, `$c` event context, conflicting shadow-root
+modes, unsupported publisher attributes — all of which remain hard errors),
+`f-slotted` and `f-children` are removed from the output and reported as a
+`ConvertWarning::StrippedUnsupportedDirective` instead of aborting conversion.
+WebUI has no built-in lifecycle equivalent to FAST's slotted/children
+observation, and FAST Convert does not invent lifecycle behavior to emulate one;
+treating only these two directives as warnings (rather than every unsupported
+construct) lets a batch conversion surface every directive a caller needs to
+rewrite in one pass instead of stopping at the first one. A caller that needs
+slotted/children behavior (e.g. CAPI) should rewrite the directive to a WebUI
+idiom — such as a `w-ref` combined with a `@slotchange` handler — in the FAST
+source, either before or after conversion.
 
 ### Passthrough bindings
 
@@ -120,24 +123,14 @@ Already-native bindings such as `{{title}}`, `?disabled="{{disabled}}"`,
 `:config="{{config}}"`, and `@click="{save()}"` pass through largely unchanged.
 The target applies light grammar validation only — double-brace bindings must be
 non-empty and properly closed — matching the validation already performed for
-`webui-prerelease` and `fast-v3-ts`.
+`fast-v3-ts`.
 
 Unknown `f-*` elements and attributes continue to use the existing
-`UnsupportedFElement`/`UnsupportedFAttribute` errors shared with `webui-prerelease`.
-
-### Suffix deviation
-
-The target's default output suffix is `.webui-native.html`, not `.webui.html`.
-This deliberately differs from `webui-prerelease`'s `.webui.html` suffix: if it
-reused that suffix, converting the same input to both targets without an explicit
-`--output` would silently overwrite one target's output file with the other's.
-
-A `WebUIConvertOptions` struct for caller-supplied conversion options was considered
-but is not implemented in this iteration; it remains a possible future enhancement.
+`UnsupportedFElement`/`UnsupportedFAttribute` errors shared with `fast-v3-ts`.
 
 ## FAST v3 TypeScript conversion
 
-The TypeScript target always emits `export const template = html\`…\`;` and imports only helpers used by the converted template. It supports text and attribute bindings, `f-repeat`, `f-when`, `f-ref`, `f-children`, `f-slotted`, and event handler calls using `$e`/`$c`.
+The TypeScript target always emits `export const template = html\`…\`;` and imports only helpers used by the converted template. It supports text and attribute bindings, `f-repeat`, `f-when`, `f-ref`, `f-children`, `f-slotted`, and event handler calls using `$e`/`$c`. This target never produces warnings; `fast-v3-ts` conversions always return an empty `ConvertOutput::warnings`.
 
 Repeat bodies use the same local alias mapping as FAST declarative templates: `{{item.name}}` inside `item in items` becomes `x => x.name`. Event handlers inside repeats map root handlers through FAST's repeat context chain (`c.parent`, `c.parentContext.parent`, and so on).
 
@@ -190,3 +183,13 @@ This exists so `fast convert` output for templates combining multiple
 differently-named `ref`/`children`/`slotted` directives (e.g. `packages/fast-build/test/fixtures/convert/supported.html`)
 type-checks standalone once a concrete element type is supplied, instead of requiring
 callers to hand-add the generic parameter after every conversion.
+
+## wasm boundary
+
+`wasm.rs` mirrors the Rust API for Node consumers, with one adaptation:
+`convert_template`/`convert_template_with_options` return a `#[wasm_bindgen]`
+`ConvertResult` struct (`output: string`, `warnings: string[]` as JS getters)
+rather than a bare string, so JS callers can read both the converted output and
+any warning messages (each a pre-formatted `ConvertWarning::to_string()`) without
+a JSON encode/decode round trip. `convert_stylesheet` and `convert_syntax_metadata`
+are unaffected.
