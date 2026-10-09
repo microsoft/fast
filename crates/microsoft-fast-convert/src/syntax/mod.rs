@@ -1,5 +1,6 @@
 pub(crate) mod fast_v3_ts;
 pub(crate) mod webui;
+pub(crate) mod webui_framework_prerelease;
 
 use crate::error::{template_context, ConvertError};
 use crate::html::parse_attributes;
@@ -15,7 +16,11 @@ pub struct SyntaxMetadata {
     pub suffix: &'static str,
 }
 
-const SYNTAX_METADATA: &[SyntaxMetadata] = &[webui::METADATA, fast_v3_ts::METADATA];
+const SYNTAX_METADATA: &[SyntaxMetadata] = &[
+    webui::METADATA,
+    fast_v3_ts::METADATA,
+    webui_framework_prerelease::METADATA,
+];
 
 pub fn syntax_metadata() -> &'static [SyntaxMetadata] {
     SYNTAX_METADATA
@@ -97,6 +102,10 @@ pub(crate) fn validate_directive_attrs(
         }
     }
     Ok(())
+}
+
+pub(crate) fn is_supported_f_attribute(name: &str) -> bool {
+    matches!(name, "f-ref" | "f-children" | "f-slotted")
 }
 
 /// Returns `true` when `value` is a valid TypeScript/JavaScript identifier:

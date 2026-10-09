@@ -199,6 +199,7 @@ excluded by `walkHtmlFiles`, not rejected with a validation error.
 | Syntax | Output extension | Default suffix |
 |--------|------------------|----------------|
 | `webui-prerelease` | `.html` | `.webui.html` |
+| `webui-framework-prerelease` | `.html` | `.webui-framework.html` |
 | `fast-v3-ts` | `.ts` | `.template.ts` |
 
 When `output` is omitted, the CLI writes next to each input template using the
@@ -252,7 +253,11 @@ converted `.html` and `.ts` outputs are not checked in. The
 `test:fixtures:convert` package script runs the fixture-only validation, and
 `test:node` includes it so CI validates both `webui-prerelease` and
 `fast-v3-ts` through the real `fast convert` CLI, including a `--templates`
-batch conversion against the real converter WASM.
+batch conversion against the real converter WASM. CLI-level coverage of
+`webui-framework-prerelease` (including its strip-with-warning behavior for
+`f-slotted`/`f-children`) lives in `test/config.test.js` rather than the shared
+fixture, since it exercises a stricter grammar than `supported.html` is written
+against.
 
 `test/fixtures/convert/type-source.test.js` covers `--type-source` /
 `--type-source-import` against `supported.html`, which combines multiple
@@ -290,10 +295,10 @@ The converter WASM module is loaded from
 syntax)`, `convert_template_with_options(template, syntax, typeSource?,
 typeSourceImport?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
 receives the source `.html` template contents, the selected syntax
-(`webui-prerelease` or `fast-v3-ts`), and optional `typeSource` /
+(`webui-prerelease`, `webui-framework-prerelease`, or `fast-v3-ts`), and optional `typeSource` /
 `typeSourceImport` strings, returning a `{ output, warnings }` object (`output` the
 converted file contents, `warnings` an array of warning message strings — currently
-only populated when `webui-prerelease` strips an unsupported `f-slotted`/`f-children`
+only populated when `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children`
 directive) and throwing on conversion or validation errors (including `type-source`
 misuse). The CLI writes `output` to the resolved output file and prints each
 `warnings` entry to stderr as `Warning: <message>` without failing the command.

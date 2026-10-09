@@ -11,16 +11,22 @@ fn fast_template(inner: &str) -> String {
 fn exposes_syntax_metadata() {
     let metadata = syntax_metadata();
 
-    assert_eq!(metadata.len(), 2);
+    assert_eq!(metadata.len(), 3);
     assert_eq!(metadata[0].name, "webui-prerelease");
     assert_eq!(metadata[0].extension, ".html");
     assert_eq!(metadata[0].suffix, ".webui.html");
     assert_eq!(metadata[1].name, "fast-v3-ts");
     assert_eq!(metadata[1].extension, ".ts");
     assert_eq!(metadata[1].suffix, ".template.ts");
+    assert_eq!(metadata[2].name, "webui-framework-prerelease");
+    assert_eq!(metadata[2].extension, ".html");
+    // Deliberately distinct from `webui-prerelease`'s `.webui.html` default so
+    // converting the same input for both targets without an explicit
+    // `--output` cannot silently overwrite the other target's file.
+    assert_eq!(metadata[2].suffix, ".webui-framework.html");
     assert_eq!(
         syntax_metadata_json(),
-        r#"[{"syntax":"webui-prerelease","extension":".html","suffix":".webui.html"},{"syntax":"fast-v3-ts","extension":".ts","suffix":".template.ts"}]"#
+        r#"[{"syntax":"webui-prerelease","extension":".html","suffix":".webui.html"},{"syntax":"fast-v3-ts","extension":".ts","suffix":".template.ts"},{"syntax":"webui-framework-prerelease","extension":".html","suffix":".webui-framework.html"}]"#
     );
 }
 
@@ -195,13 +201,35 @@ fn fast_v3_ts_accepts_dotted_type_source() {
 }
 
 // ---------------------------------------------------------------------------
-// `webui-prerelease` native-style conversion (shadow DOM, f-ref, events)
+// `webui-framework-prerelease` target (shadow DOM, f-ref, events)
 // ---------------------------------------------------------------------------
 
 #[test]
-fn webui_light_dom_has_no_shadow_attributes() {
+fn webui_framework_metadata_is_present() {
+    let metadata = syntax_metadata();
+    let framework = metadata
+        .iter()
+        .find(|entry| entry.name == "webui-framework-prerelease")
+        .expect("webui-framework-prerelease metadata entry present");
+
+    assert_eq!(framework.extension, ".html");
+    // Intentionally distinct from `webui-prerelease`'s `.webui.html` default
+    // so converting the same input for both targets without an explicit
+    // `--output` cannot silently overwrite the other target's file.
+    assert_eq!(framework.suffix, ".webui-framework.html");
+
+    let prerelease = metadata
+        .iter()
+        .find(|entry| entry.name == "webui-prerelease")
+        .expect("webui-prerelease metadata entry present");
+    assert_eq!(prerelease.extension, ".html");
+    assert_eq!(prerelease.suffix, ".webui.html");
+}
+
+#[test]
+fn webui_framework_light_dom_has_no_shadow_attributes() {
     let input = fast_template(r#"<template><span>{{name}}</span></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -210,9 +238,9 @@ fn webui_light_dom_has_no_shadow_attributes() {
 }
 
 #[test]
-fn webui_moves_shadow_root_mode_to_inner_template() {
+fn webui_framework_moves_shadow_root_mode_to_inner_template() {
     let input = r#"<f-template name="my-element" shadowrootmode="open"><template><span>{{name}}</span></template></f-template>"#;
-    let output = convert_template(input, "webui-prerelease").unwrap();
+    let output = convert_template(input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -221,9 +249,9 @@ fn webui_moves_shadow_root_mode_to_inner_template() {
 }
 
 #[test]
-fn webui_accepts_matching_inner_shadow_root_mode_deterministically() {
+fn webui_framework_accepts_matching_inner_shadow_root_mode_deterministically() {
     let input = r#"<f-template name="my-element" shadowrootmode="open"><template shadowrootmode="open"><span>{{name}}</span></template></f-template>"#;
-    let output = convert_template(input, "webui-prerelease").unwrap();
+    let output = convert_template(input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -232,9 +260,22 @@ fn webui_accepts_matching_inner_shadow_root_mode_deterministically() {
 }
 
 #[test]
-fn webui_converts_f_ref_to_braced_w_ref() {
+fn webui_framework_converts_repeat_and_when() {
+    let input = fast_template(
+        r#"<template><f-repeat value="{{item in items}}"><f-when value="{{item.visible}}"><span>{{item.name}}</span></f-when></f-repeat></template>"#,
+    );
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
+
+    assert_eq!(
+        output.output,
+        r#"<template><for each="item in items"><if condition="item.visible"><span>{{item.name}}</span></if></for></template>"#
+    );
+}
+
+#[test]
+fn webui_framework_converts_f_ref_to_braced_w_ref() {
     let input = fast_template(r#"<template><input f-ref="{input}" /></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -243,9 +284,9 @@ fn webui_converts_f_ref_to_braced_w_ref() {
 }
 
 #[test]
-fn webui_converts_event_e_argument_to_bare_e() {
+fn webui_framework_converts_event_e_argument_to_bare_e() {
     let input = fast_template(r#"<template><button @click="{select($e)}"></button></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -254,11 +295,11 @@ fn webui_converts_event_e_argument_to_bare_e() {
 }
 
 #[test]
-fn webui_passes_through_no_arg_and_ordinary_argument_calls() {
+fn webui_framework_passes_through_no_arg_and_ordinary_argument_calls() {
     let input = fast_template(
         r#"<template><button @click="{save()}"></button><button @click="{select(item.id)}"></button><button @click="{select('a', 1)}"></button></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -267,11 +308,11 @@ fn webui_passes_through_no_arg_and_ordinary_argument_calls() {
 }
 
 #[test]
-fn webui_passes_through_compatible_bindings() {
+fn webui_framework_passes_through_compatible_bindings() {
     let input = fast_template(
         r#"<template><span>{{title}}</span><h1 title="{{title}}"></h1><input ?disabled="{{disabled}}" :config="{{config}}" /></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -280,11 +321,11 @@ fn webui_passes_through_compatible_bindings() {
 }
 
 #[test]
-fn webui_retains_nested_repeat_and_when_scope() {
+fn webui_framework_retains_nested_repeat_and_when_scope() {
     let input = fast_template(
         r#"<template><f-repeat value="{{item in items}}"><f-repeat value="{{child in item.children}}"><f-when value="{{child.visible}}"><span>{{child.name}}</span></f-when></f-repeat></f-repeat></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -293,11 +334,11 @@ fn webui_retains_nested_repeat_and_when_scope() {
 }
 
 #[test]
-fn webui_comments_with_fast_looking_text_pass_through_unchanged() {
+fn webui_framework_comments_with_fast_looking_text_pass_through_unchanged() {
     let input = fast_template(
         r#"<template><!-- <f-repeat value="{{item in items}}">{{x}}</f-repeat> --><span>{{title}}</span></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -306,12 +347,12 @@ fn webui_comments_with_fast_looking_text_pass_through_unchanged() {
 }
 
 #[test]
-fn webui_supports_single_and_double_quoted_attributes() {
+fn webui_framework_supports_single_and_double_quoted_attributes() {
     // Both quote styles parse successfully; the converter normalizes output
     // attribute values to double quotes regardless of the source quote style.
     let input =
         fast_template(r#"<template><h1 title='{{title}}' data-id="fixed"></h1></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -320,24 +361,24 @@ fn webui_supports_single_and_double_quoted_attributes() {
 }
 
 #[test]
-fn webui_is_deterministic() {
+fn webui_framework_is_deterministic() {
     let input = fast_template(
         r#"<template><f-repeat value="{{item in items}}"><button @click="{select($e)}">{{item.name}}</button></f-repeat></template>"#,
     );
-    let first = convert_template(&input, "webui-prerelease").unwrap();
-    let second = convert_template(&input, "webui-prerelease").unwrap();
+    let first = convert_template(&input, "webui-framework-prerelease").unwrap();
+    let second = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(first, second);
 }
 
 #[test]
-fn webui_avatar_fixture_after_caller_adaptation() {
+fn webui_framework_avatar_fixture_after_caller_adaptation() {
     // The source has already been adapted by the caller: the default slot
     // uses `w-ref`/`@slotchange` directly rather than `f-slotted`, since
-    // `f-slotted` has no WebUI equivalent and is stripped (with a warning)
-    // by this target.
+    // `f-slotted` has no WebUI Framework equivalent and is stripped (with a
+    // warning) by this target.
     let input = r#"<f-template name="fast-avatar" shadowrootmode="open"><template><div class="link"><slot w-ref="{defaultSlot}" @slotchange="{syncSlottedDefaults()}"></slot></div></template></f-template>"#;
-    let output = convert_template(input, "webui-prerelease").unwrap();
+    let output = convert_template(input, "webui-framework-prerelease").unwrap();
 
     assert!(output
         .output
@@ -356,11 +397,11 @@ fn webui_avatar_fixture_after_caller_adaptation() {
 }
 
 #[test]
-fn webui_raw_text_script_content_is_not_rewritten() {
+fn webui_framework_raw_text_script_content_is_not_rewritten() {
     let input = fast_template(
         r#"<template><script>const msg = "f-repeat and {{not a binding in js}}";</script></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -369,13 +410,13 @@ fn webui_raw_text_script_content_is_not_rewritten() {
 }
 
 #[test]
-fn webui_preserves_uppercase_tag_and_attribute_case() {
+fn webui_framework_preserves_uppercase_tag_and_attribute_case() {
     // The converter is case-sensitive: directive keywords (`f-repeat`,
     // `f-when`, `f-ref`, …) are only recognized in lowercase. An uppercase
     // tag/attribute is treated as an ordinary element and its case is
     // preserved rather than rewritten.
     let input = fast_template(r#"<template><DIV CLASS="x">{{title}}</DIV></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -388,9 +429,9 @@ fn webui_preserves_uppercase_tag_and_attribute_case() {
 // ---------------------------------------------------------------------------
 
 #[test]
-fn webui_strips_f_slotted_with_warning() {
+fn webui_framework_strips_f_slotted_with_warning() {
     let input = fast_template(r#"<template><slot f-slotted="{x}"></slot></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(output.output, r#"<template><slot></slot></template>"#);
     assert_eq!(output.warnings.len(), 1);
@@ -402,9 +443,9 @@ fn webui_strips_f_slotted_with_warning() {
 }
 
 #[test]
-fn webui_strips_f_children_with_warning() {
+fn webui_framework_strips_f_children_with_warning() {
     let input = fast_template(r#"<template><div f-children="{x}"></div></template>"#);
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(output.output, r#"<template><div></div></template>"#);
     assert_eq!(output.warnings.len(), 1);
@@ -415,11 +456,11 @@ fn webui_strips_f_children_with_warning() {
 }
 
 #[test]
-fn webui_strips_multiple_unsupported_directives_with_one_warning_each() {
+fn webui_framework_strips_multiple_unsupported_directives_with_one_warning_each() {
     let input = fast_template(
         r#"<template><slot f-slotted="{x}"></slot><div f-children="{y}"></div></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,
@@ -429,11 +470,11 @@ fn webui_strips_multiple_unsupported_directives_with_one_warning_each() {
 }
 
 #[test]
-fn webui_strips_f_slotted_alongside_other_attributes() {
+fn webui_framework_strips_f_slotted_alongside_other_attributes() {
     let input = fast_template(
         r#"<template><slot class="default" f-slotted="{x}" id="s"></slot></template>"#,
     );
-    let output = convert_template(&input, "webui-prerelease").unwrap();
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
         output.output,

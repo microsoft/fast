@@ -23,14 +23,6 @@
                     "enabled": false
                 }
             }
-        },
-        {
-            "includes": ["**/fast-build/test/fixtures/convert/**/*.html"],
-            "html": {
-                "formatter": {
-                    "enabled": false
-                }
-            }
         }
     ],
     "html": {

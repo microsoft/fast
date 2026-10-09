@@ -1,13 +1,13 @@
 <f-template name="fixture-card">
     <template>
         <section
-            f-ref="{root}"
+            f-ref="root"
             title="{{title}}"
             ?hidden="{{hidden}}"
             :value="{{value}}"
             data-literal="literal ${ value } `tick` \ slash"
         >
-            <button type="button" @click="{handleRoot($e)}">Root {{title}}</button>
+            <button @click="{handleRoot($e, $c)}">Root {{title}}</button>
             Literal ${ sequence, `backtick`, and \ backslash
             <f-repeat value="{{item in items}}">
                 <article f-children="children">
@@ -15,7 +15,7 @@
                     <f-when value="{{item.visible}}">
                         <slot f-slotted="{slottedNodes}">{{item.count}}</slot>
                         <f-repeat value="{{child in item.children}}">
-                            <button type="button" @click="{handleChild($e, child.id)}">{{child.label}}</button>
+                            <button @click="{handleChild($e, $c, child.id)}">{{child.label}}</button>
                         </f-repeat>
                     </f-when>
                 </article>

@@ -141,7 +141,7 @@ fn invalid_type_source_is_rejected() {
 }
 
 // ---------------------------------------------------------------------------
-// `webui-prerelease` native-style conversion errors
+// `webui-framework-prerelease` target
 //
 // `f-slotted`/`f-children` are intentionally *not* tested here: they are
 // stripped with a warning rather than rejected (see `tests/conversions.rs`).
@@ -149,9 +149,9 @@ fn invalid_type_source_is_rejected() {
 // ---------------------------------------------------------------------------
 
 #[test]
-fn webui_unsupported_publisher_attribute_is_rejected() {
+fn webui_framework_unsupported_publisher_attribute_is_rejected() {
     let input = r#"<f-template name="my-element" data-extra="value"><template><span></span></template></f-template>"#.to_string();
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::UnsupportedPublisherAttribute { ref attribute, .. } if attribute == "data-extra"
@@ -159,9 +159,9 @@ fn webui_unsupported_publisher_attribute_is_rejected() {
 }
 
 #[test]
-fn webui_conflicting_shadow_root_mode_is_rejected() {
+fn webui_framework_conflicting_shadow_root_mode_is_rejected() {
     let input = r#"<f-template name="my-element" shadowrootmode="open"><template shadowrootmode="closed"><span></span></template></f-template>"#.to_string();
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::ConflictingShadowRootMode { .. }
@@ -169,9 +169,9 @@ fn webui_conflicting_shadow_root_mode_is_rejected() {
 }
 
 #[test]
-fn webui_non_braced_f_ref_is_rejected() {
+fn webui_framework_non_braced_f_ref_is_rejected() {
     let input = fast_template(r#"<template><input f-ref="input" /></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::InvalidAttributeValue { ref attribute, .. } if attribute == "f-ref"
@@ -179,9 +179,9 @@ fn webui_non_braced_f_ref_is_rejected() {
 }
 
 #[test]
-fn webui_event_context_c_is_rejected() {
+fn webui_framework_event_context_c_is_rejected() {
     let input = fast_template(r#"<template><button @click="{select($c)}"></button></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::UnsupportedEventContext { ref value, .. } if value == "$c"
@@ -189,10 +189,10 @@ fn webui_event_context_c_is_rejected() {
 }
 
 #[test]
-fn webui_event_context_traversal_is_rejected() {
+fn webui_framework_event_context_traversal_is_rejected() {
     let input =
         fast_template(r#"<template><button @click="{select($c.parent)}"></button></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::UnsupportedEventContext { ref value, .. } if value == "$c.parent"
@@ -200,7 +200,7 @@ fn webui_event_context_traversal_is_rejected() {
 
     let input =
         fast_template(r#"<template><button @click="{select($e.target)}"></button></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::UnsupportedEventContext { ref value, .. } if value == "$e.target"
@@ -208,16 +208,16 @@ fn webui_event_context_traversal_is_rejected() {
 }
 
 #[test]
-fn webui_unknown_f_element_is_rejected() {
+fn webui_framework_unknown_f_element_is_rejected() {
     let input = fast_template(r#"<template><f-mystery></f-mystery></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(err, ConvertError::UnsupportedFElement { ref tag, .. } if tag == "f-mystery"));
 }
 
 #[test]
-fn webui_unknown_f_attribute_is_rejected() {
+fn webui_framework_unknown_f_attribute_is_rejected() {
     let input = fast_template(r#"<template><span f-unknown="value"></span></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(
         err,
         ConvertError::UnsupportedFAttribute { ref attribute, .. } if attribute == "f-unknown"
@@ -225,15 +225,15 @@ fn webui_unknown_f_attribute_is_rejected() {
 }
 
 #[test]
-fn webui_unclosed_binding_is_rejected() {
+fn webui_framework_unclosed_binding_is_rejected() {
     let input = fast_template(r#"<template><span>{{title</span></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(err, ConvertError::UnclosedBinding { .. }));
 }
 
 #[test]
-fn webui_empty_binding_is_rejected() {
+fn webui_framework_empty_binding_is_rejected() {
     let input = fast_template(r#"<template><span>{{}}</span></template>"#);
-    let err = convert_template(&input, "webui-prerelease").unwrap_err();
+    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
     assert!(matches!(err, ConvertError::EmptyBinding { .. }));
 }

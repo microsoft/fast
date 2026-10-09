@@ -248,7 +248,7 @@ describe("convert CLI", () => {
 
         const result = runConvertCapture(
             [
-                "--syntax=webui-prerelease",
+                "--syntax=webui-framework-prerelease",
                 "--templates=example.html",
                 "--output=actual.html",
             ],

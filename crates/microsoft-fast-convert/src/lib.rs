@@ -1,16 +1,21 @@
 //! # microsoft-fast-convert
 //!
 //! Converts one FAST declarative HTML `<f-template>` string into WebUI
-//! prerelease template HTML, or FAST v3 TypeScript template source. The
-//! converter uses a focused hand scanner rather than constructing a DOM or
-//! depending on an HTML parser.
+//! prerelease template HTML, WebUI Framework declarative HTML, or FAST v3
+//! TypeScript template source. The converter uses a focused hand scanner
+//! rather than constructing a DOM or depending on an HTML parser.
 //!
-//! The `webui-prerelease` target emits HTML for WebUI's native shadow-DOM
-//! runtime — note that the WebUI Framework itself is currently a prerelease,
-//! hence the target's name. FAST directives with no WebUI equivalent
+//! The `webui-prerelease` target emits HTML consumed by WebUI's FAST parser
+//! plugin, preserving FAST's directive syntax largely as-is.
+//!
+//! The `webui-framework-prerelease` target emits HTML for the Microsoft
+//! WebUI Framework's own declarative shadow-DOM runtime — note that the
+//! WebUI Framework project itself is currently a prerelease, hence the
+//! target's name. FAST directives with no WebUI Framework equivalent
 //! (`f-slotted`, `f-children`) are stripped from the output rather than
 //! causing conversion to fail; [`ConvertOutput::warnings`] reports each one
-//! that was removed.
+//! that was removed. All other syntax targets always report an empty
+//! `warnings` list.
 
 mod converter;
 mod error;
@@ -43,9 +48,10 @@ pub struct ConvertOptions {
 
 /// Convert a FAST declarative template string to the requested syntax.
 ///
-/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`. Returns
-/// the converted output alongside any non-fatal [`ConvertWarning`]s, such as
-/// a stripped `f-slotted`/`f-children` directive.
+/// Supported syntax values are `webui-prerelease`, `webui-framework-prerelease`,
+/// and `fast-v3-ts`. Returns the converted output alongside any non-fatal
+/// [`ConvertWarning`]s, such as a stripped `f-slotted`/`f-children` directive
+/// (only reported for `webui-framework-prerelease`).
 pub fn convert_template(template: &str, syntax: &str) -> Result<ConvertOutput, ConvertError> {
     convert_template_with_options(template, syntax, &ConvertOptions::default())
 }
@@ -53,9 +59,10 @@ pub fn convert_template(template: &str, syntax: &str) -> Result<ConvertOutput, C
 /// Convert a FAST declarative template string to the requested syntax, with
 /// additional output options.
 ///
-/// Supported syntax values are `webui-prerelease` and `fast-v3-ts`. Returns
-/// the converted output alongside any non-fatal [`ConvertWarning`]s, such as
-/// a stripped `f-slotted`/`f-children` directive.
+/// Supported syntax values are `webui-prerelease`, `webui-framework-prerelease`,
+/// and `fast-v3-ts`. Returns the converted output alongside any non-fatal
+/// [`ConvertWarning`]s, such as a stripped `f-slotted`/`f-children` directive
+/// (only reported for `webui-framework-prerelease`).
 pub fn convert_template_with_options(
     template: &str,
     syntax: &str,

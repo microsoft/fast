@@ -60,14 +60,13 @@ function assertWebuiOutput(output) {
     assertIncludes(output, '<for each="item in items">');
     assertIncludes(output, '<if condition="item.visible">');
     assertIncludes(output, '<for each="child in item.children">');
-    assertIncludes(output, 'w-ref="{root}"');
-    assertIncludes(output, '@click="{handleRoot(e)}"');
-    assertIncludes(output, '@click="{handleChild(e, child.id)}"');
+    assertIncludes(output, 'f-ref="root"');
+    assertIncludes(output, 'f-children="children"');
+    assertIncludes(output, 'f-slotted="{slottedNodes}"');
+    assertIncludes(output, '@click="{handleRoot($e, $c)}"');
+    assertIncludes(output, '@click="{handleChild($e, $c, child.id)}"');
     assert.equal(output.includes("<f-repeat"), false);
     assert.equal(output.includes("<f-when"), false);
-    assert.equal(output.includes("f-ref"), false);
-    assert.equal(output.includes("f-children"), false);
-    assert.equal(output.includes("f-slotted"), false);
 }
 
 function assertFastV3TsOutput(output) {
@@ -90,13 +89,13 @@ function assertFastV3TsOutput(output) {
     assertIncludes(output, '${ref("root")}');
     assertIncludes(output, '${children("children")}');
     assertIncludes(output, '${slotted("slottedNodes")}');
-    assertIncludes(output, '@click="${(x, c) => x.handleRoot(c.event)}"');
+    assertIncludes(output, '@click="${(x, c) => x.handleRoot(c.event, c)}"');
     assertIncludes(output, "${repeat(x => x.items, x => html`");
     assertIncludes(output, "${when(x => x.visible, html`");
     assertIncludes(output, "${repeat(x => x.children, x => html`");
     assertIncludes(
         output,
-        '@click="${(x, c) => c.parentContext.parent.handleChild(c.event, x.id)}"',
+        '@click="${(x, c) => c.parentContext.parent.handleChild(c.event, c, x.id)}"',
     );
     assertIncludes(output, "Literal \\${ sequence, \\`backtick\\`, and \\\\ backslash");
     assert.equal(output.includes("<f-repeat"), false);

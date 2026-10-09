@@ -1,6 +1,8 @@
 use crate::error::ConvertError;
 use crate::html::parse_template_document;
-use crate::syntax::{fast_v3_ts, is_valid_identifier, is_valid_type_source, webui};
+use crate::syntax::{
+    fast_v3_ts, is_valid_identifier, is_valid_type_source, webui, webui_framework_prerelease,
+};
 use crate::{ConvertOptions, ConvertOutput};
 
 pub(crate) fn convert(
@@ -13,10 +15,13 @@ pub(crate) fn convert(
     let parsed = parse_template_document(template)?;
 
     match syntax_kind {
-        Syntax::WebuiPrerelease => webui::convert(&parsed),
+        Syntax::WebuiPrerelease => {
+            webui::convert(&parsed.template).map(ConvertOutput::without_warnings)
+        }
         Syntax::FastV3Ts => {
             fast_v3_ts::convert(&parsed.template, options).map(ConvertOutput::without_warnings)
         }
+        Syntax::WebuiFrameworkPrerelease => webui_framework_prerelease::convert(&parsed),
     }
 }
 
@@ -76,6 +81,7 @@ fn validate_options(
 enum Syntax {
     WebuiPrerelease,
     FastV3Ts,
+    WebuiFrameworkPrerelease,
 }
 
 impl Syntax {
@@ -83,6 +89,9 @@ impl Syntax {
         match value {
             value if value == webui::METADATA.name => Ok(Self::WebuiPrerelease),
             value if value == fast_v3_ts::METADATA.name => Ok(Self::FastV3Ts),
+            value if value == webui_framework_prerelease::METADATA.name => {
+                Ok(Self::WebuiFrameworkPrerelease)
+            }
             _ => Err(ConvertError::UnsupportedSyntax {
                 syntax: value.to_string(),
             }),
@@ -93,6 +102,7 @@ impl Syntax {
         match self {
             Self::WebuiPrerelease => webui::METADATA.name,
             Self::FastV3Ts => fast_v3_ts::METADATA.name,
+            Self::WebuiFrameworkPrerelease => webui_framework_prerelease::METADATA.name,
         }
     }
 }
