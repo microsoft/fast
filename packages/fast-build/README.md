@@ -215,15 +215,17 @@ fast convert --syntax=fast-v3-ts --templates=example.html \
 
 | Option | Default | Description |
 |---|---|---|
-| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease` or `fast-v3-ts` |
+| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, or `fast-v3-ts` |
 | `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates to convert. An exact single file path is also accepted. Loads the converter WASM module once for the whole batch. |
-| `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
+| `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `webui-framework-prerelease` defaults to `*.webui-framework.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
 | `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
 | `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
-Only matched `.html` files are converted; non-`.html` files and directories are never matched. The output extension must match the selected syntax: `.html` for `webui-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When a `--templates` pattern matches zero files, a warning is printed but the command does not fail unless every pattern matches zero files.
+Only matched `.html` files are converted; non-`.html` files and directories are never matched. The output extension must match the selected syntax: `.html` for `webui-prerelease`/`webui-framework-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When a `--templates` pattern matches zero files, a warning is printed but the command does not fail unless every pattern matches zero files.
+
+`webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
 
 `--type-source` exists so templates that combine more than one differently-named
 `ref`/`children`/`slotted` directive (which otherwise fail to type-check once a

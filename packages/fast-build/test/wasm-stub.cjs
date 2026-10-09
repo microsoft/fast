@@ -78,7 +78,7 @@ const convertStub = {
     },
     convert_template(template, syntax) {
         calls.push({ name: "convert_template", template, syntax });
-        return `converted:${syntax}:${template}`;
+        return { output: `converted:${syntax}:${template}`, warnings: [] };
     },
     convert_template_with_options(template, syntax, typeSource, typeSourceImport) {
         calls.push({
@@ -105,7 +105,8 @@ const convertStub = {
         if (typeSourceImport) {
             suffix += `:type-source-import=${typeSourceImport}`;
         }
-        return `converted:${syntax}:${template}${suffix}`;
+        const warnings = [];
+        return { output: `converted:${syntax}:${template}${suffix}`, warnings };
     },
 };
 

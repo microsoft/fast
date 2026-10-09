@@ -2,10 +2,43 @@ use wasm_bindgen::prelude::*;
 
 use crate::ConvertOptions;
 
+/// The wasm-facing result of a successful template conversion: the converted
+/// `output` string alongside any non-fatal `warnings` (each formatted as a
+/// human-readable message) produced while converting it.
+#[wasm_bindgen]
+pub struct ConvertResult {
+    output: String,
+    warnings: Vec<String>,
+}
+
+#[wasm_bindgen]
+impl ConvertResult {
+    #[wasm_bindgen(getter)]
+    pub fn output(&self) -> String {
+        self.output.clone()
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn warnings(&self) -> Vec<String> {
+        self.warnings.clone()
+    }
+}
+
+impl From<crate::ConvertOutput> for ConvertResult {
+    fn from(value: crate::ConvertOutput) -> Self {
+        Self {
+            output: value.output,
+            warnings: value.warnings.iter().map(ToString::to_string).collect(),
+        }
+    }
+}
+
 /// Convert one FAST declarative template string to the requested syntax.
 #[wasm_bindgen]
-pub fn convert_template(template: &str, syntax: &str) -> Result<String, JsValue> {
-    crate::convert_template(template, syntax).map_err(|error| JsValue::from_str(&error.to_string()))
+pub fn convert_template(template: &str, syntax: &str) -> Result<ConvertResult, JsValue> {
+    crate::convert_template(template, syntax)
+        .map(ConvertResult::from)
+        .map_err(|error| JsValue::from_str(&error.to_string()))
 }
 
 /// Convert a CSS stylesheet string to the requested syntax, exporting it as `export_name`.
@@ -30,12 +63,13 @@ pub fn convert_template_with_options(
     syntax: &str,
     type_source: Option<String>,
     type_source_import: Option<String>,
-) -> Result<String, JsValue> {
+) -> Result<ConvertResult, JsValue> {
     let options = ConvertOptions {
         type_source,
         type_source_import,
     };
     crate::convert_template_with_options(template, syntax, &options)
+        .map(ConvertResult::from)
         .map_err(|error| JsValue::from_str(&error.to_string()))
 }
 
