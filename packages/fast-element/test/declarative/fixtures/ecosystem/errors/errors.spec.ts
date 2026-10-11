@@ -26,7 +26,13 @@ test.describe("f-template errors", () => {
                 const errors: string[] = await page.evaluate(
                     () => (window as any).__errors,
                 );
-                return errors.some(msg => msg.includes("must be a <template>"));
+                return errors.some(
+                    msg =>
+                        msg.includes("A <template> child is missing") &&
+                        msg.includes(
+                            "https://fast.design/docs/3.x/declarative-templates/f-templates/",
+                        ),
+                );
             })
             .toBe(true);
     });
@@ -41,7 +47,13 @@ test.describe("f-template errors", () => {
                 const errors: string[] = await page.evaluate(
                     () => (window as any).__errors,
                 );
-                return errors.some(msg => msg.includes("only be one <template>"));
+                return errors.some(
+                    msg =>
+                        msg.includes("only be one <template>") &&
+                        msg.includes(
+                            "https://fast.design/docs/3.x/declarative-templates/f-templates/",
+                        ),
+                );
             })
             .toBe(true);
     });
