@@ -355,6 +355,13 @@ hosts, not enabled in normal PR tests. See the crate's
 [`benchmark baseline guide`](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
 for exact commands, workload sizes, measurement limitations, and later milestones.
 
+Post-scanner profiling combines bounded measurements of the actual packaged
+WASM with separate symbolized native render/locator phases. Repeat fixtures
+and attribute-overlay controls expose the cost of copying child state; native
+setup percentages are not treated as end-to-end WASM percentages. The recorded
+outputs are checked against native rendering. Profiling does not alter this
+package's production build, exports, or streaming behavior.
+
 ---
 
 ## Error handling

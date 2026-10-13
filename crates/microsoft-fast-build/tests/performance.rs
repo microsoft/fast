@@ -7,6 +7,17 @@ use microsoft_fast_build::{
 };
 use sha2::{Digest, Sha256};
 
+fn output_stats(html: &str) -> serde_json::Value {
+    serde_json::json!({
+        "outputBytes": html.len(),
+        "sha256": format!("{:x}", Sha256::digest(html.as_bytes())),
+        "hosts": html.matches("<bench-").count(),
+        "bindings": html.matches("<!--fe:b-->").count() + html.matches("<!--fe-b$$start$$").count(),
+        "repeats": html.matches("<!--fe:r-->").count() + html.matches("<!--fe-repeat$$start$$").count(),
+        "attributeMarkers": html.matches(" data-fe=").count() + html.matches(" data-fe-b-").count() + html.matches(" data-fe-c-").count(),
+    })
+}
+
 #[test]
 fn benchmark_corpus_matches_pre_optimization_bytes_in_both_marker_modes() {
     let records: serde_json::Value =
@@ -33,14 +44,7 @@ fn benchmark_corpus_matches_pre_optimization_bytes_in_both_marker_modes() {
                 .unwrap(),
             html,
         );
-        let stats = serde_json::json!({
-            "outputBytes": html.len(),
-            "sha256": format!("{:x}", Sha256::digest(html.as_bytes())),
-            "hosts": html.matches("<bench-").count(),
-            "bindings": html.matches("<!--fe:b-->").count() + html.matches("<!--fe-b$$start$$").count(),
-            "repeats": html.matches("<!--fe:r-->").count() + html.matches("<!--fe-repeat$$start$$").count(),
-            "attributeMarkers": html.matches(" data-fe=").count() + html.matches(" data-fe-b-").count() + html.matches(" data-fe-c-").count(),
-        });
+        let stats = output_stats(&html);
         for key in [
             "outputBytes",
             "sha256",
@@ -60,6 +64,37 @@ fn benchmark_corpus_matches_pre_optimization_bytes_in_both_marker_modes() {
         .unwrap();
         assert!(chunks.iter().all(|chunk| !chunk.is_empty()));
         assert_eq!(chunks.concat(), html, "{record}");
+    }
+}
+
+#[test]
+fn remaining_workload_reports_match_native_outputs_without_timing_assertions() {
+    let reports = [
+        include_str!("../benchmark-baselines/aarch64-apple-darwin-repeat-profile.json"),
+        include_str!("../benchmark-baselines/aarch64-apple-darwin-plain-profile.json"),
+        include_str!("../benchmark-baselines/aarch64-apple-darwin-overlay-profile.json"),
+        include_str!("../benchmark-baselines/aarch64-apple-darwin-no-overlay-profile.json"),
+        include_str!("../benchmark-baselines/aarch64-apple-darwin-definitions-profile.json"),
+    ];
+    for report in reports {
+        let report: serde_json::Value = serde_json::from_str(report).unwrap();
+        for record in report["records"].as_array().unwrap() {
+            let fixture = fixtures::fixture(
+                record["case"].as_str().unwrap(),
+                record["count"].as_u64().unwrap() as usize,
+                record["payload"].as_u64().unwrap() as usize,
+                record["rootKeys"].as_u64().unwrap() as usize,
+            );
+            let locator = fixture.locator();
+            let config = RenderConfig::new().with_markers_v2(record["mode"] == "v2");
+            let html =
+                render_entry_with_locator(&fixture.entry, &fixture.state, &locator, Some(&config))
+                    .unwrap();
+            let stats = output_stats(&html);
+            for (key, value) in stats.as_object().unwrap() {
+                assert_eq!(value, &record[key], "{record}: {key}");
+            }
+        }
     }
 }
 
