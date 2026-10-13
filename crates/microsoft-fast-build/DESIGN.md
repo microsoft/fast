@@ -733,5 +733,19 @@ all renderer work.
 
 See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for commands,
 timing/RSS methodology, explicit scaling checks, and baseline provenance.
+Post-scanner native CPU profiles and bounded packaged-WASM measurements identify
+whole-root cloning in `build_custom_element_child_root` as the strongest next
+target for repeat/attribute-overlay workloads. The repeat root contains the
+whole items array, so each attributed child copies state proportional to the
+number of items. The no-attribute path avoids that copy and must remain intact.
+
+Profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
+frame pointers; no production counters, allocator changes, or new dependencies
+are introduced. Native locator and render phases are sampled separately so a
+hot function within a cheap setup phase is not mistaken for the dominant
+end-to-end cost. Native stack frequencies do not measure WASM allocations.
+Rust integration tests verify the recorded WASM outputs against native rendering
+without imposing machine-specific timing thresholds.
+
 Compiled templates, single buffered recursive sinks, borrowed state, prepared
 WASM handles, incremental sessions, and workers remain separate milestones.

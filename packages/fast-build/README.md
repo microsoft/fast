@@ -133,6 +133,12 @@ same fixtures against pre-optimization hashes without flaky timing thresholds.
 See the [benchmark guide](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
 for native Criterion benchmarks, fixture sizes, methodology, and limitations.
 
+The guide includes post-scanner repeat/state-heavy and many-definition profiles.
+Start expensive repeat cases with `--counts=250,1000 --warmup-count=250`;
+state-overlay controls and separate native phases help identify the next
+optimization without running an unbounded matrix. Native CPU samples are not
+WASM allocation measurements, and no production rendering behavior is changed.
+
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
