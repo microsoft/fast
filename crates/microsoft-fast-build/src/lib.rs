@@ -22,10 +22,8 @@
 //!   node::render_node(template, root, loop_vars, locator, hydration?)     │
 //!   streaming::stream_node(...) → Vec<String> chunks                      │
 //!         │                                                                │
-//!         ├─ [hydration] scan literal HTML tags for attr bindings         │
-//!         │      └─ inject data-fe="N" count markers                    │
-//!         │                                                                │
-//!         ├─ directive::next_directive() → earliest position              │
+//!         ├─ directive::next_event() → next tag or directive              │
+//!         │      ├─ PlainTag     → resolve attributes, hydration markers │
 //!         │      ├─ TripleBrace  → content::render_triple_brace()        │
 //!         │      ├─ DoubleBrace  → content::render_double_brace()        │
 //!         │      ├─ When         → directive::render_when()  ────────────┘ recurse
@@ -46,7 +44,7 @@
 //! | `renderer` | Thin entry points mapping the public API into `render_node` or `stream_node` calls |
 //! | `node` | Main rendering loop — directive dispatch and hydration tag scan |
 //! | `streaming` | Simulated streaming loop — returns precomputed HTML chunks |
-//! | `directive` | `Directive` enum, `next_directive` scanner, directive renderers |
+//! | `directive` | `Directive` / `RenderEvent` enums, forward `next_event` scanner, directive renderers |
 //! | `content` | `{{expr}}` / `{{{expr}}}` binding renderers and `html_escape` |
 //! | `attribute` | Low-level HTML/attribute string parsing utilities |
 //! | `attribute_lookup` | Static lookup tables mapping ARIA and HTML attribute names to DOM property names |

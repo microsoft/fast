@@ -39,7 +39,8 @@
   ],
   "scripts": {
     "build": "node build-wasm.cjs",
-    "test:node": "node --test test/config.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js",
+    "test:node": "node --test test/config.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs",
+    "bench:render": "node test/performance/render-entry.mjs",
     "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js"
   },
   "engines": {

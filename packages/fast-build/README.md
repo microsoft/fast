@@ -110,6 +110,29 @@ provided. Chunk boundaries are safe for HTML parsing:
 - Empty chunks are omitted.
 - Concatenating all chunks matches the normal non-streamed render.
 
+### Performance benchmarks for contributors
+
+The renderer discovers tags and bindings in a forward scan, eliminating repeated
+remaining-suffix searches for adjacent custom elements and plain tags. Existing
+WASM exports, rendered bytes, default markers, and `markers_v2` remain compatible.
+Rendering is still synchronous, and `--stream` still buffers all chunks in WASM.
+
+From a FAST repository checkout, not an installed npm package:
+
+```shell
+npm run build -w @microsoft/fast-build
+npm run bench:render -w @microsoft/fast-build -- --case=url_sink_siblings --output=/tmp/fast-render.json
+npm run bench:render -w @microsoft/fast-build -- --case=url_sink_siblings --check-scaling
+```
+
+The runner benchmarks the actual packaged WASM in fresh child processes in both
+marker modes, recording timing, CPU, output hashes, throughput, and peak RSS.
+Use `--case`, `--counts`, `--samples`, or `--compare=<baseline.json>` to narrow
+or compare a run. Output files are never overwritten. Normal tests verify the
+same fixtures against pre-optimization hashes without flaky timing thresholds.
+See the [benchmark guide](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
+for native Criterion benchmarks, fixture sizes, methodology, and limitations.
+
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
