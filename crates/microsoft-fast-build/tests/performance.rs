@@ -99,6 +99,50 @@ fn remaining_workload_reports_match_native_outputs_without_timing_assertions() {
 }
 
 #[test]
+fn allocation_baseline_preserves_output_and_has_consistent_heap_statistics() {
+    let report: serde_json::Value = serde_json::from_str(include_str!(
+        "../benchmark-baselines/aarch64-apple-darwin-allocations.json"
+    ))
+    .unwrap();
+    assert_eq!(report["records"].as_array().unwrap().len(), 30);
+    for record in report["records"].as_array().unwrap() {
+        let fixture = fixtures::fixture(
+            record["case"].as_str().unwrap(),
+            record["count"].as_u64().unwrap() as usize,
+            record["payload"].as_u64().unwrap() as usize,
+            record["rootKeys"].as_u64().unwrap() as usize,
+        );
+        let locator = fixture.locator();
+        let config = RenderConfig::new().with_markers_v2(record["mode"] == "v2");
+        let html =
+            render_entry_with_locator(&fixture.entry, &fixture.state, &locator, Some(&config))
+                .unwrap();
+        let stats = output_stats(&html);
+        for key in ["sha256", "outputBytes"] {
+            assert_eq!(stats[key], record[key], "{record}: {key}");
+        }
+        for (total, peak, retained) in [
+            ("totalBytes", "peakLiveBytes", "retainedBytes"),
+            ("totalBlocks", "peakLiveBlocks", "retainedBlocks"),
+        ] {
+            let total = record[total].as_u64().unwrap();
+            let peak = record[peak].as_u64().unwrap();
+            let retained = record[retained].as_u64().unwrap();
+            assert!(
+                total >= peak && peak >= retained && retained > 0,
+                "{record}"
+            );
+        }
+        if record["phase"] == "locator" {
+            assert!(record["allocatedBytesPerOutputByte"].is_null());
+        } else {
+            assert_eq!(record["retainedBlocks"], 1);
+            assert!(record["retainedBytes"].as_u64().unwrap() >= html.len() as u64);
+        }
+    }
+}
+
+#[test]
 fn url_sink_has_readable_golden_output() {
     let fixture = fixtures::fixture("url_sink_siblings", 1, 1, 0);
     let locator = fixture.locator();

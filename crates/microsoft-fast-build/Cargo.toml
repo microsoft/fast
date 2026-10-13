@@ -15,8 +15,14 @@ name = "microsoft_fast_build"
 path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]
 
+[features]
+allocation-profiling = []
+
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+allocation-counter = "0.8.1"
 
 [dev-dependencies]
 criterion = "0.5"
@@ -27,3 +33,7 @@ tempfile = "3"
 [[bench]]
 name = "render"
 harness = false
+
+[[example]]
+name = "profile-allocations"
+required-features = ["allocation-profiling"]
