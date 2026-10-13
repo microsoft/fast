@@ -1,0 +1,194 @@
+{
+    "schemaVersion": 1,
+    "fastCommit": "a58548a5cec9f4508fd46693f9ec63443e07b0b6",
+    "nativeBinarySha256": "2ac24b2e8cec04f6d9afc7890ad54af760dba1c2d9292ae924d4e9e658a1e30a",
+    "crateVersion": "0.12.0",
+    "rustc": "1.93.1 (01f6ddf75 2026-02-11)",
+    "criterion": "0.5.1",
+    "target": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "cpu": "Apple M3 Pro",
+        "osVersion": "macOS 27.0.1 (26A434)"
+    },
+    "build": {
+        "profile": "bench",
+        "CARGO_PROFILE_BENCH_DEBUG": "true",
+        "RUSTFLAGS": "-C force-frame-pointers=yes"
+    },
+    "sampling": {
+        "tool": "/usr/bin/sample",
+        "durationSeconds": 3,
+        "intervalMilliseconds": 1,
+        "criterionProfileSeconds": 8,
+        "mode": "v3",
+        "count": 1000,
+        "counting": "Sum inclusive call-graph counts for each named non-recursive function. These are sampled stacks, not allocation counts or exclusive CPU time. Zero means no observed frame, not necessarily no work."
+    },
+    "symbols": {
+        "childState": "microsoft_fast_build::directive::build_custom_element_child_root",
+        "attributes": "microsoft_fast_build::attribute::parse_element_attribute_parts",
+        "codeEscape": "microsoft_fast_build::code_escape::escape_code_sample_elements"
+    },
+    "records": [
+        {
+            "case": "repeat_custom_elements",
+            "phase": "render",
+            "payload": 1,
+            "rootKeys": 0,
+            "mainThreadSamples": 2001,
+            "inclusiveSamples": {
+                "childState": 1075,
+                "attributes": 6,
+                "codeEscape": 0
+            },
+            "rawSampleSha256": "6510ea2ae3959466da579a0232244a75fc2cf09c8a97fec94e2994406773a928",
+            "criterionQuickEstimatesMs": {
+                "render": 408.13,
+                "parseStateAndRender": 424.42,
+                "locator": 0.00028747
+            },
+            "topLeafSymbols": [
+                { "name": "_platform_memmove", "samples": 351 },
+                { "name": "_xzm_free_tc", "samples": 250 },
+                { "name": "__xzm_xzone_free_to_freelist_chunk", "samples": 210 },
+                { "name": "_xzm_malloc_tc", "samples": 173 }
+            ]
+        },
+        {
+            "case": "plain_bound_elements",
+            "phase": "render",
+            "payload": 1,
+            "rootKeys": 0,
+            "mainThreadSamples": 2069,
+            "inclusiveSamples": {
+                "childState": 0,
+                "attributes": 252,
+                "codeEscape": 0
+            },
+            "rawSampleSha256": "477b5852f5102711483ceb1f4d53db1f2a78d9c61c53c6eab9f16a60aff1e1a2",
+            "criterionQuickEstimatesMs": {
+                "render": 4.9825,
+                "parseStateAndRender": 11.413,
+                "locator": 0.00016248
+            },
+            "topLeafSymbols": [
+                { "name": "_platform_memmove", "samples": 255 },
+                { "name": "_xzm_free_tc", "samples": 152 },
+                { "name": "_malloc_zone_malloc", "samples": 110 },
+                { "name": "_xzm_malloc_tc", "samples": 109 }
+            ]
+        },
+        {
+            "case": "large_state_overlay",
+            "phase": "render",
+            "payload": 1,
+            "rootKeys": 200,
+            "mainThreadSamples": 2049,
+            "inclusiveSamples": {
+                "childState": 1205,
+                "attributes": 20,
+                "codeEscape": 1
+            },
+            "rawSampleSha256": "df36f12894f0e14d9de02f54d20841160c3bacb2381a6aa7ccc4683292803383",
+            "criterionQuickEstimatesMs": {
+                "render": 29.823,
+                "parseStateAndRender": 30.104,
+                "locator": 0.00012905
+            },
+            "topLeafSymbols": [
+                { "name": "_xzm_malloc_tc", "samples": 256 },
+                { "name": "_xzm_free_tc", "samples": 254 },
+                { "name": "_platform_memmove", "samples": 230 },
+                { "name": "_malloc_zone_malloc", "samples": 182 }
+            ]
+        },
+        {
+            "case": "large_state_no_overlay",
+            "phase": "render",
+            "payload": 1,
+            "rootKeys": 200,
+            "mainThreadSamples": 2121,
+            "inclusiveSamples": {
+                "childState": 0,
+                "attributes": 37,
+                "codeEscape": 12
+            },
+            "rawSampleSha256": "6a15c36943771e62adcfe07cf4bbeca009be3ad2cbcf0eb8911bbb49f174c0bb",
+            "criterionQuickEstimatesMs": {
+                "render": 1.4584,
+                "parseStateAndRender": 1.5381,
+                "locator": 0.00012772
+            },
+            "topLeafSymbols": [
+                { "name": "_platform_memmove", "samples": 203 },
+                {
+                    "name": "core::str::pattern::StrSearcher::new",
+                    "samples": 165
+                },
+                { "name": "xzm_malloc_zone_malloc_type_realloc", "samples": 127 },
+                { "name": "_xzm_free_tc", "samples": 105 }
+            ]
+        },
+        {
+            "case": "many_definitions",
+            "phase": "locator",
+            "payload": 20,
+            "rootKeys": 0,
+            "mainThreadSamples": 2148,
+            "inclusiveSamples": {
+                "childState": 0,
+                "attributes": 0,
+                "codeEscape": 1257
+            },
+            "rawSampleSha256": "51eb16735505792660714ace678b21a04efc120773c1b405b5ee91482aca2eff",
+            "criterionQuickEstimatesMs": {
+                "render": 34.478,
+                "parseStateAndRender": 33.149,
+                "locator": 0.24331
+            },
+            "topLeafSymbols": [
+                {
+                    "name": "core::str::pattern::TwoWaySearcher::next",
+                    "samples": 920
+                },
+                { "name": "_platform_memmove", "samples": 213 },
+                { "name": "_xzm_free_tc", "samples": 154 },
+                {
+                    "name": "core::str::pattern::StrSearcher::new",
+                    "samples": 141
+                }
+            ]
+        },
+        {
+            "case": "many_definitions",
+            "phase": "render",
+            "payload": 20,
+            "rootKeys": 0,
+            "mainThreadSamples": 2095,
+            "inclusiveSamples": {
+                "childState": 0,
+                "attributes": 200,
+                "codeEscape": 2
+            },
+            "rawSampleSha256": "a7d5ca3cb63cf5aaf7df1937bb5a2bd261b2394c457217b9cb0bf9fc9db1bebc",
+            "criterionQuickEstimatesMs": {
+                "render": 34.478,
+                "parseStateAndRender": 33.149,
+                "locator": 0.24331
+            },
+            "topLeafSymbols": [
+                {
+                    "name": "core::str::pattern::TwoWaySearcher::next",
+                    "samples": 253
+                },
+                { "name": "_platform_memmove", "samples": 213 },
+                { "name": "_xzm_free_tc", "samples": 132 },
+                {
+                    "name": "microsoft_fast_build::content::html_escape",
+                    "samples": 96
+                }
+            ]
+        }
+    ]
+}

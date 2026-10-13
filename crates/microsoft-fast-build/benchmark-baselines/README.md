@@ -86,6 +86,110 @@ To reproduce an optimized comparison after building the package:
 node packages/fast-build/test/performance/render-entry.mjs --case=url_sink_siblings --compare=crates/microsoft-fast-build/benchmark-baselines/aarch64-apple-darwin-before.json --output=/tmp/fast-render-after.json --check-scaling
 ```
 
+## Profiling the remaining workloads
+
+The `aarch64-apple-darwin-*-profile.json` reports were captured after the scanner
+fix at `a58548a5cec9f4508fd46693f9ec63443e07b0b6`. Five reports contain 36
+fresh-child packaged-WASM measurements in both marker modes; the native report
+summarizes six symbolized CPU captures and separate Criterion quick estimates.
+No renderer optimization was made during this investigation.
+
+The WASM runs use three samples and a 250-instance warmup. Repeat and plain
+controls use 250/1,000 instances, state cases use 1,000/5,000 hosts with 0/200
+extra root keys, and definitions use 50/200/1,000 templates with payloads 1/20.
+These bounded sizes avoid multiplying an already expensive state-cloning path
+into an unhelpful full-matrix run. They do not establish 20k acceptance targets.
+
+| Packaged-WASM workload | Instances | Extra root keys | v3 median (ms) | v2 median (ms) |
+| --- | ---: | ---: | ---: | ---: |
+| Repeated custom elements | 1,000 | 0 | 422.71 | 431.95 |
+| Bound plain elements | 1,000 | 0 | 15.06 | 14.81 |
+| Attribute overlays | 1,000 | 0 | 4.30 | 4.37 |
+| Attribute overlays | 1,000 | 200 | 35.25 | 35.27 |
+| No attribute overlays | 1,000 | 200 | 3.70 | 3.84 |
+| Many definitions, payload 20 | 1,000 | 0 | 43.68 | 46.72 |
+
+### Findings and next optimization
+
+Child-state construction is the strongest measured next target. In native v3
+profiles, `build_custom_element_child_root` occurs in 1,075/2,001 main-thread
+samples (53.72%) for repeated custom elements and 1,205/2,049 (58.81%) for
+attribute overlays with 200 root keys. Its descendant stacks include
+`RawTable::clone`, `Vec::clone`, `String::clone`, and allocator/copy routines.
+Separate destruction stacks and frequent free routines show additional cleanup
+work outside those inclusive counts.
+
+The repeat fixture's root contains the entire `items` array. Every attributed
+child clones that root before overlaying host attributes; increasing the
+number of items therefore increases both the number and size of those copies.
+Packaged-WASM repeat times rise from 53.55 to 422.71 ms (v3) and 45.86 to
+431.95 ms (v2) for a 4x instance increase. This is evidence for the remaining
+state-copying hazard, not a fitted 1k/5k/20k scaling claim. Removing attributes
+is not a valid optimization because it would change state semantics.
+
+The overlay controls reinforce this finding: adding 200 unused root keys
+increases v3 time from 4.30 to 35.25 ms at 1,000 attributed hosts, while the
+no-overlay case changes only from 3.40 to 3.70 ms. Output hashes within each
+overlay/no-overlay workload are unchanged by those extra unused keys.
+Borrowed child-state overlays should be the next focused optimization, with
+state precedence/inheritance parity preserved.
+
+The many-definition case has a different profile. Native locator construction
+takes about 0.243 ms for 1,000 definitions with payload 20, versus about
+34.48 ms for rendering with an already prepared locator. Code-sample
+preprocessing appears in 1,257/2,148 (58.52%) locator-phase samples, but that
+phase is small here; its percentage must not be interpreted as 58.52% of
+end-to-end rendering. The render profile instead contains string searching,
+attribute parsing/binding resolution, escaping, and copying. Compiled
+templates, parse-once attributes, and buffered sinks remain relevant follow-ons.
+
+Native quick estimates are independent, low-sample diagnostic runs; do not
+subtract them to infer isolated parsing costs. Native sampling percentages
+are inclusive stack frequencies, not exclusive CPU time, allocation counts,
+or WASM phase percentages. Zero observed frames do not prove zero work,
+especially with inlining. Native allocator behavior does not establish WASM
+memory behavior. Raw captures remain local; the compact report retains their
+hashes, selected symbols/counts, compiler/build flags, and binary provenance.
+
+### Reproducing the investigation
+
+Use new output paths; these commands do not refresh the checked-in reports:
+
+```sh
+npm run bench:render -w @microsoft/fast-build -- --case=repeat_custom_elements --counts=250,1000 --samples=3 --warmup-count=250 --output=/tmp/fast-repeat-profile.json
+npm run bench:render -w @microsoft/fast-build -- --case=plain_bound_elements --counts=250,1000 --samples=3 --warmup-count=250 --output=/tmp/fast-plain-profile.json
+npm run bench:render -w @microsoft/fast-build -- --case=large_state_overlay --counts=1000,5000 --samples=3 --warmup-count=250 --output=/tmp/fast-overlay-profile.json
+npm run bench:render -w @microsoft/fast-build -- --case=large_state_no_overlay --counts=1000,5000 --samples=3 --warmup-count=250 --output=/tmp/fast-no-overlay-profile.json
+npm run bench:render -w @microsoft/fast-build -- --case=many_definitions --samples=3 --warmup-count=250 --output=/tmp/fast-definitions-profile.json
+CARGO_PROFILE_BENCH_DEBUG=true RUSTFLAGS="-C force-frame-pointers=yes" cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render -- '^repeat_custom_elements/v3/render/1000/payload1/root0$' --profile-time 8 --noplot
+```
+
+For a native CPU capture, run the final command in one terminal. Once Criterion
+prints `Profiling for`, attach macOS `sample <benchmark-pid> 3 1 -file <new-path>`
+from another terminal. Sample the benchmark executable, not Cargo. Building
+first with the same environment and `--no-run --message-format=json` reveals
+its path in the `compiler-artifact` record. A direct invocation of that binary
+must include `--bench`, otherwise Criterion performs a correctness run rather
+than a profiling loop. The profiling environment is opt-in and does not change
+production WASM build settings or add dependencies.
+
+The six filters used for CPU captures were:
+
+```text
+^repeat_custom_elements/v3/render/1000/payload1/root0$
+^plain_bound_elements/v3/render/1000/payload1/root0$
+^large_state_overlay/v3/render/1000/payload1/root200$
+^large_state_no_overlay/v3/render/1000/payload1/root200$
+^many_definitions/v3/locator/1000/payload20/root0$
+^many_definitions/v3/render/1000/payload20/root0$
+```
+
+Replace `--profile-time 8` with `--quick` for diagnostic timing estimates.
+The compact native report sums counts across call-graph entries for each
+named non-recursive function; recursive frame totals must not be summed as if
+they represented distinct samples. Platform-specific Linux profiling and native
+allocation reports remain outstanding.
+
 ## Output compatibility and remaining work
 
 Correctness runs in normal Rust/Node tests at 0/1/2/1,000 instances in both marker
@@ -103,6 +207,10 @@ toolchain and fixture recipe. The runner cannot isolate internal WASM phases,
 WASM memory pages (not exported), native allocation counts, or file writes; those
 require separate profiling. The schema does not invent measurements for them.
 
-This milestone addresses directive discovery only. Compiled templates, buffered
+Rust parity tests also render every remaining-workload WASM report record and
+verify its output hash, bytes, and marker counts, including the larger
+definition payloads and state-overlay controls. They do not assert timing.
+
+The completed optimization addresses directive discovery only. Compiled templates, buffered
 recursive writes, state overlays, prepared WASM handles, and genuinely incremental
 sessions remain separate work. `stream: true` still materializes all chunks.

@@ -734,3 +734,9 @@ locator construction. Shared fixtures cover 1k/5k/20k instances and
 50/200/1,000 definitions with payload sizes 1/20 in both marker modes.
 See [performance baselines](benchmark-baselines/README.md) for the packaged
 WASM runner, golden hashes, scaling checks, RSS measurement, and limitations.
+
+The guide also records post-scanner repeat/state-overlay and many-definition
+profiles, with bounded workload commands and symbolized native CPU sampling
+through Criterion's `--profile-time` mode. Those measurements identify child-state
+copying as the next repeat/overlay target; they do not claim that memory or
+allocation targets have been met.
