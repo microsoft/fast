@@ -1,6 +1,6 @@
 # microsoft-fast-build
 
-A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in pure Rust with no external dependencies.
+A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in pure Rust with no native runtime dependencies.
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
@@ -712,3 +712,25 @@ duplicate template: element '<my-button>' is defined in multiple files: ./a/my-b
 ## Numeric Precision
 
 The hand-rolled JSON parser stores all numbers as `f64`. This means integers larger than 2^53 (9,007,199,254,740,992) lose precision, as is the case with standard JavaScript `number` values. For typical use cases (IDs, counts, display values) this is not a concern. If your state contains very large integers, represent them as strings and bind with `{{expr}}` accordingly.
+
+## Renderer performance
+
+Tag and binding discovery uses a forward event scan rather than repeated
+remaining-suffix searches for each directive kind. Adjacent custom elements
+and plain tags no longer incur those quadratic searches. Rendered HTML,
+attribute handling, default markers, and `markers_v2` remain compatible.
+Templates still render recursively; this is not a compiled-template or lazy
+streaming API. Stream functions continue to return fully materialized chunks.
+
+From a FAST repository checkout, run the native benchmarks and parity tests:
+
+```sh
+cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render
+cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+```
+
+Criterion separates parsed-state rendering, state parsing plus rendering, and
+locator construction. Shared fixtures cover 1k/5k/20k instances and
+50/200/1,000 definitions with payload sizes 1/20 in both marker modes.
+See [performance baselines](benchmark-baselines/README.md) for the packaged
+WASM runner, golden hashes, scaling checks, RSS measurement, and limitations.

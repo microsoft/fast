@@ -1,22 +1,21 @@
 use crate::attribute::{
-    count_tag_attribute_bindings, extract_directive_content, extract_directive_expr,
-    find_next_plain_html_tag, find_tag_end, inject_hydration_marker, parse_element_attributes,
-    read_tag_name, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
+    extract_directive_content, extract_directive_expr, find_tag_end, parse_element_attributes,
+    read_tag_name,
 };
 use crate::config::RenderConfig;
 use crate::content::{render_double_brace, render_triple_brace};
 use crate::context::resolve_value;
 use crate::directive::{
     build_custom_element_child_root, build_element_open_tag, build_loop_vars,
-    build_shadowroot_template_attrs, merge_template_host_attrs, next_directive,
-    parse_repeat_expr, Directive,
+    build_shadowroot_template_attrs, merge_template_host_attrs, next_event,
+    parse_repeat_expr, Directive, RenderEvent,
 };
 use crate::error::{template_context, RenderError};
 use crate::expression::evaluate;
 use crate::hydration::HydrationScope;
 use crate::json::JsonValue;
 use crate::locator::Locator;
-use crate::node::render_node;
+use crate::node::{process_plain_html_tag, render_node};
 
 pub(crate) fn stream_node(
     template: &str,
@@ -32,23 +31,20 @@ pub(crate) fn stream_node(
     let mut pos = 0;
 
     loop {
-        pos = process_plain_html_tags(
-            template,
-            pos,
-            root,
-            loop_vars,
-            locator,
-            hydration.as_mut().map(|h| &mut **h),
-            &mut current,
-        );
-
-        let dir_chunk = match next_directive(template, pos, locator) {
+        let dir_chunk = match next_event(template, pos, locator) {
             None => {
                 current.push_str(&template[pos..]);
                 push_non_empty(&mut chunks, current);
                 break;
             }
-            Some(d) => d,
+            Some(RenderEvent::PlainTag(tag_pos)) => {
+                pos = process_plain_html_tag(
+                    template, pos, tag_pos, root, loop_vars,
+                    hydration.as_mut().map(|h| &mut **h), &mut current,
+                );
+                continue;
+            }
+            Some(RenderEvent::Directive(d)) => d,
         };
 
         current.push_str(&template[pos..dir_chunk.position()]);
@@ -69,64 +65,6 @@ pub(crate) fn stream_node(
     }
 
     Ok(chunks)
-}
-
-fn process_plain_html_tags(
-    template: &str,
-    mut pos: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
-    locator: Option<&Locator>,
-    mut hydration: Option<&mut HydrationScope>,
-    result: &mut String,
-) -> usize {
-    loop {
-        let dir_pos = next_directive(template, pos, locator)
-            .map(|d| d.position())
-            .unwrap_or(template.len());
-
-        let tag_pos = match find_next_plain_html_tag(template, pos, locator) {
-            Some(p) if p < dir_pos => p,
-            _ => break,
-        };
-
-        result.push_str(&template[pos..tag_pos]);
-
-        let tag_end = match find_tag_end(template, tag_pos) {
-            Some(e) => e,
-            None => {
-                result.push_str(&template[tag_pos..]);
-                return template.len();
-            }
-        };
-        let tag_str = &template[tag_pos..tag_end];
-        let (db, sb) = count_tag_attribute_bindings(tag_str);
-        let total = db + sb;
-
-        match hydration.as_mut() {
-            Some(hy) => {
-                if total > 0 {
-                    let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
-                    let stripped = strip_client_only_attrs(&resolved);
-                    let marker = hy.attribute_marker(total);
-                    result.push_str(&inject_hydration_marker(&stripped, &marker));
-                } else {
-                    result.push_str(&strip_client_only_attrs(tag_str));
-                }
-            }
-            None => {
-                if db > 0 {
-                    result.push_str(&resolve_attribute_bindings_in_tag(tag_str, root, loop_vars));
-                } else {
-                    result.push_str(tag_str);
-                }
-            }
-        }
-
-        pos = tag_end;
-    }
-
-    pos
 }
 
 fn stream_directive(
