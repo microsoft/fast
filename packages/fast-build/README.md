@@ -139,6 +139,12 @@ state-overlay controls and separate native phases help identify the next
 optimization without running an unbounded matrix. Native CPU samples are not
 WASM allocation measurements, and no production rendering behavior is changed.
 
+The guide also includes an opt-in native allocation baseline and a fresh-process
+matrix command: `node crates/microsoft-fast-build/benches/profile-allocations.mjs
+--output=/tmp/fast-allocations.json` from the repository root. Its counters are
+development-only Rust tooling, not part of the npm CLI or WASM; native peak
+newly-live heap is not process RSS.
+
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
