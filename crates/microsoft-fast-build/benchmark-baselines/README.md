@@ -39,7 +39,54 @@ exponent <= 1.15. Timing checks are opt-in: do not enable them on unpinned PR
 runners. At least three samples on otherwise idle, stable hardware are recommended.
 Output paths are created exclusively; a run never overwrites an existing baseline.
 Reports snapshot the starting git revision, dirty-worktree flag, and WASM
-SHA-256; dirty reports identify an uncommitted implementation via its artifact hash.
+SHA-256. A dirty worktree can include benchmark helpers, reports, or generated
+files; it does not necessarily mean the renderer implementation is uncommitted.
+Use the artifact hash and source provenance together.
+
+## Local before/after measurements
+
+The checked-in `aarch64-apple-darwin-before.json` and
+`aarch64-apple-darwin-after.json` measure the URL sibling regression on an Apple
+M3 Pro with Node 22.22.1, three fresh-child samples per size/mode, and a
+1,000-instance warmup. These are local macOS measurements, not Linux/reference
+machine results or full-corpus performance claims.
+
+| Marker mode | Instances | Before median (ms) | After median (ms) | Speedup |
+| --- | ---: | ---: | ---: | ---: |
+| v3 | 1,000 | 299.682 | 7.999 | 37.47x |
+| v3 | 5,000 | 7,091.213 | 32.416 | 218.75x |
+| v3 | 20,000 | 116,906.540 | 122.098 | 957.48x |
+| v2 | 1,000 | 287.428 | 8.046 | 35.72x |
+| v2 | 5,000 | 7,037.736 | 33.219 | 211.86x |
+| v2 | 20,000 | 115,477.367 | 122.144 | 945.42x |
+
+All six before/after output hashes and byte lengths match. The optimized
+20k/5k ratios are 3.77 (v3) and 3.68 (v2), with fitted exponents 0.99 and
+0.96 respectively. Both pass the 1.15 exponent threshold. The original v3
+ratio is 16.49 with exponent 2.02; its
+`--check-scaling` run intentionally failed after writing the baseline report.
+
+Process peak RSS at 20,000 instances was 106.06 -> 108.94 MiB (v3) and
+99.17 -> 114.52 MiB (v2). This scanner change does not demonstrate a memory
+reduction. Peak RSS includes warmup and hash verification; shorter optimized
+calls also make 100 ms RSS samples sparse or unavailable.
+
+The before artifact was built from `a38c2f1aea2840ea530de42d055f0a03cefe5872`
+before renderer edits, with the new benchmark helpers present. Its WASM SHA-256 is
+`c749f46306b561bb55e45700cf19f7ed3db8ad67d01cd8e9a3b7198943c4ca51`.
+The after artifact was built from `3e9117770a8da29c369d3d31a04e37da25fa08fb`;
+its WASM SHA-256 is
+`c128e5d88ff457dedc0549438ec9e2d11450e0a89e997899b003898e587063bc`.
+Both reports retain their starting provenance even if the worktree changes
+during measurement.
+
+To reproduce an optimized comparison after building the package:
+
+```sh
+node packages/fast-build/test/performance/render-entry.mjs --case=url_sink_siblings --compare=crates/microsoft-fast-build/benchmark-baselines/aarch64-apple-darwin-before.json --output=/tmp/fast-render-after.json --check-scaling
+```
+
+## Output compatibility and remaining work
 
 Correctness runs in normal Rust/Node tests at 0/1/2/1,000 instances in both marker
 modes. The shared `benches/fixtures/expected-baseline.json` records pre-optimization
