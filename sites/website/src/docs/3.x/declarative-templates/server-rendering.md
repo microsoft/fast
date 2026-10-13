@@ -271,6 +271,20 @@ fast build \
 
 The output (`index.html`) contains the fully resolved HTML with Declarative Shadow DOM and hydration markers.
 
+### Large build-time renders
+
+FAST Build discovers opening tags and bindings in a forward scan, avoiding
+repeated remaining-suffix searches when an entry contains many adjacent custom
+elements or plain tags. This optimization preserves rendered bytes and both
+the default hydration markers and the opt-in `markers_v2` format; existing
+callers need no changes.
+
+The WASM renderer is still synchronous. `--stream` writes precomputed chunks,
+not incrementally generated output, so it does not unblock the Node event loop
+or reduce time to the first chunk. Contributors can compare native and packaged
+WASM workloads using the
+[FAST Build benchmark guide](https://github.com/microsoft/fast/blob/main/crates/microsoft-fast-build/benchmark-baselines/README.md).
+
 ### Configuration File
 
 Instead of passing every option on the command line, create a `fast-build.config.json`:

@@ -92,6 +92,9 @@ fast convert [options]
 | `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary |
 | `wasm/convert/microsoft_fast_convert.js` | WASM-generated JS bindings for the Rust converter |
 | `wasm/convert/microsoft_fast_convert_bg.wasm` | Compiled Rust converter binary |
+| `test/performance/fixtures.mjs` | Generates WASM workloads from the shared Rust benchmark corpus |
+| `test/performance/render-entry.mjs` | Fresh-child WASM timing, memory, hash comparison, and opt-in scaling checks |
+| `test/performance/performance.test.mjs` | Byte/hash/marker parity against pre-optimization goldens in both marker modes |
 
 ---
 
@@ -290,6 +293,12 @@ The build WASM module exposes four functions; the CLI uses the entry renderer wh
 
 See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
 
+Normal and compatibility-stream rendering share a forward Rust event scanner
+and atomic plain-tag handler. Discovery stops at the next tag or binding instead
+of performing independent searches over the remaining entry suffix for every
+host. WASM exports and positional arguments are unchanged. This does not make
+rendering asynchronous or introduce prepared/compiled template handles.
+
 The converter WASM module is loaded from
 `wasm/convert/microsoft_fast_convert.js` and must export `convert_template(template,
 syntax)`, `convert_template_with_options(template, syntax, typeSource?,
@@ -322,6 +331,29 @@ Streaming mode does not write `--output`, does not print `Built: ...`, and does
 not warn when `--templates` is omitted. Non-streaming output remains unchanged.
 Chunk construction happens in Rust before the WASM call returns, so this is
 simulated streaming rather than a lazy Node.js `ReadableStream`.
+
+## Performance validation
+
+`bench:render` runs the packaged WASM export in fresh child processes. Each child
+warms up with at most 1,000 instances by default, forces GC, measures one synchronous render, and reports wall/CPU time,
+JSON stringify time, input/output sizes, and before/after memory. OS peak RSS
+comes from `process.resourceUsage()`; the parent samples RSS every 100 ms on
+macOS/Linux because a timer in the blocked child cannot observe the render.
+Peak memory includes warmup and verification. Internal WASM phases and memory
+pages are not exposed and are not claimed as measured.
+
+Both the Rust and Node generators read
+`crates/microsoft-fast-build/benches/fixtures/corpus.json`. Normal package tests
+compare output hashes, byte counts, marker counts, and joined legacy chunks
+against a shared pre-optimization golden at 0/1/2/1,000 instances in both marker
+modes. Native tests verify the same golden, preventing fixture generators from
+drifting unnoticed.
+
+Benchmark reports are explicitly written to new files only. `--compare` checks
+byte/hash parity and reports speedups; `--check-scaling` is opt-in for stable
+hosts, not enabled in normal PR tests. See the crate's
+[`benchmark baseline guide`](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
+for exact commands, workload sizes, measurement limitations, and later milestones.
 
 ---
 

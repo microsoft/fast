@@ -4,9 +4,9 @@ use crate::expression::evaluate;
 use crate::content::html_escape;
 use crate::config::{RenderConfig, AttributeNameStrategy};
 use crate::attribute::{
-    find_str, find_directive, extract_directive_expr, extract_directive_content,
-    find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
-    parse_element_attributes, find_custom_element,
+    extract_directive_expr, extract_directive_content,
+    skip_single_brace_expr, find_tag_end, read_tag_name, read_tag_name_slice,
+    parse_element_attributes, find_next_plain_html_tag, is_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
     data_attr_to_dataset_key, kebab_to_camel,
 };
@@ -17,6 +17,7 @@ use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 
 /// A template directive found at a given byte position.
+#[derive(Debug, PartialEq, Eq)]
 pub enum Directive {
     TripleBrace(usize),
     DoubleBrace(usize),
@@ -35,43 +36,77 @@ impl Directive {
     }
 }
 
-/// Find the earliest directive in `template` starting from `from`.
-/// Single-brace expressions (`{…}`) are skipped so their `}` characters cannot
-/// accidentally terminate a `{{…}}` binding search.
-/// If `locator` is Some, also detects `CustomElement` directives for known elements.
-pub fn next_directive(template: &str, from: usize, locator: Option<&Locator>) -> Option<Directive> {
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum RenderEvent {
+    PlainTag(usize),
+    Directive(Directive),
+}
+
+pub(crate) fn next_event(
+    template: &str,
+    from: usize,
+    locator: Option<&Locator>,
+) -> Option<RenderEvent> {
+    let bytes = template.as_bytes();
     let mut pos = from;
-    loop {
-        let triple = find_str(template, "{{{", pos).map(Directive::TripleBrace);
-        // Suppress `{{` when it coincides with the start of a `{{{`
-        let double = find_str(template, "{{", pos).and_then(|d| {
-            let shadowed = triple.as_ref().map(|t| t.position() == d).unwrap_or(false);
-            if shadowed { None } else { Some(Directive::DoubleBrace(d)) }
-        });
-        let when   = find_directive(template, "<f-when",   pos).map(Directive::When);
-        let repeat = find_directive(template, "<f-repeat", pos).map(Directive::Repeat);
-        let custom = locator.and_then(|loc| {
-            find_custom_element(template, pos, loc).map(Directive::CustomElement)
-        });
+    while pos < bytes.len() {
+        match bytes[pos] {
+            b'{' if bytes.get(pos + 1) == Some(&b'{') => {
+                let directive = if bytes.get(pos + 2) == Some(&b'{') {
+                    Directive::TripleBrace(pos)
+                } else {
+                    Directive::DoubleBrace(pos)
+                };
+                return Some(RenderEvent::Directive(directive));
+            }
 
-        let all_refs = [triple.as_ref(), double.as_ref(), when.as_ref(), repeat.as_ref(), custom.as_ref()];
-        let earliest_pos = all_refs.into_iter().flatten().map(|d| d.position()).min();
-
-        // If a single { precedes the earliest binding, skip past it so its `}`
-        // cannot be misread as the closing `}}` of a double-brace binding.
-        if let (Some(single), Some(earliest)) = (find_single_brace(template, pos), earliest_pos) {
-            if single < earliest {
-                pos = skip_single_brace_expr(template, single);
+            b'{' => {
+                let after = skip_single_brace_expr(template, pos);
+                // The legacy plain-tag pass also sees tags inside client expressions.
+                // Stop at one before resuming so attribute handling stays byte-compatible.
+                if let Some(tag) = find_next_plain_html_tag(template, pos + 1, after, locator) {
+                    return Some(RenderEvent::PlainTag(tag));
+                }
+                pos = after;
                 continue;
             }
+            b'<' => {
+                for (tag, directive) in [
+                    ("<f-when", Directive::When(pos)),
+                    ("<f-repeat", Directive::Repeat(pos)),
+                ] {
+                    if template[pos..].starts_with(tag)
+                        && matches!(
+                            bytes.get(pos + tag.len()),
+                            Some(b' ' | b'>' | b'\n' | b'\t' | b'\r'),
+                        )
+                    {
+                        return Some(RenderEvent::Directive(directive));
+                    }
+                }
+                if let Some(name) = read_tag_name_slice(template, pos) {
+                    if is_custom_element(name)
+                        && locator.map_or(false, |loc| loc.has_template(name))
+                    {
+                        return Some(RenderEvent::Directive(Directive::CustomElement(pos)));
+                    }
+                    if !matches!(bytes.get(pos + 1), Some(b'/' | b'!'))
+                        && !name.starts_with("f-")
+                    {
+                        return Some(RenderEvent::PlainTag(pos));
+                    }
+                }
+            }
+            _ => {}
         }
-
-        return [triple, double, when, repeat, custom]
-            .into_iter()
-            .flatten()
-            .min_by_key(|d| d.position());
+        pos += 1;
     }
+    None
 }
+
+#[cfg(test)]
+#[path = "directive-scan-tests.rs"]
+mod scan_tests;
 
 /// Render an `<f-when>` directive.
 pub fn render_when(

@@ -2,11 +2,11 @@ use crate::json::JsonValue;
 use crate::error::RenderError;
 use crate::config::RenderConfig;
 use crate::content::{render_triple_brace, render_double_brace};
-use crate::directive::{Directive, next_directive, render_when, render_repeat, render_custom_element};
+use crate::directive::{Directive, RenderEvent, next_event, render_when, render_repeat, render_custom_element};
 use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 use crate::attribute::{
-    find_next_plain_html_tag, count_tag_attribute_bindings,
+    count_tag_attribute_bindings,
     resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_hydration_marker, find_tag_end,
 };
 
@@ -27,18 +27,16 @@ pub fn render_node(
     let mut result = String::new();
     let mut pos = 0;
     loop {
-        pos = process_plain_html_tags(
-            template,
-            pos,
-            root,
-            loop_vars,
-            locator,
-            hydration.as_mut().map(|h| &mut **h),
-            &mut result,
-        );
-        let dir_chunk = match next_directive(template, pos, locator) {
+        let dir_chunk = match next_event(template, pos, locator) {
             None => { result.push_str(&template[pos..]); break; }
-            Some(d) => d,
+            Some(RenderEvent::PlainTag(tag_pos)) => {
+                pos = process_plain_html_tag(
+                    template, pos, tag_pos, root, loop_vars,
+                    hydration.as_mut().map(|h| &mut **h), &mut result,
+                );
+                continue;
+            }
+            Some(RenderEvent::Directive(d)) => d,
         };
         result.push_str(&template[pos..dir_chunk.position()]);
         let (chunk, next_pos) = process_directive(
@@ -53,73 +51,49 @@ pub fn render_node(
     Ok(result)
 }
 
-fn process_plain_html_tags(
+pub(crate) fn process_plain_html_tag(
     template: &str,
-    mut pos: usize,
+    pos: usize,
+    tag_pos: usize,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
-    locator: Option<&Locator>,
-    mut hydration: Option<&mut HydrationScope>,
+    hydration: Option<&mut HydrationScope>,
     result: &mut String,
 ) -> usize {
-    loop {
-        // Find where the next directive starts so we don't scan past it.
-        let dir_pos = next_directive(template, pos, locator)
-            .map(|d| d.position())
-            .unwrap_or(template.len());
+    result.push_str(&template[pos..tag_pos]);
 
-        // Find the next plain HTML opening tag that precedes the directive.
-        // Plain = not a closing tag, not <!…>, not an f-* directive, and not a
-        // custom element that has a template in the locator (those are handled
-        // as CustomElement directives by the main loop).
-        let tag_pos = match find_next_plain_html_tag(template, pos, locator) {
-            Some(p) if p < dir_pos => p,
-            // No plain tag before the next directive — hand control back to the main loop.
-            _ => break,
-        };
+    let tag_end = match find_tag_end(template, tag_pos) {
+        Some(e) => e,
+        None => {
+            // Preserve malformed tags verbatim.
+            result.push_str(&template[tag_pos..]);
+            return template.len();
+        }
+    };
+    let tag_str = &template[tag_pos..tag_end];
 
-        // Emit literal text that precedes this tag.
-        result.push_str(&template[pos..tag_pos]);
-
-        let tag_end = match find_tag_end(template, tag_pos) {
-            Some(e) => e,
-            None => {
-                // Malformed tag with no closing `>` — emit the rest verbatim and stop.
-                result.push_str(&template[tag_pos..]);
-                return template.len();
-            }
-        };
-        let tag_str = &template[tag_pos..tag_end];
-
-        // Count {{expr}} and {expr} attribute bindings on this tag.
-        let (db, sb) = count_tag_attribute_bindings(tag_str);
-        let total = db + sb;
-        match hydration.as_mut() {
-            Some(hy) => {
-                if total > 0 {
-                    // Allocate binding indices for this tag's bindings, resolve {{expr}}
-                    // attribute values, strip client-only attrs, then inject the
-                    // hydration marker `data-fe="N"`.
-                    let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
-                    let stripped = strip_client_only_attrs(&resolved);
-                    let marker = hy.attribute_marker(total);
-                    result.push_str(&inject_hydration_marker(&stripped, &marker));
-                } else {
-                    // No bindings — still strip client-only attrs but no marker needed.
-                    result.push_str(&strip_client_only_attrs(tag_str));
-                }
-            }
-            None => {
-                if db > 0 {
-                    result.push_str(&resolve_attribute_bindings_in_tag(tag_str, root, loop_vars));
-                } else {
-                    result.push_str(tag_str);
-                }
+    let (db, sb) = count_tag_attribute_bindings(tag_str);
+    let total = db + sb;
+    match hydration {
+        Some(hy) => {
+            if total > 0 {
+                let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
+                let stripped = strip_client_only_attrs(&resolved);
+                let marker = hy.attribute_marker(total);
+                result.push_str(&inject_hydration_marker(&stripped, &marker));
+            } else {
+                result.push_str(&strip_client_only_attrs(tag_str));
             }
         }
-        pos = tag_end;
+        None => {
+            if db > 0 {
+                result.push_str(&resolve_attribute_bindings_in_tag(tag_str, root, loop_vars));
+            } else {
+                result.push_str(tag_str);
+            }
+        }
     }
-    pos
+    tag_end
 }
 
 fn process_directive(

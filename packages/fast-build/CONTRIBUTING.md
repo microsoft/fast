@@ -26,6 +26,18 @@ This runs `cargo build` on the Rust crate followed by `wasm-pack build --target 
 ### Running the Rust tests
 
 ```sh
-cd crates/microsoft-fast-build
-cargo test
+cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+npm run test:node -w @microsoft/fast-build
 ```
+
+## Performance benchmarks
+
+```sh
+npm run bench:render -w @microsoft/fast-build -- --case=url_sink_siblings --output=/tmp/fast-render.json
+cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render
+```
+
+The Node runner measures the packaged WASM in fresh child processes; native
+Criterion groups isolate renderer/state/locator phases. See the
+[benchmark guide](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
+for comparison commands, golden parity, opt-in scaling checks, and limitations.
