@@ -362,6 +362,12 @@ setup percentages are not treated as end-to-end WASM percentages. The recorded
 outputs are checked against native rendering. Profiling does not alter this
 package's production build, exports, or streaming behavior.
 
+Native allocation baselines are collected by an opt-in Rust development example
+and a fresh-process runner under the crate's `benches/` directory. The npm CLI
+and shipped WASM do not use its allocator or feature. Shared output hashes
+preserve cross-language parity; native current-thread allocation volume and
+peak newly-live heap must not be presented as Node RSS or WASM memory usage.
+
 ---
 
 ## Error handling

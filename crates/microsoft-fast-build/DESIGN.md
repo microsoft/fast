@@ -686,7 +686,9 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **No native runtime dependencies.** The JSON parser, glob matcher, HTML scanner,
 and expression evaluator are hand-rolled. Criterion, serde_json, and SHA-256
-are development-only dependencies for benchmarks and parity tests;
+are development-only dependencies for benchmarks and parity tests.
+The native-only `allocation-counter` development dependency is used by the
+opt-in allocation example and its isolated integration test;
 wasm-bindgen remains a WASM-target dependency.
 
 **No intermediate representation.** The renderer operates directly on the source template string using byte indices. This avoids the memory allocation and complexity of building an AST or DOM tree.
@@ -739,13 +741,28 @@ target for repeat/attribute-overlay workloads. The repeat root contains the
 whole items array, so each attributed child copies state proportional to the
 number of items. The no-attribute path avoids that copy and must remain intact.
 
-Profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
-frame pointers; no production counters, allocator changes, or new dependencies
-are introduced. Native locator and render phases are sampled separately so a
+CPU profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
+frame pointers; that path introduces no production counters or allocator changes.
+Native locator and render phases are sampled separately so a
 hot function within a cheap setup phase is not mistaken for the dominant
 end-to-end cost. Native stack frequencies do not measure WASM allocations.
 Rust integration tests verify the recorded WASM outputs against native rendering
 without imposing machine-specific timing thresholds.
+
+`examples/profile-allocations.rs` is gated by `allocation-profiling` and uses
+`allocation-counter` only in its development executable. It measures one
+synchronous phase on the current thread, after preparing the shared fixture
+and any pre-parsed state/locator. The output or new locator is retained at the
+measurement boundary; hashing, JSON serialization, and locator validation
+rendering happen afterward. Separate integration-test processes avoid counting
+other tests' allocations. The library never installs this allocator.
+
+The Node orchestration under `benches/` discovers the example executable from
+Cargo JSON, launches a fresh process for each of 30 requests, and rejects mixed
+source/binary/lockfile provenance or duplicate records. Reports distinguish
+cumulative allocation volume from peak newly-live heap, exclude pre-existing
+inputs, and are not RSS or WASM measurements. They establish a baseline for
+borrowed state overlays, not an allocation reduction already delivered.
 
 Compiled templates, single buffered recursive sinks, borrowed state, prepared
 WASM handles, incremental sessions, and workers remain separate milestones.

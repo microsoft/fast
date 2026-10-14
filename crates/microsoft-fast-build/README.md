@@ -740,3 +740,16 @@ profiles, with bounded workload commands and symbolized native CPU sampling
 through Criterion's `--profile-time` mode. Those measurements identify child-state
 copying as the next repeat/overlay target; they do not claim that memory or
 allocation targets have been met.
+
+For native allocation baselines, use the opt-in development example or the
+fresh-process matrix runner from the repository root:
+
+```sh
+node crates/microsoft-fast-build/benches/profile-allocations.mjs --output=/tmp/fast-allocations.json
+cargo run --manifest-path crates/microsoft-fast-build/Cargo.toml --release --features allocation-profiling --example profile-allocations -- --case=repeat_custom_elements --count=250 --mode=v3 --phase=render
+```
+
+The feature does not instrument the library or shipped WASM. Reports count
+only allocations on the measuring thread within the selected phase, excluding
+prepared inputs and report generation. See the baseline guide for controls,
+output retention, reallocation semantics, and test commands.
