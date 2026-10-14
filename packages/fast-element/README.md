@@ -96,6 +96,9 @@ preserving SSR nodes while reconciling missing or excess items.
 Existing FAST 3 marker output and opt-in `markers_v2` remain supported without
 application changes. See the [server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)
 and [contributor performance workloads](./docs/template-bindings.md#hydration-cpu-regression-coverage).
+Contributor-facing internals separate DOM traversal, binding target mapping,
+and repeat-range discovery; the opt-in benchmark spec is independent of the
+deterministic correctness and allocation regression spec.
 
 ## Export Sizes
 

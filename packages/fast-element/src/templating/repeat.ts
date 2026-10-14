@@ -1,8 +1,8 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
 import { isHydratable } from "../components/hydration.js";
-import { getHostName } from "../hydration/diagnostics.js";
 import { getHydrationMarkers } from "../hydration/markers.js";
+import { collectHydrationRepeatRanges } from "../hydration/repeat-ranges.js";
 import { ArrayObserver, type Sort, type Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
@@ -71,17 +71,6 @@ function bindWithPositioning(
     view.context.length = items.length;
     view.context.index = index;
     view.bind(items[index]);
-}
-
-function isCommentNode(node: Node): node is Comment {
-    return node.nodeType === Node.COMMENT_NODE;
-}
-
-interface HydrationRepeatRange {
-    start: Node;
-    end: Node;
-    startMarker: Comment;
-    endMarker: Comment;
 }
 
 function removeNodeRange(first: Node, last: Node): void {
@@ -437,49 +426,15 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const views = (this.views = new Array(itemCount));
         const markers = getHydrationMarkers();
 
-        const itemRanges: HydrationRepeatRange[] = [];
-        const stack: Comment[] = [];
-        // Start at this directive's content, not an earlier adjacent repeat's prefix.
+        // Do not scan an earlier adjacent repeat's prefix.
         const boundaries = (this.controller as HydrationView).bindingViewBoundaries[
             this.directive.targetNodeId
         ];
-        let current: Node | null = boundaries?.first ?? this.location;
-
-        while (current !== null && current !== this.location) {
-            if (isCommentNode(current)) {
-                const data = current.data;
-                if (markers.isRepeatViewStartMarker(data)) {
-                    stack.push(current);
-                } else if (markers.isRepeatViewEndMarker(data)) {
-                    const startMarker = stack.pop();
-                    if (startMarker === undefined) {
-                        const expected =
-                            current.previousSibling === null
-                                ? "end should never be null."
-                                : "repeat start marker not found.";
-                        throw new Error(
-                            `Error when hydrating inside "${getHostName(this.location)}": ${expected}`,
-                        );
-                    }
-                    if (stack.length === 0) {
-                        const start = startMarker.nextSibling!;
-                        const end = current.previousSibling!;
-                        itemRanges.push({
-                            start,
-                            end: end === startMarker ? start : end,
-                            startMarker,
-                            endMarker: current,
-                        });
-                    }
-                }
-            }
-            current = current.nextSibling;
-        }
-        if (stack.length !== 0) {
-            throw new Error(
-                `Error when hydrating inside "${getHostName(this.location)}": repeat end marker not found.`,
-            );
-        }
+        const itemRanges = collectHydrationRepeatRanges(
+            boundaries?.first ?? this.location,
+            this.location,
+            markers,
+        );
 
         // Nested ranges still belong to the child views that will hydrate below.
         for (const { startMarker, endMarker } of itemRanges) {

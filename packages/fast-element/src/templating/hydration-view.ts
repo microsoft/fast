@@ -7,11 +7,11 @@ import {
 } from "../hydration/diagnostics.js";
 import {
     buildViewBindingTargets,
-    createRangeForNodes,
     HydrationTargetElementError,
     targetFactory,
     type ViewBehaviorBoundaries,
 } from "../hydration/target-builder.js";
+import { createRangeForNodes } from "../hydration/traversal.js";
 import { type ExecutionContext, SourceLifetime } from "../observation/observable.js";
 import { makeSerializationNoop } from "../platform.js";
 import type { ViewTemplate } from "../templating/template.js";

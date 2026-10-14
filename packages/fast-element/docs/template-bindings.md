@@ -341,6 +341,11 @@ Nested custom elements that also need hydration are demarcated so the parent's w
 
 ### Hydration Binding Flow
 
+`hydration/traversal.ts` owns pointer navigation and its live Range fallback.
+`hydration/target-builder.ts` consumes that traversal to map factories, keeping
+direct native marker reads inline. `HydrationView` uses the same range utility
+when producing diagnostic fragments, without coupling it to target discovery.
+
 ```mermaid
 flowchart TD
     A["Server renders HTML with Declarative Shadow DOM"] --> B["Browser parses HTML, creates DOM + shadow roots"]
@@ -447,6 +452,12 @@ and rescanning prefixes belonging to earlier adjacent repeats. Nested markers
 remain untouched until child views hydrate. Both unmatched starts and unmatched
 ends throw before repeat markers are cleared.
 
+The read-only `collectHydrationRepeatRanges()` helper in
+`hydration/repeat-ranges.ts` owns this discovery and validation. `RepeatBehavior`
+supplies its own binding boundaries, then clears top-level markers and hydrates,
+creates, or removes views. The discovery helper does not alter marker data or
+bind views.
+
 ```mermaid
 flowchart TD
     A["RepeatBehavior.bind(controller)"] --> B{"isHydratable(template) && hydrating?"}
@@ -486,18 +497,21 @@ preservation, malformed-marker diagnostics, installed `markers_v2`, empty items,
 and missing/excess reconciliation. Existing target-builder tests compare live
 endpoint mutations with the legacy Range walker. The declarative repeat fixture
 checks SSR node identity, three nested repeat levels, an empty inner list, and an
-adjacent repeat before exercising reactive updates.
+adjacent repeat before exercising reactive updates. The co-located
+`src/hydration/repeat-ranges.pw.spec.ts` also verifies that successful discovery
+leaves native and legacy marker data unchanged and excludes adjacent ranges.
 
 Run focused correctness coverage from the monorepo root:
 
 ```sh
-npm exec -w @microsoft/fast-element -- playwright test src/hydration/target-builder.pw.spec.ts src/hydration/hydration-performance.pw.spec.ts src/templating/repeat.pw.spec.ts --project=chromium
+npm exec -w @microsoft/fast-element -- playwright test src/hydration/target-builder.pw.spec.ts src/hydration/hydration-performance.pw.spec.ts src/hydration/repeat-ranges.pw.spec.ts src/templating/repeat.pw.spec.ts --project=chromium
 ```
 
-CPU timings are opt-in rather than flaky wall-clock CI gates:
+CPU timings live separately in `src/hydration/hydration-benchmark.pw.spec.ts`
+and are opt-in rather than flaky wall-clock CI gates:
 
 ```sh
-FAST_HYDRATION_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test src/hydration/hydration-performance.pw.spec.ts --project=chromium --retries=0 -g "measures independent"
+FAST_HYDRATION_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test src/hydration/hydration-benchmark.pw.spec.ts --project=chromium --retries=0 -g "measures independent"
 ```
 
 The workloads measure 4,000 marker-free sibling views, 4,000 native

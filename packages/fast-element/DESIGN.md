@@ -118,6 +118,15 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 
 ### Hydration traversal
 
+The implementation separates DOM navigation (`src/hydration/traversal.ts`),
+factory-to-node mapping (`src/hydration/target-builder.ts`), and bounded repeat
+range discovery (`src/hydration/repeat-ranges.ts`). `RepeatBehavior` retains marker
+cleanup and view lifecycle reconciliation. Traversal exposes a small internal
+move/update/mutation-preparation tuple, without adding per-marker allocations.
+The native fast path remains inline in target discovery rather than routing
+through generic resolution objects. Opt-in timing workloads live separately in
+`src/hydration/hydration-benchmark.pw.spec.ts`.
+
 Target discovery uses pointer DFS for ordered endpoints with a shared, non-null
 parent, including descendants of both endpoints when they are the same node.
 Sibling movement stops at the inclusive last endpoint; content and custom-element
