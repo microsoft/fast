@@ -1,5 +1,7 @@
 import { enableDebug } from "../src/debug.js";
 
+export { createNativeHydrationWorkload } from "./hydration-workload.js";
+
 enableDebug();
 
 export {

@@ -103,6 +103,14 @@ TestElementWithObserverMap.define(
     [observerMap()],
 );
 
+export class TestElementRepeatLabel extends FASTElement {
+    @attr label: string = "";
+}
+TestElementRepeatLabel.define({
+    name: "test-element-repeat-label",
+    template: declarativeTemplate(),
+});
+
 export class TestElementNestedRepeat extends FASTElement {
     @observable
     groups: { name: string; items: { label: string; values: number[] }[] }[] = [

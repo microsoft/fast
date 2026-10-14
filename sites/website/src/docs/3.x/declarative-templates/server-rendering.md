@@ -89,6 +89,13 @@ potentially mutating marker cleanup retain the live Range traversal. This is an
 internal optimization: marker formats, registration order, readiness promises,
 and update scheduling are unchanged, including opt-in `markers_v2`.
 
+For FAST-registered elements, native `data-fe` cleanup also stays on pointers
+when the registration-time observation snapshot proves the marker unobserved
+and attribute methods are native. Unknown registration and custom marker
+strategies, observed markers, customized built-ins, and overridden methods
+retain mutation-safe traversal. Marker cleanup remains synchronous; no
+application registration or callback-order changes are needed.
+
 :::tip
 The controller exposes two properties: `isPrerendered` resolves `true` when the element had a declarative shadow root at connect time, while `isHydrated` resolves `true` only when hydration actually ran successfully. Use these to detect how the element was rendered and when it is fully interactive.
 :::
