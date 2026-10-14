@@ -346,6 +346,23 @@ Nested custom elements that also need hydration are demarcated so the parent's w
 direct native marker reads inline. `HydrationView` uses the same range utility
 when producing diagnostic fragments, without coupling it to target discovery.
 
+`enableHydration()` replaces the small core `components/element-registration.ts`
+strategy with `hydration/attribute-observation.ts`. Client-only `FASTElement`
+bundles do not include observation tracking. Immediately before FAST's platform
+registration, tracking records only a boolean proving that `data-fe` is
+unobserved, after extensions and asynchronous template resolution. The proof is
+available during synchronous upgrades and restored if registration fails.
+Earlier untracked registrations remain conservative; calling `enableHydration()`
+again does not reset existing proof. Hydration never reconstructs the platform
+snapshot by rereading `constructor.observedAttributes`.
+
+For a known unobserved `data-fe` attribute and native attribute methods, removal
+cannot invoke an attribute-change callback, so pointers remain active.
+Registration/lifecycle accessors, custom attribute iterators, unknown registry
+wrappers, customized built-ins, and overridden attribute methods remain
+conservative. Legacy/custom marker cleanup still captures live boundaries from
+the outset. Marker removal is not deferred and callback order is unchanged.
+
 ```mermaid
 flowchart TD
     A["Server renders HTML with Declarative Shadow DOM"] --> B["Browser parses HTML, creates DOM + shadow roots"]
@@ -501,17 +518,30 @@ adjacent repeat before exercising reactive updates. The co-located
 `src/hydration/repeat-ranges.pw.spec.ts` also verifies that successful discovery
 leaves native and legacy marker data unchanged and excludes adjacent ranges.
 
+`src/hydration/native-marker-cleanup.pw.spec.ts` exercises a 1,000-record,
+three-repeat-level workload with 20 adjacent prefix items: 4,021 FAST elements,
+4,020 native attribute markers, and 8,041 hydrated views. Range/TreeWalker setup,
+`comparePoint`, and `intersectsNode` counts are all zero; all 7,020 SSR descendant
+elements retain their identity. Mutation fixtures require the fallback and
+verify immediate insertion/removal, endpoint moves, unstable observation
+metadata, method accessors, customized built-ins, and legacy/custom strategies.
+Registration-order cases cover disabled tracking, enabling after registration,
+repeated enablement after observation changes, and platform registration deferred
+until after asynchronous template resolution.
+The declarative repeat fixture includes bound FAST child elements, checks zero
+live traversal setup, and exercises reactive updates after hydration.
+
 Run focused correctness coverage from the monorepo root:
 
 ```sh
-npm exec -w @microsoft/fast-element -- playwright test src/hydration/target-builder.pw.spec.ts src/hydration/hydration-performance.pw.spec.ts src/hydration/repeat-ranges.pw.spec.ts src/templating/repeat.pw.spec.ts --project=chromium
+npm exec -w @microsoft/fast-element -- playwright test src/hydration/target-builder.pw.spec.ts src/hydration/hydration-performance.pw.spec.ts src/hydration/native-marker-cleanup.pw.spec.ts src/hydration/repeat-ranges.pw.spec.ts src/templating/repeat.pw.spec.ts --project=chromium
 ```
 
 CPU timings live separately in `src/hydration/hydration-benchmark.pw.spec.ts`
 and are opt-in rather than flaky wall-clock CI gates:
 
 ```sh
-FAST_HYDRATION_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test src/hydration/hydration-benchmark.pw.spec.ts --project=chromium --retries=0 -g "measures independent"
+FAST_HYDRATION_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test src/hydration/hydration-benchmark.pw.spec.ts --project=chromium --retries=0
 ```
 
 The workloads measure 4,000 marker-free sibling views, 4,000 native
@@ -530,6 +560,13 @@ fallbacks for custom-element attribute cleanup, not just ordinary element views.
 These microbenchmarks time template hydration, not the issue's application
 registration or hydration-completion tracking, and should not be presented as
 that application's hydration timings.
+
+The separate native FAST workload times bind/unbind for the 4,021-element /
+8,041-view case above. Setup and registration are excluded, identity and marker
+removal are verified after every sample, and the same fresh-document sampling
+rules apply. Use this workload to compare the known-unobserved cleanup path;
+the original combined workload intentionally registers ordinary custom elements
+outside FAST and therefore retains its conservative fallback.
 
 ### Hydration Stage Lifecycle
 

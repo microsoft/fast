@@ -82,6 +82,7 @@
                 <li data-group="{{group.name}}">
                     <f-repeat value="{{item in group.items}}">
                         <span data-item="{{item.label}}">
+                            <test-element-repeat-label label="{{item.label}}"></test-element-repeat-label>
                             <f-repeat value="{{value in item.values}}">
                                 <b>{{value}}</b>
                             </f-repeat>
@@ -93,5 +94,10 @@
                 <li data-tail>{{item}}</li>
             </f-repeat>
         </ul>
+    </template>
+</f-template>
+<f-template name="test-element-repeat-label">
+    <template>
+        <span data-label>{{label}}</span>
     </template>
 </f-template>

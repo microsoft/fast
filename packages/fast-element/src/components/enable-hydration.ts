@@ -1,3 +1,4 @@
+import { installAttributeObservation } from "../hydration/attribute-observation.js";
 import { installHydrationDiagnostic } from "../hydration/diagnostics.js";
 import { installHydrationMarkers } from "../hydration/markers.js";
 import { ensureHydrationRuntime } from "../hydration/runtime.js";
@@ -32,6 +33,9 @@ let hookInstalled = false;
  * Call this before any FAST elements connect to the DOM. Hydration
  * logic is not active unless this function is called, keeping
  * `FASTElement` lightweight for client-side-only applications.
+ * Call before platform registration to also enable the pointer-only native
+ * marker cleanup optimization. Earlier registrations remain mutation-safe
+ * through conservative traversal.
  *
  * Safe to call multiple times — the hydration hook is installed once
  * and subsequent calls merge their options into the shared tracker.
@@ -110,6 +114,7 @@ export function enableHydration(options?: HydrationOptions): HydrationController
     }
 
     if (!hookInstalled) {
+        installAttributeObservation();
         tracker = new HydrationTracker(options ?? {});
         hookInstalled = true;
         const activeTracker = tracker;
