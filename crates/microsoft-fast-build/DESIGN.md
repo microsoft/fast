@@ -98,6 +98,14 @@ All handlers return `Result<(String, usize), RenderError>`. The `usize` is the b
 
 ## Simulated streaming — `streaming.rs`
 
+Nullable attribute values are resolved by the shared attribute helper before
+serializing a tag: a missing/null segment omits the whole attribute, but an
+explicit empty string is retained. Known HTML boolean attributes bound to JSON
+booleans use presence; other booleans remain textual values. Hydration counts
+come from the original source tag, not the surviving attributes. Host-default
+deduplication also considers source author names so an omitted author binding
+cannot be replaced by a template default.
+
 `stream_node` shares `next_event` and `node::process_plain_html_tag` with the
 recursive rendering loop in `node.rs`, but returns
 `Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
@@ -132,6 +140,29 @@ Author attributes still win, client-only host attributes are skipped, and
 template-host bindings resolve against the child state.
 
 ---
+
+## Plugin integration boundaries
+
+`render_shadow_root_*_with_locator` returns just the DSD `<template>` for a
+named definition and resolved component state. Normal, stream, and fragment
+rendering share `directive::render_shadow_content`, with a fresh hydration scope
+and no extra fragment allocation on whole-host paths. The fragment API does
+not create host attributes or light DOM; nested hosts still follow normal rules.
+
+`binding_metadata.rs` reuses render-event discovery, tag attributes, directive
+body extraction, repeat parsing, and code escaping to describe bindings.
+Metadata retains expressions and lexical repeat frames rather than inventing
+root paths or state declarations. `name` is absent for compound expressions;
+`paths` are lexical references, not a JavaScript type checker. `optional` is
+unknown, and types are unknown except for repeat collections' array requirement.
+The permissive template parser remains descriptive, not full syntax validation.
+
+Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
+`Locator::from_metadata` validates native versions/names/duplicates; WASM render
+exports validate explicit per-definition `formatVersion` before constructing
+the locator. Unversioned string/metadata maps remain compatible. The CLI retains
+metadata fields when mapping parsed definitions, and WASM custom declarations
+describe the JSON interfaces without adding a runtime serialization dependency.
 
 ## Finding the next event — `directive::next_event`
 
@@ -583,7 +614,7 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 
 ## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes five functions to JavaScript via `wasm-bindgen`:
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes these functions to JavaScript via `wasm-bindgen`:
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -591,6 +622,7 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}`. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool, markers_v2?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+| `render_shadow_root` | `(element_name: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render only the complete DSD template using resolved component state; no host or light DOM |
 | `compose_f_template_styles` | `(template_html: &str, css: &str) → String` (throws on error) | Insert `<style>{css}</style>` as the first child of the inner `<template>` of a single `<f-template>` definition; throws a JS error (the `RenderError` display message) on any validation failure |
 
 ### `parse_f_templates`
@@ -602,12 +634,21 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
   {
     "name": "my-button",
     "content": "<button>{{label}}</button>",
-    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}]
+    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}],
+    "hostAttributes": [],
+    "formatVersion": 1,
+    "bindings": [{
+      "name": "label", "expression": "label", "kind": "content",
+      "paths": ["label"], "scope": [], "type": null, "optional": null
+    }]
   },
   {
     "name": null,
     "content": "<span>unnamed</span>",
-    "shadowrootAttributes": []
+    "shadowrootAttributes": [],
+    "hostAttributes": [],
+    "formatVersion": 1,
+    "bindings": []
   }
 ]
 ```

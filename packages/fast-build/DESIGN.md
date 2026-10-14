@@ -136,6 +136,19 @@ The config file must be a JSON object. Build config keys must be one of `entry`,
 
 ## Template loading — `parseFTemplates`
 
+Parsed definitions now include versioned binding metadata. The JavaScript layer
+retains these fields while removing only `name` to form the keyed render map;
+binding discovery and version validation remain Rust-owned. Each generated
+definition has `formatVersion: 1`; renderer entry points reject explicit
+incompatible versions while accepting legacy unversioned definitions.
+`bindings` describe syntax/lexical scopes with explicit unknown state types
+and optionality, not an inferred application schema.
+
+Plugins can call the exported `render_shadow_root` directly for a complete DSD
+fragment using resolved component state, without creating a throwaway host or
+slicing serialized HTML. Host/light-DOM ownership stays with the caller.
+Normal/stream/fragment paths share native shadow rendering and marker scopes.
+
 Template HTML files are scanned for `<f-template>` elements. Each `<f-template>` with a `name` attribute contributes one entry to the templates map:
 
 ```html
@@ -186,6 +199,11 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 ---
 
 ## Converter output rules
+
+The opt-in `typed` CLI/config boolean is passed as the appended optional WASM
+argument. It annotates template/style exports with FAST types for
+`isolatedDeclarations`; default conversion is unchanged and unsupported target
+syntaxes fail. Explicit CLI false overrides configured true.
 
 `fast convert` accepts a required target `syntax` and a required `templates`
 source: a comma-separated glob pattern list (an exact single file path is also
@@ -280,7 +298,7 @@ runs test files concurrently and `convert-fixtures.test.js` clears the shared
 
 ## WASM integration
 
-The build WASM module exposes four functions; the CLI uses the entry renderer when templates are loaded or streaming is requested:
+The build WASM module exposes rendering and metadata functions; the CLI uses the entry renderer when templates are loaded or streaming is requested:
 
 | Function | Used when |
 |----------|-----------|
@@ -288,6 +306,7 @@ The build WASM module exposes four functions; the CLI uses the entry renderer wh
 | `wasm.render_with_templates(entry, templatesJson, state?, strategy, markers_v2?)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
 | `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?, markers_v2?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
+| `wasm.render_shadow_root(name, templatesJson, state?, strategy?, markers_v2?)` | Plugins that own their host and light DOM, passing resolved component state |
 
 `templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>`, any forwarded `shadowrootAttributes`, and a `hostAttributes` array carrying the attributes declared on the inner `<template>` element. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>` and merging `hostAttributes` onto the rendered host element opening tag (author host attributes win on conflicts; client-only attrs and `{{expr}}` / `?name="{{expr}}"` bindings are handled by the WASM renderer — see the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details). It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
 
@@ -296,13 +315,13 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 Normal and compatibility-stream rendering share a forward Rust event scanner
 and atomic plain-tag handler. Discovery stops at the next tag or binding instead
 of performing independent searches over the remaining entry suffix for every
-host. WASM exports and positional arguments are unchanged. This does not make
+host. Existing WASM positional arguments remain compatible. This does not make
 rendering asynchronous or introduce prepared/compiled template handles.
 
 The converter WASM module is loaded from
 `wasm/convert/microsoft_fast_convert.js` and must export `convert_template(template,
 syntax)`, `convert_template_with_options(template, syntax, typeSource?,
-typeSourceImport?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
+typeSourceImport?, typed?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
 receives the source `.html` template contents, the selected syntax
 (`webui-prerelease`, `webui-framework-prerelease`, or `fast-v3-ts`), and optional `typeSource` /
 `typeSourceImport` strings, returning a `{ output, warnings }` object (`output` the

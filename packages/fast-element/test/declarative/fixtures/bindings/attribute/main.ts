@@ -34,6 +34,19 @@ TestElementExpression.define({
     template: declarativeTemplate(),
 });
 
+class TestElementNullable extends FASTElement {
+    @observable nullableHref: string | null = null;
+    @observable missingRole: string | undefined = undefined;
+    @observable nullableTabIndex: number | null = null;
+    @observable emptyHref: string = "";
+    @observable isDisabled: boolean = false;
+    @observable nullableValue: string | null = null;
+}
+TestElementNullable.define({
+    name: "test-element-nullable",
+    template: declarativeTemplate(),
+});
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;

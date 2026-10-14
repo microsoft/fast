@@ -68,6 +68,12 @@ client window where custom elements connect, render, update, and hydrate.
 
 ## Debug entrypoint
 
+The declarative attribute fixture covers server-side omission of null/missing
+attributes and subsequent hydration updates. Explicit empty strings remain
+present, and omitted attributes retain binding slots. See the
+[server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)
+for the rendering contract.
+
 `@microsoft/fast-element/debug.js` exports `enableDebug()` instead of configuring
 FAST at import time. The development root export and debug rollup bundle still
 enable debug behavior automatically.

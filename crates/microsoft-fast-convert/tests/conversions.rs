@@ -164,6 +164,7 @@ fn fast_v3_ts_emits_type_source_generic_without_import() {
     let options = ConvertOptions {
         type_source: Some("MyElement".to_string()),
         type_source_import: None,
+        ..ConvertOptions::default()
     };
     let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
 
@@ -179,6 +180,7 @@ fn fast_v3_ts_emits_type_source_generic_with_import() {
     let options = ConvertOptions {
         type_source: Some("MyElement".to_string()),
         type_source_import: Some("./my-element.js".to_string()),
+        ..ConvertOptions::default()
     };
     let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
 
@@ -194,6 +196,7 @@ fn fast_v3_ts_accepts_dotted_type_source() {
     let options = ConvertOptions {
         type_source: Some("Namespace.MyElement".to_string()),
         type_source_import: None,
+        ..ConvertOptions::default()
     };
     let output = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap();
 
