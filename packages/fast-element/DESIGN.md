@@ -116,6 +116,52 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
   Malformed or untargetable markers still surface structured hydration errors —
   see [Hydration mismatch diagnostics](#hydration-mismatch-diagnostics) below.
 
+### Hydration traversal
+
+The implementation separates DOM navigation (`src/hydration/traversal.ts`),
+factory-to-node mapping (`src/hydration/target-builder.ts`), and bounded repeat
+range discovery (`src/hydration/repeat-ranges.ts`). `RepeatBehavior` retains marker
+cleanup and view lifecycle reconciliation. Traversal exposes a small internal
+move/update/mutation-preparation tuple, without adding per-marker allocations.
+The native fast path remains inline in target discovery rather than routing
+through generic resolution objects. Opt-in timing workloads live separately in
+`src/hydration/hydration-benchmark.pw.spec.ts`.
+
+Target discovery uses pointer DFS for ordered endpoints with a shared, non-null
+parent, including descendants of both endpoints when they are the same node.
+Sibling movement stops at the inclusive last endpoint; content and custom-element
+markers use balanced sibling scans without visiting their nested views.
+The node mask remains elements, text, and comments.
+
+Non-sibling, reversed, and separate-root endpoints retain the live
+`Range`/`TreeWalker` traversal. Before potentially mutating native marker cleanup
+(custom elements, customized built-ins, or overridden attribute methods), the
+pointer traversal captures a live Range at its current position. Generic marker
+strategies use this fallback from the outset because their resolvers and cleanup
+callbacks can execute application code. The fallback preserves live endpoint
+movement, reparenting, and original end offsets during synchronous DOM mutation.
+When the live endpoints and offsets are unchanged, their own nodes are already
+known to intersect the range; the fallback avoids a redundant DOM position query
+for those nodes.
+
+Native `data-fe` counts consume factories directly after leading host bindings,
+without resolution objects, cleanup closures, or factory-index arrays. Native
+content and element markers use direct string comparisons. The existing native
+count parser and invalid-array-length resolver preserve malformed-marker errors;
+`markers_v2` continues through the generic strategy.
+
+Repeats scan forward only through their own `bindingViewBoundaries`, pairing
+top-level ranges in order with a stack. Nested markers remain available to child
+views, and top-level markers are cleared only after discovery succeeds. Starting
+at the binding boundary rather than the parent's first child avoids rescanning
+or consuming an earlier adjacent repeat. Unmatched starts and ends throw;
+overlapping, missing, excess, and empty item reconciliation is unchanged.
+
+See [hydration CPU regression coverage](./docs/template-bindings.md#hydration-cpu-regression-coverage)
+for deterministic allocation/visit assertions and opt-in same-machine workloads.
+No marker format, public API, registration, scheduling, or timer batching changes
+are required.
+
 ### Hydration mismatch diagnostics
 
 Nullable attribute SSR coverage lives in the declarative attribute fixture.

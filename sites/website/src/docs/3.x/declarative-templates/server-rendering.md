@@ -82,6 +82,13 @@ The end-to-end flow from server to interactive page follows these steps:
 5. **Hydration** — If `enableHydration()` was called before FAST elements connect, FAST detects the pre-rendered shadow DOM, maps existing DOM nodes to binding slots using hydration markers, and re-establishes reactive observations. Without `enableHydration()`, the element renders client-side instead. By default, hydration no-ops after the initial hydration batch completes; set `stopHydration: StopHydration.never` for pages that stream Declarative Shadow DOM later. Await `enableHydration().whenHydrated()` when application code needs to wait for the active hydration batch. In `StopHydration.never` mode, that promise intentionally remains pending because there is no global completion point.
 6. **Interactive** — The page is fully interactive. Property changes trigger targeted DOM updates.
 
+Hydration reuses the same SSR nodes. Ordinary sibling-bounded views use pointer
+traversal and read native sequential markers directly, avoiding per-view DOM
+Range/TreeWalker setup and factory-index arrays. Unusual view boundaries and
+potentially mutating marker cleanup retain the live Range traversal. This is an
+internal optimization: marker formats, registration order, readiness promises,
+and update scheduling are unchanged, including opt-in `markers_v2`.
+
 :::tip
 The controller exposes two properties: `isPrerendered` resolves `true` when the element had a declarative shadow root at connect time, while `isHydrated` resolves `true` only when hydration actually ran successfully. Use these to detect how the element was rendered and when it is fully interactive.
 :::
@@ -429,6 +436,12 @@ initial array items by index. `repeat()` does not require the SSR and client
 counts to match for the first bind: it hydrates the overlapping prefix, calls
 `template.create()` to fill in missing items past the SSR ranges, and removes
 extra SSR ranges past the client item count.
+
+Range discovery is a forward, balanced scan within that repeat's own content
+boundary, so adjacent repeats cannot consume one another's ranges. Nested markers
+are retained for child hydration, including empty items. Unmatched start or end
+markers are malformed SSR and throw even when the client array is empty; they
+are not treated as a recoverable item-count mismatch.
 
 ```html
 <!-- one server-rendered repeat item -->
