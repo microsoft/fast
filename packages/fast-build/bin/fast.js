@@ -12,7 +12,7 @@ const CONVERT_WASM_MODULE = path.join(
 );
 const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
 const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
-const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite"]);
+const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite", "typed"]);
 const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
@@ -24,6 +24,7 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
 ]);
 const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["markers_v2", "stream"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
+    "typed",
     "syntax",
     "templates",
     "output",
@@ -31,10 +32,11 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "type-source",
     "type-source-import",
 ]);
-const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite"]);
+const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite", "typed"]);
 const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
+/** @typedef {import("../wasm/microsoft_fast_build.js").FTemplateMetadata} FTemplateMetadata */
 /** @typedef {{ syntax: string, extension: string, suffix: string }} ConvertSyntaxMetadata */
 
 /**
@@ -323,21 +325,22 @@ function staticPrefixDir(pattern) {
  * @param {string} html
  * @param {string} filePath - used in warning messages
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[], hostAttributes: { name: string, value: string | null }[] }[]}
+ * @returns {(FTemplateMetadata & { name: string })[]}
  */
 function parseFTemplates(html, filePath, wasm) {
-    /** @type {{ name: string | null, content: string, shadowrootAttributes?: { name: string, value: string | null }[], hostAttributes?: { name: string, value: string | null }[] }[]} */
+    /** @type {FTemplateMetadata[]} */
     const parsed = JSON.parse(wasm.parse_f_templates(html));
     const results = [];
-    for (const { name, content, shadowrootAttributes, hostAttributes } of parsed) {
+    for (const template of parsed) {
+        const { name, content, shadowrootAttributes, hostAttributes } = template;
         if (name === null) {
             process.stderr.write(
                 `Warning: <f-template> without a 'name' attribute in '${filePath}': ${content.trim()}\n`
             );
         } else {
             results.push({
+                ...template,
                 name,
-                content,
                 shadowrootAttributes: shadowrootAttributes || [],
                 hostAttributes: hostAttributes || [],
             });
@@ -353,7 +356,7 @@ function parseFTemplates(html, filePath, wasm) {
  * Warns (but does not error) if the base directory does not exist.
  * @param {string} pattern
  * @param {object} wasm - the loaded WASM module
- * @returns {{ name: string, content: string, shadowrootAttributes: { name: string, value: string | null }[], hostAttributes: { name: string, value: string | null }[] }[]}
+ * @returns {(FTemplateMetadata & { name: string })[]}
  */
 function resolvePattern(pattern, wasm) {
     const baseDir = staticPrefixDir(pattern);
@@ -367,9 +370,7 @@ function resolvePattern(pattern, wasm) {
         if (globMatch(pattern, file)) {
             const html = fs.readFileSync(file, "utf8");
             const templates = parseFTemplates(html, file, wasm);
-            for (const { name, content, shadowrootAttributes, hostAttributes } of templates) {
-                results.push({ name, content, shadowrootAttributes, hostAttributes });
-            }
+            results.push(...templates);
         }
     }
     return results;
@@ -553,6 +554,7 @@ function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
  * @param {Record<string, ConvertSyntaxMetadata>} syntaxMetadata
  * @param {string | undefined} typeSource
  * @param {string | undefined} typeSourceImport
+ * @param {boolean} typed
  */
 function runConvertBatch(
     templatesArg,
@@ -563,6 +565,7 @@ function runConvertBatch(
     syntaxMetadata,
     typeSource,
     typeSourceImport,
+    typed,
 ) {
     const patterns = templatesArg.split(",").map((p) => p.trim());
     const seen = new Set();
@@ -591,6 +594,7 @@ function runConvertBatch(
             syntax,
             typeSource,
             typeSourceImport,
+            typed || undefined,
         );
         for (const warning of result.warnings) {
             process.stderr.write(`Warning: ${warning}\n`);
@@ -622,6 +626,7 @@ async function runConvert(args) {
     const overwrite = resolvePresenceBooleanOption(args, config, "overwrite");
     const typeSource = resolveOption(args, config, configDir, "type-source");
     const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
+    const typed = resolveBooleanOption(args, config, "typed");
     const wasm = loadConvertWasm();
     const syntaxMetadata = loadConvertSyntaxMetadata(wasm);
     const syntaxList = convertSyntaxList(syntaxMetadata);
@@ -654,6 +659,7 @@ async function runConvert(args) {
         syntaxMetadata,
         typeSource,
         typeSourceImport,
+        typed,
     );
 }
 
@@ -703,13 +709,13 @@ async function runBuild(args) {
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, content, shadowrootAttributes, hostAttributes } of matches) {
+            for (const { name, ...definition } of matches) {
                 if (name in templatesMap) {
                     process.stderr.write(
                         `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
                     );
                 }
-                templatesMap[name] = { content, shadowrootAttributes, hostAttributes };
+                templatesMap[name] = definition;
             }
         }
     }
@@ -865,6 +871,8 @@ function writeConvertUsage() {
         '  --type-source-import="<module>"\n' +
         "                         Module specifier for an `import type` statement\n" +
         "                         for --type-source. Requires --type-source.\n" +
+        "  --typed               Annotate TypeScript exports with FAST types.\n" +
+        "                         Use --typed=false to override config.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
         '                         Defaults to "fast-convert.config.json" in the\n' +
         "                         current directory if it exists. File paths in\n" +

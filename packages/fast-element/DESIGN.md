@@ -118,6 +118,11 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
 
 ### Hydration mismatch diagnostics
 
+Nullable attribute SSR coverage lives in the declarative attribute fixture.
+It checks absence with JavaScript disabled, preservation of explicit empty
+strings, and observable updates after hydrating slots for omitted attributes.
+Server omission must not reduce hydration binding counts.
+
 When SSR markup cannot be reconciled with the client template (a recovery path
 above does not apply), hydration throws either `HydrationBindingError`
 (after the DOM walk, when a binding factory has no resolved target) or

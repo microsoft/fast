@@ -10,6 +10,33 @@ use crate::{
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen(typescript_custom_section)]
+const TEMPLATE_METADATA_TYPES: &str = r#"
+export interface TemplateBindingScope {
+    variable: string;
+    iterable: string;
+}
+export interface TemplateBinding {
+    name: string | null;
+    expression: string;
+    kind: "content" | "unescapedContent" | "attribute" | "hostAttribute" |
+          "booleanAttribute" | "property" | "event" | "attributeDirective" |
+          "when" | "repeat";
+    paths: string[];
+    scope: TemplateBindingScope[];
+    type: "array" | null;
+    optional: boolean | null;
+}
+export interface FTemplateMetadata {
+    name: string | null;
+    content: string;
+    shadowrootAttributes: { name: string; value: string | null }[];
+    hostAttributes: { name: string; value: string | null }[];
+    formatVersion: 1;
+    bindings: TemplateBinding[];
+}
+"#;
+
 /// Render a FAST HTML template with an optional JSON state string.
 /// Omitted state is treated as an empty object.
 /// Returns the rendered HTML or throws a JavaScript error.
@@ -107,6 +134,23 @@ pub fn render_entry_with_templates(
     }
 }
 
+/// Render only a named component's Declarative Shadow DOM fragment.
+/// State is resolved component state; host and light DOM remain caller-owned.
+#[wasm_bindgen]
+pub fn render_shadow_root(
+    element_name: &str,
+    templates_json: &str,
+    state: Option<String>,
+    attribute_name_strategy: Option<String>,
+    markers_v2: Option<bool>,
+) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let locator = Locator::from_template_definitions(templates);
+    let config = build_config(attribute_name_strategy.as_deref(), markers_v2.unwrap_or(false))?;
+    crate::render_shadow_root_template_with_locator(element_name, state.as_deref(), &locator, config.as_ref())
+        .map_err(|error| JsValue::from_str(&error.to_string()))
+}
+
 /// Apply the FAST code-sample escape to an HTML string.
 ///
 /// Walks the input HTML and, for every `<code>` element, escapes:
@@ -145,11 +189,13 @@ pub fn parse_f_templates(html: &str) -> String {
             None => "null".to_string(),
         };
         parts.push(format!(
-            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{},\"hostAttributes\":{}}}",
+            "{{\"name\":{},\"content\":\"{}\",\"shadowrootAttributes\":{},\"hostAttributes\":{},\"formatVersion\":{},\"bindings\":{}}}",
             name_json,
             escape_json_str(&template.content),
             attribute_pairs_json(&template.shadowroot_attributes),
-            attribute_pairs_json(&template.host_attributes)
+            attribute_pairs_json(&template.host_attributes),
+            template.format_version,
+            crate::binding_metadata::bindings_json(&template.bindings)
         ));
     }
     format!("[{}]", parts.join(","))
@@ -237,6 +283,14 @@ fn parse_template_metadata(
     ),
     JsValue,
 > {
+    if let Some(version) = template.get("formatVersion") {
+        if !matches!(version, json::JsonValue::Number(number) if *number == f64::from(crate::TEMPLATE_FORMAT_VERSION)) {
+            return Err(JsValue::from_str(&format!(
+                "Unsupported formatVersion for template '{}': expected {}",
+                template_name, crate::TEMPLATE_FORMAT_VERSION,
+            )));
+        }
+    }
     let content = match template.get("content") {
         Some(json::JsonValue::String(content)) => content.clone(),
         _ => {

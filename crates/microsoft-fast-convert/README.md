@@ -47,18 +47,38 @@ use microsoft_fast_convert::{convert_template_with_options, ConvertOptions};
 let options = ConvertOptions {
     type_source: Some("MyElement".to_string()),
     type_source_import: Some("./my-element.js".to_string()),
+    ..ConvertOptions::default()
 };
 let ts = convert_template_with_options(source, "fast-v3-ts", &options)?.output;
 ```
 
 `type_source` must be a dotted TypeScript identifier (e.g. `MyElement` or
 `Namespace.MyElement`); `type_source_import`, when provided, also emits a matching
-`import type { <type_source> } from "<type_source_import>";` statement. `type_source`
+`import type { <root_identifier> } from "<type_source_import>";` statement. `type_source`
 is only supported for `fast-v3-ts`; `type_source_import` requires `type_source`.
 
 Syntax metadata is available through `syntax_metadata()`. The metadata includes each
 supported syntax name, required output extension, and default output suffix so package
 tooling can avoid duplicating target definitions.
+
+### Explicit public export types
+
+Set `ConvertOptions { typed: true, ..ConvertOptions::default() }` for
+`fast-v3-ts` template conversion. It emits an `ElementViewTemplate<TSource>`
+annotation (or `ElementViewTemplate` when no source type is supplied) and a
+type-only FAST import. The default remains byte-compatible unannotated output.
+Other syntax targets reject `typed: true`.
+
+`convert_stylesheet_with_options(css, syntax, export_name, &options)` similarly
+emits `export const styles: ElementStyles = css...` with a type-only import.
+Stylesheet options reject `type_source`/`type_source_import`. Existing
+`convert_stylesheet` calls keep their original output. Type imports use the
+root of dotted source names; FAST type names are aliased when necessary to
+avoid collisions with supplied names.
+
+Typed exports support `isolatedDeclarations`; the converter does not infer a
+state interface. Supply a concrete source type for strict property validation.
+Native struct literals should use `..ConvertOptions::default()` for unset options.
 
 ## WASM usage
 
@@ -76,8 +96,9 @@ convert_template_with_options(
     syntax: string,
     typeSource?: string,
     typeSourceImport?: string,
+    typed?: boolean,
 ): ConvertResult
-convert_stylesheet(stylesheet: string, syntax: string, export_name: string): string
+convert_stylesheet(stylesheet: string, syntax: string, export_name: string, typed?: boolean): string
 convert_syntax_metadata(): string
 ```
 

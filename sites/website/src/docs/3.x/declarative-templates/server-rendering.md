@@ -123,6 +123,23 @@ The renderer applies special rules for certain HTML attributes:
 
 ## Host Attribute Propagation
 
+Missing or null attribute bindings omit the attribute, rather than serializing
+an empty value. Explicit empty strings stay present. This also applies to
+bindings embedded in literal attribute values. Hydration counts still include
+omitted attributes, so reactive updates can add them later. Use `?name` for
+client/server truthy/falsy boolean bindings; JSON booleans on known HTML boolean
+attributes also use presence on the server, while ARIA booleans stay textual.
+
+Build-time plugins can use `render_shadow_root` from the
+`@microsoft/fast-build/wasm/microsoft_fast_build.js` export to render a complete
+DSD `<template>` with resolved component state and no throwaway host/light DOM.
+`parse_f_templates` exposes versioned binding descriptions, including lexical
+repeat scopes and explicit unknown state types/optionality. Persist the full
+record to retain version checks; this metadata does not replace application
+state declarations. See the
+[FAST Build integration APIs](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#apis-for-build-time-plugins)
+and [migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/plugin-integrations.md).
+
 Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
 
 ```html

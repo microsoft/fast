@@ -15,7 +15,7 @@ use crate::expression::evaluate;
 use crate::hydration::HydrationScope;
 use crate::json::JsonValue;
 use crate::locator::Locator;
-use crate::node::{process_plain_html_tag, render_node};
+use crate::node::process_plain_html_tag;
 
 pub(crate) fn stream_node(
     template: &str,
@@ -292,17 +292,7 @@ fn stream_custom_element(
         build_custom_element_child_root(&attrs, root, loop_vars, config.attribute_name_strategy);
     let child_root = child_root_owned.as_ref().unwrap_or(root);
 
-    let mut shadow_scope = HydrationScope::new(config.markers_v2);
-    let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered_shadow = render_node(
-        element_template,
-        child_root,
-        &[],
-        Some(locator),
-        Some(&mut shadow_scope),
-        false,
-        config,
-    )?;
+    let rendered_shadow = crate::directive::render_shadow_content(&tag_name, child_root, locator, config)?;
     let shadowroot_attributes =
         build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
 
@@ -318,6 +308,7 @@ fn stream_custom_element(
         element_open,
         locator.get_host_attributes(&tag_name),
         child_root,
+        &attrs,
     );
 
     let (children, after) = if is_self_closing {

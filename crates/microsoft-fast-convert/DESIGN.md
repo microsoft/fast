@@ -168,7 +168,7 @@ target's output file with the other's.
 
 ## FAST v3 TypeScript conversion
 
-The TypeScript target always emits `export const template = html\`…\`;` and imports only helpers used by the converted template. It supports text and attribute bindings, `f-repeat`, `f-when`, `f-ref`, `f-children`, `f-slotted`, and event handler calls using `$e`/`$c`. This target never produces warnings; `fast-v3-ts` conversions always return an empty `ConvertOutput::warnings`.
+The TypeScript target defaults to `export const template = html\`…\`;` and imports only helpers used by the converted template. It supports text and attribute bindings, `f-repeat`, `f-when`, `f-ref`, `f-children`, `f-slotted`, and event handler calls using `$e`/`$c`. This target never produces warnings; `fast-v3-ts` conversions always return an empty `ConvertOutput::warnings`.
 
 Repeat bodies use the same local alias mapping as FAST declarative templates: `{{item.name}}` inside `item in items` becomes `x => x.name`. Event handlers inside repeats map root handlers through FAST's repeat context chain (`c.parent`, `c.parentContext.parent`, and so on).
 
@@ -214,13 +214,30 @@ literal-content escaping, with an added carriage-return case.
   `Namespace.MyElement`); other syntax targets or malformed values are rejected in
   `converter::validate_options` before the template is walked.
 - `type_source_import`, when combined with `type_source`, additionally emits
-  `import type { <type_source> } from "<type_source_import>";` immediately after the
+  `import type { <root_identifier> } from "<type_source_import>";` immediately after the
   helper imports. It is rejected on its own, since there is no type name to import.
 
 This exists so `fast convert` output for templates combining multiple
 differently-named `ref`/`children`/`slotted` directives (e.g. `packages/fast-build/test/fixtures/convert/supported.html`)
 type-checks standalone once a concrete element type is supplied, instead of requiring
 callers to hand-add the generic parameter after every conversion.
+
+### Typed exports
+
+`ConvertOptions::typed` defaults to false. For TypeScript templates it adds a
+type-only `ElementViewTemplate` import and an explicit export annotation,
+retaining the existing source generic and helper selection. Other syntaxes
+reject the option rather than ignoring it. Stylesheets use
+`convert_stylesheet_with_options` and `ElementStyles`, rejecting irrelevant
+template source-type options. Existing entry points retain untyped output.
+Imports of dotted source types name their root namespace; generated FAST type
+imports are aliased on collisions. No application state type is synthesized.
+
+WASM appends an optional `typed` boolean to the existing template/options and
+stylesheet exports, preserving old argument positions. The CLI exposes
+`--typed[=true|false]` and a JSON boolean config key; explicit false overrides
+configured true. Package tests emit declarations with `isolatedDeclarations`
+against the real FAST types, not just string snapshots.
 
 ## wasm boundary
 

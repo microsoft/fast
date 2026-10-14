@@ -37,11 +37,13 @@ pub use warning::{ConvertOutput, ConvertWarning};
 /// [`ConvertError::TypeSourceUnsupportedForSyntax`] error.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ConvertOptions {
+    /// Annotate public TypeScript exports with FAST template/style types.
+    pub typed: bool,
     /// Explicit `TSource` type name emitted as `html<TypeSource>` in
     /// `fast-v3-ts` output. Must be a simple dotted identifier
     /// (e.g. `MyElement` or `Namespace.MyElement`).
     pub type_source: Option<String>,
-    /// Module specifier for an `import type { <type_source> } from "…";`
+    /// Module specifier for an `import type { <root_identifier> } from "…";`
     /// statement emitted alongside `type_source`. Requires `type_source`.
     pub type_source_import: Option<String>,
 }
@@ -84,7 +86,21 @@ pub fn convert_stylesheet(
     syntax: &str,
     export_name: &str,
 ) -> Result<String, ConvertError> {
-    converter::convert_stylesheet(stylesheet, syntax, export_name)
+    convert_stylesheet_with_options(stylesheet, syntax, export_name, &ConvertOptions::default())
+}
+
+/// Convert CSS with an optional explicit `ElementStyles` export annotation.
+/// Template source-type options are not valid for stylesheets.
+pub fn convert_stylesheet_with_options(
+    stylesheet: &str,
+    syntax: &str,
+    export_name: &str,
+    options: &ConvertOptions,
+) -> Result<String, ConvertError> {
+    if options.type_source.is_some() || options.type_source_import.is_some() {
+        return Err(ConvertError::TypeSourceUnsupportedForStylesheet);
+    }
+    converter::convert_stylesheet(stylesheet, syntax, export_name, options.typed)
 }
 
 /// Metadata for all supported converter syntax targets.

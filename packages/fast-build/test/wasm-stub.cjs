@@ -23,6 +23,18 @@ const stub = {
                 name: "my-el",
                 content: "<span>{{text}}</span>",
                 shadowrootAttributes: [{ name: "shadowrootmode", value: "open" }],
+                formatVersion: 1,
+                bindings: [
+                    {
+                        name: "text",
+                        expression: "text",
+                        kind: "content",
+                        paths: ["text"],
+                        scope: [],
+                        type: null,
+                        optional: null,
+                    },
+                ],
             },
         ]);
     },
