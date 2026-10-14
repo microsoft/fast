@@ -84,6 +84,19 @@ import { enableDebug } from "@microsoft/fast-element/debug.js";
 enableDebug();
 ```
 
+## Server-rendered hydration
+
+Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before
+components connect to reuse their server-rendered DOM. Ordered sibling-bounded
+views use pointer traversal and consume native markers without factory-index
+arrays; unusual boundaries and potentially mutating cleanup retain the live
+Range fallback. Nested and adjacent repeats pair only their own server ranges,
+preserving SSR nodes while reconciling missing or excess items.
+
+Existing FAST 3 marker output and opt-in `markers_v2` remain supported without
+application changes. See the [server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)
+and [contributor performance workloads](./docs/template-bindings.md#hydration-cpu-regression-coverage).
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.

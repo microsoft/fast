@@ -3,6 +3,17 @@
     "item_parent": "Bat",
     "emptyList": [],
     "eventList": ["A"],
+    "nestedGroups": [
+        {
+            "name": "one",
+            "items": [
+                { "label": "A", "values": [1, 2] },
+                { "label": "empty", "values": [] }
+            ]
+        },
+        { "name": "two", "items": [{ "label": "B", "values": [3] }] }
+    ],
+    "tail": ["last"],
     "someData": {
         "list1": [{ "icon": "repeat" }],
         "list2": [{ "icon": "repeat" }]
