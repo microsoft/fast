@@ -4,9 +4,52 @@ import type {
     TestElementEmptyArray,
     TestElementEvent,
     TestElementIntervalUpdates,
+    TestElementNestedRepeat,
 } from "./main.js";
 
 test.describe("f-template", async () => {
+    test("preserves SSR nodes through three nested repeats and an adjacent repeat", async ({
+        page,
+    }) => {
+        await page.addInitScript(() => {
+            const define = customElements.define;
+            customElements.define = function (name, elementType, options) {
+                if (name === "test-element-nested-repeat") {
+                    const root = document.querySelector(name)?.shadowRoot;
+                    if (!root) throw new Error("Server repeat shadow root is missing");
+                    (
+                        window as Window & { serverRepeatNodes?: Element[] }
+                    ).serverRepeatNodes = Array.from(root.querySelectorAll("b"));
+                }
+                return define.call(this, name, elementType, options);
+            };
+        });
+        await page.goto("/fixtures/directives/repeat/");
+        await page.waitForFunction(() => (window as any).hydrationCompleted === true);
+        const element = page.locator("test-element-nested-repeat");
+        await expect(element.locator("b")).toHaveText(["1", "2", "3"]);
+        await expect(element.locator("[data-tail]")).toHaveText(["last"]);
+        expect(
+            await element.evaluate((node: TestElementNestedRepeat) => {
+                const original = (window as Window & { serverRepeatNodes?: Element[] })
+                    .serverRepeatNodes;
+                const current = node.shadowRoot!.querySelectorAll("b");
+                return (
+                    original?.length === 3 &&
+                    original.every((item, index) => item === current[index])
+                );
+            }),
+        ).toBe(true);
+        await element.evaluate((node: TestElementNestedRepeat) => {
+            node.groups = [
+                { name: "client", items: [{ label: "C", values: [4, 5, 6] }] },
+            ];
+            node.tail = ["next", "final"];
+        });
+        await expect(element.locator("[data-group]")).toHaveCount(1);
+        await expect(element.locator("b")).toHaveText(["4", "5", "6"]);
+        await expect(element.locator("[data-tail]")).toHaveText(["next", "final"]);
+    });
     test("create a repeat directive over an array of strings with an observable decorator", async ({
         page,
     }) => {

@@ -341,6 +341,11 @@ Nested custom elements that also need hydration are demarcated so the parent's w
 
 ### Hydration Binding Flow
 
+`hydration/traversal.ts` owns pointer navigation and its live Range fallback.
+`hydration/target-builder.ts` consumes that traversal to map factories, keeping
+direct native marker reads inline. `HydrationView` uses the same range utility
+when producing diagnostic fragments, without coupling it to target discovery.
+
 ```mermaid
 flowchart TD
     A["Server renders HTML with Declarative Shadow DOM"] --> B["Browser parses HTML, creates DOM + shadow roots"]
@@ -354,11 +359,11 @@ flowchart TD
     H --> I["Stage: unhydrated → hydrating"]
     I --> J["buildViewBindingTargets(firstChild, lastChild, factories)"]
 
-    J --> K["Create TreeWalker over existing DOM range"]
+    J --> K["Pointer DFS for ordered sibling endpoints; live Range fallback otherwise or before mutating cleanup"]
     K --> L{"Walk each node"}
 
     L -->|Element node| M["Parse data-fe attribute"]
-    M --> N["Map factory indices to this element via targetFactory()"]
+    M --> N["Consume N sequential factories directly via targetFactory(); generic resolution for legacy markers"]
     N --> O["Remove data-fe marker attribute"]
 
     L -->|Comment: content marker| P["Match fe:b start marker by string equality"]
@@ -393,7 +398,7 @@ flowchart LR
     end
 
     subgraph "HydrationView (server-rendered)"
-        B1["DOM already exists in shadow root"] --> B2["TreeWalker scans for markers"]
+        B1["DOM already exists in shadow root"] --> B2["Bounded pointer DFS scans markers; live Range fallback when needed"]
         B2 --> B3["buildViewBindingTargets maps markers → nodes"]
         B3 --> B4["Create behaviors & bind to existing nodes"]
         B4 --> B5["Marker comments cleared (data set to empty string)"]
@@ -403,7 +408,7 @@ flowchart LR
 | Aspect | HTMLView | HydrationView |
 |---|---|---|
 | **DOM source** | Clones compiled DocumentFragment | Reuses server-rendered DOM in place |
-| **Target resolution** | Prototype getters via childNodes indices | TreeWalker + hydration marker parsing |
+| **Target resolution** | Prototype getters via childNodes indices | Pointer DFS + sequential markers; live Range / generic-strategy fallback |
 | **Node creation** | Creates all DOM nodes from scratch | No node creation (reuses existing) |
 | **Fragment** | Holds cloned fragment, moved into host | No fragment initially (created only on remove) |
 | **Lifecycle** | Ready immediately after creation | Transitions through unhydrated → hydrating → hydrated |
@@ -441,7 +446,17 @@ sequenceDiagram
 
 ### Repeat Directive Hydration
 
-The repeat directive hydrates by walking **backwards** from its location marker, finding paired repeat markers for each array item:
+The repeat directive scans **forward** from its own content boundary to its
+location, pairing top-level ranges with a stack. This avoids reverse collection
+and rescanning prefixes belonging to earlier adjacent repeats. Nested markers
+remain untouched until child views hydrate. Both unmatched starts and unmatched
+ends throw before repeat markers are cleared.
+
+The read-only `collectHydrationRepeatRanges()` helper in
+`hydration/repeat-ranges.ts` owns this discovery and validation. `RepeatBehavior`
+supplies its own binding boundaries, then clears top-level markers and hydrates,
+creates, or removes views. The discovery helper does not alter marker data or
+bind views.
 
 ```mermaid
 flowchart TD
@@ -450,23 +465,19 @@ flowchart TD
     B -->|No| D["refreshAllViews() — normal client path"]
 
     C --> E["Allocate views array sized to items.length"]
-    E --> F["Start at location.previousSibling, walk backwards"]
-
-    F --> G{"Current node is comment?"}
-    G -->|No| H["Skip, move to previousSibling"]
-    G -->|Yes| I{"isRepeatEndMarker (string equality)?"}
-    I -->|No| H
-    I -->|Yes, index N| J["Clear end marker comment data"]
-
-    J --> K["end = previous sibling of end marker"]
-    K --> L["Walk backwards to find matching start marker"]
-    L --> M{"Handle nested repeats via unmatchedEndMarkers counter"}
-    M --> N["Found start marker with same index N"]
-    N --> O["Clear start marker, start = startMarker.nextSibling"]
-    O --> P["template.hydrate(start, end) → HydrationView"]
-    P --> Q["views[N] = view"]
-    Q --> R["bindView(view, items, N, controller)"]
-    R --> F
+    E --> F["Scan bindingViewBoundaries[targetNodeId].first through location"]
+    F --> G{"Repeat marker?"}
+    G -->|Start| H["Push start marker"]
+    G -->|End| I["Pop start; throw if absent"]
+    I --> J{"Stack empty?"}
+    J -->|Yes| K["Append top-level range in item order"]
+    J -->|No| F
+    H --> F
+    K --> F
+    G -->|Other node| F
+    F -->|Reached location| L["Throw if stack nonempty; otherwise clear top-level markers"]
+    L --> M["Hydrate overlapping SSR/client ranges in order"]
+    M --> N["Create missing client views and remove excess server ranges"]
 
     subgraph "Result"
         S["Each array item mapped to a HydrationView"]
@@ -474,6 +485,51 @@ flowchart TD
         U["Markers cleared to empty strings (invisible in DOM)"]
     end
 ```
+
+### Hydration CPU regression coverage
+
+`src/hydration/hydration-performance.pw.spec.ts` instruments Range/TreeWalker
+creation and native factory-index array allocation across 500 sibling-bounded
+views. Those counters must all be zero on the ordinary native path. It also
+asserts exact linear repeat predicate visits (four starts and two ends per
+four-comment nested item), scope isolation from earlier siblings, nested marker
+preservation, malformed-marker diagnostics, installed `markers_v2`, empty items,
+and missing/excess reconciliation. Existing target-builder tests compare live
+endpoint mutations with the legacy Range walker. The declarative repeat fixture
+checks SSR node identity, three nested repeat levels, an empty inner list, and an
+adjacent repeat before exercising reactive updates. The co-located
+`src/hydration/repeat-ranges.pw.spec.ts` also verifies that successful discovery
+leaves native and legacy marker data unchanged and excludes adjacent ranges.
+
+Run focused correctness coverage from the monorepo root:
+
+```sh
+npm exec -w @microsoft/fast-element -- playwright test src/hydration/target-builder.pw.spec.ts src/hydration/hydration-performance.pw.spec.ts src/hydration/repeat-ranges.pw.spec.ts src/templating/repeat.pw.spec.ts --project=chromium
+```
+
+CPU timings live separately in `src/hydration/hydration-benchmark.pw.spec.ts`
+and are opt-in rather than flaky wall-clock CI gates:
+
+```sh
+FAST_HYDRATION_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test src/hydration/hydration-benchmark.pw.spec.ts --project=chromium --retries=0 -g "measures independent"
+```
+
+The workloads measure 4,000 marker-free sibling views, 4,000 native
+attribute/content marker groups, 4,000 nested repeat ranges with stubbed child
+hydration, 20 adjacent repeats with 200 flat item ranges each, and a combined
+1,000-record page with three repeat levels, 4,000 minimal native custom elements,
+and 8,001 hydrated views. Setup, custom-element registration, and template
+construction are outside the timed interval; repeat workloads include bind and unbind. Each
+workload has one warm-up and ten recorded samples, each in a fresh document so
+live Ranges from earlier samples cannot amplify later DOM mutation costs.
+Compare the same test on the base and changed revisions on the same browser and
+machine. To attribute improvements, also compare traversal-only, native-only,
+and repeat-only source variants in an isolated worktree, reversing variant order
+for a second pass. The combined workload includes conservative live-Range
+fallbacks for custom-element attribute cleanup, not just ordinary element views.
+These microbenchmarks time template hydration, not the issue's application
+registration or hydration-completion tracking, and should not be presented as
+that application's hydration timings.
 
 ### Hydration Stage Lifecycle
 
