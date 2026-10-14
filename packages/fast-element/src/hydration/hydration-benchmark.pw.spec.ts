@@ -4,6 +4,41 @@ test.beforeEach(async ({ page }) => {
     await page.goto("/");
 });
 
+test("measures the native FAST custom-element workload", async ({ page }) => {
+    test.skip(
+        !process.env.FAST_HYDRATION_BENCHMARK,
+        "Opt-in same-machine CPU benchmark.",
+    );
+    const samples: number[] = [];
+    for (let run = 0; run < 11; run++) {
+        await page.goto("/");
+        const duration = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { createNativeHydrationWorkload, enableHydration } = await import(
+                "/main.js"
+            );
+            enableHydration();
+            const workload = await createNativeHydrationWorkload();
+            const start = performance.now();
+            workload.run();
+            const duration = performance.now() - start;
+            workload.verify();
+            return duration;
+        });
+        if (run > 0) samples.push(duration);
+    }
+    samples.sort((a, b) => a - b);
+    expect(samples).toHaveLength(10);
+    console.log(
+        `Native FAST hydration workload (ms): ${JSON.stringify({
+            median: (samples[4] + samples[5]) / 2,
+            min: samples[0],
+            max: samples[9],
+            samples,
+        })}`,
+    );
+});
+
 test("measures independent traversal, native-marker, repeat and combined workloads", async ({
     page,
 }) => {
