@@ -346,12 +346,18 @@ Nested custom elements that also need hydration are demarcated so the parent's w
 direct native marker reads inline. `HydrationView` uses the same range utility
 when producing diagnostic fragments, without coupling it to target discovery.
 
-Native marker cleanup uses the observation snapshot recorded by
-`components/attribute-observation.ts` immediately before FAST's platform
-registration. For a known unobserved `data-fe` attribute and native attribute
-methods, removal cannot invoke an attribute-change callback, so pointers remain
-active. This snapshot is copied after extensions and is available during
-synchronous upgrades; hydration does not reread `constructor.observedAttributes`.
+`enableHydration()` replaces the small core `components/element-registration.ts`
+strategy with `hydration/attribute-observation.ts`. Client-only `FASTElement`
+bundles do not include observation tracking. Immediately before FAST's platform
+registration, tracking records only a boolean proving that `data-fe` is
+unobserved, after extensions and asynchronous template resolution. The proof is
+available during synchronous upgrades and restored if registration fails.
+Earlier untracked registrations remain conservative; calling `enableHydration()`
+again does not reset existing proof. Hydration never reconstructs the platform
+snapshot by rereading `constructor.observedAttributes`.
+
+For a known unobserved `data-fe` attribute and native attribute methods, removal
+cannot invoke an attribute-change callback, so pointers remain active.
 Registration/lifecycle accessors, custom attribute iterators, unknown registry
 wrappers, customized built-ins, and overridden attribute methods remain
 conservative. Legacy/custom marker cleanup still captures live boundaries from
@@ -519,6 +525,9 @@ three-repeat-level workload with 20 adjacent prefix items: 4,021 FAST elements,
 elements retain their identity. Mutation fixtures require the fallback and
 verify immediate insertion/removal, endpoint moves, unstable observation
 metadata, method accessors, customized built-ins, and legacy/custom strategies.
+Registration-order cases cover disabled tracking, enabling after registration,
+repeated enablement after observation changes, and platform registration deferred
+until after asynchronous template resolution.
 The declarative repeat fixture includes bound FAST child elements, checks zero
 live traversal setup, and exercises reactive updates after hydration.
 

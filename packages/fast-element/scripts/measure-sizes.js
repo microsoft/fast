@@ -151,7 +151,17 @@ export { ${exportName} };
         format: "esm",
         write: false,
         treeShaking: true,
+        metafile: importPath === fastElementImportPath,
     });
+
+    if (
+        importPath === fastElementImportPath &&
+        Object.keys(result.metafile.inputs).some(input =>
+            input.endsWith("/attribute-observation.js"),
+        )
+    ) {
+        throw new Error("FASTElement must not bundle hydration observation tracking.");
+    }
 
     const code = Buffer.from(result.outputFiles[0].contents);
     return measureBuffer(code);

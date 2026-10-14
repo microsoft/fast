@@ -137,24 +137,32 @@ Non-sibling, reversed, and separate-root endpoints retain the live
 `Range`/`TreeWalker` traversal. Before potentially mutating native marker cleanup
 (unknown custom elements, observed markers, customized built-ins, or overridden
 attribute methods), the pointer traversal captures a live Range at its current
-position. Generic marker
-strategies use this fallback from the outset because their resolvers and cleanup
+position. Generic marker strategies use this fallback from the outset because
+their resolvers and cleanup
 callbacks can execute application code. The fallback preserves live endpoint
 movement, reparenting, and original end offsets during synchronous DOM mutation.
 When the live endpoints and offsets are unchanged, their own nodes are already
 known to intersect the range; the fallback avoids a redundant DOM position query
 for those nodes.
 
-`components/attribute-observation.ts` records immutable observation snapshots
-when FAST registers an element, before the platform can synchronously upgrade
-existing instances. Native `data-fe` removal stays on pointers when that snapshot
-proves the marker unobserved and attribute methods are native. Snapshots are
-copied after extensions, are not recomputed from mutable constructor properties
-during hydration, and are restored if registration throws. Unknown registration
-wrappers, lifecycle/observation accessors, custom iterators, and other uncertain
-metadata retain the conservative fallback. Method descriptors are checked
-without invoking getters before live boundaries have been captured. Cleanup
-remains immediate; callbacks and target discovery are not reordered.
+Core keeps only the small `components/element-registration.ts` strategy.
+`enableHydration()` installs `hydration/attribute-observation.ts`, keeping the
+observation checks out of client-only bundles. At actual platform registration,
+after extensions and asynchronous template resolution, it records a private
+boolean proving that `data-fe` is unobserved. The proof is available before
+synchronous upgrades and restored if registration throws; no attribute sets
+are allocated. Earlier untracked registrations remain conservative, including
+when their definition is later registered in another registry. Repeated
+enablement does not reset the proof or reread mutable constructor properties.
+The export-size build checks the core bundle dependency graph to prevent
+observation tracking from leaking back into `FASTElement`.
+
+Native `data-fe` removal stays on pointers when that proof is available and
+attribute methods are native. Unknown registration wrappers, lifecycle/observation
+accessors, custom iterators, and other uncertain metadata retain the conservative
+fallback. Method descriptors are checked without invoking getters before live
+boundaries have been captured. Cleanup remains immediate; callbacks and target
+discovery are not reordered.
 
 Native `data-fe` counts consume factories directly after leading host bindings,
 without resolution objects, cleanup closures, or factory-index arrays. Native

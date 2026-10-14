@@ -93,10 +93,13 @@ arrays; unusual boundaries and potentially mutating cleanup retain the live
 Range fallback. Nested and adjacent repeats pair only their own server ranges,
 preserving SSR nodes while reconciling missing or excess items.
 
-FAST-registered components whose registration snapshot does not observe `data-fe`
-retain pointer traversal during native marker cleanup. Unknown registration,
-observed markers, customized built-ins, and overridden attribute methods still
-use the mutation-safe fallback. Cleanup remains synchronous.
+Call `enableHydration()` before components are registered with the platform to
+also enable pointer-only native marker cleanup for FAST components that do not
+observe `data-fe`. Observation tracking is opt-in and excluded from client-only
+`FASTElement` bundles. Earlier registrations still hydrate correctly through
+the conservative fallback, as do unknown registration, observed markers,
+customized built-ins, and overridden attribute methods. Cleanup remains
+synchronous.
 
 Existing FAST 3 marker output and opt-in `markers_v2` remain supported without
 application changes. See the [server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)

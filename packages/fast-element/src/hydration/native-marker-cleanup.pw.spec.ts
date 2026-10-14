@@ -4,6 +4,216 @@ test.beforeEach(async ({ page }) => {
     await page.goto("/");
 });
 
+for (const enableAfterRegistration of [false, true]) {
+    test(`registrations before hydration tracking stay conservative: late enable ${enableAfterRegistration}`, async ({
+        page,
+    }) => {
+        const result = await page.evaluate(async enableAfterRegistration => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                enableHydration,
+                buildViewBindingTargets,
+                uniqueElementName,
+            } = await import("/main.js");
+            class EarlyElement extends FASTElement {}
+            const definition = await FASTElementDefinition.compose(EarlyElement, {
+                name: uniqueElementName(),
+                template: html``,
+            });
+            definition.define();
+            if (enableAfterRegistration) {
+                enableHydration();
+                definition.define();
+            }
+            const element = document.createElement(definition.name);
+            element.setAttribute("data-fe", "1");
+            const root = document.createElement("div");
+            root.append(element);
+            const createRange = document.createRange;
+            let ranges = 0;
+            let identity = false;
+            try {
+                document.createRange = function () {
+                    ranges++;
+                    return createRange.call(this);
+                };
+                const { targets } = buildViewBindingTargets(element, element, [
+                    { targetNodeId: "one" },
+                ]);
+                identity = targets.one === element;
+            } finally {
+                document.createRange = createRange;
+            }
+            return { ranges, identity, marker: element.hasAttribute("data-fe") };
+        }, enableAfterRegistration);
+        expect(result).toEqual({ ranges: 1, identity: true, marker: false });
+    });
+}
+
+test("untracked FAST attribute accessors capture live boundaries before running", async ({
+    page,
+}) => {
+    const result = await page.evaluate(async () => {
+        // @ts-expect-error: Client module.
+        const {
+            FASTElement,
+            html,
+            enableHydration,
+            buildViewBindingTargets,
+            uniqueElementName,
+        } = await import("/main.js");
+        class EarlyElement extends FASTElement {}
+        const name = uniqueElementName();
+        await EarlyElement.define({ name, template: html`` });
+        enableHydration();
+        const root = document.createElement("div");
+        root.innerHTML = `<${name} id="first" data-fe="1"></${name}><i id="middle" data-fe="1"></i><u id="last" data-fe="1"></u><s id="outside" data-fe="1"></s>`;
+        const first = root.firstElementChild!;
+        const last = root.querySelector("#last")!;
+        let mutations = 0;
+        Object.defineProperty(first, "getAttribute", {
+            get() {
+                mutations++;
+                root.append(last);
+                return Element.prototype.getAttribute;
+            },
+        });
+        const { targets } = buildViewBindingTargets(
+            first,
+            last,
+            ["one", "two", "three", "four"].map(targetNodeId => ({ targetNodeId })),
+        );
+        return {
+            ids: Object.values(targets).map(node => (node as Element).id),
+            mutations,
+            outside: root.querySelector("#outside")!.getAttribute("data-fe"),
+            last: last.getAttribute("data-fe"),
+        };
+    });
+    expect(result).toEqual({
+        ids: ["first", "middle"],
+        mutations: 1,
+        outside: "1",
+        last: "1",
+    });
+});
+
+test("repeated enablement preserves registration-time proof instead of rereading attributes", async ({
+    page,
+}) => {
+    const result = await page.evaluate(async () => {
+        // @ts-expect-error: Client module.
+        const {
+            FASTElement,
+            html,
+            enableHydration,
+            buildViewBindingTargets,
+            uniqueElementName,
+        } = await import("/main.js");
+        enableHydration();
+        class KnownElement extends FASTElement {}
+        const name = uniqueElementName();
+        await KnownElement.define({ name, template: html`` });
+        KnownElement.observedAttributes.push("data-fe");
+        enableHydration();
+        const element = document.createElement(name);
+        element.setAttribute("data-fe", "1");
+        const root = document.createElement("div");
+        root.append(element);
+        const createRange = document.createRange;
+        let ranges = 0;
+        try {
+            document.createRange = function () {
+                ranges++;
+                return createRange.call(this);
+            };
+            buildViewBindingTargets(element, element, [{ targetNodeId: "one" }]);
+        } finally {
+            document.createRange = createRange;
+        }
+        return { ranges, marker: element.hasAttribute("data-fe") };
+    });
+    expect(result).toEqual({ ranges: 0, marker: false });
+});
+
+for (const observesMarker of [false, true]) {
+    test(`async registration captures proof after template resolution: observes ${observesMarker}`, async ({
+        page,
+    }) => {
+        const result = await page.evaluate(async observesMarker => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                html,
+                enableHydration,
+                buildViewBindingTargets,
+                uniqueElementName,
+            } = await import("/main.js");
+            let mutations = 0;
+            class DeferredElement extends FASTElement {
+                attributeChangedCallback(
+                    name: string,
+                    oldValue: string | null,
+                    newValue: string | null,
+                ) {
+                    if (name === "data-fe" && oldValue !== null && newValue === null)
+                        mutations++;
+                    else super.attributeChangedCallback(name, oldValue, newValue);
+                }
+            }
+            const template = html``;
+            let resolveTemplate!: (value: typeof template) => void;
+            const pending = new Promise<typeof template>(resolve => {
+                resolveTemplate = resolve;
+            });
+            const definition = await FASTElementDefinition.compose(DeferredElement, {
+                name: uniqueElementName(),
+                template: async () => {
+                    await pending;
+                    if (observesMarker)
+                        DeferredElement.observedAttributes.push("data-fe");
+                    return template;
+                },
+            });
+            definition.define();
+            const initiallyPending = customElements.get(definition.name) === void 0;
+            enableHydration();
+            resolveTemplate(template);
+            await customElements.whenDefined(definition.name);
+            const element = document.createElement(definition.name);
+            element.setAttribute("data-fe", "1");
+            const root = document.createElement("div");
+            root.append(element);
+            const createRange = document.createRange;
+            let ranges = 0;
+            let identity = false;
+            try {
+                document.createRange = function () {
+                    ranges++;
+                    return createRange.call(this);
+                };
+                const { targets } = buildViewBindingTargets(element, element, [
+                    { targetNodeId: "one" },
+                ]);
+                identity = targets.one === element;
+            } finally {
+                document.createRange = createRange;
+            }
+            return { ranges, mutations, initiallyPending, identity };
+        }, observesMarker);
+        expect(result).toEqual({
+            ranges: observesMarker ? 1 : 0,
+            mutations: observesMarker ? 1 : 0,
+            initiallyPending: true,
+            identity: true,
+        });
+    });
+}
+
 test("ordinary FAST marker cleanup avoids live ranges across 4,021 custom elements", async ({
     page,
 }) => {
@@ -61,8 +271,14 @@ test("registration upgrades can discover native targets without live ranges", as
 }) => {
     const result = await page.evaluate(async () => {
         // @ts-expect-error: Client module.
-        const { FASTElement, html, buildViewBindingTargets, uniqueElementName } =
-            await import("/main.js");
+        const {
+            FASTElement,
+            html,
+            enableHydration,
+            buildViewBindingTargets,
+            uniqueElementName,
+        } = await import("/main.js");
+        enableHydration();
         const name = uniqueElementName();
         const root = document.createElement("div");
         root.innerHTML = `<${name} data-fe="1"></${name}><span data-fe="1"></span>`;
@@ -118,8 +334,14 @@ for (const mutation of [
     test(`preserves immediate mutation-safe cleanup: ${mutation}`, async ({ page }) => {
         const result = await page.evaluate(async mutation => {
             // @ts-expect-error: Client module.
-            const { FASTElement, html, buildViewBindingTargets, uniqueElementName } =
-                await import("/main.js");
+            const {
+                FASTElement,
+                html,
+                enableHydration,
+                buildViewBindingTargets,
+                uniqueElementName,
+            } = await import("/main.js");
+            enableHydration();
             let getterReads = 0;
             let mutations = 0;
             const root = document.createElement("div");
@@ -328,8 +550,14 @@ test("customized built-ins retain conservative cleanup", async ({
     test.skip(browserName === "webkit", "WebKit does not support customized built-ins.");
     const result = await page.evaluate(async () => {
         // @ts-expect-error: Client module.
-        const { FASTElement, html, buildViewBindingTargets, uniqueElementName } =
-            await import("/main.js");
+        const {
+            FASTElement,
+            html,
+            enableHydration,
+            buildViewBindingTargets,
+            uniqueElementName,
+        } = await import("/main.js");
+        enableHydration();
         class ButtonElement extends FASTElement.from(HTMLButtonElement) {}
         const name = uniqueElementName();
         await FASTElement.define(ButtonElement, {
@@ -372,9 +600,11 @@ test("a failed registration preserves earlier observation metadata and surfaces 
             FASTElement,
             FASTElementDefinition,
             html,
+            enableHydration,
             buildViewBindingTargets,
             uniqueElementName,
         } = await import("/main.js");
+        enableHydration();
         class RegisteredElement extends FASTElement {}
         const definition = await FASTElementDefinition.compose(RegisteredElement, {
             name: uniqueElementName(),
@@ -432,6 +662,7 @@ for (const strategy of ["legacy", "custom"] as const) {
                 createHydrationMarkers,
                 HydrationMarkup,
             } = await import("/main.js");
+            enableHydration();
             class KnownElement extends FASTElement {}
             const name = uniqueElementName();
             await KnownElement.define({ name, template: html`` });

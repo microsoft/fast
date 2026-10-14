@@ -4,8 +4,8 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 80.87 KB | 24.39 KB | 21.63 KB |
-| FASTElement (@microsoft/fast-element/fast-element.js) | 24.92 KB | 7.70 KB | 6.94 KB |
+| CDN Rollup Bundle | 79.59 KB | 24.01 KB | 21.35 KB |
+| FASTElement (@microsoft/fast-element/fast-element.js) | 23.49 KB | 7.27 KB | 6.55 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.75 KB | 2.51 KB | 2.23 KB |
 | observable (@microsoft/fast-element/observable.js) | 6.79 KB | 2.52 KB | 2.24 KB |
@@ -15,11 +15,11 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | slotted (@microsoft/fast-element/slotted.js) | 4.66 KB | 1.81 KB | 1.59 KB |
 | volatile (@microsoft/fast-element/volatile.js) | 6.84 KB | 2.54 KB | 2.26 KB |
 | when (@microsoft/fast-element/when.js) | 1.88 KB | 731 B | 589 B |
-| html (@microsoft/fast-element/html.js) | 28.31 KB | 9.40 KB | 8.47 KB |
-| repeat (@microsoft/fast-element/repeat.js) | 32.25 KB | 10.43 KB | 9.42 KB |
+| html (@microsoft/fast-element/html.js) | 28.26 KB | 9.38 KB | 8.45 KB |
+| repeat (@microsoft/fast-element/repeat.js) | 32.20 KB | 10.40 KB | 9.40 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
-| enableHydration (@microsoft/fast-element/hydration.js) | 48.74 KB | 14.86 KB | 13.36 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 62.89 KB | 19.96 KB | 17.88 KB |
+| enableHydration (@microsoft/fast-element/hydration.js) | 48.79 KB | 14.85 KB | 13.34 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 62.84 KB | 19.93 KB | 17.82 KB |
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.55 KB | 4.46 KB | 4.03 KB |
-| observerMap (@microsoft/fast-element/observer-map.js) | 23.51 KB | 8.17 KB | 7.37 KB |
-| attributeMap (@microsoft/fast-element/attribute-map.js) | 16.86 KB | 5.88 KB | 5.30 KB |
+| observerMap (@microsoft/fast-element/observer-map.js) | 22.07 KB | 7.75 KB | 6.99 KB |
+| attributeMap (@microsoft/fast-element/attribute-map.js) | 15.42 KB | 5.44 KB | 4.91 KB |

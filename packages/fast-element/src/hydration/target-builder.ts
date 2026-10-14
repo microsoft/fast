@@ -1,9 +1,9 @@
-import { isAttributeUnobserved } from "../components/attribute-observation.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "../templating/html-directive.js";
+import { isHydrationMarkerUnobserved } from "./attribute-observation.js";
 import {
     getHostName,
     getHydrationDiagnostic,
@@ -188,12 +188,12 @@ export function buildViewBindingTargets(
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
                 const element = node as Element;
+                const nativeCustomElement =
+                    nativeMarkers && element.localName.includes("-");
                 const unobserved =
-                    nativeMarkers &&
-                    element.localName.includes("-") &&
-                    isAttributeUnobserved(element, "data-fe");
+                    nativeCustomElement && isHydrationMarkerUnobserved(element);
                 if (
-                    unobserved
+                    nativeCustomElement
                         ? !hasNativeAttributeMethod(element, "getAttribute", getAttribute)
                         : element.getAttribute !== getAttribute
                 ) {

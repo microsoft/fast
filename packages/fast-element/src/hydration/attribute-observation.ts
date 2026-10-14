@@ -1,3 +1,5 @@
+import { ElementRegistration } from "../components/element-registration.js";
+
 const define = Object.getOwnPropertyDescriptor(
     Object.getPrototypeOf(customElements),
     "define",
@@ -6,7 +8,7 @@ const arrayIterator = Object.getOwnPropertyDescriptor(
     Array.prototype,
     Symbol.iterator,
 )?.value;
-const observedAttributes = new WeakMap<object, ReadonlySet<string> | null>();
+const unobservedMarkers = new WeakMap<object, boolean>();
 const lifecycleCallbacks = [
     "connectedCallback",
     "disconnectedCallback",
@@ -30,11 +32,11 @@ function findDescriptor(
     }
 }
 
-function captureObservedAttributes(
+function isMarkerUnobserved(
     type: CustomElementConstructor,
     registry: CustomElementRegistry,
     options?: ElementDefinitionOptions,
-): ReadonlySet<string> | null {
+): boolean {
     if (
         typeof define !== "function" ||
         typeof arrayIterator !== "function" ||
@@ -46,7 +48,7 @@ function captureObservedAttributes(
             name => findDescriptor(type.prototype, name)?.get !== void 0,
         )
     ) {
-        return null;
+        return false;
     }
     const names = findDescriptor(type, "observedAttributes")?.value;
     if (
@@ -54,48 +56,49 @@ function captureObservedAttributes(
         Object.getPrototypeOf(names) !== Array.prototype ||
         findDescriptor(names, Symbol.iterator)?.value !== arrayIterator
     ) {
-        return null;
+        return false;
     }
-    const snapshot = new Set<string>();
     for (let i = 0; i < names.length; i++) {
         const descriptor = Object.getOwnPropertyDescriptor(names, i);
-        if (typeof descriptor?.value !== "string") return null;
-        snapshot.add(descriptor.value);
+        if (typeof descriptor?.value !== "string" || descriptor.value === "data-fe")
+            return false;
     }
-    return snapshot;
+    return true;
 }
 
-/**
- * Records a conservative platform observation snapshot before synchronous upgrades.
- * @internal
- */
-export function defineCustomElement(
+function defineCustomElement(
     name: string,
     type: CustomElementConstructor,
     options: ElementDefinitionOptions,
     registry: CustomElementRegistry,
+    wasDefined: boolean,
 ): void {
     const prototype = type.prototype;
-    const previous = observedAttributes.get(prototype);
-    const snapshot = captureObservedAttributes(type, registry, options);
-    observedAttributes.set(
+    const previous = unobservedMarkers.get(prototype);
+    // Earlier untracked registrations cannot acquire proof retroactively.
+    unobservedMarkers.set(
         prototype,
-        previous === null || snapshot === null
-            ? null
-            : previous === void 0
-              ? snapshot
-              : new Set([...previous, ...snapshot]),
+        (previous === void 0 ? !wasDefined : previous) &&
+            isMarkerUnobserved(type, registry, options),
     );
     try {
         registry.define(name, type, options);
     } catch (error) {
-        if (previous === void 0) observedAttributes.delete(prototype);
-        else observedAttributes.set(prototype, previous);
+        if (previous === void 0) unobservedMarkers.delete(prototype);
+        else unobservedMarkers.set(prototype, previous);
         throw error;
     }
 }
 
+/**
+ * Installs registration-time marker tracking before synchronous upgrades.
+ * @internal
+ */
+export function installAttributeObservation(): void {
+    ElementRegistration.define = defineCustomElement;
+}
+
 /** @internal */
-export function isAttributeUnobserved(element: Element, name: string): boolean {
-    return observedAttributes.get(Object.getPrototypeOf(element))?.has(name) === false;
+export function isHydrationMarkerUnobserved(element: Element): boolean {
+    return unobservedMarkers.get(Object.getPrototypeOf(element)) === true;
 }
