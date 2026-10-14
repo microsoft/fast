@@ -3,6 +3,7 @@ import type {
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "../templating/html-directive.js";
+import { isHydrationMarkerUnobserved } from "./attribute-observation.js";
 import {
     getHostName,
     getHydrationDiagnostic,
@@ -84,8 +85,29 @@ export interface ViewBehaviorBoundaries {
 }
 const removeAttribute = Element.prototype.removeAttribute;
 const getAttribute = Element.prototype.getAttribute;
+const hasAttribute = Element.prototype.hasAttribute;
 
-function canMutateOnAttributeRemoval(element: Element): boolean {
+function hasNativeAttributeMethod(
+    element: Element,
+    name: "getAttribute" | "removeAttribute",
+    method: typeof getAttribute | typeof removeAttribute,
+): boolean {
+    let current: object | null = element;
+    while (current !== null) {
+        const descriptor = Object.getOwnPropertyDescriptor(current, name);
+        if (descriptor !== void 0) return descriptor.value === method;
+        current = Object.getPrototypeOf(current);
+    }
+    return false;
+}
+
+function canMutateOnAttributeRemoval(element: Element, unobserved: boolean): boolean {
+    if (unobserved) {
+        return (
+            hasAttribute.call(element, "is") ||
+            !hasNativeAttributeMethod(element, "removeAttribute", removeAttribute)
+        );
+    }
     return (
         element.localName.includes("-") ||
         element.hasAttribute("is") ||
@@ -166,7 +188,15 @@ export function buildViewBindingTargets(
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
                 const element = node as Element;
-                if (element.getAttribute !== getAttribute) {
+                const nativeCustomElement =
+                    nativeMarkers && element.localName.includes("-");
+                const unobserved =
+                    nativeCustomElement && isHydrationMarkerUnobserved(element);
+                if (
+                    nativeCustomElement
+                        ? !hasNativeAttributeMethod(element, "getAttribute", getAttribute)
+                        : element.getAttribute !== getAttribute
+                ) {
                     prepareForMutation();
                 }
                 if (nativeMarkers) {
@@ -191,7 +221,7 @@ export function buildViewBindingTargets(
                             }
                             targetFactory(factory, node, targets);
                         }
-                        if (canMutateOnAttributeRemoval(element)) {
+                        if (canMutateOnAttributeRemoval(element, unobserved)) {
                             prepareForMutation();
                         }
                         element.removeAttribute("data-fe");
@@ -219,7 +249,7 @@ export function buildViewBindingTargets(
                         targetFactory(factory, node, targets);
                     }
 
-                    if (canMutateOnAttributeRemoval(element)) {
+                    if (canMutateOnAttributeRemoval(element, false)) {
                         prepareForMutation();
                     }
                     resolution.cleanup?.();

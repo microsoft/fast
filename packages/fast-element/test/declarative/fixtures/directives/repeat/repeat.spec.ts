@@ -8,6 +8,53 @@ import type {
 } from "./main.js";
 
 test.describe("f-template", async () => {
+    test("hydrates bound FAST children without per-view live traversal setup", async ({
+        page,
+    }) => {
+        await page.addInitScript(() => {
+            const counts = { ranges: 0, walkers: 0 };
+            const createRange = Document.prototype.createRange;
+            const createWalker = Document.prototype.createTreeWalker;
+            Document.prototype.createRange = function () {
+                counts.ranges++;
+                return createRange.call(this);
+            };
+            Document.prototype.createTreeWalker = function (...args) {
+                counts.walkers++;
+                return createWalker.apply(this, args);
+            };
+            Object.defineProperty(window, "hydrationTraversalCounts", { value: counts });
+        });
+        await page.goto("/fixtures/directives/repeat/");
+        await page.waitForFunction(
+            () =>
+                (window as Window & { hydrationCompleted?: boolean })
+                    .hydrationCompleted === true,
+        );
+        const element = page.locator("test-element-nested-repeat");
+        await expect(
+            element.locator("test-element-repeat-label").locator("[data-label]"),
+        ).toHaveText(["A", "empty", "B"]);
+        expect(
+            await page.evaluate(
+                () =>
+                    (
+                        window as Window & {
+                            hydrationTraversalCounts: { ranges: number; walkers: number };
+                        }
+                    ).hydrationTraversalCounts,
+            ),
+        ).toEqual({ ranges: 0, walkers: 0 });
+        await element.evaluate((node: TestElementNestedRepeat) => {
+            node.groups = [
+                { name: "client", items: [{ label: "updated", values: [4] }] },
+            ];
+        });
+        await expect(
+            element.locator("test-element-repeat-label").locator("[data-label]"),
+        ).toHaveText(["updated"]);
+    });
+
     test("preserves SSR nodes through three nested repeats and an adjacent repeat", async ({
         page,
     }) => {
