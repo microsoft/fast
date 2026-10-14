@@ -2,6 +2,43 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Wed, 14 Oct 2026 02:56:20 GMT",
+      "version": "0.13.0",
+      "tag": "@microsoft/fast-build_v0.13.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "fb55a8b887edc12f0cd48f9249d5f8c6cd0bcb53",
+            "comment": "Add nullable and boolean attribute semantics, typed converter exports, shadow-root fragments, and versioned binding metadata for plugin integrations."
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "078774949c41844847147241c6106ac12eb6bb92",
+            "comment": "Add opt-in native allocation profiling and renderer allocation baselines."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "8b9c524f3a6a7544919588e708c4ad0c98a8197b",
+            "comment": "Document remaining renderer workload profiles and reproducible profiling commands."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "a58548a5cec9f4508fd46693f9ec63443e07b0b6",
+            "comment": "Improve renderer discovery performance for adjacent elements while preserving rendered HTML and hydration markers."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 09 Oct 2026 21:33:43 GMT",
       "version": "0.12.0",
       "tag": "@microsoft/fast-build_v0.12.0",

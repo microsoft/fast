@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Document remaining renderer workload profiles and reproducible profiling commands.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
