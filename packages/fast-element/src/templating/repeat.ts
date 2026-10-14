@@ -1,6 +1,7 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
 import { isHydratable } from "../components/hydration.js";
+import { getHostName } from "../hydration/diagnostics.js";
 import { getHydrationMarkers } from "../hydration/markers.js";
 import { ArrayObserver, type Sort, type Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
@@ -436,70 +437,55 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const views = (this.views = new Array(itemCount));
         const markers = getHydrationMarkers();
 
-        // First pass: collect all repeat marker pairs by walking backward.
-        // Each entry tracks both the item content range and its SSR markers.
         const itemRanges: HydrationRepeatRange[] = [];
-        let current: Node | null = this.location.previousSibling;
+        const stack: Comment[] = [];
+        // Start at this directive's content, not an earlier adjacent repeat's prefix.
+        const boundaries = (this.controller as HydrationView).bindingViewBoundaries[
+            this.directive.targetNodeId
+        ];
+        let current: Node | null = boundaries?.first ?? this.location;
 
-        while (current !== null) {
-            if (!isCommentNode(current) || !markers.isRepeatViewEndMarker(current.data)) {
-                current = current.previousSibling;
-                continue;
-            }
-
-            const endMarker = current;
-            endMarker.data = "";
-            const end = endMarker.previousSibling;
-            if (!end) {
-                throw new Error(
-                    `Error when hydrating inside "${
-                        (this.location.getRootNode() as ShadowRoot).host.nodeName
-                    }": end should never be null.`,
-                );
-            }
-
-            // Find matching start marker via balanced counting
-            let start: Node | null = end;
-            let depth = 0;
-            while (start !== null) {
-                if (isCommentNode(start)) {
-                    if (markers.isRepeatViewEndMarker(start.data)) {
-                        depth++;
-                    } else if (markers.isRepeatViewStartMarker(start.data)) {
-                        if (depth === 0) {
-                            const startMarker = start;
-                            startMarker.data = "";
-                            current = startMarker.previousSibling;
-                            const itemStart = startMarker.nextSibling ?? endMarker;
-
-                            // Empty item: start and end markers are adjacent.
-                            const itemEnd = end === startMarker ? itemStart : end;
-
-                            itemRanges.push({
-                                start: itemStart,
-                                end: itemEnd,
-                                startMarker,
-                                endMarker,
-                            });
-                            break;
-                        }
-                        depth--;
+        while (current !== null && current !== this.location) {
+            if (isCommentNode(current)) {
+                const data = current.data;
+                if (markers.isRepeatViewStartMarker(data)) {
+                    stack.push(current);
+                } else if (markers.isRepeatViewEndMarker(data)) {
+                    const startMarker = stack.pop();
+                    if (startMarker === undefined) {
+                        const expected =
+                            current.previousSibling === null
+                                ? "end should never be null."
+                                : "repeat start marker not found.";
+                        throw new Error(
+                            `Error when hydrating inside "${getHostName(this.location)}": ${expected}`,
+                        );
+                    }
+                    if (stack.length === 0) {
+                        const start = startMarker.nextSibling!;
+                        const end = current.previousSibling!;
+                        itemRanges.push({
+                            start,
+                            end: end === startMarker ? start : end,
+                            startMarker,
+                            endMarker: current,
+                        });
                     }
                 }
-                start = start.previousSibling;
             }
-            if (!start) {
-                throw new Error(
-                    `Error when hydrating inside "${
-                        (this.location.getRootNode() as ShadowRoot).host.nodeName
-                    }": repeat start marker not found.`,
-                );
-            }
+            current = current.nextSibling;
+        }
+        if (stack.length !== 0) {
+            throw new Error(
+                `Error when hydrating inside "${getHostName(this.location)}": repeat end marker not found.`,
+            );
         }
 
-        // Ranges were collected backward (last item first).
-        // Reverse so index 0 = first SSR item.
-        itemRanges.reverse();
+        // Nested ranges still belong to the child views that will hydrate below.
+        for (const { startMarker, endMarker } of itemRanges) {
+            startMarker.data = "";
+            endMarker.data = "";
+        }
 
         // Hydrate each SSR item at its correct index (0-based from start).
         const hydrationCount = Math.min(itemRanges.length, itemCount);
