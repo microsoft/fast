@@ -106,6 +106,7 @@ fn type_source_is_rejected_for_webui_syntax() {
     let options = ConvertOptions {
         type_source: Some("MyElement".to_string()),
         type_source_import: None,
+        ..ConvertOptions::default()
     };
     let err = convert_template_with_options(&input, "webui-prerelease", &options).unwrap_err();
     assert!(matches!(
@@ -121,6 +122,7 @@ fn type_source_import_without_type_source_is_rejected() {
     let options = ConvertOptions {
         type_source: None,
         type_source_import: Some("./my-element.js".to_string()),
+        ..ConvertOptions::default()
     };
     let err = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap_err();
     assert!(matches!(
@@ -135,6 +137,7 @@ fn invalid_type_source_is_rejected() {
     let options = ConvertOptions {
         type_source: Some("My Element<T>".to_string()),
         type_source_import: None,
+        ..ConvertOptions::default()
     };
     let err = convert_template_with_options(&input, "fast-v3-ts", &options).unwrap_err();
     assert!(matches!(err, ConvertError::InvalidTypeSource { .. }));

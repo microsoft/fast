@@ -5,7 +5,7 @@ declarative templates.
 
 | Fixture | Description |
 |---|---|
-| `attribute` | Attribute binding via `@attr` and `@observable` decorators on custom elements. |
+| `attribute` | Attribute binding via `@attr` and `@observable`, including omitted null/missing attributes, retained empty strings, and hydration of omitted binding slots. |
 | `content` | Content binding with `{{text}}` for escaped HTML and `{{{html}}}` for unescaped HTML injection. |
 | `dot-syntax` | Dot-notation path access in bindings (e.g., `{{user.name}}`, `{{user.address.city}}`). |
 | `event` | Event binding syntax with `@click="{handleClick()}"`, DOM event access via `$e`, and context access via `$c`. |

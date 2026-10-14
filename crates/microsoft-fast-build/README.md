@@ -86,6 +86,61 @@ rendering.
 
 ---
 
+## Plugin integration APIs
+
+`render_shadow_root_with_locator(element_name, state, locator, config)` renders
+only the complete Declarative Shadow DOM `<template>` fragment. Its JSON-state
+counterpart is `render_shadow_root_template_with_locator(element_name,
+state: Option<&str>, locator, config)`. Pass resolved **component state**;
+these APIs do not synthesize a host, overlay host attributes, emit template-host
+attributes, or render caller-owned light DOM. Nested components, code-sample
+escaping, and fresh v3/v2 hydration scopes use the whole-host rendering path.
+Unknown template names and invalid JSON state return explicit errors.
+
+```rust
+use microsoft_fast_build::{
+    parse_f_templates, render_shadow_root_template_with_locator, Locator,
+};
+
+let definitions = parse_f_templates(
+    r#"<f-template name="my-card"><template>{{title}}</template></f-template>"#,
+);
+let locator = Locator::from_metadata(definitions)?;
+let fragment = render_shadow_root_template_with_locator(
+    "my-card", Some(r#"{"title":"Hello"}"#), &locator, None,
+)?;
+```
+
+`parse_f_templates` is also a public native API. It returns `Vec<FTemplate>`
+with `format_version`, `bindings`, name/content, and host/shadow-root attributes.
+`BindingMetadata` records direct names, expressions, syntax kinds, lexical
+paths, and nested `BindingScope { variable, iterable }` frames. Application
+types and required/optional declarations remain unknown (`None`); repeat
+collections alone have a known array requirement. Metadata describes syntax,
+not a state schema or a full validation certificate. Code samples are excluded.
+`Locator::from_metadata` validates names, duplicates, and the format version.
+Legacy content/tuple constructors remain supported.
+
+The WASM exports are `parse_f_templates(html)` (JSON metadata array) and
+`render_shadow_root(elementName, templatesJson, state?, attributeNameStrategy?,
+markers_v2?)`. Generated declarations include `FTemplateMetadata`,
+`TemplateBinding`, and `TemplateBindingScope`. Each generated record has
+`formatVersion: 1`; render exports reject unsupported or malformed explicit
+versions, while still accepting unversioned maps and string-valued definitions.
+
+### Nullable and boolean attributes
+
+Missing or explicit `null` bindings omit the entire attribute, including when
+embedded in a literal value such as `href="/prefix/{{value}}"`. An explicit
+empty string remains `href=""`. Boolean JSON values bound to known HTML boolean
+attributes use presence/absence; ordinary attributes such as `aria-hidden`
+still serialize booleans as `"true"`/`"false"`. `?name="{{expr}}"` remains the
+recommended truthy/falsy form for matching browser-side FAST behavior.
+Omitted bindings still reserve hydration slots. An author binding that resolves
+to absence overrides template-host defaults rather than reintroducing them.
+See the [migration guide](../../packages/fast-build/docs/migration/plugin-integrations.md)
+for intentional changes from earlier output.
+
 ## Template Syntax
 
 ### Content Bindings

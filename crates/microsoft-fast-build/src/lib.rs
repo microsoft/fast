@@ -77,14 +77,56 @@ mod streaming;
 mod error;
 mod locator;
 mod f_template;
+mod binding_metadata;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
 pub use json::{JsonValue, JsonError};
 pub use error::RenderError;
-pub use locator::Locator;
+pub use locator::{Locator, FTemplate, parse_f_templates};
+pub use binding_metadata::{BindingMetadata, BindingScope};
 pub use config::{RenderConfig, AttributeNameStrategy};
 pub use f_template::compose_f_template_styles;
+
+/// Version of generated template metadata; unversioned maps remain supported.
+pub const TEMPLATE_FORMAT_VERSION: u32 = 1;
+
+/// Render only the Declarative Shadow DOM `<template>` for a named component.
+///
+/// `state` is the component's resolved state. No host markup, host-attribute
+/// overlay, or light DOM is synthesized. Nested components and hydration use
+/// the same rendering path as whole-host rendering.
+pub fn render_shadow_root_with_locator(
+    element_name: &str,
+    state: &JsonValue,
+    locator: &Locator,
+    config: Option<&RenderConfig>,
+) -> Result<String, RenderError> {
+    let default_config = RenderConfig::default();
+    let config = config.unwrap_or(&default_config);
+    let content = directive::render_shadow_content(element_name, state, locator, config)?;
+    let attrs = directive::build_shadowroot_template_attrs(
+        locator.get_shadowroot_attributes(element_name),
+    );
+    Ok(format!("<template{attrs}>{content}</template>"))
+}
+
+/// Render a named component's shadow-root fragment with optional JSON state.
+/// Omitted state is treated as an empty object.
+pub fn render_shadow_root_template_with_locator(
+    element_name: &str,
+    state: Option<&str>,
+    locator: &Locator,
+    config: Option<&RenderConfig>,
+) -> Result<String, RenderError> {
+    let state = match state {
+        Some(state) => json::parse(state).map_err(|error| RenderError::JsonParse {
+            message: error.message,
+        })?,
+        None => empty_state(),
+    };
+    render_shadow_root_with_locator(element_name, &state, locator, config)
+}
 
 fn empty_state() -> JsonValue {
     JsonValue::Object(std::collections::HashMap::new())

@@ -21,7 +21,17 @@ pub(crate) fn convert(template: &str, options: &ConvertOptions) -> Result<String
     let body = convert_segment(template, &mut state, &[])?;
 
     let mut output = String::new();
+    let type_source_root = options.type_source.as_deref().and_then(|source| source.split('.').next());
+    let template_type = if type_source_root == Some("ElementViewTemplate") {
+        "_ElementViewTemplate"
+    } else { "ElementViewTemplate" };
     output.push_str("import { html } from \"@microsoft/fast-element/html.js\";\n");
+    if options.typed {
+        let imported = if template_type == "ElementViewTemplate" {
+            template_type.to_string()
+        } else { format!("ElementViewTemplate as {template_type}") };
+        output.push_str(&format!("import type {{ {imported} }} from \"@microsoft/fast-element\";\n"));
+    }
     if state.repeat {
         output.push_str("import { repeat } from \"@microsoft/fast-element/repeat.js\";\n");
     }
@@ -42,11 +52,19 @@ pub(crate) fn convert(template: &str, options: &ConvertOptions) -> Result<String
         options.type_source_import.as_deref(),
     ) {
         output.push_str(&format!(
-            "import type {{ {type_source} }} from \"{}\";\n",
+            "import type {{ {} }} from \"{}\";\n",
+            type_source.split('.').next().expect("Type source was validated"),
             escape_js_string(type_source_import)
         ));
     }
-    output.push_str("\nexport const template = html");
+    output.push_str("\nexport const template");
+    if options.typed {
+        output.push_str(&format!(": {template_type}"));
+        if let Some(type_source) = options.type_source.as_deref() {
+            output.push_str(&format!("<{type_source}>"));
+        }
+    }
+    output.push_str(" = html");
     if let Some(type_source) = options.type_source.as_deref() {
         output.push('<');
         output.push_str(type_source);
@@ -65,11 +83,22 @@ pub(crate) fn convert(template: &str, options: &ConvertOptions) -> Result<String
 /// `export_name` must already be a validated TypeScript identifier — validation
 /// is performed by the caller (`converter::convert_stylesheet`) so error
 /// messages stay centralized alongside the other `ConvertError` variants.
-pub(crate) fn convert_stylesheet(stylesheet: &str, export_name: &str) -> String {
+pub(crate) fn convert_stylesheet(stylesheet: &str, export_name: &str, typed: bool) -> String {
     let mut output = String::new();
-    output.push_str("import { css } from \"@microsoft/fast-element/css.js\";\n\n");
+    let style_type = if export_name == "ElementStyles" { "_ElementStyles" } else { "ElementStyles" };
+    output.push_str("import { css } from \"@microsoft/fast-element/css.js\";\n");
+    if typed {
+        let imported = if style_type == "ElementStyles" { style_type.to_string() } else {
+            format!("ElementStyles as {style_type}")
+        };
+        output.push_str(&format!("import type {{ {imported} }} from \"@microsoft/fast-element\";\n"));
+    }
+    output.push('\n');
     output.push_str("export const ");
     output.push_str(export_name);
+    if typed {
+        output.push_str(&format!(": {style_type}"));
+    }
     output.push_str(" = css`");
     output.push_str(&escape_ts_literal_with_carriage_returns(stylesheet));
     output.push_str("`;\n");

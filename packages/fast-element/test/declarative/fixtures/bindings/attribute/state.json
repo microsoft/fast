@@ -4,5 +4,10 @@
     "current-group": "work",
     "activeGroup": "work",
     "currentGroup": "work",
-    "isEnabled": false
+    "isEnabled": false,
+    "nullableHref": null,
+    "nullableTabIndex": null,
+    "emptyHref": "",
+    "isDisabled": false,
+    "nullableValue": null
 }

@@ -309,6 +309,19 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
                 result.push_str(&attr.raw);
             }
             Some(v) if v.contains("{{") => {
+                if let Some(expr) = single_attribute_binding(&v) {
+                    if is_boolean_attribute(&name) {
+                        if let Some(crate::json::JsonValue::Bool(enabled)) =
+                            crate::context::resolve_value(expr, root, loop_vars)
+                        {
+                            if enabled {
+                                result.push(' ');
+                                result.push_str(&name);
+                            }
+                            continue;
+                        }
+                    }
+                }
                 if let Some(resolved) = resolve_attribute_value(&v, root, loop_vars) {
                     append_quoted_attribute(&mut result, &name, &resolved);
                 }
@@ -346,7 +359,7 @@ fn append_double_quote_escaped(out: &mut String, value: &str) {
     }
 }
 
-fn resolve_attribute_value(
+pub(crate) fn resolve_attribute_value(
     value: &str,
     root: &crate::json::JsonValue,
     loop_vars: &[(String, crate::json::JsonValue)],
@@ -374,10 +387,32 @@ fn resolve_attribute_value(
         };
         let expr = value[inner_start..end].trim();
         let resolved = resolve_value(expr, root, loop_vars)?;
+        if matches!(resolved, crate::json::JsonValue::Null) {
+            return None;
+        }
         result.push_str(&value[pos..dbl]);
         result.push_str(&html_escape(&resolved.to_display_string()));
         pos = end + 2;
     }
+}
+
+pub(crate) fn single_attribute_binding(value: &str) -> Option<&str> {
+    value
+        .trim()
+        .strip_prefix("{{")?
+        .strip_suffix("}}")
+        .filter(|expression| !expression.contains("{{") && !expression.contains("}}"))
+        .map(str::trim)
+}
+
+pub(crate) fn is_boolean_attribute(name: &str) -> bool {
+    [
+        "allowfullscreen", "async", "autofocus", "autoplay", "checked", "controls",
+        "default", "defer", "disabled", "formnovalidate", "hidden", "inert", "ismap",
+        "itemscope", "loop", "multiple", "muted", "nomodule", "novalidate", "open",
+        "playsinline", "readonly", "required", "reversed", "selected",
+        "shadowrootclonable", "shadowrootdelegatesfocus", "shadowrootserializable",
+    ].iter().any(|attribute| name.eq_ignore_ascii_case(attribute))
 }
 
 /// Remove all FAST client-only binding attributes from an opening tag string:
