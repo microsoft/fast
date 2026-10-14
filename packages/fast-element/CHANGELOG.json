@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 14 Oct 2026 04:26:38 GMT",
+      "version": "3.1.1",
+      "tag": "@microsoft/fast-element_v3.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "not available",
+            "comment": "Reduce hydration traversal and native marker allocations, and pair scoped repeat ranges in a forward pass while preserving live DOM mutation behavior."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 14 Oct 2026 02:56:20 GMT",
       "version": "3.1.0",
       "tag": "@microsoft/fast-element_v3.1.0",

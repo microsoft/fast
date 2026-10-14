@@ -103,6 +103,27 @@ TestElementWithObserverMap.define(
     [observerMap()],
 );
 
+export class TestElementNestedRepeat extends FASTElement {
+    @observable
+    groups: { name: string; items: { label: string; values: number[] }[] }[] = [
+        {
+            name: "one",
+            items: [
+                { label: "A", values: [1, 2] },
+                { label: "empty", values: [] },
+            ],
+        },
+        { name: "two", items: [{ label: "B", values: [3] }] },
+    ];
+
+    @observable
+    tail: string[] = ["last"];
+}
+TestElementNestedRepeat.define({
+    name: "test-element-nested-repeat",
+    template: declarativeTemplate(),
+});
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;
