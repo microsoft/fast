@@ -28,6 +28,6 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "^0.12.0"
+    "@microsoft/fast-build": "^0.13.0"
   }
 }
