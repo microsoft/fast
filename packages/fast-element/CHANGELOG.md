@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 09 Oct 2026 21:33:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 14 Oct 2026 04:26:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.1.1
+
+Wed, 14 Oct 2026 04:26:38 GMT
+
+### Patches
+
+- Reduce hydration traversal and native marker allocations, and pair scoped repeat ranges in a forward pass while preserving live DOM mutation behavior. (7559015+janechu@users.noreply.github.com)
 
 ## 3.1.0
 

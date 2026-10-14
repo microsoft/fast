@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Reduce hydration traversal and native marker allocations, and pair scoped repeat ranges in a forward pass while preserving live DOM mutation behavior.",
-  "packageName": "@microsoft/fast-element",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
