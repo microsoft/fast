@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "..",
+        "noEmit": true,
+        // Playwright's declarations use module namespaces unsupported by TypeScript 7.
+        "skipLibCheck": true
+    },
+    "include": ["**/*.ts", "../src/**/*.pw.spec.ts"],
+    "exclude": []
+}
