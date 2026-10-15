@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 14 Oct 2026 04:26:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 14 Oct 2026 22:58:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.1.2
+
+Wed, 14 Oct 2026 22:58:43 GMT
+
+### Patches
+
+- Avoid live-range hydration fallback for unobserved native markers on FAST elements registered after hydration is enabled, while keeping observation tracking out of client-only bundles. (7559015+janechu@users.noreply.github.com)
 
 ## 3.1.1
 
