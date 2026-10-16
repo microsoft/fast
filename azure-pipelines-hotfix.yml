@@ -1,0 +1,220 @@
+trigger: none
+pr: none
+lockBehavior: sequential
+
+parameters:
+- name: baseTag
+  displayName: Published base release or hotfix tag
+  type: string
+  default: ''
+- name: hotfixTag
+  displayName: Reviewed hotfix/package_vversion source tag
+  type: string
+  default: ''
+- name: publish
+  displayName: Publish the verified artifacts (main only)
+  type: boolean
+  default: false
+
+resources:
+  repositories:
+  - repository: 1esPipelines
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    pool:
+      name: OneESPool
+      image: HostedPoolLinuxImage
+      os: linux
+    sdl:
+      sourceAnalysisPool:
+        name: OneESPool
+        image: HostedPoolWindowsImage
+        os: windows
+    settings:
+      networkIsolationPolicy: CFSClean
+    stages:
+    - stage: BuildHotfix
+      displayName: Validate, build, and pack the exact hotfix source
+      jobs:
+      - job: Build
+        workspace:
+          clean: all
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            targetPath: $(Build.ArtifactStagingDirectory)/fast-hotfix-inputs
+            artifactName: fast-hotfix-inputs
+            condition: and(succeeded(), eq(variables['plan.needsDeployment'], 'true'))
+        steps:
+        - checkout: self
+          clean: true
+          fetchDepth: 0
+          fetchTags: true
+          persistCredentials: false
+
+        - task: UseNode@1
+          inputs:
+            version: "22.x"
+
+        - script: node build/scripts/hotfix-release.mjs plan
+          name: plan
+          displayName: Validate published base, hotfix tag, lineage, and versions
+          env:
+            FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
+            FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+            FAST_HOTFIX_PUBLISH: ${{ lower(parameters.publish) }}
+            FAST_HOTFIX_PLAN: $(Agent.TempDirectory)/fast-hotfix-plan.json
+            FAST_HOTFIX_SOURCE_ROOT: $(Build.SourcesDirectory)/hotfix-source
+
+        - bash: |
+            set -euo pipefail
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --target wasm32-unknown-unknown
+            echo "##vso[task.prependpath]$HOME/.cargo/bin"
+          condition: and(succeeded(), eq(variables['plan.needsDeployment'], 'true'))
+          displayName: Install Rust toolchain
+
+        - bash: |
+            set -euo pipefail
+            cargo install wasm-pack --locked
+            cd "$HOTFIX_SOURCE_ROOT"
+            npm ci
+            npx lage build --to "$HOTFIX_PACKAGE"
+            npx playwright install --with-deps
+            npx lage test:node test:playwright --to "$HOTFIX_PACKAGE" --concurrency 1
+          condition: and(succeeded(), eq(variables['plan.needsDeployment'], 'true'))
+          displayName: Build and test the historical workspace with its lockfile
+          env:
+            HOTFIX_SOURCE_ROOT: $(Build.SourcesDirectory)/hotfix-source
+            HOTFIX_PACKAGE: $(plan.packageName)
+
+        - script: node build/scripts/hotfix-release.mjs pack
+          condition: and(succeeded(), eq(variables['plan.needsDeployment'], 'true'))
+          displayName: Pack only the selected package and paired crates
+          env:
+            FAST_HOTFIX_PLAN: $(Agent.TempDirectory)/fast-hotfix-plan.json
+            FAST_HOTFIX_SOURCE_ROOT: $(Build.SourcesDirectory)/hotfix-source
+            FAST_HOTFIX_ARTIFACT_ROOT: $(Build.ArtifactStagingDirectory)/fast-hotfix-inputs
+
+    - ${{ if eq(parameters.publish, true) }}:
+      - stage: PublishHotfix
+        displayName: Publish the governed hotfix artifact without GitHub Releases
+        dependsOn: BuildHotfix
+        condition: and(succeeded(), eq(dependencies.BuildHotfix.outputs['Build.plan.needsDeployment'], 'true'))
+        variables:
+        - name: npm_config_tag
+          value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.npmDistTag'] ]
+        - name: hotfixSourceSha
+          value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.sourceSha'] ]
+        - name: hotfixBaseSha
+          value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.baseSha'] ]
+        - name: hasCrates
+          value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.hasCrates'] ]
+        jobs:
+        - job: Deploy
+          displayName: Publish the selected hotfix package and paired crates
+          workspace:
+            clean: all
+          variables:
+          - group: fast-hotfix-publishing
+          templateContext:
+            type: releaseJob
+            isProduction: true
+            inputs:
+            - input: pipelineArtifact
+              artifactName: fast-hotfix-inputs
+              targetPath: $(System.DefaultWorkingDirectory)
+          steps:
+          - checkout: none
+
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+
+          - script: node publish_artifacts_meta/hotfix-release.mjs prepare-publication
+            displayName: Verify artifacts, require unused versions, and prevent channel rollback
+            env:
+              FAST_HOTFIX_ARTIFACT_ROOT: $(System.DefaultWorkingDirectory)
+              FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
+              FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+              FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
+              FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
+
+          - task: EsrpRelease@10
+            displayName: Publish npm hotfix to its maintenance channel
+            inputs:
+              connectedservicename: $(clientId)
+              usemanagedidentity: true
+              keyvaultname: $(keyvault)
+              signcertname: $(clientId)
+              clientid: $(clientId)
+              intent: PackageDistribution
+              contenttype: npm
+              contentsource: Folder
+              folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_npm
+              productstate: $(npm_config_tag)
+              waitforreleasecompletion: true
+              owners: $(releaseOwners)
+              approvers: $(releaseApprovers)
+              serviceendpointurl: https://api.esrp.microsoft.com
+              mainpublisher: ESRPRELPACMAN
+              domaintenantid: $(tenantId)
+
+          - task: EsrpRelease@10
+            displayName: Publish paired Rust crates
+            condition: and(succeeded(), eq(variables['hasCrates'], 'true'))
+            inputs:
+              connectedservicename: $(clientId)
+              usemanagedidentity: true
+              keyvaultname: $(keyvault)
+              signcertname: $(clientId)
+              clientid: $(clientId)
+              intent: PackageDistribution
+              contenttype: Rust
+              contentsource: Folder
+              folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_crates
+              waitforreleasecompletion: true
+              owners: $(releaseOwners)
+              approvers: $(releaseApprovers)
+              serviceendpointurl: https://api.esrp.microsoft.com
+              mainpublisher: ESRPRELPACMAN
+              domaintenantid: $(tenantId)
+
+          - script: node publish_artifacts_meta/hotfix-release.mjs verify-publication
+            name: verified
+            displayName: Verify all registry bytes and the maintenance channel
+            env:
+              FAST_HOTFIX_ARTIFACT_ROOT: $(System.DefaultWorkingDirectory)
+              FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
+              FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+              FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
+              FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
+
+        - job: MarkDeployed
+          displayName: Record the verified hotfix commit as deployed
+          dependsOn: Deploy
+          condition: and(eq(dependencies.Deploy.result, 'Succeeded'), eq(dependencies.Deploy.outputs['verified.publicationVerified'], 'true'))
+          workspace:
+            clean: all
+          steps:
+          - checkout: self
+            persistCredentials: true
+            fetchDepth: 0
+            fetchTags: true
+
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+
+          - script: node build/scripts/hotfix-release.mjs mark-deployed
+            displayName: Push only the deployed/hotfix marker for the built commit
+            env:
+              FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
+              FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+              FAST_HOTFIX_PUBLISH: 'true'
+              FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
+              FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
