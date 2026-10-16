@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 09 Oct 2026 21:33:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 14 Oct 2026 02:56:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.13.0
+
+Wed, 14 Oct 2026 02:56:20 GMT
+
+### Minor changes
+
+- Add nullable and boolean attribute semantics, typed converter exports, shadow-root fragments, and versioned binding metadata for plugin integrations. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Improve renderer discovery performance for adjacent elements while preserving rendered HTML and hydration markers. (7559015+janechu@users.noreply.github.com)
 
 ## 0.12.0
 

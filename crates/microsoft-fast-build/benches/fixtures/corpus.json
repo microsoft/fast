@@ -1,0 +1,22 @@
+{
+    "item": {
+        "label": "Item & <\"'> café {i}",
+        "hrefValue": "https://example.test/item/{i}?a=1&b=2",
+        "srcValue": "https://example.test/image/{i}.png",
+        "active": true,
+        "values": ["one", "two"],
+        "options": { "enabled": true }
+    },
+    "urlEntry": "<bench-url-item href-value=\"https://example.test/item/{i}?a=1&b=2\" src-value=\"https://example.test/image/{i}.png\"></bench-url-item>",
+    "urlTemplate": "<a href=\"{{hrefValue}}\">{{label}}</a><img src=\"{{srcValue}}\">",
+    "repeatEntry": "<bench-repeat></bench-repeat>",
+    "repeatTemplate": "<f-repeat value=\"{{item in items}}\"><f-when value=\"{{item.active}}\"><bench-item label=\"{{item.label}}\" href-value=\"{{item.hrefValue}}\" :values=\"{{item.values}}\" :options=\"{{item.options}}\"><span>{{item.label}}</span></bench-item></f-when></f-repeat>",
+    "itemTemplate": "<a href=\"{{hrefValue}}\" ?hidden=\"{{!active}}\" @click=\"{handle({key: '}}'})}\">{{label}}</a><span>{{values}}</span><span>{{options}}</span><slot></slot>",
+    "plainEntry": "<bench-plain></bench-plain>",
+    "plainTemplate": "<f-repeat value=\"{{item in items}}\"><a href=\"{{item.hrefValue}}\" title=\"{{item.label}}\" ?hidden=\"{{!item.active}}\">{{item.label}}</a><img src=\"{{item.srcValue}}\"></f-repeat>",
+    "definitionEntry": "<bench-definition-{i}></bench-definition-{i}>",
+    "definitionTemplate": "<span title=\"{{label}}\">{{label}}</span>",
+    "overlayEntry": "<bench-overlay label=\"Item {i}\"></bench-overlay>",
+    "overlayBareEntry": "<bench-overlay></bench-overlay>",
+    "overlayTemplate": "<span>{{label}}</span>"
+}

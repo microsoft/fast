@@ -30,6 +30,7 @@
             <!--fe:b--><!--fe:r-->
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#repeat-icon" data-fe="1"></use>
                     </svg>
                 </li>
@@ -38,6 +39,7 @@
             <!--fe:b--><!--fe:r-->
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#repeat-icon" data-fe="1"></use>
                     </svg>
                 </li>
@@ -50,8 +52,43 @@
             <!--fe:b--><!--fe:/b-->
         </ul></template></test-element-empty-array>
         <test-element-event><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
-            <button data-fe="1">Click</button>
+            <button type="button" data-fe="1">Click</button>
         <!--fe:/r--><!--fe:/b--></template></test-element-event>
+        <test-element-nested-repeat><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <li data-group="one" data-fe="1">
+                    <!--fe:b--><!--fe:r-->
+                        <span data-item="A" data-fe="1">
+                            <test-element-repeat-label label="A" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span data-label><!--fe:b-->A<!--fe:/b--></span></template></test-element-repeat-label>
+                            <!--fe:b--><!--fe:r-->
+                                <b><!--fe:b-->1<!--fe:/b--></b>
+                            <!--fe:/r--><!--fe:r-->
+                                <b><!--fe:b-->2<!--fe:/b--></b>
+                            <!--fe:/r--><!--fe:/b-->
+                        </span>
+                    <!--fe:/r--><!--fe:r-->
+                        <span data-item="empty" data-fe="1">
+                            <test-element-repeat-label label="empty" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span data-label><!--fe:b-->empty<!--fe:/b--></span></template></test-element-repeat-label>
+                            <!--fe:b--><!--fe:/b-->
+                        </span>
+                    <!--fe:/r--><!--fe:/b-->
+                </li>
+            <!--fe:/r--><!--fe:r-->
+                <li data-group="two" data-fe="1">
+                    <!--fe:b--><!--fe:r-->
+                        <span data-item="B" data-fe="1">
+                            <test-element-repeat-label label="B" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span data-label><!--fe:b-->B<!--fe:/b--></span></template></test-element-repeat-label>
+                            <!--fe:b--><!--fe:r-->
+                                <b><!--fe:b-->3<!--fe:/b--></b>
+                            <!--fe:/r--><!--fe:/b-->
+                        </span>
+                    <!--fe:/r--><!--fe:/b-->
+                </li>
+            <!--fe:/r--><!--fe:/b-->
+            <!--fe:b--><!--fe:r-->
+                <li data-tail><!--fe:b-->last<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
+        </ul></template></test-element-nested-repeat>
 <f-template name="test-element">
     <template>
         <ul>
@@ -93,7 +130,7 @@
 <f-template name="test-element-event">
     <template>
         <f-repeat value="{{item in list}}">
-            <button @click="{handleClick()}">Click</button>
+            <button type="button" @click="{handleClick()}">Click</button>
         </f-repeat>
     </template>
 </f-template>
@@ -112,6 +149,7 @@
             <f-repeat value="{{item in someData.list1}}">
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#{{item.icon}}-icon"></use>
                     </svg>
                 </li>
@@ -120,11 +158,38 @@
             <f-repeat value="{{item in someData.list2}}">
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#{{item.icon}}-icon"></use>
                     </svg>
                 </li>
             </f-repeat>
         </ul>
+    </template>
+</f-template>
+<f-template name="test-element-nested-repeat">
+    <template>
+        <ul>
+            <f-repeat value="{{group in groups}}">
+                <li data-group="{{group.name}}">
+                    <f-repeat value="{{item in group.items}}">
+                        <span data-item="{{item.label}}">
+                            <test-element-repeat-label label="{{item.label}}"></test-element-repeat-label>
+                            <f-repeat value="{{value in item.values}}">
+                                <b>{{value}}</b>
+                            </f-repeat>
+                        </span>
+                    </f-repeat>
+                </li>
+            </f-repeat>
+            <f-repeat value="{{item in tail}}">
+                <li data-tail>{{item}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-repeat-label">
+    <template>
+        <span data-label>{{label}}</span>
     </template>
 </f-template>
 

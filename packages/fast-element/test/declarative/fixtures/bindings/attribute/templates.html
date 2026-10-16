@@ -1,6 +1,15 @@
 <f-template name="test-element">
     <template> <input type="{{type}}" disabled> </template>
 </f-template>
+<!-- biome-ignore-start lint/a11y/useValidAriaRole: This template intentionally binds the role at runtime. -->
+<f-template name="test-element-nullable">
+    <template>
+        <a id="nullable-link" href="{{nullableHref}}" role="{{missingRole}}" tabindex="{{nullableTabIndex}}">Link</a>
+        <a id="empty-link" href="{{emptyHref}}">Empty link</a>
+        <input id="nullable-input" ?disabled="{{isDisabled}}" value="{{nullableValue}}">
+    </template>
+</f-template>
+<!-- biome-ignore-end lint/a11y/useValidAriaRole: This template intentionally binds the role at runtime. -->
 <f-template name="test-element-property">
     <template> <input type="checkbox" ?disabled="{{!isEnabled}}"> </template>
 </f-template>

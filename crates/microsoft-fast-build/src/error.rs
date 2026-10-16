@@ -3,6 +3,10 @@ use std::fmt;
 /// An error encountered while rendering a FAST HTML template.
 #[derive(Debug)]
 pub enum RenderError {
+    /// Template metadata has an unsupported version, missing name or duplicate name.
+    InvalidTemplateMetadata { message: String },
+    /// A shadow-root render requested an element absent from its locator.
+    UnknownTemplate { element: String },
     /// `{{expr` with no closing `}}`.
     UnclosedBinding { expr: String, context: String },
     /// `{{{expr` with no closing `}}}`.
@@ -40,6 +44,8 @@ pub enum RenderError {
 impl fmt::Display for RenderError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InvalidTemplateMetadata { message } => write!(f, "invalid template metadata: {message}"),
+            Self::UnknownTemplate { element } => write!(f, "unknown template: no definition for '<{element}>'"),
             Self::UnclosedBinding { expr, context } => write!(
                 f,
                 "unclosed binding '{{{{{}': \

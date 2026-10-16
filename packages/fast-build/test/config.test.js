@@ -1168,6 +1168,18 @@ describe("stream output", () => {
 
         assert.equal(stdout, "<my-el>Hello</my-el>");
         assert.equal(templates["my-el"].content, "<span>{{text}}</span>");
+        assert.equal(templates["my-el"].formatVersion, 1);
+        assert.deepEqual(templates["my-el"].bindings, [
+            {
+                name: "text",
+                expression: "text",
+                kind: "content",
+                paths: ["text"],
+                scope: [],
+                type: null,
+                optional: null,
+            },
+        ]);
         assert.deepEqual(templates["my-el"].shadowrootAttributes, [
             { name: "shadowrootmode", value: "open" },
         ]);

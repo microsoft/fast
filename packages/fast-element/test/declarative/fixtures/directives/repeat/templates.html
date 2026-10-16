@@ -39,7 +39,7 @@
 <f-template name="test-element-event">
     <template>
         <f-repeat value="{{item in list}}">
-            <button @click="{handleClick()}">Click</button>
+            <button type="button" @click="{handleClick()}">Click</button>
         </f-repeat>
     </template>
 </f-template>
@@ -58,6 +58,7 @@
             <f-repeat value="{{item in someData.list1}}">
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#{{item.icon}}-icon"></use>
                     </svg>
                 </li>
@@ -66,10 +67,37 @@
             <f-repeat value="{{item in someData.list2}}">
                 <li>
                     <svg width="20px" height="20px">
+                        <title>Item icon</title>
                         <use href="sprites.svg#{{item.icon}}-icon"></use>
                     </svg>
                 </li>
             </f-repeat>
         </ul>
+    </template>
+</f-template>
+<f-template name="test-element-nested-repeat">
+    <template>
+        <ul>
+            <f-repeat value="{{group in groups}}">
+                <li data-group="{{group.name}}">
+                    <f-repeat value="{{item in group.items}}">
+                        <span data-item="{{item.label}}">
+                            <test-element-repeat-label label="{{item.label}}"></test-element-repeat-label>
+                            <f-repeat value="{{value in item.values}}">
+                                <b>{{value}}</b>
+                            </f-repeat>
+                        </span>
+                    </f-repeat>
+                </li>
+            </f-repeat>
+            <f-repeat value="{{item in tail}}">
+                <li data-tail>{{item}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-repeat-label">
+    <template>
+        <span data-label>{{label}}</span>
     </template>
 </f-template>

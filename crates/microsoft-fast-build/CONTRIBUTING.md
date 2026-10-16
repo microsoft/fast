@@ -32,6 +32,19 @@ This runs both unit tests (embedded in each source module) and integration tests
 | `tests/errors.rs` | All `RenderError` variants |
 | `tests/custom_elements.rs` | Custom elements and `Locator` |
 | `tests/common/mod.rs` | Shared helpers (`ok`, `err`, `make_locator`, `empty_root`) |
+| `tests/performance.rs` | Shared benchmark corpus byte/hash/marker parity and normal/stream equivalence |
+
+### Performance benchmarks
+
+From the monorepo root:
+
+```sh
+cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render
+```
+
+See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for fixture
+sizes, packaged WASM comparisons, profiling limitations, and explicit baseline
+recording. Timing thresholds are opt-in rather than assertions in normal tests.
 
 ## Building
 
@@ -47,9 +60,9 @@ cargo build
 | `src/json.rs` | `JsonValue` enum and hand-rolled JSON string parser |
 | `src/context.rs` | Value resolution: `resolve_value`, `get_nested_property` |
 | `src/expression.rs` | f-when expression evaluator (`\|\|`, `&&`, comparisons, `!`) |
-| `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content`, `find_custom_element`, `parse_element_attributes` |
+| `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content`, `read_tag_name_slice`, `parse_element_attributes` |
 | `src/content.rs` | `{{}}` and `{{{}}}` binding renderers, `html_escape` |
-| `src/directive.rs` | `Directive` enum, `next_directive`, `render_when`, `render_repeat`, `render_custom_element` |
+| `src/directive.rs` | `Directive` / `RenderEvent` enums, `next_event`, `render_when`, `render_repeat`, `render_custom_element` |
 | `src/node.rs` | `render_node` — core template traversal loop |
 | `src/renderer.rs` | Thin entry points that call `render_node` |
 | `src/locator.rs` | `Locator` — maps element names to template content; glob-based filesystem scanner |

@@ -68,6 +68,12 @@ client window where custom elements connect, render, update, and hydrate.
 
 ## Debug entrypoint
 
+The declarative attribute fixture covers server-side omission of null/missing
+attributes and subsequent hydration updates. Explicit empty strings remain
+present, and omitted attributes retain binding slots. See the
+[server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)
+for the rendering contract.
+
 `@microsoft/fast-element/debug.js` exports `enableDebug()` instead of configuring
 FAST at import time. The development root export and debug rollup bundle still
 enable debug behavior automatically.
@@ -77,6 +83,30 @@ import { enableDebug } from "@microsoft/fast-element/debug.js";
 
 enableDebug();
 ```
+
+## Server-rendered hydration
+
+Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before
+components connect to reuse their server-rendered DOM. Ordered sibling-bounded
+views use pointer traversal and consume native markers without factory-index
+arrays; unusual boundaries and potentially mutating cleanup retain the live
+Range fallback. Nested and adjacent repeats pair only their own server ranges,
+preserving SSR nodes while reconciling missing or excess items.
+
+Call `enableHydration()` before components are registered with the platform to
+also enable pointer-only native marker cleanup for FAST components that do not
+observe `data-fe`. Observation tracking is opt-in and excluded from client-only
+`FASTElement` bundles. Earlier registrations still hydrate correctly through
+the conservative fallback, as do unknown registration, observed markers,
+customized built-ins, and overridden attribute methods. Cleanup remains
+synchronous.
+
+Existing FAST 3 marker output and opt-in `markers_v2` remain supported without
+application changes. See the [server-rendering guide](https://www.fast.design/docs/3.x/declarative-templates/server-rendering/)
+and [contributor performance workloads](./docs/template-bindings.md#hydration-cpu-regression-coverage).
+Contributor-facing internals separate DOM traversal, binding target mapping,
+and repeat-range discovery; the opt-in benchmark spec is independent of the
+deterministic correctness and allocation regression spec.
 
 ## Export Sizes
 

@@ -20,11 +20,9 @@ render_template(template, state_str)
         ▼                                                                │
   node::render_node(template, root, loop_vars, locator, hydration?)     │
         │                                                                │
-        ├─ [hydration mode] scan HTML opening tags for attr bindings     │
-        │        └─ inject data-fe="N" attribute markers                 │
-        │                                                                │
-        ├─ scan forward: next_directive()                                │
+        ├─ scan forward once: next_event()                               │
         │        │                                                       │
+        │        ├─ PlainTag     → process_plain_html_tag()             │
         │        ├─ TripleBrace  → content::render_triple_brace()       │
         │        ├─ DoubleBrace  → content::render_double_brace()       │
         │        ├─ When         → directive::render_when()  ───────────┘ (recurse)
@@ -42,9 +40,9 @@ render_template(template, state_str)
 |--------|------|
 | `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
-| `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
+| `node.rs` | Main event loop and shared atomic plain-tag handling, including attribute bindings and hydration markers |
 | `streaming.rs` | Simulated streaming loop — mirrors `node.rs` and returns non-empty HTML chunks |
-| `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
+| `directive.rs` | `Directive` / `RenderEvent` enums, monotonic `next_event` scanner, and directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
@@ -80,13 +78,19 @@ The `is_entry` flag distinguishes two rendering contexts for **opening-tag attri
 
 The loop works like a cursor:
 
-1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a `data-fe="N"` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
-2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
-3. If nothing is found, append `template[pos..]` to output and break.
-4. Otherwise, append the literal text from `pos` up to the directive's start.
-5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in the configured v3 data-free or v2 indexed markers.
-6. Append `chunk` and advance `pos` to `next_pos`.
-7. Repeat.
+1. Call `next_event(template, pos, locator)` once to find the next plain opening
+   tag or directive. The byte cursor advances forward instead of independently
+   searching the remaining suffix for each directive kind.
+2. If nothing is found, append `template[pos..]` and stop.
+3. For `PlainTag`, call `process_plain_html_tag`: append the literal prefix,
+   resolve attribute bindings atomically, and advance past the complete tag.
+   In a hydration scope, count bindings, strip client-only attributes, and
+   inject the configured attribute marker. Outside hydration, resolve only
+   server bindings and otherwise preserve the authored tag.
+4. For a directive, append its literal prefix and dispatch to the existing
+   handler returning `(chunk, next_pos)`. Content bindings in hydration mode
+   retain the configured v3 data-free or v2 indexed markers.
+5. Append the directive result, advance to `next_pos`, and repeat.
 
 All handlers return `Result<(String, usize), RenderError>`. The `usize` is the byte position in the original template that the handler consumed up to — the cursor's next position.
 
@@ -94,7 +98,16 @@ All handlers return `Result<(String, usize), RenderError>`. The `usize` is the b
 
 ## Simulated streaming — `streaming.rs`
 
-`stream_node` mirrors the recursive rendering loop in `node.rs`, but returns
+Nullable attribute values are resolved by the shared attribute helper before
+serializing a tag: a missing/null segment omits the whole attribute, but an
+explicit empty string is retained. Known HTML boolean attributes bound to JSON
+booleans use presence; other booleans remain textual values. Hydration counts
+come from the original source tag, not the surviving attributes. Host-default
+deduplication also considers source author names so an omitted author binding
+cannot be replaced by a template default.
+
+`stream_node` shares `next_event` and `node::process_plain_html_tag` with the
+recursive rendering loop in `node.rs`, but returns
 `Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
 is prepared in memory before the API returns. The invariant is that
 `chunks.join("")` matches the equivalent non-streamed render, including the
@@ -128,9 +141,32 @@ template-host bindings resolve against the child state.
 
 ---
 
-## Finding the next directive — `directive::next_directive`
+## Plugin integration boundaries
 
-`next_directive` finds the **earliest** of five possible directives starting from a given position:
+`render_shadow_root_*_with_locator` returns just the DSD `<template>` for a
+named definition and resolved component state. Normal, stream, and fragment
+rendering share `directive::render_shadow_content`, with a fresh hydration scope
+and no extra fragment allocation on whole-host paths. The fragment API does
+not create host attributes or light DOM; nested hosts still follow normal rules.
+
+`binding_metadata.rs` reuses render-event discovery, tag attributes, directive
+body extraction, repeat parsing, and code escaping to describe bindings.
+Metadata retains expressions and lexical repeat frames rather than inventing
+root paths or state declarations. `name` is absent for compound expressions;
+`paths` are lexical references, not a JavaScript type checker. `optional` is
+unknown, and types are unknown except for repeat collections' array requirement.
+The permissive template parser remains descriptive, not full syntax validation.
+
+Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
+`Locator::from_metadata` validates native versions/names/duplicates; WASM render
+exports validate explicit per-definition `formatVersion` before constructing
+the locator. Unversioned string/metadata maps remain compatible. The CLI retains
+metadata fields when mapping parsed definitions, and WASM custom declarations
+describe the JSON interfaces without adding a runtime serialization dependency.
+
+## Finding the next event — `directive::next_event`
+
+`next_event` recognizes plain HTML opening tags and five directive kinds:
 
 - `{{{` — triple-brace unescaped binding
 - `{{` — double-brace escaped binding (shadowed if `{{{` starts at the same position)
@@ -138,22 +174,41 @@ template-host bindings resolve against the child state.
 - `<f-repeat` — repeat directive
 - a custom element tag known to the `Locator`
 
-It returns a `Directive` enum value carrying the byte position, or `None` if nothing is found.
+It returns `RenderEvent::PlainTag(position)`, `RenderEvent::Directive(Directive)`,
+or `None`. At `<`, directive prefixes retain their existing tag-boundary rules;
+known custom elements are looked up using a borrowed tag-name slice, without
+allocating a name string for discovery. Unknown custom elements remain plain
+tags. At `{`, triple braces take precedence over double braces.
+
+Returning plain tags as events is essential: fixing only directive discovery
+would still rescan long suffixes before each adjacent plain tag. Both rendering
+loops consume each event once, and no second discovery pass occurs before
+dispatch. This removes the quadratic absent-pattern searches for adjacent
+known hosts and plain tags. It does not claim that every recursive renderer
+path is linear: matching directive bodies, root-state clones, and repeated
+template/attribute parsing remain separate optimization targets.
+
+The scanner intentionally preserves the old string-scanner semantics rather
+than introducing DOM parsing rules. For example, directives inside HTML
+comments are not newly suppressed. Differential tests compare discovery with
+the pre-optimization scanner at every UTF-8 boundary across generated fragment
+pairs, including malformed tags, single braces, quotes, and directive-name
+prefixes.
 
 ### Single-brace passthrough
 
-FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). In most rendering contexts these pass through the server renderer **unchanged** — `next_directive` skips over them so their `}` characters do not accidentally close a `{{binding}}`.
+FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). In most rendering contexts these pass through the server renderer **unchanged** — `next_event` skips over them so their `}` characters do not accidentally close a `{{binding}}`.
 
 The problem is that a single-brace expression may contain `}}` inside it (e.g. `{handler({key: val})}`) which would be misread as the closing delimiter of a `{{binding}}`.
 
-`next_directive` handles this with a loop:
-
-1. Find the earliest single `{` that is **not** the start of `{{` or `{{{`.
-2. Find the earliest binding/directive position.
-3. If the single `{` comes before any binding, skip past the entire single-brace expression (respecting nesting and quoted strings) and repeat.
-4. Only return a directive when there is no single `{` preceding it.
-
-The skip logic lives in `attribute::find_single_brace` and `attribute::skip_single_brace_expr`. `skip_single_brace_expr` tracks brace depth and skips quoted strings so inner `}` characters are not mistakenly treated as closing braces.
+When the cursor reaches a single `{`, `attribute::skip_single_brace_expr`
+tracks nested braces and quoted strings to locate its end. Directive discovery
+resumes after the expression. The legacy plain-tag pass could still process
+tags inside a client expression, so `next_event` performs a bounded plain-tag
+search within that expression and returns the first such tag before resuming.
+This deliberately preserves that permissive behavior. Unclosed expressions
+retain the existing one-byte fallback; this milestone does not change errors
+or promise linear handling of every malformed input.
 
 ### Attribute directive stripping in Declarative Shadow DOM
 
@@ -320,7 +375,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 
 Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
 
-If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
+If a custom element has no matching template, `next_event` treats it as a plain
+tag rather than expanding it. Existing plain-tag attribute handling still applies.
 
 ---
 
@@ -414,7 +470,9 @@ order.
 
 ### Attribute binding markers
 
-Plain HTML opening tags in the literal regions are scanned by `attribute::find_next_plain_html_tag` **before** `next_directive` processes them. For each tag that has `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
+Plain HTML opening tags are returned by `next_event` and processed atomically
+by `node::process_plain_html_tag`, shared with simulated streaming. For each
+tag with `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
 
 1. `count_tag_attribute_bindings` counts both types.
 2. The scope's `binding_idx` is advanced by the total count.
@@ -556,7 +614,7 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 
 ## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes five functions to JavaScript via `wasm-bindgen`:
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes these functions to JavaScript via `wasm-bindgen`:
 
 | Export | Signature | Description |
 |--------|-----------|-------------|
@@ -564,6 +622,7 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}`. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool, markers_v2?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+| `render_shadow_root` | `(element_name: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render only the complete DSD template using resolved component state; no host or light DOM |
 | `compose_f_template_styles` | `(template_html: &str, css: &str) → String` (throws on error) | Insert `<style>{css}</style>` as the first child of the inner `<template>` of a single `<f-template>` definition; throws a JS error (the `RenderError` display message) on any validation failure |
 
 ### `parse_f_templates`
@@ -575,12 +634,21 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
   {
     "name": "my-button",
     "content": "<button>{{label}}</button>",
-    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}]
+    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}],
+    "hostAttributes": [],
+    "formatVersion": 1,
+    "bindings": [{
+      "name": "label", "expression": "label", "kind": "content",
+      "paths": ["label"], "scope": [], "type": null, "optional": null
+    }]
   },
   {
     "name": null,
     "content": "<span>unnamed</span>",
-    "shadowrootAttributes": []
+    "shadowrootAttributes": [],
+    "hostAttributes": [],
+    "formatVersion": 1,
+    "bindings": []
   }
 ]
 ```
@@ -657,7 +725,12 @@ A hand-rolled recursive-descent parser. No external crates.
 
 ## Design decisions
 
-**No external dependencies.** The JSON parser, glob matcher, HTML scanner, and expression evaluator are all hand-rolled. This keeps the build fast, the compile graph shallow, and avoids supply-chain risk in a build tooling context.
+**No native runtime dependencies.** The JSON parser, glob matcher, HTML scanner,
+and expression evaluator are hand-rolled. Criterion, serde_json, and SHA-256
+are development-only dependencies for benchmarks and parity tests.
+The native-only `allocation-counter` development dependency is used by the
+opt-in allocation example and its isolated integration test;
+wasm-bindgen remains a WASM-target dependency.
 
 **No intermediate representation.** The renderer operates directly on the source template string using byte indices. This avoids the memory allocation and complexity of building an AST or DOM tree.
 
@@ -671,8 +744,66 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **Hydration marker formats.** Comment markers are data-free by default (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). When `RenderConfig.markers_v2` is enabled, `HydrationScope` emits FAST Element 2.x indexed comment markers and `data-fe-b-N` / `data-fe-c-START-COUNT` attribute markers instead.
 
-**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
+**Atomic tag processing for attribute bindings.** Plain opening tags are scanner
+events. Their attributes are resolved and hydration markers inserted before
+the cursor advances past the complete tag, so attribute bindings cannot be
+mistaken for content bindings. Normal and simulated-stream rendering use
+the same helper rather than maintaining two tag-processing implementations.
 
 **`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and invalid directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` treats a missing list binding as an empty array while still erroring when a present value is not an array.
 
-**Left-to-right, first-match scanning.** Directives are found by searching for their literal opening strings. The earliest position wins. This is O(n×d) where n is the template length and d is the number of directive types — acceptable for the template sizes this crate targets.
+**Left-to-right event discovery.** One forward scan recognizes the next tag or
+binding and stops immediately. It does not independently search the remaining
+suffix for absent directive patterns at every host. The compatibility reference
+exists only in unit tests; no slow renderer or feature flag ships.
+
+## Performance and parity coverage
+
+`benches/fixtures/corpus.json` defines shared fixture recipes for URL-bound
+sibling hosts, repeated custom elements with nested conditionals, bound plain
+elements, many definitions, and large root state with/without attribute overlays.
+Native Criterion and Node/WASM runs cover both marker modes. The native fixture
+generator is reused by Rust integration tests; the Node generator consumes the
+same recipes, with cross-language parity checked against one pre-optimization
+golden at 0/1/2/1,000 instances.
+
+`src/directive-scan-tests.rs` retains the old directive search for differential
+testing only. A test-only `find_str` counter records its logical search spans:
+the four absent literal patterns scan 30,030,000 bytes across 1,000 adjacent
+15-byte hosts, while event discovery for 20,000 hosts performs no such searches.
+The counter measures those pattern-search ranges, not CPU instructions or
+all renderer work.
+
+See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for commands,
+timing/RSS methodology, explicit scaling checks, and baseline provenance.
+Post-scanner native CPU profiles and bounded packaged-WASM measurements identify
+whole-root cloning in `build_custom_element_child_root` as the strongest next
+target for repeat/attribute-overlay workloads. The repeat root contains the
+whole items array, so each attributed child copies state proportional to the
+number of items. The no-attribute path avoids that copy and must remain intact.
+
+CPU profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
+frame pointers; that path introduces no production counters or allocator changes.
+Native locator and render phases are sampled separately so a
+hot function within a cheap setup phase is not mistaken for the dominant
+end-to-end cost. Native stack frequencies do not measure WASM allocations.
+Rust integration tests verify the recorded WASM outputs against native rendering
+without imposing machine-specific timing thresholds.
+
+`examples/profile-allocations.rs` is gated by `allocation-profiling` and uses
+`allocation-counter` only in its development executable. It measures one
+synchronous phase on the current thread, after preparing the shared fixture
+and any pre-parsed state/locator. The output or new locator is retained at the
+measurement boundary; hashing, JSON serialization, and locator validation
+rendering happen afterward. Separate integration-test processes avoid counting
+other tests' allocations. The library never installs this allocator.
+
+The Node orchestration under `benches/` discovers the example executable from
+Cargo JSON, launches a fresh process for each of 30 requests, and rejects mixed
+source/binary/lockfile provenance or duplicate records. Reports distinguish
+cumulative allocation volume from peak newly-live heap, exclude pre-existing
+inputs, and are not RSS or WASM measurements. They establish a baseline for
+borrowed state overlays, not an allocation reduction already delivered.
+
+Compiled templates, single buffered recursive sinks, borrowed state, prepared
+WASM handles, incremental sessions, and workers remain separate milestones.

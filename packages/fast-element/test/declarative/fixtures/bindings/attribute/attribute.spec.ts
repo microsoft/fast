@@ -1,6 +1,65 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("f-template", async () => {
+    test("omits nullable attributes before any client JavaScript runs", async ({
+        browser,
+        baseURL,
+    }) => {
+        const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
+        try {
+            const page = await context.newPage();
+            await page.goto("/fixtures/bindings/attribute/");
+            const element = page.locator("test-element-nullable");
+            for (const attribute of ["href", "role", "tabindex"]) {
+                await expect(element.locator("#nullable-link")).not.toHaveAttribute(
+                    attribute,
+                );
+            }
+            await expect(element.locator("#empty-link")).toHaveAttribute("href", "");
+            await expect(element.locator("#nullable-input")).not.toHaveAttribute(
+                "disabled",
+            );
+            await expect(element.locator("#nullable-input")).not.toHaveAttribute("value");
+        } finally {
+            await context.close();
+        }
+    });
+    test("hydrates omitted binding slots and updates nullable attributes", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/bindings/attribute/");
+        await page.waitForFunction(
+            () =>
+                (window as Window & { hydrationCompleted?: boolean }).hydrationCompleted,
+        );
+        const element = page.locator("test-element-nullable");
+        await expect(element.locator("#nullable-link")).not.toHaveAttribute("href");
+        await page.evaluate(() => {
+            const element = document.querySelector<
+                HTMLElement & {
+                    nullableHref: string | null;
+                    missingRole: string | undefined;
+                    nullableTabIndex: number | null;
+                    isDisabled: boolean;
+                    nullableValue: string | null;
+                }
+            >("test-element-nullable");
+            if (!element) throw new Error("Missing nullable fixture element");
+            element.nullableHref = "";
+            element.missingRole = "button";
+            element.nullableTabIndex = 0;
+            element.isDisabled = true;
+            element.nullableValue = "ready";
+        });
+        await expect(element.locator("#nullable-link")).toHaveAttribute("href", "");
+        await expect(element.locator("#nullable-link")).toHaveAttribute("role", "button");
+        await expect(element.locator("#nullable-link")).toHaveAttribute("tabindex", "0");
+        await expect(element.locator("#nullable-input")).toHaveAttribute("disabled");
+        await expect(element.locator("#nullable-input")).toHaveAttribute(
+            "value",
+            "ready",
+        );
+    });
     test("create a non-binding attribute", async ({ page }) => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,

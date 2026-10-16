@@ -1,6 +1,16 @@
+#[cfg(test)]
+std::thread_local! {
+    pub(crate) static SEARCH_BYTES: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+
 /// Find the first occurrence of `pat` in `s[from..]`, returning the absolute index.
 pub(crate) fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
-    s[from..].find(pat).map(|i| i + from)
+    let found = s[from..].find(pat).map(|i| i + from);
+    #[cfg(test)]
+    SEARCH_BYTES.with(|counter| {
+        counter.set(counter.get() + found.map_or(s.len() - from, |at| at - from + pat.len()));
+    });
+    found
 }
 
 /// Find a directive tag (e.g. `<f-when`, `<f-repeat`), ensuring the character
@@ -45,6 +55,7 @@ pub(crate) fn find_tag_end(template: &str, from: usize) -> Option<usize> {
 
 /// Find the first `{` that is NOT the start of `{{` or `{{{`.
 /// These are FAST client-side bindings that the server renderer must pass through verbatim.
+#[cfg(test)]
 pub(crate) fn find_single_brace(template: &str, from: usize) -> Option<usize> {
     let bytes = template.as_bytes();
     let mut i = from;
@@ -135,6 +146,10 @@ pub(crate) fn extract_directive_content(
 
 /// Read the tag name from a `<` position. Returns None for closing tags (`</...>`).
 pub(crate) fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
+    read_tag_name_slice(template, lt_pos).map(str::to_string)
+}
+
+pub(crate) fn read_tag_name_slice(template: &str, lt_pos: usize) -> Option<&str> {
     let bytes = template.as_bytes();
     let mut i = lt_pos;
 
@@ -165,7 +180,7 @@ pub(crate) fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
     if i == name_start {
         return None;
     }
-    Some(template[name_start..i].to_string())
+    Some(&template[name_start..i])
 }
 
 /// Return true if `tag_name` is a custom element (contains a hyphen and is not a FAST directive).
@@ -173,9 +188,7 @@ pub(crate) fn is_custom_element(tag_name: &str) -> bool {
     tag_name.contains('-') && tag_name != "f-when" && tag_name != "f-repeat"
 }
 
-/// Find the position of the next opening tag of a custom element that has a template in `locator`.
-/// Scans `template[from..]` for `<`, reads the next word, and checks both `is_custom_element`
-/// and `locator.has_template`. Skips closing tags and non-custom elements.
+#[cfg(test)]
 pub(crate) fn find_custom_element(
     template: &str,
     from: usize,
@@ -296,6 +309,19 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
                 result.push_str(&attr.raw);
             }
             Some(v) if v.contains("{{") => {
+                if let Some(expr) = single_attribute_binding(&v) {
+                    if is_boolean_attribute(&name) {
+                        if let Some(crate::json::JsonValue::Bool(enabled)) =
+                            crate::context::resolve_value(expr, root, loop_vars)
+                        {
+                            if enabled {
+                                result.push(' ');
+                                result.push_str(&name);
+                            }
+                            continue;
+                        }
+                    }
+                }
                 if let Some(resolved) = resolve_attribute_value(&v, root, loop_vars) {
                     append_quoted_attribute(&mut result, &name, &resolved);
                 }
@@ -333,7 +359,7 @@ fn append_double_quote_escaped(out: &mut String, value: &str) {
     }
 }
 
-fn resolve_attribute_value(
+pub(crate) fn resolve_attribute_value(
     value: &str,
     root: &crate::json::JsonValue,
     loop_vars: &[(String, crate::json::JsonValue)],
@@ -361,10 +387,32 @@ fn resolve_attribute_value(
         };
         let expr = value[inner_start..end].trim();
         let resolved = resolve_value(expr, root, loop_vars)?;
+        if matches!(resolved, crate::json::JsonValue::Null) {
+            return None;
+        }
         result.push_str(&value[pos..dbl]);
         result.push_str(&html_escape(&resolved.to_display_string()));
         pos = end + 2;
     }
+}
+
+pub(crate) fn single_attribute_binding(value: &str) -> Option<&str> {
+    value
+        .trim()
+        .strip_prefix("{{")?
+        .strip_suffix("}}")
+        .filter(|expression| !expression.contains("{{") && !expression.contains("}}"))
+        .map(str::trim)
+}
+
+pub(crate) fn is_boolean_attribute(name: &str) -> bool {
+    [
+        "allowfullscreen", "async", "autofocus", "autoplay", "checked", "controls",
+        "default", "defer", "disabled", "formnovalidate", "hidden", "inert", "ismap",
+        "itemscope", "loop", "multiple", "muted", "nomodule", "novalidate", "open",
+        "playsinline", "readonly", "required", "reversed", "selected",
+        "shadowrootclonable", "shadowrootdelegatesfocus", "shadowrootserializable",
+    ].iter().any(|attribute| name.eq_ignore_ascii_case(attribute))
 }
 
 /// Remove all FAST client-only binding attributes from an opening tag string:
@@ -423,7 +471,7 @@ pub(crate) fn inject_hydration_marker(tag: &str, marker: &str) -> String {
     }
 }
 
-/// Find the next opening HTML tag in `template[from..]`, skipping:
+/// Find the next opening HTML tag before `before`, skipping:
 /// - Closing tags (`</`)
 /// - Comments / declarations (`<!`)
 /// - FAST directive tags (`<f-...`)
@@ -431,11 +479,12 @@ pub(crate) fn inject_hydration_marker(tag: &str, marker: &str) -> String {
 pub(crate) fn find_next_plain_html_tag(
     template: &str,
     from: usize,
+    before: usize,
     locator: Option<&crate::locator::Locator>,
 ) -> Option<usize> {
     let mut i = from;
-    while i < template.len() {
-        let rel = template[i..].find('<')?;
+    while i < before {
+        let rel = template[i..before].find('<')?;
         let lt_pos = i + rel;
         let after = lt_pos + 1;
         if after >= template.len() {
@@ -446,8 +495,8 @@ pub(crate) fn find_next_plain_html_tag(
             i = lt_pos + 1;
             continue;
         }
-        if let Some(name) = read_tag_name(template, lt_pos) {
-            if !is_skippable_tag(&name, locator) {
+        if let Some(name) = read_tag_name_slice(template, lt_pos) {
+            if !is_skippable_tag(name, locator) {
                 return Some(lt_pos);
             }
         }

@@ -116,7 +116,78 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
   Malformed or untargetable markers still surface structured hydration errors —
   see [Hydration mismatch diagnostics](#hydration-mismatch-diagnostics) below.
 
+### Hydration traversal
+
+The implementation separates DOM navigation (`src/hydration/traversal.ts`),
+factory-to-node mapping (`src/hydration/target-builder.ts`), and bounded repeat
+range discovery (`src/hydration/repeat-ranges.ts`). `RepeatBehavior` retains marker
+cleanup and view lifecycle reconciliation. Traversal exposes a small internal
+move/update/mutation-preparation tuple, without adding per-marker allocations.
+The native fast path remains inline in target discovery rather than routing
+through generic resolution objects. Opt-in timing workloads live separately in
+`src/hydration/hydration-benchmark.pw.spec.ts`.
+
+Target discovery uses pointer DFS for ordered endpoints with a shared, non-null
+parent, including descendants of both endpoints when they are the same node.
+Sibling movement stops at the inclusive last endpoint; content and custom-element
+markers use balanced sibling scans without visiting their nested views.
+The node mask remains elements, text, and comments.
+
+Non-sibling, reversed, and separate-root endpoints retain the live
+`Range`/`TreeWalker` traversal. Before potentially mutating native marker cleanup
+(unknown custom elements, observed markers, customized built-ins, or overridden
+attribute methods), the pointer traversal captures a live Range at its current
+position. Generic marker strategies use this fallback from the outset because
+their resolvers and cleanup
+callbacks can execute application code. The fallback preserves live endpoint
+movement, reparenting, and original end offsets during synchronous DOM mutation.
+When the live endpoints and offsets are unchanged, their own nodes are already
+known to intersect the range; the fallback avoids a redundant DOM position query
+for those nodes.
+
+Core keeps only the small `components/element-registration.ts` strategy.
+`enableHydration()` installs `hydration/attribute-observation.ts`, keeping the
+observation checks out of client-only bundles. At actual platform registration,
+after extensions and asynchronous template resolution, it records a private
+boolean proving that `data-fe` is unobserved. The proof is available before
+synchronous upgrades and restored if registration throws; no attribute sets
+are allocated. Earlier untracked registrations remain conservative, including
+when their definition is later registered in another registry. Repeated
+enablement does not reset the proof or reread mutable constructor properties.
+The export-size build checks the core bundle dependency graph to prevent
+observation tracking from leaking back into `FASTElement`.
+
+Native `data-fe` removal stays on pointers when that proof is available and
+attribute methods are native. Unknown registration wrappers, lifecycle/observation
+accessors, custom iterators, and other uncertain metadata retain the conservative
+fallback. Method descriptors are checked without invoking getters before live
+boundaries have been captured. Cleanup remains immediate; callbacks and target
+discovery are not reordered.
+
+Native `data-fe` counts consume factories directly after leading host bindings,
+without resolution objects, cleanup closures, or factory-index arrays. Native
+content and element markers use direct string comparisons. The existing native
+count parser and invalid-array-length resolver preserve malformed-marker errors;
+`markers_v2` continues through the generic strategy.
+
+Repeats scan forward only through their own `bindingViewBoundaries`, pairing
+top-level ranges in order with a stack. Nested markers remain available to child
+views, and top-level markers are cleared only after discovery succeeds. Starting
+at the binding boundary rather than the parent's first child avoids rescanning
+or consuming an earlier adjacent repeat. Unmatched starts and ends throw;
+overlapping, missing, excess, and empty item reconciliation is unchanged.
+
+See [hydration CPU regression coverage](./docs/template-bindings.md#hydration-cpu-regression-coverage)
+for deterministic allocation/visit assertions and opt-in same-machine workloads.
+No marker format, public API, registration, scheduling, or timer batching changes
+are required.
+
 ### Hydration mismatch diagnostics
+
+Nullable attribute SSR coverage lives in the declarative attribute fixture.
+It checks absence with JavaScript disabled, preservation of explicit empty
+strings, and observable updates after hydrating slots for omitted attributes.
+Server omission must not reduce hydration binding counts.
 
 When SSR markup cannot be reconciled with the client template (a recovery path
 above does not apply), hydration throws either `HydrationBindingError`

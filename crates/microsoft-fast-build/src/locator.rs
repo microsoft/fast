@@ -4,12 +4,15 @@ use crate::attribute::{find_tag_end, parse_element_attributes};
 use crate::error::RenderError;
 use crate::code_escape::escape_code_sample_elements;
 
+/// A parsed definition with versioned, descriptive binding metadata.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct FTemplate {
+pub struct FTemplate {
     pub name: Option<String>,
     pub content: String,
     pub shadowroot_attributes: Vec<(String, Option<String>)>,
     pub host_attributes: Vec<(String, Option<String>)>,
+    pub format_version: u32,
+    pub bindings: Vec<crate::BindingMetadata>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -24,6 +27,36 @@ pub struct Locator {
 }
 
 impl Locator {
+    /// Build a locator from parsed metadata, validating format versions and names.
+    pub fn from_metadata(templates: Vec<FTemplate>) -> Result<Self, RenderError> {
+        let mut definitions = HashMap::new();
+        for template in templates {
+            let name = template.name.ok_or_else(|| {
+                RenderError::InvalidTemplateMetadata {
+                    message: "a template definition requires a name".to_string(),
+                }
+            })?;
+            if template.format_version != crate::TEMPLATE_FORMAT_VERSION {
+                return Err(RenderError::InvalidTemplateMetadata {
+                    message: format!(
+                        "unsupported formatVersion {} for '{}': expected {}",
+                        template.format_version, name, crate::TEMPLATE_FORMAT_VERSION,
+                    ),
+                });
+            }
+            if definitions.contains_key(&name) {
+                return Err(RenderError::InvalidTemplateMetadata {
+                    message: format!("duplicate template name '{name}'"),
+                });
+            }
+            definitions.insert(
+                name,
+                (template.content, template.shadowroot_attributes, template.host_attributes),
+            );
+        }
+        Ok(Self::from_template_definitions(definitions))
+    }
+
     /// Create a Locator by scanning files matching glob patterns.
     /// Each pattern is a glob like `"./components/**/*.html"`.
     /// The element name is read from the `name` attribute of `<f-template>` elements inside each file.
@@ -207,8 +240,8 @@ impl Locator {
 }
 
 /// Parse all `<f-template>` elements from an HTML string.
-/// Returns the name, inner template content, and shadowroot-prefixed attributes.
-pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
+/// Returns names, content, host/shadow attributes and versioned binding metadata.
+pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
     let mut results = Vec::new();
     let mut search_start = 0;
     while let Some(tag_start) = find_html_start_tag(html, "f-template", search_start) {
@@ -233,11 +266,14 @@ pub(crate) fn parse_f_templates(html: &str) -> Vec<FTemplate> {
         let inner_html = &html[inner_start..inner_end];
         let (content, host_attributes) = extract_template_content(inner_html);
 
+        let bindings = crate::binding_metadata::collect_bindings(&content, &host_attributes);
         results.push(FTemplate {
             name,
             content,
             shadowroot_attributes,
             host_attributes,
+            format_version: crate::TEMPLATE_FORMAT_VERSION,
+            bindings,
         });
         search_start = end_tag_close;
     }

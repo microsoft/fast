@@ -4,9 +4,9 @@ use crate::expression::evaluate;
 use crate::content::html_escape;
 use crate::config::{RenderConfig, AttributeNameStrategy};
 use crate::attribute::{
-    find_str, find_directive, extract_directive_expr, extract_directive_content,
-    find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
-    parse_element_attributes, find_custom_element,
+    extract_directive_expr, extract_directive_content,
+    skip_single_brace_expr, find_tag_end, read_tag_name, read_tag_name_slice,
+    parse_element_attributes, find_next_plain_html_tag, is_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
     data_attr_to_dataset_key, kebab_to_camel,
 };
@@ -17,6 +17,7 @@ use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 
 /// A template directive found at a given byte position.
+#[derive(Debug, PartialEq, Eq)]
 pub enum Directive {
     TripleBrace(usize),
     DoubleBrace(usize),
@@ -35,43 +36,77 @@ impl Directive {
     }
 }
 
-/// Find the earliest directive in `template` starting from `from`.
-/// Single-brace expressions (`{…}`) are skipped so their `}` characters cannot
-/// accidentally terminate a `{{…}}` binding search.
-/// If `locator` is Some, also detects `CustomElement` directives for known elements.
-pub fn next_directive(template: &str, from: usize, locator: Option<&Locator>) -> Option<Directive> {
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum RenderEvent {
+    PlainTag(usize),
+    Directive(Directive),
+}
+
+pub(crate) fn next_event(
+    template: &str,
+    from: usize,
+    locator: Option<&Locator>,
+) -> Option<RenderEvent> {
+    let bytes = template.as_bytes();
     let mut pos = from;
-    loop {
-        let triple = find_str(template, "{{{", pos).map(Directive::TripleBrace);
-        // Suppress `{{` when it coincides with the start of a `{{{`
-        let double = find_str(template, "{{", pos).and_then(|d| {
-            let shadowed = triple.as_ref().map(|t| t.position() == d).unwrap_or(false);
-            if shadowed { None } else { Some(Directive::DoubleBrace(d)) }
-        });
-        let when   = find_directive(template, "<f-when",   pos).map(Directive::When);
-        let repeat = find_directive(template, "<f-repeat", pos).map(Directive::Repeat);
-        let custom = locator.and_then(|loc| {
-            find_custom_element(template, pos, loc).map(Directive::CustomElement)
-        });
+    while pos < bytes.len() {
+        match bytes[pos] {
+            b'{' if bytes.get(pos + 1) == Some(&b'{') => {
+                let directive = if bytes.get(pos + 2) == Some(&b'{') {
+                    Directive::TripleBrace(pos)
+                } else {
+                    Directive::DoubleBrace(pos)
+                };
+                return Some(RenderEvent::Directive(directive));
+            }
 
-        let all_refs = [triple.as_ref(), double.as_ref(), when.as_ref(), repeat.as_ref(), custom.as_ref()];
-        let earliest_pos = all_refs.into_iter().flatten().map(|d| d.position()).min();
-
-        // If a single { precedes the earliest binding, skip past it so its `}`
-        // cannot be misread as the closing `}}` of a double-brace binding.
-        if let (Some(single), Some(earliest)) = (find_single_brace(template, pos), earliest_pos) {
-            if single < earliest {
-                pos = skip_single_brace_expr(template, single);
+            b'{' => {
+                let after = skip_single_brace_expr(template, pos);
+                // The legacy plain-tag pass also sees tags inside client expressions.
+                // Stop at one before resuming so attribute handling stays byte-compatible.
+                if let Some(tag) = find_next_plain_html_tag(template, pos + 1, after, locator) {
+                    return Some(RenderEvent::PlainTag(tag));
+                }
+                pos = after;
                 continue;
             }
+            b'<' => {
+                for (tag, directive) in [
+                    ("<f-when", Directive::When(pos)),
+                    ("<f-repeat", Directive::Repeat(pos)),
+                ] {
+                    if template[pos..].starts_with(tag)
+                        && matches!(
+                            bytes.get(pos + tag.len()),
+                            Some(b' ' | b'>' | b'\n' | b'\t' | b'\r'),
+                        )
+                    {
+                        return Some(RenderEvent::Directive(directive));
+                    }
+                }
+                if let Some(name) = read_tag_name_slice(template, pos) {
+                    if is_custom_element(name)
+                        && locator.map_or(false, |loc| loc.has_template(name))
+                    {
+                        return Some(RenderEvent::Directive(Directive::CustomElement(pos)));
+                    }
+                    if !matches!(bytes.get(pos + 1), Some(b'/' | b'!'))
+                        && !name.starts_with("f-")
+                    {
+                        return Some(RenderEvent::PlainTag(pos));
+                    }
+                }
+            }
+            _ => {}
         }
-
-        return [triple, double, when, repeat, custom]
-            .into_iter()
-            .flatten()
-            .min_by_key(|d| d.position());
+        pos += 1;
     }
+    None
 }
+
+#[cfg(test)]
+#[path = "directive-scan-tests.rs"]
+mod scan_tests;
 
 /// Render an `<f-when>` directive.
 pub fn render_when(
@@ -271,9 +306,7 @@ pub fn render_custom_element(
     let child_root = child_root_owned.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
-    let mut shadow_scope = HydrationScope::new(config.markers_v2);
-    let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false, config)?;
+    let rendered = render_shadow_content(&tag_name, child_root, locator, config)?;
     let shadowroot_attributes = build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
@@ -296,6 +329,7 @@ pub fn render_custom_element(
         element_open,
         locator.get_host_attributes(&tag_name),
         child_root,
+        &attrs,
     );
 
     // Extract the light DOM children (for non-self-closing elements).
@@ -331,6 +365,20 @@ pub fn render_custom_element(
     Ok((output, after))
 }
 
+pub(crate) fn render_shadow_content(
+    element_name: &str,
+    state: &JsonValue,
+    locator: &Locator,
+    config: &RenderConfig,
+) -> Result<String, RenderError> {
+    let template = locator.get_template(element_name)
+        .ok_or_else(|| RenderError::UnknownTemplate {
+            element: element_name.to_string(),
+        })?;
+    let mut scope = HydrationScope::new(config.markers_v2);
+    render_node(template, state, &[], Some(locator), Some(&mut scope), false, config)
+}
+
 /// Merge `template_host_attrs` (parsed from the inner `<template …>` element)
 /// onto the already-built host opening tag string `element_open`.
 ///
@@ -353,6 +401,7 @@ pub(crate) fn merge_template_host_attrs(
     element_open: String,
     template_host_attrs: &[(String, Option<String>)],
     child_root: &JsonValue,
+    source_author_attrs: &[(String, Option<String>)],
 ) -> String {
     if template_host_attrs.is_empty() {
         return element_open;
@@ -363,10 +412,15 @@ pub(crate) fn merge_template_host_attrs(
     // always rendered as non-self-closing here), so parsing the full string
     // gives the complete attribute set including any `data-fe` marker.
     let author_attrs = parse_element_attributes(&element_open);
-    let author_names: Vec<String> = author_attrs
+    let mut author_names: Vec<String> = author_attrs
         .into_iter()
         .map(|(name, _)| name.to_lowercase())
         .collect();
+    for (name, _) in source_author_attrs {
+        if !is_client_only_attr(name) {
+            author_names.push(name.strip_prefix('?').unwrap_or(name).to_lowercase());
+        }
+    }
 
     let mut injected = String::new();
     for (name, value) in template_host_attrs {
@@ -437,11 +491,7 @@ fn format_template_host_attr(
             out.push_str(name);
         }
         Some(v) => {
-            let trimmed = v.trim();
-            if let Some(expr) = trimmed
-                .strip_prefix("{{")
-                .and_then(|s| s.strip_suffix("}}"))
-            {
+            if let Some(expr) = crate::attribute::single_attribute_binding(v) {
                 let resolved = resolve_value(expr.trim(), child_root, &[])
                     .unwrap_or(JsonValue::Null);
                 match resolved {
@@ -460,6 +510,13 @@ fn format_template_host_attr(
                         out.push('"');
                     }
                     JsonValue::Bool(b) => {
+                        if crate::attribute::is_boolean_attribute(name) {
+                            if b {
+                                out.push(' ');
+                                out.push_str(name);
+                            }
+                            return;
+                        }
                         out.push(' ');
                         out.push_str(name);
                         out.push_str("=\"");
@@ -468,6 +525,10 @@ fn format_template_host_attr(
                     }
                     // Array / Object / Null → cannot be expressed as an HTML attribute value.
                     _ => {}
+                }
+            } else if v.contains("{{") {
+                if let Some(resolved) = crate::attribute::resolve_attribute_value(v, child_root, &[]) {
+                    crate::attribute::append_quoted_attribute(out, name, &resolved);
                 }
             } else {
                 out.push(' ');
@@ -723,8 +784,8 @@ fn build_entry_element_open_tag(
                 out.push(' ');
                 out.push_str(&name);
             }
-            Some(ref v) if v.trim().starts_with("{{") && v.trim().ends_with("}}") && v.trim().len() > 4 => {
-                let binding = v.trim()[2..v.trim().len() - 2].trim();
+            Some(ref v) if crate::attribute::single_attribute_binding(v).is_some() => {
+                let binding = crate::attribute::single_attribute_binding(v).expect("Binding was checked");
                 if name.starts_with('?') {
                     // ?attr="{{expr}}" — boolean binding: emit bare attr name when truthy
                     if evaluate(binding, root, loop_vars) {
@@ -736,9 +797,20 @@ fn build_entry_element_open_tag(
                     match resolved {
                         JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
                         JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
-                        JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
+                        JsonValue::Bool(b) => {
+                            if crate::attribute::is_boolean_attribute(&name) {
+                                if b { out.push_str(&format!(" {}", name)); }
+                            } else {
+                                out.push_str(&format!(" {}=\"{}\"", name, b));
+                            }
+                        }
                         _ => {} // Array, Object, Null — strip
                     }
+                }
+            }
+            Some(v) if v.contains("{{") => {
+                if let Some(resolved) = crate::attribute::resolve_attribute_value(&v, root, loop_vars) {
+                    crate::attribute::append_quoted_attribute(&mut out, &name, &resolved);
                 }
             }
             Some(v) => {

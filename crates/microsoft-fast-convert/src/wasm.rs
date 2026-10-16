@@ -47,8 +47,14 @@ pub fn convert_stylesheet(
     stylesheet: &str,
     syntax: &str,
     export_name: &str,
+    typed: Option<bool>,
 ) -> Result<String, JsValue> {
-    crate::convert_stylesheet(stylesheet, syntax, export_name)
+    crate::convert_stylesheet_with_options(
+        stylesheet,
+        syntax,
+        export_name,
+        &ConvertOptions { typed: typed.unwrap_or(false), ..ConvertOptions::default() },
+    )
         .map_err(|error| JsValue::from_str(&error.to_string()))
 }
 
@@ -63,8 +69,10 @@ pub fn convert_template_with_options(
     syntax: &str,
     type_source: Option<String>,
     type_source_import: Option<String>,
+    typed: Option<bool>,
 ) -> Result<ConvertResult, JsValue> {
     let options = ConvertOptions {
+        typed: typed.unwrap_or(false),
         type_source,
         type_source_import,
     };

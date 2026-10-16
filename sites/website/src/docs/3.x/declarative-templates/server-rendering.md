@@ -82,6 +82,22 @@ The end-to-end flow from server to interactive page follows these steps:
 5. **Hydration** — If `enableHydration()` was called before FAST elements connect, FAST detects the pre-rendered shadow DOM, maps existing DOM nodes to binding slots using hydration markers, and re-establishes reactive observations. Without `enableHydration()`, the element renders client-side instead. By default, hydration no-ops after the initial hydration batch completes; set `stopHydration: StopHydration.never` for pages that stream Declarative Shadow DOM later. Await `enableHydration().whenHydrated()` when application code needs to wait for the active hydration batch. In `StopHydration.never` mode, that promise intentionally remains pending because there is no global completion point.
 6. **Interactive** — The page is fully interactive. Property changes trigger targeted DOM updates.
 
+Hydration reuses the same SSR nodes. Ordinary sibling-bounded views use pointer
+traversal and read native sequential markers directly, avoiding per-view DOM
+Range/TreeWalker setup and factory-index arrays. Unusual view boundaries and
+potentially mutating marker cleanup retain the live Range traversal. This is an
+internal optimization: marker formats, registration order, readiness promises,
+and update scheduling are unchanged, including opt-in `markers_v2`.
+
+Call `enableHydration()` before FAST elements are registered with the platform
+to also enable pointer-only native `data-fe` cleanup when the registration-time
+proof shows the marker unobserved and attribute methods are native. The
+observation checks are excluded from client-only `FASTElement` bundles. Elements
+registered earlier still hydrate correctly through conservative traversal, as
+do unknown registrations, custom marker strategies, observed markers, customized
+built-ins, and overridden methods. Marker cleanup remains synchronous and
+callback order is unchanged.
+
 :::tip
 The controller exposes two properties: `isPrerendered` resolves `true` when the element had a declarative shadow root at connect time, while `isHydrated` resolves `true` only when hydration actually ran successfully. Use these to detect how the element was rendered and when it is fully interactive.
 :::
@@ -122,6 +138,23 @@ The renderer applies special rules for certain HTML attributes:
 | Boolean (`?attr`) | Truthy/falsy evaluation | `?disabled="{{isOff}}"` → present or absent |
 
 ## Host Attribute Propagation
+
+Missing or null attribute bindings omit the attribute, rather than serializing
+an empty value. Explicit empty strings stay present. This also applies to
+bindings embedded in literal attribute values. Hydration counts still include
+omitted attributes, so reactive updates can add them later. Use `?name` for
+client/server truthy/falsy boolean bindings; JSON booleans on known HTML boolean
+attributes also use presence on the server, while ARIA booleans stay textual.
+
+Build-time plugins can use `render_shadow_root` from the
+`@microsoft/fast-build/wasm/microsoft_fast_build.js` export to render a complete
+DSD `<template>` with resolved component state and no throwaway host/light DOM.
+`parse_f_templates` exposes versioned binding descriptions, including lexical
+repeat scopes and explicit unknown state types/optionality. Persist the full
+record to retain version checks; this metadata does not replace application
+state declarations. See the
+[FAST Build integration APIs](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#apis-for-build-time-plugins)
+and [migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/plugin-integrations.md).
 
 Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
 
@@ -271,6 +304,20 @@ fast build \
 
 The output (`index.html`) contains the fully resolved HTML with Declarative Shadow DOM and hydration markers.
 
+### Large build-time renders
+
+FAST Build discovers opening tags and bindings in a forward scan, avoiding
+repeated remaining-suffix searches when an entry contains many adjacent custom
+elements or plain tags. This optimization preserves rendered bytes and both
+the default hydration markers and the opt-in `markers_v2` format; existing
+callers need no changes.
+
+The WASM renderer is still synchronous. `--stream` writes precomputed chunks,
+not incrementally generated output, so it does not unblock the Node event loop
+or reduce time to the first chunk. Contributors can compare native and packaged
+WASM workloads using the
+[FAST Build benchmark guide](https://github.com/microsoft/fast/blob/main/crates/microsoft-fast-build/benchmark-baselines/README.md).
+
 ### Configuration File
 
 Instead of passing every option on the command line, create a `fast-build.config.json`:
@@ -398,6 +445,12 @@ initial array items by index. `repeat()` does not require the SSR and client
 counts to match for the first bind: it hydrates the overlapping prefix, calls
 `template.create()` to fill in missing items past the SSR ranges, and removes
 extra SSR ranges past the client item count.
+
+Range discovery is a forward, balanced scan within that repeat's own content
+boundary, so adjacent repeats cannot consume one another's ranges. Nested markers
+are retained for child hydration, including empty items. Unmatched start or end
+markers are malformed SSR and throw even when the client array is empty; they
+are not treated as a recoverable item-count mismatch.
 
 ```html
 <!-- one server-rendered repeat item -->

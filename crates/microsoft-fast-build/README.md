@@ -1,6 +1,6 @@
 # microsoft-fast-build
 
-A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in pure Rust with no external dependencies.
+A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in pure Rust with no native runtime dependencies.
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
@@ -85,6 +85,61 @@ the same author-wins and client-only-attribute filtering rules as normal
 rendering.
 
 ---
+
+## Plugin integration APIs
+
+`render_shadow_root_with_locator(element_name, state, locator, config)` renders
+only the complete Declarative Shadow DOM `<template>` fragment. Its JSON-state
+counterpart is `render_shadow_root_template_with_locator(element_name,
+state: Option<&str>, locator, config)`. Pass resolved **component state**;
+these APIs do not synthesize a host, overlay host attributes, emit template-host
+attributes, or render caller-owned light DOM. Nested components, code-sample
+escaping, and fresh v3/v2 hydration scopes use the whole-host rendering path.
+Unknown template names and invalid JSON state return explicit errors.
+
+```rust
+use microsoft_fast_build::{
+    parse_f_templates, render_shadow_root_template_with_locator, Locator,
+};
+
+let definitions = parse_f_templates(
+    r#"<f-template name="my-card"><template>{{title}}</template></f-template>"#,
+);
+let locator = Locator::from_metadata(definitions)?;
+let fragment = render_shadow_root_template_with_locator(
+    "my-card", Some(r#"{"title":"Hello"}"#), &locator, None,
+)?;
+```
+
+`parse_f_templates` is also a public native API. It returns `Vec<FTemplate>`
+with `format_version`, `bindings`, name/content, and host/shadow-root attributes.
+`BindingMetadata` records direct names, expressions, syntax kinds, lexical
+paths, and nested `BindingScope { variable, iterable }` frames. Application
+types and required/optional declarations remain unknown (`None`); repeat
+collections alone have a known array requirement. Metadata describes syntax,
+not a state schema or a full validation certificate. Code samples are excluded.
+`Locator::from_metadata` validates names, duplicates, and the format version.
+Legacy content/tuple constructors remain supported.
+
+The WASM exports are `parse_f_templates(html)` (JSON metadata array) and
+`render_shadow_root(elementName, templatesJson, state?, attributeNameStrategy?,
+markers_v2?)`. Generated declarations include `FTemplateMetadata`,
+`TemplateBinding`, and `TemplateBindingScope`. Each generated record has
+`formatVersion: 1`; render exports reject unsupported or malformed explicit
+versions, while still accepting unversioned maps and string-valued definitions.
+
+### Nullable and boolean attributes
+
+Missing or explicit `null` bindings omit the entire attribute, including when
+embedded in a literal value such as `href="/prefix/{{value}}"`. An explicit
+empty string remains `href=""`. Boolean JSON values bound to known HTML boolean
+attributes use presence/absence; ordinary attributes such as `aria-hidden`
+still serialize booleans as `"true"`/`"false"`. `?name="{{expr}}"` remains the
+recommended truthy/falsy form for matching browser-side FAST behavior.
+Omitted bindings still reserve hydration slots. An author binding that resolves
+to absence overrides template-host defaults rather than reintroducing them.
+See the [migration guide](../../packages/fast-build/docs/migration/plugin-integrations.md)
+for intentional changes from earlier output.
 
 ## Template Syntax
 
@@ -712,3 +767,44 @@ duplicate template: element '<my-button>' is defined in multiple files: ./a/my-b
 ## Numeric Precision
 
 The hand-rolled JSON parser stores all numbers as `f64`. This means integers larger than 2^53 (9,007,199,254,740,992) lose precision, as is the case with standard JavaScript `number` values. For typical use cases (IDs, counts, display values) this is not a concern. If your state contains very large integers, represent them as strings and bind with `{{expr}}` accordingly.
+
+## Renderer performance
+
+Tag and binding discovery uses a forward event scan rather than repeated
+remaining-suffix searches for each directive kind. Adjacent custom elements
+and plain tags no longer incur those quadratic searches. Rendered HTML,
+attribute handling, default markers, and `markers_v2` remain compatible.
+Templates still render recursively; this is not a compiled-template or lazy
+streaming API. Stream functions continue to return fully materialized chunks.
+
+From a FAST repository checkout, run the native benchmarks and parity tests:
+
+```sh
+cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render
+cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+```
+
+Criterion separates parsed-state rendering, state parsing plus rendering, and
+locator construction. Shared fixtures cover 1k/5k/20k instances and
+50/200/1,000 definitions with payload sizes 1/20 in both marker modes.
+See [performance baselines](benchmark-baselines/README.md) for the packaged
+WASM runner, golden hashes, scaling checks, RSS measurement, and limitations.
+
+The guide also records post-scanner repeat/state-overlay and many-definition
+profiles, with bounded workload commands and symbolized native CPU sampling
+through Criterion's `--profile-time` mode. Those measurements identify child-state
+copying as the next repeat/overlay target; they do not claim that memory or
+allocation targets have been met.
+
+For native allocation baselines, use the opt-in development example or the
+fresh-process matrix runner from the repository root:
+
+```sh
+node crates/microsoft-fast-build/benches/profile-allocations.mjs --output=/tmp/fast-allocations.json
+cargo run --manifest-path crates/microsoft-fast-build/Cargo.toml --release --features allocation-profiling --example profile-allocations -- --case=repeat_custom_elements --count=250 --mode=v3 --phase=render
+```
+
+The feature does not instrument the library or shipped WASM. Reports count
+only allocations on the measuring thread within the selected phase, excluding
+prepared inputs and report generation. See the baseline guide for controls,
+output retention, reallocation semantics, and test commands.

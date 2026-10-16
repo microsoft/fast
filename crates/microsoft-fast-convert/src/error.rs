@@ -3,6 +3,10 @@ use std::fmt;
 /// An error encountered while converting a FAST declarative template.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConvertError {
+    /// Typed exports are only meaningful for TypeScript conversion.
+    TypedUnsupportedForSyntax { syntax: String },
+    /// Stylesheets cannot use template source types.
+    TypeSourceUnsupportedForStylesheet,
     /// The requested target syntax is not supported.
     UnsupportedSyntax { syntax: String },
     /// No `<f-template>` element was present in the input.
@@ -87,6 +91,8 @@ pub enum ConvertError {
 impl fmt::Display for ConvertError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::TypedUnsupportedForSyntax { syntax } => write!(f, "typed output is only supported for syntax 'fast-v3-ts', not '{syntax}'"),
+            Self::TypeSourceUnsupportedForStylesheet => write!(f, "stylesheet conversion does not accept type-source or type-source-import"),
             Self::UnsupportedSyntax { syntax } => write!(
                 f,
                 "unsupported syntax '{syntax}': accepted values are {}",

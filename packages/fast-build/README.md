@@ -110,6 +110,41 @@ provided. Chunk boundaries are safe for HTML parsing:
 - Empty chunks are omitted.
 - Concatenating all chunks matches the normal non-streamed render.
 
+### Performance benchmarks for contributors
+
+The renderer discovers tags and bindings in a forward scan, eliminating repeated
+remaining-suffix searches for adjacent custom elements and plain tags. Existing
+WASM exports, rendered bytes, default markers, and `markers_v2` remain compatible.
+Rendering is still synchronous, and `--stream` still buffers all chunks in WASM.
+
+From a FAST repository checkout, not an installed npm package:
+
+```shell
+npm run build -w @microsoft/fast-build
+npm run bench:render -w @microsoft/fast-build -- --case=url_sink_siblings --output=/tmp/fast-render.json
+npm run bench:render -w @microsoft/fast-build -- --case=url_sink_siblings --check-scaling
+```
+
+The runner benchmarks the actual packaged WASM in fresh child processes in both
+marker modes, recording timing, CPU, output hashes, throughput, and peak RSS.
+Use `--case`, `--counts`, `--samples`, or `--compare=<baseline.json>` to narrow
+or compare a run. Output files are never overwritten. Normal tests verify the
+same fixtures against pre-optimization hashes without flaky timing thresholds.
+See the [benchmark guide](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
+for native Criterion benchmarks, fixture sizes, methodology, and limitations.
+
+The guide includes post-scanner repeat/state-heavy and many-definition profiles.
+Start expensive repeat cases with `--counts=250,1000 --warmup-count=250`;
+state-overlay controls and separate native phases help identify the next
+optimization without running an unbounded matrix. Native CPU samples are not
+WASM allocation measurements, and no production rendering behavior is changed.
+
+The guide also includes an opt-in native allocation baseline and a fresh-process
+matrix command: `node crates/microsoft-fast-build/benches/profile-allocations.mjs
+--output=/tmp/fast-allocations.json` from the repository root. Its counters are
+development-only Rust tooling, not part of the npm CLI or WASM; native peak
+newly-live heap is not process RSS.
+
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
@@ -121,6 +156,54 @@ When a binding value is not present in state:
 - Content bindings render nothing, including unresolved dot paths: `<p>{{foo.bar}}</p>` becomes `<p></p>`.
 - Attribute bindings omit the entire attribute, including unresolved dot paths: `<div class="{{foo.bar}}"></div>` becomes `<div></div>`.
 - `<f-repeat>` treats a missing list binding, including unresolved dot paths, as an empty array and renders zero iterations. If the binding is present but is not an array, rendering still errors.
+
+Explicit `null` also omits an attribute, even in an interpolated attribute
+value. Empty strings remain present. Known HTML boolean attributes bound to
+JSON booleans use presence/absence; ordinary attributes (including ARIA)
+retain textual booleans. Use `?name` for browser-side truthy/falsy bindings.
+Author bindings resolving to absence still override template-host defaults.
+These intentional output changes are described in the
+[plugin migration guide](./docs/migration/plugin-integrations.md).
+
+### APIs for build-time plugins
+
+Import the actual exported WASM subpath; do not slice rendered host HTML:
+
+```js
+import {
+    parse_f_templates,
+    render_shadow_root,
+} from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const definitions = JSON.parse(parse_f_templates(templateHtml));
+const templates = Object.fromEntries(
+    definitions.filter(definition => definition.name !== null)
+        .map(definition => [definition.name, definition]),
+);
+const shadowRootHtml = render_shadow_root(
+    "my-card", JSON.stringify(templates), JSON.stringify(componentState),
+);
+```
+
+The result is the complete DSD `<template>` fragment, with hydration markers
+and nested components, but no host, host defaults, or light DOM. Pass resolved
+component state; the API does not derive it from caller-owned host attributes.
+It accepts the existing attribute-name strategy and v2 marker options.
+
+Parsed records add `formatVersion: 1` and `bindings` without changing the array
+shape. Binding records expose `name` (null for compound expressions),
+`expression`, syntax `kind`, lexical `paths`, and outer-to-inner repeat
+`scope` frames. `type` is null except for repeat collections (`"array"`);
+`optional` is null because required state declarations are not inferable.
+`$index` paths refer to the active repeat frame, not a root state key.
+Client expressions are described lexically, not fully JavaScript-type-checked.
+Code samples are excluded; metadata is not full syntax or state validation.
+Generated WASM declarations expose these JSON interfaces.
+
+Render exports reject unsupported/malformed explicit versions before rendering.
+Legacy unversioned maps and string definitions remain supported. The CLI keeps
+version/binding fields when assembling a map; persisted metadata should do the
+same instead of discarding them.
 
 ### Custom element templates
 
@@ -219,6 +302,7 @@ fast convert --syntax=fast-v3-ts --templates=example.html \
 | `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates to convert. An exact single file path is also accepted. Loads the converter WASM module once for the whole batch. |
 | `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `webui-framework-prerelease` defaults to `*.webui-framework.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
+| `--typed[=true/false]` | `false` | Only for `fast-v3-ts`. Add an explicit `ElementViewTemplate<TSource>` export annotation and type-only import. Explicit false overrides configured true. |
 | `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
 | `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
@@ -249,9 +333,15 @@ against a concrete element type. See
 }
 ```
 
-Only `syntax`, `templates`, `output`, `overwrite`, `type-source`, and
-`type-source-import` are allowed. Values must be strings except `overwrite`, which
-must be a JSON boolean.
+Only `syntax`, `templates`, `output`, `overwrite`, `type-source`,
+`type-source-import`, and `typed` are allowed. Values must be strings except
+`overwrite` and `typed`, which must be JSON booleans.
+
+For declaration-emitting consumers, use `--typed --type-source=MyElement`.
+The converter WASM's `convert_template_with_options` accepts an appended
+optional `typed` boolean. `convert_stylesheet(css, "fast-v3-ts", "styles",
+true)` emits an `ElementStyles` annotation. Existing calls remain untyped;
+typed exports are tested with TypeScript `isolatedDeclarations`.
 
 ### Running converter fixtures locally
 

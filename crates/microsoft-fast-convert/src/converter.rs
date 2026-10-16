@@ -33,6 +33,7 @@ pub(crate) fn convert_stylesheet(
     stylesheet: &str,
     syntax: &str,
     export_name: &str,
+    typed: bool,
 ) -> Result<String, ConvertError> {
     let syntax = Syntax::parse(syntax)?;
 
@@ -48,7 +49,7 @@ pub(crate) fn convert_stylesheet(
         });
     }
 
-    Ok(fast_v3_ts::convert_stylesheet(stylesheet, export_name))
+    Ok(fast_v3_ts::convert_stylesheet(stylesheet, export_name, typed))
 }
 
 fn validate_options(
@@ -56,6 +57,11 @@ fn validate_options(
     syntax_kind: Syntax,
     options: &ConvertOptions,
 ) -> Result<(), ConvertError> {
+    if options.typed && syntax_kind != Syntax::FastV3Ts {
+        return Err(ConvertError::TypedUnsupportedForSyntax {
+            syntax: syntax.to_string(),
+        });
+    }
     if options.type_source_import.is_some() && options.type_source.is_none() {
         return Err(ConvertError::TypeSourceImportRequiresTypeSource);
     }
