@@ -24,13 +24,24 @@ running `create-github-releases.mjs` without it creates GitHub Releases.
 
 Hotfixes use [azure-pipelines-hotfix.yml](../azure-pipelines-hotfix.yml). They
 **never create or download GitHub Releases**. The pipeline builds a reviewed
-source tag, transfers its tarballs through an Azure pipeline artifact, and
-publishes through a governed ESRP release job.
+non-main branch at its pinned source tag, transfers its tarballs through an Azure
+pipeline artifact, and publishes through a governed ESRP release job.
 
 ### Prepare the source
 
+Follow this sequence: **published tag -> maintenance branch -> reviewed changes
+and version bump -> push branch -> tag its approved tip -> run against that branch**.
+Never start the hotfix from `main` or use `main` as the package source.
+
 Start a maintenance branch, such as `releases/fast-element-3.0`, from the exact
-published package tag. Backport only the reviewed fixes and necessary
+published package tag:
+
+```bash
+git fetch origin tag "@microsoft/fast-element_v3.0.4"
+git switch -c releases/fast-element-3.0 "@microsoft/fast-element_v3.0.4"
+```
+
+Backport only the reviewed fixes and necessary
 compatibility adjustments. Include regression tests for that version's behavior.
 Use separate reviewed code/change-file and metadata-only bump PRs, as for
 ordinary releases, targeting the maintenance branch rather than `main`.
@@ -55,17 +66,21 @@ choosing a version. The base must have a matching `deployed/<base-tag>` marker.
 A subsequent hotfix can instead use a previously deployed `hotfix/` tag as its
 base. Never move an existing tag.
 
-To publish code from a particular branch, create the hotfix tag at that branch's
-reviewed commit, including its version bump. For example, replace
+Push the reviewed maintenance branch to `origin`, then have a maintainer create
+the hotfix tag at its pushed tip, including its version bump. For example, replace
 `REVIEWED_COMMIT_SHA` with the approved commit from `releases/fast-element-3.0`:
 
 ```bash
+git push -u origin releases/fast-element-3.0
 git tag "hotfix/@microsoft/fast-element_v3.0.5" REVIEWED_COMMIT_SHA
 git push origin "refs/tags/hotfix/@microsoft/fast-element_v3.0.5"
 ```
 
-The source branch does not need to be merged into `main`. The tag pins its exact
-commit; later commits on the branch do not change what the pipeline builds.
+The branch must exist on `origin`, and its tip must equal the tag's commit when
+the run plans its source. A local branch or a tag at an older branch commit is
+not sufficient. The source branch does not need to be merged into `main`.
+Once planning succeeds, the exact commit is pinned; later branch commits do not
+change what that run builds or marks as deployed.
 
 Do not create the ordinary `@microsoft/fast-element_v3.0.5` tag or a GitHub
 Release. Do not merge the maintenance branch's version metadata into `main`.
@@ -76,19 +91,31 @@ appears on `main`.
 
 ### Run the pipeline
 
-Select the pipeline definition from `main`, then supply:
+A maintainer manually queues the central pipeline, targeting the **pushed
+hotfix branch** through these required inputs:
 
 | Parameter | Example | Meaning |
 | --- | --- | --- |
 | `baseTag` | `@microsoft/fast-element_v3.0.4` | Exact published baseline |
+| `hotfixBranch` | `releases/fast-element-3.0` | Pushed package source branch; `main` is rejected |
 | `hotfixTag` | `hotfix/@microsoft/fast-element_v3.0.5` | Reviewed source and new version |
 
 Every new, valid, approved run publishes; there is no build-only switch.
-Azure's branch selector chooses the pipeline definition and tooling, so keep it
-on `main`. The `hotfixTag` parameter selects the package source independently.
+The Azure branch selector stays on `main` **only to load the central pipeline
+definition and tooling**, not to select hotfix package code. `hotfixBranch`
+selects the remote source branch, and `hotfixTag` pins its approved tip. Short
+branch names and `refs/heads/...` are accepted; `main`, tag refs, missing remote
+branches, and mismatched branch/tag commits fail before building.
+Do not backport pipeline YAML or publishing helpers into the historical branch.
+Agents can discover this process in the
+[shipping skill](../.github/skills/shipping/SKILL.md#version-specific-hotfixes)
+and [Copilot instructions](../.github/copilot-instructions.md#version-specific-hotfixes).
+Agents must not autonomously queue publication, create release/source tags,
+publish packages, merge PRs, or change publishing settings.
 
-The build resolves both tags to commits and verifies their ancestry and package
-manifests. It installs the historical snapshot's dependencies using `npm ci`,
+The build verifies the pushed branch once, resolves both tags to commits, and
+verifies their ancestry and package manifests. It installs the historical
+snapshot's dependencies using `npm ci`,
 builds the selected workspace and its dependencies, and runs that workspace's
 Node and browser suites. The snapshot must support the npm-workspace/Lage build
 and test commands used by this pipeline; it does not retrofit older toolchains.
@@ -100,7 +127,9 @@ FAST Build includes both `microsoft-fast-build` and `microsoft-fast-convert` whe
 present in the selected source; their versions must match the npm package.
 The `FAST_RELEASE_SKIP_CRATES` escape hatch does not apply to hotfixes.
 
-Publication is manual and `main`-only. Its npm channel is derived, not supplied:
+Publication requires a manual run of the central definition from `main`;
+the package source is always the selected non-main branch. Its npm channel is
+derived, not supplied:
 `hotfix-<major>.<minor>`, such as `hotfix-3.0`. The ESRP task receives that channel
 through its **`productstate` input**; `.npmrc` alone does not configure ESRP.
 An archived `publishConfig.tag` cannot override the maintenance channel, and
@@ -123,7 +152,8 @@ Before enabling real publication, a human administrator must:
    `keyvault`, `tenantId`, `releaseOwners`, and `releaseApprovers`, using the
    approved ESRP service connection, signing identity, and release approvers.
    Keep credential values in Azure, not source control.
-3. Apply branch-control checks requiring `main`, release approvals, and an
+3. Apply branch-control checks requiring `main` for the **central pipeline
+   definition/tooling**, release approvals, and an
    exclusive lock to the protected publishing resources. `lockBehavior:
    sequential` only serializes runs when an exclusive-lock check is configured.
    Use a dedicated hotfix publishing connection/identity where required by

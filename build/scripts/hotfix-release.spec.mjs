@@ -104,6 +104,7 @@ function fixture({
     const hotfixTag = hotfixTagFor(name, version);
     git(root, "tag", hotfixTag);
     const sourceSha = git(root, "rev-parse", "HEAD");
+    const hotfixBranch = "backport";
     return {
         root,
         name,
@@ -111,9 +112,18 @@ function fixture({
         baseTag,
         baseSha,
         hotfixTag,
+        hotfixBranch,
         sourceSha,
-        plan: () => planHotfix({ root, baseTag, hotfixTag }),
+        plan: () => planHotfix({ root, baseTag, hotfixTag, hotfixBranch }),
     };
+}
+
+function pushBranch(f, sha = f.sourceSha) {
+    const remote = join(temporaryRoot(), "origin.git");
+    git(f.root, "init", "--bare", "--quiet", remote);
+    git(f.root, "remote", "add", "origin", remote);
+    git(f.root, "push", "--quiet", "origin", `${sha}:refs/heads/${f.hotfixBranch}`);
+    return remote;
 }
 
 function runScript(root, name, args = [], env = {}) {
@@ -157,6 +167,7 @@ test("planning pins the backport SHA rather than the pipeline checkout or GITHUB
     assert.equal(plan.pipelineSha, f.baseSha);
     assert.notEqual(plan.sourceSha, plan.pipelineSha);
     assert.equal(plan.npmDistTag, "hotfix-3.0");
+    assert.equal(plan.hotfixBranch, f.hotfixBranch);
     assert.equal(plan.alreadyDeployed, false);
     assert.deepEqual(plan.crates, []);
 });
@@ -173,7 +184,12 @@ test("planning supports annotated source tags and previously deployed hotfix bas
     git(f.root, "commit", "--quiet", "-m", "Next hotfix");
     const nextTag = hotfixTagFor(f.name, nextVersion);
     git(f.root, "tag", nextTag);
-    const plan = planHotfix({ root: f.root, baseTag: f.hotfixTag, hotfixTag: nextTag });
+    const plan = planHotfix({
+        root: f.root,
+        baseTag: f.hotfixTag,
+        hotfixTag: nextTag,
+        hotfixBranch: f.hotfixBranch,
+    });
     assert.equal(plan.baseSha, f.sourceSha);
     assert.equal(plan.version, nextVersion);
 });
@@ -195,6 +211,66 @@ test("planning rejects canonical release collisions", () => {
     assert.throws(f.plan, /cannot reuse a normal release version/);
 });
 
+test("the hotfix source branch is required and cannot be main or a tag ref", () => {
+    const f = fixture();
+    for (const hotfixBranch of [
+        undefined,
+        "",
+        "main",
+        "refs/heads/main",
+        "refs/tags/base",
+    ]) {
+        assert.throws(
+            () =>
+                planHotfix({
+                    root: f.root,
+                    baseTag: f.baseTag,
+                    hotfixTag: f.hotfixTag,
+                    hotfixBranch,
+                }),
+            /hotfix branch|Hotfix source/,
+        );
+    }
+    for (const hotfixBranch of ["back port", "back..port", "refs/heads/"]) {
+        assert.throws(() =>
+            planHotfix({
+                root: f.root,
+                baseTag: f.baseTag,
+                hotfixTag: f.hotfixTag,
+                hotfixBranch,
+            }),
+        );
+    }
+});
+
+test("central planning requires the pushed branch head to match the source tag", () => {
+    for (const [branch, sha] of [
+        ["missing", undefined],
+        ["backport", "base"],
+        ["backport", "absent"],
+    ]) {
+        const f = fixture();
+        pushBranch(f, sha === "base" ? f.baseSha : f.sourceSha);
+        if (sha === "absent")
+            git(f.root, "push", "--quiet", "origin", "--delete", "backport");
+        const sourceRoot = join(f.root, "hotfix-source");
+        const result = runScript(f.root, "hotfix-release.mjs", ["plan"], {
+            TF_BUILD: "true",
+            BUILD_REASON: "Manual",
+            BUILD_SOURCEBRANCH: "refs/heads/main",
+            FAST_HOTFIX_BASE_TAG: f.baseTag,
+            FAST_HOTFIX_TAG: f.hotfixTag,
+            FAST_HOTFIX_BRANCH: branch,
+            FAST_HOTFIX_PLAN: join(f.root, "plan.json"),
+            FAST_HOTFIX_SOURCE_ROOT: sourceRoot,
+        });
+        assert.notEqual(result.status, 0);
+        assert.match(result.stderr, /pushed hotfix branch|branch head must match/);
+        assert.equal(existsSync(sourceRoot), false);
+        assert.equal(existsSync(join(f.root, "plan.json")), false);
+    }
+});
+
 test("planning rejects untagged, malformed, cross-package, and mismatched sources", () => {
     const f = fixture();
     for (const hotfixTag of [
@@ -205,12 +281,25 @@ test("planning rejects untagged, malformed, cross-package, and mismatched source
         `${f.hotfixTag};echo injected`,
         "hotfix/@microsoft/fast-router_v3.0.5",
     ]) {
-        assert.throws(() => planHotfix({ root: f.root, baseTag: f.baseTag, hotfixTag }));
+        assert.throws(() =>
+            planHotfix({
+                root: f.root,
+                baseTag: f.baseTag,
+                hotfixTag,
+                hotfixBranch: f.hotfixBranch,
+            }),
+        );
     }
     const mismatch = hotfixTagFor(f.name, "3.0.6");
     git(f.root, "tag", mismatch);
     assert.throws(
-        () => planHotfix({ root: f.root, baseTag: f.baseTag, hotfixTag: mismatch }),
+        () =>
+            planHotfix({
+                root: f.root,
+                baseTag: f.baseTag,
+                hotfixTag: mismatch,
+                hotfixBranch: f.hotfixBranch,
+            }),
         /manifest must agree/,
     );
 });
@@ -389,6 +478,7 @@ test("a governed publication rejects an artifact from a different source before 
             FAST_HOTFIX_ARTIFACT_ROOT: root,
             FAST_HOTFIX_BASE_TAG: f.baseTag,
             FAST_HOTFIX_TAG: f.hotfixTag,
+            FAST_HOTFIX_BRANCH: f.hotfixBranch,
             FAST_HOTFIX_SOURCE_SHA: f.baseSha,
             FAST_HOTFIX_BASE_SHA: f.baseSha,
             npm_config_tag: "hotfix-3.0",
@@ -399,6 +489,30 @@ test("a governed publication rejects an artifact from a different source before 
         result.stderr,
         /must match the requested tags and planned source commits/,
     );
+});
+
+test("publication rejects a different or main source branch before registry access", () => {
+    const f = fixture();
+    const root = join(temporaryRoot(), "artifact");
+    packHotfix({ plan: f.plan(), root: f.root, sourceRoot: f.root, artifactRoot: root });
+    for (const hotfixBranch of ["other", "main"]) {
+        const result = runScript(
+            root,
+            join(root, "publish_artifacts_meta/hotfix-release.mjs"),
+            ["prepare-publication"],
+            {
+                FAST_HOTFIX_ARTIFACT_ROOT: root,
+                FAST_HOTFIX_BASE_TAG: f.baseTag,
+                FAST_HOTFIX_TAG: f.hotfixTag,
+                FAST_HOTFIX_BRANCH: hotfixBranch,
+                FAST_HOTFIX_SOURCE_SHA: f.sourceSha,
+                FAST_HOTFIX_BASE_SHA: f.baseSha,
+                npm_config_tag: "hotfix-3.0",
+            },
+        );
+        assert.notEqual(result.status, 0);
+        assert.match(result.stderr, /non-main branch|must match the requested/);
+    }
 });
 
 test("normal missing releases remain detectable and are not confused with historical tags", () => {
@@ -449,6 +563,7 @@ test("an already-deployed hotfix skips source materialization and publication", 
         BUILD_SOURCEBRANCH: "refs/heads/main",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
+        FAST_HOTFIX_BRANCH: f.hotfixBranch,
         FAST_HOTFIX_PLAN: join(f.root, "plan.json"),
     });
     assert.equal(result.status, 0, result.stderr);
@@ -456,15 +571,20 @@ test("an already-deployed hotfix skips source materialization and publication", 
     assert.match(result.stdout, /skipping build and publication/);
 });
 
-test("the hotfix tag selects a reviewed branch commit without changing the main checkout", () => {
+test("the pushed branch selects a pinned source without backporting pipeline infrastructure", () => {
     const f = fixture();
-    writeFileSync(
-        join(f.root, "packages/fast-element/index.js"),
-        "export const value = 'later';\n",
+    pushBranch(f);
+    assert.equal(
+        git(
+            f.root,
+            "ls-tree",
+            "--name-only",
+            f.sourceSha,
+            "--",
+            "azure-pipelines-hotfix.yml",
+        ),
+        "",
     );
-    git(f.root, "add", ".");
-    git(f.root, "commit", "--quiet", "-m", "Later untagged branch work");
-    assert.notEqual(git(f.root, "rev-parse", "HEAD"), f.sourceSha);
     git(f.root, "checkout", "--quiet", "main");
     const sourceRoot = join(f.root, "hotfix-source");
     const result = runScript(f.root, "hotfix-release.mjs", ["plan"], {
@@ -473,6 +593,7 @@ test("the hotfix tag selects a reviewed branch commit without changing the main 
         BUILD_SOURCEBRANCH: "refs/heads/main",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
+        FAST_HOTFIX_BRANCH: `refs/heads/${f.hotfixBranch}`,
         FAST_HOTFIX_PLAN: join(f.root, "plan.json"),
         FAST_HOTFIX_SOURCE_ROOT: sourceRoot,
     });
@@ -485,6 +606,23 @@ test("the hotfix tag selects a reviewed branch commit without changing the main 
         ).version,
         f.version,
     );
+    git(f.root, "checkout", "--quiet", f.hotfixBranch);
+    writeFileSync(
+        join(f.root, "packages/fast-element/index.js"),
+        "export const later = 1;\n",
+    );
+    git(f.root, "add", "packages/fast-element/index.js");
+    git(f.root, "commit", "--quiet", "-m", "Later branch work");
+    git(f.root, "push", "--quiet", "origin", f.hotfixBranch);
+    git(f.root, "checkout", "--quiet", "main");
+    const manifest = packHotfix({
+        root: f.root,
+        sourceRoot,
+        plan: JSON.parse(readFileSync(join(f.root, "plan.json"), "utf8")),
+        artifactRoot: join(temporaryRoot(), "artifact"),
+    });
+    assert.equal(manifest.sourceSha, f.sourceSha);
+    assert.equal(manifest.hotfixBranch, f.hotfixBranch);
 });
 
 test("deployment markers point to the built source, not the main checkout", () => {
@@ -499,6 +637,7 @@ test("deployment markers point to the built source, not the main checkout", () =
         BUILD_SOURCEBRANCH: "refs/heads/main",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
+        FAST_HOTFIX_BRANCH: f.hotfixBranch,
         FAST_HOTFIX_SOURCE_SHA: f.sourceSha,
         FAST_HOTFIX_BASE_SHA: f.baseSha,
     };
@@ -746,6 +885,12 @@ test("the manual Azure path always includes publication without GitHub Releases"
         "utf8",
     );
     assert.match(yaml, /^trigger: none\npr: none\n/);
+    assert.match(yaml, /name: hotfixBranch/);
+    assert.equal(
+        (yaml.match(/FAST_HOTFIX_BRANCH: \$\{\{ parameters.hotfixBranch }}/g) ?? [])
+            .length,
+        4,
+    );
     assert.match(yaml, /^ {4}- stage: PublishHotfix$/m);
     assert.doesNotMatch(yaml, /name: publish\b|parameters\.publish|FAST_HOTFIX_PUBLISH/);
     assert.match(yaml, /productstate: \$\(npm_config_tag\)/);

@@ -11,6 +11,10 @@ parameters:
   displayName: Reviewed hotfix/package_vversion source tag
   type: string
   default: ''
+- name: hotfixBranch
+  displayName: Pushed hotfix source branch (not main)
+  type: string
+  default: ''
 
 resources:
   repositories:
@@ -59,10 +63,11 @@ extends:
 
         - script: node build/scripts/hotfix-release.mjs plan
           name: plan
-          displayName: Validate published base, hotfix tag, lineage, and versions
+          displayName: Validate pushed branch, hotfix tag, lineage, and versions
           env:
             FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
             FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+            FAST_HOTFIX_BRANCH: ${{ parameters.hotfixBranch }}
             FAST_HOTFIX_PLAN: $(Agent.TempDirectory)/fast-hotfix-plan.json
             FAST_HOTFIX_SOURCE_ROOT: $(Build.SourcesDirectory)/hotfix-source
 
@@ -135,6 +140,7 @@ extends:
             FAST_HOTFIX_ARTIFACT_ROOT: $(System.DefaultWorkingDirectory)
             FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
             FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+            FAST_HOTFIX_BRANCH: ${{ parameters.hotfixBranch }}
             FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
             FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
 
@@ -185,6 +191,7 @@ extends:
             FAST_HOTFIX_ARTIFACT_ROOT: $(System.DefaultWorkingDirectory)
             FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
             FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+            FAST_HOTFIX_BRANCH: ${{ parameters.hotfixBranch }}
             FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
             FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
 
@@ -209,5 +216,6 @@ extends:
           env:
             FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
             FAST_HOTFIX_TAG: ${{ parameters.hotfixTag }}
+            FAST_HOTFIX_BRANCH: ${{ parameters.hotfixBranch }}
             FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
             FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)

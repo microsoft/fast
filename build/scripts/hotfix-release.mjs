@@ -37,6 +37,20 @@ function tagCommit(root, tag) {
     return git(root, "rev-parse", "--verify", `refs/tags/${tag}^{commit}`);
 }
 
+function hotfixBranchName(root, branch) {
+    assert(
+        typeof branch === "string" && branch.length > 0,
+        "A pushed hotfix branch is required.",
+    );
+    const name = branch.startsWith("refs/heads/") ? branch.slice(11) : branch;
+    assert(
+        name !== "main" && !name.startsWith("refs/"),
+        "Hotfix source must be a non-main branch, not a tag or another ref.",
+    );
+    git(root, "check-ref-format", `refs/heads/${name}`);
+    return name;
+}
+
 function tagPackage(tag) {
     assert(typeof tag === "string", "A version-specific git tag is required.");
     const match = /^(?:hotfix\/)?(@microsoft\/[a-z0-9-]+)_v(.+)$/.exec(tag);
@@ -64,7 +78,8 @@ function selection(baseTag, hotfixTag) {
     return { base, hotfix, npmDistTag: `hotfix-${after.major}.${after.minor}` };
 }
 
-export function planHotfix({ root = ".", baseTag, hotfixTag }) {
+export function planHotfix({ root = ".", baseTag, hotfixTag, hotfixBranch }) {
+    hotfixBranch = hotfixBranchName(root, hotfixBranch);
     const { base, hotfix: target, npmDistTag } = selection(baseTag, hotfixTag);
     const workspace = listPublishableWorkspaces(root).find(
         pkg => pkg.name === target.name,
@@ -133,6 +148,7 @@ export function planHotfix({ root = ".", baseTag, hotfixTag }) {
         baseTag,
         baseSha,
         hotfixTag,
+        hotfixBranch,
         sourceSha,
         pipelineSha: git(root, "rev-parse", "HEAD"),
         packageName: target.name,
@@ -156,7 +172,12 @@ function fileRecord(root, file) {
 export function packHotfix({ plan, root = ".", sourceRoot, artifactRoot }) {
     assert.deepEqual(
         plan,
-        planHotfix({ root, baseTag: plan.baseTag, hotfixTag: plan.hotfixTag }),
+        planHotfix({
+            root,
+            baseTag: plan.baseTag,
+            hotfixTag: plan.hotfixTag,
+            hotfixBranch: plan.hotfixBranch,
+        }),
         "Source tags changed or the hotfix plan was modified.",
     );
     assert(git(sourceRoot, "rev-parse", "HEAD") === plan.sourceSha);
@@ -237,6 +258,7 @@ export function verifyHotfixArtifact(root) {
         readFileSync(join(root, "publish_artifacts_meta", "hotfix.json"), "utf8"),
     );
     assert(manifest.schemaVersion === 1, "Unsupported hotfix manifest schema.");
+    assert(manifest.hotfixBranch === hotfixBranchName(root, manifest.hotfixBranch));
     const { hotfix, npmDistTag } = selection(manifest.baseTag, manifest.hotfixTag);
     assert(manifest.packageName === hotfix.name && manifest.version === hotfix.version);
     assert(manifest.npmDistTag === npmDistTag, "Invalid hotfix maintenance channel.");
@@ -329,18 +351,20 @@ function output(name, value) {
 
 function assertPublicationContext(manifest) {
     assert(
-        manifest.baseTag === process.env.FAST_HOTFIX_BASE_TAG &&
+        manifest.hotfixBranch ===
+            hotfixBranchName(process.cwd(), process.env.FAST_HOTFIX_BRANCH) &&
+            manifest.baseTag === process.env.FAST_HOTFIX_BASE_TAG &&
             manifest.hotfixTag === process.env.FAST_HOTFIX_TAG &&
             manifest.baseSha === process.env.FAST_HOTFIX_BASE_SHA &&
             manifest.sourceSha === process.env.FAST_HOTFIX_SOURCE_SHA,
-        "The governed artifact must match the requested tags and planned source commits.",
+        "The governed artifact must match the requested tags and planned source commits and branch.",
     );
     if (process.env.TF_BUILD) {
         assert(
             process.env.BUILD_REASON === "Manual" &&
                 process.env.BUILD_SOURCEBRANCH === "refs/heads/main" &&
                 manifest.pipelineSha === process.env.BUILD_SOURCEVERSION,
-            "Publication must use the artifact and tooling from this manual main run.",
+            "Publication must use the artifact and tooling from this manual central-pipeline run.",
         );
     }
 }
@@ -355,13 +379,14 @@ async function main() {
             assert(process.env.BUILD_REASON === "Manual", "Hotfix runs must be manual.");
             assert(
                 process.env.BUILD_SOURCEBRANCH === "refs/heads/main",
-                "Publishing must use the pipeline definition from main.",
+                "Central tooling must use the pipeline definition from main.",
             );
         }
         const plan = planHotfix({
             root,
             baseTag: process.env.FAST_HOTFIX_BASE_TAG,
             hotfixTag: process.env.FAST_HOTFIX_TAG,
+            hotfixBranch: process.env.FAST_HOTFIX_BRANCH,
         });
         if (action === "mark-deployed") {
             assert(
@@ -383,6 +408,21 @@ async function main() {
             }
             git(root, "push", "origin", `refs/tags/${tag}`);
             return;
+        }
+        if (!plan.alreadyDeployed) {
+            const ref = `refs/heads/${plan.hotfixBranch}`;
+            const [sha, remoteRef] = git(
+                root,
+                "ls-remote",
+                "--heads",
+                "origin",
+                ref,
+            ).split(/\s+/);
+            assert(remoteRef === ref, `Required pushed hotfix branch is missing: ${ref}`);
+            assert(
+                sha === plan.sourceSha,
+                "The pushed hotfix branch head must match the reviewed hotfix tag.",
+            );
         }
         console.log(JSON.stringify(plan, null, 4));
         writeFileSync(planPath, `${JSON.stringify(plan, null, 4)}\n`);

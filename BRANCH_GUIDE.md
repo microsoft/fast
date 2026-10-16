@@ -8,17 +8,21 @@ The `main` branch is the default branch. It is used for ordinary releases of the
 
 ## Maintenance and hotfixes
 
-Use a `releases/*` branch, such as `releases/fast-element-3.0`, for a reviewed
-backport from an exact published package tag. Keep the branch name to one
-segment after `releases/` so existing validation triggers match it. Configure
+Create a `releases/*` branch, such as `releases/fast-element-3.0`, from an exact
+published package tag, **not from `main`**. Make the relevant fix, tests, and
+version updates there, then push the reviewed branch to `origin`. Keep the branch
+name to one segment after `releases/` so existing validation triggers match it. Configure
 Beachball's comparison branch accordingly and scope bumps to the selected
 package.
 
 Hotfix source tags use `hotfix/<package>_v<version>` and must never be moved.
 They are not ordinary release tags and must never have GitHub Releases.
-Create the tag at the maintenance branch's reviewed commit. Queue the Azure
-pipeline definition from `main`; the tag, not Azure's branch selector, selects
-the source to build. Later branch commits do not change the tagged source.
+Create the tag at the pushed maintenance branch's approved tip. A maintainer
+queues the central Azure pipeline with `baseTag`, `hotfixBranch`, and
+`hotfixTag`; `main` is rejected as the source branch. The remote branch head
+must match the tag when planning starts; later branch movement cannot change
+the pinned source. The Azure branch selector loads central tooling from `main`,
+not package code. Do not backport publishing infrastructure into old branches.
 Publish only through the manual Azure hotfix pipeline described in
 [build/README.md](build/README.md#version-specific-hotfixes). Forward-port code
 fixes independently; do not merge backlevel package versions into `main`.

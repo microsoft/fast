@@ -239,22 +239,30 @@ Hotfixes **must not create GitHub Releases**. Use the separate manual
 GitHub-release workflow or the ordinary single-package flow above.
 
 Prepare reviewed backports and a scoped version bump on a maintenance branch
-from the exact published package tag. A maintainer then creates an immutable
-`hotfix/<package>_v<new-version>` source tag at the approved commit. The new
-version must be unused, newer than the baseline, and on the same major/minor
+from the exact published package tag, **not from `main`**, then push the reviewed
+branch to `origin`. A maintainer creates an immutable
+`hotfix/<package>_v<new-version>` source tag at that pushed branch's approved tip.
+The new version must be unused, newer than the baseline, and on the same major/minor
 line. Do not move an existing tag or merge backlevel version metadata into
 `main`.
 
-Every new, valid, approved manual run from `main` builds, tests, and publishes;
-there is no build-only switch. The resulting Azure pipeline artifact passes
-directly to a governed ESRP release job, uses `hotfix-<major>.<minor>` rather than npm
+A maintainer queues the central pipeline with `baseTag`, `hotfixBranch`, and
+`hotfixTag`. It rejects `main` as package source and requires the pushed branch's
+head to match the tag at planning time. The pipeline definition/tooling remains
+on `main`; do not copy that infrastructure into historical branches.
+Every new, valid, approved run builds, tests, and publishes the pinned
+maintenance-branch commit; there is no build-only switch. The resulting Azure
+pipeline artifact passes directly to a governed ESRP release job, uses
+`hotfix-<major>.<minor>` rather than npm
 `latest`, and creates `deployed/<hotfix-tag>` only after verifying all registry
 bytes and the maintenance channel. Ordinary GitHub release creation and
 deployment discovery exclude versions reserved by `hotfix/` tags.
 
 See [the build-tools operator guide](build/README.md#version-specific-hotfixes)
-for parameters, paired Rust crates, activation/approval/lock requirements, and
-manual handling of partial publication. No pipeline registration, settings
+and [agent shipping workflow](.github/skills/shipping/SKILL.md#version-specific-hotfixes)
+for the branch-from-tag process, parameters, paired Rust crates,
+activation/approval/lock requirements, and manual handling of partial publication.
+No pipeline registration, settings
 changes, tag creation, or publication is performed merely by merging the pipeline
 YAML.
 
