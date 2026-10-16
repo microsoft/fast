@@ -893,16 +893,20 @@ test("the manual Azure path always includes publication without GitHub Releases"
     );
     assert.match(yaml, /^ {4}- stage: PublishHotfix$/m);
     assert.doesNotMatch(yaml, /name: publish\b|parameters\.publish|FAST_HOTFIX_PUBLISH/);
-    assert.match(yaml, /productstate: \$\(npm_config_tag\)/);
+    assert.match(yaml, /repository: fastPipelines/);
+    assert.match(yaml, /name: open-source\/FASTPipelineTemplates/);
+    assert.match(
+        yaml,
+        /template: FAST\.Release\.PipelineTemplate\.yml@fastPipelines\n\s+parameters:\n\s+npmDistTag: \$\(npm_config_tag\)\n\s+continueOnError: false/,
+    );
+    assert.doesNotMatch(yaml, /task: EsrpRelease@|releaseOwners|releaseApprovers/);
     assert.match(yaml, /cargo install wasm-pack --locked/);
-    assert.match(yaml, /plan.hasCrates/);
-    assert.match(yaml, /eq\(variables\['hasCrates'\], 'true'\)/);
     assert.match(yaml, /type: releaseJob/);
     assert.match(yaml, /eq\(dependencies.Deploy.result, 'Succeeded'\)/);
     assert.match(yaml, /verified.publicationVerified/);
     assert.match(yaml, /persistCredentials: false/);
     assert.doesNotMatch(
         yaml,
-        /DownloadGitHubRelease|gh release|create-github-releases|continueOnError|GH_TOKEN|schedules:|pending_npm|pending_crates/,
+        /DownloadGitHubRelease|gh release|create-github-releases|continueOnError: true|GH_TOKEN|schedules:|pending_npm|pending_crates/,
     );
 });

@@ -431,7 +431,6 @@ async function main() {
         output("baseSha", plan.baseSha);
         output("packageName", plan.packageName);
         output("npmDistTag", plan.npmDistTag);
-        output("hasCrates", plan.crates.length > 0);
         if (plan.alreadyDeployed) {
             console.log("Hotfix already deployed; skipping build and publication.");
         } else {

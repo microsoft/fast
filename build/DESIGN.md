@@ -61,6 +61,9 @@ The build uploads `fast-hotfix-inputs` through the official Azure pipeline
 artifact mechanism. The checkout-free production `releaseJob` consumes that
 declared artifact. No GitHub Release, GitHub release asset API, or download task
 is involved, and no npm/crates credentials are exposed to the source build.
+The job delegates npm and paired-crate publishing to
+`FAST.Release.PipelineTemplate.yml@fastPipelines`, matching ordinary CD instead
+of duplicating its ESRP tasks, identity inputs, and owner/approver configuration.
 The job also compares the artifact's branch, tags, source SHAs, and tooling commit
 with this run's parameters, planning outputs, and pipeline commit before submission.
 
@@ -71,12 +74,16 @@ investigation, even when its bytes match. ESRP consumes the original archive
 folders directly, without pending-asset copies or partial-publication recovery.
 
 The maintenance npm channel is always `hotfix-<major>.<minor>`. ESRP receives it
-explicitly through `productstate`, not an assumed local npm configuration.
+explicitly through the shared template's `npmDistTag` parameter and ESRP's
+`productstate` input, not an assumed local npm configuration.
 The job refuses backward channel movement. Protected-resource approval,
 branch-control, and exclusive-lock checks are part of activation and must
 serialize publishers sharing a channel; YAML cannot install those checks.
 
-ESRP failures remain failures. Post-publication verification waits for bounded
+The shared-template call sets `continueOnError: false`, so ESRP failures remain
+failures and later publishers require successful preceding steps. The template's
+backward-compatible parameter update must merge before this consumer.
+Post-publication verification waits for bounded
 registry propagation, compares every archive, requires the maintenance channel
 to identify this exact version, and rejects a hotfix owning `latest`. Only a strictly
 successful, verified deployment allows the marker job to run. That job checks

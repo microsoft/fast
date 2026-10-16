@@ -44,7 +44,10 @@ not a choice of package source. No pipeline infrastructure is copied into the
 maintenance branch. Later branch movement does not change a planned run.
 A checkout-free production
 release job verifies artifact identities/checksums, requires every selected
-version to be unused, and submits the original archive folders through ESRP.
+version to be unused, and submits the original archive folders through the same
+`FAST.Release.PipelineTemplate.yml@fastPipelines` publisher as ordinary CD.
+The hotfix call passes `npmDistTag: $(npm_config_tag)` and
+`continueOnError: false`; the shared-template parameter update must merge first.
 Its npm `productstate` is `hotfix-<major>.<minor>`, never `latest`; it refuses
 backward channel movement. A strictly successful registry verification gates
 the `deployed/<hotfix-tag>` marker, which points to the built source commit.

@@ -18,6 +18,10 @@ parameters:
 
 resources:
   repositories:
+  - repository: fastPipelines
+    type: git
+    name: open-source/FASTPipelineTemplates
+    ref: main
   - repository: 1esPipelines
     type: git
     name: 1ESPipelineTemplates/1ESPipelineTemplates
@@ -111,8 +115,6 @@ extends:
         value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.sourceSha'] ]
       - name: hotfixBaseSha
         value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.baseSha'] ]
-      - name: hasCrates
-        value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.hasCrates'] ]
       jobs:
       - job: Deploy
         displayName: Publish the selected hotfix package and paired crates
@@ -144,45 +146,10 @@ extends:
             FAST_HOTFIX_SOURCE_SHA: $(hotfixSourceSha)
             FAST_HOTFIX_BASE_SHA: $(hotfixBaseSha)
 
-        - task: EsrpRelease@10
-          displayName: Publish npm hotfix to its maintenance channel
-          inputs:
-            connectedservicename: $(clientId)
-            usemanagedidentity: true
-            keyvaultname: $(keyvault)
-            signcertname: $(clientId)
-            clientid: $(clientId)
-            intent: PackageDistribution
-            contenttype: npm
-            contentsource: Folder
-            folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_npm
-            productstate: $(npm_config_tag)
-            waitforreleasecompletion: true
-            owners: $(releaseOwners)
-            approvers: $(releaseApprovers)
-            serviceendpointurl: https://api.esrp.microsoft.com
-            mainpublisher: ESRPRELPACMAN
-            domaintenantid: $(tenantId)
-
-        - task: EsrpRelease@10
-          displayName: Publish paired Rust crates
-          condition: and(succeeded(), eq(variables['hasCrates'], 'true'))
-          inputs:
-            connectedservicename: $(clientId)
-            usemanagedidentity: true
-            keyvaultname: $(keyvault)
-            signcertname: $(clientId)
-            clientid: $(clientId)
-            intent: PackageDistribution
-            contenttype: Rust
-            contentsource: Folder
-            folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_crates
-            waitforreleasecompletion: true
-            owners: $(releaseOwners)
-            approvers: $(releaseApprovers)
-            serviceendpointurl: https://api.esrp.microsoft.com
-            mainpublisher: ESRPRELPACMAN
-            domaintenantid: $(tenantId)
+        - template: FAST.Release.PipelineTemplate.yml@fastPipelines
+          parameters:
+            npmDistTag: $(npm_config_tag)
+            continueOnError: false
 
         - script: node publish_artifacts_meta/hotfix-release.mjs verify-publication
           name: verified

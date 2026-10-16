@@ -26,6 +26,8 @@ Hotfixes use [azure-pipelines-hotfix.yml](../azure-pipelines-hotfix.yml). They
 **never create or download GitHub Releases**. The pipeline builds a reviewed
 non-main branch at its pinned source tag, transfers its tarballs through an Azure
 pipeline artifact, and publishes through a governed ESRP release job.
+That job uses `FAST.Release.PipelineTemplate.yml@fastPipelines`, the same shared
+publisher as ordinary CD, rather than duplicating ESRP tasks.
 
 ### Prepare the source
 
@@ -131,7 +133,11 @@ Publication requires a manual run of the central definition from `main`;
 the package source is always the selected non-main branch. Its npm channel is
 derived, not supplied:
 `hotfix-<major>.<minor>`, such as `hotfix-3.0`. The ESRP task receives that channel
-through its **`productstate` input**; `.npmrc` alone does not configure ESRP.
+through the shared template's **`npmDistTag` parameter**, which sets ESRP's
+`productstate` input; `.npmrc` alone does not configure ESRP.
+The hotfix call sets `continueOnError: false`, so publisher failures fail the
+job and block deployment marking. The shared template detects the npm/crate
+artifact directories and retains the approved ESRP owner/approver configuration.
 An archived `publishConfig.tag` cannot override the maintenance channel, and
 `publishConfig.registry` must not redirect publication to another registry.
 The job requires every selected version to be unused, rejects backward channel
@@ -146,11 +152,15 @@ maintenance dist-tag does not constrain existing SemVer dependency ranges.
 
 Before enabling real publication, a human administrator must:
 
-1. Register `azure-pipelines-hotfix.yml` as a **manual** production pipeline and
-   authorize the existing official template, pool, and repository resources.
+1. Merge the prerequisite shared-template update adding `npmDistTag` and
+   `continueOnError` parameters before merging/enabling this pipeline.
+   Register `azure-pipelines-hotfix.yml` as a **manual** production pipeline and
+   authorize the shared `fastPipelines` repository, official template, pool,
+   and other repository resources.
 2. Create/authorize the `fast-hotfix-publishing` variable group with `clientId`,
-   `keyvault`, `tenantId`, `releaseOwners`, and `releaseApprovers`, using the
-   approved ESRP service connection, signing identity, and release approvers.
+   `keyvault`, and `tenantId`, using the same approved ESRP configuration as
+   ordinary CD. Release owners/approvers come from the shared template; no
+   separate `releaseOwners` or `releaseApprovers` variables are needed.
    Keep credential values in Azure, not source control.
 3. Apply branch-control checks requiring `main` for the **central pipeline
    definition/tooling**, release approvals, and an
