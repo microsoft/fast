@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-      "test:node": "node --test scripts/hotfix-release.spec.mjs"
+      "test:node": "node --test \"scripts/*.spec.mjs\""
   },
   "bin": {
     "clean": "clean.mjs",
