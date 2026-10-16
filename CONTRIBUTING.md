@@ -224,7 +224,7 @@ A narrow exception exists for the **manual version bump** flow described in [the
 
 After merge, [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) runs on its nightly cron (`0 8 * * *` UTC, ~12am PST) — or you can trigger it immediately via `gh workflow run cd-github-releases.yml` if you don't want to wait. Its `detect` job notices the new `${name}_v${version}` tags don't yet exist; the `release` job packs each `.tgz` (and any paired `.crate`) and atomically creates one GitHub release per bumped package. The next nightly run of [`azure-pipelines-cd.yml`](azure-pipelines-cd.yml) (scheduled ~1 hour later at 09:00 UTC) downloads those assets, hands off to `FAST.Release.PipelineTemplate` for the actual `npm publish` / `cargo publish`, and on success pushes `deployed/<tag>` marker tags so the publish is never repeated.
 
-#### Hotfix or single-package bump
+#### Single-package bump
 
 The same flow works for a single-package release — just keep only the relevant change file(s) before running `npm run bump`, or pass `--package` to beachball directly:
 
@@ -232,12 +232,38 @@ The same flow works for a single-package release — just keep only the relevant
 npx beachball bump --package "@microsoft/fast-build"
 ```
 
+#### Version-specific hotfix publishing
+
+Hotfixes **must not create GitHub Releases**. Use the separate manual
+[`azure-pipelines-hotfix.yml`](azure-pipelines-hotfix.yml), not the nightly
+GitHub-release workflow or the ordinary single-package flow above.
+
+Prepare reviewed backports and a scoped version bump on a maintenance branch
+from the exact published package tag. A maintainer then creates an immutable
+`hotfix/<package>_v<new-version>` source tag at the approved commit. The new
+version must be unused, newer than the baseline, and on the same major/minor
+line. Do not move an existing tag or merge backlevel version metadata into
+`main`.
+
+Every new, valid, approved manual run from `main` builds, tests, and publishes;
+there is no build-only switch. The resulting Azure pipeline artifact passes
+directly to a governed ESRP release job, uses `hotfix-<major>.<minor>` rather than npm
+`latest`, and creates `deployed/<hotfix-tag>` only after verifying all registry
+bytes and the maintenance channel. Ordinary GitHub release creation and
+deployment discovery exclude versions reserved by `hotfix/` tags.
+
+See [the build-tools operator guide](build/README.md#version-specific-hotfixes)
+for parameters, paired Rust crates, activation/approval/lock requirements, and
+manual handling of partial publication. No pipeline registration, settings
+changes, tag creation, or publication is performed merely by merging the pipeline
+YAML.
+
 ### Manual version bumps
 
 `npm run checkchange` normally requires a beachball [change file](#change-files) for any edit to `packages/*/package.json`, including a single `"version"` line. Three maintainer-driven flows produce legitimate `package.json` edits without a change file:
 
 - The full bump PR documented in [Publishing](#publishing) above (`npm run bump` consumes the change files, so by the time the PR is opened there is nothing left for `npm run change` to record).
-- **Hotfix overrides** where the entire change is `1.2.3` → `1.2.4` on one or two workspaces.
+- **Hotfix overrides** where the entire change is `1.2.3` → `1.2.4` on one or two workspaces, targeting a maintenance branch and the separate Azure hotfix flow, never an ordinary GitHub Release.
 - **Paired Rust crate ↔ npm package sync recovery** where the postbump hook missed an entry (the npm version is correct but `Cargo.toml` drifted, or vice versa) and a maintainer is forcing the two back into agreement.
 
 To accommodate these flows without weakening the check for the broad contributor population, [`build/scripts/checkchange.mjs`](build/scripts/checkchange.mjs) skips beachball entirely **only** when both of the following are true for the current run:
