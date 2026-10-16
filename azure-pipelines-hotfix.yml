@@ -80,7 +80,7 @@ extends:
 
         - bash: |
             set -euo pipefail
-            cargo install wasm-pack
+            cargo install wasm-pack --locked
             cd "$HOTFIX_SOURCE_ROOT"
             npm ci
             npx lage build --to "$HOTFIX_PACKAGE"
@@ -112,9 +112,11 @@ extends:
           value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.sourceSha'] ]
         - name: hotfixBaseSha
           value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.baseSha'] ]
+        - name: hasCrates
+          value: $[ stageDependencies.BuildHotfix.Build.outputs['plan.hasCrates'] ]
         jobs:
         - job: Deploy
-          displayName: Publish only missing, checksum-verified hotfix artifacts
+          displayName: Publish the selected hotfix package and paired crates
           workspace:
             clean: all
           variables:
@@ -134,8 +136,7 @@ extends:
               version: "22.x"
 
           - script: node publish_artifacts_meta/hotfix-release.mjs prepare-publication
-            name: pending
-            displayName: Verify artifacts, check registry bytes, and prevent channel rollback
+            displayName: Verify artifacts, require unused versions, and prevent channel rollback
             env:
               FAST_HOTFIX_ARTIFACT_ROOT: $(System.DefaultWorkingDirectory)
               FAST_HOTFIX_BASE_TAG: ${{ parameters.baseTag }}
@@ -145,7 +146,6 @@ extends:
 
           - task: EsrpRelease@10
             displayName: Publish npm hotfix to its maintenance channel
-            condition: and(succeeded(), eq(variables['pending.npmNeedsPublication'], 'true'))
             inputs:
               connectedservicename: $(clientId)
               usemanagedidentity: true
@@ -155,7 +155,7 @@ extends:
               intent: PackageDistribution
               contenttype: npm
               contentsource: Folder
-              folderlocation: $(System.DefaultWorkingDirectory)/pending_npm
+              folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_npm
               productstate: $(npm_config_tag)
               waitforreleasecompletion: true
               owners: $(releaseOwners)
@@ -165,8 +165,8 @@ extends:
               domaintenantid: $(tenantId)
 
           - task: EsrpRelease@10
-            displayName: Publish missing paired Rust crates
-            condition: and(succeeded(), eq(variables['pending.cratesNeedPublication'], 'true'))
+            displayName: Publish paired Rust crates
+            condition: and(succeeded(), eq(variables['hasCrates'], 'true'))
             inputs:
               connectedservicename: $(clientId)
               usemanagedidentity: true
@@ -176,7 +176,7 @@ extends:
               intent: PackageDistribution
               contenttype: Rust
               contentsource: Folder
-              folderlocation: $(System.DefaultWorkingDirectory)/pending_crates
+              folderlocation: $(System.DefaultWorkingDirectory)/publish_artifacts_crates
               waitforreleasecompletion: true
               owners: $(releaseOwners)
               approvers: $(releaseApprovers)

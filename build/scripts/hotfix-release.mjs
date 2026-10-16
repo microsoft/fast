@@ -64,35 +64,6 @@ function selection(baseTag, hotfixTag) {
     return { base, hotfix, npmDistTag: `hotfix-${after.major}.${after.minor}` };
 }
 
-function validatePlan(plan) {
-    assert(plan?.schemaVersion === 1, "Unsupported hotfix manifest schema.");
-    const { hotfix, npmDistTag } = selection(plan.baseTag, plan.hotfixTag);
-    assert(plan.packageName === hotfix.name && plan.version === hotfix.version);
-    assert(plan.npmDistTag === npmDistTag);
-    for (const sha of [plan.baseSha, plan.sourceSha, plan.pipelineSha]) {
-        assert(
-            typeof sha === "string" && /^[a-f0-9]{40,64}$/.test(sha),
-            "Invalid source SHA.",
-        );
-    }
-    assert(
-        typeof plan.packagePath === "string" &&
-            /^packages\/[a-z0-9-]+$/.test(plan.packagePath),
-        "Unsupported hotfix workspace path.",
-    );
-    assert(Array.isArray(plan.crates), "Missing paired-crate manifest.");
-    for (const { crateName, cargoTomlPath } of plan.crates) {
-        assert(
-            /^microsoft-[a-z0-9-]+$/.test(crateName) &&
-                cargoTomlPath === `crates/${crateName}/Cargo.toml`,
-            "Invalid paired-crate path.",
-        );
-    }
-    assert(
-        new Set(plan.crates.map(crate => crate.crateName)).size === plan.crates.length,
-    );
-}
-
 export function planHotfix({ root = ".", baseTag, hotfixTag }) {
     const { base, hotfix: target, npmDistTag } = selection(baseTag, hotfixTag);
     const workspace = listPublishableWorkspaces(root).find(
@@ -171,20 +142,7 @@ export function planHotfix({ root = ".", baseTag, hotfixTag }) {
         crates,
         alreadyDeployed,
     };
-    validatePlan(plan);
     return plan;
-}
-
-function assertTagState(plan, root) {
-    const current = planHotfix({
-        root,
-        baseTag: plan.baseTag,
-        hotfixTag: plan.hotfixTag,
-    });
-    assert(
-        current.baseSha === plan.baseSha && current.sourceSha === plan.sourceSha,
-        "Source tags changed after the hotfix was planned.",
-    );
 }
 
 function digest(path, algorithm) {
@@ -196,8 +154,11 @@ function fileRecord(root, file) {
 }
 
 export function packHotfix({ plan, root = ".", sourceRoot, artifactRoot }) {
-    validatePlan(plan);
-    assertTagState(plan, root);
+    assert.deepEqual(
+        plan,
+        planHotfix({ root, baseTag: plan.baseTag, hotfixTag: plan.hotfixTag }),
+        "Source tags changed or the hotfix plan was modified.",
+    );
     assert(git(sourceRoot, "rev-parse", "HEAD") === plan.sourceSha);
     assert(
         !existsSync(artifactRoot) || readdirSync(artifactRoot).length === 0,
@@ -261,20 +222,12 @@ export function packHotfix({ plan, root = ".", sourceRoot, artifactRoot }) {
     }
     const metaDirectory = join(artifactRoot, "publish_artifacts_meta");
     mkdirSync(metaDirectory, { recursive: true });
-    const controlFiles = [];
     for (const name of toolNames) {
-        const file = `publish_artifacts_meta/${name}`;
-        copyFileSync(join(tooling, name), join(artifactRoot, file));
-        controlFiles.push(fileRecord(artifactRoot, file));
+        copyFileSync(join(tooling, name), join(metaDirectory, name));
     }
     writeFileSync(
-        join(artifactRoot, ".npmrc"),
-        `tag=${plan.npmDistTag}\nignore-scripts=true\n`,
-    );
-    controlFiles.push(fileRecord(artifactRoot, ".npmrc"));
-    writeFileSync(
         join(metaDirectory, "hotfix.json"),
-        `${JSON.stringify({ ...plan, artifacts, controlFiles }, null, 4)}\n`,
+        `${JSON.stringify({ ...plan, artifacts }, null, 4)}\n`,
     );
     return verifyHotfixArtifact(artifactRoot);
 }
@@ -283,7 +236,18 @@ export function verifyHotfixArtifact(root) {
     const manifest = JSON.parse(
         readFileSync(join(root, "publish_artifacts_meta", "hotfix.json"), "utf8"),
     );
-    validatePlan(manifest);
+    assert(manifest.schemaVersion === 1, "Unsupported hotfix manifest schema.");
+    const { hotfix, npmDistTag } = selection(manifest.baseTag, manifest.hotfixTag);
+    assert(manifest.packageName === hotfix.name && manifest.version === hotfix.version);
+    assert(manifest.npmDistTag === npmDistTag, "Invalid hotfix maintenance channel.");
+    assert(
+        manifest.crates.every(
+            ({ crateName, cargoTomlPath }) =>
+                pairedCrateNames(hotfix.name).includes(crateName) &&
+                cargoTomlPath === `crates/${crateName}/Cargo.toml`,
+        ),
+        "Invalid paired-crate manifest.",
+    );
     const expected = [
         `publish_artifacts_npm/${manifest.packageName.replace(/^@/, "").replace("/", "-")}-${manifest.version}.tgz`,
         ...manifest.crates.map(
@@ -291,17 +255,12 @@ export function verifyHotfixArtifact(root) {
                 `publish_artifacts_crates/${crate.crateName}-${manifest.version}.crate`,
         ),
     ];
-    assert(Array.isArray(manifest.artifacts) && Array.isArray(manifest.controlFiles));
     assert.deepEqual(
         manifest.artifacts.map(artifact => artifact.file).sort(),
         expected.sort(),
         "The artifact must contain only the selected npm package and paired crates.",
     );
-    assert.deepEqual(
-        manifest.controlFiles.map(file => file.file).sort(),
-        [".npmrc", ...toolNames.map(name => `publish_artifacts_meta/${name}`)].sort(),
-    );
-    for (const { file, sha256 } of [...manifest.artifacts, ...manifest.controlFiles]) {
+    for (const { file, sha256 } of manifest.artifacts) {
         assert(
             lstatSync(join(root, file)).isFile(),
             "Artifact files must not be symlinks.",
@@ -318,10 +277,6 @@ export function verifyHotfixArtifact(root) {
             : [];
         assert.deepEqual(actual.sort(), files.sort(), "Unexpected publication assets.");
     }
-    assert(
-        readFileSync(join(root, ".npmrc"), "utf8") ===
-            `tag=${manifest.npmDistTag}\nignore-scripts=true\n`,
-    );
     for (const artifact of manifest.artifacts) {
         const npm = artifact.file.endsWith(".tgz");
         const member = npm
@@ -435,6 +390,7 @@ async function main() {
         output("baseSha", plan.baseSha);
         output("packageName", plan.packageName);
         output("npmDistTag", plan.npmDistTag);
+        output("hasCrates", plan.crates.length > 0);
         if (plan.alreadyDeployed) {
             console.log("Hotfix already deployed; skipping build and publication.");
         } else {
@@ -463,9 +419,7 @@ async function main() {
                 manifest.npmDistTag,
             "The publisher's npm channel must match the verified artifact.",
         );
-        const pending = await preparePublication(manifest, artifactRoot);
-        output("npmNeedsPublication", pending.npm);
-        output("cratesNeedPublication", pending.crates);
+        await preparePublication(manifest);
     } else if (action === "verify-publication") {
         const manifest = verifyHotfixArtifact(artifactRoot);
         assertPublicationContext(manifest);

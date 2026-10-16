@@ -5,7 +5,6 @@ import {
     existsSync,
     mkdirSync,
     mkdtempSync,
-    readdirSync,
     readFileSync,
     rmSync,
     writeFileSync,
@@ -259,7 +258,8 @@ test("packing uses the tagged source and verifies archive identity and checksums
     assert.equal(manifest.sourceSha, f.sourceSha);
     assert.equal(manifest.artifacts.length, 1);
     assert.equal(manifest.artifacts[0].name, f.name);
-    assert.match(readFileSync(join(root, ".npmrc"), "utf8"), /^tag=hotfix-3.0\n/);
+    assert.equal(existsSync(join(root, ".npmrc")), false);
+    assert.equal(manifest.controlFiles, undefined);
     assert.deepEqual(verifyHotfixArtifact(root), manifest);
     const standalone = runScript(
         root,
@@ -317,13 +317,21 @@ test("packing fails if a source tag moved after planning", () => {
 test("artifact verification rejects extra publication files and channel tampering", () => {
     const f = fixture();
     const root = join(temporaryRoot(), "artifact");
-    packHotfix({ plan: f.plan(), root: f.root, sourceRoot: f.root, artifactRoot: root });
+    const manifest = packHotfix({
+        plan: f.plan(),
+        root: f.root,
+        sourceRoot: f.root,
+        artifactRoot: root,
+    });
     const extra = join(root, "publish_artifacts_npm/unrelated.tgz");
     writeFileSync(extra, "unrelated");
     assert.throws(() => verifyHotfixArtifact(root), /Unexpected publication assets/);
     rmSync(extra);
-    writeFileSync(join(root, ".npmrc"), "tag=latest\n");
-    assert.throws(() => verifyHotfixArtifact(root), /checksum mismatch/);
+    json(join(root, "publish_artifacts_meta/hotfix.json"), {
+        ...manifest,
+        npmDistTag: "latest",
+    });
+    assert.throws(() => verifyHotfixArtifact(root), /Invalid hotfix maintenance channel/);
 });
 
 test("packed publishConfig cannot override the maintenance channel or registry", () => {
@@ -391,7 +399,6 @@ test("a governed publication rejects an artifact from a different source before 
         result.stderr,
         /must match the requested tags and planned source commits/,
     );
-    assert.equal(existsSync(join(root, "pending_npm")), false);
 });
 
 test("normal missing releases remain detectable and are not confused with historical tags", () => {
@@ -513,7 +520,6 @@ test("deployment markers point to the built source, not the main checkout", () =
 });
 
 function registryFixture() {
-    const root = temporaryRoot();
     const version = "0.13.1";
     const artifacts = [
         {
@@ -533,8 +539,6 @@ function registryFixture() {
         },
     ].map(artifact => {
         const bytes = Buffer.from(artifact.name);
-        mkdirSync(dirname(join(root, artifact.file)), { recursive: true });
-        writeFileSync(join(root, artifact.file), bytes);
         return {
             ...artifact,
             version,
@@ -565,7 +569,7 @@ function registryFixture() {
                 };
             } else {
                 const artifact = artifacts.find(item =>
-                    url.includes(item.name.replace("/", "%2f")),
+                    url.includes(encodeURIComponent(item.name)),
                 );
                 assert(artifact, `Unexpected registry URL: ${url}`);
                 if (published.includes(artifact.name)) {
@@ -573,14 +577,18 @@ function registryFixture() {
                         artifact.kind === "npm"
                             ? {
                                   dist: {
-                                      integrity: mismatch
-                                          ? "different"
-                                          : artifact.integrity,
+                                      integrity:
+                                          mismatch === artifact.name
+                                              ? "different"
+                                              : artifact.integrity,
                                   },
                               }
                             : {
                                   version: {
-                                      checksum: mismatch ? "different" : artifact.sha256,
+                                      checksum:
+                                          mismatch === artifact.name
+                                              ? "different"
+                                              : artifact.sha256,
                                   },
                               };
                 }
@@ -589,74 +597,107 @@ function registryFixture() {
             return { status: code, ok: code === 200, json: async () => value };
         };
     }
-    return { root, manifest, artifacts, fetcher };
+    return { manifest, artifacts, fetcher };
 }
 
-test("publication prepares only selected missing assets, not GitHub release assets", async () => {
+test("registry requests percent-encode scoped package names in both npm URLs", async () => {
     const f = registryFixture();
-    const pending = await preparePublication(f.manifest, f.root, f.fetcher());
-    assert.deepEqual(pending, { npm: true, crates: true });
-    assert.deepEqual(readdirSync(join(f.root, "pending_npm")), ["build.tgz"]);
-    assert.deepEqual(readdirSync(join(f.root, "pending_crates")), [
-        "build.crate",
-        "convert.crate",
+    const urls = [];
+    const fetcher = f.fetcher();
+    await preparePublication(f.manifest, async url => {
+        urls.push(url);
+        return fetcher(url);
+    });
+    assert.deepEqual(urls, [
+        "https://registry.npmjs.org/-/package/%40microsoft%2Ffast-build/dist-tags",
+        "https://registry.npmjs.org/%40microsoft%2Ffast-build/0.13.1",
+        "https://crates.io/api/v1/crates/microsoft-fast-build/0.13.1",
+        "https://crates.io/api/v1/crates/microsoft-fast-convert/0.13.1",
     ]);
 });
 
-test("partial publication resumes by skipping exact matching registry bytes", async () => {
-    const f = registryFixture();
-    const pending = await preparePublication(
-        f.manifest,
-        f.root,
-        f.fetcher({
-            published: ["@microsoft/fast-build", "microsoft-fast-convert"],
-            channel: f.manifest.version,
-        }),
-    );
-    assert.deepEqual(pending, { npm: false, crates: true });
-    assert.equal(existsSync(join(f.root, "pending_npm")), false);
-    assert.deepEqual(readdirSync(join(f.root, "pending_crates")), ["build.crate"]);
+test("publication requires unused versions instead of recovering a partial publication", async () => {
+    for (const name of ["@microsoft/fast-build", "microsoft-fast-convert"]) {
+        const f = registryFixture();
+        await assert.rejects(
+            preparePublication(
+                f.manifest,
+                f.fetcher({ published: [name], channel: f.manifest.version }),
+            ),
+            /already published.*manual recovery/,
+        );
+    }
 });
 
-test("fully published bytes can finalize a missing marker without republishing", async () => {
+test("verification requires matching npm and crate bytes and the exact maintenance channel", async () => {
     const f = registryFixture();
     const fetcher = f.fetcher({
         published: f.artifacts.map(artifact => artifact.name),
-        channel: "0.13.2",
-    });
-    assert.deepEqual(await preparePublication(f.manifest, f.root, fetcher), {
-        npm: false,
-        crates: false,
+        channel: f.manifest.version,
     });
     await verifyPublication(f.manifest, { fetcher, attempts: 1 });
+    await assert.rejects(
+        verifyPublication(f.manifest, {
+            fetcher: f.fetcher({
+                published: f.artifacts.map(artifact => artifact.name),
+                channel: "0.13.2",
+            }),
+            attempts: 1,
+        }),
+        /no deployment marker/,
+    );
 });
 
-test("publication fails closed on checksum collisions, latest, and backwards channels", async () => {
-    for (const [options, error] of [
-        [
-            { published: ["@microsoft/fast-build"], mismatch: true },
+test("verification rejects different published bytes for npm and each paired crate", async () => {
+    const f = registryFixture();
+    for (const artifact of f.artifacts) {
+        await assert.rejects(
+            verifyPublication(f.manifest, {
+                fetcher: f.fetcher({
+                    published: f.artifacts.map(item => item.name),
+                    channel: f.manifest.version,
+                    mismatch: artifact.name,
+                }),
+                attempts: 1,
+            }),
             /Published bytes differ/,
-        ],
+        );
+    }
+});
+
+test("publication fails closed on used versions, latest, and backwards channels", async () => {
+    for (const [options, error] of [
+        [{ published: ["@microsoft/fast-build"] }, /already published/],
         [{ latest: "0.13.1" }, /unexpectedly owns npm latest/],
         [{ channel: "0.13.2" }, /channel backwards/],
         [{ channel: "0.14.0" }, /outside its maintenance line/],
-        [{ published: ["@microsoft/fast-build"] }, /no matching or newer/],
         [{ status: 500 }, /Registry request failed/],
     ]) {
         const f = registryFixture();
-        await assert.rejects(
-            preparePublication(f.manifest, f.root, f.fetcher(options)),
-            error,
-        );
-        assert.equal(existsSync(join(f.root, "pending_npm")), false);
-        assert.equal(existsSync(join(f.root, "pending_crates")), false);
+        await assert.rejects(preparePublication(f.manifest, f.fetcher(options)), error);
     }
 });
 
 test("registry failures do not become unpublished-version fallbacks", async () => {
     const f = registryFixture();
+    for (const status of [401, 403, 429, 500]) {
+        await assert.rejects(
+            preparePublication(f.manifest, f.fetcher({ status })),
+            /Registry request failed/,
+        );
+    }
+    for (const data of [null, []]) {
+        await assert.rejects(
+            preparePublication(f.manifest, async () => ({
+                status: 200,
+                ok: true,
+                json: async () => data,
+            })),
+            /Invalid registry metadata/,
+        );
+    }
     await assert.rejects(
-        preparePublication(f.manifest, f.root, async () => {
+        preparePublication(f.manifest, async () => {
             throw new Error("Network unavailable");
         }),
         /Network unavailable/,
@@ -696,12 +737,15 @@ test("the manual Azure path never creates or downloads GitHub Releases", () => {
     assert.match(yaml, /name: publish[\s\S]*?default: false/);
     assert.match(yaml, /if eq\(parameters.publish, true\)/);
     assert.match(yaml, /productstate: \$\(npm_config_tag\)/);
+    assert.match(yaml, /cargo install wasm-pack --locked/);
+    assert.match(yaml, /plan.hasCrates/);
+    assert.match(yaml, /eq\(variables\['hasCrates'\], 'true'\)/);
     assert.match(yaml, /type: releaseJob/);
     assert.match(yaml, /eq\(dependencies.Deploy.result, 'Succeeded'\)/);
     assert.match(yaml, /verified.publicationVerified/);
     assert.match(yaml, /persistCredentials: false/);
     assert.doesNotMatch(
         yaml,
-        /DownloadGitHubRelease|gh release|create-github-releases|continueOnError|GH_TOKEN|schedules:/,
+        /DownloadGitHubRelease|gh release|create-github-releases|continueOnError|GH_TOKEN|schedules:|pending_npm|pending_crates/,
     );
 });

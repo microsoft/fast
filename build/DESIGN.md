@@ -40,8 +40,9 @@ credentials. Packing disables npm lifecycle scripts, selects exactly one npm
 workspace, and includes only its paired Rust archives. A versioned manifest
 records both source commits, the pipeline commit, archive identities, SHA-256
 checksums, and npm SHA-512 integrity. Verification checks actual archive
-manifests, rejects extra publication files and channel overrides, and checks
-the copied verification tools/configuration.
+manifests and rejects extra publication files and channel overrides. The
+verifier scripts travel with the governed Azure artifact; there is no separate
+self-checksum protocol for tooling or an artifact-local `.npmrc`.
 
 ## Governed artifact publication
 
@@ -52,10 +53,11 @@ is involved, and no npm/crates credentials are exposed to the source build.
 The job also compares the artifact's tags, source SHAs, and tooling commit with
 this run's parameters, planning outputs, and pipeline commit before submission.
 
-`scripts/hotfix-registry.mjs` compares expected hashes with registry metadata
-before preparing the pending npm/Rust folders. A 404 means an unpublished
-version; all other request errors stop publication. Matching versions are
-skipped to recover partial publication; mismatched bytes are never overwritten.
+`scripts/hotfix-registry.mjs` requires every selected npm/Rust version to be
+unused before publication. A 404 means an unpublished version; all other
+request errors stop publication. An existing version stops the job for manual
+investigation, even when its bytes match. ESRP consumes the original archive
+folders directly, without pending-asset copies or partial-publication recovery.
 
 The maintenance npm channel is always `hotfix-<major>.<minor>`. ESRP receives it
 explicitly through `productstate`, not an assumed local npm configuration.
@@ -64,17 +66,17 @@ branch-control, and exclusive-lock checks are part of activation and must
 serialize publishers sharing a channel; YAML cannot install those checks.
 
 ESRP failures remain failures. Post-publication verification waits for bounded
-registry propagation, compares every archive, requires an appropriate
-maintenance channel, and rejects a hotfix owning `latest`. Only a strictly
+registry propagation, compares every archive, requires the maintenance channel
+to identify this exact version, and rejects a hotfix owning `latest`. Only a strictly
 successful, verified deployment allows the marker job to run. That job checks
 both source tags again and creates `deployed/<hotfix-tag>` at the original
 source SHA, never at the marker job's checkout.
 
-Tags and registry writes cannot form one transaction. Recovery therefore uses
-the original immutable pipeline artifact and checksum-based registry
-reconciliation, not an assumption that a missing marker means nothing was
-published. A moved source tag, changed registry bytes, unavailable registry, or
-missing channel requires an explicit failure and investigation.
+Tags and registry writes cannot form one transaction. A partial publication,
+moved source tag, changed registry bytes, unavailable registry, or incorrect
+channel requires manual investigation. The pipeline does not skip existing
+versions, repair channels, or automatically resume partial publication. Retain
+the original immutable artifact as the reference for any approved recovery.
 
 ## Tests
 
@@ -82,5 +84,6 @@ The workspace's `test:node` script participates in the existing Lage Node test
 tasks. Tests use isolated temporary Git repositories and local bare remotes,
 real npm tarballs and offline Cargo archives, and mocked registry responses.
 They cover source/tag/version checks, artifact integrity, paired crates,
-publication recovery, default-off/manual/main-only publishing, completion
-provenance, and exclusion from both ordinary GitHub release paths.
+unused-version preflight, scoped registry URL encoding, default-off/manual/main-only
+publishing, completion provenance, and exclusion from both ordinary GitHub release
+paths.

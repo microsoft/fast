@@ -254,8 +254,9 @@ deployment discovery exclude versions reserved by `hotfix/` tags.
 
 See [the build-tools operator guide](build/README.md#version-specific-hotfixes)
 for parameters, paired Rust crates, activation/approval/lock requirements, and
-partial-publication recovery. No pipeline registration, settings changes, tag
-creation, or publication is performed merely by merging the pipeline YAML.
+manual handling of partial publication. No pipeline registration, settings
+changes, tag creation, or publication is performed merely by merging the pipeline
+YAML.
 
 ### Manual version bumps
 

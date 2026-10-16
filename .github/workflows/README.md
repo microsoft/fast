@@ -35,11 +35,13 @@ Release, or GitHub release asset API participates.
 
 Explicit publication requires a manual run of the definition from `main` and
 the configured protected publishing resources. A checkout-free production
-release job verifies artifact identities/checksums, reconciles partial
-publication against registry hashes, and submits missing archives through ESRP.
+release job verifies artifact identities/checksums, requires every selected
+version to be unused, and submits the original archive folders through ESRP.
 Its npm `productstate` is `hotfix-<major>.<minor>`, never `latest`; it refuses
 backward channel movement. A strictly successful registry verification gates
 the `deployed/<hotfix-tag>` marker, which points to the built source commit.
+Partial publication stops for manual investigation rather than automatic
+reconciliation or republishing.
 
 The YAML does not install its Azure variable group, authorize resources, or
 configure approvals/exclusive-lock checks. See

@@ -90,8 +90,10 @@ Publication is manual and `main`-only. Its npm channel is derived, not supplied:
 through its **`productstate` input**; `.npmrc` alone does not configure ESRP.
 An archived `publishConfig.tag` cannot override the maintenance channel, and
 `publishConfig.registry` must not redirect publication to another registry.
-The job rejects backward channel movement and refuses to mark a hotfix that
-unexpectedly becomes npm's `latest`.
+The job requires every selected version to be unused, rejects backward channel
+movement, and refuses to mark a hotfix that unexpectedly becomes npm's `latest`.
+Publication uses the original artifact folders directly; there is no automatic
+recovery of partially published npm/crate batches.
 
 Consumers pinned to the original version must update their dependency. A
 maintenance dist-tag does not constrain existing SemVer dependency ranges.
@@ -125,18 +127,20 @@ variable group, or publish anything.
 
 ### Recovery
 
-The release job compares registry checksums with the original artifact before
-submission. Existing identical versions are skipped; different bytes are an
-error. This allows a failed npm/Rust batch to resume without overwriting any
-published version. Retry the failed release job/stage of the **same run**, using
-its original retained artifact rather than rebuilding under a newer toolchain.
+If publication fails, retain the original artifact and inspect the ESRP result
+and every selected npm/crate version before taking further action. A missing
+deployment marker does not mean nothing was published. Preflight rejects any
+existing version, including identical bytes: do not rerun the release job to
+automatically resume a partial batch or rebuild archives for an existing version.
 
-After ESRP completes, the job waits for registry visibility and verifies every
-archive and the maintenance channel. Only then can the marker job push
-`deployed/<hotfix-tag>` at the built source SHA. If registry verification or the
+After ESRP completes, the job waits for registry visibility, verifies every
+archive, and requires the maintenance channel to identify this exact version.
+Only then can the marker job push `deployed/<hotfix-tag>` at the built source SHA.
+If registry verification or the
 marker push fails, retain the artifact and investigate; do not force tags,
-ignore checksum conflicts, or mark a release successful manually.
+ignore checksum conflicts, or mark an unverified release successful. A failed
+marker-only job can be retried after the original deployment was verified.
 
-If a matching npm version exists but its maintenance channel is missing/older,
-or the version has become `latest`, stop for an approved registry-channel
-repair. The pipeline does not silently republish or repair dist-tags.
+Partial publication or a missing/incorrect maintenance channel requires an
+approved manual recovery using the retained artifact and registry checksums.
+The pipeline does not silently skip versions, republish, or repair dist-tags.

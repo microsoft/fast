@@ -1,6 +1,4 @@
 import { strict as assert } from "node:assert";
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
-import { basename, join } from "node:path";
 import { setTimeout } from "node:timers/promises";
 import { compareReleaseVersions, parseReleaseVersion } from "./release-metadata.mjs";
 
@@ -13,31 +11,24 @@ async function registryJson(url, fetcher) {
     });
     if (response.status === 404) return null;
     assert(response.ok, `Registry request failed (${response.status}): ${url}`);
-    return response.json();
-}
-
-function npmUrl(name) {
-    return `https://registry.npmjs.org/${name.replace("/", "%2f")}`;
-}
-
-async function publishedArtifact(artifact, fetcher) {
-    const url =
-        artifact.kind === "npm"
-            ? `${npmUrl(artifact.name)}/${artifact.version}`
-            : `https://crates.io/api/v1/crates/${artifact.name}/${artifact.version}`;
-    const pkg = await registryJson(url, fetcher);
-    if (!pkg) return false;
-    const checksum =
-        artifact.kind === "npm" ? pkg.dist?.integrity : pkg.version?.checksum;
+    const data = await response.json();
     assert(
-        checksum === (artifact.kind === "npm" ? artifact.integrity : artifact.sha256),
-        `Published bytes differ for ${artifact.name}@${artifact.version}; refusing to overwrite.`,
+        data && typeof data === "object" && !Array.isArray(data),
+        `Invalid registry metadata: ${url}`,
     );
-    return true;
+    return data;
+}
+
+function artifactUrl(artifact) {
+    const registry =
+        artifact.kind === "npm"
+            ? "https://registry.npmjs.org"
+            : "https://crates.io/api/v1/crates";
+    return `${registry}/${encodeURIComponent(artifact.name)}/${artifact.version}`;
 }
 
 async function distTags(manifest, fetcher) {
-    const url = `https://registry.npmjs.org/-/package/${manifest.packageName.replace("/", "%2f")}/dist-tags`;
+    const url = `https://registry.npmjs.org/-/package/${encodeURIComponent(manifest.packageName)}/dist-tags`;
     const tags = await registryJson(url, fetcher);
     assert(tags && typeof tags === "object", "The base npm package must already exist.");
     assert(
@@ -56,44 +47,19 @@ async function distTags(manifest, fetcher) {
     return channel;
 }
 
-export async function preparePublication(manifest, root, fetcher = fetch) {
-    const npmRoot = join(root, "pending_npm");
-    const cratesRoot = join(root, "pending_crates");
-    assert(
-        !existsSync(npmRoot) && !existsSync(cratesRoot),
-        "Pending-publication directories must be new; retry the job with the original artifact.",
-    );
+export async function preparePublication(manifest, fetcher = fetch) {
     const channel = await distTags(manifest, fetcher);
-    const pending = [];
+    assert(
+        !channel || compareReleaseVersions(channel, manifest.version) <= 0,
+        "Refusing to move the maintenance channel backwards.",
+    );
     for (const artifact of manifest.artifacts) {
-        const published = await publishedArtifact(artifact, fetcher);
-        console.log(
-            `${artifact.name}@${artifact.version}: ${published ? "matching published bytes; skip" : "not published"}`,
+        assert(
+            (await registryJson(artifactUrl(artifact), fetcher)) === null,
+            `${artifact.name}@${artifact.version} is already published; stop for manual recovery.`,
         );
-        if (!published) pending.push(artifact);
-        if (artifact.kind === "npm") {
-            if (published) {
-                assert(
-                    channel && compareReleaseVersions(channel, manifest.version) >= 0,
-                    "Published hotfix bytes have no matching or newer maintenance channel.",
-                );
-            } else {
-                assert(
-                    !channel || compareReleaseVersions(channel, manifest.version) <= 0,
-                    "Refusing to move the maintenance channel backwards.",
-                );
-            }
-        }
     }
-    for (const artifact of pending) {
-        const directory = artifact.kind === "npm" ? npmRoot : cratesRoot;
-        mkdirSync(directory, { recursive: true });
-        copyFileSync(join(root, artifact.file), join(directory, basename(artifact.file)));
-    }
-    return {
-        npm: pending.some(artifact => artifact.kind === "npm"),
-        crates: pending.some(artifact => artifact.kind === "crate"),
-    };
+    console.log("Selected npm and crate versions are unused; publication may proceed.");
 }
 
 export async function verifyPublication(
@@ -103,14 +69,21 @@ export async function verifyPublication(
     for (let attempt = 1; attempt <= attempts; attempt++) {
         let complete = true;
         for (const artifact of manifest.artifacts) {
-            if (!(await publishedArtifact(artifact, fetcher))) complete = false;
+            const pkg = await registryJson(artifactUrl(artifact), fetcher);
+            if (!pkg) {
+                complete = false;
+                continue;
+            }
+            assert(
+                (artifact.kind === "npm"
+                    ? pkg.dist?.integrity
+                    : pkg.version?.checksum) ===
+                    (artifact.kind === "npm" ? artifact.integrity : artifact.sha256),
+                `Published bytes differ for ${artifact.name}@${artifact.version}.`,
+            );
         }
         const channel = await distTags(manifest, fetcher);
-        if (
-            complete &&
-            channel &&
-            compareReleaseVersions(channel, manifest.version) >= 0
-        ) {
+        if (complete && channel === manifest.version) {
             console.log(
                 "All hotfix registry bytes and the maintenance channel verified.",
             );
