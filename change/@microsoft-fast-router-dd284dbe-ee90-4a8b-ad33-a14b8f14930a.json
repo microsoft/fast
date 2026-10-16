@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Handle SVG links and ignore non-anchor href elements.",
+  "packageName": "@microsoft/fast-router",
+  "email": "lhi25wy@163.com",
+  "dependentChangeType": "none"
+}
