@@ -27,6 +27,8 @@
  * versions plus matching release tags. This keeps historical bare beachball tags
  * from being treated as deployable releases while still working on a
  * freshly-cloned 1ES agent with no `node_modules` or cargo registry.
+ * Versions with a matching `hotfix/${name}_v${version}` tag are excluded:
+ * their artifacts belong exclusively to the manual Azure hotfix pipeline.
  *
  * Most workspaces map to at most one crate by name convention.
  * `@microsoft/fast-build` intentionally maps to both `microsoft-fast-build`
@@ -35,8 +37,11 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import {
+    excludeHotfixWorkspaces,
+    listPairedCrates,
+    listPublishableWorkspaces,
+} from "./release-metadata.mjs";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 if (!CHECK_ONLY) {
@@ -63,101 +68,16 @@ function listGitTags() {
         .filter(Boolean);
 }
 
-function npmNameToCrateName(npmName) {
-    return npmName.replace(/^@/, "").replace(/\//g, "-");
-}
-
-const bundledCratesByPackage = new Map([
-    ["@microsoft/fast-build", ["microsoft-fast-build", "microsoft-fast-convert"]],
-]);
-
-function npmNameToCrateNames(npmName) {
-    return bundledCratesByPackage.get(npmName) ?? [npmNameToCrateName(npmName)];
-}
-
 function shouldSkipCrates() {
     return process.env.FAST_RELEASE_SKIP_CRATES === "true";
 }
 
 function npmNameToOutputPrefix(npmName) {
-    return npmNameToCrateName(npmName)
+    return npmName
+        .replace(/^@/, "")
+        .replace(/\//g, "-")
         .replace(/^microsoft-/, "")
         .replace(/-([a-z0-9])/g, (_, char) => char.toUpperCase());
-}
-
-function readCargoTomlVersion(cargoTomlPath) {
-    const content = readFileSync(cargoTomlPath, "utf8");
-    let inPackage = false;
-    for (const rawLine of content.split("\n")) {
-        const line = rawLine.trim();
-        if (line.startsWith("[")) {
-            inPackage = line === "[package]";
-            continue;
-        }
-        if (!inPackage) continue;
-        const m = /^version\s*=\s*"([^"]+)"/.exec(line);
-        if (m) return m[1];
-    }
-    return null;
-}
-
-function validatePairedCrates(pkgName, pkgVersion) {
-    if (shouldSkipCrates()) return;
-
-    for (const crateName of npmNameToCrateNames(pkgName)) {
-        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        if (!existsSync(cargoTomlPath)) continue;
-
-        const crateVersion = readCargoTomlVersion(cargoTomlPath);
-        if (crateVersion !== pkgVersion) {
-            throw new Error(
-                `Version mismatch for ${pkgName}: package.json is ${pkgVersion} ` +
-                    `but ${cargoTomlPath} is ${crateVersion}. ` +
-                    "Update one to match the other.",
-            );
-        }
-    }
-}
-
-function listPublishableWorkspaces() {
-    const rootPkg = JSON.parse(readFileSync("package.json", "utf8"));
-    const patterns = rootPkg.workspaces || [];
-    const locations = new Set();
-
-    for (const pattern of patterns) {
-        if (pattern.endsWith("/*")) {
-            const parent = pattern.slice(0, -2);
-            if (!existsSync(parent)) continue;
-            for (const entry of readdirSync(parent, { withFileTypes: true })) {
-                if (entry.isDirectory()) {
-                    locations.add(join(parent, entry.name));
-                }
-            }
-        } else {
-            locations.add(pattern);
-        }
-    }
-
-    const workspaces = [];
-    for (const location of locations) {
-        const pkgPath = join(location, "package.json");
-        if (!existsSync(pkgPath)) continue;
-        const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-        if (pkg.private === true) continue;
-        if (!pkg.name || !pkg.version) continue;
-
-        validatePairedCrates(pkg.name, pkg.version);
-
-        workspaces.push({
-            location,
-            name: pkg.name,
-            version: pkg.version,
-            tag: `${pkg.name}_v${pkg.version}`,
-            outputPrefix: npmNameToOutputPrefix(pkg.name),
-        });
-    }
-
-    return workspaces;
 }
 
 function setAzureOutput(name, value) {
@@ -170,7 +90,16 @@ const tagSet = new Set(allTags);
 const deployed = new Set(
     allTags.filter(t => t.startsWith("deployed/")).map(t => t.slice("deployed/".length)),
 );
-const publishable = listPublishableWorkspaces();
+const publishable = excludeHotfixWorkspaces(listPublishableWorkspaces()).map(
+    workspace => {
+        listPairedCrates(workspace.name, workspace.version);
+        return {
+            ...workspace,
+            tag: `${workspace.name}_v${workspace.version}`,
+            outputPrefix: npmNameToOutputPrefix(workspace.name),
+        };
+    },
+);
 if (shouldSkipCrates()) {
     console.log("Paired Rust crate assets are skipped for this deployment check.");
 }

@@ -13,7 +13,7 @@ All CI workflows that run against pull requests are configured to skip draft PRs
 
 ## Continuous Deployment
 
-Nightly publishing is coordinated across GitHub Actions and Azure Pipelines so that npm credentials never leave the Azure environment. GitHub Releases are the source of truth, and `deployed/<tag>` git marker tags track which releases have already been published.
+Ordinary nightly publishing is coordinated across GitHub Actions and Azure Pipelines so that npm credentials never leave the Azure environment. GitHub Releases are the source of truth for ordinary releases, and `deployed/<tag>` git marker tags track which releases have already been published. Version-specific hotfixes are a separate Azure-only path and **never create or download GitHub Releases**.
 
 - **`cd-github-releases.yml`** (GitHub Actions) runs nightly via cron (`0 8 * * *` UTC, ~12am PST) and on `workflow_dispatch`. It does **not** bump versions or push source changes to `main` — version bumps land on `main` through ordinary human-authored pull requests (for example, by running `npm run bump` locally and opening a PR). The cron is scheduled ~1 hour before the Azure CD pipeline (09:00 UTC) so any GitHub releases this job creates are picked up by that same night's publish run. The workflow has two jobs:
   1. **`detect`** — checks out `main` with `fetch-depth: 0` and runs [`build/scripts/create-github-releases.mjs --check-only`](../../build/scripts/create-github-releases.mjs). The script walks the workspaces tree (no `npm ci` required), computes `${name}_v${version}` for every non-private workspace, and emits `hasMissingReleases=true` if any of those git tags do not yet exist.
@@ -22,7 +22,41 @@ Nightly publishing is coordinated across GitHub Actions and Azure Pipelines so t
   1. **`Check`** — runs [`build/scripts/download-github-releases.mjs --check-only`](../../build/scripts/download-github-releases.mjs). The script walks the current publishable workspaces, keeps only workspaces whose current `${name}_v${version}` release tag exists, filters out tags that already have a `deployed/<tag>` counterpart, and emits Azure Pipelines output variables for the overall deployment decision, npm dist-tag, and each package-specific release tag. No network calls to GitHub, npm, or crates.io are needed.
   2. **`Package`** — depends on `Check` and runs only when `needsDeployment == 'true'`. Its `PrepareReleaseInputs` job downloads undeployed release assets through the `fast` GitHub service connection, sorts them into `publish_artifacts_npm/` (`.tgz`) and `publish_artifacts_crates/` (`.crate`), configures the detected npm dist-tag, and publishes those files as a governed pipeline artifact. The checkout-free `Deploy` release job consumes that artifact through `templateContext.inputs`, then `FAST.Release.PipelineTemplate.yml@fastPipelines` performs the actual `npm publish` / `cargo publish`. After publishing succeeds, the ordinary `MarkDeployed` job checks out the repository and pushes a `deployed/<tag>` marker for each release. The next nightly run sees those markers and skips the corresponding releases.
 
-Both scripts are thin Node.js wrappers around existing CLI tools and repository metadata — no extra npm dependencies and no custom GitHub API client. Idempotency is enforced entirely through git tags (`${name}_v${version}` on the GitHub side, `deployed/${name}_v${version}` on the Azure side), so neither side needs to talk to npm.org or crates.io to decide whether work is required.
+Both scripts are thin Node.js wrappers around existing CLI tools and repository metadata — no extra npm dependencies and no custom GitHub API client. Ordinary release discovery uses git tags (`${name}_v${version}` on the GitHub side, `deployed/${name}_v${version}` on the Azure side), so neither side needs to talk to npm.org or crates.io to decide whether work is required. Both scripts exclude package versions with matching `hotfix/${name}_v${version}` tags, including when backlevel metadata or an ordinary tag is accidentally added.
+
+### Version-specific hotfixes
+
+[`azure-pipelines-hotfix.yml`](../../azure-pipelines-hotfix.yml) is manually
+queued using central tooling from `main` and always includes publication for a
+new valid hotfix, subject to configured approvals. Start a maintenance branch
+from the exact published baseline tag, make/review the fix and version changes,
+and push the branch to `origin`. The required `hotfixBranch` input targets that
+pushed branch, **never `main`**. Its head must match the reviewed
+`hotfix/<package>_v<version>` source tag when planning begins.
+The run pins that commit, builds/tests the historical
+workspace, and transfers only that package's tarball and paired crates through
+the official Azure pipeline artifact mechanism. No GitHub workflow, GitHub
+Release, or GitHub release asset API participates.
+
+Publication requires a manual run of the definition from `main` and
+the configured protected publishing resources; this is a tooling restriction,
+not a choice of package source. No pipeline infrastructure is copied into the
+maintenance branch. Later branch movement does not change a planned run.
+A checkout-free production
+release job verifies artifact identities/checksums, requires every selected
+version to be unused, and submits the original archive folders through ESRP.
+Its npm `productstate` is `hotfix-<major>.<minor>`, never `latest`; it refuses
+backward channel movement. A strictly successful registry verification gates
+the `deployed/<hotfix-tag>` marker, which points to the built source commit.
+Partial publication stops for manual investigation rather than automatic
+reconciliation or republishing.
+
+The YAML does not install its Azure variable group, authorize resources, or
+configure approvals/exclusive-lock checks. See
+[the operator guide](../../build/README.md#activation-and-permissions) before
+enabling publication, and [the design](../../build/DESIGN.md) for provenance,
+GitHub exclusion, and recovery invariants. Tests participate in the build-tools
+workspace's `test:node` target.
 
 ### Adding a publishable package
 
