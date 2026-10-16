@@ -55,6 +55,18 @@ choosing a version. The base must have a matching `deployed/<base-tag>` marker.
 A subsequent hotfix can instead use a previously deployed `hotfix/` tag as its
 base. Never move an existing tag.
 
+To publish code from a particular branch, create the hotfix tag at that branch's
+reviewed commit, including its version bump. For example, replace
+`REVIEWED_COMMIT_SHA` with the approved commit from `releases/fast-element-3.0`:
+
+```bash
+git tag "hotfix/@microsoft/fast-element_v3.0.5" REVIEWED_COMMIT_SHA
+git push origin "refs/tags/hotfix/@microsoft/fast-element_v3.0.5"
+```
+
+The source branch does not need to be merged into `main`. The tag pins its exact
+commit; later commits on the branch do not change what the pipeline builds.
+
 Do not create the ordinary `@microsoft/fast-element_v3.0.5` tag or a GitHub
 Release. Do not merge the maintenance branch's version metadata into `main`.
 Forward-port code fixes separately when they are not already on `main`.
@@ -70,7 +82,10 @@ Select the pipeline definition from `main`, then supply:
 | --- | --- | --- |
 | `baseTag` | `@microsoft/fast-element_v3.0.4` | Exact published baseline |
 | `hotfixTag` | `hotfix/@microsoft/fast-element_v3.0.5` | Reviewed source and new version |
-| `publish` | `false` | Build/test/pack only; publication requires explicit `true` |
+
+Every new, valid, approved run publishes; there is no build-only switch.
+Azure's branch selector chooses the pipeline definition and tooling, so keep it
+on `main`. The `hotfixTag` parameter selects the package source independently.
 
 The build resolves both tags to commits and verifies their ancestry and package
 manifests. It installs the historical snapshot's dependencies using `npm ci`,
@@ -120,7 +135,9 @@ Before enabling real publication, a human administrator must:
    credentials or registry credentials.
 5. Confirm the governed release job can read public npm and crates.io metadata.
    A timeout, authentication error, or unavailable registry fails closed.
-   Run with `publish: false` before approving the first publication.
+   Validate the YAML with Azure's preview API and review the built artifact
+   before approving the first publication. Queuing a run requests publication,
+   not a dry run.
 
 Adding this YAML does not register a pipeline, change permissions, create a
 variable group, or publish anything.

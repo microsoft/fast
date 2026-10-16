@@ -16,6 +16,9 @@ package.
 
 Hotfix source tags use `hotfix/<package>_v<version>` and must never be moved.
 They are not ordinary release tags and must never have GitHub Releases.
+Create the tag at the maintenance branch's reviewed commit. Queue the Azure
+pipeline definition from `main`; the tag, not Azure's branch selector, selects
+the source to build. Later branch commits do not change the tagged source.
 Publish only through the manual Azure hotfix pipeline described in
 [build/README.md](build/README.md#version-specific-hotfixes). Forward-port code
 fixes independently; do not merge backlevel package versions into `main`.

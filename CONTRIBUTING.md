@@ -245,9 +245,9 @@ version must be unused, newer than the baseline, and on the same major/minor
 line. Do not move an existing tag or merge backlevel version metadata into
 `main`.
 
-The pipeline defaults to build/test/pack only (`publish: false`). Explicit
-publication from `main` passes the resulting Azure pipeline artifact directly
-to a governed ESRP release job, uses `hotfix-<major>.<minor>` rather than npm
+Every new, valid, approved manual run from `main` builds, tests, and publishes;
+there is no build-only switch. The resulting Azure pipeline artifact passes
+directly to a governed ESRP release job, uses `hotfix-<major>.<minor>` rather than npm
 `latest`, and creates `deployed/<hotfix-tag>` only after verifying all registry
 bytes and the maintenance channel. Ordinary GitHub release creation and
 deployment discovery exclude versions reserved by `hotfix/` tags.

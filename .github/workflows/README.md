@@ -27,13 +27,14 @@ Both scripts are thin Node.js wrappers around existing CLI tools and repository 
 ### Version-specific hotfixes
 
 [`azure-pipelines-hotfix.yml`](../../azure-pipelines-hotfix.yml) is manually
-queued and defaults to `publish: false`. It uses a published baseline tag and
+queued from `main` and always includes publication for a new valid hotfix,
+subject to configured approvals. It uses a published baseline tag and
 a reviewed `hotfix/<package>_v<version>` source tag, builds/tests the historical
 workspace, and transfers only that package's tarball and paired crates through
 the official Azure pipeline artifact mechanism. No GitHub workflow, GitHub
 Release, or GitHub release asset API participates.
 
-Explicit publication requires a manual run of the definition from `main` and
+Publication requires a manual run of the definition from `main` and
 the configured protected publishing resources. A checkout-free production
 release job verifies artifact identities/checksums, requires every selected
 version to be unused, and submits the original archive folders through ESRP.

@@ -353,12 +353,10 @@ async function main() {
     if (action === "plan" || action === "mark-deployed") {
         if (process.env.TF_BUILD) {
             assert(process.env.BUILD_REASON === "Manual", "Hotfix runs must be manual.");
-            if (process.env.FAST_HOTFIX_PUBLISH === "true") {
-                assert(
-                    process.env.BUILD_SOURCEBRANCH === "refs/heads/main",
-                    "Publishing must use the pipeline definition from main.",
-                );
-            }
+            assert(
+                process.env.BUILD_SOURCEBRANCH === "refs/heads/main",
+                "Publishing must use the pipeline definition from main.",
+            );
         }
         const plan = planHotfix({
             root,
@@ -366,7 +364,10 @@ async function main() {
             hotfixTag: process.env.FAST_HOTFIX_TAG,
         });
         if (action === "mark-deployed") {
-            assert(process.env.FAST_HOTFIX_PUBLISH === "true");
+            assert(
+                process.env.TF_BUILD,
+                "Deployment markers must be written by the manual Azure pipeline.",
+            );
             assert(
                 plan.sourceSha === process.env.FAST_HOTFIX_SOURCE_SHA &&
                     plan.baseSha === process.env.FAST_HOTFIX_BASE_SHA,

@@ -432,7 +432,6 @@ test("publishing is blocked outside manual main runs before materializing source
     ]) {
         const result = runScript(f.root, "hotfix-release.mjs", ["plan"], {
             TF_BUILD: "true",
-            FAST_HOTFIX_PUBLISH: "true",
             ...env,
         });
         assert.notEqual(result.status, 0);
@@ -447,7 +446,7 @@ test("an already-deployed hotfix skips source materialization and publication", 
     const result = runScript(f.root, "hotfix-release.mjs", ["plan"], {
         TF_BUILD: "true",
         BUILD_REASON: "Manual",
-        FAST_HOTFIX_PUBLISH: "false",
+        BUILD_SOURCEBRANCH: "refs/heads/main",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
         FAST_HOTFIX_PLAN: join(f.root, "plan.json"),
@@ -457,14 +456,21 @@ test("an already-deployed hotfix skips source materialization and publication", 
     assert.match(result.stdout, /skipping build and publication/);
 });
 
-test("a dry run materializes the exact tagged source without changing the pipeline checkout", () => {
+test("the hotfix tag selects a reviewed branch commit without changing the main checkout", () => {
     const f = fixture();
+    writeFileSync(
+        join(f.root, "packages/fast-element/index.js"),
+        "export const value = 'later';\n",
+    );
+    git(f.root, "add", ".");
+    git(f.root, "commit", "--quiet", "-m", "Later untagged branch work");
+    assert.notEqual(git(f.root, "rev-parse", "HEAD"), f.sourceSha);
     git(f.root, "checkout", "--quiet", "main");
     const sourceRoot = join(f.root, "hotfix-source");
     const result = runScript(f.root, "hotfix-release.mjs", ["plan"], {
         TF_BUILD: "true",
         BUILD_REASON: "Manual",
-        FAST_HOTFIX_PUBLISH: "false",
+        BUILD_SOURCEBRANCH: "refs/heads/main",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
         FAST_HOTFIX_PLAN: join(f.root, "plan.json"),
@@ -491,12 +497,18 @@ test("deployment markers point to the built source, not the main checkout", () =
         TF_BUILD: "true",
         BUILD_REASON: "Manual",
         BUILD_SOURCEBRANCH: "refs/heads/main",
-        FAST_HOTFIX_PUBLISH: "true",
         FAST_HOTFIX_BASE_TAG: f.baseTag,
         FAST_HOTFIX_TAG: f.hotfixTag,
         FAST_HOTFIX_SOURCE_SHA: f.sourceSha,
         FAST_HOTFIX_BASE_SHA: f.baseSha,
     };
+    const local = runScript(f.root, "hotfix-release.mjs", ["mark-deployed"], {
+        ...env,
+        TF_BUILD: "",
+    });
+    assert.notEqual(local.status, 0);
+    assert.match(local.stderr, /manual Azure pipeline/);
+    assert.equal(gitTagExists(`deployed/${f.hotfixTag}`, f.root), false);
     const rejected = runScript(f.root, "hotfix-release.mjs", ["mark-deployed"], {
         ...env,
         FAST_HOTFIX_SOURCE_SHA: f.baseSha,
@@ -728,14 +740,14 @@ test("verification waits for visibility but never marks an unverified publicatio
     });
 });
 
-test("the manual Azure path never creates or downloads GitHub Releases", () => {
+test("the manual Azure path always includes publication without GitHub Releases", () => {
     const yaml = readFileSync(
         resolve(scripts, "../../azure-pipelines-hotfix.yml"),
         "utf8",
     );
     assert.match(yaml, /^trigger: none\npr: none\n/);
-    assert.match(yaml, /name: publish[\s\S]*?default: false/);
-    assert.match(yaml, /if eq\(parameters.publish, true\)/);
+    assert.match(yaml, /^ {4}- stage: PublishHotfix$/m);
+    assert.doesNotMatch(yaml, /name: publish\b|parameters\.publish|FAST_HOTFIX_PUBLISH/);
     assert.match(yaml, /productstate: \$\(npm_config_tag\)/);
     assert.match(yaml, /cargo install wasm-pack --locked/);
     assert.match(yaml, /plan.hasCrates/);
