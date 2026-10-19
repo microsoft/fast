@@ -151,6 +151,11 @@ controller when styles need to change.
 
 ## Declarative HTML
 
+Bindings and FAST directive markup inside HTML comments are unsupported in
+declarative templates. Commenting out bound markup does not reliably disable its
+bindings; remove unused markup instead. See the
+[template syntax restrictions](./docs/declarative/syntax.md#html-comments).
+
 FAST Element publishes its declarative HTML runtime from
 `@microsoft/fast-element/declarative.js`. This entrypoint exports the
 functional APIs for declarative templates: `declarativeTemplate()`,

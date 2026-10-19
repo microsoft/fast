@@ -374,6 +374,11 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 
 ### Directives
 
+Bindings and FAST directive markup inside HTML comments are unsupported. The
+string-based parsers do not reliably exclude comment contents, so commenting out
+bound markup can still affect binding discovery and hydration. See the
+[HTML comment restrictions](./syntax.md#html-comments).
+
 | Directive | Example |
 |---|---|
 | `<f-when value="{{expr}}">` | Conditional rendering |

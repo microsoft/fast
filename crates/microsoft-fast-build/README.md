@@ -143,6 +143,12 @@ for intentional changes from earlier output.
 
 ## Template Syntax
 
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
+
 ### Content Bindings
 
 | Syntax | Description |
