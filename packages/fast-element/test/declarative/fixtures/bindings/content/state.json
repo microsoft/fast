@@ -1,4 +1,5 @@
 {
     "text": "Hello world",
+    "ignored": "DO NOT INTERPOLATE",
     "html": "<p>Hello world</p>"
 }

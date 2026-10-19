@@ -46,6 +46,11 @@ Declarative templates use a handlebars-like syntax for data binding. There are t
 
 Server-evaluated bindings (`{{}}` and `{{{}}}`) are resolved during server-side rendering and hydrated on the client. Client-only bindings (`{}`) are ignored by the server and activated when the component connects in the browser.
 
+HTML comments are literal: binding expressions and directive markup inside them
+are not evaluated and do not create binding metadata or client behaviors.
+For example, `<!-- {{ignored}} -->` stays unchanged during server rendering and
+client hydration, while bindings outside the comment continue to update normally.
+
 ## Content Bindings
 
 Use double curly braces to bind text content:

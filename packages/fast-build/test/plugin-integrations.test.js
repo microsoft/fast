@@ -8,6 +8,72 @@ const path = require("node:path");
 const { execFileSync, spawnSync } = require("node:child_process");
 const typescript = require("typescript");
 
+const commentTemplate =
+    '<f-template name="example-card"><template><p>{{before}}</p><!-- {{ignored}} --><p>{{value}}</p></template></f-template>';
+
+test("HTML comments do not contribute parsed binding metadata", () => {
+    const [metadata] = JSON.parse(wasm.parse_f_templates(commentTemplate));
+    assert.deepEqual(
+        metadata.bindings.map(({ name, kind, paths }) => ({ name, kind, paths })),
+        [
+            { name: "before", kind: "content", paths: ["before"] },
+            { name: "value", kind: "content", paths: ["value"] },
+        ],
+    );
+    assert.ok(metadata.content.includes("<!-- {{ignored}} -->"));
+});
+
+for (const markersV2 of [false, true]) {
+    test(`HTML comments remain literal beside rendered bindings (markersV2=${markersV2})`, () => {
+        const [metadata] = JSON.parse(wasm.parse_f_templates(commentTemplate));
+        const state = JSON.stringify({
+            before: "Before comment",
+            ignored: "DO NOT INTERPOLATE",
+            value: "After comment",
+        });
+        const baseline = wasm.render_entry_with_templates(
+            "<example-card></example-card>",
+            JSON.stringify({
+                "example-card": "<p>{{before}}</p><p>{{value}}</p>",
+            }),
+            state,
+            undefined,
+            false,
+            markersV2,
+        );
+        const expected = baseline.replace("</p><p>", "</p><!-- {{ignored}} --><p>");
+        for (const stream of [false, true]) {
+            const output = wasm.render_entry_with_templates(
+                "<example-card></example-card>",
+                JSON.stringify({ "example-card": metadata }),
+                state,
+                undefined,
+                stream,
+                markersV2,
+            );
+            const rendered = stream ? JSON.parse(output).join("") : output;
+            assert.equal(rendered, expected);
+            assert.ok(rendered.includes("Before comment"));
+            assert.ok(rendered.includes("After comment"));
+            assert.ok(!rendered.includes("DO NOT INTERPOLATE"));
+        }
+    });
+}
+
+test("HTML comments stay literal in conversion while adjacent bindings are converted", () => {
+    const result = convert.convert_template_with_options(commentTemplate, "fast-v3-ts");
+    try {
+        assert.ok(
+            result.output.includes(
+                "<p>${x => x.before}</p><!-- {{ignored}} --><p>${x => x.value}</p>",
+            ),
+        );
+        assert.ok(!result.output.includes("x.ignored"));
+    } finally {
+        result.free();
+    }
+});
+
 test("null attributes are omitted, empty strings retained, and HTML booleans use presence", () => {
     assert.equal(
         wasm.render(

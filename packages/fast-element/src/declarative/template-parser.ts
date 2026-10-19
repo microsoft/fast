@@ -6,6 +6,7 @@ import { repeat } from "../templating/repeat.js";
 import { slotted } from "../templating/slotted.js";
 import { ViewTemplate } from "../templating/template.js";
 import { when } from "../templating/when.js";
+import { createBehaviorScanner } from "./behavior-scanner.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
 import {
     type AttributeDirective,
@@ -16,7 +17,6 @@ import {
     type DataBindingBehaviorConfig,
     getBooleanBinding,
     getExpressionChain,
-    getNextBehavior,
     getRootPropertyName,
     parseEventArgs,
     type TemplateDirectiveBehaviorConfig,
@@ -43,6 +43,7 @@ interface TemplateResolutionContext {
     parentContext: string | null;
     level: number;
     schema: Schema;
+    scan: ReturnType<typeof createBehaviorScanner>;
 }
 
 interface NodeDirectiveOptions {
@@ -96,6 +97,7 @@ export class TemplateParser {
             parentContext: null,
             level: 0,
             schema,
+            scan: createBehaviorScanner(innerHTML),
         });
     }
 
@@ -117,15 +119,24 @@ export class TemplateParser {
      * @param rootPropertyName - The root property name for schema registration.
      * @param innerHTML - The innerHTML.
      * @param context - The template resolution context.
+     * @param offset - The start of this slice in the scanner's original source.
      */
     private resolveStringsAndValues(
         rootPropertyName: string | null,
         innerHTML: string,
         context: TemplateResolutionContext,
+        offset = 0,
     ): ResolvedStringsAndValues {
         const strings = new StringsAccumulator();
         const values: any[] = [];
-        this.resolveInnerHTML(rootPropertyName, innerHTML, strings, values, context);
+        this.resolveInnerHTML(
+            rootPropertyName,
+            innerHTML,
+            strings,
+            values,
+            context,
+            offset,
+        );
 
         (strings.segments as any).raw = strings.segments.map(value =>
             String.raw({ raw: value }),
@@ -151,6 +162,7 @@ export class TemplateParser {
         externalValues: Array<any>,
         innerHTML: string,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
         switch (behaviorConfig.name) {
             case "when": {
@@ -171,6 +183,7 @@ export class TemplateParser {
                         behaviorConfig.closingTagStartIndex,
                     ),
                     context,
+                    offset + behaviorConfig.openingTagEndIndex,
                 );
 
                 externalValues.push(
@@ -204,6 +217,7 @@ export class TemplateParser {
                     parentContext: valueAttr[0],
                     level: updatedLevel,
                     schema: context.schema,
+                    scan: context.scan,
                 };
 
                 const { strings, values } = this.resolveStringsAndValues(
@@ -213,6 +227,7 @@ export class TemplateParser {
                         behaviorConfig.closingTagStartIndex,
                     ),
                     repeatContext,
+                    offset + behaviorConfig.openingTagEndIndex,
                 );
 
                 externalValues.push(
@@ -399,6 +414,7 @@ export class TemplateParser {
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
         strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
         const propName = innerHTML.slice(
@@ -419,6 +435,7 @@ export class TemplateParser {
             strings,
             values,
             context,
+            offset + behaviorConfig.closingEndIndex,
         );
     }
 
@@ -433,6 +450,7 @@ export class TemplateParser {
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
         strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
         let attributeBinding;
@@ -505,6 +523,7 @@ export class TemplateParser {
             strings,
             values,
             context,
+            offset + behaviorConfig.closingEndIndex,
         );
     }
 
@@ -518,6 +537,7 @@ export class TemplateParser {
         values: Array<any>,
         behaviorConfig: AttributeDirectiveBindingBehaviorConfig,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
         strings.push(
             innerHTML.slice(
@@ -536,6 +556,7 @@ export class TemplateParser {
             strings,
             values,
             context,
+            offset + behaviorConfig.closingEndIndex + 1,
         );
     }
 
@@ -550,6 +571,7 @@ export class TemplateParser {
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
         switch (behaviorConfig.subtype) {
             case "content":
@@ -560,6 +582,7 @@ export class TemplateParser {
                     values,
                     behaviorConfig,
                     context,
+                    offset,
                 );
                 break;
             case "attribute":
@@ -570,6 +593,7 @@ export class TemplateParser {
                     values,
                     behaviorConfig,
                     context,
+                    offset,
                 );
                 break;
             case "attributeDirective":
@@ -580,6 +604,7 @@ export class TemplateParser {
                     values,
                     behaviorConfig,
                     context,
+                    offset,
                 );
                 break;
         }
@@ -593,6 +618,7 @@ export class TemplateParser {
      * @param strings - Accumulator for literal HTML segments and running previous-string.
      * @param values - The values array (accumulates binding functions and directives).
      * @param context - The template resolution context.
+     * @param offset - The start of this slice in the scanner's original source.
      */
     private resolveInnerHTML(
         rootPropertyName: string | null,
@@ -600,8 +626,9 @@ export class TemplateParser {
         strings: StringsAccumulator,
         values: Array<any>,
         context: TemplateResolutionContext,
+        offset: number,
     ): void {
-        const behaviorConfig = getNextBehavior(innerHTML);
+        const behaviorConfig = context.scan(offset, offset + innerHTML.length);
 
         if (behaviorConfig === null) {
             strings.push(innerHTML);
@@ -615,6 +642,7 @@ export class TemplateParser {
                         values,
                         behaviorConfig,
                         context,
+                        offset,
                     );
 
                     break;
@@ -627,6 +655,7 @@ export class TemplateParser {
                         values,
                         innerHTML,
                         context,
+                        offset,
                     );
 
                     this.resolveInnerHTML(
@@ -638,6 +667,7 @@ export class TemplateParser {
                         strings,
                         values,
                         context,
+                        offset + behaviorConfig.closingTagEndIndex,
                     );
 
                     break;

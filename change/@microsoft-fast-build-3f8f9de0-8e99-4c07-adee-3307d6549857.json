@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Preserve HTML comments literally during rendering and exclude their contents from binding metadata.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

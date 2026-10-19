@@ -534,7 +534,13 @@ the imperative `html` API:
   publisher supplies the definition template and later duplicates do not
   reassign it.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
-  shape used by `ViewTemplate.create()`.
+  shape used by `ViewTemplate.create()`. HTML comments remain literal strings:
+  binding-like text and directive markup inside them do not create behavior
+  factories or schema entries. This keeps client binding slots aligned with
+  server-rendered hydration markers. Comment discovery runs once per parse and
+  is shared across binding and nested-directive scans. The HTML transformation
+  pass likewise discovers comments once and assembles replacements from immutable
+  source rather than rebuilding and rescanning the template for each binding.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
   exported from `@microsoft/fast-element/attribute-map.js` and
   `@microsoft/fast-element/observer-map.js`. With `declarativeTemplate()` they

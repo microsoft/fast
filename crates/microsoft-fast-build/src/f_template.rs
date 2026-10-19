@@ -108,7 +108,7 @@ fn require_single_tag(
             break;
         }
         starts.push(start);
-        pos = start + 1;
+        pos = find_tag_end(html, start).unwrap_or(html.len());
     }
 
     match starts.len() {
