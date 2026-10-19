@@ -197,7 +197,10 @@ shape. Binding records expose `name` (null for compound expressions),
 `optional` is null because required state declarations are not inferable.
 `$index` paths refer to the active repeat frame, not a root state key.
 Client expressions are described lexically, not fully JavaScript-type-checked.
-Code samples are excluded; metadata is not full syntax or state validation.
+Code samples and HTML comment contents are excluded; metadata is not full syntax
+or state validation. Rendering preserves HTML comments literally, including
+binding-like text and FAST directive markup, without evaluating expressions or
+inserting hydration markers inside them.
 Generated WASM declarations expose these JSON interfaces.
 
 Render exports reject unsupported/malformed explicit versions before rendering.

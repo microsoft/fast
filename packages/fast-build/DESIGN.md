@@ -143,6 +143,9 @@ definition has `formatVersion: 1`; renderer entry points reject explicit
 incompatible versions while accepting legacy unversioned definitions.
 `bindings` describe syntax/lexical scopes with explicit unknown state types
 and optionality, not an inferred application schema.
+HTML comments are literal regions: their contents do not contribute bindings,
+and rendering preserves them without expression evaluation or hydration markers.
+Comment boundaries are handled in Rust, not reparsed in the JavaScript layer.
 
 Plugins can call the exported `render_shadow_root` directly for a complete DSD
 fragment using resolved component state, without creating a throwaway host or

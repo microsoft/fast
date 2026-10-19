@@ -13,8 +13,42 @@ pub(crate) fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
     found
 }
 
+/// Skip an HTML comment at `from`, treating an unclosed comment as literal to EOF.
+pub(crate) fn comment_end(template: &str, from: usize) -> Option<usize> {
+    template[from..].starts_with("<!--").then(|| {
+        template[from + 4..]
+            .find("-->")
+            .map_or(template.len(), |end| from + 4 + end + 3)
+    })
+}
+
+/// Recognize opening/closing tag starts, not literal less-than text.
+pub(crate) fn is_html_tag_start(template: &str, at: usize) -> bool {
+    let bytes = template.as_bytes();
+    if bytes.get(at) != Some(&b'<') {
+        return false;
+    }
+    let name_start = at + if bytes.get(at + 1) == Some(&b'/') { 2 } else { 1 };
+    bytes.get(name_start).is_some_and(u8::is_ascii_alphabetic)
+}
+
+/// Find the next real tag boundary, ignoring comments and literal less-than text.
+pub(crate) fn find_next_tag(template: &str, from: usize) -> Option<usize> {
+    let mut pos = from;
+    while let Some(rel) = template[pos..].find('<') {
+        let at = pos + rel;
+        match comment_end(template, at) {
+            Some(end) => pos = end,
+            None if is_html_tag_start(template, at) => return Some(at),
+            None => pos = at + 1,
+        }
+    }
+    None
+}
+
 /// Find a directive tag (e.g. `<f-when`, `<f-repeat`), ensuring the character
 /// immediately after the tag name is whitespace or `>` to avoid false matches.
+#[cfg(test)]
 pub(crate) fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
     let mut pos = from;
     while let Some(idx) = find_str(template, tag, pos) {
@@ -123,25 +157,23 @@ pub(crate) fn extract_directive_content(
 
     let mut depth = 1usize;
     let mut pos = tag_end;
-    loop {
-        let next_open = find_directive(template, &open_tag, pos);
-        let next_close = find_str(template, &close_tag, pos);
-
-        match (next_open, next_close) {
-            (_, None) => return None,
-            (Some(o), Some(c)) if o < c => {
-                depth += 1;
-                pos = o + open_tag.len();
+    while let Some(at) = find_next_tag(template, pos) {
+        if template[at..].starts_with(&close_tag) {
+            depth -= 1;
+            if depth == 0 {
+                return Some((template[tag_end..at].to_string(), at + close_tag.len()));
             }
-            (_, Some(c)) => {
-                depth -= 1;
-                if depth == 0 {
-                    return Some((template[tag_end..c].to_string(), c + close_tag.len()));
-                }
-                pos = c + close_tag.len();
-            }
+        } else if template[at..].starts_with(&open_tag)
+            && matches!(
+                template.as_bytes().get(at + open_tag.len()),
+                Some(b' ' | b'>' | b'\n' | b'\t' | b'\r'),
+            )
+        {
+            depth += 1;
         }
+        pos = find_tag_end(template, at).unwrap_or(template.len());
     }
+    None
 }
 
 /// Read the tag name from a `<` position. Returns None for closing tags (`</...>`).
@@ -486,6 +518,14 @@ pub(crate) fn find_next_plain_html_tag(
     while i < before {
         let rel = template[i..before].find('<')?;
         let lt_pos = i + rel;
+        if let Some(end) = comment_end(template, lt_pos) {
+            i = end;
+            continue;
+        }
+        if !is_html_tag_start(template, lt_pos) {
+            i = lt_pos + 1;
+            continue;
+        }
         let after = lt_pos + 1;
         if after >= template.len() {
             return None;

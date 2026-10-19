@@ -325,9 +325,12 @@ export function getIndexOfNextMatchingTag(
  * @param innerHTML - The innerHTML string to evaluate
  * @returns DirectiveBehaviorConfig - A configuration object
  */
-function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
-    const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
-    const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+function getNextDirectiveBehavior(
+    innerHTML: string,
+    searchHTML: string,
+): TemplateDirectiveBehaviorConfig {
+    const whenIndex = searchHTML.indexOf(whenDirectiveOpen);
+    const repeatIndex = searchHTML.indexOf(repeatDirectiveOpen);
 
     const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
 
@@ -347,10 +350,10 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
     const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
         openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
 
-    const directiveValue = getNextDataBindingBehavior(innerHTML);
+    const directiveValue = getNextDataBindingBehavior(innerHTML, searchHTML);
 
     const matchingCloseTagIndex = getIndexOfNextMatchingTag(
-        openingTagStartSlice,
+        searchHTML.slice(openingTagStartIndex),
         openingTag,
         closingTag,
         openingTagStartIndex,
@@ -513,9 +516,12 @@ function getIndexAndBindingTypeOfNextDataBindingBehavior(
  * @param innerHTML - The innerHTML string to evaluate
  * @returns DataBindingBehaviorConfig - A configuration object
  */
-function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfig {
+function getNextDataBindingBehavior(
+    innerHTML: string,
+    searchHTML: string = innerHTML,
+): DataBindingBehaviorConfig {
     const { openingStartIndex, closingStartIndex, bindingType } =
-        getIndexAndBindingTypeOfNextDataBindingBehavior(innerHTML);
+        getIndexAndBindingTypeOfNextDataBindingBehavior(searchHTML);
     const bindingLength =
         bindingType === "client" ? 1 : bindingType === "default" ? 2 : 3;
     const partialConfig: BaseDataBindingBehaviorConfig = {
@@ -534,6 +540,41 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
           : getContentDataBindingConfig(partialConfig);
 }
 
+function maskHTMLComments(innerHTML: string): string {
+    if (!innerHTML.includes("<!--")) return innerHTML;
+
+    let result = "";
+    let lastEnd = 0;
+    let cursor = 0;
+    while ((cursor = innerHTML.indexOf("<", cursor)) !== -1) {
+        if (innerHTML.startsWith("<!--", cursor)) {
+            const closing = innerHTML.indexOf("-->", cursor + 4);
+            const end = closing === -1 ? innerHTML.length : closing + 3;
+            // Keep offsets stable while excluding comment contents from behavior discovery.
+            result += innerHTML.slice(lastEnd, cursor) + " ".repeat(end - cursor);
+            lastEnd = cursor = end;
+        } else if (
+            /[A-Za-z]/.test(
+                innerHTML.charAt(cursor + (innerHTML.charAt(cursor + 1) === "/" ? 2 : 1)),
+            )
+        ) {
+            cursor++;
+            while (cursor < innerHTML.length) {
+                const character = innerHTML.charAt(cursor++);
+                if (character === '"' || character === "'") {
+                    const closing = innerHTML.indexOf(character, cursor);
+                    cursor = closing === -1 ? innerHTML.length : closing + 1;
+                } else if (character === ">") {
+                    break;
+                }
+            }
+        } else {
+            cursor++;
+        }
+    }
+    return result + innerHTML.slice(lastEnd);
+}
+
 /**
  * Get the next behavior
  * @param innerHTML - The innerHTML string to evaluate
@@ -545,20 +586,25 @@ export function getNextBehavior(
     innerHTML: string,
     offset: number = 0,
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
+    const searchHTML = maskHTMLComments(innerHTML);
     // eslint-disable-next-line no-constant-condition
     while (true) {
         const currentSlice = innerHTML.slice(offset);
+        const searchSlice = searchHTML.slice(offset);
         // client side binding will capture all bindings starting with "{"
-        const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
-        const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
-        const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
+        const dataBindingOpen = searchSlice.indexOf(clientSideOpenExpression);
+        const whenDirectiveIndex = searchSlice.indexOf(whenDirectiveOpen);
+        const repeatDirectiveIndex = searchSlice.indexOf(repeatDirectiveOpen);
         const directiveBindingOpen =
             whenDirectiveIndex === -1
                 ? repeatDirectiveIndex
                 : repeatDirectiveIndex === -1
                   ? whenDirectiveIndex
                   : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
-        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(
+            currentSlice,
+            searchSlice,
+        );
 
         if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
             return null;
@@ -577,7 +623,10 @@ export function getNextBehavior(
             directiveBindingOpen !== -1 &&
             (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
         ) {
-            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+            return offsetDirective(
+                getNextDirectiveBehavior(currentSlice, searchSlice),
+                offset,
+            );
         }
 
         return offsetDataBinding(nextDataBindingBehavior, offset);
@@ -1175,46 +1224,33 @@ function resolveChainedExpression(
  * @public
  */
 export function transformInnerHTML(innerHTML: string, index = 0): string {
-    const sliceToEvaluate = innerHTML.slice(index);
-    const nextBinding = getNextBehavior(sliceToEvaluate);
+    const nextBinding = getNextBehavior(innerHTML, index);
     let transformedInnerHTML = innerHTML;
 
     if (nextBinding && nextBinding.type === "dataBinding") {
         if (nextBinding.bindingType === "unescaped") {
-            transformedInnerHTML = `${innerHTML.slice(0, index)}${sliceToEvaluate.slice(
+            transformedInnerHTML = `${innerHTML.slice(
                 0,
                 nextBinding.openingStartIndex,
-            )}${startInnerHTMLDiv}${sliceToEvaluate.slice(
+            )}${startInnerHTMLDiv}${innerHTML.slice(
                 nextBinding.openingStartIndex + 3,
                 nextBinding.closingStartIndex,
-            )}${endInnerHTMLDiv}${sliceToEvaluate.slice(
-                nextBinding.closingStartIndex + 3,
-            )}`;
+            )}${endInnerHTMLDiv}${innerHTML.slice(nextBinding.closingStartIndex + 3)}`;
 
             return transformInnerHTML(
                 transformedInnerHTML,
-                index +
-                    startInnerHTMLDivLength +
+                startInnerHTMLDivLength +
                     endInnerHTMLDivLength +
                     nextBinding.closingStartIndex -
                     3,
             );
         } else if (nextBinding.bindingType === "client") {
-            return transformInnerHTML(
-                transformedInnerHTML,
-                index + nextBinding.closingEndIndex,
-            );
+            return transformInnerHTML(transformedInnerHTML, nextBinding.closingEndIndex);
         }
 
-        return transformInnerHTML(
-            transformedInnerHTML,
-            index + nextBinding.closingEndIndex,
-        );
+        return transformInnerHTML(transformedInnerHTML, nextBinding.closingEndIndex);
     } else if (nextBinding) {
-        return transformInnerHTML(
-            transformedInnerHTML,
-            index + nextBinding.closingTagEndIndex,
-        );
+        return transformInnerHTML(transformedInnerHTML, nextBinding.closingTagEndIndex);
     }
 
     return transformedInnerHTML;

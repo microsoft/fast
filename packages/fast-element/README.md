@@ -160,6 +160,10 @@ declarative runtime is pure at import time; declarative APIs lazily install only
 declarative debug messages. Hydration is separate and remains opt-in through
 `enableHydration()` from `@microsoft/fast-element/hydration.js`.
 
+HTML comments in declarative templates remain literal. Expressions and directive
+markup inside comments do not create bindings or schema entries, so comments
+remain unchanged during rendering and hydration.
+
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
