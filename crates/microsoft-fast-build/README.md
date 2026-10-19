@@ -117,10 +117,7 @@ with `format_version`, `bindings`, name/content, and host/shadow-root attributes
 paths, and nested `BindingScope { variable, iterable }` frames. Application
 types and required/optional declarations remain unknown (`None`); repeat
 collections alone have a known array requirement. Metadata describes syntax,
-not a state schema or a full validation certificate. Code samples and HTML
-comment contents are excluded. Rendering preserves HTML comments literally:
-binding-like text and directive markup inside them are not evaluated and do
-not receive hydration markers.
+not a state schema or a full validation certificate. Code samples are excluded.
 `Locator::from_metadata` validates names, duplicates, and the format version.
 Legacy content/tuple constructors remain supported.
 
@@ -145,6 +142,12 @@ See the [migration guide](../../packages/fast-build/docs/migration/plugin-integr
 for intentional changes from earlier output.
 
 ## Template Syntax
+
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
 
 ### Content Bindings
 

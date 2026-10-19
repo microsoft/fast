@@ -156,8 +156,6 @@ root paths or state declarations. `name` is absent for compound expressions;
 `paths` are lexical references, not a JavaScript type checker. `optional` is
 unknown, and types are unknown except for repeat collections' array requirement.
 The permissive template parser remains descriptive, not full syntax validation.
-HTML comment contents are excluded from binding discovery, just as they are
-excluded from evaluation during rendering.
 
 Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
 `Locator::from_metadata` validates native versions/names/duplicates; WASM render
@@ -190,16 +188,14 @@ known hosts and plain tags. It does not claim that every recursive renderer
 path is linear: matching directive bodies, root-state clones, and repeated
 template/attribute parsing remain separate optimization targets.
 
-HTML comments are literal regions. Scanning skips their contents, so bindings,
-directive tags, and custom elements inside comments are not evaluated or counted
-for hydration. Normal and streamed rendering preserve the authored comment
-without inserting markers inside it. Code-sample preprocessing also preserves
-comments rather than escaping binding-like text inside them.
-
-Outside comments, the scanner retains its permissive string-scanner semantics
-rather than introducing a DOM parser. Differential tests compare discovery with
-the pre-optimization scanner across generated fragment pairs; focused comment
-regressions cover the intentional change from the legacy scanner.
+The scanner intentionally preserves the old string-scanner semantics rather
+than introducing DOM parsing rules. For example, directives inside HTML
+comments are not suppressed. Bindings and FAST directive markup inside comments
+are unsupported; commenting out bound markup does not disable parsing, and no
+comment filtering or validation is performed. Differential tests compare
+discovery with the pre-optimization scanner at every UTF-8 boundary across
+generated fragment pairs, including malformed tags, single braces, quotes, and directive-name
+prefixes.
 
 ### Single-brace passthrough
 

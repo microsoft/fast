@@ -374,6 +374,11 @@ The declarative syntax is a superset of HTML with three binding delimiters:
 
 ### Directives
 
+Bindings and FAST directive markup inside HTML comments are unsupported. The
+string-based parsers do not reliably exclude comment contents, so commenting out
+bound markup can still affect binding discovery and hydration. See the
+[HTML comment restrictions](./syntax.md#html-comments).
+
 | Directive | Example |
 |---|---|
 | `<f-when value="{{expr}}">` | Conditional rendering |
@@ -443,14 +448,7 @@ transforms:
   converts declarative HTML into `strings`/`values` arrays for
   `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running
   previous-string in O(1) per binding site instead of O(N) `join("")` calls.
-  Prepares comment discovery once at parse entry and shares the scanner across
-  recursive source windows, including nested directives.
   Independently testable without DOM.
-- **Behavior discovery** (`behavior-scanner.ts`) — Holds the original source and
-  an offset-preserving search string that excludes actual HTML comments while
-  retaining quoted attribute contents. Comment-free sources reuse the original
-  string. Parsing and transformation each prepare this once, not once per binding;
-  existing suffix searches remain, so this does not make the entire parser linear.
 - **Schema transforms** (`definition-options.ts`) — Extension-provided callbacks run
   after parsing and before `ViewTemplate.create()`. `attributeMap()` runs before
   `observerMap()`.
@@ -461,7 +459,6 @@ sequenceDiagram
     participant FTE as internal f-template
     participant TP as TemplateParser
     participant U as utilities.ts
-    participant BS as behavior-scanner.ts
     participant S as Schema
     participant Transforms as schema transforms
 
@@ -470,12 +467,10 @@ sequenceDiagram
     FTE->>FTE: publishTemplate(definition)
     FTE->>S: new Schema(name)
     FTE->>U: transformInnerHTML(this.innerHTML)
-    U->>BS: createBehaviorScanner(innerHTML)
     FTE->>TP: parser.parse(innerHTML, schema)
-    TP->>BS: createBehaviorScanner(innerHTML)
-    loop resolve next behavior
-        TP->>BS: scan(source window)
-        BS-->>TP: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
+    loop getNextBehavior(innerHTML)
+        TP->>U: getNextBehavior()
+        U-->>TP: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
         alt content binding
             TP->>TP: resolveContentBinding()
             TP->>TP: resolveAccessBinding()
@@ -530,22 +525,16 @@ interface TemplateResolutionContext {
     parentContext: string | null;  // Current repeat item alias (e.g. "item")
     level: number;          // Nesting depth for repeat directives
     schema: Schema;         // JSON schema builder for property tracking
-    scan: ReturnType<typeof createBehaviorScanner>; // Shared immutable-source scanner
 }
 ```
 
 `rootPropertyName` is intentionally kept separate because it is selectively mutated per branch and must not leak across sibling binding resolutions.
 
-Source-window offsets travel on the recursive call stack. Nested directive bodies
-and remaining binding suffixes reuse the original scanner instead of discovering
-comments again. `transformInnerHTML()` also scans immutable source and joins its
-replacement segments once, keeping comment and quoted-attribute context intact.
-
-### Key parsing functions
+### Key parsing functions (utilities.ts)
 
 | Function | Role |
 |---|---|
-| `getNextBehavior(innerHTML)` | Stateless public wrapper returning the next behavior or `null`. Each call prepares its own scanner; the internal parse/transform loops instead reuse `createBehaviorScanner()` to avoid repeated whole-template comment discovery. |
+| `getNextBehavior(innerHTML)` | Top-level scanner: returns the next `DataBindingBehaviorConfig` or `TemplateDirectiveBehaviorConfig`, or `null` when done. |
 | `getNextDataBindingBehavior(innerHTML)` | Identifies whether the next binding is `{{}}`, `{{{}}}`, or `{}` and classifies it as content/attribute/attributeDirective. |
 | `getNextDirectiveBehavior(innerHTML)` | Finds the next `<f-when>` or `<f-repeat>` and its matching close tag. |
 | `bindingResolver(...)` | Builds a `(x, c) => value` closure for a given path; also calls `schema.addPath()`. |
@@ -553,7 +542,7 @@ replacement segments once, keeping comment and quoted-attribute context intact.
 | `getBooleanBinding(...)` | Returns a `(x, c) => boolean` closure for `<f-when>` expressions. |
 | `assignObservables(schema, rootSchema, data, target, rootProperty)` | Wraps objects/arrays in `Proxy` for deep observation. |
 | `deepMerge(target, source)` | Merges source into an existing proxy, preserving proxy identity and triggering observable notifications. |
-| `transformInnerHTML(html)` | Wraps unescaped content bindings in `:innerHTML` elements, preserving literal comments. Uses one scanner and assembles replacements from the original source without per-binding template reconstruction. |
+| `transformInnerHTML(html)` | Normalises HTML-encoded operator characters (`&gt;`, `&lt;`, etc.) used in `<f-when>` expressions. |
 | `escapeBracesInCodeElements(html)` | Replaces `{` / `}` characters inside every `<code>` element with `&#123;` / `&#125;` so binding-like syntax in code samples renders literally rather than being interpreted as FAST bindings. Client-side half of a two-stage escape — the brace escape mirrors the server-side pass in `microsoft-fast-build` (necessary client-side because `&#123;` / `&#125;` decode back to literal `{` / `}` in the DOM and `.innerHTML` does not re-encode them). The angle-bracket escape for FAST directive tags (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) inside `<code>` runs only on the server because the DOM serializer re-encodes `<` / `>` in text content automatically. Real HTML elements (`<button>`) and custom elements inside `<code>` keep their angle brackets and continue to render as live DOM elements. Modeled on Microsoft WebUI's `webui-press` markdown renderer. |
 
 ### Binding classification

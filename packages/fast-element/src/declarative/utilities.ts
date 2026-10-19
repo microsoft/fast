@@ -4,7 +4,6 @@ import {
     type JSONSchema,
     type Schema,
 } from "../components/schema.js";
-import { createBehaviorScanner, isAttribute } from "./behavior-scanner.js";
 import {
     attributeDirectivePrefix,
     clientSideCloseExpression,
@@ -13,9 +12,14 @@ import {
     eventArgAccessor,
     executionContextAccessor,
     openExpression,
+    repeatDirectiveClose,
+    repeatDirectiveOpen,
+    unescapedCloseExpression,
+    unescapedOpenExpression,
+    whenDirectiveClose,
+    whenDirectiveOpen,
 } from "./syntax.js";
 
-export { getIndexOfNextMatchingTag } from "./behavior-scanner.js";
 export {
     assignObservables,
     assignProxy,
@@ -205,7 +209,9 @@ export function parseEventArgs(argsString: string): ParsedEventArg[] {
 }
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
+const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
+const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
 /**
  * Logical operator tokens.
@@ -260,6 +266,275 @@ export const Operator = {
 export type Operator = (typeof Operator)[keyof typeof Operator];
 
 /**
+ * Get the index of the next matching tag
+ * @param openingTagStartSlice - The slice starting from the opening tag
+ * @param openingTag - The opening tag string
+ * @param closingTag - The closing tag
+ * @param openingTagStartIndex - The opening tag start index derived from the innerHTML
+ * @returns index
+ * @public
+ */
+export function getIndexOfNextMatchingTag(
+    openingTagStartSlice: string,
+    openingTag: string,
+    closingTag: string,
+    openingTagStartIndex: number,
+): number {
+    let tagCount = 1;
+    let matchingCloseTagIndex = -1;
+    const openingTagLength = openingTag.length;
+    const closingTagLength = closingTag.length;
+    let nextSlice = openingTagStartSlice.slice(openingTagLength);
+    let nextOpenTag = nextSlice.indexOf(openingTag);
+    let nextCloseTag = nextSlice.indexOf(closingTag);
+    let tagOffset = openingTagStartIndex + openingTagLength;
+
+    do {
+        // if a closing tag has been found for the last open tag, decrement the tag count
+        if (nextOpenTag > nextCloseTag || nextOpenTag === -1) {
+            tagCount--;
+
+            if (tagCount === 0) {
+                matchingCloseTagIndex = nextCloseTag + tagOffset;
+                break;
+            }
+
+            tagOffset += nextCloseTag + closingTagLength;
+            nextSlice = nextSlice.slice(nextCloseTag + closingTagLength);
+            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextCloseTag = nextSlice.indexOf(closingTag);
+        } else if (nextOpenTag !== -1) {
+            tagCount++;
+            tagOffset += nextOpenTag + openingTagLength;
+            nextSlice = nextSlice.slice(nextOpenTag + openingTagLength);
+            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextCloseTag = nextSlice.indexOf(closingTag);
+        }
+
+        if (tagCount === 0) {
+            matchingCloseTagIndex = nextCloseTag + tagOffset;
+            break;
+        }
+    } while (tagCount > 0);
+
+    return matchingCloseTagIndex;
+}
+
+/**
+ * Get the next directive
+ * @param innerHTML - The innerHTML string to evaluate
+ * @returns DirectiveBehaviorConfig - A configuration object
+ */
+function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
+    const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
+    const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+
+    const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
+
+    let openingTag: string = repeatDirectiveOpen;
+    let closingTag: string = repeatDirectiveClose;
+    let directiveTag: TemplateDirective = "repeat";
+    let openingTagStartIndex: number = repeatIndex;
+
+    if (isWhen) {
+        openingTag = whenDirectiveOpen;
+        closingTag = whenDirectiveClose;
+        directiveTag = "when";
+        openingTagStartIndex = whenIndex;
+    }
+
+    const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
+    const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
+        openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
+
+    const directiveValue = getNextDataBindingBehavior(innerHTML);
+
+    const matchingCloseTagIndex = getIndexOfNextMatchingTag(
+        openingTagStartSlice,
+        openingTag,
+        closingTag,
+        openingTagStartIndex,
+    );
+
+    return {
+        type: "templateDirective",
+        name: directiveTag,
+        value: innerHTML.slice(
+            directiveValue.openingEndIndex,
+            directiveValue.closingStartIndex,
+        ),
+        openingTagStartIndex,
+        openingTagEndIndex,
+        closingTagStartIndex: matchingCloseTagIndex,
+        closingTagEndIndex: matchingCloseTagIndex + closingTag.length,
+    };
+}
+
+/**
+ * Determine if this binding is an attribute binding
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param openingStartIndex - The index of the binding opening marker
+ * @returns boolean
+ */
+function isAttribute(innerHTML: string, openingStartIndex: number): boolean {
+    return innerHTML.slice(openingStartIndex - 2, openingStartIndex - 1) === "=";
+}
+
+/**
+ * Determine if this binding is an attribute directive binding
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param openingStartIndex - The index of the binding opening marker
+ * @returns boolean
+ */
+function isAttributeDirective(innerHTML: string, openingStartIndex: number): boolean {
+    const splitHTML = innerHTML.slice(0, openingStartIndex - 2).split(" ");
+    return splitHTML[splitHTML.length - 1].startsWith(attributeDirectivePrefix);
+}
+
+/**
+ * Get the attribute binding config
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param config - The base configuration of the binding
+ * @returns AttributeDataBindingBehaviorConfig
+ */
+function getAttributeDataBindingConfig(
+    innerHTML: string,
+    config: BaseDataBindingBehaviorConfig,
+): AttributeDataBindingBehaviorConfig {
+    const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
+    const firstCharOfAttribute = splitInnerHTML[splitInnerHTML.length - 1][0];
+    const aspect =
+        firstCharOfAttribute === "?" ||
+        firstCharOfAttribute === "@" ||
+        firstCharOfAttribute === ":"
+            ? firstCharOfAttribute
+            : null;
+
+    return {
+        ...config,
+        subtype: "attribute",
+        aspect,
+    };
+}
+
+/**
+ * Get the attribute directive binding config
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param config - The base configuration of the binding
+ * @returns AttributeDirectiveBindingBehaviorConfig
+ */
+function getAttributeDirectiveDataBindingConfig(
+    innerHTML: string,
+    config: BaseDataBindingBehaviorConfig,
+): AttributeDirectiveBindingBehaviorConfig {
+    const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
+    const lastItem = splitInnerHTML[splitInnerHTML.length - 1];
+    const equals = lastItem.indexOf("=");
+    const name = lastItem.slice(2, equals);
+
+    return {
+        ...config,
+        subtype: "attributeDirective",
+        name: name as AttributeDirective,
+    };
+}
+
+/**
+ * Get the content data binding config
+ * @param config - The base configuration of the binding
+ * @returns ContentDataBindingBehaviorConfig
+ */
+function getContentDataBindingConfig(
+    config: BaseDataBindingBehaviorConfig,
+): ContentDataBindingBehaviorConfig {
+    return {
+        ...config,
+        subtype: "content",
+    };
+}
+
+interface NextDataBindingBehaviorConfig {
+    openingStartIndex: number;
+    closingStartIndex: number;
+    bindingType: DataBindingBindingType;
+}
+
+/**
+ * Finds the next data binding in innerHTML and determines its type and indices
+ * @param innerHTML - The innerHTML string to search for data bindings
+ * @returns NextDataBindingBehaviorConfig containing the binding type and start indices
+ */
+function getIndexAndBindingTypeOfNextDataBindingBehavior(
+    innerHTML: string,
+): NextDataBindingBehaviorConfig {
+    // {{{}}} binding
+    const openingUnescapedStartIndex = innerHTML.indexOf(unescapedOpenExpression);
+    const closingUnescapedStartIndex = innerHTML.indexOf(unescapedCloseExpression);
+    // {{}} binding
+    const openingContentStartIndex = innerHTML.indexOf(openExpression);
+    const closingContentStartIndex = innerHTML.indexOf(closeExpression);
+    // {} binding
+    const openingClientStartIndex = innerHTML.indexOf(clientSideOpenExpression);
+    const closingClientStartIndex = innerHTML.indexOf(clientSideCloseExpression);
+
+    if (
+        openingUnescapedStartIndex !== -1 &&
+        openingUnescapedStartIndex <= openingContentStartIndex &&
+        openingUnescapedStartIndex <= openingClientStartIndex
+    ) {
+        // is unescaped {{{}}}
+        return {
+            openingStartIndex: openingUnescapedStartIndex,
+            closingStartIndex: closingUnescapedStartIndex,
+            bindingType: "unescaped",
+        };
+    } else if (
+        openingContentStartIndex !== -1 &&
+        openingContentStartIndex <= openingClientStartIndex
+    ) {
+        // is default {{}}
+        return {
+            openingStartIndex: openingContentStartIndex,
+            closingStartIndex: closingContentStartIndex,
+            bindingType: "default",
+        };
+    }
+
+    // is client {}
+    return {
+        openingStartIndex: openingClientStartIndex,
+        closingStartIndex: closingClientStartIndex,
+        bindingType: "client",
+    };
+}
+
+/**
+ * Get the next data binding
+ * @param innerHTML - The innerHTML string to evaluate
+ * @returns DataBindingBehaviorConfig - A configuration object
+ */
+function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfig {
+    const { openingStartIndex, closingStartIndex, bindingType } =
+        getIndexAndBindingTypeOfNextDataBindingBehavior(innerHTML);
+    const bindingLength =
+        bindingType === "client" ? 1 : bindingType === "default" ? 2 : 3;
+    const partialConfig: BaseDataBindingBehaviorConfig = {
+        type: "dataBinding",
+        bindingType,
+        openingStartIndex,
+        openingEndIndex: openingStartIndex + bindingLength,
+        closingStartIndex,
+        closingEndIndex: closingStartIndex + bindingLength,
+    };
+
+    return isAttributeDirective(innerHTML, openingStartIndex)
+        ? getAttributeDirectiveDataBindingConfig(innerHTML, partialConfig)
+        : isAttribute(innerHTML, openingStartIndex)
+          ? getAttributeDataBindingConfig(innerHTML, partialConfig)
+          : getContentDataBindingConfig(partialConfig);
+}
+
+/**
  * Get the next behavior
  * @param innerHTML - The innerHTML string to evaluate
  * @param offset - The current offset in the original string.
@@ -270,7 +545,94 @@ export function getNextBehavior(
     innerHTML: string,
     offset: number = 0,
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    return createBehaviorScanner(innerHTML)(0, innerHTML.length, offset);
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const currentSlice = innerHTML.slice(offset);
+        // client side binding will capture all bindings starting with "{"
+        const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
+        const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
+        const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
+        const directiveBindingOpen =
+            whenDirectiveIndex === -1
+                ? repeatDirectiveIndex
+                : repeatDirectiveIndex === -1
+                  ? whenDirectiveIndex
+                  : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            dataBindingOpen !== -1 &&
+            nextDataBindingBehavior.bindingType === "client" &&
+            !isLegitimateClientSideBinding(nextDataBindingBehavior)
+        ) {
+            offset = nextDataBindingBehavior.closingEndIndex + offset;
+            continue;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        return offsetDataBinding(nextDataBindingBehavior, offset);
+    }
+}
+
+/**
+ * Apply an offset to a data binding
+ * @param config DataBindingBehaviorConfig
+ * @param offset number
+ * @returns DataBindingBehaviorConfig
+ */
+function offsetDataBinding(
+    config: DataBindingBehaviorConfig,
+    offset: number,
+): DataBindingBehaviorConfig {
+    config.openingStartIndex = config.openingStartIndex + offset;
+    config.openingEndIndex = config.openingEndIndex + offset;
+    config.closingStartIndex = config.closingStartIndex + offset;
+    config.closingEndIndex = config.closingEndIndex + offset;
+
+    return config;
+}
+
+/**
+ * Apply an offset to a directive
+ * @param config TemplateDirectiveBehaviorConfig
+ * @param offset number
+ * @returns TemplateDirectiveBehaviorConfig
+ */
+function offsetDirective(
+    config: TemplateDirectiveBehaviorConfig,
+    offset: number,
+): TemplateDirectiveBehaviorConfig {
+    config.openingTagStartIndex = config.openingTagStartIndex + offset;
+    config.openingTagEndIndex = config.openingTagEndIndex + offset;
+    config.closingTagStartIndex = config.closingTagStartIndex + offset;
+    config.closingTagEndIndex = config.closingTagEndIndex + offset;
+
+    return config;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
@@ -813,35 +1175,49 @@ function resolveChainedExpression(
  * @public
  */
 export function transformInnerHTML(innerHTML: string, index = 0): string {
-    const scan = createBehaviorScanner(innerHTML);
-    const segments: string[] = [];
-    let lastEnd = 0;
-    let nextBinding = scan(0, innerHTML.length, index);
+    const sliceToEvaluate = innerHTML.slice(index);
+    const nextBinding = getNextBehavior(sliceToEvaluate);
+    let transformedInnerHTML = innerHTML;
 
-    while (nextBinding) {
-        if (nextBinding.type === "dataBinding") {
-            if (nextBinding.bindingType === "unescaped") {
-                segments.push(
-                    innerHTML.slice(lastEnd, nextBinding.openingStartIndex),
-                    startInnerHTMLDiv,
-                    innerHTML.slice(
-                        nextBinding.openingEndIndex,
-                        nextBinding.closingStartIndex,
-                    ),
-                    endInnerHTMLDiv,
-                );
-                lastEnd = nextBinding.closingEndIndex;
-            }
-            index = nextBinding.closingEndIndex;
-        } else {
-            index = nextBinding.closingTagEndIndex;
+    if (nextBinding && nextBinding.type === "dataBinding") {
+        if (nextBinding.bindingType === "unescaped") {
+            transformedInnerHTML = `${innerHTML.slice(0, index)}${sliceToEvaluate.slice(
+                0,
+                nextBinding.openingStartIndex,
+            )}${startInnerHTMLDiv}${sliceToEvaluate.slice(
+                nextBinding.openingStartIndex + 3,
+                nextBinding.closingStartIndex,
+            )}${endInnerHTMLDiv}${sliceToEvaluate.slice(
+                nextBinding.closingStartIndex + 3,
+            )}`;
+
+            return transformInnerHTML(
+                transformedInnerHTML,
+                index +
+                    startInnerHTMLDivLength +
+                    endInnerHTMLDivLength +
+                    nextBinding.closingStartIndex -
+                    3,
+            );
+        } else if (nextBinding.bindingType === "client") {
+            return transformInnerHTML(
+                transformedInnerHTML,
+                index + nextBinding.closingEndIndex,
+            );
         }
-        nextBinding = scan(0, innerHTML.length, index);
+
+        return transformInnerHTML(
+            transformedInnerHTML,
+            index + nextBinding.closingEndIndex,
+        );
+    } else if (nextBinding) {
+        return transformInnerHTML(
+            transformedInnerHTML,
+            index + nextBinding.closingTagEndIndex,
+        );
     }
 
-    return segments.length === 0
-        ? innerHTML
-        : segments.join("") + innerHTML.slice(lastEnd);
+    return transformedInnerHTML;
 }
 
 /**

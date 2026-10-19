@@ -8,7 +8,7 @@ use crate::attribute::{
     skip_single_brace_expr, find_tag_end, read_tag_name, read_tag_name_slice,
     parse_element_attributes, find_next_plain_html_tag, is_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
-    data_attr_to_dataset_key, kebab_to_camel, comment_end, is_html_tag_start,
+    data_attr_to_dataset_key, kebab_to_camel,
 };
 use crate::attribute_lookup::{aria_attr_to_property_key, html_attr_to_property_key};
 use crate::error::{RenderError, template_context};
@@ -71,14 +71,6 @@ pub(crate) fn next_event(
                 continue;
             }
             b'<' => {
-                if let Some(end) = comment_end(template, pos) {
-                    pos = end;
-                    continue;
-                }
-                if !is_html_tag_start(template, pos) {
-                    pos += 1;
-                    continue;
-                }
                 for (tag, directive) in [
                     ("<f-when", Directive::When(pos)),
                     ("<f-repeat", Directive::Repeat(pos)),

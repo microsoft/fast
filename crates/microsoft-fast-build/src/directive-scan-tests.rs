@@ -61,7 +61,7 @@ fn legacy_next_event(
 }
 
 #[test]
-fn scanner_matches_legacy_discovery_outside_comments_at_every_utf8_boundary() {
+fn scanner_matches_legacy_discovery_at_every_utf8_boundary() {
     let locator = Locator::from_templates(HashMap::from([
         ("my-el".into(), "<span>{{value}}</span>".into()),
         ("other-el".into(), "<slot></slot>".into()),
@@ -85,6 +85,8 @@ fn scanner_matches_legacy_discovery_outside_comments_at_every_utf8_boundary() {
         "<div",
         "<",
         "</div>",
+        "<!-- {{comment}} -->",
+        "<!-- <my-el></my-el> -->",
         "<!doctype html>",
         "< f-when>",
         "<f-when>",
@@ -115,30 +117,6 @@ fn scanner_matches_legacy_discovery_outside_comments_at_every_utf8_boundary() {
             }
         }
     }
-}
-
-#[test]
-fn scanner_skips_whole_comments_before_discovering_real_events() {
-    let locator = Locator::from_templates(HashMap::from([("my-el".into(), "".into())]));
-    let comment = r#"<!-- {{ignored}} {{{raw}}} <div title=">"> <my-el> <f-when value="{{show}}"> <f-repeat value="{{item in items}}"> " -->"#;
-    for (tail, event) in [
-        ("{{real}}", RenderEvent::Directive(Directive::DoubleBrace(comment.len()))),
-        ("{{{real}}}", RenderEvent::Directive(Directive::TripleBrace(comment.len()))),
-        ("<div>", RenderEvent::PlainTag(comment.len())),
-        ("<my-el>", RenderEvent::Directive(Directive::CustomElement(comment.len()))),
-        ("<f-when>", RenderEvent::Directive(Directive::When(comment.len()))),
-        ("<f-repeat>", RenderEvent::Directive(Directive::Repeat(comment.len()))),
-    ] {
-        assert_eq!(
-            next_event(&format!("{comment}{tail}"), 0, Some(&locator)),
-            Some(event),
-        );
-    }
-    assert_eq!(next_event(comment, 0, Some(&locator)), None);
-    assert_eq!(
-        next_event("<!-- {{ignored}} <my-el>", 0, Some(&locator)),
-        None,
-    );
 }
 
 #[test]

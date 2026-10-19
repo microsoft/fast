@@ -46,10 +46,21 @@ Declarative templates use a handlebars-like syntax for data binding. There are t
 
 Server-evaluated bindings (`{{}}` and `{{{}}}`) are resolved during server-side rendering and hydrated on the client. Client-only bindings (`{}`) are ignored by the server and activated when the component connects in the browser.
 
-HTML comments are literal: binding expressions and directive markup inside them
-are not evaluated and do not create binding metadata or client behaviors.
-For example, `<!-- {{ignored}} -->` stays unchanged during server rendering and
-client hydration, while bindings outside the comment continue to update normally.
+### HTML Comments
+
+:::warning
+Bindings and FAST directive markup inside HTML comments are unsupported. This
+applies to content, attribute, and client-only bindings, including bound markup
+that has been commented out.
+
+The declarative parsers scan template strings and do not reliably exclude comment
+contents. For example, `<!-- {{title}} -->` can still be interpreted as a binding,
+causing unexpected evaluation, rendering errors, or hydration mismatches. Comments
+are not a way to disable bindings or directives.
+
+Remove unused bound markup from the template instead of wrapping it in a comment.
+Keep explanatory comments free of binding syntax and FAST directive tags.
+:::
 
 ## Content Bindings
 
@@ -228,10 +239,11 @@ Inside `<f-repeat>`, bindings without a context prefix resolve to the host eleme
 ```html
 <f-repeat value="{{item in list}}">
     <li>{{item}} - {{title}}</li>
-    <!-- {{item}} is the current list item -->
-    <!-- {{title}} resolves to the host element's title property -->
 </f-repeat>
 ```
+
+Here, `item` is the current list item, while `title` resolves to the host
+element's property.
 
 #### Accessing the Parent Context
 

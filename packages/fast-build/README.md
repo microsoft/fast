@@ -197,10 +197,7 @@ shape. Binding records expose `name` (null for compound expressions),
 `optional` is null because required state declarations are not inferable.
 `$index` paths refer to the active repeat frame, not a root state key.
 Client expressions are described lexically, not fully JavaScript-type-checked.
-Code samples and HTML comment contents are excluded; metadata is not full syntax
-or state validation. Rendering preserves HTML comments literally, including
-binding-like text and FAST directive markup, without evaluating expressions or
-inserting hydration markers inside them.
+Code samples are excluded; metadata is not full syntax or state validation.
 Generated WASM declarations expose these JSON interfaces.
 
 Render exports reject unsupported/malformed explicit versions before rendering.
@@ -364,6 +361,12 @@ by `fast build`. Generated fixture output is written under
 element type, using a separate `test/.fixture-output-type-source/` directory.
 
 ## Template syntax
+
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
 
 Template syntax follows the FAST declarative HTML format. See the
 [`@microsoft/fast-element` declarative documentation](../fast-element/docs/declarative/syntax.md)
