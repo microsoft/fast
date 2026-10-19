@@ -117,7 +117,10 @@ with `format_version`, `bindings`, name/content, and host/shadow-root attributes
 paths, and nested `BindingScope { variable, iterable }` frames. Application
 types and required/optional declarations remain unknown (`None`); repeat
 collections alone have a known array requirement. Metadata describes syntax,
-not a state schema or a full validation certificate. Code samples are excluded.
+not a state schema or a full validation certificate. Code samples and HTML
+comment contents are excluded. Rendering preserves HTML comments literally:
+binding-like text and directive markup inside them are not evaluated and do
+not receive hydration markers.
 `Locator::from_metadata` validates names, duplicates, and the format version.
 Legacy content/tuple constructors remain supported.
 

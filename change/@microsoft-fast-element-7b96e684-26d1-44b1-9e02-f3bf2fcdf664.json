@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Preserve literal HTML comments in declarative templates so client bindings align with server-rendered hydration markers.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

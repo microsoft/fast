@@ -285,8 +285,7 @@ pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Op
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
 
-    while let Some(rel) = html[pos..].find('<') {
-        let tag_start = pos + rel;
+    while let Some(tag_start) = crate::attribute::find_next_tag(html, pos) {
         let name_start = tag_start + 1;
 
         if name_start >= bytes.len() {
@@ -300,7 +299,7 @@ pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Op
             return Some(tag_start);
         }
 
-        pos = name_start;
+        pos = find_tag_end(html, tag_start).unwrap_or(html.len());
     }
 
     None
@@ -311,11 +310,12 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
 
-    while let Some(rel) = html[pos..].find("</") {
-        let tag_start = pos + rel;
+    while let Some(tag_start) = crate::attribute::find_next_tag(html, pos) {
         let name_start = tag_start + 2;
 
-        if starts_with_ascii_case_insensitive(bytes, name_start, tag_name) {
+        if bytes.get(tag_start + 1) == Some(&b'/')
+            && starts_with_ascii_case_insensitive(bytes, name_start, tag_name)
+        {
             let mut tag_end = name_start + tag_name.len();
 
             while tag_end < bytes.len() && bytes[tag_end].is_ascii_whitespace() {
@@ -327,7 +327,7 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
             }
         }
 
-        pos = name_start;
+        pos = find_tag_end(html, tag_start).unwrap_or(html.len());
     }
 
     None

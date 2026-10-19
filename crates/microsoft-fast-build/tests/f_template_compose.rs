@@ -36,6 +36,35 @@ fn test_compose_preserves_surrounding_document_content() {
 }
 
 #[test]
+fn test_compose_ignores_commented_template_tags() {
+    let input = r#"<!-- <f-template><template></template></f-template> --><f-template name="my-el"><!-- <template></template> --><template><!-- </template></f-template> -->hi</template></f-template>"#;
+    assert_eq!(
+        compose_f_template_styles(input, "a{}").unwrap(),
+        r#"<!-- <f-template><template></template></f-template> --><f-template name="my-el"><!-- <template></template> --><template><style>a{}</style><!-- </template></f-template> -->hi</template></f-template>"#,
+    );
+}
+
+#[test]
+fn test_compose_counts_real_templates_after_quoted_comment_openers() {
+    let input = r#"<f-template name="my-el"><template title="<!--">first</template><template>second</template></f-template>"#;
+    assert!(matches!(
+        compose_f_template_styles(input, "a{}"),
+        Err(RenderError::MultipleInnerTemplates { count: 2 }),
+    ));
+}
+
+#[test]
+fn test_compose_preserves_raw_less_than_text_between_real_tags() {
+    for text in ["1 < 2", "Use < before a number", "1 <2", "1 << 2"] {
+        let input = format!(
+            "{text}<f-template name=\"my-el\">{text}<template><span title=\"<!-- </template> -->\"></span>{text}{{{{real}}}}</template>{text}</f-template>"
+        );
+        let expected = input.replacen("<template>", "<template><style>a{}</style>", 1);
+        assert_eq!(compose_f_template_styles(&input, "a{}").unwrap(), expected);
+    }
+}
+
+#[test]
 fn test_compose_with_empty_css_still_inserts_empty_style_element() {
     let input = r#"<f-template name="my-el"><template></template></f-template>"#;
     let composed = compose_f_template_styles(input, "").expect("compose");

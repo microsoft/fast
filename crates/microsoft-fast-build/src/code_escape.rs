@@ -48,6 +48,8 @@
 //! Rust crate is therefore solely responsible for directive-tag
 //! neutralisation; the JS pass only re-applies the brace escape.
 
+use crate::attribute::comment_end;
+
 /// HTML void elements that have no content and therefore no matching
 /// close tag. Included for completeness in `parse_opening_tag` so a
 /// `<code />` style self-closing form is handled correctly even though
@@ -95,11 +97,7 @@ pub fn escape_code_sample_elements(html: &str) -> String {
             }
         };
 
-        if html[lt..].starts_with("<!--") {
-            let end = html[lt + 4..]
-                .find("-->")
-                .map(|e| lt + 4 + e + 3)
-                .unwrap_or(html.len());
+        if let Some(end) = comment_end(html, lt) {
             result.push_str(&html[pos..end]);
             pos = end;
             continue;
@@ -278,11 +276,7 @@ fn find_matching_close_tag(html: &str, content_start: usize, tag_name: &str) -> 
             }
         }
 
-        if html[lt..].starts_with("<!--") {
-            let end = html[lt + 4..]
-                .find("-->")
-                .map(|e| lt + 4 + e + 3)
-                .unwrap_or(html.len());
+        if let Some(end) = comment_end(html, lt) {
             pos = end;
             continue;
         }
@@ -317,8 +311,26 @@ fn find_matching_close_tag(html: &str, content_start: usize, tag_name: &str) -> 
 /// directive scanner free of binding-syntax noise inside attribute
 /// values.
 fn escape_code_sample_inner(s: &str) -> String {
-    let with_braces = escape_braces_in_text(s);
-    escape_directive_tag_angles(&with_braces)
+    let escape = |text: &str| escape_directive_tag_angles(&escape_braces_in_text(text));
+    if !s.contains("<!--") {
+        return escape(s);
+    }
+
+    let mut out = String::with_capacity(s.len());
+    let mut start = 0;
+    let mut pos = 0;
+    while let Some(lt) = find_byte(s.as_bytes(), pos, b'<') {
+        if let Some(end) = comment_end(s, lt) {
+            out.push_str(&escape(&s[start..lt]));
+            out.push_str(&s[lt..end]);
+            start = end;
+            pos = end;
+        } else {
+            pos = parse_opening_tag(s, lt).map_or(lt + 1, |tag| tag.tag_end);
+        }
+    }
+    out.push_str(&escape(&s[start..]));
+    out
 }
 
 /// Byte-scan: find the next `{` or `}`, bulk-copy the rest. Mirrors
