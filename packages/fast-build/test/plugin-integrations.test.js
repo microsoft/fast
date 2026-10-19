@@ -165,6 +165,143 @@ test("parsed bindings expose paths and repeat scopes, versioned metadata rejects
     );
 });
 
+test("authored source spans locate duplicate bindings, attributes, and nested scopes", () => {
+    const source =
+        "🚀 Préface\r\n" +
+        '<f-template name="first-card"><template title="{{ title }}">\r\n' +
+        '  😀<p data-label="pré &amp; {{ title }}">{{ title }}</p>\r\n' +
+        '  <code>😀é {{example}} <f-when value="{{ignored}}">sample</f-when></code>\r\n' +
+        '  <f-repeat value="{{ item in items }}"><f-when value="{{ item.visible }}">\r\n' +
+        '    <button @click="{ save(item.id) }">{{item.label}}</button>\r\n' +
+        "  </f-when></f-repeat>\r\n" +
+        "</template></f-template>\r\n" +
+        '<f-template name="second-card"><template>{{ title }}</template></f-template>';
+    const templates = JSON.parse(wasm.parse_f_templates(source));
+    const bindings = templates.flatMap(template => template.bindings);
+    assert.deepEqual(
+        bindings.map(binding => binding.expression),
+        [
+            "title",
+            "title",
+            "title",
+            "items",
+            "item.visible",
+            "save(item.id)",
+            "item.label",
+            "title",
+        ],
+    );
+    const markers = [
+        "{{ title }}",
+        "{{ title }}",
+        "{{ title }}",
+        "{{ item in items }}",
+        "{{ item.visible }}",
+        "{ save(item.id) }",
+        "{{item.label}}",
+        "{{ title }}",
+    ];
+    let cursor = 0;
+    for (const [index, binding] of bindings.entries()) {
+        const marker = markers[index];
+        const expectedStart =
+            source.indexOf(marker, cursor) + marker.indexOf(binding.expression);
+        const expectedEnd = expectedStart + binding.expression.length;
+        const { start, end } = binding.span;
+        assert.equal(start.offset, expectedStart);
+        assert.equal(end.offset, expectedEnd);
+        assert.equal(source.slice(start.offset, end.offset), binding.expression);
+        for (const position of [start, end]) {
+            const lines = source.slice(0, position.offset).split(/\r\n|\r|\n/);
+            assert.equal(position.line, lines.length);
+            assert.equal(position.column, lines.at(-1).length + 1);
+        }
+        cursor = expectedEnd;
+    }
+    assert.deepEqual(bindings[6].scope, [{ variable: "item", iterable: "items" }]);
+    assert.equal(bindings[3].type, "array");
+    assert.equal(templates[0].formatVersion, 1);
+    const fragment = wasm.render_shadow_root(
+        "second-card",
+        JSON.stringify({ "second-card": templates[1] }),
+        '{"title":"visible"}',
+    );
+    assert.ok(fragment.includes("visible"));
+    const olderMetadata = structuredClone(templates[1]);
+    for (const binding of olderMetadata.bindings) {
+        delete binding.span;
+    }
+    assert.equal(
+        wasm.render_shadow_root(
+            "second-card",
+            JSON.stringify({ "second-card": olderMetadata }),
+            '{"title":"visible"}',
+        ),
+        fragment,
+    );
+});
+
+test("authored source spans preserve multiline client expressions and raw entities", () => {
+    const source =
+        '<f-template name="test-card">\r<template>\n' +
+        '😀<input :value={input.value} ?disabled="{{count &gt; 0}}" ' +
+        'f-ref="{ inputElement }" @click="{\r\n save($e,\r item.id)\n }">' +
+        "{{{ html }}}</template></f-template>";
+    const [{ bindings }] = JSON.parse(wasm.parse_f_templates(source));
+    assert.deepEqual(
+        bindings.map(binding => binding.expression),
+        ["input.value", "count &gt; 0", "inputElement", "save($e,\r item.id)", "html"],
+    );
+    for (const binding of bindings) {
+        assert.equal(
+            source.slice(binding.span.start.offset, binding.span.end.offset),
+            binding.expression,
+        );
+        for (const position of [binding.span.start, binding.span.end]) {
+            const lines = source.slice(0, position.offset).split(/\r\n|\r|\n/);
+            assert.equal(position.line, lines.length);
+            assert.equal(position.column, lines.at(-1).length + 1);
+        }
+    }
+});
+
+test("authored source spans are exposed by the generated WASM declarations", () => {
+    const directory = fs.mkdtempSync(path.join(__dirname, ".plugin-types-"));
+    try {
+        const file = path.join(directory, "metadata.ts");
+        fs.writeFileSync(
+            file,
+            `import type { FTemplateMetadata, TemplateSourceSpan } from "../../wasm/microsoft_fast_build.js";
+export function authoredExpression(source: string, template: FTemplateMetadata): string {
+    const span: TemplateSourceSpan = template.bindings[0].span;
+    const line: number = span.start.line;
+    const column: number = span.end.column;
+    return source.slice(span.start.offset, span.end.offset) + line + column;
+}
+`,
+        );
+        const program = typescript.createProgram([file], {
+            module: typescript.ModuleKind.ESNext,
+            moduleResolution: typescript.ModuleResolutionKind.Bundler,
+            strict: true,
+            noEmit: true,
+            types: [],
+        });
+        const diagnostics = typescript.getPreEmitDiagnostics(program);
+        assert.equal(
+            diagnostics.length,
+            0,
+            diagnostics
+                .map(diagnostic =>
+                    typescript.flattenDiagnosticMessageText(diagnostic.messageText, "\n"),
+                )
+                .join("\n"),
+        );
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
+    }
+});
+
 test("typed CLI/config output emits declarations with isolatedDeclarations and explicit false overrides", () => {
     const directory = fs.mkdtempSync(path.join(__dirname, ".plugin-types-"));
     const cli = path.resolve(__dirname, "../bin/fast.js");

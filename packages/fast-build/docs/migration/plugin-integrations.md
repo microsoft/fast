@@ -45,3 +45,18 @@ Repeat collections alone have a known array requirement. Complex/client
 references are lexical descriptions; metadata is not a full state schema or
 syntax-validation certificate. Use application declarations for definitive
 type/requiredness checks.
+
+Each newly parsed binding now includes an authored `span` with half-open `start`
+and `end` positions in the complete input string. Offsets are zero-based UTF-16;
+lines and UTF-16 columns are one-based. Use the original input, not the returned
+trimmed `content`, when slicing or attaching diagnostics. The range covers the
+trimmed expression without braces; repeat bindings locate only the iterable.
+CRLF counts as one line break and two offset units; lone CR and LF each count
+as a line break. Raw attribute entities are not decoded.
+
+Format version 1 is unchanged, and renderers still accept older records without
+spans. Regenerate persisted metadata to obtain authored locations; preserve spans
+when mapping or serializing records. Native `BindingMetadata` struct literals
+must now supply the public `span: SourceSpan` field; prefer `parse_f_templates`
+to constructing descriptive metadata manually. Generated WASM declarations expose
+`TemplateSourceSpan` and `TemplateSourcePosition`.

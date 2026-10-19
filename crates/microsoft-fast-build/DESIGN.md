@@ -157,12 +157,37 @@ root paths or state declarations. `name` is absent for compound expressions;
 unknown, and types are unknown except for repeat collections' array requirement.
 The permissive template parser remains descriptive, not full syntax validation.
 
+Each binding carries a half-open `SourceSpan` over its trimmed expression in the
+complete original `parse_f_templates` input. Source positions use zero-based
+UTF-16 offsets and one-based lines/UTF-16 columns; CRLF is a single line break,
+as are lone CR and LF. Tabs count as one column and non-BMP characters as two.
+Repeat spans cover only the iterable, matching existing expression metadata.
+Attribute values remain raw rather than entity-decoded.
+
+Extraction retains byte ranges before trimming. Attribute parsing records value
+starts, and directive extraction exposes shared expression/body range helpers.
+Metadata recursion borrows source windows instead of copying directive bodies.
+Code-sample discovery shares the renderer's existing traversal but masks code
+bodies with equal-byte-length spaces for metadata; it does not scan an expanded,
+entity-escaped string. Thus bindings after code samples retain their authored
+byte positions, while code-sample bindings remain excluded.
+
+A single forward source cursor converts these internal byte positions to public
+UTF-16 coordinates across all templates in one input. It advances in binding
+source order, avoiding per-binding rescans of the document prefix or a per-byte
+position map. This does not claim all existing metadata discovery is linear.
+UTF-16 coordinate tracking runs only during metadata parsing, not rendering or
+the FAST Element client runtime.
+Bindings and directives inside HTML comments remain unsupported.
+
 Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
 `Locator::from_metadata` validates native versions/names/duplicates; WASM render
 exports validate explicit per-definition `formatVersion` before constructing
 the locator. Unversioned string/metadata maps remain compatible. The CLI retains
 metadata fields when mapping parsed definitions, and WASM custom declarations
 describe the JSON interfaces without adding a runtime serialization dependency.
+The new spans are additive under format version 1; rendering does not require or
+validate them, so older version-1 records remain renderable.
 
 ## Finding the next event — `directive::next_event`
 
