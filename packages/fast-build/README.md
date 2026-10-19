@@ -362,6 +362,12 @@ element type, using a separate `test/.fixture-output-type-source/` directory.
 
 ## Template syntax
 
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
+
 Template syntax follows the FAST declarative HTML format. See the
 [`@microsoft/fast-element` declarative documentation](../fast-element/docs/declarative/syntax.md)
 for full documentation on bindings, conditionals, repeats, and directives.

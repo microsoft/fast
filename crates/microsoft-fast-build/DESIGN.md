@@ -190,9 +190,11 @@ template/attribute parsing remain separate optimization targets.
 
 The scanner intentionally preserves the old string-scanner semantics rather
 than introducing DOM parsing rules. For example, directives inside HTML
-comments are not newly suppressed. Differential tests compare discovery with
-the pre-optimization scanner at every UTF-8 boundary across generated fragment
-pairs, including malformed tags, single braces, quotes, and directive-name
+comments are not suppressed. Bindings and FAST directive markup inside comments
+are unsupported; commenting out bound markup does not disable parsing, and no
+comment filtering or validation is performed. Differential tests compare
+discovery with the pre-optimization scanner at every UTF-8 boundary across
+generated fragment pairs, including malformed tags, single braces, quotes, and directive-name
 prefixes.
 
 ### Single-brace passthrough

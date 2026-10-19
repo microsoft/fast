@@ -6,6 +6,11 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 
 ## High-level overview
 
+Bindings and FAST directive markup inside HTML comments are unsupported by the
+declarative rendering contract. The renderer and client use string scanning that
+does not reliably exclude comment contents; authors must remove unused bound
+markup rather than comment it out. No comment filtering or validation is implied.
+
 `@microsoft/fast-build` is a Node.js CLI tool that server-side renders FAST declarative HTML templates and converts FAST declarative template files to other supported syntaxes. It delegates template rendering to a WebAssembly module compiled from the [`microsoft-fast-build`](../../crates/microsoft-fast-build) Rust crate and conversion to the `microsoft-fast-convert` WASM module generated under `wasm/convert/`. The Node.js layer is responsible only for:
 
 1. Dispatching `fast build` and `fast convert`

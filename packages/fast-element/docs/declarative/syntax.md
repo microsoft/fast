@@ -54,6 +54,18 @@ Example:
 The legacy `defer-hydration` and `needs-hydration` attributes are no longer
 required.
 
+## HTML Comments
+
+Bindings and FAST directive markup inside HTML comments are unsupported. This
+includes double-brace and triple-brace bindings, client-only bindings, and
+commented-out elements containing bindings or directives.
+
+The declarative parsers scan template strings and do not reliably exclude
+comments. A comment such as `<!-- {{greeting}} -->` can still contribute a binding,
+leading to unexpected evaluation, rendering errors, or hydration mismatches.
+Remove unused bound markup rather than commenting it out, and keep explanatory
+comments free of binding syntax and FAST directive tags.
+
 ## Non-browser HTML Rendering
 
 One of the benefits of FAST declarative HTML templates is that the server can
