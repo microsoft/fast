@@ -149,6 +149,20 @@ incompatible versions while accepting legacy unversioned definitions.
 `bindings` describe syntax/lexical scopes with explicit unknown state types
 and optionality, not an inferred application schema.
 
+Every binding occurrence now includes an authored `span` with inclusive `start`
+and exclusive `end` positions. Offsets are zero-based UTF-16 code units; lines
+and UTF-16 columns are one-based. CRLF counts as one break, while lone CR and LF
+also start a new line. Spans cover trimmed expressions (the iterable for repeats)
+in the complete input to `parse_f_templates`, including document prefixes, rather
+than the returned trimmed content. Existing lexical scopes and raw attribute
+entity spelling are preserved.
+
+Location discovery remains Rust-owned. The CLI retains spans with the rest of
+the binding metadata; no expression search or JavaScript coordinate conversion
+is needed. Format version 1 remains compatible: renderers do not consume spans
+and continue accepting older records without them. Regenerate older metadata
+when authored diagnostics need locations.
+
 Plugins can call the exported `render_shadow_root` directly for a complete DSD
 fragment using resolved component state, without creating a throwaway host or
 slicing serialized HTML. Host/light-DOM ownership stays with the caller.

@@ -121,10 +121,25 @@ not a state schema or a full validation certificate. Code samples are excluded.
 `Locator::from_metadata` validates names, duplicates, and the format version.
 Legacy content/tuple constructors remain supported.
 
+Each `BindingMetadata` also has a `span: SourceSpan` containing `start` and `end`
+`SourcePosition` records. Positions refer to the complete original input to
+`parse_f_templates`, including document prefixes and whitespace removed from the
+returned content. `offset` is zero-based UTF-16, **not a Rust byte index**; `line`
+and `column` are one-based, with columns measured in UTF-16 code units. Tabs count
+as one column and non-BMP characters as two. CRLF is one line break and two offset
+units; lone CR and LF each start a new line.
+
+Spans are half-open and cover trimmed expressions without braces. Repeat spans
+cover the iterable, matching the existing expression metadata; lexical scopes are
+unchanged. Attribute entities retain their authored spelling. Code-sample
+preprocessing does not shift later spans. Bindings and FAST directive markup
+inside HTML comments remain unsupported.
+
 The WASM exports are `parse_f_templates(html)` (JSON metadata array) and
 `render_shadow_root(elementName, templatesJson, state?, attributeNameStrategy?,
 markers_v2?)`. Generated declarations include `FTemplateMetadata`,
-`TemplateBinding`, and `TemplateBindingScope`. Each generated record has
+`TemplateBinding`, `TemplateBindingScope`, `TemplateSourceSpan`, and
+`TemplateSourcePosition`. Each generated record has
 `formatVersion: 1`; render exports reject unsupported or malformed explicit
 versions, while still accepting unversioned maps and string-valued definitions.
 

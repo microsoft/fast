@@ -200,6 +200,40 @@ Client expressions are described lexically, not fully JavaScript-type-checked.
 Code samples are excluded; metadata is not full syntax or state validation.
 Generated WASM declarations expose these JSON interfaces.
 
+#### Authored binding source spans
+
+Each binding occurrence includes `span: { start, end }`. Both positions contain
+`offset`, `line`, and `column`, relative to the **complete HTML string passed to
+`parse_f_templates`**, not the extracted or trimmed template body. Duplicate
+expressions have separate spans, including occurrences in host attributes,
+interpolated attribute values, and nested directives.
+
+- `offset` is a zero-based UTF-16 code-unit offset, compatible with JavaScript
+  string slicing. It is not a UTF-8 byte offset.
+- `line` and `column` are one-based. Columns count UTF-16 code units, not visual
+  width or Unicode code points; a tab counts as one and a non-BMP character
+  counts as two.
+- Ranges are half-open: `start` is inclusive and `end` is exclusive. They cover
+  the trimmed expression, excluding braces and surrounding whitespace.
+- CRLF counts as one line break but two offset units. Lone CR and LF each count
+  as one line break. Input line endings are not normalized.
+- Repeat bindings locate the iterable expression, not the alias or `in` keyword,
+  matching their existing `expression` field. Nested `scope` frames are unchanged.
+
+```js
+const [definition] = JSON.parse(parse_f_templates(templateHtml));
+for (const binding of definition.bindings) {
+    const { start, end } = binding.span;
+    const authoredExpression = templateHtml.slice(start.offset, end.offset);
+    console.log(`${start.line}:${start.column}`, authoredExpression);
+}
+```
+
+Positions refer to the original, entity-encoded attribute text. No entity decoding
+is introduced. Code samples remain excluded without shifting subsequent spans.
+Callers associate the input with its file name and must regenerate metadata after
+editing that input. Bindings and directives inside HTML comments remain unsupported.
+
 Render exports reject unsupported/malformed explicit versions before rendering.
 Legacy unversioned maps and string definitions remain supported. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the

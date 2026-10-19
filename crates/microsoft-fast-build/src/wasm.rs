@@ -16,6 +16,19 @@ export interface TemplateBindingScope {
     variable: string;
     iterable: string;
 }
+export interface TemplateSourcePosition {
+    /** Zero-based UTF-16 code-unit offset in the original HTML input. */
+    offset: number;
+    /** One-based line; CRLF is one break, as are lone CR and LF. */
+    line: number;
+    /** One-based UTF-16 code-unit column; tabs count as one code unit. */
+    column: number;
+}
+/** Half-open trimmed expression range, excluding braces; repeats locate the iterable. */
+export interface TemplateSourceSpan {
+    start: TemplateSourcePosition;
+    end: TemplateSourcePosition;
+}
 export interface TemplateBinding {
     name: string | null;
     expression: string;
@@ -26,6 +39,7 @@ export interface TemplateBinding {
     scope: TemplateBindingScope[];
     type: "array" | null;
     optional: boolean | null;
+    span: TemplateSourceSpan;
 }
 export interface FTemplateMetadata {
     name: string | null;

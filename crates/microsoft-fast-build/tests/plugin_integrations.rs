@@ -161,6 +161,91 @@ fn metadata_retains_nested_repeat_aliases_and_does_not_invent_state_declarations
         .any(|binding| binding.kind == "repeat" && binding.value_type.as_deref() == Some("array")));
 }
 
+fn authored_expression(source: &str, binding: &microsoft_fast_build::BindingMetadata) -> String {
+    let span = binding.span;
+    String::from_utf16(
+        &source.encode_utf16()
+            .skip(span.start.offset)
+            .take(span.end.offset - span.start.offset)
+            .collect::<Vec<_>>(),
+    )
+    .unwrap()
+}
+
+#[test]
+fn metadata_spans_reference_the_full_input_across_templates_and_duplicate_attributes() {
+    let source = "🌍\r\n<f-template name=\"card-one\">\r\n<template title='{{ title }}'>\r\n\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>\r\n</template></f-template>\r\n<f-template name=\"card-two\"><template>{{ title }}</template></f-template>";
+    let templates = parse_f_templates(source);
+    let bindings: Vec<_> = templates.iter().flat_map(|template| &template.bindings).collect();
+    assert_eq!(
+        bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
+        ["title", "title", "café", "title", "title"],
+    );
+    let mut cursor = 0;
+    for binding in &bindings {
+        assert_eq!(authored_expression(source, binding), binding.expression);
+        assert!(binding.span.start.offset >= cursor);
+        cursor = binding.span.end.offset;
+    }
+    assert_eq!(
+        bindings[0].span.start,
+        microsoft_fast_build::SourcePosition { offset: 54, line: 3, column: 21 },
+    );
+    assert_eq!(bindings[0].span.end.column, 26);
+    assert_eq!(bindings[1].span.start.line, 4);
+    assert_eq!(bindings[1].span.start.column, 25);
+    assert_eq!(bindings[4].span.start.line, 6);
+    assert_eq!(templates[0].content, "\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>".trim());
+}
+
+#[test]
+fn metadata_spans_survive_code_samples_and_nested_repeat_aliases() {
+    let source = r#"<f-template name="test-card"><template>
+<code>😀é {{example}} <f-repeat value="{{ignored in samples}}">{{ignored}}</f-repeat></code>
+<f-repeat value="{{ item in items }}"><code>{{item.example}}</code>
+<f-repeat value="{{item in item.children}}"><f-when value="{{ item.visible }}">
+<button @click="{ save(item.id, '{{literal}}') }">{{ item.name }} {{{ html }}}</button>
+</f-when></f-repeat></f-repeat></template></f-template>"#;
+    let templates = parse_f_templates(source);
+    let bindings = &templates[0].bindings;
+    assert_eq!(
+        bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
+        ["items", "item.children", "item.visible", "save(item.id, '{{literal}}')", "item.name", "html"],
+    );
+    for binding in bindings {
+        assert_eq!(authored_expression(source, binding), binding.expression);
+    }
+    assert_eq!(bindings[0].value_type.as_deref(), Some("array"));
+    assert_eq!(bindings[4].scope.len(), 2);
+    assert_eq!(bindings[4].scope[0].iterable, "items");
+    assert_eq!(bindings[4].scope[1].iterable, "item.children");
+    assert_eq!(bindings[3].paths, ["save", "item.id"]);
+}
+
+#[test]
+fn metadata_spans_preserve_raw_entities_multiline_expressions_and_fallback_content() {
+    for source in [
+        "<f-template name=\"test-card\">\r<template>\n😀<input :value={input.value} ?disabled=\"{{count &gt; 0}}\" f-ref=\"{ inputElement }\" @click=\"{\r\n save($e,\r item.id)\n }\">{{{ html }}}</template></f-template>",
+        "<f-template name=\"test-card\">\u{2003}\r\n{{ value }}\r\n{{   }}\u{2003}</f-template>",
+    ] {
+        let templates = parse_f_templates(source);
+        for binding in &templates[0].bindings {
+            assert_eq!(authored_expression(source, binding), binding.expression);
+        }
+        let event = templates[0].bindings.iter().find(|binding| binding.kind == "event");
+        if let Some(event) = event {
+            assert_eq!(event.expression, "save($e,\r item.id)");
+            assert_eq!(event.span.start.line, 4);
+            assert_eq!(event.span.start.column, 2);
+            assert_eq!(event.span.end.line, 5);
+            assert_eq!(event.span.end.column, 10);
+        } else {
+            assert_eq!(templates[0].content, "{{ value }}\r\n{{   }}");
+            assert_eq!(templates[0].bindings[1].span.start, templates[0].bindings[1].span.end);
+        }
+    }
+}
+
 #[test]
 fn native_metadata_locator_validates_versions_and_names() {
     let source = r#"<f-template name="test-card"><template>{{title}}</template></f-template>"#;
