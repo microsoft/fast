@@ -150,7 +150,10 @@ Build-time plugins can use `render_shadow_root` from the
 `@microsoft/fast-build/wasm/microsoft_fast_build.js` export to render a complete
 DSD `<template>` with resolved component state and no throwaway host/light DOM.
 `parse_f_templates` exposes versioned binding descriptions, including lexical
-repeat scopes and explicit unknown state types/optionality. Persist the full
+repeat scopes, authored expression spans, and explicit unknown state
+types/optionality. Spans use half-open ranges in the complete original HTML input,
+with zero-based UTF-16 offsets and one-based lines/UTF-16 columns; CRLF counts as
+one line break. Bindings inside HTML comments remain unsupported. Persist the full
 record to retain version checks; this metadata does not replace application
 state declarations. See the
 [FAST Build integration APIs](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#apis-for-build-time-plugins)

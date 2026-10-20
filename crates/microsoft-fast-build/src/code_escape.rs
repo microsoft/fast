@@ -78,6 +78,14 @@ const DIRECTIVE_TAGS: &[&str] = &["f-when", "f-repeat"];
 /// inside `<code>` keep their angle brackets so they render as real
 /// DOM elements. Content outside `<code>` is left untouched.
 pub fn escape_code_sample_elements(html: &str) -> String {
+    transform_code_sample_elements(html, escape_code_sample_inner)
+}
+
+pub(crate) fn mask_code_sample_elements(html: &str) -> String {
+    transform_code_sample_elements(html, |inner| " ".repeat(inner.len()))
+}
+
+fn transform_code_sample_elements(html: &str, transform: impl Fn(&str) -> String) -> String {
     if !html.contains("<code") {
         return html.to_string();
     }
@@ -130,7 +138,7 @@ pub fn escape_code_sample_elements(html: &str) -> String {
         let close_start =
             find_matching_close_tag(html, opening.content_start, CODE_ELEMENT);
         let inner = &html[opening.content_start..close_start];
-        result.push_str(&escape_code_sample_inner(inner));
+        result.push_str(&transform(inner));
         pos = close_start;
     }
 

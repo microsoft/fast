@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::path::Path;
-use crate::attribute::{find_tag_end, parse_element_attributes};
+use crate::attribute::{find_tag_end, parse_element_attribute_parts, parse_element_attributes};
 use crate::error::RenderError;
 use crate::code_escape::escape_code_sample_elements;
 
@@ -244,6 +244,7 @@ impl Locator {
 pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
     let mut results = Vec::new();
     let mut search_start = 0;
+    let mut source_locations = crate::binding_metadata::SourceLocations::new(html);
     while let Some(tag_start) = find_html_start_tag(html, "f-template", search_start) {
         // Find the closing '>' of the opening <f-template ...> tag
         let tag_close = match find_tag_end(html, tag_start) {
@@ -264,14 +265,23 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             None => break,
         };
         let inner_html = &html[inner_start..inner_end];
-        let (content, host_attributes) = extract_template_content(inner_html);
-
-        let bindings = crate::binding_metadata::collect_bindings(&content, &host_attributes);
+        let (content_range, host_tag) = extract_template_content(inner_html);
+        let content = &inner_html[content_range.clone()];
+        let host_attributes = host_tag.as_ref()
+            .map(|range| parse_element_attribute_parts(&inner_html[range.clone()]))
+            .unwrap_or_default();
+        let bindings = crate::binding_metadata::collect_bindings(
+            content,
+            inner_start + content_range.start,
+            &host_attributes,
+            inner_start + host_tag.map(|range| range.start).unwrap_or(0),
+            &mut source_locations,
+        );
         results.push(FTemplate {
             name,
-            content,
+            content: content.to_string(),
             shadowroot_attributes,
-            host_attributes,
+            host_attributes: host_attributes.into_iter().map(|attr| (attr.name, attr.value)).collect(),
             format_version: crate::TEMPLATE_FORMAT_VERSION,
             bindings,
         });
@@ -367,27 +377,20 @@ fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(Str
     results
 }
 
-/// Extract the inner content and the opening-tag attributes of the first
-/// `<template>` element found in `html`. Returns the trimmed inner content
-/// and the attributes parsed from the inner `<template …>` opening tag.
+/// Locate the trimmed content and opening tag of the first `<template>`.
 ///
 /// If no `<template>` element is found, returns the trimmed input with an
-/// empty attribute list.
-fn extract_template_content(html: &str) -> (String, Vec<(String, Option<String>)>) {
-    let open = match find_html_start_tag(html, "template", 0) {
-        Some(i) => i,
-        None => return (html.trim().to_string(), Vec::new()),
-    };
-    let tag_end = match find_tag_end(html, open) {
-        Some(i) => i,
-        None => return (html.trim().to_string(), Vec::new()),
-    };
-    let close = match find_html_end_tag(html, "template", tag_end) {
-        Some((i, _)) => i,
-        None => return (html.trim().to_string(), Vec::new()),
-    };
-    let attrs = parse_element_attributes(&html[open..tag_end]);
-    (html[tag_end..close].trim().to_string(), attrs)
+/// absent opening-tag range. All ranges are byte offsets into `html`.
+fn extract_template_content(html: &str) -> (std::ops::Range<usize>, Option<std::ops::Range<usize>>) {
+    let template = find_html_start_tag(html, "template", 0).and_then(|open| {
+        let tag_end = find_tag_end(html, open)?;
+        let (close, _) = find_html_end_tag(html, "template", tag_end)?;
+        Some((tag_end..close, Some(open..tag_end)))
+    });
+    let (range, host_tag) = template.unwrap_or((0..html.len(), None));
+    let content = &html[range.clone()];
+    let start = range.start + content.len() - content.trim_start().len();
+    (start..start + content.trim().len(), host_tag)
 }
 
 
@@ -719,18 +722,18 @@ mod tests {
     #[test]
     fn test_extract_template_content_basic() {
         let html = "    <template>\n        <button>click</button>\n    </template>\n";
-        let (content, attrs) = extract_template_content(html);
-        assert_eq!(content, "<button>click</button>");
-        assert!(attrs.is_empty());
+        let (content, tag) = extract_template_content(html);
+        assert_eq!(&html[content], "<button>click</button>");
+        assert!(parse_element_attributes(&html[tag.unwrap()]).is_empty());
     }
 
     #[test]
     fn test_extract_template_content_with_attrs() {
         let html = "<template tabindex=\"0\" ?disabled=\"{{isDisabled}}\"><span>x</span></template>";
-        let (content, attrs) = extract_template_content(html);
-        assert_eq!(content, "<span>x</span>");
+        let (content, tag) = extract_template_content(html);
+        assert_eq!(&html[content], "<span>x</span>");
         assert_eq!(
-            attrs,
+            parse_element_attributes(&html[tag.unwrap()]),
             vec![
                 ("tabindex".to_string(), Some("0".to_string())),
                 ("?disabled".to_string(), Some("{{isDisabled}}".to_string())),
@@ -741,8 +744,8 @@ mod tests {
     #[test]
     fn test_extract_template_content_closing_tag_with_whitespace() {
         let html = "<template tabindex=\"0\"><span>x</span></template \n\t>";
-        let (content, attrs) = extract_template_content(html);
-        assert_eq!(content, "<span>x</span>");
-        assert_eq!(attrs, vec![("tabindex".to_string(), Some("0".to_string()))]);
+        let (content, tag) = extract_template_content(html);
+        assert_eq!(&html[content], "<span>x</span>");
+        assert_eq!(parse_element_attributes(&html[tag.unwrap()]), vec![("tabindex".to_string(), Some("0".to_string()))]);
     }
 }
