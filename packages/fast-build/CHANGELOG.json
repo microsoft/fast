@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Tue, 20 Oct 2026 19:01:10 GMT",
+      "version": "0.14.0",
+      "tag": "@microsoft/fast-build_v0.14.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "118f053280264c3f075def6b280ee74f21c882b9",
+            "comment": "Add structured error codes and authored HTML locations to build and conversion failures."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "c986a5b8550f9067ff0acf06830f162841d068bf",
+            "comment": "Expose authored UTF-16 source spans for each binding occurrence in parsed template metadata."
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "c4013349a5914759dba9dc070f0617ebcaa4ec63",
+            "comment": "Document that bindings and FAST directive markup inside HTML comments are unsupported."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 14 Oct 2026 02:56:20 GMT",
       "version": "0.13.0",
       "tag": "@microsoft/fast-build_v0.13.0",

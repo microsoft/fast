@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Wed, 14 Oct 2026 02:56:20 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 20 Oct 2026 19:01:10 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.14.0
+
+Tue, 20 Oct 2026 19:01:10 GMT
+
+### Minor changes
+
+- Add structured error codes and authored HTML locations to build and conversion failures. (7559015+janechu@users.noreply.github.com)
+- Expose authored UTF-16 source spans for each binding occurrence in parsed template metadata. (7559015+janechu@users.noreply.github.com)
 
 ## 0.13.0
 
