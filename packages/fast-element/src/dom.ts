@@ -1,53 +1,8 @@
-import type { DOMPolicy as DOMPolicyDefinition } from "./dom-policy.js";
+import { DOMPolicy as DOMPolicyDefinition } from "./dom-policy.js";
 import { Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
-/**
- * The type of HTML aspect to target.
- * @public
- */
-export const DOMAspect = Object.freeze({
-    /**
-     * Not aspected.
-     */
-    none: 0 as const,
-
-    /**
-     * An attribute.
-     */
-    attribute: 1 as const,
-
-    /**
-     * A boolean attribute.
-     */
-    booleanAttribute: 2 as const,
-
-    /**
-     * A property.
-     */
-    property: 3 as const,
-
-    /**
-     * Content
-     */
-    content: 4 as const,
-
-    /**
-     * A token list.
-     */
-    tokenList: 5 as const,
-
-    /**
-     * An event.
-     */
-    event: 6 as const,
-} as const);
-
-/**
- * The type of HTML aspect to target.
- * @public
- */
-export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
+export { DOMAspect } from "./dom-aspect.js";
 
 /**
  * A function used to send values to a DOM sink.
@@ -71,22 +26,10 @@ const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
     ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
     : { createHTML };
 
-let defaultPolicy: DOMPolicyDefinition = Object.freeze({
-    createHTML(value: string): string {
-        return fastTrustedType.createHTML(value);
-    },
-
-    protect(
-        tagName: string | null,
-        aspect: DOMAspect,
-        aspectName: string,
-        sink: DOMSink,
-    ): DOMSink {
-        return sink;
-    },
+const fastPolicy = DOMPolicyDefinition.create({
+    trustedType: fastTrustedType,
 });
-
-const fastPolicy = defaultPolicy;
+let defaultPolicy: DOMPolicyDefinition = fastPolicy;
 
 /**
  * Common DOM APIs.

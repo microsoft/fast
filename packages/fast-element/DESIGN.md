@@ -324,12 +324,25 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 
 ### DOM Policy
 
-**Files**: `src/dom.ts`, `src/dom-policy.ts`
+**Files**: `src/dom.ts`, `src/dom-aspect.ts`, `src/dom-policy.ts`
 
 `DOM.policy` is the templating system's DOM write policy. `DOMPolicy.create()` builds a
 policy from Trusted Types integration plus default guard maps for element-specific and
 aspect-wide sinks. User guard configuration is merged with those defaults so partial
 overrides preserve unspecified built-in guards.
+
+The initial `DOM.policy` uses those same guards for ESM, focused, declarative,
+and Rollup entrypoints. It reuses the existing `fast-html` Trusted Types policy.
+No entrypoint calls `DOM.setPolicy()` to initialize the baseline: the application
+can still install its own global policy once, before compiling or rendering
+templates. Template-specific and binding-specific policies retain their existing
+precedence.
+
+`DOMAspect` lives in a dependency-neutral module and is re-exported from `dom.ts`.
+The policy helper imports it directly and imports `DOMSink` only as a type, so
+`dom.ts` can create the guarded default without a circular runtime dependency.
+Binding behaviors cache their protected sink; ordinary sinks are returned
+unchanged, while guarded URL sinks validate values on each write.
 
 The default guards block known dangerous sinks such as inline event handlers,
 `innerHTML`, script text/source writes, and executable object/link/embed sources. URL
