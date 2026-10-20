@@ -1,4 +1,5 @@
-import { DOMAspect, type DOMSink } from "./dom.js";
+import type { DOMSink } from "./dom.js";
+import { DOMAspect } from "./dom-aspect.js";
 import { isString, Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 

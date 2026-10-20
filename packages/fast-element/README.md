@@ -84,6 +84,21 @@ import { enableDebug } from "@microsoft/fast-element/debug.js";
 enableDebug();
 ```
 
+## DOM policy
+
+All entrypoints use the same default DOM sink guards, including ESM, focused
+imports, declarative HTML, and CDN bundles. The baseline filters unsafe protocols
+in guarded URL bindings and blocks known dangerous sinks such as `:innerHTML`
+and inline event-handler attributes. Normal text bindings and `@click` listeners
+continue to work without configuration.
+
+Applications can still call `DOM.setPolicy()` once, before templates compile or
+render, to customize the global policy. Use an explicit sanitizing policy when
+binding rich HTML; the default Trusted Types policy does not sanitize template
+strings. See the
+[DOMPolicy and Trusted Types guide](https://www.fast.design/docs/3.x/advanced/dom-policy-and-trusted-types/)
+and [migration guidance](./docs/migration/fast-element-3.md#default-dom-sink-guards-v3).
+
 ## Server-rendered hydration
 
 Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before
