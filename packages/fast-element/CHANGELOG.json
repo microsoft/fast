@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 20 Oct 2026 19:01:10 GMT",
+      "version": "3.1.2",
+      "tag": "@microsoft/fast-element_v3.1.2",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c4013349a5914759dba9dc070f0617ebcaa4ec63",
+            "comment": "Document that bindings and FAST directive markup inside HTML comments are unsupported."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 14 Oct 2026 22:58:43 GMT",
       "version": "3.1.2",
       "tag": "@microsoft/fast-element_v3.1.2",
