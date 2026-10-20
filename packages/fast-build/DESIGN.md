@@ -350,6 +350,23 @@ directive) and throwing on conversion or validation errors (including `type-sour
 misuse). The CLI writes `output` to the resolved output file and prints each
 `warnings` entry to stderr as `Warning: <message>` without failing the command.
 
+### Structured diagnostics
+
+Both WASM wrappers construct native JavaScript `Error` objects with unchanged
+display messages, a stable `code`, and optional `line`, `column`, `length`, and
+`templateName`. Generated declarations export `FastBuildError` from each module.
+The CLI already prefers `error.message`, preserving its existing stderr format.
+See the [public contract and code lists](./README.md#structured-errors).
+
+Rust scanners capture source ranges on failure. Recursive slices rebase those
+ranges explicitly; template-definition boundaries assign names and stop entry
+rebasing. The renderer reverses only its known code-sample expansions on the
+error path. Conversion preserves the extracted template offset and reverses the
+publisher opening-tag rewrite. No integration searches snippets or reparses
+messages. Non-HTML failures omit coordinates. Metadata discovery remains
+permissive, successful output/warnings are unchanged, and fast-element's client
+runtime is not modified.
+
 ---
 
 ## Stream output

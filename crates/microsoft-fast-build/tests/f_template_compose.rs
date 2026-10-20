@@ -101,7 +101,7 @@ fn test_compose_rejects_multiple_f_templates() {
     let input = r#"<f-template name="a"><template>x</template></f-template><f-template name="b"><template>y</template></f-template>"#;
     let e = compose_f_template_styles(input, "a{}").expect_err("expected error");
     assert!(
-        matches!(e, RenderError::MultipleFTemplates { count: 2 }),
+        matches!(e.kind(), RenderError::MultipleFTemplates { count: 2 }),
         "wrong variant: {e}"
     );
 }
@@ -113,7 +113,7 @@ fn test_compose_rejects_missing_inner_template() {
     let input = r#"<f-template name="my-el"><span>no template here</span></f-template>"#;
     let e = compose_f_template_styles(input, "a{}").expect_err("expected error");
     assert!(
-        matches!(e, RenderError::MissingInnerTemplate),
+        matches!(e.kind(), RenderError::MissingInnerTemplate),
         "wrong variant: {e}"
     );
 }
@@ -124,7 +124,7 @@ fn test_compose_rejects_multiple_inner_templates() {
         r#"<f-template name="my-el"><template>x</template><template>y</template></f-template>"#;
     let e = compose_f_template_styles(input, "a{}").expect_err("expected error");
     assert!(
-        matches!(e, RenderError::MultipleInnerTemplates { count: 2 }),
+        matches!(e.kind(), RenderError::MultipleInnerTemplates { count: 2 }),
         "wrong variant: {e}"
     );
 }

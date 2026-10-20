@@ -241,10 +241,27 @@ against the real FAST types, not just string snapshots.
 
 ## wasm boundary
 
-`wasm.rs` mirrors the Rust API for Node consumers, with one adaptation:
+`wasm.rs` mirrors the Rust API for Node consumers, with these adaptations:
 `convert_template`/`convert_template_with_options` return a `#[wasm_bindgen]`
 `ConvertResult` struct (`output: string`, `warnings: string[]` as JS getters)
 rather than a bare string, so JS callers can read both the converted output and
 any warning messages (each a pre-formatted `ConvertWarning::to_string()`) without
 a JSON encode/decode round trip. `convert_stylesheet` and `convert_syntax_metadata`
-are unaffected.
+retain their successful return shapes.
+
+Failures construct actual JavaScript `Error` instances, retaining display text
+and adding stable codes and optional authored locations. The generated declarations
+expose `FastBuildError`. `ConvertError` uses boxed source contexts on failure,
+with `code()`, `location()`, `template_name()`, and `kind()` accessors; validation
+variants can be annotated through `Located`. Warnings remain plain message strings
+and do not allocate diagnostic source contexts.
+
+`ParsedTemplate` preserves the original inner-template and publisher offsets.
+Recursive directive conversions rebase their body ranges. The framework target
+maps positions after its rewritten opening tag back by the known header lengths;
+errors within that header highlight the original opening tag. Publisher/conflict
+errors point at the original outer wrapper. Conversion's top-level boundary then
+rebases into the complete HTML input and attaches its template name. UTF-16
+coordinates are calculated only on failure, with CRLF and lone CR/LF handling
+matching renderer metadata. No messages or expression strings are searched to
+recover positions. Syntax/options/CSS-option errors omit HTML coordinates.

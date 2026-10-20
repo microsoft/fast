@@ -1,5 +1,5 @@
 use crate::attribute::{
-    extract_directive_content, extract_directive_expr, find_tag_end, parse_element_attributes,
+    extract_directive_content, extract_directive_content_range, extract_directive_expr, find_tag_end, parse_element_attributes,
     read_tag_name,
 };
 use crate::config::RenderConfig;
@@ -112,12 +112,13 @@ fn stream_when(
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
 ) -> Result<(Vec<String>, usize), RenderError> {
-    let (inner, after) = extract_directive_content(template, at, "f-when").ok_or_else(|| {
+    let (inner_range, after) = extract_directive_content_range(template, at, "f-when").ok_or_else(|| {
         RenderError::UnclosedDirective {
             tag: "f-when".to_string(),
             context: template_context(template, at),
         }
     })?;
+    let inner = &template[inner_range.clone()];
     let expr =
         extract_directive_expr(template, at).ok_or_else(|| RenderError::MissingValueAttribute {
             tag: "f-when".to_string(),
@@ -129,14 +130,14 @@ fn stream_when(
         let inner_chunks = if evaluate(&expr, root, loop_vars) {
             let mut child_scope = HydrationScope::new(config.markers_v2);
             stream_node(
-                &inner,
+                inner,
                 root,
                 loop_vars,
                 locator,
                 Some(&mut child_scope),
                 false,
                 config,
-            )?
+            ).map_err(|error| error.rebase(template, inner_range.start))?
         } else {
             Vec::new()
         };
@@ -146,7 +147,8 @@ fn stream_when(
             &hy.content_end_marker(index),
         )
     } else if evaluate(&expr, root, loop_vars) {
-        stream_node(&inner, root, loop_vars, locator, None, false, config)?
+        stream_node(inner, root, loop_vars, locator, None, false, config)
+            .map_err(|error| error.rebase(template, inner_range.start))?
     } else {
         Vec::new()
     };
@@ -163,12 +165,13 @@ fn stream_repeat(
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
 ) -> Result<(Vec<String>, usize), RenderError> {
-    let (inner, after) = extract_directive_content(template, at, "f-repeat").ok_or_else(|| {
+    let (inner_range, after) = extract_directive_content_range(template, at, "f-repeat").ok_or_else(|| {
         RenderError::UnclosedDirective {
             tag: "f-repeat".to_string(),
             context: template_context(template, at),
         }
     })?;
+    let inner = &template[inner_range.clone()];
     let expr =
         extract_directive_expr(template, at).ok_or_else(|| RenderError::MissingValueAttribute {
             tag: "f-repeat".to_string(),
@@ -182,7 +185,7 @@ fn stream_repeat(
 
     let chunks = match resolve_value(&list_expr, root, loop_vars) {
         None => stream_repeat_items(
-            &inner,
+            inner,
             &[],
             &var_name,
             root,
@@ -190,10 +193,10 @@ fn stream_repeat(
             locator,
             hydration,
             config,
-        )?,
+        ).map_err(|error| error.rebase(template, inner_range.start))?,
         Some(JsonValue::Array(items)) => stream_repeat_items(
-            &inner, &items, &var_name, root, loop_vars, locator, hydration, config,
-        )?,
+            inner, &items, &var_name, root, loop_vars, locator, hydration, config,
+        ).map_err(|error| error.rebase(template, inner_range.start))?,
         Some(_) => {
             return Err(RenderError::NotAnArray {
                 binding: list_expr,
@@ -344,7 +347,7 @@ fn stream_custom_element(
         parent_hydration.as_mut().map(|h| &mut **h),
         false,
         config,
-    )?;
+    ).map_err(|error| error.rebase(template, tag_end))?;
 
     if let Some(last) = light_chunks.last_mut() {
         last.push_str(&close_tag);

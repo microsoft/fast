@@ -100,7 +100,8 @@ fn convert_directive(
             tag: tag.to_string(),
             context: template_context(template, start),
         })?;
-    let inner = convert_segment(&template[tag_end..close_start])?;
+    let inner = convert_segment(&template[tag_end..close_start])
+        .map_err(|error| error.rebase(template, tag_end))?;
 
     let output = if tag == "f-repeat" {
         format!("<for each=\"{}\">{inner}</for>", expr.trim())

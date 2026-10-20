@@ -18,8 +18,25 @@ pub struct FTemplate {
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct TemplateDefinition {
     content: String,
+    original_content: Option<String>,
     shadowroot_attributes: Vec<(String, Option<String>)>,
     host_attributes: Vec<(String, Option<String>)>,
+}
+
+impl TemplateDefinition {
+    fn new(
+        content: &str,
+        shadowroot_attributes: Vec<(String, Option<String>)>,
+        host_attributes: Vec<(String, Option<String>)>,
+    ) -> Self {
+        let escaped = escape_code_sample_elements(content);
+        Self {
+            original_content: (escaped != content).then(|| content.to_string()),
+            content: escaped,
+            shadowroot_attributes,
+            host_attributes,
+        }
+    }
 }
 
 pub struct Locator {
@@ -116,11 +133,11 @@ impl Locator {
             let (_, template) = entries.into_iter().next().expect(
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
-            templates.insert(element, TemplateDefinition {
-                content: escape_code_sample_elements(&template.content),
-                shadowroot_attributes: template.shadowroot_attributes,
-                host_attributes: template.host_attributes,
-            });
+            templates.insert(element, TemplateDefinition::new(
+                &template.content,
+                template.shadowroot_attributes,
+                template.host_attributes,
+            ));
         }
 
         Ok(Locator { templates })
@@ -136,11 +153,9 @@ impl Locator {
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, content)| (name, TemplateDefinition {
-                content: escape_code_sample_elements(&content),
-                shadowroot_attributes: Vec::new(),
-                host_attributes: Vec::new(),
-            }))
+            .map(|(name, content)| (name, TemplateDefinition::new(
+                &content, Vec::new(), Vec::new(),
+            )))
             .collect();
         Locator { templates }
     }
@@ -165,11 +180,7 @@ impl Locator {
             .into_iter()
             .map(|(name, (content, shadowroot_attributes, host_attributes))| (
                 name,
-                TemplateDefinition {
-                    content: escape_code_sample_elements(&content),
-                    shadowroot_attributes,
-                    host_attributes,
-                },
+                TemplateDefinition::new(&content, shadowroot_attributes, host_attributes),
             ))
             .collect();
         Locator { templates }
@@ -184,11 +195,9 @@ impl Locator {
     /// attributes from the source `<f-template>`'s inner `<template>` should
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
-        self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: escape_code_sample_elements(content),
-            shadowroot_attributes: Vec::new(),
-            host_attributes: Vec::new(),
-        });
+        self.templates.insert(element_name.to_string(), TemplateDefinition::new(
+            content, Vec::new(), Vec::new(),
+        ));
     }
 
     /// Add a template directly with shadowroot-prefixed attributes and host
@@ -209,15 +218,21 @@ impl Locator {
         shadowroot_attrs: &[(String, Option<String>)],
         host_attrs: &[(String, Option<String>)],
     ) {
-        self.templates.insert(element_name.to_string(), TemplateDefinition {
-            content: escape_code_sample_elements(content),
-            shadowroot_attributes: collect_shadowroot_attributes(shadowroot_attrs),
-            host_attributes: host_attrs.to_vec(),
-        });
+        self.templates.insert(element_name.to_string(), TemplateDefinition::new(
+            content,
+            collect_shadowroot_attributes(shadowroot_attrs),
+            host_attrs.to_vec(),
+        ));
     }
 
     pub fn get_template(&self, element_name: &str) -> Option<&str> {
         self.templates.get(element_name).map(|template| template.content.as_str())
+    }
+
+    pub(crate) fn authored_template(&self, element_name: &str) -> Option<&str> {
+        self.templates.get(element_name).map(|template| {
+            template.original_content.as_deref().unwrap_or(&template.content)
+        })
     }
 
     pub fn get_shadowroot_attributes(&self, element_name: &str) -> &[(String, Option<String>)] {
