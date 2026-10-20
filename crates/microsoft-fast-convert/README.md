@@ -103,7 +103,52 @@ convert_syntax_metadata(): string
 ```
 
 `convert_syntax_metadata()` returns JSON metadata for supported syntax targets.
-Errors are raised as JavaScript exceptions with the `ConvertError` message.
+Errors are JavaScript `Error` instances, retaining the `ConvertError` message and
+adding `code` plus optional `line`, `column`, `length`, and `templateName`.
+Generated declarations export the `FastBuildError extends Error` interface.
+Coordinates refer to the complete original input, not the extracted inner
+template or rewritten output. They use one-based UTF-16 columns/lines and a UTF-16
+error-token highlight length; CRLF is one break and lone CR/LF also break lines.
+Options/syntax failures have no HTML coordinates.
+
+Native `ConvertError` provides `code()`, `location() -> Option<ErrorLocation>`,
+`template_name()`, and `kind()`; use `kind()` when matching source-wrapped
+validation errors. Context fields are now boxed `ErrorContext` values. See the
+[migration guide](../../packages/fast-build/docs/migration/plugin-integrations.md#structured-errors).
+
+## Error codes
+
+| Code | Failure |
+|---|---|
+| `unsupported-syntax` | Unknown syntax target |
+| `typed-unsupported-for-syntax` | Typed output requested for non-TypeScript syntax |
+| `type-source-unsupported-for-stylesheet` | Source-type options supplied for CSS |
+| `stylesheet-unsupported-for-syntax` | CSS requested for a target other than `fast-v3-ts` |
+| `invalid-export-name` | Invalid stylesheet export identifier |
+| `type-source-unsupported-for-syntax` | Source-type options supplied for a non-TypeScript target |
+| `invalid-type-source` | Invalid dotted source-type identifier |
+| `type-source-import-requires-type-source` | Import module supplied without a source type |
+| `missing-f-template` | No outer wrapper |
+| `multiple-f-templates` | Multiple outer wrappers |
+| `missing-f-template-name` | Outer wrapper lacks a string name |
+| `empty-f-template-name` | Outer wrapper name is blank |
+| `missing-inner-template` | No inner template |
+| `multiple-inner-templates` | Multiple inner templates |
+| `unclosed-element` | No matching closing element |
+| `unclosed-tag` | Opening tag has no terminating `>` |
+| `missing-value-attribute` | Directive lacks its required value |
+| `invalid-directive-value` | Directive value lacks double-brace delimiters |
+| `invalid-repeat-expression` | Repeat value is not `item in items` |
+| `unclosed-binding` | Binding lacks closing delimiters |
+| `empty-binding` | Binding expression is blank |
+| `unsupported-f-attribute` | Unsupported FAST attribute |
+| `unsupported-f-element` | Unsupported FAST element |
+| `unsupported-expression` | Expression is outside the converter grammar |
+| `unsupported-event-handler` | Event handler cannot be converted |
+| `unsupported-event-context` | FAST context token has no WebUI mapping |
+| `conflicting-shadow-root-mode` | Outer and inner shadow-root declarations conflict |
+| `unsupported-publisher-attribute` | Outer attribute cannot be transferred |
+| `invalid-attribute-value` | Attribute lacks its required braced form |
 
 ## Validation
 

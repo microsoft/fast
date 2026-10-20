@@ -239,6 +239,66 @@ Legacy unversioned maps and string definitions remain supported. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
 
+#### Structured errors
+
+Failing render, conversion, composition, and metadata-validation APIs throw actual
+JavaScript `Error` objects, retaining the existing human-readable `message`.
+Both WASM modules export this TypeScript interface (not a runtime constructor):
+
+```ts
+interface FastBuildError extends Error {
+    code: string;
+    line?: number;
+    column?: number;
+    length?: number;
+    templateName?: string;
+}
+```
+
+Use `code`, such as `unclosed-binding`, `repeat-not-array`, or `missing-template`,
+instead of parsing messages. The complete code lists are documented with the
+[renderer errors](../../crates/microsoft-fast-build/README.md#error-handling)
+and [converter errors](../../crates/microsoft-fast-convert/README.md#error-codes).
+
+Locations use one-based lines and UTF-16 columns, with a UTF-16 highlight `length`.
+Tabs count as one unit, non-BMP characters as two; CRLF is one line break and lone
+CR/LF are also line breaks. A highlight covers the offending opening tag or
+binding including its delimiters; an unclosed binding highlights its opening
+delimiters. Unlike successful binding metadata, these are error-token ranges,
+not trimmed expression ranges.
+
+Entry-render and conversion coordinates refer to the original HTML argument,
+even after code-sample escaping, inner-template extraction, or publisher-attribute
+rewriting. Light DOM remains in its caller's source. Errors in separately supplied
+custom-element definitions include `templateName` and use coordinates within that
+definition's supplied `content`, not the entry HTML or the full file it was
+extracted from. Maintain a name-to-source mapping when presenting these locations.
+For a missing inner template, the highlight identifies its containing
+`<f-template>`; duplicate-wrapper errors identify the second wrapper.
+
+Coordinates are absent when there is no meaningful HTML position: invalid state
+JSON, malformed metadata/options, missing template definitions or outer wrappers,
+filesystem errors, and unsafe separately supplied CSS. A known `templateName`
+can still be present without coordinates. `parse_f_templates` remains permissive:
+it does not gain strict syntax validation or new failures.
+
+For a direct `render(html, stateJson)` call, an integration can report:
+
+```js
+try {
+    render(html, stateJson);
+} catch (error) {
+    if (!(error instanceof Error)) throw error;
+    const location = error.line === undefined
+        ? inputPath
+        : `${inputPath}:${error.line}:${error.column}`;
+    console.error(`${location} [${error.code}]: ${error.message}`);
+}
+```
+
+See the [migration guide](./docs/migration/plugin-integrations.md#structured-errors)
+when updating consumers that previously caught strings.
+
 ### Custom element templates
 
 Pass a glob pattern (or comma-separated list of patterns) to `--templates` to expand custom elements into [Declarative Shadow DOM](https://developer.chrome.com/docs/css-ui/declarative-shadow-dom):

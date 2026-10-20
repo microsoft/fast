@@ -26,7 +26,7 @@ mod warning;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
-pub use error::ConvertError;
+pub use error::{ConvertError, ErrorContext, ErrorLocation};
 pub use syntax::SyntaxMetadata;
 pub use warning::{ConvertOutput, ConvertWarning};
 

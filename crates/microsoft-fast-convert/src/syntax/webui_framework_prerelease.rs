@@ -18,7 +18,7 @@
 //! parser plugin instead of the WebUI Framework runtime).
 
 use super::strip_single_brace;
-use crate::error::{template_context, ConvertError};
+use crate::error::{template_context, template_snippet, ConvertError};
 use crate::expression::{is_path, parse_repeat_expression, split_arguments};
 use crate::html::{
     find_matching_close, find_tag_end, parse_attributes, read_tag_name, ParsedAttribute,
@@ -40,7 +40,13 @@ pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
 pub(crate) fn convert(parsed: &ParsedTemplate) -> Result<ConvertOutput, ConvertError> {
     let template = merge_publisher_attributes(parsed)?;
     let mut warnings = Vec::new();
-    let output = convert_segment(&template, &mut warnings)?;
+    let output = convert_segment(&template, &mut warnings).map_err(|error| {
+        error.original_open_tag(
+            &parsed.template,
+            find_tag_end(&parsed.template, 0).expect("the original template has an opening tag"),
+            find_tag_end(&template, 0).expect("the merged template has an opening tag"),
+        )
+    })?;
     Ok(ConvertOutput { output, warnings })
 }
 
@@ -235,7 +241,8 @@ fn convert_directive(
             tag: tag.to_string(),
             context: template_context(template, start),
         })?;
-    let inner = convert_segment(&template[tag_end..close_start], warnings)?;
+    let inner = convert_segment(&template[tag_end..close_start], warnings)
+        .map_err(|error| error.rebase(template, tag_end))?;
 
     let output = if tag == "f-repeat" {
         format!("<for each=\"{}\">{inner}</for>", expr.trim())
@@ -298,7 +305,7 @@ fn convert_attribute(
     if matches!(attr.name.as_str(), "f-slotted" | "f-children") {
         warnings.push(ConvertWarning::StrippedUnsupportedDirective {
             directive: attr.name.clone(),
-            context: template_context(template, at),
+            context: template_snippet(template, at),
         });
         return Ok(None);
     }

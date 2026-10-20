@@ -81,6 +81,34 @@ pub fn escape_code_sample_elements(html: &str) -> String {
     transform_code_sample_elements(html, escape_code_sample_inner)
 }
 
+/// Undo only the four expansions made by this module, on an error path.
+pub(crate) fn authored_offset(source: &str, escaped: &str, offset: usize) -> usize {
+    let mut original_at = 0;
+    let mut escaped_at = 0;
+    while escaped_at < offset {
+        let ch = source[original_at..].chars().next().expect("escaped source has an original");
+        let width = if escaped[escaped_at..].starts_with(ch) {
+            ch.len_utf8()
+        } else {
+            let entity = match ch {
+                '{' => "&#123;",
+                '}' => "&#125;",
+                '<' => "&lt;",
+                '>' => "&gt;",
+                _ => unreachable!("code-sample escaping only expands braces and angles"),
+            };
+            assert!(escaped[escaped_at..].starts_with(entity));
+            entity.len()
+        };
+        if escaped_at + width > offset {
+            break;
+        }
+        original_at += ch.len_utf8();
+        escaped_at += width;
+    }
+    original_at
+}
+
 pub(crate) fn mask_code_sample_elements(html: &str) -> String {
     transform_code_sample_elements(html, |inner| " ".repeat(inner.len()))
 }

@@ -4,6 +4,8 @@ use crate::error::{template_context, ConvertError};
 pub(crate) struct ParsedTemplate {
     pub(crate) _name: String,
     pub(crate) template: String,
+    pub(crate) template_start: usize,
+    pub(crate) publisher_start: usize,
     /// Attributes present on the outer `<f-template>` wrapper, excluding `name`.
     /// `webui-prerelease` and `fast-v3-ts` ignore these; the native `webui`
     /// target uses them to transfer Shadow/Light DOM policy onto the inner
@@ -23,7 +25,7 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
     match f_templates.len() {
         0 => return Err(ConvertError::MissingFTemplate),
         1 => {}
-        count => return Err(ConvertError::MultipleFTemplates { count }),
+        count => return Err(ConvertError::MultipleFTemplates { count }.at(template, f_templates[1])),
     }
 
     let f_template_start = f_templates[0];
@@ -33,24 +35,26 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
         })?;
     let f_template_tag = &template[f_template_start..f_template_end];
     let name =
-        read_attribute_value(f_template_tag, "name").ok_or(ConvertError::MissingFTemplateName)?;
+        read_attribute_value(f_template_tag, "name")
+            .ok_or_else(|| ConvertError::MissingFTemplateName.at(template, f_template_start))?;
     let name = name.trim();
     if name.is_empty() {
-        return Err(ConvertError::EmptyFTemplateName);
+        return Err(ConvertError::EmptyFTemplateName.at(template, f_template_start));
     }
 
     let (f_template_close, _) = find_matching_close(template, f_template_start, "f-template")
         .ok_or_else(|| ConvertError::UnclosedElement {
             tag: "f-template".to_string(),
             context: template_context(template, f_template_start),
-        })?;
+        }.in_template(name))?;
     let body = &template[f_template_end..f_template_close];
 
     let inner_templates = find_open_tags(body, "template");
     match inner_templates.len() {
-        0 => return Err(ConvertError::MissingInnerTemplate),
+        0 => return Err(ConvertError::MissingInnerTemplate.at(template, f_template_start).in_template(name)),
         1 => {}
-        count => return Err(ConvertError::MultipleInnerTemplates { count }),
+        count => return Err(ConvertError::MultipleInnerTemplates { count }
+            .at(template, f_template_end + inner_templates[1]).in_template(name)),
     }
 
     let inner_start = inner_templates[0];
@@ -60,6 +64,8 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
                 tag: "template".to_string(),
                 context: template_context(body, inner_start),
             }
+            .rebase(template, f_template_end)
+            .in_template(name)
         })?;
 
     let publisher_attributes = parse_attributes(f_template_tag)
@@ -70,6 +76,8 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
     Ok(ParsedTemplate {
         _name: name.to_string(),
         template: body[inner_start..inner_close_end].to_string(),
+        template_start: f_template_end + inner_start,
+        publisher_start: f_template_start,
         publisher_attributes,
     })
 }

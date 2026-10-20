@@ -15,6 +15,21 @@ fn unknown_syntax_lists_accepted_values() {
 }
 
 #[test]
+fn structured_error_locations_rebase_nested_utf16_source_windows() {
+    let input = "\r\n<f-template name=\"card\">\r\n\
+        <template><f-when value=\"{{shown}}\">\r\n\
+        \u{1f600}\t<f-unknown></f-unknown></f-when></template></f-template>";
+    for syntax in ["webui-prerelease", "fast-v3-ts", "webui-framework-prerelease"] {
+        let error = convert_template(input, syntax).unwrap_err();
+        assert_eq!(error.code(), "unsupported-f-element");
+        assert_eq!(error.template_name(), Some("card"));
+        assert_eq!(error.location(), Some(microsoft_fast_convert::ErrorLocation {
+            line: 4, column: 4, length: "<f-unknown>".len(),
+        }));
+    }
+}
+
+#[test]
 fn missing_f_template_is_rejected() {
     let err = convert_template("<template></template>", "webui-prerelease").unwrap_err();
     assert!(matches!(err, ConvertError::MissingFTemplate));
@@ -27,7 +42,7 @@ fn multiple_f_templates_are_rejected() {
         "webui-prerelease",
     )
     .unwrap_err();
-    assert!(matches!(err, ConvertError::MultipleFTemplates { count: 2 }));
+    assert!(matches!(err.kind(), ConvertError::MultipleFTemplates { count: 2 }));
 }
 
 #[test]
@@ -37,7 +52,7 @@ fn empty_f_template_name_is_rejected() {
         "webui-prerelease",
     )
     .unwrap_err();
-    assert!(matches!(err, ConvertError::EmptyFTemplateName));
+    assert!(matches!(err.kind(), ConvertError::EmptyFTemplateName));
 }
 
 #[test]
@@ -47,7 +62,7 @@ fn missing_inner_template_is_rejected() {
         "webui-prerelease",
     )
     .unwrap_err();
-    assert!(matches!(err, ConvertError::MissingInnerTemplate));
+    assert!(matches!(err.kind(), ConvertError::MissingInnerTemplate));
 }
 
 #[test]
@@ -58,7 +73,7 @@ fn multiple_inner_templates_are_rejected() {
     )
     .unwrap_err();
     assert!(matches!(
-        err,
+        err.kind(),
         ConvertError::MultipleInnerTemplates { count: 2 }
     ));
 }
