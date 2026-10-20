@@ -10,8 +10,69 @@ use crate::{
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_name = Error)]
+    type JavaScriptError;
+    #[wasm_bindgen(constructor, js_class = Error)]
+    fn new(message: &str) -> JavaScriptError;
+    #[wasm_bindgen(method, setter)]
+    fn set_code(this: &JavaScriptError, value: &str);
+    #[wasm_bindgen(method, setter)]
+    fn set_line(this: &JavaScriptError, value: usize);
+    #[wasm_bindgen(method, setter)]
+    fn set_column(this: &JavaScriptError, value: usize);
+    #[wasm_bindgen(method, setter)]
+    fn set_length(this: &JavaScriptError, value: usize);
+    #[wasm_bindgen(method, setter, js_name = templateName)]
+    fn set_template_name(this: &JavaScriptError, value: &str);
+}
+
+fn js_error(
+    code: &str,
+    message: &str,
+    location: Option<crate::ErrorLocation>,
+    template_name: Option<&str>,
+) -> JsValue {
+    let error = JavaScriptError::new(message);
+    error.set_code(code);
+    if let Some(location) = location {
+        error.set_line(location.line);
+        error.set_column(location.column);
+        error.set_length(location.length);
+    }
+    if let Some(name) = template_name {
+        error.set_template_name(name);
+    }
+    error.into()
+}
+
+fn render_error(error: crate::RenderError) -> JsValue {
+    js_error(error.code(), &error.to_string(), error.location(), error.template_name())
+}
+
+fn metadata_error(message: &str) -> JsValue {
+    js_error("invalid-template-metadata", message, None, None)
+}
+
+fn named_metadata_error(name: &str, message: &str) -> JsValue {
+    js_error("invalid-template-metadata", message, None, Some(name))
+}
+
 #[wasm_bindgen(typescript_custom_section)]
 const TEMPLATE_METADATA_TYPES: &str = r#"
+/** A thrown Error with a stable code and optional authored HTML coordinates. */
+export interface FastBuildError extends Error {
+    code: string;
+    /** One-based line; CRLF is one break, as are lone CR and LF. */
+    line?: number;
+    /** One-based UTF-16 column; tabs count as one code unit. */
+    column?: number;
+    /** UTF-16 highlight length, in the same source as line and column. */
+    length?: number;
+    /** For separately supplied definitions, coordinates refer to their content. */
+    templateName?: string;
+}
 export interface TemplateBindingScope {
     variable: string;
     iterable: string;
@@ -60,7 +121,7 @@ pub fn render(entry: &str, state: Option<String>) -> Result<String, JsValue> {
         Some(state) => render_template(entry, &state, None),
         None => render_template_without_state(entry, None),
     }
-    .map_err(|e| JsValue::from_str(&e.to_string()))
+    .map_err(render_error)
 }
 
 /// Render a FAST HTML template with custom element templates and an optional JSON state string.
@@ -90,7 +151,7 @@ pub fn render_with_templates(
         Some(state) => render_template_with_locator(entry, &state, &locator, config.as_ref()),
         None => render_template_with_locator_without_state(entry, &locator, config.as_ref()),
     }
-    .map_err(|e| JsValue::from_str(&e.to_string()))
+    .map_err(render_error)
 }
 
 /// Render the top-level **entry HTML** with custom element templates and an optional JSON state string.
@@ -132,7 +193,7 @@ pub fn render_entry_with_templates(
                 config.as_ref(),
             ),
         }
-        .map_err(|e| JsValue::from_str(&e.to_string()))?;
+        .map_err(render_error)?;
 
         Ok(json_string_array(&chunks))
     } else {
@@ -144,7 +205,7 @@ pub fn render_entry_with_templates(
                 render_entry_template_with_locator_without_state(entry, &locator, config.as_ref())
             }
         }
-        .map_err(|e| JsValue::from_str(&e.to_string()))
+        .map_err(render_error)
     }
 }
 
@@ -162,7 +223,7 @@ pub fn render_shadow_root(
     let locator = Locator::from_template_definitions(templates);
     let config = build_config(attribute_name_strategy.as_deref(), markers_v2.unwrap_or(false))?;
     crate::render_shadow_root_template_with_locator(element_name, state.as_deref(), &locator, config.as_ref())
-        .map_err(|error| JsValue::from_str(&error.to_string()))
+        .map_err(render_error)
 }
 
 /// Apply the FAST code-sample escape to an HTML string.
@@ -226,7 +287,7 @@ pub fn parse_f_templates(html: &str) -> String {
 #[wasm_bindgen]
 pub fn compose_f_template_styles(template_html: &str, css: &str) -> Result<String, JsValue> {
     crate::f_template::compose_f_template_styles(template_html, css)
-        .map_err(|e| JsValue::from_str(&e.to_string()))
+        .map_err(render_error)
 }
 
 fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {
@@ -259,7 +320,7 @@ fn parse_templates_map(
     JsValue,
 > {
     let parsed = json::parse(templates_json).map_err(|e| {
-        JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message))
+        metadata_error(&format!("Failed to parse templates JSON: {}", e.message))
     })?;
     match parsed {
         json::JsonValue::Object(obj) => {
@@ -273,7 +334,7 @@ fn parse_templates_map(
                         map.insert(k.clone(), parse_template_metadata(&k, &template)?);
                     }
                     _ => {
-                        return Err(JsValue::from_str(&format!(
+                        return Err(named_metadata_error(&k, &format!(
                             "Template value for '{}' must be a string or metadata object",
                             k
                         )));
@@ -282,7 +343,7 @@ fn parse_templates_map(
             }
             Ok(map)
         }
-        _ => Err(JsValue::from_str("Templates must be a JSON object")),
+        _ => Err(metadata_error("Templates must be a JSON object")),
     }
 }
 
@@ -299,7 +360,7 @@ fn parse_template_metadata(
 > {
     if let Some(version) = template.get("formatVersion") {
         if !matches!(version, json::JsonValue::Number(number) if *number == f64::from(crate::TEMPLATE_FORMAT_VERSION)) {
-            return Err(JsValue::from_str(&format!(
+            return Err(named_metadata_error(template_name, &format!(
                 "Unsupported formatVersion for template '{}': expected {}",
                 template_name, crate::TEMPLATE_FORMAT_VERSION,
             )));
@@ -308,7 +369,7 @@ fn parse_template_metadata(
     let content = match template.get("content") {
         Some(json::JsonValue::String(content)) => content.clone(),
         _ => {
-            return Err(JsValue::from_str(&format!(
+            return Err(named_metadata_error(template_name, &format!(
                 "Template metadata for '{}' must include a string content property",
                 template_name
             )));
@@ -321,7 +382,7 @@ fn parse_template_metadata(
         }
         Some(json::JsonValue::Null) | None => Vec::new(),
         Some(_) => {
-            return Err(JsValue::from_str(&format!(
+            return Err(named_metadata_error(template_name, &format!(
                 "Template metadata for '{}' must use an array shadowrootAttributes property",
                 template_name
             )));
@@ -334,7 +395,7 @@ fn parse_template_metadata(
         }
         Some(json::JsonValue::Null) | None => Vec::new(),
         Some(_) => {
-            return Err(JsValue::from_str(&format!(
+            return Err(named_metadata_error(template_name, &format!(
                 "Template metadata for '{}' must use an array hostAttributes property",
                 template_name
             )));
@@ -354,7 +415,7 @@ fn parse_attribute_pairs(
         let attr = match attr {
             json::JsonValue::Object(attr) => attr,
             _ => {
-                return Err(JsValue::from_str(&format!(
+                return Err(named_metadata_error(template_name, &format!(
                     "Template metadata for '{}' contains a non-object {} attribute",
                     template_name, kind
                 )));
@@ -363,7 +424,7 @@ fn parse_attribute_pairs(
         let name = match attr.get("name") {
             Some(json::JsonValue::String(name)) => name.clone(),
             _ => {
-                return Err(JsValue::from_str(&format!(
+                return Err(named_metadata_error(template_name, &format!(
                     "Template metadata for '{}' contains a {} attribute without a string name",
                     template_name, kind
                 )));
@@ -373,7 +434,7 @@ fn parse_attribute_pairs(
             Some(json::JsonValue::String(value)) => Some(value.clone()),
             Some(json::JsonValue::Null) | None => None,
             _ => {
-                return Err(JsValue::from_str(&format!(
+                return Err(named_metadata_error(template_name, &format!(
                     "Template metadata for '{}' contains a {} attribute with a non-string value",
                     template_name, kind
                 )));
@@ -450,10 +511,10 @@ fn build_config(strategy: Option<&str>, markers_v2: bool) -> Result<Option<Rende
     let attribute_name_strategy = match strategy {
         "" | "camelCase" => AttributeNameStrategy::CamelCase,
         "none" => AttributeNameStrategy::None,
-        _ => return Err(JsValue::from_str(&format!(
+        _ => return Err(js_error("invalid-attribute-name-strategy", &format!(
             "Invalid attribute-name-strategy '{}': expected 'none' or 'camelCase'",
             strategy
-        ))),
+        ), None, None)),
     };
 
     if attribute_name_strategy == AttributeNameStrategy::CamelCase && !markers_v2 {

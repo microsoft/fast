@@ -249,7 +249,8 @@ fn convert_repeat(
 
     let mut child_scopes = scopes.to_vec();
     child_scopes.push(RepeatScope { alias });
-    let inner = convert_segment(&template[tag_end..close_start], state, &child_scopes)?;
+    let inner = convert_segment(&template[tag_end..close_start], state, &child_scopes)
+        .map_err(|error| error.rebase(template, tag_end))?;
     state.repeat = true;
 
     Ok((
@@ -278,7 +279,8 @@ fn convert_when(
                 context: template_context(template, start),
             }
         })?;
-    let inner = convert_segment(&template[tag_end..close_start], state, scopes)?;
+    let inner = convert_segment(&template[tag_end..close_start], state, scopes)
+        .map_err(|error| error.rebase(template, tag_end))?;
     state.when = true;
 
     Ok((format!("${{when({condition}, html`{inner}`)}}"), close_end))

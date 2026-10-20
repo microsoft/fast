@@ -11,6 +11,12 @@ fn test_error_unclosed_double_brace() {
     assert!(matches!(e, RenderError::UnclosedBinding { .. }), "wrong variant: {msg}");
     assert!(msg.contains("{{name"), "should show partial expr: {msg}");
     assert!(msg.contains("Hello {{name"), "should show template context: {msg}");
+    assert_eq!(e.code(), "unclosed-binding");
+    assert_eq!(e.location(), Some(microsoft_fast_build::ErrorLocation {
+        line: 1, column: 7, length: 2,
+    }));
+    assert_eq!(e.template_name(), None);
+    assert_eq!(msg, "unclosed binding '{{name': no closing '}}' found to end the expression — template: \"Hello {{name\"");
 }
 
 #[test]

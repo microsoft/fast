@@ -8,6 +8,270 @@ const path = require("node:path");
 const { execFileSync, spawnSync } = require("node:child_process");
 const typescript = require("typescript");
 
+/**
+ * @param {() => unknown} action
+ * @param {string} code
+ * @param {string | undefined} source
+ * @param {number | undefined} at
+ * @param {string | undefined} templateName
+ * @param {number | undefined} length
+ */
+function assertDiagnostic(
+    action,
+    code,
+    source = undefined,
+    at = undefined,
+    templateName = undefined,
+    length = undefined,
+) {
+    assert.throws(action, error => {
+        assert.ok(error instanceof Error);
+        assert.equal(error.code, code);
+        assert.equal(typeof error.stack, "string");
+        assert.equal(error.templateName, templateName);
+        if (source !== undefined && at !== undefined) {
+            const lines = source.slice(0, at).split(/\r\n|\r|\n/);
+            assert.equal(error.line, lines.length);
+            assert.equal(error.column, lines.at(-1).length + 1);
+            assert.equal(error.length, length);
+        } else {
+            for (const key of ["line", "column", "length"]) {
+                assert.equal(Object.hasOwn(error, key), false);
+            }
+        }
+        return true;
+    });
+}
+
+test("render diagnostics locate authored input through escaping and nested directives", () => {
+    const repeat = '<f-repeat value="{{item in items}}">{{item}}</f-repeat>';
+    const source =
+        "<code>{{escaped}} &lt; &#123; <f-when></f-when></code>\r\n" +
+        '<f-when value="{{shown}}">\r\t😀' +
+        repeat +
+        "</f-when>";
+    for (const stream of [false, true]) {
+        assertDiagnostic(
+            () =>
+                wasm.render_entry_with_templates(
+                    source,
+                    "{}",
+                    '{"shown":true,"items":42}',
+                    undefined,
+                    stream,
+                ),
+            "repeat-not-array",
+            source,
+            source.indexOf(repeat),
+            undefined,
+            '<f-repeat value="{{item in items}}">'.length,
+        );
+    }
+    const unclosed = "<code>{{example}}</code>\n😀\t{{unfinished";
+    assertDiagnostic(
+        () => wasm.render(unclosed, "{}"),
+        "unclosed-binding",
+        unclosed,
+        unclosed.indexOf("{{unfinished"),
+        undefined,
+        2,
+    );
+});
+
+test("nested-definition diagnostics use the named content rather than the entry", () => {
+    const content =
+        '<code>{{example}}</code>\r\n<f-repeat value="{{item in items}}">' +
+        "😀<f-when><b></b></f-when></f-repeat>";
+    const templates = JSON.stringify({
+        "test-card": { content },
+        "test-wrapper": '<f-when value="{{shown}}"><test-card></test-card></f-when>',
+    });
+    for (const stream of [false, true]) {
+        assertDiagnostic(
+            () =>
+                wasm.render_entry_with_templates(
+                    "\n\n<test-wrapper></test-wrapper>",
+                    templates,
+                    '{"shown":true,"items":[1]}',
+                    undefined,
+                    stream,
+                ),
+            "missing-value-attribute",
+            content,
+            content.indexOf("<f-when>"),
+            "test-card",
+            "<f-when>".length,
+        );
+    }
+    assertDiagnostic(
+        () => wasm.render_shadow_root("test-card", templates, '{"items":[1]}'),
+        "missing-value-attribute",
+        content,
+        content.indexOf("<f-when>"),
+        "test-card",
+        "<f-when>".length,
+    );
+});
+
+test("conversion diagnostics locate the original document for every syntax target", () => {
+    const source =
+        '\r\n<f-template name="test-card" shadowrootmode="open">\r\n' +
+        "  <template class='wide' shadowroot=\"open\">\n" +
+        '<f-when value="{{shown}}">\r\n😀\t<f-unsupported></f-unsupported>' +
+        "</f-when></template></f-template>";
+    for (const syntax of [
+        "webui-prerelease",
+        "fast-v3-ts",
+        "webui-framework-prerelease",
+    ]) {
+        assertDiagnostic(
+            () => convert.convert_template(source, syntax),
+            "unsupported-f-element",
+            source,
+            source.indexOf("<f-unsupported>"),
+            "test-card",
+            "<f-unsupported>".length,
+        );
+    }
+    const unclosed =
+        '<f-template name="card"><template>\n{{title}}\r\n😀 {{unfinished</template></f-template>';
+    assertDiagnostic(
+        () => convert.convert_template(unclosed, "fast-v3-ts"),
+        "unclosed-binding",
+        unclosed,
+        unclosed.indexOf("{{unfinished"),
+        "card",
+        2,
+    );
+});
+
+test("diagnostics distinguish repeated markup and rebase light DOM children", () => {
+    const repeated =
+        '<f-when value="{{false}}"><f-when></f-when></f-when>\n' +
+        '<f-repeat value="{{item in items}}">😀<f-when></f-when></f-repeat>';
+    assertDiagnostic(
+        () => wasm.render_with_templates(repeated, "{}", '{"items":[1]}'),
+        "missing-value-attribute",
+        repeated,
+        repeated.lastIndexOf("<f-when>"),
+        undefined,
+        "<f-when>".length,
+    );
+    const source =
+        '<code>{{example}}</code>\r\n<test-card data-x=">">\r😀<f-when></f-when></test-card>';
+    for (const stream of [false, true]) {
+        assertDiagnostic(
+            () =>
+                wasm.render_entry_with_templates(
+                    source,
+                    '{"test-card":""}',
+                    "{}",
+                    undefined,
+                    stream,
+                ),
+            "missing-value-attribute",
+            source,
+            source.indexOf("<f-when>"),
+            undefined,
+            "<f-when>".length,
+        );
+    }
+    const liveCodeElement = '<code>{{example}}<test-card data-demo="{x}"></code>';
+    assertDiagnostic(
+        () => wasm.render_with_templates(liveCodeElement, '{"test-card":""}'),
+        "unclosed-directive",
+        liveCodeElement,
+        liveCodeElement.indexOf("<test-card"),
+        undefined,
+        '<test-card data-demo="{x}">'.length,
+    );
+});
+
+test("validation diagnostics locate wrappers and publisher attributes in authored HTML", () => {
+    const missingInner = '\r\n😀<f-template name="card"><div></div></f-template>';
+    for (const action of [
+        () => convert.convert_template(missingInner, "fast-v3-ts"),
+        () => wasm.compose_f_template_styles(missingInner, ""),
+    ]) {
+        assertDiagnostic(
+            action,
+            "missing-inner-template",
+            missingInner,
+            missingInner.indexOf("<f-template"),
+            "card",
+            '<f-template name="card">'.length,
+        );
+    }
+    const publisher =
+        '\n😀<f-template name="card" data-extra="x">\n<template></template></f-template>';
+    assertDiagnostic(
+        () => convert.convert_template(publisher, "webui-framework-prerelease"),
+        "unsupported-publisher-attribute",
+        publisher,
+        publisher.indexOf("<f-template"),
+        "card",
+        '<f-template name="card" data-extra="x">'.length,
+    );
+    const multiple =
+        '<f-template name="card"><template></template>\r\n😀<template></template></f-template>';
+    for (const action of [
+        () => convert.convert_template(multiple, "fast-v3-ts"),
+        () => wasm.compose_f_template_styles(multiple, ""),
+    ]) {
+        assertDiagnostic(
+            action,
+            "multiple-inner-templates",
+            multiple,
+            multiple.lastIndexOf("<template>"),
+            "card",
+            "<template>".length,
+        );
+    }
+});
+
+test("non-HTML diagnostics have codes without invented source coordinates", () => {
+    assertDiagnostic(() => wasm.render("{{title}}", "{"), "invalid-state-json");
+    assertDiagnostic(
+        () => wasm.render_with_templates("", "[]"),
+        "invalid-template-metadata",
+    );
+    assertDiagnostic(
+        () => wasm.render_with_templates("", "{}", "{}", "invalid"),
+        "invalid-attribute-name-strategy",
+    );
+    assertDiagnostic(
+        () => convert.convert_template("<template></template>", "invalid"),
+        "unsupported-syntax",
+    );
+    assertDiagnostic(
+        () => convert.convert_stylesheet("", "fast-v3-ts", "not-valid"),
+        "invalid-export-name",
+    );
+    assertDiagnostic(
+        () => wasm.render_with_templates("", '{"card":{"formatVersion":99}}'),
+        "invalid-template-metadata",
+        undefined,
+        undefined,
+        "card",
+    );
+    assertDiagnostic(
+        () => wasm.render_shadow_root("missing-card", "{}"),
+        "missing-template",
+        undefined,
+        undefined,
+        "missing-card",
+    );
+    assertDiagnostic(
+        () => wasm.compose_f_template_styles("<template></template>", ""),
+        "missing-f-template",
+    );
+    assertDiagnostic(
+        () => wasm.compose_f_template_styles("", "</style>"),
+        "unsafe-style-content",
+    );
+    assert.deepEqual(JSON.parse(wasm.parse_f_templates("<f-template>{{")), []);
+});
+
 test("null attributes are omitted, empty strings retained, and HTML booleans use presence", () => {
     assert.equal(
         wasm.render(
@@ -271,18 +535,25 @@ test("authored source spans are exposed by the generated WASM declarations", () 
         const file = path.join(directory, "metadata.ts");
         fs.writeFileSync(
             file,
-            `import type { FTemplateMetadata, TemplateSourceSpan } from "../../wasm/microsoft_fast_build.js";
+            `import type { FTemplateMetadata, TemplateSourceSpan, FastBuildError } from "../../wasm/microsoft_fast_build.js";
+import type { FastBuildError as ConvertError } from "../../wasm/convert/microsoft_fast_convert.js";
 export function authoredExpression(source: string, template: FTemplateMetadata): string {
     const span: TemplateSourceSpan = template.bindings[0].span;
     const line: number = span.start.line;
     const column: number = span.end.column;
     return source.slice(span.start.offset, span.end.offset) + line + column;
 }
+export function diagnostic(error: FastBuildError | ConvertError): [
+    Error, string, number | undefined, number | undefined, number | undefined, string | undefined
+] {
+    return [error, error.code, error.line, error.column, error.length, error.templateName];
+}
 `,
         );
         const program = typescript.createProgram([file], {
             module: typescript.ModuleKind.ESNext,
             moduleResolution: typescript.ModuleResolutionKind.Bundler,
+            target: typescript.ScriptTarget.ESNext,
             strict: true,
             noEmit: true,
             types: [],

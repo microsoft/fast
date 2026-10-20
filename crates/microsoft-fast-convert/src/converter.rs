@@ -22,7 +22,17 @@ pub(crate) fn convert(
             fast_v3_ts::convert(&parsed.template, options).map(ConvertOutput::without_warnings)
         }
         Syntax::WebuiFrameworkPrerelease => webui_framework_prerelease::convert(&parsed),
-    }
+    }.map_err(|error| {
+        let error = if matches!(error.kind(),
+            ConvertError::UnsupportedPublisherAttribute { .. }
+            | ConvertError::ConflictingShadowRootMode { .. }
+        ) {
+            error.at(template, parsed.publisher_start)
+        } else {
+            error.rebase(template, parsed.template_start)
+        };
+        error.in_template(&parsed._name)
+    })
 }
 
 /// Convert a CSS stylesheet string to the requested syntax, exporting `export_name`.

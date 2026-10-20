@@ -739,7 +739,12 @@ A hand-rolled recursive-descent parser. No external crates.
 
 ## Error handling — `error.rs`
 
-`RenderError` is a non-exhaustive enum with 16 variants. Every variant carries at least one descriptive field. Every error message includes a **template context snippet** — a ±20-character window around the error site — to help developers pinpoint the problem.
+`RenderError` retains its display explanations and context snippets, adding stable
+`code()`, optional authored `location()`, and `template_name()` accessors.
+`Located` wraps validation variants that previously carried no source information;
+`kind()` exposes the underlying variant. Context-bearing variants use boxed
+`ErrorContext` so diagnostic metadata does not enlarge successful `Result` values.
+Source strings/ranges are captured only on failure, not per successful binding.
 
 `template_context(template, at)` takes care to:
 - Walk backwards up to 20 bytes (to a UTF-8 character boundary) for pre-error context.
@@ -747,6 +752,21 @@ A hand-rolled recursive-descent parser. No external crates.
 - Add `…` ellipsis markers when the snippet is not at the string boundaries.
 
 `truncate(s, max)` truncates an expression to `max` characters with a trailing `…` to keep error messages readable.
+
+Recursive when/repeat bodies borrow source ranges and explicitly rebase errors;
+light-DOM children rebase past their host opening tag. A separate locator template
+finalizes its own original-content coordinates and name, preventing callers from
+rebasing them into an entry or parent definition. Locator definitions retain an
+extra original string only when code-sample escaping changed it. On failure,
+`authored_offset` reverses the preprocessor's four known brace/angle expansions;
+successful renders build no source map. UTF-16 coordinates reuse metadata's
+`SourceLocations` scanner. Streaming follows the same source boundaries.
+
+The WASM wrapper creates native JavaScript `Error` objects and attaches optional
+coordinates only for HTML failures. Invalid state/metadata/configuration,
+filesystem, missing-source, and separately supplied CSS errors do not claim HTML
+coordinates. Code lists and public semantics are in the
+[README](./README.md#error-handling). `parse_f_templates` stays permissive.
 
 ---
 

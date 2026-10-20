@@ -11,6 +11,7 @@ pub fn render(template: &str, root: &JsonValue, config: Option<&RenderConfig>) -
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     render_node(&preprocessed, root, &[], None, None, false, config)
+        .map_err(|error| error.authored(template))
 }
 
 pub fn render_stream(template: &str, root: &JsonValue, config: Option<&RenderConfig>) -> Result<Vec<String>, RenderError> {
@@ -18,6 +19,7 @@ pub fn render_stream(template: &str, root: &JsonValue, config: Option<&RenderCon
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     stream_node(&preprocessed, root, &[], None, None, false, config)
+        .map_err(|error| error.authored(template))
 }
 
 pub fn render_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<String, RenderError> {
@@ -25,6 +27,7 @@ pub fn render_with_locator(template: &str, root: &JsonValue, locator: &Locator, 
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     render_node(&preprocessed, root, &[], Some(locator), None, false, config)
+        .map_err(|error| error.authored(template))
 }
 
 pub fn render_stream_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<Vec<String>, RenderError> {
@@ -32,6 +35,7 @@ pub fn render_stream_with_locator(template: &str, root: &JsonValue, locator: &Lo
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     stream_node(&preprocessed, root, &[], Some(locator), None, false, config)
+        .map_err(|error| error.authored(template))
 }
 
 /// Render the top-level **entry HTML** — custom elements found at this level use
@@ -42,6 +46,7 @@ pub fn render_entry_with_locator(template: &str, root: &JsonValue, locator: &Loc
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     render_node(&preprocessed, root, &[], Some(locator), None, true, config)
+        .map_err(|error| error.authored(template))
 }
 
 pub fn render_entry_stream_with_locator(template: &str, root: &JsonValue, locator: &Locator, config: Option<&RenderConfig>) -> Result<Vec<String>, RenderError> {
@@ -49,4 +54,5 @@ pub fn render_entry_stream_with_locator(template: &str, root: &JsonValue, locato
     let config = config.unwrap_or(&default);
     let preprocessed = escape_code_sample_elements(template);
     stream_node(&preprocessed, root, &[], Some(locator), None, true, config)
+        .map_err(|error| error.authored(template))
 }

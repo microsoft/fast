@@ -70,7 +70,7 @@ impl<'a> SourceLocations<'a> {
         }
     }
 
-    fn position(&mut self, byte: usize) -> SourcePosition {
+    pub(crate) fn position(&mut self, byte: usize) -> SourcePosition {
         // Discovery visits bindings in source order, so coordinates need only one pass.
         assert!(
             byte >= self.byte,
