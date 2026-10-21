@@ -1,5 +1,33 @@
 # Migrating plugin integration pipelines
 
+## Structured errors
+
+WASM failures now throw JavaScript `Error` objects rather than strings. Read
+`error.message` for the previous human-readable text; `String(error)` now has the
+standard `Error: ` prefix. Replace message matching with stable `error.code`
+checks. Both WASM declaration modules export a `FastBuildError` interface extending
+`Error`; it is a type only, not an exported constructor.
+
+Optional `line`/`column` are one-based UTF-16 coordinates, and `length` is a UTF-16
+error-token highlight length. CRLF is one break; lone CR/LF also break lines.
+Entry and conversion coordinates refer to the complete supplied HTML. A named
+custom-element render failure instead refers to its separately supplied `content`.
+Use `templateName` to select that source, rather than attaching its coordinates
+to the entry or to a full file from which `content` was extracted. Older metadata
+does not carry enough provenance to reconstruct those full-file positions.
+Do not fabricate HTML locations when these fields are absent (JSON/options,
+missing sources, filesystem errors, or separate CSS).
+
+Native Rust `RenderError` and `ConvertError` expose `code()`, `location()` returning
+an optional `ErrorLocation`, `template_name()`, and `kind()`. Source-annotated
+validation errors may use the new `Located` variant; match `error.kind()` to
+inspect the underlying variant. Context fields now use boxed `ErrorContext`
+instead of `String`; use `context.to_string()` to read the unchanged snippet and
+`String::into()` when constructing a context without source provenance.
+Update exhaustive enum matches for `Located`. These are intentional pre-1.0
+native API changes. Successful rendering/conversion, warnings, missing-state
+behavior, and permissive `parse_f_templates` parsing are unchanged.
+
 ## Attribute output changes
 
 Missing and explicit `null` bindings now omit the entire attribute, including
@@ -45,3 +73,18 @@ Repeat collections alone have a known array requirement. Complex/client
 references are lexical descriptions; metadata is not a full state schema or
 syntax-validation certificate. Use application declarations for definitive
 type/requiredness checks.
+
+Each newly parsed binding now includes an authored `span` with half-open `start`
+and `end` positions in the complete input string. Offsets are zero-based UTF-16;
+lines and UTF-16 columns are one-based. Use the original input, not the returned
+trimmed `content`, when slicing or attaching diagnostics. The range covers the
+trimmed expression without braces; repeat bindings locate only the iterable.
+CRLF counts as one line break and two offset units; lone CR and LF each count
+as a line break. Raw attribute entities are not decoded.
+
+Format version 1 is unchanged, and renderers still accept older records without
+spans. Regenerate persisted metadata to obtain authored locations; preserve spans
+when mapping or serializing records. Native `BindingMetadata` struct literals
+must now supply the public `span: SourceSpan` field; prefer `parse_f_templates`
+to constructing descriptive metadata manually. Generated WASM declarations expose
+`TemplateSourceSpan` and `TemplateSourcePosition`.

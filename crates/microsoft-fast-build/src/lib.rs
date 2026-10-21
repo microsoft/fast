@@ -82,9 +82,9 @@ mod binding_metadata;
 mod wasm;
 
 pub use json::{JsonValue, JsonError};
-pub use error::RenderError;
+pub use error::{ErrorContext, ErrorLocation, RenderError};
 pub use locator::{Locator, FTemplate, parse_f_templates};
-pub use binding_metadata::{BindingMetadata, BindingScope};
+pub use binding_metadata::{BindingMetadata, BindingScope, SourcePosition, SourceSpan};
 pub use config::{RenderConfig, AttributeNameStrategy};
 pub use f_template::compose_f_template_styles;
 

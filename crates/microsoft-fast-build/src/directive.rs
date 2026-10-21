@@ -4,7 +4,7 @@ use crate::expression::evaluate;
 use crate::content::html_escape;
 use crate::config::{RenderConfig, AttributeNameStrategy};
 use crate::attribute::{
-    extract_directive_expr, extract_directive_content,
+    extract_directive_expr, extract_directive_content, extract_directive_content_range,
     skip_single_brace_expr, find_tag_end, read_tag_name, read_tag_name_slice,
     parse_element_attributes, find_next_plain_html_tag, is_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
@@ -118,11 +118,12 @@ pub fn render_when(
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
-    let (inner, after) = extract_directive_content(template, at, "f-when")
+    let (inner_range, after) = extract_directive_content_range(template, at, "f-when")
         .ok_or_else(|| RenderError::UnclosedDirective {
             tag: "f-when".to_string(),
             context: template_context(template, at),
         })?;
+    let inner = &template[inner_range.clone()];
     let expr = extract_directive_expr(template, at)
         .ok_or_else(|| RenderError::MissingValueAttribute {
             tag: "f-when".to_string(),
@@ -135,14 +136,16 @@ pub fn render_when(
         let end = hy.content_end_marker(index);
         let inner_content = if evaluate(&expr, root, loop_vars) {
             let mut child_scope = HydrationScope::new(config.markers_v2);
-            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false, config)?
+            render_node(inner, root, loop_vars, locator, Some(&mut child_scope), false, config)
+                .map_err(|error| error.rebase(template, inner_range.start))?
         } else {
             String::new()
         };
         format!("{}{}{}", start, inner_content, end)
     } else {
         if evaluate(&expr, root, loop_vars) {
-            render_node(&inner, root, loop_vars, locator, None, false, config)?
+            render_node(inner, root, loop_vars, locator, None, false, config)
+                .map_err(|error| error.rebase(template, inner_range.start))?
         } else {
             String::new()
         }
@@ -161,11 +164,12 @@ pub fn render_repeat(
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
-    let (inner, after) = extract_directive_content(template, at, "f-repeat")
+    let (inner_range, after) = extract_directive_content_range(template, at, "f-repeat")
         .ok_or_else(|| RenderError::UnclosedDirective {
             tag: "f-repeat".to_string(),
             context: template_context(template, at),
         })?;
+    let inner = &template[inner_range.clone()];
     let expr = extract_directive_expr(template, at)
         .ok_or_else(|| RenderError::MissingValueAttribute {
             tag: "f-repeat".to_string(),
@@ -178,11 +182,13 @@ pub fn render_repeat(
         })?;
     match resolve_value(&list_expr, root, loop_vars) {
         None => {
-            let output = render_repeat_items(&inner, &[], &var_name, root, loop_vars, locator, hydration, config)?;
+            let output = render_repeat_items(inner, &[], &var_name, root, loop_vars, locator, hydration, config)
+                .map_err(|error| error.rebase(template, inner_range.start))?;
             Ok((output, after))
         }
         Some(JsonValue::Array(items)) => {
-            let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration, config)?;
+            let output = render_repeat_items(inner, &items, &var_name, root, loop_vars, locator, hydration, config)
+                .map_err(|error| error.rebase(template, inner_range.start))?;
             Ok((output, after))
         }
         Some(_) => Err(RenderError::NotAnArray {
@@ -354,7 +360,7 @@ pub fn render_custom_element(
             parent_hydration.as_mut().map(|h| &mut **h),
             false,
             config,
-        )?
+        ).map_err(|error| error.rebase(template, tag_end))?
     };
 
     let output = format!(
@@ -377,6 +383,10 @@ pub(crate) fn render_shadow_content(
         })?;
     let mut scope = HydrationScope::new(config.markers_v2);
     render_node(template, state, &[], Some(locator), Some(&mut scope), false, config)
+        .map_err(|error| {
+            error.authored(locator.authored_template(element_name).expect("template was found"))
+                .in_template(element_name)
+        })
 }
 
 /// Merge `template_host_attrs` (parsed from the inner `<template …>` element)

@@ -534,7 +534,9 @@ the imperative `html` API:
   publisher supplies the definition template and later duplicates do not
   reassign it.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
-  shape used by `ViewTemplate.create()`.
+  shape used by `ViewTemplate.create()`. Its string scanning does not reliably
+  exclude HTML comments; bindings and FAST directive markup inside comments are
+  unsupported. Authors must remove unused bound markup rather than comment it out.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
   exported from `@microsoft/fast-element/attribute-map.js` and
   `@microsoft/fast-element/observer-map.js`. With `declarativeTemplate()` they

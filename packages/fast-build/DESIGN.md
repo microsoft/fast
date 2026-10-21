@@ -6,6 +6,11 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 
 ## High-level overview
 
+Bindings and FAST directive markup inside HTML comments are unsupported by the
+declarative rendering contract. The renderer and client use string scanning that
+does not reliably exclude comment contents; authors must remove unused bound
+markup rather than comment it out. No comment filtering or validation is implied.
+
 `@microsoft/fast-build` is a Node.js CLI tool that server-side renders FAST declarative HTML templates and converts FAST declarative template files to other supported syntaxes. It delegates template rendering to a WebAssembly module compiled from the [`microsoft-fast-build`](../../crates/microsoft-fast-build) Rust crate and conversion to the `microsoft-fast-convert` WASM module generated under `wasm/convert/`. The Node.js layer is responsible only for:
 
 1. Dispatching `fast build` and `fast convert`
@@ -143,6 +148,20 @@ definition has `formatVersion: 1`; renderer entry points reject explicit
 incompatible versions while accepting legacy unversioned definitions.
 `bindings` describe syntax/lexical scopes with explicit unknown state types
 and optionality, not an inferred application schema.
+
+Every binding occurrence now includes an authored `span` with inclusive `start`
+and exclusive `end` positions. Offsets are zero-based UTF-16 code units; lines
+and UTF-16 columns are one-based. CRLF counts as one break, while lone CR and LF
+also start a new line. Spans cover trimmed expressions (the iterable for repeats)
+in the complete input to `parse_f_templates`, including document prefixes, rather
+than the returned trimmed content. Existing lexical scopes and raw attribute
+entity spelling are preserved.
+
+Location discovery remains Rust-owned. The CLI retains spans with the rest of
+the binding metadata; no expression search or JavaScript coordinate conversion
+is needed. Format version 1 remains compatible: renderers do not consume spans
+and continue accepting older records without them. Regenerate older metadata
+when authored diagnostics need locations.
 
 Plugins can call the exported `render_shadow_root` directly for a complete DSD
 fragment using resolved component state, without creating a throwaway host or
@@ -330,6 +349,23 @@ only populated when `webui-framework-prerelease` strips an unsupported `f-slotte
 directive) and throwing on conversion or validation errors (including `type-source`
 misuse). The CLI writes `output` to the resolved output file and prints each
 `warnings` entry to stderr as `Warning: <message>` without failing the command.
+
+### Structured diagnostics
+
+Both WASM wrappers construct native JavaScript `Error` objects with unchanged
+display messages, a stable `code`, and optional `line`, `column`, `length`, and
+`templateName`. Generated declarations export `FastBuildError` from each module.
+The CLI already prefers `error.message`, preserving its existing stderr format.
+See the [public contract and code lists](./README.md#structured-errors).
+
+Rust scanners capture source ranges on failure. Recursive slices rebase those
+ranges explicitly; template-definition boundaries assign names and stop entry
+rebasing. The renderer reverses only its known code-sample expansions on the
+error path. Conversion preserves the extracted template offset and reverses the
+publisher opening-tag rewrite. No integration searches snippets or reparses
+messages. Non-HTML failures omit coordinates. Metadata discovery remains
+permissive, successful output/warnings are unchanged, and fast-element's client
+runtime is not modified.
 
 ---
 

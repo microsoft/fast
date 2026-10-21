@@ -157,12 +157,37 @@ root paths or state declarations. `name` is absent for compound expressions;
 unknown, and types are unknown except for repeat collections' array requirement.
 The permissive template parser remains descriptive, not full syntax validation.
 
+Each binding carries a half-open `SourceSpan` over its trimmed expression in the
+complete original `parse_f_templates` input. Source positions use zero-based
+UTF-16 offsets and one-based lines/UTF-16 columns; CRLF is a single line break,
+as are lone CR and LF. Tabs count as one column and non-BMP characters as two.
+Repeat spans cover only the iterable, matching existing expression metadata.
+Attribute values remain raw rather than entity-decoded.
+
+Extraction retains byte ranges before trimming. Attribute parsing records value
+starts, and directive extraction exposes shared expression/body range helpers.
+Metadata recursion borrows source windows instead of copying directive bodies.
+Code-sample discovery shares the renderer's existing traversal but masks code
+bodies with equal-byte-length spaces for metadata; it does not scan an expanded,
+entity-escaped string. Thus bindings after code samples retain their authored
+byte positions, while code-sample bindings remain excluded.
+
+A single forward source cursor converts these internal byte positions to public
+UTF-16 coordinates across all templates in one input. It advances in binding
+source order, avoiding per-binding rescans of the document prefix or a per-byte
+position map. This does not claim all existing metadata discovery is linear.
+UTF-16 coordinate tracking runs only during metadata parsing, not rendering or
+the FAST Element client runtime.
+Bindings and directives inside HTML comments remain unsupported.
+
 Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
 `Locator::from_metadata` validates native versions/names/duplicates; WASM render
 exports validate explicit per-definition `formatVersion` before constructing
 the locator. Unversioned string/metadata maps remain compatible. The CLI retains
 metadata fields when mapping parsed definitions, and WASM custom declarations
 describe the JSON interfaces without adding a runtime serialization dependency.
+The new spans are additive under format version 1; rendering does not require or
+validate them, so older version-1 records remain renderable.
 
 ## Finding the next event — `directive::next_event`
 
@@ -190,9 +215,11 @@ template/attribute parsing remain separate optimization targets.
 
 The scanner intentionally preserves the old string-scanner semantics rather
 than introducing DOM parsing rules. For example, directives inside HTML
-comments are not newly suppressed. Differential tests compare discovery with
-the pre-optimization scanner at every UTF-8 boundary across generated fragment
-pairs, including malformed tags, single braces, quotes, and directive-name
+comments are not suppressed. Bindings and FAST directive markup inside comments
+are unsupported; commenting out bound markup does not disable parsing, and no
+comment filtering or validation is performed. Differential tests compare
+discovery with the pre-optimization scanner at every UTF-8 boundary across
+generated fragment pairs, including malformed tags, single braces, quotes, and directive-name
 prefixes.
 
 ### Single-brace passthrough
@@ -712,7 +739,12 @@ A hand-rolled recursive-descent parser. No external crates.
 
 ## Error handling — `error.rs`
 
-`RenderError` is a non-exhaustive enum with 16 variants. Every variant carries at least one descriptive field. Every error message includes a **template context snippet** — a ±20-character window around the error site — to help developers pinpoint the problem.
+`RenderError` retains its display explanations and context snippets, adding stable
+`code()`, optional authored `location()`, and `template_name()` accessors.
+`Located` wraps validation variants that previously carried no source information;
+`kind()` exposes the underlying variant. Context-bearing variants use boxed
+`ErrorContext` so diagnostic metadata does not enlarge successful `Result` values.
+Source strings/ranges are captured only on failure, not per successful binding.
 
 `template_context(template, at)` takes care to:
 - Walk backwards up to 20 bytes (to a UTF-8 character boundary) for pre-error context.
@@ -720,6 +752,21 @@ A hand-rolled recursive-descent parser. No external crates.
 - Add `…` ellipsis markers when the snippet is not at the string boundaries.
 
 `truncate(s, max)` truncates an expression to `max` characters with a trailing `…` to keep error messages readable.
+
+Recursive when/repeat bodies borrow source ranges and explicitly rebase errors;
+light-DOM children rebase past their host opening tag. A separate locator template
+finalizes its own original-content coordinates and name, preventing callers from
+rebasing them into an entry or parent definition. Locator definitions retain an
+extra original string only when code-sample escaping changed it. On failure,
+`authored_offset` reverses the preprocessor's four known brace/angle expansions;
+successful renders build no source map. UTF-16 coordinates reuse metadata's
+`SourceLocations` scanner. Streaming follows the same source boundaries.
+
+The WASM wrapper creates native JavaScript `Error` objects and attaches optional
+coordinates only for HTML failures. Invalid state/metadata/configuration,
+filesystem, missing-source, and separately supplied CSS errors do not claim HTML
+coordinates. Code lists and public semantics are in the
+[README](./README.md#error-handling). `parse_f_templates` stays permissive.
 
 ---
 

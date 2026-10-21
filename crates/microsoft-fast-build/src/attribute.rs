@@ -100,13 +100,22 @@ pub(crate) fn skip_single_brace_expr(template: &str, pos: usize) -> usize {
 
 /// Extract the expression from `value="{{...}}"` inside a directive opening tag.
 pub(crate) fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String> {
+    extract_directive_expr_range(template, tag_start).map(|range| template[range].to_string())
+}
+
+pub(crate) fn extract_directive_expr_range(
+    template: &str,
+    tag_start: usize,
+) -> Option<std::ops::Range<usize>> {
     let tag_end = find_tag_end(template, tag_start)?;
     let tag_content = &template[tag_start..tag_end];
     let search = "value=\"{{";
-    let start = tag_content.find(search)? + search.len();
-    let rest = &tag_content[start..];
+    let start = tag_start + tag_content.find(search)? + search.len();
+    let rest = &template[start..tag_end];
     let end = rest.find("}}\"")?;
-    Some(rest[..end].trim().to_string())
+    let expression = &rest[..end];
+    let start = start + expression.len() - expression.trim_start().len();
+    Some(start..start + expression.trim().len())
 }
 
 /// Extract the inner content between an opening directive tag and its matching
@@ -117,6 +126,15 @@ pub(crate) fn extract_directive_content(
     tag_start: usize,
     tag_name: &str,
 ) -> Option<(String, usize)> {
+    extract_directive_content_range(template, tag_start, tag_name)
+        .map(|(range, after)| (template[range].to_string(), after))
+}
+
+pub(crate) fn extract_directive_content_range(
+    template: &str,
+    tag_start: usize,
+    tag_name: &str,
+) -> Option<(std::ops::Range<usize>, usize)> {
     let tag_end = find_tag_end(template, tag_start)?;
     let open_tag = format!("<{}", tag_name);
     let close_tag = format!("</{}>", tag_name);
@@ -136,7 +154,7 @@ pub(crate) fn extract_directive_content(
             (_, Some(c)) => {
                 depth -= 1;
                 if depth == 0 {
-                    return Some((template[tag_end..c].to_string(), c + close_tag.len()));
+                    return Some((tag_end..c, c + close_tag.len()));
                 }
                 pos = c + close_tag.len();
             }
@@ -525,6 +543,8 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
 pub(crate) struct ParsedAttribute {
     pub name: String,
     pub value: Option<String>,
+    /// Byte offset of the unquoted value in the opening tag, when present.
+    pub value_start: usize,
     pub raw: String,
 }
 
@@ -582,6 +602,7 @@ pub(crate) fn parse_element_attribute_parts(open_tag: &str) -> Vec<ParsedAttribu
             attrs.push(ParsedAttribute {
                 name,
                 value: None,
+                value_start: name_end,
                 raw: open_tag[name_start..name_end].to_string(),
             });
             continue;
@@ -596,12 +617,14 @@ pub(crate) fn parse_element_attribute_parts(open_tag: &str) -> Vec<ParsedAttribu
         }
 
         // Read value using helper.
+        let value_start = i + usize::from(matches!(bytes.get(i), Some(b'"' | b'\'')));
         let (value, new_i) = parse_attribute_value(open_tag, bytes, i);
         i = new_i;
 
         attrs.push(ParsedAttribute {
             name,
             value: Some(value),
+            value_start,
             raw: open_tag[name_start..i].to_string(),
         });
     }

@@ -121,10 +121,25 @@ not a state schema or a full validation certificate. Code samples are excluded.
 `Locator::from_metadata` validates names, duplicates, and the format version.
 Legacy content/tuple constructors remain supported.
 
+Each `BindingMetadata` also has a `span: SourceSpan` containing `start` and `end`
+`SourcePosition` records. Positions refer to the complete original input to
+`parse_f_templates`, including document prefixes and whitespace removed from the
+returned content. `offset` is zero-based UTF-16, **not a Rust byte index**; `line`
+and `column` are one-based, with columns measured in UTF-16 code units. Tabs count
+as one column and non-BMP characters as two. CRLF is one line break and two offset
+units; lone CR and LF each start a new line.
+
+Spans are half-open and cover trimmed expressions without braces. Repeat spans
+cover the iterable, matching the existing expression metadata; lexical scopes are
+unchanged. Attribute entities retain their authored spelling. Code-sample
+preprocessing does not shift later spans. Bindings and FAST directive markup
+inside HTML comments remain unsupported.
+
 The WASM exports are `parse_f_templates(html)` (JSON metadata array) and
 `render_shadow_root(elementName, templatesJson, state?, attributeNameStrategy?,
 markers_v2?)`. Generated declarations include `FTemplateMetadata`,
-`TemplateBinding`, and `TemplateBindingScope`. Each generated record has
+`TemplateBinding`, `TemplateBindingScope`, `TemplateSourceSpan`, and
+`TemplateSourcePosition`. Each generated record has
 `formatVersion: 1`; render exports reject unsupported or malformed explicit
 versions, while still accepting unversioned maps and string-valued definitions.
 
@@ -142,6 +157,12 @@ See the [migration guide](../../packages/fast-build/docs/migration/plugin-integr
 for intentional changes from earlier output.
 
 ## Template Syntax
+
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
 
 ### Content Bindings
 
@@ -733,28 +754,41 @@ Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets
 
 ## Error Handling
 
-All render functions return `Result<String, RenderError>`. `RenderError` is an enum:
+Render functions return `Result<_, RenderError>` (HTML or stream chunks).
+`RenderError` exposes `code()`, `location() -> Option<ErrorLocation>`, and
+`template_name()`. `ErrorLocation` has one-based `line` and UTF-16 `column`, plus
+a UTF-16 `length`. Match `error.kind()` to inspect variants through source-location
+wrappers. WASM failures are JavaScript `Error` instances with these details as
+properties, not plain strings. See the [source-coordinate contract and migration
+notes](../../packages/fast-build/README.md#structured-errors).
 
-| Variant | Triggered by |
-|---|---|
-| `UnclosedBinding` | `{{` with no closing `}}` |
-| `UnclosedUnescapedBinding` | `{{{` with no closing `}}}` |
-| `EmptyBinding` | `{{}}` — blank expression |
-| `MissingState` | Required directive state is absent; missing `<f-repeat>` lists render zero iterations instead |
-| `UnclosedDirective` | `<f-when>` / `<f-repeat>` with no matching close tag |
-| `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
-| `InvalidRepeatExpression` | Repeat value not in `item in list` format |
-| `NotAnArray` | `<f-repeat>` binding resolves to a non-array value |
-| `DuplicateTemplate` | Two or more files contain an `<f-template>` with the same name attribute |
-| `TemplateReadError` | A matched template file could not be read |
-| `JsonParse` | Invalid JSON passed to `render_template` |
-| `MissingFTemplate` | `compose_f_template_styles` input has no `<f-template>` element |
-| `MultipleFTemplates` | `compose_f_template_styles` input has more than one `<f-template>` element |
-| `MissingInnerTemplate` | `compose_f_template_styles` input's `<f-template>` has no inner `<template>` element |
-| `MultipleInnerTemplates` | `compose_f_template_styles` input's `<f-template>` has more than one inner `<template>` element |
-| `UnsafeStyleContent` | `compose_f_template_styles` CSS contains a case-insensitive `</style` raw-text terminator |
+| Variant | Code | Triggered by |
+|---|---|---|
+| `InvalidTemplateMetadata` | `invalid-template-metadata` | Unsupported version, missing name, or duplicate metadata name |
+| `UnknownTemplate` | `missing-template` | Shadow-root render requests an unknown definition |
+| `UnclosedBinding` | `unclosed-binding` | `{{` with no closing `}}` |
+| `UnclosedUnescapedBinding` | `unclosed-unescaped-binding` | `{{{` with no closing `}}}` |
+| `EmptyBinding` | `empty-binding` | Blank binding expression |
+| `MissingState` | `missing-state` | Required directive state is absent; missing repeat lists still render zero iterations |
+| `UnclosedDirective` | `unclosed-directive` | Directive/custom element with no matching close tag |
+| `MissingValueAttribute` | `missing-value-attribute` | Directive missing a valid `value="{{…}}"` |
+| `InvalidRepeatExpression` | `invalid-repeat-expression` | Repeat value not in `item in list` format |
+| `NotAnArray` | `repeat-not-array` | Repeat binding resolves to a non-array |
+| `DuplicateTemplate` | `duplicate-template` | Multiple files define the same name |
+| `TemplateReadError` | `template-read-error` | A matched template file could not be read |
+| `JsonParse` | `invalid-state-json` | Invalid JSON state |
+| `MissingFTemplate` | `missing-f-template` | Composition input has no outer wrapper |
+| `MultipleFTemplates` | `multiple-f-templates` | Composition input has multiple outer wrappers |
+| `MissingInnerTemplate` | `missing-inner-template` | Composition input has no inner template |
+| `MultipleInnerTemplates` | `multiple-inner-templates` | Composition input has multiple inner templates |
+| `UnsafeStyleContent` | `unsafe-style-content` | Separately supplied CSS contains a `</style` terminator |
 
-Every error message includes a description of the problem and a snippet of the template near the error site to aid debugging:
+`Located` preserves its underlying variant's code/message. WASM template-map JSON
+and attribute-record validation also use `invalid-template-metadata`; an invalid
+WASM attribute-name strategy uses `invalid-attribute-name-strategy`. These failures
+do not acquire HTML coordinates.
+
+Messages retain the existing explanation and include a snippet when available:
 
 ```
 type error: '{{items}}' must resolve to a JSON array for use in <f-repeat> — template: "…<f-repeat value=\"{{item in items}}\">…"

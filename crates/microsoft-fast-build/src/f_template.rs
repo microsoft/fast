@@ -1,6 +1,6 @@
 //! In-memory `<f-template>` CSS composition, with no filesystem requirement.
 
-use crate::attribute::find_tag_end;
+use crate::attribute::{find_tag_end, parse_element_attributes};
 use crate::error::{template_context, RenderError};
 use crate::locator::{
     find_html_end_tag, find_html_start_tag, is_html_tag_name_boundary,
@@ -51,6 +51,23 @@ pub fn compose_f_template_styles(template_html: &str, css: &str) -> Result<Strin
             tag: "f-template".to_string(),
             context: template_context(template_html, outer_start),
         })?;
+    let name = parse_element_attributes(&template_html[outer_start..outer_tag_end])
+        .into_iter()
+        .find(|(name, _)| name.eq_ignore_ascii_case("name"))
+        .and_then(|(_, value)| value);
+    compose_inner_styles(template_html, css, outer_start, outer_tag_end)
+        .map_err(|error| match name {
+            Some(name) => error.in_template(&name),
+            None => error,
+        })
+}
+
+fn compose_inner_styles(
+    template_html: &str,
+    css: &str,
+    outer_start: usize,
+    outer_tag_end: usize,
+) -> Result<String, RenderError> {
     let (outer_close_start, _) = find_html_end_tag(template_html, "f-template", outer_tag_end)
         .ok_or_else(|| RenderError::UnclosedDirective {
             tag: "f-template".to_string(),
@@ -64,7 +81,10 @@ pub fn compose_f_template_styles(template_html: &str, css: &str) -> Result<Strin
         outer_close_start,
         RenderError::MissingInnerTemplate,
         |count| RenderError::MultipleInnerTemplates { count },
-    )?;
+    ).map_err(|error| match error {
+        RenderError::MissingInnerTemplate => error.at(template_html, outer_start),
+        _ => error,
+    })?;
     let inner_tag_end =
         find_tag_end(template_html, inner_start).ok_or_else(|| RenderError::UnclosedDirective {
             tag: "template".to_string(),
@@ -114,7 +134,7 @@ fn require_single_tag(
     match starts.len() {
         0 => Err(missing),
         1 => Ok(starts[0]),
-        count => Err(multiple(count)),
+        count => Err(multiple(count).at(html, starts[1])),
     }
 }
 

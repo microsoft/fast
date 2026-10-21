@@ -200,10 +200,104 @@ Client expressions are described lexically, not fully JavaScript-type-checked.
 Code samples are excluded; metadata is not full syntax or state validation.
 Generated WASM declarations expose these JSON interfaces.
 
+#### Authored binding source spans
+
+Each binding occurrence includes `span: { start, end }`. Both positions contain
+`offset`, `line`, and `column`, relative to the **complete HTML string passed to
+`parse_f_templates`**, not the extracted or trimmed template body. Duplicate
+expressions have separate spans, including occurrences in host attributes,
+interpolated attribute values, and nested directives.
+
+- `offset` is a zero-based UTF-16 code-unit offset, compatible with JavaScript
+  string slicing. It is not a UTF-8 byte offset.
+- `line` and `column` are one-based. Columns count UTF-16 code units, not visual
+  width or Unicode code points; a tab counts as one and a non-BMP character
+  counts as two.
+- Ranges are half-open: `start` is inclusive and `end` is exclusive. They cover
+  the trimmed expression, excluding braces and surrounding whitespace.
+- CRLF counts as one line break but two offset units. Lone CR and LF each count
+  as one line break. Input line endings are not normalized.
+- Repeat bindings locate the iterable expression, not the alias or `in` keyword,
+  matching their existing `expression` field. Nested `scope` frames are unchanged.
+
+```js
+const [definition] = JSON.parse(parse_f_templates(templateHtml));
+for (const binding of definition.bindings) {
+    const { start, end } = binding.span;
+    const authoredExpression = templateHtml.slice(start.offset, end.offset);
+    console.log(`${start.line}:${start.column}`, authoredExpression);
+}
+```
+
+Positions refer to the original, entity-encoded attribute text. No entity decoding
+is introduced. Code samples remain excluded without shifting subsequent spans.
+Callers associate the input with its file name and must regenerate metadata after
+editing that input. Bindings and directives inside HTML comments remain unsupported.
+
 Render exports reject unsupported/malformed explicit versions before rendering.
 Legacy unversioned maps and string definitions remain supported. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
+
+#### Structured errors
+
+Failing render, conversion, composition, and metadata-validation APIs throw actual
+JavaScript `Error` objects, retaining the existing human-readable `message`.
+Both WASM modules export this TypeScript interface (not a runtime constructor):
+
+```ts
+interface FastBuildError extends Error {
+    code: string;
+    line?: number;
+    column?: number;
+    length?: number;
+    templateName?: string;
+}
+```
+
+Use `code`, such as `unclosed-binding`, `repeat-not-array`, or `missing-template`,
+instead of parsing messages. The complete code lists are documented with the
+[renderer errors](../../crates/microsoft-fast-build/README.md#error-handling)
+and [converter errors](../../crates/microsoft-fast-convert/README.md#error-codes).
+
+Locations use one-based lines and UTF-16 columns, with a UTF-16 highlight `length`.
+Tabs count as one unit, non-BMP characters as two; CRLF is one line break and lone
+CR/LF are also line breaks. A highlight covers the offending opening tag or
+binding including its delimiters; an unclosed binding highlights its opening
+delimiters. Unlike successful binding metadata, these are error-token ranges,
+not trimmed expression ranges.
+
+Entry-render and conversion coordinates refer to the original HTML argument,
+even after code-sample escaping, inner-template extraction, or publisher-attribute
+rewriting. Light DOM remains in its caller's source. Errors in separately supplied
+custom-element definitions include `templateName` and use coordinates within that
+definition's supplied `content`, not the entry HTML or the full file it was
+extracted from. Maintain a name-to-source mapping when presenting these locations.
+For a missing inner template, the highlight identifies its containing
+`<f-template>`; duplicate-wrapper errors identify the second wrapper.
+
+Coordinates are absent when there is no meaningful HTML position: invalid state
+JSON, malformed metadata/options, missing template definitions or outer wrappers,
+filesystem errors, and unsafe separately supplied CSS. A known `templateName`
+can still be present without coordinates. `parse_f_templates` remains permissive:
+it does not gain strict syntax validation or new failures.
+
+For a direct `render(html, stateJson)` call, an integration can report:
+
+```js
+try {
+    render(html, stateJson);
+} catch (error) {
+    if (!(error instanceof Error)) throw error;
+    const location = error.line === undefined
+        ? inputPath
+        : `${inputPath}:${error.line}:${error.column}`;
+    console.error(`${location} [${error.code}]: ${error.message}`);
+}
+```
+
+See the [migration guide](./docs/migration/plugin-integrations.md#structured-errors)
+when updating consumers that previously caught strings.
 
 ### Custom element templates
 
@@ -361,6 +455,12 @@ by `fast build`. Generated fixture output is written under
 element type, using a separate `test/.fixture-output-type-source/` directory.
 
 ## Template syntax
+
+Bindings and FAST directive markup inside HTML comments are unsupported.
+Commenting out bound markup does not reliably disable its bindings and can cause
+rendering errors or client hydration mismatches. Remove unused bound markup
+instead, and keep explanatory comments free of binding syntax and FAST directive
+tags.
 
 Template syntax follows the FAST declarative HTML format. See the
 [`@microsoft/fast-element` declarative documentation](../fast-element/docs/declarative/syntax.md)

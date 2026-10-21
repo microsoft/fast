@@ -150,11 +150,26 @@ Build-time plugins can use `render_shadow_root` from the
 `@microsoft/fast-build/wasm/microsoft_fast_build.js` export to render a complete
 DSD `<template>` with resolved component state and no throwaway host/light DOM.
 `parse_f_templates` exposes versioned binding descriptions, including lexical
-repeat scopes and explicit unknown state types/optionality. Persist the full
+repeat scopes, authored expression spans, and explicit unknown state
+types/optionality. Spans use half-open ranges in the complete original HTML input,
+with zero-based UTF-16 offsets and one-based lines/UTF-16 columns; CRLF counts as
+one line break. Bindings inside HTML comments remain unsupported. Persist the full
 record to retain version checks; this metadata does not replace application
 state declarations. See the
 [FAST Build integration APIs](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#apis-for-build-time-plugins)
 and [migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/plugin-integrations.md).
+
+Failed build-time render, conversion, and composition calls throw JavaScript
+`Error` objects with their existing `message`, a stable `code` (for example
+`unclosed-binding` or `repeat-not-array`), and optional `line`, `column`, `length`,
+and `templateName`. Lines/UTF-16 columns are one-based; highlight lengths count
+UTF-16 units, and CRLF counts as one break. Entry/conversion locations refer to
+authored input, even after preprocessing. A separately supplied component error
+instead names its definition and locates that definition's supplied `content`;
+do not attribute that location to the entry file. Non-HTML errors omit coordinates.
+Both WASM modules export a `FastBuildError` TypeScript interface. See the
+[structured-error contract and code lists](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#structured-errors).
+Metadata discovery remains permissive rather than introducing new parse failures.
 
 Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
 
