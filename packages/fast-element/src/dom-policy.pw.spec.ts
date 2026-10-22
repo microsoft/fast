@@ -1,5 +1,198 @@
+import { fileURLToPath } from "node:url";
 import { expect, test } from "@playwright/test";
+import { build } from "esbuild";
 import { DOMPolicy, type DOMPolicyOptions } from "./dom-policy.js";
+
+const packageRoot = fileURLToPath(new URL("../", import.meta.url));
+
+test.describe("focused entrypoint policy dependencies", () => {
+    for (const { name, module, forbidden } of [
+        {
+            name: "FASTElement",
+            module: "components/fast-element.ts",
+            forbidden: ["dom-policy.ts"],
+        },
+        {
+            name: "html",
+            module: "templating/html.ts",
+            forbidden: ["dom-policy.ts"],
+        },
+        ...["ref", "children", "slotted"].map(name => ({
+            name,
+            module: `templating/${name}.ts`,
+            forbidden: ["dom.ts", "dom-policy.ts"],
+        })),
+    ]) {
+        test(`${name} excludes unnecessary policy modules`, async () => {
+            const bundle = await build({
+                stdin: {
+                    contents: `export { ${name} } from "./src/${module}";`,
+                    resolveDir: packageRoot,
+                },
+                bundle: true,
+                format: "esm",
+                write: false,
+                metafile: true,
+            });
+            const unnecessaryModules = Object.keys(bundle.metafile.inputs).filter(input =>
+                forbidden.some(module => input.endsWith(`/${module}`)),
+            );
+
+            expect(unnecessaryModules).toEqual([]);
+        });
+    }
+});
+
+test.describe("the shared default dom policy", () => {
+    for (const entrypoint of [
+        "index.ts",
+        "index.debug.ts",
+        "dom.ts",
+        "dom-policy.ts",
+        "templating/html.ts",
+        "declarative/index.ts",
+        "index.rollup.ts",
+        "index.rollup.debug.ts",
+    ]) {
+        test(`guards bindings and allows application configuration through ${entrypoint}`, async ({
+            page,
+        }) => {
+            const bundle = await build({
+                stdin: {
+                    contents: `
+                        import * as entrypoint from "./src/${entrypoint}";
+                        export { entrypoint };
+                        export { DOM, DOMAspect } from "./src/dom.ts";
+                        export { DOMPolicy } from "./src/dom-policy.ts";
+                        export { html } from "./src/templating/template.ts";
+                    `,
+                    resolveDir: packageRoot,
+                },
+                bundle: true,
+                format: "esm",
+                write: false,
+            });
+
+            await page.route("**/", route =>
+                route.fulfill({
+                    contentType: "text/html",
+                    body: `<!doctype html>
+                        <meta http-equiv="Content-Security-Policy"
+                            content="trusted-types fast-html app-fast-html">
+                        <body></body>`,
+                }),
+            );
+            await page.goto("/");
+
+            const result = await page.evaluate(async code => {
+                const url = URL.createObjectURL(
+                    new Blob([code], { type: "text/javascript" }),
+                );
+
+                try {
+                    const { DOM, DOMAspect, DOMPolicy, html } = await import(url);
+                    const model = {
+                        url: "javascript:void(0)",
+                        text: "<b>plain text</b>",
+                        clicked: false,
+                    };
+                    const host = document.createElement("div");
+                    const template = html`
+                        <a href=${x => x.url}>attribute</a>
+                        <a :href=${x => x.url}>property</a>
+                        <p title=${x => x.text}>${x => x.text}</p>
+                        <button @click=${x => {
+                            x.clicked = true;
+                        }}>click</button>
+                    `;
+                    const view = template.render(model, host);
+                    const unsafeHrefs = Array.from(host.querySelectorAll("a"), a =>
+                        a.getAttribute("href"),
+                    );
+                    host.querySelector("button")!.click();
+
+                    view.bind({ ...model, url: "https://fast.design/" });
+                    const safeHrefs = Array.from(host.querySelectorAll("a"), a =>
+                        a.getAttribute("href"),
+                    );
+                    const text = host.querySelector("p")!;
+                    const blockedErrors = [
+                        html`<div :innerHTML=${x => x.text}></div>`,
+                        html`<button onclick=${x => x.text}></button>`,
+                        html`<button :onclick=${x => x.text}></button>`,
+                    ].map(template => {
+                        try {
+                            template.render(model, document.createElement("div"));
+                            return null;
+                        } catch (error) {
+                            return error instanceof Error ? error.message : String(error);
+                        }
+                    });
+
+                    const customPolicy = DOMPolicy.create({
+                        trustedType: globalThis.trustedTypes?.createPolicy(
+                            "app-fast-html",
+                            { createHTML: value => value },
+                        ) ?? { createHTML: value => value },
+                        guards: {
+                            aspects: {
+                                [DOMAspect.attribute]: {
+                                    title(_tagName, _aspect, _aspectName, sink) {
+                                        return (target, name, value, ...rest) =>
+                                            sink(target, name, `app:${value}`, ...rest);
+                                    },
+                                },
+                            },
+                        },
+                    });
+                    DOM.setPolicy(customPolicy);
+                    const customHost = document.createElement("div");
+                    html`<div title=${x => x.text}></div>`.render(model, customHost);
+
+                    let duplicateError: string | null = null;
+                    try {
+                        DOM.setPolicy(customPolicy);
+                    } catch (error) {
+                        duplicateError =
+                            error instanceof Error ? error.message : String(error);
+                    }
+
+                    view.dispose();
+
+                    return {
+                        unsafeHrefs,
+                        safeHrefs,
+                        text: text.textContent,
+                        title: text.getAttribute("title"),
+                        hasMarkup: text.querySelector("b") !== null,
+                        clicked: model.clicked,
+                        blockedErrors,
+                        customTitle: customHost.firstElementChild!.getAttribute("title"),
+                        duplicateError,
+                    };
+                } finally {
+                    URL.revokeObjectURL(url);
+                }
+            }, bundle.outputFiles[0].text);
+
+            expect(result).toEqual({
+                unsafeHrefs: ["", ""],
+                safeHrefs: ["https://fast.design/", "https://fast.design/"],
+                text: "<b>plain text</b>",
+                title: "<b>plain text</b>",
+                hasMarkup: false,
+                clicked: true,
+                blockedErrors: Array.from({ length: 3 }, () =>
+                    expect.stringMatching(/1209|blocked by the current DOMPolicy/),
+                ),
+                customTitle: "app:<b>plain text</b>",
+                duplicateError: expect.stringMatching(
+                    /1201|DOM Policy can only be set once/,
+                ),
+            });
+        });
+    }
+});
 
 test.describe("the dom policy helper", () => {
     test("can create a policy with a custom trusted types policy", async () => {
@@ -267,23 +460,13 @@ test.describe("the dom policy helper", () => {
             let propertyBlocked = false;
 
             try {
-                policy.protect(
-                    "iframe",
-                    DOMAspect.attribute,
-                    "srcdoc",
-                    DOM.setAttribute,
-                );
+                policy.protect("iframe", DOMAspect.attribute, "srcdoc", DOM.setAttribute);
             } catch {
                 attributeBlocked = true;
             }
 
             try {
-                policy.protect(
-                    "iframe",
-                    DOMAspect.property,
-                    "srcdoc",
-                    setProperty,
-                );
+                policy.protect("iframe", DOMAspect.property, "srcdoc", setProperty);
             } catch {
                 propertyBlocked = true;
             }
