@@ -1,6 +1,6 @@
 # microsoft-fast-build
 
-A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in pure Rust with no native runtime dependencies.
+A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in Rust. Rendering uses a lightweight scanner; authored slot analysis uses a standards-based HTML parser.
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
@@ -142,6 +142,52 @@ markers_v2?)`. Generated declarations include `FTemplateMetadata`,
 `TemplateSourcePosition`. Each generated record has
 `formatVersion: 1`; render exports reject unsupported or malformed explicit
 versions, while still accepting unversioned maps and string-valued definitions.
+
+### Authored slot declarations
+
+```rust
+use microsoft_fast_build::extract_template_slots;
+
+let source = "<f-template name=\"my-card\">\n    <template>\n        <slot name=\"title\"></slot>\n        <slot></slot>\n    </template>\n</f-template>";
+let slots = extract_template_slots(source, "my-card")?;
+assert_eq!(slots[0].name, "title");
+assert_eq!((slots[0].line, slots[0].column), (3, 9));
+assert_eq!(slots[1].name, "");
+```
+
+The native API returns `Result<Vec<TemplateSlot>, RenderError>`; the WASM export
+`extract_template_slots(html, templateName)` returns the same array as JSON.
+`TemplateSlot` contains `name`, `line`, and `column`; the generated TypeScript
+declarations expose the same interface.
+
+Names are HTML-entity-decoded authored values, not evaluated bindings. Default
+slots have the empty name `""`. Declarations retain source order and duplicates.
+One-based lines/UTF-16 columns identify the opening `<` in the complete original
+HTML argument. Tabs count as one code unit, non-BMP characters as two, and CRLF
+as one line break (lone CR/LF also break). Extract from original source before
+style composition, code escaping, or rendering; transformed input cannot recover
+original-file coordinates.
+
+Selection requires a nonempty, case-sensitive decoded definition name, exactly
+one matching HTML `<f-template>`, and exactly one direct HTML `<template>` child.
+The HTML tree builder supplies namespace handling, entity decoding, raw-text
+contexts, and normal HTML error recovery without executing scripts. Scripting
+is enabled for parsing `noscript` as raw text. Comments, escaped markup, and
+slot-like text in attributes, scripts, styles, or RCDATA are not declarations.
+Only HTML slots count, including those at SVG/MathML HTML integration points.
+
+Nested ordinary templates and conditional/repeated bodies are inspected once
+per authored declaration without state evaluation. Nested component definitions
+and templates carrying `shadowrootmode` or legacy `shadowroot` are separate
+authored scopes and are excluded, as are siblings and publisher markup outside
+the selected inner template. Declarative shadow roots are not attached.
+
+A valid component with no slots returns an empty vector. Failures use
+`invalid-template-metadata` (empty selector/duplicate matching definitions),
+`missing-template`, `missing-inner-template`, or `multiple-inner-templates`.
+Located failures include the selected name and authored definition/second
+conflicting opening tag. Rendering, `parse_f_templates`, binding metadata, and
+format version 1 remain unchanged.
 
 ### Nullable and boolean attributes
 
