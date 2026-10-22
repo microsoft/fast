@@ -1,4 +1,5 @@
-import { DOMPolicy as DOMPolicyDefinition } from "./dom-policy.js";
+import type { DOMPolicy as DOMPolicyDefinition } from "./dom-policy.js";
+import { protectDOMSink } from "./dom-policy-defaults.js";
 import { Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
@@ -26,8 +27,11 @@ const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
     ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
     : { createHTML };
 
-const fastPolicy = DOMPolicyDefinition.create({
-    trustedType: fastTrustedType,
+const fastPolicy: DOMPolicyDefinition = Object.freeze({
+    createHTML(value: string): string {
+        return fastTrustedType.createHTML(value);
+    },
+    protect: protectDOMSink,
 });
 let defaultPolicy: DOMPolicyDefinition = fastPolicy;
 

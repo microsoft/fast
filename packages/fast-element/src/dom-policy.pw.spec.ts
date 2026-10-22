@@ -5,6 +5,44 @@ import { DOMPolicy, type DOMPolicyOptions } from "./dom-policy.js";
 
 const packageRoot = fileURLToPath(new URL("../", import.meta.url));
 
+test.describe("focused entrypoint policy dependencies", () => {
+    for (const { name, module, forbidden } of [
+        {
+            name: "FASTElement",
+            module: "components/fast-element.ts",
+            forbidden: ["dom-policy.ts"],
+        },
+        {
+            name: "html",
+            module: "templating/html.ts",
+            forbidden: ["dom-policy.ts"],
+        },
+        ...["ref", "children", "slotted"].map(name => ({
+            name,
+            module: `templating/${name}.ts`,
+            forbidden: ["dom.ts", "dom-policy.ts"],
+        })),
+    ]) {
+        test(`${name} excludes unnecessary policy modules`, async () => {
+            const bundle = await build({
+                stdin: {
+                    contents: `export { ${name} } from "./src/${module}";`,
+                    resolveDir: packageRoot,
+                },
+                bundle: true,
+                format: "esm",
+                write: false,
+                metafile: true,
+            });
+            const unnecessaryModules = Object.keys(bundle.metafile.inputs).filter(input =>
+                forbidden.some(module => input.endsWith(`/${module}`)),
+            );
+
+            expect(unnecessaryModules).toEqual([]);
+        });
+    }
+});
+
 test.describe("the shared default dom policy", () => {
     for (const entrypoint of [
         "index.ts",
