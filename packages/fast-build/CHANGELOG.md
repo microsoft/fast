@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Tue, 20 Oct 2026 19:01:10 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 23 Oct 2026 03:53:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.15.0
+
+Fri, 23 Oct 2026 03:53:29 GMT
+
+### Minor changes
+
+- Add inline and external stylesheet composition with generated fallback identities and original-source mapping, and preserve CSS as raw text. (7559015+janechu@users.noreply.github.com)
+- Expose authored slot declarations and original source locations through native and WebAssembly APIs. (7559015+janechu@users.noreply.github.com)
 
 ## 0.14.0
 
