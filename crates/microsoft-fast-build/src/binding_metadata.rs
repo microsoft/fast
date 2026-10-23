@@ -134,7 +134,7 @@ impl BindingCollector<'_, '_> {
                         false,
                         scopes,
                     );
-                    pos = end;
+                    pos = crate::attribute::style_element_end(content, at).unwrap_or(end);
                 }
                 RenderEvent::Directive(directive) => match directive {
                     Directive::DoubleBrace(at) | Directive::TripleBrace(at) => {

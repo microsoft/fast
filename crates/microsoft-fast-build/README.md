@@ -463,6 +463,55 @@ Validation:
 
 The WASM build exposes the same function as `compose_f_template_styles(templateHtml, css)`, throwing a JS error on any validation failure.
 
+#### Delivery options and original-source mapping
+
+Use the options API when selecting stylesheet delivery or retaining diagnostics:
+
+```rust
+use microsoft_fast_build::{compose_f_template_styles_with_options, Stylesheet};
+
+let composed = compose_f_template_styles_with_options(
+    template_html,
+    Stylesheet::Inline {
+        css: ":host { display: block; }",
+        style_id: Some("my-button-styles-v1"),
+    },
+)?;
+let external = compose_f_template_styles_with_options(
+    template_html,
+    Stylesheet::External { href: "/assets/my-button.css" },
+)?;
+```
+
+`ComposedTemplate::html()` borrows the composed definition. `map_span(start, end)` accepts
+half-open UTF-16 offsets in that complete document. `map_location(location, false)`
+accepts full-document diagnostics; `true` selects this definition's trimmed inner
+content, as used by locator/shadow-root errors. Check the error's template name
+before mapping; another definition needs its own map. Results identify `Html`,
+`Css`, or `Generated`; only authored sources have a `SourceSpan`. Invalid ranges
+and ranges crossing sources return `InvalidComposition`.
+
+The WASM options API accepts a typed JavaScript object and returns a
+`ComposedTemplate` handle with `html`, `source_map` (JSON), `map_span`, and
+`map_location` (both returning JSON). Call `free()` when finished. See the
+[npm integration contract](../../packages/fast-build/README.md#stylesheet-delivery-composition)
+for examples and mapping fields.
+
+Inline identities emit `data-fast-ssr-style`. URLs and identities are escaped,
+nonblank static strings without control characters or braces. The marker names
+caller-owned replacement CSS and may be shared across instances; it is not a CSP
+nonce. Generated markup is always first, and existing styles stay untouched.
+The composer does not fetch URLs, build assets, adopt stylesheets, or remove
+fallbacks. A runtime may remove only matching fallbacks after successful
+replacement attachment, coordinated with hydration. Constructed and ordinary
+stylesheets do not have equivalent cascade ordering.
+
+CSS bodies remain raw text during parsing, rendering (including streaming),
+binding discovery, and conversion. Unsafe CSS diagnostics expose CSS coordinates
+and `source_kind() == Some("css")` (`sourceKind: "css"` in WASM). Original HTML
+coordinates require retaining and using the composition map; passing `.html`
+alone does not remap downstream diagnostics automatically.
+
 ### Rendering with a Locator
 
 ```rust
@@ -782,6 +831,7 @@ notes](../../packages/fast-build/README.md#structured-errors).
 | `MissingInnerTemplate` | `missing-inner-template` | Composition input has no inner template |
 | `MultipleInnerTemplates` | `multiple-inner-templates` | Composition input has multiple inner templates |
 | `UnsafeStyleContent` | `unsafe-style-content` | Separately supplied CSS contains a `</style` terminator |
+| `InvalidComposition` | `invalid-composition` | Invalid stylesheet options or source mapping range |
 
 `Located` preserves its underlying variant's code/message. WASM template-map JSON
 and attribute-record validation also use `invalid-template-metadata`; an invalid

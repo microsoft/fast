@@ -3,6 +3,8 @@ use std::fmt;
 /// An error encountered while rendering a FAST HTML template.
 #[derive(Debug)]
 pub enum RenderError {
+    /// Invalid stylesheet composition options or source mapping coordinates.
+    InvalidComposition { message: String },
     /// Template metadata has an unsupported version, missing name or duplicate name.
     InvalidTemplateMetadata { message: String },
     /// A shadow-root render requested an element absent from its locator.
@@ -92,6 +94,7 @@ impl RenderError {
     /// A stable, machine-readable error code.
     pub fn code(&self) -> &'static str {
         match self.kind() {
+            Self::InvalidComposition { .. } => "invalid-composition",
             Self::InvalidTemplateMetadata { .. } => "invalid-template-metadata",
             Self::UnknownTemplate { .. } => "missing-template",
             Self::UnclosedBinding { .. } => "unclosed-binding",
@@ -114,7 +117,7 @@ impl RenderError {
         }
     }
 
-    /// The authored HTML location, if an HTML source is available.
+    /// The authored location, if a source is available. Check `source_kind()`.
     pub fn location(&self) -> Option<ErrorLocation> {
         let context = self.context()?;
         let source = context.source.as_deref()?;
@@ -126,6 +129,14 @@ impl RenderError {
             column: start.column,
             length: end.offset - start.offset,
         })
+    }
+
+    /// The input owning the diagnostic; CSS errors never claim HTML coordinates.
+    pub fn source_kind(&self) -> Option<&'static str> {
+        if self.context()?.source.is_none() {
+            return None;
+        }
+        Some(if matches!(self.kind(), Self::UnsafeStyleContent { .. }) { "css" } else { "html" })
     }
 
     /// The separately supplied template containing the error, when known.
@@ -146,6 +157,7 @@ impl RenderError {
             | Self::MissingValueAttribute { context, .. }
             | Self::InvalidRepeatExpression { context, .. }
             | Self::NotAnArray { context, .. }
+            | Self::UnsafeStyleContent { context }
             | Self::Located { context, .. } => Some(&context.inner),
             _ => None,
         }
@@ -161,6 +173,7 @@ impl RenderError {
             | Self::MissingValueAttribute { context, .. }
             | Self::InvalidRepeatExpression { context, .. }
             | Self::NotAnArray { context, .. }
+            | Self::UnsafeStyleContent { context }
             | Self::Located { context, .. } => Some(&mut context.inner),
             _ => None,
         }
@@ -207,6 +220,7 @@ impl RenderError {
 impl fmt::Display for RenderError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InvalidComposition { message } => write!(f, "invalid composition: {message}"),
             Self::Located { error, .. } => error.fmt(f),
             Self::InvalidTemplateMetadata { message } => write!(f, "invalid template metadata: {message}"),
             Self::UnknownTemplate { element } => write!(f, "unknown template: no definition for '<{element}>'"),

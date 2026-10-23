@@ -15,6 +15,7 @@ pub(crate) fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
 
 /// Find a directive tag (e.g. `<f-when`, `<f-repeat`), ensuring the character
 /// immediately after the tag name is whitespace or `>` to avoid false matches.
+#[cfg(test)]
 pub(crate) fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
     let mut pos = from;
     while let Some(idx) = find_str(template, tag, pos) {
@@ -51,6 +52,25 @@ pub(crate) fn find_tag_end(template: &str, from: usize) -> Option<usize> {
         i += 1;
     }
     None
+}
+
+/// Stylesheet contents are HTML raw text, not FAST expressions or elements.
+pub(crate) fn style_element_end(template: &str, at: usize) -> Option<usize> {
+    if !read_tag_name_slice(template, at)?.eq_ignore_ascii_case("style") {
+        return None;
+    }
+    let mut pos = find_tag_end(template, at)?;
+    while let Some(relative) = template[pos..].find("</") {
+        let close = pos + relative;
+        let name = close + 2;
+        if crate::locator::starts_with_ascii_case_insensitive(template.as_bytes(), name, b"style")
+            && crate::locator::is_html_tag_name_boundary(template.as_bytes().get(name + 5).copied())
+        {
+            return Some(find_tag_end(template, close).unwrap_or(template.len()));
+        }
+        pos = name;
+    }
+    Some(template.len())
 }
 
 /// Find the first `{` that is NOT the start of `{{` or `{{{`.
@@ -141,25 +161,26 @@ pub(crate) fn extract_directive_content_range(
 
     let mut depth = 1usize;
     let mut pos = tag_end;
-    loop {
-        let next_open = find_directive(template, &open_tag, pos);
-        let next_close = find_str(template, &close_tag, pos);
-
-        match (next_open, next_close) {
-            (_, None) => return None,
-            (Some(o), Some(c)) if o < c => {
-                depth += 1;
-                pos = o + open_tag.len();
-            }
-            (_, Some(c)) => {
-                depth -= 1;
-                if depth == 0 {
-                    return Some((tag_end..c, c + close_tag.len()));
-                }
-                pos = c + close_tag.len();
-            }
+    while let Some(relative) = template[pos..].find('<') {
+        let at = pos + relative;
+        if let Some(end) = style_element_end(template, at) {
+            pos = end;
+            continue;
         }
+        if template[at..].starts_with(&close_tag) {
+            depth -= 1;
+            if depth == 0 {
+                return Some((tag_end..at, at + close_tag.len()));
+            }
+        } else if template[at..].starts_with(&open_tag)
+            && matches!(template.as_bytes().get(at + open_tag.len()),
+                Some(b' ' | b'>' | b'\n' | b'\t' | b'\r'))
+        {
+            depth += 1;
+        }
+        pos = at + 1;
     }
+    None
 }
 
 /// Read the tag name from a `<` position. Returns None for closing tags (`</...>`).

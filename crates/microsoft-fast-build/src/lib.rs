@@ -86,7 +86,10 @@ pub use error::{ErrorContext, ErrorLocation, RenderError};
 pub use locator::{Locator, FTemplate, parse_f_templates};
 pub use binding_metadata::{BindingMetadata, BindingScope, SourcePosition, SourceSpan};
 pub use config::{RenderConfig, AttributeNameStrategy};
-pub use f_template::compose_f_template_styles;
+pub use f_template::{
+    compose_f_template_styles, compose_f_template_styles_with_options, ComposedTemplate,
+    CompositionSource, CompositionSpan, Stylesheet,
+};
 
 /// Version of generated template metadata; unversioned maps remain supported.
 pub const TEMPLATE_FORMAT_VERSION: u32 = 1;

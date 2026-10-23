@@ -623,6 +623,37 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ## In-memory `<f-template>` CSS composition — `f_template.rs`
 
+`compose_f_template_styles_with_options` shares the existing selection checks and
+insertion path, accepting `Stylesheet::Inline { css, style_id }` or
+`Stylesheet::External { href }`. The string-only API is a convenience over the
+same implementation, not a second composer. URLs/identities are static,
+attribute-escaped values; control characters and braces are rejected to prevent
+binding interpretation. An inline identity adds `data-fast-ssr-style`, with no
+CSP nonce or runtime lifecycle semantics.
+
+`ComposedTemplate` retains the original HTML, optional original CSS, composed
+HTML, and insertion/CSS/content byte offsets. Its mapping helpers validate public
+UTF-16 ranges, translate unchanged regions or CSS back to their original input,
+and reuse `SourceLocations` for line/column conversion. Generated wrapper and
+attribute text maps explicitly to `Generated` without an authored span. Ranges
+crossing source boundaries error rather than synthesizing a location. Mapping
+is opt-in: binding spans and converter/document errors use complete-document
+coordinates; locator errors for this definition use trimmed-content coordinates.
+Maps are not attached to the renderer metadata or serialized into HTML.
+
+The WASM result owns a native composition and exposes `.html`, versioned
+`.source_map` JSON, and JSON-returning mapping methods. Options are a typed
+JavaScript discriminated union serialized at the boundary and validated in Rust.
+No JavaScript parser or coordinate arithmetic duplicates native logic.
+
+CSS bodies are skipped as raw text by shared plain-tag handling and metadata
+discovery, wrapper tag lookup, directive-body matching, and code-sample
+preprocessing. This prevents stylesheet strings from creating bindings, fake
+definitions, or altered hydration counts. Converter scanners similarly retain
+raw style elements; the TypeScript target escapes their literal representation,
+including CR, without interpreting CSS as FAST syntax. CSS validation failures
+now retain their separate CSS coordinates rather than claiming HTML positions.
+
 `compose_f_template_styles(template_html, css)` inserts `<style>{css}</style>` as the first child of the inner `<template>` element of a single `<f-template>` definition, entirely in memory — no filesystem access, no `Locator` construction.
 
 ### Validation

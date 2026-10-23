@@ -165,6 +165,90 @@ Author bindings resolving to absence still override template-host defaults.
 These intentional output changes are described in the
 [plugin migration guide](./docs/migration/plugin-integrations.md).
 
+### Stylesheet delivery composition
+
+Build-time plugins can compose separately authored HTML and CSS without filesystem
+access or browser APIs:
+
+```ts
+import { compose_f_template_styles_with_options } from
+    "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const composed = compose_f_template_styles_with_options(templateHtml, {
+    kind: "inline",
+    css: cssText,
+    styleId: "example-card-styles-v1", // Optional generated SSR fallback identity.
+});
+try {
+    const definitionHtml = composed.html;
+    // Pass definitionHtml to parse_f_templates or fast-convert.
+    // Keep composed until diagnostics and binding spans have been mapped.
+} finally {
+    composed.free();
+}
+```
+
+Use `{ kind: "external", href: "/assets/example-card.abc123.css" }` to insert
+`<link rel="stylesheet">` instead. The caller owns the URL, asset serving, and
+bundler processing. Both strategies insert exactly one element as the first child
+of the single inner `<template>`, preserving every other authored byte. Existing
+`compose_f_template_styles(templateHtml, css)` remains an inline string shorthand.
+
+An inline `styleId` emits `data-fast-ssr-style="…"`. It is an opaque,
+caller-controlled stylesheet/version identity, not an instance ID, hash, CSP
+nonce, or instruction to remove styles. Reuse it across component instances that
+share the same replacement CSS. Generated attributes are HTML-escaped. URLs and
+identities must be nonblank static strings without control characters or braces;
+FAST bindings in these values are deliberately rejected. Inline CSS retains the
+case-insensitive `</style` terminator check.
+
+For ordinary inline/external delivery, convert the same composed definition for
+the client; do not also register duplicate runtime styles. For adopted delivery,
+compose an identified SSR fallback, convert the original HTML for the client, and
+convert/register the CSS separately. A runtime integration must attach replacement
+styles successfully before removing only matching generated fallbacks in that
+component's shadow root, coordinate removal with hydration, and leave unrelated
+authored styles untouched. No runtime handoff is implemented here. Without
+JavaScript, or if attachment fails, retain the fallback.
+
+Placement is deterministic, not cascade equivalence: constructed stylesheets have
+different ordering from ordinary shadow stylesheets. Applications must account
+for that difference. Style identity does not provide CSP authorization; nonce
+support remains a separate concern.
+
+#### Mapping composed source locations
+
+Keep the composition result alongside its original file association. Downstream
+APIs receive composed text and therefore return composed coordinates; mapping is
+explicit, not automatic:
+
+- `JSON.parse(composed.map_span(start, end))` maps a half-open UTF-16 range from
+  the complete composed document, including binding metadata offsets.
+- `JSON.parse(composed.map_location(line, column, length, false))` maps converter
+  or full-document render diagnostics.
+- Use `true` only for locator/shadow-root errors referring to this definition's
+  trimmed inner content. Check `templateName` first; do not use this map for a
+  nested definition from another file.
+
+The result is `{ source: "html" | "css" | "generated", span }`. Authored spans
+contain zero-based UTF-16 offsets and one-based lines/UTF-16 columns. CRLF counts
+as one break; lone CR/LF also break lines. Generated markup has `span: null`.
+Invalid offsets, surrogate splits, and ranges crossing source boundaries throw
+`invalid-composition` instead of reporting a fabricated location.
+
+`JSON.parse(composed.source_map)` exposes a version-1 single-insertion map with
+`originalHtml`, optional `css` (`null` for external links), `insertionOffset`,
+`insertionLength`, optional `cssOffset`, `contentOffset`, and `contentLength`; all numeric offsets
+and lengths are UTF-16 units. This is composition provenance, not a JavaScript
+source map for generated TypeScript. Mapping ceases to apply after further
+transformations unless the caller composes their maps.
+
+Unsafe CSS errors now expose `sourceKind: "css"` and locations in the separately
+supplied CSS. Stylesheet bodies are treated as literal HTML raw text throughout
+build parsing, rendering, metadata discovery, and conversion, including
+template-looking strings. See the
+[migration notes](./docs/migration/stylesheet-composition.md).
+
 ### APIs for build-time plugins
 
 Import the actual exported WASM subpath; do not slice rendered host HTML:
