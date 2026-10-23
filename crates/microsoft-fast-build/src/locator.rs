@@ -314,6 +314,11 @@ pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Op
         let tag_start = pos + rel;
         let name_start = tag_start + 1;
 
+        if let Some(end) = crate::attribute::style_element_end(html, tag_start) {
+            pos = end;
+            continue;
+        }
+
         if name_start >= bytes.len() {
             return None;
         }
@@ -336,8 +341,16 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
 
-    while let Some(rel) = html[pos..].find("</") {
+    while let Some(rel) = html[pos..].find('<') {
         let tag_start = pos + rel;
+        if let Some(end) = crate::attribute::style_element_end(html, tag_start) {
+            pos = end;
+            continue;
+        }
+        if !html[tag_start..].starts_with("</") {
+            pos = tag_start + 1;
+            continue;
+        }
         let name_start = tag_start + 2;
 
         if starts_with_ascii_case_insensitive(bytes, name_start, tag_name) {
