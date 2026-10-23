@@ -32,6 +32,17 @@ since it has no construct warnings apply to.
 
 ## Modules
 
+Style elements are preserved as HTML raw text across all syntax targets. Shared
+wrapper discovery/matching skips their bodies so CSS strings cannot create fake
+definitions. Target traversal copies complete style elements; TypeScript escapes
+the literal (including CR), while HTML targets keep its bytes. Inline identities
+and external links require no new target or adoption behavior.
+
+Composition provenance remains owned by fast-build's result. Existing converter
+errors refer to the supplied complete document; its caller maps those structured
+coordinates through that result. No dependency on the renderer crate, new
+converter API, or source-map reconstruction from messages is needed.
+
 | Module | Role |
 | --- | --- |
 | `lib.rs` | Public Rust API and crate exports |

@@ -157,6 +157,11 @@ fn convert_segment(
             pos = next_boundary;
             continue;
         }
+        if let Some(end) = crate::html::style_element_end(template, lt) {
+            out.push_str(&template[lt..end]);
+            pos = end;
+            continue;
+        }
 
         let Some(tag_name) = read_tag_name(template, lt) else {
             out.push('<');

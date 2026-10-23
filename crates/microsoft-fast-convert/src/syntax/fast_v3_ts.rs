@@ -123,6 +123,11 @@ fn convert_segment(
     let mut pos = 0usize;
 
     while pos < template.len() {
+        if let Some(end) = crate::html::style_element_end(template, pos) {
+            out.push_str(&escape_ts_literal_with_carriage_returns(&template[pos..end]));
+            pos = end;
+            continue;
+        }
         if template[pos..].starts_with("<!--") {
             if let Some(end) = template[pos..].find("-->") {
                 let end = pos + end + 3;

@@ -141,6 +141,12 @@ fn transform_code_sample_elements(html: &str, transform: impl Fn(&str) -> String
             continue;
         }
 
+        if let Some(end) = crate::attribute::style_element_end(html, lt) {
+            result.push_str(&html[pos..end]);
+            pos = end;
+            continue;
+        }
+
         let opening = match parse_opening_tag(html, lt) {
             Some(o) => o,
             None => {

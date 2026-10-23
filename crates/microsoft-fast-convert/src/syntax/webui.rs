@@ -34,6 +34,11 @@ fn convert_segment(template: &str) -> Result<String, ConvertError> {
         };
         let lt = pos + relative;
         out.push_str(&template[pos..lt]);
+        if let Some(end) = crate::html::style_element_end(template, lt) {
+            out.push_str(&template[lt..end]);
+            pos = end;
+            continue;
+        }
 
         let Some(tag_name) = read_tag_name(template, lt) else {
             out.push('<');
