@@ -341,6 +341,22 @@ runs test files concurrently and `convert-fixtures.test.js` clears the shared
 
 ## WASM integration
 
+Stylesheet delivery composition is native-owned. The renderer WASM's
+`compose_f_template_styles_with_options(html, options)` accepts an inline/external
+discriminated union and returns a handle retaining `.html` and source provenance.
+Mapping methods accept UTF-16 document spans or document/selected-content
+diagnostics and return JSON identifying HTML, CSS, or generated text. Generated
+markup never receives authored coordinates; invalid/cross-source ranges fail.
+The versioned `source_map` JSON exposes original inputs and insertion offsets.
+Consumers retain the handle and file association until mapping is complete,
+then free it. No parsing or coordinate conversion is duplicated in JavaScript.
+
+Generated inline fallbacks use `data-fast-ssr-style`; external composition uses
+caller-supplied public URLs. Both insert first without rewriting existing source.
+Adoption, fallback removal, CSP nonce handling, and asset serving are not
+implemented by this API. Conversion preserves raw CSS and link/marker attributes;
+CSS-looking binding syntax is no longer interpreted in style bodies.
+
 The build WASM module exposes rendering and metadata functions; the CLI uses the entry renderer when templates are loaded or streaming is requested:
 
 | Function | Used when |

@@ -92,6 +92,10 @@ pub(crate) fn find_open_tags(template: &str, tag_name: &str) -> Vec<usize> {
             pos = find_comment_end(template, lt).unwrap_or(template.len());
             continue;
         }
+        if let Some(end) = style_element_end(template, lt) {
+            pos = end;
+            continue;
+        }
 
         match read_tag_name(template, lt) {
             Some(name) => {
@@ -122,6 +126,10 @@ pub(crate) fn find_matching_close(
 
     while let Some(relative) = template[pos..].find('<') {
         let lt = pos + relative;
+        if let Some(end) = style_element_end(template, lt) {
+            pos = end;
+            continue;
+        }
         if template[lt..].starts_with("<!--") {
             pos = find_comment_end(template, lt).unwrap_or(template.len());
             continue;
@@ -155,6 +163,27 @@ pub(crate) fn find_matching_close(
     }
 
     None
+}
+
+/// Preserve CSS raw text, including template-like strings and tag-like content.
+pub(crate) fn style_element_end(template: &str, at: usize) -> Option<usize> {
+    if !read_tag_name(template, at)?.eq_ignore_ascii_case("style") {
+        return None;
+    }
+    let mut pos = find_tag_end(template, at)?;
+    while let Some(relative) = template[pos..].find("</") {
+        let close = pos + relative;
+        let name = close + 2;
+        if template.as_bytes().get(name..name + 5)
+            .is_some_and(|value| value.eq_ignore_ascii_case(b"style"))
+            && template.as_bytes().get(name + 5)
+                .is_none_or(|byte| byte.is_ascii_whitespace() || matches!(byte, b'/' | b'>'))
+        {
+            return Some(find_tag_end(template, close).unwrap_or(template.len()));
+        }
+        pos = name;
+    }
+    Some(template.len())
 }
 
 pub(crate) fn find_tag_end(template: &str, from: usize) -> Option<usize> {

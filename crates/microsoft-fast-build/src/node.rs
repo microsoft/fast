@@ -93,7 +93,12 @@ pub(crate) fn process_plain_html_tag(
             }
         }
     }
-    tag_end
+    if let Some(end) = crate::attribute::style_element_end(template, tag_pos) {
+        result.push_str(&template[tag_end..end]);
+        end
+    } else {
+        tag_end
+    }
 }
 
 fn process_directive(

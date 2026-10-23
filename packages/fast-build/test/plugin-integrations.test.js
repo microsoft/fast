@@ -268,6 +268,10 @@ test("non-HTML diagnostics have codes without invented source coordinates", () =
     assertDiagnostic(
         () => wasm.compose_f_template_styles("", "</style>"),
         "unsafe-style-content",
+        "</style>",
+        0,
+        undefined,
+        "</style>".length,
     );
     assert.deepEqual(JSON.parse(wasm.parse_f_templates("<f-template>{{")), []);
 });
@@ -653,6 +657,14 @@ test("authored source spans are exposed by the generated WASM declarations", () 
             file,
             `import { extract_template_slots, type TemplateSlot, type FTemplateMetadata, type TemplateSourceSpan, type FastBuildError } from "../../wasm/microsoft_fast_build.js";
 import type { FastBuildError as ConvertError } from "../../wasm/convert/microsoft_fast_convert.js";
+import { compose_f_template_styles_with_options, type CompositionMapping, type CompositionSourceMap, type StylesheetCompositionOptions } from "../../wasm/microsoft_fast_build.js";
+export function composition(html: string, options: StylesheetCompositionOptions): CompositionMapping {
+    const result = compose_f_template_styles_with_options(html, options);
+    const sourceMap: CompositionSourceMap = JSON.parse(result.source_map);
+    const mapping: CompositionMapping = JSON.parse(result.map_span(0, sourceMap.insertionOffset));
+    result.free();
+    return mapping;
+}
 export function slots(source: string): TemplateSlot[] {
     const serialized: string = extract_template_slots(source, "card");
     const declarations: TemplateSlot[] = JSON.parse(serialized);

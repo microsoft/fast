@@ -137,6 +137,28 @@ The renderer applies special rules for certain HTML attributes:
 | `aria-*` | camelCase ARIA property | `aria-label` → `ariaLabel` |
 | Boolean (`?attr`) | Truthy/falsy evaluation | `?disabled="{{isOff}}"` → present or absent |
 
+## Composing Component Styles
+
+Build tools can call `compose_f_template_styles_with_options` from
+`@microsoft/fast-build/wasm/microsoft_fast_build.js` with either
+`{ kind: "inline", css }` or `{ kind: "external", href }`. The result's `html`
+contains a first-child style or stylesheet link, preserving authored content.
+The caller owns public asset URLs and serving.
+
+An inline `styleId` adds `data-fast-ssr-style` to identify a generated SSR
+fallback. It is not a CSP nonce. For adopted stylesheets, use the original HTML
+for client conversion and register CSS separately; a runtime integration must
+successfully attach replacement styles and coordinate hydration before removing
+only matching fallbacks. FAST Build does not perform this handoff. Keep fallbacks
+when JavaScript is absent or attachment fails, and account for the different
+cascade ordering of constructed stylesheets.
+
+Retain the composition handle to map downstream binding spans and structured
+errors back to authored HTML/CSS. Mapping is explicit; passing composed HTML
+alone changes the source coordinate space. See the
+[stylesheet composition and diagnostics contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#stylesheet-delivery-composition)
+for `map_span`, `map_location`, lifetime, and static-attribute restrictions.
+
 ## Host Attribute Propagation
 
 Missing or null attribute bindings omit the attribute, rather than serializing
