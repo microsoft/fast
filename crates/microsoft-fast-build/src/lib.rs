@@ -78,6 +78,7 @@ mod error;
 mod locator;
 mod f_template;
 mod binding_metadata;
+mod template_slots;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
@@ -90,6 +91,7 @@ pub use f_template::{
     compose_f_template_styles, compose_f_template_styles_with_options, ComposedTemplate,
     CompositionSource, CompositionSpan, Stylesheet,
 };
+pub use template_slots::{extract_template_slots, TemplateSlot};
 
 /// Version of generated template metadata; unversioned maps remain supported.
 pub const TEMPLATE_FORMAT_VERSION: u32 = 1;

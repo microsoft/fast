@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [Rust](https://www.rust-lang.org/tools/install) (stable toolchain, 1.65+)
+- [Rust](https://www.rust-lang.org/tools/install) (current stable toolchain, including the HTML parser dependencies)
 - Cargo (included with Rust)
 
 ## Setup
@@ -33,6 +33,7 @@ This runs both unit tests (embedded in each source module) and integration tests
 | `tests/custom_elements.rs` | Custom elements and `Locator` |
 | `tests/common/mod.rs` | Shared helpers (`ok`, `err`, `make_locator`, `empty_root`) |
 | `tests/performance.rs` | Shared benchmark corpus byte/hash/marker parity and normal/stream equivalence |
+| `tests/template_slots.rs` | Authored slot scope, namespaces, entity decoding, source coordinates, parser recovery, and selection errors |
 
 ### Performance benchmarks
 

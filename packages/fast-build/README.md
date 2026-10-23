@@ -323,6 +323,62 @@ Legacy unversioned maps and string definitions remain supported. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
 
+#### Authored slot declarations
+
+Inspect one component without rendering state or parsing HTML in your plugin:
+
+```js
+import { extract_template_slots } from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const source = `<f-template name="my-card">
+    <template>
+        <slot name="title"></slot>
+        <slot></slot>
+    </template>
+</f-template>`;
+const slots = JSON.parse(extract_template_slots(source, "my-card"));
+// [{ name: "title", line: 3, column: 9 }, { name: "", line: 4, column: 9 }]
+```
+
+The export returns a JSON array described by the generated `TemplateSlot`
+TypeScript interface: `{ name: string; line: number; column: number }`.
+Names are HTML-entity-decoded authored attribute values, not evaluated bindings.
+Missing, valueless, and empty `name` attributes all denote the default slot `""`.
+Declaration order and duplicates are preserved; results are not deduplicated or
+expanded into rendered instances.
+
+Discovery uses an HTML tokenizer and tree builder, including HTML error recovery,
+with scripting enabled but **no script execution**. Comments, escaped markup,
+attribute text, and HTML raw-text/RCDATA contexts (including `script`, `style`,
+`textarea`, and `noscript`) do not manufacture slot elements. Only HTML-namespace
+slots count; SVG/MathML slots do not, while real HTML descendants at integration
+points such as SVG `foreignObject` do.
+
+Selection matches the decoded `<f-template name>` value case-sensitively and
+requires exactly one matching HTML definition with exactly one direct HTML
+`<template>` child. Discovery stays inside that child's contents. It includes
+nested ordinary `<template>` contents and `<f-when>`/`<f-repeat>` bodies once
+per authored declaration, without evaluating state. Nested `<f-template>`
+definitions and templates carrying `shadowrootmode` or legacy `shadowroot`
+are separate authored scopes and are excluded. Sibling definitions and markup
+outside the selected shadow template are excluded too.
+
+Locations identify the opening `<` in the **complete HTML argument**. Lines and
+UTF-16 columns are one-based, tabs count as one code unit, and non-BMP characters
+as two. CRLF is one break; lone CR and LF are breaks too. Pass the original source
+**before** `compose_f_template_styles`, code-sample escaping, or other transforms;
+coordinates from already-transformed input cannot recover the original file.
+Associate the input with its file name and regenerate metadata after editing it.
+
+A valid component with no slots returns `[]`. Invalid selection throws
+`FastBuildError`: `invalid-template-metadata` for an empty selector or duplicate
+matching definitions, `missing-template` for no match, and
+`missing-inner-template`/`multiple-inner-templates` for ambiguous shadow-template
+structure. Located failures identify the containing definition or second
+conflicting declaration in the original input and include `templateName`.
+This additive API does not change `parse_f_templates`, binding metadata,
+rendering, or the template format version, and is not a slot-contract manifest.
+
 #### Structured errors
 
 Failing render, conversion, composition, and metadata-validation APIs throw actual

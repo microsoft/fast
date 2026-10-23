@@ -142,6 +142,15 @@ export interface FTemplateMetadata {
     formatVersion: 1;
     bindings: TemplateBinding[];
 }
+/** An authored HTML slot, located at its opening tag in the original input. */
+export interface TemplateSlot {
+    /** Decoded name; an empty string denotes the default slot. */
+    name: string;
+    /** One-based line; CRLF is one break, as are lone CR and LF. */
+    line: number;
+    /** One-based UTF-16 column; tabs count as one code unit. */
+    column: number;
+}
 "#;
 
 /// Render a FAST HTML template with an optional JSON state string.
@@ -435,6 +444,25 @@ pub fn compose_f_template_styles_with_options(
     };
     crate::compose_f_template_styles_with_options(template_html, stylesheet)
         .map(|inner| ComposedTemplate { inner }).map_err(render_error)
+}
+
+/// Return JSON slot declarations from a named component's authored shadow template.
+/// Pass original HTML before CSS composition or other source transformations.
+#[wasm_bindgen]
+pub fn extract_template_slots(html: &str, template_name: &str) -> Result<String, JsValue> {
+    let slots = crate::extract_template_slots(html, template_name).map_err(render_error)?;
+    let slots: Vec<_> = slots
+        .iter()
+        .map(|slot| {
+            format!(
+                "{{\"name\":\"{}\",\"line\":{},\"column\":{}}}",
+                escape_json_str(&slot.name),
+                slot.line,
+                slot.column,
+            )
+        })
+        .collect();
+    Ok(format!("[{}]", slots.join(",")))
 }
 
 fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {
