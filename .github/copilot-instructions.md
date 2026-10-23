@@ -53,6 +53,18 @@ These contain domain-specific guidance. Read when performing related tasks:
 - [Testing](./skills/testing/SKILL.md) — running tests locally and in CI, writing Playwright fixture tests.
 - [Documentation](./skills/documentation/SKILL.md) — adding documentation in code, markdown files in each package/crate, and the website.
 
+## Version-specific hotfixes
+
+Read the [shipping skill's hotfix workflow](./skills/shipping/SKILL.md#version-specific-hotfixes)
+and [operator guide](../build/README.md#version-specific-hotfixes) before preparing
+a hotfix. Create the maintenance branch from the exact published package tag,
+not `main`; make and review the fix and version updates, then push the branch.
+The manual pipeline targets that pushed branch through `hotfixBranch` and pins
+its reviewed tip with `hotfixTag`. `main` is never the hotfix package source.
+Keep the pipeline infrastructure central; do not backport it into historical
+branches. Agents must not autonomously queue publishing, create release tags,
+publish packages, merge PRs, or change publishing settings.
+
 ## Commands
 
 Run all commands from the monorepo root. Use workspace flags to target a single package.
