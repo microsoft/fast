@@ -169,7 +169,31 @@ instead names its definition and locates that definition's supplied `content`;
 do not attribute that location to the entry file. Non-HTML errors omit coordinates.
 Both WASM modules export a `FastBuildError` TypeScript interface. See the
 [structured-error contract and code lists](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#structured-errors).
-Metadata discovery remains permissive rather than introducing new parse failures.
+Binding metadata discovery remains permissive rather than introducing new parse failures.
+
+For authored slot inspection, import the additive `extract_template_slots` export
+from `@microsoft/fast-build/wasm/microsoft_fast_build.js`:
+
+```js
+import { extract_template_slots } from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const slots = JSON.parse(extract_template_slots(originalHtml, "greeting-card"));
+// [{ name: "title", line: 3, column: 9 }, { name: "", line: 4, column: 9 }]
+```
+
+Pass the complete original source before CSS composition or other transformations.
+Each declaration has a decoded authored `name` (`""` for the default slot) and
+one-based line/UTF-16 column at its opening `<`; duplicates remain in source order.
+Discovery uses real HTML elements and namespaces, not slot-like text in comments
+or raw-text contexts. It inspects ordinary nested templates and FAST conditional/
+repeat bodies once, without state evaluation, but excludes nested component
+definitions and templates marked as separate shadow roots. Selection must identify
+one named definition and one direct HTML template child; invalid or ambiguous
+selection throws `FastBuildError`, while a valid slot-free component returns `[]`.
+The generated WASM declarations expose `TemplateSlot`. See the
+[slot discovery contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#authored-slot-declarations)
+for namespace, nested-template, parsing, and error details. Rendering and binding
+metadata remain unchanged.
 
 Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
 
