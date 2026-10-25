@@ -546,6 +546,14 @@ the imperative `html` API:
   `definition.schema`, while `observerMap()` can use either `definition.schema`
   or `observerMap({ schema })`.
 
+Array `deepMerge` contracts and opt-in CPU measurements live in
+`src/declarative/observer-map-array-benchmark.pw.spec.ts`, with the browser workload
+in `test/observer-map-array-workload.ts`. Equal arrays preserve the observed array
+and item identities without owner or array notifications. Changed arrays are
+replacement controls and must still notify their owner. The benchmark separates
+same-reference, same-element, deeply equal and replacement payloads; payload
+construction and queue flushing are untimed. See the README workload commands.
+
 The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
 declarative API lazily installs declarative debug messages only. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by

@@ -108,6 +108,31 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
+## Observer-map array comparison workload
+
+After the root build and Playwright browser installation, contributors can run
+the array identity and notification contracts in all three browsers:
+
+```bash
+npm exec -w @microsoft/fast-element -- playwright test observer-map-array-benchmark.pw.spec.ts
+```
+
+For local CPU measurements, opt in and use one browser worker:
+
+```bash
+FAST_OBSERVER_MAP_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright test observer-map-array-benchmark.pw.spec.ts --project=chromium --workers=1
+```
+
+The workload compares the same array reference, a fresh array containing the same
+elements, fresh deeply equal items, and changed replacements at sizes 100 and
+1,000 with primitive items or object items with metric subtree depths 1 and 3. Each measurement
+uses a real observer-map owner. Payload creation and notification queue flushing
+are outside the timed synchronous `deepMerge` loop. Each group discards its first
+run and reports seven samples as median/min/max milliseconds per merge, including
+the iteration count. Run comparisons on the same machine and browser; these are
+diagnostics without timing thresholds. The deterministic tests also verify that
+replacements notify, so a disconnected observer cannot appear to be a valid no-op.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
