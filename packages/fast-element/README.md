@@ -126,8 +126,9 @@ FAST_OBSERVER_MAP_BENCHMARK=1 npm exec -w @microsoft/fast-element -- playwright 
 The workload compares the same array reference, a fresh array containing the same
 elements, fresh deeply equal items, and changed replacements at sizes 100 and
 1,000 with primitive items or object items with metric subtree depths 1 and 3. Each measurement
-uses a real observer-map owner. Payload creation and notification queue flushing
-are outside the timed synchronous `deepMerge` loop. Each group discards its first
+uses a real observer-map owner. Array/item preparation and notification queue flushing
+are outside the timed synchronous `deepMerge` loop. The per-call `{ items }`
+envelope allocation remains inside the timer. Each group discards its first
 run and reports seven samples as median/min/max milliseconds per merge, including
 the iteration count. Run comparisons on the same machine and browser; these are
 diagnostics without timing thresholds. The deterministic tests also verify that
