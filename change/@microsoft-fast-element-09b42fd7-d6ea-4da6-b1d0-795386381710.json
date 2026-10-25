@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update connection-aware injected properties to the dependency resolved from the new DOM container.",
+  "packageName": "@microsoft/fast-element",
+  "email": "vansh.nagar.dev@gmail.com",
+  "dependentChangeType": "none"
+}

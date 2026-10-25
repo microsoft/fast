@@ -846,7 +846,7 @@ export const DI = Object.freeze({
                             const oldValue = this[field];
 
                             if (newValue !== oldValue) {
-                                this[field] = value;
+                                this[field] = newValue;
                                 notifier.notify(propertyName);
                             }
                         };
