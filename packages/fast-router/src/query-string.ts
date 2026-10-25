@@ -24,7 +24,7 @@ function buildParam(key: string, value: any, traditional?: boolean): Array<strin
     } else if (typeof value === "object" && !traditional) {
         for (const propertyName in value) {
             result = result.concat(
-                buildParam(key + "[" + propertyName + "]", value[propertyName])
+                buildParam(key + "[" + propertyName + "]", value[propertyName]),
             );
         }
     } else {
@@ -54,25 +54,33 @@ function processScalarParam(existedParam: any, value: string): any {
 function parseComplexParam(
     queryParams: Record<string, any>,
     keys: string[],
-    value: any
+    value: any,
 ): void {
+    // Never follow or assign the prototype setter when traversing query keys.
+    if (keys.indexOf("__proto__") !== -1) {
+        return;
+    }
+
     let currentParams: Record<string, any> = queryParams;
     const keysLastIndex = keys.length - 1;
 
     for (let j = 0; j <= keysLastIndex; j++) {
         const key = keys[j] === "" ? currentParams.length : keys[j];
         if (j < keysLastIndex) {
+            const currentValue = Object.prototype.hasOwnProperty.call(currentParams, key)
+                ? currentParams[key]
+                : undefined;
             // The value has to be an array or a false value
             // It can happen that the value is no array if the key was repeated with traditional style like `list=1&list[]=2`
             const prevValue =
-                !currentParams.get(key) || typeof currentParams.get(key) === "object"
-                    ? currentParams.get(key)
-                    : [currentParams.get(key)];
-            currentParams.set(key, prevValue || (isNaN(keys[j + 1] as any) ? {} : []));
-            currentParams = currentParams.get(key);
+                !currentValue || typeof currentValue === "object"
+                    ? currentValue
+                    : [currentValue];
+            currentParams[key] =
+                prevValue || (Number.isNaN(Number(keys[j + 1])) ? {} : []);
+            currentParams = currentParams[key];
         } else {
-            currentParams.set(key, value);
-            currentParams = currentParams.get(key);
+            currentParams[key] = value;
         }
     }
 }
