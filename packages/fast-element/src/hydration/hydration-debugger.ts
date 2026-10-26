@@ -1,4 +1,4 @@
-import { DOMAspect } from "../dom.js";
+import { DOMAspect } from "../dom-aspect.js";
 import type { ViewBehaviorFactory } from "../templating/html-directive.js";
 import type {
     HydrationDiagnostic,
