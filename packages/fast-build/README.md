@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
 
-The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element), primarily for use in testing environments. It is powered by a WebAssembly core with zero runtime npm dependencies.
+The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. It is powered by a WebAssembly core with zero runtime npm dependencies.
 
-> **Note:** For production server-side rendering, we recommend using the [`@microsoft/webui`](https://github.com/microsoft/webui) project instead.
+[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
 ## Installation
 
