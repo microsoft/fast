@@ -72,6 +72,11 @@ Application owners should configure the global policy. Reusable component librar
 
 By default, `DOMPolicy.create()` creates a Trusted Types policy named `fast-html` when `globalThis.trustedTypes` is available. It also installs guard rules for common dangerous sinks, including inline event attributes, `innerHTML`, selected URL attributes/properties, script text, and `iframe[srcdoc]`.
 
+Guarded URL values are coerced to strings once before validation, so arrays and
+objects receive the same protocol checks as strings. The sink receives that
+validated string rather than the original value. Null and undefined retain their
+existing attribute/property behavior.
+
 FAST's initial DOM policy reuses its built-in Trusted Types policy rather than
 creating it twice. When creating additional policies under CSP restrictions on
 duplicate policy names, pass an application-specific `trustedType`, as in the

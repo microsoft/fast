@@ -9,7 +9,10 @@ guarded policy explicitly.
 ### Changed behavior
 
 - Guarded URL attributes and properties, such as anchor `href`, reject unsafe
-  protocols by writing an empty string.
+  protocols by writing an empty string. Non-nullish values, including arrays
+  and objects, are coerced to strings once before validation; the validated
+  string is written to the sink. Null and undefined retain their existing
+  attribute/property behavior.
 - Known dangerous bindings, including `:innerHTML`, inline event-handler
   attributes/properties, and `iframe[srcdoc]`, throw a DOM policy error.
 - Ordinary text bindings and `@click` event listeners are unchanged.

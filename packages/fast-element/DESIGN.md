@@ -352,6 +352,9 @@ are imported only as types where possible, avoiding circular runtime dependencie
 The focused-entrypoint dependency regressions enforce these import boundaries.
 Binding behaviors cache their protected sink; ordinary sinks are returned
 unchanged, while guarded URL sinks validate values on each write.
+Non-nullish URL values are coerced to strings once before validation, and the
+validated string is passed to the sink so objects cannot bypass checks through
+DOM coercion. Null and undefined retain their existing sink behavior.
 
 The default guards block known dangerous sinks such as inline event handlers,
 `innerHTML`, script text/source writes, and executable object/link/embed sources. URL

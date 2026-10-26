@@ -515,6 +515,121 @@ test.describe("the dom policy helper", () => {
         expect(results).toEqual(["", "", "", "", "", "", ""]);
     });
 
+    for (const policySource of ["default", "custom"]) {
+        test(`validates coerced URL values with the ${policySource} policy`, async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const results = await page.evaluate(async policySource => {
+                // @ts-expect-error: Client modules.
+                const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+                const policy =
+                    policySource === "default" ? DOM.policy : DOMPolicy.create();
+                const sinks = [
+                    policy.protect("a", DOMAspect.attribute, "href", DOM.setAttribute),
+                    policy.protect(
+                        "a",
+                        DOMAspect.property,
+                        "href",
+                        (target: HTMLAnchorElement, _name: string, value: string) => {
+                            target.href = value;
+                        },
+                    ),
+                ];
+
+                return sinks.map(sink => {
+                    const values = [
+                        ["javascript:alert(1)"],
+                        new String("data:text/html,<svg onload=alert(1)>"),
+                        { toString: () => " java%0Ascript:alert(1) " },
+                        [" https://fast.design/ "],
+                        new URL("https://fast.design/docs"),
+                        0,
+                        false,
+                    ].map(value => {
+                        const element = document.createElement("a");
+                        sink(element, "href", value);
+                        return element.getAttribute("href");
+                    });
+                    const nullish = [null, undefined].map(value => {
+                        const element = document.createElement("a");
+                        element.setAttribute("href", "/previous");
+                        sink(element, "href", value);
+                        return element.getAttribute("href");
+                    });
+
+                    let coercions = 0;
+                    const element = document.createElement("a");
+                    sink(element, "href", {
+                        toString() {
+                            return ++coercions === 1
+                                ? " https://fast.design/ "
+                                : "javascript:alert(1)";
+                        },
+                    });
+
+                    return {
+                        values,
+                        nullish,
+                        href: element.getAttribute("href"),
+                        coercions,
+                    };
+                });
+            }, policySource);
+
+            expect(results).toEqual(
+                Array.from({ length: 2 }, (_, index) => ({
+                    values: [
+                        "",
+                        "",
+                        "",
+                        "https://fast.design/",
+                        "https://fast.design/docs",
+                        "0",
+                        "false",
+                    ],
+                    nullish: index === 0 ? [null, null] : ["null", "undefined"],
+                    href: "https://fast.design/",
+                    coercions: 1,
+                })),
+            );
+        });
+    }
+
+    test("validates coerced URL values on initial binding and later updates", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { html } = await import("./main.js");
+            const host = document.createElement("div");
+            const template = html`
+                <a href=${x => x.url}>attribute</a>
+                <a :href=${x => x.url}>property</a>
+            `;
+            const view = template.render({ url: ["javascript:alert(1)"] }, host);
+            const hrefs = () =>
+                Array.from(host.querySelectorAll("a"), a => a.getAttribute("href"));
+            const initial = hrefs();
+            view.bind({ url: [" https://fast.design/ "] });
+            const safe = hrefs();
+            view.bind({ url: new String("javascript:alert(1)") });
+            const unsafe = hrefs();
+            view.dispose();
+
+            return { initial, safe, unsafe };
+        });
+
+        expect(results).toEqual({
+            initial: ["", ""],
+            safe: ["https://fast.design/", "https://fast.design/"],
+            unsafe: ["", ""],
+        });
+    });
+
     test("preserves safe and protocol-relative URL values after trimming", async ({
         page,
     }) => {

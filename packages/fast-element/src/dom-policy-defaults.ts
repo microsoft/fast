@@ -1,7 +1,7 @@
 import type { DOMSink } from "./dom.js";
 import { DOMAspect } from "./dom-aspect.js";
 import type { DOMAspectGuards, DOMGuards } from "./dom-policy.js";
-import { isString, Message } from "./interfaces.js";
+import { Message } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 const surroundingWhitespaceAndControlChars =
@@ -52,9 +52,9 @@ function safeURL(
     aspectName: string,
     sink: DOMSink,
 ): DOMSink {
-    return (target: Node, name: string, value: string, ...rest: any[]) => {
-        if (isString(value)) {
-            value = sanitizeURL(value);
+    return (target: Node, name: string, value: unknown, ...rest: any[]) => {
+        if (value !== null && value !== undefined) {
+            value = sanitizeURL(`${value}`);
         }
 
         sink(target, name, value, ...rest);

@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Enable the built-in DOM sink guards consistently across entrypoints while preserving application policy configuration.",
+  "comment": "Enable the built-in DOM sink guards consistently across entrypoints and validate coerced URL values while preserving application policy configuration.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
