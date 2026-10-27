@@ -1,6 +1,7 @@
-import { DOMAspect, type DOMSink } from "./dom.js";
-import { isString, Message, type TrustedTypesPolicy } from "./interfaces.js";
-import { FAST } from "./platform.js";
+import type { DOMSink } from "./dom.js";
+import { DOMAspect } from "./dom-aspect.js";
+import { getDefaultAspectGuard, getDefaultElementGuard } from "./dom-policy-defaults.js";
+import type { TrustedTypesPolicy } from "./interfaces.js";
 
 /**
  * A policy that controls whether values can be written to DOM sinks.
@@ -95,384 +96,41 @@ export type DOMGuards = {
     aspects: DOMAspectGuards;
 };
 
-const surroundingWhitespaceAndControlChars =
-    /^[\u0000-\u0020\u007F]+|[\u0000-\u0020\u007F]+$/g;
-const whitespaceAndControlChars = /[\u0000-\u0020\u007F]+/g;
-const unsafeURLProtocol = /^(?:javascript|vbscript|data):/;
-
-function trimURL(value: string): string {
-    return value.replace(surroundingWhitespaceAndControlChars, "");
-}
-
-function decodeURL(value: string): string {
-    try {
-        return decodeURIComponent(value);
-    } catch {
-        return value;
-    }
-}
-
-function hasUnsafeURLProtocol(value: string): boolean {
-    let normalized = trimURL(value);
-
-    for (let i = 0; i < 3; ++i) {
-        const decoded = decodeURL(normalized);
-
-        if (decoded === normalized) {
-            break;
-        }
-
-        normalized = trimURL(decoded);
-    }
-
-    normalized = normalized.replace(whitespaceAndControlChars, "").toLowerCase();
-
-    return unsafeURLProtocol.test(normalized);
-}
-
-function sanitizeURL(value: string): string {
-    const trimmed = trimURL(value);
-    return hasUnsafeURLProtocol(trimmed) ? "" : trimmed;
-}
-
-function safeURL(
-    tagName: string | null,
-    aspect: DOMAspect,
-    aspectName: string,
-    sink: DOMSink,
-): DOMSink {
-    return (target: Node, name: string, value: string, ...rest: any[]) => {
-        if (isString(value)) {
-            value = sanitizeURL(value);
-        }
-
-        sink(target, name, value, ...rest);
-    };
-}
-
-function block(
-    tagName: string | null,
-    aspect: DOMAspect,
-    aspectName: string,
-    sink: DOMSink,
-): DOMSink {
-    throw FAST.error(Message.blockedByDOMPolicy, {
-        aspectName,
-        tagName: tagName ?? "text",
-    });
-}
-
-const defaultDOMElementGuards = {
-    a: {
-        [DOMAspect.attribute]: {
-            href: safeURL,
-        },
-        [DOMAspect.property]: {
-            href: safeURL,
-        },
-    },
-    area: {
-        [DOMAspect.attribute]: {
-            href: safeURL,
-        },
-        [DOMAspect.property]: {
-            href: safeURL,
-        },
-    },
-    button: {
-        [DOMAspect.attribute]: {
-            formaction: safeURL,
-        },
-        [DOMAspect.property]: {
-            formAction: safeURL,
-        },
-    },
-    embed: {
-        [DOMAspect.attribute]: {
-            src: block,
-        },
-        [DOMAspect.property]: {
-            src: block,
-        },
-    },
-    form: {
-        [DOMAspect.attribute]: {
-            action: safeURL,
-        },
-        [DOMAspect.property]: {
-            action: safeURL,
-        },
-    },
-    frame: {
-        [DOMAspect.attribute]: {
-            src: safeURL,
-        },
-        [DOMAspect.property]: {
-            src: safeURL,
-        },
-    },
-    iframe: {
-        [DOMAspect.attribute]: {
-            src: safeURL,
-            srcdoc: block,
-        },
-        [DOMAspect.property]: {
-            src: safeURL,
-            srcdoc: block,
-        },
-    },
-    input: {
-        [DOMAspect.attribute]: {
-            formaction: safeURL,
-        },
-        [DOMAspect.property]: {
-            formAction: safeURL,
-        },
-    },
-    link: {
-        [DOMAspect.attribute]: {
-            href: block,
-        },
-        [DOMAspect.property]: {
-            href: block,
-        },
-    },
-    object: {
-        [DOMAspect.attribute]: {
-            codebase: block,
-            data: block,
-        },
-        [DOMAspect.property]: {
-            codeBase: block,
-            data: block,
-        },
-    },
-    script: {
-        [DOMAspect.attribute]: {
-            src: block,
-            text: block,
-        },
-        [DOMAspect.property]: {
-            src: block,
-            text: block,
-            innerText: block,
-            textContent: block,
-        },
-    },
-    style: {
-        [DOMAspect.property]: {
-            innerText: block,
-            textContent: block,
-        },
-    },
-};
-
-const blockedEvents = {
-    onabort: block,
-    onauxclick: block,
-    onbeforeinput: block,
-    onbeforematch: block,
-    onblur: block,
-    oncancel: block,
-    oncanplay: block,
-    oncanplaythrough: block,
-    onchange: block,
-    onclick: block,
-    onclose: block,
-    oncontextlost: block,
-    oncontextmenu: block,
-    oncontextrestored: block,
-    oncopy: block,
-    oncuechange: block,
-    oncut: block,
-    ondblclick: block,
-    ondrag: block,
-    ondragend: block,
-    ondragenter: block,
-    ondragleave: block,
-    ondragover: block,
-    ondragstart: block,
-    ondrop: block,
-    ondurationchange: block,
-    onemptied: block,
-    onended: block,
-    onerror: block,
-    onfocus: block,
-    onformdata: block,
-    oninput: block,
-    oninvalid: block,
-    onkeydown: block,
-    onkeypress: block,
-    onkeyup: block,
-    onload: block,
-    onloadeddata: block,
-    onloadedmetadata: block,
-    onloadstart: block,
-    onmousedown: block,
-    onmouseenter: block,
-    onmouseleave: block,
-    onmousemove: block,
-    onmouseout: block,
-    onmouseover: block,
-    onmouseup: block,
-    onpaste: block,
-    onpause: block,
-    onplay: block,
-    onplaying: block,
-    onprogress: block,
-    onratechange: block,
-    onreset: block,
-    onresize: block,
-    onscroll: block,
-    onsecuritypolicyviolation: block,
-    onseeked: block,
-    onseeking: block,
-    onselect: block,
-    onslotchange: block,
-    onstalled: block,
-    onsubmit: block,
-    onsuspend: block,
-    ontimeupdate: block,
-    ontoggle: block,
-    onvolumechange: block,
-    onwaiting: block,
-    onwebkitanimationend: block,
-    onwebkitanimationiteration: block,
-    onwebkitanimationstart: block,
-    onwebkittransitionend: block,
-    onwheel: block,
-};
-
-const defaultDOMGuards = {
-    elements: defaultDOMElementGuards,
-    aspects: {
-        [DOMAspect.attribute]: {
-            ...blockedEvents,
-        },
-        [DOMAspect.property]: {
-            innerHTML: block,
-            ...blockedEvents,
-        },
-        [DOMAspect.event]: {
-            ...blockedEvents,
-        },
-    },
-};
-
-function createDomSinkGuards(
-    config: Partial<DOMSinkGuards>,
-    defaults: DOMSinkGuards,
-): DOMSinkGuards {
+function snapshotGuards<T extends object>(config: T, depth: number): Readonly<T>;
+function snapshotGuards(config: object, depth: number): object {
     const result = {};
 
-    for (const name in defaults) {
-        const overrideValue = config[name];
-        const defaultValue = defaults[name];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[name] = defaultValue;
-                break;
-            default:
-                // override the default
-                result[name] = overrideValue;
-                break;
-        }
-    }
-
-    // add any new sinks that were not overrides
-    for (const name in config) {
-        if (!(name in result)) {
-            result[name] = config[name];
-        }
+    for (const key in config) {
+        const value = config[key];
+        result[key] = depth && value ? snapshotGuards(value, depth - 1) : value;
     }
 
     return Object.freeze(result);
 }
 
-function createDOMAspectGuards(
-    config: DOMAspectGuards,
-    defaults: DOMAspectGuards,
-): DOMAspectGuards {
-    const result = {};
-
-    for (const aspect in defaults) {
-        const overrideValue = config[aspect];
-        const defaultValue = defaults[aspect];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[aspect] = createDomSinkGuards(defaultValue, {});
-                break;
-            default:
-                // override the default
-                result[aspect] = createDomSinkGuards(overrideValue, defaultValue);
-                break;
-        }
-    }
-
-    // add any new aspect guards that were not overrides
-    for (const aspect in config) {
-        if (!(aspect in result)) {
-            result[aspect] = createDomSinkGuards(config[aspect], {});
-        }
-    }
-
-    return Object.freeze(result);
-}
-
-function createElementGuards(
-    config: DOMElementGuards,
-    defaults: DOMElementGuards,
-): DOMElementGuards {
-    const result = {};
-
-    for (const tag in defaults) {
-        const overrideValue = config[tag];
-        const defaultValue = defaults[tag];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[tag] = createDOMAspectGuards(defaultValue, {});
-                break;
-            default:
-                // override the default aspects
-                result[tag] = createDOMAspectGuards(overrideValue, defaultValue);
-                break;
-        }
-    }
-
-    // Add any new element guards that were not overrides
-    for (const tag in config) {
-        if (!(tag in result)) {
-            result[tag] = createDOMAspectGuards(config[tag], {});
-        }
-    }
-
-    return Object.freeze(result);
-}
-
-function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGuards {
+function createDOMGuards(config: Partial<DOMGuards>): DOMGuards {
     return Object.freeze({
-        elements: config.elements
-            ? createElementGuards(config.elements, defaults.elements)
-            : defaults.elements,
-        aspects: config.aspects
-            ? createDOMAspectGuards(config.aspects, defaults.aspects)
-            : defaults.aspects,
+        elements: snapshotGuards(config.elements ?? {}, 2),
+        aspects: snapshotGuards(config.aspects ?? {}, 1),
     });
+}
+
+function getGuard(
+    config: DOMAspectGuards | undefined,
+    aspect: DOMAspect,
+    aspectName: string,
+    defaultGuard: DOMSinkGuards[string] | undefined,
+): DOMSinkGuards[string] | undefined {
+    if (config === null) {
+        return;
+    }
+    const aspectGuards = config?.[aspect];
+    if (aspectGuards === null) {
+        // A removed aspect retains the lookup behavior of an empty guard map.
+        return {}[aspectName];
+    }
+    const guard = aspectGuards?.[aspectName];
+    return guard === null ? undefined : (guard ?? defaultGuard);
 }
 
 function createTrustedType() {
@@ -480,23 +138,6 @@ function createTrustedType() {
     return globalThis.trustedTypes
         ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
         : { createHTML };
-}
-
-function tryGuard(
-    aspectGuards: DOMAspectGuards,
-    tagName: string | null,
-    aspect: DOMAspect,
-    aspectName: string,
-    sink: DOMSink,
-) {
-    const sinkGuards = aspectGuards[aspect];
-
-    if (sinkGuards) {
-        const guard = sinkGuards[aspectName];
-        if (guard) {
-            return guard(tagName, aspect, aspectName, sink);
-        }
-    }
 }
 
 /**
@@ -527,7 +168,7 @@ export const DOMPolicy = Object.freeze({
      */
     create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
-        const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
+        const guards = createDOMGuards(options.guards ?? {});
 
         return Object.freeze({
             createHTML(value: string): string {
@@ -540,27 +181,24 @@ export const DOMPolicy = Object.freeze({
                 aspectName: string,
                 sink: DOMSink,
             ): DOMSink {
-                // Check for element-specific guards.
                 const key = (tagName ?? "").toLowerCase();
-                const elementGuards = guards.elements[key];
-                if (elementGuards) {
-                    const guard = tryGuard(
-                        elementGuards,
-                        tagName,
-                        aspect,
-                        aspectName,
-                        sink,
-                    );
-
-                    if (guard) {
-                        return guard;
-                    }
-                }
-
-                // Check for guards applicable to all nodes.
-                return (
-                    tryGuard(guards.aspects, tagName, aspect, aspectName, sink) ?? sink
+                const elementGuard = getGuard(
+                    guards.elements[key],
+                    aspect,
+                    aspectName,
+                    getDefaultElementGuard(key, aspect, aspectName),
                 );
+                const guardedSink = elementGuard?.(tagName, aspect, aspectName, sink);
+                if (guardedSink) {
+                    return guardedSink;
+                }
+                const aspectGuard = getGuard(
+                    guards.aspects,
+                    aspect,
+                    aspectName,
+                    getDefaultAspectGuard(aspect, aspectName),
+                );
+                return aspectGuard?.(tagName, aspect, aspectName, sink) ?? sink;
             },
         });
     },
