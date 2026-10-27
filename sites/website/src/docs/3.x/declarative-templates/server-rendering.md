@@ -289,10 +289,10 @@ The propagation is implemented by the build-time renderer in `@microsoft/fast-bu
 
 ## Using `@microsoft/fast-build`
 
-The `@microsoft/fast-build` package is a build-time renderer for declarative templates, powered by a WebAssembly core. It implements the rendering contract described above and is primarily used in testing and development workflows.
+The `@microsoft/fast-build` package renders declarative FAST syntax for integration with existing backends, powered by a WebAssembly core. It implements the rendering contract described above.
 
 :::note
-For production server-side rendering, consider the [`@microsoft/webui`](https://github.com/microsoft/webui) project, which provides a full rendering pipeline.
+[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that can render FASTElement using the `fast_v3` plugin.
 :::
 
 ### Installation
