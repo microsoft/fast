@@ -55,6 +55,7 @@ render_template(template, state_str)
 | `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 | `f_template.rs` | `compose_f_template_styles` — in-memory insertion of a `<style>` element into an `<f-template>` definition's inner `<template>`, with no filesystem requirement |
+| `template_slots.rs` | Authored slot analysis using HTML tokenization/tree construction and original byte locations, isolated from rendering |
 | `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, `compose_f_template_styles`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
 
 ---
@@ -188,6 +189,40 @@ metadata fields when mapping parsed definitions, and WASM custom declarations
 describe the JSON interfaces without adding a runtime serialization dependency.
 The new spans are additive under format version 1; rendering does not require or
 validate them, so older version-1 records remain renderable.
+
+### Authored slot analysis
+
+`extract_template_slots` is additive and separate from `parse_f_templates`.
+Only this analysis path constructs a DOM: `html5gum` tokenizes with byte-position
+tracking, `html5ever` supplies HTML tree construction and tokenizer-state/namespace
+feedback, and `markup5ever_rcdom` stores the result. This avoids a second
+hand-written HTML parser and handles comments, raw text, RCDATA, decoded
+attributes, and SVG/MathML integration points without running a browser.
+
+`LocatedEmitter` forwards the tokenizer interface while retaining each opening
+tag's byte offset. `LocatedDom` delegates tree operations to RcDom and associates
+authored HTML definition/template/slot nodes with that offset. Declarative shadow
+attachment is disabled so marked templates remain inspectable authored scope
+boundaries. Scripting is enabled only as a parsing mode (`noscript` is raw text);
+scripts are never executed. HTML parse-error recovery is allowed, not reported
+as a separate document-validation API.
+
+Selection matches decoded names case-sensitively, rejects empty/missing/duplicate
+matches, and requires one direct inner HTML template. Iterative traversal includes
+ordinary nested templates and conditional/repeated bodies once, but stops at
+nested component definitions or templates marked `shadowrootmode`/`shadowroot`.
+Only HTML slot elements count. The result is sorted by original byte position,
+not DOM order, because HTML recovery can reparent nodes (for example, foster
+parenting around tables).
+
+The shared `SourceLocations` cursor converts sorted offsets in one forward pass
+to one-based lines/UTF-16 columns at the opening `<`. Duplicate names retain
+individual locations. Input is never trimmed, composed, or code-escaped. Callers
+must supply original authored HTML before transformations; the API cannot map an
+arbitrary transformed string back to its original source. Selection errors reuse
+`RenderError` codes and authored opening-tag context; a valid no-slot component
+alone returns an empty collection. Neither rendering nor existing binding
+metadata is routed through the standards parser.
 
 ## Finding the next event — `directive::next_event`
 
@@ -623,6 +658,37 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ## In-memory `<f-template>` CSS composition — `f_template.rs`
 
+`compose_f_template_styles_with_options` shares the existing selection checks and
+insertion path, accepting `Stylesheet::Inline { css, style_id }` or
+`Stylesheet::External { href }`. The string-only API is a convenience over the
+same implementation, not a second composer. URLs/identities are static,
+attribute-escaped values; control characters and braces are rejected to prevent
+binding interpretation. An inline identity adds `data-fast-ssr-style`, with no
+CSP nonce or runtime lifecycle semantics.
+
+`ComposedTemplate` retains the original HTML, optional original CSS, composed
+HTML, and insertion/CSS/content byte offsets. Its mapping helpers validate public
+UTF-16 ranges, translate unchanged regions or CSS back to their original input,
+and reuse `SourceLocations` for line/column conversion. Generated wrapper and
+attribute text maps explicitly to `Generated` without an authored span. Ranges
+crossing source boundaries error rather than synthesizing a location. Mapping
+is opt-in: binding spans and converter/document errors use complete-document
+coordinates; locator errors for this definition use trimmed-content coordinates.
+Maps are not attached to the renderer metadata or serialized into HTML.
+
+The WASM result owns a native composition and exposes `.html`, versioned
+`.source_map` JSON, and JSON-returning mapping methods. Options are a typed
+JavaScript discriminated union serialized at the boundary and validated in Rust.
+No JavaScript parser or coordinate arithmetic duplicates native logic.
+
+CSS bodies are skipped as raw text by shared plain-tag handling and metadata
+discovery, wrapper tag lookup, directive-body matching, and code-sample
+preprocessing. This prevents stylesheet strings from creating bindings, fake
+definitions, or altered hydration counts. Converter scanners similarly retain
+raw style elements; the TypeScript target escapes their literal representation,
+including CR, without interpreting CSS as FAST syntax. CSS validation failures
+now retain their separate CSS coordinates rather than claiming HTML positions.
+
 `compose_f_template_styles(template_html, css)` inserts `<style>{css}</style>` as the first child of the inner `<template>` element of a single `<f-template>` definition, entirely in memory — no filesystem access, no `Locator` construction.
 
 ### Validation
@@ -649,6 +715,7 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 | `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}`. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool, markers_v2?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
 | `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+| `extract_template_slots` | `(html: &str, template_name: &str) → String` (throws on error) | Inspect one definition's authored HTML slots as `{name, line, column}` JSON records |
 | `render_shadow_root` | `(element_name: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render only the complete DSD template using resolved component state; no host or light DOM |
 | `compose_f_template_styles` | `(template_html: &str, css: &str) → String` (throws on error) | Insert `<style>{css}</style>` as the first child of the inner `<template>` of a single `<f-template>` definition; throws a JS error (the `RenderError` display message) on any validation failure |
 
@@ -772,8 +839,11 @@ coordinates. Code lists and public semantics are in the
 
 ## Design decisions
 
-**No native runtime dependencies.** The JSON parser, glob matcher, HTML scanner,
-and expression evaluator are hand-rolled. Criterion, serde_json, and SHA-256
+**Rendering remains scanner-based.** The JSON parser, glob matcher, rendering HTML
+scanner, and expression evaluator are hand-rolled. The separate slot-analysis API
+uses `html5gum`, `html5ever`, and RcDom as runtime dependencies for standards-based
+HTML semantics and source locations. These dependencies do not replace or run on
+rendering paths. Criterion, serde_json, and SHA-256
 are development-only dependencies for benchmarks and parity tests.
 The native-only `allocation-counter` development dependency is used by the
 opt-in allocation example and its isolated integration test;

@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
 
-The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element), primarily for use in testing environments. It is powered by a WebAssembly core with zero runtime npm dependencies.
+The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. It is powered by a WebAssembly core with zero runtime npm dependencies.
 
-> **Note:** For production server-side rendering, we recommend using the [`@microsoft/webui`](https://github.com/microsoft/webui) project instead.
+[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
 ## Installation
 
@@ -165,6 +165,90 @@ Author bindings resolving to absence still override template-host defaults.
 These intentional output changes are described in the
 [plugin migration guide](./docs/migration/plugin-integrations.md).
 
+### Stylesheet delivery composition
+
+Build-time plugins can compose separately authored HTML and CSS without filesystem
+access or browser APIs:
+
+```ts
+import { compose_f_template_styles_with_options } from
+    "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const composed = compose_f_template_styles_with_options(templateHtml, {
+    kind: "inline",
+    css: cssText,
+    styleId: "example-card-styles-v1", // Optional generated SSR fallback identity.
+});
+try {
+    const definitionHtml = composed.html;
+    // Pass definitionHtml to parse_f_templates or fast-convert.
+    // Keep composed until diagnostics and binding spans have been mapped.
+} finally {
+    composed.free();
+}
+```
+
+Use `{ kind: "external", href: "/assets/example-card.abc123.css" }` to insert
+`<link rel="stylesheet">` instead. The caller owns the URL, asset serving, and
+bundler processing. Both strategies insert exactly one element as the first child
+of the single inner `<template>`, preserving every other authored byte. Existing
+`compose_f_template_styles(templateHtml, css)` remains an inline string shorthand.
+
+An inline `styleId` emits `data-fast-ssr-style="…"`. It is an opaque,
+caller-controlled stylesheet/version identity, not an instance ID, hash, CSP
+nonce, or instruction to remove styles. Reuse it across component instances that
+share the same replacement CSS. Generated attributes are HTML-escaped. URLs and
+identities must be nonblank static strings without control characters or braces;
+FAST bindings in these values are deliberately rejected. Inline CSS retains the
+case-insensitive `</style` terminator check.
+
+For ordinary inline/external delivery, convert the same composed definition for
+the client; do not also register duplicate runtime styles. For adopted delivery,
+compose an identified SSR fallback, convert the original HTML for the client, and
+convert/register the CSS separately. A runtime integration must attach replacement
+styles successfully before removing only matching generated fallbacks in that
+component's shadow root, coordinate removal with hydration, and leave unrelated
+authored styles untouched. No runtime handoff is implemented here. Without
+JavaScript, or if attachment fails, retain the fallback.
+
+Placement is deterministic, not cascade equivalence: constructed stylesheets have
+different ordering from ordinary shadow stylesheets. Applications must account
+for that difference. Style identity does not provide CSP authorization; nonce
+support remains a separate concern.
+
+#### Mapping composed source locations
+
+Keep the composition result alongside its original file association. Downstream
+APIs receive composed text and therefore return composed coordinates; mapping is
+explicit, not automatic:
+
+- `JSON.parse(composed.map_span(start, end))` maps a half-open UTF-16 range from
+  the complete composed document, including binding metadata offsets.
+- `JSON.parse(composed.map_location(line, column, length, false))` maps converter
+  or full-document render diagnostics.
+- Use `true` only for locator/shadow-root errors referring to this definition's
+  trimmed inner content. Check `templateName` first; do not use this map for a
+  nested definition from another file.
+
+The result is `{ source: "html" | "css" | "generated", span }`. Authored spans
+contain zero-based UTF-16 offsets and one-based lines/UTF-16 columns. CRLF counts
+as one break; lone CR/LF also break lines. Generated markup has `span: null`.
+Invalid offsets, surrogate splits, and ranges crossing source boundaries throw
+`invalid-composition` instead of reporting a fabricated location.
+
+`JSON.parse(composed.source_map)` exposes a version-1 single-insertion map with
+`originalHtml`, optional `css` (`null` for external links), `insertionOffset`,
+`insertionLength`, optional `cssOffset`, `contentOffset`, and `contentLength`; all numeric offsets
+and lengths are UTF-16 units. This is composition provenance, not a JavaScript
+source map for generated TypeScript. Mapping ceases to apply after further
+transformations unless the caller composes their maps.
+
+Unsafe CSS errors now expose `sourceKind: "css"` and locations in the separately
+supplied CSS. Stylesheet bodies are treated as literal HTML raw text throughout
+build parsing, rendering, metadata discovery, and conversion, including
+template-looking strings. See the
+[migration notes](./docs/migration/stylesheet-composition.md).
+
 ### APIs for build-time plugins
 
 Import the actual exported WASM subpath; do not slice rendered host HTML:
@@ -238,6 +322,62 @@ Render exports reject unsupported/malformed explicit versions before rendering.
 Legacy unversioned maps and string definitions remain supported. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
+
+#### Authored slot declarations
+
+Inspect one component without rendering state or parsing HTML in your plugin:
+
+```js
+import { extract_template_slots } from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const source = `<f-template name="my-card">
+    <template>
+        <slot name="title"></slot>
+        <slot></slot>
+    </template>
+</f-template>`;
+const slots = JSON.parse(extract_template_slots(source, "my-card"));
+// [{ name: "title", line: 3, column: 9 }, { name: "", line: 4, column: 9 }]
+```
+
+The export returns a JSON array described by the generated `TemplateSlot`
+TypeScript interface: `{ name: string; line: number; column: number }`.
+Names are HTML-entity-decoded authored attribute values, not evaluated bindings.
+Missing, valueless, and empty `name` attributes all denote the default slot `""`.
+Declaration order and duplicates are preserved; results are not deduplicated or
+expanded into rendered instances.
+
+Discovery uses an HTML tokenizer and tree builder, including HTML error recovery,
+with scripting enabled but **no script execution**. Comments, escaped markup,
+attribute text, and HTML raw-text/RCDATA contexts (including `script`, `style`,
+`textarea`, and `noscript`) do not manufacture slot elements. Only HTML-namespace
+slots count; SVG/MathML slots do not, while real HTML descendants at integration
+points such as SVG `foreignObject` do.
+
+Selection matches the decoded `<f-template name>` value case-sensitively and
+requires exactly one matching HTML definition with exactly one direct HTML
+`<template>` child. Discovery stays inside that child's contents. It includes
+nested ordinary `<template>` contents and `<f-when>`/`<f-repeat>` bodies once
+per authored declaration, without evaluating state. Nested `<f-template>`
+definitions and templates carrying `shadowrootmode` or legacy `shadowroot`
+are separate authored scopes and are excluded. Sibling definitions and markup
+outside the selected shadow template are excluded too.
+
+Locations identify the opening `<` in the **complete HTML argument**. Lines and
+UTF-16 columns are one-based, tabs count as one code unit, and non-BMP characters
+as two. CRLF is one break; lone CR and LF are breaks too. Pass the original source
+**before** `compose_f_template_styles`, code-sample escaping, or other transforms;
+coordinates from already-transformed input cannot recover the original file.
+Associate the input with its file name and regenerate metadata after editing it.
+
+A valid component with no slots returns `[]`. Invalid selection throws
+`FastBuildError`: `invalid-template-metadata` for an empty selector or duplicate
+matching definitions, `missing-template` for no match, and
+`missing-inner-template`/`multiple-inner-templates` for ambiguous shadow-template
+structure. Located failures identify the containing definition or second
+conflicting declaration in the original input and include `templateName`.
+This additive API does not change `parse_f_templates`, binding metadata,
+rendering, or the template format version, and is not a slot-contract manifest.
 
 #### Structured errors
 

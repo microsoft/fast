@@ -9,9 +9,14 @@ use crate::{
 };
 use std::collections::HashMap;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
 
 #[wasm_bindgen]
 extern "C" {
+    #[wasm_bindgen(typescript_type = "StylesheetCompositionOptions")]
+    pub type StylesheetCompositionOptions;
+    #[wasm_bindgen(js_namespace = JSON, js_name = stringify, catch)]
+    fn stringify_options(value: &StylesheetCompositionOptions) -> Result<String, JsValue>;
     #[wasm_bindgen(js_name = Error)]
     type JavaScriptError;
     #[wasm_bindgen(constructor, js_class = Error)]
@@ -26,6 +31,8 @@ extern "C" {
     fn set_length(this: &JavaScriptError, value: usize);
     #[wasm_bindgen(method, setter, js_name = templateName)]
     fn set_template_name(this: &JavaScriptError, value: &str);
+    #[wasm_bindgen(method, setter, js_name = sourceKind)]
+    fn set_source_kind(this: &JavaScriptError, value: &str);
 }
 
 fn js_error(
@@ -48,7 +55,12 @@ fn js_error(
 }
 
 fn render_error(error: crate::RenderError) -> JsValue {
-    js_error(error.code(), &error.to_string(), error.location(), error.template_name())
+    let result = js_error(error.code(), &error.to_string(), error.location(), error.template_name());
+    if error.source_kind() == Some("css") {
+        let error: &JavaScriptError = result.unchecked_ref();
+        error.set_source_kind("css");
+    }
+    result
 }
 
 fn metadata_error(message: &str) -> JsValue {
@@ -61,7 +73,7 @@ fn named_metadata_error(name: &str, message: &str) -> JsValue {
 
 #[wasm_bindgen(typescript_custom_section)]
 const TEMPLATE_METADATA_TYPES: &str = r#"
-/** A thrown Error with a stable code and optional authored HTML coordinates. */
+/** A thrown Error with a stable code and optional authored-source coordinates. */
 export interface FastBuildError extends Error {
     code: string;
     /** One-based line; CRLF is one break, as are lone CR and LF. */
@@ -72,6 +84,26 @@ export interface FastBuildError extends Error {
     length?: number;
     /** For separately supplied definitions, coordinates refer to their content. */
     templateName?: string;
+    /** Present for separately supplied CSS diagnostics. */
+    sourceKind?: "css";
+}
+export type StylesheetCompositionOptions =
+    | { kind: "inline"; css: string; styleId?: string }
+    | { kind: "external"; href: string };
+export interface CompositionMapping {
+    source: "html" | "css" | "generated";
+    span: TemplateSourceSpan | null;
+}
+/** Single-insertion map; offsets and lengths are UTF-16 code units. */
+export interface CompositionSourceMap {
+    version: 1;
+    originalHtml: string;
+    css: string | null;
+    insertionOffset: number;
+    insertionLength: number;
+    cssOffset: number | null;
+    contentOffset: number;
+    contentLength: number;
 }
 export interface TemplateBindingScope {
     variable: string;
@@ -109,6 +141,15 @@ export interface FTemplateMetadata {
     hostAttributes: { name: string; value: string | null }[];
     formatVersion: 1;
     bindings: TemplateBinding[];
+}
+/** An authored HTML slot, located at its opening tag in the original input. */
+export interface TemplateSlot {
+    /** Decoded name; an empty string denotes the default slot. */
+    name: string;
+    /** One-based line; CRLF is one break, as are lone CR and LF. */
+    line: number;
+    /** One-based UTF-16 column; tabs count as one code unit. */
+    column: number;
 }
 "#;
 
@@ -288,6 +329,140 @@ pub fn parse_f_templates(html: &str) -> String {
 pub fn compose_f_template_styles(template_html: &str, css: &str) -> Result<String, JsValue> {
     crate::f_template::compose_f_template_styles(template_html, css)
         .map_err(render_error)
+}
+
+/// HTML plus original-source mapping. Mapping methods return CompositionMapping JSON.
+#[wasm_bindgen]
+pub struct ComposedTemplate {
+    inner: crate::ComposedTemplate,
+}
+
+#[wasm_bindgen]
+impl ComposedTemplate {
+    #[wasm_bindgen(getter)]
+    pub fn html(&self) -> String {
+        self.inner.html.clone()
+    }
+
+    /// CompositionSourceMap JSON, retained separately from template metadata.
+    #[wasm_bindgen(getter)]
+    pub fn source_map(&self) -> String {
+        let inner = &self.inner;
+        let units = |byte| inner.html[..byte].encode_utf16().count();
+        let css = inner.css.as_ref().map(|css| format!("\"{}\"", escape_json_str(css)))
+            .unwrap_or_else(|| "null".to_string());
+        let css_offset = inner.css.as_ref().map(|_| units(inner.css_start).to_string())
+            .unwrap_or_else(|| "null".to_string());
+        format!(
+            "{{\"version\":1,\"originalHtml\":\"{}\",\"css\":{},\"insertionOffset\":{},\"insertionLength\":{},\"cssOffset\":{},\"contentOffset\":{},\"contentLength\":{}}}",
+            escape_json_str(&inner.original), css, units(inner.insertion),
+            units(inner.insertion + inner.inserted_len) - units(inner.insertion),
+            css_offset, units(inner.content_start),
+            units(inner.content_end) - units(inner.content_start)
+        )
+    }
+
+    /// Map a half-open composed-document UTF-16 range.
+    pub fn map_span(&self, start: f64, end: f64) -> Result<String, JsValue> {
+        let start = mapping_coordinate(start)?;
+        let end = mapping_coordinate(end)?;
+        self.inner.map_span(start, end).map(mapping_json).map_err(render_error)
+    }
+
+    /// Map document diagnostics, or selected-definition content diagnostics when true.
+    pub fn map_location(
+        &self, line: f64, column: f64, length: f64, template_content: bool,
+    ) -> Result<String, JsValue> {
+        let line = mapping_coordinate(line)?;
+        let column = mapping_coordinate(column)?;
+        let length = mapping_coordinate(length)?;
+        self.inner.map_location(crate::ErrorLocation { line, column, length }, template_content)
+            .map(mapping_json).map_err(render_error)
+    }
+}
+
+fn mapping_coordinate(value: f64) -> Result<usize, JsValue> {
+    if !value.is_finite() || value < 0.0 || value.fract() != 0.0 || value > u32::MAX as f64 {
+        return Err(render_error(crate::RenderError::InvalidComposition {
+            message: "mapping coordinates must be nonnegative 32-bit integers".to_string(),
+        }));
+    }
+    Ok(value as usize)
+}
+
+fn mapping_json(mapping: crate::CompositionSpan) -> String {
+    let source = match mapping.source {
+        crate::CompositionSource::Html => "html",
+        crate::CompositionSource::Css => "css",
+        crate::CompositionSource::Generated => "generated",
+    };
+    let position = |p: crate::SourcePosition| format!(
+        "{{\"offset\":{},\"line\":{},\"column\":{}}}", p.offset, p.line, p.column
+    );
+    let span = mapping.span.map(|span| format!(
+        "{{\"start\":{},\"end\":{}}}", position(span.start), position(span.end)
+    )).unwrap_or_else(|| "null".to_string());
+    format!("{{\"source\":\"{source}\",\"span\":{span}}}")
+}
+
+/// Compose an inline stylesheet or external link, retaining source mapping.
+#[wasm_bindgen]
+pub fn compose_f_template_styles_with_options(
+    template_html: &str, options: &StylesheetCompositionOptions,
+) -> Result<ComposedTemplate, JsValue> {
+    let invalid = |message: &str| render_error(crate::RenderError::InvalidComposition {
+        message: message.to_string(),
+    });
+    let options_json = stringify_options(options)
+        .map_err(|_| invalid("stylesheet options must be JSON-serializable"))?;
+    let parsed = json::parse(&options_json).map_err(|error| invalid(&error.message))?;
+    let json::JsonValue::Object(options) = parsed else {
+        return Err(invalid("stylesheet options must be an object"));
+    };
+    let string = |key: &str| -> Result<&str, JsValue> {
+        match options.get(key) {
+            Some(json::JsonValue::String(value)) => Ok(value),
+            _ => Err(invalid(&format!("{key} must be a string"))),
+        }
+    };
+    let kind = string("kind")?;
+    let allowed: &[&str] = match kind {
+        "inline" => &["kind", "css", "styleId"],
+        "external" => &["kind", "href"],
+        _ => return Err(invalid("stylesheet kind must be inline or external")),
+    };
+    if options.keys().any(|key| !allowed.contains(&key.as_str())) {
+        return Err(invalid("unexpected stylesheet option"));
+    }
+    let stylesheet = if kind == "inline" {
+        crate::Stylesheet::Inline {
+            css: string("css")?,
+            style_id: if options.contains_key("styleId") { Some(string("styleId")?) } else { None },
+        }
+    } else {
+        crate::Stylesheet::External { href: string("href")? }
+    };
+    crate::compose_f_template_styles_with_options(template_html, stylesheet)
+        .map(|inner| ComposedTemplate { inner }).map_err(render_error)
+}
+
+/// Return JSON slot declarations from a named component's authored shadow template.
+/// Pass original HTML before CSS composition or other source transformations.
+#[wasm_bindgen]
+pub fn extract_template_slots(html: &str, template_name: &str) -> Result<String, JsValue> {
+    let slots = crate::extract_template_slots(html, template_name).map_err(render_error)?;
+    let slots: Vec<_> = slots
+        .iter()
+        .map(|slot| {
+            format!(
+                "{{\"name\":\"{}\",\"line\":{},\"column\":{}}}",
+                escape_json_str(&slot.name),
+                slot.line,
+                slot.column,
+            )
+        })
+        .collect();
+    Ok(format!("[{}]", slots.join(",")))
 }
 
 fn attribute_pairs_json(attrs: &[(String, Option<String>)]) -> String {

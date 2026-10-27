@@ -19,22 +19,22 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 79.59 KB | 24.01 KB | 21.35 KB |
-| FASTElement (@microsoft/fast-element/fast-element.js) | 23.49 KB | 7.27 KB | 6.55 KB |
+| CDN Rollup Bundle | 79.12 KB | 23.98 KB | 21.30 KB |
+| FASTElement (@microsoft/fast-element/fast-element.js) | 25.77 KB | 8.14 KB | 7.33 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.75 KB | 2.51 KB | 2.23 KB |
 | observable (@microsoft/fast-element/observable.js) | 6.79 KB | 2.52 KB | 2.24 KB |
 | attr (@microsoft/fast-element/attr.js) | 477 B | 287 B | 244 B |
-| children (@microsoft/fast-element/children.js) | 4.87 KB | 1.88 KB | 1.65 KB |
-| ref (@microsoft/fast-element/ref.js) | 3.84 KB | 1.54 KB | 1.34 KB |
-| slotted (@microsoft/fast-element/slotted.js) | 4.66 KB | 1.81 KB | 1.59 KB |
+| children (@microsoft/fast-element/children.js) | 4.31 KB | 1.67 KB | 1.46 KB |
+| ref (@microsoft/fast-element/ref.js) | 3.29 KB | 1.34 KB | 1.14 KB |
+| slotted (@microsoft/fast-element/slotted.js) | 4.10 KB | 1.61 KB | 1.39 KB |
 | volatile (@microsoft/fast-element/volatile.js) | 6.84 KB | 2.54 KB | 2.26 KB |
 | when (@microsoft/fast-element/when.js) | 1.88 KB | 731 B | 589 B |
-| html (@microsoft/fast-element/html.js) | 28.26 KB | 9.38 KB | 8.45 KB |
-| repeat (@microsoft/fast-element/repeat.js) | 32.20 KB | 10.40 KB | 9.40 KB |
+| html (@microsoft/fast-element/html.js) | 30.54 KB | 10.21 KB | 9.20 KB |
+| repeat (@microsoft/fast-element/repeat.js) | 31.75 KB | 10.26 KB | 9.27 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
-| enableHydration (@microsoft/fast-element/hydration.js) | 48.79 KB | 14.85 KB | 13.34 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 62.95 KB | 19.95 KB | 17.86 KB |
+| enableHydration (@microsoft/fast-element/hydration.js) | 51.07 KB | 15.71 KB | 14.12 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 65.24 KB | 20.80 KB | 18.60 KB |
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.55 KB | 4.46 KB | 4.03 KB |
-| observerMap (@microsoft/fast-element/observer-map.js) | 22.07 KB | 7.75 KB | 6.99 KB |
-| attributeMap (@microsoft/fast-element/attribute-map.js) | 15.42 KB | 5.44 KB | 4.91 KB |
+| observerMap (@microsoft/fast-element/observer-map.js) | 24.36 KB | 8.58 KB | 7.76 KB |
+| attributeMap (@microsoft/fast-element/attribute-map.js) | 17.70 KB | 6.27 KB | 5.67 KB |

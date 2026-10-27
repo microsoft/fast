@@ -152,6 +152,23 @@ validation errors. Context fields are now boxed `ErrorContext` values. See the
 
 ## Validation
 
+### Composed stylesheet definitions
+
+All targets retain inline `<style>` elements, generated
+`data-fast-ssr-style` ownership attributes, and external stylesheet links.
+Style bodies are raw text: binding/directive-looking CSS is not converted.
+The TypeScript target escapes backticks, `${…}`, backslashes, and CR so the
+generated tagged literal retains the original CSS value.
+
+When converting the output of fast-build's
+`compose_f_template_styles_with_options`, keep its composition result and map
+conversion errors with `map_location(line, column, length, false)` to recover
+original HTML/CSS positions. The converter still reports positions in the text
+it receives; it neither guesses source provenance nor strips marked fallbacks.
+For adopted delivery, convert original HTML and register separately converted
+CSS; only the SSR definition needs the identified inline fallback.
+See the [composition contract](../../packages/fast-build/README.md#stylesheet-delivery-composition).
+
 The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output. It also validates that `type_source` is a dotted identifier, that `type_source` is only supplied for `fast-v3-ts`, and that `type_source_import` is only supplied alongside `type_source`.
 
 The `webui-framework-prerelease` target additionally validates that outer `<f-template>` attributes (other than `name`) are `shadowroot`-prefixed (`ConvertError::UnsupportedPublisherAttribute` otherwise), that a `shadowroot`-prefixed outer attribute doesn't conflict with a differently-valued attribute already on the inner `<template>` (`ConvertError::ConflictingShadowRootMode`), that `f-ref` values are single-braced (`ConvertError::InvalidAttributeValue`), and that event arguments don't use FAST's repeat-context tokens such as `$c` (`ConvertError::UnsupportedEventContext`). `f-slotted` and `f-children` are the one exception to this target's otherwise strict validation: rather than erroring, they are stripped from the output and reported via `ConvertOutput::warnings` as a `ConvertWarning::StrippedUnsupportedDirective`.

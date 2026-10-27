@@ -137,6 +137,28 @@ The renderer applies special rules for certain HTML attributes:
 | `aria-*` | camelCase ARIA property | `aria-label` → `ariaLabel` |
 | Boolean (`?attr`) | Truthy/falsy evaluation | `?disabled="{{isOff}}"` → present or absent |
 
+## Composing Component Styles
+
+Build tools can call `compose_f_template_styles_with_options` from
+`@microsoft/fast-build/wasm/microsoft_fast_build.js` with either
+`{ kind: "inline", css }` or `{ kind: "external", href }`. The result's `html`
+contains a first-child style or stylesheet link, preserving authored content.
+The caller owns public asset URLs and serving.
+
+An inline `styleId` adds `data-fast-ssr-style` to identify a generated SSR
+fallback. It is not a CSP nonce. For adopted stylesheets, use the original HTML
+for client conversion and register CSS separately; a runtime integration must
+successfully attach replacement styles and coordinate hydration before removing
+only matching fallbacks. FAST Build does not perform this handoff. Keep fallbacks
+when JavaScript is absent or attachment fails, and account for the different
+cascade ordering of constructed stylesheets.
+
+Retain the composition handle to map downstream binding spans and structured
+errors back to authored HTML/CSS. Mapping is explicit; passing composed HTML
+alone changes the source coordinate space. See the
+[stylesheet composition and diagnostics contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#stylesheet-delivery-composition)
+for `map_span`, `map_location`, lifetime, and static-attribute restrictions.
+
 ## Host Attribute Propagation
 
 Missing or null attribute bindings omit the attribute, rather than serializing
@@ -169,7 +191,31 @@ instead names its definition and locates that definition's supplied `content`;
 do not attribute that location to the entry file. Non-HTML errors omit coordinates.
 Both WASM modules export a `FastBuildError` TypeScript interface. See the
 [structured-error contract and code lists](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#structured-errors).
-Metadata discovery remains permissive rather than introducing new parse failures.
+Binding metadata discovery remains permissive rather than introducing new parse failures.
+
+For authored slot inspection, import the additive `extract_template_slots` export
+from `@microsoft/fast-build/wasm/microsoft_fast_build.js`:
+
+```js
+import { extract_template_slots } from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+
+const slots = JSON.parse(extract_template_slots(originalHtml, "greeting-card"));
+// [{ name: "title", line: 3, column: 9 }, { name: "", line: 4, column: 9 }]
+```
+
+Pass the complete original source before CSS composition or other transformations.
+Each declaration has a decoded authored `name` (`""` for the default slot) and
+one-based line/UTF-16 column at its opening `<`; duplicates remain in source order.
+Discovery uses real HTML elements and namespaces, not slot-like text in comments
+or raw-text contexts. It inspects ordinary nested templates and FAST conditional/
+repeat bodies once, without state evaluation, but excludes nested component
+definitions and templates marked as separate shadow roots. Selection must identify
+one named definition and one direct HTML template child; invalid or ambiguous
+selection throws `FastBuildError`, while a valid slot-free component returns `[]`.
+The generated WASM declarations expose `TemplateSlot`. See the
+[slot discovery contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#authored-slot-declarations)
+for namespace, nested-template, parsing, and error details. Rendering and binding
+metadata remain unchanged.
 
 Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
 
@@ -243,10 +289,10 @@ The propagation is implemented by the build-time renderer in `@microsoft/fast-bu
 
 ## Using `@microsoft/fast-build`
 
-The `@microsoft/fast-build` package is a build-time renderer for declarative templates, powered by a WebAssembly core. It implements the rendering contract described above and is primarily used in testing and development workflows.
+The `@microsoft/fast-build` package renders declarative FAST syntax for integration with existing backends, powered by a WebAssembly core. It implements the rendering contract described above.
 
 :::note
-For production server-side rendering, consider the [`@microsoft/webui`](https://github.com/microsoft/webui) project, which provides a full rendering pipeline.
+[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that can render FASTElement using the `fast_v3` plugin.
 :::
 
 ### Installation

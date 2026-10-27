@@ -30,7 +30,7 @@
     "github-markdown-css": "5.9.0"
   },
   "devDependencies": {
-    "@microsoft/fast-build": "^0.14.0",
+    "@microsoft/fast-build": "^0.15.0",
     "@microsoft/fast-element": "^3.1.2"
   }
 }

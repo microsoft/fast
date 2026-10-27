@@ -168,6 +168,30 @@ fragment using resolved component state, without creating a throwaway host or
 slicing serialized HTML. Host/light-DOM ownership stays with the caller.
 Normal/stream/fragment paths share native shadow rendering and marker scopes.
 
+The additive `extract_template_slots(html, templateName)` export returns JSON
+`TemplateSlot` records (`name`, `line`, `column`) from the original complete HTML,
+without composing CSS, escaping code samples, or rendering. Rust owns HTML
+tokenization, tree construction, namespaces, entity decoding, selection, and
+coordinate conversion; JavaScript has no duplicate parser. Only this analysis
+path uses the standards parser; `parse_f_templates` and rendering keep their
+existing scanners and format-version behavior.
+
+Selection requires one case-sensitive decoded definition name and one direct
+HTML template child. Slots retain authored order/duplicates and one-based
+line/UTF-16-column locations at `<`. Ordinary nested templates and FAST
+conditional/repeated bodies are inspected once without state evaluation.
+Nested definitions and templates marked with `shadowrootmode` or `shadowroot`
+are excluded as separate authored scopes. HTML integration points are traversed,
+but foreign-namespace slots are excluded. HTML error recovery is permitted;
+scripts never run, and `noscript` uses scripting-enabled tokenization.
+
+Invalid or ambiguous selection throws the existing structured errors rather
+than returning `[]`; only a valid slot-free component returns an empty array.
+Plugins pass original source before style composition or other transformations
+and retain its file association. The API cannot infer original coordinates from
+already-transformed input. See the package README for the complete discovery
+and failure contract.
+
 Template HTML files are scanned for `<f-template>` elements. Each `<f-template>` with a `name` attribute contributes one entry to the templates map:
 
 ```html
@@ -317,6 +341,22 @@ runs test files concurrently and `convert-fixtures.test.js` clears the shared
 
 ## WASM integration
 
+Stylesheet delivery composition is native-owned. The renderer WASM's
+`compose_f_template_styles_with_options(html, options)` accepts an inline/external
+discriminated union and returns a handle retaining `.html` and source provenance.
+Mapping methods accept UTF-16 document spans or document/selected-content
+diagnostics and return JSON identifying HTML, CSS, or generated text. Generated
+markup never receives authored coordinates; invalid/cross-source ranges fail.
+The versioned `source_map` JSON exposes original inputs and insertion offsets.
+Consumers retain the handle and file association until mapping is complete,
+then free it. No parsing or coordinate conversion is duplicated in JavaScript.
+
+Generated inline fallbacks use `data-fast-ssr-style`; external composition uses
+caller-supplied public URLs. Both insert first without rewriting existing source.
+Adoption, fallback removal, CSP nonce handling, and asset serving are not
+implemented by this API. Conversion preserves raw CSS and link/marker attributes;
+CSS-looking binding syntax is no longer interpreted in style bodies.
+
 The build WASM module exposes rendering and metadata functions; the CLI uses the entry renderer when templates are loaded or streaming is requested:
 
 | Function | Used when |
@@ -325,6 +365,7 @@ The build WASM module exposes rendering and metadata functions; the CLI uses the
 | `wasm.render_with_templates(entry, templatesJson, state?, strategy, markers_v2?)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
 | `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?, markers_v2?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
+| `wasm.extract_template_slots(html, name)` | Inspecting a selected definition's authored slot declarations and original line/UTF-16-column locations, without rendering |
 | `wasm.render_shadow_root(name, templatesJson, state?, strategy?, markers_v2?)` | Plugins that own their host and light DOM, passing resolved component state |
 
 `templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>`, any forwarded `shadowrootAttributes`, and a `hostAttributes` array carrying the attributes declared on the inner `<template>` element. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>` and merging `hostAttributes` onto the rendered host element opening tag (author host attributes win on conflicts; client-only attrs and `{{expr}}` / `?name="{{expr}}"` bindings are handled by the WASM renderer — see the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details). It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.

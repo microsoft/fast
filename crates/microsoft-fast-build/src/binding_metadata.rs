@@ -71,10 +71,10 @@ impl<'a> SourceLocations<'a> {
     }
 
     pub(crate) fn position(&mut self, byte: usize) -> SourcePosition {
-        // Discovery visits bindings in source order, so coordinates need only one pass.
+        // Discovery visits locations in source order, so coordinates need only one pass.
         assert!(
             byte >= self.byte,
-            "binding locations must advance in source order"
+            "source locations must advance in source order"
         );
         for ch in self.source[self.byte..byte].chars() {
             self.position.offset += ch.len_utf16();
@@ -134,7 +134,7 @@ impl BindingCollector<'_, '_> {
                         false,
                         scopes,
                     );
-                    pos = end;
+                    pos = crate::attribute::style_element_end(content, at).unwrap_or(end);
                 }
                 RenderEvent::Directive(directive) => match directive {
                     Directive::DoubleBrace(at) | Directive::TripleBrace(at) => {

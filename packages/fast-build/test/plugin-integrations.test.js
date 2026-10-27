@@ -268,6 +268,10 @@ test("non-HTML diagnostics have codes without invented source coordinates", () =
     assertDiagnostic(
         () => wasm.compose_f_template_styles("", "</style>"),
         "unsafe-style-content",
+        "</style>",
+        0,
+        undefined,
+        "</style>".length,
     );
     assert.deepEqual(JSON.parse(wasm.parse_f_templates("<f-template>{{")), []);
 });
@@ -529,14 +533,148 @@ test("authored source spans preserve multiline client expressions and raw entiti
     }
 });
 
+test("slot metadata reports authored declarations without composing or rendering", () => {
+    const source =
+        '<slot name="outside"></slot>\r\n<f-template name="card">\r\n<template>\r\n' +
+        '<code>{{example}}</code>\r\n\t😀<slot name="a&amp;b"></slot>\r\n' +
+        "<slot></slot><slot name='a&amp;b'></slot>\r\n</template></f-template>" +
+        '<f-template name="other"><template><slot name="other"></slot></template></f-template>';
+    const slots = JSON.parse(wasm.extract_template_slots(source, "card"));
+    assert.deepEqual(slots, [
+        { name: "a&b", line: 5, column: 4 },
+        { name: "", line: 6, column: 1 },
+        { name: "a&b", line: 6, column: 14 },
+    ]);
+    const composed = wasm.compose_f_template_styles(
+        source.slice(
+            source.indexOf("<f-template"),
+            source.indexOf('<f-template name="other"'),
+        ),
+        ":host {\n display: block;\n}",
+    );
+    assert.ok(composed.includes("<style>"));
+    assert.deepEqual(JSON.parse(wasm.extract_template_slots(source, "card")), slots);
+    assert.deepEqual(
+        JSON.parse(
+            wasm.extract_template_slots(
+                "<f-template name=card><template></template></f-template>",
+                "card",
+            ),
+        ),
+        [],
+    );
+});
+
+test("slot metadata exposes structured errors for invalid and ambiguous selection", () => {
+    assertDiagnostic(
+        () => wasm.extract_template_slots("", "missing"),
+        "missing-template",
+        undefined,
+        undefined,
+        "missing",
+    );
+    assertDiagnostic(
+        () => wasm.extract_template_slots("", ""),
+        "invalid-template-metadata",
+    );
+    const missing = "\r\n😀<f-template name=card></f-template>";
+    assertDiagnostic(
+        () => wasm.extract_template_slots(missing, "card"),
+        "missing-inner-template",
+        missing,
+        missing.indexOf("<f-template"),
+        "card",
+        "<f-template name=card>".length,
+    );
+    const duplicate =
+        "<f-template name=card><template></template></f-template>\r\n😀<f-template name=card><template></template></f-template>";
+    assertDiagnostic(
+        () => wasm.extract_template_slots(duplicate, "card"),
+        "invalid-template-metadata",
+        duplicate,
+        duplicate.lastIndexOf("<f-template"),
+        "card",
+        "<f-template name=card>".length,
+    );
+    const multiple =
+        "<f-template name=card><template></template>\r\n😀<template></template></f-template>";
+    assertDiagnostic(
+        () => wasm.extract_template_slots(multiple, "card"),
+        "multiple-inner-templates",
+        multiple,
+        multiple.lastIndexOf("<template>"),
+        "card",
+        "<template>".length,
+    );
+});
+
+test("slot metadata follows HTML contexts, decoded attributes, and authored scope", () => {
+    const source = `<!-- <f-template name="a&amp;b"><template><slot></slot></template></f-template> -->
+<f-template name="a&amp;b"><template>
+<!-- <slot name="comment"></slot> -->
+<script>"</template><slot name='script'>"</script>
+<style>slot { content: "<slot name='style'>"; }</style>
+<textarea><slot name="textarea"></textarea>
+<noscript><slot name="noscript"></noscript>
+<svg><slot name="svg"></slot><foreignObject><slot name="html"></slot></foreignObject></svg>
+<template><slot name="latent"></slot></template>
+<f-when value="{{shown}}"><slot name="conditional"></slot></f-when>
+<f-repeat value="{{item in items}}"><slot name="repeated"></slot></f-repeat>
+<f-template name="nested"><template><slot name="nested"></slot></template></f-template>
+<nested-card><template shadowrootmode="open"><slot name="shadow"></slot></template></nested-card>
+<template shadowroot="closed"><slot name="legacy"></slot></template>
+<SLOT NAME="&quot;&#10;&#9;&#x1f600;" name="ignored"></SLOT>
+<slot name="{{authoredName}}"></slot>
+</template></f-template>`;
+    const slots = JSON.parse(wasm.extract_template_slots(source, "a&b"));
+    assert.deepEqual(
+        slots.map(slot => slot.name),
+        ["html", "latent", "conditional", "repeated", '"\n\t😀', "{{authoredName}}"],
+    );
+    for (const slot of slots) {
+        assert.equal(
+            source
+                .split("\n")
+                [slot.line - 1].slice(slot.column - 1, slot.column + 4)
+                .toLowerCase(),
+            "<slot",
+        );
+    }
+    assertDiagnostic(
+        () => wasm.extract_template_slots(source, "A&B"),
+        "missing-template",
+        undefined,
+        undefined,
+        "A&B",
+    );
+});
+
 test("authored source spans are exposed by the generated WASM declarations", () => {
     const directory = fs.mkdtempSync(path.join(__dirname, ".plugin-types-"));
     try {
         const file = path.join(directory, "metadata.ts");
         fs.writeFileSync(
             file,
-            `import type { FTemplateMetadata, TemplateSourceSpan, FastBuildError } from "../../wasm/microsoft_fast_build.js";
+            `import { extract_template_slots, type TemplateSlot, type FTemplateMetadata, type TemplateSourceSpan, type FastBuildError } from "../../wasm/microsoft_fast_build.js";
 import type { FastBuildError as ConvertError } from "../../wasm/convert/microsoft_fast_convert.js";
+import { compose_f_template_styles_with_options, type CompositionMapping, type CompositionSourceMap, type StylesheetCompositionOptions } from "../../wasm/microsoft_fast_build.js";
+export function composition(html: string, options: StylesheetCompositionOptions): CompositionMapping {
+    const result = compose_f_template_styles_with_options(html, options);
+    const sourceMap: CompositionSourceMap = JSON.parse(result.source_map);
+    const mapping: CompositionMapping = JSON.parse(result.map_span(0, sourceMap.insertionOffset));
+    result.free();
+    return mapping;
+}
+export function slots(source: string): TemplateSlot[] {
+    const serialized: string = extract_template_slots(source, "card");
+    const declarations: TemplateSlot[] = JSON.parse(serialized);
+    return declarations.map(slot => {
+        const name: string = slot.name;
+        const line: number = slot.line;
+        const column: number = slot.column;
+        return { name, line, column };
+    });
+}
 export function authoredExpression(source: string, template: FTemplateMetadata): string {
     const span: TemplateSourceSpan = template.bindings[0].span;
     const line: number = span.start.line;
