@@ -508,6 +508,10 @@ FAST ships a full hierarchical DI container inspired by Aurelia. Key types:
 
 Containers are typically attached to DOM elements and walk the DOM hierarchy. DI keys are classes, interfaces, or `Context`-like tokens. Constructor parameters are annotated with the `@inject(key)` decorator (or use `@singleton` / `@transient` to declare the class's own registration).
 
+Properties defined with `respectConnection: true` re-resolve their dependency when
+the element's connection changes. The cached value is updated before notifying
+property subscribers, and no notification is emitted if the instance is unchanged.
+
 See `docs/di/api-report.api.md` for the full public API surface.
 
 ---

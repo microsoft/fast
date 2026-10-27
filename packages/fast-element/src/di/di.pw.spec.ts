@@ -17,6 +17,82 @@ function simulateTSCompilerDesignParamTypes(target: any, deps: any[]) {
 }
 
 test.describe(`The DI object`, () => {
+    test.describe("defineProperty()", () => {
+        for (const respectConnection of [true, false]) {
+            test(`resolves a moved element's dependency with respectConnection=${respectConnection}`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async respectConnection => {
+                    // @ts-expect-error: Client module.
+                    const { DI, FASTElement, html, Registration, uniqueElementName } =
+                        await import("/main.js");
+
+                    class Consumer extends FASTElement {}
+
+                    DI.defineProperty(
+                        Consumer.prototype,
+                        "service",
+                        "scoped-service",
+                        respectConnection,
+                    );
+                    await Consumer.define({
+                        name: uniqueElementName(),
+                        template: html`<span>consumer</span>`,
+                    });
+
+                    const firstService = { name: "first" };
+                    const secondService = { name: "second" };
+                    const parents = [firstService, secondService, secondService].map(
+                        service => {
+                            const parent = document.createElement("div");
+                            DI.getOrCreateDOMContainer(parent).register(
+                                Registration.instance("scoped-service", service),
+                            );
+                            document.body.append(parent);
+                            return parent;
+                        },
+                    );
+                    const consumer = new Consumer() as Consumer & {
+                        service: { name: string };
+                    };
+                    parents[0].append(consumer);
+                    const values = [consumer.service.name];
+                    const notifications: string[] = [];
+                    consumer.$fastController.subscribe(
+                        {
+                            handleChange() {
+                                notifications.push(consumer.service.name);
+                            },
+                        },
+                        "service",
+                    );
+
+                    for (const parent of [parents[1], parents[2], parents[0]]) {
+                        parent.append(consumer);
+                        values.push(consumer.service.name);
+                    }
+                    parents.forEach(parent => parent.remove());
+
+                    return { values, notifications };
+                }, respectConnection);
+
+                expect(result).toEqual(
+                    respectConnection
+                        ? {
+                              values: ["first", "second", "second", "first"],
+                              notifications: ["second", "first"],
+                          }
+                        : {
+                              values: ["first", "first", "first", "first"],
+                              notifications: [],
+                          },
+                );
+            });
+        }
+    });
+
     test.describe(`createContainer()`, () => {
         test(`returns an instance of Container`, () => {
             const actual = DI.createContainer();
