@@ -195,6 +195,191 @@ test.describe("the shared default dom policy", () => {
 });
 
 test.describe("the dom policy helper", () => {
+    test("preserves the built-in element guard matrix", async ({ page }) => {
+        await page.goto("/");
+
+        const failures = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+            const failures: string[] = [];
+            const unsafe = "javascript:alert(1)";
+            const urlRules = [
+                ["a", "href", "href"],
+                ["area", "href", "href"],
+                ["button", "formaction", "formAction"],
+                ["form", "action", "action"],
+                ["frame", "src", "src"],
+                ["iframe", "src", "src"],
+                ["input", "formaction", "formAction"],
+            ];
+            const blockedRules: [string, string[], string[]][] = [
+                ["embed", ["src"], ["src"]],
+                ["iframe", ["srcdoc"], ["srcdoc"]],
+                ["link", ["href"], ["href"]],
+                ["object", ["codebase", "data"], ["codeBase", "data"]],
+                ["script", ["src", "text"], ["src", "text", "innerText", "textContent"]],
+                ["style", [], ["innerText", "textContent"]],
+            ];
+
+            function check(policy, tag, aspect, name, expected) {
+                const element = document.createElement(tag);
+                try {
+                    const sink = policy.protect(
+                        tag.toUpperCase(),
+                        aspect,
+                        name,
+                        DOM.setAttribute,
+                    );
+                    sink(element, name, unsafe);
+                    if (
+                        expected === "blocked" ||
+                        element.getAttribute(name) !== expected
+                    ) {
+                        failures.push(`${tag}/${aspect}/${name}: unexpected write`);
+                    }
+                } catch (error) {
+                    if (expected !== "blocked") {
+                        failures.push(`${tag}/${aspect}/${name}: ${error}`);
+                    }
+                }
+            }
+
+            for (const policy of [DOM.policy, DOMPolicy.create()]) {
+                for (const [tag, attribute, property] of urlRules) {
+                    check(policy, tag, DOMAspect.attribute, attribute, "");
+                    check(policy, tag, DOMAspect.property, property, "");
+                }
+                for (const [tag, attributes, properties] of blockedRules) {
+                    for (const name of attributes) {
+                        check(policy, tag, DOMAspect.attribute, name, "blocked");
+                    }
+                    for (const name of properties) {
+                        check(policy, tag, DOMAspect.property, name, "blocked");
+                    }
+                }
+                check(policy, "button", DOMAspect.property, "formaction", unsafe);
+                check(policy, "object", DOMAspect.property, "codebase", unsafe);
+                check(policy, "script", DOMAspect.attribute, "textContent", unsafe);
+                check(policy, "style", DOMAspect.attribute, "innerText", unsafe);
+                check(policy, "div", DOMAspect.property, "onmadeup", unsafe);
+            }
+            return failures;
+        });
+
+        expect(failures).toEqual([]);
+    });
+
+    test("preserves guard removals and undefined default fallback", async ({ page }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+            const attribute = DOMAspect.attribute;
+            const property = DOMAspect.property;
+            const globalGuard = (_tag, _aspect, _name, sink) => (target, name) =>
+                sink(target, name, "/global");
+            const results: (string | null)[] = [];
+
+            for (const override of [
+                null,
+                { [attribute]: null },
+                { [attribute]: { href: null } },
+                undefined,
+                { [attribute]: undefined },
+                { [attribute]: { href: undefined } },
+            ]) {
+                const policy = DOMPolicy.create({
+                    guards: {
+                        elements: { a: override },
+                        aspects: { [attribute]: { href: globalGuard } },
+                    },
+                });
+                const element = document.createElement("a");
+                policy.protect(
+                    "a",
+                    attribute,
+                    "href",
+                    DOM.setAttribute,
+                )(element, "href", "javascript:alert(1)");
+                results.push(element.getAttribute("href"));
+            }
+
+            for (const override of [null, { innerHTML: null }]) {
+                const policy = DOMPolicy.create({
+                    guards: { aspects: { [property]: override } },
+                });
+                const sink = () => {};
+                results.push(
+                    policy.protect("div", property, "innerHTML", sink) === sink
+                        ? "removed"
+                        : "guarded",
+                );
+                try {
+                    policy.protect("script", property, "src", sink);
+                    results.push("unblocked");
+                } catch {
+                    results.push("blocked");
+                }
+            }
+            return results;
+        });
+
+        expect(results).toEqual([
+            "/global",
+            "/global",
+            "/global",
+            "",
+            "",
+            "",
+            "removed",
+            "blocked",
+            "removed",
+            "blocked",
+        ]);
+    });
+
+    test("snapshots custom guard maps at every level", async ({ page }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client modules.
+            const { DOM, DOMAspect, DOMPolicy } = await import("./main.js");
+            const attribute = DOMAspect.attribute;
+            const guard = value => (_tag, _aspect, _name, sink) => (target, name) =>
+                sink(target, name, value);
+            const elementSinks = { href: guard("/element") };
+            const elementAspects = { [attribute]: elementSinks };
+            const elements = { a: elementAspects };
+            const globalSinks = { title: guard("global") };
+            const aspects = { [attribute]: globalSinks };
+            const guards = { elements, aspects };
+            const policy = DOMPolicy.create({ guards });
+            const replacement = { href: guard("/mutated") };
+
+            elementSinks.href = replacement.href;
+            elementAspects[attribute] = replacement;
+            elements.a = { [attribute]: replacement };
+            globalSinks.title = guard("mutated");
+            aspects[attribute] = { title: guard("mutated") };
+            guards.elements = { a: { [attribute]: replacement } };
+            guards.aspects = { [attribute]: { title: guard("mutated") } };
+
+            const element = document.createElement("a");
+            for (const name of ["href", "title"]) {
+                policy.protect(
+                    "a",
+                    attribute,
+                    name,
+                    DOM.setAttribute,
+                )(element, name, "ignored");
+            }
+            return [element.getAttribute("href"), element.getAttribute("title")];
+        });
+
+        expect(results).toEqual(["/element", "global"]);
+    });
+
     test("can create a policy with a custom trusted types policy", async () => {
         let invoked = false;
         function createTrustedType() {

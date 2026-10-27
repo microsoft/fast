@@ -328,9 +328,10 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 `src/dom-policy-defaults.ts`
 
 `DOM.policy` is the templating system's DOM write policy. `DOMPolicy.create()` builds a
-policy from Trusted Types integration plus default guard maps for element-specific and
-aspect-wide sinks. User guard configuration is merged with those defaults so partial
-overrides preserve unspecified built-in guards.
+policy from Trusted Types integration plus element-specific and aspect-wide sink guards.
+It snapshots only user-supplied guard maps and resolves unspecified guards through the
+shared built-in selectors. Partial overrides, null removals, and element-before-global
+precedence retain their existing behavior.
 
 The initial `DOM.policy` uses those same guards for ESM, focused, declarative,
 and Rollup entrypoints. It reuses the existing `fast-html` Trusted Types policy.
@@ -339,11 +340,12 @@ can still install its own global policy once, before compiling or rendering
 templates. Template-specific and binding-specific policies retain their existing
 precedence.
 
-`dom-policy-defaults.ts` owns the shared guard maps, URL validation, and sink
-protection. Both the internal default and `DOMPolicy.create()` use that
-implementation, but `dom.ts` does not import the custom-policy factory or its
-configuration-merging helpers. Focused core and template imports therefore
-include baseline protection without retaining customization code.
+`dom-policy-defaults.ts` owns the compact, aspect-aware element rules, global guard
+selection, URL validation, and sink protection. Both the internal default and
+`DOMPolicy.create()` use that implementation, but `dom.ts` does not import the
+custom-policy factory or its configuration-snapshot helpers. Focused core and
+template imports therefore include baseline protection without retaining
+customization code.
 
 `DOMAspect` lives in a dependency-neutral module and is re-exported from `dom.ts`.
 Aspect-only consumers, including the attached directive helpers, import it

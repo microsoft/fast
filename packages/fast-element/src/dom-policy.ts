@@ -1,6 +1,6 @@
 import type { DOMSink } from "./dom.js";
 import { DOMAspect } from "./dom-aspect.js";
-import { defaultDOMGuards, protectDOMSink } from "./dom-policy-defaults.js";
+import { getDefaultAspectGuard, getDefaultElementGuard } from "./dom-policy-defaults.js";
 import type { TrustedTypesPolicy } from "./interfaces.js";
 
 /**
@@ -96,120 +96,41 @@ export type DOMGuards = {
     aspects: DOMAspectGuards;
 };
 
-function createDomSinkGuards(
-    config: Partial<DOMSinkGuards>,
-    defaults: DOMSinkGuards,
-): DOMSinkGuards {
+function snapshotGuards<T extends object>(config: T, depth: number): Readonly<T>;
+function snapshotGuards(config: object, depth: number): object {
     const result = {};
 
-    for (const name in defaults) {
-        const overrideValue = config[name];
-        const defaultValue = defaults[name];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[name] = defaultValue;
-                break;
-            default:
-                // override the default
-                result[name] = overrideValue;
-                break;
-        }
-    }
-
-    // add any new sinks that were not overrides
-    for (const name in config) {
-        if (!(name in result)) {
-            result[name] = config[name];
-        }
+    for (const key in config) {
+        const value = config[key];
+        result[key] = depth && value ? snapshotGuards(value, depth - 1) : value;
     }
 
     return Object.freeze(result);
 }
 
-function createDOMAspectGuards(
-    config: DOMAspectGuards,
-    defaults: DOMAspectGuards,
-): DOMAspectGuards {
-    const result = {};
-
-    for (const aspect in defaults) {
-        const overrideValue = config[aspect];
-        const defaultValue = defaults[aspect];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[aspect] = createDomSinkGuards(defaultValue, {});
-                break;
-            default:
-                // override the default
-                result[aspect] = createDomSinkGuards(overrideValue, defaultValue);
-                break;
-        }
-    }
-
-    // add any new aspect guards that were not overrides
-    for (const aspect in config) {
-        if (!(aspect in result)) {
-            result[aspect] = createDomSinkGuards(config[aspect], {});
-        }
-    }
-
-    return Object.freeze(result);
-}
-
-function createElementGuards(
-    config: DOMElementGuards,
-    defaults: DOMElementGuards,
-): DOMElementGuards {
-    const result = {};
-
-    for (const tag in defaults) {
-        const overrideValue = config[tag];
-        const defaultValue = defaults[tag];
-
-        switch (overrideValue) {
-            case null:
-                // remove the default
-                break;
-            case undefined:
-                // keep the default
-                result[tag] = createDOMAspectGuards(defaultValue, {});
-                break;
-            default:
-                // override the default aspects
-                result[tag] = createDOMAspectGuards(overrideValue, defaultValue);
-                break;
-        }
-    }
-
-    // Add any new element guards that were not overrides
-    for (const tag in config) {
-        if (!(tag in result)) {
-            result[tag] = createDOMAspectGuards(config[tag], {});
-        }
-    }
-
-    return Object.freeze(result);
-}
-
-function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGuards {
+function createDOMGuards(config: Partial<DOMGuards>): DOMGuards {
     return Object.freeze({
-        elements: config.elements
-            ? createElementGuards(config.elements, defaults.elements)
-            : defaults.elements,
-        aspects: config.aspects
-            ? createDOMAspectGuards(config.aspects, defaults.aspects)
-            : defaults.aspects,
+        elements: snapshotGuards(config.elements ?? {}, 2),
+        aspects: snapshotGuards(config.aspects ?? {}, 1),
     });
+}
+
+function getGuard(
+    config: DOMAspectGuards | undefined,
+    aspect: DOMAspect,
+    aspectName: string,
+    defaultGuard: DOMSinkGuards[string] | undefined,
+): DOMSinkGuards[string] | undefined {
+    if (config === null) {
+        return;
+    }
+    const aspectGuards = config?.[aspect];
+    if (aspectGuards === null) {
+        // A removed aspect retains the lookup behavior of an empty guard map.
+        return {}[aspectName];
+    }
+    const guard = aspectGuards?.[aspectName];
+    return guard === null ? undefined : (guard ?? defaultGuard);
 }
 
 function createTrustedType() {
@@ -247,7 +168,7 @@ export const DOMPolicy = Object.freeze({
      */
     create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
-        const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
+        const guards = createDOMGuards(options.guards ?? {});
 
         return Object.freeze({
             createHTML(value: string): string {
@@ -260,7 +181,24 @@ export const DOMPolicy = Object.freeze({
                 aspectName: string,
                 sink: DOMSink,
             ): DOMSink {
-                return protectDOMSink(tagName, aspect, aspectName, sink, guards);
+                const key = (tagName ?? "").toLowerCase();
+                const elementGuard = getGuard(
+                    guards.elements[key],
+                    aspect,
+                    aspectName,
+                    getDefaultElementGuard(key, aspect, aspectName),
+                );
+                const guardedSink = elementGuard?.(tagName, aspect, aspectName, sink);
+                if (guardedSink) {
+                    return guardedSink;
+                }
+                const aspectGuard = getGuard(
+                    guards.aspects,
+                    aspect,
+                    aspectName,
+                    getDefaultAspectGuard(aspect, aspectName),
+                );
+                return aspectGuard?.(tagName, aspect, aspectName, sink) ?? sink;
             },
         });
     },

@@ -1,6 +1,6 @@
 import type { DOMSink } from "./dom.js";
 import { DOMAspect } from "./dom-aspect.js";
-import type { DOMAspectGuards, DOMGuards } from "./dom-policy.js";
+import type { DOMSinkGuards } from "./dom-policy.js";
 import { Message } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
@@ -73,110 +73,52 @@ function block(
     });
 }
 
-const defaultDOMElementGuards = {
-    a: {
-        [DOMAspect.attribute]: {
-            href: safeURL,
-        },
-        [DOMAspect.property]: {
-            href: safeURL,
-        },
-    },
-    area: {
-        [DOMAspect.attribute]: {
-            href: safeURL,
-        },
-        [DOMAspect.property]: {
-            href: safeURL,
-        },
-    },
-    button: {
-        [DOMAspect.attribute]: {
-            formaction: safeURL,
-        },
-        [DOMAspect.property]: {
-            formAction: safeURL,
-        },
-    },
-    embed: {
-        [DOMAspect.attribute]: {
-            src: block,
-        },
-        [DOMAspect.property]: {
-            src: block,
-        },
-    },
-    form: {
-        [DOMAspect.attribute]: {
-            action: safeURL,
-        },
-        [DOMAspect.property]: {
-            action: safeURL,
-        },
-    },
-    frame: {
-        [DOMAspect.attribute]: {
-            src: safeURL,
-        },
-        [DOMAspect.property]: {
-            src: safeURL,
-        },
-    },
-    iframe: {
-        [DOMAspect.attribute]: {
-            src: safeURL,
-            srcdoc: block,
-        },
-        [DOMAspect.property]: {
-            src: safeURL,
-            srcdoc: block,
-        },
-    },
-    input: {
-        [DOMAspect.attribute]: {
-            formaction: safeURL,
-        },
-        [DOMAspect.property]: {
-            formAction: safeURL,
-        },
-    },
-    link: {
-        [DOMAspect.attribute]: {
-            href: block,
-        },
-        [DOMAspect.property]: {
-            href: block,
-        },
-    },
-    object: {
-        [DOMAspect.attribute]: {
-            codebase: block,
-            data: block,
-        },
-        [DOMAspect.property]: {
-            codeBase: block,
-            data: block,
-        },
-    },
-    script: {
-        [DOMAspect.attribute]: {
-            src: block,
-            text: block,
-        },
-        [DOMAspect.property]: {
-            src: block,
-            text: block,
-            innerText: block,
-            textContent: block,
-        },
-    },
-    style: {
-        [DOMAspect.property]: {
-            innerText: block,
-            textContent: block,
-        },
-    },
+const sharedElementGuards: DOMSinkGuards = {
+    "a.href": safeURL,
+    "area.href": safeURL,
+    "embed.src": block,
+    "form.action": safeURL,
+    "frame.src": safeURL,
+    "iframe.src": safeURL,
+    "iframe.srcdoc": block,
+    "link.href": block,
+    "object.data": block,
+    "script.src": block,
+    "script.text": block,
 };
+
+const attributeElementGuards: DOMSinkGuards = {
+    "button.formaction": safeURL,
+    "input.formaction": safeURL,
+    "object.codebase": block,
+};
+
+const propertyElementGuards: DOMSinkGuards = {
+    "button.formAction": safeURL,
+    "input.formAction": safeURL,
+    "object.codeBase": block,
+    "script.innerText": block,
+    "script.textContent": block,
+    "style.innerText": block,
+    "style.textContent": block,
+};
+
+export function getDefaultElementGuard(
+    tagName: string,
+    aspect: DOMAspect,
+    aspectName: string,
+): DOMSinkGuards[string] | undefined {
+    const guards =
+        aspect === DOMAspect.attribute
+            ? attributeElementGuards
+            : aspect === DOMAspect.property
+              ? propertyElementGuards
+              : undefined;
+    if (guards) {
+        const key = `${tagName}.${aspectName}`;
+        return guards[key] ?? sharedElementGuards[key];
+    }
+}
 
 const blockedEvents = {
     onabort: block,
@@ -254,36 +196,19 @@ const blockedEvents = {
     onwheel: block,
 };
 
-export const defaultDOMGuards: DOMGuards = {
-    elements: defaultDOMElementGuards,
-    aspects: {
-        [DOMAspect.attribute]: {
-            ...blockedEvents,
-        },
-        [DOMAspect.property]: {
-            innerHTML: block,
-            ...blockedEvents,
-        },
-        [DOMAspect.event]: {
-            ...blockedEvents,
-        },
-    },
-};
-
-function tryGuard(
-    aspectGuards: DOMAspectGuards,
-    tagName: string | null,
+export function getDefaultAspectGuard(
     aspect: DOMAspect,
     aspectName: string,
-    sink: DOMSink,
-) {
-    const sinkGuards = aspectGuards[aspect];
-
-    if (sinkGuards) {
-        const guard = sinkGuards[aspectName];
-        if (guard) {
-            return guard(tagName, aspect, aspectName, sink);
-        }
+): DOMSinkGuards[string] | undefined {
+    if (aspect === DOMAspect.property && aspectName === "innerHTML") {
+        return block;
+    }
+    if (
+        aspect === DOMAspect.attribute ||
+        aspect === DOMAspect.property ||
+        aspect === DOMAspect.event
+    ) {
+        return blockedEvents[aspectName];
     }
 }
 
@@ -292,19 +217,9 @@ export function protectDOMSink(
     aspect: DOMAspect,
     aspectName: string,
     sink: DOMSink,
-    guards: DOMGuards = defaultDOMGuards,
 ): DOMSink {
-    // Check for element-specific guards.
-    const key = (tagName ?? "").toLowerCase();
-    const elementGuards = guards.elements[key];
-    if (elementGuards) {
-        const guard = tryGuard(elementGuards, tagName, aspect, aspectName, sink);
-
-        if (guard) {
-            return guard;
-        }
-    }
-
-    // Check for guards applicable to all nodes.
-    return tryGuard(guards.aspects, tagName, aspect, aspectName, sink) ?? sink;
+    const guard =
+        getDefaultElementGuard((tagName ?? "").toLowerCase(), aspect, aspectName) ??
+        getDefaultAspectGuard(aspect, aspectName);
+    return guard ? guard(tagName, aspect, aspectName, sink) : sink;
 }
