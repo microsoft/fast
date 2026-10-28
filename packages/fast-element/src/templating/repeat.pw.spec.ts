@@ -382,6 +382,256 @@ test.describe("The repeat", () => {
     });
 
     test.describe("behavior", () => {
+        for (const rotation of [
+            "first-to-last",
+            "last-to-first",
+            "queued-reorders",
+        ] as const) {
+            test(`preserves focus in stable views during ${rotation}`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async rotation => {
+                    // @ts-expect-error: Client module.
+                    const { html, repeat, Updates } = await import("/main.js");
+
+                    const items = [0, 1, 2];
+                    const host = document.createElement("div");
+                    document.body.append(host);
+                    const view = html`${repeat(
+                        () => items,
+                        html`<input :value=${item => item}>`,
+                    )}`.render({}, host);
+                    const nodes = Array.from(host.querySelectorAll("input"));
+                    const focused = nodes[rotation === "first-to-last" ? 1 : 0];
+                    const removedInputs: string[] = [];
+                    const observer = new MutationObserver(records => {
+                        for (const record of records) {
+                            for (const node of record.removedNodes) {
+                                if (node instanceof HTMLInputElement) {
+                                    removedInputs.push(node.value);
+                                }
+                            }
+                        }
+                    });
+                    observer.observe(host, { childList: true });
+                    focused.focus();
+                    focused.setSelectionRange(0, 1);
+
+                    if (rotation === "queued-reorders") {
+                        items.reverse();
+                    }
+
+                    const offset = rotation === "first-to-last" ? 2 : 1;
+                    items.sort(
+                        (first, second) =>
+                            ((first + offset) % 3) - ((second + offset) % 3),
+                    );
+                    await Updates.next();
+
+                    const rendered = Array.from(host.querySelectorAll("input"));
+                    const result = {
+                        order: rendered.map(node => node.value),
+                        preservesFocus: document.activeElement === focused,
+                        preservesNodes: rendered.every(
+                            (node, index) => node === nodes[items[index]],
+                        ),
+                        selection: [focused.selectionStart, focused.selectionEnd],
+                        removedInputs,
+                    };
+                    observer.disconnect();
+                    view.dispose();
+                    host.remove();
+                    return result;
+                }, rotation);
+
+                expect(result).toEqual({
+                    order:
+                        rotation === "first-to-last" ? ["1", "2", "0"] : ["2", "0", "1"],
+                    preservesFocus: true,
+                    preservesNodes: true,
+                    selection: [0, 1],
+                    removedInputs: [rotation === "first-to-last" ? "0" : "2"],
+                });
+            });
+        }
+
+        test("reorders hydrated child views without replacing their nodes", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { enableHydration, html, repeat, Updates } = await import(
+                    "/main.js"
+                );
+                enableHydration();
+
+                const items = Array.from({ length: 12 }, (_, index) => index);
+                const itemTemplate = html`<span>item</span>`;
+                const host = document.createElement("div");
+                document.body.append(host);
+                const view = html`${repeat(() => items, itemTemplate)}`.render({}, host);
+                const behavior = view.behaviors[0];
+                const nodes = Array.from(host.querySelectorAll("span"));
+
+                for (let index = 0; index < nodes.length; index++) {
+                    const node = nodes[index];
+                    node.textContent = String(index);
+                    behavior.views[index].unbind();
+                    const hydrated = itemTemplate.hydrate(node, node);
+                    hydrated.bind(items[index]);
+                    behavior.views[index] = hydrated;
+                }
+
+                items.reverse();
+                await Updates.next();
+                const reordered = Array.from(host.querySelectorAll("span"));
+                const actual = reordered.map(node => node.textContent);
+                const preservesNodes = reordered.every(
+                    (node, index) => node === nodes[nodes.length - index - 1],
+                );
+                view.dispose();
+                host.remove();
+                return { actual, preservesNodes };
+            });
+
+            expect(result.actual).toEqual(
+                Array.from({ length: 12 }, (_, index) => String(11 - index)),
+            );
+            expect(result.preservesNodes).toBe(true);
+        });
+
+        for (const operation of [
+            "identity-sort",
+            "reverse",
+            "rotate",
+            "consecutive-reorders",
+            "sort-push",
+            "push-sort",
+            "sort-splice",
+            "splice-sort",
+            "prepend",
+            "recycle-across-splices",
+        ] as const) {
+            test(`reconciles ${operation} in one batch`, async ({ page }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async operation => {
+                    // @ts-expect-error: Client module.
+                    const { repeat, html, Updates } = await import("/main.js");
+
+                    const items = Array.from({ length: 12 }, (_, id) => ({ id }));
+                    const host = document.createElement("div");
+                    document.body.append(host);
+                    const view = html`${repeat(
+                        (source: any) => source.items,
+                        html`<span data-id=${(item: any) => item.id}>${(
+                            item: any,
+                            context: any,
+                        ) => `${context.index}/${context.length}:${item.id}`}</span>`,
+                        { positioning: true },
+                    )}`.render({ items }, host);
+                    const nodes = new Map(
+                        Array.from(host.querySelectorAll("span"), node => [
+                            Number(node.getAttribute("data-id")),
+                            node,
+                        ]),
+                    );
+                    const before = host.textContent;
+
+                    switch (operation) {
+                        case "identity-sort": {
+                            items.sort((first, second) => first.id - second.id);
+                            break;
+                        }
+                        case "reverse": {
+                            items.reverse();
+                            break;
+                        }
+                        case "rotate": {
+                            items.sort(
+                                (first, second) =>
+                                    ((first.id + 5) % 12) - ((second.id + 5) % 12),
+                            );
+                            break;
+                        }
+                        case "consecutive-reorders": {
+                            items.reverse();
+                            items.sort((first, second) => first.id - second.id);
+                            items.reverse();
+                            break;
+                        }
+                        case "sort-push": {
+                            items.sort((first, second) => second.id - first.id);
+                            items.push({ id: 12 });
+                            break;
+                        }
+                        case "push-sort": {
+                            items.push({ id: 12 });
+                            items.sort((first, second) => second.id - first.id);
+                            break;
+                        }
+                        case "sort-splice": {
+                            items.sort((first, second) => second.id - first.id);
+                            items.splice(2, 3, { id: 12 });
+                            break;
+                        }
+                        case "splice-sort": {
+                            items.splice(2, 3, { id: 12 });
+                            items.sort((first, second) => second.id - first.id);
+                            break;
+                        }
+                        case "prepend": {
+                            items.unshift(
+                                ...Array.from({ length: 128 }, (_, index) => ({
+                                    id: index + 12,
+                                })),
+                            );
+                            break;
+                        }
+                        case "recycle-across-splices": {
+                            items.splice(0, 3, { id: 12 });
+                            items.splice(5, 1, { id: 13 }, { id: 14 }, { id: 15 });
+                            break;
+                        }
+                        default: {
+                            throw new Error(`Unknown operation: ${operation}`);
+                        }
+                    }
+
+                    const deferred = host.textContent === before;
+                    await Updates.next();
+                    const rendered = Array.from(host.querySelectorAll("span"));
+                    const actual = rendered.map(node => node.textContent);
+                    const expected = items.map(
+                        (item, index) => `${index}/${items.length}:${item.id}`,
+                    );
+                    const preservesNodes = rendered.every(
+                        (node, index) => nodes.get(items[index].id) === node,
+                    );
+                    view.dispose();
+                    host.remove();
+                    return { deferred, actual, expected, preservesNodes };
+                }, operation);
+
+                expect(result.deferred).toBe(true);
+                expect(result.actual).toEqual(result.expected);
+                if (
+                    [
+                        "identity-sort",
+                        "reverse",
+                        "rotate",
+                        "consecutive-reorders",
+                    ].includes(operation)
+                ) {
+                    expect(result.preservesNodes).toBe(true);
+                }
+            });
+        }
+
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
         const zeroThroughTen = [0].concat(oneThroughTen);

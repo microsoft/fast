@@ -15,7 +15,7 @@ navigationOptions:
 
 ## RepeatBehavior.handleChange() method
 
-Handles changes in the array, its items, and the repeat template.
+Handles array replacements, batched mutations, and repeat template changes.
 
 **Signature:**
 
@@ -69,7 +69,7 @@ args
 
 </td><td>
 
-The details about what was changed.
+A binding observer, splice records, reorder records, or a reset.
 
 
 </td></tr>
@@ -78,3 +78,7 @@ The details about what was changed.
 **Returns:**
 
 void
+
+## Remarks
+
+Reset notifications, including mixed mutation batches, refresh all views. Pure reorder and splice batches use their respective reconciliation paths.
