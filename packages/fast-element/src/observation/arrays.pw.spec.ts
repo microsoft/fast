@@ -306,6 +306,142 @@ test.describe("The ArrayObserver", () => {
         expect(changeArgs0Sorted).toEqual("[3,1,4,2,0]");
     });
 
+    test("preserves stable sort mappings for duplicate and sparse values", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, Observable, Updates } = await import("/main.js");
+            ArrayObserver.enable();
+
+            const shared = { rank: 2 };
+            const sparse = [Number.NaN, 0, -0, Number.NaN, 2, undefined];
+            sparse.length = 8;
+            const scenarios = [
+                {
+                    items: [shared, { rank: 1 }, shared, { rank: 3 }, shared],
+                    compare: (first: any, second: any) => first.rank - second.rank,
+                },
+                { items: sparse, compare: () => 0 },
+                {
+                    items: Array.from({ length: 512 }, (_, index) => index % 5),
+                    compare: (first: any, second: any) => second - first,
+                },
+            ];
+            const results = [];
+
+            for (const { items, compare } of scenarios) {
+                const before = items.slice();
+                const expected = before.slice().sort(compare);
+                const consumed = new Set<number>();
+                const expectedMapping = Array.from(expected, value => {
+                    const index = before.findIndex(
+                        (candidate, index) =>
+                            !consumed.has(index) && Object.is(candidate, value),
+                    );
+                    consumed.add(index);
+                    return index;
+                });
+                const observer = Observable.getNotifier(items);
+                let mapping: number[] = [];
+                observer.subscribe({
+                    handleChange(_source: any, changes: Sort[]) {
+                        mapping = changes[0].sorted!;
+                    },
+                });
+                const returned = items.sort(compare);
+                observer.flush();
+                results.push({
+                    mapping,
+                    expectedMapping,
+                    returnsArray: returned === items,
+                    preservesHoles: Array.from(
+                        { length: items.length },
+                        (_, index) =>
+                            Object.hasOwn(items, index) ===
+                            Object.hasOwn(expected, index),
+                    ).every(Boolean),
+                });
+            }
+
+            await Updates.next();
+            return results;
+        });
+
+        for (const result of results) {
+            expect(result.mapping).toEqual(result.expectedMapping);
+            expect(result.returnsArray).toBe(true);
+            expect(result.preservesHoles).toBe(true);
+        }
+    });
+
+    test("delivers one reset and dependent notifications for mixed mutations", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, Observable, Updates } = await import("/main.js");
+            ArrayObserver.enable();
+
+            const items = [3, 1, 2];
+            const observer = Observable.getNotifier(items);
+            const length = observer.lengthObserver;
+            const sorted = observer.sortObserver;
+            let deliveries = 0;
+            let resets = 0;
+            let lengthChanges = 0;
+            let sortChanges = 0;
+            observer.subscribe({
+                handleChange(_source: any, changes: Splice[]) {
+                    deliveries++;
+                    resets += Number(changes[0].reset === true);
+                },
+            });
+            Observable.getNotifier(length).subscribe({
+                handleChange() {
+                    lengthChanges++;
+                },
+            });
+            Observable.getNotifier(sorted).subscribe({
+                handleChange() {
+                    sortChanges++;
+                },
+            });
+
+            items.sort();
+            items.push(4);
+            items.reverse();
+            const deferred = deliveries === 0;
+            await Updates.next();
+
+            return {
+                deferred,
+                deliveries,
+                resets,
+                lengthChanges,
+                sortChanges,
+                length: length.length,
+                sorted: sorted.sorted,
+                items,
+            };
+        });
+
+        expect(result).toEqual({
+            deferred: true,
+            deliveries: 1,
+            resets: 1,
+            lengthChanges: 1,
+            sortChanges: 1,
+            length: 4,
+            sorted: 2,
+            items: [4, 3, 2, 1],
+        });
+    });
+
     test("observes splices", async ({ page }) => {
         await page.goto("/");
 
@@ -348,6 +484,84 @@ test.describe("The ArrayObserver", () => {
         expect(changeArgs0AddedCount).toBe(1);
         expect(changeArgs0Removed).toEqual(`["hello"]`);
         expect(changeArgs0Index).toBe(1);
+    });
+
+    test("preserves exact splice output for large replacements and fallback cases", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, Observable, Updates } = await import("/main.js");
+            ArrayObserver.enable();
+
+            const before = Array.from({ length: 1_200 }, (_, index) => index);
+            const cases = [1, 7, 47, 80, 500].map(rotation => ({
+                before,
+                after: before.slice(rotation).concat(before.slice(0, rotation)),
+                expected: [
+                    { index: 0, removed: before.slice(0, rotation), addedCount: 0 },
+                    {
+                        index: before.length - rotation,
+                        removed: [],
+                        addedCount: rotation,
+                    },
+                ],
+            }));
+            cases.push({
+                before,
+                after: before
+                    .slice(4)
+                    .concat(Array.from({ length: 36 }, (_, index) => index + 1_200)),
+                expected: [
+                    { index: 0, removed: before.slice(0, 4), addedCount: 0 },
+                    { index: 1_196, removed: [], addedCount: 36 },
+                ],
+            });
+            cases.push({
+                before: before.map(value => value % 2),
+                after: before.map(value => (value + 1) % 2),
+                expected: [
+                    { index: 0, removed: [], addedCount: 1 },
+                    { index: 1_200, removed: [1], addedCount: 0 },
+                ],
+            });
+            cases.push({
+                before,
+                after: before.map(value => value + 1_200),
+                expected: [{ index: 0, removed: before, addedCount: before.length }],
+            });
+
+            const results = [];
+            for (const scenario of cases) {
+                const items = scenario.before.slice();
+                const observer = Observable.getNotifier(items);
+                let records: Splice[] = [];
+                observer.subscribe({
+                    handleChange(_source: any, changes: Splice[]) {
+                        records = changes;
+                    },
+                });
+                items.splice(0, items.length, ...scenario.after);
+                observer.flush();
+                results.push({
+                    actual: records.map(({ index, removed, addedCount }) => ({
+                        index,
+                        removed,
+                        addedCount,
+                    })),
+                    expected: scenario.expected,
+                });
+            }
+
+            await Updates.next();
+            return results;
+        });
+
+        for (const result of results) {
+            expect(result.actual).toEqual(result.expected);
+        }
     });
 
     test("observes unshifts", async ({ page }) => {

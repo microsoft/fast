@@ -304,6 +304,22 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 This gives FAST automatic, fine-grained dependency tracking without explicit declarations.
 
+#### Array mutation delivery
+
+Array observers batch mutation records through `Updates`. Pure splice batches are
+merged and normalized; pure sort/reverse batches deliver numeric permutations.
+Batches containing both kinds deliver the existing reset notification so that
+subscribers reconcile against the final array without losing intervening changes.
+Length and sort observers receive the same batched delivery.
+
+Sort bookkeeping appends original indices to per-value buckets and consumes each
+bucket with a cursor, preserving duplicate occurrence order without repeatedly
+copying index arrays. Splice normalization trims common prefixes and suffixes.
+Large changed spans first try bounded edit-distance bands with packed two-bit
+backtracking directions. Successful bands preserve the full matrix's edit and
+tie-breaking rules; unreachable bands stop early. High-edit spans retain the
+original quadratic-time-and-space matrix fallback.
+
 ---
 
 ### Bindings
@@ -441,6 +457,16 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 | `children` / `slotted` | `ChildrenDirective` / `SlottedDirective` | Observes DOM mutations |
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
+
+`RepeatBehavior` composes queued sort permutations in its view array before moving
+DOM nodes into the final order. A longest increasing subsequence of original view
+positions stays mounted; only the remaining views move. This preserves focus and
+selection in retained views while minimizing DOM moves. Positioning contexts are
+refreshed after reordering. Splice updates
+shift the view-array tail once per normalized splice, then fill the insertion
+range using removed views, unused views from earlier splices, or new views.
+Unused removed views are disposed after the batch. Mutation workloads are
+documented in the [benchmark guide](../../sites/benchmarks/README.md#repeat-mutation-workloads).
 
 The `render` directive in `src/templating/render.ts` uses `RenderInstruction`
 registrations to resolve templates for arbitrary model types. Registrations are

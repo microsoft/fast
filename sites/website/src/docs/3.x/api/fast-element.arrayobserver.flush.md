@@ -25,3 +25,7 @@ flush(): void;
 **Returns:**
 
 void
+
+## Remarks
+
+The default observer delivers pure reorder batches as permutations and normalizes pure splice batches with the active strategy. Batches mixing reorders with splices or a reset deliver a reset for the final array.

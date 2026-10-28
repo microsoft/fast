@@ -100,7 +100,7 @@ Bind this behavior.
 
 </td><td>
 
-Handles changes in the array, its items, and the repeat template.
+Handles array replacements, batched mutations, and repeat template changes.
 
 
 </td></tr>
