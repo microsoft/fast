@@ -123,6 +123,31 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
+## List identity and movement
+
+Use `repeat(items, template, { key: item => item.id })` when fresh records should
+retain the views associated with their IDs. Without `key`, repeat keeps its
+existing positional recycling behavior. Keys must be unique within each list
+and stable for the lifetime of a record. Matching keys retain views even with
+`recycle: false`; removed keys are disposed rather than recycled for other keys.
+Declarative templates use a literal item property path:
+
+```html
+<f-repeat value="{{item in items}}" key="id">
+    <button>{{item.name}}</button>
+</f-repeat>
+```
+
+Connected view reorders use `moveBefore()` when available. `FASTElement` provides
+`connectedMoveCallback()` so these moves keep its controller connected. Older
+browsers use insertion with focus and input-selection restoration; that fallback
+still runs disconnect/connect callbacks and cannot preserve all browser-owned
+state, such as iframe state or animations.
+
+`observerMap()` notifies array owners after removals as well as additions, so
+bindings to nested array lengths stay current. Mixed mutation resets also make
+new records observable before notifying owners.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.

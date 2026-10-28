@@ -382,6 +382,387 @@ test.describe("The repeat", () => {
     });
 
     test.describe("behavior", () => {
+        for (const operation of ["reverse", "pop"] as const) {
+            test(`preserves non-recycling views after ${operation} and an owner notification`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async operation => {
+                    // @ts-expect-error: Client module.
+                    const { html, Observable, repeat, Updates } = await import(
+                        "/main.js"
+                    );
+                    const model = { items: ["A", "B", "C"] };
+                    const items = model.items;
+                    Observable.defineProperty(model, "items");
+                    model.items = items;
+                    const host = document.createElement("div");
+                    document.body.append(host);
+                    const view = html`
+                        <output>${source => source.items.length}</output>
+                        ${repeat(
+                            source => source.items,
+                            html`<input data-id=${item => item} value="initial">`,
+                            { recycle: false },
+                        )}
+                    `.render(model, host);
+                    const original = new Map(
+                        Array.from(host.querySelectorAll("input"), input => [
+                            input.dataset.id,
+                            input,
+                        ]),
+                    );
+                    original.get("A")!.value = "unsaved A";
+
+                    model.items[operation]();
+                    Observable.notify(model, "items");
+                    Updates.process();
+
+                    const current = Array.from(host.querySelectorAll("input"));
+                    const result = {
+                        order: current.map(input => input.dataset.id),
+                        retained: current.every(
+                            input => input === original.get(input.dataset.id),
+                        ),
+                        draft: host.querySelector<HTMLInputElement>('[data-id="A"]')!
+                            .value,
+                        count: host.querySelector("output")!.textContent,
+                    };
+                    view.dispose();
+                    host.remove();
+                    return result;
+                }, operation);
+
+                expect(result).toEqual({
+                    order: operation === "reverse" ? ["C", "B", "A"] : ["A", "B"],
+                    retained: true,
+                    draft: "unsaved A",
+                    count: operation === "reverse" ? "3" : "2",
+                });
+            });
+        }
+
+        for (const operation of [
+            "replace",
+            "prepend",
+            "mixed",
+            "no-recycling",
+        ] as const) {
+            test(`preserves keyed record identity after ${operation}`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async operation => {
+                    // @ts-expect-error: Client module.
+                    const { html, Observable, repeat, Updates } = await import(
+                        "/main.js"
+                    );
+                    const model = {
+                        items: ["A", "B", "C"].map(id => ({ id, label: id })),
+                    };
+                    const initialItems = model.items;
+                    Observable.defineProperty(model, "items");
+                    model.items = initialItems;
+                    const selected: string[] = [];
+                    const host = document.createElement("div");
+                    document.body.append(host);
+                    const view = html`${repeat(
+                        source => source.items,
+                        html`<div data-id=${item => item.id}>
+                            <button @click=${item => selected.push(item.id)}>
+                                ${item => item.label}
+                            </button>
+                            <input value="draft">
+                            <span>${(_item, context) => context.index}/${(_item, context) => context.length}</span>
+                        </div>`,
+                        {
+                            key: item => item.id,
+                            positioning: true,
+                            recycle: operation !== "no-recycling",
+                        },
+                    )}`.render(model, host);
+                    const rows = new Map(
+                        Array.from(
+                            host.querySelectorAll<HTMLDivElement>("[data-id]"),
+                        ).map(row => [row.dataset.id, row]),
+                    );
+                    const focused = rows.get("B")!.querySelector("button")!;
+                    rows.get("B")!.querySelector("input")!.value = "unsaved B";
+                    focused.focus();
+
+                    if (operation === "replace" || operation === "no-recycling") {
+                        model.items = ["D", "A", "B", "C"].map(id => ({
+                            id,
+                            label: `new ${id}`,
+                        }));
+                    }
+
+                    if (operation === "prepend") {
+                        model.items.unshift({ id: "D", label: "D" });
+                    }
+
+                    if (operation === "mixed") {
+                        model.items.reverse();
+                        model.items.splice(1, 0, { id: "D", label: "D" });
+                    }
+
+                    Updates.process();
+                    focused.click();
+                    const current = Array.from(
+                        host.querySelectorAll<HTMLDivElement>("[data-id]"),
+                    );
+                    const result = {
+                        ids: current.map(row => row.dataset.id),
+                        retained: current.every(
+                            row =>
+                                !rows.has(row.dataset.id) ||
+                                rows.get(row.dataset.id) === row,
+                        ),
+                        focused: document.activeElement === focused,
+                        selected,
+                        draft: host.querySelector<HTMLInputElement>(
+                            '[data-id="B"] input',
+                        )!.value,
+                        labels: current.map(row =>
+                            row.querySelector("button")!.textContent!.trim(),
+                        ),
+                        positions: current.map(
+                            row => row.querySelector("span")!.textContent,
+                        ),
+                    };
+                    view.dispose();
+                    host.remove();
+                    return result;
+                }, operation);
+
+                const ids =
+                    operation === "mixed" ? ["C", "D", "B", "A"] : ["D", "A", "B", "C"];
+                expect(result.ids).toEqual(ids);
+                expect(result.retained).toBe(true);
+                expect(result.focused).toBe(true);
+                expect(result.selected).toEqual(["B"]);
+                expect(result.draft).toBe("unsaved B");
+                expect(result.labels).toEqual(
+                    ids.map(id =>
+                        operation === "replace" || operation === "no-recycling"
+                            ? `new ${id}`
+                            : id,
+                    ),
+                );
+                expect(result.positions).toEqual(["0/4", "1/4", "2/4", "3/4"]);
+            });
+        }
+
+        test("validates keyed updates before changing views and recovers after removals", async ({
+            page,
+        }) => {
+            await page.goto("/");
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { html, repeat } = await import("/main.js");
+                const host = document.createElement("div");
+                document.body.append(host);
+                const items = [{ id: "A" }, { id: "B" }];
+                const view = html`${repeat(() => items, html`<b>${item => item.id}</b>`, {
+                    key: item => item.id,
+                })}`.render({}, host);
+                const behavior = view.behaviors[0];
+                const original = Array.from(host.querySelectorAll("b"));
+                const update = (items: { id: string }[]) => {
+                    behavior.items = items;
+                    behavior.handleChange(null, [{ reset: true }]);
+                };
+                let duplicateError = "";
+                try {
+                    update([{ id: "A" }, { id: "A" }]);
+                } catch (error) {
+                    duplicateError = (error as Error).message;
+                }
+                const unchanged = original.every(
+                    (node, index) => host.querySelectorAll("b")[index] === node,
+                );
+                items[0].id = "changed";
+                update([{ id: "A" }]);
+                const storedKey = host.querySelector("b") === original[0];
+                const removed =
+                    !original[1].isConnected &&
+                    !behavior.views.some(itemView => itemView.source === items[1]);
+                update([]);
+                const empty = host.querySelectorAll("b").length === 0;
+                update([{ id: "B" }]);
+                const notRecycled = host.querySelector("b") !== original[1];
+                behavior.template = html`<i>${item => item.id}</i>`;
+                behavior.refreshAllViews(true);
+                const changedTemplate =
+                    host.querySelector("b") === null &&
+                    host.querySelector("i")!.textContent === "B";
+                view.dispose();
+                host.remove();
+                return {
+                    duplicateError,
+                    unchanged,
+                    storedKey,
+                    removed,
+                    empty,
+                    notRecycled,
+                    changedTemplate,
+                };
+            });
+            expect(result.duplicateError).toBe(
+                "Repeat keys must be unique within the array.",
+            );
+            expect(result).toMatchObject({
+                unchanged: true,
+                storedKey: true,
+                removed: true,
+                empty: true,
+                notRecycled: true,
+                changedTemplate: true,
+            });
+        });
+
+        for (const rendering of ["client", "hydrated", "shadow"] as const) {
+            for (const fallback of [false, true]) {
+                test(`preserves focus in moved ${rendering} views with fallback ${fallback}`, async ({
+                    page,
+                }) => {
+                    await page.goto("/");
+
+                    const result = await page.evaluate(
+                        async ({ rendering, fallback }) => {
+                            // @ts-expect-error: Client module.
+                            const {
+                                FASTElement,
+                                enableHydration,
+                                html,
+                                repeat,
+                                uniqueElementName,
+                                Updates,
+                            } = await import("/main.js");
+                            let connections = 0;
+                            let disconnections = 0;
+
+                            class MovingElement extends FASTElement {
+                                connectedCallback() {
+                                    super.connectedCallback();
+                                    connections++;
+                                }
+
+                                disconnectedCallback() {
+                                    disconnections++;
+                                    super.disconnectedCallback();
+                                }
+                            }
+
+                            const name = uniqueElementName();
+                            await MovingElement.define({
+                                name,
+                                template: html`<slot></slot>`,
+                            });
+                            const items = [0, 1, 2];
+                            const host = document.createElement("div");
+                            document.body.append(host);
+                            const container =
+                                rendering === "shadow"
+                                    ? host.attachShadow({ mode: "open" })
+                                    : host;
+                            const itemTemplate = html`
+                                <input value="draft">
+                                ${html.partial(`<${name}></${name}>`)}
+                            `;
+                            const view =
+                                html`${repeat(() => items, itemTemplate)}`.render(
+                                    {},
+                                    container,
+                                );
+
+                            if (rendering === "hydrated") {
+                                enableHydration();
+                                const behavior = view.behaviors[0];
+
+                                for (let index = 0; index < items.length; index++) {
+                                    const current = behavior.views[index];
+                                    current.unbind();
+                                    const hydrated = itemTemplate.hydrate(
+                                        current.firstChild,
+                                        current.lastChild,
+                                    );
+                                    hydrated.bind(items[index]);
+                                    behavior.views[index] = hydrated;
+                                }
+                            }
+
+                            const nodes = Array.from(container.querySelectorAll("input"));
+                            const focused = nodes[2];
+                            focused.focus();
+                            focused.setSelectionRange(1, 4, "backward");
+                            connections = 0;
+                            disconnections = 0;
+                            const descriptor = Object.getOwnPropertyDescriptor(
+                                container,
+                                "moveBefore",
+                            );
+                            const nativeMoves =
+                                !fallback && typeof container.moveBefore === "function";
+
+                            try {
+                                if (fallback) {
+                                    Object.defineProperty(container, "moveBefore", {
+                                        configurable: true,
+                                        value: undefined,
+                                    });
+                                }
+
+                                items.reverse();
+                                Updates.process();
+
+                                return {
+                                    nativeMoves,
+                                    preservesFocus:
+                                        (host.shadowRoot ?? document).activeElement ===
+                                        focused,
+                                    preservesNodes: Array.from(
+                                        container.querySelectorAll("input"),
+                                    ).every((node, index) => node === nodes[2 - index]),
+                                    selection: [
+                                        focused.selectionStart,
+                                        focused.selectionEnd,
+                                        focused.selectionDirection,
+                                    ],
+                                    connections,
+                                    disconnections,
+                                };
+                            } finally {
+                                if (descriptor) {
+                                    Object.defineProperty(
+                                        container,
+                                        "moveBefore",
+                                        descriptor,
+                                    );
+                                }
+
+                                if (!descriptor) {
+                                    Reflect.deleteProperty(container, "moveBefore");
+                                }
+
+                                view.dispose();
+                                host.remove();
+                            }
+                        },
+                        { rendering, fallback },
+                    );
+
+                    expect(result.preservesNodes).toBe(true);
+                    expect(result.preservesFocus).toBe(true);
+                    expect(result.selection).toEqual([1, 4, "backward"]);
+                    expect(result.connections).toBe(result.nativeMoves ? 0 : 2);
+                    expect(result.disconnections).toBe(result.nativeMoves ? 0 : 2);
+                });
+            }
+        }
+
         for (const rotation of [
             "first-to-last",
             "last-to-first",

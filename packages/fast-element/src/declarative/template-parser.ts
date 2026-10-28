@@ -1,8 +1,9 @@
 import type { Schema } from "../components/schema.js";
+import { DOM } from "../dom.js";
 import { children } from "../templating/children.js";
 import { elements } from "../templating/node-observation.js";
 import { ref } from "../templating/ref.js";
-import { repeat } from "../templating/repeat.js";
+import { type RepeatOptions, repeat } from "../templating/repeat.js";
 import { slotted } from "../templating/slotted.js";
 import { ViewTemplate } from "../templating/template.js";
 import { when } from "../templating/when.js";
@@ -216,12 +217,40 @@ export class TemplateParser {
                 );
 
                 externalValues.push(
-                    repeat((x, c) => binding(x, c), this.createTemplate(strings, values)),
+                    repeat(
+                        (x, c) => binding(x, c),
+                        this.createTemplate(strings, values),
+                        {
+                            key: this.resolveRepeatKey(
+                                innerHTML.slice(
+                                    behaviorConfig.openingTagStartIndex,
+                                    behaviorConfig.openingTagEndIndex,
+                                ),
+                            ),
+                        },
+                    ),
                 );
 
                 break;
             }
         }
+    }
+
+    private resolveRepeatKey(openingTag: string): RepeatOptions["key"] {
+        if (!/\skey\s*=/.test(openingTag)) {
+            return;
+        }
+
+        const template = document.createElement("template");
+        template.innerHTML = DOM.policy.createHTML(openingTag);
+        const path = template.content.firstElementChild!.getAttribute("key") ?? "";
+
+        if (!/^[\w$]+(?:\.[\w$]+)*$/.test(path)) {
+            throw new Error("An f-repeat key must be a non-empty item property path.");
+        }
+
+        const segments = path.split(".");
+        return item => segments.reduce((value, property) => value?.[property], item);
     }
 
     /**

@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "Correct batched array mutations and repeat positioning while reducing sort, splice, and list reconciliation overhead.",
+  "type": "minor",
+  "comment": "Add opt-in keyed repeat identity and state-preserving view moves, keep observer-map array counts and mixed-batch records reactive, and optimize batched array and repeat reconciliation.",
   "packageName": "@microsoft/fast-element",
   "email": "863023+radium-v@users.noreply.github.com",
   "dependentChangeType": "none"

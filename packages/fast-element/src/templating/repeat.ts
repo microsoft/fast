@@ -32,7 +32,7 @@ import { HTMLView, type SyntheticView } from "./view.js";
  * Options for configuring repeat behavior.
  * @public
  */
-export interface RepeatOptions {
+export interface RepeatOptions<TItem = any> {
     /**
      * Enables index, length, and dependent positioning updates in item templates.
      */
@@ -42,6 +42,13 @@ export interface RepeatOptions {
      * Enables view recycling
      */
     recycle?: boolean;
+
+    /**
+     * Selects a unique, stable key for each item. Matching keys retain their views
+     * across replacements and mutations. Views are never recycled between keys,
+     * regardless of the recycle option. Keys use Map equality semantics.
+     */
+    key?: (item: TItem) => unknown;
 }
 
 const defaultRepeatOptions: RepeatOptions = Object.freeze({
@@ -78,6 +85,10 @@ function getStableViewIndices(sorted: readonly number[]): number[] {
     const sequence: number[] = [];
 
     for (let index = 0; index < sorted.length; ++index) {
+        if (sorted[index] < 0) {
+            continue;
+        }
+
         const previousIndex = sequence[sequence.length - 1];
 
         if (previousIndex === void 0 || sorted[previousIndex] < sorted[index]) {
@@ -167,6 +178,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     private itemsObserver: Notifier | null = null;
     private itemsBindingObserver: ExpressionObserver<TSource, any[]>;
     private bindView: typeof bindWithoutPositioning = bindWithoutPositioning;
+    private viewKeys: unknown[] = [];
 
     /** @internal */
     public views: SyntheticView[] = [];
@@ -232,7 +244,13 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      */
     public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
-            this.items = this.itemsBindingObserver.bind(this.controller);
+            const items = this.itemsBindingObserver.bind(this.controller);
+
+            if (items === this.items) {
+                return;
+            }
+
+            this.items = items;
             this.observeItems();
             this.refreshAllViews();
         } else if (args === this.templateBindingObserver) {
@@ -241,6 +259,8 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             this.refreshAllViews(true);
         } else if (!args[0]) {
             return;
+        } else if (this.directive.options.key) {
+            this.refreshAllViews();
         } else if (args[0].reset) {
             this.refreshAllViews();
         } else if (args[0].sorted) {
@@ -312,7 +332,6 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             }
 
             if (!isStable && view.lastChild.nextSibling !== location) {
-                view.remove();
                 view.insertBefore(location);
             }
 
@@ -414,6 +433,11 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     }
 
     private refreshAllViews(templateChanged: boolean = false): void {
+        if (this.directive.options.key) {
+            this.refreshKeyedViews(templateChanged);
+            return;
+        }
+
         const items = this.items!;
         const template = this.template;
         const location = this.location;
@@ -484,6 +508,69 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
     }
 
+    private getItemKeys(): unknown[] {
+        const selectKey = this.directive.options.key!;
+        const keys = this.items!.map(item => selectKey(item));
+        const unique = new Set(keys);
+
+        if (unique.size !== keys.length) {
+            throw new Error("Repeat keys must be unique within the array.");
+        }
+
+        return keys;
+    }
+
+    private refreshKeyedViews(templateChanged: boolean): void {
+        const keys = this.getItemKeys();
+        const previous = new Map(
+            this.viewKeys.map((key, index) => [key, { view: this.views[index], index }]),
+        );
+
+        if (templateChanged) {
+            for (const view of this.views) {
+                view.dispose();
+            }
+
+            previous.clear();
+        }
+
+        const positions = new Array<number>(keys.length);
+        const views = new Array<SyntheticView>(keys.length);
+
+        for (let index = 0; index < keys.length; ++index) {
+            const key = keys[index];
+            const match = previous.get(key);
+            const view = match?.view ?? this.template.create();
+            positions[index] = match?.index ?? -1;
+            views[index] = view;
+            previous.delete(key);
+            this.bindView(view, this.items!, index, this.controller);
+        }
+
+        for (const { view } of previous.values()) {
+            view.dispose();
+        }
+
+        const stable = getStableViewIndices(positions);
+        let stableIndex = stable.length - 1;
+        let location = this.location;
+
+        for (let index = views.length - 1; index >= 0; --index) {
+            const view = views[index];
+
+            if (stable[stableIndex] === index) {
+                stableIndex--;
+            } else {
+                view.insertBefore(location);
+            }
+
+            location = view.firstChild;
+        }
+
+        this.views = views;
+        this.viewKeys = keys;
+    }
+
     private unbindAllViews(): void {
         const views = this.views;
 
@@ -516,6 +603,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
         const items = this.items;
         const itemCount = items.length;
+        if (this.directive.options.key) {
+            this.viewKeys = this.getItemKeys();
+        }
+
         const views = (this.views = new Array(itemCount));
         const markers = getHydrationMarkers();
 
@@ -625,7 +716,7 @@ export function repeat<
         | Expression<TSource, ViewTemplate<any, TSource>>
         | Binding<TSource, ViewTemplate<any, TSource>>
         | ViewTemplate<any, TSource>,
-    options: RepeatOptions = defaultRepeatOptions,
+    options: RepeatOptions<TArray[number]> = defaultRepeatOptions,
 ): CaptureType<TSource, TParent> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);

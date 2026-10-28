@@ -194,6 +194,13 @@ export class MyElement extends FASTElement {
 Overriding `connectedCallback` can affect the timing of when your template is bound and when behaviors run, so it's generally recommended to call `super.connectedCallback()` at the beginning of your override. Conversely, for `disconnectedCallback` and `attributeChangedCallback`, it's usually best to call the super method at the end of your override to ensure that your custom logic runs while the element is still in a consistent state.
 :::
 
+For state-preserving DOM moves, `FASTElement` supplies a no-op
+`connectedMoveCallback()`. Browsers call this callback instead of disconnecting
+and reconnecting the element during `moveBefore()`, keeping the FAST controller
+bound. Override it for move-specific work, without disconnecting the controller.
+Browsers without `moveBefore()` still use the ordinary disconnect/connect
+lifecycle when repeat moves a view.
+
 ## Defining the Element
 
 ### `define()`

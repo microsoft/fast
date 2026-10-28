@@ -50,6 +50,11 @@ export interface FASTElement extends HTMLElement {
     disconnectedCallback(): void;
 
     /**
+     * Invoked for a state-preserving DOM move without disconnecting the controller.
+     */
+    connectedMoveCallback(): void;
+
+    /**
      * The attribute changed callback for this FASTElement.
      * @param name - The name of the attribute that changed.
      * @param oldValue - The previous value of the attribute.
@@ -93,6 +98,8 @@ function createFASTElement<T extends typeof HTMLElement>(
         public disconnectedCallback(): void {
             this.$fastController.disconnect();
         }
+
+        public connectedMoveCallback(): void {}
 
         public attributeChangedCallback(
             name: string,
