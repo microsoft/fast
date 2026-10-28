@@ -25,6 +25,8 @@ const hydrationImportPath = "@microsoft/fast-element/hydration.js";
 const arrayObserverImportPath = "@microsoft/fast-element/arrays.js";
 const observerMapImportPath = "@microsoft/fast-element/observer-map.js";
 const attributeMapImportPath = "@microsoft/fast-element/attribute-map.js";
+const contextImportPath = "@microsoft/fast-element/context.js";
+const diImportPath = "@microsoft/fast-element/di.js";
 
 const namedExports = [{ name: "FASTElement", importPath: fastElementImportPath }];
 
@@ -113,6 +115,16 @@ const measuredExports = [
         name: "attributeMap",
         export: "attributeMap",
         importPath: attributeMapImportPath,
+    },
+    {
+        name: "Context",
+        export: "Context",
+        importPath: contextImportPath,
+    },
+    {
+        name: "DI",
+        export: "DI",
+        importPath: diImportPath,
     },
 ];
 
@@ -205,6 +217,10 @@ async function main() {
         "# Export Sizes",
         "",
         "Bundle sizes for `@microsoft/fast-element` exports.",
+        "",
+        "Context and DI include complete legacy decorator metadata support. This",
+        "dependency is excluded from core and declarative bundles when Context/DI",
+        "are not used. Importing both shares a single metadata implementation.",
         "",
         "| Export | Minified | Gzip | Brotli |",
         "|--------|----------|------|--------|",

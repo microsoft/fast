@@ -143,6 +143,25 @@ a narrower entrypoint directly. The website's
 [Path Exports](https://www.fast.design/docs/3.x/advanced/path-exports/) page is
 generated from `package.json` and lists each supported path.
 
+## Context and Dependency Injection Metadata
+
+The optional `@microsoft/fast-element/context.js` and
+`@microsoft/fast-element/di.js` entrypoints automatically initialize the complete
+legacy decorator metadata API through `reflect-metadata/lite`. No separate setup
+is needed for TypeScript's `experimentalDecorators` and `emitDecoratorMetadata`
+support. These metadata methods extend `Reflect`; they are not native JavaScript
+reflection methods.
+
+The lite implementation supplies the complete metadata API, including property
+metadata, inherited lookup, key enumeration, and deletion. It uses native
+`Map`, `Set`, and `WeakMap` rather than bundling collection polyfills.
+
+Core, focused `FASTElement`, and declarative imports do not include or initialize
+this metadata implementation unless Context/DI is also used. Bundlers can remove
+unused Context/DI imports; used Context/DI APIs retain the complete implementation
+to preserve automatic metadata support. Importing both entrypoints shares one
+copy. See [`SIZES.md`](./SIZES.md) for their measured bundle sizes.
+
 ## Dynamic Style Application
 
 Import `css`, `CSSTemplateTag`, `CSSValue`, and style APIs such as
