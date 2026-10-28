@@ -20,6 +20,28 @@ keywords:
 
 Dependency injection is a flexible & modular design pattern for passing functionality to the parts of an app that need it. If you need your project to be more maintainable and testable, this might be a good solution for you to use. The `@microsoft/fast-element` package has dependency injection utilities for regular use in JavaScript, and for injecting dependencies into web components.
 
+### Decorator Metadata and Bundle Scope
+
+Importing APIs from `@microsoft/fast-element/di.js` or
+`@microsoft/fast-element/context.js` automatically initializes the complete legacy
+decorator metadata API using `reflect-metadata/lite`. No separate metadata setup
+is needed for TypeScript's `experimentalDecorators` and `emitDecoratorMetadata`
+options. Metadata methods such as `Reflect.getOwnMetadata` extend `Reflect`;
+they are not native JavaScript APIs.
+
+The complete implementation supports constructor and property metadata,
+inherited lookup, key enumeration, and deletion, so compatible metadata
+implementations can share existing data regardless of initialization order.
+The lite variant omits only collection polyfills and uses native `Map`, `Set`,
+and `WeakMap`.
+
+Context and DI are optional path exports. Core `@microsoft/fast-element`,
+focused `FASTElement`, and `declarative.js` imports do not include or initialize
+this metadata implementation unless Context/DI is also used. Bundlers can
+remove unused Context/DI imports, while used Context/DI APIs retain the complete
+implementation to preserve automatic metadata support. Importing both shares
+one copy. See [Export Sizes](/docs/3.x/resources/export-sizes/) for measured sizes.
+
 ### Basic Example
 
 The first step to dependency injection is the creation of a container, this is where dependencies will be injected and resolved. There are two available ways to create a container, you can either use `createContainer()` or `getOrCreateDOMContainer()`. You can have as many containers as you like, however they will only resolve dependencies registered within their container.

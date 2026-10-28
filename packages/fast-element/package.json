@@ -176,6 +176,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
+    "test:node": "node --test test/metadata-compatibility.test.js",
     "test:playwright": "playwright test && npm run test:playwright:declarative",
     "test:exports": "node ./scripts/smoke-package-exports.js",
     "test:playwright:declarative": "playwright test --config=playwright.declarative.config.ts",
@@ -184,8 +185,8 @@
     "test-server": "npx vite test/ --clearScreen false",
     "test-server:declarative": "npx vite test/declarative --clearScreen false --port 5174 --strictPort",
     "test-server:declarative:webui": "npx vite temp/integrations/webui --clearScreen false --port 5174 --strictPort",
-    "test": "npm run lint && npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:playwright",
-    "test:ci": "npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:playwright",
+    "test": "npm run lint && npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:node && npm run test:playwright",
+    "test:ci": "npm run doc:path-exports:check && npm run doc:ci && npm run doc:exports:ci && npm run test:exports && npm run test:node && npm run test:playwright",
     "test:ui:declarative": "playwright test --config=playwright.declarative.config.ts --ui",
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
@@ -193,6 +194,9 @@
     "dist",
     "CHANGELOG.md"
   ],
+  "dependencies": {
+    "reflect-metadata": "^0.2.2"
+  },
   "beachball": {
     "disallowedChangeTypes": [
       "prerelease",

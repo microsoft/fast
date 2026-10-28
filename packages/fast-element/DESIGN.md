@@ -510,6 +510,30 @@ Containers are typically attached to DOM elements and walk the DOM hierarchy. DI
 
 See `docs/di/api-report.api.md` for the full public API surface.
 
+#### Shared decorator metadata
+
+Context and DI both import `src/metadata.ts`. This module initializes the
+complete legacy metadata reflection API with `reflect-metadata/lite` and keeps
+FAST's `design:paramtypes` and `annotation:paramtypes` helpers on that shared
+store. It preserves automatic TypeScript constructor metadata and existing
+annotation arrays without adding a separate setup step.
+
+Do not install a partial metadata API on the global `Reflect` object. A later
+complete implementation can treat an existing API as a compatible provider and
+require operations such as own-key enumeration and deletion. The complete lite
+implementation supports those operations, property keys, inherited lookup, and
+interoperation between independently evaluated compatible implementations. It
+relies on native collections, matching the supported browser runtime.
+
+Metadata initialization stays confined to the optional Context/DI import graph,
+not the root, focused `FASTElement`, or declarative entrypoints. Unused Context/DI
+imports remain tree-shakeable under the existing package configuration. A used
+Context/DI API retains the complete shared metadata implementation; omitting it
+would change legacy decorator behavior. Importing both entrypoints does not
+duplicate it. The isolated metadata compatibility tests cover initialization
+order, independently evaluated copies, and bundled entrypoint boundaries.
+`scripts/measure-sizes.js` reports Context and DI sizes separately in `SIZES.md`.
+
 ---
 
 ### Context Protocol
