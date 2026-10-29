@@ -304,6 +304,16 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 This gives FAST automatic, fine-grained dependency tracking without explicit declarations.
 
+#### Array mutation performance
+
+Sort bookkeeping appends original indices to per-value buckets and consumes each
+bucket with a cursor, preserving duplicate occurrence order without repeatedly
+copying index arrays. Splice normalization trims common prefixes and suffixes.
+Large changed spans first try bounded edit-distance bands with packed two-bit
+backtracking directions. Successful bands preserve the full matrix's edit and
+tie-breaking rules; unreachable bands stop early. High-edit spans retain the
+original quadratic-time-and-space matrix fallback.
+
 ---
 
 ### Bindings
