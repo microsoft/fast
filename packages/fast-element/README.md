@@ -123,6 +123,12 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
+## Array mutation reactivity
+
+`observerMap()` notifies array owners after removals as well as additions, so
+bindings to nested array lengths stay current. Mixed mutation resets also make
+new records observable before notifying owners.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.

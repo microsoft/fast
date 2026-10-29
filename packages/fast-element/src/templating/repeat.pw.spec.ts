@@ -382,6 +382,67 @@ test.describe("The repeat", () => {
     });
 
     test.describe("behavior", () => {
+        for (const operation of ["reverse", "pop"] as const) {
+            test(`preserves non-recycling views after ${operation} and an owner notification`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async operation => {
+                    // @ts-expect-error: Client module.
+                    const { html, Observable, repeat, Updates } = await import(
+                        "/main.js"
+                    );
+                    const model = { items: ["A", "B", "C"] };
+                    const items = model.items;
+                    Observable.defineProperty(model, "items");
+                    model.items = items;
+                    const host = document.createElement("div");
+                    document.body.append(host);
+                    const view = html`
+                        <output>${source => source.items.length}</output>
+                        ${repeat(
+                            source => source.items,
+                            html`<input data-id=${item => item} value="initial">`,
+                            { recycle: false },
+                        )}
+                    `.render(model, host);
+                    const original = new Map(
+                        Array.from(host.querySelectorAll("input"), input => [
+                            input.dataset.id,
+                            input,
+                        ]),
+                    );
+                    original.get("A")!.value = "unsaved A";
+
+                    model.items[operation]();
+                    Observable.notify(model, "items");
+                    Updates.process();
+
+                    const current = Array.from(host.querySelectorAll("input"));
+                    const result = {
+                        order: current.map(input => input.dataset.id),
+                        retained: current.every(
+                            input => input === original.get(input.dataset.id),
+                        ),
+                        draft: host.querySelector<HTMLInputElement>('[data-id="A"]')!
+                            .value,
+                        count: host.querySelector("output")!.textContent,
+                    };
+                    view.dispose();
+                    host.remove();
+                    return result;
+                }, operation);
+
+                expect(result).toEqual({
+                    order: operation === "reverse" ? ["C", "B", "A"] : ["A", "B"],
+                    retained: true,
+                    draft: "unsaved A",
+                    count: operation === "reverse" ? "3" : "2",
+                });
+            });
+        }
+
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
         const zeroThroughTen = [0].concat(oneThroughTen);

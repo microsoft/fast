@@ -18,6 +18,7 @@ interface ArrayObserverRegistration {
     schema: JSONSchema | JSONSchemaDefinition;
     rootSchema: JSONSchema;
     reachableArrays: any[];
+    observedItems: Set<unknown>;
     subscriber: {
         handleChange(subject: any, args: any[]): void;
     };
@@ -159,6 +160,10 @@ function defineObservableProperty(
                 if (oldValue !== newValue) {
                     source[field] = newValue;
 
+                    if (Array.isArray(newValue)) {
+                        addTargetToObject(newValue, source, key);
+                    }
+
                     const changeCallback = source[callback];
 
                     if (typeof changeCallback === "function") {
@@ -259,13 +264,31 @@ function getArrayRegistrationRoots(registration: ArrayObserverRegistration): any
 }
 
 function notifyArrayRegistration(registration: ArrayObserverRegistration): void {
-    Observable.notify(registration.target, registration.rootProperty);
+    const targets = [
+        { target: registration.target, rootProperty: registration.rootProperty },
+        ...getTargetsForObject(registration.target),
+    ];
 
-    getTargetsForObject(registration.target).forEach(
-        (targetItem: ObservedTargetsAndProperties) => {
-            Observable.notify(targetItem.target, targetItem.rootProperty);
-        },
-    );
+    for (const array of registration.reachableArrays) {
+        for (const owner of getTargetsForObject(array)) {
+            if (
+                owner.target?.[owner.rootProperty] !== array ||
+                targets.some(
+                    notified =>
+                        notified.target === owner.target &&
+                        notified.rootProperty === owner.rootProperty,
+                )
+            ) {
+                continue;
+            }
+
+            targets.push(owner);
+        }
+    }
+
+    for (const { target, rootProperty } of targets) {
+        Observable.notify(target, rootProperty);
+    }
 }
 
 function isSameArrayObserverContext(
@@ -294,12 +317,19 @@ function handleArrayChange(
     }
 
     const schemaProperties = getSchemaProperties(registration.schema);
+    const additions = args[0]?.reset ? [{ index: 0, addedCount: subject.length }] : args;
+    const observedItems = registration.observedItems;
 
-    args.forEach((arg: any) => {
+    additions.forEach((arg: any) => {
         if (arg.addedCount > 0) {
             if (schemaProperties) {
                 for (let i = arg.addedCount - 1; i >= 0; i--) {
                     const item = subject[arg.index + i];
+
+                    if (observedItems.has(item)) {
+                        continue;
+                    }
+
                     const originalItem = Object.assign({}, item);
 
                     assignProxyToItemsInArray(
@@ -312,12 +342,21 @@ function handleArrayChange(
                     );
 
                     Object.assign(item, originalItem);
+                    observedItems.add(item);
                 }
             }
-
-            notifyArrayRegistration(registration);
         }
     });
+
+    if (schemaProperties) {
+        registration.observedItems = new Set(
+            subject.filter((item: any) => observedItems.has(item)),
+        );
+    }
+
+    if (args.length > 0) {
+        notifyArrayRegistration(registration);
+    }
 }
 
 function removeArrayRegistration(
@@ -385,6 +424,7 @@ function observeArray(
         schema,
         rootSchema,
         reachableArrays: [reachableArray],
+        observedItems: new Set(getSchemaProperties(schema) ? observedArray : []),
         subscriber: {
             handleChange(subject, args) {
                 handleArrayChange(registration, subject, args);
