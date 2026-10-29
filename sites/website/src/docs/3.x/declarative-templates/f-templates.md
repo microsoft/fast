@@ -245,6 +245,23 @@ Inside `<f-repeat>`, bindings without a context prefix resolve to the host eleme
 Here, `item` is the current list item, while `title` resolves to the host
 element's property.
 
+#### Keyed Items
+
+Add a literal `key` property path to retain each record's view when an array is
+replaced or reordered:
+
+```html
+<f-repeat value="{{item in items}}" key="id">
+    <button>{{item.name}}</button>
+</f-repeat>
+```
+
+The path resolves from the item, so use `id` or `metadata.id`, not `item.id` or
+binding braces. Keys must be unique within each list and stable across updates.
+Each nested repeat has its own key set. Fresh objects with the same keys reuse
+their existing views; removed keys are disposed. Without `key`, positional view
+recycling remains unchanged.
+
 #### Accessing the Parent Context
 
 Inside `<f-repeat>`, use `$c.parent` to access the host element's methods and properties from event handlers:

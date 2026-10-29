@@ -78,9 +78,9 @@
 <f-template name="test-element-nested-repeat">
     <template>
         <ul>
-            <f-repeat value="{{group in groups}}">
+            <f-repeat key="name" value="{{group in groups}}">
                 <li data-group="{{group.name}}">
-                    <f-repeat value="{{item in group.items}}">
+                    <f-repeat value="{{item in group.items}}" key="label">
                         <span data-item="{{item.label}}">
                             <test-element-repeat-label label="{{item.label}}"></test-element-repeat-label>
                             <f-repeat value="{{value in item.values}}">

@@ -911,7 +911,7 @@ export class RenderDirective<TSource = any> implements HTMLDirective, ViewBehavi
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType<TSource, TParent>;
+export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions<TArray[number]>): CaptureType<TSource, TParent>;
 
 // @public
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
@@ -944,7 +944,8 @@ export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehavi
 }
 
 // @public
-export interface RepeatOptions {
+export interface RepeatOptions<TItem = any> {
+    key?: (item: TItem) => unknown;
     positioning?: boolean;
     recycle?: boolean;
 }

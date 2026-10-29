@@ -171,6 +171,26 @@ const template = html<FriendList>`
 
 Disabling recycling avoids stale state at the cost of recreating views, so reserve it for cases where reused DOM causes problems.
 
+#### Keyed Views
+
+Pass a `key` selector when records have stable IDs and replacing an array should
+preserve each record's DOM and local state:
+
+```ts
+repeat(
+  x => x.items,
+  html<Item>`<button>${x => x.name}</button>`,
+  { key: item => item.id }
+)
+```
+
+Matching keys retain their views and bind to the current records, including fresh
+objects with the same IDs. Removed keys are disposed; new keys get new views.
+Keys must be unique within each list and stable across updates. Equality follows
+JavaScript `Map` semantics. Duplicate keys throw before reconciliation changes the
+DOM. With `key`, matching views remain even when `recycle: false`, and views are
+never recycled between different keys. Without `key`, recycling is unchanged.
+
 Reorders use native `moveBefore()` when supported. FAST elements stay connected
 through `connectedMoveCallback()`. The fallback restores focus and supported input
 selection but still invokes disconnect/connect callbacks; it cannot preserve all

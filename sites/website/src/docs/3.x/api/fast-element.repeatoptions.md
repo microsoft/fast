@@ -20,7 +20,7 @@ Options for configuring repeat behavior.
 **Signature:**
 
 ```typescript
-export interface RepeatOptions
+export interface RepeatOptions<TItem = any>
 ```
 
 ## Properties
@@ -47,6 +47,25 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[key?](../fast-element.repeatoptions.key/)
+
+
+</td><td>
+
+
+</td><td>
+
+(item: TItem) =&gt; unknown
+
+
+</td><td>
+
+_(Optional)_ Selects a unique, stable key for each item. Matching keys retain their views across replacements and mutations. Views are never recycled between keys, regardless of the recycle option. Keys use Map equality semantics.
+
+
+</td></tr>
+<tr><td>
 
 [positioning?](../fast-element.repeatoptions.positioning/)
 

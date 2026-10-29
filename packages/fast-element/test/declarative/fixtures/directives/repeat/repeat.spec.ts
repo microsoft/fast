@@ -8,6 +8,57 @@ import type {
 } from "./main.js";
 
 test.describe("f-template", async () => {
+    test("retains hydrated keyed rows when nested records are replaced", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/directives/repeat/");
+        await page.waitForFunction(() => (window as any).hydrationCompleted === true);
+        const element = page.locator("test-element-nested-repeat");
+        await expect(element.locator("[data-item]")).toHaveCount(3);
+        await element.evaluate(
+            (node: TestElementNestedRepeat & { keyedRows?: Element[] }) => {
+                const rows = Array.from(
+                    node.shadowRoot!.querySelectorAll<HTMLElement>("[data-item]"),
+                );
+                node.keyedRows = rows;
+                rows[0].tabIndex = 0;
+                rows[0].focus();
+                node.groups = [
+                    {
+                        name: "one",
+                        items: [
+                            { label: "new", values: [9] },
+                            { label: "empty", values: [] },
+                            { label: "A", values: [4] },
+                        ],
+                    },
+                    { name: "two", items: [{ label: "B", values: [5] }] },
+                ];
+            },
+        );
+        await expect(element.locator("[data-label]")).toHaveText([
+            "new",
+            "empty",
+            "A",
+            "B",
+        ]);
+        await expect(element.locator("b")).toHaveText(["9", "4", "5"]);
+        expect(
+            await element.evaluate(
+                (node: TestElementNestedRepeat & { keyedRows?: Element[] }) => {
+                    const rows = node.shadowRoot!.querySelectorAll("[data-item]");
+                    return {
+                        identity:
+                            rows[1] === node.keyedRows![1] &&
+                            rows[2] === node.keyedRows![0] &&
+                            rows[3] === node.keyedRows![2],
+                        focus: node.shadowRoot!.activeElement === node.keyedRows![0],
+                    };
+                },
+            ),
+        ).toEqual({ identity: true, focus: true });
+    });
+
     test("hydrates bound FAST children without per-view live traversal setup", async ({
         page,
     }) => {

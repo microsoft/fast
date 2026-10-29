@@ -125,6 +125,19 @@ deterministic correctness and allocation regression spec.
 
 ## List identity and movement
 
+Use `repeat(items, template, { key: item => item.id })` when fresh records should
+retain the views associated with their IDs. Without `key`, repeat keeps its
+existing positional recycling behavior. Keys must be unique within each list
+and stable for the lifetime of a record. Matching keys retain views even with
+`recycle: false`; removed keys are disposed rather than recycled for other keys.
+Declarative templates use a literal item property path:
+
+```html
+<f-repeat value="{{item in items}}" key="id">
+    <button>{{item.name}}</button>
+</f-repeat>
+```
+
 Connected view reorders use `moveBefore()` when available. `FASTElement` provides
 `connectedMoveCallback()` so these moves keep its controller connected. Older
 browsers use insertion with focus and input-selection restoration; that fallback

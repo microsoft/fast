@@ -20,7 +20,7 @@ A directive that enables list rendering.
 **Signature:**
 
 ```typescript
-export declare function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType<TSource, TParent>;
+export declare function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions<TArray[number]>): CaptureType<TSource, TParent>;
 ```
 
 ## Parameters
@@ -80,7 +80,7 @@ options
 
 </td><td>
 
-[RepeatOptions](../fast-element.repeatoptions/)
+[RepeatOptions](../fast-element.repeatoptions/)<!-- -->&lt;TArray\[number\]&gt;
 
 
 </td><td>
