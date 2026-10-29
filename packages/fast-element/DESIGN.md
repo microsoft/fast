@@ -574,7 +574,9 @@ the imperative `html` API:
   or `observerMap({ schema })`.
 
 The `src/declarative/index.ts` entrypoint is pure at module evaluation time. Running a
-declarative API lazily installs declarative debug messages only. Hydration hooks
+declarative API lazily installs declarative debug messages only. Template structure
+errors link to the published f-template syntax guide, including reserved delimiters
+and literal code samples. Hydration hooks
 and hydratable `ViewTemplate` support are installed exclusively by
 `enableHydration()` from `@microsoft/fast-element/hydration.js`. See
 [`docs/declarative/design.md`](./docs/declarative/design.md) for the detailed
