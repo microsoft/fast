@@ -193,7 +193,13 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      */
     public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
-            this.items = this.itemsBindingObserver.bind(this.controller);
+            const items = this.itemsBindingObserver.bind(this.controller);
+
+            if (items === this.items) {
+                return;
+            }
+
+            this.items = items;
             this.observeItems();
             this.refreshAllViews();
         } else if (args === this.templateBindingObserver) {

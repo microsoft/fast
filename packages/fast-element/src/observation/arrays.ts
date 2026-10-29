@@ -1021,6 +1021,10 @@ export interface ArrayObserver extends SubscriberSet {
 
     /**
      * Flushes the changes to subscribers.
+     * @remarks
+     * The default observer delivers pure reorder batches as permutations and
+     * normalizes pure splice batches with the active strategy. Batches mixing
+     * reorders with splices or a reset deliver a reset for the final array.
      */
     flush(): void;
 }
@@ -1121,6 +1125,14 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.enqueue();
     }
 
+    /**
+     * Clears pending mutation records and delivers one batch to subscribers.
+     * @remarks
+     * Mixed reorder/splice or reorder/reset batches deliver a final-state reset.
+     * Pure reorder batches retain permutations; other batches use the active
+     * splice strategy. Clearing records before notification lets mutations from
+     * subscriber callbacks queue separately.
+     */
     public flush(): void {
         const splices = this.splices;
         const sorts = this.sorts;
@@ -1135,15 +1147,20 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.sorts = void 0;
         this.oldCollection = void 0;
 
-        sorts !== void 0
-            ? this.notify(sorts)
-            : this.notify(
-                  (this._strategy ?? defaultMutationStrategy).normalize(
-                      oldCollection,
-                      this.subject,
-                      splices,
-                  ),
-              );
+        if (sorts !== void 0) {
+            this.notify(
+                splices === void 0 && oldCollection === void 0 ? sorts : resetSplices,
+            );
+            return;
+        }
+
+        this.notify(
+            (this._strategy ?? defaultMutationStrategy).normalize(
+                oldCollection,
+                this.subject,
+                splices,
+            ),
+        );
     }
 
     private enqueue(): void {

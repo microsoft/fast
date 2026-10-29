@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Keep mixed array mutation batches, nested array counts, and inserted records reactive without recreating retained repeat views.",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

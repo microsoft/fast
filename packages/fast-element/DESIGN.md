@@ -304,7 +304,13 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 This gives FAST automatic, fine-grained dependency tracking without explicit declarations.
 
-#### Array mutation performance
+#### Array mutation delivery
+
+Array observers batch mutation records through `Updates`. Pure splice batches are
+merged and normalized; pure sort/reverse batches deliver numeric permutations.
+Batches containing both kinds deliver the existing reset notification so that
+subscribers reconcile against the final array without losing intervening changes.
+Length and sort observers receive the same batched delivery.
 
 Sort bookkeeping appends original indices to per-value buckets and consumes each
 bucket with a cursor, preserving duplicate occurrence order without repeatedly
@@ -451,6 +457,11 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 | `children` / `slotted` | `ChildrenDirective` / `SlottedDirective` | Observes DOM mutations |
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
+
+`observerMap` notifies live immediate array owners as well as root owners after
+mutations. Each array registration tracks its live initialized records. Reset
+notifications initialize newcomers without reassigning retained records or invoking
+their change callbacks. Removed records leave the tracking set.
 
 The `render` directive in `src/templating/render.ts` uses `RenderInstruction`
 registrations to resolve templates for arbitrary model types. Registrations are

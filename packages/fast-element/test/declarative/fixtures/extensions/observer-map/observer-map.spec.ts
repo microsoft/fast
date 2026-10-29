@@ -132,6 +132,99 @@ test.describe("ObserverMap", async () => {
         await expect(aliceCard.locator(".post-card")).toHaveCount(3);
     });
 
+    for (const mutation of ["pop", "shift", "splice"] as const) {
+        test(`updates nested array counts after ${mutation}`, async ({ page }) => {
+            const userCard = page.locator(".user-card").first();
+            await expect(userCard.locator("h4")).toHaveText("Posts (2 posts)");
+
+            for (const remaining of [1, 0]) {
+                await page
+                    .locator("observer-map-test-element")
+                    .evaluate((element: any, operation) => {
+                        const posts = element.users[0].posts;
+
+                        if (operation === "splice") {
+                            posts.splice(0, 1);
+                            return;
+                        }
+
+                        posts[operation]();
+                    }, mutation);
+
+                await expect(userCard.locator(".post-card")).toHaveCount(remaining);
+                await expect(userCard.locator("h4")).toHaveText(
+                    `Posts (${remaining} posts)`,
+                );
+            }
+        });
+    }
+
+    test("observes new records in mixed reorder and insertion batches", async ({
+        page,
+    }) => {
+        const element = page.locator("observer-map-test-element");
+        const userCard = page.locator(".user-card").first();
+        await element.evaluate((element: any) => {
+            const posts = element.users[0].posts;
+            const post = JSON.parse(JSON.stringify(posts[0]));
+            post.id = 999;
+            post.title = "Mixed batch post";
+            posts.reverse();
+            posts.push(post);
+        });
+        await expect(userCard.locator(".post-card")).toHaveCount(3);
+        await expect(userCard.locator("h4")).toHaveText("Posts (3 posts)");
+        await element.evaluate((element: any) => {
+            element.users[0].posts[2].title = "Updated mixed batch post";
+        });
+        await expect(
+            userCard.locator(".post-card").last().locator("strong").first(),
+        ).toHaveText("Updated mixed batch post");
+    });
+
+    test("preserves existing records and callbacks during mixed array resets", async ({
+        page,
+    }) => {
+        const element = page.locator("observer-map-test-element");
+        await element.evaluate((element: any) => {
+            const user = element.users[0];
+            const state = (element.resetState = {
+                user,
+                posts: user.posts,
+                notifications: 0,
+            });
+            user.postsChanged = (_previous: unknown, current: any[]) => {
+                state.notifications++;
+                current.push(current[0]);
+            };
+            element.users.reverse();
+            element.addNewUser();
+        });
+        await expect(element.locator(".user-card")).toHaveCount(3);
+        expect(
+            await element.evaluate((element: any) => {
+                const state = element.resetState;
+                return {
+                    notifications: state.notifications,
+                    retained: state.user.posts === state.posts,
+                    count: state.user.posts.length,
+                };
+            }),
+        ).toEqual({ notifications: 0, retained: true, count: 2 });
+
+        expect(
+            await element.evaluate((element: any) => {
+                const state = element.resetState;
+                state.user.posts = [state.user.posts[0]];
+                return {
+                    notifications: state.notifications,
+                    count: state.user.posts.length,
+                    callbackMutationRetained: state.user.posts[0] === state.user.posts[1],
+                };
+            }),
+        ).toEqual({ notifications: 1, count: 2, callbackMutationRetained: true });
+    });
+
     test("should update the likes on a new post", async ({ page }) => {
         const aliceCard = page.locator(".user-card").first();
 

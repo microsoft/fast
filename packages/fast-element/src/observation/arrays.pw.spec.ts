@@ -377,6 +377,71 @@ test.describe("The ArrayObserver", () => {
         }
     });
 
+    test("delivers one reset and dependent notifications for mixed mutations", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, Observable, Updates } = await import("/main.js");
+            ArrayObserver.enable();
+
+            const items = [3, 1, 2];
+            const observer = Observable.getNotifier(items);
+            const length = observer.lengthObserver;
+            const sorted = observer.sortObserver;
+            let deliveries = 0;
+            let resets = 0;
+            let lengthChanges = 0;
+            let sortChanges = 0;
+            observer.subscribe({
+                handleChange(_source: any, changes: Splice[]) {
+                    deliveries++;
+                    resets += Number(changes[0].reset === true);
+                },
+            });
+            Observable.getNotifier(length).subscribe({
+                handleChange() {
+                    lengthChanges++;
+                },
+            });
+            Observable.getNotifier(sorted).subscribe({
+                handleChange() {
+                    sortChanges++;
+                },
+            });
+
+            items.sort();
+            items.push(4);
+            items.reverse();
+            const deferred = deliveries === 0;
+            await Updates.next();
+
+            return {
+                deferred,
+                deliveries,
+                resets,
+                lengthChanges,
+                sortChanges,
+                length: length.length,
+                sorted: sorted.sorted,
+                items,
+            };
+        });
+
+        expect(result).toEqual({
+            deferred: true,
+            deliveries: 1,
+            resets: 1,
+            lengthChanges: 1,
+            sortChanges: 1,
+            length: 4,
+            sorted: 2,
+            items: [4, 3, 2, 1],
+        });
+    });
+
     test("observes splices", async ({ page }) => {
         await page.goto("/");
 
