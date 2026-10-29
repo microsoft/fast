@@ -2,6 +2,10 @@
 
 Bundle sizes for `@microsoft/fast-element` exports.
 
+Context and DI include a dependency-free, FAST-owned legacy metadata shim.
+The shim is excluded from core and declarative bundles when Context/DI
+are not used. Importing both shares a single metadata implementation.
+
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
 | CDN Rollup Bundle | 79.23 KB | 24.02 KB | 21.35 KB |
@@ -23,3 +27,5 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.55 KB | 4.46 KB | 4.03 KB |
 | observerMap (@microsoft/fast-element/observer-map.js) | 24.36 KB | 8.58 KB | 7.76 KB |
 | attributeMap (@microsoft/fast-element/attribute-map.js) | 17.70 KB | 6.27 KB | 5.67 KB |
+| Context (@microsoft/fast-element/context.js) | 6.20 KB | 2.32 KB | 2.03 KB |
+| DI (@microsoft/fast-element/di.js) | 18.97 KB | 5.98 KB | 5.40 KB |
