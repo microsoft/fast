@@ -95,6 +95,8 @@ function metadataPrototype(target: object): object | null {
     return parent;
 }
 
+// TODO: Remove this legacy Reflect shim after the Context/DI decorator migration.
+// https://github.com/microsoft/fast/issues/7210
 export function initializeMetadataReflection(): MetadataReflection {
     const reflection = Reflect as typeof Reflect & MetadataReflection;
 
