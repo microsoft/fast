@@ -85,7 +85,7 @@ elseTemplateOrTemplateBinding
 
 </td><td>
 
-_(Optional)_ Optional template or binding that that gets the template to render when the conditional is false.
+_(Optional)_ Optional template or binding that gets the template to render when the conditional is false.
 
 
 </td></tr>
@@ -94,3 +94,9 @@ _(Optional)_ Optional template or binding that that gets the template to render 
 **Returns:**
 
 [CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+
+An expression that selects a template, or null when the condition is false and no else template is supplied.
+
+## Remarks
+
+Fixed templates are selected without per-evaluation wrapper calls. A constant condition with fixed templates selects its result at directive creation. Template bindings evaluate only for the selected branch, using the current source and execution context.
