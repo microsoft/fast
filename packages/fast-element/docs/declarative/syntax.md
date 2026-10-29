@@ -400,6 +400,16 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
+    Add `key="id"` to retain each record's view across array replacements and
+    reordering. The value is a literal dot-separated item property path, such as
+    `id` or `metadata.id`, without the item variable or binding braces. Keys must
+    be unique within the current list and stable across updates. Nested repeats
+    have independent key sets. Without `key`, views use positional recycling.
+
+    ```html
+    <f-repeat value="{{item in list}}" key="id"><li>{{item.name}}</li></f-repeat>
+    ```
+
     Bindings inside `<f-repeat>` without a context prefix resolve to the custom element. For example, `{{title}}` below resolves to the host element's `title` property:
 
     ```html

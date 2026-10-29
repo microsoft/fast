@@ -471,6 +471,15 @@ shift the view-array tail once per normalized splice, then fill the insertion
 range using removed views, unused views from earlier splices, or new views.
 Unused removed views are disposed after the batch.
 
+An opt-in `RepeatOptions.key` selector replaces positional recycling with keyed
+reconciliation for replacements, splices, and reorder/reset batches. The behavior
+stores keys alongside views, rejects duplicate new keys before DOM changes,
+binds matching views to fresh records, disposes missing keys, and uses the same
+longest-increasing-subsequence helper to minimize moves. Hydration records keys
+for the initial client items. Keys use Map equality; `recycle` does not permit
+reuse across different keys. Reconciliation takes O(n log n) time and O(n) space,
+excluding template creation, binding, and DOM work.
+
 Client and hydrated views share a range insertion helper. Connected same-document
 moves feature-detect the destination's `moveBefore()`. The insertion fallback
 restores focus and supported input selection when the move loses them, without
