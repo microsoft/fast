@@ -225,17 +225,22 @@ const enum Edit {
     delete = 3,
 }
 
-// Note: This function is *based* on the computation of the Levenshtein
-// "edit" distance. The one change is that "updates" are treated as two
-// edits - not one. With Array splices, an update is really a delete
-// followed by an add. By retaining this, we optimize for "keeping" the
-// maximum array items in the original array. For example:
-//
-//   'xxxx123' to '123yyyy'
-//
-// With 1-edit updates, the shortest path would be just to update all seven
-// characters. With 2-edit updates, we delete 4, leave 3, and add 4. This
-// leaves the substring '123' intact.
+/**
+ * Builds the full edit-distance matrix for two array spans.
+ * @remarks
+ * Uses a variation of Levenshtein edit distance: insertions and deletions cost
+ * one edit each, but replacing an item costs two instead of one. A replacement
+ * is a deletion followed by an insertion, preserving the maximum number of
+ * equal items rather than favoring replacements.
+ *
+ * For example, changing `xxxx123` to `123yyyy` favors seven replacements when
+ * each replacement costs one edit. With two-edit replacements, deleting four
+ * leading items and inserting four trailing items costs eight edits and keeps
+ * `123` intact.
+ *
+ * Items compare by strict equality. Time and space are
+ * O(oldLength * currentLength), where the lengths describe the supplied spans.
+ */
 function calcEditDistances(
     current: any[],
     currentStart: number,
@@ -277,9 +282,12 @@ function calcEditDistances(
     return distances;
 }
 
-// This starts at the final weight, and walks "backward" by finding
-// the minimum previous weight recursively until the origin of the weight
-// matrix.
+/**
+ * Backtracks through an edit-distance matrix and returns forward-ordered edits.
+ * @remarks
+ * Equal predecessor costs prefer the diagonal, then deletion, then insertion.
+ * A diagonal step represents either an unchanged item or a replacement.
+ */
 function spliceOperationsFromEditDistances(distances: number[][]): number[] {
     let i = distances.length - 1;
     let j = distances[0].length - 1;
@@ -330,6 +338,121 @@ function spliceOperationsFromEditDistances(distances: number[][]): number[] {
     }
 
     return edits.reverse();
+}
+
+/**
+ * Finds the minimum-cost edits within a bounded distance of the matrix diagonal.
+ * @param current - The current array.
+ * @param currentStart - The inclusive start of the current span.
+ * @param currentEnd - The exclusive end of the current span.
+ * @param old - The previous array.
+ * @param oldStart - The inclusive start of the previous span.
+ * @param oldEnd - The exclusive end of the previous span.
+ * @param maxDistance - The edit budget; a replacement consumes two edits.
+ * @returns Forward-ordered edits, or null when the minimum cost exceeds the budget.
+ * @remarks
+ * Stores one row of costs and two-bit predecessor choices within the band.
+ * Backtracking uses the full matrix's tie-breaking order. A row with no path
+ * within budget ends the search early. Time and space are
+ * O(oldLength * (maxDistance + 1) + currentLength) for the supplied spans.
+ */
+function calcBandedOperations(
+    current: unknown[],
+    currentStart: number,
+    currentEnd: number,
+    old: unknown[],
+    oldStart: number,
+    oldEnd: number,
+    maxDistance: number,
+): number[] | null {
+    const rowCount = oldEnd - oldStart;
+    const columnCount = currentEnd - currentStart;
+    const width = maxDistance * 2 + 1;
+    const directions = new Uint8Array(Math.ceil((rowCount * width) / 4));
+    const distances = new Uint32Array(columnCount + 1);
+    const unreachable = maxDistance + 1;
+    distances.fill(unreachable);
+
+    for (let column = 0; column <= Math.min(columnCount, maxDistance); ++column) {
+        distances[column] = column;
+    }
+
+    for (let row = 1; row <= rowCount; ++row) {
+        const start = Math.max(1, row - maxDistance);
+        const end = Math.min(columnCount, row + maxDistance);
+        let diagonal = distances[start - 1];
+        distances[start - 1] = start === 1 ? row : unreachable;
+        let minimum = distances[start - 1];
+
+        for (let column = start; column <= end; ++column) {
+            const above = distances[column];
+            const left = distances[column - 1];
+            const distance =
+                current[currentStart + column - 1] === old[oldStart + row - 1]
+                    ? diagonal
+                    : Math.min(above, left) + 1;
+            let operation: Edit;
+
+            if (diagonal <= above && diagonal <= left) {
+                operation = diagonal === distance ? Edit.leave : Edit.update;
+            } else {
+                operation = above <= left ? Edit.delete : Edit.add;
+            }
+
+            const cell = (row - 1) * width + column - row + maxDistance;
+            directions[Math.floor(cell / 4)] |= operation << ((cell % 4) * 2);
+            diagonal = above;
+            distances[column] = distance;
+
+            if (distance < minimum) {
+                minimum = distance;
+            }
+        }
+
+        if (minimum > maxDistance) {
+            return null;
+        }
+
+        if (end < columnCount) {
+            distances[end + 1] = unreachable;
+        }
+    }
+
+    if (distances[columnCount] > maxDistance) {
+        return null;
+    }
+
+    const operations: number[] = [];
+    let row = rowCount;
+    let column = columnCount;
+
+    while (row > 0 || column > 0) {
+        if (row === 0) {
+            operations.push(Edit.add);
+            column--;
+            continue;
+        }
+
+        if (column === 0) {
+            operations.push(Edit.delete);
+            row--;
+            continue;
+        }
+
+        const cell = (row - 1) * width + column - row + maxDistance;
+        const operation = (directions[Math.floor(cell / 4)] >> ((cell % 4) * 2)) & 3;
+        operations.push(operation);
+
+        if (operation !== Edit.add) {
+            row--;
+        }
+
+        if (operation !== Edit.delete) {
+            column--;
+        }
+    }
+
+    return operations.reverse();
 }
 
 function sharedPrefix(current: any[], old: any[], searchLength: number): number {
@@ -383,15 +506,18 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
 }
 
 /**
+ * Finds splices with the fewest inserted and deleted items.
  * @remarks
- * Lacking individual splice mutation information, the minimal set of
- * splices can be synthesized given the previous state and final state of an
- * array. The basic approach is to calculate the edit distance matrix and
- * choose the shortest path through it.
+ * Trims matching prefixes and suffixes at array boundaries, then handles
+ * insertion-only and deletion-only spans directly.
  *
- * Complexity: O(l * p)
- *   l: The length of the current array
- *   p: The length of the old array
+ * For remaining spans with a length product of at least 1,000,000, tries banded
+ * searches with edit budgets of 8, 32, and 128. Skips budgets smaller than the
+ * absolute length difference.
+ *
+ * If no band succeeds, uses the full edit-distance matrix with the same
+ * tie-breaking rules. The fallback takes O(currentLength * oldLength) time and
+ * space for the remaining spans.
  */
 function calc(
     current: unknown[],
@@ -434,9 +560,37 @@ function calc(
         return [new Splice(currentStart, [], currentEnd - currentStart)];
     }
 
-    const ops = spliceOperationsFromEditDistances(
-        calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd),
-    );
+    const currentLength = currentEnd - currentStart;
+    const oldLength = oldEnd - oldStart;
+    let ops: number[] | null = null;
+
+    if (currentLength * oldLength >= 1_000_000) {
+        for (const maxDistance of [8, 32, 128]) {
+            if (Math.abs(currentLength - oldLength) > maxDistance) {
+                continue;
+            }
+
+            ops = calcBandedOperations(
+                current,
+                currentStart,
+                currentEnd,
+                old,
+                oldStart,
+                oldEnd,
+                maxDistance,
+            );
+
+            if (ops !== null) {
+                break;
+            }
+        }
+    }
+
+    if (ops === null) {
+        ops = spliceOperationsFromEditDistances(
+            calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd),
+        );
+    }
 
     const splices: Splice[] = [];
     let splice: Splice | undefined = void 0;
@@ -571,8 +725,16 @@ function merge(splice: Splice, splices: Splice[]): void {
     }
 }
 
+/**
+ * Merges recorded mutations and normalizes them against the final array.
+ * @param array - The final array after the recorded mutations.
+ * @param changes - Mutation records, which may be modified during merging.
+ * @returns Normalized splices in ascending index order.
+ * @remarks
+ * Each merged span contributes its normalized records to one result array.
+ */
 function project(array: unknown[], changes: Splice[]): Splice[] {
-    let splices: Splice[] = [];
+    const splices: Splice[] = [];
     const initialSplices: Splice[] = [];
 
     for (let i = 0, ii = changes.length; i < ii; i++) {
@@ -590,16 +752,18 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
             continue;
         }
 
-        splices = splices.concat(
-            calc(
-                array,
-                splice.index,
-                splice.index + splice.addedCount,
-                splice.removed,
-                0,
-                splice.removed.length,
-            ),
+        const normalized = calc(
+            array,
+            splice.index,
+            splice.index + splice.addedCount,
+            splice.removed,
+            0,
+            splice.removed.length,
         );
+
+        for (let index = 0; index < normalized.length; ++index) {
+            splices.push(normalized[index]);
+        }
     }
 
     return splices;
@@ -692,31 +856,42 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         return result;
     },
 
+    /**
+     * Performs the native sort and records a new-index-to-old-index permutation.
+     * @remarks
+     * Per-value index buckets preserve duplicate occurrence order. Each original
+     * index is appended and consumed once, so bookkeeping takes O(array.length)
+     * time and space, excluding the native sort.
+     */
     sort(
         array: any[],
         observer: ArrayObserver,
         sort: typeof Array.prototype.sort,
         args: any[],
     ): any[] {
-        const map = new Map();
+        const map = new Map<any, { indices: number[]; cursor: number }>();
 
         for (let i = 0, ii = array.length; i < ii; ++i) {
-            const mapValue = map.get(array[i]) || [];
+            const item = array[i];
+            let entry = map.get(item);
 
-            map.set(array[i], [...mapValue, i]);
+            if (entry === void 0) {
+                entry = { indices: [], cursor: 0 };
+                map.set(item, entry);
+            }
+
+            entry.indices.push(i);
         }
 
         const result = sort.apply(array, args);
 
         (array as any).sorted++;
 
-        const sortedItems: number[] = [];
+        const sortedItems = new Array<number>(array.length);
 
         for (let i = 0, ii = array.length; i < ii; ++i) {
-            const indexs = map.get(array[i]);
-            sortedItems.push(indexs[0]);
-
-            map.set(array[i], indexs.splice(1));
+            const entry = map.get(array[i])!;
+            sortedItems[i] = entry.indices[entry.cursor++];
         }
 
         observer.addSort(new Sort(sortedItems));
