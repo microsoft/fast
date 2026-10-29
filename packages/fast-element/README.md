@@ -123,7 +123,13 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
-## Array mutation reactivity
+## List identity and movement
+
+Connected view reorders use `moveBefore()` when available. `FASTElement` provides
+`connectedMoveCallback()` so these moves keep its controller connected. Older
+browsers use insertion with focus and input-selection restoration; that fallback
+still runs disconnect/connect callbacks and cannot preserve all browser-owned
+state, such as iframe state or animations.
 
 `observerMap()` notifies array owners after removals as well as additions, so
 bindings to nested array lengths stay current. Mixed mutation resets also make

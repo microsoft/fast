@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Preserve focus and input selection during client and hydrated view reorders, and add FASTElement.connectedMoveCallback for native state-preserving moves.",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

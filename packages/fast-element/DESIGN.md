@@ -95,6 +95,10 @@ The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServi
    - `disconnectedCallback` → `$fastController.disconnect()`
    - `attributeChangedCallback` → `$fastController.onAttributeChangedCallback()`
 
+`connectedMoveCallback()` is a no-op on the base class. Native `moveBefore()`
+moves therefore keep the controller connected rather than unbinding and rebinding
+the component. Derived classes can override it for move-specific work.
+
 `ElementController` is the real workhorse. It:
 
 - Uses composition with an internal `_notifier` field (rather than extending `PropertyChangeNotifier`) and implements the `Notifier` interface directly, so the element still participates in the observable system.
@@ -466,6 +470,13 @@ refreshed after reordering. Splice updates
 shift the view-array tail once per normalized splice, then fill the insertion
 range using removed views, unused views from earlier splices, or new views.
 Unused removed views are disposed after the batch.
+
+Client and hydrated views share a range insertion helper. Connected same-document
+moves feature-detect the destination's `moveBefore()`. The insertion fallback
+restores focus and supported input selection when the move loses them, without
+overriding an application callback that focuses a different element. It does not
+emulate state-preserving moves for iframes, animations, or custom-element lifecycle
+callbacks.
 
 `observerMap` notifies live immediate array owners as well as root owners after
 mutations. Each array registration tracks its live initialized records. Reset

@@ -5,6 +5,7 @@ import {
     SourceLifetime,
 } from "../observation/observable.js";
 import { makeSerializationNoop } from "../platform.js";
+import { composedContains } from "../utilities.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,
@@ -116,6 +117,78 @@ export function removeNodeSequence(firstNode: Node, lastNode: Node): void {
     }
 
     parent.removeChild(lastNode);
+}
+
+export function insertNodeSequenceBefore(first: Node, last: Node, reference: Node): void {
+    if (reference.previousSibling === last) {
+        return;
+    }
+
+    const parent = reference.parentNode!;
+    const ownerDocument = first.ownerDocument!;
+    const moveBefore = parent.moveBefore;
+    const nativeMove =
+        typeof moveBefore === "function" &&
+        first.isConnected &&
+        parent.isConnected &&
+        ownerDocument === parent.ownerDocument;
+    let focused = ownerDocument.activeElement as HTMLElement | null;
+
+    while (focused?.shadowRoot?.activeElement) {
+        focused = focused.shadowRoot.activeElement as HTMLElement;
+    }
+
+    const selection =
+        focused && (focused.tagName === "INPUT" || focused.tagName === "TEXTAREA")
+            ? (focused as HTMLInputElement | HTMLTextAreaElement)
+            : null;
+    const selectionStart = selection?.selectionStart;
+    const selectionEnd = selection?.selectionEnd;
+    const selectionDirection = selection?.selectionDirection;
+    let movedFocus = false;
+    let current = first;
+
+    while (true) {
+        const next = current.nextSibling;
+
+        if (
+            focused &&
+            current.nodeType === 1 &&
+            composedContains(current as HTMLElement, focused)
+        ) {
+            movedFocus = true;
+        }
+
+        if (nativeMove) {
+            moveBefore.call(parent, current, reference);
+        } else {
+            parent.insertBefore(current, reference);
+        }
+
+        if (current === last) {
+            break;
+        }
+
+        current = next!;
+    }
+
+    if (movedFocus && focused?.isConnected) {
+        if (!nativeMove && ownerDocument.activeElement === ownerDocument.body) {
+            focused.focus({ preventScroll: true });
+        }
+
+        if (
+            focused.matches(":focus") &&
+            typeof selectionStart === "number" &&
+            typeof selectionEnd === "number"
+        ) {
+            selection!.setSelectionRange(
+                selectionStart,
+                selectionEnd,
+                selectionDirection ?? "none",
+            );
+        }
+    }
 }
 
 /**
@@ -301,20 +374,7 @@ export class HTMLView<TSource = any, TParent = any>
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            const end = this.lastChild!;
-            if (node.previousSibling === end) return;
-
-            const parentNode = node.parentNode!;
-            let current = this.firstChild!;
-            let next;
-
-            while (current !== end) {
-                next = current.nextSibling;
-                parentNode.insertBefore(current, node);
-                current = next!;
-            }
-
-            parentNode.insertBefore(end, node);
+            insertNodeSequenceBefore(this.firstChild, this.lastChild, node);
         }
     }
 

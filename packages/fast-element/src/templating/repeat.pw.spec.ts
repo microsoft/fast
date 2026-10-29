@@ -443,6 +443,146 @@ test.describe("The repeat", () => {
             });
         }
 
+        for (const rendering of ["client", "hydrated", "shadow"] as const) {
+            for (const fallback of [false, true]) {
+                test(`preserves focus in moved ${rendering} views with fallback ${fallback}`, async ({
+                    page,
+                }) => {
+                    await page.goto("/");
+
+                    const result = await page.evaluate(
+                        async ({ rendering, fallback }) => {
+                            // @ts-expect-error: Client module.
+                            const {
+                                FASTElement,
+                                enableHydration,
+                                html,
+                                repeat,
+                                uniqueElementName,
+                                Updates,
+                            } = await import("/main.js");
+                            let connections = 0;
+                            let disconnections = 0;
+
+                            class MovingElement extends FASTElement {
+                                connectedCallback() {
+                                    super.connectedCallback();
+                                    connections++;
+                                }
+
+                                disconnectedCallback() {
+                                    disconnections++;
+                                    super.disconnectedCallback();
+                                }
+                            }
+
+                            const name = uniqueElementName();
+                            await MovingElement.define({
+                                name,
+                                template: html`<slot></slot>`,
+                            });
+                            const items = [0, 1, 2];
+                            const host = document.createElement("div");
+                            document.body.append(host);
+                            const container =
+                                rendering === "shadow"
+                                    ? host.attachShadow({ mode: "open" })
+                                    : host;
+                            const itemTemplate = html`
+                                <input value="draft">
+                                ${html.partial(`<${name}></${name}>`)}
+                            `;
+                            const view =
+                                html`${repeat(() => items, itemTemplate)}`.render(
+                                    {},
+                                    container,
+                                );
+
+                            if (rendering === "hydrated") {
+                                enableHydration();
+                                const behavior = view.behaviors[0];
+
+                                for (let index = 0; index < items.length; index++) {
+                                    const current = behavior.views[index];
+                                    current.unbind();
+                                    const hydrated = itemTemplate.hydrate(
+                                        current.firstChild,
+                                        current.lastChild,
+                                    );
+                                    hydrated.bind(items[index]);
+                                    behavior.views[index] = hydrated;
+                                }
+                            }
+
+                            const nodes = Array.from(container.querySelectorAll("input"));
+                            const focused = nodes[2];
+                            focused.focus();
+                            focused.setSelectionRange(1, 4, "backward");
+                            connections = 0;
+                            disconnections = 0;
+                            const descriptor = Object.getOwnPropertyDescriptor(
+                                container,
+                                "moveBefore",
+                            );
+                            const nativeMoves =
+                                !fallback && typeof container.moveBefore === "function";
+
+                            try {
+                                if (fallback) {
+                                    Object.defineProperty(container, "moveBefore", {
+                                        configurable: true,
+                                        value: undefined,
+                                    });
+                                }
+
+                                items.reverse();
+                                Updates.process();
+
+                                return {
+                                    nativeMoves,
+                                    preservesFocus:
+                                        (host.shadowRoot ?? document).activeElement ===
+                                        focused,
+                                    preservesNodes: Array.from(
+                                        container.querySelectorAll("input"),
+                                    ).every((node, index) => node === nodes[2 - index]),
+                                    selection: [
+                                        focused.selectionStart,
+                                        focused.selectionEnd,
+                                        focused.selectionDirection,
+                                    ],
+                                    connections,
+                                    disconnections,
+                                };
+                            } finally {
+                                if (descriptor) {
+                                    Object.defineProperty(
+                                        container,
+                                        "moveBefore",
+                                        descriptor,
+                                    );
+                                }
+
+                                if (!descriptor) {
+                                    Reflect.deleteProperty(container, "moveBefore");
+                                }
+
+                                view.dispose();
+                                host.remove();
+                            }
+                        },
+                        { rendering, fallback },
+                    );
+
+                    expect(result.preservesNodes).toBe(true);
+                    expect(result.preservesFocus).toBe(true);
+                    expect(result.selection).toEqual([1, 4, "backward"]);
+                    expect(result.connections).toBe(result.nativeMoves ? 0 : 2);
+                    expect(result.disconnections).toBe(result.nativeMoves ? 0 : 2);
+                });
+            }
+        }
+
         for (const rotation of [
             "first-to-last",
             "last-to-first",

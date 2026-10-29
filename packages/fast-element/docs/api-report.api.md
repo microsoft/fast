@@ -529,6 +529,7 @@ export interface FASTElement extends HTMLElement {
     readonly $fastController: ElementController;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
+    connectedMoveCallback(): void;
     disconnectedCallback(): void;
 }
 
