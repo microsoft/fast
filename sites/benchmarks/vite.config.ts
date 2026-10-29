@@ -1,5 +1,5 @@
-import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
@@ -84,7 +84,7 @@ function renderCached(name: string): string {
 
 // Build scenario render functions. Most scenarios use static state and
 // cache a single rendered string. attr-reflect varies state per node.
-const scenarioRenders: Record<string, (index: number) => string> = {
+const aggregateScenarioRenders: Record<string, (index: number) => string> = {
     "attr-reflect"(index: number): string {
         const cache = loadScenario("attr-reflect");
         const count = `${index + 1}`;
@@ -99,8 +99,14 @@ const scenarioRenders: Record<string, (index: number) => string> = {
     when: () => renderCached("when"),
 };
 
+// Mutation workloads run separately so aggregate SSR matches the CSR component set.
+const scenarioRenders: Record<string, (index: number) => string> = {
+    ...aggregateScenarioRenders,
+    "repeat-mutations": () => renderCached("repeat-mutations"),
+};
+
 function allRender(index: number): string {
-    return Object.values(scenarioRenders)
+    return Object.values(aggregateScenarioRenders)
         .map(render => render(index))
         .join("");
 }

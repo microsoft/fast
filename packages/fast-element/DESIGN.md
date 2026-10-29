@@ -469,7 +469,8 @@ selection in retained views while minimizing DOM moves. Positioning contexts are
 refreshed after reordering. Splice updates
 shift the view-array tail once per normalized splice, then fill the insertion
 range using removed views, unused views from earlier splices, or new views.
-Unused removed views are disposed after the batch.
+Unused removed views are disposed after the batch. Mutation workloads are
+documented in the [benchmark guide](../../sites/benchmarks/README.md#repeat-mutation-workloads).
 
 An opt-in `RepeatOptions.key` selector replaces positional recycling with keyed
 reconciliation for replacements, splices, and reorder/reset batches. The behavior
