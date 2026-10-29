@@ -383,7 +383,7 @@ test.describe("The repeat", () => {
 
     test.describe("behavior", () => {
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
+        const randomizedOneThroughEleven = [5, 4, 6, 1, 7, 3, 2, 11, 10, 9, 8];
         const zeroThroughTen = [0].concat(oneThroughTen);
 
         for (const size of zeroThroughTen) {
@@ -809,7 +809,7 @@ test.describe("The repeat", () => {
             });
         }
 
-        for (const size of oneThroughTen) {
+        for (const size of [...oneThroughTen, 11]) {
             test(`updates rendered HTML when items are reversed in an array of size ${size}`, async ({
                 page,
             }) => {
@@ -899,7 +899,7 @@ test.describe("The repeat", () => {
             });
         }
 
-        for (const size of randomizedOneThroughTen) {
+        for (const size of randomizedOneThroughEleven) {
             test(`updates rendered HTML when items are sorted in an array of size ${size}`, async ({
                 page,
             }) => {
@@ -917,7 +917,9 @@ test.describe("The repeat", () => {
                         removeWhitespace,
                     } = await import("/main.js");
 
-                    const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
+                    const randomizedOneThroughEleven = [
+                        5, 4, 6, 1, 7, 3, 2, 11, 10, 9, 8,
+                    ];
                     const itemTemplate = html`
                         ${x => x.name}
                     `;
@@ -939,7 +941,7 @@ test.describe("The repeat", () => {
                         constructor(sz) {
                             this.items = createRandomizedArray(
                                 sz,
-                                randomizedOneThroughTen,
+                                randomizedOneThroughEleven,
                             );
                         }
                     }
@@ -988,8 +990,8 @@ test.describe("The repeat", () => {
                         .fill(undefined)
                         .map((item, index) => {
                             return {
-                                name: `item${randomizedOneThroughTen[index]}`,
-                                index: randomizedOneThroughTen[index],
+                                name: `item${randomizedOneThroughEleven[index]}`,
+                                index: randomizedOneThroughEleven[index],
                             };
                         })
                         .sort(sortAlgo)
