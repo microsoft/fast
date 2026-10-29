@@ -171,6 +171,12 @@ const template = html<FriendList>`
 
 Disabling recycling avoids stale state at the cost of recreating views, so reserve it for cases where reused DOM causes problems.
 
+Reorders use native `moveBefore()` when supported. FAST elements stay connected
+through `connectedMoveCallback()`. The fallback restores focus and supported input
+selection but still invokes disconnect/connect callbacks; it cannot preserve all
+browser-owned state, such as iframe state or animations. Updating a bound value
+can still intentionally replace a control's local state.
+
 ### The `when` Directive
 
 The `when()` directive conditionally renders elements. It accepts a predicate function, a template to render when the predicate is true, and an optional template to render when it is false.

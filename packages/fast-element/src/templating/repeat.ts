@@ -318,7 +318,6 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             }
 
             if (!isStable && view.lastChild.nextSibling !== location) {
-                view.remove();
                 view.insertBefore(location);
             }
 

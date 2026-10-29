@@ -25,6 +25,7 @@ import type {
 import {
     DefaultExecutionContext,
     type ElementView,
+    insertNodeSequenceBefore,
     removeNodeSequence,
     type SyntheticView,
 } from "./view.js";
@@ -138,33 +139,17 @@ export class HydrationView<TSource = any, TParent = any>
     }
 
     /**
-     * no-op. Hydrated views are don't need to be moved from a documentFragment
-     * to the target node.
+     * Inserts the view's nodes before the referenced node after hydration.
      */
     public insertBefore(node: Node): void {
-        // No-op in cases where this is called before the view is removed,
-        // because the nodes will already be in the document and just need hydrating.
-        if (this.fragment === null) {
+        if (this.fragment === null && this.hydrationStage !== HydrationStage.hydrated) {
             return;
         }
 
-        if (this.fragment.hasChildNodes()) {
+        if (this.fragment?.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {
-            const end = this.lastChild!;
-            if (node.previousSibling === end) return;
-
-            const parentNode = node.parentNode!;
-            let current = this.firstChild!;
-            let next;
-
-            while (current !== end) {
-                next = current.nextSibling;
-                parentNode.insertBefore(current, node);
-                current = next!;
-            }
-
-            parentNode.insertBefore(end, node);
+            insertNodeSequenceBefore(this.firstChild, this.lastChild, node);
         }
     }
 
