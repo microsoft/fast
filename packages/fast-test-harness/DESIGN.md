@@ -2,11 +2,6 @@
 
 This document describes the internal architecture of the `@microsoft/fast-test-harness` package — a Playwright testing harness for FAST Element web components with CSR and SSR support.
 
-**Dependency policy:** FAST packages must always be dependency-free. Do not
-declare regular npm `dependencies` that would be installed with the package.
-This restriction applies only to the `dependencies` field; `devDependencies`,
-`peerDependencies`, and `optionalDependencies` are explicitly excluded.
-
 ---
 
 ## Table of Contents
