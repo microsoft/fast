@@ -194,9 +194,6 @@
     "dist",
     "CHANGELOG.md"
   ],
-  "dependencies": {
-    "reflect-metadata": "^0.2.2"
-  },
   "beachball": {
     "disallowedChangeTypes": [
       "prerelease",

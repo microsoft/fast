@@ -24,16 +24,18 @@ Dependency injection is a flexible & modular design pattern for passing function
 
 Importing APIs from `@microsoft/fast-element/di.js` or
 `@microsoft/fast-element/context.js` automatically initializes the complete legacy
-decorator metadata API using `reflect-metadata/lite`. No separate metadata setup
-is needed for TypeScript's `experimentalDecorators` and `emitDecoratorMetadata`
-options. Metadata methods such as `Reflect.getOwnMetadata` extend `Reflect`;
-they are not native JavaScript APIs.
+decorator metadata API using a dependency-free, FAST-owned shim. No separate
+metadata setup is needed for TypeScript's `experimentalDecorators` and
+`emitDecoratorMetadata` options. Metadata methods such as
+`Reflect.getOwnMetadata` extend `Reflect`; they are not native JavaScript APIs.
 
 The complete implementation supports constructor and property metadata,
 inherited lookup, key enumeration, and deletion, so compatible metadata
 implementations can share existing data regardless of initialization order.
-The lite variant omits only collection polyfills and uses native `Map`, `Set`,
-and `WeakMap`.
+The shim uses native collections and weakly held targets; it has no external
+metadata package dependency. An existing complete metadata API is reused without
+replacing its methods or data. An incomplete existing API causes an explicit
+`TypeError` rather than silently mixing incompatible stores.
 
 Context and DI are optional path exports. Core `@microsoft/fast-element`,
 focused `FASTElement`, and `declarative.js` imports do not include or initialize

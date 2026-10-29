@@ -147,14 +147,16 @@ generated from `package.json` and lists each supported path.
 
 The optional `@microsoft/fast-element/context.js` and
 `@microsoft/fast-element/di.js` entrypoints automatically initialize the complete
-legacy decorator metadata API through `reflect-metadata/lite`. No separate setup
+legacy decorator metadata API through a dependency-free, FAST-owned shim. No separate setup
 is needed for TypeScript's `experimentalDecorators` and `emitDecoratorMetadata`
 support. These metadata methods extend `Reflect`; they are not native JavaScript
 reflection methods.
 
-The lite implementation supplies the complete metadata API, including property
-metadata, inherited lookup, key enumeration, and deletion. It uses native
-`Map`, `Set`, and `WeakMap` rather than bundling collection polyfills.
+The shim supplies the complete metadata API, including decorator application,
+property metadata, inherited lookup, key enumeration, and deletion. It uses
+native collections and weakly held targets. An existing complete metadata API
+is reused without replacing its methods or data. An incomplete existing API
+causes an explicit `TypeError` rather than silently mixing incompatible stores.
 
 Core, focused `FASTElement`, and declarative imports do not include or initialize
 this metadata implementation unless Context/DI is also used. Bundlers can remove

@@ -1,7 +1,8 @@
-import "reflect-metadata/lite";
 import type { Constructable } from "./interfaces.js";
+import { initializeMetadataReflection } from "./metadata-reflection.js";
 import { emptyArray } from "./platform.js";
 
+const reflection = initializeMetadataReflection();
 const annotationParamTypesKey = "annotation:paramtypes";
 const designParamTypesKey = "design:paramtypes";
 
@@ -16,7 +17,7 @@ export const Metadata = Object.freeze({
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
     getDesignParamTypes: (Type: Constructable) =>
-        (Reflect.getOwnMetadata(designParamTypesKey, Type) ??
+        (reflection.getOwnMetadata(designParamTypesKey, Type) ??
             emptyArray) as readonly any[],
 
     /**
@@ -25,7 +26,7 @@ export const Metadata = Object.freeze({
      * @returns The metadata array or a frozen empty array if no metadata is found.
      */
     getAnnotationParamTypes: (Type: Constructable) =>
-        (Reflect.getOwnMetadata(annotationParamTypesKey, Type) ??
+        (reflection.getOwnMetadata(annotationParamTypesKey, Type) ??
             emptyArray) as readonly any[],
 
     /**
@@ -38,7 +39,7 @@ export const Metadata = Object.freeze({
         let types = this.getAnnotationParamTypes(Type);
 
         if (types === emptyArray) {
-            Reflect.defineMetadata(annotationParamTypesKey, (types = []), Type);
+            reflection.defineMetadata(annotationParamTypesKey, (types = []), Type);
         }
 
         return types;

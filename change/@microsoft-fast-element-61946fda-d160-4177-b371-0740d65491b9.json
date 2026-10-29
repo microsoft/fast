@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Initialize complete shared metadata reflection for Context and dependency injection while keeping core and declarative bundles unchanged.",
+  "comment": "Initialize complete, dependency-free metadata reflection for Context and dependency injection while keeping core and declarative bundles unchanged.",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
