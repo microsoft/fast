@@ -4,6 +4,11 @@ This document is a contributor-oriented guide to the architecture of `@microsoft
 
 For deep dives into specific areas, see the linked detailed documents.
 
+**Dependency policy:** FAST packages must always be dependency-free. Do not
+declare regular npm `dependencies` that would be installed with the package.
+This restriction applies only to the `dependencies` field; `devDependencies`,
+`peerDependencies`, and `optionalDependencies` are explicitly excluded.
+
 ---
 
 ## Table of Contents
@@ -509,6 +514,39 @@ FAST ships a full hierarchical DI container inspired by Aurelia. Key types:
 Containers are typically attached to DOM elements and walk the DOM hierarchy. DI keys are classes, interfaces, or `Context`-like tokens. Constructor parameters are annotated with the `@inject(key)` decorator (or use `@singleton` / `@transient` to declare the class's own registration).
 
 See `docs/di/api-report.api.md` for the full public API surface.
+
+#### Shared decorator metadata
+
+Context and DI both import `src/metadata.ts`. This module calls the internal
+`initializeMetadataReflection()` from `src/metadata-reflection.ts` and keeps
+FAST's `design:paramtypes` and `annotation:paramtypes` helpers on the shared
+reflection store. The independently authored shim has no external dependency
+or vendored implementation. It preserves automatic TypeScript constructor
+metadata and annotation arrays without adding a separate setup step.
+
+Do not install a partial metadata API on the global `Reflect` object. A later
+complete implementation can treat an existing API as a compatible provider and
+require operations such as own-key enumeration and deletion. The shim supplies
+all ten legacy metadata methods, including decorator application. A `WeakMap`
+holds targets, with separate maps for each property and metadata key. Prototype
+traversal supports both modern classes and legacy constructor inheritance.
+Native property-key coercion preserves symbols and conversion errors.
+
+Initialization reuses an existing complete API without overwriting its methods
+or metadata. It throws `TypeError` for an incomplete existing API because private
+stores cannot be safely merged. Metadata decorators forward writes through the
+current shared `defineMetadata` method, including when a compatible implementation
+is loaded after a decorator was created. API input validation also throws
+`TypeError` as required by the legacy metadata contract.
+
+Metadata initialization stays confined to the optional Context/DI import graph,
+not the root, focused `FASTElement`, or declarative entrypoints. Unused Context/DI
+imports remain tree-shakeable under the existing package configuration. A used
+Context/DI API retains the complete shared metadata implementation; omitting it
+would change legacy decorator behavior. Importing both entrypoints does not
+duplicate it. The isolated metadata compatibility tests cover initialization
+order, independently evaluated copies, and bundled entrypoint boundaries.
+`scripts/measure-sizes.js` reports Context and DI sizes separately in `SIZES.md`.
 
 ---
 
