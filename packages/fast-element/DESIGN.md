@@ -4,6 +4,11 @@ This document is a contributor-oriented guide to the architecture of `@microsoft
 
 For deep dives into specific areas, see the linked detailed documents.
 
+**Dependency policy:** FAST packages must always be dependency-free. Do not
+declare regular npm `dependencies` that would be installed with the package.
+This restriction applies only to the `dependencies` field; `devDependencies`,
+`peerDependencies`, and `optionalDependencies` are explicitly excluded.
+
 ---
 
 ## Table of Contents
