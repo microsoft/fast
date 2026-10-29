@@ -458,6 +458,15 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 
 `ViewBehaviorFactory` (created at template-authoring time) is the blueprint; `ViewBehavior` (created per `HTMLView` instance) is the live runtime object.
 
+`RepeatBehavior` composes queued sort permutations in its view array before moving
+DOM nodes into the final order. A longest increasing subsequence of original view
+positions stays mounted; only the remaining views move. This preserves focus and
+selection in retained views while minimizing DOM moves. Positioning contexts are
+refreshed after reordering. Splice updates
+shift the view-array tail once per normalized splice, then fill the insertion
+range using removed views, unused views from earlier splices, or new views.
+Unused removed views are disposed after the batch.
+
 `observerMap` notifies live immediate array owners as well as root owners after
 mutations. Each array registration tracks its live initialized records. Reset
 notifications initialize newcomers without reassigning retained records or invoking

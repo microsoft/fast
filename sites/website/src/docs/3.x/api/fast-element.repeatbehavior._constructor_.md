@@ -53,6 +53,8 @@ directive
 
 </td><td>
 
+The bindings, target, and options for this repeat.
+
 
 </td></tr>
 </tbody></table>

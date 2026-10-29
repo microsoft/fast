@@ -73,6 +73,47 @@ function bindWithPositioning(
     view.bind(items[index]);
 }
 
+function getStableViewIndices(sorted: readonly number[]): number[] {
+    const predecessors = new Array<number>(sorted.length);
+    const sequence: number[] = [];
+
+    for (let index = 0; index < sorted.length; ++index) {
+        const previousIndex = sequence[sequence.length - 1];
+
+        if (previousIndex === void 0 || sorted[previousIndex] < sorted[index]) {
+            predecessors[index] = previousIndex ?? -1;
+            sequence.push(index);
+            continue;
+        }
+
+        let start = 0;
+        let end = sequence.length;
+
+        while (start < end) {
+            const middle = Math.floor((start + end) / 2);
+
+            if (sorted[sequence[middle]] < sorted[index]) {
+                start = middle + 1;
+                continue;
+            }
+
+            end = middle;
+        }
+
+        predecessors[index] = start > 0 ? sequence[start - 1] : -1;
+        sequence[start] = index;
+    }
+
+    let previousIndex = sequence[sequence.length - 1];
+
+    for (let index = sequence.length - 1; index >= 0; --index) {
+        sequence[index] = previousIndex;
+        previousIndex = predecessors[previousIndex];
+    }
+
+    return sequence;
+}
+
 function removeNodeRange(first: Node, last: Node): void {
     const parentNode = first.parentNode;
 
@@ -132,12 +173,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
     /**
      * Creates an instance of RepeatBehavior.
-     * @param location - The location in the DOM to render the repeat.
-     * @param dataBinding - The array to render.
-     * @param isItemsBindingVolatile - Indicates whether the items binding has volatile dependencies.
-     * @param templateBinding - The template to render for each item.
-     * @param isTemplateBindingVolatile - Indicates whether the template binding has volatile dependencies.
-     * @param options - Options used to turn on special repeat features.
+     * @param directive - The bindings, target, and options for this repeat.
      */
     public constructor(private directive: RepeatDirective) {
         this.itemsBindingObserver = directive.dataBinding.createObserver(this, directive);
@@ -187,9 +223,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     }
 
     /**
-     * Handles changes in the array, its items, and the repeat template.
+     * Handles array replacements, batched mutations, and repeat template changes.
      * @param source - The source of the change.
-     * @param args - The details about what was changed.
+     * @param args - A binding observer, splice records, reorder records, or a reset.
+     * @remarks
+     * Reset notifications, including mixed mutation batches, refresh all views.
+     * Pure reorder and splice batches use their respective reconciliation paths.
      */
     public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
@@ -236,33 +275,71 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
     }
 
+    /**
+     * Applies queued permutations while preserving existing item-view associations.
+     * @param sorts - Ordered mappings from each new index to its previous index.
+     * @remarks
+     * Composes the mappings before moving DOM nodes. A longest increasing
+     * subsequence of original view positions stays mounted; other views move
+     * without rebinding. Positioning contexts refresh when enabled.
+     * Bookkeeping takes O(viewCount * sorts.length + viewCount * log(viewCount))
+     * time and O(viewCount) auxiliary space, plus the cost of moving nodes.
+     */
     private updateSortedViews(sorts: Sort[]): void {
         const views = this.views;
+        let sorted = sorts[0].sorted!;
 
-        for (let i = 0, ii = sorts.length; i < ii; ++i) {
-            const sortedItems = sorts[i].sorted!.slice();
-            const unsortedItems = sortedItems.slice().sort();
+        for (let index = 1; index < sorts.length; ++index) {
+            const permutation = sorts[index].sorted!;
+            const previous = sorted;
+            sorted = new Array<number>(permutation.length);
 
-            for (let j = 0, jj = sortedItems.length; j < jj; ++j) {
-                const sortedIndex: number = sortedItems.find(
-                    value => sortedItems[j] === unsortedItems[value],
-                ) as number;
+            for (let viewIndex = 0; viewIndex < permutation.length; ++viewIndex) {
+                sorted[viewIndex] = previous[permutation[viewIndex]];
+            }
+        }
 
-                if (sortedIndex !== j) {
-                    const removedItems = unsortedItems.splice(sortedIndex, 1);
-                    unsortedItems.splice(j, 0, ...removedItems);
-                    const neighbor = views[j];
-                    const location = neighbor ? neighbor.firstChild : this.location;
+        const previous = views.slice();
 
-                    views[sortedIndex].remove();
-                    views[sortedIndex].insertBefore(location);
-                    const removedViews = views.splice(sortedIndex, 1);
-                    views.splice(j, 0, ...removedViews);
-                }
+        for (let index = 0; index < sorted.length; ++index) {
+            views[index] = previous[sorted[index]];
+        }
+
+        const stableViewIndices = getStableViewIndices(sorted);
+        let stableIndex = stableViewIndices.length - 1;
+        let location = this.location;
+
+        for (let index = views.length - 1; index >= 0; --index) {
+            const view = views[index];
+            const isStable = stableViewIndices[stableIndex] === index;
+
+            if (isStable) {
+                stableIndex--;
+            }
+
+            if (!isStable && view.lastChild.nextSibling !== location) {
+                view.remove();
+                view.insertBefore(location);
+            }
+
+            location = view.firstChild;
+
+            if (this.directive.options.positioning) {
+                view.context.length = views.length;
+                view.context.index = index;
             }
         }
     }
 
+    /**
+     * Applies normalized splices, recycling removed views when enabled.
+     * @param splices - Mutation records in ascending index order.
+     * @remarks
+     * Shifts the view-array tail once per splice before filling the insertion
+     * range. Recycling consumes current removals before unused removals from
+     * earlier splices. Remaining removed views are disposed after the batch,
+     * and positioning contexts refresh when enabled.
+     */
     private updateSplicedViews(splices: Splice[]): void {
         const views = this.views;
         const bindView = this.bindView;
@@ -272,44 +349,60 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const recycle: RepeatOptions["recycle"] = this.directive.options.recycle;
         const leftoverViews: SyntheticView[] = [];
         let leftoverIndex = 0;
-        let availableViews = 0;
 
         for (let i = 0, ii = splices.length; i < ii; ++i) {
             const splice = splices[i];
-            const removed = splice.removed;
-
+            const removedCount = splice.removed.length;
             let removeIndex = 0;
             let addIndex = splice.index;
             const end = addIndex + splice.addedCount;
-            const removedViews = views.splice(splice.index, removed.length);
-            const totalAvailableViews = (availableViews =
-                leftoverViews.length + removedViews.length);
+            const oldLength = views.length;
+            const removedViews = views.slice(addIndex, addIndex + removedCount);
+            const newLength = oldLength - removedCount + splice.addedCount;
+            const offset = splice.addedCount - removedCount;
+
+            if (offset > 0) {
+                for (
+                    let index = oldLength - 1;
+                    index >= addIndex + removedCount;
+                    --index
+                ) {
+                    views[index + offset] = views[index];
+                }
+            }
+
+            if (offset < 0) {
+                for (let index = addIndex + removedCount; index < oldLength; ++index) {
+                    views[index + offset] = views[index];
+                }
+            }
+
+            views.length = newLength;
+            const neighbor = views[end];
+            const location = neighbor ? neighbor.firstChild : this.location;
 
             for (; addIndex < end; ++addIndex) {
-                const neighbor = views[addIndex];
-                const location = neighbor ? neighbor.firstChild : this.location;
                 let view;
 
-                if (recycle && availableViews > 0) {
-                    if (removeIndex <= totalAvailableViews && removedViews.length > 0) {
-                        view = removedViews[removeIndex];
-                        removeIndex++;
-                    } else {
-                        view = leftoverViews[leftoverIndex];
-                        leftoverIndex++;
-                    }
-                    availableViews--;
-                } else {
+                if (recycle && removeIndex < removedViews.length) {
+                    view = removedViews[removeIndex++];
+                }
+
+                if (view === void 0 && recycle && leftoverIndex < leftoverViews.length) {
+                    view = leftoverViews[leftoverIndex++];
+                }
+
+                if (view === void 0) {
                     view = template.create();
                 }
 
-                views.splice(addIndex, 0, view);
+                views[addIndex] = view;
                 bindView(view, items, addIndex, controller);
                 view.insertBefore(location);
             }
 
-            if (removedViews[removeIndex]) {
-                leftoverViews.push(...removedViews.slice(removeIndex));
+            for (; removeIndex < removedViews.length; ++removeIndex) {
+                leftoverViews.push(removedViews[removeIndex]);
             }
         }
 
