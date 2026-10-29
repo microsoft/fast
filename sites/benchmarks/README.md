@@ -56,6 +56,61 @@ npm run bench -- basic/csr
 npm run bench -w @microsoft/fast-bench
 ```
 
+## Repeat mutation workloads
+
+Run the mutation workloads from the repository root:
+
+```bash
+BENCH_ITERATIONS=20 npm run bench -w @microsoft/fast-bench -- repeat-mutations
+```
+
+The mutation workloads share one driver. Rendered variants use the same component,
+row markup, and initial items for CSR and SSR:
+
+| Variant | Workload | SSR variant |
+| --- | --- | --- |
+| `array-sort` | Sort 10,000 duplicate-heavy values without rendering | None |
+| `array-splices` | Normalize full-array replacements with overlapping values | None |
+| `sort` | Alternate ascending and descending rendered-list order | `sort-ssr` |
+| `reverse` | Reverse a rendered list | `reverse-ssr` |
+| `prepend` | Prepend 128 items per delivery | `prepend-ssr` |
+| `mixed` | Deliver sort, append, and reverse mutations in the same batch | `mixed-ssr` |
+
+Run a CSR/SSR pair by filtering on the workload name. This command runs both
+`sort` and `sort-ssr`:
+
+```bash
+BENCH_ITERATIONS=20 npm run bench -w @microsoft/fast-bench -- repeat-mutations/sort
+```
+
+SSR pages start with 2,000 server-rendered items and verify that hydration keeps
+every existing item node. The mutation clock starts after hydration. Each mutation
+page performs eight deliveries, checks the first item after each delivery, and
+verifies the full final order before signaling completion.
+
+SSR uses the standard `hydration/entry.html`, `hydration/state.json`, and
+`template.html` fixtures with the shared scenario loader and render cache.
+The `<!-- @bench-ssr-render 1 -->` marker renders one component containing the
+2,000 items. Keep the state fixture in sync with `createMutationItems()` when
+changing the initial items.
+
+The `bench` user measure includes mutation processing, reactive updates, and the
+per-delivery check. It excludes initial mounting or hydration and the final full
+assertion. Rendered variants await the update queue; observer-only variants flush
+directly. Compare results from the same benchmark setup, browser, and machine.
+FCP and LCP describe the initial page paint, not the mutation interval.
+
+To measure initial hydration separately, run:
+
+```bash
+BENCH_ITERATIONS=20 npm run bench -w @microsoft/fast-bench -- repeat-mutations/hydration
+```
+
+This page times custom-element registration and hydration of the same 2,000-item
+list without mutations. Its node-reuse assertion runs after the measured interval.
+Server rendering happens during the Vite build and is excluded from browser
+timings. Timing results are informational rather than correctness-test thresholds.
+
 ## Project structure
 
 ```text
@@ -76,10 +131,11 @@ src/
     dot-syntax/
     ref-slotted/
     repeat/
+    repeat-mutations/
     when/
 ```
 
-Each scenario follows a consistent structure:
+The mounting and hydration scenarios use this structure:
 
 ```text
 <scenario>/
