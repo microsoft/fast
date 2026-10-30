@@ -293,6 +293,15 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 `SubscriberSet` is an optimised set that stores the first two subscribers inline (avoiding heap allocations for the common 1–2 subscriber case) and falls back to an array. `PropertyChangeNotifier` extends `SubscriberSet` to support per-property subscriptions.
 
+#### Array observation
+
+`repeat()` enables array observation automatically. Sort-only batches deliver
+permutation records, and repeat reconciles their view indices in numeric order.
+If a batch also contains splices or an explicit reset, the observer delivers a
+reset instead: permutation records alone cannot describe the structural edits.
+Repeat then refreshes its views against the final array state. Splice-only
+normalization and the default diff algorithm are unchanged.
+
 #### ExpressionNotifier (binding observer)
 
 `Observable.binding(expression, subscriber)` creates an `ExpressionNotifier`. When `observe(source, context)` is called it:
