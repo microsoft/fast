@@ -66,6 +66,41 @@ test.describe("The ArrayObserver", () => {
         expect(keys).toEqual(["0", "1", "2"]);
     });
 
+    test("delivers a reset when an explicit reset and sort share a batch", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { ArrayObserver, Observable, Updates } = await import("/main.js");
+            ArrayObserver.enable();
+
+            const array = ["b", "a"];
+            const observer = Observable.getNotifier<ArrayObserver>(array);
+            const notifications: { reset: boolean; count: number }[] = [];
+            observer.subscribe({
+                handleChange(_source, changes) {
+                    notifications.push({
+                        reset: changes[0].reset === true,
+                        count: changes.length,
+                    });
+                },
+            });
+
+            const previous = array.slice();
+            array[0] = "c";
+            observer.reset(previous);
+            array.sort();
+
+            await Updates.next();
+
+            return notifications;
+        });
+
+        expect(result).toEqual([{ reset: true, count: 1 }]);
+    });
+
     test("observes pops", async ({ page }) => {
         await page.goto("/");
 

@@ -961,7 +961,9 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.oldCollection = void 0;
 
         sorts !== void 0
-            ? this.notify(sorts)
+            ? this.notify(
+                  splices === void 0 && oldCollection === void 0 ? sorts : resetSplices,
+              )
             : this.notify(
                   (this._strategy ?? defaultMutationStrategy).normalize(
                       oldCollection,
