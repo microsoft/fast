@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Reduce allocations and function calls in the when directive for fixed templates.",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
