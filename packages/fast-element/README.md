@@ -123,6 +123,14 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
+## Array mutations in repeat
+
+`repeat()` enables observation of its source array automatically. In-place
+`sort()` and `reverse()` operations reorder the existing views, including lists
+whose view indices have multiple digits. If structural edits and sorting occur
+before the same update flush, repeat refreshes from the final array state so
+added and removed items are not lost.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
