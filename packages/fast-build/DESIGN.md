@@ -2,6 +2,11 @@
 
 This document describes the internal architecture of the `@microsoft/fast-build` package.
 
+**Dependency policy:** FAST packages must always be dependency-free. Do not
+declare regular npm `dependencies` that would be installed with the package.
+This restriction applies only to the `dependencies` field; `devDependencies`,
+`peerDependencies`, and `optionalDependencies` are explicitly excluded.
+
 ---
 
 ## High-level overview

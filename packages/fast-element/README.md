@@ -123,6 +123,14 @@ Contributor-facing internals separate DOM traversal, binding target mapping,
 and repeat-range discovery; the opt-in benchmark spec is independent of the
 deterministic correctness and allocation regression spec.
 
+## Array mutations in repeat
+
+`repeat()` enables observation of its source array automatically. In-place
+`sort()` and `reverse()` operations reorder the existing views, including lists
+whose view indices have multiple digits. If structural edits and sorting occur
+before the same update flush, repeat refreshes from the final array state so
+added and removed items are not lost.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
@@ -142,6 +150,27 @@ Focused package path exports remain available for consumers that want to import
 a narrower entrypoint directly. The website's
 [Path Exports](https://www.fast.design/docs/3.x/advanced/path-exports/) page is
 generated from `package.json` and lists each supported path.
+
+## Context and Dependency Injection Metadata
+
+The optional `@microsoft/fast-element/context.js` and
+`@microsoft/fast-element/di.js` entrypoints automatically initialize the complete
+legacy decorator metadata API through a dependency-free, FAST-owned shim. No separate setup
+is needed for TypeScript's `experimentalDecorators` and `emitDecoratorMetadata`
+support. These metadata methods extend `Reflect`; they are not native JavaScript
+reflection methods.
+
+The shim supplies the complete metadata API, including decorator application,
+property metadata, inherited lookup, key enumeration, and deletion. It uses
+native collections and weakly held targets. An existing complete metadata API
+is reused without replacing its methods or data. An incomplete existing API
+causes an explicit `TypeError` rather than silently mixing incompatible stores.
+
+Core, focused `FASTElement`, and declarative imports do not include or initialize
+this metadata implementation unless Context/DI is also used. Bundlers can remove
+unused Context/DI imports; used Context/DI APIs retain the complete implementation
+to preserve automatic metadata support. Importing both entrypoints shares one
+copy. See [`SIZES.md`](./SIZES.md) for their measured bundle sizes.
 
 ## Dynamic Style Application
 
