@@ -32,6 +32,38 @@ Read these documents, they are located at the root of the specific package or cr
 - `DESIGN.md` - Explains the code patterns.
 - `README.md` - Explains how a developer/agent would use this package/crate.
 
+# Version-specific hotfixes
+
+Use the [hotfix operator guide](../../../build/README.md#version-specific-hotfixes)
+as the canonical checklist. Hotfixes are Azure-only and must never create
+GitHub Releases or use `main` as their package source.
+
+1. Fetch the exact published package tag and create a `releases/*` maintenance
+   branch from that tag, **not from `main`**. Confirm the baseline has its
+   matching `deployed/` marker.
+2. Make and review only the relevant fix, regression tests, and scoped version
+   updates on that maintenance line. Include lockfiles, changelog, and any paired
+   Rust crate versions. Follow the ordinary reviewed change-file/bump process,
+   but target the maintenance branch and compare against it.
+3. Push the reviewed maintenance branch to `origin`. A local-only branch is not
+   a pipeline input.
+4. A maintainer creates/pushes an immutable `hotfix/<package>_v<version>` tag at
+   that pushed branch's approved tip. Never create an ordinary release tag.
+5. A maintainer manually queues the central Azure hotfix pipeline with
+   `baseTag`, `hotfixBranch`, and `hotfixTag`. The source branch must not be
+   `main`, and its remote tip must match the source tag when planning begins.
+   Every new valid approved run publishes; there is no dry-run switch.
+
+The central definition/tooling may come from `main`; the package is built,
+tested, and packed only from the pinned maintenance-branch snapshot. Do not copy
+pipeline YAML or publishing helpers into historical branches. Branch movement
+after planning cannot change the selected source. Forward-port code fixes
+separately without merging backlevel version metadata into `main`.
+
+Agents may prepare changes and push branches when explicitly authorized.
+Queuing publication and creating release/source tags remain maintainer actions;
+do not autonomously publish, merge, or change Azure/repository settings.
+
 # Commit and PR title conventions
 
 Use [conventional commit](https://www.conventionalcommits.org/) format for PR titles and merge commit messages:
