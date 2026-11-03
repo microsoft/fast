@@ -57,7 +57,7 @@ extends:
 
           - task: UseNode@1
             inputs:
-              version: "22.x"
+              version: "26.x"
             displayName: "Install Node.js"
 
           # The check enumerates current workspace release tags rather than every
@@ -217,7 +217,7 @@ extends:
 
           - task: UseNode@1
             inputs:
-              version: "22.x"
+              version: "26.x"
             displayName: "Install Node.js"
 
           - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
