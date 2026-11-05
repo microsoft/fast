@@ -4,13 +4,9 @@ use crate::error::{template_context, ConvertError};
 pub(crate) struct ParsedTemplate {
     pub(crate) _name: String,
     pub(crate) template: String,
+    pub(crate) original_template: String,
+    pub(crate) host_start: Option<usize>,
     pub(crate) template_start: usize,
-    pub(crate) publisher_start: usize,
-    /// Attributes present on the outer `<f-template>` wrapper, excluding `name`.
-    /// `webui-prerelease` and `fast-v3-ts` ignore these; the native `webui`
-    /// target uses them to transfer Shadow/Light DOM policy onto the inner
-    /// `<template>`.
-    pub(crate) publisher_attributes: Vec<ParsedAttribute>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -49,7 +45,23 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
         }.in_template(name))?;
     let body = &template[f_template_end..f_template_close];
 
-    let inner_templates = find_open_tags(body, "template");
+    let direct = direct_children(body)
+        .map_err(|error| error.rebase(template, f_template_end).in_template(name))?;
+    let inner_templates: Vec<_> = direct
+        .iter()
+        .filter(|(tag, _)| tag == "template")
+        .map(|(_, at)| *at)
+        .collect();
+    let hosts: Vec<_> = direct
+        .iter()
+        .filter(|(tag, _)| tag == "f-host")
+        .map(|(_, at)| *at)
+        .collect();
+    if hosts.len() > 1 {
+        return Err(ConvertError::MultipleHosts { count: hosts.len() }
+            .at(template, f_template_end + hosts[1])
+            .in_template(name));
+    }
     match inner_templates.len() {
         0 => return Err(ConvertError::MissingInnerTemplate.at(template, f_template_start).in_template(name)),
         1 => {}
@@ -68,18 +80,91 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
             .in_template(name)
         })?;
 
-    let publisher_attributes = parse_attributes(f_template_tag)
+    let original_template = body[inner_start..inner_close_end].to_string();
+    let inner_open_end = find_tag_end(&original_template, 0).expect("matched template opening tag");
+    let mut attrs: Vec<_> = parse_attributes(&original_template[..inner_open_end])
         .into_iter()
-        .filter(|attr| attr.name != "name")
+        .filter(|attr| attr.name.to_ascii_lowercase().starts_with("shadowroot"))
         .collect();
+    if let Some(host) = hosts.first() {
+        let host_end = find_tag_end(body, *host).expect("validated host opening tag");
+        attrs.extend(parse_attributes(&body[*host..host_end]));
+    }
+    let mut normalized = String::from("<template");
+    for attr in attrs {
+        normalized.push(' ');
+        normalized.push_str(&attr.raw);
+    }
+    normalized.push('>');
+    normalized.push_str(&original_template[inner_open_end..]);
 
     Ok(ParsedTemplate {
         _name: name.to_string(),
-        template: body[inner_start..inner_close_end].to_string(),
+        template: normalized,
+        original_template,
+        host_start: hosts.first().map(|at| f_template_end + at),
         template_start: f_template_end + inner_start,
-        publisher_start: f_template_start,
-        publisher_attributes,
     })
+}
+
+fn direct_children(template: &str) -> Result<Vec<(String, usize)>, ConvertError> {
+    let mut children = Vec::new();
+    let mut pos = 0;
+    while let Some(relative) = template[pos..].find('<') {
+        let at = pos + relative;
+        if template[at..].starts_with("<!--") {
+            pos = find_comment_end(template, at).unwrap_or(template.len());
+            continue;
+        }
+        if read_closing_tag_name(template, at)
+            .is_some_and(|name| name.eq_ignore_ascii_case("f-host"))
+        {
+            return Err(ConvertError::InvalidHostDeclaration.at(template, at));
+        }
+        let Some(name) = read_tag_name(template, at) else {
+            pos = at + 1;
+            continue;
+        };
+        let name = name.to_ascii_lowercase();
+        let end = find_tag_end(template, at).ok_or_else(|| ConvertError::UnclosedTag {
+            context: template_context(template, at),
+        })?;
+        if name == "f-host"
+            && parse_attributes(&template[at..end])
+                .iter()
+                .any(|attr| attr.name.contains(['<', '>', '"', '\'', '=']))
+        {
+            return Err(ConvertError::InvalidHostDeclaration.at(template, at));
+        }
+        children.push((name.clone(), at));
+        if matches!(
+            name.as_str(),
+            "area"
+                | "base"
+                | "br"
+                | "col"
+                | "embed"
+                | "hr"
+                | "img"
+                | "input"
+                | "link"
+                | "meta"
+                | "param"
+                | "source"
+                | "track"
+                | "wbr"
+        ) {
+            pos = end;
+        } else {
+            pos = find_matching_close(template, at, &name)
+                .ok_or_else(|| ConvertError::UnclosedElement {
+                    tag: name,
+                    context: template_context(template, at),
+                })?
+                .1;
+        }
+    }
+    Ok(children)
 }
 
 pub(crate) fn find_open_tags(template: &str, tag_name: &str) -> Vec<usize> {
@@ -99,7 +184,7 @@ pub(crate) fn find_open_tags(template: &str, tag_name: &str) -> Vec<usize> {
 
         match read_tag_name(template, lt) {
             Some(name) => {
-                if name == tag_name {
+                if name.eq_ignore_ascii_case(tag_name) {
                     tags.push(lt);
                 }
                 pos = find_tag_end(template, lt).unwrap_or(lt + 1);
@@ -138,7 +223,12 @@ pub(crate) fn find_matching_close(
         if template[lt..].starts_with("</") {
             if let Some(name) = read_closing_tag_name(template, lt) {
                 let close_end = find_tag_end(template, lt)?;
-                if name == tag_name {
+                if name.eq_ignore_ascii_case(tag_name) {
+                    if name.eq_ignore_ascii_case("f-host")
+                        && template[lt + 2 + name.len()..close_end].trim() != ">"
+                    {
+                        return None;
+                    }
                     depth -= 1;
                     if depth == 0 {
                         return Some((lt, close_end));
@@ -153,7 +243,7 @@ pub(crate) fn find_matching_close(
 
         if let Some(name) = read_tag_name(template, lt) {
             let tag_end = find_tag_end(template, lt)?;
-            if name == tag_name && !is_self_closing_tag(&template[lt..tag_end]) {
+            if name.eq_ignore_ascii_case(tag_name) && !is_self_closing_tag(&template[lt..tag_end]) {
                 depth += 1;
             }
             pos = tag_end;
@@ -340,7 +430,7 @@ pub(crate) fn parse_attributes(open_tag: &str) -> Vec<ParsedAttribute> {
 pub(crate) fn read_attribute_value(open_tag: &str, name: &str) -> Option<String> {
     parse_attributes(open_tag)
         .into_iter()
-        .find(|attr| attr.name == name)
+        .find(|attr| attr.name.eq_ignore_ascii_case(name))
         .and_then(|attr| attr.value)
 }
 

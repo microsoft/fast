@@ -319,6 +319,49 @@ which property receives data.
    Hydration is not installed by `declarative.js`; call `enableHydration()`
    before elements connect when SSR content should hydrate.
 
+## Declarative host attributes and bindings (v3)
+
+Move legacy host attributes and bindings from the inner `<template>` or outer
+`<f-template>` to a single optional direct `<f-host>` child:
+
+```html
+<!-- Before -->
+<f-template name="my-button" role="button">
+    <template tabindex="0" appearance="{{appearance}}" @click="{handleClick()}">
+        <slot></slot>
+    </template>
+</f-template>
+
+<!-- After -->
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <template><slot></slot></template>
+</f-template>
+```
+
+Keep definition metadata such as `name` on `<f-template>` and shadow content
+inside `<template>`. The inner template no longer supplies host attributes or
+bindings, including events. Leave `shadowroot*` configuration as Rust build
+metadata; it is not host metadata.
+
+Use at most one direct `<f-host>` and always include `</f-host>`; do not
+self-close it. Runtime/build processing consumes this metadata without
+registering a custom element or rendering it into the component shadow DOM.
+Unregistered does not mean inert: attributes such as `tabindex` can affect
+`<f-host>` in the declaration outside the inner template. For document-embedded
+definitions, add `hidden` to `<f-template>` to keep metadata out of layout and
+tab order before JavaScript loads. This `hidden` is definition-only and never
+forwarded to the component host; no global stylesheet or JavaScript hiding
+mechanism is planned.
+
+Static attributes are defaults that preserve authored instance values. SSR
+emits supported initial attribute values, preserving authored host attributes
+on conflict, and skips client-only events/properties. Dynamic bindings are
+component-owned after hydration and can subsequently update those attributes.
+
+This migration applies only to declarative `<f-template>` markup. Core
+JavaScript `html` tagged templates retain `<template ...>` host binding support.
+
 ## Debug entrypoint explicit enablement (v3)
 
 ### Import changes

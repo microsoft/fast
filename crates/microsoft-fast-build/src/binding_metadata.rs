@@ -109,8 +109,13 @@ pub(crate) fn collect_bindings(
         locations,
         bindings: Vec::new(),
     };
-    collector.collect_attributes(host_attrs, host_offset, true, &[]);
-    collector.scan(&mask_code_sample_elements(content), content_offset, &[]);
+    if host_offset <= content_offset {
+        collector.collect_attributes(host_attrs, host_offset, true, &[]);
+        collector.scan(&mask_code_sample_elements(content), content_offset, &[]);
+    } else {
+        collector.scan(&mask_code_sample_elements(content), content_offset, &[]);
+        collector.collect_attributes(host_attrs, host_offset, true, &[]);
+    }
     collector.bindings
 }
 

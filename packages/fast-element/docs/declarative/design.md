@@ -74,8 +74,9 @@ When connected to the DOM it:
 1. Registers itself with the declarative template bridge using its registry and
    `name` attribute.
 2. Publishes a template when a matching FAST element definition requests one.
-3. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which
-   converts declarative bindings into FAST `ViewTemplate` strings and values.
+3. Consumes an optional direct `<f-host>` as host metadata and delegates
+   declarative binding parsing to `TemplateParser`, producing FAST
+   `ViewTemplate` strings and values with the inner `<template>` as shadow content.
 4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
 
@@ -83,6 +84,29 @@ When multiple connected `<f-template>` publishers share the same `name`, the
 bridge resolves pending definitions from the first connected publisher and keeps
 the resolved template stable. Later duplicate publishers do not reassign the
 definition template.
+
+### `<f-host>` — host metadata
+
+A definition may contain at most one direct `<f-host>` child, with an explicit
+closing tag. Runtime/build processing consumes its static attributes and
+dynamic bindings without registering it as a custom element or rendering it
+into the component shadow DOM. Static attributes are defaults, preserving
+authored instance values. Dynamic bindings are component-owned after hydration;
+SSR emits supported initial attribute values and skips client-only events and
+properties.
+
+Outer `<f-template>` attributes are definition metadata only; inner
+`<template>` attributes no longer supply host attributes or bindings, including
+events. `shadowroot*` configuration remains Rust build metadata. This
+declarative split does not change core `html` tagged-template host bindings.
+See [host syntax and an example](./syntax.md#host-attributes-and-bindings).
+
+Unregistered `<f-host>` is not inert HTML: attributes such as `tabindex` can
+affect the declaration outside the inner `<template>`. Document-embedded
+definitions should use `<f-template hidden name="...">` to keep metadata out
+of layout and tab order before JavaScript loads. This `hidden` is
+definition-only and never forwarded to the component host. No global
+stylesheet or JavaScript hiding mechanism is planned.
 
 ### `TemplateParser` — declarative HTML parser
 

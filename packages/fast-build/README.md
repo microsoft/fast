@@ -408,7 +408,7 @@ delimiters. Unlike successful binding metadata, these are error-token ranges,
 not trimmed expression ranges.
 
 Entry-render and conversion coordinates refer to the original HTML argument,
-even after code-sample escaping, inner-template extraction, or publisher-attribute
+even after code-sample escaping, inner-template extraction, or host-attribute
 rewriting. Light DOM remains in its caller's source. Errors in separately supplied
 custom-element definitions include `templateName` and use coordinates within that
 definition's supplied `content`, not the entry HTML or the full file it was
@@ -457,6 +457,7 @@ Template files must use the following format:
 
 ```html
 <f-template name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
     <template>
         <button>{{label}}</button>
     </template>
@@ -465,7 +466,26 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
-Any `shadowroot*` attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. The CLI normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+`<f-host>` is optional single direct-child metadata, not a custom element or
+rendered content. Its attributes become the existing `hostAttributes` metadata:
+static defaults and reactive bindings use the shared host renderer, with
+authored instance attributes taking precedence even when they resolve to
+absence. Both normal and stream output emit initial host attributes before DSD.
+Host binding spans point into the complete original input, including a host
+declaration placed after the inner template.
+
+**Migration:** Move all host attributes from `<f-template>` and the inner
+`<template>` to `<f-host>`. The wrapper holds definition metadata only; the inner
+template holds content and `shadowroot*` configuration only. Other inner-template
+attributes and their bindings are ignored. Duplicate direct hosts and
+malformed/unclosed declarations throw structured parser errors and fail CLI
+builds. Use an explicit `</f-host>` closing tag.
+
+`shadowroot*` attributes on the inner `<template>` are forwarded to DSD.
+`shadowrootmode` and legacy `shadowroot` default to `open`, mirror when exactly
+one value is nonempty, and preserve both explicit values when both are nonempty.
+Conversion targets transfer `<f-host>` attributes to their host-template
+representation, without emitting the metadata node or its children.
 
 ### Attribute name strategy
 

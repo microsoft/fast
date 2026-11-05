@@ -166,6 +166,137 @@ test.describe("DeclarativeTemplateBridge", () => {
 });
 
 test.describe("declarativeTemplate", () => {
+    test("uses f-host defaults and bindings during client rendering", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+            // @ts-expect-error: Client module.
+            const { Observable, Updates } = await import("/main.js");
+            const name = uniqueElementName();
+
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template hidden name="${name}" data-outer="ignored">
+                    <template data-inner="ignored"><span>{{label}}</span></template>
+                    <f-host role="button" tabindex="0" data-label="{{label}}" @click="{handleClick()}"></f-host>
+                </f-template>`,
+            );
+
+            class TestElement extends FASTElement {
+                public label = "initial";
+                public clicks = 0;
+                public handleClick() {
+                    this.clicks++;
+                }
+            }
+            Observable.defineProperty(TestElement.prototype, "label");
+            await TestElement.define({ name, template: declarativeTemplate() });
+
+            const element = document.createElement(name) as TestElement;
+            element.setAttribute("tabindex", "-1");
+            document.body.appendChild(element);
+            const defaultElement = document.createElement(name);
+            document.body.appendChild(defaultElement);
+            await Updates.next();
+            element.click();
+            const initial = element.getAttribute("data-label");
+            element.label = "updated";
+            await Updates.next();
+
+            return {
+                initial,
+                updated: element.getAttribute("data-label"),
+                text: element.shadowRoot?.textContent,
+                role: element.getAttribute("role"),
+                tabindex: element.getAttribute("tabindex"),
+                defaultTabindex: defaultElement.getAttribute("tabindex"),
+                outer: element.hasAttribute("data-outer"),
+                hidden: element.hidden,
+                inner: element.hasAttribute("data-inner"),
+                hasHostNode: element.shadowRoot?.querySelector("f-host") !== null,
+                hostRegistered: customElements.get("f-host") !== undefined,
+                clicks: element.clicks,
+            };
+        });
+
+        expect(result).toEqual({
+            initial: "initial",
+            updated: "updated",
+            text: "updated",
+            role: "button",
+            tabindex: "-1",
+            defaultTabindex: "0",
+            outer: false,
+            hidden: false,
+            inner: false,
+            hasHostNode: false,
+            hostRegistered: false,
+            clicks: 1,
+        });
+    });
+
+    test("ignores legacy host attributes without an f-host declaration", async ({
+        page,
+    }) => {
+        await page.goto("/");
+        const result = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+            const name = uniqueElementName();
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${name}" role="button"><template tabindex="0" data-label="{{missing}}"><span>content</span></template></f-template>`,
+            );
+            class TestElement extends FASTElement {}
+            await TestElement.define({ name, template: declarativeTemplate() });
+            const element = document.createElement(name);
+            document.body.appendChild(element);
+            return {
+                role: element.getAttribute("role"),
+                tabindex: element.getAttribute("tabindex"),
+                label: element.getAttribute("data-label"),
+                text: element.shadowRoot?.textContent,
+            };
+        });
+        expect(result).toEqual({
+            role: null,
+            tabindex: null,
+            label: null,
+            text: "content",
+        });
+    });
+
+    test("rejects multiple direct f-host declarations", async ({ page }) => {
+        await page.goto("/");
+        const message = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+            const name = uniqueElementName();
+            document.body.insertAdjacentHTML(
+                "beforeend",
+                `<f-template name="${name}"><f-host></f-host><template></template><f-host></f-host></f-template>`,
+            );
+            class TestElement extends FASTElement {}
+            try {
+                await TestElement.define({ name, template: declarativeTemplate() });
+                return "unexpected success";
+            } catch (error) {
+                return String(error);
+            }
+        });
+        expect(message).toContain("only be one direct <f-host>");
+    });
+
     test("does not install hydration until enableHydration is called", async ({
         page,
     }) => {

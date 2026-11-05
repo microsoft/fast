@@ -3,8 +3,8 @@
 //! Converts the FAST-element-authored declarative `<f-template>` syntax into
 //! the declarative HTML syntax consumed by the Microsoft WebUI Framework's
 //! own web component runtime: the outer `<f-template>` publisher wrapper is
-//! removed (its `shadowroot`-prefixed attributes are transferred onto the
-//! inner `<template>`), `f-ref` becomes a braced `w-ref`, and FAST's `$e`
+//! removed (host attributes come from its direct `<f-host>` declaration),
+//! `f-ref` becomes a braced `w-ref`, and FAST's `$e`
 //! event argument becomes `e`. FAST directives with no WebUI Framework
 //! equivalent (`f-slotted`, `f-children`) are stripped from the output and
 //! reported as [`ConvertWarning`]s rather than aborting conversion; every
@@ -38,82 +38,9 @@ pub(crate) const METADATA: SyntaxMetadata = SyntaxMetadata {
 };
 
 pub(crate) fn convert(parsed: &ParsedTemplate) -> Result<ConvertOutput, ConvertError> {
-    let template = merge_publisher_attributes(parsed)?;
     let mut warnings = Vec::new();
-    let output = convert_segment(&template, &mut warnings).map_err(|error| {
-        error.original_open_tag(
-            &parsed.template,
-            find_tag_end(&parsed.template, 0).expect("the original template has an opening tag"),
-            find_tag_end(&template, 0).expect("the merged template has an opening tag"),
-        )
-    })?;
+    let output = convert_segment(&parsed.template, &mut warnings)?;
     Ok(ConvertOutput { output, warnings })
-}
-
-/// Moves supported outer `<f-template>` publisher attributes (`shadowroot`-prefixed
-/// attributes) onto the inner `<template>` tag, rejecting unsupported publisher
-/// attributes and conflicting shadow-root declarations.
-fn merge_publisher_attributes(parsed: &ParsedTemplate) -> Result<String, ConvertError> {
-    let template = &parsed.template;
-    let tag_end = find_tag_end(template, 0).ok_or_else(|| ConvertError::UnclosedTag {
-        context: template_context(template, 0),
-    })?;
-    let open_tag = &template[0..tag_end];
-    let inner_attrs = parse_attributes(open_tag);
-
-    let mut merged: Vec<ParsedAttribute> = inner_attrs.clone();
-
-    for publisher_attr in &parsed.publisher_attributes {
-        if !is_shadowroot_attribute(&publisher_attr.name) {
-            return Err(ConvertError::UnsupportedPublisherAttribute {
-                attribute: publisher_attr.name.clone(),
-                context: template_context(template, 0),
-            });
-        }
-
-        match inner_attrs
-            .iter()
-            .find(|attr| attr.name.eq_ignore_ascii_case(&publisher_attr.name))
-        {
-            Some(existing) if existing.value == publisher_attr.value => {
-                // Already present with an identical value; nothing to do.
-            }
-            Some(existing) => {
-                return Err(ConvertError::ConflictingShadowRootMode {
-                    publisher: attribute_display(publisher_attr),
-                    inner: attribute_display(existing),
-                    context: template_context(template, 0),
-                });
-            }
-            None => merged.push(publisher_attr.clone()),
-        }
-    }
-
-    let mut rebuilt = String::from("<template");
-    for attr in &merged {
-        rebuilt.push(' ');
-        rebuilt.push_str(&attr.name);
-        if let Some(value) = &attr.value {
-            rebuilt.push_str("=\"");
-            rebuilt.push_str(value);
-            rebuilt.push('"');
-        }
-    }
-    rebuilt.push('>');
-    rebuilt.push_str(&template[tag_end..]);
-
-    Ok(rebuilt)
-}
-
-fn is_shadowroot_attribute(name: &str) -> bool {
-    name.to_ascii_lowercase().starts_with("shadowroot")
-}
-
-fn attribute_display(attr: &ParsedAttribute) -> String {
-    match &attr.value {
-        Some(value) => format!("{}=\"{value}\"", attr.name),
-        None => attr.name.clone(),
-    }
 }
 
 fn convert_segment(

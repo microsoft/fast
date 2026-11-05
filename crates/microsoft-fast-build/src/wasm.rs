@@ -294,10 +294,11 @@ pub fn escape_code_samples(html: &str) -> String {
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns a JSON array of template metadata objects,
 /// one per `<f-template>` element found. `name` is `null` when the element has
-/// no `name` attribute.
+/// no `name` attribute. Duplicate hosts and malformed/unclosed declarations
+/// throw structured JavaScript errors.
 #[wasm_bindgen]
-pub fn parse_f_templates(html: &str) -> String {
-    let templates = crate::locator::parse_f_templates(html);
+pub fn parse_f_templates(html: &str) -> Result<String, JsValue> {
+    let templates = crate::locator::parse_f_templates(html).map_err(render_error)?;
     let mut parts = Vec::with_capacity(templates.len());
     for template in templates {
         let name_json = match template.name {
@@ -314,7 +315,7 @@ pub fn parse_f_templates(html: &str) -> String {
             crate::binding_metadata::bindings_json(&template.bindings)
         ));
     }
-    format!("[{}]", parts.join(","))
+    Ok(format!("[{}]", parts.join(",")))
 }
 
 /// Compose `css` into the single `<f-template>` element in `template_html`.

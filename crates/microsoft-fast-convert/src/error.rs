@@ -21,6 +21,10 @@ pub enum ConvertError {
     MissingInnerTemplate,
     /// The `<f-template>` element contains more than one inner `<template>` element.
     MultipleInnerTemplates { count: usize },
+    /// More than one direct metadata host declaration was authored.
+    MultipleHosts { count: usize },
+    /// Host metadata has malformed HTML tag syntax.
+    InvalidHostDeclaration,
     /// An HTML element was not closed.
     UnclosedElement { tag: String, context: ErrorContext },
     /// An opening tag was not terminated with `>`.
@@ -148,6 +152,8 @@ impl ConvertError {
             Self::EmptyFTemplateName => "empty-f-template-name",
             Self::MissingInnerTemplate => "missing-inner-template",
             Self::MultipleInnerTemplates { .. } => "multiple-inner-templates",
+            Self::MultipleHosts { .. } => "multiple-hosts",
+            Self::InvalidHostDeclaration => "invalid-host-declaration",
             Self::UnclosedElement { .. } => "unclosed-element",
             Self::UnclosedTag { .. } => "unclosed-tag",
             Self::MissingValueAttribute { .. } => "missing-value-attribute",
@@ -276,7 +282,30 @@ impl ConvertError {
             };
             context.source = Some(source.to_string());
         }
+
         self
+    }
+
+    pub(crate) fn authored_template(
+        mut self,
+        source: &str,
+        original: &str,
+        rewritten: &str,
+        offset: usize,
+        host: Option<usize>,
+    ) -> Self {
+        let original_end =
+            crate::html::find_tag_end(original, 0).expect("validated original template");
+        let rewritten_end =
+            crate::html::find_tag_end(rewritten, 0).expect("validated rewritten template");
+        if self
+            .context()
+            .is_some_and(|context| context.range.start < rewritten_end)
+        {
+            return self.at(source, host.unwrap_or(offset));
+        }
+        self = self.original_open_tag(original, original_end, rewritten_end);
+        self.rebase(source, offset)
     }
 
     pub(crate) fn in_template(mut self, name: &str) -> Self {
@@ -290,6 +319,8 @@ impl ConvertError {
 impl fmt::Display for ConvertError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::MultipleHosts { count } => write!(f, "expected at most one direct <f-host> declaration, found {count}"),
+            Self::InvalidHostDeclaration => write!(f, "malformed <f-host> declaration"),
             Self::Located { error, .. } => error.fmt(f),
             Self::TypedUnsupportedForSyntax { syntax } => write!(f, "typed output is only supported for syntax 'fast-v3-ts', not '{syntax}'"),
             Self::TypeSourceUnsupportedForStylesheet => write!(f, "stylesheet conversion does not accept type-source or type-source-import"),

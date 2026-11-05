@@ -5,8 +5,31 @@
 ## Supported targets
 
 - `webui-prerelease` — unwraps the outer `<f-template>` and emits HTML for WebUI's FAST parser plugin, converting only `<f-repeat>` to `<for>` and `<f-when>` to `<if>`. Other supported FAST attributes (`@click`, `:prop`, `?bool`, `f-ref`, `f-children`, `f-slotted`) pass through unchanged.
-- `webui-framework-prerelease` — converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (transferring Shadow/Light DOM policy from the outer `<f-template>` onto the inner `<template>`). It converts `<f-repeat>` to `<for>`, `<f-when>` to `<if>`, `f-ref` to a braced `w-ref`, and FAST's `$e` event argument to bare `e`. `f-slotted`/`f-children` are stripped from the output with a warning, since WebUI Framework has no equivalent; every other unsupported construct (unknown `f-*`, `$c` event context, non-braced `f-ref`, conflicting shadow-root modes) remains a hard error. The target's name reflects the WebUI Framework project's own current prerelease status, not the stability of this target's implementation.
+- `webui-framework-prerelease` — converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax. It converts `<f-repeat>` to `<for>`, `<f-when>` to `<if>`, `f-ref` to a braced `w-ref`, and FAST's `$e` event argument to bare `e`. `f-slotted`/`f-children` are stripped with a warning; unknown `f-*`, unsupported event context, and non-braced `f-ref` remain errors.
 - `fast-v3-ts` — emits TypeScript source that imports FAST helpers and exports `template` as an `html` tagged template.
+
+All targets accept an optional single direct-child `<f-host>`:
+
+```html
+<f-template name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
+    <template shadowrootmode="open"><slot></slot></template>
+</f-template>
+```
+
+Its attributes are converted on the target's host `<template>`; the metadata
+element and its children are never emitted. Host declarations can precede or
+follow content. Duplicate declarations fail with `multiple-hosts`; unclosed
+declarations use existing `unclosed-element`/`unclosed-tag` errors. Errors in host
+attributes locate the authored `<f-host>`; content errors retain their original
+document coordinates.
+
+**Migration:** Move host attributes from publisher/inner-template attributes to
+`<f-host>`, and move shadow-root configuration to the inner `<template>`.
+Publisher attributes are definition metadata, not forwarded attributes.
+Only `shadowroot*` attributes are retained from the inner template; all its
+other attributes and bindings are ignored. Legacy publisher conflict and
+unsupported-publisher-attribute errors no longer apply.
 
 ## Rust usage
 
@@ -134,6 +157,8 @@ validation errors. Context fields are now boxed `ErrorContext` values. See the
 | `empty-f-template-name` | Outer wrapper name is blank |
 | `missing-inner-template` | No inner template |
 | `multiple-inner-templates` | Multiple inner templates |
+| `multiple-hosts` | Multiple direct `<f-host>` declarations |
+| `invalid-host-declaration` | Malformed `<f-host>` tag syntax |
 | `unclosed-element` | No matching closing element |
 | `unclosed-tag` | Opening tag has no terminating `>` |
 | `missing-value-attribute` | Directive lacks its required value |
@@ -146,8 +171,8 @@ validation errors. Context fields are now boxed `ErrorContext` values. See the
 | `unsupported-expression` | Expression is outside the converter grammar |
 | `unsupported-event-handler` | Event handler cannot be converted |
 | `unsupported-event-context` | FAST context token has no WebUI mapping |
-| `conflicting-shadow-root-mode` | Outer and inner shadow-root declarations conflict |
-| `unsupported-publisher-attribute` | Outer attribute cannot be transferred |
+| `conflicting-shadow-root-mode` | Legacy variant; only inner-template shadow configuration is used |
+| `unsupported-publisher-attribute` | Legacy variant; publisher metadata is no longer forwarded |
 | `invalid-attribute-value` | Attribute lacks its required braced form |
 
 ## Validation
@@ -171,6 +196,10 @@ See the [composition contract](../../packages/fast-build/README.md#stylesheet-de
 
 The converter validates that the input contains exactly one `<f-template name="…">` with a non-empty name and exactly one inner `<template>`. It validates supported syntax values, `<f-repeat>` and `<f-when>` `value="{{…}}"` expressions, supported `f-*` attributes, and the limited expression grammar used for `fast-v3-ts` output. It also validates that `type_source` is a dotted identifier, that `type_source` is only supplied for `fast-v3-ts`, and that `type_source_import` is only supplied alongside `type_source`.
 
-The `webui-framework-prerelease` target additionally validates that outer `<f-template>` attributes (other than `name`) are `shadowroot`-prefixed (`ConvertError::UnsupportedPublisherAttribute` otherwise), that a `shadowroot`-prefixed outer attribute doesn't conflict with a differently-valued attribute already on the inner `<template>` (`ConvertError::ConflictingShadowRootMode`), that `f-ref` values are single-braced (`ConvertError::InvalidAttributeValue`), and that event arguments don't use FAST's repeat-context tokens such as `$c` (`ConvertError::UnsupportedEventContext`). `f-slotted` and `f-children` are the one exception to this target's otherwise strict validation: rather than erroring, they are stripped from the output and reported via `ConvertOutput::warnings` as a `ConvertWarning::StrippedUnsupportedDirective`.
+The `webui-framework-prerelease` target validates single-braced `f-ref` values
+(`InvalidAttributeValue`) and rejects FAST repeat-context event tokens such as
+`$c` (`UnsupportedEventContext`). `f-slotted` and `f-children` are stripped and
+reported via `ConvertOutput::warnings` as `StrippedUnsupportedDirective`.
+Publisher metadata is no longer merged or validated as host attributes.
 
 `convert_stylesheet` validates that `syntax` is `fast-v3-ts` (CSS conversion is not supported for `webui-prerelease`/`webui-framework-prerelease`) and that `export_name` is a valid TypeScript/JavaScript identifier. Stylesheet content is escaped for safe embedding in a TypeScript template literal: backslashes, backticks, literal `${` sequences, and carriage returns are all escaped.
