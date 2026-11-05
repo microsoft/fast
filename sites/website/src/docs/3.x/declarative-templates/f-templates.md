@@ -25,7 +25,7 @@ keywords:
 An `<f-template>` element associates a declarative HTML template with a custom element by name. The inner `<template>` contains the markup that becomes the element's shadow DOM.
 
 ```html
-<f-template name="my-element">
+<f-template hidden name="my-element">
     <template>
         <!-- template content here -->
     </template>
@@ -33,6 +33,69 @@ An `<f-template>` element associates a declarative HTML template with a custom e
 ```
 
 The `name` attribute must match the custom element tag name registered in JavaScript. A single HTML file can contain multiple `<f-template>` elements for different components.
+
+## Host Attributes and Bindings
+
+Use an optional `<f-host>` direct child of `<f-template>` to configure the
+component host rather than an element inside its shadow DOM:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+There may be at most one direct `<f-host>` per definition. Always write its
+explicit closing tag (`</f-host>`); do not use self-closing syntax.
+Runtime/build processing consumes it as metadata. It is never registered as a
+custom element or rendered into the component's shadow DOM.
+
+Unregistered does not mean inert. `<f-host>` is an HTML element outside the
+inner `<template>`, so attributes such as `tabindex` can affect the declaration
+itself. For definitions embedded in the document, use
+`<f-template hidden name="...">` to keep metadata out of layout and tab order,
+including before JavaScript loads. `hidden` on `<f-template>` is
+definition-only and never forwarded to the component host. Authors must supply
+it explicitly; no global stylesheet or JavaScript hiding mechanism is planned.
+
+Static attributes such as `role` and `tabindex` are defaults: attributes
+authored on `<my-button>` win. Dynamic bindings such as `appearance` are
+component-owned after hydration and update the host as state changes. SSR emits
+supported initial attribute values while preserving authored instance values
+on conflict; client-only events and properties are skipped until the client
+runtime activates them.
+
+Outer `<f-template>` attributes are definition metadata only. The inner
+`<template>` supplies shadow content, not host attributes or bindings (including
+events). Use `<f-shadow>` for static shadow-root configuration, not `<f-host>`
+or the content template. Core JavaScript `html` tagged templates still
+support `<template ...>` host bindings. For legacy declarative markup, see
+[Move host attributes and bindings to f-host](/docs/3.x/migration-guide/declarative-html/#move-host-attributes-and-bindings-to-f-host).
+
+## Shadow-Root Configuration
+
+Use an optional single direct-child
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`
+alongside `<f-host>` and the inner content `<template>`. Include the explicit
+closing tag. It is metadata consumed by runtime/build processing, never
+rendered into the component or registered as a custom element.
+
+| Attribute | Configuration | SSR output attribute |
+|---|---|---|
+| `mode` | `open` (default) or `closed` | `shadowrootmode` |
+| `delegatesFocus` | Boolean, enabled by presence | `shadowrootdelegatesfocus` |
+| `clonable` | Boolean, enabled by presence | `shadowrootclonable` |
+| `serializable` | Boolean, enabled by presence | `shadowrootserializable` |
+
+Attribute names are case-insensitive. Omit a boolean flag to disable it:
+`delegatesFocus="false"` still enables it because the attribute is present.
+Only static configuration is supported; do not use binding expressions.
+When `<f-shadow>` is present, it replaces the complete legacy shadow
+configuration rather than merging, so omitted options use their defaults.
+The browser runtime updates `definition.shadowOptions` before registration;
+SSR emits the corresponding native Declarative Shadow DOM attributes.
 
 ## Binding Syntax
 

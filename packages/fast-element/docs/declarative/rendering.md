@@ -320,18 +320,28 @@ Should result in:
 <!--fe:/b-->
 ```
 
-### Host attributes from `<f-template>`
+### Host attributes from `<f-host>`
 
-Build-time renderers (e.g. `@microsoft/fast-build`) forward attributes declared on the inner `<template>` element of an `<f-template>` onto the rendered host element opening tag.
+Build-time renderers (e.g. `@microsoft/fast-build`) emit supported initial
+attributes from the optional direct `<f-host>` child of an `<f-template>` onto
+the rendered component host. At most one `<f-host>` is allowed, with an explicit
+closing tag. It is consumed as metadata, never registered as a custom element
+or rendered into the component's shadow DOM.
 
 Example template:
 ```html
-<f-template name="my-button">
-    <template tabindex="0" ?disabled="{{isDisabled}}">
+<f-template hidden name="my-button">
+    <f-host tabindex="0" ?disabled="{{isDisabled}}"></f-host>
+    <template>
         <button><slot></slot></button>
     </template>
 </f-template>
 ```
+
+For definitions embedded in the document, use `hidden` on `<f-template>`:
+unregistered `<f-host>` is not inert, and attributes such as `tabindex` can
+affect the declaration outside the inner template before JavaScript loads.
+`hidden` is definition-only and never forwarded to the rendered component host.
 
 Combined with author HTML `<my-button></my-button>` and state:
 ```json
@@ -342,8 +352,8 @@ Combined with author HTML `<my-button></my-button>` and state:
 
 Should result in:
 ```html
-<my-button tabindex="0" disabled defer-hydration needs-hydration>
-    <template shadowrootmode="open" shadowroot="open">
+<my-button tabindex="0" disabled>
+    <template shadowrootmode="open">
         <button><slot></slot></button>
     </template>
 </my-button>
@@ -351,10 +361,46 @@ Should result in:
 
 Rules:
 - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are skipped — they have no meaning on a server-rendered host element.
-- Author attributes on the host element always win on conflicts (case-insensitive name match; the dedupe key for `?name="{{expr}}"` is the bare `name`).
+- During SSR, authored attributes on the host element win on conflicts (case-insensitive name match; the dedupe key for `?name="{{expr}}"` is the bare `name`).
 - Static `name="value"` is forwarded verbatim (HTML-escaped); static boolean `name` is emitted bare.
 - `name="{{expr}}"` is resolved against the element's initial child state; primitives are emitted as `name="value"`, `Array` / `Object` / `Null` and missing values are stripped.
 - `?name="{{expr}}"` is evaluated as a boolean against the same state; the bare `name` (without `?`) is emitted when truthy and skipped when falsy.
+
+At runtime, static host attributes remain defaults, while dynamic bindings are
+component-owned after hydration and can update the host even when an authored
+attribute supplied its initial value. Client-only events and properties are
+activated by the client runtime.
+
+Outer `<f-template>` attributes are definition metadata only. The inner
+`<template>` no longer supplies host attributes or bindings, including events;
+static shadow-root configuration comes from `<f-shadow>`. This does not change
+core JavaScript `html` tagged-template host bindings. See the
+[declarative host migration](../migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+
+### Shadow-root metadata from `<f-shadow>`
+
+An optional single direct `<f-shadow>` child configures the shadow root; the
+inner `<template>` supplies content only. Author an explicit closing tag:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+`mode` defaults to `open` and accepts `open`/`closed`. The boolean
+`delegatesFocus`, `clonable`, and `serializable` flags use presence; attribute
+names are case-insensitive. Only static configuration is supported. When
+present, `<f-shadow>` replaces the complete legacy shadow configuration
+rather than merging. The metadata is never rendered into the component or
+registered as a custom element.
+
+SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
+`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
+`serializable` to `shadowrootserializable` on the native DSD output template.
+The browser runtime updates `definition.shadowOptions` before registration.
 
 ### Client Side Bindings
 

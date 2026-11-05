@@ -80,6 +80,13 @@ The lifecycle flow during this phase:
    the schema, applies `observerMap()` / `attributeMap()` behavior, and resolves
    data bindings, directives, and other template features into the `ViewTemplate`
    model which is also used by the `@microsoft/fast-element` `html` tag template.
+   An optional direct `<f-host>` supplies host metadata separately from inner
+   `<template>` shadow content. It is consumed, not registered as a custom
+   element or rendered into the component shadow DOM.
+   An optional single direct `<f-shadow>` supplies static shadow configuration
+   and updates `definition.shadowOptions` before platform registration. It is
+   consumed as metadata, not rendered or registered as a custom element; see
+   [shadow-root configuration](./syntax.md#shadow-root-configuration).
 4. **Template Attachment**: The concrete `ViewTemplate` is returned to
    the subclass `define()` call, which assigns it to the definition before platform
    registration completes.
@@ -103,6 +110,11 @@ When custom elements are instantiated in the DOM, the following occurs:
 5. **Hydration**: `ElementController` uses `template.hydrate()` to create a
    `HydrationView` that maps existing DOM nodes to binding targets using `fe:b`
    / `fe:/b` markers
+
+Static `<f-host>` attributes provide defaults without replacing authored
+instance attributes. Dynamic host bindings are component-owned after hydration,
+including client-only events and properties that SSR skips. See
+[host attributes and bindings](./syntax.md#host-attributes-and-bindings).
 
 The DOM after hydration should look like this:
 

@@ -26,7 +26,7 @@ host-autofocus {
         </style>
     </head>
     <body>
-        <host-event-element><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
+        <host-event-element role="button" appearance="value"><template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
         <host-multi-element disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-multi-element>
         <host-static-element id="static-host"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->first<!--fe:/b--> <!--fe:b-->second<!--fe:/b--></span></template></host-static-element>
         <host-events-element text="content text"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->content text<!--fe:/b--></template></host-events-element>
@@ -40,63 +40,76 @@ host-autofocus {
         <!-- biome-ignore lint/a11y/noAutofocus: deliberate fixture verifying author-provided host attribute propagation through SSR -->
         <host-autofocus autofocus tabindex="0"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-autofocus>
 <!-- biome-ignore-all format: SSR renderer requires multi-line <template> layout for binding marker placement -->
-<f-template name="host-event-element">
-    <template @click="{handleClick()}">
+<f-template hidden name="host-event-element" data-definition="not-a-host-attribute">
+    <f-host role="button" appearance="{{hostAttr}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template data-legacy="not-a-host-attribute">
         <span>{{greeting}}</span>
     </template>
 </f-template>
-<f-template name="host-multi-element">
-    <template @click="{handleClick()}" ?disabled="{{isDisabled}}">
+<f-template hidden name="host-multi-element">
+    <f-host @click="{handleClick()}" ?disabled="{{isDisabled}}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-static-element">
-    <template id="static-host" @click="{handleClick()}">
+<f-template hidden name="host-static-element">
+    <f-host id="static-host" @click="{handleClick()}"></f-host>
+    <template>
         <span>{{first}} {{second}}</span>
     </template>
 </f-template>
-<f-template name="host-events-element">
-    <template @click="{handleClick()}" @mouseenter="{handleMouseEnter()}">
+<f-template hidden name="host-events-element">
+    <f-host @click="{handleClick()}" @mouseenter="{handleMouseEnter()}"></f-host>
+    <template>
         {{text}}
     </template>
 </f-template>
-<f-template name="host-multi-content-element">
-    <template @click="{handleClick()}">
+<f-template hidden name="host-multi-content-element">
+    <f-host @click="{handleClick()}"></f-host>
+    <template>
         <span first="{{first}}" second="{{second}}"></span>
     </template>
 </f-template>
-<f-template name="host-text-binding-element">
-    <template @click="{handleClick()}">
+<f-template hidden name="host-text-binding-element">
+    <f-host @click="{handleClick()}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-property-element">
-    <template :title="{hostTitle}">
+<f-template hidden name="host-property-element">
+    <f-host :title="{hostTitle}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-all-types-element">
-    <template @click="{handleClick()}" ?disabled="{{isDisabled}}" :title="{hostTitle}" attr="{{hostAttr}}">
+<f-template hidden name="host-all-types-element">
+    <f-host @click="{handleClick()}" ?disabled="{{isDisabled}}" :title="{hostTitle}" attr="{{hostAttr}}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-perm-attr-first">
-    <template attr="{{hostAttr}}" :title="{hostTitle}" ?disabled="{{isDisabled}}" @click="{handleClick()}">
+<f-template hidden name="host-perm-attr-first">
+    <f-host attr="{{hostAttr}}" :title="{hostTitle}" ?disabled="{{isDisabled}}" @click="{handleClick()}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-perm-bool-first">
-    <template ?disabled="{{isDisabled}}" @click="{handleClick()}" attr="{{hostAttr}}" :title="{hostTitle}">
+<f-template hidden name="host-perm-bool-first">
+    <f-host ?disabled="{{isDisabled}}" @click="{handleClick()}" attr="{{hostAttr}}" :title="{hostTitle}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-perm-prop-first">
-    <template :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}">
+<f-template hidden name="host-perm-prop-first">
+    <f-host :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>
-<f-template name="host-autofocus">
-    <template tabindex="0">
+<f-template hidden name="host-autofocus">
+    <f-host tabindex="0"></f-host>
+    <template>
         <span>{{text}}</span>
     </template>
 </f-template>

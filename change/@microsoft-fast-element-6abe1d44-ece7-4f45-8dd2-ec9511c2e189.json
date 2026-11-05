@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add f-host declarations for host attributes and bindings and f-shadow declarations for shadow-root options, retaining legacy shadowroot configuration temporarily.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
