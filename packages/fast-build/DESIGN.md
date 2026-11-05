@@ -202,7 +202,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template>
         <button>{{label}}</button>
     </template>
@@ -213,9 +213,10 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 - The inner content of the `<template>` child element becomes the raw template string sent to the WASM renderer.
 - An optional single direct `<f-shadow>` supplies static shadow configuration
   as `shadowrootAttributes` metadata applied to the emitted DSD template.
-  `mode` defaults to `open` and accepts `open`/`closed`; `delegatesFocus`,
-  `clonable`, and `serializable` use boolean presence semantics. Attribute
-  names are case-insensitive; bindings are unsupported. An explicit closing tag
+  `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+  `shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+  use boolean presence semantics. Attribute names are case-insensitive;
+  bindings are unsupported. An explicit closing tag
   is required. The declaration replaces the complete legacy shadow configuration
   rather than merging, and is never rendered or registered as a custom element.
 - Attributes on an optional single direct `<f-host>` child become the unchanged `hostAttributes` metadata. The metadata node and its children are not rendered or registered as a custom element. The shared normal/stream renderer merges initial attributes before DSD; authored instance attributes win, including bindings resolving to absence. Client-only attributes are skipped and bindings resolve against child state.
@@ -386,9 +387,9 @@ The build WASM module exposes rendering and metadata functions; the CLI uses the
 `templatesJson` maps names to metadata with inner-template content and
 `shadowrootAttributes`, and direct `<f-host>` attributes as `hostAttributes`.
 The renderer preserves the existing explicit metadata API and host merge rules.
-`<f-shadow>` maps `mode`, `delegatesFocus`, `clonable`, and `serializable` to
-`shadowrootmode`, `shadowrootdelegatesfocus`, `shadowrootclonable`, and
-`shadowrootserializable`. The inner `<template>` supplies content only.
+`<f-shadow>` uses the HTML-standard names `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`,
+which are preserved on native DSD output. The inner `<template>` supplies content only.
 The browser runtime updates `definition.shadowOptions` before registration.
 Conversion similarly normalizes authored `<f-host>` attributes into each
 target's host-template representation in Rust,

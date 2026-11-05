@@ -14,7 +14,7 @@ metadata declarations:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -33,15 +33,15 @@ The inner template supplies content only; its attributes and bindings are
 ignored. Legacy publisher conflict and unsupported-publisher-attribute errors
 no longer apply.
 
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` uses
-static configuration only, not bindings. `mode` defaults to `open` and accepts
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` uses
+static configuration only, not bindings. `shadowrootmode` defaults to `open` and accepts
 `open`/`closed`. Boolean flags use presence; attribute names are case-insensitive.
 Use at most one direct declaration and an explicit closing tag. When present,
 it replaces the complete legacy shadow configuration rather than merging.
 The metadata is not rendered into the component or registered as a custom
 element. The browser runtime updates `definition.shadowOptions` before
-registration; SSR maps the options to `shadowrootmode`,
-`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`.
+registration; SSR preserves these HTML-standard attribute names on the native
+DSD template without renaming them.
 
 Use `hidden` on document-embedded definitions to keep metadata out of layout
 and tab order before JavaScript loads. It is definition-only and never

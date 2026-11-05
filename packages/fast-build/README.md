@@ -458,7 +458,7 @@ Template files must use the following format:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template>
         <button>{{label}}</button>
     </template>
@@ -483,17 +483,16 @@ malformed/unclosed declarations throw structured parser errors and fail CLI
 builds. Use an explicit `</f-host>` closing tag.
 
 Use an optional single direct-child
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` for
-static shadow-root configuration. `mode` defaults to `open` and accepts
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` for
+static shadow-root configuration. `shadowrootmode` defaults to `open` and accepts
 `open`/`closed`. Boolean flags use presence, attribute names are case-insensitive,
 and bindings are unsupported. Always include an explicit closing tag. When
 present, `<f-shadow>` replaces the complete legacy shadow configuration rather
 than merging; it is never rendered into the component or registered as a
 custom element.
 
-SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
-`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
-`serializable` to `shadowrootserializable`. The browser runtime applies the
+SSR uses the same lowercase HTML-standard attribute names on native DSD output
+templates without renaming them. The browser runtime applies the
 same configuration to `definition.shadowOptions` before registration.
 Use `hidden` on document-embedded `<f-template>` definitions to keep metadata
 out of layout and tab order before JavaScript loads; it is definition-only and

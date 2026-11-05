@@ -385,21 +385,21 @@ inner `<template>` supplies content only. Author an explicit closing tag:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
 
-`mode` defaults to `open` and accepts `open`/`closed`. The boolean
-`delegatesFocus`, `clonable`, and `serializable` flags use presence; attribute
-names are case-insensitive. Only static configuration is supported. When
+`shadowrootmode` defaults to `open` and accepts `open`/`closed`. The boolean
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+flags use presence; attribute names are case-insensitive.
+Only static configuration is supported. When
 present, `<f-shadow>` replaces the complete legacy shadow configuration
 rather than merging. The metadata is never rendered into the component or
 registered as a custom element.
 
-SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
-`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
-`serializable` to `shadowrootserializable` on the native DSD output template.
+SSR uses the same lowercase HTML-standard attribute names on the native DSD
+output template without renaming them.
 The browser runtime updates `definition.shadowOptions` before registration.
 
 ### Client Side Bindings

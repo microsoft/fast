@@ -453,7 +453,7 @@ Template HTML files must wrap their content in an `<f-template>` element with a 
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template>
         <button>{{label}}</button>
     </template>
@@ -490,7 +490,7 @@ to `<f-host>`. Definition-wrapper attributes are metadata only; the inner
 `<template>` supplies content only, not host attributes or bindings.
 Put static shadow-root configuration on an optional single direct `<f-shadow>`.
 
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` accepts
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` accepts
 `open`/`closed` mode, defaulting to `open`. Boolean flags use presence and
 attribute names are case-insensitive. Only static configuration is supported;
 bindings are not allowed. An explicit closing tag is required. When present,
@@ -498,9 +498,8 @@ the declaration replaces the complete legacy shadow configuration rather
 than merging. It is not rendered into the component or registered as a custom
 element.
 
-SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
-`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
-`serializable` to `shadowrootserializable`. The browser runtime updates
+SSR uses the same lowercase HTML-standard attribute names on native DSD output
+templates without renaming them. The browser runtime updates
 `definition.shadowOptions` before registration. `hidden` on document-embedded
 `<f-template>` keeps metadata out of layout and tab order before JavaScript
 loads; it is definition-only and never forwarded to the component host.

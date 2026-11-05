@@ -62,7 +62,7 @@ Declare host attributes and bindings on an optional `<f-host>` direct child of
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -96,20 +96,21 @@ See the [migration steps](../migration/fast-element-3.md#declarative-host-attrib
 ### Shadow-root configuration
 
 Use an optional single direct-child
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>`
 alongside `<f-host>` and the inner content `<template>`. Always include the
 explicit closing tag. This is static metadata consumed by runtime/build
 processing, never rendered into the component or registered as a custom element.
 
-| Attribute | Configuration | SSR output attribute |
-|---|---|---|
-| `mode` | `open` (default) or `closed` | `shadowrootmode` |
-| `delegatesFocus` | Boolean, enabled by presence | `shadowrootdelegatesfocus` |
-| `clonable` | Boolean, enabled by presence | `shadowrootclonable` |
-| `serializable` | Boolean, enabled by presence | `shadowrootserializable` |
+| Attribute | Configuration |
+|---|---|
+| `shadowrootmode` | `open` (default) or `closed` |
+| `shadowrootdelegatesfocus` | Boolean, enabled by presence |
+| `shadowrootclonable` | Boolean, enabled by presence |
+| `shadowrootserializable` | Boolean, enabled by presence |
 
-Attribute names are case-insensitive. Omit a boolean flag to disable it;
-writing `delegatesFocus="false"` still enables it because the attribute is
+These are the lowercase HTML-standard names, also used unchanged on SSR output
+templates. Attribute names are case-insensitive. Omit a boolean flag to disable it;
+writing `shadowrootdelegatesfocus="false"` still enables it because the attribute is
 present. Bindings and dynamic configuration are unsupported. When `<f-shadow>`
 is present, it replaces the complete legacy shadow configuration rather than
 merging with it, so omitted options use their defaults. The browser runtime

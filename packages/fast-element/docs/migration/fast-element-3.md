@@ -335,7 +335,7 @@ Move legacy host attributes and bindings from the inner `<template>` or outer
 <!-- After -->
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -366,8 +366,8 @@ JavaScript `html` tagged templates retain `<template ...>` host binding support.
 ### Shadow-root configuration
 
 Use at most one direct-child
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`.
-`mode` defaults to `open` and accepts `open`/`closed`; boolean flags use
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>`.
+`shadowrootmode` defaults to `open` and accepts `open`/`closed`; boolean flags use
 presence and attribute names are case-insensitive. Bindings are unsupported.
 When present, it replaces the complete legacy shadow configuration, not just
 explicitly supplied options. The runtime updates `definition.shadowOptions`

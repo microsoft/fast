@@ -11,7 +11,7 @@ const typescript = require("typescript");
 test("f-shadow configures SSR and conversion while legacy locations stay compatible", () => {
     const source =
         '<f-template hidden name="my-button" shadowrootmode="closed">' +
-        '<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>' +
+        '<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>' +
         '<f-host role="button"></f-host><template shadowrootmode="closed"><slot></slot></template></f-template>';
     const [metadata] = JSON.parse(wasm.parse_f_templates(source));
     assert.deepEqual(metadata.shadowrootAttributes, [
@@ -75,8 +75,13 @@ test("f-shadow rejects duplicate, malformed and dynamic configuration in WASM", 
     for (const declaration of [
         "<f-shadow></f-shadow><f-shadow></f-shadow>",
         "<f-shadow/>",
-        '<f-shadow mode="{{mode}}"></f-shadow>',
-        '<f-shadow mode="invalid"></f-shadow>',
+        '<f-shadow shadowrootmode="{{mode}}"></f-shadow>',
+        '<f-shadow shadowrootmode="invalid"></f-shadow>',
+        '<f-shadow shadowrootdelegatesfocus="{{flag}}"></f-shadow>',
+        '<f-shadow mode="open"></f-shadow>',
+        "<f-shadow delegatesfocus></f-shadow>",
+        "<f-shadow clonable></f-shadow>",
+        "<f-shadow serializable></f-shadow>",
     ]) {
         const source = `<f-template name="my-button">${declaration}<template></template></f-template>`;
         assert.throws(() => wasm.parse_f_templates(source), /f-shadow/);

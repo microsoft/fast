@@ -210,7 +210,7 @@ Move legacy host attributes and bindings from the inner `<template>` or outer
 <!-- After -->
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -242,8 +242,8 @@ not be migrated. See [Host Attributes and Bindings](/docs/3.x/declarative-templa
 ## Move shadow-root configuration to f-shadow
 
 Use at most one direct-child
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` with an
-explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` with an
+explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
 boolean flags use presence and attribute names are case-insensitive.
 Configuration is static; binding expressions are unsupported.
 

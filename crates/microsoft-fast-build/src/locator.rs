@@ -458,15 +458,15 @@ fn shadow_declaration_attributes(
             return Err("<f-shadow> configuration must be static".to_string());
         }
         match name.as_str() {
-            "mode" => {
+            "shadowrootmode" => {
                 let value = value.as_deref().unwrap_or("");
                 if !matches!(value, "open" | "closed") {
-                    return Err("<f-shadow> mode must be 'open' or 'closed'".to_string());
+                    return Err("<f-shadow> shadowrootmode must be 'open' or 'closed'".to_string());
                 }
                 mode = value.to_string();
             }
-            "delegatesfocus" | "clonable" | "serializable" => {
-                flags.push((format!("shadowroot{name}"), None));
+            "shadowrootdelegatesfocus" | "shadowrootclonable" | "shadowrootserializable" => {
+                flags.push((name, None));
             }
             _ => return Err(format!("unsupported <f-shadow> attribute '{name}'")),
         }

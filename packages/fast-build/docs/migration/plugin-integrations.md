@@ -37,7 +37,7 @@ optional single direct `<f-host>` child:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -67,17 +67,16 @@ errors. Renderer declaration validation uses `invalid-template-metadata`.
 ## Declarative shadow-root configuration
 
 Put static shadow-root configuration on an optional single direct
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`,
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>`,
 not on the content template or `<f-host>`. Use an explicit closing tag.
-`mode` defaults to `open` and accepts `open`/`closed`. Boolean flags use
+`shadowrootmode` defaults to `open` and accepts `open`/`closed`. Boolean flags use
 presence; attribute names are case-insensitive. Bindings are unsupported.
 
 When present, the declaration replaces the complete legacy shadow configuration
 rather than merging. The metadata is not rendered into the component or
 registered as a custom element. The existing `shadowrootAttributes` API carries
-the normalized SSR attributes: `mode` becomes `shadowrootmode`,
-`delegatesFocus` becomes `shadowrootdelegatesfocus`, `clonable` becomes
-`shadowrootclonable`, and `serializable` becomes `shadowrootserializable`.
+the same lowercase HTML-standard SSR attributes: `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`.
 The browser runtime updates `definition.shadowOptions` before registration.
 Regenerate persisted definitions from the canonical authored syntax.
 

@@ -183,7 +183,7 @@ test.describe("declarativeTemplate", () => {
                 [
                     "",
                     "",
-                    '<f-shadow mode="closed" delegatesFocus clonable serializable></f-shadow>',
+                    '<f-shadow shadowrootmode="closed" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>',
                 ],
                 [
                     'shadowrootmode="closed" shadowrootdelegatesfocus',
@@ -263,9 +263,13 @@ test.describe("declarativeTemplate", () => {
             const errors: string[] = [];
             for (const shadow of [
                 "<f-shadow></f-shadow><f-shadow></f-shadow>",
-                '<f-shadow mode="invalid"></f-shadow>',
-                '<f-shadow mode="{{mode}}"></f-shadow>',
-                '<f-shadow delegatesFocus="{{flag}}"></f-shadow>',
+                '<f-shadow shadowrootmode="invalid"></f-shadow>',
+                '<f-shadow shadowrootmode="{{mode}}"></f-shadow>',
+                '<f-shadow shadowrootdelegatesfocus="{{flag}}"></f-shadow>',
+                '<f-shadow mode="open"></f-shadow>',
+                "<f-shadow delegatesfocus></f-shadow>",
+                "<f-shadow clonable></f-shadow>",
+                "<f-shadow serializable></f-shadow>",
                 "<f-shadow unknown></f-shadow>",
             ]) {
                 const name = uniqueElementName();

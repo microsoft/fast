@@ -433,9 +433,9 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    </my-button>
    ```
    The native DSD `<template>` receives normalized configuration from the
-   optional single direct `<f-shadow>`: `mode` maps to `shadowrootmode`,
-   `delegatesFocus` to `shadowrootdelegatesfocus`, `clonable` to
-   `shadowrootclonable`, and `serializable` to `shadowrootserializable`.
+   optional single direct `<f-shadow>`, using the same HTML-standard attribute
+   names: `shadowrootmode`, `shadowrootdelegatesfocus`, `shadowrootclonable`,
+   and `shadowrootserializable`.
    The metadata declaration itself is not rendered or registered as a custom
    element.
 
@@ -646,8 +646,9 @@ For each glob pattern:
 - Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
 - Reads an optional single direct `<f-shadow>` as static configuration, with an
-  explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
-  `delegatesFocus`, `clonable`, and `serializable` are presence-based flags.
+  explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+  `shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+  are presence-based flags.
   Attribute names are case-insensitive and bindings are unsupported.
   When present, it replaces the complete legacy shadow configuration rather
   than merging. Normalized SSR names populate `shadowrootAttributes`, with

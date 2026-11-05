@@ -2,7 +2,12 @@ import type { FASTElementDefinition } from "../components/fast-definitions.js";
 import { FAST } from "../platform.js";
 import { Message } from "./interfaces.js";
 
-const shadowAttributes = ["mode", "delegatesfocus", "clonable", "serializable"];
+const shadowAttributes = [
+    "shadowrootmode",
+    "shadowrootdelegatesfocus",
+    "shadowrootclonable",
+    "shadowrootserializable",
+];
 
 export function applyShadowOptions(
     publisher: HTMLElement,
@@ -31,19 +36,19 @@ export function applyShadowOptions(
                 });
             }
         }
-        const mode = declaration.getAttribute("mode") ?? "open";
+        const mode = declaration.getAttribute("shadowrootmode") ?? "open";
         if (mode !== "open" && mode !== "closed") {
             throw FAST.error(Message.invalidShadowConfiguration, {
                 name,
-                reason: "The mode must be 'open' or 'closed'.",
+                reason: "The shadowrootmode must be 'open' or 'closed'.",
             });
         }
         definition.shadowOptions = {
             ...definition.shadowOptions,
             mode,
-            delegatesFocus: declaration.hasAttribute("delegatesfocus"),
-            clonable: declaration.hasAttribute("clonable"),
-            serializable: declaration.hasAttribute("serializable"),
+            delegatesFocus: declaration.hasAttribute("shadowrootdelegatesfocus"),
+            clonable: declaration.hasAttribute("shadowrootclonable"),
+            serializable: declaration.hasAttribute("shadowrootserializable"),
         };
         return;
     }

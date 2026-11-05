@@ -8,7 +8,7 @@ const SYNTAXES: [&str; 3] = [
 
 #[test]
 fn shadow_metadata_maps_to_native_attributes_for_every_target() {
-    let source = r#"<f-template name="my-button" shadowrootmode="closed"><f-shadow mode="open" delegatesFocus clonable serializable></f-shadow><f-host role="button"></f-host><template shadowrootmode="closed"><slot></slot></template></f-template>"#;
+    let source = r#"<f-template name="my-button" shadowrootmode="closed"><f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow><f-host role="button"></f-host><template shadowrootmode="closed"><slot></slot></template></f-template>"#;
     for syntax in SYNTAXES {
         let output = convert_template(source, syntax).unwrap().output;
         assert!(
@@ -76,8 +76,13 @@ fn invalid_shadow_metadata_fails_before_conversion_with_a_location() {
         "<f-shadow></f-shadow><f-shadow></f-shadow>",
         "<f-shadow/>",
         "<f-shadow>",
-        r#"<f-shadow mode="invalid"></f-shadow>"#,
-        r#"<f-shadow mode="{{mode}}"></f-shadow>"#,
+        r#"<f-shadow shadowrootmode="invalid"></f-shadow>"#,
+        r#"<f-shadow shadowrootmode="{{mode}}"></f-shadow>"#,
+        r#"<f-shadow shadowrootdelegatesfocus="{{flag}}"></f-shadow>"#,
+        r#"<f-shadow mode="open"></f-shadow>"#,
+        "<f-shadow delegatesfocus></f-shadow>",
+        "<f-shadow clonable></f-shadow>",
+        "<f-shadow serializable></f-shadow>",
         "<f-shadow unknown></f-shadow>",
     ] {
         let source = format!(

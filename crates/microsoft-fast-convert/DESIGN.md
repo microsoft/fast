@@ -106,15 +106,15 @@ An optional single direct `<f-shadow>` supplies static shadow configuration;
 the inner `<template>` supplies content only. Publisher metadata and legacy
 inner host attributes are not forwarded.
 
-`mode` defaults to `open` and accepts `open`/`closed`; `delegatesFocus`,
-`clonable`, and `serializable` use boolean presence semantics. Attribute names
-are case-insensitive; bindings are unsupported. An explicit closing tag is
+`shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+use boolean presence semantics. Attribute names are case-insensitive;
+bindings are unsupported. An explicit closing tag is
 required. When present, `<f-shadow>` replaces the complete legacy shadow
 configuration rather than merging. It is not rendered into the component or
 registered as a custom element. The browser runtime updates
-`definition.shadowOptions` before registration; SSR maps these options to
-`shadowrootmode`, `shadowrootdelegatesfocus`, `shadowrootclonable`, and
-`shadowrootserializable`.
+`definition.shadowOptions` before registration; SSR preserves these HTML-standard
+attribute names on the native DSD template without renaming them.
 
 All targets receive a normalized host `<template>` with those attributes plus
 the unchanged content body. The original template opening tag, its document

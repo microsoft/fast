@@ -6,7 +6,7 @@ use microsoft_fast_build::{
 #[test]
 fn shadow_metadata_configures_dsd_and_is_not_rendered() {
     let source = r#"<f-template name="my-button" shadowrootmode="closed">
-        <f-shadow mode="open" delegatesFocus clonable serializable>discard {{ignored}}</f-shadow>
+        <f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable>discard {{ignored}}</f-shadow>
         <f-host role="button"></f-host>
         <template shadowrootmode="closed"><span>{{label}}</span></template>
     </f-template>"#;
@@ -33,7 +33,7 @@ fn shadow_metadata_configures_dsd_and_is_not_rendered() {
 fn shadow_declaration_defaults_and_closed_mode_are_independent_of_legacy_attributes() {
     for (declaration, mode) in [
         ("<f-shadow></f-shadow>", "open"),
-        (r#"<f-shadow mode="closed"></f-shadow>"#, "closed"),
+        (r#"<f-shadow shadowrootmode="closed"></f-shadow>"#, "closed"),
     ] {
         let source = format!(
             r#"<f-template name="my-button" shadowrootdelegatesfocus><template shadowrootclonable><slot></slot></template>{declaration}</f-template>"#
@@ -88,7 +88,7 @@ fn legacy_outer_and_inner_attributes_remain_supported_with_inner_precedence() {
 
 #[test]
 fn shadow_metadata_is_removed_from_fallback_content_without_moving_binding_spans() {
-    let source = r#"<f-template name="my-button">{{before}}<f-shadow mode="open">{{ignored}}</f-shadow><f-host title="{{title}}"></f-host>{{after}}</f-template>"#;
+    let source = r#"<f-template name="my-button">{{before}}<f-shadow shadowrootmode="open">{{ignored}}</f-shadow><f-host title="{{title}}"></f-host>{{after}}</f-template>"#;
     let definitions = parse_f_templates(source).unwrap();
     assert_eq!(definitions[0].content, "{{before}}{{after}}");
     assert_eq!(definitions[0].bindings.len(), 3);
@@ -108,9 +108,13 @@ fn invalid_shadow_declarations_report_authored_errors() {
         "<f-shadow/><template></template>",
         "<f-shadow><template></template>",
         "<f-shadow></f-shadow invalid><template></template>",
-        r#"<f-shadow mode="invalid"></f-shadow><template></template>"#,
-        r#"<f-shadow mode="{{mode}}"></f-shadow><template></template>"#,
-        r#"<f-shadow delegatesFocus="{{flag}}"></f-shadow><template></template>"#,
+        r#"<f-shadow shadowrootmode="invalid"></f-shadow><template></template>"#,
+        r#"<f-shadow shadowrootmode="{{mode}}"></f-shadow><template></template>"#,
+        r#"<f-shadow shadowrootdelegatesfocus="{{flag}}"></f-shadow><template></template>"#,
+        r#"<f-shadow mode="open"></f-shadow><template></template>"#,
+        "<f-shadow delegatesfocus></f-shadow><template></template>",
+        "<f-shadow clonable></f-shadow><template></template>",
+        "<f-shadow serializable></f-shadow><template></template>",
         r#"<f-shadow unknown></f-shadow><template></template>"#,
     ] {
         let source = format!(r#"<f-template name="my-button">{body}</f-template>"#);

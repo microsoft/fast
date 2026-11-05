@@ -112,16 +112,17 @@ stylesheet or JavaScript hiding mechanism is planned.
 ### `<f-shadow>` — shadow-root metadata
 
 At most one direct `<f-shadow>` configures the shadow root; it requires an
-explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`.
-`delegatesFocus`, `clonable`, and `serializable` use boolean presence semantics;
-attribute names are case-insensitive. Bindings are unsupported. When present,
+explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`.
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+use boolean presence semantics; attribute names are case-insensitive.
+Bindings are unsupported. When present,
 the declaration replaces the complete legacy shadow configuration rather
 than merging, and the runtime updates `definition.shadowOptions` before
 registration. It is not rendered into the component or registered as a custom
 element. The inner `<template>` supplies content only.
 
-SSR maps these options to `shadowrootmode`, `shadowrootdelegatesfocus`,
-`shadowrootclonable`, and `shadowrootserializable`. See the
+SSR preserves the HTML-standard attribute names `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`. See the
 [configuration reference](./syntax.md#shadow-root-configuration).
 
 ### `TemplateParser` — declarative HTML parser

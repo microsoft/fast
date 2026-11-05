@@ -42,7 +42,7 @@ component host rather than an element inside its shadow DOM:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -77,20 +77,21 @@ support `<template ...>` host bindings. For legacy declarative markup, see
 ## Shadow-Root Configuration
 
 Use an optional single direct-child
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>`
 alongside `<f-host>` and the inner content `<template>`. Include the explicit
 closing tag. It is metadata consumed by runtime/build processing, never
 rendered into the component or registered as a custom element.
 
-| Attribute | Configuration | SSR output attribute |
-|---|---|---|
-| `mode` | `open` (default) or `closed` | `shadowrootmode` |
-| `delegatesFocus` | Boolean, enabled by presence | `shadowrootdelegatesfocus` |
-| `clonable` | Boolean, enabled by presence | `shadowrootclonable` |
-| `serializable` | Boolean, enabled by presence | `shadowrootserializable` |
+| Attribute | Configuration |
+|---|---|
+| `shadowrootmode` | `open` (default) or `closed` |
+| `shadowrootdelegatesfocus` | Boolean, enabled by presence |
+| `shadowrootclonable` | Boolean, enabled by presence |
+| `shadowrootserializable` | Boolean, enabled by presence |
 
-Attribute names are case-insensitive. Omit a boolean flag to disable it:
-`delegatesFocus="false"` still enables it because the attribute is present.
+These are the lowercase HTML-standard names, also used unchanged on SSR output
+templates. Attribute names are case-insensitive. Omit a boolean flag to disable it:
+`shadowrootdelegatesfocus="false"` still enables it because the attribute is present.
 Only static configuration is supported; do not use binding expressions.
 When `<f-shadow>` is present, it replaces the complete legacy shadow
 configuration rather than merging, so omitted options use their defaults.

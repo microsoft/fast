@@ -235,7 +235,7 @@ component host, separate from the inner template's shadow content:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -259,10 +259,11 @@ Outer `<f-template>` attributes are definition metadata only. The inner
 `<template>` no longer supplies host attributes or bindings, including events;
 shadow-root configuration belongs on an optional single direct-child
 `<f-shadow>`, not on the content template or `<f-host>`.
-`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` is
-static metadata, not rendered content or a registered custom element. `mode`
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` is
+static metadata, not rendered content or a registered custom element. `shadowrootmode`
 defaults to `open` and accepts `open` or `closed`; the boolean flags use
-presence, and attribute names are case-insensitive. Bindings are not supported.
+presence, and attribute names follow HTML's case-insensitive matching. These are
+the same lowercase attribute names used by native DSD. Bindings are not supported.
 When present, it replaces the complete legacy shadow configuration rather
 than merging with it. The browser runtime updates `definition.shadowOptions`
 before registration. SSR maps the options to native DSD attributes; see

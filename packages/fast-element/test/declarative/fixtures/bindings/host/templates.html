@@ -1,7 +1,7 @@
 <!-- biome-ignore-all format: SSR renderer requires multi-line <template> layout for binding marker placement -->
 <f-template hidden name="host-event-element" data-definition="not-a-host-attribute">
     <f-host role="button" appearance="{{hostAttr}}" @click="{handleClick()}"></f-host>
-    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
     <template data-legacy="not-a-host-attribute">
         <span>{{greeting}}</span>
     </template>

@@ -159,15 +159,14 @@ fn shadow_declaration_attributes(tag: &str) -> Result<Vec<ParsedAttribute>, Conv
             return Err(invalid("configuration must be static"));
         }
         match name.as_str() {
-            "mode" => {
+            "shadowrootmode" => {
                 let value = attr.value.as_deref().unwrap_or("");
                 if !matches!(value, "open" | "closed") {
-                    return Err(invalid("mode must be 'open' or 'closed'"));
+                    return Err(invalid("shadowrootmode must be 'open' or 'closed'"));
                 }
                 mode = value.to_string();
             }
-            "delegatesfocus" | "clonable" | "serializable" => {
-                let name = format!("shadowroot{name}");
+            "shadowrootdelegatesfocus" | "shadowrootclonable" | "shadowrootserializable" => {
                 flags.push(ParsedAttribute {
                     raw: name.clone(),
                     name,

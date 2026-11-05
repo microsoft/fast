@@ -619,14 +619,14 @@ the imperative `html` API:
   events, no longer supply declarative host bindings. This does not change
   core `html` tagged-template `<template ...>` host binding support.
 - At most one direct `<f-shadow>` supplies static shadow configuration, with an
-  explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
-  `delegatesFocus`, `clonable`, and `serializable` are presence-based flags.
+  explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+  `shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+  are presence-based flags, using the native HTML attribute names.
   Attribute names are case-insensitive; bindings are unsupported. When present,
   this metadata replaces the complete legacy shadow configuration rather than
   merging, and updates `definition.shadowOptions` before platform registration.
   It is neither registered as a custom element nor rendered into the component.
-  SSR maps the options to `shadowrootmode`, `shadowrootdelegatesfocus`,
-  `shadowrootclonable`, and `shadowrootserializable`, respectively.
+  SSR preserves these HTML-standard attribute names on the native DSD template.
 - Unregistered `<f-host>` elements are not inert HTML: attributes such as
   `tabindex` can affect the declaration outside the inner `<template>`.
   Document-embedded definitions should use `<f-template hidden name="...">`
