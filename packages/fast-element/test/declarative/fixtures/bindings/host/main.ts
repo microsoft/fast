@@ -9,6 +9,9 @@ class HostEventElement extends FASTElement {
     @attr
     greeting: string = "Hello";
 
+    @observable
+    hostAttr: string = "value";
+
     public clickCount = 0;
 
     public handleClick = (): void => {

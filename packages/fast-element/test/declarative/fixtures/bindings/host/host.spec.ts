@@ -13,6 +13,7 @@ test.describe("Host Bindings Hydration", async () => {
 
             // Verify initial state - content binding rendered correctly
             await expect(element.locator("span")).toHaveText("Hello");
+            await expect(element).toHaveAttribute("appearance", "value");
 
             // Verify event binding works after hydration
             const messages: string[] = [];
@@ -25,9 +26,11 @@ test.describe("Host Bindings Hydration", async () => {
             // KEY TEST: Verify updating content binding works (proves correct index offset)
             await element.evaluate((el: any) => {
                 el.greeting = "Updated";
+                el.hostAttr = "updated";
             });
 
             await expect(element.locator("span")).toHaveText("Updated");
+            await expect(element).toHaveAttribute("appearance", "updated");
         });
 
         test("multiple host bindings (event + boolean attr) with content text binding", async ({
@@ -375,13 +378,52 @@ test.describe("Host Bindings Hydration", async () => {
         });
     });
 
-    test.describe("should propagate host attributes from the template's <template>", () => {
+    test.describe("should propagate host attributes from <f-host>", () => {
+        test("adopts server-rendered host attributes without rewriting them", async ({
+            page,
+        }) => {
+            await page.addInitScript(() => {
+                const changes: string[] = [];
+                Object.defineProperty(window, "hostAttributeChanges", {
+                    value: changes,
+                });
+                new MutationObserver(records => {
+                    for (const record of records) {
+                        const target = record.target;
+                        if (
+                            target instanceof HTMLElement &&
+                            (target.localName === "host-event-element" ||
+                                target.localName === "host-autofocus")
+                        ) {
+                            changes.push(`${target.localName}:${record.attributeName}`);
+                        }
+                    }
+                }).observe(document, {
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ["appearance", "role", "tabindex"],
+                });
+            });
+            await page.goto("/fixtures/bindings/host/");
+            await page.waitForFunction(
+                () => Reflect.get(window, "hydrationCompleted") === true,
+            );
+            expect(
+                await page.evaluate(() => Reflect.get(window, "hostAttributeChanges")),
+            ).toEqual([]);
+            await expect(page.locator("host-event-element")).toHaveAttribute(
+                "appearance",
+                "value",
+            );
+            await expect(page.locator("host-autofocus")).toHaveAttribute("tabindex", "0");
+        });
+
         test("host-autofocus has author-provided autofocus and template-provided tabindex", async ({
             page,
         }) => {
             test.skip(
                 !!process.env.FAST_WEBUI_INTEGRATION,
-                "WebUI does not propagate static inner <template> attributes to the host output",
+                "WebUI does not yet support <f-host> declarations",
             );
 
             const hydrationCompleted = page.waitForFunction(
@@ -395,8 +437,39 @@ test.describe("Host Bindings Hydration", async () => {
             // Author-provided attribute survives the SSR pipeline.
             await expect(element).toHaveAttribute("autofocus", "");
 
-            // Template <template tabindex="0"> attribute is propagated to the host tag.
+            // The <f-host> default is emitted on the host tag.
             await expect(element).toHaveAttribute("tabindex", "0");
+        });
+
+        test("renders host attributes before JavaScript executes", async ({
+            browser,
+            baseURL,
+        }) => {
+            const context = await browser.newContext({
+                javaScriptEnabled: false,
+                baseURL,
+            });
+            const page = await context.newPage();
+            await page.goto("/fixtures/bindings/host/");
+
+            await expect(page.locator("host-autofocus")).toHaveAttribute("tabindex", "0");
+            await expect(page.locator("host-event-element")).toHaveAttribute(
+                "appearance",
+                "value",
+            );
+            await expect(page.locator("host-event-element")).toHaveAttribute(
+                "role",
+                "button",
+            );
+            await expect(page.locator("host-event-element")).not.toHaveAttribute(
+                "data-definition",
+            );
+            await expect(page.locator("host-event-element")).not.toHaveAttribute(
+                "data-legacy",
+            );
+            await expect(page.locator("host-event-element f-host")).toHaveCount(0);
+            await expect(page.locator("host-event-element span")).toHaveText("Hello");
+            await context.close();
         });
     });
 });

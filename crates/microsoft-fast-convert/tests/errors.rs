@@ -167,23 +167,19 @@ fn invalid_type_source_is_rejected() {
 // ---------------------------------------------------------------------------
 
 #[test]
-fn webui_framework_unsupported_publisher_attribute_is_rejected() {
+fn webui_framework_publisher_metadata_is_not_forwarded() {
     let input = r#"<f-template name="my-element" data-extra="value"><template><span></span></template></f-template>"#.to_string();
-    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
-    assert!(matches!(
-        err,
-        ConvertError::UnsupportedPublisherAttribute { ref attribute, .. } if attribute == "data-extra"
-    ));
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
+    assert!(!output.output.contains("data-extra"));
 }
 
 #[test]
-fn webui_framework_conflicting_shadow_root_mode_is_rejected() {
+fn webui_framework_inner_shadow_root_configuration_is_authoritative() {
     let input = r#"<f-template name="my-element" shadowrootmode="open"><template shadowrootmode="closed"><span></span></template></f-template>"#.to_string();
-    let err = convert_template(&input, "webui-framework-prerelease").unwrap_err();
-    assert!(matches!(
-        err,
-        ConvertError::ConflictingShadowRootMode { .. }
-    ));
+    let output = convert_template(&input, "webui-framework-prerelease").unwrap();
+    assert!(output
+        .output
+        .starts_with("<template shadowrootmode=\"closed\">"));
 }
 
 #[test]

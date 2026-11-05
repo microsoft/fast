@@ -229,6 +229,37 @@ connected, the first connected element supplies the template and later duplicate
 do not reassign it. Consumers should not import or define the `<f-template>`
 implementation directly.
 
+Use an optional direct `<f-host>` child for attributes and bindings on the
+component host, separate from the inner template's shadow content:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <template><slot></slot></template>
+</f-template>
+```
+
+Allow at most one `<f-host>` per definition and always write its closing tag.
+It is metadata consumed by the runtime and build tools, not a registered custom
+element or rendered shadow DOM node. Static attributes are defaults; authored
+instance attributes win. Dynamic bindings belong to the component after
+hydration. SSR emits supported initial attribute values and skips client-only
+events and properties.
+
+Unregistered does not mean inert: `<f-host>` is an HTML element outside the
+inner `<template>`, so attributes such as `tabindex` can affect the declaration
+itself. For definitions embedded in the document, author
+`<f-template hidden name="...">` to keep metadata out of layout and tab order,
+including before JavaScript loads. This `hidden` is definition-only and is
+never forwarded to the component host. Hiding is author-controlled; no global
+stylesheet or JavaScript hiding mechanism is planned.
+
+Outer `<f-template>` attributes are definition metadata only. The inner
+`<template>` no longer supplies host attributes or bindings, including events;
+`shadowroot*` configuration remains Rust build metadata, not host attributes.
+Core JavaScript `html` tagged templates still support `<template ...>` host
+bindings. See the [declarative host migration](./docs/migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+
 Declarative schema behavior is enabled with define extensions:
 
 ```ts

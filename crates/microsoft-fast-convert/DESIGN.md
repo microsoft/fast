@@ -9,8 +9,8 @@ convert_template(template, syntax)
         │
         ├─ parse syntax (`webui-prerelease` | `fast-v3-ts` | `webui-framework-prerelease`)
         ├─ validate one outer `<f-template name="…">`
-        ├─ extract exactly one inner `<template>` (plus other outer attributes,
-        │  for `webui-framework-prerelease`)
+        ├─ select one direct inner `<template>` and at most one direct `<f-host>`
+        ├─ normalize host attributes and inner `shadowroot*` configuration
         └─ target converter → `ConvertOutput { output, warnings }`
 
 convert_stylesheet(stylesheet, syntax, export_name)
@@ -77,10 +77,8 @@ element, rewriting only structural FAST directives:
 - `<f-when value="{{condition}}">` → `<if condition="condition">`
 
 Other supported FAST attributes such as `@click`, `:prop`, `?bool`, `f-ref`,
-`f-children`, and `f-slotted` are preserved unchanged. Outer `<f-template>`
-attributes other than `name` are ignored by this target (no Shadow/Light DOM
-merge, no publisher-attribute validation) — see `webui-framework-prerelease`
-below for that behavior.
+`f-children`, and `f-slotted` are preserved unchanged. All targets ignore outer
+definition metadata except `name`.
 
 Unknown `f-*` elements and attributes use `ConvertError::UnsupportedFElement`/
 `ConvertError::UnsupportedFAttribute`, shared with the other targets.
@@ -98,27 +96,23 @@ are expected to adapt the FAST source to WebUI Framework idioms before
 invoking this target. `webui-prerelease` and `fast-v3-ts` output are
 unaffected by this target.
 
-### Publisher wrapper and Shadow/Light DOM
+### Definition, host, and shadow-template ownership
 
-`html::parse_template_document` captures every attribute on the outer
-`<f-template>` other than `name` as `ParsedTemplate.publisher_attributes`
-(`webui-prerelease` and `fast-v3-ts` ignore this field). The
-`webui-framework-prerelease` target uses it to decide the inner `<template>`'s
-Shadow/Light DOM policy:
+Shared parsing selects direct children rather than counting nested templates.
+The optional direct `<f-host>` supplies host attributes and is never emitted as
+content. A second direct declaration is a located `MultipleHosts` error;
+self-closing/unclosed declarations use existing structured element/tag errors.
+Only `shadowroot*` configuration is retained from the inner `<template>`.
+Publisher metadata and legacy inner host attributes are not forwarded.
 
-- The outer `<f-template name="…">` wrapper is always removed; only the inner
-  `<template>` element remains in the output.
-- Any outer attribute whose name starts with `shadowroot` (case-insensitive, e.g.
-  `shadowrootmode`, `shadowrootdelegatesfocus`) is moved onto the inner `<template>`.
-- If the inner `<template>` already declares the same `shadowroot*` attribute with
-  the same value, the outer copy is silently deduplicated. If the inner element
-  declares a different value for the same attribute name, the conversion fails with
-  `ConvertError::ConflictingShadowRootMode`.
-- Any other outer attribute (not `name`, not `shadowroot`-prefixed) is rejected with
-  `ConvertError::UnsupportedPublisherAttribute` — the target does not know how to
-  transfer arbitrary publisher metadata onto the inner `<template>`.
-- When no `shadowroot*` attribute is present at all, the output is a plain Light DOM
-  `<template>` with no shadow-root attributes added.
+All targets receive a normalized host `<template>` with those attributes plus
+the unchanged content body. The original template opening tag, its document
+offset, and the optional host offset are retained separately. Converter errors
+in the normalized opening tag map to the original host (or inner template when
+absent); later errors compensate for the opening-tag length delta before
+rebasing to the document. No coordinates are inferred from error strings.
+The old publisher-attribute merge/conflict policy no longer runs; its public
+error variants remain available for source compatibility.
 
 ### Directive mappings
 
@@ -144,8 +138,7 @@ Structural directives map the same way as `webui-prerelease`:
 ### `f-slotted` and `f-children`: stripped with a warning
 
 Unlike every other unsupported construct in this target (unknown `f-*` elements
-and attributes, non-braced `f-ref`, `$c` event context, conflicting shadow-root
-modes, unsupported publisher attributes — all of which remain hard errors),
+and attributes, non-braced `f-ref`, `$c` event context — all remain hard errors),
 `f-slotted` and `f-children` are removed from the output and reported as a
 `ConvertWarning::StrippedUnsupportedDirective` instead of aborting conversion.
 WebUI Framework has no built-in lifecycle equivalent to FAST's slotted/children
@@ -267,12 +260,12 @@ with `code()`, `location()`, `template_name()`, and `kind()` accessors; validati
 variants can be annotated through `Located`. Warnings remain plain message strings
 and do not allocate diagnostic source contexts.
 
-`ParsedTemplate` preserves the original inner-template and publisher offsets.
-Recursive directive conversions rebase their body ranges. The framework target
-maps positions after its rewritten opening tag back by the known header lengths;
-errors within that header highlight the original opening tag. Publisher/conflict
-errors point at the original outer wrapper. Conversion's top-level boundary then
-rebases into the complete HTML input and attaches its template name. UTF-16
+`ParsedTemplate` preserves original inner-template and host offsets.
+Recursive directive conversions rebase their body ranges. The shared boundary
+maps positions after the normalized opening tag back by known header lengths;
+errors within that header highlight the authored host opening tag (or the inner
+template when no host exists). It then rebases into the complete HTML input and
+attaches its template name. UTF-16
 coordinates are calculated only on failure, with CRLF and lone CR/LF handling
 matching renderer metadata. No messages or expression strings are searched to
 recover positions. Syntax/options/CSS-option errors omit HTML coordinates.

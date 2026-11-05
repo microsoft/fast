@@ -1201,7 +1201,7 @@ describe("template shadowroot attributes", () => {
         fs.rmSync(dir, { recursive: true, force: true });
     });
 
-    it("forwards f-template shadowroot attributes through the CLI", () => {
+    it("forwards inner-template shadowroot attributes through the CLI", () => {
         writeFixture(dir, {
             entry: "<my-el></my-el>",
             state: "{}",
@@ -1209,8 +1209,8 @@ describe("template shadowroot attributes", () => {
         fs.mkdirSync(path.join(dir, "templates"));
         fs.writeFileSync(
             path.join(dir, "templates", "my-el.html"),
-            `<f-template name="my-el" shadowrootmode="closed" shadowrootdelegatesfocus>
-                <template><span>shadow</span></template>
+            `<f-template name="my-el">
+                <template shadowrootmode="closed" shadowrootdelegatesfocus><span>shadow</span></template>
             </f-template>`,
         );
 
@@ -1231,6 +1231,62 @@ describe("template shadowroot attributes", () => {
         assert.ok(templateTag.includes(`shadowrootmode="closed"`), output);
         assert.ok(templateTag.includes(`shadowroot="closed"`), output);
         assert.ok(templateTag.includes("shadowrootdelegatesfocus"), output);
+    });
+});
+
+describe("f-host declarations through the CLI", () => {
+    let dir;
+    beforeEach(() => {
+        dir = tmpDir();
+    });
+    afterEach(() => {
+        fs.rmSync(dir, { recursive: true, force: true });
+    });
+
+    it("renders static and reactive defaults before DSD in normal and stream modes", () => {
+        writeFixture(dir, {
+            entry: '<my-button role="link">Light</my-button>',
+            state: '{"appearance":"accent"}',
+        });
+        fs.writeFileSync(
+            path.join(dir, "templates.html"),
+            '<f-template name="my-button" title="legacy"><f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host><template title="legacy"><slot></slot></template></f-template>',
+        );
+        const args = [
+            "--entry=entry.html",
+            "--state=state.json",
+            "--templates=templates.html",
+        ];
+        run([...args, "--output=out.html"], dir);
+        const html = fs.readFileSync(path.join(dir, "out.html"), "utf8");
+        assert.ok(
+            html.startsWith(
+                '<my-button role="link" tabindex="0" appearance="accent"><template ',
+            ),
+            html,
+        );
+        assert.ok(!html.includes("f-host") && !html.includes("legacy"), html);
+        assert.equal(run([...args, "--stream"], dir), html);
+    });
+
+    it("fails explicitly for duplicate and unclosed f-host declarations", () => {
+        writeFixture(dir, { entry: "<my-button></my-button>", state: "{}" });
+        for (const body of [
+            "<f-host></f-host><f-host></f-host><template></template>",
+            "<f-host><template></template>",
+        ]) {
+            fs.writeFileSync(
+                path.join(dir, "templates.html"),
+                `<f-template name="my-button">${body}</f-template>`,
+            );
+            const result = runWithStderr(
+                ["--entry=entry.html", "--templates=templates.html", "--output=out.html"],
+                dir,
+            );
+            assert.notEqual(result.exitCode, 0);
+            assert.match(result.stderr, /f-host/);
+            assert.ok(!fs.existsSync(path.join(dir, "out.html")));
+        }
     });
 });
 

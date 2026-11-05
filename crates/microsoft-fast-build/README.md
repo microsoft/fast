@@ -79,8 +79,8 @@ assert_eq!(chunks.join(""), html);
 Custom element streaming uses the `*_stream_with_locator` and
 `render_entry_*_stream_with_locator` APIs. For entry HTML, a custom element's
 opening tag chunk includes the complete Declarative Shadow DOM template; light
-DOM content follows in later chunks. Template host attributes declared on the
-inner `<template>` element are merged onto the streamed host opening tag with
+DOM content follows in later chunks. Host attributes declared on the direct
+`<f-host>` child of `<f-template>` are merged onto the streamed host opening tag with
 the same author-wins and client-only-attribute filtering rules as normal
 rendering.
 
@@ -104,14 +104,14 @@ use microsoft_fast_build::{
 
 let definitions = parse_f_templates(
     r#"<f-template name="my-card"><template>{{title}}</template></f-template>"#,
-);
+)?;
 let locator = Locator::from_metadata(definitions)?;
 let fragment = render_shadow_root_template_with_locator(
     "my-card", Some(r#"{"title":"Hello"}"#), &locator, None,
 )?;
 ```
 
-`parse_f_templates` is also a public native API. It returns `Vec<FTemplate>`
+`parse_f_templates` is also a public native API. It returns `Result<Vec<FTemplate>, RenderError>`
 with `format_version`, `bindings`, name/content, and host/shadow-root attributes.
 `BindingMetadata` records direct names, expressions, syntax kinds, lexical
 paths, and nested `BindingScope { variable, iterable }` frames. Application
@@ -452,6 +452,7 @@ Template HTML files must wrap their content in an `<f-template>` element with a 
 
 ```html
 <f-template name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
     <template>
         <button>{{label}}</button>
     </template>
@@ -475,7 +476,34 @@ A single file may contain multiple templates:
 
 If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
-Any `shadowroot*` attributes on `<f-template>` are copied to the rendered Declarative Shadow DOM `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+An optional single direct-child `<f-host>` declares attributes for the rendered
+custom host. It is metadata, not a registered custom element or shadow content;
+its children are discarded. Static and reactive attributes use the existing
+host rendering semantics. Authored instance attributes win, including bindings
+that resolve to absence. Initial host attributes precede DSD in normal and
+stream output. The native `host_attributes` and WASM `hostAttributes` APIs remain
+unchanged.
+
+**Migration:** Move host attributes from `<f-template>` or the inner `<template>`
+to `<f-host>`. Definition-wrapper attributes are metadata only; inner-template
+attributes other than `shadowroot*` are ignored, including their bindings.
+Put shadow-root configuration on the inner `<template>`. Its `shadowroot*`
+attributes are copied to the rendered DSD template. `shadowrootmode` and legacy
+`shadowroot` default to `open`, mirror when exactly one is nonempty, and retain
+both explicit values when both are nonempty.
+
+`parse_f_templates` now returns a `Result`; update native calls to use `?`.
+Duplicate direct hosts, self-closing hosts, malformed opening tags, and unclosed
+declarations fail with located `invalid-template-metadata` errors instead of
+silently dropping definitions. WASM throws the existing structured JavaScript
+`Error`. Host binding spans use original-document coordinates and remain in
+authored order, even when `<f-host>` follows the inner template.
+
+Discovery remains permissive about missing or multiple inner templates, so
+definitions authored for browser diagnostics can still be built. It selects the
+first inner template when present and otherwise retains legacy body content,
+excluding the direct host declaration and its children. Client diagnostics and
+the stricter composition/conversion/slot-analysis APIs are unchanged.
 
 ### Composing CSS into an `<f-template>` — `compose_f_template_styles`
 
@@ -707,7 +735,7 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 
 - `shadowrootmode="open"` — the standard declarative shadow DOM mode emitted by default.
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
-- `shadowroot*` attributes declared on the source `<f-template>` are forwarded to the output `<template>`; `shadowrootmode` and `shadowroot` default to `open` when neither has a non-empty value, mirror when exactly one has a non-empty value, and are preserved as authored when both have explicit non-empty values.
+- `shadowroot*` attributes declared on the source inner `<template>` are forwarded to the output `<template>`; `shadowrootmode` and `shadowroot` default to `open` when neither has a non-empty value, mirror when exactly one has a non-empty value, and are preserved as authored when both have explicit non-empty values.
 
 Custom elements that have no matching template in the locator are passed through verbatim.
 

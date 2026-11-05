@@ -54,6 +54,44 @@ Example:
 The legacy `defer-hydration` and `needs-hydration` attributes are no longer
 required.
 
+### Host attributes and bindings
+
+Declare host attributes and bindings on an optional `<f-host>` direct child of
+`<f-template>`, alongside the inner `<template>`:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <template><slot></slot></template>
+</f-template>
+```
+
+There may be at most one direct `<f-host>` per definition. Always use an
+explicit `</f-host>` closing tag, not self-closing syntax. This element is
+metadata consumed by runtime/build processing: it is never registered as a
+custom element or rendered into the component's shadow DOM.
+
+An unregistered HTML element is not inert. Because `<f-host>` is outside the
+inner `<template>`, its attributes (for example, `tabindex`) can affect the
+declaration itself. Use `<f-template hidden name="...">` for definitions
+embedded in the document to keep metadata out of layout and tab order even
+before JavaScript loads. `hidden` on `<f-template>` is definition-only and
+never forwarded to the component host. No global stylesheet or JavaScript
+hiding mechanism is planned; authors supply `hidden` explicitly.
+
+Static attributes such as `role` and `tabindex` provide defaults; attributes
+authored on a component instance take precedence. Dynamic bindings such as
+`appearance` are component-owned after hydration and continue updating the
+host. SSR emits supported initial attribute values but skips client-only
+events and properties, which the client runtime activates.
+
+The outer `<f-template>` carries definition metadata only. The inner
+`<template>` supplies shadow content, no longer host attributes or bindings
+(including events). Existing `shadowroot*` configuration remains Rust build
+metadata; do not move it to `<f-host>`. Core JavaScript `html` tagged-template
+`<template ...>` host bindings remain supported and do not need migration.
+See the [migration steps](../migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+
 ## HTML Comments
 
 Bindings and FAST directive markup inside HTML comments are unsupported. This

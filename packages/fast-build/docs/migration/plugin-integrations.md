@@ -26,7 +26,40 @@ instead of `String`; use `context.to_string()` to read the unchanged snippet and
 `String::into()` when constructing a context without source provenance.
 Update exhaustive enum matches for `Located`. These are intentional pre-1.0
 native API changes. Successful rendering/conversion, warnings, missing-state
-behavior, and permissive `parse_f_templates` parsing are unchanged.
+behavior are unchanged by structured errors. The `<f-host>` migration below
+separately makes declaration parsing fallible.
+
+## Declarative host attributes
+
+Move host attributes from `<f-template>` and its inner `<template>` to an
+optional single direct `<f-host>` child:
+
+```html
+<f-template name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
+    <template shadowrootmode="open"><slot></slot></template>
+</f-template>
+```
+
+The wrapper is definition metadata only. The inner template supplies content
+and `shadowroot*` configuration; its other attributes/bindings are ignored.
+`<f-host>` and its children are never rendered or registered as a custom element.
+Initial host attributes precede DSD in normal and stream SSR. Existing host
+binding rules and authored-instance precedence remain unchanged, including
+authored bindings resolving to absence.
+
+The `hostAttributes` metadata API and format version 1 remain unchanged;
+regenerate stored definitions to pick up the new authored syntax. Host spans
+retain original-document positions regardless of child order. All converter
+targets transfer host attributes into their target host-template representation.
+
+Native `parse_f_templates` now returns `Result<Vec<FTemplate>, RenderError>`;
+use `?` or explicitly handle errors. WASM still returns a JSON array on success,
+but throws a structured `Error` for duplicate hosts and malformed/unclosed
+declarations rather than silently returning incomplete metadata. Author explicit
+closing tags, not `<f-host/>`. Converter duplicates use `multiple-hosts`;
+malformed hosts use `invalid-host-declaration` or existing unclosed tag/element
+errors. Renderer declaration validation uses `invalid-template-metadata`.
 
 ## Attribute output changes
 

@@ -53,8 +53,8 @@ fn maps_binding_spans_and_diagnostics_after_multiline_css() {
     let html = "\r\n😀<f-template name='my-card'>\r<template>\n😀\t{{title}}<f-when></f-when></template></f-template>";
     let css = "\r\n:host {\r color: red;\n}\n";
     let result = compose_f_template_styles_with_options(html, inline(css, None)).unwrap();
-    let definitions = parse_f_templates(result.html());
-    let original = parse_f_templates(html);
+    let definitions = parse_f_templates(result.html()).unwrap();
+    let original = parse_f_templates(html).unwrap();
     let binding = &definitions[0].bindings[0];
     let mapped = result
         .map_span(binding.span.start.offset, binding.span.end.offset)
@@ -148,7 +148,7 @@ fn maps_crlf_line_starts_without_selecting_the_middle_of_the_break() {
     let html =
         "<f-template name='my-card'><template>\r\n<f-when></f-when>\r\n</template></f-template>";
     let result = compose_f_template_styles_with_options(html, inline("a{}\r\n", None)).unwrap();
-    let definitions = parse_f_templates(result.html());
+    let definitions = parse_f_templates(result.html()).unwrap();
     let locator = Locator::from_metadata(definitions).unwrap();
     let error =
         render_template_with_locator("<my-card></my-card>", "{}", &locator, None).unwrap_err();
@@ -182,7 +182,7 @@ fn css_is_raw_text_for_parsing_metadata_and_both_render_paths() {
     let css = "a{content:'{{notState}} <f-template><template><f-when></f-when></template></f-template> </my-card> <code>{{}}</code>'}";
     let result =
         compose_f_template_styles_with_options(html, inline(css, Some("card-v1"))).unwrap();
-    let definitions = parse_f_templates(result.html());
+    let definitions = parse_f_templates(result.html()).unwrap();
     assert_eq!(definitions.len(), 1);
     assert_eq!(definitions[0].bindings.len(), 1);
     let locator = Locator::from_metadata(definitions).unwrap();
