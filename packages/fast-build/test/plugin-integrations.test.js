@@ -8,6 +8,266 @@ const path = require("node:path");
 const { execFileSync, spawnSync } = require("node:child_process");
 const typescript = require("typescript");
 
+test("f-shadow configures SSR and conversion while legacy locations stay compatible", () => {
+    const source =
+        '<f-template hidden name="my-button" shadowrootmode="closed">' +
+        '<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>' +
+        '<f-host role="button"></f-host><template shadowrootmode="closed"><slot></slot></template></f-template>';
+    const [metadata] = JSON.parse(wasm.parse_f_templates(source));
+    assert.deepEqual(metadata.shadowrootAttributes, [
+        { name: "shadowrootmode", value: "open" },
+        { name: "shadowrootdelegatesfocus", value: null },
+        { name: "shadowrootclonable", value: null },
+        { name: "shadowrootserializable", value: null },
+    ]);
+    assert.ok(!metadata.content.includes("f-shadow"));
+    const templates = JSON.stringify({ "my-button": metadata });
+    const html = wasm.render_entry_with_templates("<my-button></my-button>", templates);
+    assert.ok(
+        html.includes(
+            'shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable',
+        ),
+    );
+    assert.equal(
+        JSON.parse(
+            wasm.render_entry_with_templates(
+                "<my-button></my-button>",
+                templates,
+                undefined,
+                undefined,
+                true,
+            ),
+        ).join(""),
+        html,
+    );
+    for (const syntax of [
+        "webui-prerelease",
+        "webui-framework-prerelease",
+        "fast-v3-ts",
+    ]) {
+        const result = convert.convert_template(source, syntax);
+        try {
+            const output = result.output;
+            assert.ok(output.includes('shadowrootmode="open"'), output);
+            assert.ok(output.includes("shadowrootdelegatesfocus"), output);
+            assert.ok(!output.includes("f-shadow") && !output.includes("closed"), output);
+        } finally {
+            result.free();
+        }
+    }
+    for (const [outer, inner] of [
+        ['shadowrootmode="closed" shadowrootdelegatesfocus', ""],
+        ["", 'shadowrootmode="closed" shadowrootdelegatesfocus'],
+    ]) {
+        const [legacy] = JSON.parse(
+            wasm.parse_f_templates(
+                `<f-template name="my-button" ${outer}><template ${inner}><slot></slot></template></f-template>`,
+            ),
+        );
+        assert.deepEqual(legacy.shadowrootAttributes, [
+            { name: "shadowrootmode", value: "closed" },
+            { name: "shadowrootdelegatesfocus", value: null },
+        ]);
+    }
+});
+
+test("f-shadow rejects duplicate, malformed and dynamic configuration in WASM", () => {
+    for (const declaration of [
+        "<f-shadow></f-shadow><f-shadow></f-shadow>",
+        "<f-shadow/>",
+        '<f-shadow shadowrootmode="{{mode}}"></f-shadow>',
+        '<f-shadow shadowrootmode="invalid"></f-shadow>',
+        '<f-shadow shadowrootdelegatesfocus="{{flag}}"></f-shadow>',
+        '<f-shadow mode="open"></f-shadow>',
+        "<f-shadow delegatesfocus></f-shadow>",
+        "<f-shadow clonable></f-shadow>",
+        "<f-shadow serializable></f-shadow>",
+    ]) {
+        const source = `<f-template name="my-button">${declaration}<template></template></f-template>`;
+        assert.throws(() => wasm.parse_f_templates(source), /f-shadow/);
+        assert.throws(
+            () => convert.convert_template(source, "webui-prerelease"),
+            /f-shadow/,
+        );
+    }
+});
+
+test("f-host metadata renders initial host attributes before DSD in normal and stream output", () => {
+    const source =
+        '<f-template name="my-button" role="legacy">' +
+        '<f-host role="button" tabindex="0" appearance="{{appearance}}" title="{{title}}"></f-host>' +
+        '<template title="legacy" shadowrootmode="closed"><slot></slot></template></f-template>';
+    const [metadata] = JSON.parse(wasm.parse_f_templates(source));
+    assert.deepEqual(
+        metadata.hostAttributes.map(attribute => attribute.name),
+        ["role", "tabindex", "appearance", "title"],
+    );
+    assert.ok(!metadata.content.includes("f-host"));
+    const templates = JSON.stringify({ "my-button": metadata });
+    for (const markersV2 of [false, true]) {
+        const entry = '<my-button role="link" title="{{missing}}">Light</my-button>';
+        const state = '{"appearance":"accent"}';
+        const html = wasm.render_entry_with_templates(
+            entry,
+            templates,
+            state,
+            undefined,
+            false,
+            markersV2,
+        );
+        const chunks = JSON.parse(
+            wasm.render_entry_with_templates(
+                entry,
+                templates,
+                state,
+                undefined,
+                true,
+                markersV2,
+            ),
+        );
+        assert.ok(
+            html.startsWith(
+                '<my-button role="link" tabindex="0" appearance="accent"><template shadowrootmode="closed"',
+            ),
+        );
+        assert.equal(chunks.join(""), html);
+        assert.ok(chunks[0].includes("</template>"));
+        assert.ok(
+            !html.includes("f-host") &&
+                !html.includes("legacy") &&
+                !html.includes("title="),
+        );
+    }
+});
+
+test("f-host boolean bindings render independently and publisher hidden never forwards", () => {
+    const [metadata] = JSON.parse(
+        wasm.parse_f_templates(
+            '<f-template name="my-button" hidden><f-host role="button" tabindex="0" appearance="{{hostAttr}}" ?disabled="{{disabled}}"></f-host><template><slot></slot></template></f-template>',
+        ),
+    );
+    const templates = JSON.stringify({ "my-button": metadata });
+    for (const disabled of [true, false, undefined]) {
+        const state = JSON.stringify({ hostAttr: "accent", disabled });
+        const html = wasm.render_entry_with_templates(
+            "<my-button></my-button>",
+            templates,
+            state,
+        );
+        const opening = html.slice(0, html.indexOf(">") + 1);
+        assert.ok(opening.includes('appearance="accent"'));
+        assert.equal(opening.includes(" disabled"), disabled === true);
+        assert.ok(!opening.includes("hidden") && !opening.includes("?disabled"));
+        assert.equal(
+            JSON.parse(
+                wasm.render_entry_with_templates(
+                    "<my-button></my-button>",
+                    templates,
+                    state,
+                    undefined,
+                    true,
+                ),
+            ).join(""),
+            html,
+        );
+    }
+});
+
+test("f-host after the inner template retains authored binding order and UTF-16 spans", () => {
+    const source =
+        '😀\r\n<f-template name="my-button"><template>\r\n' +
+        '<f-repeat value="{{ item in items }}"><span>{{ item.label }}</span></f-repeat>' +
+        '</template>\r\n<f-host title="{{ title }}" @click="{ save() }"></f-host></f-template>';
+    const [metadata] = JSON.parse(wasm.parse_f_templates(source));
+    assert.deepEqual(
+        metadata.bindings.map(binding => binding.expression),
+        ["items", "item.label", "title", "save()"],
+    );
+    assert.deepEqual(
+        metadata.bindings.map(binding => binding.kind),
+        ["repeat", "content", "hostAttribute", "event"],
+    );
+    assert.deepEqual(metadata.bindings[1].scope, [
+        { variable: "item", iterable: "items" },
+    ]);
+    const markers = [
+        "{{ item in items }}",
+        "{{ item.label }}",
+        "{{ title }}",
+        "{ save() }",
+    ];
+    let cursor = 0;
+    for (const [index, binding] of metadata.bindings.entries()) {
+        const { start, end } = binding.span;
+        const marker = markers[index];
+        const expectedStart =
+            source.indexOf(marker, cursor) + marker.indexOf(binding.expression);
+        assert.equal(start.offset, expectedStart);
+        assert.equal(end.offset, expectedStart + binding.expression.length);
+        assert.equal(source.slice(start.offset, end.offset), binding.expression);
+        for (const position of [start, end]) {
+            const lines = source.slice(0, position.offset).split(/\r\n|\r|\n/);
+            assert.equal(position.line, lines.length);
+            assert.equal(position.column, lines.at(-1).length + 1);
+        }
+        cursor = end.offset;
+    }
+});
+
+test("f-host parsing throws structured errors rather than silently dropping declarations", () => {
+    for (const body of [
+        "<f-host></f-host><template></template><f-host></f-host>",
+        "<f-host><template></template>",
+        "<f-host/><template></template>",
+        '<f-host role="unfinished',
+    ]) {
+        const source = `<f-template name="my-button">${body}</f-template>`;
+        assert.throws(
+            () => wasm.parse_f_templates(source),
+            error => {
+                assert.ok(error instanceof Error);
+                assert.equal(error.code, "invalid-template-metadata");
+                assert.equal(typeof error.line, "number");
+                return true;
+            },
+        );
+    }
+});
+
+test("conversion forwards f-host attributes for every target and preserves host diagnostic locations", () => {
+    for (const syntax of [
+        "webui-prerelease",
+        "webui-framework-prerelease",
+        "fast-v3-ts",
+    ]) {
+        const source =
+            '<f-template name="my-button"><template title="legacy"><slot></slot></template>' +
+            '<f-host role="button" appearance="{{appearance}}"></f-host></f-template>';
+        const result = convert.convert_template(source, syntax);
+        try {
+            assert.ok(
+                result.output.includes('role="button"') &&
+                    result.output.includes("appearance="),
+            );
+            assert.ok(
+                !result.output.includes("legacy") && !result.output.includes("f-host"),
+            );
+        } finally {
+            result.free();
+        }
+        const invalid =
+            '<f-template name="my-button">\r\n<f-host f-unknown="{host}"></f-host><template></template></f-template>';
+        assertDiagnostic(
+            () => convert.convert_template(invalid, syntax),
+            "unsupported-f-attribute",
+            invalid,
+            invalid.indexOf("<f-host"),
+            "my-button",
+            '<f-host f-unknown="{host}">'.length,
+        );
+    }
+});
+
 /**
  * @param {() => unknown} action
  * @param {string} code
@@ -204,14 +464,12 @@ test("validation diagnostics locate wrappers and publisher attributes in authore
     }
     const publisher =
         '\n😀<f-template name="card" data-extra="x">\n<template></template></f-template>';
-    assertDiagnostic(
-        () => convert.convert_template(publisher, "webui-framework-prerelease"),
-        "unsupported-publisher-attribute",
-        publisher,
-        publisher.indexOf("<f-template"),
-        "card",
-        '<f-template name="card" data-extra="x">'.length,
-    );
+    const converted = convert.convert_template(publisher, "webui-framework-prerelease");
+    try {
+        assert.equal(converted.output, "<template></template>");
+    } finally {
+        converted.free();
+    }
     const multiple =
         '<f-template name="card"><template></template>\r\n😀<template></template></f-template>';
     for (const action of [
@@ -273,7 +531,14 @@ test("non-HTML diagnostics have codes without invented source coordinates", () =
         undefined,
         "</style>".length,
     );
-    assert.deepEqual(JSON.parse(wasm.parse_f_templates("<f-template>{{")), []);
+    assertDiagnostic(
+        () => wasm.parse_f_templates("<f-template>{{"),
+        "invalid-template-metadata",
+        "<f-template>{{",
+        0,
+        undefined,
+        "<f-template>".length,
+    );
 });
 
 test("null attributes are omitted, empty strings retained, and HTML booleans use presence", () => {
@@ -371,7 +636,7 @@ test("shadow-only rendering returns the exact DSD fragment without a host or lig
 test("parsed bindings expose paths and repeat scopes, versioned metadata rejects stale artifacts", () => {
     const [metadata] = JSON.parse(
         wasm.parse_f_templates(
-            '<f-template name="test-card"><template title="{{title}}"><f-repeat value="{{item in items}}"><a href="{{item.url}}">{{title}} {{item.name}}</a></f-repeat><f-when value="{{visible && count > 0}}">{{title}}</f-when><code>{{example}}</code></template></f-template>',
+            '<f-template name="test-card"><f-host title="{{title}}"></f-host><template><f-repeat value="{{item in items}}"><a href="{{item.url}}">{{title}} {{item.name}}</a></f-repeat><f-when value="{{visible && count > 0}}">{{title}}</f-when><code>{{example}}</code></template></f-template>',
         ),
     );
     assert.equal(metadata.formatVersion, 1);
@@ -436,7 +701,7 @@ test("parsed bindings expose paths and repeat scopes, versioned metadata rejects
 test("authored source spans locate duplicate bindings, attributes, and nested scopes", () => {
     const source =
         "🚀 Préface\r\n" +
-        '<f-template name="first-card"><template title="{{ title }}">\r\n' +
+        '<f-template name="first-card"><f-host title="{{ title }}"></f-host><template>\r\n' +
         '  😀<p data-label="pré &amp; {{ title }}">{{ title }}</p>\r\n' +
         '  <code>😀é {{example}} <f-when value="{{ignored}}">sample</f-when></code>\r\n' +
         '  <f-repeat value="{{ item in items }}"><f-when value="{{ item.visible }}">\r\n' +

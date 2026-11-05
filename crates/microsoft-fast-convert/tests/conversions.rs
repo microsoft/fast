@@ -241,8 +241,8 @@ fn webui_framework_light_dom_has_no_shadow_attributes() {
 }
 
 #[test]
-fn webui_framework_moves_shadow_root_mode_to_inner_template() {
-    let input = r#"<f-template name="my-element" shadowrootmode="open"><template><span>{{name}}</span></template></f-template>"#;
+fn webui_framework_preserves_inner_shadow_root_mode() {
+    let input = r#"<f-template name="my-element"><template shadowrootmode="open"><span>{{name}}</span></template></f-template>"#;
     let output = convert_template(input, "webui-framework-prerelease").unwrap();
 
     assert_eq!(
@@ -380,7 +380,7 @@ fn webui_framework_avatar_fixture_after_caller_adaptation() {
     // uses `w-ref`/`@slotchange` directly rather than `f-slotted`, since
     // `f-slotted` has no WebUI Framework equivalent and is stripped (with a
     // warning) by this target.
-    let input = r#"<f-template name="fast-avatar" shadowrootmode="open"><template><div class="link"><slot w-ref="{defaultSlot}" @slotchange="{syncSlottedDefaults()}"></slot></div></template></f-template>"#;
+    let input = r#"<f-template name="fast-avatar"><template shadowrootmode="open"><div class="link"><slot w-ref="{defaultSlot}" @slotchange="{syncSlottedDefaults()}"></slot></div></template></f-template>"#;
     let output = convert_template(input, "webui-framework-prerelease").unwrap();
 
     assert!(output

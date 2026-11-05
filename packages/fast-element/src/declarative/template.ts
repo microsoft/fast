@@ -1,3 +1,4 @@
+import { oneTime } from "../binding/one-time.js";
 import { getDefinitionSchemaTransforms } from "../components/definition-schema-transforms.js";
 import type {
     FASTElementDefinition,
@@ -9,6 +10,8 @@ import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
+import { applyShadowOptions } from "./shadow.js";
+import { attributeDirectivePrefix } from "./syntax.js";
 import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
 import { escapeBracesInCodeElements, transformInnerHTML } from "./utilities.js";
@@ -144,11 +147,58 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
             throw FAST.error(Message.noTemplateProvided, { name });
         }
 
+        const hosts = Array.from(this.children).filter(
+            child => child.tagName === "F-HOST",
+        );
+
+        if (hosts.length > 1) {
+            throw FAST.error(Message.moreThanOneHostProvided, { name });
+        }
+
+        applyShadowOptions(this, templates[0], definition);
+
         const schema = definition.schema ?? new Schema(name);
         definition.schema = schema;
-        const innerHTML = transformInnerHTML(escapeBracesInCodeElements(this.innerHTML));
+        const template = templates[0].cloneNode(true) as HTMLTemplateElement;
+
+        for (const attribute of Array.from(template.attributes)) {
+            template.removeAttributeNode(attribute);
+        }
+
+        const defaults: Array<{ name: string; value: string }> = [];
+
+        for (const attribute of Array.from(hosts[0]?.attributes ?? [])) {
+            if (
+                !attribute.value.includes("{") &&
+                !attribute.name.startsWith(attributeDirectivePrefix) &&
+                !/^[?:@]/.test(attribute.name)
+            ) {
+                defaults.push({ name: attribute.name, value: attribute.value });
+            } else {
+                template.setAttributeNode(attribute.cloneNode() as Attr);
+            }
+        }
+
+        const innerHTML = transformInnerHTML(
+            escapeBracesInCodeElements(template.outerHTML),
+        );
         const parser = new TemplateParser();
         const { strings, values } = parser.parse(innerHTML, schema);
+
+        // Static declarations are defaults, not replacements for authored attributes.
+        if (defaults.length > 0) {
+            const hostStrings = ["<template"];
+            const hostValues = defaults.map(attribute => {
+                hostStrings[hostStrings.length - 1] += ` ${attribute.name}="`;
+                hostStrings.push('"');
+                return oneTime<HTMLElement>(
+                    host => host.getAttribute(attribute.name) ?? attribute.value,
+                );
+            });
+            hostStrings[hostStrings.length - 1] += strings[0].slice("<template".length);
+            strings.splice(0, 1, ...hostStrings);
+            values.unshift(...hostValues);
+        }
 
         for (const transform of getDefinitionSchemaTransforms(definition)) {
             transform({ definition, schema });

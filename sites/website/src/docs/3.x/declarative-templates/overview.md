@@ -62,7 +62,7 @@ HelloWorld.define({
 **2. Write the template** (`templates.html`):
 
 ```html
-<f-template name="hello-world">
+<f-template hidden name="hello-world">
     <template>
         <p>{{greeting}}, world!</p>
     </template>
@@ -82,7 +82,24 @@ HelloWorld.define({
 </html>
 ```
 
-When the page loads, `declarativeTemplate()` automatically defines FAST's internal `<f-template>` publisher in the relevant registry, finds the `<f-template name="hello-world">` element, parses its inner `<template>`, and resolves the template for the `hello-world` definition. If you call `enableHydration()` before elements connect, matching pre-rendered content is hydrated; otherwise the component renders client-side. Reactive bindings keep the DOM in sync with property changes.
+When the page loads, `declarativeTemplate()` automatically defines FAST's internal `<f-template>` publisher in the relevant registry, finds the `<f-template name="hello-world">` element, consumes any direct `<f-host>` host metadata, parses the inner `<template>` as shadow content, and resolves the template for the `hello-world` definition. If you call `enableHydration()` before elements connect, matching pre-rendered content is hydrated; otherwise the component renders client-side. Reactive bindings keep the DOM in sync with property changes.
+
+Host attributes and bindings belong on an optional direct `<f-host>` child, not
+on the inner `<template>` or outer `<f-template>`. `<f-host>` is consumed as
+metadata, not registered as a custom element or rendered into the component
+shadow DOM. See [Host Attributes and Bindings](/docs/3.x/declarative-templates/f-templates/#host-attributes-and-bindings)
+for syntax, defaults, and hydration ownership.
+
+An optional single direct `<f-shadow>` child supplies static shadow-root
+configuration, while the inner `<template>` supplies content only. See
+[Shadow-Root Configuration](/docs/3.x/declarative-templates/f-templates/#shadow-root-configuration)
+for mode and boolean flags. The runtime consumes this metadata and updates
+`definition.shadowOptions` before registration; it does not render or register
+`<f-shadow>` as a custom element.
+
+Use `hidden` on document-embedded definitions to keep metadata out of layout
+and tab order before JavaScript loads: an unregistered `<f-host>` is not inert
+HTML. This `hidden` is definition-only and never forwarded to the component host.
 
 ## How It Works
 

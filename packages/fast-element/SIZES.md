@@ -23,7 +23,7 @@ are not used. Importing both shares a single metadata implementation.
 | repeat (@microsoft/fast-element/repeat.js) | 31.78 KB | 10.28 KB | 9.29 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
 | enableHydration (@microsoft/fast-element/hydration.js) | 51.07 KB | 15.71 KB | 14.12 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 65.26 KB | 20.85 KB | 18.65 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 68.04 KB | 21.63 KB | 19.31 KB |
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.58 KB | 4.47 KB | 4.04 KB |
 | observerMap (@microsoft/fast-element/observer-map.js) | 24.36 KB | 8.58 KB | 7.76 KB |
 | attributeMap (@microsoft/fast-element/attribute-map.js) | 17.70 KB | 6.27 KB | 5.67 KB |

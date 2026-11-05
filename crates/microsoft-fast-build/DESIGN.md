@@ -51,7 +51,7 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and v3 data-free or opt-in v2 indexed marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; fallible `<f-template>` parser. Stored bodies use `escape_code_sample_elements`. A single optional direct `<f-host>` supplies host attributes; an optional single direct `<f-shadow>` supplies static shadow-root configuration; the inner `<template>` supplies content only. |
 | `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 | `f_template.rs` | `compose_f_template_styles` — in-memory insertion of a `<style>` element into an `<f-template>` definition's inner `<template>`, with no filesystem requirement |
@@ -136,7 +136,7 @@ DOM as soon as the element is parsed.
 Streaming custom-element rendering uses the same directive helpers as the
 non-streamed path: child state is built from root state plus author attributes,
 the host opening tag is produced by `build_element_open_tag`, and inner
-`<template>` host attributes are merged with `merge_template_host_attrs`.
+`<f-host>` attributes are merged with `merge_template_host_attrs`.
 Author attributes still win, client-only host attributes are skipped, and
 template-host bindings resolve against the child state.
 
@@ -403,7 +403,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
      - No `data-fe` marker is added — root elements at entry level have no parent hydration scope.
    - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe="N"` is injected.
-8. **Template host attribute propagation.** Attributes declared on the inner `<template>` element of the source `<f-template>` are merged onto the rendered host opening tag built in step 7. `merge_template_host_attrs` (in `directive.rs`) splices the surviving attributes in just before the closing `>`, resolving any bindings against `child_root` — the same child state used to render the shadow template (the root state with the host element's HTML attributes overlaid).
+8. **Template host attribute propagation.** Attributes declared on the direct `<f-host>` child of the source `<f-template>` are merged onto the rendered host opening tag built in step 7. `merge_template_host_attrs` (in `directive.rs`) splices the surviving attributes in just before the closing `>`, resolving any bindings against `child_root` — the same child state used to render the shadow template (the root state with the host element's HTML attributes overlaid).
    - **Client-only attrs are skipped**: any template host attr whose name starts with `@` (event) or `:` (property binding), or whose lowercased name is `f-ref`, `f-slotted`, or `f-children`, is dropped — none of these have any meaning on a server-rendered host element.
    - **Author attributes win.** Attributes already present on the host element opening tag (the author markup) are preserved verbatim. Template host attrs whose lowercased name matches an existing author attribute are skipped. For `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` (without the leading `?`).
    - **Static `name="value"`** → emitted verbatim with the value HTML-escaped. **Static boolean `name`** (no `=`) → emitted bare.
@@ -415,7 +415,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    *Worked example.* Given the template
    ```html
    <f-template name="my-el">
-       <template tabindex="0" ?disabled="{{isDisabled}}">…</template>
+       <f-host tabindex="0" ?disabled="{{isDisabled}}"></f-host>
+       <template>…</template>
    </f-template>
    ```
    the author markup `<my-el disabled></my-el>` and state `{"isDisabled": false}` render as
@@ -431,7 +432,12 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      [light DOM children]
    </my-button>
    ```
-   The `<template>` receives any `shadowroot*` attributes declared on the source `<f-template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+   The native DSD `<template>` receives normalized configuration from the
+   optional single direct `<f-shadow>`, using the same HTML-standard attribute
+   names: `shadowrootmode`, `shadowrootdelegatesfocus`, `shadowrootclonable`,
+   and `shadowrootserializable`.
+   The metadata declaration itself is not rendered or registered as a custom
+   element.
 
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe="N"` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
@@ -639,11 +645,36 @@ For each glob pattern:
 - Verifies the character after `<f-template` is ASCII whitespace, `/`, or `>` to avoid matching non-`f-template` tags such as `<f-template-x>`.
 - Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
-- Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
+- Reads an optional single direct `<f-shadow>` as static configuration, with an
+  explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+  `shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+  are presence-based flags.
+  Attribute names are case-insensitive and bindings are unsupported.
+  When present, it replaces the complete legacy shadow configuration rather
+  than merging. Normalized SSR names populate `shadowrootAttributes`, with
+  boolean attributes represented as `None`.
 - Extracts the inner HTML between `>` and a matching `</f-template>` end tag, allowing ASCII whitespace before the closing `>`.
-- Calls `extract_template_content` on the inner HTML to get the content **and the attributes** declared on the inner `<template>` element. The returned attribute list is preserved as the template's **host attributes**, available later via `Locator::get_host_attributes` and merged onto the rendered host opening tag by `merge_template_host_attrs` (see the **Custom elements** section above).
+- Scans direct children, matching nested template closing tags and skipping comments/raw-text bodies. At most one direct `<f-host>` supplies host attributes. Only the inner `<template>` body supplies rendered content; host children are discarded. Definition attributes and other inner-template attributes are never forwarded as host attributes.
 
-Returns a `Vec<FTemplate>` containing the optional name, template content, the collected shadowroot attributes, and the inner `<template>` element's host attributes. The locator stores the shadowroot attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`, and stores the host attributes so they can be merged onto the rendered host element opening tag.
+Returns `Result<Vec<FTemplate>, RenderError>` with optional names, content,
+shadow-root attributes, and unchanged host-attribute metadata. Duplicate direct
+hosts and malformed/unclosed declarations return located
+`InvalidTemplateMetadata` errors; file loading propagates them and WASM converts
+them to structured errors. No custom-element registration is added.
+
+Binding collection visits the host opening tag and content in authored order,
+regardless of which child comes first, so the forward UTF-16 location cursor
+continues to preserve original content spans. Inner-template and publisher
+attributes no longer contribute host bindings. The version-1 metadata shape and
+explicit programmatic host-attribute APIs are unchanged.
+
+Definition discovery remains permissive about missing or multiple inner
+templates so browser-diagnostic fixtures can still be built: the first template
+is used when present, otherwise the body is retained as legacy fallback content.
+An optional direct host and its children are removed from fallback content, with
+bindings collected from original source windows in authored order. Only
+host-specific structural validation is added; strict inner-template cardinality
+checks remain owned by the client, composition, conversion, and slot analysis.
 
 ### Glob matching
 
@@ -747,7 +778,13 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
 ]
 ```
 
-`name` is `null` when the `<f-template>` element has no `name` attribute. The `shadowrootAttributes` array preserves forwarded `shadowroot*` attributes as `{name, value}` metadata, using `null` for boolean attributes. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+`name` is `null` when the `<f-template>` element has no `name` attribute. The
+`shadowrootAttributes` array carries normalized `<f-shadow>` options as native
+DSD `{name, value}` metadata, using `null` for boolean attributes. The
+`@microsoft/fast-build` CLI uses this export to parse HTML files without
+reimplementing the parsing logic in JavaScript. The browser runtime consumes
+the same authored configuration into `definition.shadowOptions` before
+registration.
 
 ### `render_with_templates`
 
