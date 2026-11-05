@@ -62,6 +62,7 @@ Declare host attributes and bindings on an optional `<f-host>` direct child of
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -87,10 +88,33 @@ events and properties, which the client runtime activates.
 
 The outer `<f-template>` carries definition metadata only. The inner
 `<template>` supplies shadow content, no longer host attributes or bindings
-(including events). Existing `shadowroot*` configuration remains Rust build
-metadata; do not move it to `<f-host>`. Core JavaScript `html` tagged-template
+(including events). Use `<f-shadow>` for shadow-root configuration, not
+`<f-host>` or the content template. Core JavaScript `html` tagged-template
 `<template ...>` host bindings remain supported and do not need migration.
 See the [migration steps](../migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+
+### Shadow-root configuration
+
+Use an optional single direct-child
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`
+alongside `<f-host>` and the inner content `<template>`. Always include the
+explicit closing tag. This is static metadata consumed by runtime/build
+processing, never rendered into the component or registered as a custom element.
+
+| Attribute | Configuration | SSR output attribute |
+|---|---|---|
+| `mode` | `open` (default) or `closed` | `shadowrootmode` |
+| `delegatesFocus` | Boolean, enabled by presence | `shadowrootdelegatesfocus` |
+| `clonable` | Boolean, enabled by presence | `shadowrootclonable` |
+| `serializable` | Boolean, enabled by presence | `shadowrootserializable` |
+
+Attribute names are case-insensitive. Omit a boolean flag to disable it;
+writing `delegatesFocus="false"` still enables it because the attribute is
+present. Bindings and dynamic configuration are unsupported. When `<f-shadow>`
+is present, it replaces the complete legacy shadow configuration rather than
+merging with it, so omitted options use their defaults. The browser runtime
+updates `definition.shadowOptions` before custom element registration; SSR
+emits the corresponding native Declarative Shadow DOM attributes.
 
 ## HTML Comments
 

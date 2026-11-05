@@ -8,6 +8,85 @@ const path = require("node:path");
 const { execFileSync, spawnSync } = require("node:child_process");
 const typescript = require("typescript");
 
+test("f-shadow configures SSR and conversion while legacy locations stay compatible", () => {
+    const source =
+        '<f-template hidden name="my-button" shadowrootmode="closed">' +
+        '<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>' +
+        '<f-host role="button"></f-host><template shadowrootmode="closed"><slot></slot></template></f-template>';
+    const [metadata] = JSON.parse(wasm.parse_f_templates(source));
+    assert.deepEqual(metadata.shadowrootAttributes, [
+        { name: "shadowrootmode", value: "open" },
+        { name: "shadowrootdelegatesfocus", value: null },
+        { name: "shadowrootclonable", value: null },
+        { name: "shadowrootserializable", value: null },
+    ]);
+    assert.ok(!metadata.content.includes("f-shadow"));
+    const templates = JSON.stringify({ "my-button": metadata });
+    const html = wasm.render_entry_with_templates("<my-button></my-button>", templates);
+    assert.ok(
+        html.includes(
+            'shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable',
+        ),
+    );
+    assert.equal(
+        JSON.parse(
+            wasm.render_entry_with_templates(
+                "<my-button></my-button>",
+                templates,
+                undefined,
+                undefined,
+                true,
+            ),
+        ).join(""),
+        html,
+    );
+    for (const syntax of [
+        "webui-prerelease",
+        "webui-framework-prerelease",
+        "fast-v3-ts",
+    ]) {
+        const result = convert.convert_template(source, syntax);
+        try {
+            const output = result.output;
+            assert.ok(output.includes('shadowrootmode="open"'), output);
+            assert.ok(output.includes("shadowrootdelegatesfocus"), output);
+            assert.ok(!output.includes("f-shadow") && !output.includes("closed"), output);
+        } finally {
+            result.free();
+        }
+    }
+    for (const [outer, inner] of [
+        ['shadowrootmode="closed" shadowrootdelegatesfocus', ""],
+        ["", 'shadowrootmode="closed" shadowrootdelegatesfocus'],
+    ]) {
+        const [legacy] = JSON.parse(
+            wasm.parse_f_templates(
+                `<f-template name="my-button" ${outer}><template ${inner}><slot></slot></template></f-template>`,
+            ),
+        );
+        assert.deepEqual(legacy.shadowrootAttributes, [
+            { name: "shadowrootmode", value: "closed" },
+            { name: "shadowrootdelegatesfocus", value: null },
+        ]);
+    }
+});
+
+test("f-shadow rejects duplicate, malformed and dynamic configuration in WASM", () => {
+    for (const declaration of [
+        "<f-shadow></f-shadow><f-shadow></f-shadow>",
+        "<f-shadow/>",
+        '<f-shadow mode="{{mode}}"></f-shadow>',
+        '<f-shadow mode="invalid"></f-shadow>',
+    ]) {
+        const source = `<f-template name="my-button">${declaration}<template></template></f-template>`;
+        assert.throws(() => wasm.parse_f_templates(source), /f-shadow/);
+        assert.throws(
+            () => convert.convert_template(source, "webui-prerelease"),
+            /f-shadow/,
+        );
+    }
+});
+
 test("f-host metadata renders initial host attributes before DSD in normal and stream output", () => {
     const source =
         '<f-template name="my-button" role="legacy">' +

@@ -26,7 +26,7 @@ host-autofocus {
         </style>
     </head>
     <body>
-        <host-event-element role="button" appearance="value"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
+        <host-event-element role="button" appearance="value"><template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
         <host-multi-element disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-multi-element>
         <host-static-element id="static-host"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->first<!--fe:/b--> <!--fe:b-->second<!--fe:/b--></span></template></host-static-element>
         <host-events-element text="content text"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->content text<!--fe:/b--></template></host-events-element>
@@ -42,6 +42,7 @@ host-autofocus {
 <!-- biome-ignore-all format: SSR renderer requires multi-line <template> layout for binding marker placement -->
 <f-template hidden name="host-event-element" data-definition="not-a-host-attribute">
     <f-host role="button" appearance="{{hostAttr}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template data-legacy="not-a-host-attribute">
         <span>{{greeting}}</span>
     </template>

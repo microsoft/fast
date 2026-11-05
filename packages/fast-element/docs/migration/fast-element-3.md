@@ -335,14 +335,15 @@ Move legacy host attributes and bindings from the inner `<template>` or outer
 <!-- After -->
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
 
 Keep definition metadata such as `name` on `<f-template>` and shadow content
 inside `<template>`. The inner template no longer supplies host attributes or
-bindings, including events. Leave `shadowroot*` configuration as Rust build
-metadata; it is not host metadata.
+bindings, including events. Put static shadow-root configuration on a separate
+optional direct `<f-shadow>` child, not on `<f-host>` or the content template.
 
 Use at most one direct `<f-host>` and always include `</f-host>`; do not
 self-close it. Runtime/build processing consumes this metadata without
@@ -361,6 +362,22 @@ component-owned after hydration and can subsequently update those attributes.
 
 This migration applies only to declarative `<f-template>` markup. Core
 JavaScript `html` tagged templates retain `<template ...>` host binding support.
+
+### Shadow-root configuration
+
+Use at most one direct-child
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>`.
+`mode` defaults to `open` and accepts `open`/`closed`; boolean flags use
+presence and attribute names are case-insensitive. Bindings are unsupported.
+When present, it replaces the complete legacy shadow configuration, not just
+explicitly supplied options. The runtime updates `definition.shadowOptions`
+before registration; SSR emits the corresponding native DSD attributes.
+The metadata is not rendered into the component or registered as a custom
+element. See the [configuration reference](../declarative/syntax.md#shadow-root-configuration).
+
+Legacy shadow-configuration compatibility is scheduled for removal in a
+breaking release under tracking issue #7800, milestone **FAST Element vNext**.
+Use `<f-shadow>` for new and migrated definitions.
 
 ## Debug entrypoint explicit enablement (v3)
 

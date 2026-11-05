@@ -309,6 +309,15 @@ pub fn parse_f_templates(html: &str) -> Result<Vec<FTemplate>, RenderError> {
                 "duplicate direct-child <f-host> declaration",
             )));
         }
+        let mut shadows = children.iter().filter(|child| child.name == "f-shadow");
+        let shadow = shadows.next();
+        if let Some(duplicate) = shadows.next() {
+            return Err(with_name(invalid_declaration(
+                html,
+                inner_start + duplicate.open.start,
+                "duplicate direct-child <f-shadow> declaration",
+            )));
+        }
         let template = children.iter().find(|child| child.name == "template");
         let (content_range, template_tag) = if let Some(template) = template {
             let content = &inner_html[template.content.clone()];
@@ -317,41 +326,85 @@ pub fn parse_f_templates(html: &str) -> Result<Vec<FTemplate>, RenderError> {
                 start..start + content.trim().len(),
                 Some(template.open.clone()),
             )
-        } else if host.is_some() {
+        } else if host.is_some() || shadow.is_some() {
             (0..inner_html.len(), None)
         } else {
             extract_template_content(inner_html)
         };
-        let shadowroot_attributes = template_tag
+        let inner_shadowroot_attributes = template_tag
             .as_ref()
             .map(|range| {
                 collect_shadowroot_attributes(&parse_element_attributes(&inner_html[range.clone()]))
             })
             .unwrap_or_default();
+        let shadowroot_attributes = if let Some(shadow) = shadow {
+            shadow_declaration_attributes(&parse_element_attributes(
+                &inner_html[shadow.open.clone()],
+            ))
+            .map_err(|message| {
+                with_name(invalid_declaration(
+                    html,
+                    inner_start + shadow.open.start,
+                    &message,
+                ))
+            })?
+        } else {
+            // TODO(#7800): Remove outer/inner template shadowroot forwarding in vNext.
+            let has_inner_mode = inner_shadowroot_attributes
+                .iter()
+                .any(|(name, _)| matches!(name.as_str(), "shadowrootmode" | "shadowroot"));
+            let mut merged = inner_shadowroot_attributes;
+            merged.extend(
+                attrs
+                    .iter()
+                    .filter(|(name, _)| {
+                        !has_inner_mode
+                            || !(name.eq_ignore_ascii_case("shadowrootmode")
+                                || name.eq_ignore_ascii_case("shadowroot"))
+                    })
+                    .cloned(),
+            );
+            collect_shadowroot_attributes(&merged)
+        };
         let host_tag = host.map(|host| host.open.clone());
         let content = &inner_html[content_range.clone()];
         let host_attributes = host_tag.as_ref()
             .map(|range| parse_element_attribute_parts(&inner_html[range.clone()]))
             .unwrap_or_default();
         let host_offset = inner_start + host_tag.map(|range| range.start).unwrap_or(0);
-        let (content, bindings) = if let Some(host) = host.filter(|_| template_tag.is_none()) {
-            let before = &inner_html[..host.open.start];
-            let after = &inner_html[host.end..];
-            let mut bindings = crate::binding_metadata::collect_bindings(
-                before,
-                inner_start,
-                &[],
-                inner_start,
-                &mut source_locations,
-            );
+        let (content, bindings) = if template_tag.is_none() && (host.is_some() || shadow.is_some()) {
+            let mut content = String::new();
+            let mut bindings = Vec::new();
+            let mut cursor = 0;
+            for child in children
+                .iter()
+                .filter(|child| is_metadata_declaration(&child.name))
+            {
+                let before = &inner_html[cursor..child.open.start];
+                bindings.extend(crate::binding_metadata::collect_bindings(
+                    before,
+                    inner_start + cursor,
+                    if child.name == "f-host" {
+                        &host_attributes
+                    } else {
+                        &[]
+                    },
+                    inner_start + child.open.start,
+                    &mut source_locations,
+                ));
+                content.push_str(before);
+                cursor = child.end;
+            }
+            let after = &inner_html[cursor..];
             bindings.extend(crate::binding_metadata::collect_bindings(
                 after,
-                inner_start + host.end,
-                &host_attributes,
-                host_offset,
+                inner_start + cursor,
+                &[],
+                inner_start + cursor,
                 &mut source_locations,
             ));
-            (format!("{before}{after}").trim().to_string(), bindings)
+            content.push_str(after);
+            (content.trim().to_string(), bindings)
         } else {
             let bindings = crate::binding_metadata::collect_bindings(
                 content,
@@ -380,6 +433,47 @@ fn invalid_declaration(html: &str, at: usize, message: &str) -> RenderError {
         message: message.to_string(),
     }
     .at(html, at)
+}
+
+fn is_metadata_declaration(name: &str) -> bool {
+    matches!(name, "f-host" | "f-shadow")
+}
+
+fn shadow_declaration_attributes(
+    attrs: &[(String, Option<String>)],
+) -> Result<Vec<(String, Option<String>)>, String> {
+    let mut mode = "open".to_string();
+    let mut flags = Vec::new();
+    let mut seen = Vec::new();
+    for (name, value) in attrs {
+        let name = name.to_ascii_lowercase();
+        if seen.contains(&name) {
+            continue;
+        }
+        seen.push(name.clone());
+        if value
+            .as_deref()
+            .is_some_and(|value| value.contains(['{', '}']))
+        {
+            return Err("<f-shadow> configuration must be static".to_string());
+        }
+        match name.as_str() {
+            "mode" => {
+                let value = value.as_deref().unwrap_or("");
+                if !matches!(value, "open" | "closed") {
+                    return Err("<f-shadow> mode must be 'open' or 'closed'".to_string());
+                }
+                mode = value.to_string();
+            }
+            "delegatesfocus" | "clonable" | "serializable" => {
+                flags.push((format!("shadowroot{name}"), None));
+            }
+            _ => return Err(format!("unsupported <f-shadow> attribute '{name}'")),
+        }
+    }
+    let mut result = vec![("shadowrootmode".to_string(), Some(mode))];
+    result.extend(flags);
+    Ok(result)
 }
 
 struct DeclarationChild {
@@ -414,14 +508,14 @@ fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError
         }
         let end = find_tag_end(html, at)
             .ok_or_else(|| invalid_declaration(html, at, "unclosed declaration opening tag"))?;
-        if name == "f-host" && closing && html[name_end..end].trim() != ">" {
+        if is_metadata_declaration(&name) && closing && html[name_end..end].trim() != ">" {
             return Err(invalid_declaration(
                 html,
                 at,
-                "malformed </f-host> declaration",
+                &format!("malformed </{name}> declaration"),
             ));
         }
-        if name == "f-host"
+        if is_metadata_declaration(&name)
             && !closing
             && parse_element_attribute_parts(&html[at..end])
                 .iter()
@@ -430,16 +524,19 @@ fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError
             return Err(invalid_declaration(
                 html,
                 at,
-                "malformed <f-host> opening tag",
+                &format!("malformed <{name}> opening tag"),
             ));
         }
         if closing {
             if let Some(index) = stack.iter().rposition(|(tag, _, _)| tag == &name) {
-                if stack[index + 1..].iter().any(|(tag, _, _)| tag == "f-host") {
+                if let Some((tag, _, _)) = stack[index + 1..]
+                    .iter()
+                    .find(|(tag, _, _)| is_metadata_declaration(tag))
+                {
                     return Err(invalid_declaration(
                         html,
                         at,
-                        "unclosed <f-host> declaration",
+                        &format!("unclosed <{tag}> declaration"),
                     ));
                 }
                 let (_, open, content_start) = stack[index].clone();
@@ -452,11 +549,11 @@ fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError
                         end,
                     });
                 }
-            } else if name == "f-host" {
+            } else if is_metadata_declaration(&name) {
                 return Err(invalid_declaration(
                     html,
                     at,
-                    "unexpected </f-host> declaration",
+                    &format!("unexpected </{name}> declaration"),
                 ));
             }
         } else {
@@ -481,11 +578,11 @@ fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError
                 .trim_end_matches('>')
                 .trim_end()
                 .ends_with('/');
-            if name == "f-host" && self_closing {
+            if is_metadata_declaration(&name) && self_closing {
                 return Err(invalid_declaration(
                     html,
                     at,
-                    "<f-host> requires an explicit closing tag",
+                    &format!("<{name}> requires an explicit closing tag"),
                 ));
             }
             if !void && !self_closing {
@@ -500,14 +597,14 @@ fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError
         }
         pos = end;
     }
-    if let Some((_, at, _)) = stack
+    if let Some((name, at, _)) = stack
         .iter()
-        .find(|(name, _, _)| name == "f-host")
+        .find(|(name, _, _)| is_metadata_declaration(name))
     {
         return Err(invalid_declaration(
             html,
             *at,
-            "unclosed <f-host> declaration",
+            &format!("unclosed <{name}> declaration"),
         ));
     }
     Ok(children)

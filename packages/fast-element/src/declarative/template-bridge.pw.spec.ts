@@ -166,6 +166,129 @@ test.describe("DeclarativeTemplateBridge", () => {
 });
 
 test.describe("declarativeTemplate", () => {
+    test("configures shadow roots from f-shadow and retains legacy inputs", async ({
+        page,
+    }) => {
+        await page.goto("/");
+        const results = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                declarativeTemplate,
+                uniqueElementName,
+            } = await import("/declarative-main.js");
+            const results = [];
+            for (const [outer, inner, shadow] of [
+                [
+                    "",
+                    "",
+                    '<f-shadow mode="closed" delegatesFocus clonable serializable></f-shadow>',
+                ],
+                [
+                    'shadowrootmode="closed" shadowrootdelegatesfocus',
+                    'shadowrootmode="closed"',
+                    "<f-shadow></f-shadow>",
+                ],
+                ['shadowrootmode="closed" shadowrootdelegatesfocus', "", ""],
+                ["", 'shadowrootmode="closed" shadowrootdelegatesfocus', ""],
+                [
+                    'shadowrootmode="open" shadowrootdelegatesfocus',
+                    'shadowroot="closed"',
+                    "",
+                ],
+            ]) {
+                const name = uniqueElementName();
+                document.body.insertAdjacentHTML(
+                    "beforeend",
+                    `<f-template hidden name="${name}" ${outer}><template ${inner}><span>content</span></template>${shadow}</f-template>`,
+                );
+                class TestElement extends FASTElement {}
+                await TestElement.define({ name, template: declarativeTemplate() });
+                const definition = FASTElementDefinition.getByType(TestElement);
+                const element = document.createElement(name);
+                document.body.appendChild(element);
+                results.push({
+                    mode: definition.shadowOptions.mode,
+                    delegatesFocus: definition.shadowOptions.delegatesFocus ?? false,
+                    clonable: definition.shadowOptions.clonable ?? false,
+                    serializable: definition.shadowOptions.serializable ?? false,
+                    closed: element.shadowRoot === null,
+                    hasShadowNode:
+                        element.shadowRoot?.querySelector("f-shadow") !== null &&
+                        element.shadowRoot !== null,
+                    registered: customElements.get("f-shadow") !== undefined,
+                });
+            }
+            return results;
+        });
+        expect(results).toEqual([
+            {
+                mode: "closed",
+                delegatesFocus: true,
+                clonable: true,
+                serializable: true,
+                closed: true,
+                hasShadowNode: false,
+                registered: false,
+            },
+            {
+                mode: "open",
+                delegatesFocus: false,
+                clonable: false,
+                serializable: false,
+                closed: false,
+                hasShadowNode: false,
+                registered: false,
+            },
+            ...Array.from({ length: 3 }, () => ({
+                mode: "closed",
+                delegatesFocus: true,
+                clonable: false,
+                serializable: false,
+                closed: true,
+                hasShadowNode: false,
+                registered: false,
+            })),
+        ]);
+    });
+
+    test("rejects duplicate and invalid shadow declarations", async ({ page }) => {
+        await page.goto("/");
+        const errors = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const { FASTElement, declarativeTemplate, uniqueElementName } = await import(
+                "/declarative-main.js"
+            );
+            const errors: string[] = [];
+            for (const shadow of [
+                "<f-shadow></f-shadow><f-shadow></f-shadow>",
+                '<f-shadow mode="invalid"></f-shadow>',
+                '<f-shadow mode="{{mode}}"></f-shadow>',
+                '<f-shadow delegatesFocus="{{flag}}"></f-shadow>',
+                "<f-shadow unknown></f-shadow>",
+            ]) {
+                const name = uniqueElementName();
+                document.body.insertAdjacentHTML(
+                    "beforeend",
+                    `<f-template hidden name="${name}">${shadow}<template></template></f-template>`,
+                );
+                class TestElement extends FASTElement {}
+                try {
+                    await TestElement.define({ name, template: declarativeTemplate() });
+                    errors.push("unexpected success");
+                } catch (error) {
+                    errors.push(String(error));
+                }
+            }
+            return errors;
+        });
+        expect(errors[0]).toContain("only be one direct <f-shadow>");
+        for (const error of errors.slice(1)) {
+            expect(error).toContain("Invalid shadow-root configuration");
+        }
+    });
+
     test("uses f-host defaults and bindings during client rendering", async ({
         page,
     }) => {

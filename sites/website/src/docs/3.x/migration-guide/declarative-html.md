@@ -44,6 +44,7 @@ Key migration points:
 5. Replace `prepare()` with standard element lifecycle code.
 6. Update declarative event handlers to use `$e` instead of bare `e`.
 7. Move declarative host attributes and bindings to a direct `<f-host>` child.
+8. Use a direct `<f-shadow>` child for static shadow-root configuration.
 
 ## Update imports
 
@@ -209,14 +210,15 @@ Move legacy host attributes and bindings from the inner `<template>` or outer
 <!-- After -->
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
 
 Keep definition metadata such as `name` on `<f-template>` and shadow content
 inside `<template>`. The inner template no longer supplies host attributes or
-bindings, including events. Existing `shadowroot*` configuration remains Rust
-build metadata; do not move it to `<f-host>`.
+bindings, including events. Put static shadow-root configuration on a separate
+optional direct `<f-shadow>` child, not on `<f-host>` or the content template.
 
 Use at most one direct `<f-host>` and always write `</f-host>`, not self-closing
 syntax. Runtime/build processing consumes it as metadata; it is never
@@ -236,6 +238,26 @@ component-owned after hydration and can then update the host.
 This migration is only for declarative `<f-template>` markup. Core JavaScript
 `html` tagged templates still support `<template ...>` host bindings and should
 not be migrated. See [Host Attributes and Bindings](/docs/3.x/declarative-templates/f-templates/#host-attributes-and-bindings).
+
+## Move shadow-root configuration to f-shadow
+
+Use at most one direct-child
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` with an
+explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
+boolean flags use presence and attribute names are case-insensitive.
+Configuration is static; binding expressions are unsupported.
+
+When present, `<f-shadow>` replaces the complete legacy shadow configuration,
+not just the supplied options. The runtime updates `definition.shadowOptions`
+before registration. SSR maps the options to native `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+attributes. The metadata is not rendered into the component or registered as a
+custom element. See [Shadow-Root Configuration](/docs/3.x/declarative-templates/f-templates/#shadow-root-configuration).
+
+Legacy shadow-configuration compatibility is scheduled for removal in a
+breaking release under tracking issue #7800, milestone **FAST Element vNext**.
+Use `<f-shadow>` for new and migrated definitions; native DSD output and core
+JavaScript `html` tagged-template examples do not need migration.
 
 ## Update declarative attribute mapping
 
@@ -392,7 +414,8 @@ the script module loads.
 9. If declarative output is server-rendered, complete the
    [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
 10. Move legacy host attributes and bindings to an optional direct `<f-host>`
-    child with an explicit closing tag, leaving definition and shadow-root
-    metadata in place.
+    child with an explicit closing tag, leaving definition metadata in place.
+11. Put static shadow-root configuration on an optional single direct
+    `<f-shadow>` child, leaving the inner `<template>` for content only.
 
 {% endraw %}

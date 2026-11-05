@@ -90,6 +90,13 @@ metadata, not registered as a custom element or rendered into the component
 shadow DOM. See [Host Attributes and Bindings](/docs/3.x/declarative-templates/f-templates/#host-attributes-and-bindings)
 for syntax, defaults, and hydration ownership.
 
+An optional single direct `<f-shadow>` child supplies static shadow-root
+configuration, while the inner `<template>` supplies content only. See
+[Shadow-Root Configuration](/docs/3.x/declarative-templates/f-templates/#shadow-root-configuration)
+for mode and boolean flags. The runtime consumes this metadata and updates
+`definition.shadowOptions` before registration; it does not render or register
+`<f-shadow>` as a custom element.
+
 Use `hidden` on document-embedded definitions to keep metadata out of layout
 and tab order before JavaScript loads: an unregistered `<f-host>` is not inert
 HTML. This `hidden` is definition-only and never forwarded to the component host.

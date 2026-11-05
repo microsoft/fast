@@ -74,8 +74,9 @@ When connected to the DOM it:
 1. Registers itself with the declarative template bridge using its registry and
    `name` attribute.
 2. Publishes a template when a matching FAST element definition requests one.
-3. Consumes an optional direct `<f-host>` as host metadata and delegates
-   declarative binding parsing to `TemplateParser`, producing FAST
+3. Consumes optional direct `<f-host>` host metadata and `<f-shadow>` static
+   shadow-root metadata, updates `definition.shadowOptions` before registration,
+   and delegates declarative binding parsing to `TemplateParser`, producing FAST
    `ViewTemplate` strings and values with the inner `<template>` as shadow content.
 4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
@@ -97,7 +98,7 @@ properties.
 
 Outer `<f-template>` attributes are definition metadata only; inner
 `<template>` attributes no longer supply host attributes or bindings, including
-events. `shadowroot*` configuration remains Rust build metadata. This
+events. `<f-shadow>` supplies static shadow-root configuration. This
 declarative split does not change core `html` tagged-template host bindings.
 See [host syntax and an example](./syntax.md#host-attributes-and-bindings).
 
@@ -107,6 +108,21 @@ definitions should use `<f-template hidden name="...">` to keep metadata out
 of layout and tab order before JavaScript loads. This `hidden` is
 definition-only and never forwarded to the component host. No global
 stylesheet or JavaScript hiding mechanism is planned.
+
+### `<f-shadow>` — shadow-root metadata
+
+At most one direct `<f-shadow>` configures the shadow root; it requires an
+explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`.
+`delegatesFocus`, `clonable`, and `serializable` use boolean presence semantics;
+attribute names are case-insensitive. Bindings are unsupported. When present,
+the declaration replaces the complete legacy shadow configuration rather
+than merging, and the runtime updates `definition.shadowOptions` before
+registration. It is not rendered into the component or registered as a custom
+element. The inner `<template>` supplies content only.
+
+SSR maps these options to `shadowrootmode`, `shadowrootdelegatesfocus`,
+`shadowrootclonable`, and `shadowrootserializable`. See the
+[configuration reference](./syntax.md#shadow-root-configuration).
 
 ### `TemplateParser` — declarative HTML parser
 

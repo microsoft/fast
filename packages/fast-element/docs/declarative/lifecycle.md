@@ -83,6 +83,10 @@ The lifecycle flow during this phase:
    An optional direct `<f-host>` supplies host metadata separately from inner
    `<template>` shadow content. It is consumed, not registered as a custom
    element or rendered into the component shadow DOM.
+   An optional single direct `<f-shadow>` supplies static shadow configuration
+   and updates `definition.shadowOptions` before platform registration. It is
+   consumed as metadata, not rendered or registered as a custom element; see
+   [shadow-root configuration](./syntax.md#shadow-root-configuration).
 4. **Template Attachment**: The concrete `ViewTemplate` is returned to
    the subclass `define()` call, which assigns it to the definition before platform
    registration completes.

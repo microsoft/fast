@@ -307,8 +307,33 @@ The build-time renderer in `@microsoft/fast-build` emits supported initial
 `<f-host>` attribute values; the client runtime applies defaults and activates
 dynamic host bindings. Outer `<f-template>` attributes are definition metadata
 only. Inner `<template>` attributes no longer supply host attributes or bindings,
-including events. `shadowroot*` configuration remains Rust build metadata, not
-host attributes. See the [declarative host migration](/docs/3.x/migration-guide/declarative-html/#move-host-attributes-and-bindings-to-f-host).
+including events. Shadow-root configuration comes from static `<f-shadow>`
+metadata, not host attributes. See the [declarative host migration](/docs/3.x/migration-guide/declarative-html/#move-host-attributes-and-bindings-to-f-host).
+
+## Shadow-Root Configuration
+
+Use an optional single direct `<f-shadow>` child to configure the shadow root;
+the inner `<template>` supplies content only:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+`mode` defaults to `open` and accepts `open`/`closed`. The boolean
+`delegatesFocus`, `clonable`, and `serializable` flags use presence; attribute
+names are case-insensitive. Configuration is static, not bindable. Always
+include an explicit closing tag. When present, `<f-shadow>` replaces the
+complete legacy shadow configuration rather than merging. The metadata is
+never rendered into the component or registered as a custom element.
+
+SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
+`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
+`serializable` to `shadowrootserializable` on the native DSD output template.
+The browser runtime updates `definition.shadowOptions` before registration.
 
 ## Using `@microsoft/fast-build`
 

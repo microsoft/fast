@@ -235,6 +235,7 @@ component host, separate from the inner template's shadow content:
 ```html
 <f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template><slot></slot></template>
 </f-template>
 ```
@@ -256,7 +257,16 @@ stylesheet or JavaScript hiding mechanism is planned.
 
 Outer `<f-template>` attributes are definition metadata only. The inner
 `<template>` no longer supplies host attributes or bindings, including events;
-`shadowroot*` configuration remains Rust build metadata, not host attributes.
+shadow-root configuration belongs on an optional single direct-child
+`<f-shadow>`, not on the content template or `<f-host>`.
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` is
+static metadata, not rendered content or a registered custom element. `mode`
+defaults to `open` and accepts `open` or `closed`; the boolean flags use
+presence, and attribute names are case-insensitive. Bindings are not supported.
+When present, it replaces the complete legacy shadow configuration rather
+than merging with it. The browser runtime updates `definition.shadowOptions`
+before registration. SSR maps the options to native DSD attributes; see
+[shadow-root configuration](./docs/declarative/syntax.md#shadow-root-configuration).
 Core JavaScript `html` tagged templates still support `<template ...>` host
 bindings. See the [declarative host migration](./docs/migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
 

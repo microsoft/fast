@@ -608,16 +608,25 @@ the imperative `html` API:
   publisher supplies the definition template and later duplicates do not
   reassign it.
 - Declarative definitions separate outer `<f-template>` definition metadata,
-  optional direct `<f-host>` host metadata, and inner `<template>` shadow
-  content. At most one `<f-host>` is allowed, with an explicit closing tag.
+  optional direct `<f-host>` host metadata, optional direct `<f-shadow>`
+  shadow-root metadata, and inner `<template>` shadow content. At most one
+  `<f-host>` is allowed, with an explicit closing tag.
   Runtime/build processing consumes it without registering a custom element or
   rendering it into the component shadow DOM. Static host attributes are
   defaults that preserve authored instance attributes; dynamic host bindings are
   component-owned after hydration. SSR emits supported initial attributes and
   skips client-only events/properties. Inner-template attributes, including
-  events, no longer supply declarative host bindings; `shadowroot*` remains
-  Rust build metadata. This does not change core `html` tagged-template
-  `<template ...>` host binding support.
+  events, no longer supply declarative host bindings. This does not change
+  core `html` tagged-template `<template ...>` host binding support.
+- At most one direct `<f-shadow>` supplies static shadow configuration, with an
+  explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
+  `delegatesFocus`, `clonable`, and `serializable` are presence-based flags.
+  Attribute names are case-insensitive; bindings are unsupported. When present,
+  this metadata replaces the complete legacy shadow configuration rather than
+  merging, and updates `definition.shadowOptions` before platform registration.
+  It is neither registered as a custom element nor rendered into the component.
+  SSR maps the options to `shadowrootmode`, `shadowrootdelegatesfocus`,
+  `shadowrootclonable`, and `shadowrootserializable`, respectively.
 - Unregistered `<f-host>` elements are not inert HTML: attributes such as
   `tabindex` can affect the declaration outside the inner `<template>`.
   Document-embedded definitions should use `<f-template hidden name="...">`

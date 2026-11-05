@@ -51,7 +51,7 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and v3 data-free or opt-in v2 indexed marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; fallible `<f-template>` parser. Stored bodies use `escape_code_sample_elements`. A single optional direct `<f-host>` supplies host attributes; the inner `<template>` supplies content and `shadowroot*` configuration only. |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; fallible `<f-template>` parser. Stored bodies use `escape_code_sample_elements`. A single optional direct `<f-host>` supplies host attributes; an optional single direct `<f-shadow>` supplies static shadow-root configuration; the inner `<template>` supplies content only. |
 | `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 | `f_template.rs` | `compose_f_template_styles` — in-memory insertion of a `<style>` element into an `<f-template>` definition's inner `<template>`, with no filesystem requirement |
@@ -432,7 +432,12 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      [light DOM children]
    </my-button>
    ```
-   The `<template>` receives any `shadowroot*` attributes declared on the source inner `<template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+   The native DSD `<template>` receives normalized configuration from the
+   optional single direct `<f-shadow>`: `mode` maps to `shadowrootmode`,
+   `delegatesFocus` to `shadowrootdelegatesfocus`, `clonable` to
+   `shadowrootclonable`, and `serializable` to `shadowrootserializable`.
+   The metadata declaration itself is not rendered or registered as a custom
+   element.
 
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe="N"` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
@@ -640,7 +645,13 @@ For each glob pattern:
 - Verifies the character after `<f-template` is ASCII whitespace, `/`, or `>` to avoid matching non-`f-template` tags such as `<f-template-x>`.
 - Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
 - Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
-- Collects unique `shadowroot`-prefixed attributes from the direct inner `<template>`, preserving boolean attributes as `None` and lowercasing attribute names.
+- Reads an optional single direct `<f-shadow>` as static configuration, with an
+  explicit closing tag. `mode` defaults to `open` and accepts `open`/`closed`;
+  `delegatesFocus`, `clonable`, and `serializable` are presence-based flags.
+  Attribute names are case-insensitive and bindings are unsupported.
+  When present, it replaces the complete legacy shadow configuration rather
+  than merging. Normalized SSR names populate `shadowrootAttributes`, with
+  boolean attributes represented as `None`.
 - Extracts the inner HTML between `>` and a matching `</f-template>` end tag, allowing ASCII whitespace before the closing `>`.
 - Scans direct children, matching nested template closing tags and skipping comments/raw-text bodies. At most one direct `<f-host>` supplies host attributes. Only the inner `<template>` body supplies rendered content; host children are discarded. Definition attributes and other inner-template attributes are never forwarded as host attributes.
 
@@ -766,7 +777,13 @@ Calls `locator::parse_f_templates` (the same function used by `Locator::from_pat
 ]
 ```
 
-`name` is `null` when the `<f-template>` element has no `name` attribute. The `shadowrootAttributes` array preserves forwarded `shadowroot*` attributes as `{name, value}` metadata, using `null` for boolean attributes. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+`name` is `null` when the `<f-template>` element has no `name` attribute. The
+`shadowrootAttributes` array carries normalized `<f-shadow>` options as native
+DSD `{name, value}` metadata, using `null` for boolean attributes. The
+`@microsoft/fast-build` CLI uses this export to parse HTML files without
+reimplementing the parsing logic in JavaScript. The browser runtime consumes
+the same authored configuration into `definition.shadowOptions` before
+registration.
 
 ### `render_with_templates`
 

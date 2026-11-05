@@ -25,6 +25,10 @@ pub enum ConvertError {
     MultipleHosts { count: usize },
     /// Host metadata has malformed HTML tag syntax.
     InvalidHostDeclaration,
+    /// More than one direct shadow-root declaration was authored.
+    MultipleShadows { count: usize },
+    /// Shadow-root metadata is malformed or unsupported.
+    InvalidShadowDeclaration { reason: String },
     /// An HTML element was not closed.
     UnclosedElement { tag: String, context: ErrorContext },
     /// An opening tag was not terminated with `>`.
@@ -154,6 +158,8 @@ impl ConvertError {
             Self::MultipleInnerTemplates { .. } => "multiple-inner-templates",
             Self::MultipleHosts { .. } => "multiple-hosts",
             Self::InvalidHostDeclaration => "invalid-host-declaration",
+            Self::MultipleShadows { .. } => "multiple-shadows",
+            Self::InvalidShadowDeclaration { .. } => "invalid-shadow-declaration",
             Self::UnclosedElement { .. } => "unclosed-element",
             Self::UnclosedTag { .. } => "unclosed-tag",
             Self::MissingValueAttribute { .. } => "missing-value-attribute",
@@ -321,6 +327,8 @@ impl fmt::Display for ConvertError {
         match self {
             Self::MultipleHosts { count } => write!(f, "expected at most one direct <f-host> declaration, found {count}"),
             Self::InvalidHostDeclaration => write!(f, "malformed <f-host> declaration"),
+            Self::MultipleShadows { count } => write!(f, "expected at most one direct <f-shadow> declaration, found {count}"),
+            Self::InvalidShadowDeclaration { reason } => write!(f, "invalid <f-shadow> declaration: {reason}"),
             Self::Located { error, .. } => error.fmt(f),
             Self::TypedUnsupportedForSyntax { syntax } => write!(f, "typed output is only supported for syntax 'fast-v3-ts', not '{syntax}'"),
             Self::TypeSourceUnsupportedForStylesheet => write!(f, "stylesheet conversion does not accept type-source or type-source-import"),

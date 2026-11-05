@@ -8,16 +8,18 @@
 - `webui-framework-prerelease` — converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax. It converts `<f-repeat>` to `<for>`, `<f-when>` to `<if>`, `f-ref` to a braced `w-ref`, and FAST's `$e` event argument to bare `e`. `f-slotted`/`f-children` are stripped with a warning; unknown `f-*`, unsupported event context, and non-braced `f-ref` remain errors.
 - `fast-v3-ts` — emits TypeScript source that imports FAST helpers and exports `template` as an `html` tagged template.
 
-All targets accept an optional single direct-child `<f-host>`:
+All targets accept optional single direct-child `<f-host>` and `<f-shadow>`
+metadata declarations:
 
 ```html
-<f-template name="my-button">
+<f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
-    <template shadowrootmode="open"><slot></slot></template>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template><slot></slot></template>
 </f-template>
 ```
 
-Its attributes are converted on the target's host `<template>`; the metadata
+`<f-host>` attributes are converted on the target's host `<template>`; the metadata
 element and its children are never emitted. Host declarations can precede or
 follow content. Duplicate declarations fail with `multiple-hosts`; unclosed
 declarations use existing `unclosed-element`/`unclosed-tag` errors. Errors in host
@@ -25,11 +27,25 @@ attributes locate the authored `<f-host>`; content errors retain their original
 document coordinates.
 
 **Migration:** Move host attributes from publisher/inner-template attributes to
-`<f-host>`, and move shadow-root configuration to the inner `<template>`.
+`<f-host>`, and put static shadow-root configuration on `<f-shadow>`.
 Publisher attributes are definition metadata, not forwarded attributes.
-Only `shadowroot*` attributes are retained from the inner template; all its
-other attributes and bindings are ignored. Legacy publisher conflict and
-unsupported-publisher-attribute errors no longer apply.
+The inner template supplies content only; its attributes and bindings are
+ignored. Legacy publisher conflict and unsupported-publisher-attribute errors
+no longer apply.
+
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` uses
+static configuration only, not bindings. `mode` defaults to `open` and accepts
+`open`/`closed`. Boolean flags use presence; attribute names are case-insensitive.
+Use at most one direct declaration and an explicit closing tag. When present,
+it replaces the complete legacy shadow configuration rather than merging.
+The metadata is not rendered into the component or registered as a custom
+element. The browser runtime updates `definition.shadowOptions` before
+registration; SSR maps the options to `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`.
+
+Use `hidden` on document-embedded definitions to keep metadata out of layout
+and tab order before JavaScript loads. It is definition-only and never
+forwarded to the component host.
 
 ## Rust usage
 
@@ -171,7 +187,7 @@ validation errors. Context fields are now boxed `ErrorContext` values. See the
 | `unsupported-expression` | Expression is outside the converter grammar |
 | `unsupported-event-handler` | Event handler cannot be converted |
 | `unsupported-event-context` | FAST context token has no WebUI mapping |
-| `conflicting-shadow-root-mode` | Legacy variant; only inner-template shadow configuration is used |
+| `conflicting-shadow-root-mode` | Legacy variant retained for source compatibility; use `<f-shadow>` configuration |
 | `unsupported-publisher-attribute` | Legacy variant; publisher metadata is no longer forwarded |
 | `invalid-attribute-value` | Attribute lacks its required braced form |
 

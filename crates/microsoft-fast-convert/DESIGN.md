@@ -9,8 +9,8 @@ convert_template(template, syntax)
         │
         ├─ parse syntax (`webui-prerelease` | `fast-v3-ts` | `webui-framework-prerelease`)
         ├─ validate one outer `<f-template name="…">`
-        ├─ select one direct inner `<template>` and at most one direct `<f-host>`
-        ├─ normalize host attributes and inner `shadowroot*` configuration
+        ├─ select one direct inner `<template>`, at most one `<f-host>` and one `<f-shadow>`
+        ├─ normalize host attributes and static `<f-shadow>` configuration
         └─ target converter → `ConvertOutput { output, warnings }`
 
 convert_stylesheet(stylesheet, syntax, export_name)
@@ -102,8 +102,19 @@ Shared parsing selects direct children rather than counting nested templates.
 The optional direct `<f-host>` supplies host attributes and is never emitted as
 content. A second direct declaration is a located `MultipleHosts` error;
 self-closing/unclosed declarations use existing structured element/tag errors.
-Only `shadowroot*` configuration is retained from the inner `<template>`.
-Publisher metadata and legacy inner host attributes are not forwarded.
+An optional single direct `<f-shadow>` supplies static shadow configuration;
+the inner `<template>` supplies content only. Publisher metadata and legacy
+inner host attributes are not forwarded.
+
+`mode` defaults to `open` and accepts `open`/`closed`; `delegatesFocus`,
+`clonable`, and `serializable` use boolean presence semantics. Attribute names
+are case-insensitive; bindings are unsupported. An explicit closing tag is
+required. When present, `<f-shadow>` replaces the complete legacy shadow
+configuration rather than merging. It is not rendered into the component or
+registered as a custom element. The browser runtime updates
+`definition.shadowOptions` before registration; SSR maps these options to
+`shadowrootmode`, `shadowrootdelegatesfocus`, `shadowrootclonable`, and
+`shadowrootserializable`.
 
 All targets receive a normalized host `<template>` with those attributes plus
 the unchanged content body. The original template opening tag, its document

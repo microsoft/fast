@@ -456,8 +456,9 @@ Each matched `.html` file is scanned for `<f-template>` elements. The `name` att
 Template files must use the following format:
 
 ```html
-<f-template name="my-button">
+<f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template>
         <button>{{label}}</button>
     </template>
@@ -476,14 +477,28 @@ declaration placed after the inner template.
 
 **Migration:** Move all host attributes from `<f-template>` and the inner
 `<template>` to `<f-host>`. The wrapper holds definition metadata only; the inner
-template holds content and `shadowroot*` configuration only. Other inner-template
-attributes and their bindings are ignored. Duplicate direct hosts and
+template holds content only. Other inner-template attributes and their bindings
+are ignored. Duplicate direct hosts and
 malformed/unclosed declarations throw structured parser errors and fail CLI
 builds. Use an explicit `</f-host>` closing tag.
 
-`shadowroot*` attributes on the inner `<template>` are forwarded to DSD.
-`shadowrootmode` and legacy `shadowroot` default to `open`, mirror when exactly
-one value is nonempty, and preserve both explicit values when both are nonempty.
+Use an optional single direct-child
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` for
+static shadow-root configuration. `mode` defaults to `open` and accepts
+`open`/`closed`. Boolean flags use presence, attribute names are case-insensitive,
+and bindings are unsupported. Always include an explicit closing tag. When
+present, `<f-shadow>` replaces the complete legacy shadow configuration rather
+than merging; it is never rendered into the component or registered as a
+custom element.
+
+SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
+`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
+`serializable` to `shadowrootserializable`. The browser runtime applies the
+same configuration to `definition.shadowOptions` before registration.
+Use `hidden` on document-embedded `<f-template>` definitions to keep metadata
+out of layout and tab order before JavaScript loads; it is definition-only and
+never forwarded to the component host.
+
 Conversion targets transfer `<f-host>` attributes to their host-template
 representation, without emitting the metadata node or its children.
 

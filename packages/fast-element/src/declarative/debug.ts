@@ -5,4 +5,8 @@ export const debugMessages = {
         "There can only be one <template> inside the <f-template>; remove any extra <template> elements and keep exactly one for ${name}.",
     [2002 /* moreThanOneHostProvided */]:
         "There can only be one direct <f-host> inside the <f-template>; remove extra <f-host> declarations from ${name}.",
+    [2003 /* moreThanOneShadowProvided */]:
+        "There can only be one direct <f-shadow> inside the <f-template>; remove extra <f-shadow> declarations from ${name}.",
+    [2004 /* invalidShadowConfiguration */]:
+        "Invalid shadow-root configuration for ${name}: ${reason}",
 };

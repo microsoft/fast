@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Render declarative host attributes from f-host instead of the inner template element.",
+  "comment": "Render declarative host attributes from f-host and shadow-root options from f-shadow, retaining legacy shadowroot configuration temporarily.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

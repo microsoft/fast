@@ -57,9 +57,19 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
         .filter(|(tag, _)| tag == "f-host")
         .map(|(_, at)| *at)
         .collect();
+    let shadows: Vec<_> = direct
+        .iter()
+        .filter(|(tag, _)| tag == "f-shadow")
+        .map(|(_, at)| *at)
+        .collect();
     if hosts.len() > 1 {
         return Err(ConvertError::MultipleHosts { count: hosts.len() }
             .at(template, f_template_end + hosts[1])
+            .in_template(name));
+    }
+    if shadows.len() > 1 {
+        return Err(ConvertError::MultipleShadows { count: shadows.len() }
+            .at(template, f_template_end + shadows[1])
             .in_template(name));
     }
     match inner_templates.len() {
@@ -86,6 +96,27 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
         .into_iter()
         .filter(|attr| attr.name.to_ascii_lowercase().starts_with("shadowroot"))
         .collect();
+    if let Some(shadow) = shadows.first() {
+        let shadow_end = find_tag_end(body, *shadow).expect("validated shadow opening tag");
+        attrs = shadow_declaration_attributes(&body[*shadow..shadow_end])
+            .map_err(|error| error.at(template, f_template_end + shadow).in_template(name))?;
+    } else {
+        // TODO(#7800): Remove outer/inner template shadowroot forwarding in vNext.
+        let has_inner_mode = attrs.iter().any(|attr| {
+            attr.name.eq_ignore_ascii_case("shadowrootmode")
+                || attr.name.eq_ignore_ascii_case("shadowroot")
+        });
+        for attr in parse_attributes(f_template_tag) {
+            if attr.name.to_ascii_lowercase().starts_with("shadowroot")
+                && !attrs.iter().any(|existing| existing.name.eq_ignore_ascii_case(&attr.name))
+                && !(has_inner_mode
+                    && (attr.name.eq_ignore_ascii_case("shadowrootmode")
+                        || attr.name.eq_ignore_ascii_case("shadowroot")))
+            {
+                attrs.push(attr);
+            }
+        }
+    }
     if let Some(host) = hosts.first() {
         let host_end = find_tag_end(body, *host).expect("validated host opening tag");
         attrs.extend(parse_attributes(&body[*host..host_end]));
@@ -107,6 +138,58 @@ pub(crate) fn parse_template_document(template: &str) -> Result<ParsedTemplate, 
     })
 }
 
+fn shadow_declaration_attributes(tag: &str) -> Result<Vec<ParsedAttribute>, ConvertError> {
+    let mut mode = "open".to_string();
+    let mut flags = Vec::new();
+    let mut seen = Vec::new();
+    for attr in parse_attributes(tag) {
+        let name = attr.name.to_ascii_lowercase();
+        if seen.contains(&name) {
+            continue;
+        }
+        seen.push(name.clone());
+        let invalid = |reason: &str| ConvertError::InvalidShadowDeclaration {
+            reason: reason.to_string(),
+        };
+        if attr
+            .value
+            .as_deref()
+            .is_some_and(|value| value.contains(['{', '}']))
+        {
+            return Err(invalid("configuration must be static"));
+        }
+        match name.as_str() {
+            "mode" => {
+                let value = attr.value.as_deref().unwrap_or("");
+                if !matches!(value, "open" | "closed") {
+                    return Err(invalid("mode must be 'open' or 'closed'"));
+                }
+                mode = value.to_string();
+            }
+            "delegatesfocus" | "clonable" | "serializable" => {
+                let name = format!("shadowroot{name}");
+                flags.push(ParsedAttribute {
+                    raw: name.clone(),
+                    name,
+                    value: None,
+                });
+            }
+            _ => return Err(invalid(&format!("unsupported attribute '{name}'"))),
+        }
+    }
+    let mut attrs = vec![ParsedAttribute {
+        name: "shadowrootmode".to_string(),
+        raw: format!("shadowrootmode=\"{mode}\""),
+        value: Some(mode),
+    }];
+    attrs.extend(flags);
+    Ok(attrs)
+}
+
+fn is_metadata_declaration(name: &str) -> bool {
+    matches!(name, "f-host" | "f-shadow")
+}
+
 fn direct_children(template: &str) -> Result<Vec<(String, usize)>, ConvertError> {
     let mut children = Vec::new();
     let mut pos = 0;
@@ -117,9 +200,12 @@ fn direct_children(template: &str) -> Result<Vec<(String, usize)>, ConvertError>
             continue;
         }
         if read_closing_tag_name(template, at)
-            .is_some_and(|name| name.eq_ignore_ascii_case("f-host"))
+            .is_some_and(|name| is_metadata_declaration(&name.to_ascii_lowercase()))
         {
-            return Err(ConvertError::InvalidHostDeclaration.at(template, at));
+            let name = read_closing_tag_name(template, at)
+                .unwrap()
+                .to_ascii_lowercase();
+            return Err(invalid_metadata_declaration(&name).at(template, at));
         }
         let Some(name) = read_tag_name(template, at) else {
             pos = at + 1;
@@ -129,12 +215,12 @@ fn direct_children(template: &str) -> Result<Vec<(String, usize)>, ConvertError>
         let end = find_tag_end(template, at).ok_or_else(|| ConvertError::UnclosedTag {
             context: template_context(template, at),
         })?;
-        if name == "f-host"
+        if is_metadata_declaration(&name)
             && parse_attributes(&template[at..end])
                 .iter()
                 .any(|attr| attr.name.contains(['<', '>', '"', '\'', '=']))
         {
-            return Err(ConvertError::InvalidHostDeclaration.at(template, at));
+            return Err(invalid_metadata_declaration(&name).at(template, at));
         }
         children.push((name.clone(), at));
         if matches!(
@@ -165,6 +251,16 @@ fn direct_children(template: &str) -> Result<Vec<(String, usize)>, ConvertError>
         }
     }
     Ok(children)
+}
+
+fn invalid_metadata_declaration(name: &str) -> ConvertError {
+    if name == "f-shadow" {
+        ConvertError::InvalidShadowDeclaration {
+            reason: "malformed HTML tag".to_string(),
+        }
+    } else {
+        ConvertError::InvalidHostDeclaration
+    }
 }
 
 pub(crate) fn find_open_tags(template: &str, tag_name: &str) -> Vec<usize> {
@@ -224,7 +320,7 @@ pub(crate) fn find_matching_close(
             if let Some(name) = read_closing_tag_name(template, lt) {
                 let close_end = find_tag_end(template, lt)?;
                 if name.eq_ignore_ascii_case(tag_name) {
-                    if name.eq_ignore_ascii_case("f-host")
+                    if is_metadata_declaration(&name.to_ascii_lowercase())
                         && template[lt + 2 + name.len()..close_end].trim() != ">"
                     {
                         return None;

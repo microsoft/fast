@@ -468,6 +468,12 @@ test.describe("Host Bindings Hydration", async () => {
                 "data-legacy",
             );
             await expect(page.locator("host-event-element f-host")).toHaveCount(0);
+            await expect(page.locator("host-event-element f-shadow")).toHaveCount(0);
+            expect(
+                await page
+                    .locator("host-event-element")
+                    .evaluate(element => element.shadowRoot?.delegatesFocus),
+            ).toBe(true);
             await expect(page.locator("host-event-element span")).toHaveText("Hello");
             await context.close();
         });

@@ -451,8 +451,9 @@ Glob patterns support `*` (any characters within one path segment), `**` (any nu
 Template HTML files must wrap their content in an `<f-template>` element with a `name` attribute identifying the custom element, and an inner `<template>` element containing the template markup:
 
 ```html
-<f-template name="my-button">
+<f-template hidden name="my-button">
     <f-host role="button" tabindex="0" appearance="{{appearance}}"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
     <template>
         <button>{{label}}</button>
     </template>
@@ -485,12 +486,24 @@ stream output. The native `host_attributes` and WASM `hostAttributes` APIs remai
 unchanged.
 
 **Migration:** Move host attributes from `<f-template>` or the inner `<template>`
-to `<f-host>`. Definition-wrapper attributes are metadata only; inner-template
-attributes other than `shadowroot*` are ignored, including their bindings.
-Put shadow-root configuration on the inner `<template>`. Its `shadowroot*`
-attributes are copied to the rendered DSD template. `shadowrootmode` and legacy
-`shadowroot` default to `open`, mirror when exactly one is nonempty, and retain
-both explicit values when both are nonempty.
+to `<f-host>`. Definition-wrapper attributes are metadata only; the inner
+`<template>` supplies content only, not host attributes or bindings.
+Put static shadow-root configuration on an optional single direct `<f-shadow>`.
+
+`<f-shadow mode="open" delegatesFocus clonable serializable></f-shadow>` accepts
+`open`/`closed` mode, defaulting to `open`. Boolean flags use presence and
+attribute names are case-insensitive. Only static configuration is supported;
+bindings are not allowed. An explicit closing tag is required. When present,
+the declaration replaces the complete legacy shadow configuration rather
+than merging. It is not rendered into the component or registered as a custom
+element.
+
+SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
+`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
+`serializable` to `shadowrootserializable`. The browser runtime updates
+`definition.shadowOptions` before registration. `hidden` on document-embedded
+`<f-template>` keeps metadata out of layout and tab order before JavaScript
+loads; it is definition-only and never forwarded to the component host.
 
 `parse_f_templates` now returns a `Result`; update native calls to use `?`.
 Duplicate direct hosts, self-closing hosts, malformed opening tags, and unclosed
@@ -735,7 +748,9 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 
 - `shadowrootmode="open"` — the standard declarative shadow DOM mode emitted by default.
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
-- `shadowroot*` attributes declared on the source inner `<template>` are forwarded to the output `<template>`; `shadowrootmode` and `shadowroot` default to `open` when neither has a non-empty value, mirror when exactly one has a non-empty value, and are preserved as authored when both have explicit non-empty values.
+- Static `<f-shadow>` configuration supplies the output `shadowrootmode`,
+  `shadowrootdelegatesfocus`, `shadowrootclonable`, and
+  `shadowrootserializable` attributes.
 
 Custom elements that have no matching template in the locator are passed through verbatim.
 

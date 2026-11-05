@@ -205,8 +205,10 @@ elements connect when prerendered Declarative Shadow DOM should be reused.
 
 Move legacy host attributes and bindings, including events, from the inner
 `<template>` or outer `<f-template>` to an optional direct `<f-host>` child.
-Keep definition metadata on `<f-template>` and `shadowroot*` configuration as
-Rust build metadata. See the [before/after example and ownership rules](./fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+Keep definition metadata on `<f-template>`, content in the inner `<template>`,
+and static shadow-root configuration on an optional single direct `<f-shadow>`
+child with an explicit closing tag. See the [before/after example and ownership rules](./fast-element-3.md#declarative-host-attributes-and-bindings-v3)
+and [shadow configuration reference](../declarative/syntax.md#shadow-root-configuration).
 Core JavaScript `html` tagged-template host bindings do not need migration.
 
 ## Schema-driven maps and optional definition schema

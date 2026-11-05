@@ -373,9 +373,34 @@ activated by the client runtime.
 
 Outer `<f-template>` attributes are definition metadata only. The inner
 `<template>` no longer supplies host attributes or bindings, including events;
-`shadowroot*` configuration remains Rust build metadata. This does not change
+static shadow-root configuration comes from `<f-shadow>`. This does not change
 core JavaScript `html` tagged-template host bindings. See the
 [declarative host migration](../migration/fast-element-3.md#declarative-host-attributes-and-bindings-v3).
+
+### Shadow-root metadata from `<f-shadow>`
+
+An optional single direct `<f-shadow>` child configures the shadow root; the
+inner `<template>` supplies content only. Author an explicit closing tag:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0"></f-host>
+    <f-shadow mode="open" delegatesFocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+`mode` defaults to `open` and accepts `open`/`closed`. The boolean
+`delegatesFocus`, `clonable`, and `serializable` flags use presence; attribute
+names are case-insensitive. Only static configuration is supported. When
+present, `<f-shadow>` replaces the complete legacy shadow configuration
+rather than merging. The metadata is never rendered into the component or
+registered as a custom element.
+
+SSR maps `mode` to `shadowrootmode`, `delegatesFocus` to
+`shadowrootdelegatesfocus`, `clonable` to `shadowrootclonable`, and
+`serializable` to `shadowrootserializable` on the native DSD output template.
+The browser runtime updates `definition.shadowOptions` before registration.
 
 ### Client Side Bindings
 

@@ -10,6 +10,7 @@ import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
+import { applyShadowOptions } from "./shadow.js";
 import { attributeDirectivePrefix } from "./syntax.js";
 import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
@@ -153,6 +154,8 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         if (hosts.length > 1) {
             throw FAST.error(Message.moreThanOneHostProvided, { name });
         }
+
+        applyShadowOptions(this, templates[0], definition);
 
         const schema = definition.schema ?? new Schema(name);
         definition.schema = schema;
