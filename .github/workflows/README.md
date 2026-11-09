@@ -41,7 +41,7 @@ successfully published releases.
 
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
 
-The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching Azure CD variables and a conditional `DownloadGitHubRelease@0` task. It also enforces the strict `MarkDeployed` dependency and success condition. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline or when marker gating is weakened.
+The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching Azure CD variables and a conditional `DownloadGitHubRelease@0` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.
 
 When adding a new non-private workspace that should publish through CD:
 
