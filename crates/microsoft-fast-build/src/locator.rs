@@ -106,7 +106,7 @@ impl Locator {
                             message: e.to_string(),
                         }
                     })?;
-                    for template in parse_f_templates(&html) {
+                    for template in parse_f_templates(&html)? {
                         if let Some(name) = template.name.clone() {
                             element_entries
                                 .entry(name)
@@ -192,7 +192,7 @@ impl Locator {
     /// Declarative Shadow DOM and host attributes are empty for this entry.
     /// Use [`Locator::add_template_with_attrs`] when the rendered shadow
     /// `<template>` needs attributes such as `shadowrootmode`, or when host
-    /// attributes from the source `<f-template>`'s inner `<template>` should
+    /// attributes from the source `<f-template>`'s direct `<f-host>` should
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(element_name.to_string(), TemplateDefinition::new(
@@ -256,7 +256,10 @@ impl Locator {
 
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns names, content, host/shadow attributes and versioned binding metadata.
-pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
+///
+/// Host attributes come only from an optional single direct `<f-host>` child.
+/// Duplicate hosts and malformed/unclosed declarations return located errors.
+pub fn parse_f_templates(html: &str) -> Result<Vec<FTemplate>, RenderError> {
     let mut results = Vec::new();
     let mut search_start = 0;
     let mut source_locations = crate::binding_metadata::SourceLocations::new(html);
@@ -264,7 +267,13 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
         // Find the closing '>' of the opening <f-template ...> tag
         let tag_close = match find_tag_end(html, tag_start) {
             Some(i) => i,
-            None => break,
+            None => {
+                return Err(invalid_declaration(
+                    html,
+                    tag_start,
+                    "unclosed <f-template> opening tag",
+                ))
+            }
         };
         let open_tag = &html[tag_start..tag_close];
         let attrs = parse_element_attributes(open_tag);
@@ -272,29 +281,143 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             .iter()
             .find(|(name, _)| name.eq_ignore_ascii_case("name"))
             .and_then(|(_, value)| value.clone());
-        let shadowroot_attributes = collect_shadowroot_attributes(&attrs);
+        let with_name = |error: RenderError| match name.as_deref() {
+            Some(name) => error.in_template(name),
+            None => error,
+        };
         // Find </f-template>
         let inner_start = tag_close;
         let (inner_end, end_tag_close) = match find_html_end_tag(html, "f-template", inner_start) {
             Some(result) => result,
-            None => break,
+            None => {
+                return Err(with_name(invalid_declaration(
+                    html,
+                    tag_start,
+                    "unclosed <f-template> declaration",
+                )))
+            }
         };
         let inner_html = &html[inner_start..inner_end];
-        let (content_range, host_tag) = extract_template_content(inner_html);
+        let children = declaration_children(inner_html)
+            .map_err(|error| with_name(error.rebase(html, inner_start)))?;
+        let mut hosts = children.iter().filter(|child| child.name == "f-host");
+        let host = hosts.next();
+        if let Some(duplicate) = hosts.next() {
+            return Err(with_name(invalid_declaration(
+                html,
+                inner_start + duplicate.open.start,
+                "duplicate direct-child <f-host> declaration",
+            )));
+        }
+        let mut shadows = children.iter().filter(|child| child.name == "f-shadow");
+        let shadow = shadows.next();
+        if let Some(duplicate) = shadows.next() {
+            return Err(with_name(invalid_declaration(
+                html,
+                inner_start + duplicate.open.start,
+                "duplicate direct-child <f-shadow> declaration",
+            )));
+        }
+        let template = children.iter().find(|child| child.name == "template");
+        let (content_range, template_tag) = if let Some(template) = template {
+            let content = &inner_html[template.content.clone()];
+            let start = template.content.start + content.len() - content.trim_start().len();
+            (
+                start..start + content.trim().len(),
+                Some(template.open.clone()),
+            )
+        } else if host.is_some() || shadow.is_some() {
+            (0..inner_html.len(), None)
+        } else {
+            extract_template_content(inner_html)
+        };
+        let inner_shadowroot_attributes = template_tag
+            .as_ref()
+            .map(|range| {
+                collect_shadowroot_attributes(&parse_element_attributes(&inner_html[range.clone()]))
+            })
+            .unwrap_or_default();
+        let shadowroot_attributes = if let Some(shadow) = shadow {
+            shadow_declaration_attributes(&parse_element_attributes(
+                &inner_html[shadow.open.clone()],
+            ))
+            .map_err(|message| {
+                with_name(invalid_declaration(
+                    html,
+                    inner_start + shadow.open.start,
+                    &message,
+                ))
+            })?
+        } else {
+            // TODO(#7800): Remove outer/inner template shadowroot forwarding in vNext.
+            let has_inner_mode = inner_shadowroot_attributes
+                .iter()
+                .any(|(name, _)| matches!(name.as_str(), "shadowrootmode" | "shadowroot"));
+            let mut merged = inner_shadowroot_attributes;
+            merged.extend(
+                attrs
+                    .iter()
+                    .filter(|(name, _)| {
+                        !has_inner_mode
+                            || !(name.eq_ignore_ascii_case("shadowrootmode")
+                                || name.eq_ignore_ascii_case("shadowroot"))
+                    })
+                    .cloned(),
+            );
+            collect_shadowroot_attributes(&merged)
+        };
+        let host_tag = host.map(|host| host.open.clone());
         let content = &inner_html[content_range.clone()];
         let host_attributes = host_tag.as_ref()
             .map(|range| parse_element_attribute_parts(&inner_html[range.clone()]))
             .unwrap_or_default();
-        let bindings = crate::binding_metadata::collect_bindings(
-            content,
-            inner_start + content_range.start,
-            &host_attributes,
-            inner_start + host_tag.map(|range| range.start).unwrap_or(0),
-            &mut source_locations,
-        );
+        let host_offset = inner_start + host_tag.map(|range| range.start).unwrap_or(0);
+        let (content, bindings) = if template_tag.is_none() && (host.is_some() || shadow.is_some()) {
+            let mut content = String::new();
+            let mut bindings = Vec::new();
+            let mut cursor = 0;
+            for child in children
+                .iter()
+                .filter(|child| is_metadata_declaration(&child.name))
+            {
+                let before = &inner_html[cursor..child.open.start];
+                bindings.extend(crate::binding_metadata::collect_bindings(
+                    before,
+                    inner_start + cursor,
+                    if child.name == "f-host" {
+                        &host_attributes
+                    } else {
+                        &[]
+                    },
+                    inner_start + child.open.start,
+                    &mut source_locations,
+                ));
+                content.push_str(before);
+                cursor = child.end;
+            }
+            let after = &inner_html[cursor..];
+            bindings.extend(crate::binding_metadata::collect_bindings(
+                after,
+                inner_start + cursor,
+                &[],
+                inner_start + cursor,
+                &mut source_locations,
+            ));
+            content.push_str(after);
+            (content.trim().to_string(), bindings)
+        } else {
+            let bindings = crate::binding_metadata::collect_bindings(
+                content,
+                inner_start + content_range.start,
+                &host_attributes,
+                host_offset,
+                &mut source_locations,
+            );
+            (content.to_string(), bindings)
+        };
         results.push(FTemplate {
             name,
-            content: content.to_string(),
+            content,
             shadowroot_attributes,
             host_attributes: host_attributes.into_iter().map(|attr| (attr.name, attr.value)).collect(),
             format_version: crate::TEMPLATE_FORMAT_VERSION,
@@ -302,7 +425,189 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
         });
         search_start = end_tag_close;
     }
-    results
+    Ok(results)
+}
+
+fn invalid_declaration(html: &str, at: usize, message: &str) -> RenderError {
+    RenderError::InvalidTemplateMetadata {
+        message: message.to_string(),
+    }
+    .at(html, at)
+}
+
+fn is_metadata_declaration(name: &str) -> bool {
+    matches!(name, "f-host" | "f-shadow")
+}
+
+fn shadow_declaration_attributes(
+    attrs: &[(String, Option<String>)],
+) -> Result<Vec<(String, Option<String>)>, String> {
+    let mut mode = "open".to_string();
+    let mut flags = Vec::new();
+    let mut seen = Vec::new();
+    for (name, value) in attrs {
+        let name = name.to_ascii_lowercase();
+        if seen.contains(&name) {
+            continue;
+        }
+        seen.push(name.clone());
+        if value
+            .as_deref()
+            .is_some_and(|value| value.contains(['{', '}']))
+        {
+            return Err("<f-shadow> configuration must be static".to_string());
+        }
+        match name.as_str() {
+            "shadowrootmode" => {
+                let value = value.as_deref().unwrap_or("");
+                if !matches!(value, "open" | "closed") {
+                    return Err("<f-shadow> shadowrootmode must be 'open' or 'closed'".to_string());
+                }
+                mode = value.to_string();
+            }
+            "shadowrootdelegatesfocus" | "shadowrootclonable" | "shadowrootserializable" => {
+                flags.push((name, None));
+            }
+            _ => return Err(format!("unsupported <f-shadow> attribute '{name}'")),
+        }
+    }
+    let mut result = vec![("shadowrootmode".to_string(), Some(mode))];
+    result.extend(flags);
+    Ok(result)
+}
+
+struct DeclarationChild {
+    name: String,
+    open: std::ops::Range<usize>,
+    content: std::ops::Range<usize>,
+    end: usize,
+}
+
+/// Keep metadata selection outside content, including nested ordinary templates.
+fn declaration_children(html: &str) -> Result<Vec<DeclarationChild>, RenderError> {
+    let mut children = Vec::new();
+    let mut stack: Vec<(String, usize, usize)> = Vec::new();
+    let mut pos = 0;
+    while let Some(relative) = html[pos..].find('<') {
+        let at = pos + relative;
+        if html[at..].starts_with("<!--") {
+            pos = html[at..]
+                .find("-->")
+                .map_or(html.len(), |end| at + end + 3);
+            continue;
+        }
+        let closing = html[at..].starts_with("</");
+        let start = at + if closing { 2 } else { 1 };
+        let name_end = html[start..]
+            .find(|ch: char| ch.is_ascii_whitespace() || ch == '/' || ch == '>')
+            .map_or(html.len(), |end| start + end);
+        let name = html[start..name_end].to_ascii_lowercase();
+        if name.is_empty() || name.starts_with('!') || name.starts_with('?') {
+            pos = at + 1;
+            continue;
+        }
+        let end = find_tag_end(html, at)
+            .ok_or_else(|| invalid_declaration(html, at, "unclosed declaration opening tag"))?;
+        if is_metadata_declaration(&name) && closing && html[name_end..end].trim() != ">" {
+            return Err(invalid_declaration(
+                html,
+                at,
+                &format!("malformed </{name}> declaration"),
+            ));
+        }
+        if is_metadata_declaration(&name)
+            && !closing
+            && parse_element_attribute_parts(&html[at..end])
+                .iter()
+                .any(|attr| attr.name.contains(['<', '>', '"', '\'', '=']))
+        {
+            return Err(invalid_declaration(
+                html,
+                at,
+                &format!("malformed <{name}> opening tag"),
+            ));
+        }
+        if closing {
+            if let Some(index) = stack.iter().rposition(|(tag, _, _)| tag == &name) {
+                if let Some((tag, _, _)) = stack[index + 1..]
+                    .iter()
+                    .find(|(tag, _, _)| is_metadata_declaration(tag))
+                {
+                    return Err(invalid_declaration(
+                        html,
+                        at,
+                        &format!("unclosed <{tag}> declaration"),
+                    ));
+                }
+                let (_, open, content_start) = stack[index].clone();
+                stack.truncate(index);
+                if stack.is_empty() {
+                    children.push(DeclarationChild {
+                        name,
+                        open: open..content_start,
+                        content: content_start..at,
+                        end,
+                    });
+                }
+            } else if is_metadata_declaration(&name) {
+                return Err(invalid_declaration(
+                    html,
+                    at,
+                    &format!("unexpected </{name}> declaration"),
+                ));
+            }
+        } else {
+            let void = matches!(
+                name.as_str(),
+                "area"
+                    | "base"
+                    | "br"
+                    | "col"
+                    | "embed"
+                    | "hr"
+                    | "img"
+                    | "input"
+                    | "link"
+                    | "meta"
+                    | "param"
+                    | "source"
+                    | "track"
+                    | "wbr"
+            );
+            let self_closing = html[at..end]
+                .trim_end_matches('>')
+                .trim_end()
+                .ends_with('/');
+            if is_metadata_declaration(&name) && self_closing {
+                return Err(invalid_declaration(
+                    html,
+                    at,
+                    &format!("<{name}> requires an explicit closing tag"),
+                ));
+            }
+            if !void && !self_closing {
+                stack.push((name.clone(), at, end));
+                if matches!(name.as_str(), "script" | "style" | "textarea" | "title") {
+                    if let Some((close, _)) = find_html_end_tag(html, &name, end) {
+                        pos = close;
+                        continue;
+                    }
+                }
+            }
+        }
+        pos = end;
+    }
+    if let Some((name, at, _)) = stack
+        .iter()
+        .find(|(name, _, _)| is_metadata_declaration(name))
+    {
+        return Err(invalid_declaration(
+            html,
+            *at,
+            &format!("unclosed <{name}> declaration"),
+        ));
+    }
+    Ok(children)
 }
 
 pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Option<usize> {
@@ -314,7 +619,13 @@ pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Op
         let tag_start = pos + rel;
         let name_start = tag_start + 1;
 
-        if let Some(end) = crate::attribute::style_element_end(html, tag_start) {
+        if html[tag_start..].starts_with("<!--") {
+            pos = html[tag_start..]
+                .find("-->")
+                .map_or(html.len(), |end| tag_start + end + 3);
+            continue;
+        }
+        if let Some(end) = raw_element_end(html, tag_start) {
             pos = end;
             continue;
         }
@@ -330,7 +641,7 @@ pub(crate) fn find_html_start_tag(html: &str, tag_name: &str, from: usize) -> Op
             return Some(tag_start);
         }
 
-        pos = name_start;
+        pos = find_tag_end(html, tag_start)?;
     }
 
     None
@@ -340,15 +651,28 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
     let bytes = html.as_bytes();
     let tag_name = tag_name.as_bytes();
     let mut pos = from;
+    let mut depth = 1;
 
     while let Some(rel) = html[pos..].find('<') {
         let tag_start = pos + rel;
-        if let Some(end) = crate::attribute::style_element_end(html, tag_start) {
+        if html[tag_start..].starts_with("<!--") {
+            pos = html[tag_start..]
+                .find("-->")
+                .map_or(html.len(), |end| tag_start + end + 3);
+            continue;
+        }
+        if let Some(end) = raw_element_end(html, tag_start) {
             pos = end;
             continue;
         }
         if !html[tag_start..].starts_with("</") {
-            pos = tag_start + 1;
+            let name_start = tag_start + 1;
+            if starts_with_ascii_case_insensitive(bytes, name_start, tag_name)
+                && is_html_tag_name_boundary(bytes.get(name_start + tag_name.len()).copied())
+            {
+                depth += 1;
+            }
+            pos = find_tag_end(html, tag_start)?;
             continue;
         }
         let name_start = tag_start + 2;
@@ -361,14 +685,39 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
             }
 
             if tag_end < bytes.len() && bytes[tag_end] == b'>' {
-                return Some((tag_start, tag_end + 1));
+                depth -= 1;
+                if depth == 0 {
+                    return Some((tag_start, tag_end + 1));
+                }
             }
         }
 
-        pos = name_start;
+        pos = find_tag_end(html, tag_start)?;
     }
 
     None
+}
+
+fn raw_element_end(html: &str, at: usize) -> Option<usize> {
+    let name = crate::attribute::read_tag_name_slice(html, at)?;
+    if !["style", "script", "textarea", "title"]
+        .iter()
+        .any(|raw| name.eq_ignore_ascii_case(raw))
+    {
+        return None;
+    }
+    let mut pos = find_tag_end(html, at)?;
+    while let Some(relative) = html[pos..].find("</") {
+        let close = pos + relative;
+        let start = close + 2;
+        if starts_with_ascii_case_insensitive(html.as_bytes(), start, name.as_bytes())
+            && is_html_tag_name_boundary(html.as_bytes().get(start + name.len()).copied())
+        {
+            return Some(find_tag_end(html, close).unwrap_or(html.len()));
+        }
+        pos = start;
+    }
+    Some(html.len())
 }
 
 pub(crate) fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8]) -> bool {
@@ -579,7 +928,7 @@ mod tests {
         <button>{{label}}</button>
     </template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, Some("my-button".to_string()));
         assert_eq!(results[0].content, "<button>{{label}}</button>");
@@ -595,7 +944,7 @@ mod tests {
 <f-template name="my-b">
     <template><div>B</div></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 2);
         assert_eq!(results[0].name, Some("my-a".to_string()));
         assert_eq!(results[0].content, "<span>A</span>");
@@ -610,7 +959,7 @@ mod tests {
         let html = r#"<f-template>
     <template><span>no name</span></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, None);
         assert!(results[0].host_attributes.is_empty());
@@ -618,10 +967,10 @@ mod tests {
 
     #[test]
     fn test_parse_f_templates_shadowroot_attrs() {
-        let html = r#"<f-template name="my-el" shadowrootmode="closed" shadowrootdelegatesfocus shadowrootclonable="true">
-    <template><span>shadow</span></template>
+        let html = r#"<f-template name="my-el">
+    <template shadowrootmode="closed" shadowrootdelegatesfocus shadowrootclonable="true"><span>shadow</span></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(
             results[0].shadowroot_attributes,
@@ -638,13 +987,15 @@ mod tests {
     fn test_parse_f_templates_open_tags_with_whitespace() {
         let html = r#"<f-template
     name="my-button"
-    shadowrootmode="open"
 >
-    <template
+    <f-host
         tabindex="0"
+    ></f-host>
+    <template
+        shadowrootmode="open"
     ><button>{{label}}</button></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, Some("my-button".to_string()));
         assert_eq!(results[0].content, "<button>{{label}}</button>");
@@ -661,7 +1012,7 @@ mod tests {
     #[test]
     fn test_parse_f_templates_template_closing_tag_with_whitespace() {
         let html = "<f-template name=\"my-button\"><template><button>{{label}}</button></template\n\t></f-template>";
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, Some("my-button".to_string()));
         assert_eq!(results[0].content, "<button>{{label}}</button>");
@@ -670,7 +1021,7 @@ mod tests {
     #[test]
     fn test_parse_f_templates_f_template_closing_tag_with_whitespace() {
         let html = "<f-template name=\"my-button\"><template><button>{{label}}</button></template></f-template\n>";
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].name, Some("my-button".to_string()));
         assert_eq!(results[0].content, "<button>{{label}}</button>");
@@ -679,9 +1030,10 @@ mod tests {
     #[test]
     fn test_parse_f_templates_host_attributes() {
         let html = r#"<f-template name="my-el">
-    <template tabindex="0" @click="{handle()}" attr="{{val}}"><span>x</span></template>
+    <f-host tabindex="0" @click="{handle()}" attr="{{val}}"></f-host>
+    <template><span>x</span></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(
             results[0].host_attributes,
@@ -697,9 +1049,9 @@ mod tests {
     fn test_parse_f_templates_host_attributes_with_quoted_gt() {
         // A `>` inside a quoted attribute value must not terminate the opening tag.
         let html = r#"<f-template name="my-el">
-    <template data-x="a>b"><span>x</span></template>
+    <f-host data-x="a>b"></f-host><template><span>x</span></template>
 </f-template>"#;
-        let results = parse_f_templates(html);
+        let results = parse_f_templates(html).unwrap();
         assert_eq!(results.len(), 1);
         assert_eq!(results[0].content, "<span>x</span>");
         assert_eq!(

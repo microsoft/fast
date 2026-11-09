@@ -109,8 +109,8 @@ fn author_null_or_false_does_not_reintroduce_template_host_defaults() {
 #[test]
 fn mixed_host_attributes_resolve_every_segment_and_retain_empty_values() {
     let metadata = parse_f_templates(
-        r#"<f-template name="test-card"><template title="{{first}}/{{second}}" role="prefix{{nullable}}"><span></span></template></f-template>"#,
-    );
+        r#"<f-template name="test-card"><f-host title="{{first}}/{{second}}" role="prefix{{nullable}}"></f-host><template><span></span></template></f-template>"#,
+    ).unwrap();
     let locator = Locator::from_metadata(metadata).unwrap();
     let state = r#"{"first":"","second":"","nullable":null}"#;
     for entry in [
@@ -131,8 +131,8 @@ fn mixed_host_attributes_resolve_every_segment_and_retain_empty_values() {
 #[test]
 fn metadata_retains_nested_repeat_aliases_and_does_not_invent_state_declarations() {
     let templates = parse_f_templates(
-        r#"<f-template name="test-card"><template title="{{title}}"><f-repeat value="{{item in items}}"><f-repeat value="{{item in item.children}}"><span>{{item.name}} {{$index}}</span><button @click="{save(item.id, 'not.a.path')}"></button></f-repeat></f-repeat><f-when value="{{visible && count > 0}}">{{{html}}}</f-when><code>{{example}}</code></template></f-template>"#,
-    );
+        r#"<f-template name="test-card"><f-host title="{{title}}"></f-host><template><f-repeat value="{{item in items}}"><f-repeat value="{{item in item.children}}"><span>{{item.name}} {{$index}}</span><button @click="{save(item.id, 'not.a.path')}"></button></f-repeat></f-repeat><f-when value="{{visible && count > 0}}">{{{html}}}</f-when><code>{{example}}</code></template></f-template>"#,
+    ).unwrap();
     let template = &templates[0];
     assert_eq!(template.format_version, 1);
     let item = template
@@ -174,8 +174,8 @@ fn authored_expression(source: &str, binding: &microsoft_fast_build::BindingMeta
 
 #[test]
 fn metadata_spans_reference_the_full_input_across_templates_and_duplicate_attributes() {
-    let source = "🌍\r\n<f-template name=\"card-one\">\r\n<template title='{{ title }}'>\r\n\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>\r\n</template></f-template>\r\n<f-template name=\"card-two\"><template>{{ title }}</template></f-template>";
-    let templates = parse_f_templates(source);
+    let source = "🌍\r\n<f-template name=\"card-one\">\r\n<f-host title='{{ title }}'></f-host><template>\r\n\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>\r\n</template></f-template>\r\n<f-template name=\"card-two\"><template>{{ title }}</template></f-template>";
+    let templates = parse_f_templates(source).unwrap();
     let bindings: Vec<_> = templates.iter().flat_map(|template| &template.bindings).collect();
     assert_eq!(
         bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
@@ -189,9 +189,13 @@ fn metadata_spans_reference_the_full_input_across_templates_and_duplicate_attrib
     }
     assert_eq!(
         bindings[0].span.start,
-        microsoft_fast_build::SourcePosition { offset: 54, line: 3, column: 21 },
+        microsoft_fast_build::SourcePosition {
+            offset: 52,
+            line: 3,
+            column: 19
+        },
     );
-    assert_eq!(bindings[0].span.end.column, 26);
+    assert_eq!(bindings[0].span.end.column, 24);
     assert_eq!(bindings[1].span.start.line, 4);
     assert_eq!(bindings[1].span.start.column, 25);
     assert_eq!(bindings[4].span.start.line, 6);
@@ -206,7 +210,7 @@ fn metadata_spans_survive_code_samples_and_nested_repeat_aliases() {
 <f-repeat value="{{item in item.children}}"><f-when value="{{ item.visible }}">
 <button @click="{ save(item.id, '{{literal}}') }">{{ item.name }} {{{ html }}}</button>
 </f-when></f-repeat></f-repeat></template></f-template>"#;
-    let templates = parse_f_templates(source);
+    let templates = parse_f_templates(source).unwrap();
     let bindings = &templates[0].bindings;
     assert_eq!(
         bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
@@ -228,7 +232,7 @@ fn metadata_spans_preserve_raw_entities_multiline_expressions_and_fallback_conte
         "<f-template name=\"test-card\">\r<template>\n😀<input :value={input.value} ?disabled=\"{{count &gt; 0}}\" f-ref=\"{ inputElement }\" @click=\"{\r\n save($e,\r item.id)\n }\">{{{ html }}}</template></f-template>",
         "<f-template name=\"test-card\">\u{2003}\r\n{{ value }}\r\n{{   }}\u{2003}</f-template>",
     ] {
-        let templates = parse_f_templates(source);
+        let templates = parse_f_templates(source).unwrap();
         for binding in &templates[0].bindings {
             assert_eq!(authored_expression(source, binding), binding.expression);
         }
@@ -249,7 +253,7 @@ fn metadata_spans_preserve_raw_entities_multiline_expressions_and_fallback_conte
 #[test]
 fn native_metadata_locator_validates_versions_and_names() {
     let source = r#"<f-template name="test-card"><template>{{title}}</template></f-template>"#;
-    let metadata = parse_f_templates(source);
+    let metadata = parse_f_templates(source).unwrap();
     assert!(Locator::from_metadata(metadata.clone()).is_ok());
     let mut stale = metadata.clone();
     stale[0].format_version = 2;
@@ -270,7 +274,7 @@ fn native_metadata_locator_validates_versions_and_names() {
 fn metadata_covers_client_kinds_without_treating_literals_as_state() {
     let metadata = parse_f_templates(
         r#"<f-template name="test-card"><template><input :value="{input.value}" ?disabled="{{!enabled}}" f-ref="{inputElement}" f-slotted="{slots}" f-children="{children}" @click="{save(item.id, '{{notBinding}}')}"><f-when value="{{count > 1e3 && visible == true}}">{{{html}}}</f-when><f-when value="{{true}}"></f-when></template></f-template>"#,
-    );
+    ).unwrap();
     let bindings = &metadata[0].bindings;
     for kind in [
         "property",

@@ -217,15 +217,27 @@ The generated WASM declarations expose `TemplateSlot`. See the
 for namespace, nested-template, parsing, and error details. Rendering and binding
 metadata remain unchanged.
 
-Attributes declared on the inner `<template>` element of an `<f-template>` definition are propagated onto the rendered host element's opening tag. This lets a component's declarative template pre-declare host-level attributes — such as `tabindex`, `role`, `aria-*`, or `class` — without requiring the page author to repeat them on every usage.
+Attributes declared on an optional direct `<f-host>` child of `<f-template>`
+provide host metadata. The server emits supported initial values on the
+component host's opening tag, rather than into its shadow content. At most one
+`<f-host>` is allowed per definition, with an explicit closing tag. It is
+consumed by runtime/build processing, never registered as a custom element or
+rendered into the component's shadow DOM.
 
 ```html
-<f-template name="primary-button">
-    <template tabindex="0" role="button" class="primary">
+<f-template hidden name="primary-button">
+    <f-host tabindex="0" role="button" class="primary"></f-host>
+    <template>
         <slot></slot>
     </template>
 </f-template>
 ```
+
+For definitions embedded in the document, author `hidden` on `<f-template>`.
+Unregistered `<f-host>` is not inert HTML; its `tabindex` can affect the
+declaration outside the inner template before JavaScript loads. `hidden` keeps
+metadata out of layout and tab order and is never forwarded to the rendered
+component host. No global stylesheet or JavaScript hiding mechanism is planned.
 
 ```html
 <!-- Author writes: -->
@@ -243,7 +255,7 @@ Attributes declared on the inner `<template>` element of an `<f-template>` defin
 
 ### Supported binding forms
 
-Three forms on the source `<template>` are propagated to the host:
+Three forms on the source `<f-host>` supply initial host attributes:
 
 | Form | Behavior on host |
 |---|---|
@@ -261,15 +273,21 @@ Attributes intended for the client-side runtime never appear on the rendered hos
 - `f-slotted` — slotted content directives
 - `f-children` — child node directives
 
-These continue to be handled exclusively by the hydration runtime.
+These are handled by the client runtime during hydration or client rendering.
 
 ### Author attributes win on conflict
 
-When the page author already supplies an attribute on the host element, that value is preserved and the template's value is ignored. Dedupe is performed on the lowercased attribute name, and `?name="{{expression}}"` is deduped against the bare `name`.
+During SSR, when the page author already supplies an attribute on the host
+element, that value is preserved instead of the `<f-host>` value. Dedupe uses
+the lowercased attribute name, and `?name="{{expression}}"` is deduped against
+the bare `name`. Static attributes remain defaults in the client runtime.
+Dynamic bindings are component-owned after hydration and can subsequently
+update the host even if an authored attribute supplied the initial value.
 
 ```html
-<f-template name="primary-button">
-    <template tabindex="0" class="primary">
+<f-template hidden name="primary-button">
+    <f-host tabindex="0" class="primary"></f-host>
+    <template>
         <slot></slot>
     </template>
 </f-template>
@@ -285,7 +303,37 @@ When the page author already supplies an attribute on the host element, that val
 
 ### Available in `@microsoft/fast-build`
 
-The propagation is implemented by the build-time renderer in `@microsoft/fast-build`. Author-provided host attributes always win, so existing templates that did not previously rely on template-level host attributes continue to render unchanged.
+The build-time renderer in `@microsoft/fast-build` emits supported initial
+`<f-host>` attribute values; the client runtime applies defaults and activates
+dynamic host bindings. Outer `<f-template>` attributes are definition metadata
+only. Inner `<template>` attributes no longer supply host attributes or bindings,
+including events. Shadow-root configuration comes from static `<f-shadow>`
+metadata, not host attributes. See the [declarative host migration](/docs/3.x/migration-guide/declarative-html/#move-host-attributes-and-bindings-to-f-host).
+
+## Shadow-Root Configuration
+
+Use an optional single direct `<f-shadow>` child to configure the shadow root;
+the inner `<template>` supplies content only:
+
+```html
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0"></f-host>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+`shadowrootmode` defaults to `open` and accepts `open`/`closed`. The boolean
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+flags use presence; attribute names are case-insensitive.
+Configuration is static, not bindable. Always
+include an explicit closing tag. When present, `<f-shadow>` replaces the
+complete legacy shadow configuration rather than merging. The metadata is
+never rendered into the component or registered as a custom element.
+
+SSR uses the same lowercase HTML-standard attribute names on the native DSD
+output template without renaming them.
+The browser runtime updates `definition.shadowOptions` before registration.
 
 ## Using `@microsoft/fast-build`
 

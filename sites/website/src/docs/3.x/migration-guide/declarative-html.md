@@ -43,6 +43,8 @@ Key migration points:
 4. Replace `TemplateElement.options()` with define extensions.
 5. Replace `prepare()` with standard element lifecycle code.
 6. Update declarative event handlers to use `$e` instead of bare `e`.
+7. Move declarative host attributes and bindings to a direct `<f-host>` child.
+8. Use a direct `<f-shadow>` child for static shadow-root configuration.
 
 ## Update imports
 
@@ -191,6 +193,71 @@ MyElement.define({
 Elements can still be defined before a template is attached. A later
 `FASTElementDefinition.template` update notifies connected elements so they can
 render or hydrate with the new template.
+
+## Move host attributes and bindings to f-host
+
+Move legacy host attributes and bindings from the inner `<template>` or outer
+`<f-template>` to an optional direct `<f-host>` child:
+
+```html
+<!-- Before -->
+<f-template name="my-button" role="button">
+    <template tabindex="0" appearance="{{appearance}}" @click="{handleClick()}">
+        <slot></slot>
+    </template>
+</f-template>
+
+<!-- After -->
+<f-template hidden name="my-button">
+    <f-host role="button" tabindex="0" appearance="{{appearance}}" @click="{handleClick()}"></f-host>
+    <f-shadow shadowrootmode="open" shadowrootdelegatesfocus></f-shadow>
+    <template><slot></slot></template>
+</f-template>
+```
+
+Keep definition metadata such as `name` on `<f-template>` and shadow content
+inside `<template>`. The inner template no longer supplies host attributes or
+bindings, including events. Put static shadow-root configuration on a separate
+optional direct `<f-shadow>` child, not on `<f-host>` or the content template.
+
+Use at most one direct `<f-host>` and always write `</f-host>`, not self-closing
+syntax. Runtime/build processing consumes it as metadata; it is never
+registered as a custom element or rendered into the component shadow DOM.
+Unregistered HTML is not inert: `<f-host>` attributes such as `tabindex` can
+affect the declaration outside the inner template. Add `hidden` to
+document-embedded `<f-template>` definitions to keep metadata out of layout and
+tab order even before JavaScript loads. This `hidden` is definition-only and
+never forwarded to the component host. No global stylesheet or JavaScript
+hiding mechanism is planned.
+
+Static host attributes are defaults that preserve authored instance attributes.
+SSR emits supported initial attribute values, preserving authored values on
+conflict, and skips client-only events and properties. Dynamic bindings are
+component-owned after hydration and can then update the host.
+
+This migration is only for declarative `<f-template>` markup. Core JavaScript
+`html` tagged templates still support `<template ...>` host bindings and should
+not be migrated. See [Host Attributes and Bindings](/docs/3.x/declarative-templates/f-templates/#host-attributes-and-bindings).
+
+## Move shadow-root configuration to f-shadow
+
+Use at most one direct-child
+`<f-shadow shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable shadowrootserializable></f-shadow>` with an
+explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`;
+boolean flags use presence and attribute names are case-insensitive.
+Configuration is static; binding expressions are unsupported.
+
+When present, `<f-shadow>` replaces the complete legacy shadow configuration,
+not just the supplied options. The runtime updates `definition.shadowOptions`
+before registration. SSR maps the options to native `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+attributes. The metadata is not rendered into the component or registered as a
+custom element. See [Shadow-Root Configuration](/docs/3.x/declarative-templates/f-templates/#shadow-root-configuration).
+
+Legacy shadow-configuration compatibility is scheduled for removal in a
+breaking release under tracking issue #7800, milestone **FAST Element vNext**.
+Use `<f-shadow>` for new and migrated definitions; native DSD output and core
+JavaScript `html` tagged-template examples do not need migration.
 
 ## Update declarative attribute mapping
 
@@ -346,5 +413,9 @@ the script module loads.
 8. Move `prepare()` logic to standard element lifecycle code.
 9. If declarative output is server-rendered, complete the
    [Hydration and SSR migration](/docs/3.x/migration-guide/hydration/).
+10. Move legacy host attributes and bindings to an optional direct `<f-host>`
+    child with an explicit closing tag, leaving definition metadata in place.
+11. Put static shadow-root configuration on an optional single direct
+    `<f-shadow>` child, leaving the inner `<template>` for content only.
 
 {% endraw %}

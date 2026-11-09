@@ -23,14 +23,13 @@ pub(crate) fn convert(
         }
         Syntax::WebuiFrameworkPrerelease => webui_framework_prerelease::convert(&parsed),
     }.map_err(|error| {
-        let error = if matches!(error.kind(),
-            ConvertError::UnsupportedPublisherAttribute { .. }
-            | ConvertError::ConflictingShadowRootMode { .. }
-        ) {
-            error.at(template, parsed.publisher_start)
-        } else {
-            error.rebase(template, parsed.template_start)
-        };
+        let error = error.authored_template(
+            template,
+            &parsed.original_template,
+            &parsed.template,
+            parsed.template_start,
+            parsed.host_start,
+        );
         error.in_template(&parsed._name)
     })
 }

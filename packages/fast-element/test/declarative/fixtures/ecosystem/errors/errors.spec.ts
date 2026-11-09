@@ -26,7 +26,9 @@ test.describe("f-template errors", () => {
                 const errors: string[] = await page.evaluate(
                     () => (window as any).__errors,
                 );
-                return errors.some(msg => msg.includes("must be a <template>"));
+                return errors.some(msg =>
+                    msg.includes("must contain a direct <template> child"),
+                );
             })
             .toBe(true);
     });

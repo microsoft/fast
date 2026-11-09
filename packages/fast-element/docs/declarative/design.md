@@ -74,8 +74,10 @@ When connected to the DOM it:
 1. Registers itself with the declarative template bridge using its registry and
    `name` attribute.
 2. Publishes a template when a matching FAST element definition requests one.
-3. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which
-   converts declarative bindings into FAST `ViewTemplate` strings and values.
+3. Consumes optional direct `<f-host>` host metadata and `<f-shadow>` static
+   shadow-root metadata, updates `definition.shadowOptions` before registration,
+   and delegates declarative binding parsing to `TemplateParser`, producing FAST
+   `ViewTemplate` strings and values with the inner `<template>` as shadow content.
 4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
 
@@ -83,6 +85,45 @@ When multiple connected `<f-template>` publishers share the same `name`, the
 bridge resolves pending definitions from the first connected publisher and keeps
 the resolved template stable. Later duplicate publishers do not reassign the
 definition template.
+
+### `<f-host>` — host metadata
+
+A definition may contain at most one direct `<f-host>` child, with an explicit
+closing tag. Runtime/build processing consumes its static attributes and
+dynamic bindings without registering it as a custom element or rendering it
+into the component shadow DOM. Static attributes are defaults, preserving
+authored instance values. Dynamic bindings are component-owned after hydration;
+SSR emits supported initial attribute values and skips client-only events and
+properties.
+
+Outer `<f-template>` attributes are definition metadata only; inner
+`<template>` attributes no longer supply host attributes or bindings, including
+events. `<f-shadow>` supplies static shadow-root configuration. This
+declarative split does not change core `html` tagged-template host bindings.
+See [host syntax and an example](./syntax.md#host-attributes-and-bindings).
+
+Unregistered `<f-host>` is not inert HTML: attributes such as `tabindex` can
+affect the declaration outside the inner `<template>`. Document-embedded
+definitions should use `<f-template hidden name="...">` to keep metadata out
+of layout and tab order before JavaScript loads. This `hidden` is
+definition-only and never forwarded to the component host. No global
+stylesheet or JavaScript hiding mechanism is planned.
+
+### `<f-shadow>` — shadow-root metadata
+
+At most one direct `<f-shadow>` configures the shadow root; it requires an
+explicit closing tag. `shadowrootmode` defaults to `open` and accepts `open`/`closed`.
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`
+use boolean presence semantics; attribute names are case-insensitive.
+Bindings are unsupported. When present,
+the declaration replaces the complete legacy shadow configuration rather
+than merging, and the runtime updates `definition.shadowOptions` before
+registration. It is not rendered into the component or registered as a custom
+element. The inner `<template>` supplies content only.
+
+SSR preserves the HTML-standard attribute names `shadowrootmode`,
+`shadowrootdelegatesfocus`, `shadowrootclonable`, and `shadowrootserializable`. See the
+[configuration reference](./syntax.md#shadow-root-configuration).
 
 ### `TemplateParser` — declarative HTML parser
 
