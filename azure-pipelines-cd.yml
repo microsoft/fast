@@ -225,7 +225,7 @@ extends:
       - job: MarkDeployed
         displayName: Mark releases as deployed
         dependsOn: Deploy
-        condition: succeeded()
+        condition: and(succeeded(), eq(dependencies.Deploy.result, 'Succeeded'))
         steps:
           - checkout: self
             persistCredentials: "true"

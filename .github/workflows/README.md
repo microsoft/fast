@@ -24,6 +24,19 @@ Nightly publishing is coordinated across GitHub Actions and Azure Pipelines so t
 
 Both scripts are thin Node.js wrappers around existing CLI tools and repository metadata — no extra npm dependencies and no custom GitHub API client. Idempotency is enforced entirely through git tags (`${name}_v${version}` on the GitHub side, `deployed/${name}_v${version}` on the Azure side), so neither side needs to talk to npm.org or crates.io to decide whether work is required.
 
+`MarkDeployed` requires the `Deploy` job's exact `Succeeded` result. Azure's
+`succeeded()` also accepts `SucceededWithIssues`, so it is insufficient on its own:
+publication failures must not produce deployment markers, even if a shared template
+allows a task to continue on error. The shared release template must propagate npm
+and Rust publishing failures and wait for release completion.
+
+If a failed publish was incorrectly marked deployed, first fix the publishing failure
+and verify the affected package versions in their registries. A maintainer can then
+remove only the erroneous `deployed/<tag>` marker and rerun CD, preserving the release
+tag and GitHub release. Check every artifact in a bundled release before retrying;
+one registry may already have accepted its artifact. Do not remove markers for
+successfully published releases.
+
 ### Adding a publishable package
 
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
