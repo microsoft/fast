@@ -5,7 +5,8 @@
  * `cd-github-releases.yml` discovers publishable workspaces dynamically, but
  * `azure-pipelines-cd.yml` must declare one `DownloadGitHubRelease@0` task per
  * package because Azure Pipelines cannot create tasks from runtime output. This
- * script keeps those surfaces in sync.
+ * script keeps those surfaces in sync and requires strict publication success
+ * before deployment markers are written.
  */
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -84,8 +85,10 @@ function getStepBlocks(pipeline, stepHeader) {
         const block = [];
         for (let j = i; j < lines.length; j++) {
             const current = lines[j];
-            const nextStep = current.match(/^(\s*)- (checkout|script|task|template):/);
-            if (j > i && nextStep && nextStep[1].length === indent) {
+            const nextStep = current.match(
+                /^(\s*)- (checkout|script|task|template|job|stage):/,
+            );
+            if (j > i && nextStep && nextStep[1].length <= indent) {
                 break;
             }
             block.push(current);
@@ -119,6 +122,19 @@ const publishable = listPublishableWorkspaces();
 const downloadBlocks = getStepBlocks(pipeline, "- task: DownloadGitHubRelease@0");
 const failures = validateUniquePrefixes(publishable);
 
+const markerJobs = getStepBlocks(pipeline, "- job: MarkDeployed");
+if (
+    markerJobs.length !== 1 ||
+    !markerJobs[0].includes("\n        dependsOn: Deploy\n") ||
+    !markerJobs[0].includes(
+        "\n        condition: and(succeeded(), eq(dependencies.Deploy.result, 'Succeeded'))\n",
+    )
+) {
+    failures.push(
+        "MarkDeployed must depend on Deploy and require its exact 'Succeeded' result; succeeded() alone also accepts 'SucceededWithIssues'.",
+    );
+}
+
 for (const { name, outputPrefix } of publishable) {
     const needsVariable = `${outputPrefix}NeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.${outputPrefix}NeedsDeployment'] ]`;
     const tagVariable = `${outputPrefix}ReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.${outputPrefix}ReleaseTag'] ]`;
@@ -151,7 +167,7 @@ for (const { name, outputPrefix } of publishable) {
 }
 
 if (failures.length > 0) {
-    console.error("[check-publish-pipeline] Azure CD publish coverage is incomplete.");
+    console.error("[check-publish-pipeline] Azure CD publish validation failed.");
     console.error(
         "Every non-private workspace must be represented in azure-pipelines-cd.yml. See .github/workflows/README.md > Adding a publishable package.",
     );
