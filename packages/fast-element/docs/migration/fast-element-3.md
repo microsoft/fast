@@ -1,5 +1,46 @@
 # Migrating from previous versions
 
+## Default DOM sink guards (v3)
+
+ESM root, development, focused, and declarative imports now use the same default
+sink guards as the CDN bundles. Previously, ESM consumers needed to install a
+guarded policy explicitly.
+
+### Changed behavior
+
+- Guarded URL attributes and properties, such as anchor `href`, reject unsafe
+  protocols by writing an empty string. Non-nullish values, including arrays
+  and objects, are coerced to strings once before validation; the validated
+  string is written to the sink. Null and undefined retain their existing
+  attribute/property behavior.
+- Known dangerous bindings, including `:innerHTML`, inline event-handler
+  attributes/properties, and `iframe[srcdoc]`, throw a DOM policy error.
+- Ordinary text bindings and `@click` event listeners are unchanged.
+- Bundles no longer consume the application's one-time `DOM.setPolicy()` call
+  or create a second built-in Trusted Types policy.
+
+### Migration steps
+
+1. Remove redundant `DOM.setPolicy(DOMPolicy.create())` calls if you only need
+   the built-in guards.
+2. Replace inline handler bindings such as `onclick` with FAST event listeners
+   such as `@click`.
+3. Replace raw HTML bindings with text bindings where possible. If rich HTML is
+   necessary, provide a template-specific, binding-specific, or application
+   policy that sanitizes it before writing. Do not disable guards globally just
+   to restore the previous unguarded behavior.
+4. Keep custom global policy configuration at application startup, before
+   templates compile or render. `DOM.setPolicy()` remains a one-time override;
+   it does not change policies already captured by compiled templates.
+5. If your CSP restricts Trusted Types policy names, allow `fast-html` and your
+   application's policy name. Pass the application Trusted Types policy to
+   `DOMPolicy.create({ trustedType })` rather than creating another `fast-html`
+   policy.
+
+See the [DOMPolicy and Trusted Types guide](https://www.fast.design/docs/3.x/advanced/dom-policy-and-trusted-types/)
+for custom guard and sanitized rich-text examples. The baseline is not a general
+HTML sanitizer and does not make untrusted template source safe.
+
 ## FASTGlobal version tracking (v2 → v3)
 
 ### Removed API

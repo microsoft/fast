@@ -22,6 +22,8 @@ test.describe("f-template", async () => {
         await expect(customElement).toHaveText("Hello pluto");
     });
     test("create an unescaped binding", async ({ page }) => {
+        const errors: string[] = [];
+        page.on("pageerror", error => errors.push(error.message));
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
         );
@@ -32,5 +34,13 @@ test.describe("f-template", async () => {
 
         expect(await customElement.locator("p").count()).toEqual(1);
         await expect(customElement).toHaveText("Hello world");
+
+        await page.evaluate(() => {
+            document.body.append(document.createElement("test-element-unescaped"));
+        });
+        const clientElement = page.locator("test-element-unescaped").nth(1);
+        await expect(clientElement.locator("p")).toHaveCount(1);
+        await expect(clientElement).toHaveText("Hello world");
+        expect(errors).toEqual([]);
     });
 });

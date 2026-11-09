@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Mon, 02 Nov 2026 18:49:44 GMT",
+      "version": "0.15.0",
+      "tag": "@microsoft/fast-build_v0.15.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4be355ca16bb4fdf5b440671b704cc7add426171",
+            "comment": "Document the dependency-free package policy and exemptions for development, peer, and optional dependencies."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "1d0ba188764c422101fb21141d36eb8addf654b4",
+            "comment": "Clarify FAST Build integration with existing backends and WebUI rendering through the fast_v3 plugin."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Oct 2026 03:53:29 GMT",
       "version": "0.15.0",
       "tag": "@microsoft/fast-build_v0.15.0",

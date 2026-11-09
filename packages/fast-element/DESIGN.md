@@ -4,6 +4,11 @@ This document is a contributor-oriented guide to the architecture of `@microsoft
 
 For deep dives into specific areas, see the linked detailed documents.
 
+**Dependency policy:** FAST packages must always be dependency-free. Do not
+declare regular npm `dependencies` that would be installed with the package.
+This restriction applies only to the `dependencies` field; `devDependencies`,
+`peerDependencies`, and `optionalDependencies` are explicitly excluded.
+
 ---
 
 ## Table of Contents
@@ -293,6 +298,15 @@ Backing slots are internal implementation details. Lifecycle rebinding treats pu
 
 `SubscriberSet` is an optimised set that stores the first two subscribers inline (avoiding heap allocations for the common 1–2 subscriber case) and falls back to an array. `PropertyChangeNotifier` extends `SubscriberSet` to support per-property subscriptions.
 
+#### Array observation
+
+`repeat()` enables array observation automatically. Sort-only batches deliver
+permutation records, and repeat reconciles their view indices in numeric order.
+If a batch also contains splices or an explicit reset, the observer delivers a
+reset instead: permutation records alone cannot describe the structural edits.
+Repeat then refreshes its views against the final array state. Splice-only
+normalization and the default diff algorithm are unchanged.
+
 #### ExpressionNotifier (binding observer)
 
 `Observable.binding(expression, subscriber)` creates an `ExpressionNotifier`. When `observe(source, context)` is called it:
@@ -324,12 +338,39 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 
 ### DOM Policy
 
-**Files**: `src/dom.ts`, `src/dom-policy.ts`
+**Files**: `src/dom.ts`, `src/dom-aspect.ts`, `src/dom-policy.ts`,
+`src/dom-policy-defaults.ts`
 
 `DOM.policy` is the templating system's DOM write policy. `DOMPolicy.create()` builds a
-policy from Trusted Types integration plus default guard maps for element-specific and
-aspect-wide sinks. User guard configuration is merged with those defaults so partial
-overrides preserve unspecified built-in guards.
+policy from Trusted Types integration plus element-specific and aspect-wide sink guards.
+It snapshots only user-supplied guard maps and resolves unspecified guards through the
+shared built-in selectors. Partial overrides, null removals, and element-before-global
+precedence retain their existing behavior.
+
+The initial `DOM.policy` uses those same guards for ESM, focused, declarative,
+and Rollup entrypoints. It reuses the existing `fast-html` Trusted Types policy.
+No entrypoint calls `DOM.setPolicy()` to initialize the baseline: the application
+can still install its own global policy once, before compiling or rendering
+templates. Template-specific and binding-specific policies retain their existing
+precedence.
+
+`dom-policy-defaults.ts` owns the compact, aspect-aware element rules, global guard
+selection, URL validation, and sink protection. Both the internal default and
+`DOMPolicy.create()` use that implementation, but `dom.ts` does not import the
+custom-policy factory or its configuration-snapshot helpers. Focused core and
+template imports therefore include baseline protection without retaining
+customization code.
+
+`DOMAspect` lives in a dependency-neutral module and is re-exported from `dom.ts`.
+Aspect-only consumers, including the attached directive helpers, import it
+directly so they do not initialize DOM policies. Policy interfaces and `DOMSink`
+are imported only as types where possible, avoiding circular runtime dependencies.
+The focused-entrypoint dependency regressions enforce these import boundaries.
+Binding behaviors cache their protected sink; ordinary sinks are returned
+unchanged, while guarded URL sinks validate values on each write.
+Non-nullish URL values are coerced to strings once before validation, and the
+validated string is passed to the sink so objects cannot bypass checks through
+DOM coercion. Null and undefined retain their existing sink behavior.
 
 The default guards block known dangerous sinks such as inline event handlers,
 `innerHTML`, script text/source writes, and executable object/link/embed sources. URL
@@ -482,6 +523,39 @@ FAST ships a full hierarchical DI container inspired by Aurelia. Key types:
 Containers are typically attached to DOM elements and walk the DOM hierarchy. DI keys are classes, interfaces, or `Context`-like tokens. Constructor parameters are annotated with the `@inject(key)` decorator (or use `@singleton` / `@transient` to declare the class's own registration).
 
 See `docs/di/api-report.api.md` for the full public API surface.
+
+#### Shared decorator metadata
+
+Context and DI both import `src/metadata.ts`. This module calls the internal
+`initializeMetadataReflection()` from `src/metadata-reflection.ts` and keeps
+FAST's `design:paramtypes` and `annotation:paramtypes` helpers on the shared
+reflection store. The independently authored shim has no external dependency
+or vendored implementation. It preserves automatic TypeScript constructor
+metadata and annotation arrays without adding a separate setup step.
+
+Do not install a partial metadata API on the global `Reflect` object. A later
+complete implementation can treat an existing API as a compatible provider and
+require operations such as own-key enumeration and deletion. The shim supplies
+all ten legacy metadata methods, including decorator application. A `WeakMap`
+holds targets, with separate maps for each property and metadata key. Prototype
+traversal supports both modern classes and legacy constructor inheritance.
+Native property-key coercion preserves symbols and conversion errors.
+
+Initialization reuses an existing complete API without overwriting its methods
+or metadata. It throws `TypeError` for an incomplete existing API because private
+stores cannot be safely merged. Metadata decorators forward writes through the
+current shared `defineMetadata` method, including when a compatible implementation
+is loaded after a decorator was created. API input validation also throws
+`TypeError` as required by the legacy metadata contract.
+
+Metadata initialization stays confined to the optional Context/DI import graph,
+not the root, focused `FASTElement`, or declarative entrypoints. Unused Context/DI
+imports remain tree-shakeable under the existing package configuration. A used
+Context/DI API retains the complete shared metadata implementation; omitting it
+would change legacy decorator behavior. Importing both entrypoints does not
+duplicate it. The isolated metadata compatibility tests cover initialization
+order, independently evaluated copies, and bundled entrypoint boundaries.
+`scripts/measure-sizes.js` reports Context and DI sizes separately in `SIZES.md`.
 
 ---
 

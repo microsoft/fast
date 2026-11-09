@@ -29,7 +29,16 @@ Use a policy to:
 
 ## Configure a policy at startup
 
-`DOM.setPolicy()` installs the default policy used by FAST's templating system. It can only be called once, so configure it from an application entry module before custom elements are defined, templates are compiled, or templates are rendered.
+FAST starts with the same guarded default policy for ESM root and development
+imports, focused imports, declarative templates, and CDN bundles. No setup call
+is required to enable the baseline sink guards.
+
+`DOM.setPolicy()` replaces that default with an application policy. The built-in
+default does not consume this one-time override. If you need custom guards or
+Trusted Types integration, configure the override from an application entry
+module before custom elements are defined, templates are compiled, or templates
+are rendered. Changing the global policy does not update policies already
+captured by compiled templates.
 
 ```ts
 import { DOM } from "@microsoft/fast-element/dom.js";
@@ -62,6 +71,16 @@ Application owners should configure the global policy. Reusable component librar
 | `protect(tagName, aspect, aspectName, sink)` | Returns the DOM sink FAST should use when a binding writes to an attribute, property, content node, token list, or event. |
 
 By default, `DOMPolicy.create()` creates a Trusted Types policy named `fast-html` when `globalThis.trustedTypes` is available. It also installs guard rules for common dangerous sinks, including inline event attributes, `innerHTML`, selected URL attributes/properties, script text, and `iframe[srcdoc]`.
+
+Guarded URL values are coerced to strings once before validation, so arrays and
+objects receive the same protocol checks as strings. The sink receives that
+validated string rather than the original value. Null and undefined retain their
+existing attribute/property behavior.
+
+FAST's initial DOM policy reuses its built-in Trusted Types policy rather than
+creating it twice. When creating additional policies under CSP restrictions on
+duplicate policy names, pass an application-specific `trustedType`, as in the
+startup example above.
 
 You can extend or replace guards for your own application requirements. The guard receives the sink FAST would normally call and returns the sink FAST should call instead.
 
