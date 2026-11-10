@@ -1,6 +1,8 @@
 # microsoft-fast-build
 
-A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in Rust. Rendering uses a lightweight scanner; authored slot analysis uses a standards-based HTML parser.
+A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates,
+written in Rust. Rendering uses lightweight in-memory instruction plans; authored
+slot analysis uses a standards-based HTML parser.
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
@@ -910,8 +912,21 @@ Tag and binding discovery uses a forward event scan rather than repeated
 remaining-suffix searches for each directive kind. Adjacent custom elements
 and plain tags no longer incur those quadratic searches. Rendered HTML,
 attribute handling, default markers, and `markers_v2` remain compatible.
-Templates still render recursively; this is not a compiled-template or lazy
-streaming API. Stream functions continue to return fully materialized chunks.
+Templates still render recursively, but each locator lazily compiles named
+definitions and executed directive bodies into reusable structural plans.
+One-shot entries execute through the same instruction cursor without retaining
+an entry instruction vector. Native incremental registration avoids invalidation
+scans until plans have actually been cached.
+Content bindings append into their current output buffer rather than creating
+temporary rendered chunks. Stream functions still return fully materialized
+chunks with the same boundaries.
+
+Reuse a native `Locator` across render calls to retain its plans. No additional
+file, public compile API, or server cache setup is required. Existing WASM exports
+create a new locator per call, so their reuse is within that call, not between
+requests. Plans retain metadata memory and may add overhead for small definitions
+rendered only once. Boolean expressions and attribute interpolation still use
+the existing evaluators; this is structural compilation, not expression bytecode.
 
 From a FAST repository checkout, run the native benchmarks and parity tests:
 

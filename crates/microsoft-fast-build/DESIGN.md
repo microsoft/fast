@@ -6,7 +6,11 @@ This document explains how the crate works internally: the data flow, the key da
 
 ## High-level overview
 
-The crate takes a **FAST declarative HTML template** (a string) and an optional **JSON state object** and produces static HTML or precomputed HTML stream chunks. Public no-state entry points treat omitted state exactly like an empty object (`{}`). Rendering happens in a single recursive pass — no AST is built, no DOM is constructed. The template string is scanned byte-by-byte, literal regions are copied verbatim, and directives / bindings are resolved and replaced.
+The crate takes a **FAST declarative HTML template** and optional **JSON state**
+and produces static HTML or precomputed stream chunks. Omitted state is an empty
+object (`{}`). A lightweight scanner compiles template structure into reusable
+in-memory instructions, not a DOM. Evaluation resolves fresh state and creates
+fresh hydration scopes; plans never store rendered HTML or request state.
 
 ```
 render_template(template, state_str)
@@ -15,21 +19,20 @@ render_template(template, state_str)
    json::parse(state_str)          ← hand-rolled JSON parser → JsonValue
         │
         ▼
-  renderer::render(template, root) ─────────────────────────────────────┐
-        │                                                                │
-        ▼                                                                │
-  node::render_node(template, root, loop_vars, locator, hydration?)     │
-        │                                                                │
-        ├─ scan forward once: next_event()                               │
-        │        │                                                       │
-        │        ├─ PlainTag     → process_plain_html_tag()             │
-        │        ├─ TripleBrace  → content::render_triple_brace()       │
-        │        ├─ DoubleBrace  → content::render_double_brace()       │
-        │        ├─ When         → directive::render_when()  ───────────┘ (recurse)
-        │        ├─ Repeat       → directive::render_repeat() ──────────┘ (recurse per item)
-        │        └─ CustomElement→ directive::render_custom_element() ──┘ (recurse with fresh HydrationScope)
+  renderer::render(template, root)      ← code-sample preprocessing
         │
-        └─ Append literal prefix + resolved chunk → output string
+        ▼
+  plan::InstructionCursor(template, locator)
+        ├─ One-shot entry: execute directly
+        └─ Reusable definition/body: collect into a cached RenderPlan
+        │
+        ▼
+  node::render_plan / streaming::stream_plan
+        ├─ Literal / Tag / Binding → append or evaluate
+        ├─ When / Repeat → lazily compiled body plan, reused per item
+        └─ CustomElement → cached Locator plan, fresh HydrationScope
+
+  Result: output string or precomputed chunks
 ```
 
 ---
@@ -40,10 +43,11 @@ render_template(template, state_str)
 |--------|------|
 | `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
-| `node.rs` | Main event loop and shared atomic plain-tag handling, including attribute bindings and hydration markers |
-| `streaming.rs` | Simulated streaming loop — mirrors `node.rs` and returns non-empty HTML chunks |
+| `plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and parsed tag/directive metadata |
+| `node.rs` | Plan evaluation and shared atomic plain-tag handling; content bindings append directly into the current output buffer |
+| `streaming.rs` | Evaluation of the same plans into precomputed non-empty HTML chunks |
 | `directive.rs` | `Directive` / `RenderEvent` enums, monotonic `next_event` scanner, and directive renderers |
-| `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
+| `content.rs` | Binding diagnostics and shared HTML escaping |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
 | `config.rs` | `RenderConfig` struct, `AttributeNameStrategy` enum, and `markers_v2` option — rendering configuration options |
@@ -60,13 +64,50 @@ render_template(template, state_str)
 
 ---
 
-## The rendering loop — `node.rs`
+## Compilation and plan execution — `plan.rs` / `node.rs`
 
-`render_node` is the core of the crate. It is called recursively for nested directives and custom element templates. Its signature:
+`render_node` executes one-shot entries directly from `InstructionCursor`, without
+allocating an entry instruction vector. `RenderPlan::compile` collects that same
+cursor for reusable definitions and bodies. `render_plan` executes the collected
+instructions through the same evaluator:
 
 ```
 fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool, config: &RenderConfig) → Result<String>
 ```
+
+Named definitions keep a `OnceLock<RenderPlan>` inside their private locator
+record. Each directive or light-DOM body stores a source range and its own lazy
+plan. The first executed iteration compiles the body; later iterations and
+native renders using the same locator reuse it. Skipped bodies stay uncompiled.
+There is no global cache, generated file, new public handle, or serialized plan.
+
+Instructions describe literal ranges, trimmed content expressions, parsed plain
+tags and original binding counts, conditionals, repeat aliases/collections, and
+known custom elements with their parsed author attributes. Evaluation still uses
+the existing boolean-expression and attribute-value evaluators. Those expressions
+are not a new expression language or fully compiled expression bytecode.
+
+Source ranges refer to the unchanged, code-escaped template owned by the locator
+or current call. Syntax failures are deferred until execution reaches them, so
+skipped branches and empty repeats retain their prior error behavior. Diagnostics
+are reconstructed per failure and rebased to authored source as before. Missing
+custom-element closing tags are still diagnosed after shadow rendering.
+
+Plans contain no configuration or state values. Hydration counters, attribute
+name strategies, parent-context attribute evaluation, loop variables, and child
+overlays are supplied during each execution. `OnceLock` permits native concurrent
+reads without sharing request state. Adding/replacing a locator definition clears
+all definition/body plans: a formerly unknown element may now require expansion.
+An atomic mutation guard skips the scan until a plan has been initialized, so
+incremental population is not quadratic. After invalidation, further registration
+also skips the scan until rendering initializes another plan. The guard does not
+publish plan contents; `OnceLock` provides that synchronization.
+Static serialized DSD attributes are cached separately per definition.
+
+Existing WASM exports still construct a locator for each call. Reuse occurs
+between instances within that call; native callers can reuse a locator across
+calls. Compilation retains metadata memory and can cost more for small single-use
+definitions. It does not imply a cross-request WASM cache or a universal speedup.
 
 The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
 
@@ -77,23 +118,14 @@ The `is_entry` flag distinguishes two rendering contexts for **opening-tag attri
 
 `renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
 
-The loop works like a cursor:
-
-1. Call `next_event(template, pos, locator)` once to find the next plain opening
-   tag or directive. The byte cursor advances forward instead of independently
-   searching the remaining suffix for each directive kind.
-2. If nothing is found, append `template[pos..]` and stop.
-3. For `PlainTag`, call `process_plain_html_tag`: append the literal prefix,
-   resolve attribute bindings atomically, and advance past the complete tag.
-   In a hydration scope, count bindings, strip client-only attributes, and
-   inject the configured attribute marker. Outside hydration, resolve only
-   server bindings and otherwise preserve the authored tag.
-4. For a directive, append its literal prefix and dispatch to the existing
-   handler returning `(chunk, next_pos)`. Content bindings in hydration mode
-   retain the configured v3 data-free or v2 indexed markers.
-5. Append the directive result, advance to `next_pos`, and repeat.
-
-All handlers return `Result<(String, usize), RenderError>`. The `usize` is the byte position in the original template that the handler consumed up to — the cursor's next position.
+The instruction cursor advances using `next_event`, retaining the existing
+permissive scanner and raw-style handling. Cached execution walks prepared
+instructions without rediscovering events or directive body boundaries; one-shot
+execution prepares and consumes each instruction immediately.
+`render_tag` resolves attributes atomically and emits the configured marker;
+content bindings borrow strings and append escaped text/markers directly into the
+current output buffer. Recursive directives still materialize their own strings;
+this is not a single buffered sink for the entire component tree.
 
 ---
 
@@ -107,8 +139,9 @@ come from the original source tag, not the surviving attributes. Host-default
 deduplication also considers source author names so an omitted author binding
 cannot be replaced by a template default.
 
-`stream_node` shares `next_event` and `node::process_plain_html_tag` with the
-recursive rendering loop in `node.rs`, but returns
+`stream_node` executes the same cursor directly for entries, while `stream_plan`
+executes retained plans. Both share cached bodies and `node::render_tag` with
+normal evaluation, but return
 `Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
 is prepared in memory before the API returns. The invariant is that
 `chunks.join("")` matches the equivalent non-streamed render, including the
@@ -225,6 +258,9 @@ alone returns an empty collection. Neither rendering nor existing binding
 metadata is routed through the standards parser.
 
 ## Finding the next event — `directive::next_event`
+
+Compilation and binding metadata use this scanner; prepared-plan execution does
+not rescan the source to discover events.
 
 `next_event` recognizes plain HTML opening tags and five directive kinds:
 
@@ -349,10 +385,10 @@ property is missing. Root state remains accessible for unshadowed keys.
 
 `render_when` in `directive.rs`:
 
-1. Calls `attribute::extract_directive_content` to find the inner HTML and the position after `</f-when>`.
-2. Calls `attribute::extract_directive_expr` to extract the expression from `value="{{…}}"`.
+1. Uses the body range and expression prepared by `plan::When`.
+2. The compiler extracts those with `extract_directive_content_range` and `extract_directive_expr`.
 3. Calls `expression::evaluate(expr, root, loop_vars)`.
-4. If true: recursively calls `render_node` on the inner HTML.
+4. If true: lazily obtains the body plan and recursively calls `render_plan`.
 5. If false: returns an empty string.
 
 ---
@@ -380,17 +416,18 @@ Because `||` is sought before `&&`, the recursive split on `||` runs first. Each
 
 `render_repeat` in `directive.rs`:
 
-1. Extracts inner HTML and end position (same as `render_when`).
-2. Parses `value="{{item in items}}"` with `parse_repeat_expr` — expects exactly three whitespace-separated tokens where the middle is `"in"`.
+1. Uses the body range and end position prepared by `plan::Repeat`.
+2. Compilation parses `value="{{item in items}}"` with `parse_repeat_expr`; the existing separator rules remain unchanged.
 3. Resolves the list expression. Missing values are treated as an empty array. Present non-array values return `RenderError::NotAnArray`.
-4. For each item in the array, pushes `(var_name, item)` onto a new `loop_vars` vec and calls `render_node` on the inner template.
+4. Each iteration builds borrowed loop variables and evaluates the same lazily compiled body plan, with a fresh item hydration scope when active.
 5. Uses `Iterator::collect::<Result<String, _>>()` to short-circuit on the first error in any iteration.
 
 ---
 
-## Nested directives — `attribute::extract_directive_content`
+## Nested directives — `attribute::extract_directive_content_range`
 
-To correctly find the closing `</f-when>` or `</f-repeat>` for a directive, `extract_directive_content` tracks nesting depth:
+During compilation, `extract_directive_content_range` tracks nesting depth to
+find the closing `</f-when>` or `</f-repeat>`:
 
 - Start at depth 1 (for the outer opening tag).
 - Scan forward for the next opening tag of the same name **or** the next closing tag.
@@ -426,8 +463,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects); if the binding is missing, the child-state value becomes `JsonValue::Null`, which displays as empty content
    - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
    - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
-5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
-6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
+5. **Render the shadow template** through the locator's cached plan, with child state as root and a **fresh `HydrationScope`** (always active).
+6. **Render light DOM children** using the body range prepared by `extract_directive_content_range` and a shared lazy body plan. Light DOM retains parent state and loop scope.
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
    - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
      - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
@@ -553,7 +590,7 @@ Scopes carry no numeric ID. Markers are data-free and paired by balanced depth c
 
 ### Content binding markers
 
-When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
+When `hydration` is `Some`, plan evaluation wraps each `{{expr}}` / `{{{expr}}}` result:
 
 ```
 <!--fe:b-->VALUE<!--fe:/b-->
@@ -565,19 +602,20 @@ order.
 
 ### Attribute binding markers
 
-Plain HTML opening tags are returned by `next_event` and processed atomically
-by `node::process_plain_html_tag`, shared with simulated streaming. For each
+Plain opening tags are prepared by the compiler and processed atomically
+by `node::render_tag`, shared with simulated streaming. For each
 tag with `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
 
-1. `count_tag_attribute_bindings` counts both types.
+1. Compilation counts both types from the parsed original attributes.
 2. The scope's `binding_idx` is advanced by the total count.
-3. `resolve_attribute_bindings_in_tag` resolves each attribute binding:
-   - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
+3. `AttributePlan::resolve` resolves each attribute binding:
+   - `?attr="{{expr}}"` — **boolean binding**: if truthy, emit the bare attribute name; otherwise omit it.
    - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped. If `expr` is missing, the entire attribute is omitted, though the hydration binding count still includes it.
    - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
-4. `inject_count_marker` inserts `data-fe="N"` before the closing `>` of the tag.
+4. `inject_hydration_marker` inserts the configured attribute marker before the closing `>` of the tag.
 
-This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
+Atomic tag compilation keeps attribute expressions out of the content instruction
+stream. Counts come from source attributes, even when a value is omitted.
 
 ### Dataset bindings — `attribute::data_attr_to_dataset_key`
 
@@ -882,9 +920,12 @@ The native-only `allocation-counter` development dependency is used by the
 opt-in allocation example and its isolated integration test;
 wasm-bindgen remains a WASM-target dependency.
 
-**No intermediate representation.** The renderer operates directly on the source template string using byte indices. This avoids the memory allocation and complexity of building an AST or DOM tree.
+**Private structural plans, not a DOM.** Instructions reference source byte ranges
+and retain parsed tag/directive metadata. Cache lifetime follows the locator;
+native callers can amortize compilation while one-shot calls pay its cost.
 
-**Recursive rendering via `render_node`.** Instead of special-casing nesting, `render_when`, `render_repeat`, and `render_custom_element` all call `render_node` recursively on their inner content. This means the full template feature set is available inside any directive or custom element at any depth.
+**Recursive plan evaluation.** Directive and component renderers evaluate reusable
+body/definition plans, retaining the full feature set inside nested scopes.
 
 **Automatic state propagation.** Every custom element — whether at the entry level or deeply nested — receives the current root state as a base for its child state. Per-element HTML attributes are overlaid on top, overriding any matching keys. This means unbound state keys automatically propagate through the entire element tree without requiring explicit attribute bindings on every intermediate element. For example, a `{{text}}` binding in a grandchild element resolves from the same state as the root element, unless an ancestor explicitly overrides `text` via an attribute.
 
@@ -894,9 +935,8 @@ wasm-bindgen remains a WASM-target dependency.
 
 **Hydration marker formats.** Comment markers are data-free by default (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). When `RenderConfig.markers_v2` is enabled, `HydrationScope` emits FAST Element 2.x indexed comment markers and `data-fe-b-N` / `data-fe-c-START-COUNT` attribute markers instead.
 
-**Atomic tag processing for attribute bindings.** Plain opening tags are scanner
-events. Their attributes are resolved and hydration markers inserted before
-the cursor advances past the complete tag, so attribute bindings cannot be
+**Atomic tag processing for attribute bindings.** Plain opening tags are compiled
+as complete units, so attribute bindings cannot be
 mistaken for content bindings. Normal and simulated-stream rendering use
 the same helper rather than maintaining two tag-processing implementations.
 
@@ -949,7 +989,9 @@ without imposing machine-specific timing thresholds.
 synchronous phase on the current thread, after preparing the shared fixture
 and any pre-parsed state/locator. The output or new locator is retained at the
 measurement boundary; hashing, JSON serialization, and locator validation
-rendering happen afterward. Separate integration-test processes avoid counting
+rendering happen afterward. First-use render measurements include lazy plan
+construction and retain cached locator metadata alongside the output; they are
+not warm-cache measurements. Separate integration-test processes avoid counting
 other tests' allocations. The library never installs this allocator.
 
 The Node orchestration under `benches/` discovers the example executable from
@@ -959,5 +1001,5 @@ cumulative allocation volume from peak newly-live heap, exclude pre-existing
 inputs, and are not RSS or WASM measurements. They establish a baseline for
 borrowed state overlays, not an allocation reduction already delivered.
 
-Compiled templates, single buffered recursive sinks, borrowed state, prepared
-WASM handles, incremental sessions, and workers remain separate milestones.
+Whole-tree buffered sinks, prepared WASM handles, incremental sessions, and workers
+remain separate potential milestones.

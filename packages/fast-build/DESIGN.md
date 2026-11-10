@@ -473,11 +473,35 @@ their previous behavior. Package exports, WASM signatures, CLI options, and JSON
 state formats are unchanged; there is no prepared-template handle or persistent
 render-plan cache.
 
+Private structural render plans now cache literal/content/tag operations,
+directive boundaries and expressions, repeat aliases, and custom-element author
+attributes. A locator compiles each used definition lazily; each executed
+directive/light-DOM body is compiled on first use and reused. State, loop values,
+marker counters, and configuration are never cached. Native locator mutation
+invalidates plans so newly registered components are recognized, and serialized
+static DSD attributes are retained per definition.
+
+One-shot entries execute through the shared instruction cursor without building
+an entry instruction vector. Cached plans collect that same cursor, so parsing
+and evaluation are not duplicated. Definition/body caching still begins on first
+use; there is no adaptive second-use promotion policy. Native registration skips
+invalidation scans until plans exist, and scans only once per registration batch
+unless rendering initializes more plans between mutations.
+
+Normal, simulated-stream, and shadow-fragment paths share these plans. Content
+bindings append directly into their current buffer; attribute-value and boolean
+expression evaluators remain shared with the existing implementation. There is
+no serialized plan file or new public API. The WASM exports still rebuild their
+locator for each call, so cross-request retention would need a separate API.
+Cold single-use definitions can pay compilation overhead and retain more metadata.
+
 Native allocation baselines are collected by an opt-in Rust development example
 and a fresh-process runner under the crate's `benches/` directory. The npm CLI
 and shipped WASM do not use its allocator or feature. Shared output hashes
 preserve cross-language parity; native current-thread allocation volume and
 peak newly-live heap must not be presented as Node RSS or WASM memory usage.
+Cold render measurements include first-use compilation; retained bytes can include
+locator-owned plans as well as output, not just the returned HTML allocation.
 
 ---
 

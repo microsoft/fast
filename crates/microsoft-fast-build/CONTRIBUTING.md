@@ -61,12 +61,13 @@ cargo build
 | `src/json.rs` | `JsonValue` enum and hand-rolled JSON string parser |
 | `src/context.rs` | Value resolution: `resolve_value`, `get_nested_property` |
 | `src/expression.rs` | f-when expression evaluator (`\|\|`, `&&`, comparisons, `!`) |
-| `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content`, `read_tag_name_slice`, `parse_element_attributes` |
+| `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content_range`, `read_tag_name_slice`, `parse_element_attributes` |
 | `src/content.rs` | `{{}}` and `{{{}}}` binding renderers, `html_escape` |
 | `src/directive.rs` | `Directive` / `RenderEvent` enums, `next_event`, `render_when`, `render_repeat`, `render_custom_element` |
-| `src/node.rs` | `render_node` — core template traversal loop |
+| `src/plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and cache-reuse tests |
+| `src/node.rs` | `render_node` / `render_plan` — transient and cached instruction evaluation |
 | `src/renderer.rs` | Thin entry points that call `render_node` |
-| `src/locator.rs` | `Locator` — maps element names to template content; glob-based filesystem scanner |
+| `src/locator.rs` | `Locator` — template content and metadata, lazy plans, mutation invalidation, and filesystem scanning |
 | `src/error.rs` | `RenderError` enum with all variants and `Display` implementation |
 | `tests/` | Integration tests split by feature area (see above) |
 | `tests/fixtures/` | HTML template files used by integration tests |
