@@ -29,6 +29,72 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
+## Reusing Prepared Templates
+
+For a long-running Node server, `@microsoft/fast-build/prepared.js` separates
+template preparation from request state:
+
+```js
+import { prepareRenderer } from "@microsoft/fast-build/prepared.js";
+
+const renderer = await prepareRenderer({
+    entryFile: "./entry.html",
+    templateFiles: ["./components.html"],
+    cacheDirectory: "./.fast-prepared",
+});
+
+const html = await renderer.render({ title: "Request-specific state" });
+```
+
+Preparation writes versioned instructions and a manifest, not rendered state.
+A separate server process can call `loadRenderer({ manifestPath })` with the
+generated directory and no authored template files. Disk I/O is asynchronous;
+loaded pieces are retained in a bounded cache and can be reloaded after eviction.
+The host preloads the entry's conservative referenced-template graph, including
+references in skipped branches, before synchronous WASM execution.
+
+Call `await renderer.refresh()` to activate source changes or a replacement
+generated manifest. Content/compiler identities regenerate affected pieces;
+requests already running retain their original snapshot. Development can opt
+into file watching with `watch: true`; production refresh is explicit.
+Call `await renderer.dispose()` at shutdown to stop watchers, wait for active
+work, and release cached allocations. This does not necessarily shrink WASM memory.
+Existing synchronous APIs, CLI behavior, hydration markers and precomputed chunk
+boundaries remain unchanged. See
+[prepared template pieces](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#prepared-template-pieces)
+for deployment compatibility, update failures, memory-budget exclusions and
+artifact retention.
+
+### Build tools and selective rendering
+
+When a build tool already owns transformed templates, watching and asset emission,
+use `compileArtifacts({ entries, templates })` and
+`createPreparedRuntime({ manifest, loadArtifact, maxMemoryBytes })` instead of
+starting a filesystem watcher. The compiler accepts named entry strings and returns
+a multi-entry manifest plus piece-ID-to-byte artifacts. One runtime shares its
+cache and budget across all entries:
+
+```js
+const html = await runtime.render("home", state, { dsd: ["my-card"] });
+const fragment = await runtime.renderShadowRoot("my-card", componentState);
+```
+
+DSD selection is per request, not a different registry or compilation. Excluded
+components render their authored host/light DOM without template host defaults
+or shadow evaluation; selected descendants in that light DOM still render.
+`dsd: []` disables component shadow rendering. Fragment rendering accepts resolved
+component state and returns a complete DSD template with correct metadata/markers,
+without synthesizing a host or rendering caller-owned light DOM.
+
+Emit `<id>.fast-artifact.json` files and the versioned manifest with the **server**
+build, never into the client graph. Resolve them relative to the deployed server
+output so relocation does not depend on original source paths. Generate and serve
+with matching compiler fingerprints; a package version alone is insufficient.
+For HMR, publish every new artifact before calling `runtime.activate(manifest)`,
+retain old artifacts for in-flight requests, and drain the runtime on shutdown.
+The filesystem wrapper remains a convenient single-entry host; different entries
+must not compete for its one `manifest.json`.
+
 ## The Rendering Contract
 
 A server-side renderer must produce HTML that follows these conventions so the client-side FAST runtime can hydrate it:

@@ -1,6 +1,8 @@
 # microsoft-fast-build
 
-A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, written in Rust. Rendering uses a lightweight scanner; authored slot analysis uses a standards-based HTML parser.
+A server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates,
+written in Rust. Rendering uses lightweight in-memory instruction plans; authored
+slot analysis uses a standards-based HTML parser.
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
@@ -723,6 +725,25 @@ Custom elements that have no matching template in the locator are passed through
 
 The `RenderConfig` struct provides configuration options that control rendering behaviour. Pass `Some(&config)` to any render function, or `None` for defaults.
 
+### DSD selection
+
+`DsdSelection::All` is the default. Use `DsdSelection::Only` with a set of
+component names to restrict shadow rendering for one request:
+
+```rust
+use std::collections::BTreeSet;
+use microsoft_fast_build::{DsdSelection, RenderConfig};
+
+let config = RenderConfig::new().with_dsd_selection(
+    DsdSelection::Only(BTreeSet::from(["my-card".to_string()])),
+);
+```
+
+An empty set disables all component DSD. Excluded components retain authored
+host attributes and caller-scoped light DOM, but do not evaluate their shadow
+template or apply template host defaults. Keep the complete registry for prepared
+linking; selection changes execution, not immutable classification or artifacts.
+
 ### `attribute-name-strategy`
 
 Controls how HTML attribute names are mapped to state property names when building child state for custom elements.
@@ -910,8 +931,93 @@ Tag and binding discovery uses a forward event scan rather than repeated
 remaining-suffix searches for each directive kind. Adjacent custom elements
 and plain tags no longer incur those quadratic searches. Rendered HTML,
 attribute handling, default markers, and `markers_v2` remain compatible.
-Templates still render recursively; this is not a compiled-template or lazy
-streaming API. Stream functions continue to return fully materialized chunks.
+Templates still render recursively, but each locator lazily compiles named
+definitions and executed directive bodies into reusable structural plans.
+One-shot entries execute through the same instruction cursor without retaining
+an entry instruction vector. Native incremental registration avoids invalidation
+scans until plans have actually been cached.
+Content bindings append into their current output buffer rather than creating
+temporary rendered chunks. Stream functions still return fully materialized
+chunks with the same boundaries.
+
+Reuse a native `Locator` across render calls to retain its plans. No additional
+file, preparation API, or server cache setup is required for those APIs. Existing WASM exports
+create a new locator per call, so their reuse is within that call, not between
+requests. Plans retain metadata memory and may add overhead for small definitions
+rendered only once. Boolean expressions and attribute interpolation still use
+the existing evaluators; this is structural compilation, not expression bytecode.
+
+### Portable prepared pieces
+
+`PreparedCompiler` registers component names once and prepares immutable
+`PreparedPiece` values individually. Pieces eagerly prepare structural bodies,
+but store deferred syntax errors rather than reporting errors in skipped branches.
+Use `identity` to check a cache before compiling, `to_bytes` to persist actual
+instructions, and `PreparedPiece::from_bytes` to restore them without recompiling.
+
+```rust
+use std::collections::HashMap;
+use std::sync::Arc;
+use microsoft_fast_build::{JsonValue, PreparedCompiler, PreparedPiece, PreparedProgram};
+
+let compiler = PreparedCompiler::new(&["my-card".to_string()]);
+let entry = compiler.compile("<my-card></my-card>", vec![], vec![])?;
+let card = compiler.compile("<b>{{title}}</b>", vec![], vec![])?;
+let bytes = card.to_bytes();
+let restored = Arc::new(PreparedPiece::from_bytes(&bytes)?);
+let program = PreparedProgram::new(
+    Arc::new(entry),
+    HashMap::from([("my-card".to_string(), restored)]),
+)?;
+let state = JsonValue::Object(HashMap::from([
+    ("title".to_string(), JsonValue::String("Hello".to_string())),
+]));
+let html = program.render(&state, None)?;
+let fragment = program.render_shadow_root("my-card", &state, None)?;
+# Ok::<(), microsoft_fast_build::RenderError>(())
+```
+
+`PreparedProgram` links a dependency-closed set of shared pieces and creates fresh
+hydration/state execution for every call. It supports entry HTML, exact existing
+precomputed chunks, and named shadow-root fragments. Fragments accept resolved
+component state and share the existing fragment-rendering helper; they do not
+create a host or render caller-owned light DOM.
+
+DSD selection belongs to request configuration, not the registry or artifact.
+Excluded components render their authored host/light DOM in the caller's scope,
+without template host defaults or shadow evaluation. Selected descendants in that
+light DOM still render. Keep the complete dependency-closed registry when linking;
+changing a request's selection must not invalidate shared instructions or require
+preparing another registry variant. Known excluded fragment roots return empty
+output; unknown names remain errors.
+
+Native callers own persistence and cache eviction; the
+[`@microsoft/fast-build` Node host](../../packages/fast-build/README.md#prepared-template-pieces)
+provides storage-neutral compilation/loading, multi-entry manifests with a shared
+byte-budgeted runtime cache, and a separate filesystem/watching adapter.
+
+The exported WASM `PreparedCompiler`, `PreparedPiece`, and `PreparedProgram`
+provide the same low-level ownership model. Prepared execution accepts
+`render(state?, attributeNameStrategy?, stream, markersV2, dsdSelectionJson?)`
+and `render_shadow_root(name, state?, attributeNameStrategy?, markersV2,
+dsdSelectionJson?)`. Omit the selection for all DSD, or pass a JSON array of
+allowed names. Call generated `free()` methods when handles are no longer needed.
+Build tools should normally use the Node storage-neutral runtime rather than
+reimplementing manifest/checksum validation, dependency loading and leases.
+
+`PREPARED_FORMAT_VERSION` and `PREPARED_COMPILER_ID` identify compatibility. The
+compiler fingerprint covers Rust sources, the crate manifest, and dependency
+lockfile. Piece identities cover source, host/shadow metadata, and the registry
+membership of referenced names. Component content is not inlined, so replacing a
+child does not invalidate unchanged callers. Adding/removing a referenced registered
+name does. Prepared structural nesting is limited to 128 bodies. Flat serialized
+body records avoid JSON nesting proportional to template depth.
+
+Artifacts include authored diagnostic source and must be treated as trusted
+application files. Invalid/incompatible artifacts return `invalid-prepared-artifact`;
+loading does not fall back to compilation. No request values or counters are persisted.
+Memory estimates exclude allocator overhead and render output; dropping pieces frees
+allocations but does not guarantee shrinking WASM linear memory.
 
 From a FAST repository checkout, run the native benchmarks and parity tests:
 
