@@ -64,6 +64,29 @@ async function filesUnder(directory) {
     return result;
 }
 
+test("Vite recognizes Windows-normalized module IDs as configured source files", async t => {
+    const { preparedPlugin } = await import(
+        pathToFileURL(path.join(fixtureRoot, "prepared-plugin.mjs")).href
+    );
+    t.mock.method(path, "resolve", path.win32.resolve);
+    t.mock.method(path, "normalize", path.win32.normalize);
+    const plugin = preparedPlugin({
+        root: "D:\\prepared-fixture",
+        entries: { home: "home.html" },
+        templates: {},
+    });
+    const html = "<main>Windows source</main>";
+    assert.deepEqual(
+        plugin.transform(html, "D:/prepared-fixture/home.html?prepared-source"),
+        { code: `export default ${JSON.stringify(html)};`, map: null },
+    );
+    assert.equal(plugin.api.sources.get("D:\\prepared-fixture\\home.html"), html);
+    assert.equal(
+        plugin.transform(html, "D:/prepared-fixture/unknown.html?prepared-source"),
+        undefined,
+    );
+});
+
 test("Vite SSR emits relocatable transformed artifacts shared across entries", async t => {
     const { build } = await import("vite");
     const { root, siteConfig, entries, templates } = await fixture(t);
@@ -228,7 +251,7 @@ test("minimal Vite client output has no prepared data, server runtime or Node im
 });
 
 test("Vite HMR publishes atomically, pins requests and drains on server close", async t => {
-    const { createServer } = await import("vite");
+    const { createServer, normalizePath } = await import("vite");
     const { root, siteConfig } = await fixture(t);
     const started = deferred();
     const release = deferred();
@@ -260,7 +283,7 @@ test("Vite HMR publishes atomically, pins requests and drains on server close", 
     await started.promise;
     const card = path.join(root, "card.html");
     const original = await fs.readFile(card, "utf8");
-    const update = () => plugin.handleHotUpdate({ file: card, server });
+    const update = () => plugin.handleHotUpdate({ file: normalizePath(card), server });
     await fs.writeFile(card, original.replace("__BUILD_LABEL__", "replacement"));
     await update();
     assert.notEqual(runtime.generation, oldGeneration);
@@ -372,9 +395,11 @@ test("Vite's artifact store retires drained snapshots without deleting shared or
 });
 
 test("Vite close drains serialized HMR transforms and rejects new updates", async t => {
-    const { createServer } = await import("vite");
+    const { createServer, normalizePath } = await import("vite");
     const { root, siteConfig } = await fixture(t);
     const { config, plugin } = siteConfig(root);
+    const cardSource = normalizePath(path.join(root, "card.html")) + "?prepared-source";
+    const badgeSource = normalizePath(path.join(root, "badge.html")) + "?prepared-source";
     const started = deferred();
     const release = deferred();
     const trace = [];
@@ -385,12 +410,12 @@ test("Vite close drains serialized HMR transforms and rejects new updates", asyn
             if (!gateTransforms) {
                 return;
             }
-            if (id === path.join(root, "card.html") + "?prepared-source") {
+            if (id === cardSource) {
                 trace.push("card:start");
                 started.resolve();
                 await release.promise;
                 trace.push("card:end");
-            } else if (id === path.join(root, "badge.html") + "?prepared-source") {
+            } else if (id === badgeSource) {
                 trace.push("badge");
             }
         },

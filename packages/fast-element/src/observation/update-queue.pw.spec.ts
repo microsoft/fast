@@ -156,7 +156,7 @@ test.describe("The UpdateQueue", () => {
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
@@ -187,7 +187,7 @@ test.describe("The UpdateQueue", () => {
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
@@ -334,7 +334,8 @@ test.describe("The UpdateQueue", () => {
 
                 const callsBefore = JSON.parse(JSON.stringify(calls));
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 
@@ -396,7 +397,8 @@ test.describe("The UpdateQueue", () => {
 
                 const callsBefore = JSON.parse(JSON.stringify(calls));
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 
@@ -413,6 +415,15 @@ test.describe("The UpdateQueue", () => {
         test("executes tasks scheduled by another task that later throws an error", async ({
             page,
         }) => {
+            await page.addInitScript(() => {
+                const requestFrame = globalThis.requestAnimationFrame;
+                const schedule = globalThis.setTimeout;
+                // Cover frames delayed beyond the former 100 ms assertion timeout.
+                globalThis.requestAnimationFrame = callback =>
+                    requestFrame(time => {
+                        schedule(() => callback(time), 200);
+                    });
+            });
             await page.goto("/");
 
             const errors = await page.evaluate(async () => {
@@ -440,7 +451,8 @@ test.describe("The UpdateQueue", () => {
                     throw 0;
                 });
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 
@@ -508,7 +520,8 @@ test.describe("The UpdateQueue", () => {
 
                 const callsBefore = JSON.parse(JSON.stringify(calls));
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 
@@ -555,7 +568,8 @@ test.describe("The UpdateQueue", () => {
 
                 Updates.enqueue(go);
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 
@@ -623,7 +637,8 @@ test.describe("The UpdateQueue", () => {
                 Updates.enqueue(go2);
                 Updates.enqueue(go3);
 
-                await new Promise(resolve => originalSetTimeout(resolve, 100));
+                await Updates.next();
+                await new Promise(resolve => originalSetTimeout(resolve, 0));
 
                 globalThis.setTimeout = originalSetTimeout;
 

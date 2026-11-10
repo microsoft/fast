@@ -481,6 +481,11 @@ See [docs/template-bindings.md](./docs/template-bindings.md) for the full bindin
 
 In async mode, the first `enqueue` call schedules a `requestAnimationFrame` callback that drains up to 1024 tasks per frame. Errors in tasks are deferred via `setTimeout` so they don't abort the remaining tasks.
 
+Async error tests await `Updates.next()` and then a zero-delay timer scheduled
+after the flush. This lets the already queued error timers finish before restoring
+the test's timer interceptor, without assuming that a frame arrives within a
+fixed wall-clock delay.
+
 Observable setters and `attributeChangedCallback` enqueue their DOM mutations through `Updates`, ensuring that multiple synchronous property changes result in only one DOM update per frame.
 
 See [docs/architecture/updates.md](./docs/architecture/updates.md) for more detail.
