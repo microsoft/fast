@@ -164,17 +164,26 @@ impl WasmPreparedPiece {
 pub struct WasmPreparedProgram {
     entry: Arc<crate::PreparedPiece>,
     templates: HashMap<String, Arc<crate::PreparedPiece>>,
+    registry: Option<Vec<String>>,
 }
 
 #[wasm_bindgen(js_class = PreparedProgram)]
 impl WasmPreparedProgram {
     #[wasm_bindgen(constructor)]
     pub fn new(entry: &WasmPreparedPiece) -> Self {
-        Self { entry: Arc::clone(&entry.inner), templates: HashMap::new() }
+        Self { entry: Arc::clone(&entry.inner), templates: HashMap::new(), registry: None }
     }
 
     pub fn add_template(&mut self, name: &str, piece: &WasmPreparedPiece) {
         self.templates.insert(name.to_string(), Arc::clone(&piece.inner));
+    }
+
+    /// Full registered-name metadata, independent of request-loaded definitions.
+    pub fn set_registry(&mut self, names: &str) -> Result<(), JsValue> {
+        self.registry = Some(serde_json::from_str(names).map_err(|error| {
+            render_error(crate::prepared::invalid(error.to_string()))
+        })?);
+        Ok(())
     }
 
     /// Render entry HTML or a JSON array of legacy chunks using fresh request state.
@@ -199,8 +208,7 @@ impl WasmPreparedProgram {
             markers_v2,
             dsd_selection.as_deref(),
         )?;
-        let program = crate::PreparedProgram::new(Arc::clone(&self.entry), self.templates.clone())
-            .map_err(render_error)?;
+        let program = self.link()?;
         if stream {
             program
                 .render_stream(&state, config.as_ref())
@@ -235,12 +243,43 @@ impl WasmPreparedProgram {
             markers_v2,
             dsd_selection.as_deref(),
         )?;
-        let program = crate::PreparedProgram::new(Arc::clone(&self.entry), self.templates.clone())
-            .map_err(render_error)?;
+        let program = self.link()?;
         program
             .render_shadow_root(name, &state, config.as_ref())
             .map_err(render_error)
     }
+}
+
+impl WasmPreparedProgram {
+    fn link(&self) -> Result<crate::PreparedProgram, JsValue> {
+        match &self.registry {
+            Some(registry) => crate::PreparedProgram::new_with_registry(
+                Arc::clone(&self.entry), self.templates.clone(), registry,
+            ),
+            None => crate::PreparedProgram::new(
+                Arc::clone(&self.entry), self.templates.clone(),
+            ),
+        }.map_err(render_error)
+    }
+}
+
+/// Validate request inputs even when an excluded fragment needs no artifact handles.
+#[wasm_bindgen]
+pub fn validate_prepared_request(
+    state: Option<String>,
+    attribute_name_strategy: Option<String>,
+    markers_v2: bool,
+    dsd_selection: Option<String>,
+) -> Result<(), JsValue> {
+    if let Some(state) = state {
+        json::parse(&state).map_err(|error| {
+            render_error(crate::RenderError::JsonParse { message: error.message })
+        })?;
+    }
+    prepared_config(
+        attribute_name_strategy.as_deref(), markers_v2, dsd_selection.as_deref(),
+    )?;
+    Ok(())
 }
 
 fn prepared_config(

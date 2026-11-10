@@ -429,6 +429,13 @@ test("published prepared declarations resolve and distinguish HTML from chunks",
             const runtime = createPreparedRuntime({
                 manifest, loadArtifact: async id => artifacts.get(id)!,
             });
+            const snapshot = runtime.snapshot;
+            const generation: string = snapshot.generation;
+            const drained: Promise<void> = snapshot.drained;
+            // @ts-expect-error Snapshot handles are readonly.
+            snapshot.generation = "changed";
+            // @ts-expect-error The current snapshot is not assignable.
+            runtime.snapshot = snapshot;
             const page: string = await runtime.render("home", {}, {dsd: []});
             const stream: string[] = await runtime.render("home", {}, {stream: true, dsd: ["test-card"]});
             const fragment: string = await runtime.renderShadowRoot("test-card", {}, {dsd: "all"});
@@ -628,10 +635,12 @@ test("runtime activation copies snapshots, keeps old requests coherent and drain
         },
     });
     try {
+        const firstSnapshot = runtime.snapshot;
         first.manifest.templates["test-card"] = "external mutation";
         const pending = runtime.render("home");
         await began;
         const generation = runtime.activate(second.manifest);
+        const secondSnapshot = runtime.snapshot;
         assert.equal(generation, second.manifest.generation);
         second.manifest.templates["test-card"] = "external mutation";
         const next = runtime.render("home");
@@ -642,10 +651,179 @@ test("runtime activation copies snapshots, keeps old requests coherent and drain
         assert.match(await pending, />old<\/template>/);
         assert.match(await next, />new<\/template>/);
         await disposing;
+        await Promise.all([firstSnapshot.drained, secondSnapshot.drained]);
         assert.ok(reads > 0);
         assert.deepEqual(runtime.memoryUsage, { bytes: 0, pieces: 0, pendingLoads: 0 });
     } finally {
         unblock();
+        await runtime.dispose();
+    }
+});
+
+test("snapshot handles distinguish overlapping and ABA activations until accepted readers drain", async () => {
+    const first = compileArtifacts({
+        entries: { home: "<test-card></test-card>" },
+        templates: { "test-card": "old" },
+    });
+    const second = compileArtifacts({
+        entries: { home: "<test-card></test-card>" },
+        templates: { "test-card": "new" },
+    });
+    const artifacts = new Map([...first.artifacts, ...second.artifacts]);
+    let unblock;
+    const gate = new Promise(resolve => {
+        unblock = resolve;
+    });
+    const runtime = createPreparedRuntime({
+        manifest: first.manifest,
+        maxMemoryBytes: 0,
+        loadArtifact: async id => {
+            await gate;
+            const bytes = artifacts.get(id);
+            assert.ok(bytes);
+            return bytes;
+        },
+    });
+    try {
+        const firstSnapshot = runtime.snapshot;
+        assert.equal(firstSnapshot.generation, first.manifest.generation);
+        assert.ok(Object.isFrozen(firstSnapshot));
+        let firstDrained = false;
+        firstSnapshot.drained.then(() => {
+            firstDrained = true;
+        });
+        const pending = runtime.render("home");
+        runtime.activate(second.manifest);
+        const secondSnapshot = runtime.snapshot;
+        runtime.activate(first.manifest);
+        const repeated = runtime.snapshot;
+        assert.notEqual(repeated, firstSnapshot);
+        assert.equal(repeated.generation, firstSnapshot.generation);
+        await secondSnapshot.drained;
+        assert.equal(
+            firstDrained,
+            false,
+            "a load need not have begun to pin its snapshot",
+        );
+        let currentDrained = false;
+        repeated.drained.then(() => {
+            currentDrained = true;
+        });
+        await Promise.resolve();
+        assert.equal(currentDrained, false, "the current zero-reader snapshot is live");
+        const disposing = runtime.dispose();
+        assert.equal(runtime.dispose(), disposing);
+        await repeated.drained;
+        assert.equal(firstDrained, false);
+        unblock();
+        assert.match(await pending, />old<\/template>/);
+        await firstSnapshot.drained;
+        await disposing;
+        assert.deepEqual(runtime.memoryUsage, { bytes: 0, pieces: 0, pendingLoads: 0 });
+    } finally {
+        unblock();
+        await runtime.dispose();
+    }
+});
+
+test("snapshot retirement handles invalid activations and rejected or failed readers", async () => {
+    const compiled = compileArtifacts({ entries: { home: "{{title}}" } });
+    for (const failure of ["missing", "corrupt", "render"]) {
+        const runtime = createPreparedRuntime({
+            manifest: compiled.manifest,
+            maxMemoryBytes: 0,
+            loadArtifact: async id => {
+                if (failure === "missing") {
+                    throw new Error("storage unavailable");
+                }
+                return failure === "corrupt"
+                    ? new Uint8Array()
+                    : compiled.artifacts.get(id);
+            },
+        });
+        try {
+            const snapshot = runtime.snapshot;
+            assert.throws(() =>
+                runtime.activate({ ...compiled.manifest, generation: "0".repeat(64) }),
+            );
+            assert.equal(runtime.snapshot, snapshot);
+            await assert.rejects(runtime.render("unknown"), /Unknown/);
+            assert.throws(() => runtime.render("home", {}, { dsd: "invalid" }), /dsd/);
+            const circular = {};
+            circular.self = circular;
+            assert.throws(() => runtime.render("home", circular), /circular/i);
+            const pending = runtime.render(
+                "home",
+                {},
+                failure === "render" ? { attributeNameStrategy: "invalid" } : {},
+            );
+            const rejected = assert.rejects(
+                pending,
+                failure === "render"
+                    ? /attribute.*strategy|strategy.*attribute/i
+                    : failure === "missing"
+                      ? /storage unavailable/
+                      : { code: "invalid-prepared-artifact" },
+            );
+            runtime.activate(compiled.manifest);
+            await rejected;
+            await snapshot.drained;
+            assert.equal(runtime.memoryUsage.pendingLoads, 0);
+            assert.equal(runtime.memoryUsage.pieces, 0);
+        } finally {
+            await runtime.dispose();
+            await runtime.snapshot.drained;
+        }
+    }
+});
+
+test("snapshot reader accounting precedes reentrant state serialization and disposal", async () => {
+    const compiled = compileArtifacts({ entries: { home: "<b>{{title}}</b>" } });
+    const runtime = createPreparedRuntime({
+        manifest: compiled.manifest,
+        loadArtifact: async id => compiled.artifacts.get(id),
+    });
+    const snapshot = runtime.snapshot;
+    let disposing;
+    const pending = runtime.render("home", {
+        toJSON() {
+            disposing = runtime.dispose();
+            return { title: "accepted" };
+        },
+    });
+    assert.match(await pending, /accepted/);
+    await disposing;
+    await snapshot.drained;
+    assert.equal(runtime.memoryUsage.pieces, 0);
+});
+
+test("activation cannot publish a snapshot after manifest serialization disposes the runtime", async () => {
+    const compiled = compileArtifacts({ entries: { home: "<b>current</b>" } });
+    const runtime = createPreparedRuntime({
+        manifest: compiled.manifest,
+        loadArtifact: async id => compiled.artifacts.get(id),
+    });
+    const snapshot = runtime.snapshot;
+    let disposing;
+    const candidate = { ...compiled.manifest };
+    Object.defineProperty(candidate, "toJSON", {
+        value() {
+            disposing = runtime.dispose();
+            return compiled.manifest;
+        },
+    });
+    try {
+        assert.throws(() => runtime.activate(candidate), /disposed/);
+        assert.equal(
+            runtime.snapshot,
+            snapshot,
+            "no activation escapes the disposal drain",
+        );
+        await disposing;
+        await snapshot.drained;
+        assert.equal(runtime.dispose(), disposing);
+        assert.throws(() => runtime.render("home"), /disposed/);
+    } finally {
         await runtime.dispose();
     }
 });
@@ -845,7 +1023,9 @@ test("native selection snapshots allowlists and state before asynchronous artifa
                         const pending = fragment
                             ? runtime.renderShadowRoot("test-card", state, options)
                             : runtime.render("home", state, options);
-                        await began;
+                        if (!fragment || include) {
+                            await began;
+                        }
                         dsd.splice(0, dsd.length, ...(include ? [] : ["test-card"]));
                         state.title = "mutated";
                         unblock();
@@ -859,6 +1039,9 @@ test("native selection snapshots allowlists and state before asynchronous artifa
                                 output,
                                 fragment ? "" : "<test-card></test-card>",
                             );
+                            if (fragment) {
+                                assert.equal(blocked, false);
+                            }
                         }
                     } finally {
                         unblock();

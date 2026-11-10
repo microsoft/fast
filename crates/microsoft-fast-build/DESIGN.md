@@ -147,8 +147,8 @@ state. Invalid syntax remains a deferred instruction, even inside skipped bodies
 The optional path limits structural body depth to 128. Existing one-shot paths
 retain their previous lazy compilation behavior and have no new preparation limit.
 
-Pieces share `Arc<TemplateDefinition>` records. `PreparedProgram` links a
-dependency-closed map and entry piece, validates registry membership, and executes
+Pieces share `Arc<TemplateDefinition>` records. `PreparedProgram` links an
+entry piece and definition map, validates registry membership, and executes
 the same normal/chunk evaluators. Requests supply fresh state, overlays, loop frames,
 configuration and hydration counters. No rendered values enter the piece.
 Mutable legacy locators use copy-on-write records when invalidating shared work;
@@ -162,6 +162,16 @@ must match equivalent unregistered-element output without changing immutable
 instruction classification. Prepared shadow-fragment execution shares the existing
 fragment helper, shadow metadata and fresh hydration scope; a known excluded root
 returns no fragment, while an unknown root remains an error.
+
+`PreparedProgram::new` retains strict dependency-closed linking.
+`new_with_registry` additionally accepts complete immutable registered-name
+membership independently of loaded definitions. Every loaded piece's classification
+is checked against that full registry, not merely names whose shadow pieces were
+loaded. Execution verifies the conservative DSD-required closure before rendering:
+excluded shadows need no definition, but selected missing definitions remain
+errors. Authored light-DOM dependencies reside in the caller's piece, so excluding
+an enclosing shadow does not hide selected descendants. No policy-specific
+artifacts, source reparsing, or second state evaluation is needed.
 
 Serialization uses a versioned JSON envelope with a flat list of body-plan records
 identified by absolute source offsets. Instruction ranges within a plan remain
@@ -180,6 +190,9 @@ Both instruction format and compiler identity must match at load time.
 
 Filesystem persistence, asynchronous graph loading, memory admission, manifest
 publication and development watching belong to the Node host, not WASM.
+The host can prune registered dependency edges using the request's DSD allowlist;
+registry membership itself remains complete. Excluded fragments validate native
+request configuration/state and return empty output without loading a root piece.
 `PreparedPiece::memory_bytes` estimates retained Rust structures/string capacities;
 it excludes allocator overhead, host objects, request temporaries and output.
 Native callers can implement their own persistence/cache policy with the same

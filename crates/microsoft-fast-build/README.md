@@ -983,13 +983,20 @@ precomputed chunks, and named shadow-root fragments. Fragments accept resolved
 component state and share the existing fragment-rendering helper; they do not
 create a host or render caller-owned light DOM.
 
+For policy-aware loading, `PreparedProgram::new_with_registry` accepts complete
+registered-name metadata separately from the available definition pieces.
+Classification validation still uses the entire registry; the execution policy
+determines which definitions are required. The existing `new` constructor keeps
+its dependency-closed contract.
+
 DSD selection belongs to request configuration, not the registry or artifact.
 Excluded components render their authored host/light DOM in the caller's scope,
 without template host defaults or shadow evaluation. Selected descendants in that
-light DOM still render. Keep the complete dependency-closed registry when linking;
-changing a request's selection must not invalidate shared instructions or require
-preparing another registry variant. Known excluded fragment roots return empty
-output; unknown names remain errors.
+light DOM still render. Keep complete registry metadata when linking, even if an
+excluded shadow's definition is not loaded. Changing a request's selection must
+not invalidate shared instructions or require preparing another registry variant.
+Selected missing definitions fail rather than becoming ordinary elements. Known
+excluded fragment roots return empty output; unknown names remain errors.
 
 Native callers own persistence and cache eviction; the
 [`@microsoft/fast-build` Node host](../../packages/fast-build/README.md#prepared-template-pieces)
@@ -1002,6 +1009,9 @@ provide the same low-level ownership model. Prepared execution accepts
 and `render_shadow_root(name, state?, attributeNameStrategy?, markersV2,
 dsdSelectionJson?)`. Omit the selection for all DSD, or pass a JSON array of
 allowed names. Call generated `free()` methods when handles are no longer needed.
+WASM `PreparedProgram.set_registry(namesJson)` supplies the complete name registry
+for selectively loaded definitions. Without it, existing dependency-closed linking
+is unchanged.
 Build tools should normally use the Node storage-neutral runtime rather than
 reimplementing manifest/checksum validation, dependency loading and leases.
 

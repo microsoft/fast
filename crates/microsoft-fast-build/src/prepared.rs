@@ -650,11 +650,122 @@ mod tests {
         )
         .is_err());
     }
+
+    #[test]
+    fn partial_definitions_preserve_full_registry_html_chunks_and_fragments() {
+        let names = vec![
+            "test-parent".into(), "test-child".into(), "test-hidden".into(),
+        ];
+        let entry = piece(
+            r#"<test-parent title="{{title}}"><test-child title="{{title}}"></test-child></test-parent>"#,
+            &names,
+        );
+        let child = piece("<b>{{title}}</b>", &names);
+        let full = PreparedProgram::new(
+            Arc::clone(&entry),
+            HashMap::from([
+                ("test-parent".into(), piece("<test-hidden></test-hidden>", &names)),
+                ("test-child".into(), Arc::clone(&child)),
+                ("test-hidden".into(), piece("secret", &names)),
+            ]),
+        ).unwrap();
+        let partial = PreparedProgram::new_with_registry(
+            Arc::clone(&entry),
+            HashMap::from([("test-child".into(), child)]),
+            &names,
+        ).unwrap();
+        let empty = PreparedProgram::new_with_registry(entry, HashMap::new(), &names).unwrap();
+        let state = crate::json::parse(r#"{"title":"caller<&"}"#).unwrap();
+        for markers in [false, true] {
+            for selection in [vec![], vec!["test-child".into()]] {
+                let config = RenderConfig::new()
+                    .with_markers_v2(markers)
+                    .with_dsd_selection(crate::DsdSelection::Only(selection.into_iter().collect()));
+                assert_eq!(
+                    partial.render(&state, Some(&config)).unwrap(),
+                    full.render(&state, Some(&config)).unwrap(),
+                );
+                assert_eq!(
+                    partial.render_stream(&state, Some(&config)).unwrap(),
+                    full.render_stream(&state, Some(&config)).unwrap(),
+                );
+                for name in &names {
+                    assert_eq!(
+                        partial.render_shadow_root(name, &state, Some(&config)).unwrap(),
+                        full.render_shadow_root(name, &state, Some(&config)).unwrap(),
+                    );
+                }
+            }
+        }
+        let none = RenderConfig::new()
+            .with_dsd_selection(crate::DsdSelection::Only(Default::default()));
+        assert_eq!(
+            empty.render(&state, Some(&none)).unwrap(),
+            full.render(&state, Some(&none)).unwrap(),
+        );
+        assert_eq!(
+            empty.render_shadow_root("test-parent", &state, Some(&none)).unwrap(), "",
+        );
+        assert_eq!(
+            empty.render_shadow_root("unknown", &state, Some(&none)).unwrap_err().code(),
+            "missing-template",
+        );
+        for result in [
+            empty.render(&state, None).map(|_| ()),
+            empty.render_stream(&state, None).map(|_| ()),
+            empty.render_shadow_root("test-parent", &state, None).map(|_| ()),
+        ] {
+            assert_eq!(result.unwrap_err().code(), "invalid-prepared-artifact");
+        }
+    }
+
+    #[test]
+    fn full_registry_linking_rejects_reclassified_or_unregistered_definitions() {
+        let names = vec!["test-child".into()];
+        assert!(PreparedProgram::new_with_registry(
+            piece("<test-child></test-child>", &names), HashMap::new(), &[],
+        ).is_err());
+        assert!(PreparedProgram::new_with_registry(
+            piece("<test-child></test-child>", &[]), HashMap::new(), &names,
+        ).is_err());
+        assert!(PreparedProgram::new_with_registry(
+            piece("", &[]), HashMap::from([("test-child".into(), piece("", &[]))]), &[],
+        ).is_err());
+    }
+
+    #[test]
+    fn selected_skipped_branches_still_require_definitions_and_defer_syntax_errors() {
+        let names = vec!["test-child".into()];
+        let entry = piece(
+            r#"<f-when value="{{shown}}"><test-child></test-child>{{unfinished</f-when>"#,
+            &names,
+        );
+        let program = PreparedProgram::new_with_registry(
+            Arc::clone(&entry), HashMap::new(), &names,
+        ).unwrap();
+        let hidden = crate::json::parse(r#"{"shown":false}"#).unwrap();
+        assert_eq!(
+            program.render(&hidden, None).unwrap_err().code(), "invalid-prepared-artifact",
+        );
+        let config = RenderConfig::new()
+            .with_dsd_selection(crate::DsdSelection::Only(Default::default()));
+        assert_eq!(program.render(&hidden, Some(&config)).unwrap(), "");
+        let shown = crate::json::parse(r#"{"shown":true}"#).unwrap();
+        let full = PreparedProgram::new(
+            entry, HashMap::from([("test-child".into(), piece("child", &names))]),
+        ).unwrap();
+        let expected = full.render(&shown, Some(&config)).unwrap_err();
+        let actual = program.render(&shown, Some(&config)).unwrap_err();
+        assert_eq!(actual.code(), expected.code());
+        assert_eq!(actual.location(), expected.location());
+    }
 }
 /// A request/program snapshot. Cloned pieces share immutable instructions, never request state.
 pub struct PreparedProgram {
     entry: Arc<PreparedPiece>,
     locator: Locator,
+    registry: BTreeSet<String>,
+    dependencies: HashMap<String, Vec<String>>,
 }
 
 impl PreparedProgram {
@@ -666,7 +777,16 @@ impl PreparedProgram {
         state: &JsonValue,
         config: Option<&RenderConfig>,
     ) -> Result<String, RenderError> {
-        crate::render_shadow_root_with_locator(name, state, &self.locator, config)
+        let default = RenderConfig::default();
+        let config = config.unwrap_or(&default);
+        if !self.registry.contains(name) {
+            return Err(RenderError::UnknownTemplate { element: name.into() });
+        }
+        if !config.dsd_selection.includes(name) {
+            return Ok(String::new());
+        }
+        self.require_definitions(vec![name.to_string()], config)?;
+        crate::render_shadow_root_with_locator(name, state, &self.locator, Some(config))
     }
 
     /// Link a dependency-closed set of pieces. Missing dependencies are rejected before rendering.
@@ -674,9 +794,26 @@ impl PreparedProgram {
         entry: Arc<PreparedPiece>,
         templates: HashMap<String, Arc<PreparedPiece>>,
     ) -> Result<Self, RenderError> {
+        let registered = templates.keys().cloned().collect::<Vec<_>>();
+        Self::new_with_registry(entry, templates, &registered)
+    }
+
+    /// Link loaded definitions against the full immutable registry. Definitions omitted
+    /// by a request's DSD policy need not be loaded; selected dependencies must exist.
+    pub fn new_with_registry(
+        entry: Arc<PreparedPiece>,
+        templates: HashMap<String, Arc<PreparedPiece>>,
+        registered: &[String],
+    ) -> Result<Self, RenderError> {
+        let registry: BTreeSet<_> = registered.iter().cloned().collect();
+        for name in templates.keys() {
+            if !registry.contains(name) {
+                return Err(invalid(format!("unregistered definition '{name}'")));
+            }
+        }
         for piece in std::iter::once(&entry).chain(templates.values()) {
             for (name, registered) in &piece.classification {
-                if *registered != templates.contains_key(name) {
+                if *registered != registry.contains(name) {
                     return Err(invalid(format!(
                         "registry membership changed for '{name}'"
                     )));
@@ -685,6 +822,11 @@ impl PreparedProgram {
         }
         Ok(Self {
             entry,
+            registry,
+            dependencies: templates
+                .iter()
+                .map(|(name, piece)| (name.clone(), piece.dependencies()))
+                .collect(),
             locator: Locator::from_prepared(
                 templates
                     .into_iter()
@@ -694,6 +836,24 @@ impl PreparedProgram {
         })
     }
 
+    fn require_definitions(
+        &self,
+        mut pending: Vec<String>,
+        config: &RenderConfig,
+    ) -> Result<(), RenderError> {
+        let mut visited = BTreeSet::new();
+        while let Some(name) = pending.pop() {
+            if !config.dsd_selection.includes(&name) || !visited.insert(name.clone()) {
+                continue;
+            }
+            let dependencies = self.dependencies.get(&name).ok_or_else(|| {
+                invalid(format!("missing selected prepared definition '{name}'"))
+            })?;
+            pending.extend(dependencies.iter().cloned());
+        }
+        Ok(())
+    }
+
     /// Render entry HTML using fresh request state and hydration scopes.
     pub fn render(
         &self,
@@ -701,6 +861,8 @@ impl PreparedProgram {
         config: Option<&RenderConfig>,
     ) -> Result<String, RenderError> {
         let default = RenderConfig::default();
+        let config = config.unwrap_or(&default);
+        self.require_definitions(self.entry.dependencies(), config)?;
         crate::node::render_plan(
             self.entry.definition.plan.get().expect("prepared entry"),
             &self.entry.definition.content,
@@ -709,7 +871,7 @@ impl PreparedProgram {
             Some(&self.locator),
             None,
             true,
-            config.unwrap_or(&default),
+            config,
         )
         .map_err(|error| {
             error.authored(
@@ -729,6 +891,8 @@ impl PreparedProgram {
         config: Option<&RenderConfig>,
     ) -> Result<Vec<String>, RenderError> {
         let default = RenderConfig::default();
+        let config = config.unwrap_or(&default);
+        self.require_definitions(self.entry.dependencies(), config)?;
         crate::streaming::stream_plan(
             self.entry.definition.plan.get().expect("prepared entry"),
             &self.entry.definition.content,
@@ -737,7 +901,7 @@ impl PreparedProgram {
             Some(&self.locator),
             None,
             true,
-            config.unwrap_or(&default),
+            config,
         )
         .map_err(|error| {
             error.authored(

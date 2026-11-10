@@ -116,6 +116,24 @@ try {
 
 `compileArtifacts` is synchronous CPU work. Its `artifacts` map is keyed by piece
 ID; a storage adapter decides how those bytes are emitted and retrieved.
+For subsequent transformed batches, pass the previous complete result:
+
+```js
+const next = compileArtifacts(
+    { entries: transformedEntries, templates: transformedDefinitions },
+    { previous: prepared },
+);
+```
+
+FAST validates the prior manifest/artifact integrity and compatibility, calculates
+registry-sensitive identities, reuses unchanged instructions, and assembles a
+complete candidate. It does not mutate the previous result. Invalid reuse rejects
+preparation; callers can deliberately retry without `previous` to rebuild from
+source. Reuse avoids unchanged instruction compilation, not all input scanning,
+hashing or manifest assembly. Keep only the preparation results needed by your
+build lifecycle; this is not a process-global compiler cache or part of the render
+cache budget. No watcher or bundler-specific API is involved.
+
 `createPreparedRuntime` synchronously validates and copies the manifest, while
 `render` and `renderShadowRoot` asynchronously load their dependency graphs before
 synchronous WASM execution. FAST owns compatibility/checksum validation, load
@@ -138,6 +156,30 @@ loads them. Adapters should finish emission before activation and retain the las
 valid generation on transformation/build failures. Disposal rejects new work and
 drains existing requests before freeing cached handles.
 
+`runtime.snapshot` exposes a readonly `{ generation, drained }` handle for the
+current activation. Capture it before replacement:
+
+```js
+const retired = runtime.snapshot;
+// Publish every candidate artifact to the application store first.
+runtime.activate(next.manifest); // Still returns the generation string.
+await retired.drained;
+```
+
+`drained` resolves only after that activation is retired and all its accepted
+requests finish, including requests blocked in artifact loading and failed
+requests. Disposal retires the current snapshot and drains it too. Handles
+identify activation instances: activating A, then B, then A creates three distinct
+handles even when two generation hashes match. No per-request adapter wrapping
+is needed.
+
+The storage adapter still owns deletion policy. A drained handle permits removing
+only artifacts **not referenced by the current or any other undrained snapshot**;
+shared IDs must remain available. Register the new snapshot's references before
+processing retirement cleanup. These signals cover one runtime, not other workers
+or processes; coordinate deployment-wide collection separately. FAST never deletes
+application backing objects.
+
 ### Selective DSD and shadow fragments
 
 Pass `dsd: "all"` (the default) or an array of component names for request-local
@@ -155,6 +197,14 @@ components in their authored light DOM still render. Definitions remain register
 for plan classification; do not remove them, mutate a shared registry, refresh per
 request, or prepare a registry variant for every selection.
 
+Loading follows the same selection: `dsd: []` loads the entry piece only, and a
+mixed allowlist omits excluded shadow pieces and their shadow-only dependencies.
+Selected descendants in an excluded host's authored light DOM remain reachable
+through their caller piece. The full registry remains available for immutable
+classification validation independently of loaded definitions. Dependencies in
+skipped state-dependent branches are still conservative; selection does not
+evaluate conditions early or promise branch pruning.
+
 `renderShadowRoot(name, resolvedComponentState, options)` returns the complete DSD
 `<template>` fragment with its shadow metadata and fresh hydration scope. It does
 not synthesize a host, apply host defaults, derive state from host attributes, or
@@ -163,6 +213,11 @@ A known but excluded root returns an empty string; an unknown name is an error.
 Marker and attribute-strategy options match entry rendering. Fragments are not
 implemented by slicing synthetic host output. The filesystem wrapper exposes the
 same fragment operation.
+Known excluded fragments return empty output without loading any artifact,
+after request validation. Unknown roots and missing/corrupt pieces actually needed
+by the selected execution still fail. Unused excluded artifacts are not read and
+therefore do not cause backing-file errors; this intentionally replaces the
+earlier prerelease conservative-loading behavior.
 
 ### Generated artifacts and deployment
 
@@ -197,7 +252,7 @@ Artifacts must match the runtime's compiler fingerprint and instruction-format
 version. The fingerprint covers Rust sources, the crate manifest, and lockfile;
 use the same compiler build for generation and serving. Artifact checksums,
 source ranges, identities, and dependency membership are validated. Missing,
-corrupt, or incompatible generated files reject the request; `loadRenderer`
+corrupt, or incompatible generated files needed by a request reject it; `loadRenderer`
 does not silently fall back to source compilation.
 
 The multi-entry manifest is version 2; artifact instruction format and compiler
@@ -251,10 +306,9 @@ that directory while requests still need its files.
 ### Memory and execution boundaries
 
 File reads/writes are asynchronous. Before entering WASM, each request loads the
-entry's conservative referenced-template graph, including references in skipped
-branches and excluded components' conservative dependencies. DSD selection does
-not promise to avoid loading those artifacts. Unreachable registered templates
-are not loaded. This is not a
+entry's DSD-policy-required referenced-template graph, including selected references
+in skipped branches. Excluded shadow definitions and their shadow-only dependencies
+are not loaded. Unreachable registered templates are not loaded. This is not a
 state-dependent expanded component tree, and does not evaluate conditions twice.
 Execution then uses the existing synchronous evaluator and fresh request state.
 `stream: true` returns the existing precomputed chunks, not live network streaming.
@@ -278,7 +332,8 @@ From a FAST repository checkout, measure these stages separately with
 `npm run bench:prepared -w @microsoft/fast-build`. The
 [dedicated harness](./test/performance/PREPARED.md) distinguishes startup,
 preparation, cold generated-file
-loading, warm requests, and many-entry retention. Earlier one-shot cursor timings
+loading, warm requests, many-entry retention, incremental preparation reuse and
+selective DSD/fragment loads. Earlier one-shot cursor timings
 are not prepared-path performance evidence.
 
 ## CLI usage

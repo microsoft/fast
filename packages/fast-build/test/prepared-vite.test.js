@@ -304,6 +304,73 @@ test("Vite HMR publishes atomically, pins requests and drains on server close", 
     await assert.rejects(async () => runtime.render("home"), /dispos/i);
 });
 
+test("Vite's artifact store retires drained snapshots without deleting shared or ABA pieces", async t => {
+    const { createServer } = await import("vite");
+    const { root, siteConfig } = await fixture(t);
+    const started = deferred();
+    const release = deferred();
+    let blocked = false;
+    const { config, plugin } = siteConfig(root, {
+        maxMemoryBytes: 0,
+        loadArtifact: async (_id, read) => {
+            if (!blocked) {
+                blocked = true;
+                started.resolve();
+                await release.promise;
+            }
+            return read();
+        },
+    });
+    config.server = { middlewareMode: true, hmr: false, watch: null };
+    const server = await createServer(config);
+    t.after(async () => {
+        release.resolve();
+        await server.close();
+    });
+    const runtime = await plugin.api.prepare();
+    const originalSnapshot = runtime.snapshot;
+    const originalIds = plugin.api.artifactIds;
+    const card = path.join(root, "card.html");
+    const original = await fs.readFile(card, "utf8");
+    const pending = runtime.render("home", { title: "pinned old request" });
+    await started.promise;
+    async function update(content) {
+        await fs.writeFile(card, content);
+        await plugin.handleHotUpdate({ file: card, server });
+    }
+
+    await update(original.replace("__BUILD_LABEL__", "replacement"));
+    const replacement = runtime.snapshot;
+    const replacementIds = plugin.api.artifactIds;
+    assert.equal(replacementIds.size, originalIds.size + 1);
+    for (const id of originalIds) {
+        assert.ok(replacementIds.has(id), "blocked old artifact loads remain possible");
+    }
+    await update(original);
+    assert.equal(runtime.generation, originalSnapshot.generation);
+    assert.notEqual(runtime.snapshot, originalSnapshot, "ABA is a distinct activation");
+    await replacement.drained;
+    assert.deepEqual(plugin.api.artifactIds, originalIds);
+    assert.equal(plugin.api.snapshotCount, 2, "both equal-generation activations live");
+
+    await update(original.replace("__BUILD_LABEL__", "current"));
+    assert.equal(plugin.api.artifactIds.size, originalIds.size + 1);
+    release.resolve();
+    assert.match(await pending, /Vite transformed/);
+    await originalSnapshot.drained;
+    assert.equal(plugin.api.artifactIds.size, originalIds.size);
+    assert.equal(plugin.api.snapshotCount, 1);
+    for (let index = 0; index < 32; index++) {
+        await update(original.replace("__BUILD_LABEL__", `update-${index}`));
+        assert.equal(plugin.api.artifactIds.size, originalIds.size);
+        assert.equal(plugin.api.snapshotCount, 1);
+        assert.match(await runtime.render("home"), new RegExp(`update-${index}`));
+    }
+    await server.close();
+    assert.equal(plugin.api.artifactIds.size, 0);
+    assert.equal(plugin.api.snapshotCount, 0);
+});
+
 test("Vite close drains serialized HMR transforms and rejects new updates", async t => {
     const { createServer } = await import("vite");
     const { root, siteConfig } = await fixture(t);
@@ -361,6 +428,8 @@ test("Vite close drains serialized HMR transforms and rejects new updates", asyn
     assert.notEqual(runtime.generation, originalGeneration);
     assert.match(plugin.api.sources.get(badge), /queued badge/);
     assert.equal(runtime.memoryUsage.pieces, 0);
+    assert.equal(plugin.api.artifactIds.size, 0);
+    assert.equal(plugin.api.snapshotCount, 0);
     await assert.rejects(async () => runtime.render("home"), /dispos/i);
     await assert.rejects(plugin.api.prepare(), /dispos/i);
 });

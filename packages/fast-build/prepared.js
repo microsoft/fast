@@ -15,6 +15,7 @@ const directoryOwners = new Set();
 
 /** @typedef {{ checksum: string, dependencies: string[] }} PieceDescriptor */
 /** @typedef {import("./prepared.js").PreparedManifest} Manifest */
+/** @typedef {{ manifest: Manifest, handle: import("./prepared.js").PreparedSnapshot, readers: number, retired: boolean, drain: () => void }} Snapshot */
 /** @typedef {import("./wasm/microsoft_fast_build.js").PreparedPiece} Piece */
 /** @typedef {{ piece: Piece, bytes: number, users: number }} CacheRecord */
 /** @typedef {{ piece: Piece, release: () => void }} Lease */
@@ -323,9 +324,75 @@ function compile(sources, reusable = new Map()) {
     }
 }
 
-/** Compile a complete registry once, without filesystem access. @param {import("./prepared.js").PreparedArtifactSources} sources */
-function compileArtifacts(sources) {
-    return compile(sources);
+// Weak byte provenance avoids native rehydration, not checksum validation or compilation.
+/** @type {WeakMap<Uint8Array, { id: string, checksum: string, dependencies: string }>} */
+const artifactProvenance = new WeakMap();
+
+/** @param {import("./prepared.js").PreparedArtifacts} previous */
+function reusableArtifacts(previous) {
+    if (!object(previous) || !(previous.artifacts instanceof Map)) {
+        throw artifactError(
+            "Previous preparation must contain a manifest and artifact map.",
+        );
+    }
+    const manifest = validateManifest(previous.manifest);
+    if (previous.artifacts.size !== Object.keys(manifest.pieces).length) {
+        throw artifactError(
+            "Previous preparation must contain exactly its manifest's pieces.",
+        );
+    }
+    /** @type {Map<string, { bytes: Uint8Array, descriptor: PieceDescriptor }>} */
+    const reusable = new Map();
+    for (const [id, descriptor] of Object.entries(manifest.pieces)) {
+        const input = previous.artifacts.get(id);
+        if (!(input instanceof Uint8Array)) {
+            throw artifactError(`Missing or invalid previous prepared piece ${id}.`);
+        }
+        const bytes = Uint8Array.from(input);
+        if (digest(bytes) !== descriptor.checksum) {
+            throw artifactError(`Checksum mismatch for previous prepared piece ${id}.`);
+        }
+        const provenance = artifactProvenance.get(input);
+        if (
+            provenance?.id !== id ||
+            provenance.checksum !== descriptor.checksum ||
+            provenance.dependencies !== JSON.stringify(descriptor.dependencies)
+        ) {
+            // Copied or independently loaded results cross the native validation boundary.
+            try {
+                decodePiece(bytes, id, descriptor).free();
+            } catch {
+                throw artifactError(`Invalid previous prepared piece ${id}.`);
+            }
+        }
+        reusable.set(id, { bytes, descriptor });
+    }
+    return reusable;
+}
+
+/**
+ * Compile a complete registry without filesystem access. Unchanged identities reuse
+ * copied bytes from a complete previous result; inputs are still scanned and hashed.
+ * Invalid, incomplete, corrupt or incompatible previous results reject before compilation.
+ * Neither previous results nor their bytes are mutated or shared with the new result.
+ * @param {import("./prepared.js").PreparedArtifactSources} sources
+ * @param {import("./prepared.js").PreparedCompileOptions} [options]
+ * @returns {import("./prepared.js").PreparedArtifacts}
+ */
+function compileArtifacts(sources, { previous } = {}) {
+    const result = compile(
+        sources,
+        previous === undefined ? undefined : reusableArtifacts(previous),
+    );
+    for (const [id, bytes] of result.artifacts) {
+        const descriptor = result.manifest.pieces[id];
+        artifactProvenance.set(bytes, {
+            id,
+            checksum: descriptor.checksum,
+            dependencies: JSON.stringify(descriptor.dependencies),
+        });
+    }
+    return result;
 }
 
 /** @param {Sources} sources */
@@ -453,30 +520,59 @@ async function buildManifest(directory, sources, refresh = false) {
 
 /** An asynchronous host for portable pieces and synchronous, request-local WASM execution. */
 class PreparedRuntime {
-    /** @type {Manifest} */
+    /** @type {Snapshot} */
     #snapshot;
     /** @type {PieceCache} */
     #cache;
     /** @type {(id: string) => Promise<Uint8Array>} */
     #load;
-    /** @type {Set<Promise<unknown>>} */
-    #renders = new Set();
+    /** @type {Set<Snapshot>} */
+    #snapshots = new Set();
     #closed = false;
     /** @type {Promise<void> | undefined} */
     #disposing;
 
     /** @param {import("./prepared.js").PreparedRuntimeConfiguration} options */
     constructor(options) {
-        this.#snapshot = validateManifest(options.manifest);
+        const manifest = validateManifest(options.manifest);
         if (typeof options.loadArtifact !== "function") {
             throw new TypeError("loadArtifact must be a function.");
         }
         this.#load = options.loadArtifact;
         this.#cache = new PieceCache(options.maxMemoryBytes ?? DEFAULT_MEMORY_BYTES);
+        this.#snapshot = this.#createSnapshot(manifest);
     }
 
     get generation() {
-        return this.#snapshot.generation;
+        return this.#snapshot.handle.generation;
+    }
+
+    get snapshot() {
+        return this.#snapshot.handle;
+    }
+
+    /** @param {Manifest} manifest @returns {Snapshot} */
+    #createSnapshot(manifest) {
+        /** @type {() => void} */
+        let resolve;
+        /** @type {Promise<void>} */
+        const drained = new Promise(done => {
+            resolve = done;
+        });
+        const snapshot = {
+            manifest,
+            handle: Object.freeze({ generation: manifest.generation, drained }),
+            readers: 0,
+            retired: false,
+            drain: () => {
+                if (snapshot.retired && snapshot.readers === 0) {
+                    this.#snapshots.delete(snapshot);
+                    resolve();
+                }
+            },
+        };
+        this.#snapshots.add(snapshot);
+        return snapshot;
     }
 
     get memoryUsage() {
@@ -490,9 +586,14 @@ class PreparedRuntime {
     /** @param {Manifest} manifest */
     activate(manifest) {
         this.#assertOpen();
-        const snapshot = validateManifest(manifest);
+        const validated = validateManifest(manifest);
+        this.#assertOpen();
+        const snapshot = this.#createSnapshot(validated);
+        const previous = this.#snapshot;
         this.#snapshot = snapshot;
-        return snapshot.generation;
+        previous.retired = true;
+        previous.drain();
+        return snapshot.handle.generation;
     }
 
     #assertOpen() {
@@ -515,7 +616,9 @@ class PreparedRuntime {
     #request(name, fragment, state, options) {
         this.#assertOpen();
         const snapshot = this.#snapshot;
-        const registry = fragment ? snapshot.templates : snapshot.entries;
+        const registry = fragment
+            ? snapshot.manifest.templates
+            : snapshot.manifest.entries;
         if (!Object.hasOwn(registry, name)) {
             return Promise.reject(
                 new Error(
@@ -523,34 +626,55 @@ class PreparedRuntime {
                 ),
             );
         }
-        const copied = { ...options };
-        if (copied.dsd !== undefined && copied.dsd !== "all") {
-            if (
-                !Array.isArray(copied.dsd) ||
-                copied.dsd.some(value => typeof value !== "string")
-            ) {
-                throw new TypeError("dsd must be 'all' or an array of component names.");
+        snapshot.readers++;
+        const release = () => {
+            snapshot.readers--;
+            snapshot.drain();
+        };
+        try {
+            const copied = { ...options };
+            if (copied.dsd !== undefined && copied.dsd !== "all") {
+                if (
+                    !Array.isArray(copied.dsd) ||
+                    copied.dsd.some(value => typeof value !== "string")
+                ) {
+                    throw new TypeError(
+                        "dsd must be 'all' or an array of component names.",
+                    );
+                }
+                copied.dsd = [...copied.dsd];
             }
-            copied.dsd = [...copied.dsd];
+            const json = state === undefined ? undefined : JSON.stringify(state);
+            return this.#render(
+                snapshot.manifest,
+                registry[name],
+                fragment ? name : undefined,
+                json,
+                copied,
+            ).finally(release);
+        } catch (error) {
+            release();
+            throw error;
         }
-        const json = state === undefined ? undefined : JSON.stringify(state);
-        const request = this.#render(
-            snapshot,
-            registry[name],
-            fragment ? name : undefined,
-            json,
-            copied,
-        );
-        this.#renders.add(request);
-        request.then(
-            () => this.#renders.delete(request),
-            () => this.#renders.delete(request),
-        );
-        return request;
     }
 
     /** @param {Manifest} snapshot @param {string} root @param {string | undefined} fragment @param {string | undefined} state @param {import("./prepared.js").PreparedRenderOptions} options */
     async #render(snapshot, root, fragment, state, options) {
+        const selected =
+            options.dsd === undefined || options.dsd === "all"
+                ? undefined
+                : new Set(options.dsd);
+        const selection =
+            selected === undefined ? undefined : JSON.stringify([...selected]);
+        if (fragment !== undefined && selected !== undefined && !selected.has(fragment)) {
+            wasm.validate_prepared_request(
+                state,
+                options.attributeNameStrategy,
+                options.markersV2 ?? false,
+                selection,
+            );
+            return "";
+        }
         /** @type {Map<string, Lease>} */
         const leases = new Map();
         /** @type {Map<string, string>} */
@@ -579,6 +703,9 @@ class PreparedRuntime {
                         leases.set(id, lease);
                         next.delete(id);
                         for (const name of descriptor.dependencies) {
+                            if (selected !== undefined && !selected.has(name)) {
+                                continue;
+                            }
                             const dependency = snapshot.templates[name];
                             templates.set(name, dependency);
                             if (!leases.has(dependency)) {
@@ -597,16 +724,13 @@ class PreparedRuntime {
                 throw artifactError("Prepared root was not loaded.");
             }
             program = new wasm.PreparedProgram(entry.piece);
+            program.set_registry(JSON.stringify(Object.keys(snapshot.templates)));
             for (const [name, id] of templates) {
                 const lease = leases.get(id);
                 if (lease) {
                     program.add_template(name, lease.piece);
                 }
             }
-            const selection =
-                options.dsd === undefined || options.dsd === "all"
-                    ? undefined
-                    : JSON.stringify(options.dsd);
             if (fragment !== undefined) {
                 return program.render_shadow_root(
                     fragment,
@@ -635,8 +759,13 @@ class PreparedRuntime {
     dispose() {
         if (!this.#disposing) {
             this.#closed = true;
+            const snapshots = [...this.#snapshots];
+            for (const snapshot of snapshots) {
+                snapshot.retired = true;
+                snapshot.drain();
+            }
             this.#disposing = (async () => {
-                await Promise.allSettled([...this.#renders]);
+                await Promise.all(snapshots.map(snapshot => snapshot.handle.drained));
                 this.#cache.clear();
             })();
         }

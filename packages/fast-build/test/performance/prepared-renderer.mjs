@@ -161,6 +161,129 @@ function workloads(config) {
     ];
 }
 
+function policyWorkload(config) {
+    return {
+        name: "DSD-selection-and-fragments",
+        entries: {
+            home:
+                "<main>" +
+                "<bench-shell>{{label}}<bench-leaf></bench-leaf></bench-shell>".repeat(
+                    config.instances,
+                ) +
+                "</main>",
+        },
+        templates: {
+            "bench-shell":
+                "<section><bench-shadow-only></bench-shadow-only><slot></slot></section>",
+            "bench-shadow-only": "<i>{{label}}</i>",
+            "bench-leaf": "<b>{{label}}</b>",
+        },
+        state: { label: 'Selected & <"value"> caf\u00e9' },
+    };
+}
+
+function policyCases() {
+    return [
+        { name: "entry-all", root: "home", expectedLoads: 4 },
+        { name: "entry-no-DSD", root: "home", dsd: [], expectedLoads: 1 },
+        {
+            name: "entry-mixed",
+            root: "home",
+            dsd: ["bench-leaf"],
+            expectedLoads: 2,
+        },
+        {
+            name: "fragment-all",
+            root: "bench-shell",
+            fragment: true,
+            expectedLoads: 2,
+        },
+        {
+            name: "fragment-mixed",
+            root: "bench-shell",
+            fragment: true,
+            dsd: ["bench-shell"],
+            expectedLoads: 1,
+        },
+        {
+            name: "fragment-excluded",
+            root: "bench-shell",
+            fragment: true,
+            dsd: [],
+            expectedLoads: 0,
+        },
+    ];
+}
+
+function executePolicy(runtime, input, policy, options = {}) {
+    const renderOptions = {
+        attributeNameStrategy: "camelCase",
+        ...options,
+        ...(policy.dsd === undefined ? {} : { dsd: policy.dsd }),
+    };
+    return policy.fragment
+        ? runtime.renderShadowRoot(policy.root, input.state, renderOptions)
+        : runtime.render(policy.root, input.state, renderOptions);
+}
+
+function policyExpected(wasm, input, policy, options) {
+    const templates =
+        policy.dsd === undefined
+            ? input.templates
+            : Object.fromEntries(
+                  Object.entries(input.templates).filter(([name]) =>
+                      policy.dsd.includes(name),
+                  ),
+              );
+    if (policy.fragment) {
+        return Object.hasOwn(templates, policy.root)
+            ? wasm.render_shadow_root(
+                  policy.root,
+                  JSON.stringify(templates),
+                  JSON.stringify(input.state),
+                  "camelCase",
+                  options.markersV2,
+              )
+            : "";
+    }
+    return legacy(wasm, input, policy.root, JSON.stringify(templates), options);
+}
+
+async function policyParity(api, wasm, input, compiled) {
+    const records = [];
+    for (const policy of policyCases()) {
+        const runtime = api.createPreparedRuntime({
+            manifest: compiled.manifest,
+            loadArtifact: async id => compiled.artifacts.get(id),
+        });
+        try {
+            for (const markersV2 of [false, true]) {
+                for (const stream of policy.fragment ? [false] : [false, true]) {
+                    const options = { markersV2, stream };
+                    const reference = policyExpected(wasm, input, policy, options);
+                    const expected = stream ? JSON.parse(reference) : reference;
+                    const actual = await executePolicy(runtime, input, policy, options);
+                    assert.deepEqual(actual, expected, `${policy.name}/parity`);
+                    const html = stream ? actual.join("") : actual;
+                    records.push({
+                        policy: policy.name,
+                        mode: markersV2 ? "v2" : "v3",
+                        output: stream ? "exact-chunks" : "HTML",
+                        oracle:
+                            policy.fragment && policy.dsd?.length === 0
+                                ? "known-excluded-fragment empty-output contract"
+                                : "legacy rendering with selected registry",
+                        ...outputStats(html),
+                    });
+                }
+            }
+        } finally {
+            await runtime.dispose();
+        }
+    }
+    return records;
+}
+
 function legacy(wasm, input, entry, templatesJson, options) {
     return wasm.render_entry_with_templates(
         input.entries[entry],
@@ -345,6 +468,15 @@ async function benchmark(api, wasm, input, compiled, directory, config) {
             }),
         wasm,
     );
+    const preparationReuse = await sample(
+        config.samples,
+        () =>
+            api.compileArtifacts(
+                { entries: input.entries, templates: input.templates },
+                { previous: compiled },
+            ),
+        wasm,
+    );
     const persistence = await timed(() => writeArtifacts(directory, compiled), wasm);
     const coldMeasurements = [];
     for (let index = 0; index < config.samples; index++) {
@@ -451,10 +583,88 @@ async function benchmark(api, wasm, input, compiled, directory, config) {
         artifactCount: compiled.artifacts.size,
         manifestBytes: Buffer.byteLength(JSON.stringify(compiled.manifest)),
         preparation,
+        preparationReuse,
         filesystemPersistence: persistence.measurement,
         diskLoadAndFirstRender: summarize(coldMeasurements),
         warmedRendering: modes,
         retention: caches,
+    };
+}
+
+async function benchmarkPolicies(api, wasm, input, compiled, directory, config) {
+    await writeArtifacts(directory, compiled);
+    const records = [];
+    for (const policy of policyCases()) {
+        const cold = [];
+        for (let index = 0; index < config.samples; index++) {
+            const loads = loader(directory);
+            let runtime;
+            try {
+                const result = await timed(async () => {
+                    const manifest = JSON.parse(
+                        await fs.readFile(path.join(directory, "manifest.json"), "utf8"),
+                    );
+                    runtime = api.createPreparedRuntime({
+                        manifest,
+                        loadArtifact: loads.loadArtifact,
+                    });
+                    return executePolicy(runtime, input, policy);
+                }, wasm);
+                assert.equal(loads.stats.calls, policy.expectedLoads, policy.name);
+                cold.push({
+                    ...result.measurement,
+                    artifactLoads: loads.stats.calls,
+                    loadedArtifactBytes: loads.stats.bytes,
+                    retained: usage(runtime),
+                });
+            } finally {
+                await runtime?.dispose();
+            }
+        }
+        const warm = [];
+        for (const markersV2 of [false, true]) {
+            for (const stream of policy.fragment ? [false] : [false, true]) {
+                const options = { markersV2, stream };
+                const loads = loader(directory);
+                const runtime = api.createPreparedRuntime({
+                    manifest: compiled.manifest,
+                    loadArtifact: loads.loadArtifact,
+                });
+                try {
+                    await executePolicy(runtime, input, policy, options);
+                    for (let index = 0; index < config.warmup; index++) {
+                        await executePolicy(runtime, input, policy, options);
+                    }
+                    const calls = loads.stats.calls;
+                    const measurements = await sample(
+                        config.samples,
+                        () => executePolicy(runtime, input, policy, options),
+                        wasm,
+                    );
+                    assert.equal(loads.stats.calls, calls);
+                    warm.push({
+                        mode: markersV2 ? "v2" : "v3",
+                        output: stream ? "exact-chunks" : "HTML",
+                        prepared: measurements,
+                        artifactLoadsDuringSamples: loads.stats.calls - calls,
+                        retained: usage(runtime),
+                    });
+                } finally {
+                    await runtime.dispose();
+                }
+            }
+        }
+        records.push({
+            ...policy,
+            diskLoadAndFirstRender: summarize(cold),
+            warmedRendering: warm,
+        });
+    }
+    return {
+        name: input.name,
+        instancesPerEntry: config.instances,
+        fragmentSize: "One shell with one shadow-only child and a slot.",
+        records,
     };
 }
 
@@ -490,7 +700,15 @@ async function main() {
             records: await parity(api, wasm, inputs[index], compiled[index]),
         });
     }
-    console.error("HTML and exact-chunk parity passed for every entry in v2 and v3.");
+    const policyInput = policyWorkload(config);
+    const policyCompiled = api.compileArtifacts(policyInput);
+    const policyParityRecords = await policyParity(
+        api,
+        wasm,
+        policyInput,
+        policyCompiled,
+    );
+    console.error("HTML/chunk parity passed for entries, DSD policies and fragments.");
     const startup = [];
     for (let index = 0; index < config.startupSamples; index++) {
         const start = performance.now();
@@ -508,6 +726,7 @@ async function main() {
     // Owned, uniquely named scratch storage under cwd; never a system temp directory.
     const directory = path.resolve(`.prepared-bench-${randomUUID()}`);
     const records = [];
+    let dsdPolicies;
     try {
         for (let index = 0; index < inputs.length; index++) {
             console.error(`Measuring ${inputs[index].name}...`);
@@ -522,11 +741,20 @@ async function main() {
                 ),
             );
         }
+        console.error("Measuring DSD policies and shadow fragments...");
+        dsdPolicies = await benchmarkPolicies(
+            api,
+            wasm,
+            policyInput,
+            policyCompiled,
+            path.join(directory, "policies"),
+            config,
+        );
     } finally {
         await fs.rm(directory, { recursive: true, force: true });
     }
     const report = {
-        schemaVersion: 1,
+        schemaVersion: 2,
         benchmark: "prepared-renderer-lifecycle",
         generatedAt: new Date().toISOString(),
         configuration: config,
@@ -567,7 +795,7 @@ async function main() {
             startup:
                 "Fresh child processes; parent wall includes launch, harness imports, import/WASM initialization, reporting and exit. Child import timer excludes Node and harness startup.",
             preparation:
-                "Repeated synchronous compileArtifacts CPU/wall, after parity/JIT initialization; no filesystem writes.",
+                "Repeated synchronous compileArtifacts CPU/wall, after parity/JIT initialization; no filesystem writes. Full compilation and validated previous-result reuse are separate lanes; reuse still includes identity scanning/hashing and candidate assembly.",
             persistence:
                 "One async write of generated files and manifest; no fsync, no durable-storage guarantee.",
             diskCold:
@@ -575,12 +803,15 @@ async function main() {
             warm: "Runtime creation/full manifest validation reported separately per mode; preparation and priming excluded. Prepared host serializes state on each request; legacy serializes state per call but reuses serialized template map. Legacy stream returns JSON text; prepared returns decoded chunks, as their public APIs specify.",
             retention:
                 "Sequential requests; one shared full-manifest runtime versus one full-manifest runtime per entry. Revisit loads=0 means no eviction for that budget/workload, not measured reload.",
+            dsdPolicies:
+                "Dedicated all/none/mixed entry and selected/mixed/excluded fragment cases. Cold includes manifest read/validation, runtime creation and execution with a fresh cache; load counts/bytes and retained Rust estimates reported per sample. Warm excludes setup/priming and includes both marker modes plus exact chunks for entries. Excluded fragments use the empty-output contract as oracle; other policies compare to legacy with selected definitions. Fragments are fixed-size, not repeated-instance workloads.",
             state: "One unmodified state object per workload; each call captures/serializes fresh request state, with no mutation or retained output. No concurrent requests.",
             memory: "Process before/after snapshots and deltas, not allocation peaks; no forced GC. Rust retained bytes are runtime estimates, not RSS. WASM buffer is null when not publicly exposed and may not shrink after dispose. No active-allocation peak instrumentation.",
             ordering:
                 "Fixed workload/mode/lane order; no statistical significance or speedup claim. All raw samples retained, medians use midpoint averaging for even counts.",
         },
         parity: parityRecords,
+        policyParity: policyParityRecords,
         processColdInitialization: {
             samples: startup.length,
             medianProcessLaunchThroughExitMs: median(
@@ -592,6 +823,7 @@ async function main() {
             measurements: startup,
         },
         records,
+        dsdPolicies,
     };
     const json = `${JSON.stringify(report, null, 2)}\n`;
     if (args.output) {

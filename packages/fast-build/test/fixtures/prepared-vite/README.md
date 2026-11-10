@@ -37,11 +37,17 @@ queue. Shutdown rejects new updates, drains accepted transforms and activations,
 then disposes the runtime and clears retained bytes.
 Failed preprocessing or compilation leaves the previous generation active. The
 fixture preprocessing step rejects the explicit `__BUILD_ERROR__` token. Old bytes remain until
-server shutdown so requests pinned to old snapshots can finish. `closeBundle`
-awaits runtime disposal before releasing those bytes. There is no FAST watcher in
+their snapshot handles report `drained`, including requests blocked in loading.
+The application store removes only IDs not referenced by any current or undrained
+snapshot; shared IDs and A-to-B-to-A activations remain safe. Repeated completed
+edits therefore do not accumulate every old generation. `closeBundle`
+awaits runtime disposal before releasing remaining bytes. There is no FAST watcher in
 addition to Vite's watcher. Tests invoke that lifecycle directly with deferred
 artifact loads, avoiding filesystem-watcher races.
 
 This is deliberately a small integration example, not a general-purpose published
-Vite plugin. A production adapter may garbage-collect retired artifact generations
-after draining their requests; this example retains them until shutdown.
+Vite plugin. Compilation uses generic `compileArtifacts(sources, { previous })`
+reuse and the last successful complete result; FAST owns validation, identity
+invalidation and candidate assembly. Retirement uses generic `runtime.snapshot`
+handles, not Vite transform timing or duplicate per-request lifetime tracking.
+The public APIs and native loading behavior contain no Vite-specific logic.

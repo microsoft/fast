@@ -513,6 +513,14 @@ artifacts without filesystem access. `createPreparedRuntime` validates a manifes
 and accepts an asynchronous piece-ID loader. JavaScript does not duplicate template
 parsing, instruction compilation, or native artifact decoding.
 
+`compileArtifacts(sources, { previous })` exposes the same identity-based reuse
+boundary to every build host. FAST validates compatible previous results and
+artifact integrity, then constructs a complete candidate without mutating prior
+results. Unchanged instructions are not compiled again; identity scanning/hashing
+and manifest construction still occur. Ownership is explicit and build-scoped,
+with no global cache or bundler-specific lifecycle. Preparation-result bytes are
+not charged to the runtime's native-piece budget.
+
 A version-2 manifest maps entry names and component names to piece IDs, with a
 compiler fingerprint, checksums, conservative dependencies, and a complete
 generation hash. The runtime validates/copies manifests before publication. Its
@@ -533,9 +541,12 @@ child can reuse unchanged callers. Registry additions/removals affect only sourc
 pieces mentioning those names. Unchanged artifacts are not rewritten.
 
 Every `render` captures its manifest before awaiting I/O. It loads the chosen entry's
-dependency closure in bounded parallel batches, deduplicating cycles/shared loads.
-This includes statically referenced skipped branches, but excludes unreachable
-definitions; it is not an expanded state-dependent render tree. After loading,
+DSD-policy-required dependency closure in bounded parallel batches, deduplicating
+cycles/shared loads. This includes statically referenced skipped branches, but
+excludes unreachable definitions and excluded shadow definitions/transitives.
+Authored light-DOM dependencies belong to the caller piece, so selected descendants
+remain reachable even when their enclosing host's shadow is excluded. It is not
+an expanded state-dependent render tree. After loading,
 a request-local WASM `PreparedProgram` pins the same immutable piece records and
 uses the existing evaluator. There is no synchronous filesystem access, render
 restart on misses, second state-evaluation pass, or true network streaming.
@@ -543,11 +554,23 @@ restart on misses, second state-evaluation pass, or true network streaming.
 Request-local DSD allowlists are execution configuration, not registry variants or
 piece identities. Excluded component instructions render authored host/light DOM
 with caller state and do not apply template host defaults or evaluate shadow
-content. Definitions remain available for immutable plan classification.
+content. Complete registry membership remains available for immutable plan
+classification independently of loaded definitions. Native linking validates
+that classification against the full registry; selected missing definitions fail
+rather than silently becoming ordinary elements.
 `renderShadowRoot` begins with the requested component's dependency graph, not an
 unrelated entry, and reuses the native fragment helper with resolved component
 state and fresh markers. A known excluded root returns empty output; unknown
-names fail. Normal, chunk, and fragment paths share selection/hydration semantics.
+names fail. Excluded fragments validate request inputs but perform no artifact
+I/O. Normal, chunk, and fragment paths share selection/hydration semantics.
+
+`runtime.snapshot` returns an immutable activation handle with its generation and
+`drained` promise. Reader counts start before asynchronous loads and end after
+native programs/leases are released, on success or failure. Replacement retires
+the old handle; its promise resolves when no accepted reader remains. Disposal
+retires and drains the current handle too. Activation identity is separate from
+content generation, preserving A-to-B-to-A behavior. `activate` still returns the
+generation string. No callback can throw into a render or activation.
 
 The byte-budgeted LRU cache holds generated WASM `PreparedPiece` handles.
 Acquisitions reserve leases before concurrent loads finish; active leases cannot
@@ -579,10 +602,15 @@ Build-tool adapters publish all candidate bytes before `runtime.activate` and
 retain old bytes until old readers drain. They own transform failures, HMR events,
 server-only output emission and relative deployment paths; they do not enable a
 second FAST watcher. Manifest validation is eager, artifact loading is lazy and
-checksummed. A valid manifest cannot guarantee that backing storage will deliver
-every piece. The executable Vite fixture exercises that boundary, while the
+checksummed. Snapshot drain handles provide runtime-owned lifetime accounting,
+while adapters retain IDs shared with current/other undrained activations and own
+deletion policy. Other runtimes/processes require separate coordination. A valid
+manifest cannot guarantee that backing storage will deliver every required piece.
+The executable Vite fixture exercises those generic APIs, not a Vite-specific
+runtime path, while the
 prepared benchmark separates compilation, cold disk loading, warmed requests,
-process initialization and many-entry cache retention.
+process initialization and many-entry cache retention, including policy-specific
+entry/fragment load counts and validated incremental preparation.
 
 ---
 

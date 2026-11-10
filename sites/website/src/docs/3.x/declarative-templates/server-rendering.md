@@ -50,8 +50,9 @@ Preparation writes versioned instructions and a manifest, not rendered state.
 A separate server process can call `loadRenderer({ manifestPath })` with the
 generated directory and no authored template files. Disk I/O is asynchronous;
 loaded pieces are retained in a bounded cache and can be reloaded after eviction.
-The host preloads the entry's conservative referenced-template graph, including
-references in skipped branches, before synchronous WASM execution.
+The host preloads the entry's DSD-policy-required referenced-template graph,
+including selected references in skipped branches, before synchronous WASM
+execution. It does not evaluate conditions early.
 
 Call `await renderer.refresh()` to activate source changes or a replacement
 generated manifest. Content/compiler identities regenerate affected pieces;
@@ -79,12 +80,26 @@ const html = await runtime.render("home", state, { dsd: ["my-card"] });
 const fragment = await runtime.renderShadowRoot("my-card", componentState);
 ```
 
+For the next transformed batch, call
+`compileArtifacts(nextSources, { previous: prepared })` with the last complete
+result. FAST validates reuse, recalculates registry-sensitive identities and
+assembles a complete candidate without recompiling unchanged instructions.
+Input scanning/hashing still occurs. Invalid reuse rejects; retrying without
+`previous` explicitly recompiles. This API has no global cache, filesystem or
+bundler-specific assumptions.
+
 DSD selection is per request, not a different registry or compilation. Excluded
 components render their authored host/light DOM without template host defaults
 or shadow evaluation; selected descendants in that light DOM still render.
-`dsd: []` disables component shadow rendering. Fragment rendering accepts resolved
+`dsd: []` disables component shadow rendering and loads only the entry piece.
+Mixed selections skip excluded shadow definitions and their shadow-only
+dependencies while preserving the complete registry for classification validation.
+Fragment rendering accepts resolved
 component state and returns a complete DSD template with correct metadata/markers,
 without synthesizing a host or rendering caller-owned light DOM.
+Known excluded fragments return empty output with no artifact loading after
+request validation. Unknown names and missing/corrupt required artifacts still
+fail; excluded unused artifact bytes are not read.
 
 Emit `<id>.fast-artifact.json` files and the versioned manifest with the **server**
 build, never into the client graph. Resolve them relative to the deployed server
@@ -92,6 +107,12 @@ output so relocation does not depend on original source paths. Generate and serv
 with matching compiler fingerprints; a package version alone is insufficient.
 For HMR, publish every new artifact before calling `runtime.activate(manifest)`,
 retain old artifacts for in-flight requests, and drain the runtime on shutdown.
+Capture `const old = runtime.snapshot` before activation and await `old.drained`
+to know when that activation's accepted readers have finished, including failed
+requests and requests blocked in loading. The handle is unique per activation,
+even when a generation is reactivated, and disposal retires the current handle.
+The application—not FAST—deletes backing objects, preserving IDs referenced by
+the current or any other undrained snapshot and coordinating other server workers.
 The filesystem wrapper remains a convenient single-entry host; different entries
 must not compete for its one `manifest.json`.
 

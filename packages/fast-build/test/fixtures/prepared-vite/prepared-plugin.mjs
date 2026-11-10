@@ -21,6 +21,7 @@ export function preparedPlugin({
 }) {
     const sources = new Map();
     const artifacts = new Map();
+    const snapshots = new Map();
     const files = new Set(
         [
             ...Object.values(entries),
@@ -30,6 +31,7 @@ export function preparedPlugin({
     let config;
     let server;
     let runtime;
+    let previous;
     let initializing;
     let updates = Promise.resolve();
     let disposed = false;
@@ -46,42 +48,65 @@ export function preparedPlugin({
             }
             return value;
         }
-        return compileArtifacts({
-            entries: Object.fromEntries(
-                Object.entries(entries).map(([name, file]) => [name, source(file)]),
-            ),
-            templates: Object.fromEntries(
-                Object.entries(templates).map(([name, { file, ...metadata }]) => [
-                    name,
-                    { ...metadata, content: source(file) },
-                ]),
-            ),
-        });
+        return compileArtifacts(
+            {
+                entries: Object.fromEntries(
+                    Object.entries(entries).map(([name, file]) => [name, source(file)]),
+                ),
+                templates: Object.fromEntries(
+                    Object.entries(templates).map(([name, { file, ...metadata }]) => [
+                        name,
+                        { ...metadata, content: source(file) },
+                    ]),
+                ),
+            },
+            { previous },
+        );
+    }
+
+    function prune() {
+        const live = new Set([...snapshots.values()].flatMap(ids => [...ids]));
+        for (const id of artifacts.keys()) {
+            if (!live.has(id)) {
+                artifacts.delete(id);
+            }
+        }
     }
 
     function publish(compiled) {
-        // Keep old content-addressed bytes until shutdown: old requests pin old manifests.
         for (const [id, bytes] of compiled.artifacts) {
             artifacts.set(id, bytes);
         }
-        if (runtime) {
-            runtime.activate(compiled.manifest);
-        } else {
-            runtime = createPreparedRuntime({
-                manifest: compiled.manifest,
-                maxMemoryBytes,
-                loadArtifact: id => {
-                    const read = async () => {
-                        const bytes = artifacts.get(id);
-                        if (!bytes) {
-                            throw new Error(`Missing prepared artifact: ${id}`);
-                        }
-                        return bytes;
-                    };
-                    return loadArtifact ? loadArtifact(id, read) : read();
-                },
-            });
+        try {
+            if (runtime) {
+                runtime.activate(compiled.manifest);
+            } else {
+                runtime = createPreparedRuntime({
+                    manifest: compiled.manifest,
+                    maxMemoryBytes,
+                    loadArtifact: id => {
+                        const read = async () => {
+                            const bytes = artifacts.get(id);
+                            if (!bytes) {
+                                throw new Error(`Missing prepared artifact: ${id}`);
+                            }
+                            return bytes;
+                        };
+                        return loadArtifact ? loadArtifact(id, read) : read();
+                    },
+                });
+            }
+        } catch (error) {
+            prune();
+            throw error;
         }
+        previous = compiled;
+        const snapshot = runtime.snapshot;
+        snapshots.set(snapshot, new Set(Object.keys(compiled.manifest.pieces)));
+        snapshot.drained.then(() => {
+            snapshots.delete(snapshot);
+            prune();
+        });
         return compiled.manifest;
     }
 
@@ -117,6 +142,12 @@ export function preparedPlugin({
             },
             get runtime() {
                 return runtime;
+            },
+            get artifactIds() {
+                return new Set(artifacts.keys());
+            },
+            get snapshotCount() {
+                return snapshots.size;
             },
         },
         configResolved(resolved) {
@@ -218,6 +249,7 @@ export function preparedPlugin({
             signalShutdown();
             await drained;
             artifacts.clear();
+            previous = undefined;
         },
     };
 }

@@ -60,11 +60,33 @@ export interface PreparedMemoryUsage {
     pendingLoads: number;
 }
 
-/** Synchronously compile a registry, once per content identity, without filesystem I/O. */
-export function compileArtifacts(sources: PreparedArtifactSources): {
+/** Identity belongs to one activation, even when generation hashes repeat. */
+export interface PreparedSnapshot {
+    readonly generation: string;
+    /** Resolves after retirement and completion of every accepted reader, including failures. */
+    readonly drained: Promise<void>;
+}
+
+export interface PreparedArtifacts {
     manifest: PreparedManifest;
     artifacts: Map<string, Uint8Array>;
-};
+}
+
+export interface PreparedCompileOptions {
+    /**
+     * Complete compatible previous result. Invalid manifests, missing/corrupt bytes,
+     * or incompatible compiler/format versions reject rather than silently rebuilding.
+     * Inputs are still scanned/hashed; unchanged pieces are not compiled again.
+     * Previous results are never mutated; reused bytes and descriptors are copied.
+     */
+    previous?: PreparedArtifacts;
+}
+
+/** Synchronously compile a complete registry without filesystem I/O or global caches. */
+export function compileArtifacts(
+    sources: PreparedArtifactSources,
+    options?: PreparedCompileOptions,
+): PreparedArtifacts;
 
 /** Storage-independent host. Loading is asynchronous; native execution is synchronous. */
 export function createPreparedRuntime(
@@ -74,6 +96,8 @@ export function createPreparedRuntime(
 export class PreparedRuntime {
     private constructor();
     readonly generation: string;
+    /** Current immutable activation; retires on successful activation or disposal. */
+    readonly snapshot: PreparedSnapshot;
     readonly memoryUsage: PreparedMemoryUsage;
     render(
         entryName: string,

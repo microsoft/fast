@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Expose snapshot retirement and incremental artifact preparation, and skip excluded shadow definitions during prepared rendering.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
