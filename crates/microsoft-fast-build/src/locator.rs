@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use std::path::Path;
+use std::sync::OnceLock;
 use crate::attribute::{find_tag_end, parse_element_attribute_parts, parse_element_attributes};
 use crate::error::RenderError;
 use crate::code_escape::escape_code_sample_elements;
+use crate::plan::RenderPlan;
 
 /// A parsed definition with versioned, descriptive binding metadata.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -15,12 +17,14 @@ pub struct FTemplate {
     pub bindings: Vec<crate::BindingMetadata>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug)]
 struct TemplateDefinition {
     content: String,
     original_content: Option<String>,
     shadowroot_attributes: Vec<(String, Option<String>)>,
     host_attributes: Vec<(String, Option<String>)>,
+    plan: OnceLock<RenderPlan>,
+    shadowroot_markup: OnceLock<String>,
 }
 
 impl TemplateDefinition {
@@ -35,6 +39,8 @@ impl TemplateDefinition {
             content: escaped,
             shadowroot_attributes,
             host_attributes,
+            plan: OnceLock::new(),
+            shadowroot_markup: OnceLock::new(),
         }
     }
 }
@@ -195,6 +201,7 @@ impl Locator {
     /// attributes from the source `<f-template>`'s inner `<template>` should
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
+        self.invalidate_plans();
         self.templates.insert(element_name.to_string(), TemplateDefinition::new(
             content, Vec::new(), Vec::new(),
         ));
@@ -218,6 +225,7 @@ impl Locator {
         shadowroot_attrs: &[(String, Option<String>)],
         host_attrs: &[(String, Option<String>)],
     ) {
+        self.invalidate_plans();
         self.templates.insert(element_name.to_string(), TemplateDefinition::new(
             content,
             collect_shadowroot_attributes(shadowroot_attrs),
@@ -251,6 +259,28 @@ impl Locator {
 
     pub fn has_template(&self, element_name: &str) -> bool {
         self.templates.contains_key(element_name)
+    }
+
+    pub(crate) fn render_plan(&self, element_name: &str) -> Option<&RenderPlan> {
+        self.templates.get(element_name).map(|template| {
+            template.plan.get_or_init(|| RenderPlan::compile(&template.content, Some(self)))
+        })
+    }
+
+    pub(crate) fn shadowroot_markup(&self, element_name: &str) -> &str {
+        self.templates.get(element_name).expect("template was found")
+            .shadowroot_markup.get_or_init(|| {
+                crate::directive::build_shadowroot_template_attrs(
+                    self.get_shadowroot_attributes(element_name),
+                )
+            })
+    }
+
+    fn invalidate_plans(&mut self) {
+        // Registering a formerly unknown element changes event classification in other definitions.
+        for template in self.templates.values_mut() {
+            template.plan.take();
+        }
     }
 }
 

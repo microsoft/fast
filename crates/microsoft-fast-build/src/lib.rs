@@ -15,25 +15,21 @@
 //!    json::parse(state_str)          ← hand-rolled JSON parser → JsonValue
 //!         │
 //!         ▼
-//!   renderer::render(template, root) ─────────────────────────────────────┐
-//!   renderer::render_stream(template, root) ───────────────┐              │
-//!         │                                                                │
-//!         ▼                                                                │
-//!   node::render_node(template, root, loop_vars, locator, hydration?)     │
-//!   streaming::stream_node(...) → Vec<String> chunks                      │
-//!         │                                                                │
-//!         ├─ directive::next_event() → next tag or directive              │
-//!         │      ├─ PlainTag     → resolve attributes, hydration markers │
-//!         │      ├─ TripleBrace  → content::render_triple_brace()        │
-//!         │      ├─ DoubleBrace  → content::render_double_brace()        │
-//!         │      ├─ When         → directive::render_when()  ────────────┘ recurse
-//!         │      ├─ Repeat       → directive::render_repeat() ───────────┘ recurse per item
-//!         │      └─ CustomElement→ directive::render_custom_element() ───┘ recurse, fresh HydrationScope
+//!   renderer entry points → code-sample preprocessing
 //!         │
-//!         └─ append literal prefix + resolved chunk → output string
+//!         ▼
+//!   plan::RenderPlan::compile → private structural instructions
+//!         │
+//!         ▼
+//!   node::render_plan / streaming::stream_plan
+//!         ├─ Literal / Tag / Binding → append or evaluate
+//!         ├─ When / Repeat → cached lazy body plan
+//!         └─ CustomElement → cached Locator plan, fresh hydration scope
+//!
+//!   Result: output string or precomputed non-empty chunks
 //! ```
 //!
-//! Streaming entry points use the same scanner and rendering semantics, but
+//! Streaming entry points use the same plans and rendering semantics, but
 //! return precomputed non-empty HTML chunks. Joining those chunks matches the
 //! equivalent non-streamed render.
 //!
@@ -42,7 +38,8 @@
 //! | Module | Role |
 //! |--------|------|
 //! | `renderer` | Thin entry points mapping the public API into `render_node` or `stream_node` calls |
-//! | `node` | Main rendering loop — directive dispatch and hydration tag scan |
+//! | `plan` | Private reusable instructions and lazy directive/light-DOM body plans |
+//! | `node` | Plan evaluation — direct binding output, directive dispatch, and tag handling |
 //! | `streaming` | Simulated streaming loop — returns precomputed HTML chunks |
 //! | `directive` | `Directive` / `RenderEvent` enums, forward `next_event` scanner, directive renderers |
 //! | `content` | `{{expr}}` / `{{{expr}}}` binding renderers and `html_escape` |
@@ -72,6 +69,7 @@ mod directive;
 mod hydration;
 mod code_escape;
 mod node;
+mod plan;
 mod renderer;
 mod streaming;
 mod error;
@@ -110,9 +108,7 @@ pub fn render_shadow_root_with_locator(
     let default_config = RenderConfig::default();
     let config = config.unwrap_or(&default_config);
     let content = directive::render_shadow_content(element_name, state, locator, config)?;
-    let attrs = directive::build_shadowroot_template_attrs(
-        locator.get_shadowroot_attributes(element_name),
-    );
+    let attrs = locator.shadowroot_markup(element_name);
     Ok(format!("<template{attrs}>{content}</template>"))
 }
 
