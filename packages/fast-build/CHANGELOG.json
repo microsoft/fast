@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Tue, 10 Nov 2026 21:34:48 GMT",
+      "version": "0.16.0",
+      "tag": "@microsoft/fast-build_v0.16.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "078c6ddb6d646e9b1eb0b4013a0385a8b5f93b65",
+            "comment": "Add reusable render plans and portable, storage-neutral prepared templates with incremental preparation, bounded shared caching, snapshot retirement, selective DSD loading, and shadow fragments."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "78ebe3b794e877f183ebbc5683a72177e757ae1d",
+            "comment": "Reduce rendering allocations by borrowing inherited component state and repeat values."
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 02 Nov 2026 18:49:44 GMT",
       "version": "0.15.0",
       "tag": "@microsoft/fast-build_v0.15.0",
