@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 23 Oct 2026 03:53:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 10 Nov 2026 21:34:48 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.16.0
+
+Tue, 10 Nov 2026 21:34:48 GMT
+
+### Minor changes
+
+- Add reusable render plans and portable, storage-neutral prepared templates with incremental preparation, bounded shared caching, snapshot retirement, selective DSD loading, and shadow fragments. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Reduce rendering allocations by borrowing inherited component state and repeat values. (7559015+janechu@users.noreply.github.com)
 
 ## 0.15.0
 
