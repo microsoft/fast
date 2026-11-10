@@ -775,6 +775,14 @@ Below is a conceptual map of the major subsystems and their relationships:
 └───────────────────┘                        └─────────────────────┘
 ```
 
+The nested-element qualification fixture independently converts parent and child
+FAST declarations, bundles their client templates, and hydrates synchronous,
+prepared and prepared-chunk FAST Build output with both marker strategies. It
+checks server-node reuse, nested bindings and updates, inline styles, host/shadow
+metadata, ordinary unknown elements and application-controlled registration.
+Its in-memory build/route setup belongs to the test, not the runtime or a bundler
+adapter API.
+
 **Authoring flow summary**:
 
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `MyElement.define({ name, template, styles })`.

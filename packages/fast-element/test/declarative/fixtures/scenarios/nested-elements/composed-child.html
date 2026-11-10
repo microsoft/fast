@@ -1,0 +1,15 @@
+<f-template name="composed-child" shadowrootmode="open">
+    <template role="status">
+        <style>
+            .message { color: rgb(65, 43, 21); }
+        </style>
+        <p class="message">{{message}}</p>
+        <ul>
+            <f-repeat value="{{item in items}}">
+                <li>{{item.label}}</li>
+            </f-repeat>
+        </ul>
+        <button type="button" @click="{increment($e)}">Increment</button>
+        <span class="clicks">{{clicks}}</span>
+    </template>
+</f-template>

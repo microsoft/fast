@@ -90,7 +90,10 @@ const prepared = compileArtifacts({
         home: "<site-card>{{title}}</site-card>",
         account: "<main><site-card></site-card></main>",
     },
-    templates: { "site-card": "<h2>{{title}}</h2>" },
+    templates: {
+        "site-card": '<h2>{{title}}</h2><site-badge label="{{title}}"></site-badge>',
+        "site-badge": "<strong>{{label}}</strong>",
+    },
 });
 const store = new Map(prepared.artifacts);
 const runtime = createPreparedRuntime({
@@ -116,6 +119,24 @@ try {
 
 `compileArtifacts` is synchronous CPU work. Its `artifacts` map is keyed by piece
 ID; a storage adapter decides how those bytes are emitted and retrieved.
+
+Definitions are composed by name: the `site-badge` inside `site-card` is rendered
+recursively from its separately supplied definition, without flattening either
+component's source. Preserve each definition's `content`, `hostAttributes` and
+`shadowrootAttributes` when assembling the registry. FAST does not discover
+packages or infer application dependency declarations. An unknown custom element
+remains an ordinary authored host/light-DOM subtree; it is not automatically a
+missing-dependency error. Tooling must validate its declared required dependencies
+before supplying the registry. Missing pieces required by a prepared manifest
+still fail when selected for loading.
+
+Convert each component independently for the client. Conversion does not resolve
+or register referenced components; component libraries own public asset exports,
+and applications own registration order, streaming barriers and DSD eligibility.
+FAST diagnostics identify the supplied component content with `templateName` and
+source coordinates. Hosts retain the association with original files and map
+coordinates through preprocessing or stylesheet composition where needed.
+
 For subsequent transformed batches, pass the previous complete result:
 
 ```js
@@ -204,6 +225,11 @@ through their caller piece. The full registry remains available for immutable
 classification validation independently of loaded definitions. Dependencies in
 skipped state-dependent branches are still conservative; selection does not
 evaluate conditions early or promise branch pruning.
+
+An allowlisted child that exists only inside an excluded parent's shadow template
+is not rendered: selection does not reconstruct excluded ancestors. Render that
+child separately with `renderShadowRoot` and resolved child state when a standalone
+fragment is wanted.
 
 `renderShadowRoot(name, resolvedComponentState, options)` returns the complete DSD
 `<template>` fragment with its shadow metadata and fresh hydration scope. It does
