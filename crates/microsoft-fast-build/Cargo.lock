@@ -493,6 +493,7 @@ dependencies = [
  "html5ever",
  "html5gum",
  "markup5ever_rcdom",
+ "serde",
  "serde_json",
  "sha2",
  "tempfile",

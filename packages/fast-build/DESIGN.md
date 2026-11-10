@@ -97,6 +97,7 @@ fast convert [options]
 | File | Role |
 |------|------|
 | `bin/fast.js` | CLI entry point — argument parsing, config file loading, file I/O, template scanning, WASM dispatch |
+| `prepared.js` / `prepared.d.ts` | Opt-in asynchronous prepared renderer, portable file store, bounded cache, immutable manifests and development watching |
 | `build-wasm.cjs` | Package build helper that builds the renderer WASM and converter WASM into `wasm/convert/` |
 | `wasm/microsoft_fast_build.js` | WASM-generated JS bindings for the Rust renderer |
 | `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary |
@@ -470,14 +471,146 @@ items borrow existing JSON values. Dataset updates copy only the affected branch
 and per-iteration scope vectors still allocate. Null masking, parent-context
 attribute evaluation, loop shadowing, and both hydration marker formats retain
 their previous behavior. Package exports, WASM signatures, CLI options, and JSON
-state formats are unchanged; there is no prepared-template handle or persistent
-render-plan cache.
+state formats are unchanged in existing APIs. The optional prepared API below
+adds explicitly owned cross-request reuse.
+
+Private structural render plans now cache literal/content/tag operations,
+directive boundaries and expressions, repeat aliases, and custom-element author
+attributes. A locator compiles each used definition lazily; each executed
+directive/light-DOM body is compiled on first use and reused. State, loop values,
+marker counters, and configuration are never cached. Native locator mutation
+invalidates plans so newly registered components are recognized, and serialized
+static DSD attributes are retained per definition.
+
+One-shot entries execute through the shared instruction cursor without building
+an entry instruction vector. Cached plans collect that same cursor, so parsing
+and evaluation are not duplicated. Definition/body caching still begins on first
+use; there is no adaptive second-use promotion policy. Native registration skips
+invalidation scans until plans exist, and scans only once per registration batch
+unless rendering initializes more plans between mutations.
+
+Normal, simulated-stream, and shadow-fragment paths share these plans. Content
+bindings append directly into their current buffer; attribute-value and boolean
+expression evaluators remain shared with the existing implementation. There is
+no change to existing one-shot WASM APIs. Those exports still rebuild their
+locator for each call; cross-request retention uses the separate prepared API.
+Cold single-use definitions can pay compilation overhead and retain more metadata.
 
 Native allocation baselines are collected by an opt-in Rust development example
 and a fresh-process runner under the crate's `benches/` directory. The npm CLI
 and shipped WASM do not use its allocator or feature. Shared output hashes
 preserve cross-language parity; native current-thread allocation volume and
 peak newly-live heap must not be presented as Node RSS or WASM memory usage.
+Cold render measurements include first-use compilation; retained bytes can include
+locator-owned plans as well as output, not just the returned HTML allocation.
+
+## Prepared renderer — `prepared.js`
+
+The module separates storage-neutral compilation/execution from filesystem
+hosting. `compileArtifacts` accepts transformed named entries and definitions,
+creates one Rust `PreparedCompiler` for the registry, and returns manifest/byte
+artifacts without filesystem access. `createPreparedRuntime` validates a manifest
+and accepts an asynchronous piece-ID loader. JavaScript does not duplicate template
+parsing, instruction compilation, or native artifact decoding.
+
+`compileArtifacts(sources, { previous })` exposes the same identity-based reuse
+boundary to every build host. FAST validates compatible previous results and
+artifact integrity, then constructs a complete candidate without mutating prior
+results. Unchanged instructions are not compiled again; identity scanning/hashing
+and manifest construction still occur. Ownership is explicit and build-scoped,
+with no global cache or bundler-specific lifecycle. Preparation-result bytes are
+not charged to the runtime's native-piece budget.
+
+A version-2 manifest maps entry names and component names to piece IDs, with a
+compiler fingerprint, checksums, conservative dependencies, and a complete
+generation hash. The runtime validates/copies manifests before publication. Its
+cache, deduplicated pending loads, lease accounting, and disposal are shared across
+all entries in that runtime, not across unrelated runtimes or WASM instances.
+Applications that need an aggregate many-entry budget create one explicit runtime.
+Storage adapters supply bytes, not native handles or alternate validation logic.
+
+`prepareRenderer` and `loadRenderer` provide the single-entry filesystem adapter;
+they are not the required build-tool integration path. This adapter alone owns
+source files, persistence, refresh serialization, and optional filesystem watching.
+Different entries must not compete for one fixed `manifest.json`; use distinct
+single-entry directories or a multi-entry manifest/runtime.
+
+The host persists `<input/compiler hash>.fast-artifact.json` files before atomically
+replacing `manifest.json`. Component calls reference names, not copied child content, so a changed
+child can reuse unchanged callers. Registry additions/removals affect only source
+pieces mentioning those names. Unchanged artifacts are not rewritten.
+
+Every `render` captures its manifest before awaiting I/O. It loads the chosen entry's
+DSD-policy-required dependency closure in bounded parallel batches, deduplicating
+cycles/shared loads. This includes statically referenced skipped branches, but
+excludes unreachable definitions and excluded shadow definitions/transitives.
+Authored light-DOM dependencies belong to the caller piece, so selected descendants
+remain reachable even when their enclosing host's shadow is excluded. It is not
+an expanded state-dependent render tree. After loading,
+a request-local WASM `PreparedProgram` pins the same immutable piece records and
+uses the existing evaluator. There is no synchronous filesystem access, render
+restart on misses, second state-evaluation pass, or true network streaming.
+
+Request-local DSD allowlists are execution configuration, not registry variants or
+piece identities. Excluded component instructions render authored host/light DOM
+with caller state and do not apply template host defaults or evaluate shadow
+content. Complete registry membership remains available for immutable plan
+classification independently of loaded definitions. Native linking validates
+that classification against the full registry; selected missing definitions fail
+rather than silently becoming ordinary elements.
+`renderShadowRoot` begins with the requested component's dependency graph, not an
+unrelated entry, and reuses the native fragment helper with resolved component
+state and fresh markers. A known excluded root returns empty output; unknown
+names fail. Excluded fragments validate request inputs but perform no artifact
+I/O. Normal, chunk, and fragment paths share selection/hydration semantics.
+
+`runtime.snapshot` returns an immutable activation handle with its generation and
+`drained` promise. Reader counts start before asynchronous loads and end after
+native programs/leases are released, on success or failure. Replacement retires
+the old handle; its promise resolves when no accepted reader remains. Disposal
+retires and drains the current handle too. Activation identity is separate from
+content generation, preserving A-to-B-to-A behavior. `activate` still returns the
+generation string. No callback can throw into a render or activation.
+
+The byte-budgeted LRU cache holds generated WASM `PreparedPiece` handles.
+Acquisitions reserve leases before concurrent loads finish; active leases cannot
+be evicted. The default 32 MiB estimated Rust-piece budget can be temporarily
+exceeded by active requests. Zero budget evicts every unpinned piece. Releasing
+request programs before leases allows eviction to free records safely. Source
+inputs, adapter-retained artifact bytes, JS objects, compiler work, I/O buffers,
+allocator overhead and output are
+outside this budget. Disposal waits for requests/refreshes and frees the cache;
+it does not shrink WASM linear memory or delete artifacts.
+
+`refresh` serializes updates and activates a new immutable snapshot only after
+successful preparation/publication. Failed updates reject and leave the prior
+snapshot active. Candidate watchers are installed before publication and replace
+old watchers only on success. Opt-in development watching observes parent
+directories and filters declared files, surviving editor rename-based replacement.
+It coalesces events during refresh without timers. Production uses explicit refresh.
+Content/compiler identities establish correctness; watcher events only trigger
+checking, and an explicit refresh remains necessary if filesystem events are lost.
+Old artifacts remain available to old requests/processes; cross-process cleanup
+belongs to deployment management after those readers finish.
+
+The Rust API remains responsible for artifact decoding/validation, source
+provenance, state/marker semantics and registry classification. The Node package
+adds no runtime npm dependencies. Preparation and artifact loading have costs;
+the API does not promise a cold-start or small-one-shot performance improvement.
+
+Build-tool adapters publish all candidate bytes before `runtime.activate` and
+retain old bytes until old readers drain. They own transform failures, HMR events,
+server-only output emission and relative deployment paths; they do not enable a
+second FAST watcher. Manifest validation is eager, artifact loading is lazy and
+checksummed. Snapshot drain handles provide runtime-owned lifetime accounting,
+while adapters retain IDs shared with current/other undrained activations and own
+deletion policy. Other runtimes/processes require separate coordination. A valid
+manifest cannot guarantee that backing storage will deliver every required piece.
+The executable Vite fixture exercises those generic APIs, not a Vite-specific
+runtime path, while the
+prepared benchmark separates compilation, cold disk loading, warmed requests,
+process initialization and many-entry cache retention, including policy-specific
+entry/fragment load counts and validated incremental preparation.
 
 ---
 

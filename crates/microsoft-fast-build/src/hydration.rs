@@ -1,3 +1,5 @@
+use std::fmt::Write;
+
 /// Hydration state for one template scope.
 /// Each custom-element shadow, f-when body, and f-repeat item template gets its own scope.
 ///
@@ -48,6 +50,24 @@ impl HydrationScope {
             format!("<!--fe-b$$end$${}$$fast-build$$fe-b-->", index)
         } else {
             "<!--fe:/b-->".to_string()
+        }
+    }
+
+    pub(crate) fn push_content_start(&self, out: &mut String, index: usize) {
+        if self.markers_v2 {
+            write!(out, "<!--fe-b$$start$${}$$fast-build$$fe-b-->", index)
+                .expect("writing to a String cannot fail");
+        } else {
+            out.push_str("<!--fe:b-->");
+        }
+    }
+
+    pub(crate) fn push_content_end(&self, out: &mut String, index: usize) {
+        if self.markers_v2 {
+            write!(out, "<!--fe-b$$end$${}$$fast-build$$fe-b-->", index)
+                .expect("writing to a String cannot fail");
+        } else {
+            out.push_str("<!--fe:/b-->");
         }
     }
 

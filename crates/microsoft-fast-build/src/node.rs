@@ -1,21 +1,61 @@
-use crate::context::{LoopVars, State};
-use crate::error::RenderError;
-use crate::config::RenderConfig;
-use crate::content::{render_triple_brace, render_double_brace};
-use crate::directive::{Directive, RenderEvent, next_event, render_when, render_repeat, render_custom_element};
-use crate::locator::Locator;
-use crate::hydration::HydrationScope;
-use crate::attribute::{
-    count_tag_attribute_bindings,
-    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_hydration_marker, find_tag_end,
-};
+use std::borrow::{Borrow, Cow};
 
-/// Recursively render a template fragment against root state and loop variables.
-/// When `hydration` is `Some`, binding markers and `data-fe` attribute count markers are emitted.
-/// When `is_entry` is `true`, custom elements found in this fragment are treated as root
-/// elements for opening-tag attribute handling. Child state always starts from the current
-/// root state, with any state-relevant attributes overlaid on top.
+use crate::attribute::{inject_hydration_marker, strip_client_only_attrs};
+use crate::config::RenderConfig;
+use crate::content::{push_html_escaped, render_double_brace, render_triple_brace};
+use crate::context::{resolve_value, LoopVars, State};
+use crate::directive::{render_custom_element, render_repeat, render_when, Directive};
+use crate::error::RenderError;
+use crate::hydration::HydrationScope;
+use crate::json::JsonValue;
+use crate::locator::Locator;
+use crate::plan::{Instruction, InstructionCursor, RenderPlan, Tag};
+
 pub fn render_node(
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+) -> Result<String, RenderError> {
+    render_instructions(
+        InstructionCursor::new(template, locator),
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration,
+        is_entry,
+        config,
+    )
+}
+
+pub(crate) fn render_plan(
+    plan: &RenderPlan,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+) -> Result<String, RenderError> {
+    render_instructions(
+        &plan.instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration,
+        is_entry,
+        config,
+    )
+}
+
+fn render_instructions<I>(
+    instructions: I,
     template: &str,
     root: &dyn State,
     loop_vars: &LoopVars<'_>,
@@ -23,86 +63,193 @@ pub fn render_node(
     mut hydration: Option<&mut HydrationScope>,
     is_entry: bool,
     config: &RenderConfig,
-) -> Result<String, RenderError> {
+) -> Result<String, RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
     let mut result = String::new();
-    let mut pos = 0;
-    loop {
-        let dir_chunk = match next_event(template, pos, locator) {
-            None => { result.push_str(&template[pos..]); break; }
-            Some(RenderEvent::PlainTag(tag_pos)) => {
-                pos = process_plain_html_tag(
-                    template, pos, tag_pos, root, loop_vars,
-                    hydration.as_mut().map(|h| &mut **h), &mut result,
+    append_instructions(
+        instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration.as_deref_mut(),
+        is_entry,
+        config,
+        &mut result,
+    )?;
+    Ok(result)
+}
+
+fn append_instructions<I>(
+    instructions: I,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+    result: &mut String,
+) -> Result<(), RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
+    for instruction in instructions {
+        let instruction = instruction.borrow();
+        let scope = hydration.as_deref_mut();
+        if let Instruction::Deferred(Directive::CustomElement(at)) = instruction {
+            if crate::attribute::read_tag_name_slice(template, *at)
+                .is_some_and(|name| !config.dsd_selection.includes(name))
+            {
+                result.push_str(&template[*at..]);
+                continue;
+            }
+        }
+        if let Instruction::Element(element) = instruction {
+            if !config.dsd_selection.includes(&element.name) {
+                render_tag(
+                    &element.opening,
+                    template,
+                    root,
+                    loop_vars,
+                    hydration.as_deref_mut(),
+                    result,
+                );
+                let body = element
+                    .children
+                    .as_ref()
+                    .or(element.unclosed_children.as_ref())
+                    .expect("element has authored content");
+                append_instructions(
+                    &body.plan(template, locator).instructions,
+                    &template[body.range.clone()],
+                    root,
+                    loop_vars,
+                    locator,
+                    hydration.as_deref_mut(),
+                    is_entry,
+                    config,
+                    result,
+                )
+                .map_err(|error| error.rebase(template, body.range.start))?;
+                result.push_str(&template[body.range.end..element.after]);
+                continue;
+            }
+        }
+        let directive = match instruction {
+            Instruction::Literal(range) => {
+                result.push_str(&template[range.clone()]);
+                continue;
+            }
+            Instruction::Tag(tag) => {
+                render_tag(tag, template, root, loop_vars, scope, result);
+                continue;
+            }
+            Instruction::Binding {
+                expression,
+                escaped,
+            } => {
+                append_binding(
+                    result,
+                    &template[expression.clone()],
+                    *escaped,
+                    root,
+                    loop_vars,
+                    scope,
                 );
                 continue;
             }
-            Some(RenderEvent::Directive(d)) => d,
+            Instruction::When(when) => Directive::When(when.at),
+            Instruction::Repeat(repeat) => Directive::Repeat(repeat.at),
+            Instruction::Element(element) => Directive::CustomElement(element.at),
+            Instruction::Deferred(directive) => *directive,
         };
-        result.push_str(&template[pos..dir_chunk.position()]);
-        let (chunk, next_pos) = process_directive(
-            dir_chunk, template, root, loop_vars, locator,
-            hydration.as_mut().map(|h| &mut **h),
+        let (chunk, _) = process_directive(
+            directive,
+            instruction,
+            template,
+            root,
+            loop_vars,
+            locator,
+            scope,
             is_entry,
             config,
         )?;
         result.push_str(&chunk);
-        pos = next_pos;
     }
-    Ok(result)
+    Ok(())
 }
 
-pub(crate) fn process_plain_html_tag(
+pub(crate) fn render_tag(
+    tag: &Tag,
     template: &str,
-    pos: usize,
-    tag_pos: usize,
     root: &dyn State,
     loop_vars: &LoopVars<'_>,
     hydration: Option<&mut HydrationScope>,
     result: &mut String,
-) -> usize {
-    result.push_str(&template[pos..tag_pos]);
-
-    let tag_end = match find_tag_end(template, tag_pos) {
-        Some(e) => e,
-        None => {
-            // Preserve malformed tags verbatim.
-            result.push_str(&template[tag_pos..]);
-            return template.len();
-        }
-    };
-    let tag_str = &template[tag_pos..tag_end];
-
-    let (db, sb) = count_tag_attribute_bindings(tag_str);
-    let total = db + sb;
+) {
     match hydration {
-        Some(hy) => {
-            if total > 0 {
-                let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
-                let stripped = strip_client_only_attrs(&resolved);
-                let marker = hy.attribute_marker(total);
-                result.push_str(&inject_hydration_marker(&stripped, &marker));
-            } else {
-                result.push_str(&strip_client_only_attrs(tag_str));
-            }
+        Some(scope) if tag.total_bindings > 0 => {
+            let resolved = tag.attributes.resolve(root, loop_vars);
+            let stripped = strip_client_only_attrs(&resolved);
+            let marker = scope.attribute_marker(tag.total_bindings);
+            result.push_str(&inject_hydration_marker(&stripped, &marker));
         }
-        None => {
-            if db > 0 {
-                result.push_str(&resolve_attribute_bindings_in_tag(tag_str, root, loop_vars));
-            } else {
-                result.push_str(tag_str);
-            }
+        Some(_) => result.push_str(&tag.stripped),
+        None if tag.double_bindings > 0 => {
+            result.push_str(&tag.attributes.resolve(root, loop_vars))
+        }
+        None => result.push_str(&template[tag.range.clone()]),
+    }
+}
+
+pub(crate) fn render_binding(
+    expression: &str,
+    escaped: bool,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    hydration: Option<&mut HydrationScope>,
+) -> String {
+    let mut out = String::new();
+    append_binding(&mut out, expression, escaped, root, loop_vars, hydration);
+    out
+}
+
+fn append_binding(
+    out: &mut String,
+    expression: &str,
+    escaped: bool,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    mut hydration: Option<&mut HydrationScope>,
+) {
+    let index = hydration.as_deref_mut().map(|scope| scope.next_binding());
+    if let (Some(scope), Some(index)) = (&hydration, index) {
+        scope.push_content_start(out, index);
+    }
+    if let Some(value) = resolve_value(expression, root, loop_vars) {
+        let text = match value.as_ref() {
+            JsonValue::String(value) => Cow::Borrowed(value.as_str()),
+            _ => Cow::Owned(value.to_display_string()),
+        };
+        if escaped {
+            push_html_escaped(out, &text);
+        } else {
+            out.push_str(&text);
         }
     }
-    if let Some(end) = crate::attribute::style_element_end(template, tag_pos) {
-        result.push_str(&template[tag_end..end]);
-        end
-    } else {
-        tag_end
+    if let (Some(scope), Some(index)) = (&hydration, index) {
+        scope.push_content_end(out, index);
     }
 }
 
 fn process_directive(
-    dir_chunk: Directive,
+    directive: Directive,
+    prepared: &Instruction,
     template: &str,
     root: &dyn State,
     loop_vars: &LoopVars<'_>,
@@ -111,42 +258,66 @@ fn process_directive(
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
-    match dir_chunk {
+    match directive {
         Directive::TripleBrace(p) => {
             let (out, end) = render_triple_brace(template, p, root, loop_vars)?;
-            let final_out = wrap_content_binding(out, template, p, "{{{", "}}}", hydration);
-            Ok((final_out, end))
+            Ok((wrap_content_binding(out, hydration), end))
         }
         Directive::DoubleBrace(p) => {
             let (out, end) = render_double_brace(template, p, root, loop_vars)?;
-            let final_out = wrap_content_binding(out, template, p, "{{", "}}", hydration);
-            Ok((final_out, end))
+            Ok((wrap_content_binding(out, hydration), end))
         }
-        Directive::When(p) => render_when(template, p, root, loop_vars, locator, hydration, config),
-        Directive::Repeat(p) => render_repeat(template, p, root, loop_vars, locator, hydration, config),
+        Directive::When(p) => {
+            let when = match prepared {
+                Instruction::When(when) => Some(when),
+                _ => None,
+            };
+            render_when(
+                template, p, root, loop_vars, locator, hydration, config, when,
+            )
+        }
+        Directive::Repeat(p) => {
+            let repeat = match prepared {
+                Instruction::Repeat(repeat) => Some(repeat),
+                _ => None,
+            };
+            render_repeat(
+                template, p, root, loop_vars, locator, hydration, config, repeat,
+            )
+        }
         Directive::CustomElement(p) => {
-            render_custom_element(template, p, root, loop_vars, locator.expect("locator is required to render a CustomElement directive"), hydration, is_entry, config)
+            let element = match prepared {
+                Instruction::Element(element) => Some(element),
+                _ => None,
+            };
+            render_custom_element(
+                template,
+                p,
+                root,
+                loop_vars,
+                locator.expect("locator is required for a custom element"),
+                hydration,
+                is_entry,
+                config,
+                element,
+            )
         }
     }
 }
 
-fn wrap_content_binding(
+pub(crate) fn wrap_content_binding(
     out: String,
-    _template: &str,
-    _p: usize,
-    _open: &str,
-    _close: &str,
     hydration: Option<&mut HydrationScope>,
 ) -> String {
     match hydration {
         None => out,
-        Some(hy) => {
-            let index = hy.next_binding();
+        Some(scope) => {
+            let index = scope.next_binding();
             format!(
                 "{}{}{}",
-                hy.content_start_marker(index),
+                scope.content_start_marker(index),
                 out,
-                hy.content_end_marker(index)
+                scope.content_end_marker(index)
             )
         }
     }
