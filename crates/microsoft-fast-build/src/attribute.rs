@@ -140,16 +140,7 @@ pub(crate) fn extract_directive_expr_range(
 
 /// Extract the inner content between an opening directive tag and its matching
 /// closing tag, handling nested directives of the same name.
-/// Returns `(inner_content, position_after_close_tag)`.
-pub(crate) fn extract_directive_content(
-    template: &str,
-    tag_start: usize,
-    tag_name: &str,
-) -> Option<(String, usize)> {
-    extract_directive_content_range(template, tag_start, tag_name)
-        .map(|(range, after)| (template[range].to_string(), after))
-}
-
+/// Returns `(inner_range, position_after_close_tag)`.
 pub(crate) fn extract_directive_content_range(
     template: &str,
     tag_start: usize,
@@ -257,11 +248,12 @@ pub(crate) fn find_custom_element(
 /// - `attr="{{expr}}"` → double-brace binding
 /// - `attr="{expr}"` (single brace, not `{{`) → single-brace client binding
 /// Returns `(double_brace_count, single_brace_count)`.
-pub(crate) fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
-    let attrs = parse_element_attributes(tag);
+pub(crate) fn count_attribute_bindings<'a>(
+    values: impl Iterator<Item = Option<&'a str>>,
+) -> (usize, usize) {
     let mut db = 0usize;
     let mut sb = 0usize;
-    for (_name, value) in attrs {
+    for value in values {
         if let Some(v) = value {
             if v.contains("{{") {
                 db += 1;
@@ -312,74 +304,129 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
     root: &dyn crate::context::State,
     loop_vars: &crate::context::LoopVars<'_>,
 ) -> String {
-    use crate::expression::evaluate;
+    match AttributePlan::new(tag) {
+        Some(plan) => plan.resolve(root, loop_vars),
+        None => tag.to_string(),
+    }
+}
 
-    let trimmed = tag.trim_end();
-    let is_self_closing = trimmed.ends_with("/>");
-    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
-    let tag_name = match read_tag_name(tag, 0) {
-        Some(name) => name,
-        None => return tag.to_string(),
-    };
+#[derive(Debug)]
+pub(crate) struct AttributePlan {
+    tag_name: String,
+    attributes: Vec<ParsedAttribute>,
+    self_closing: bool,
+    closing_gt: bool,
+    capacity: usize,
+}
 
-    let mut result = String::with_capacity(tag.len());
-    result.push('<');
-    result.push_str(&tag_name);
+impl AttributePlan {
+    pub(crate) fn new(tag: &str) -> Option<Self> {
+        let trimmed = tag.trim_end();
+        let self_closing = trimmed.ends_with("/>");
+        Some(Self {
+            tag_name: read_tag_name(tag, 0)?,
+            attributes: parse_element_attribute_parts(tag),
+            self_closing,
+            closing_gt: self_closing || trimmed.ends_with('>'),
+            capacity: tag.len(),
+        })
+    }
 
-    for attr in parse_element_attribute_parts(tag) {
-        let name = attr.name;
-        if name.starts_with('?') {
-            if let Some(v) = attr.value {
-                let trimmed = v.trim();
-                if trimmed.starts_with("{{") && trimmed.ends_with("}}") && trimmed.len() > 4 {
-                    let expr = trimmed[2..trimmed.len() - 2].trim();
-                    if evaluate(expr, root, loop_vars) {
-                        result.push(' ');
-                        result.push_str(&name[1..]);
-                    }
-                }
+    pub(crate) fn binding_counts(&self) -> (usize, usize) {
+        count_attribute_bindings(self.attributes.iter().map(|attr| attr.value.as_deref()))
+    }
+
+    pub(crate) fn stripped(&self) -> String {
+        let mut out = format!("<{}", self.tag_name);
+        for attr in &self.attributes {
+            let name = &attr.name;
+            if name.starts_with('@')
+                || name.starts_with(':')
+                || name.eq_ignore_ascii_case("f-ref")
+                || name.eq_ignore_ascii_case("f-slotted")
+                || name.eq_ignore_ascii_case("f-children")
+            {
+                continue;
             }
-            continue;
+            out.push(' ');
+            out.push_str(&attr.raw);
         }
+        if self.self_closing {
+            out.push_str(" />");
+        } else if self.closing_gt {
+            out.push('>');
+        }
+        out
+    }
 
-        match attr.value {
-            None => {
-                result.push(' ');
-                result.push_str(&attr.raw);
-            }
-            Some(v) if v.contains("{{") => {
-                if let Some(expr) = single_attribute_binding(&v) {
-                    if is_boolean_attribute(&name) {
-                        if let Some(crate::json::JsonValue::Bool(enabled)) =
-                            crate::context::resolve_value(expr, root, loop_vars)
-                                .as_deref()
-                        {
-                            if *enabled {
-                                result.push(' ');
-                                result.push_str(&name);
-                            }
-                            continue;
+    pub(crate) fn resolve(
+        &self,
+        root: &dyn crate::context::State,
+        loop_vars: &crate::context::LoopVars<'_>,
+    ) -> String {
+        use crate::expression::evaluate;
+
+        let mut result = String::with_capacity(self.capacity);
+        result.push('<');
+        result.push_str(&self.tag_name);
+
+        for attr in &self.attributes {
+            let name = &attr.name;
+            if name.starts_with('?') {
+                if let Some(v) = attr.value.as_deref() {
+                    let trimmed = v.trim();
+                    if trimmed.starts_with("{{")
+                        && trimmed.ends_with("}}")
+                        && trimmed.len() > 4
+                    {
+                        let expr = trimmed[2..trimmed.len() - 2].trim();
+                        if evaluate(expr, root, loop_vars) {
+                            result.push(' ');
+                            result.push_str(&name[1..]);
                         }
                     }
                 }
-                if let Some(resolved) = resolve_attribute_value(&v, root, loop_vars) {
-                    append_quoted_attribute(&mut result, &name, &resolved);
+                continue;
+            }
+
+            match attr.value.as_deref() {
+                None => {
+                    result.push(' ');
+                    result.push_str(&attr.raw);
+                }
+                Some(v) if v.contains("{{") => {
+                    if let Some(expr) = single_attribute_binding(v) {
+                        if is_boolean_attribute(name) {
+                            if let Some(crate::json::JsonValue::Bool(enabled)) =
+                                crate::context::resolve_value(expr, root, loop_vars).as_deref()
+                            {
+                                if *enabled {
+                                    result.push(' ');
+                                    result.push_str(name);
+                                }
+                                continue;
+                            }
+                        }
+                    }
+                    if let Some(resolved) = resolve_attribute_value(v, root, loop_vars) {
+                        append_quoted_attribute(&mut result, name, &resolved);
+                    }
+                }
+                Some(_) => {
+                    result.push(' ');
+                    result.push_str(&attr.raw);
                 }
             }
-            Some(_) => {
-                result.push(' ');
-                result.push_str(&attr.raw);
-            }
         }
-    }
 
-    if is_self_closing {
-        result.push_str(" />");
-    } else if has_closing_gt {
-        result.push('>');
-    }
+        if self.self_closing {
+            result.push_str(" />");
+        } else if self.closing_gt {
+            result.push('>');
+        }
 
-    result
+        result
+    }
 }
 
 pub(crate) fn append_quoted_attribute(out: &mut String, name: &str, value: &str) {
@@ -462,39 +509,13 @@ pub(crate) fn is_boolean_attribute(name: &str) -> bool {
 ///
 /// These are resolved or reconnected entirely by the FAST client runtime and
 /// have no meaning in static HTML. The `data-fe` hydration binding count is
-/// unaffected — callers use `count_tag_attribute_bindings` on the *original*
-/// tag string so the FAST runtime still allocates the correct number of binding slots.
+/// unaffected — callers count bindings from the *original* parsed attributes so
+/// the FAST runtime still allocates the correct number of binding slots.
 pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
-    let trimmed = tag.trim_end();
-    let is_self_closing = trimmed.ends_with("/>");
-    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
-
-    let tag_name = match read_tag_name(tag, 0) {
-        Some(name) => name,
-        None => return tag.to_string(),
-    };
-
-    let mut out = format!("<{}", tag_name);
-    for attr in parse_element_attribute_parts(tag) {
-        let name = attr.name;
-        if name.starts_with('@')
-            || name.starts_with(':')
-            || name.eq_ignore_ascii_case("f-ref")
-            || name.eq_ignore_ascii_case("f-slotted")
-            || name.eq_ignore_ascii_case("f-children")
-        {
-            continue;
-        }
-        out.push(' ');
-        out.push_str(&attr.raw);
+    match AttributePlan::new(tag) {
+        Some(plan) => plan.stripped(),
+        None => tag.to_string(),
     }
-
-    if is_self_closing {
-        out.push_str(" />");
-    } else if has_closing_gt {
-        out.push('>');
-    }
-    out
 }
 
 /// Insert a hydration marker attribute just before the closing `>` or `/>`.
@@ -562,6 +583,7 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
         .collect()
 }
 
+#[derive(Debug)]
 pub(crate) struct ParsedAttribute {
     pub name: String,
     pub value: Option<String>,
