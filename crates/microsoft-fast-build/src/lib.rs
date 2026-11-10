@@ -18,10 +18,12 @@
 //!   renderer entry points → code-sample preprocessing
 //!         │
 //!         ▼
-//!   plan::RenderPlan::compile → private structural instructions
+//!   plan::InstructionCursor → shared structural instructions
+//!         ├─ One-shot entry: execute directly
+//!         └─ Definition/body: collect into a cached RenderPlan
 //!         │
 //!         ▼
-//!   node::render_plan / streaming::stream_plan
+//!   node / streaming shared instruction evaluation
 //!         ├─ Literal / Tag / Binding → append or evaluate
 //!         ├─ When / Repeat → cached lazy body plan
 //!         └─ CustomElement → cached Locator plan, fresh hydration scope
@@ -38,7 +40,7 @@
 //! | Module | Role |
 //! |--------|------|
 //! | `renderer` | Thin entry points mapping the public API into `render_node` or `stream_node` calls |
-//! | `plan` | Private reusable instructions and lazy directive/light-DOM body plans |
+//! | `plan` | Shared instruction cursor, cached plans, and lazy directive/light-DOM bodies |
 //! | `node` | Plan evaluation — direct binding output, directive dispatch, and tag handling |
 //! | `streaming` | Simulated streaming loop — returns precomputed HTML chunks |
 //! | `directive` | `Directive` / `RenderEvent` enums, forward `next_event` scanner, directive renderers |

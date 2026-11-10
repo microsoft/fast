@@ -914,6 +914,9 @@ and plain tags no longer incur those quadratic searches. Rendered HTML,
 attribute handling, default markers, and `markers_v2` remain compatible.
 Templates still render recursively, but each locator lazily compiles named
 definitions and executed directive bodies into reusable structural plans.
+One-shot entries execute through the same instruction cursor without retaining
+an entry instruction vector. Native incremental registration avoids invalidation
+scans until plans have actually been cached.
 Content bindings append into their current output buffer rather than creating
 temporary rendered chunks. Stream functions still return fully materialized
 chunks with the same boundaries.

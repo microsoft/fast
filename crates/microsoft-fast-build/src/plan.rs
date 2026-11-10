@@ -168,70 +168,110 @@ impl RenderPlan {
     pub(crate) fn compile(source: &str, locator: Option<&Locator>) -> Self {
         #[cfg(test)]
         COMPILATIONS.with(|count| count.set(count.get() + 1));
-        let mut instructions = Vec::new();
-        let mut pos = 0;
-        while let Some(event) = next_event(source, pos, locator) {
-            let at = match &event {
-                RenderEvent::PlainTag(at) => *at,
-                RenderEvent::Directive(directive) => directive.position(),
-            };
-            if pos < at {
-                instructions.push(Instruction::Literal(pos..at));
-            }
-            let prepared = match event {
-                RenderEvent::PlainTag(at) => {
-                    let Some(end) = find_tag_end(source, at) else {
-                        instructions.push(Instruction::Literal(at..source.len()));
-                        return Self { instructions };
-                    };
-                    let tag = &source[at..end];
-                    let attributes =
-                        AttributePlan::new(tag).expect("scanner found an opening tag");
-                    let (double_bindings, single_bindings) = attributes.binding_counts();
-                    let stripped = if double_bindings + single_bindings == 0 {
-                        attributes.stripped()
-                    } else {
-                        String::new()
-                    };
-                    instructions.push(Instruction::Tag(Tag {
-                        range: at..end,
-                        attributes,
-                        double_bindings,
-                        total_bindings: double_bindings + single_bindings,
-                        stripped,
-                    }));
-                    let after = style_element_end(source, at).unwrap_or(end);
-                    if end < after {
-                        instructions.push(Instruction::Literal(end..after));
-                    }
-                    pos = after;
-                    continue;
+        Self {
+            instructions: InstructionCursor::new(source, locator).collect(),
+        }
+    }
+}
+
+pub(crate) struct InstructionCursor<'a> {
+    source: &'a str,
+    locator: Option<&'a Locator>,
+    pos: usize,
+    event: Option<RenderEvent>,
+    literal: Option<Range<usize>>,
+}
+
+impl<'a> InstructionCursor<'a> {
+    pub(crate) fn new(source: &'a str, locator: Option<&'a Locator>) -> Self {
+        Self {
+            source,
+            locator,
+            pos: 0,
+            event: None,
+            literal: None,
+        }
+    }
+}
+
+impl Iterator for InstructionCursor<'_> {
+    type Item = Instruction;
+
+    fn next(&mut self) -> Option<Instruction> {
+        if let Some(range) = self.literal.take() {
+            return Some(Instruction::Literal(range));
+        }
+        let source = self.source;
+        if self.pos >= source.len() {
+            return None;
+        }
+        let event = self
+            .event
+            .take()
+            .or_else(|| next_event(source, self.pos, self.locator));
+        let Some(event) = event else {
+            let range = self.pos..source.len();
+            self.pos = source.len();
+            return Some(Instruction::Literal(range));
+        };
+        let at = match &event {
+            RenderEvent::PlainTag(at) => *at,
+            RenderEvent::Directive(directive) => directive.position(),
+        };
+        if self.pos < at {
+            let range = self.pos..at;
+            self.pos = at;
+            self.event = Some(event);
+            return Some(Instruction::Literal(range));
+        }
+        match event {
+            RenderEvent::PlainTag(at) => {
+                let Some(end) = find_tag_end(source, at) else {
+                    self.pos = source.len();
+                    return Some(Instruction::Literal(at..source.len()));
+                };
+                let attributes =
+                    AttributePlan::new(&source[at..end]).expect("scanner found a tag");
+                let (double_bindings, single_bindings) = attributes.binding_counts();
+                let stripped = if double_bindings + single_bindings == 0 {
+                    attributes.stripped()
+                } else {
+                    String::new()
+                };
+                self.pos = style_element_end(source, at).unwrap_or(end);
+                if end < self.pos {
+                    self.literal = Some(end..self.pos);
                 }
-                RenderEvent::Directive(directive) => match &directive {
+                Some(Instruction::Tag(Tag {
+                    range: at..end,
+                    attributes,
+                    double_bindings,
+                    total_bindings: double_bindings + single_bindings,
+                    stripped,
+                }))
+            }
+            RenderEvent::Directive(directive) => {
+                let prepared = match &directive {
                     Directive::DoubleBrace(at) | Directive::TripleBrace(at) => {
                         let escaped = matches!(directive, Directive::DoubleBrace(_));
                         let width = if escaped { 2 } else { 3 };
                         let start = at + width;
                         let delimiter = if escaped { "}}" } else { "}}}" };
-                        if let Some(end) =
-                            source[start..].find(delimiter).map(|p| p + start)
-                        {
+                        source[start..].find(delimiter).and_then(|offset| {
+                            let end = start + offset;
                             let text = &source[start..end];
-                            if !text.trim().is_empty() {
-                                let start = start + text.len() - text.trim_start().len();
-                                Some((
-                                    Instruction::Binding {
-                                        expression: start..start + text.trim().len(),
-                                        escaped,
-                                    },
-                                    end + width,
-                                ))
-                            } else {
-                                None
+                            if text.trim().is_empty() {
+                                return None;
                             }
-                        } else {
-                            None
-                        }
+                            let start = start + text.len() - text.trim_start().len();
+                            Some((
+                                Instruction::Binding {
+                                    expression: start..start + text.trim().len(),
+                                    escaped,
+                                },
+                                end + width,
+                            ))
+                        })
                     }
                     Directive::When(at) => When::parse(source, *at).ok().map(|when| {
                         let after = when.after;
@@ -249,22 +289,19 @@ impl RenderPlan {
                             (Instruction::Element(element), after)
                         })
                     }
+                };
+                match prepared {
+                    Some((instruction, after)) => {
+                        self.pos = after;
+                        Some(instruction)
+                    }
+                    None => {
+                        self.pos = source.len();
+                        Some(Instruction::Deferred(directive))
+                    }
                 }
-                .or_else(|| {
-                    instructions.push(Instruction::Deferred(directive));
-                    None
-                }),
-            };
-            let Some((instruction, after)) = prepared else {
-                return Self { instructions };
-            };
-            instructions.push(instruction);
-            pos = after;
+            }
         }
-        if pos < source.len() {
-            instructions.push(Instruction::Literal(pos..source.len()));
-        }
-        Self { instructions }
     }
 }
 
@@ -303,6 +340,29 @@ mod tests {
     }
 
     #[test]
+    fn one_shot_entries_execute_without_compiling_a_plan() {
+        let locator = Locator::from_templates(HashMap::new());
+        let source = "<p>{{value}}</p><style>b{content:'{{value}}'}</style>";
+        let root = crate::json::parse(r#"{"value":"<&"}"#).unwrap();
+        let before = COMPILATIONS.with(|count| count.get());
+        let html =
+            crate::render_entry_with_locator(source, &root, &locator, None).unwrap();
+        let chunks =
+            crate::render_entry_stream_with_locator(source, &root, &locator, None)
+                .unwrap();
+        assert_eq!(
+            chunks,
+            [
+                "<p>",
+                "&lt;&amp;",
+                "</p><style>b{content:'{{value}}'}</style>"
+            ],
+        );
+        assert_eq!(html, chunks.concat());
+        assert_eq!(COMPILATIONS.with(|count| count.get()), before);
+    }
+
+    #[test]
     fn repeated_bodies_and_definitions_are_reused_without_caching_state_or_scopes() {
         let source = r#"<f-repeat value="{{item in items}}"><f-when value="{{item.active}}"><b title="{{item.text}}">{{$index}}:{{item.text}}</b></f-when></f-repeat>"#;
         let locator = locator(source);
@@ -330,8 +390,8 @@ mod tests {
         assert!(std::ptr::eq(plan, locator.render_plan("my-list").unwrap()));
         assert_eq!(
             COMPILATIONS.with(|count| count.get()) - before,
-            1,
-            "only the new entry is compiled"
+            0,
+            "the new entry is executed without retaining a plan"
         );
         assert_eq!(
             second,

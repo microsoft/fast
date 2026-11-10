@@ -4,6 +4,25 @@
 mod harness;
 
 #[test]
+fn single_use_entries_do_not_retain_instruction_metadata() {
+    let mut options = harness::Options::parse(
+        ["--case=url_sink_siblings", "--count=5000"]
+            .into_iter()
+            .map(str::to_string),
+    )
+    .unwrap();
+    for mode in ["v3", "v2"] {
+        options.mode = mode.into();
+        let rendered = harness::measure(&options).unwrap();
+        assert!(
+            rendered["peakLiveBytes"].as_u64().unwrap()
+                <= rendered["retainedBytes"].as_u64().unwrap() * 2,
+            "one-shot entry metadata must not dominate the render peak: {rendered}",
+        );
+    }
+}
+
+#[test]
 fn attributed_children_do_not_copy_unused_root_state() {
     let mut options = harness::Options::parse(
         ["--case=large_state_overlay", "--count=16"]

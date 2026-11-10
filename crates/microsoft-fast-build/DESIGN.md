@@ -22,7 +22,9 @@ render_template(template, state_str)
   renderer::render(template, root)      ← code-sample preprocessing
         │
         ▼
-  plan::RenderPlan::compile(template, locator)
+  plan::InstructionCursor(template, locator)
+        ├─ One-shot entry: execute directly
+        └─ Reusable definition/body: collect into a cached RenderPlan
         │
         ▼
   node::render_plan / streaming::stream_plan
@@ -41,7 +43,7 @@ render_template(template, state_str)
 |--------|------|
 | `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
-| `plan.rs` | Private structural instruction plans, lazy directive/light-DOM bodies, and parsed tag/directive metadata |
+| `plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and parsed tag/directive metadata |
 | `node.rs` | Plan evaluation and shared atomic plain-tag handling; content bindings append directly into the current output buffer |
 | `streaming.rs` | Evaluation of the same plans into precomputed non-empty HTML chunks |
 | `directive.rs` | `Directive` / `RenderEvent` enums, monotonic `next_event` scanner, and directive renderers |
@@ -64,7 +66,10 @@ render_template(template, state_str)
 
 ## Compilation and plan execution — `plan.rs` / `node.rs`
 
-`render_node` compiles an ephemeral entry plan, then delegates to `render_plan`:
+`render_node` executes one-shot entries directly from `InstructionCursor`, without
+allocating an entry instruction vector. `RenderPlan::compile` collects that same
+cursor for reusable definitions and bodies. `render_plan` executes the collected
+instructions through the same evaluator:
 
 ```
 fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool, config: &RenderConfig) → Result<String>
@@ -92,7 +97,11 @@ Plans contain no configuration or state values. Hydration counters, attribute
 name strategies, parent-context attribute evaluation, loop variables, and child
 overlays are supplied during each execution. `OnceLock` permits native concurrent
 reads without sharing request state. Adding/replacing a locator definition clears
-all body plans: a formerly unknown element may now require component expansion.
+all definition/body plans: a formerly unknown element may now require expansion.
+An atomic mutation guard skips the scan until a plan has been initialized, so
+incremental population is not quadratic. After invalidation, further registration
+also skips the scan until rendering initializes another plan. The guard does not
+publish plan contents; `OnceLock` provides that synchronization.
 Static serialized DSD attributes are cached separately per definition.
 
 Existing WASM exports still construct a locator for each call. Reuse occurs
@@ -109,9 +118,10 @@ The `is_entry` flag distinguishes two rendering contexts for **opening-tag attri
 
 `renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
 
-Compilation advances a source cursor using `next_event`, retaining the existing
-permissive scanner and raw-style handling. Execution walks the prepared
-instructions without rediscovering events or directive body boundaries.
+The instruction cursor advances using `next_event`, retaining the existing
+permissive scanner and raw-style handling. Cached execution walks prepared
+instructions without rediscovering events or directive body boundaries; one-shot
+execution prepares and consumes each instruction immediately.
 `render_tag` resolves attributes atomically and emits the configured marker;
 content bindings borrow strings and append escaped text/markers directly into the
 current output buffer. Recursive directives still materialize their own strings;
@@ -129,8 +139,9 @@ come from the original source tag, not the surviving attributes. Host-default
 deduplication also considers source author names so an omitted author binding
 cannot be replaced by a template default.
 
-`stream_node` compiles an entry plan and `stream_plan` shares its instruction
-representation, cached bodies, and `node::render_tag` with normal evaluation, but returns
+`stream_node` executes the same cursor directly for entries, while `stream_plan`
+executes retained plans. Both share cached bodies and `node::render_tag` with
+normal evaluation, but return
 `Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
 is prepared in memory before the API returns. The invariant is that
 `chunks.join("")` matches the equivalent non-streamed render, including the

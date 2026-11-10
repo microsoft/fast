@@ -1,4 +1,4 @@
-use std::borrow::Cow;
+use std::borrow::{Borrow, Cow};
 
 use crate::attribute::{inject_hydration_marker, strip_client_only_attrs};
 use crate::config::RenderConfig;
@@ -9,7 +9,7 @@ use crate::error::RenderError;
 use crate::hydration::HydrationScope;
 use crate::json::JsonValue;
 use crate::locator::Locator;
-use crate::plan::{Instruction, RenderPlan, Tag};
+use crate::plan::{Instruction, InstructionCursor, RenderPlan, Tag};
 
 pub fn render_node(
     template: &str,
@@ -20,8 +20,8 @@ pub fn render_node(
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<String, RenderError> {
-    render_plan(
-        &RenderPlan::compile(template, locator),
+    render_instructions(
+        InstructionCursor::new(template, locator),
         template,
         root,
         loop_vars,
@@ -38,12 +38,39 @@ pub(crate) fn render_plan(
     root: &dyn State,
     loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
-    mut hydration: Option<&mut HydrationScope>,
+    hydration: Option<&mut HydrationScope>,
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<String, RenderError> {
+    render_instructions(
+        &plan.instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration,
+        is_entry,
+        config,
+    )
+}
+
+fn render_instructions<I>(
+    instructions: I,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+) -> Result<String, RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
     let mut result = String::new();
-    for instruction in &plan.instructions {
+    for instruction in instructions {
+        let instruction = instruction.borrow();
         let scope = hydration.as_deref_mut();
         let directive = match instruction {
             Instruction::Literal(range) => {

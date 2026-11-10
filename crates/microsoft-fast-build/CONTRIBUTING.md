@@ -64,8 +64,8 @@ cargo build
 | `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content_range`, `read_tag_name_slice`, `parse_element_attributes` |
 | `src/content.rs` | `{{}}` and `{{{}}}` binding renderers, `html_escape` |
 | `src/directive.rs` | `Directive` / `RenderEvent` enums, `next_event`, `render_when`, `render_repeat`, `render_custom_element` |
-| `src/plan.rs` | Private structural plans, lazy body compilation, and cache-reuse tests |
-| `src/node.rs` | `render_node` / `render_plan` — compilation entry and instruction evaluation |
+| `src/plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and cache-reuse tests |
+| `src/node.rs` | `render_node` / `render_plan` — transient and cached instruction evaluation |
 | `src/renderer.rs` | Thin entry points that call `render_node` |
 | `src/locator.rs` | `Locator` — template content and metadata, lazy plans, mutation invalidation, and filesystem scanning |
 | `src/error.rs` | `RenderError` enum with all variants and `Display` implementation |

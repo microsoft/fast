@@ -12,6 +12,8 @@ files, CLI options, and hydration output remain unchanged.
 Template structure is compiled lazily into in-memory plans and reused between
 component instances and repeat iterations within a render call. No extra server
 file is required. Existing WASM APIs do not retain plans across separate calls.
+One-shot entry templates use the same instruction cursor without building an
+entry instruction vector.
 
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 

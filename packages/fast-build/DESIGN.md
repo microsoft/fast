@@ -481,6 +481,13 @@ marker counters, and configuration are never cached. Native locator mutation
 invalidates plans so newly registered components are recognized, and serialized
 static DSD attributes are retained per definition.
 
+One-shot entries execute through the shared instruction cursor without building
+an entry instruction vector. Cached plans collect that same cursor, so parsing
+and evaluation are not duplicated. Definition/body caching still begins on first
+use; there is no adaptive second-use promotion policy. Native registration skips
+invalidation scans until plans exist, and scans only once per registration batch
+unless rendering initializes more plans between mutations.
+
 Normal, simulated-stream, and shadow-fragment paths share these plans. Content
 bindings append directly into their current buffer; attribute-value and boolean
 expression evaluators remain shared with the existing implementation. There is

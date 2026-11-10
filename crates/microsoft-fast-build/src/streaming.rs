@@ -1,3 +1,5 @@
+use std::borrow::Borrow;
+
 use crate::config::RenderConfig;
 use crate::content::{render_double_brace, render_triple_brace};
 use crate::context::{resolve_value, LoopVars, State};
@@ -11,7 +13,7 @@ use crate::hydration::HydrationScope;
 use crate::json::JsonValue;
 use crate::locator::Locator;
 use crate::node::{render_binding, render_tag};
-use crate::plan::{Body, Element, Instruction, RenderPlan, Repeat, When};
+use crate::plan::{Body, Element, Instruction, InstructionCursor, RenderPlan, Repeat, When};
 
 pub(crate) fn stream_node(
     template: &str,
@@ -22,9 +24,15 @@ pub(crate) fn stream_node(
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<Vec<String>, RenderError> {
-    stream_plan(
-        &RenderPlan::compile(template, locator),
-        template, root, loop_vars, locator, hydration, is_entry, config,
+    stream_instructions(
+        InstructionCursor::new(template, locator),
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration,
+        is_entry,
+        config,
     )
 }
 
@@ -34,13 +42,40 @@ pub(crate) fn stream_plan(
     root: &dyn State,
     loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
-    mut hydration: Option<&mut HydrationScope>,
+    hydration: Option<&mut HydrationScope>,
     is_entry: bool,
     config: &RenderConfig,
 ) -> Result<Vec<String>, RenderError> {
+    stream_instructions(
+        &plan.instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration,
+        is_entry,
+        config,
+    )
+}
+
+fn stream_instructions<I>(
+    instructions: I,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+) -> Result<Vec<String>, RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
     let mut chunks = Vec::new();
     let mut current = String::new();
-    for instruction in &plan.instructions {
+    for instruction in instructions {
+        let instruction = instruction.borrow();
         let scope = hydration.as_deref_mut();
         let directive = match instruction {
             Instruction::Literal(range) => {
