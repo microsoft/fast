@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { normalizePath } from "vite";
 import {
     compileArtifacts,
     createPreparedRuntime,
@@ -120,7 +121,7 @@ export function preparedPlugin({
         if (!initializing) {
             initializing = (async () => {
                 for (const file of files) {
-                    await server.transformRequest(file + sourceQuery);
+                    await server.transformRequest(normalizePath(file) + sourceQuery);
                 }
                 publish(compile());
                 return runtime;
@@ -163,7 +164,7 @@ export function preparedPlugin({
         },
         async load(id) {
             if (id.endsWith(sourceQuery)) {
-                const file = id.slice(0, -sourceQuery.length);
+                const file = path.normalize(id.slice(0, -sourceQuery.length));
                 if (files.has(file)) {
                     this.addWatchFile(file);
                     return readFile(file, "utf8");
@@ -174,7 +175,7 @@ export function preparedPlugin({
                     throw new Error("Prepared artifacts are server-only.");
                 }
                 return `
-                    ${[...files].map(file => `import ${JSON.stringify(file + sourceQuery)};`).join("\n")}
+                    ${[...files].map(file => `import ${JSON.stringify(normalizePath(file) + sourceQuery)};`).join("\n")}
                     import { readFile } from "node:fs/promises";
                     import { createPreparedRuntime } from "@microsoft/fast-build/prepared.js";
                     const directory = new URL("./prepared/", import.meta.url);
@@ -195,7 +196,7 @@ export function preparedPlugin({
         },
         transform(code, id) {
             if (id.endsWith(sourceQuery)) {
-                const file = id.slice(0, -sourceQuery.length);
+                const file = path.normalize(id.slice(0, -sourceQuery.length));
                 if (files.has(file)) {
                     sources.set(file, code);
                     return { code: `export default ${JSON.stringify(code)};`, map: null };
@@ -224,12 +225,13 @@ export function preparedPlugin({
             if (disposed) {
                 throw new Error("Prepared Vite integration is disposed.");
             }
-            if (!files.has(context.file) || !initializing) {
+            const file = path.normalize(context.file);
+            if (!files.has(file) || !initializing) {
                 return;
             }
             const update = updates.then(async () => {
                 await initializing;
-                const id = context.file + sourceQuery;
+                const id = normalizePath(file) + sourceQuery;
                 const module = server.moduleGraph.getModuleById(id);
                 if (module) {
                     server.moduleGraph.invalidateModule(module);

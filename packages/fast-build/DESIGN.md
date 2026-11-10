@@ -607,8 +607,11 @@ while adapters retain IDs shared with current/other undrained activations and ow
 deletion policy. Other runtimes/processes require separate coordination. A valid
 manifest cannot guarantee that backing storage will deliver every required piece.
 The executable Vite fixture exercises those generic APIs, not a Vite-specific
-runtime path, while the
-prepared benchmark separates compilation, cold disk loading, warmed requests,
+runtime path. Its source maps use native normalized filesystem paths, while
+Vite imports, transform requests and module-graph lookups use Vite-normalized
+module IDs. Hook inputs are converted back to native paths before source lookup,
+so Windows separators do not bypass preprocessing or HMR invalidation.
+The prepared benchmark separates compilation, cold disk loading, warmed requests,
 process initialization and many-entry cache retention, including policy-specific
 entry/fragment load counts and validated incremental preparation.
 
