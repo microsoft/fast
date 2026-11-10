@@ -80,6 +80,15 @@ const html = await runtime.render("home", state, { dsd: ["my-card"] });
 const fragment = await runtime.renderShadowRoot("my-card", componentState);
 ```
 
+Supply parent and child definitions separately; registered children inside parent
+templates render recursively. FAST does not discover dependency packages. Tooling
+owns declared dependency resolution and graph validation; an unregistered custom
+element remains an ordinary authored host rather than an implicit dependency
+error. Convert client components independently and let the application control
+their registration, matching the client hydration strategy to the server markers.
+Keep definition host/shadow metadata and original-source mappings when assembling
+the registry; FAST diagnostics refer to the supplied entry or named content.
+
 For the next transformed batch, call
 `compileArtifacts(nextSources, { previous: prepared })` with the last complete
 result. FAST validates reuse, recalculates registry-sensitive identities and
@@ -94,6 +103,9 @@ or shadow evaluation; selected descendants in that light DOM still render.
 `dsd: []` disables component shadow rendering and loads only the entry piece.
 Mixed selections skip excluded shadow definitions and their shadow-only
 dependencies while preserving the complete registry for classification validation.
+Allowlisting a child inside an excluded parent's shadow template does not
+reconstruct the parent or render that shadow-only child. Use an explicit shadow
+fragment with resolved child state when it must be rendered independently.
 Fragment rendering accepts resolved
 component state and returns a complete DSD template with correct metadata/markers,
 without synthesizing a host or rendering caller-owned light DOM.

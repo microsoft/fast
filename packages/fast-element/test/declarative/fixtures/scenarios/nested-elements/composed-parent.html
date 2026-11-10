@@ -1,0 +1,14 @@
+<f-template name="composed-parent" shadowrootmode="open" shadowrootdelegatesfocus>
+    <template role="region">
+        <style>
+            h2 { color: rgb(12, 34, 56); }
+        </style>
+        <h2>{{heading}}</h2>
+        <composed-child message="{{message}}" :items="{{items}}"></composed-child>
+        <f-when value="{{show}}">
+            <p class="conditional">{{message}}</p>
+        </f-when>
+        <composed-unknown><b>Ordinary custom element</b></composed-unknown>
+        <slot></slot>
+    </template>
+</f-template>

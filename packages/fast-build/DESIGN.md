@@ -513,6 +513,15 @@ artifacts without filesystem access. `createPreparedRuntime` validates a manifes
 and accepts an asynchronous piece-ID loader. JavaScript does not duplicate template
 parsing, instruction compilation, or native artifact decoding.
 
+The supplied registry is not an application dependency graph. Ordinary unknown
+custom elements retain authored host/light DOM behavior; build hosts validate
+their own required dependency declarations before compilation. Names registered
+in a prepared manifest must resolve to valid pieces when selected. Hosts preserve
+definition content, host/shadow metadata and the association between diagnostic
+`templateName`/content coordinates and original files or preprocessing source maps.
+FAST does not own package discovery, composed output identities, registration
+scheduling, asset exports, streaming barriers or application DSD eligibility.
+
 `compileArtifacts(sources, { previous })` exposes the same identity-based reuse
 boundary to every build host. FAST validates compatible previous results and
 artifact integrity, then constructs a complete candidate without mutating prior
@@ -563,6 +572,8 @@ unrelated entry, and reuses the native fragment helper with resolved component
 state and fresh markers. A known excluded root returns empty output; unknown
 names fail. Excluded fragments validate request inputs but perform no artifact
 I/O. Normal, chunk, and fragment paths share selection/hydration semantics.
+Allowlisting a shadow-only descendant does not reconstruct an excluded ancestor;
+the descendant can instead be rendered as an explicit standalone shadow fragment.
 
 `runtime.snapshot` returns an immutable activation handle with its generation and
 `drained` promise. Reader counts start before asynchronous loads and end after

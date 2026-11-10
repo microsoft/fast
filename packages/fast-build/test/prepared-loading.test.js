@@ -75,6 +75,13 @@ test("no DSD loads only entry while mixed selection retains caller-owned light d
         assert.match(mixed, /shadowrootmode="closed"/);
         assert.match(mixed, /<strong>.*caller/);
         assert.doesNotMatch(mixed, /hidden|role=/);
+        assert.doesNotMatch(mixed, /<test-shadow|<test-deep/);
+        const fragment = await runtime.renderShadowRoot(
+            "test-deep",
+            {},
+            { dsd: ["test-deep"], markersV2 },
+        );
+        assert.match(fragment, /^<template[^>]*><b>hidden<\/b><\/template>$/);
         assert.equal(runtime.memoryUsage.pieces, 0);
     }
 });
@@ -289,6 +296,7 @@ test("policy pruning does not prune state-dependent branches or evaluate skipped
         },
         templates,
     });
+
     const { runtime, loads, manifest } = fixture(t, compiled);
     assert.equal(
         await runtime.render("home", { shown: false }, { dsd: ["test-parent"] }),
@@ -306,4 +314,24 @@ test("policy pruning does not prune state-dependent branches or evaluate skipped
         error =>
             error.code !== "invalid-prepared-artifact" && typeof error.line === "number",
     );
+});
+
+test("prepared nested diagnostics retain the supplied definition's source coordinates", async t => {
+    const compiled = compileArtifacts({
+        entries: { home: "<test-parent></test-parent>" },
+        templates: {
+            "test-parent": "<test-child></test-child>",
+            "test-child": "<h2>child</h2>\r\n<f-when>invalid</f-when>",
+        },
+    });
+    const { runtime } = fixture(t, compiled);
+    for (const markersV2 of [false, true]) {
+        await assert.rejects(runtime.render("home", {}, { markersV2 }), {
+            code: "missing-value-attribute",
+            templateName: "test-child",
+            line: 2,
+            column: 1,
+            length: "<f-when>".length,
+        });
+    }
 });

@@ -43,6 +43,16 @@ errors refer to the supplied complete document; its caller maps those structured
 coordinates through that result. No dependency on the renderer crate, new
 converter API, or source-map reconstruction from messages is needed.
 
+Referenced custom elements remain references in independently converted component
+templates. Conversion does not flatten a dependency tree, load definitions or
+schedule registration. Applications select the matching client hydration marker
+strategy and own registration; component libraries own public asset exports.
+Build hosts assemble the server registry and retain the original-source mappings.
+FAST Build's existing native metadata exposes bindings and source spans, not a
+general authored custom-element-reference list. Neither that metadata nor a
+custom-element reference establishes dependency availability or DSD eligibility;
+no dependency discovery API or adapter-side HTML parser is introduced.
+
 | Module | Role |
 | --- | --- |
 | `lib.rs` | Public Rust API and crate exports |
