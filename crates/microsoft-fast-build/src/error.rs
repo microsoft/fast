@@ -3,6 +3,8 @@ use std::fmt;
 /// An error encountered while rendering a FAST HTML template.
 #[derive(Debug)]
 pub enum RenderError {
+    /// A prepared template artifact is incompatible, corrupt or incorrectly linked.
+    InvalidPreparedArtifact { message: String },
     /// Invalid stylesheet composition options or source mapping coordinates.
     InvalidComposition { message: String },
     /// Template metadata has an unsupported version, missing name or duplicate name.
@@ -94,6 +96,7 @@ impl RenderError {
     /// A stable, machine-readable error code.
     pub fn code(&self) -> &'static str {
         match self.kind() {
+            Self::InvalidPreparedArtifact { .. } => "invalid-prepared-artifact",
             Self::InvalidComposition { .. } => "invalid-composition",
             Self::InvalidTemplateMetadata { .. } => "invalid-template-metadata",
             Self::UnknownTemplate { .. } => "missing-template",
@@ -220,6 +223,7 @@ impl RenderError {
 impl fmt::Display for RenderError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InvalidPreparedArtifact { message } => write!(f, "invalid prepared artifact: {message}"),
             Self::InvalidComposition { message } => write!(f, "invalid composition: {message}"),
             Self::Located { error, .. } => error.fmt(f),
             Self::InvalidTemplateMetadata { message } => write!(f, "invalid template metadata: {message}"),

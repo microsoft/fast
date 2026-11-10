@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add reusable prepared template artifacts with asynchronous disk loading, bounded memory caching, and content-based refreshes.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
