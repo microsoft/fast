@@ -7,12 +7,14 @@ const path = require("node:path");
 
 const wasm = require("./wasm/microsoft_fast_build.js");
 
-const FORMAT_VERSION = 1;
+const FORMAT_VERSION = 2;
 const DEFAULT_MEMORY_BYTES = 32 * 1024 * 1024;
 const HASH = /^[a-f0-9]{64}$/;
+// Ownership coordinates live filesystem writers only, never retained render pieces.
+const directoryOwners = new Set();
 
 /** @typedef {{ checksum: string, dependencies: string[] }} PieceDescriptor */
-/** @typedef {{ version: number, compiler: string, generation: string, entry: string, templates: Record<string, string>, pieces: Record<string, PieceDescriptor> }} Manifest */
+/** @typedef {import("./prepared.js").PreparedManifest} Manifest */
 /** @typedef {import("./wasm/microsoft_fast_build.js").PreparedPiece} Piece */
 /** @typedef {{ piece: Piece, bytes: number, users: number }} CacheRecord */
 /** @typedef {{ piece: Piece, release: () => void }} Lease */
@@ -34,9 +36,24 @@ function digest(bytes) {
     return createHash("sha256").update(bytes).digest("hex");
 }
 
-/** @param {Record<string, unknown>} manifest */
+/** @param {unknown} manifest */
 function generation(manifest) {
-    return digest(JSON.stringify(manifest));
+    return digest(JSON.stringify(canonical(manifest)));
+}
+
+/** @param {any} value @returns {any} */
+function canonical(value) {
+    if (Array.isArray(value)) {
+        return value.map(canonical);
+    }
+    if (object(value)) {
+        return Object.fromEntries(
+            Object.keys(value)
+                .sort()
+                .map(key => [key, canonical(value[key])]),
+        );
+    }
+    return value;
 }
 
 /** @param {unknown} value @returns {value is Record<string, any>} */
@@ -65,26 +82,33 @@ async function atomicWrite(filename, bytes) {
 
 /** @param {string} filename */
 async function readManifest(filename) {
-    let input;
     const bytes = await fs.readFile(filename, "utf8");
     try {
-        input = JSON.parse(bytes);
+        return validateManifest(JSON.parse(bytes));
     } catch {
-        throw artifactError("Prepared manifest is not valid JSON.");
+        throw artifactError("Prepared manifest is invalid or incompatible.");
     }
+}
+
+/** Validate and copy before publishing; callers cannot mutate active snapshots. @param {unknown} input @returns {Manifest} */
+function validateManifest(input) {
     if (
         !object(input) ||
         input.version !== FORMAT_VERSION ||
         input.compiler !== wasm.prepared_compiler_id() ||
+        !object(input.entries) ||
+        Object.keys(input.entries).length === 0 ||
         !object(input.templates) ||
         !object(input.pieces)
     ) {
         throw artifactError("Incompatible or invalid prepared manifest.");
     }
-    hash(input.entry, "entry");
     hash(input.generation, "generation");
-    for (const id of Object.values(input.templates)) {
-        hash(id, "template");
+    for (const id of [
+        ...Object.values(input.entries),
+        ...Object.values(input.templates),
+    ]) {
+        hash(id, "entry or template");
     }
     for (const [id, descriptor] of Object.entries(input.pieces)) {
         hash(id, "piece");
@@ -103,7 +127,10 @@ async function readManifest(filename) {
             }
         }
     }
-    for (const id of [input.entry, ...Object.values(input.templates)]) {
+    for (const id of [
+        ...Object.values(input.entries),
+        ...Object.values(input.templates),
+    ]) {
         if (!Object.hasOwn(input.pieces, id)) {
             throw artifactError(`Missing prepared piece ${id}.`);
         }
@@ -112,7 +139,7 @@ async function readManifest(filename) {
     if (generation(contents) !== expected) {
         throw artifactError("Prepared manifest checksum does not match.");
     }
-    return /** @type {Manifest} */ (input);
+    return JSON.parse(JSON.stringify(input));
 }
 
 class PieceCache {
@@ -205,23 +232,100 @@ class PieceCache {
     }
 }
 
-/** @param {string} directory @param {string} id @param {PieceDescriptor | undefined} descriptor */
-async function readPiece(directory, id, descriptor) {
-    const bytes = await fs.readFile(path.join(directory, `${id}.fastpiece`));
-    if (descriptor && digest(bytes) !== descriptor.checksum) {
+/** @param {Uint8Array} input @param {string} id @param {PieceDescriptor} descriptor */
+function decodePiece(input, id, descriptor) {
+    if (!(input instanceof Uint8Array)) {
+        throw artifactError(`Prepared piece ${id} is not a byte array.`);
+    }
+    const bytes = Uint8Array.from(input);
+    if (digest(bytes) !== descriptor.checksum) {
         throw artifactError(`Checksum mismatch for prepared piece ${id}.`);
     }
     const piece = wasm.PreparedPiece.load(bytes);
     if (
         piece.id !== id ||
-        (descriptor &&
-            JSON.stringify(JSON.parse(piece.dependencies)) !==
-                JSON.stringify(descriptor.dependencies))
+        JSON.stringify(JSON.parse(piece.dependencies)) !==
+            JSON.stringify(descriptor.dependencies)
     ) {
         piece.free();
         throw artifactError(`Prepared piece ${id} does not match its manifest.`);
     }
-    return { piece, bytes };
+    return piece;
+}
+
+/** @param {import("./prepared.js").PreparedArtifactSources} sources @param {Map<string, { bytes: Uint8Array, descriptor: PieceDescriptor }>} [reusable] */
+function compile(sources, reusable = new Map()) {
+    if (
+        !object(sources.entries) ||
+        Object.keys(sources.entries).length === 0 ||
+        Object.values(sources.entries).some(value => typeof value !== "string")
+    ) {
+        throw new TypeError("entries must map at least one entry name to HTML strings.");
+    }
+    if (sources.templates !== undefined && !object(sources.templates)) {
+        throw new TypeError("templates must map names to template definitions.");
+    }
+    const templates = sources.templates ?? {};
+    const compiler = new wasm.PreparedCompiler(
+        JSON.stringify(Object.keys(templates).sort()),
+    );
+    /** @type {Map<string, Uint8Array>} */
+    const artifacts = new Map();
+    /** @type {Record<string, PieceDescriptor>} */
+    const pieces = Object.create(null);
+    /** @param {unknown} template */
+    function prepare(template) {
+        const json = JSON.stringify(template);
+        const id = compiler.identity(json);
+        if (Object.hasOwn(pieces, id)) {
+            return id;
+        }
+        const reused = reusable.get(id);
+        if (reused) {
+            artifacts.set(id, reused.bytes);
+            pieces[id] = reused.descriptor;
+            return id;
+        }
+        const piece = compiler.compile(json);
+        try {
+            const bytes = piece.serialize();
+            artifacts.set(id, bytes);
+            pieces[id] = {
+                checksum: digest(bytes),
+                dependencies: JSON.parse(piece.dependencies),
+            };
+        } finally {
+            piece.free();
+        }
+        return id;
+    }
+    try {
+        const entries = Object.fromEntries(
+            Object.keys(sources.entries)
+                .sort()
+                .map(name => [name, prepare(sources.entries[name])]),
+        );
+        const linked = Object.fromEntries(
+            Object.keys(templates)
+                .sort()
+                .map(name => [name, prepare(templates[name])]),
+        );
+        const contents = {
+            version: /** @type {const} */ (2),
+            compiler: wasm.prepared_compiler_id(),
+            entries,
+            templates: linked,
+            pieces,
+        };
+        return { manifest: { ...contents, generation: generation(contents) }, artifacts };
+    } finally {
+        compiler.free();
+    }
+}
+
+/** Compile a complete registry once, without filesystem access. @param {import("./prepared.js").PreparedArtifactSources} sources */
+function compileArtifacts(sources) {
+    return compile(sources);
 }
 
 /** @param {Sources} sources */
@@ -279,11 +383,9 @@ async function loadSources(sources) {
     return { entry, templates };
 }
 
-/** @param {string} directory @param {Sources} sources @param {PieceCache} cache */
-async function buildManifest(directory, sources, cache) {
+/** @param {string} directory @param {Sources} sources @param {boolean} [refresh] */
+async function buildManifest(directory, sources, refresh = false) {
     const { entry, templates } = await loadSources(sources);
-    /** @type {Record<string, PieceDescriptor>} */
-    const pieces = Object.create(null);
     /** @type {Manifest | undefined} */
     let previous;
     try {
@@ -298,139 +400,79 @@ async function buildManifest(directory, sources, cache) {
         }
     }
 
-    const compiler = new wasm.PreparedCompiler(
-        JSON.stringify([...templates.keys()].sort()),
-    );
-
-    /** @param {unknown} template */
-    async function prepare(template) {
-        const json = JSON.stringify(template);
-        const id = compiler.identity(json);
-        if (Object.hasOwn(pieces, id)) {
-            return id;
-        }
-        const existing = previous?.pieces[id];
-        if (existing) {
-            try {
-                const bytes = await fs.readFile(path.join(directory, `${id}.fastpiece`));
-                if (digest(bytes) === existing.checksum) {
-                    pieces[id] = existing;
-                    return id;
-                }
-            } catch (error) {
-                if (errorCode(error) !== "ENOENT") {
-                    throw error;
-                }
+    /** @type {Map<string, { bytes: Uint8Array, descriptor: PieceDescriptor }>} */
+    const reusable = new Map();
+    for (const [id, descriptor] of Object.entries(previous?.pieces ?? {})) {
+        try {
+            const bytes = await fs.readFile(
+                path.join(directory, `${id}.fast-artifact.json`),
+            );
+            if (digest(bytes) === descriptor.checksum) {
+                reusable.set(id, { bytes, descriptor });
             }
-        }
-        let checksum;
-        const lease = await cache.acquire(id, async () => {
-            try {
-                const loaded = await readPiece(directory, id, undefined);
-                checksum = digest(loaded.bytes);
-                return loaded.piece;
-            } catch (error) {
-                if (
-                    errorCode(error) !== "ENOENT" &&
-                    errorCode(error) !== "invalid-prepared-artifact"
-                ) {
-                    throw error;
-                }
-            }
-            const piece = compiler.compile(json);
-            try {
-                const bytes = piece.serialize();
-                await atomicWrite(path.join(directory, `${id}.fastpiece`), bytes);
-                checksum = digest(bytes);
-                return piece;
-            } catch (error) {
-                piece.free();
+        } catch (error) {
+            if (
+                errorCode(error) !== "ENOENT" &&
+                errorCode(error) !== "invalid-prepared-artifact"
+            ) {
                 throw error;
             }
-        });
-        try {
-            if (checksum === undefined) {
-                const bytes = lease.piece.serialize();
-                checksum = digest(bytes);
-                // A cached piece may outlive a removed/corrupt disk artifact.
-                await atomicWrite(path.join(directory, `${id}.fastpiece`), bytes);
-            }
-            pieces[id] = {
-                checksum,
-                dependencies: JSON.parse(lease.piece.dependencies),
-            };
-        } finally {
-            lease.release();
         }
-        return id;
     }
-
-    try {
-        const entryId = await prepare(entry);
-        /** @type {Record<string, string>} */
-        const linked = Object.create(null);
-        for (const [name, template] of [...templates].sort(([a], [b]) =>
-            a < b ? -1 : a > b ? 1 : 0,
-        )) {
-            linked[name] = await prepare(template);
-        }
-        const contents = {
-            version: FORMAT_VERSION,
-            compiler: wasm.prepared_compiler_id(),
-            entry: entryId,
-            templates: linked,
-            pieces,
-        };
-        const manifest = { ...contents, generation: generation(contents) };
-        await atomicWrite(
-            path.join(directory, "manifest.json"),
-            JSON.stringify(manifest) + "\n",
+    const result = compile(
+        {
+            entries: { default: entry },
+            templates:
+                /** @type {import("./prepared.js").PreparedArtifactSources["templates"]} */ (
+                    Object.fromEntries(templates)
+                ),
+        },
+        reusable,
+    );
+    if (
+        previous &&
+        !refresh &&
+        (Object.keys(previous.entries).length !== 1 ||
+            !Object.hasOwn(previous.entries, "default"))
+    ) {
+        throw new Error(
+            "Prepared directory contains a multi-entry manifest; use a different directory.",
         );
-        return manifest;
-    } finally {
-        compiler.free();
     }
+    for (const [id, bytes] of result.artifacts) {
+        if (!reusable.has(id)) {
+            await atomicWrite(path.join(directory, `${id}.fast-artifact.json`), bytes);
+        }
+    }
+    await atomicWrite(
+        path.join(directory, "manifest.json"),
+        JSON.stringify(result.manifest) + "\n",
+    );
+    return result.manifest;
 }
 
 /** An asynchronous host for portable pieces and synchronous, request-local WASM execution. */
-class PreparedRenderer {
-    /** @type {string} */
-    #directory;
+class PreparedRuntime {
     /** @type {Manifest} */
     #snapshot;
-    /** @type {Sources | undefined} */
-    #sources;
     /** @type {PieceCache} */
     #cache;
-    /** @type {RuntimeOptions} */
-    #options;
+    /** @type {(id: string) => Promise<Uint8Array>} */
+    #load;
     /** @type {Set<Promise<unknown>>} */
     #renders = new Set();
-    /** @type {import("node:fs").FSWatcher[]} */
-    #watchers = [];
-    #refreshQueue = Promise.resolve();
+    #closed = false;
     /** @type {Promise<void> | undefined} */
     #disposing;
-    #closed = false;
-    #watchDirty = false;
-    #watchRefreshing = false;
 
-    /** @param {string} directory @param {Manifest} snapshot @param {PieceCache} cache @param {RuntimeOptions} options @param {Sources | undefined} sources */
-    constructor(directory, snapshot, cache, options, sources) {
-        this.#directory = directory;
-        this.#snapshot = snapshot;
-        this.#cache = cache;
-        this.#options = { ...options };
-        this.#sources = sources;
-        this.#replaceWatchers(this.#createWatchers(sources));
-    }
-
-    get directory() {
-        return this.#directory;
-    }
-
-    get manifestPath() {
-        return path.join(this.directory, "manifest.json");
+    /** @param {import("./prepared.js").PreparedRuntimeConfiguration} options */
+    constructor(options) {
+        this.#snapshot = validateManifest(options.manifest);
+        if (typeof options.loadArtifact !== "function") {
+            throw new TypeError("loadArtifact must be a function.");
+        }
+        this.#load = options.loadArtifact;
+        this.#cache = new PieceCache(options.maxMemoryBytes ?? DEFAULT_MEMORY_BYTES);
     }
 
     get generation() {
@@ -445,12 +487,60 @@ class PreparedRenderer {
         };
     }
 
-    /** @param {unknown} [state] @param {{ stream?: boolean, markersV2?: boolean, attributeNameStrategy?: "camelCase" | "none" }} [options] @returns {Promise<string | string[]>} */
-    render(state, options = {}) {
+    /** @param {Manifest} manifest */
+    activate(manifest) {
+        this.#assertOpen();
+        const snapshot = validateManifest(manifest);
+        this.#snapshot = snapshot;
+        return snapshot.generation;
+    }
+
+    #assertOpen() {
+        if (this.#closed) {
+            throw new Error("Prepared runtime is disposed.");
+        }
+    }
+
+    /** @param {string} entryName @param {unknown} [state] @param {import("./prepared.js").PreparedRenderOptions} [options] */
+    render(entryName, state, options = {}) {
+        return this.#request(entryName, false, state, options);
+    }
+
+    /** @param {string} name @param {unknown} [state] @param {import("./prepared.js").PreparedShadowRootOptions} [options] */
+    renderShadowRoot(name, state, options = {}) {
+        return /** @type {Promise<string>} */ (this.#request(name, true, state, options));
+    }
+
+    /** @param {string} name @param {boolean} fragment @param {unknown} state @param {import("./prepared.js").PreparedRenderOptions} options */
+    #request(name, fragment, state, options) {
         this.#assertOpen();
         const snapshot = this.#snapshot;
+        const registry = fragment ? snapshot.templates : snapshot.entries;
+        if (!Object.hasOwn(registry, name)) {
+            return Promise.reject(
+                new Error(
+                    `Unknown prepared ${fragment ? "component" : "entry"} '${name}'.`,
+                ),
+            );
+        }
+        const copied = { ...options };
+        if (copied.dsd !== undefined && copied.dsd !== "all") {
+            if (
+                !Array.isArray(copied.dsd) ||
+                copied.dsd.some(value => typeof value !== "string")
+            ) {
+                throw new TypeError("dsd must be 'all' or an array of component names.");
+            }
+            copied.dsd = [...copied.dsd];
+        }
         const json = state === undefined ? undefined : JSON.stringify(state);
-        const request = this.#render(snapshot, json, { ...options });
+        const request = this.#render(
+            snapshot,
+            registry[name],
+            fragment ? name : undefined,
+            json,
+            copied,
+        );
         this.#renders.add(request);
         request.then(
             () => this.#renders.delete(request),
@@ -459,15 +549,15 @@ class PreparedRenderer {
         return request;
     }
 
-    /** @param {Manifest} snapshot @param {string | undefined} state @param {{ stream?: boolean, markersV2?: boolean, attributeNameStrategy?: string }} options */
-    async #render(snapshot, state, options) {
+    /** @param {Manifest} snapshot @param {string} root @param {string | undefined} fragment @param {string | undefined} state @param {import("./prepared.js").PreparedRenderOptions} options */
+    async #render(snapshot, root, fragment, state, options) {
         /** @type {Map<string, Lease>} */
         const leases = new Map();
         /** @type {Map<string, string>} */
-        const templates = new Map();
+        const templates = new Map(fragment === undefined ? [] : [[fragment, root]]);
         let program;
         try {
-            const next = new Set([snapshot.entry]);
+            const next = new Set([root]);
             while (next.size) {
                 /** @type {string[]} */
                 const batch = [];
@@ -481,10 +571,10 @@ class PreparedRenderer {
                 const results = await Promise.allSettled(
                     batch.map(async id => {
                         const descriptor = snapshot.pieces[id];
-                        const lease = await this.#cache.acquire(
-                            id,
-                            async () =>
-                                (await readPiece(this.directory, id, descriptor)).piece,
+                        // A manifest may never substitute a different descriptor for a cached identity.
+                        const key = `${id}:${descriptor.checksum}:${JSON.stringify(descriptor.dependencies)}`;
+                        const lease = await this.#cache.acquire(key, async () =>
+                            decodePiece(await this.#load(id), id, descriptor),
                         );
                         leases.set(id, lease);
                         next.delete(id);
@@ -502,9 +592,9 @@ class PreparedRenderer {
                     throw failure.reason;
                 }
             }
-            const entry = leases.get(snapshot.entry);
+            const entry = leases.get(root);
             if (!entry) {
-                throw artifactError("Prepared entry was not loaded.");
+                throw artifactError("Prepared root was not loaded.");
             }
             program = new wasm.PreparedProgram(entry.piece);
             for (const [name, id] of templates) {
@@ -513,11 +603,25 @@ class PreparedRenderer {
                     program.add_template(name, lease.piece);
                 }
             }
+            const selection =
+                options.dsd === undefined || options.dsd === "all"
+                    ? undefined
+                    : JSON.stringify(options.dsd);
+            if (fragment !== undefined) {
+                return program.render_shadow_root(
+                    fragment,
+                    state,
+                    options.attributeNameStrategy,
+                    options.markersV2 ?? false,
+                    selection,
+                );
+            }
             const output = program.render(
                 state,
                 options.attributeNameStrategy,
                 options.stream ?? false,
                 options.markersV2 ?? false,
+                selection,
             );
             return options.stream ? JSON.parse(output) : output;
         } finally {
@@ -526,6 +630,92 @@ class PreparedRenderer {
                 lease.release();
             }
         }
+    }
+
+    dispose() {
+        if (!this.#disposing) {
+            this.#closed = true;
+            this.#disposing = (async () => {
+                await Promise.allSettled([...this.#renders]);
+                this.#cache.clear();
+            })();
+        }
+        return this.#disposing;
+    }
+}
+
+/** @param {import("./prepared.js").PreparedRuntimeConfiguration} options */
+function createPreparedRuntime(options) {
+    return new PreparedRuntime(options);
+}
+
+/** Single-directory convenience adapter around the storage-independent runtime. */
+class PreparedRenderer {
+    /** @type {string} */
+    #directory;
+    /** @type {Sources | undefined} */
+    #sources;
+    /** @type {PreparedRuntime} */
+    #runtime;
+    /** @type {RuntimeOptions} */
+    #options;
+    /** @type {import("node:fs").FSWatcher[]} */
+    #watchers = [];
+    #refreshQueue = Promise.resolve();
+    /** @type {Promise<void> | undefined} */
+    #disposing;
+    #closed = false;
+    #watchDirty = false;
+    #watchRefreshing = false;
+    #ownsDirectory;
+
+    /** @param {string} directory @param {Manifest} snapshot @param {RuntimeOptions} options @param {Sources | undefined} sources */
+    constructor(directory, snapshot, options, sources) {
+        this.#directory = directory;
+        if (
+            Object.keys(snapshot.entries).length !== 1 ||
+            !Object.hasOwn(snapshot.entries, "default")
+        ) {
+            throw artifactError("Filesystem renderer requires a single default entry.");
+        }
+        this.#runtime = createPreparedRuntime({
+            manifest: snapshot,
+            maxMemoryBytes: options.maxMemoryBytes,
+            loadArtifact: id =>
+                fs.readFile(path.join(directory, `${id}.fast-artifact.json`)),
+        });
+        this.#options = { ...options };
+        this.#sources = sources;
+        this.#ownsDirectory = sources !== undefined;
+        this.#replaceWatchers(this.#createWatchers(sources));
+    }
+
+    get directory() {
+        return this.#directory;
+    }
+
+    get manifestPath() {
+        return path.join(this.directory, "manifest.json");
+    }
+
+    get generation() {
+        return this.#runtime.generation;
+    }
+
+    get memoryUsage() {
+        return this.#runtime.memoryUsage;
+    }
+
+    /** @param {unknown} [state] @param {import("./prepared.js").PreparedRenderOptions} [options] @returns {Promise<string | string[]>} */
+    render(state, options = {}) {
+        this.#assertOpen();
+        return this.#runtime.render("default", state, options);
+    }
+
+    /** @param {string} name @param {unknown} [state] @param {import("./prepared.js").PreparedShadowRootOptions} [options] */
+    renderShadowRoot(name, state, options = {}) {
+        this.#assertOpen();
+        return this.#runtime.renderShadowRoot(name, state, options);
     }
 
     /** Regenerate from sources, or reload a build-generated manifest when sources are absent. @param {Sources} [changes] */
@@ -540,16 +730,39 @@ class PreparedRenderer {
                         : undefined
                     : copySources({ ...this.#sources, ...copied });
             const watchers = this.#createWatchers(sources);
+            let claimed = false;
             try {
+                if (sources !== undefined && !this.#ownsDirectory) {
+                    if (directoryOwners.has(this.directory)) {
+                        throw new Error(
+                            "Prepared directory is already owned by a live renderer.",
+                        );
+                    }
+                    directoryOwners.add(this.directory);
+                    claimed = true;
+                }
                 const snapshot =
                     sources === undefined
                         ? await readManifest(this.manifestPath)
-                        : await buildManifest(this.directory, sources, this.#cache);
-                this.#snapshot = snapshot;
+                        : await buildManifest(this.directory, sources, true);
+                if (
+                    Object.keys(snapshot.entries).length !== 1 ||
+                    !Object.hasOwn(snapshot.entries, "default")
+                ) {
+                    throw artifactError(
+                        "Filesystem renderer requires a single default entry.",
+                    );
+                }
+                this.#assertOpen();
+                this.#runtime.activate(snapshot);
                 this.#sources = sources;
+                this.#ownsDirectory ||= claimed;
                 this.#replaceWatchers(watchers);
                 return snapshot.generation;
             } catch (error) {
+                if (claimed) {
+                    directoryOwners.delete(this.directory);
+                }
                 for (const watcher of watchers) {
                     watcher.close();
                 }
@@ -669,8 +882,10 @@ class PreparedRenderer {
             this.#watchers = [];
             this.#disposing = (async () => {
                 await this.#refreshQueue;
-                await Promise.allSettled([...this.#renders]);
-                this.#cache.clear();
+                await this.#runtime.dispose();
+                if (this.#ownsDirectory) {
+                    directoryOwners.delete(this.directory);
+                }
             })();
         }
         return this.#disposing;
@@ -680,14 +895,17 @@ class PreparedRenderer {
 /** @param {Sources & RuntimeOptions & { cacheDirectory: string }} options */
 async function prepareRenderer(options) {
     const directory = path.resolve(options.cacheDirectory);
-    const cache = new PieceCache(options.maxMemoryBytes ?? DEFAULT_MEMORY_BYTES);
     const sources = copySources(options);
+    if (directoryOwners.has(directory)) {
+        throw new Error("Prepared directory is already owned by a live renderer.");
+    }
+    directoryOwners.add(directory);
     try {
         await fs.mkdir(directory, { recursive: true });
-        const manifest = await buildManifest(directory, sources, cache);
-        return new PreparedRenderer(directory, manifest, cache, options, sources);
+        const manifest = await buildManifest(directory, sources);
+        return new PreparedRenderer(directory, manifest, options, sources);
     } catch (error) {
-        cache.clear();
+        directoryOwners.delete(directory);
         throw error;
     }
 }
@@ -699,14 +917,14 @@ async function loadRenderer(options) {
         throw new TypeError("manifestPath must refer to a generated manifest.json.");
     }
     const manifest = await readManifest(filename);
-    const cache = new PieceCache(options.maxMemoryBytes ?? DEFAULT_MEMORY_BYTES);
-    return new PreparedRenderer(
-        path.dirname(filename),
-        manifest,
-        cache,
-        options,
-        undefined,
-    );
+    return new PreparedRenderer(path.dirname(filename), manifest, options, undefined);
 }
 
-module.exports = { prepareRenderer, loadRenderer, PreparedRenderer };
+module.exports = {
+    compileArtifacts,
+    createPreparedRuntime,
+    PreparedRuntime,
+    prepareRenderer,
+    loadRenderer,
+    PreparedRenderer,
+};

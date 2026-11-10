@@ -154,6 +154,15 @@ configuration and hydration counters. No rendered values enter the piece.
 Mutable legacy locators use copy-on-write records when invalidating shared work;
 prepared program locators remain private and immutable.
 
+DSD selection is request-local execution configuration, separate from registered
+name membership. Excluded components preserve authored hosts and caller-scoped
+light DOM without applying template host defaults or evaluating shadow content.
+Selected descendants in that light DOM still render. Normal and chunk execution
+must match equivalent unregistered-element output without changing immutable
+instruction classification. Prepared shadow-fragment execution shares the existing
+fragment helper, shadow metadata and fresh hydration scope; a known excluded root
+returns no fragment, while an unknown root remains an error.
+
 Serialization uses a versioned JSON envelope with a flat list of body-plan records
 identified by absolute source offsets. Instruction ranges within a plan remain
 relative to its body. `OnceLock` caches are omitted from individual records and
@@ -1048,5 +1057,8 @@ cumulative allocation volume from peak newly-live heap, exclude pre-existing
 inputs, and are not RSS or WASM measurements. They establish a baseline for
 borrowed state overlays, not an allocation reduction already delivered.
 
-Whole-tree buffered sinks, prepared WASM handles, incremental sessions, and workers
-remain separate potential milestones.
+Prepared WASM handles and explicitly owned multi-entry host sessions are available
+through the prepared APIs. Whole-tree buffered sinks, true streaming and workers
+remain separate potential milestones. Prepared lifecycle benchmarks must measure
+preparation, loading and warm execution separately; the native allocation baseline
+does not establish their latency or process-memory behavior.

@@ -65,6 +65,25 @@ pub(crate) struct Tag {
     pub(crate) stripped: String,
 }
 
+impl Tag {
+    fn parse(source: &str, range: Range<usize>) -> Self {
+        let attributes = AttributePlan::new(&source[range.clone()]).expect("scanner found a tag");
+        let (double_bindings, single_bindings) = attributes.binding_counts();
+        let stripped = if double_bindings + single_bindings == 0 {
+            attributes.stripped()
+        } else {
+            String::new()
+        };
+        Self {
+            range,
+            attributes,
+            double_bindings,
+            total_bindings: double_bindings + single_bindings,
+            stripped,
+        }
+    }
+}
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct When {
     pub(crate) at: usize,
@@ -124,6 +143,8 @@ pub(crate) struct Element {
     pub(crate) attrs: Vec<(String, Option<String>)>,
     pub(crate) binding_count: usize,
     pub(crate) children: Option<Body>,
+    pub(crate) opening: Tag,
+    pub(crate) unclosed_children: Option<Body>,
     pub(crate) after: usize,
 }
 
@@ -159,6 +180,8 @@ impl Element {
             base,
             attrs,
             binding_count: double + single,
+            opening: Tag::parse(source, at..tag_end),
+            unclosed_children: content.is_none().then(|| Body::new(tag_end..after)),
             children: content.map(|(range, _)| Body::new(range)),
             after,
         })
@@ -231,25 +254,11 @@ impl Iterator for InstructionCursor<'_> {
                     self.pos = source.len();
                     return Some(Instruction::Literal(at..source.len()));
                 };
-                let attributes =
-                    AttributePlan::new(&source[at..end]).expect("scanner found a tag");
-                let (double_bindings, single_bindings) = attributes.binding_counts();
-                let stripped = if double_bindings + single_bindings == 0 {
-                    attributes.stripped()
-                } else {
-                    String::new()
-                };
                 self.pos = style_element_end(source, at).unwrap_or(end);
                 if end < self.pos {
                     self.literal = Some(end..self.pos);
                 }
-                Some(Instruction::Tag(Tag {
-                    range: at..end,
-                    attributes,
-                    double_bindings,
-                    total_bindings: double_bindings + single_bindings,
-                    stripped,
-                }))
+                Some(Instruction::Tag(Tag::parse(source, at..end)))
             }
             RenderEvent::Directive(directive) => {
                 let prepared = match &directive {

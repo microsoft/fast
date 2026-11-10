@@ -65,6 +65,36 @@ boundaries remain unchanged. See
 for deployment compatibility, update failures, memory-budget exclusions and
 artifact retention.
 
+### Build tools and selective rendering
+
+When a build tool already owns transformed templates, watching and asset emission,
+use `compileArtifacts({ entries, templates })` and
+`createPreparedRuntime({ manifest, loadArtifact, maxMemoryBytes })` instead of
+starting a filesystem watcher. The compiler accepts named entry strings and returns
+a multi-entry manifest plus piece-ID-to-byte artifacts. One runtime shares its
+cache and budget across all entries:
+
+```js
+const html = await runtime.render("home", state, { dsd: ["my-card"] });
+const fragment = await runtime.renderShadowRoot("my-card", componentState);
+```
+
+DSD selection is per request, not a different registry or compilation. Excluded
+components render their authored host/light DOM without template host defaults
+or shadow evaluation; selected descendants in that light DOM still render.
+`dsd: []` disables component shadow rendering. Fragment rendering accepts resolved
+component state and returns a complete DSD template with correct metadata/markers,
+without synthesizing a host or rendering caller-owned light DOM.
+
+Emit `<id>.fast-artifact.json` files and the versioned manifest with the **server**
+build, never into the client graph. Resolve them relative to the deployed server
+output so relocation does not depend on original source paths. Generate and serve
+with matching compiler fingerprints; a package version alone is insufficient.
+For HMR, publish every new artifact before calling `runtime.activate(manifest)`,
+retain old artifacts for in-flight requests, and drain the runtime on shutdown.
+The filesystem wrapper remains a convenient single-entry host; different entries
+must not compete for its one `manifest.json`.
+
 ## The Rendering Contract
 
 A server-side renderer must produce HTML that follows these conventions so the client-side FAST runtime can hydrate it:

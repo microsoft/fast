@@ -184,23 +184,76 @@ impl WasmPreparedProgram {
         attribute_name_strategy: Option<String>,
         stream: bool,
         markers_v2: bool,
+        dsd_selection: Option<String>,
     ) -> Result<String, JsValue> {
         let state = match state {
-            Some(state) => json::parse(&state).map_err(|error| render_error(crate::RenderError::JsonParse {
-                message: error.message,
-            }))?,
+            Some(state) => json::parse(&state).map_err(|error| {
+                render_error(crate::RenderError::JsonParse {
+                    message: error.message,
+                })
+            })?,
             None => crate::empty_state(),
         };
-        let config = build_config(attribute_name_strategy.as_deref(), markers_v2)?;
-        let program = crate::PreparedProgram::new(
-            Arc::clone(&self.entry), self.templates.clone(),
-        ).map_err(render_error)?;
+        let config = prepared_config(
+            attribute_name_strategy.as_deref(),
+            markers_v2,
+            dsd_selection.as_deref(),
+        )?;
+        let program = crate::PreparedProgram::new(Arc::clone(&self.entry), self.templates.clone())
+            .map_err(render_error)?;
         if stream {
-            program.render_stream(&state, config.as_ref())
-                .map(|chunks| json_string_array(&chunks)).map_err(render_error)
+            program
+                .render_stream(&state, config.as_ref())
+                .map(|chunks| json_string_array(&chunks))
+                .map_err(render_error)
         } else {
-            program.render(&state, config.as_ref()).map_err(render_error)
+            program
+                .render(&state, config.as_ref())
+                .map_err(render_error)
         }
+    }
+
+    /// Render a complete named shadow-root fragment, without a synthetic host or light DOM.
+    pub fn render_shadow_root(
+        &self,
+        name: &str,
+        state: Option<String>,
+        attribute_name_strategy: Option<String>,
+        markers_v2: bool,
+        dsd_selection: Option<String>,
+    ) -> Result<String, JsValue> {
+        let state = match state {
+            Some(state) => json::parse(&state).map_err(|error| {
+                render_error(crate::RenderError::JsonParse {
+                    message: error.message,
+                })
+            })?,
+            None => crate::empty_state(),
+        };
+        let config = prepared_config(
+            attribute_name_strategy.as_deref(),
+            markers_v2,
+            dsd_selection.as_deref(),
+        )?;
+        let program = crate::PreparedProgram::new(Arc::clone(&self.entry), self.templates.clone())
+            .map_err(render_error)?;
+        program
+            .render_shadow_root(name, &state, config.as_ref())
+            .map_err(render_error)
+    }
+}
+
+fn prepared_config(
+    strategy: Option<&str>,
+    markers_v2: bool,
+    selection: Option<&str>,
+) -> Result<Option<RenderConfig>, JsValue> {
+    let config = build_config(strategy, markers_v2)?;
+    match selection {
+        None => Ok(config),
+        Some(selection) => Ok(Some(config.unwrap_or_default().with_dsd_selection(
+            crate::DsdSelection::from_json(selection).map_err(render_error)?,
+        ))),
     }
 }
 

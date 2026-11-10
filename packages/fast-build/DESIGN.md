@@ -506,19 +506,33 @@ locator-owned plans as well as output, not just the returned HTML allocation.
 
 ## Prepared renderer — `prepared.js`
 
-`prepareRenderer` reads an entry and definition map/files, creates one Rust
-`PreparedCompiler` for the whole registry, and eagerly prepares individual reusable
-pieces. JavaScript does not duplicate template parsing or instruction compilation.
-`loadRenderer` consumes generated artifacts without authored sources.
+The module separates storage-neutral compilation/execution from filesystem
+hosting. `compileArtifacts` accepts transformed named entries and definitions,
+creates one Rust `PreparedCompiler` for the registry, and returns manifest/byte
+artifacts without filesystem access. `createPreparedRuntime` validates a manifest
+and accepts an asynchronous piece-ID loader. JavaScript does not duplicate template
+parsing, instruction compilation, or native artifact decoding.
 
-The host persists `<input/compiler hash>.fastpiece` files before atomically replacing
-`manifest.json`. Manifest descriptors include artifact checksums and conservative
-registered-component dependencies. A SHA-256 generation identifies the complete
-manifest. Component calls reference names, not copied child content, so a changed
+A version-2 manifest maps entry names and component names to piece IDs, with a
+compiler fingerprint, checksums, conservative dependencies, and a complete
+generation hash. The runtime validates/copies manifests before publication. Its
+cache, deduplicated pending loads, lease accounting, and disposal are shared across
+all entries in that runtime, not across unrelated runtimes or WASM instances.
+Applications that need an aggregate many-entry budget create one explicit runtime.
+Storage adapters supply bytes, not native handles or alternate validation logic.
+
+`prepareRenderer` and `loadRenderer` provide the single-entry filesystem adapter;
+they are not the required build-tool integration path. This adapter alone owns
+source files, persistence, refresh serialization, and optional filesystem watching.
+Different entries must not compete for one fixed `manifest.json`; use distinct
+single-entry directories or a multi-entry manifest/runtime.
+
+The host persists `<input/compiler hash>.fast-artifact.json` files before atomically
+replacing `manifest.json`. Component calls reference names, not copied child content, so a changed
 child can reuse unchanged callers. Registry additions/removals affect only source
 pieces mentioning those names. Unchanged artifacts are not rewritten.
 
-Every `render` captures its manifest before awaiting I/O. It loads the entry's
+Every `render` captures its manifest before awaiting I/O. It loads the chosen entry's
 dependency closure in bounded parallel batches, deduplicating cycles/shared loads.
 This includes statically referenced skipped branches, but excludes unreachable
 definitions; it is not an expanded state-dependent render tree. After loading,
@@ -526,12 +540,22 @@ a request-local WASM `PreparedProgram` pins the same immutable piece records and
 uses the existing evaluator. There is no synchronous filesystem access, render
 restart on misses, second state-evaluation pass, or true network streaming.
 
+Request-local DSD allowlists are execution configuration, not registry variants or
+piece identities. Excluded component instructions render authored host/light DOM
+with caller state and do not apply template host defaults or evaluate shadow
+content. Definitions remain available for immutable plan classification.
+`renderShadowRoot` begins with the requested component's dependency graph, not an
+unrelated entry, and reuses the native fragment helper with resolved component
+state and fresh markers. A known excluded root returns empty output; unknown
+names fail. Normal, chunk, and fragment paths share selection/hydration semantics.
+
 The byte-budgeted LRU cache holds generated WASM `PreparedPiece` handles.
 Acquisitions reserve leases before concurrent loads finish; active leases cannot
 be evicted. The default 32 MiB estimated Rust-piece budget can be temporarily
 exceeded by active requests. Zero budget evicts every unpinned piece. Releasing
 request programs before leases allows eviction to free records safely. Source
-inputs, JS objects, compiler work, I/O buffers, allocator overhead and output are
+inputs, adapter-retained artifact bytes, JS objects, compiler work, I/O buffers,
+allocator overhead and output are
 outside this budget. Disposal waits for requests/refreshes and frees the cache;
 it does not shrink WASM linear memory or delete artifacts.
 
@@ -550,6 +574,15 @@ The Rust API remains responsible for artifact decoding/validation, source
 provenance, state/marker semantics and registry classification. The Node package
 adds no runtime npm dependencies. Preparation and artifact loading have costs;
 the API does not promise a cold-start or small-one-shot performance improvement.
+
+Build-tool adapters publish all candidate bytes before `runtime.activate` and
+retain old bytes until old readers drain. They own transform failures, HMR events,
+server-only output emission and relative deployment paths; they do not enable a
+second FAST watcher. Manifest validation is eager, artifact loading is lazy and
+checksummed. A valid manifest cannot guarantee that backing storage will deliver
+every piece. The executable Vite fixture exercises that boundary, while the
+prepared benchmark separates compilation, cold disk loading, warmed requests,
+process initialization and many-entry cache retention.
 
 ---
 

@@ -321,6 +321,8 @@ impl RenderPlan {
                         element.name.capacity()
                             + element.base.capacity()
                             + attributes_bytes(&element.attrs)
+                            + element.opening.attributes.memory_bytes()
+                            + element.opening.stripped.capacity()
                     }
                     _ => 0,
                 })
@@ -359,7 +361,10 @@ fn bodies(plan: &RenderPlan) -> impl Iterator<Item = &Body> {
         .filter_map(|instruction| match instruction {
             Instruction::When(when) => Some(&when.body),
             Instruction::Repeat(repeat) => Some(&repeat.body),
-            Instruction::Element(element) => element.children.as_ref(),
+            Instruction::Element(element) => element
+                .children
+                .as_ref()
+                .or(element.unclosed_children.as_ref()),
             _ => None,
         })
 }
@@ -430,6 +435,23 @@ fn restore_plan(
                 if element.binding_count > source.len() {
                     return Err(invalid("invalid prepared element binding count"));
                 }
+                if element.opening.range != (element.at..element.tag_end) {
+                    return Err(invalid("invalid prepared element opening"));
+                }
+                if element.opening.double_bindings > element.opening.total_bindings
+                    || element.opening.total_bindings > source.len()
+                    || element.children.is_some() == element.unclosed_children.is_some()
+                    || element
+                        .unclosed_children
+                        .as_ref()
+                        .is_some_and(|body| body.range != (element.tag_end..element.after))
+                {
+                    return Err(invalid("invalid prepared authored element content"));
+                }
+                element
+                    .opening
+                    .attributes
+                    .validate(&source[element.opening.range.clone()])?;
             }
             Instruction::Deferred(directive) => {
                 let expected = match directive {
@@ -636,6 +658,17 @@ pub struct PreparedProgram {
 }
 
 impl PreparedProgram {
+    /// Render a complete DSD fragment using resolved component state and fresh scopes.
+    /// Unknown names are errors even when excluded; known excluded names return empty HTML.
+    pub fn render_shadow_root(
+        &self,
+        name: &str,
+        state: &JsonValue,
+        config: Option<&RenderConfig>,
+    ) -> Result<String, RenderError> {
+        crate::render_shadow_root_with_locator(name, state, &self.locator, config)
+    }
+
     /// Link a dependency-closed set of pieces. Missing dependencies are rejected before rendering.
     pub fn new(
         entry: Arc<PreparedPiece>,

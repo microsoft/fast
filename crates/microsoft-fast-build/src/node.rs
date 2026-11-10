@@ -69,16 +69,84 @@ where
     I::Item: Borrow<Instruction>,
 {
     let mut result = String::new();
+    append_instructions(
+        instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration.as_deref_mut(),
+        is_entry,
+        config,
+        &mut result,
+    )?;
+    Ok(result)
+}
+
+fn append_instructions<I>(
+    instructions: I,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+    result: &mut String,
+) -> Result<(), RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
     for instruction in instructions {
         let instruction = instruction.borrow();
         let scope = hydration.as_deref_mut();
+        if let Instruction::Deferred(Directive::CustomElement(at)) = instruction {
+            if crate::attribute::read_tag_name_slice(template, *at)
+                .is_some_and(|name| !config.dsd_selection.includes(name))
+            {
+                result.push_str(&template[*at..]);
+                continue;
+            }
+        }
+        if let Instruction::Element(element) = instruction {
+            if !config.dsd_selection.includes(&element.name) {
+                render_tag(
+                    &element.opening,
+                    template,
+                    root,
+                    loop_vars,
+                    hydration.as_deref_mut(),
+                    result,
+                );
+                let body = element
+                    .children
+                    .as_ref()
+                    .or(element.unclosed_children.as_ref())
+                    .expect("element has authored content");
+                append_instructions(
+                    &body.plan(template, locator).instructions,
+                    &template[body.range.clone()],
+                    root,
+                    loop_vars,
+                    locator,
+                    hydration.as_deref_mut(),
+                    is_entry,
+                    config,
+                    result,
+                )
+                .map_err(|error| error.rebase(template, body.range.start))?;
+                result.push_str(&template[body.range.end..element.after]);
+                continue;
+            }
+        }
         let directive = match instruction {
             Instruction::Literal(range) => {
                 result.push_str(&template[range.clone()]);
                 continue;
             }
             Instruction::Tag(tag) => {
-                render_tag(tag, template, root, loop_vars, scope, &mut result);
+                render_tag(tag, template, root, loop_vars, scope, result);
                 continue;
             }
             Instruction::Binding {
@@ -86,7 +154,7 @@ where
                 escaped,
             } => {
                 append_binding(
-                    &mut result,
+                    result,
                     &template[expression.clone()],
                     *escaped,
                     root,
@@ -113,7 +181,7 @@ where
         )?;
         result.push_str(&chunk);
     }
-    Ok(result)
+    Ok(())
 }
 
 pub(crate) fn render_tag(

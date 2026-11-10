@@ -725,6 +725,25 @@ Custom elements that have no matching template in the locator are passed through
 
 The `RenderConfig` struct provides configuration options that control rendering behaviour. Pass `Some(&config)` to any render function, or `None` for defaults.
 
+### DSD selection
+
+`DsdSelection::All` is the default. Use `DsdSelection::Only` with a set of
+component names to restrict shadow rendering for one request:
+
+```rust
+use std::collections::BTreeSet;
+use microsoft_fast_build::{DsdSelection, RenderConfig};
+
+let config = RenderConfig::new().with_dsd_selection(
+    DsdSelection::Only(BTreeSet::from(["my-card".to_string()])),
+);
+```
+
+An empty set disables all component DSD. Excluded components retain authored
+host attributes and caller-scoped light DOM, but do not evaluate their shadow
+template or apply template host defaults. Keep the complete registry for prepared
+linking; selection changes execution, not immutable classification or artifacts.
+
 ### `attribute-name-strategy`
 
 Controls how HTML attribute names are mapped to state property names when building child state for custom elements.
@@ -954,14 +973,37 @@ let state = JsonValue::Object(HashMap::from([
     ("title".to_string(), JsonValue::String("Hello".to_string())),
 ]));
 let html = program.render(&state, None)?;
+let fragment = program.render_shadow_root("my-card", &state, None)?;
 # Ok::<(), microsoft_fast_build::RenderError>(())
 ```
 
 `PreparedProgram` links a dependency-closed set of shared pieces and creates fresh
-hydration/state execution for every call. It supports both HTML and exact existing
-precomputed chunks. Native callers own persistence and cache eviction; the
+hydration/state execution for every call. It supports entry HTML, exact existing
+precomputed chunks, and named shadow-root fragments. Fragments accept resolved
+component state and share the existing fragment-rendering helper; they do not
+create a host or render caller-owned light DOM.
+
+DSD selection belongs to request configuration, not the registry or artifact.
+Excluded components render their authored host/light DOM in the caller's scope,
+without template host defaults or shadow evaluation. Selected descendants in that
+light DOM still render. Keep the complete dependency-closed registry when linking;
+changing a request's selection must not invalidate shared instructions or require
+preparing another registry variant. Known excluded fragment roots return empty
+output; unknown names remain errors.
+
+Native callers own persistence and cache eviction; the
 [`@microsoft/fast-build` Node host](../../packages/fast-build/README.md#prepared-template-pieces)
-provides asynchronous files, versioned manifests, watching, and a byte-budgeted cache.
+provides storage-neutral compilation/loading, multi-entry manifests with a shared
+byte-budgeted runtime cache, and a separate filesystem/watching adapter.
+
+The exported WASM `PreparedCompiler`, `PreparedPiece`, and `PreparedProgram`
+provide the same low-level ownership model. Prepared execution accepts
+`render(state?, attributeNameStrategy?, stream, markersV2, dsdSelectionJson?)`
+and `render_shadow_root(name, state?, attributeNameStrategy?, markersV2,
+dsdSelectionJson?)`. Omit the selection for all DSD, or pass a JSON array of
+allowed names. Call generated `free()` methods when handles are no longer needed.
+Build tools should normally use the Node storage-neutral runtime rather than
+reimplementing manifest/checksum validation, dependency loading and leases.
 
 `PREPARED_FORMAT_VERSION` and `PREPARED_COMPILER_ID` identify compatibility. The
 compiler fingerprint covers Rust sources, the crate manifest, and dependency

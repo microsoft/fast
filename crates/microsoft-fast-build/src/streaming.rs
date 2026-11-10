@@ -74,23 +74,105 @@ where
 {
     let mut chunks = Vec::new();
     let mut current = String::new();
+    append_stream_instructions(
+        instructions,
+        template,
+        root,
+        loop_vars,
+        locator,
+        hydration.as_deref_mut(),
+        is_entry,
+        config,
+        &mut chunks,
+        &mut current,
+    )?;
+    push_non_empty(&mut chunks, current);
+    Ok(chunks)
+}
+
+fn append_stream_instructions<I>(
+    instructions: I,
+    template: &str,
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
+    locator: Option<&Locator>,
+    mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
+    config: &RenderConfig,
+    chunks: &mut Vec<String>,
+    current: &mut String,
+) -> Result<(), RenderError>
+where
+    I: IntoIterator,
+    I::Item: Borrow<Instruction>,
+{
     for instruction in instructions {
         let instruction = instruction.borrow();
         let scope = hydration.as_deref_mut();
+        if let Instruction::Deferred(Directive::CustomElement(at)) = instruction {
+            if crate::attribute::read_tag_name_slice(template, *at)
+                .is_some_and(|name| !config.dsd_selection.includes(name))
+            {
+                current.push_str(&template[*at..]);
+                continue;
+            }
+        }
+        if let Instruction::Element(element) = instruction {
+            if !config.dsd_selection.includes(&element.name) {
+                render_tag(
+                    &element.opening,
+                    template,
+                    root,
+                    loop_vars,
+                    hydration.as_deref_mut(),
+                    current,
+                );
+                let body = element
+                    .children
+                    .as_ref()
+                    .or(element.unclosed_children.as_ref())
+                    .expect("element has authored content");
+                append_stream_instructions(
+                    &body.plan(template, locator).instructions,
+                    &template[body.range.clone()],
+                    root,
+                    loop_vars,
+                    locator,
+                    hydration.as_deref_mut(),
+                    is_entry,
+                    config,
+                    chunks,
+                    current,
+                )
+                .map_err(|error| error.rebase(template, body.range.start))?;
+                current.push_str(&template[body.range.end..element.after]);
+                continue;
+            }
+        }
         let directive = match instruction {
             Instruction::Literal(range) => {
                 current.push_str(&template[range.clone()]);
                 continue;
             }
             Instruction::Tag(tag) => {
-                render_tag(tag, template, root, loop_vars, scope, &mut current);
+                render_tag(tag, template, root, loop_vars, scope, current);
                 continue;
             }
-            Instruction::Binding { expression, escaped } => {
-                push_non_empty(&mut chunks, std::mem::take(&mut current));
-                push_non_empty(&mut chunks, render_binding(
-                    &template[expression.clone()], *escaped, root, loop_vars, scope,
-                ));
+            Instruction::Binding {
+                expression,
+                escaped,
+            } => {
+                push_non_empty(chunks, std::mem::take(current));
+                push_non_empty(
+                    chunks,
+                    render_binding(
+                        &template[expression.clone()],
+                        *escaped,
+                        root,
+                        loop_vars,
+                        scope,
+                    ),
+                );
                 continue;
             }
             Instruction::When(when) => Directive::When(when.at),
@@ -98,7 +180,7 @@ where
             Instruction::Element(element) => Directive::CustomElement(element.at),
             Instruction::Deferred(directive) => *directive,
         };
-        push_non_empty(&mut chunks, std::mem::take(&mut current));
+        push_non_empty(chunks, std::mem::take(current));
         let (dir_chunks, _) = stream_directive(
             directive,
             instruction,
@@ -110,10 +192,9 @@ where
             is_entry,
             config,
         )?;
-        extend_non_empty(&mut chunks, dir_chunks);
+        extend_non_empty(chunks, dir_chunks);
     }
-    push_non_empty(&mut chunks, current);
-    Ok(chunks)
+    Ok(())
 }
 
 fn stream_directive(

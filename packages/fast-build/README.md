@@ -17,7 +17,9 @@ entry instruction vector.
 
 For reuse across requests or deployments, the optional
 [`prepared.js` API](#prepared-template-pieces) eagerly prepares individual templates,
-persists their instructions, and manages a bounded in-memory piece cache.
+exports portable instructions, and manages a bounded in-memory piece cache.
+Build tools can supply their own storage and lifecycle; a filesystem host is
+provided for standalone Node applications.
 
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
@@ -70,13 +72,112 @@ containing `<f-template>` declarations. Duplicate names are rejected.
 entries. In-memory source inputs are copied and retained for later refreshes;
 use file inputs or `loadRenderer` to avoid retaining authored source maps.
 
+### Build tools and multiple entries
+
+Use the storage-neutral APIs when a bundler already owns transformation, watching,
+asset emission, and server lifecycle. Compilation accepts transformed template
+strings and produces a versioned manifest plus artifact bytes, without reading
+or writing files:
+
+```js
+import {
+    compileArtifacts,
+    createPreparedRuntime,
+} from "@microsoft/fast-build/prepared.js";
+
+const prepared = compileArtifacts({
+    entries: {
+        home: "<site-card>{{title}}</site-card>",
+        account: "<main><site-card></site-card></main>",
+    },
+    templates: { "site-card": "<h2>{{title}}</h2>" },
+});
+const store = new Map(prepared.artifacts);
+const runtime = createPreparedRuntime({
+    manifest: prepared.manifest,
+    loadArtifact: async id => {
+        const bytes = store.get(id);
+        if (!bytes) {
+            throw new Error(`Missing prepared artifact ${id}`);
+        }
+        return bytes;
+    },
+    maxMemoryBytes: 32 * 1024 * 1024,
+});
+
+try {
+    const home = await runtime.render("home", { title: "Home" });
+    const account = await runtime.render("account", { title: "Account" });
+    const shadow = await runtime.renderShadowRoot("site-card", { title: "Fragment" });
+} finally {
+    await runtime.dispose();
+}
+```
+
+`compileArtifacts` is synchronous CPU work. Its `artifacts` map is keyed by piece
+ID; a storage adapter decides how those bytes are emitted and retrieved.
+`createPreparedRuntime` synchronously validates and copies the manifest, while
+`render` and `renderShadowRoot` asynchronously load their dependency graphs before
+synchronous WASM execution. FAST owns compatibility/checksum validation, load
+deduplication, eviction, and handle leases; adapters must not reproduce them.
+
+All entries in one runtime share one memory budget and cached component pieces.
+Creating several runtimes creates several independent caches and budgets, not a
+server-wide limit. Runtime ownership is explicit, never a process-global cache.
+The filesystem convenience wrapper has one entry and one manifest owner per
+directory; use a multi-entry runtime instead of pointing different entry wrappers
+at the same `manifest.json`.
+
+For HMR, compile a complete candidate, make **all** its artifact bytes available,
+then call `runtime.activate(candidate.manifest)`. Activation validates and copies
+the candidate before replacing the current snapshot. Requests already loading
+retain their original snapshot; do not delete their artifacts. Invalid manifests
+leave the active generation unchanged. An accepted manifest does not prove that
+every backing object exists: missing/corrupt bytes still reject the request that
+loads them. Adapters should finish emission before activation and retain the last
+valid generation on transformation/build failures. Disposal rejects new work and
+drains existing requests before freeing cached handles.
+
+### Selective DSD and shadow fragments
+
+Pass `dsd: "all"` (the default) or an array of component names for request-local
+DSD selection. An empty array disables all component shadow rendering:
+
+```js
+const html = await runtime.render("home", state, { dsd: ["site-card"] });
+const chunks = await runtime.render("home", state, { stream: true, dsd: [] });
+```
+
+Excluded components behave like unregistered elements at execution: their authored
+host attributes and light DOM render in the caller's state/scope, but template
+host defaults are not applied and shadow content is not evaluated. Selected
+components in their authored light DOM still render. Definitions remain registered
+for plan classification; do not remove them, mutate a shared registry, refresh per
+request, or prepare a registry variant for every selection.
+
+`renderShadowRoot(name, resolvedComponentState, options)` returns the complete DSD
+`<template>` fragment with its shadow metadata and fresh hydration scope. It does
+not synthesize a host, apply host defaults, derive state from host attributes, or
+render caller-owned light DOM. Nested components follow the same DSD selection.
+A known but excluded root returns an empty string; an unknown name is an error.
+Marker and attribute-strategy options match entry rendering. Fragments are not
+implemented by slicing synthetic host output. The filesystem wrapper exposes the
+same fragment operation.
+
 ### Generated artifacts and deployment
 
-Preparation writes content-addressed `<id>.fastpiece` files and a `manifest.json`
+Preparation writes content-addressed `<id>.fast-artifact.json` files and a `manifest.json`
 into `cacheDirectory`. Files contain actual prepared instructions, source needed
 for diagnostics, parsed attributes, body plans, and component references. They
 contain no request state, hydration counters, or rendered HTML. Store this directory
 as a trusted application build artifact, not as user-uploaded input.
+
+Bundlers emit each `compileArtifacts().artifacts` map entry under
+`<id>.fast-artifact.json` and serialize its manifest alongside the server output.
+Keep the runtime and artifacts out of the client module graph. Resolve generated
+files relative to the deployed server module/output directory, not the original
+source tree or current working directory. A custom `loadArtifact` can instead use
+bundler-managed objects or another asynchronous application store.
 
 A build step can call `prepareRenderer`, then `dispose`, and deploy the resulting
 directory without the authored template files. A separate process loads it with:
@@ -98,6 +199,17 @@ use the same compiler build for generation and serving. Artifact checksums,
 source ranges, identities, and dependency membership are validated. Missing,
 corrupt, or incompatible generated files reject the request; `loadRenderer`
 does not silently fall back to source compilation.
+
+The multi-entry manifest is version 2; artifact instruction format and compiler
+identity are separate checks. Regenerate artifacts made with earlier prerelease
+manifest layouts or the old file extension rather than renaming files and
+assuming compatibility. Generate and serve using the same installed compiler
+build; independently compiled server and artifact pipelines must compare the
+fingerprint explicitly, not just package versions.
+
+See the [executable Vite integration](./test/fixtures/prepared-vite/README.md) for
+transformed inputs, server-only asset emission, production relocation, shared
+multi-entry caching, fingerprint failures and HMR/shutdown ownership.
 
 ### Changes and development watching
 
@@ -140,7 +252,9 @@ that directory while requests still need its files.
 
 File reads/writes are asynchronous. Before entering WASM, each request loads the
 entry's conservative referenced-template graph, including references in skipped
-branches. Unreachable registered templates are not loaded. This is not a
+branches and excluded components' conservative dependencies. DSD selection does
+not promise to avoid loading those artifacts. Unreachable registered templates
+are not loaded. This is not a
 state-dependent expanded component tree, and does not evaluate conditions twice.
 Execution then uses the existing synchronous evaluator and fresh request state.
 `stream: true` returns the existing precomputed chunks, not live network streaming.
@@ -151,6 +265,7 @@ budget of 32 MiB. Active requests pin pieces and may temporarily exceed that bud
 `renderer.memoryUsage` reports estimated piece bytes, piece count, and pending loads.
 The budget excludes JavaScript objects, retained source inputs, preparation work,
 temporary file buffers, allocator overhead, and output. It is not a process-RSS cap.
+Artifact bytes retained by an adapter's backing store are also outside this budget.
 
 Eviction drops the memory representation, not the durable artifact. A later request
 can reload it without source preparation. `dispose()` stops watchers, waits for
@@ -158,6 +273,13 @@ active requests and refreshes, and releases cached WASM allocations; it leaves
 generated files intact. Freed WASM allocations are reusable, but linear memory does
 not necessarily shrink. Preparation and JSON artifact loading have costs; small
 one-shot templates are not guaranteed to benefit.
+
+From a FAST repository checkout, measure these stages separately with
+`npm run bench:prepared -w @microsoft/fast-build`. The
+[dedicated harness](./test/performance/PREPARED.md) distinguishes startup,
+preparation, cold generated-file
+loading, warm requests, and many-entry retention. Earlier one-shot cursor timings
+are not prepared-path performance evidence.
 
 ## CLI usage
 

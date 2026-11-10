@@ -1,19 +1,24 @@
 // @ts-check
 const assert = require("node:assert/strict");
 const { spawnSync } = require("node:child_process");
+const { createHash } = require("node:crypto");
 const fs = require("node:fs/promises");
-const os = require("node:os");
 const path = require("node:path");
 const { test } = require("node:test");
 const { setTimeout: delay } = require("node:timers/promises");
 
 const typescript = require("typescript");
 
-const { loadRenderer, prepareRenderer } = require("../prepared.js");
+const {
+    compileArtifacts,
+    createPreparedRuntime,
+    loadRenderer,
+    prepareRenderer,
+} = require("../prepared.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
 
 async function fixture(t) {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), "fast-prepared-"));
+    const root = await fs.mkdtemp(path.join(__dirname, ".fast-prepared-"));
     t.after(() => fs.rm(root, { recursive: true, force: true }));
     return { root, cacheDirectory: path.join(root, "pieces") };
 }
@@ -127,20 +132,41 @@ test("refresh regenerates changed pieces but not unchanged callers or unused pie
     t.after(() => renderer.dispose());
     const before = await manifest(renderer);
     const unchanged = [
-        before.entry,
+        before.entries.default,
         before.templates["test-parent"],
         before.templates["test-unused"],
     ];
     const mtimes = await Promise.all(
-        unchanged.map(id => fs.stat(path.join(cacheDirectory, `${id}.fastpiece`))),
+        unchanged.map(id =>
+            fs.stat(path.join(cacheDirectory, `${id}.fast-artifact.json`)),
+        ),
     );
-    await renderer.refresh({
-        templates: {
-            "test-parent": "<test-child></test-child>",
-            "test-child": "<b>new</b>",
-            "test-unused": "<i>unused</i>",
-        },
-    });
+    const originalLoad = wasm.PreparedPiece.load;
+    const originalCompile = wasm.PreparedCompiler.prototype.compile;
+    let loads = 0;
+    let compilations = 0;
+    wasm.PreparedPiece.load = function (...args) {
+        loads++;
+        return originalLoad.apply(this, args);
+    };
+    wasm.PreparedCompiler.prototype.compile = function (...args) {
+        compilations++;
+        return originalCompile.apply(this, args);
+    };
+    try {
+        await renderer.refresh({
+            templates: {
+                "test-parent": "<test-child></test-child>",
+                "test-child": "<b>new</b>",
+                "test-unused": "<i>unused</i>",
+            },
+        });
+        assert.equal(loads, 0);
+        assert.equal(compilations, 1);
+    } finally {
+        wasm.PreparedPiece.load = originalLoad;
+        wasm.PreparedCompiler.prototype.compile = originalCompile;
+    }
     const after = await manifest(renderer);
     assert.notEqual(after.generation, before.generation);
     assert.notEqual(after.templates["test-child"], before.templates["test-child"]);
@@ -148,7 +174,8 @@ test("refresh regenerates changed pieces but not unchanged callers or unused pie
     assert.equal(after.templates["test-unused"], before.templates["test-unused"]);
     for (const [index, id] of unchanged.entries()) {
         assert.equal(
-            (await fs.stat(path.join(cacheDirectory, `${id}.fastpiece`))).mtimeMs,
+            (await fs.stat(path.join(cacheDirectory, `${id}.fast-artifact.json`)))
+                .mtimeMs,
             mtimes[index].mtimeMs,
         );
     }
@@ -180,7 +207,7 @@ test("registry additions, removals and host metadata regenerate affected pieces"
         },
     });
     const added = await manifest(renderer);
-    assert.equal(added.entry, before.entry);
+    assert.equal(added.entries.default, before.entries.default);
     assert.notEqual(added.templates["test-parent"], before.templates["test-parent"]);
     assert.match(await renderer.render(), /<test-child role="button">/);
     await renderer.refresh({
@@ -218,7 +245,10 @@ test("in-flight requests pin an old snapshot while a refresh publishes replaceme
     });
     t.after(() => renderer.dispose());
     const old = await manifest(renderer);
-    const filename = path.join(cacheDirectory, `${old.entry}.fastpiece`);
+    const filename = path.join(
+        cacheDirectory,
+        `${old.entries.default}.fast-artifact.json`,
+    );
     const original = fs.readFile;
     let unblock;
     const gate = new Promise(resolve => {
@@ -283,7 +313,10 @@ test("corrupt pieces fail closed and source refresh repairs durable artifacts", 
     });
     t.after(() => renderer.dispose());
     const snapshot = await manifest(renderer);
-    const filename = path.join(cacheDirectory, `${snapshot.entry}.fastpiece`);
+    const filename = path.join(
+        cacheDirectory,
+        `${snapshot.entries.default}.fast-artifact.json`,
+    );
     await fs.writeFile(filename, "{}");
     await assert.rejects(renderer.render(), { code: "invalid-prepared-artifact" });
     assert.equal(renderer.memoryUsage.bytes, 0);
@@ -342,7 +375,10 @@ test("bounded caches preload dependency cycles but do not load unreachable defin
     t.after(() => renderer.dispose());
     const snapshot = await manifest(renderer);
     await fs.rm(
-        path.join(cacheDirectory, `${snapshot.templates["test-unused"]}.fastpiece`),
+        path.join(
+            cacheDirectory,
+            `${snapshot.templates["test-unused"]}.fast-artifact.json`,
+        ),
     );
     assert.match(await renderer.render({ shown: false }), /<test-card>/);
     assert.ok(renderer.memoryUsage.bytes <= 1000);
@@ -353,7 +389,10 @@ test("bounded caches preload dependency cycles but do not load unreachable defin
     });
     t.after(() => reader.dispose());
     await fs.writeFile(
-        path.join(cacheDirectory, `${snapshot.templates["test-card"]}.fastpiece`),
+        path.join(
+            cacheDirectory,
+            `${snapshot.templates["test-card"]}.fast-artifact.json`,
+        ),
         "{}",
     );
     await assert.rejects(reader.render(), { code: "invalid-prepared-artifact" });
@@ -368,7 +407,7 @@ test("published prepared declarations resolve and distinguish HTML from chunks",
     await fs.writeFile(
         file,
         `
-        import { prepareRenderer, loadRenderer } from ${JSON.stringify(api)};
+        import { compileArtifacts, createPreparedRuntime, prepareRenderer, loadRenderer } from ${JSON.stringify(api)};
         async function use() {
             const renderer = await prepareRenderer({
                 entry: "<test-card></test-card>",
@@ -383,6 +422,22 @@ test("published prepared declarations resolve and distinguish HTML from chunks",
             await renderer.dispose();
             const loaded = await loadRenderer({manifestPath: "./generated/manifest.json"});
             await loaded.dispose();
+            const {manifest, artifacts} = compileArtifacts({
+                entries: {home: "<test-card></test-card>"},
+                templates: {"test-card": {content: "<b>hello</b>"}},
+            });
+            const runtime = createPreparedRuntime({
+                manifest, loadArtifact: async id => artifacts.get(id)!,
+            });
+            const page: string = await runtime.render("home", {}, {dsd: []});
+            const stream: string[] = await runtime.render("home", {}, {stream: true, dsd: ["test-card"]});
+            const fragment: string = await runtime.renderShadowRoot("test-card", {}, {dsd: "all"});
+            // @ts-expect-error Fragment rendering does not return chunks.
+            const wrong: string[] = await runtime.renderShadowRoot("test-card");
+            // @ts-expect-error Fragment rendering does not take streaming options.
+            await runtime.renderShadowRoot("test-card", {}, {stream: true});
+            runtime.activate(manifest);
+            await runtime.dispose();
         }
     `,
     );
@@ -404,6 +459,539 @@ test("published prepared declarations resolve and distinguish HTML from chunks",
             )
             .join("\n"),
     );
+});
+
+test("in-memory multi-entry compilation is deterministic, deduplicated and filesystem independent", async () => {
+    const originalRead = fs.readFile;
+    const originalWrite = fs.writeFile;
+    const originalCompile = wasm.PreparedCompiler.prototype.compile;
+    let compilations = 0;
+    fs.readFile = async () => {
+        throw new Error("unexpected filesystem read");
+    };
+    fs.writeFile = async () => {
+        throw new Error("unexpected filesystem write");
+    };
+    wasm.PreparedCompiler.prototype.compile = function (...args) {
+        compilations++;
+        return originalCompile.apply(this, args);
+    };
+    let runtime;
+    try {
+        const first = compileArtifacts({
+            entries: {
+                home: "<test-card></test-card>",
+                duplicate: "<test-card></test-card>",
+            },
+            templates: { "test-unused": "unused", "test-card": "<b>{{title}}</b>" },
+        });
+        assert.equal(compilations, 3);
+        assert.equal(first.manifest.version, 2);
+        assert.equal(first.manifest.entries.home, first.manifest.entries.duplicate);
+        const second = compileArtifacts({
+            templates: { "test-card": "<b>{{title}}</b>", "test-unused": "unused" },
+            entries: {
+                duplicate: "<test-card></test-card>",
+                home: "<test-card></test-card>",
+            },
+        });
+        assert.deepEqual(first.manifest, second.manifest);
+        assert.deepEqual(first.artifacts, second.artifacts);
+        runtime = createPreparedRuntime({
+            manifest: first.manifest,
+            loadArtifact: async id => {
+                const bytes = first.artifacts.get(id);
+                assert.ok(bytes);
+                return bytes;
+            },
+        });
+        assert.match(await runtime.render("home", { title: "memory" }), /memory/);
+        assert.match(
+            (
+                await runtime.render("duplicate", { title: "chunks" }, { stream: true })
+            ).join(""),
+            /chunks/,
+        );
+    } finally {
+        await runtime?.dispose();
+        fs.readFile = originalRead;
+        fs.writeFile = originalWrite;
+        wasm.PreparedCompiler.prototype.compile = originalCompile;
+    }
+});
+
+test("one runtime shares leases and an aggregate memory budget across entries", async () => {
+    const { manifest, artifacts } = compileArtifacts({
+        entries: {
+            first: "<test-card></test-card>",
+            second: "<main><test-card></test-card></main>",
+        },
+        templates: { "test-card": "<b>{{title}}</b>" },
+    });
+    const reads = new Map();
+    const runtime = createPreparedRuntime({
+        manifest,
+        maxMemoryBytes: 0,
+        loadArtifact: async id => {
+            reads.set(id, (reads.get(id) ?? 0) + 1);
+            const bytes = artifacts.get(id);
+            assert.ok(bytes);
+            return bytes;
+        },
+    });
+    try {
+        const outputs = await Promise.all([
+            runtime.render("first", { title: "one" }),
+            runtime.render("second", { title: "two" }),
+            runtime.render("first", { title: "three" }),
+        ]);
+        assert.match(outputs[0], /one/);
+        assert.match(outputs[1], /two/);
+        assert.match(outputs[2], /three/);
+        assert.equal(reads.size, 3);
+        assert.ok([...reads.values()].every(count => count === 1));
+        assert.deepEqual(runtime.memoryUsage, { bytes: 0, pieces: 0, pendingLoads: 0 });
+    } finally {
+        await runtime.dispose();
+    }
+    const sizes = new Map(
+        [...artifacts].map(([id, bytes]) => {
+            const piece = wasm.PreparedPiece.load(bytes);
+            try {
+                return [id, piece.memory_bytes];
+            } finally {
+                piece.free();
+            }
+        }),
+    );
+    const budget =
+        sizes.get(manifest.templates["test-card"]) +
+        Math.max(...Object.values(manifest.entries).map(id => sizes.get(id)));
+    const boundedReads = new Map();
+    const bounded = createPreparedRuntime({
+        manifest,
+        maxMemoryBytes: budget,
+        loadArtifact: async id => {
+            boundedReads.set(id, (boundedReads.get(id) ?? 0) + 1);
+            const bytes = artifacts.get(id);
+            assert.ok(bytes);
+            return bytes;
+        },
+    });
+    try {
+        for (const name of ["first", "second", "first"]) {
+            await bounded.render(name);
+            assert.ok(bounded.memoryUsage.bytes <= budget);
+            assert.equal(bounded.memoryUsage.pieces, 2);
+        }
+        assert.equal(boundedReads.get(manifest.templates["test-card"]), 1);
+        assert.equal(boundedReads.get(manifest.entries.first), 2);
+        assert.equal(boundedReads.get(manifest.entries.second), 1);
+    } finally {
+        await bounded.dispose();
+    }
+});
+
+test("runtime activation copies snapshots, keeps old requests coherent and drains disposal", async () => {
+    const first = compileArtifacts({
+        entries: { home: "<test-card></test-card>" },
+        templates: { "test-card": "old" },
+    });
+    const second = compileArtifacts({
+        entries: { home: "<test-card></test-card>" },
+        templates: { "test-card": "new" },
+    });
+    const artifacts = new Map([...first.artifacts, ...second.artifacts]);
+    let unblock;
+    const gate = new Promise(resolve => {
+        unblock = resolve;
+    });
+    let started;
+    const began = new Promise(resolve => {
+        started = resolve;
+    });
+    let blocked = true;
+    let reads = 0;
+    const runtime = createPreparedRuntime({
+        manifest: first.manifest,
+        maxMemoryBytes: 0,
+        loadArtifact: async id => {
+            reads++;
+            if (blocked) {
+                blocked = false;
+                started();
+                await gate;
+            }
+            const bytes = artifacts.get(id);
+            assert.ok(bytes);
+            return bytes;
+        },
+    });
+    try {
+        first.manifest.templates["test-card"] = "external mutation";
+        const pending = runtime.render("home");
+        await began;
+        const generation = runtime.activate(second.manifest);
+        assert.equal(generation, second.manifest.generation);
+        second.manifest.templates["test-card"] = "external mutation";
+        const next = runtime.render("home");
+        const disposing = runtime.dispose();
+        assert.throws(() => runtime.activate(second.manifest), /disposed/);
+        assert.throws(() => runtime.render("home"), /disposed/);
+        unblock();
+        assert.match(await pending, />old<\/template>/);
+        assert.match(await next, />new<\/template>/);
+        await disposing;
+        assert.ok(reads > 0);
+        assert.deepEqual(runtime.memoryUsage, { bytes: 0, pieces: 0, pendingLoads: 0 });
+    } finally {
+        unblock();
+        await runtime.dispose();
+    }
+});
+
+test("runtime rejects invalid manifests before I/O and missing or corrupt bytes without compilation", async () => {
+    const result = compileArtifacts({ entries: { home: "<b>{{title}}</b>" } });
+    let reads = 0;
+    const runtime = createPreparedRuntime({
+        manifest: result.manifest,
+        maxMemoryBytes: 0,
+        loadArtifact: async () => {
+            reads++;
+            return new Uint8Array();
+        },
+    });
+    try {
+        for (const invalid of [
+            { ...result.manifest, generation: "0".repeat(64) },
+            { ...result.manifest, compiler: "old" },
+            { ...result.manifest, version: 1 },
+            { ...result.manifest, pieces: {} },
+        ]) {
+            assert.throws(() => runtime.activate(invalid), {
+                code: "invalid-prepared-artifact",
+            });
+            assert.equal(runtime.generation, result.manifest.generation);
+        }
+        assert.equal(reads, 0);
+        await assert.rejects(runtime.render("unknown"), /Unknown prepared entry/);
+        await assert.rejects(runtime.render("home"), {
+            code: "invalid-prepared-artifact",
+        });
+        assert.deepEqual(runtime.memoryUsage, { bytes: 0, pieces: 0, pendingLoads: 0 });
+        assert.throws(() => runtime.render("home", {}, { dsd: "invalid" }), /dsd/);
+    } finally {
+        await runtime.dispose();
+    }
+    const missing = createPreparedRuntime({
+        manifest: result.manifest,
+        loadArtifact: async () => {
+            throw new Error("storage unavailable");
+        },
+    });
+    try {
+        await assert.rejects(missing.render("home"), /storage unavailable/);
+        assert.equal(missing.memoryUsage.pendingLoads, 0);
+    } finally {
+        await missing.dispose();
+    }
+});
+
+test("descriptor changes cannot reuse warm or pending cache records across activation", async t => {
+    function canonical(value) {
+        if (Array.isArray(value)) {
+            return value.map(canonical);
+        }
+        if (value !== null && typeof value === "object") {
+            return Object.fromEntries(
+                Object.keys(value)
+                    .sort()
+                    .map(key => [key, canonical(value[key])]),
+            );
+        }
+        return value;
+    }
+
+    for (const warm of [false, true]) {
+        for (const field of ["checksum", "dependencies"]) {
+            await t.test(
+                `${warm ? "warm" : "pending"} identity, changed ${field}`,
+                async () => {
+                    const initial = compileArtifacts({
+                        entries: { home: "<test-card></test-card>" },
+                        templates: { "test-card": "initial" },
+                    });
+                    const current = compileArtifacts({
+                        entries: { home: "<test-card></test-card>" },
+                        templates: { "test-card": "current" },
+                    });
+                    const artifacts = new Map([
+                        ...initial.artifacts,
+                        ...current.artifacts,
+                    ]);
+                    const root = current.manifest.entries.home;
+                    let unblock;
+                    const gate = new Promise(resolve => {
+                        unblock = resolve;
+                    });
+                    let started;
+                    const began = new Promise(resolve => {
+                        started = resolve;
+                    });
+                    let blockId;
+                    let blocked = false;
+                    const reads = new Map();
+                    const runtime = createPreparedRuntime({
+                        manifest: initial.manifest,
+                        loadArtifact: async id => {
+                            reads.set(id, (reads.get(id) ?? 0) + 1);
+                            if (id === blockId && !blocked) {
+                                blocked = true;
+                                started();
+                                await gate;
+                            }
+                            const bytes = artifacts.get(id);
+                            assert.ok(bytes);
+                            return bytes;
+                        },
+                    });
+                    try {
+                        if (warm) {
+                            assert.match(await runtime.render("home"), /initial/);
+                        }
+                        runtime.activate(current.manifest);
+                        const contradictory = JSON.parse(
+                            JSON.stringify(current.manifest),
+                        );
+                        if (field === "checksum") {
+                            contradictory.pieces[root].checksum = "0".repeat(64);
+                        } else {
+                            contradictory.pieces[root].dependencies = [];
+                        }
+                        delete contradictory.generation;
+                        contradictory.generation = createHash("sha256")
+                            .update(JSON.stringify(canonical(contradictory)))
+                            .digest("hex");
+                        blockId = warm ? current.manifest.templates["test-card"] : root;
+                        const pending = runtime.render("home");
+                        await began;
+                        current.manifest.templates["test-card"] = "external mutation";
+                        current.manifest.pieces[root].dependencies.length = 0;
+                        runtime.activate(contradictory);
+                        // Repairing the caller's object cannot repair the published bad descriptor.
+                        contradictory.pieces[root] = structuredClone(
+                            initial.manifest.pieces[root],
+                        );
+                        await assert.rejects(runtime.render("home"), {
+                            code: "invalid-prepared-artifact",
+                        });
+                        assert.equal(runtime.memoryUsage.pendingLoads, 1);
+                        const disposing = runtime.dispose();
+                        unblock();
+                        assert.match(await pending, />current<\/template>/);
+                        await disposing;
+                        assert.equal(reads.get(root), 2);
+                        assert.deepEqual(runtime.memoryUsage, {
+                            bytes: 0,
+                            pieces: 0,
+                            pendingLoads: 0,
+                        });
+                    } finally {
+                        unblock();
+                        await runtime.dispose();
+                    }
+                },
+            );
+        }
+    }
+});
+
+test("native selection snapshots allowlists and state before asynchronous artifact loads", async t => {
+    const { manifest: snapshot, artifacts } = compileArtifacts({
+        entries: { home: "<test-card></test-card>" },
+        templates: { "test-card": "<b>{{title}}</b>" },
+    });
+    for (const fragment of [false, true]) {
+        for (const include of [false, true]) {
+            await t.test(
+                `${fragment ? "fragment" : "entry"} initially ${include ? "included" : "excluded"}`,
+                async () => {
+                    let unblock;
+                    const gate = new Promise(resolve => {
+                        unblock = resolve;
+                    });
+                    let started;
+                    const began = new Promise(resolve => {
+                        started = resolve;
+                    });
+                    let blocked = false;
+                    const runtime = createPreparedRuntime({
+                        manifest: snapshot,
+                        loadArtifact: async id => {
+                            if (!blocked) {
+                                blocked = true;
+                                started();
+                                await gate;
+                            }
+                            const bytes = artifacts.get(id);
+                            assert.ok(bytes);
+                            return bytes;
+                        },
+                    });
+                    try {
+                        const dsd = include ? ["test-card"] : [];
+                        const state = { title: "captured" };
+                        const options = { dsd };
+                        const pending = fragment
+                            ? runtime.renderShadowRoot("test-card", state, options)
+                            : runtime.render("home", state, options);
+                        await began;
+                        dsd.splice(0, dsd.length, ...(include ? [] : ["test-card"]));
+                        state.title = "mutated";
+                        unblock();
+                        const output = await pending;
+                        if (include) {
+                            assert.match(output, /shadowrootmode=/);
+                            assert.match(output, /captured/);
+                            assert.doesNotMatch(output, /mutated/);
+                        } else {
+                            assert.equal(
+                                output,
+                                fragment ? "" : "<test-card></test-card>",
+                            );
+                        }
+                    } finally {
+                        unblock();
+                        await runtime.dispose();
+                    }
+                },
+            );
+        }
+    }
+});
+
+test("filesystem convenience preparation rejects another entry and allows explicit source refresh", async t => {
+    const { cacheDirectory } = await fixture(t);
+    const renderer = await prepareRenderer({ entry: "<b>first</b>", cacheDirectory });
+    t.after(() => renderer.dispose());
+    await assert.rejects(
+        prepareRenderer({ entry: "<i>second</i>", cacheDirectory }),
+        /already owned/,
+    );
+    assert.equal(await renderer.render(), "<b>first</b>");
+    await renderer.refresh({ entry: "<i>second</i>" });
+    assert.equal(await renderer.render(), "<i>second</i>");
+    await renderer.dispose();
+    const restarted = await prepareRenderer({
+        entry: "<u>restart rebuild</u>",
+        cacheDirectory,
+    });
+    t.after(() => restarted.dispose());
+    assert.equal(await restarted.render(), "<u>restart rebuild</u>");
+});
+
+test("filesystem adapters never silently replace a multi-entry deployment", async t => {
+    const { cacheDirectory } = await fixture(t);
+    await fs.mkdir(cacheDirectory);
+    const { manifest: deployment } = compileArtifacts({
+        entries: { first: "first", second: "second" },
+    });
+    const filename = path.join(cacheDirectory, "manifest.json");
+    const bytes = JSON.stringify(deployment);
+    await fs.writeFile(filename, bytes);
+    await assert.rejects(
+        prepareRenderer({
+            cacheDirectory,
+            entry: "replacement",
+        }),
+        /multi-entry manifest/,
+    );
+    assert.equal(await fs.readFile(filename, "utf8"), bytes);
+    await assert.rejects(
+        loadRenderer({ manifestPath: filename }),
+        /single default entry/,
+    );
+});
+
+test("native selection preserves excluded authored hosts and supports component-root fragments", async () => {
+    const { manifest, artifacts } = compileArtifacts({
+        entries: {
+            home: '<test-parent title="{{title}}"><i>{{title}}</i></test-parent>',
+            broken: "<test-unrelated></test-unrelated>",
+        },
+        templates: {
+            "test-parent": {
+                content: "<b>{{title}}</b><test-child></test-child>",
+                hostAttributes: [{ name: "role", value: "article" }],
+            },
+            "test-child": "<em>{{title}}</em>",
+            "test-unrelated": "<strong>unrelated</strong>",
+        },
+    });
+    const reads = new Set();
+    const runtime = createPreparedRuntime({
+        manifest,
+        maxMemoryBytes: 0,
+        loadArtifact: async id => {
+            reads.add(id);
+            assert.notEqual(id, manifest.entries.broken);
+            assert.notEqual(id, manifest.templates["test-unrelated"]);
+            const bytes = artifacts.get(id);
+            assert.ok(bytes);
+            return bytes;
+        },
+    });
+    try {
+        const excluded = await runtime.render("home", { title: "request" }, { dsd: [] });
+        assert.match(excluded, /^<test-parent title="request"><i>/);
+        assert.doesNotMatch(excluded, /role=|shadowroot|<b>|<em>/);
+        const selected = await runtime.render(
+            "home",
+            { title: "request" },
+            { dsd: ["test-parent"] },
+        );
+        assert.match(selected, /role="article"/);
+        assert.match(selected, /<b>/);
+        assert.match(selected, /<test-child><\/test-child>/);
+        assert.doesNotMatch(selected, /<em>/);
+        const all = await runtime.render("home", { title: "request" });
+        assert.match(all, /<em>/);
+        assert.deepEqual(
+            await runtime.render("home", { title: "request" }, { stream: true, dsd: [] }),
+            JSON.parse(
+                wasm.render_entry_with_templates(
+                    '<test-parent title="{{title}}"><i>{{title}}</i></test-parent>',
+                    "{}",
+                    JSON.stringify({ title: "request" }),
+                    undefined,
+                    true,
+                    false,
+                ),
+            ),
+        );
+        reads.clear();
+        const fragment = await runtime.renderShadowRoot("test-parent", {
+            title: "fragment",
+        });
+        assert.match(fragment, /^<template shadowrootmode="open"/);
+        assert.match(fragment, /fragment/);
+        assert.match(fragment, /<em>/);
+        assert.ok(!reads.has(manifest.entries.home));
+        assert.deepEqual(
+            reads,
+            new Set([
+                manifest.templates["test-parent"],
+                manifest.templates["test-child"],
+            ]),
+        );
+        assert.equal(await runtime.renderShadowRoot("test-parent", {}, { dsd: [] }), "");
+        await assert.rejects(
+            runtime.renderShadowRoot("unknown", {}, { dsd: [] }),
+            /Unknown prepared component/,
+        );
+    } finally {
+        await runtime.dispose();
+    }
 });
 
 test("development watching follows atomic file replacement and reports invalid updates", {

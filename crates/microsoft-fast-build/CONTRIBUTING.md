@@ -65,7 +65,8 @@ cargo build
 | `src/content.rs` | `{{}}` and `{{{}}}` binding renderers, `html_escape` |
 | `src/directive.rs` | `Directive` / `RenderEvent` enums, `next_event`, `render_when`, `render_repeat`, `render_custom_element` |
 | `src/plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and cache-reuse tests |
-| `src/prepared.rs` | Batch compiler, portable pieces, validated flat body artifacts, and immutable request programs |
+| `src/prepared.rs` | Batch compiler, portable pieces, validated flat body artifacts, and immutable entry/fragment programs |
+| `src/config.rs` | Attribute/marker configuration and request-local DSD selection independent of registration |
 | `build.rs` | Compiler fingerprint for invalidating incompatible generated pieces |
 | `src/node.rs` | `render_node` / `render_plan` — transient and cached instruction evaluation |
 | `src/renderer.rs` | Thin entry points that call `render_node` |

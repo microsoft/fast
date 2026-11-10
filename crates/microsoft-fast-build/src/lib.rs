@@ -87,7 +87,7 @@ pub use json::{JsonValue, JsonError};
 pub use error::{ErrorContext, ErrorLocation, RenderError};
 pub use locator::{Locator, FTemplate, parse_f_templates};
 pub use binding_metadata::{BindingMetadata, BindingScope, SourcePosition, SourceSpan};
-pub use config::{RenderConfig, AttributeNameStrategy};
+pub use config::{AttributeNameStrategy, DsdSelection, RenderConfig};
 pub use f_template::{
     compose_f_template_styles, compose_f_template_styles_with_options, ComposedTemplate,
     CompositionSource, CompositionSpan, Stylesheet,
@@ -111,6 +111,14 @@ pub fn render_shadow_root_with_locator(
 ) -> Result<String, RenderError> {
     let default_config = RenderConfig::default();
     let config = config.unwrap_or(&default_config);
+    if !locator.has_template(element_name) {
+        return Err(RenderError::UnknownTemplate {
+            element: element_name.to_string(),
+        });
+    }
+    if !config.dsd_selection.includes(element_name) {
+        return Ok(String::new());
+    }
     let content = directive::render_shadow_content(element_name, state, locator, config)?;
     let attrs = locator.shadowroot_markup(element_name);
     Ok(format!("<template{attrs}>{content}</template>"))
