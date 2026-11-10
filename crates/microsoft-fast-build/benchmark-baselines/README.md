@@ -243,6 +243,11 @@ peaks are independent maxima. Cumulative `totalBytes` and `totalBlocks` count
 allocation events, including replacement allocations during reallocation,
 not the number or size of currently live objects. This profiler captures the
 current thread only; future threaded rendering would require another strategy.
+
+With structural plans, a prepared locator has not necessarily compiled its
+definitions. Cold render measurements include first-use compilation and retain
+locator-owned plans alongside the HTML. Locator-phase measurements still exclude
+that lazy work. Historical pre-plan reports do not measure warm-plan execution.
 The counter uses allocate/copy/free reallocation rather than in-place system
 reallocation: event totals and temporary old/new-buffer overlap reflect that
 instrumentation strategy, not necessarily the production allocator's peaks.

@@ -51,6 +51,11 @@ pub fn render_double_brace(
 /// Escape special HTML characters in a string.
 pub fn html_escape(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
+    push_html_escaped(&mut out, s);
+    out
+}
+
+pub(crate) fn push_html_escaped(out: &mut String, s: &str) {
     for c in s.chars() {
         match c {
             '&'  => out.push_str("&amp;"),
@@ -61,5 +66,4 @@ pub fn html_escape(s: &str) -> String {
             c    => out.push(c),
         }
     }
-    out
 }
