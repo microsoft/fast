@@ -598,6 +598,12 @@ let html = render_entry_template_with_locator(
 
 All custom elements — whether at the entry level or deeply nested — receive the current root state as a base for their child state. Per-element HTML attributes are overlaid on top, with attribute-derived values taking precedence over any matching root state keys.
 
+Internally, inherited state, binding results, and repeat items are borrowed rather
+than deep-cloned for every child. Only attribute overrides are stored locally;
+`data-*` updates copy the affected `dataset` branch when necessary. Explicit nulls
+and overridden objects still mask inherited values. This does not change public
+render APIs, state input formats, or rendered HTML.
+
 This means unbound state keys automatically propagate through the entire element tree. A child element can reference any state key from its ancestors without requiring explicit attribute bindings on every intermediate element:
 
 ```html
@@ -922,9 +928,16 @@ WASM runner, golden hashes, scaling checks, RSS measurement, and limitations.
 
 The guide also records post-scanner repeat/state-overlay and many-definition
 profiles, with bounded workload commands and symbolized native CPU sampling
-through Criterion's `--profile-time` mode. Those measurements identify child-state
-copying as the next repeat/overlay target; they do not claim that memory or
-allocation targets have been met.
+through Criterion's `--profile-time` mode. Those historical measurements identified
+child-state copying as a repeat/overlay bottleneck. Borrowed state views now remove
+whole-root and repeat-item copies; dataset modifications and small per-iteration
+scope vectors can still allocate. No universal timing or memory target is implied.
+
+Run the allocation-growth regressions with:
+
+```sh
+cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml --features allocation-profiling --test allocation-profiling
+```
 
 For native allocation baselines, use the opt-in development example or the
 fresh-process matrix runner from the repository root:

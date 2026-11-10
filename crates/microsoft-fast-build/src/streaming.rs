@@ -4,7 +4,7 @@ use crate::attribute::{
 };
 use crate::config::RenderConfig;
 use crate::content::{render_double_brace, render_triple_brace};
-use crate::context::resolve_value;
+use crate::context::{resolve_value, LoopVars, State};
 use crate::directive::{
     build_custom_element_child_root, build_element_open_tag, build_loop_vars,
     build_shadowroot_template_attrs, merge_template_host_attrs, next_event,
@@ -19,8 +19,8 @@ use crate::node::process_plain_html_tag;
 
 pub(crate) fn stream_node(
     template: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     mut hydration: Option<&mut HydrationScope>,
     is_entry: bool,
@@ -70,8 +70,8 @@ pub(crate) fn stream_node(
 fn stream_directive(
     dir_chunk: Directive,
     template: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     is_entry: bool,
@@ -106,8 +106,8 @@ fn stream_directive(
 fn stream_when(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -159,8 +159,8 @@ fn stream_when(
 fn stream_repeat(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -183,7 +183,8 @@ fn stream_repeat(
             context: template_context(template, at),
         })?;
 
-    let chunks = match resolve_value(&list_expr, root, loop_vars) {
+    let items = resolve_value(&list_expr, root, loop_vars);
+    let chunks = match items.as_deref() {
         None => stream_repeat_items(
             inner,
             &[],
@@ -212,8 +213,8 @@ fn stream_repeat_items(
     inner: &str,
     items: &[JsonValue],
     var_name: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -268,8 +269,8 @@ fn stream_repeat_items(
 fn stream_custom_element(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: &Locator,
     mut parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
@@ -293,7 +294,10 @@ fn stream_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let child_root_owned =
         build_custom_element_child_root(&attrs, root, loop_vars, config.attribute_name_strategy);
-    let child_root = child_root_owned.as_ref().unwrap_or(root);
+    let child_root: &dyn State = match child_root_owned.as_ref() {
+        Some(state) => state,
+        None => root,
+    };
 
     let rendered_shadow = crate::directive::render_shadow_content(&tag_name, child_root, locator, config)?;
     let shadowroot_attributes =

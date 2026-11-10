@@ -309,8 +309,8 @@ pub(crate) fn data_attr_to_dataset_key(name: &str) -> Option<String> {
 /// If a normal attribute binding cannot be resolved, the whole attribute is omitted.
 pub(crate) fn resolve_attribute_bindings_in_tag(
     tag: &str,
-    root: &crate::json::JsonValue,
-    loop_vars: &[(String, crate::json::JsonValue)],
+    root: &dyn crate::context::State,
+    loop_vars: &crate::context::LoopVars<'_>,
 ) -> String {
     use crate::expression::evaluate;
 
@@ -352,8 +352,9 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
                     if is_boolean_attribute(&name) {
                         if let Some(crate::json::JsonValue::Bool(enabled)) =
                             crate::context::resolve_value(expr, root, loop_vars)
+                                .as_deref()
                         {
-                            if enabled {
+                            if *enabled {
                                 result.push(' ');
                                 result.push_str(&name);
                             }
@@ -400,8 +401,8 @@ fn append_double_quote_escaped(out: &mut String, value: &str) {
 
 pub(crate) fn resolve_attribute_value(
     value: &str,
-    root: &crate::json::JsonValue,
-    loop_vars: &[(String, crate::json::JsonValue)],
+    root: &dyn crate::context::State,
+    loop_vars: &crate::context::LoopVars<'_>,
 ) -> Option<String> {
     use crate::content::html_escape;
     use crate::context::resolve_value;
@@ -426,7 +427,7 @@ pub(crate) fn resolve_attribute_value(
         };
         let expr = value[inner_start..end].trim();
         let resolved = resolve_value(expr, root, loop_vars)?;
-        if matches!(resolved, crate::json::JsonValue::Null) {
+        if matches!(resolved.as_ref(), crate::json::JsonValue::Null) {
             return None;
         }
         result.push_str(&value[pos..dbl]);

@@ -1,5 +1,6 @@
+use std::borrow::Cow;
 use crate::json::JsonValue;
-use crate::context::resolve_value;
+use crate::context::{resolve_value, ChildState, LoopVars, State};
 use crate::expression::evaluate;
 use crate::content::html_escape;
 use crate::config::{RenderConfig, AttributeNameStrategy};
@@ -112,8 +113,8 @@ mod scan_tests;
 pub fn render_when(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -158,8 +159,8 @@ pub fn render_when(
 pub fn render_repeat(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -180,7 +181,8 @@ pub fn render_repeat(
             expr: expr.clone(),
             context: template_context(template, at),
         })?;
-    match resolve_value(&list_expr, root, loop_vars) {
+    let items = resolve_value(&list_expr, root, loop_vars);
+    match items.as_deref() {
         None => {
             let output = render_repeat_items(inner, &[], &var_name, root, loop_vars, locator, hydration, config)
                 .map_err(|error| error.rebase(template, inner_range.start))?;
@@ -202,8 +204,8 @@ fn render_repeat_items(
     inner: &str,
     items: &[JsonValue],
     var_name: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
@@ -236,15 +238,18 @@ fn render_repeat_items(
     }
 }
 
-pub(crate) fn build_loop_vars(
-    loop_vars: &[(String, JsonValue)],
-    var_name: &str,
-    item: &JsonValue,
+pub(crate) fn build_loop_vars<'a>(
+    loop_vars: &'a LoopVars<'_>,
+    var_name: &'a str,
+    item: &'a JsonValue,
     index: usize,
-) -> Vec<(String, JsonValue)> {
-    let mut new_vars = loop_vars.to_vec();
-    new_vars.push((var_name.to_string(), item.clone()));
-    new_vars.push(("$index".to_string(), JsonValue::Number(index as f64)));
+) -> Vec<(&'a str, Cow<'a, JsonValue>)> {
+    let mut new_vars = Vec::with_capacity(loop_vars.len() + 2);
+    new_vars.extend(
+        loop_vars.iter().map(|(name, value)| (*name, Cow::Borrowed(value.as_ref()))),
+    );
+    new_vars.push((var_name, Cow::Borrowed(item)));
+    new_vars.push(("$index", Cow::Owned(JsonValue::Number(index as f64))));
     new_vars
 }
 
@@ -271,8 +276,8 @@ pub(crate) fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 pub fn render_custom_element(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: &Locator,
     mut parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
@@ -298,10 +303,7 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Parse attributes once, then decide whether cloning is necessary.
-    // When the element has no state-relevant attributes, skip the HashMap
-    // clone and reuse `root` directly — avoids O(state-size) work per element
-    // in deep custom-element trees.
+    // Attribute overrides borrow inherited state instead of copying its payload.
     let attrs = parse_element_attributes(open_tag_content);
     let child_root_owned = build_custom_element_child_root(
         &attrs,
@@ -309,7 +311,10 @@ pub fn render_custom_element(
         loop_vars,
         config.attribute_name_strategy,
     );
-    let child_root = child_root_owned.as_ref().unwrap_or(root);
+    let child_root: &dyn State = match child_root_owned.as_ref() {
+        Some(state) => state,
+        None => root,
+    };
 
     // Render the shadow DOM template with a fresh hydration scope.
     let rendered = render_shadow_content(&tag_name, child_root, locator, config)?;
@@ -373,7 +378,7 @@ pub fn render_custom_element(
 
 pub(crate) fn render_shadow_content(
     element_name: &str,
-    state: &JsonValue,
+    state: &dyn State,
     locator: &Locator,
     config: &RenderConfig,
 ) -> Result<String, RenderError> {
@@ -410,7 +415,7 @@ pub(crate) fn render_shadow_content(
 pub(crate) fn merge_template_host_attrs(
     element_open: String,
     template_host_attrs: &[(String, Option<String>)],
-    child_root: &JsonValue,
+    child_root: &dyn State,
     source_author_attrs: &[(String, Option<String>)],
 ) -> String {
     if template_host_attrs.is_empty() {
@@ -479,7 +484,7 @@ fn format_template_host_attr(
     out: &mut String,
     name: &str,
     value: Option<&str>,
-    child_root: &JsonValue,
+    child_root: &dyn State,
 ) {
     if let Some(bare) = name.strip_prefix('?') {
         let expr = value
@@ -503,8 +508,8 @@ fn format_template_host_attr(
         Some(v) => {
             if let Some(expr) = crate::attribute::single_attribute_binding(v) {
                 let resolved = resolve_value(expr.trim(), child_root, &[])
-                    .unwrap_or(JsonValue::Null);
-                match resolved {
+                    .unwrap_or(Cow::Owned(JsonValue::Null));
+                match resolved.as_ref() {
                     JsonValue::String(s) => {
                         out.push(' ');
                         out.push_str(name);
@@ -521,7 +526,7 @@ fn format_template_host_attr(
                     }
                     JsonValue::Bool(b) => {
                         if crate::attribute::is_boolean_attribute(name) {
-                            if b {
+                            if *b {
                                 out.push(' ');
                                 out.push_str(name);
                             }
@@ -530,7 +535,7 @@ fn format_template_host_attr(
                         out.push(' ');
                         out.push_str(name);
                         out.push_str("=\"");
-                        out.push_str(if b { "true" } else { "false" });
+                        out.push_str(if *b { "true" } else { "false" });
                         out.push('"');
                     }
                     // Array / Object / Null → cannot be expressed as an HTML attribute value.
@@ -564,33 +569,26 @@ fn format_template_host_attr(
 ///   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
 ///   - HTML attrs with mismatched property names → camelCase via lookup table
 ///   - Anything else → lowercased key (or camelCase when `attribute_name_strategy` is `CamelCase`)
-pub(crate) fn build_custom_element_child_root(
+pub(crate) fn build_custom_element_child_root<'a>(
     attrs: &[(String, Option<String>)],
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
     strategy: AttributeNameStrategy,
-) -> Option<JsonValue> {
+) -> Option<ChildState<'a>> {
     if !has_state_relevant_attrs(attrs) {
         return None;
     }
 
-    let base = if let JsonValue::Object(ref root_map) = root {
-        root_map.clone()
-    } else {
-        std::collections::HashMap::new()
-    };
-
-    Some(build_attr_state(attrs, root, loop_vars, base, strategy))
+    Some(build_attr_state(attrs, root, loop_vars, strategy))
 }
 
-fn build_attr_state(
+fn build_attr_state<'a>(
     attrs: &[(String, Option<String>)],
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
-    base: std::collections::HashMap<String, JsonValue>,
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
     strategy: AttributeNameStrategy,
-) -> JsonValue {
-    let mut state_map = base;
+) -> ChildState<'a> {
+    let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in attrs {
         if attr_name.starts_with('@')
             || attr_name.starts_with('?')
@@ -612,9 +610,16 @@ fn build_attr_state(
             if let Some((group, prop)) = path.split_once('.') {
                 let group_val = state_map
                     .entry(group.to_string())
-                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
-                if let JsonValue::Object(ref mut map) = group_val {
-                    map.insert(prop.to_string(), json_val);
+                    .or_insert_with(|| {
+                        root.is_object().then(|| root.lookup(group)).flatten()
+                            .unwrap_or_else(|| Cow::Owned(JsonValue::Object(
+                                std::collections::HashMap::new(),
+                            )))
+                    });
+                if matches!(group_val.as_ref(), JsonValue::Object(_)) {
+                    if let JsonValue::Object(map) = group_val.to_mut() {
+                        map.insert(prop.to_string(), json_val.into_owned());
+                    }
                 }
             }
         } else if let Some(key) = aria_attr_to_property_key(&lowered) {
@@ -627,7 +632,7 @@ fn build_attr_state(
             state_map.insert(lowered, json_val);
         }
     }
-    JsonValue::Object(state_map)
+    ChildState::new(root, state_map)
 }
 
 fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
@@ -710,14 +715,18 @@ fn append_template_attr_value(out: &mut String, name: &str, value: &str) {
     out.push('"');
 }
 
-fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
+fn attribute_to_json_value<'a>(
+    value: Option<&String>,
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
+) -> Cow<'a, JsonValue> {
     let v = match value {
-        None => return JsonValue::Bool(true), // boolean attribute (no value)
+        None => return Cow::Owned(JsonValue::Bool(true)), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
-        return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+        return resolve_value(binding, root, loop_vars).unwrap_or(Cow::Owned(JsonValue::Null));
     }
     // Try parsing JSON array or object literals passed as attribute values.
     // Trim whitespace and check matching delimiters before invoking the parser.
@@ -727,17 +736,17 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
             || (trimmed.starts_with('{') && trimmed.ends_with('}'));
     if looks_like_json_literal {
         if let Ok(parsed) = crate::json::parse(trimmed) {
-            return parsed;
+            return Cow::Owned(parsed);
         }
     }
-    JsonValue::String(v.clone())
+    Cow::Owned(JsonValue::String(v.clone()))
 }
 
 pub(crate) fn build_element_open_tag(
     open_tag_base: &str,
     open_tag_content: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
 ) -> String {
@@ -778,8 +787,8 @@ pub(crate) fn build_element_open_tag(
 /// - Static attributes (no binding syntax) are passed through unchanged.
 fn build_entry_element_open_tag(
     open_tag_base: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
 ) -> String {
     let stripped_base = strip_client_only_attrs(open_tag_base);
     let tag_name = match read_tag_name(&stripped_base, 0) {
@@ -803,13 +812,13 @@ fn build_entry_element_open_tag(
                         out.push_str(&name[1..]);
                     }
                 } else {
-                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
-                    match resolved {
+                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(Cow::Owned(JsonValue::Null));
+                    match resolved.as_ref() {
                         JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
                         JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
                         JsonValue::Bool(b) => {
                             if crate::attribute::is_boolean_attribute(&name) {
-                                if b { out.push_str(&format!(" {}", name)); }
+                                if *b { out.push_str(&format!(" {}", name)); }
                             } else {
                                 out.push_str(&format!(" {}=\"{}\"", name, b));
                             }

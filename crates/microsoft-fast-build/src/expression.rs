@@ -1,7 +1,8 @@
+use std::borrow::Cow;
 use crate::json::JsonValue;
-use crate::context::resolve_value;
+use crate::context::{resolve_value, LoopVars, State};
 
-pub fn evaluate(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> bool {
+pub fn evaluate(expr: &str, root: &dyn State, loop_vars: &LoopVars<'_>) -> bool {
     let expr = expr.trim();
     // OR (lowest precedence)
     if let Some(idx) = find_binary_op(expr, "||") {
@@ -71,25 +72,25 @@ fn find_comparison_op(expr: &str, op: &str) -> Option<usize> {
     None
 }
 
-fn parse_or_resolve_rhs(rhs: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
+fn parse_or_resolve_rhs<'a>(rhs: &str, root: &'a dyn State, loop_vars: &'a LoopVars<'_>) -> Option<Cow<'a, JsonValue>> {
     let rhs = rhs.trim();
     // Quoted string
     if (rhs.starts_with('\'') && rhs.ends_with('\'')) || (rhs.starts_with('"') && rhs.ends_with('"')) {
-        return Some(JsonValue::String(rhs[1..rhs.len()-1].to_string()));
+        return Some(Cow::Owned(JsonValue::String(rhs[1..rhs.len()-1].to_string())));
     }
     // Boolean literals
-    if rhs == "true" { return Some(JsonValue::Bool(true)); }
-    if rhs == "false" { return Some(JsonValue::Bool(false)); }
-    if rhs == "null" { return Some(JsonValue::Null); }
+    if rhs == "true" { return Some(Cow::Owned(JsonValue::Bool(true))); }
+    if rhs == "false" { return Some(Cow::Owned(JsonValue::Bool(false))); }
+    if rhs == "null" { return Some(Cow::Owned(JsonValue::Null)); }
     // Number
     if let Ok(n) = rhs.parse::<f64>() {
-        return Some(JsonValue::Number(n));
+        return Some(Cow::Owned(JsonValue::Number(n)));
     }
     // State reference
     resolve_value(rhs, root, loop_vars)
 }
 
-fn compare_values(lhs: &Option<JsonValue>, rhs: &Option<JsonValue>, op: &str) -> bool {
+fn compare_values(lhs: &Option<Cow<'_, JsonValue>>, rhs: &Option<Cow<'_, JsonValue>>, op: &str) -> bool {
     match (lhs, rhs) {
         (Some(l), Some(r)) => {
             match op {
@@ -274,4 +275,3 @@ mod tests {
         assert!(!evaluate("a && b || c && d", &root2, &[]));
     }
 }
-

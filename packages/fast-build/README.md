@@ -5,6 +5,10 @@
 
 The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. It is powered by a WebAssembly core with zero runtime npm dependencies.
 
+The renderer borrows inherited component state and repeat values instead of
+deep-cloning the root for each attributed child. Existing render APIs, JSON state
+files, CLI options, and hydration output remain unchanged.
+
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
 ## Installation
