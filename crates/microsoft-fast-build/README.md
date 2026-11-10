@@ -922,11 +922,60 @@ temporary rendered chunks. Stream functions still return fully materialized
 chunks with the same boundaries.
 
 Reuse a native `Locator` across render calls to retain its plans. No additional
-file, public compile API, or server cache setup is required. Existing WASM exports
+file, preparation API, or server cache setup is required for those APIs. Existing WASM exports
 create a new locator per call, so their reuse is within that call, not between
 requests. Plans retain metadata memory and may add overhead for small definitions
 rendered only once. Boolean expressions and attribute interpolation still use
 the existing evaluators; this is structural compilation, not expression bytecode.
+
+### Portable prepared pieces
+
+`PreparedCompiler` registers component names once and prepares immutable
+`PreparedPiece` values individually. Pieces eagerly prepare structural bodies,
+but store deferred syntax errors rather than reporting errors in skipped branches.
+Use `identity` to check a cache before compiling, `to_bytes` to persist actual
+instructions, and `PreparedPiece::from_bytes` to restore them without recompiling.
+
+```rust
+use std::collections::HashMap;
+use std::sync::Arc;
+use microsoft_fast_build::{JsonValue, PreparedCompiler, PreparedPiece, PreparedProgram};
+
+let compiler = PreparedCompiler::new(&["my-card".to_string()]);
+let entry = compiler.compile("<my-card></my-card>", vec![], vec![])?;
+let card = compiler.compile("<b>{{title}}</b>", vec![], vec![])?;
+let bytes = card.to_bytes();
+let restored = Arc::new(PreparedPiece::from_bytes(&bytes)?);
+let program = PreparedProgram::new(
+    Arc::new(entry),
+    HashMap::from([("my-card".to_string(), restored)]),
+)?;
+let state = JsonValue::Object(HashMap::from([
+    ("title".to_string(), JsonValue::String("Hello".to_string())),
+]));
+let html = program.render(&state, None)?;
+# Ok::<(), microsoft_fast_build::RenderError>(())
+```
+
+`PreparedProgram` links a dependency-closed set of shared pieces and creates fresh
+hydration/state execution for every call. It supports both HTML and exact existing
+precomputed chunks. Native callers own persistence and cache eviction; the
+[`@microsoft/fast-build` Node host](../../packages/fast-build/README.md#prepared-template-pieces)
+provides asynchronous files, versioned manifests, watching, and a byte-budgeted cache.
+
+`PREPARED_FORMAT_VERSION` and `PREPARED_COMPILER_ID` identify compatibility. The
+compiler fingerprint covers Rust sources, the crate manifest, and dependency
+lockfile. Piece identities cover source, host/shadow metadata, and the registry
+membership of referenced names. Component content is not inlined, so replacing a
+child does not invalidate unchanged callers. Adding/removing a referenced registered
+name does. Prepared structural nesting is limited to 128 bodies. Flat serialized
+body records avoid JSON nesting proportional to template depth.
+
+Artifacts include authored diagnostic source and must be treated as trusted
+application files. Invalid/incompatible artifacts return `invalid-prepared-artifact`;
+loading does not fall back to compilation. No request values or counters are persisted.
+Memory estimates exclude allocator overhead and render output; dropping pieces frees
+allocations but does not guarantee shrinking WASM linear memory.
 
 From a FAST repository checkout, run the native benchmarks and parity tests:
 

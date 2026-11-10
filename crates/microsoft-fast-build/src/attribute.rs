@@ -310,7 +310,7 @@ pub(crate) fn resolve_attribute_bindings_in_tag(
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct AttributePlan {
     tag_name: String,
     attributes: Vec<ParsedAttribute>,
@@ -320,6 +320,24 @@ pub(crate) struct AttributePlan {
 }
 
 impl AttributePlan {
+    pub(crate) fn memory_bytes(&self) -> usize {
+        self.tag_name.capacity()
+            + self.attributes.capacity() * std::mem::size_of::<ParsedAttribute>()
+            + self.attributes.iter().map(|attribute| {
+                attribute.name.capacity() + attribute.raw.capacity()
+                    + attribute.value.as_ref().map_or(0, String::capacity)
+            }).sum::<usize>()
+    }
+
+    pub(crate) fn validate(&self, source: &str) -> Result<(), crate::RenderError> {
+        if self.capacity > source.len()
+            || self.attributes.iter().any(|attribute| attribute.value_start > source.len())
+        {
+            return Err(crate::prepared::invalid("invalid prepared attribute offsets"));
+        }
+        Ok(())
+    }
+
     pub(crate) fn new(tag: &str) -> Option<Self> {
         let trimmed = tag.trim_end();
         let self_closing = trimmed.ends_with("/>");
@@ -583,7 +601,7 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
         .collect()
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct ParsedAttribute {
     pub name: String,
     pub value: Option<String>,

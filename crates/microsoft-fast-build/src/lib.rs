@@ -72,6 +72,7 @@ mod hydration;
 mod code_escape;
 mod node;
 mod plan;
+mod prepared;
 mod renderer;
 mod streaming;
 mod error;
@@ -92,6 +93,7 @@ pub use f_template::{
     CompositionSource, CompositionSpan, Stylesheet,
 };
 pub use template_slots::{extract_template_slots, TemplateSlot};
+pub use prepared::{PreparedCompiler, PreparedPiece, PreparedProgram, PREPARED_FORMAT_VERSION, PREPARED_COMPILER_ID};
 
 /// Version of generated template metadata; unversioned maps remain supported.
 pub const TEMPLATE_FORMAT_VERSION: u32 = 1;

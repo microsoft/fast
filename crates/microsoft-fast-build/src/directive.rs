@@ -18,7 +18,7 @@ use crate::hydration::HydrationScope;
 use crate::plan::{Body, Element, Repeat, When};
 
 /// A template directive found at a given byte position.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum Directive {
     TripleBrace(usize),
     DoubleBrace(usize),

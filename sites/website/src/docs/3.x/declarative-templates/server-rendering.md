@@ -29,6 +29,42 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
+## Reusing Prepared Templates
+
+For a long-running Node server, `@microsoft/fast-build/prepared.js` separates
+template preparation from request state:
+
+```js
+import { prepareRenderer } from "@microsoft/fast-build/prepared.js";
+
+const renderer = await prepareRenderer({
+    entryFile: "./entry.html",
+    templateFiles: ["./components.html"],
+    cacheDirectory: "./.fast-prepared",
+});
+
+const html = await renderer.render({ title: "Request-specific state" });
+```
+
+Preparation writes versioned instructions and a manifest, not rendered state.
+A separate server process can call `loadRenderer({ manifestPath })` with the
+generated directory and no authored template files. Disk I/O is asynchronous;
+loaded pieces are retained in a bounded cache and can be reloaded after eviction.
+The host preloads the entry's conservative referenced-template graph, including
+references in skipped branches, before synchronous WASM execution.
+
+Call `await renderer.refresh()` to activate source changes or a replacement
+generated manifest. Content/compiler identities regenerate affected pieces;
+requests already running retain their original snapshot. Development can opt
+into file watching with `watch: true`; production refresh is explicit.
+Call `await renderer.dispose()` at shutdown to stop watchers, wait for active
+work, and release cached allocations. This does not necessarily shrink WASM memory.
+Existing synchronous APIs, CLI behavior, hydration markers and precomputed chunk
+boundaries remain unchanged. See
+[prepared template pieces](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#prepared-template-pieces)
+for deployment compatibility, update failures, memory-budget exclusions and
+artifact retention.
+
 ## The Rendering Contract
 
 A server-side renderer must produce HTML that follows these conventions so the client-side FAST runtime can hydrate it:

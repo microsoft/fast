@@ -97,6 +97,7 @@ fast convert [options]
 | File | Role |
 |------|------|
 | `bin/fast.js` | CLI entry point — argument parsing, config file loading, file I/O, template scanning, WASM dispatch |
+| `prepared.js` / `prepared.d.ts` | Opt-in asynchronous prepared renderer, portable file store, bounded cache, immutable manifests and development watching |
 | `build-wasm.cjs` | Package build helper that builds the renderer WASM and converter WASM into `wasm/convert/` |
 | `wasm/microsoft_fast_build.js` | WASM-generated JS bindings for the Rust renderer |
 | `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary |
@@ -470,8 +471,8 @@ items borrow existing JSON values. Dataset updates copy only the affected branch
 and per-iteration scope vectors still allocate. Null masking, parent-context
 attribute evaluation, loop shadowing, and both hydration marker formats retain
 their previous behavior. Package exports, WASM signatures, CLI options, and JSON
-state formats are unchanged; there is no prepared-template handle or persistent
-render-plan cache.
+state formats are unchanged in existing APIs. The optional prepared API below
+adds explicitly owned cross-request reuse.
 
 Private structural render plans now cache literal/content/tag operations,
 directive boundaries and expressions, repeat aliases, and custom-element author
@@ -491,8 +492,8 @@ unless rendering initializes more plans between mutations.
 Normal, simulated-stream, and shadow-fragment paths share these plans. Content
 bindings append directly into their current buffer; attribute-value and boolean
 expression evaluators remain shared with the existing implementation. There is
-no serialized plan file or new public API. The WASM exports still rebuild their
-locator for each call, so cross-request retention would need a separate API.
+no change to existing one-shot WASM APIs. Those exports still rebuild their
+locator for each call; cross-request retention uses the separate prepared API.
 Cold single-use definitions can pay compilation overhead and retain more metadata.
 
 Native allocation baselines are collected by an opt-in Rust development example
@@ -502,6 +503,53 @@ preserve cross-language parity; native current-thread allocation volume and
 peak newly-live heap must not be presented as Node RSS or WASM memory usage.
 Cold render measurements include first-use compilation; retained bytes can include
 locator-owned plans as well as output, not just the returned HTML allocation.
+
+## Prepared renderer — `prepared.js`
+
+`prepareRenderer` reads an entry and definition map/files, creates one Rust
+`PreparedCompiler` for the whole registry, and eagerly prepares individual reusable
+pieces. JavaScript does not duplicate template parsing or instruction compilation.
+`loadRenderer` consumes generated artifacts without authored sources.
+
+The host persists `<input/compiler hash>.fastpiece` files before atomically replacing
+`manifest.json`. Manifest descriptors include artifact checksums and conservative
+registered-component dependencies. A SHA-256 generation identifies the complete
+manifest. Component calls reference names, not copied child content, so a changed
+child can reuse unchanged callers. Registry additions/removals affect only source
+pieces mentioning those names. Unchanged artifacts are not rewritten.
+
+Every `render` captures its manifest before awaiting I/O. It loads the entry's
+dependency closure in bounded parallel batches, deduplicating cycles/shared loads.
+This includes statically referenced skipped branches, but excludes unreachable
+definitions; it is not an expanded state-dependent render tree. After loading,
+a request-local WASM `PreparedProgram` pins the same immutable piece records and
+uses the existing evaluator. There is no synchronous filesystem access, render
+restart on misses, second state-evaluation pass, or true network streaming.
+
+The byte-budgeted LRU cache holds generated WASM `PreparedPiece` handles.
+Acquisitions reserve leases before concurrent loads finish; active leases cannot
+be evicted. The default 32 MiB estimated Rust-piece budget can be temporarily
+exceeded by active requests. Zero budget evicts every unpinned piece. Releasing
+request programs before leases allows eviction to free records safely. Source
+inputs, JS objects, compiler work, I/O buffers, allocator overhead and output are
+outside this budget. Disposal waits for requests/refreshes and frees the cache;
+it does not shrink WASM linear memory or delete artifacts.
+
+`refresh` serializes updates and activates a new immutable snapshot only after
+successful preparation/publication. Failed updates reject and leave the prior
+snapshot active. Candidate watchers are installed before publication and replace
+old watchers only on success. Opt-in development watching observes parent
+directories and filters declared files, surviving editor rename-based replacement.
+It coalesces events during refresh without timers. Production uses explicit refresh.
+Content/compiler identities establish correctness; watcher events only trigger
+checking, and an explicit refresh remains necessary if filesystem events are lost.
+Old artifacts remain available to old requests/processes; cross-process cleanup
+belongs to deployment management after those readers finish.
+
+The Rust API remains responsible for artifact decoding/validation, source
+provenance, state/marker semantics and registry classification. The Node package
+adds no runtime npm dependencies. Preparation and artifact loading have costs;
+the API does not promise a cold-start or small-one-shot performance improvement.
 
 ---
 

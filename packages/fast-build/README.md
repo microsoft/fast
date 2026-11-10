@@ -15,6 +15,10 @@ file is required. Existing WASM APIs do not retain plans across separate calls.
 One-shot entry templates use the same instruction cursor without building an
 entry instruction vector.
 
+For reuse across requests or deployments, the optional
+[`prepared.js` API](#prepared-template-pieces) eagerly prepares individual templates,
+persists their instructions, and manages a bounded in-memory piece cache.
+
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
 ## Installation
@@ -32,6 +36,128 @@ Within your JavaScript or TypeScript code, you can then import library APIs like
 ```ts
 import { render } from '@microsoft/fast-build';
 ```
+
+## Prepared template pieces
+
+The opt-in Node API separates preparation from request state. Existing WASM exports
+and CLI commands keep their one-shot behavior.
+
+```js
+import { prepareRenderer } from "@microsoft/fast-build/prepared.js";
+
+const renderer = await prepareRenderer({
+    entryFile: "./entry.html",
+    templateFiles: ["./components.html"],
+    cacheDirectory: "./.fast-prepared",
+    maxMemoryBytes: 32 * 1024 * 1024,
+});
+
+try {
+    const html = await renderer.render({ title: "First request" });
+    const chunks = await renderer.render(
+        { title: "Another request" },
+        { stream: true, markersV2: false, attributeNameStrategy: "camelCase" },
+    );
+} finally {
+    await renderer.dispose();
+}
+```
+
+Provide exactly one of `entry` (an HTML string) and `entryFile`. Definitions may
+come from `templates`, a name-to-string/metadata map, and/or explicit `templateFiles`
+containing `<f-template>` declarations. Duplicate names are rejected.
+`refresh({ templates: replacementMap })` replaces the definition map, not individual
+entries. In-memory source inputs are copied and retained for later refreshes;
+use file inputs or `loadRenderer` to avoid retaining authored source maps.
+
+### Generated artifacts and deployment
+
+Preparation writes content-addressed `<id>.fastpiece` files and a `manifest.json`
+into `cacheDirectory`. Files contain actual prepared instructions, source needed
+for diagnostics, parsed attributes, body plans, and component references. They
+contain no request state, hydration counters, or rendered HTML. Store this directory
+as a trusted application build artifact, not as user-uploaded input.
+
+A build step can call `prepareRenderer`, then `dispose`, and deploy the resulting
+directory without the authored template files. A separate process loads it with:
+
+```js
+import { loadRenderer } from "@microsoft/fast-build/prepared.js";
+
+const renderer = await loadRenderer({
+    manifestPath: "./.fast-prepared/manifest.json",
+    maxMemoryBytes: 32 * 1024 * 1024,
+});
+const html = await renderer.render({ title: "Request-specific state" });
+await renderer.dispose();
+```
+
+Artifacts must match the runtime's compiler fingerprint and instruction-format
+version. The fingerprint covers Rust sources, the crate manifest, and lockfile;
+use the same compiler build for generation and serving. Artifact checksums,
+source ranges, identities, and dependency membership are validated. Missing,
+corrupt, or incompatible generated files reject the request; `loadRenderer`
+does not silently fall back to source compilation.
+
+### Changes and development watching
+
+`await renderer.refresh()` rereads source files and regenerates changed pieces.
+With `loadRenderer`, it instead reloads the generated manifest. Production
+activation is explicit; files are not checked on every request.
+
+Opt into automatic source-file updates during development:
+
+```js
+const renderer = await prepareRenderer({
+    entryFile: "./entry.html",
+    templateFiles: ["./components.html"],
+    cacheDirectory: "./.fast-prepared",
+    watch: true,
+    onError: error => console.error("Template refresh failed:", error),
+});
+```
+
+Watching parent directories also detects atomic file replacement by editors.
+Watcher events trigger content hashing; timestamps are not cache identities.
+Call `refresh()` explicitly if filesystem events are lost. Watch failures and
+invalid updates call `onError`, or `process.emitWarning` when omitted. Failed
+rebuilds retain the active snapshot. Syntax diagnostics inside skipped bodies
+remain deferred until those bodies execute.
+
+An identity includes authored content, host/shadow metadata, compiler/format
+identity, and registry membership of custom element names present in the piece.
+Changing a child's content regenerates that child without recompiling unchanged
+callers: component calls remain references rather than inlined copies.
+Adding/removing a registered name also regenerates pieces whose classification
+depends on that name. Artifacts are completed before an atomic manifest replacement.
+Requests capture a manifest snapshot before loading, so concurrent refreshes never
+mix old and new pieces in one request. Old artifacts remain on disk for old snapshots;
+remove obsolete generations only after all older readers/workers have finished.
+Keep an active renderer's artifact directory stable; do not retarget or replace
+that directory while requests still need its files.
+
+### Memory and execution boundaries
+
+File reads/writes are asynchronous. Before entering WASM, each request loads the
+entry's conservative referenced-template graph, including references in skipped
+branches. Unreachable registered templates are not loaded. This is not a
+state-dependent expanded component tree, and does not evaluate conditions twice.
+Execution then uses the existing synchronous evaluator and fresh request state.
+`stream: true` returns the existing precomputed chunks, not live network streaming.
+
+Loaded pieces use a least-recently-used cache with a default estimated Rust-memory
+budget of 32 MiB. Active requests pin pieces and may temporarily exceed that budget;
+`maxMemoryBytes: 0` drops all unpinned pieces. Shared concurrent loads are deduplicated.
+`renderer.memoryUsage` reports estimated piece bytes, piece count, and pending loads.
+The budget excludes JavaScript objects, retained source inputs, preparation work,
+temporary file buffers, allocator overhead, and output. It is not a process-RSS cap.
+
+Eviction drops the memory representation, not the durable artifact. A later request
+can reload it without source preparation. `dispose()` stops watchers, waits for
+active requests and refreshes, and releases cached WASM allocations; it leaves
+generated files intact. Freed WASM allocations are reusable, but linear memory does
+not necessarily shrink. Preparation and JSON artifact loading have costs; small
+one-shot templates are not guaranteed to benefit.
 
 ## CLI usage
 

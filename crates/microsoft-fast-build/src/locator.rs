@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::OnceLock;
+use std::sync::{Arc, OnceLock};
 use crate::attribute::{find_tag_end, parse_element_attribute_parts, parse_element_attributes};
 use crate::error::RenderError;
 use crate::code_escape::escape_code_sample_elements;
@@ -23,18 +23,20 @@ pub struct FTemplate {
     pub bindings: Vec<crate::BindingMetadata>,
 }
 
-#[derive(Debug)]
-struct TemplateDefinition {
-    content: String,
-    original_content: Option<String>,
-    shadowroot_attributes: Vec<(String, Option<String>)>,
-    host_attributes: Vec<(String, Option<String>)>,
-    plan: OnceLock<RenderPlan>,
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+pub(crate) struct TemplateDefinition {
+    pub(crate) content: String,
+    pub(crate) original_content: Option<String>,
+    pub(crate) shadowroot_attributes: Vec<(String, Option<String>)>,
+    pub(crate) host_attributes: Vec<(String, Option<String>)>,
+    #[serde(skip)]
+    pub(crate) plan: OnceLock<RenderPlan>,
+    #[serde(skip)]
     shadowroot_markup: OnceLock<String>,
 }
 
 impl TemplateDefinition {
-    fn new(
+    pub(crate) fn new(
         content: &str,
         shadowroot_attributes: Vec<(String, Option<String>)>,
         host_attributes: Vec<(String, Option<String>)>,
@@ -49,10 +51,33 @@ impl TemplateDefinition {
             shadowroot_markup: OnceLock::new(),
         }
     }
+
+    pub(crate) fn shadowroot_markup(&self) -> &str {
+        self.shadowroot_markup.get_or_init(|| {
+            crate::directive::build_shadowroot_template_attrs(&self.shadowroot_attributes)
+        })
+    }
+
+    pub(crate) fn shadowroot_markup_bytes(&self) -> usize {
+        self.shadowroot_markup().len()
+    }
+}
+
+impl Clone for TemplateDefinition {
+    fn clone(&self) -> Self {
+        Self {
+            content: self.content.clone(),
+            original_content: self.original_content.clone(),
+            shadowroot_attributes: self.shadowroot_attributes.clone(),
+            host_attributes: self.host_attributes.clone(),
+            plan: OnceLock::new(),
+            shadowroot_markup: OnceLock::new(),
+        }
+    }
 }
 
 pub struct Locator {
-    templates: HashMap<String, TemplateDefinition>,
+    templates: HashMap<String, Arc<TemplateDefinition>>,
     has_plans: AtomicBool,
 }
 
@@ -146,11 +171,11 @@ impl Locator {
             let (_, template) = entries.into_iter().next().expect(
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
-            templates.insert(element, TemplateDefinition::new(
+            templates.insert(element, Arc::new(TemplateDefinition::new(
                 &template.content,
                 template.shadowroot_attributes,
                 template.host_attributes,
-            ));
+            )));
         }
 
         Ok(Locator {
@@ -169,9 +194,9 @@ impl Locator {
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, content)| (name, TemplateDefinition::new(
+            .map(|(name, content)| (name, Arc::new(TemplateDefinition::new(
                 &content, Vec::new(), Vec::new(),
-            )))
+            ))))
             .collect();
         Locator {
             templates,
@@ -199,7 +224,7 @@ impl Locator {
             .into_iter()
             .map(|(name, (content, shadowroot_attributes, host_attributes))| (
                 name,
-                TemplateDefinition::new(&content, shadowroot_attributes, host_attributes),
+                Arc::new(TemplateDefinition::new(&content, shadowroot_attributes, host_attributes)),
             ))
             .collect();
         Locator {
@@ -218,9 +243,9 @@ impl Locator {
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.invalidate_plans();
-        self.templates.insert(element_name.to_string(), TemplateDefinition::new(
+        self.templates.insert(element_name.to_string(), Arc::new(TemplateDefinition::new(
             content, Vec::new(), Vec::new(),
-        ));
+        )));
     }
 
     /// Add a template directly with shadowroot-prefixed attributes and host
@@ -242,11 +267,11 @@ impl Locator {
         host_attrs: &[(String, Option<String>)],
     ) {
         self.invalidate_plans();
-        self.templates.insert(element_name.to_string(), TemplateDefinition::new(
+        self.templates.insert(element_name.to_string(), Arc::new(TemplateDefinition::new(
             content,
             collect_shadowroot_attributes(shadowroot_attrs),
             host_attrs.to_vec(),
-        ));
+        )));
     }
 
     pub fn get_template(&self, element_name: &str) -> Option<&str> {
@@ -277,6 +302,12 @@ impl Locator {
         self.templates.contains_key(element_name)
     }
 
+    pub(crate) fn from_prepared(
+        templates: HashMap<String, Arc<TemplateDefinition>>,
+    ) -> Self {
+        Self { templates, has_plans: AtomicBool::new(true) }
+    }
+
     pub(crate) fn render_plan(&self, element_name: &str) -> Option<&RenderPlan> {
         self.templates.get(element_name).map(|template| {
             template.plan.get_or_init(|| {
@@ -289,11 +320,7 @@ impl Locator {
 
     pub(crate) fn shadowroot_markup(&self, element_name: &str) -> &str {
         self.templates.get(element_name).expect("template was found")
-            .shadowroot_markup.get_or_init(|| {
-                crate::directive::build_shadowroot_template_attrs(
-                    self.get_shadowroot_attributes(element_name),
-                )
-            })
+            .shadowroot_markup()
     }
 
     fn invalidate_plans(&mut self) {
@@ -304,7 +331,7 @@ impl Locator {
         for template in self.templates.values_mut() {
             #[cfg(test)]
             INVALIDATION_VISITS.with(|visits| visits.set(visits.get() + 1));
-            template.plan.take();
+            Arc::make_mut(template).plan.take();
         }
     }
 }

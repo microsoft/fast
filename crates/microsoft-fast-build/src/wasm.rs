@@ -8,6 +8,7 @@ use crate::{
     render_template_without_state, Locator,
 };
 use std::collections::HashMap;
+use std::sync::Arc;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 
@@ -69,6 +70,138 @@ fn metadata_error(message: &str) -> JsValue {
 
 fn named_metadata_error(name: &str, message: &str) -> JsValue {
     js_error("invalid-template-metadata", message, None, Some(name))
+}
+
+/// Identity of the compiler used for generated prepared pieces.
+#[wasm_bindgen]
+pub fn prepared_compiler_id() -> String {
+    crate::PREPARED_COMPILER_ID.to_string()
+}
+
+fn prepared_definition(
+    template_json: &str,
+) -> Result<(String, Vec<(String, Option<String>)>, Vec<(String, Option<String>)>), JsValue> {
+    let template = json::parse(template_json).map_err(|error| metadata_error(&error.message))?;
+    let (content, shadow, host) = match template {
+        json::JsonValue::String(content) => (content, Vec::new(), Vec::new()),
+        json::JsonValue::Object(template) => parse_template_metadata("prepared piece", &template)?,
+        _ => return Err(metadata_error("prepared template must be a string or metadata object")),
+    };
+    Ok((content, shadow, host))
+}
+
+/// Batch compiler. Registry setup is performed once, not once per piece.
+#[wasm_bindgen(js_name = PreparedCompiler)]
+pub struct WasmPreparedCompiler {
+    inner: crate::PreparedCompiler,
+}
+
+#[wasm_bindgen(js_class = PreparedCompiler)]
+impl WasmPreparedCompiler {
+    #[wasm_bindgen(constructor)]
+    pub fn new(names_json: &str) -> Result<WasmPreparedCompiler, JsValue> {
+        let names = match json::parse(names_json).map_err(|error| metadata_error(&error.message))? {
+            json::JsonValue::Array(names) => names.into_iter().map(|name| match name {
+                json::JsonValue::String(name) => Ok(name),
+                _ => Err(metadata_error("registered names must be strings")),
+            }).collect::<Result<Vec<_>, _>>()?,
+            _ => return Err(metadata_error("registered names must be an array")),
+        };
+        Ok(Self { inner: crate::PreparedCompiler::new(&names) })
+    }
+
+    pub fn identity(&self, template_json: &str) -> Result<String, JsValue> {
+        let (content, shadow, host) = prepared_definition(template_json)?;
+        Ok(self.inner.identity(&content, &shadow, &host))
+    }
+
+    pub fn compile(&self, template_json: &str) -> Result<WasmPreparedPiece, JsValue> {
+        let (content, shadow, host) = prepared_definition(template_json)?;
+        self.inner.compile(&content, shadow, host)
+            .map(|inner| WasmPreparedPiece { inner: Arc::new(inner) })
+            .map_err(render_error)
+    }
+}
+
+/// A reusable, portable prepared template. Call `free()` when its memory-cache lease ends.
+#[wasm_bindgen(js_name = PreparedPiece)]
+pub struct WasmPreparedPiece {
+    inner: Arc<crate::PreparedPiece>,
+}
+
+#[wasm_bindgen(js_class = PreparedPiece)]
+impl WasmPreparedPiece {
+    /// Restore validated instructions without compiling them.
+    pub fn load(bytes: &[u8]) -> Result<WasmPreparedPiece, JsValue> {
+        crate::PreparedPiece::from_bytes(bytes)
+            .map(|inner| Self { inner: Arc::new(inner) })
+            .map_err(render_error)
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn id(&self) -> String {
+        self.inner.id().to_string()
+    }
+
+    /// JSON array of registered component dependencies.
+    #[wasm_bindgen(getter)]
+    pub fn dependencies(&self) -> String {
+        json_string_array(&self.inner.dependencies())
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn memory_bytes(&self) -> usize {
+        self.inner.memory_bytes()
+    }
+
+    pub fn serialize(&self) -> Vec<u8> {
+        self.inner.to_bytes()
+    }
+}
+
+/// A request-local set of strong piece leases. Output never retains these leases.
+#[wasm_bindgen(js_name = PreparedProgram)]
+pub struct WasmPreparedProgram {
+    entry: Arc<crate::PreparedPiece>,
+    templates: HashMap<String, Arc<crate::PreparedPiece>>,
+}
+
+#[wasm_bindgen(js_class = PreparedProgram)]
+impl WasmPreparedProgram {
+    #[wasm_bindgen(constructor)]
+    pub fn new(entry: &WasmPreparedPiece) -> Self {
+        Self { entry: Arc::clone(&entry.inner), templates: HashMap::new() }
+    }
+
+    pub fn add_template(&mut self, name: &str, piece: &WasmPreparedPiece) {
+        self.templates.insert(name.to_string(), Arc::clone(&piece.inner));
+    }
+
+    /// Render entry HTML or a JSON array of legacy chunks using fresh request state.
+    pub fn render(
+        &self,
+        state: Option<String>,
+        attribute_name_strategy: Option<String>,
+        stream: bool,
+        markers_v2: bool,
+    ) -> Result<String, JsValue> {
+        let state = match state {
+            Some(state) => json::parse(&state).map_err(|error| render_error(crate::RenderError::JsonParse {
+                message: error.message,
+            }))?,
+            None => crate::empty_state(),
+        };
+        let config = build_config(attribute_name_strategy.as_deref(), markers_v2)?;
+        let program = crate::PreparedProgram::new(
+            Arc::clone(&self.entry), self.templates.clone(),
+        ).map_err(render_error)?;
+        if stream {
+            program.render_stream(&state, config.as_ref())
+                .map(|chunks| json_string_array(&chunks)).map_err(render_error)
+        } else {
+            program.render(&state, config.as_ref()).map_err(render_error)
+        }
+    }
 }
 
 #[wasm_bindgen(typescript_custom_section)]

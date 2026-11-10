@@ -43,7 +43,9 @@ render_template(template, state_str)
 |--------|------|
 | `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
-| `plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and parsed tag/directive metadata |
+| `plan.rs` | Shared instruction cursor, cached plans, lazy bodies, and parsed tag/directive metadata |
+| `prepared.rs` | Explicit batch compiler, portable pieces, validated flat artifacts, shared immutable program snapshots |
+| `build.rs` | Deterministic compiler fingerprint over Rust sources, manifest and lockfile |
 | `node.rs` | Plan evaluation and shared atomic plain-tag handling; content bindings append directly into the current output buffer |
 | `streaming.rs` | Evaluation of the same plans into precomputed non-empty HTML chunks |
 | `directive.rs` | `Directive` / `RenderEvent` enums, monotonic `next_event` scanner, and directive renderers |
@@ -79,7 +81,8 @@ Named definitions keep a `OnceLock<RenderPlan>` inside their private locator
 record. Each directive or light-DOM body stores a source range and its own lazy
 plan. The first executed iteration compiles the body; later iterations and
 native renders using the same locator reuse it. Skipped bodies stay uncompiled.
-There is no global cache, generated file, new public handle, or serialized plan.
+The existing one-shot path adds no global cache or generated file. The optional
+prepared-piece path below exposes explicit ownership and portable artifacts.
 
 Instructions describe literal ranges, trimmed content expressions, parsed plain
 tags and original binding counts, conditionals, repeat aliases/collections, and
@@ -128,6 +131,50 @@ current output buffer. Recursive directives still materialize their own strings;
 this is not a single buffered sink for the entire component tree.
 
 ---
+
+## Prepared pieces — `prepared.rs`
+
+The optional prepared path separates immutable compilation from request execution.
+`PreparedCompiler` constructs the name registry once per batch; `identity` hashes
+authored source, host/shadow attributes, format/compiler identity, and membership
+of custom element names present in that source. This includes unresolved names:
+registering one later changes affected identities. Unrelated names and referenced
+components' contents do not enter a caller's identity.
+
+`compile` collects the existing instruction cursor and eagerly prepares each
+directive/light-DOM body, but does not expand referenced components or evaluate
+state. Invalid syntax remains a deferred instruction, even inside skipped bodies.
+The optional path limits structural body depth to 128. Existing one-shot paths
+retain their previous lazy compilation behavior and have no new preparation limit.
+
+Pieces share `Arc<TemplateDefinition>` records. `PreparedProgram` links a
+dependency-closed map and entry piece, validates registry membership, and executes
+the same normal/chunk evaluators. Requests supply fresh state, overlays, loop frames,
+configuration and hydration counters. No rendered values enter the piece.
+Mutable legacy locators use copy-on-write records when invalidating shared work;
+prepared program locators remain private and immutable.
+
+Serialization uses a versioned JSON envelope with a flat list of body-plan records
+identified by absolute source offsets. Instruction ranges within a plan remain
+relative to its body. `OnceLock` caches are omitted from individual records and
+restored from the flat list. This avoids deeply nested JSON or redundant ASTs.
+Loading verifies compiler/format identity, source identity/escaping, registry
+classifications, source/attribute ranges, deferred positions and body completeness
+before constructing the program. Artifact files are trusted application build
+outputs, not an untrusted-template sandbox or signed-code format.
+
+`build.rs` hashes source paths/bytes, the crate manifest and dependency lockfile;
+`PREPARED_COMPILER_ID` therefore changes when renderer sources change even before
+a package version bump. Paths are relative and normalized for Windows. The
+fingerprint deliberately prefers conservative invalidation over stale reuse.
+Both instruction format and compiler identity must match at load time.
+
+Filesystem persistence, asynchronous graph loading, memory admission, manifest
+publication and development watching belong to the Node host, not WASM.
+`PreparedPiece::memory_bytes` estimates retained Rust structures/string capacities;
+it excludes allocator overhead, host objects, request temporaries and output.
+Native callers can implement their own persistence/cache policy with the same
+piece format and immutable program ownership.
 
 ## Simulated streaming — `streaming.rs`
 

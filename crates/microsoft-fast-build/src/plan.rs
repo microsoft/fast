@@ -15,12 +15,12 @@ std::thread_local! {
     static COMPILATIONS: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct RenderPlan {
     pub(crate) instructions: Vec<Instruction>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) enum Instruction {
     Literal(Range<usize>),
     Tag(Tag),
@@ -35,10 +35,11 @@ pub(crate) enum Instruction {
     Deferred(Directive),
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Body {
     pub(crate) range: Range<usize>,
-    plan: OnceLock<RenderPlan>,
+    #[serde(skip)]
+    pub(crate) plan: OnceLock<RenderPlan>,
 }
 
 impl Body {
@@ -55,7 +56,7 @@ impl Body {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Tag {
     pub(crate) range: Range<usize>,
     pub(crate) attributes: AttributePlan,
@@ -64,7 +65,7 @@ pub(crate) struct Tag {
     pub(crate) stripped: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct When {
     pub(crate) at: usize,
     pub(crate) expression: String,
@@ -85,7 +86,7 @@ impl When {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Repeat {
     pub(crate) at: usize,
     pub(crate) variable: String,
@@ -114,7 +115,7 @@ impl Repeat {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Element {
     pub(crate) at: usize,
     pub(crate) name: String,
