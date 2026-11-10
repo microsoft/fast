@@ -245,7 +245,7 @@ would still rescan long suffixes before each adjacent plain tag. Both rendering
 loops consume each event once, and no second discovery pass occurs before
 dispatch. This removes the quadratic absent-pattern searches for adjacent
 known hosts and plain tags. It does not claim that every recursive renderer
-path is linear: matching directive bodies, root-state clones, and repeated
+path is linear: matching directive bodies, dataset branch copies, and repeated
 template/attribute parsing remain separate optimization targets.
 
 The scanner intentionally preserves the old string-scanner semantics rather
@@ -296,14 +296,37 @@ Both return `RenderError::EmptyBinding` for blank expressions and `RenderError::
 
 ## State resolution — `context.rs`
 
-`resolve_value(expr, root, loop_vars)` resolves an expression string to an `Option<JsonValue>`.
+`resolve_value(expr, root, loop_vars)` resolves an expression string to an
+`Option<Cow<'_, JsonValue>>`. The private `State` view accepts either a borrowed
+`JsonValue` root or a `ChildState` overlay; public render APIs still accept the
+same `JsonValue` references and JSON inputs.
 
 **Resolution order:**
 1. Scan `loop_vars` in reverse (innermost scope first). If the expression matches a variable name exactly, return its value.
 2. If the expression is `varname.prop.path`, and `varname` matches a loop variable, apply `get_nested_property` to the loop variable's value with the remaining path.
-3. Fall back to `get_nested_property(root, expr)`.
+3. Fall back to `root.lookup(expr)`.
 
-`get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices. The implementation traverses the tree via references and only clones the final leaf value — no intermediate sub-trees are cloned. The one exception is the synthesised `length` value for arrays, which is returned early as an owned `JsonValue::Number` only when `length` is the final segment (for example, `items.length`). Additional segments after `length` do not resolve and return `None` (for example, `items.length.foo`).
+`get_nested_property` walks dot-separated path segments without allocating a
+segment vector. Object properties and numeric array indices (e.g. `list.0`)
+return borrowed values, including whole objects and arrays. Only a final array
+`length` segment synthesizes an owned `JsonValue::Number`; additional segments
+after `length` do not resolve (for example, `items.length.foo`).
+
+`ChildState` stores only attribute-derived overrides and a borrowed object parent.
+Lookup checks the first path segment in the overrides before consulting the
+parent. An explicit null or an overridden object missing a nested property masks
+the parent; this is not a recursive merge. Non-object parents are not inherited
+when attributes create an object child state. An element without state-relevant
+attributes still passes its root through unchanged.
+
+Parent fallback walks the overlay chain, trading additional inherited-key lookups
+in deeply nested attributed elements for elimination of whole-root copies.
+
+Attribute expressions resolve against the parent state and loop scope, not the
+partially constructed child. `data-*` attributes use copy-on-write for the
+`dataset` branch only, preserving inherited siblings without copying unrelated
+root fields. Dataset members remain owned `JsonValue`s, so inserting a structured
+bound value can still copy that value.
 
 Callers decide how to handle unresolved values:
 - Content bindings (`{{expr}}` / `{{{expr}}}`) render an empty string.
@@ -313,7 +336,12 @@ Callers decide how to handle unresolved values:
 
 ### Loop variable scoping
 
-`loop_vars` is a `Vec<(String, JsonValue)>`. Each `<f-repeat>` iteration pushes one entry. Because `resolve_value` scans in reverse, the innermost repeat's variable shadows outer ones. Root state is always accessible for any key that is not shadowed.
+`LoopVars` is a slice of borrowed names and `Cow<JsonValue>` values. Each
+`<f-repeat>` iteration builds a small vector of references to outer values and
+the current item, plus an owned numeric `$index`; neither the collection nor
+item payloads are cloned. Reverse lookup preserves innermost alias and `$index`
+precedence. A matching alias masks outer scopes even when its requested nested
+property is missing. Root state remains accessible for unshadowed keys.
 
 ---
 
@@ -382,7 +410,12 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 1. **Locate the tag boundary** — `find_tag_end` finds the `>` that closes the opening tag, respecting quoted attribute values.
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
-4. **Build child state** — the child state always starts with the **current root state** as a base, then per-element HTML attributes are resolved and overlaid on top (attribute-derived values take precedence). This ensures all unbound state keys propagate through to every descendant custom element automatically — a child element can reference any state key from its ancestors without requiring explicit attribute bindings. As an optimisation, when the element has no state-relevant attributes (only `@event`, `?bool`, or directive attributes), the root state is passed through by reference without cloning.
+4. **Build child state** — a borrowed view of the **current object root state**
+   supplies inherited values, while per-element HTML attributes populate a small
+   override map (attribute-derived values take precedence). Unbound state keys
+   propagate to descendant custom elements without copying the root. When there
+   are no state-relevant attributes (only `@event`, `?bool`, or directive
+   attributes), the root is passed through directly, including non-object roots.
    - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
    - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
    - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`. When the `attribute-name-strategy` is set to `"camelCase"`, dashed attribute names that are not handled by specialized lookup tables are converted to camelCase instead: `selected-user-id` becomes `selectedUserId`.
@@ -893,11 +926,15 @@ all renderer work.
 
 See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for commands,
 timing/RSS methodology, explicit scaling checks, and baseline provenance.
-Post-scanner native CPU profiles and bounded packaged-WASM measurements identify
-whole-root cloning in `build_custom_element_child_root` as the strongest next
-target for repeat/attribute-overlay workloads. The repeat root contains the
-whole items array, so each attributed child copies state proportional to the
-number of items. The no-attribute path avoids that copy and must remain intact.
+Historical post-scanner profiles identified whole-root cloning in
+`build_custom_element_child_root` as the dominant repeat/attribute-overlay cost:
+each attributed repeated child copied the root's entire items array. The current
+renderer replaces that copy with borrowed child overlays, borrowed lookup
+results, and borrowed repeat values. The no-attribute path remains intact.
+Feature-gated allocation regressions verify that unused inherited payload does
+not increase attributed-child allocations and that doubling repeated children
+does not recreate quadratic allocation growth. These checks cover allocation
+volume, not universal timing or memory guarantees.
 
 CPU profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
 frame pointers; that path introduces no production counters or allocator changes.

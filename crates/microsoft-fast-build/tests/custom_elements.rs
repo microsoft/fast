@@ -2,6 +2,61 @@ mod common;
 use common::{make_locator, empty_root};
 use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError, RenderConfig, AttributeNameStrategy};
 
+#[test]
+fn nested_state_overrides_preserve_nulls_dataset_siblings_and_parent_state() {
+    use microsoft_fast_build::{render_entry_stream_with_locator, render_entry_with_locator, JsonValue};
+    use std::collections::HashMap;
+
+    let locator = make_locator(&[
+        ("my-outer", r#"<my-inner label="{{other}}" :selected="{{absent}}" data-name="local"></my-inner><i data-label="{{label}}" data-keep="{{dataset.keep}}"></i>"#),
+        ("my-inner", r#"<b data-label="{{label}}" data-selected="{{selected}}" data-name="{{dataset.name}}" data-keep="{{dataset.keep}}" data-other="{{other}}"></b>"#),
+    ]);
+    let root = JsonValue::Object(HashMap::from([
+        ("label".into(), JsonValue::String("root".into())),
+        ("other".into(), JsonValue::String("child".into())),
+        ("selected".into(), JsonValue::String("parent".into())),
+        ("absent".into(), JsonValue::Null),
+        ("dataset".into(), JsonValue::Object(HashMap::from([
+            ("name".into(), JsonValue::String("root".into())),
+            ("keep".into(), JsonValue::String("inherited".into())),
+        ]))),
+    ]));
+    let before = root.clone();
+    for mode in [false, true] {
+        let config = RenderConfig::new().with_markers_v2(mode);
+        let entry = r#"<my-outer label="outer"></my-outer>"#;
+        let html = render_entry_with_locator(entry, &root, &locator, Some(&config)).unwrap();
+        assert!(html.contains(r#"<b data-label="child" data-name="local" data-keep="inherited" data-other="child""#), "{html}");
+        assert!(html.contains(r#"<i data-label="outer" data-keep="inherited""#), "{html}");
+        let chunks = render_entry_stream_with_locator(entry, &root, &locator, Some(&config)).unwrap();
+        assert_eq!(chunks.concat(), html);
+        assert_eq!(root, before);
+    }
+}
+
+#[test]
+fn attribute_overlays_do_not_inherit_array_root_indices_or_length() {
+    let locator = make_locator(&[
+        ("my-item", r#"<b data-first="{{0.name}}" data-length="{{length}}" data-label="{{label}}"></b>"#),
+    ]);
+    for mode in [false, true] {
+        let config = RenderConfig::new().with_markers_v2(mode);
+        for (entry, expected) in [
+            ("<my-item></my-item>", r#"<b data-first="first" data-length="1""#),
+            (r#"<my-item label="override"></my-item>"#, r#"<b data-label="override""#),
+        ] {
+            let html = render_entry_template_with_locator(
+                entry, r#"[{"name":"first"}]"#, &locator, Some(&config),
+            ).unwrap();
+            assert!(html.contains(expected), "{html}");
+            let chunks = microsoft_fast_build::render_entry_template_stream_with_locator(
+                entry, r#"[{"name":"first"}]"#, &locator, Some(&config),
+            ).unwrap();
+            assert_eq!(chunks.concat(), html);
+        }
+    }
+}
+
 // ── attribute → state mapping ─────────────────────────────────────────────────
 
 #[test]

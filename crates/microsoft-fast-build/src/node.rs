@@ -1,4 +1,4 @@
-use crate::json::JsonValue;
+use crate::context::{LoopVars, State};
 use crate::error::RenderError;
 use crate::config::RenderConfig;
 use crate::content::{render_triple_brace, render_double_brace};
@@ -17,8 +17,8 @@ use crate::attribute::{
 /// root state, with any state-relevant attributes overlaid on top.
 pub fn render_node(
     template: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     mut hydration: Option<&mut HydrationScope>,
     is_entry: bool,
@@ -55,8 +55,8 @@ pub(crate) fn process_plain_html_tag(
     template: &str,
     pos: usize,
     tag_pos: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     hydration: Option<&mut HydrationScope>,
     result: &mut String,
 ) -> usize {
@@ -104,8 +104,8 @@ pub(crate) fn process_plain_html_tag(
 fn process_directive(
     dir_chunk: Directive,
     template: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     is_entry: bool,

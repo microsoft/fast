@@ -458,10 +458,20 @@ for exact commands, workload sizes, measurement limitations, and later milestone
 
 Post-scanner profiling combines bounded measurements of the actual packaged
 WASM with separate symbolized native render/locator phases. Repeat fixtures
-and attribute-overlay controls expose the cost of copying child state; native
+and attribute-overlay controls exposed the cost of copying child state; native
 setup percentages are not treated as end-to-end WASM percentages. The recorded
 outputs are checked against native rendering. Profiling does not alter this
 package's production build, exports, or streaming behavior.
+
+The Rust renderer now uses private borrowed state views for normal, simulated
+stream, and shadow-fragment rendering. Custom elements store only attribute
+overrides and read inherited values through their parent; bindings and repeat
+items borrow existing JSON values. Dataset updates copy only the affected branch,
+and per-iteration scope vectors still allocate. Null masking, parent-context
+attribute evaluation, loop shadowing, and both hydration marker formats retain
+their previous behavior. Package exports, WASM signatures, CLI options, and JSON
+state formats are unchanged; there is no prepared-template handle or persistent
+render-plan cache.
 
 Native allocation baselines are collected by an opt-in Rust development example
 and a fresh-process runner under the crate's `benches/` directory. The npm CLI
