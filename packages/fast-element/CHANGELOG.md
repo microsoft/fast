@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 02 Nov 2026 18:49:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 11 Nov 2026 04:24:47 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.1.4
+
+Wed, 11 Nov 2026 04:24:47 GMT
+
+### Patches
+
+- Preserve default-slot fallback when conditional or empty light-DOM bindings render no content. (7559015+janechu@users.noreply.github.com)
 
 ## 3.1.3
 
