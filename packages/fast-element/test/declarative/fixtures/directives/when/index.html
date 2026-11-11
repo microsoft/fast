@@ -53,8 +53,10 @@
         <!-- when false with repeat -->
         <test-element-when-false-repeat id="when-false-repeat"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-when-false-repeat>
         <!-- event -->
-        <test-element-event id="event-show" show><template shadowrootmode="open" shadowroot="open"><!--fe:b--><button data-fe="1">Click me</button><!--fe:/b--></template></test-element-event>
+        <test-element-event id="event-show" show><template shadowrootmode="open" shadowroot="open"><!--fe:b--><button type="button" data-fe="1">Click me</button><!--fe:/b--></template></test-element-event>
         <test-element-event id="event-hide"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-event>
+        <test-conditional-slot id="slot-hidden"><template shadowrootmode="open" shadowroot="open"><test-slot-fallback><template shadowrootmode="open" shadowroot="open"><slot><span class="fallback">Fallback</span></slot></template><!--fe:b--><!--fe:/b--></test-slot-fallback></template></test-conditional-slot>
+        <test-conditional-slot id="slot-shown" show><template shadowrootmode="open" shadowroot="open"><test-slot-fallback><template shadowrootmode="open" shadowroot="open"><slot><span class="fallback">Fallback</span></slot></template><!--fe:b--><span>Provided</span><!--fe:/b--></test-slot-fallback></template></test-conditional-slot>
 <!-- multiple -->
  <f-template name="test-element-multiple">
     <template>Hello <f-when value="{{planet == 'earth'}}">world</f-when><f-when value="{{planet == 'pluto'}}">pluto</f-when><f-when value="{{planet == 'mars'}}">mars</f-when></template>
@@ -111,13 +113,13 @@
                     <progress></progress>
                 </f-when>
                 <f-when value="{{!showProgress}}">
-                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
+                    <button type="button" ?disabled="{{!enableContinue}}" @click="{handleClick()}">
                         {{strings.continueButtonText}}
                     </button>
                 </f-when>
             </f-when>
             <f-when value="{{error}}">
-                <button>{{strings.retryButtonText}}</button>
+                <button type="button">{{strings.retryButtonText}}</button>
             </f-when>
         </div>
     </template>
@@ -128,7 +130,13 @@
 </f-template>
 <!-- event -->
 <f-template name="test-element-event">
-    <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
+    <template><f-when value="{{show}}"><button type="button" @click="{handleClick()}">Click me</button></f-when></template>
+</f-template>
+<f-template name="test-slot-fallback">
+    <template><slot><span class="fallback">Fallback</span></slot></template>
+</f-template>
+<f-template name="test-conditional-slot">
+    <template><test-slot-fallback><f-when value="{{show}}"><span>Provided</span></f-when></test-slot-fallback></template>
 </f-template>
 
         <script type="module" src="./main.ts"></script>

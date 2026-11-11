@@ -71,7 +71,7 @@ test("sibling views avoid traversal setup and native factory-index arrays", asyn
                 )
                     preserved++;
                 if (
-                    targets.content.nodeType !== Node.TEXT_NODE ||
+                    targets.content.nodeType !== Node.COMMENT_NODE ||
                     targets.content.textContent !== ""
                 )
                     throw new Error("Empty content target lost");

@@ -5,6 +5,188 @@ test.describe("The HTML binding directive", () => {
         await page.goto("/");
     });
 
+    for (const mode of ["client", "native", "legacy"]) {
+        for (const initialShow of [false, true]) {
+            test(`preserves default-slot fallback with ${mode} conditional content initially ${initialShow}`, async ({
+                page,
+            }) => {
+                const result = await page.evaluate(
+                    async ({ mode, initialShow }) => {
+                        // @ts-expect-error: Client module.
+                        const {
+                            html,
+                            when,
+                            Observable,
+                            Updates,
+                            enableHydration,
+                            markers_v2,
+                        } = await import("/main.js");
+                        enableHydration(
+                            mode === "legacy" ? { markers: markers_v2 } : undefined,
+                        );
+
+                        class Model {
+                            constructor(public show: boolean) {}
+                        }
+                        Observable.defineProperty(Model.prototype, "show");
+
+                        const host = document.createElement("test-slot-host");
+                        host.attachShadow({ mode: "open" }).innerHTML =
+                            "<slot><span>Fallback</span></slot>";
+                        document.body.appendChild(host);
+                        const slot = host.shadowRoot!.querySelector("slot")!;
+                        const fallback = host.shadowRoot!.querySelector("span")!;
+                        const snapshot = () => ({
+                            assigned: slot.assignedNodes().map(node => node.textContent),
+                            fallback: fallback.getClientRects().length > 0,
+                        });
+                        const template = html`${when(
+                            (x: Model) => x.show,
+                            html`Provided`,
+                        )}<span slot="unmatched">Other</span>`;
+                        let serverText: Node | null = null;
+                        let view;
+                        if (mode === "client") {
+                            view = template.create();
+                        } else {
+                            const start =
+                                mode === "legacy" ? "fe-b$$start$$0$$slot$$fe-b" : "fe:b";
+                            const end =
+                                mode === "legacy" ? "fe-b$$end$$0$$slot$$fe-b" : "fe:/b";
+                            host.innerHTML = `<!--${start}-->${initialShow ? "Provided" : ""}<!--${end}--><span slot="unmatched">Other</span>`;
+                            serverText = initialShow
+                                ? host.firstChild!.nextSibling
+                                : null;
+                            view = template.hydrate(host.firstChild!, host.lastChild!);
+                        }
+                        const model = new Model(initialShow);
+                        view.bind(model);
+                        view.appendTo(host);
+                        const initial = snapshot();
+                        const retained =
+                            serverText === null || slot.assignedNodes()[0] === serverText;
+
+                        model.show = true;
+                        await Updates.next();
+                        const shown = snapshot();
+                        model.show = false;
+                        await Updates.next();
+                        const hidden = snapshot();
+                        view.remove();
+                        const removed = snapshot();
+                        view.appendTo(host);
+                        model.show = true;
+                        await Updates.next();
+                        const reinserted = snapshot();
+                        view.dispose();
+                        const disposed = snapshot();
+                        return {
+                            initial,
+                            retained,
+                            shown,
+                            hidden,
+                            removed,
+                            reinserted,
+                            disposed,
+                        };
+                    },
+                    { mode, initialShow },
+                );
+
+                const empty = { assigned: [], fallback: true };
+                const provided = { assigned: ["Provided"], fallback: false };
+                expect(result).toEqual({
+                    initial: initialShow ? provided : empty,
+                    retained: true,
+                    shown: provided,
+                    hidden: empty,
+                    removed: empty,
+                    reinserted: provided,
+                    disposed: empty,
+                });
+            });
+        }
+
+        test(`preserves real text and template transitions in ${mode} slot content`, async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async mode => {
+                // @ts-expect-error: Client module.
+                const { html, Observable, Updates, enableHydration, markers_v2 } =
+                    await import("/main.js");
+                enableHydration(mode === "legacy" ? { markers: markers_v2 } : undefined);
+                class Model {
+                    value: any = "Server";
+                }
+                Observable.defineProperty(Model.prototype, "value");
+                const host = document.createElement("test-text-slot-host");
+                host.attachShadow({ mode: "open" }).innerHTML =
+                    "<slot><span>Fallback</span></slot>";
+                document.body.appendChild(host);
+                const slot = host.shadowRoot!.querySelector("slot")!;
+                const fallback = host.shadowRoot!.querySelector("span")!;
+                const template = html`${(x: Model) => x.value}`;
+                let serverText: Node | null = null;
+                let view;
+                if (mode === "client") {
+                    view = template.create();
+                } else {
+                    host.innerHTML =
+                        mode === "legacy"
+                            ? "<!--fe-b$$start$$0$$text$$fe-b-->Server<!--fe-b$$end$$0$$text$$fe-b-->"
+                            : "<!--fe:b-->Server<!--fe:/b-->";
+                    serverText = host.firstChild!.nextSibling;
+                    view = template.hydrate(host.firstChild!, host.lastChild!);
+                }
+                const model = new Model();
+                view.bind(model);
+                view.appendTo(host);
+                const retained =
+                    serverText === null || slot.assignedNodes()[0] === serverText;
+                const states = [];
+                for (const value of [
+                    null,
+                    0,
+                    false,
+                    "",
+                    undefined,
+                    " ",
+                    html`Template`,
+                    "Text",
+                    null,
+                ]) {
+                    model.value = value;
+                    await Updates.next();
+                    states.push({
+                        text: slot
+                            .assignedNodes()
+                            .map(node => node.textContent)
+                            .join(""),
+                        fallback: fallback.getClientRects().length > 0,
+                    });
+                }
+                view.dispose();
+                return { retained, states, remaining: host.childNodes.length };
+            }, mode);
+
+            expect(result).toEqual({
+                retained: true,
+                states: [
+                    { text: "", fallback: true },
+                    { text: "0", fallback: false },
+                    { text: "false", fallback: false },
+                    { text: "", fallback: true },
+                    { text: "", fallback: true },
+                    { text: " ", fallback: false },
+                    { text: "Template", fallback: false },
+                    { text: "Text", fallback: false },
+                    { text: "", fallback: true },
+                ],
+                remaining: 0,
+            });
+        });
+    }
+
     test.describe("when binding text content", () => {
         test("initially sets the text of a node", async ({ page }) => {
             const textContent = await page.evaluate(async () => {

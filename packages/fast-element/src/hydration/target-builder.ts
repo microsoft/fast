@@ -22,12 +22,7 @@ import {
     formatNoMoreAttributeBindings,
     formatNoMoreContentBindings,
 } from "./messages.js";
-import {
-    createHydrationTraversal,
-    type HydrationMove,
-    isComment,
-    isText,
-} from "./traversal.js";
+import { createHydrationTraversal, type HydrationMove, isComment } from "./traversal.js";
 
 export class HydrationTargetElementError extends Error {
     /**
@@ -369,25 +364,14 @@ function targetContentBinding(
 
     (current as Comment).data = "";
 
-    if (isText(first) && first.nextSibling === current) {
-        targetFactory(factory, first, targets);
-    } else {
-        // If current === first, it means there is no content in
-        // the view. This happens when a `when` directive evaluates false,
-        // or whenever a content binding returns null or undefined.
-        if (current !== first && current.previousSibling !== null) {
-            boundaries[factory.targetNodeId] = {
-                first,
-                last: current.previousSibling,
-            };
-        }
-        // Insert a text node so text content binding targets it
-        targetFactory(
-            factory,
-            current.parentNode!.insertBefore(document.createTextNode(""), current),
-            targets,
-        );
+    if (current !== first && current.previousSibling !== null) {
+        boundaries[factory.targetNodeId] = {
+            first,
+            last: current.previousSibling,
+        };
     }
+    // Comment anchors cannot participate in default-slot assignment.
+    targetFactory(factory, current, targets);
 }
 
 /**

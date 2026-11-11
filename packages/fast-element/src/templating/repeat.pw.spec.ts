@@ -759,7 +759,7 @@ test.describe("The repeat", () => {
                     behavior.bind(controller);
 
                     const before =
-                        removeWhitespace(toHTML(parent)) ===
+                        removeWhitespace(toHTML(parent)).replaceAll("<!---->", "") ===
                         createOutput(
                             s,
                             undefined,
@@ -778,7 +778,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     const after =
-                        removeWhitespace(toHTML(parent)) ===
+                        removeWhitespace(toHTML(parent)).replaceAll("<!---->", "") ===
                         createOutput(
                             s,
                             undefined,

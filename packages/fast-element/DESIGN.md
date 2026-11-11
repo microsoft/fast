@@ -428,6 +428,17 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 
 `CompilationContext.createView(hostBindingTarget?)` clones the compiled `DocumentFragment`, instantiates behaviors from factories, and returns an `HTMLView`.
 
+HTML content bindings target comment anchors rather than empty text nodes, which
+would participate in default-slot assignment and suppress fallback content.
+Nonempty primitive values use a cached text node before the anchor; empty values
+remove that text node, and templates compose their views before the same anchor.
+A leading binding receives a stable first node so removing or disposing the
+owning view also removes inserted content. Hydration reuses the cleared content
+end marker as the anchor and records all existing content as view boundaries,
+including a single text node. The content sink retains that server text node for
+primitive bindings or hydrates it as a text-only child template. The same rules
+apply to native and opt-in legacy markers without changing either SSR format.
+
 ---
 
 ### Views & Behaviors
