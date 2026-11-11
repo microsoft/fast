@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 11 Nov 2026 04:24:47 GMT",
+      "version": "3.1.4",
+      "tag": "@microsoft/fast-element_v3.1.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "759121804207e65d9431ab2c74baf3f7268fd42d",
+            "comment": "Preserve default-slot fallback when conditional or empty light-DOM bindings render no content."
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "59c074544aa20b99d5b15774b05777e875a89f03",
+            "comment": "Harden cross-platform fixture paths and asynchronous error tests."
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 02 Nov 2026 18:49:44 GMT",
       "version": "3.1.3",
       "tag": "@microsoft/fast-element_v3.1.3",
