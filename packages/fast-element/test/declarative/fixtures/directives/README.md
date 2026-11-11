@@ -9,4 +9,5 @@ Element's declarative templates.
 | `ref` | The `f-ref` directive for obtaining direct references to DOM elements. |
 | `repeat` | The `f-repeat` directive for iterating over arrays with binding context access. |
 | `slotted` | The `f-slotted` directive for filtering slotted content. |
+| `slot-fallback` | Default-slot fallback when `f-when` light DOM is absent, including hydration and conditional updates. |
 | `when` | The `f-when` conditional directive with boolean and comparison operators. |

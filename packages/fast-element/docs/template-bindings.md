@@ -69,7 +69,7 @@ flowchart TD
     I -->|Element node| N["compileChildren recursively"]
     I -->|Text node type=3| O["compileContent: Parser.parse text"]
     O --> P{"Placeholders found?"}
-    P -->|Yes| Q["Split text node, insert new text nodes"]
+    P -->|Yes| Q["Split static text and comment anchors for HTML content bindings"]
     Q --> R["context.addFactory for each directive part"]
     I -->|Comment node type=8| S["Parser.parse comment data"]
     S --> T["context.addFactory for structural directives"]
@@ -223,7 +223,8 @@ flowchart TD
     B -->|Yes| C["Treat as empty string"]
     B -->|No| D{"value.create exists? (ContentTemplate)"}
 
-    D -->|Yes — Template| E["Clear target.textContent"]
+    C --> D
+    D -->|Yes — Template| E["Remove the anchor's bound text node"]
     E --> F{"Existing view on target.$fastView?"}
     F -->|No| G["view = value.create()"]
     F -->|Yes, same template| H["Reuse existing view"]
@@ -235,7 +236,7 @@ flowchart TD
 
     D -->|No — Primitive| M{"Existing composed view?"}
     M -->|Yes| N["view.remove(), view.unbind()"]
-    N --> O["target.textContent = value"]
+    N --> O["Update cached text before anchor; remove text for empty values"]
     M -->|No| O
 ```
 
@@ -386,9 +387,8 @@ flowchart TD
     L -->|Comment: content marker| P["Match fe:b start marker by string equality"]
     P --> Q["Walk siblings to find matching fe:/b end marker\nusing balanced depth counting"]
     Q --> R{"Content between markers?"}
-    R -->|Single text node| S["Target factory to text node directly"]
-    R -->|Multiple nodes / template| T["Store boundaries in ViewBehaviorBoundaries"]
-    T --> U["Insert dummy text node as target for future string updates"]
+    R -->|Single text node / multiple nodes| T["Store boundaries in ViewBehaviorBoundaries"]
+    T --> U["Target the cleared end comment; retain SSR text during primitive binding"]
     R -->|Empty null/false binding| U
     L -->|Comment: element boundary| V["Clear fe:e start marker data\nSkip to matching fe:/e end marker\nusing balanced depth counting\nClear fe:/e end marker data\nThrow if end marker not found"]
     L -->|Other| W["Continue walking"]

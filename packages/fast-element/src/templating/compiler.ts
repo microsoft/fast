@@ -221,8 +221,8 @@ function compileContent(
         return next;
     }
 
-    let currentNode: Text;
-    let lastNode = (currentNode = node);
+    let currentNode: Text | Comment;
+    let lastNode: Text | Comment = (currentNode = node);
 
     for (let i = 0, ii = parseResult.length; i < ii; ++i) {
         const currentPart = parseResult[i];
@@ -239,8 +239,14 @@ function compileContent(
         if (isString(currentPart)) {
             currentNode.textContent = currentPart;
         } else {
-            currentNode.textContent = " ";
             HTMLDirective.assignAspect(currentPart as any as Aspected);
+            if (currentPart instanceof HTMLBindingDirective) {
+                const anchor = document.createComment("");
+                currentNode.parentNode!.replaceChild(anchor, currentNode);
+                currentNode = anchor;
+            } else {
+                currentNode.textContent = " ";
+            }
             context.addFactory(
                 currentPart as CompiledViewBehaviorFactory,
                 parentId,
@@ -310,11 +316,12 @@ function compileNode(
 }
 
 function isMarker(node: Node, directives: Record<string, ViewBehaviorFactory>): boolean {
-    return (
-        node &&
-        node.nodeType === 8 &&
-        Parser.parse((node as Comment).data, directives) !== null
-    );
+    if (!node || (node.nodeType !== 8 && node.nodeType !== 3)) {
+        return false;
+    }
+
+    const parts = Parser.parse((node as CharacterData).data, directives);
+    return parts !== null && (node.nodeType === 8 || !isString(parts[0]));
 }
 
 /**
