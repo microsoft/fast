@@ -32,7 +32,7 @@ An `<f-template>` element associates a declarative HTML template with a custom e
 </f-template>
 ```
 
-The `name` attribute must match the custom element tag name registered in JavaScript. A single HTML file can contain multiple `<f-template>` elements for different components.
+The `name` attribute must match the custom element tag name registered in JavaScript. Each `<f-template>` must contain exactly one direct child `<template>`. A single HTML file can contain multiple `<f-template>` elements for different components.
 
 ## Binding Syntax
 
@@ -61,6 +61,29 @@ are not a way to disable bindings or directives.
 Remove unused bound markup from the template instead of wrapping it in a comment.
 Keep explanatory comments free of binding syntax and FAST directive tags.
 :::
+
+## Reserved Syntax
+
+Inside a declarative template, `{{` and `}}`, `{{{` and `}}}`, and the client-only `{` and `}` delimiters are binding syntax, not literal text. Keep opening and closing delimiters paired.
+
+FAST also uses the `f-` prefix for its template elements (`<f-template>`, `<f-when>`, and `<f-repeat>`) and attribute directives (`f-children`, `f-slotted`, and `f-ref`). Use your own prefix for application components and attributes to avoid collisions with FAST syntax.
+
+### Displaying literal code
+
+Put binding-like code samples inside `<code>`. FAST preserves curly braces in its text and attribute values rather than interpreting them as bindings. Encode angle brackets when you want to display an HTML tag as text:
+
+```html
+<f-template name="code-example">
+    <template>
+        <pre><code>{{greeting}}</code></pre>
+        <pre><code>&lt;f-when value="{{show}}"&gt;Visible&lt;/f-when&gt;</code></pre>
+    </template>
+</f-template>
+```
+
+These samples display `{{greeting}}` and `<f-when value="{{show}}">Visible</f-when>` literally. Other HTML elements inside `<code>` still create real DOM elements unless their angle brackets are encoded. The build-time renderer also encodes literal `<f-when>` and `<f-repeat>` tags inside `<code>` automatically.
+
+Do not rely on a backslash or `&#123;` / `&#125;` character references outside `<code>` to escape a binding: HTML parsing decodes brace character references before the client template parser reads the markup. For literal text outside a code sample, bind a property containing the text instead of putting binding-like syntax directly in the template.
 
 ## Content Bindings
 
