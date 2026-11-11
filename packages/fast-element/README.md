@@ -53,6 +53,13 @@ For simplicity, examples throughout the documentation will assume the library ha
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
 
+## Slot fallback
+
+A false `when()` without an else template, or an empty content binding, does not
+itself suppress default-slot fallback. This applies to both client-rendered and
+hydrated templates, including subsequent conditional updates. Authored whitespace
+and other real light-DOM text still participate in slot assignment.
+
 ## Browser Requirements
 
 FAST Element v3 assumes a client-side browser `Window` runtime with native
