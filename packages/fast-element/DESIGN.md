@@ -428,6 +428,17 @@ See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html
 
 `CompilationContext.createView(hostBindingTarget?)` clones the compiled `DocumentFragment`, instantiates behaviors from factories, and returns an `HTMLView`.
 
+HTML content bindings target comment anchors rather than empty text nodes, which
+would participate in default-slot assignment and suppress fallback content.
+Nonempty primitive values use a cached text node before the anchor; empty values
+remove that text node, and templates compose their views before the same anchor.
+A leading binding receives a stable first node so removing or disposing the
+owning view also removes inserted content. Hydration reuses the cleared content
+end marker as the anchor and records all existing content as view boundaries,
+including a single text node. The content sink retains that server text node for
+primitive bindings or hydrates it as a text-only child template. The same rules
+apply to native and opt-in legacy markers without changing either SSR format.
+
 ---
 
 ### Views & Behaviors
@@ -480,6 +491,11 @@ See [docs/template-bindings.md](./docs/template-bindings.md) for the full bindin
 - `Updates.setMode(isAsync)` – toggle async (default) vs. synchronous mode.
 
 In async mode, the first `enqueue` call schedules a `requestAnimationFrame` callback that drains up to 1024 tasks per frame. Errors in tasks are deferred via `setTimeout` so they don't abort the remaining tasks.
+
+Async error tests await `Updates.next()` and then a zero-delay timer scheduled
+after the flush. This lets the already queued error timers finish before restoring
+the test's timer interceptor, without assuming that a frame arrives within a
+fixed wall-clock delay.
 
 Observable setters and `attributeChangedCallback` enqueue their DOM mutations through `Updates`, ensuring that multiple synchronous property changes result in only one DOM update per frame.
 

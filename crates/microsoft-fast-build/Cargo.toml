@@ -1,6 +1,6 @@
 [package]
 name = "microsoft-fast-build"
-version = "0.15.0"
+version = "0.16.0"
 edition = "2021"
 description = "Server-side renderer for FAST declarative HTML templates — resolves bindings, evaluates conditionals, iterates repeats, and expands custom elements into Declarative Shadow DOM."
 license = "MIT"
@@ -22,6 +22,12 @@ allocation-profiling = []
 html5ever = "0.29"
 html5gum = { version = "0.8.4", default-features = false, features = ["tree-builder"] }
 markup5ever_rcdom = "0.5.0-unofficial"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+
+[build-dependencies]
+sha2 = "0.10"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
@@ -31,8 +37,6 @@ allocation-counter = "0.8.1"
 
 [dev-dependencies]
 criterion = "0.5"
-serde_json = "1"
-sha2 = "0.10"
 tempfile = "3"
 
 [[bench]]

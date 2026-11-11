@@ -1,23 +1,24 @@
+use std::borrow::Cow;
 use crate::json::JsonValue;
-use crate::context::resolve_value;
+use crate::context::{resolve_value, ChildState, LoopVars, State};
 use crate::expression::evaluate;
 use crate::content::html_escape;
 use crate::config::{RenderConfig, AttributeNameStrategy};
 use crate::attribute::{
-    extract_directive_expr, extract_directive_content, extract_directive_content_range,
-    skip_single_brace_expr, find_tag_end, read_tag_name, read_tag_name_slice,
+    skip_single_brace_expr, read_tag_name, read_tag_name_slice,
     parse_element_attributes, find_next_plain_html_tag, is_custom_element,
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
+    resolve_attribute_bindings_in_tag, strip_client_only_attrs,
     data_attr_to_dataset_key, kebab_to_camel,
 };
 use crate::attribute_lookup::{aria_attr_to_property_key, html_attr_to_property_key};
 use crate::error::{RenderError, template_context};
-use crate::node::render_node;
+use crate::node::render_plan;
 use crate::locator::Locator;
 use crate::hydration::HydrationScope;
+use crate::plan::{Body, Element, Repeat, When};
 
 /// A template directive found at a given byte position.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum Directive {
     TripleBrace(usize),
     DoubleBrace(usize),
@@ -112,102 +113,110 @@ mod scan_tests;
 pub fn render_when(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
+    prepared: Option<&When>,
 ) -> Result<(String, usize), RenderError> {
-    let (inner_range, after) = extract_directive_content_range(template, at, "f-when")
-        .ok_or_else(|| RenderError::UnclosedDirective {
-            tag: "f-when".to_string(),
-            context: template_context(template, at),
-        })?;
+    let owned;
+    let prepared = match prepared {
+        Some(prepared) => prepared,
+        None => {
+            owned = When::parse(template, at)?;
+            &owned
+        }
+    };
+    let inner_range = &prepared.body.range;
     let inner = &template[inner_range.clone()];
-    let expr = extract_directive_expr(template, at)
-        .ok_or_else(|| RenderError::MissingValueAttribute {
-            tag: "f-when".to_string(),
-            context: template_context(template, at),
-        })?;
+    let expr = &prepared.expression;
 
     let output = if let Some(hy) = hydration {
         let index = hy.next_binding();
         let start = hy.content_start_marker(index);
         let end = hy.content_end_marker(index);
-        let inner_content = if evaluate(&expr, root, loop_vars) {
+        let inner_content = if evaluate(expr, root, loop_vars) {
             let mut child_scope = HydrationScope::new(config.markers_v2);
-            render_node(inner, root, loop_vars, locator, Some(&mut child_scope), false, config)
-                .map_err(|error| error.rebase(template, inner_range.start))?
+            render_plan(
+                prepared.body.plan(template, locator), inner, root, loop_vars,
+                locator, Some(&mut child_scope), false, config,
+            ).map_err(|error| error.rebase(template, inner_range.start))?
         } else {
             String::new()
         };
         format!("{}{}{}", start, inner_content, end)
     } else {
-        if evaluate(&expr, root, loop_vars) {
-            render_node(inner, root, loop_vars, locator, None, false, config)
-                .map_err(|error| error.rebase(template, inner_range.start))?
+        if evaluate(expr, root, loop_vars) {
+            render_plan(
+                prepared.body.plan(template, locator), inner, root, loop_vars,
+                locator, None, false, config,
+            ).map_err(|error| error.rebase(template, inner_range.start))?
         } else {
             String::new()
         }
     };
 
-    Ok((output, after))
+    Ok((output, prepared.after))
 }
 
 /// Render an `<f-repeat>` directive.
 pub fn render_repeat(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
+    prepared: Option<&Repeat>,
 ) -> Result<(String, usize), RenderError> {
-    let (inner_range, after) = extract_directive_content_range(template, at, "f-repeat")
-        .ok_or_else(|| RenderError::UnclosedDirective {
-            tag: "f-repeat".to_string(),
-            context: template_context(template, at),
-        })?;
-    let inner = &template[inner_range.clone()];
-    let expr = extract_directive_expr(template, at)
-        .ok_or_else(|| RenderError::MissingValueAttribute {
-            tag: "f-repeat".to_string(),
-            context: template_context(template, at),
-        })?;
-    let (var_name, list_expr) = parse_repeat_expr(&expr)
-        .ok_or_else(|| RenderError::InvalidRepeatExpression {
-            expr: expr.clone(),
-            context: template_context(template, at),
-        })?;
-    match resolve_value(&list_expr, root, loop_vars) {
+    let owned;
+    let prepared = match prepared {
+        Some(prepared) => prepared,
         None => {
-            let output = render_repeat_items(inner, &[], &var_name, root, loop_vars, locator, hydration, config)
-                .map_err(|error| error.rebase(template, inner_range.start))?;
-            Ok((output, after))
+            owned = Repeat::parse(template, at)?;
+            &owned
+        }
+    };
+    let inner_range = &prepared.body.range;
+    let var_name = &prepared.variable;
+    let list_expr = &prepared.collection;
+    let items = resolve_value(list_expr, root, loop_vars);
+    match items.as_deref() {
+        None => {
+            let output = render_repeat_items(
+                &prepared.body, template, &[], var_name, root, loop_vars,
+                locator, hydration, config,
+            ).map_err(|error| error.rebase(template, inner_range.start))?;
+            Ok((output, prepared.after))
         }
         Some(JsonValue::Array(items)) => {
-            let output = render_repeat_items(inner, &items, &var_name, root, loop_vars, locator, hydration, config)
-                .map_err(|error| error.rebase(template, inner_range.start))?;
-            Ok((output, after))
+            let output = render_repeat_items(
+                &prepared.body, template, items, var_name, root, loop_vars,
+                locator, hydration, config,
+            ).map_err(|error| error.rebase(template, inner_range.start))?;
+            Ok((output, prepared.after))
         }
         Some(_) => Err(RenderError::NotAnArray {
-            binding: list_expr,
+            binding: list_expr.clone(),
             context: template_context(template, at),
         }),
     }
 }
 
 fn render_repeat_items(
-    inner: &str,
+    body: &Body,
+    template: &str,
     items: &[JsonValue],
     var_name: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     config: &RenderConfig,
 ) -> Result<String, RenderError> {
+    let inner = &template[body.range.clone()];
     match hydration {
         Some(hy) => {
             let binding_index = hy.next_binding();
@@ -217,7 +226,10 @@ fn render_repeat_items(
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
                 let mut item_scope = HydrationScope::new(config.markers_v2);
-                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false, config)?;
+                let rendered = render_plan(
+                    body.plan(template, locator), inner, root, &new_vars, locator,
+                    Some(&mut item_scope), false, config,
+                )?;
                 parts.push(format!(
                     "{}{}{}",
                     hy.repeat_start_marker(i),
@@ -230,21 +242,27 @@ fn render_repeat_items(
         None => items.iter().enumerate()
             .map(|(i, item)| {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                render_node(inner, root, &new_vars, locator, None, false, config)
+                render_plan(
+                    body.plan(template, locator), inner, root, &new_vars,
+                    locator, None, false, config,
+                )
             })
             .collect::<Result<String, _>>(),
     }
 }
 
-pub(crate) fn build_loop_vars(
-    loop_vars: &[(String, JsonValue)],
-    var_name: &str,
-    item: &JsonValue,
+pub(crate) fn build_loop_vars<'a>(
+    loop_vars: &'a LoopVars<'_>,
+    var_name: &'a str,
+    item: &'a JsonValue,
     index: usize,
-) -> Vec<(String, JsonValue)> {
-    let mut new_vars = loop_vars.to_vec();
-    new_vars.push((var_name.to_string(), item.clone()));
-    new_vars.push(("$index".to_string(), JsonValue::Number(index as f64)));
+) -> Vec<(&'a str, Cow<'a, JsonValue>)> {
+    let mut new_vars = Vec::with_capacity(loop_vars.len() + 2);
+    new_vars.extend(
+        loop_vars.iter().map(|(name, value)| (*name, Cow::Borrowed(value.as_ref()))),
+    );
+    new_vars.push((var_name, Cow::Borrowed(item)));
+    new_vars.push(("$index", Cow::Owned(JsonValue::Number(index as f64))));
     new_vars
 }
 
@@ -271,58 +289,50 @@ pub(crate) fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 pub fn render_custom_element(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     locator: &Locator,
     mut parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
     config: &RenderConfig,
+    prepared: Option<&Element>,
 ) -> Result<(String, usize), RenderError> {
-    // Find the end of the opening tag.
-    let tag_end = find_tag_end(template, at).ok_or_else(|| RenderError::UnclosedDirective {
-        tag: "custom element".to_string(),
-        context: template_context(template, at),
-    })?;
-
-    let tag_name = read_tag_name(template, at).unwrap_or_default();
-    let open_tag_content = &template[at..tag_end];
-
-    // Detect self-closing (`/>` possibly preceded by whitespace).
-    let before_gt = open_tag_content[..open_tag_content.len() - 1].trim_end();
-    let is_self_closing = before_gt.ends_with('/');
-
-    // Build the non-self-closing base (no trailing > yet).
-    let open_tag_base = if is_self_closing {
-        before_gt[..before_gt.len() - 1].trim_end().to_string()
-    } else {
-        open_tag_content[..open_tag_content.len() - 1].to_string()
+    let owned;
+    let prepared = match prepared {
+        Some(prepared) => prepared,
+        None => {
+            owned = Element::parse(template, at)?;
+            &owned
+        }
     };
+    let tag_end = prepared.tag_end;
+    let tag_name = &prepared.name;
+    let open_tag_base = &prepared.base;
 
-    // Parse attributes once, then decide whether cloning is necessary.
-    // When the element has no state-relevant attributes, skip the HashMap
-    // clone and reuse `root` directly — avoids O(state-size) work per element
-    // in deep custom-element trees.
-    let attrs = parse_element_attributes(open_tag_content);
+    let attrs = &prepared.attrs;
     let child_root_owned = build_custom_element_child_root(
-        &attrs,
+        attrs,
         root,
         loop_vars,
         config.attribute_name_strategy,
     );
-    let child_root = child_root_owned.as_ref().unwrap_or(root);
+    let child_root: &dyn State = match child_root_owned.as_ref() {
+        Some(state) => state,
+        None => root,
+    };
 
     // Render the shadow DOM template with a fresh hydration scope.
-    let rendered = render_shadow_content(&tag_name, child_root, locator, config)?;
-    let shadowroot_attributes = build_shadowroot_template_attrs(locator.get_shadowroot_attributes(&tag_name));
+    let rendered = render_shadow_content(tag_name, child_root, locator, config)?;
+    let shadowroot_attributes = locator.shadowroot_markup(tag_name);
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(
-        &open_tag_base,
-        open_tag_content,
+        open_tag_base,
         root,
         loop_vars,
         parent_hydration.as_mut().map(|h| &mut **h),
         is_entry,
+        prepared.binding_count,
     );
 
     // Merge attributes declared on the template's inner `<template>` element
@@ -333,27 +343,23 @@ pub fn render_custom_element(
     // template).
     let element_open = merge_template_host_attrs(
         element_open,
-        locator.get_host_attributes(&tag_name),
+        locator.get_host_attributes(tag_name),
         child_root,
-        &attrs,
+        attrs,
     );
 
-    // Extract the light DOM children (for non-self-closing elements).
-    let (children, after) = if is_self_closing {
-        (String::new(), tag_end)
-    } else {
-        extract_directive_content(template, at, &tag_name)
-            .ok_or_else(|| RenderError::UnclosedDirective {
-                tag: tag_name.clone(),
-                context: template_context(template, at),
-            })?
-    };
+    // Missing light-DOM closes are diagnosed after shadow rendering, as before.
+    let children = prepared.children.as_ref().ok_or_else(|| RenderError::UnclosedDirective {
+        tag: tag_name.clone(),
+        context: template_context(template, at),
+    })?;
 
-    let rendered_children = if children.is_empty() {
+    let rendered_children = if children.range.is_empty() {
         String::new()
     } else {
-        render_node(
-            &children,
+        render_plan(
+            children.plan(template, Some(locator)),
+            &template[children.range.clone()],
             root,
             loop_vars,
             Some(locator),
@@ -368,12 +374,12 @@ pub fn render_custom_element(
         element_open, shadowroot_attributes, rendered, rendered_children, tag_name
     );
 
-    Ok((output, after))
+    Ok((output, prepared.after))
 }
 
 pub(crate) fn render_shadow_content(
     element_name: &str,
-    state: &JsonValue,
+    state: &dyn State,
     locator: &Locator,
     config: &RenderConfig,
 ) -> Result<String, RenderError> {
@@ -382,7 +388,10 @@ pub(crate) fn render_shadow_content(
             element: element_name.to_string(),
         })?;
     let mut scope = HydrationScope::new(config.markers_v2);
-    render_node(template, state, &[], Some(locator), Some(&mut scope), false, config)
+    render_plan(
+        locator.render_plan(element_name).expect("template was found"),
+        template, state, &[], Some(locator), Some(&mut scope), false, config,
+    )
         .map_err(|error| {
             error.authored(locator.authored_template(element_name).expect("template was found"))
                 .in_template(element_name)
@@ -410,7 +419,7 @@ pub(crate) fn render_shadow_content(
 pub(crate) fn merge_template_host_attrs(
     element_open: String,
     template_host_attrs: &[(String, Option<String>)],
-    child_root: &JsonValue,
+    child_root: &dyn State,
     source_author_attrs: &[(String, Option<String>)],
 ) -> String {
     if template_host_attrs.is_empty() {
@@ -479,7 +488,7 @@ fn format_template_host_attr(
     out: &mut String,
     name: &str,
     value: Option<&str>,
-    child_root: &JsonValue,
+    child_root: &dyn State,
 ) {
     if let Some(bare) = name.strip_prefix('?') {
         let expr = value
@@ -503,8 +512,8 @@ fn format_template_host_attr(
         Some(v) => {
             if let Some(expr) = crate::attribute::single_attribute_binding(v) {
                 let resolved = resolve_value(expr.trim(), child_root, &[])
-                    .unwrap_or(JsonValue::Null);
-                match resolved {
+                    .unwrap_or(Cow::Owned(JsonValue::Null));
+                match resolved.as_ref() {
                     JsonValue::String(s) => {
                         out.push(' ');
                         out.push_str(name);
@@ -521,7 +530,7 @@ fn format_template_host_attr(
                     }
                     JsonValue::Bool(b) => {
                         if crate::attribute::is_boolean_attribute(name) {
-                            if b {
+                            if *b {
                                 out.push(' ');
                                 out.push_str(name);
                             }
@@ -530,7 +539,7 @@ fn format_template_host_attr(
                         out.push(' ');
                         out.push_str(name);
                         out.push_str("=\"");
-                        out.push_str(if b { "true" } else { "false" });
+                        out.push_str(if *b { "true" } else { "false" });
                         out.push('"');
                     }
                     // Array / Object / Null → cannot be expressed as an HTML attribute value.
@@ -564,33 +573,26 @@ fn format_template_host_attr(
 ///   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
 ///   - HTML attrs with mismatched property names → camelCase via lookup table
 ///   - Anything else → lowercased key (or camelCase when `attribute_name_strategy` is `CamelCase`)
-pub(crate) fn build_custom_element_child_root(
+pub(crate) fn build_custom_element_child_root<'a>(
     attrs: &[(String, Option<String>)],
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
     strategy: AttributeNameStrategy,
-) -> Option<JsonValue> {
+) -> Option<ChildState<'a>> {
     if !has_state_relevant_attrs(attrs) {
         return None;
     }
 
-    let base = if let JsonValue::Object(ref root_map) = root {
-        root_map.clone()
-    } else {
-        std::collections::HashMap::new()
-    };
-
-    Some(build_attr_state(attrs, root, loop_vars, base, strategy))
+    Some(build_attr_state(attrs, root, loop_vars, strategy))
 }
 
-fn build_attr_state(
+fn build_attr_state<'a>(
     attrs: &[(String, Option<String>)],
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
-    base: std::collections::HashMap<String, JsonValue>,
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
     strategy: AttributeNameStrategy,
-) -> JsonValue {
-    let mut state_map = base;
+) -> ChildState<'a> {
+    let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in attrs {
         if attr_name.starts_with('@')
             || attr_name.starts_with('?')
@@ -612,9 +614,16 @@ fn build_attr_state(
             if let Some((group, prop)) = path.split_once('.') {
                 let group_val = state_map
                     .entry(group.to_string())
-                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
-                if let JsonValue::Object(ref mut map) = group_val {
-                    map.insert(prop.to_string(), json_val);
+                    .or_insert_with(|| {
+                        root.is_object().then(|| root.lookup(group)).flatten()
+                            .unwrap_or_else(|| Cow::Owned(JsonValue::Object(
+                                std::collections::HashMap::new(),
+                            )))
+                    });
+                if matches!(group_val.as_ref(), JsonValue::Object(_)) {
+                    if let JsonValue::Object(map) = group_val.to_mut() {
+                        map.insert(prop.to_string(), json_val.into_owned());
+                    }
                 }
             }
         } else if let Some(key) = aria_attr_to_property_key(&lowered) {
@@ -627,7 +636,7 @@ fn build_attr_state(
             state_map.insert(lowered, json_val);
         }
     }
-    JsonValue::Object(state_map)
+    ChildState::new(root, state_map)
 }
 
 fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
@@ -710,14 +719,18 @@ fn append_template_attr_value(out: &mut String, name: &str, value: &str) {
     out.push('"');
 }
 
-fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
+fn attribute_to_json_value<'a>(
+    value: Option<&String>,
+    root: &'a dyn State,
+    loop_vars: &'a LoopVars<'_>,
+) -> Cow<'a, JsonValue> {
     let v = match value {
-        None => return JsonValue::Bool(true), // boolean attribute (no value)
+        None => return Cow::Owned(JsonValue::Bool(true)), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
-        return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+        return resolve_value(binding, root, loop_vars).unwrap_or(Cow::Owned(JsonValue::Null));
     }
     // Try parsing JSON array or object literals passed as attribute values.
     // Trim whitespace and check matching delimiters before invoking the parser.
@@ -727,19 +740,19 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
             || (trimmed.starts_with('{') && trimmed.ends_with('}'));
     if looks_like_json_literal {
         if let Ok(parsed) = crate::json::parse(trimmed) {
-            return parsed;
+            return Cow::Owned(parsed);
         }
     }
-    JsonValue::String(v.clone())
+    Cow::Owned(JsonValue::String(v.clone()))
 }
 
 pub(crate) fn build_element_open_tag(
     open_tag_base: &str,
-    open_tag_content: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
     parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
+    total_attr: usize,
 ) -> String {
     if is_entry {
         // Entry-level root custom element opening tags resolve bindings from root state.
@@ -750,8 +763,6 @@ pub(crate) fn build_element_open_tag(
         // No data-fe marker is needed — root elements have no parent hydration scope.
         return build_entry_element_open_tag(open_tag_base, root, loop_vars);
     }
-    let (db, sb) = count_tag_attribute_bindings(open_tag_content);
-    let total_attr = db + sb;
     if total_attr == 0 {
         return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
@@ -778,8 +789,8 @@ pub(crate) fn build_element_open_tag(
 /// - Static attributes (no binding syntax) are passed through unchanged.
 fn build_entry_element_open_tag(
     open_tag_base: &str,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
 ) -> String {
     let stripped_base = strip_client_only_attrs(open_tag_base);
     let tag_name = match read_tag_name(&stripped_base, 0) {
@@ -803,13 +814,13 @@ fn build_entry_element_open_tag(
                         out.push_str(&name[1..]);
                     }
                 } else {
-                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
-                    match resolved {
+                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(Cow::Owned(JsonValue::Null));
+                    match resolved.as_ref() {
                         JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
                         JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
                         JsonValue::Bool(b) => {
                             if crate::attribute::is_boolean_attribute(&name) {
-                                if b { out.push_str(&format!(" {}", name)); }
+                                if *b { out.push_str(&format!(" {}", name)); }
                             } else {
                                 out.push_str(&format!(" {}=\"{}\"", name, b));
                             }

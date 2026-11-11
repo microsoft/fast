@@ -2,6 +2,65 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Wed, 11 Nov 2026 04:24:47 GMT",
+      "version": "0.16.0",
+      "tag": "@microsoft/fast-build_v0.16.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "59c074544aa20b99d5b15774b05777e875a89f03",
+            "comment": "Harden cross-platform fixture paths and asynchronous error tests."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 Nov 2026 21:34:48 GMT",
+      "version": "0.16.0",
+      "tag": "@microsoft/fast-build_v0.16.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "078c6ddb6d646e9b1eb0b4013a0385a8b5f93b65",
+            "comment": "Add reusable render plans and portable, storage-neutral prepared templates with incremental preparation, bounded shared caching, snapshot retirement, selective DSD loading, and shadow fragments."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "78ebe3b794e877f183ebbc5683a72177e757ae1d",
+            "comment": "Reduce rendering allocations by borrowing inherited component state and repeat values."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Nov 2026 18:49:44 GMT",
+      "version": "0.15.0",
+      "tag": "@microsoft/fast-build_v0.15.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4be355ca16bb4fdf5b440671b704cc7add426171",
+            "comment": "Document the dependency-free package policy and exemptions for development, peer, and optional dependencies."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "1d0ba188764c422101fb21141d36eb8addf654b4",
+            "comment": "Clarify FAST Build integration with existing backends and WebUI rendering through the fast_v3 plugin."
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 Oct 2026 03:53:29 GMT",
       "version": "0.15.0",
       "tag": "@microsoft/fast-build_v0.15.0",

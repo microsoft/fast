@@ -165,6 +165,21 @@ NestedWhenElement.define({
     template: declarativeTemplate(),
 });
 
+class TestSlotFallback extends FASTElement {}
+TestSlotFallback.define({
+    name: "test-slot-fallback",
+    template: declarativeTemplate(),
+});
+
+class TestConditionalSlot extends FASTElement {
+    @attr({ mode: "boolean" })
+    show: boolean = false;
+}
+TestConditionalSlot.define({
+    name: "test-conditional-slot",
+    template: declarativeTemplate(),
+});
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;

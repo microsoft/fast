@@ -1,8 +1,27 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 14 Oct 2026 22:58:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 11 Nov 2026 04:24:47 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 3.1.4
+
+Wed, 11 Nov 2026 04:24:47 GMT
+
+### Patches
+
+- Preserve default-slot fallback when conditional or empty light-DOM bindings render no content. (7559015+janechu@users.noreply.github.com)
+
+## 3.1.3
+
+Mon, 02 Nov 2026 18:49:44 GMT
+
+### Patches
+
+- Initialize complete, dependency-free metadata reflection for Context and dependency injection while keeping core and declarative bundles unchanged. (7559015+janechu@users.noreply.github.com)
+- Fix repeat ordering for multi-digit indices and preserve structural changes in mixed array mutation batches. (7559015+janechu@users.noreply.github.com)
+- Reduce allocations and function calls in the when directive for fixed templates. (863023+radium-v@users.noreply.github.com)
+- Enable the built-in DOM sink guards consistently across entrypoints and validate coerced URL values while preserving application policy configuration. (7559015+janechu@users.noreply.github.com)
 
 ## 3.1.2
 

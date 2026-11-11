@@ -1,5 +1,4 @@
-use crate::json::JsonValue;
-use crate::context::resolve_value;
+use crate::context::{resolve_value, LoopVars, State};
 use crate::attribute::find_str;
 use crate::error::{RenderError, template_context, truncate};
 
@@ -8,8 +7,8 @@ use crate::error::{RenderError, template_context, truncate};
 pub fn render_triple_brace(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
 ) -> Result<(String, usize), RenderError> {
     let start = at + 3;
     let end = find_str(template, "}}}", start).ok_or_else(|| RenderError::UnclosedUnescapedBinding {
@@ -31,8 +30,8 @@ pub fn render_triple_brace(
 pub fn render_double_brace(
     template: &str,
     at: usize,
-    root: &JsonValue,
-    loop_vars: &[(String, JsonValue)],
+    root: &dyn State,
+    loop_vars: &LoopVars<'_>,
 ) -> Result<(String, usize), RenderError> {
     let start = at + 2;
     let end = find_str(template, "}}", start).ok_or_else(|| RenderError::UnclosedBinding {
@@ -52,6 +51,11 @@ pub fn render_double_brace(
 /// Escape special HTML characters in a string.
 pub fn html_escape(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
+    push_html_escaped(&mut out, s);
+    out
+}
+
+pub(crate) fn push_html_escaped(out: &mut String, s: &str) {
     for c in s.chars() {
         match c {
             '&'  => out.push_str("&amp;"),
@@ -62,5 +66,4 @@ pub fn html_escape(s: &str) -> String {
             c    => out.push(c),
         }
     }
-    out
 }
