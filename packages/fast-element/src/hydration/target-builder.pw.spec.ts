@@ -116,6 +116,7 @@ test.describe("buildViewBindingTargets", () => {
             const originalComparePoint = Range.prototype.comparePoint;
             let comparePointCalls = 0;
             let targets: Record<string, Node>;
+            let content: Node;
 
             try {
                 Range.prototype.comparePoint = function (
@@ -125,23 +126,27 @@ test.describe("buildViewBindingTargets", () => {
                     comparePointCalls++;
                     return originalComparePoint.call(this, node, offset);
                 };
-                ({ targets } = buildViewBindingTargets(
+                const result = buildViewBindingTargets(
                     root.firstChild!,
                     root.lastChild!,
                     [{ targetNodeId: "content" }],
-                ));
+                );
+                targets = result.targets;
+                content = result.boundaries.content.first;
             } finally {
                 Range.prototype.comparePoint = originalComparePoint;
             }
 
             return {
-                target: targets!.content.textContent,
+                content: content!.textContent,
+                targetsEndMarker: targets!.content === root.lastChild,
                 comparePointCalls,
             };
         });
 
         expect(result).toEqual({
-            target: "content",
+            content: "content",
+            targetsEndMarker: true,
             comparePointCalls: 0,
         });
     });
@@ -1588,10 +1593,9 @@ test.describe("buildViewBindingTargets", () => {
         expect(result.empty).toEqual({
             childNodes: [
                 { type: 8, text: "" },
-                { type: 3, text: "" },
                 { type: 8, text: "" },
             ],
-            targetType: 3,
+            targetType: 8,
             targetText: "",
             boundary: null,
         });
@@ -1601,19 +1605,18 @@ test.describe("buildViewBindingTargets", () => {
                 { type: 3, text: "single" },
                 { type: 8, text: "" },
             ],
-            targetType: 3,
-            targetText: "single",
-            boundary: null,
+            targetType: 8,
+            targetText: "",
+            boundary: ["single", "single"],
         });
         expect(result.multi).toEqual({
             childNodes: [
                 { type: 8, text: "" },
                 { type: 1, text: "first" },
                 { type: 1, text: "last" },
-                { type: 3, text: "" },
                 { type: 8, text: "" },
             ],
-            targetType: 3,
+            targetType: 8,
             targetText: "",
             boundary: ["first", "last"],
         });
@@ -1657,7 +1660,7 @@ test.describe("buildViewBindingTargets", () => {
 
         expect(result).toEqual({
             after: "after",
-            outerType: 3,
+            outerType: 8,
             boundary: ["first", "last"],
             nestedMarkers: ["fe:b", "fe:b", "fe:/b", "fe:/b"],
         });

@@ -91,10 +91,33 @@ type ComposableView = ContentView & {
 type ContentTarget = Node & {
     $fastView?: ComposableView;
     $fastTemplate?: ContentTemplate;
+    $fastText?: Text;
 };
 
 function isContentTemplate(value: any): value is ContentTemplate {
     return value.create !== undefined;
+}
+
+function updateContentText(target: ContentTarget, value: any): void {
+    if (target.nodeType !== 8) {
+        target.textContent = value;
+        return;
+    }
+
+    let text = target.$fastText;
+    if (text !== void 0) {
+        text.textContent = value;
+    }
+    if (value === "") {
+        text?.remove();
+    } else {
+        if (text === void 0) {
+            target.$fastText = text = document.createTextNode(value);
+        }
+        if (text.parentNode !== target.parentNode) {
+            target.parentNode!.insertBefore(text, target);
+        }
+    }
 }
 
 /**
@@ -102,8 +125,8 @@ function isContentTemplate(value: any): value is ContentTemplate {
  * Handles two cases:
  * - If the value is a ContentTemplate (has a create() method), it composes a child
  *   view into the DOM, managing view lifecycle (create/reuse/remove/bind).
- * - If the value is a primitive, it sets target.textContent directly, first removing
- *   any previously composed view.
+ * - If the value is a primitive, it updates a text node before the anchor, first
+ *   removing any previously composed view. Empty values leave only the anchor.
  */
 function updateContent(
     this: HTMLBindingDirective,
@@ -120,7 +143,7 @@ function updateContent(
 
     // If the value has a "create" method, then it's a ContentTemplate.
     if (isContentTemplate(value)) {
-        target.textContent = "";
+        updateContentText(target, "");
         let view = target.$fastView as ComposableView;
 
         // If there's no previous view that we might be able to
@@ -188,12 +211,20 @@ function updateContent(
             const viewNodes = controller.bindingViewBoundaries[this.targetNodeId];
 
             if (viewNodes !== void 0) {
-                removeNodeSequence(viewNodes.first, viewNodes.last);
+                if (
+                    target.nodeType === 8 &&
+                    viewNodes.first === viewNodes.last &&
+                    viewNodes.first.nodeType === 3
+                ) {
+                    target.$fastText = viewNodes.first as Text;
+                } else {
+                    removeNodeSequence(viewNodes.first, viewNodes.last);
+                }
                 delete controller.bindingViewBoundaries[this.targetNodeId];
             }
         }
 
-        target.textContent = value;
+        updateContentText(target, value);
     }
 }
 

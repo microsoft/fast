@@ -54,13 +54,13 @@
                     <progress></progress>
                 </f-when>
                 <f-when value="{{!showProgress}}">
-                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
+                    <button type="button" ?disabled="{{!enableContinue}}" @click="{handleClick()}">
                         {{strings.continueButtonText}}
                     </button>
                 </f-when>
             </f-when>
             <f-when value="{{error}}">
-                <button>{{strings.retryButtonText}}</button>
+                <button type="button">{{strings.retryButtonText}}</button>
             </f-when>
         </div>
     </template>
@@ -71,5 +71,11 @@
 </f-template>
 <!-- event -->
 <f-template name="test-element-event">
-    <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
+    <template><f-when value="{{show}}"><button type="button" @click="{handleClick()}">Click me</button></f-when></template>
+</f-template>
+<f-template name="test-slot-fallback">
+    <template><slot><span class="fallback">Fallback</span></slot></template>
+</f-template>
+<f-template name="test-conditional-slot">
+    <template><test-slot-fallback><f-when value="{{show}}"><span>Provided</span></f-when></test-slot-fallback></template>
 </f-template>
