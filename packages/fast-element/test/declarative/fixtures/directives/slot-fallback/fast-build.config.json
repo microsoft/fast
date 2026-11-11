@@ -1,6 +1,0 @@
-{
-    "entry": "entry.html",
-    "state": "state.json",
-    "output": "index.html",
-    "templates": "templates.html"
-}
