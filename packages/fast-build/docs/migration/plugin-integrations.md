@@ -10,8 +10,8 @@ checks. Both WASM declaration modules export a `FastBuildError` interface extend
 
 Optional `line`/`column` are one-based UTF-16 coordinates, and `length` is a UTF-16
 error-token highlight length. CRLF is one break; lone CR/LF also break lines.
-Entry and conversion coordinates refer to the complete supplied HTML. A named
-custom-element render failure instead refers to its separately supplied `content`.
+Entry-compilation and conversion coordinates refer to the complete supplied HTML.
+A named component compilation failure instead refers to its supplied `content`.
 Use `templateName` to select that source, rather than attaching its coordinates
 to the entry or to a full file from which `content` was extracted. Older metadata
 does not carry enough provenance to reconstruct those full-file positions.

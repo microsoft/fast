@@ -13,9 +13,9 @@ cargo add microsoft-fast-build
 ### Compile server JavaScript ahead of time
 
 `compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
-with `renderEntry`, `renderHost` and `renderShadow` exports. Templates are trusted
-build inputs; the generated module imports the FAST-owned server helper rather
-than WASM, browser classes or a runtime template parser:
+with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
+Templates are trusted build inputs; the generated module imports the FAST-owned
+server helper rather than WASM, browser classes or a runtime template parser:
 
 ```rust
 use microsoft_fast_build::{compile_server_module, Locator};
@@ -139,6 +139,19 @@ Use `renderTemplate`/`render_template` for template-context root-host attributes
 Native rendering does not require JavaScript.
 Rendered markup and hydration markers are unchanged.
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
+
+## Error handling
+
+Compilation and template tooling return `RenderError`. Inspect `code()` instead
+of parsing its message; `location()` supplies optional one-based UTF-16
+line/column and highlight length, and `template_name()` identifies a separately
+supplied definition. `source_kind()` distinguishes authored HTML from separate
+CSS diagnostics. Use `kind()` when matching a source-annotated error variant.
+Compilation diagnoses malformed syntax even in unused definitions or skipped bodies.
+
+Artifact loading and native request execution return `NativeRenderError` with
+`code` and `message` fields, not compiler source coordinates. See the
+[native error and resource contract](../../packages/fast-build/docs/server-modules.md#compatibility-errors-and-memory).
 
 ## Contributing
 

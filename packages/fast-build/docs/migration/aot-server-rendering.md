@@ -21,9 +21,10 @@ configuration from build scripts.
 
 ```js
 // Build pipeline: load/compose templates before compiling.
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { compileServerModule } from "@microsoft/fast-build/server.js";
 
+await mkdir("./generated", { recursive: true });
 await writeFile(
     "./generated/server.mjs",
     compileServerModule("<my-card></my-card>", {
@@ -88,7 +89,8 @@ normalize dates, classes, accessors and `toJSON`-based models before rendering.
 State must be acyclic, with finite numbers, well-formed Unicode, dense arrays
 and plain/null-prototype objects containing enumerable own data properties.
 Nested `undefined`, functions, symbols and non-enumerable properties are rejected.
-No getter or `toJSON` is invoked. Omitted root state becomes `{}`.
+No getter or `toJSON` is invoked. For generated JavaScript exports, omitted root
+state becomes `{}`; native methods require an explicit `JsonValue`.
 
 Native and JS targets share rendering semantics, not identical workload limits.
 Native state is limited to depth 64 (root depth zero) and one million values

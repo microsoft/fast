@@ -19,15 +19,20 @@ npm install --save @microsoft/fast-build
 
 ## Ahead-of-time server modules
 
+This minor prerelease contains an **API-breaking migration**, not a drop-in
+dependency update. Follow the [upgrade guide](./docs/migration/aot-server-rendering.md)
+and regenerate compiled outputs when upgrading.
+
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
 WASM, browser-class, template-parser, or runtime source-evaluation dependency:
 
 ```js
 // Build time
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { compileServerModule } from "@microsoft/fast-build/server.js";
 
+await mkdir("./generated", { recursive: true });
 await writeFile(
     "./generated/server.mjs",
     compileServerModule("<my-card></my-card>", {
@@ -45,8 +50,8 @@ const host = renderHost("my-card", { title: "A complete host" });
 const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 ```
 
-For migrating former non-entry rendering APIs, generated `renderTemplate`
-preserves their distinct root-host attribute handling without another engine.
+Use generated `renderTemplate` for template-context root-host attribute handling,
+or `renderEntry` for entry-host rules.
 
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
@@ -54,6 +59,10 @@ registry into one module:
 ```sh
 fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
 ```
+
+The registry target compiles an empty entry; call `renderHost` or `renderShadow`
+for a registered component. To render a complete page entry, pass its HTML to
+`compileServerModule`.
 
 Use the existing browser conversion target separately with the authored component
 class and explicit registration. AOT does not change browser hydration.
@@ -75,9 +84,10 @@ See [migration](./docs/migration/aot-server-rendering.md).
 Compile at build time with `compileServerArtifact` from `server.js`:
 
 ```js
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { compileServerArtifact } from "@microsoft/fast-build/server.js";
 
+await mkdir("./generated", { recursive: true });
 await writeFile(
     "./generated/server.fast",
     compileServerArtifact("<my-card></my-card>", {
@@ -139,7 +149,7 @@ And a `state.json`:
 ```json
 {
   "title": "Hello FAST",
-  "description": "Server-side rendered with WebAssembly."
+  "description": "Ahead-of-time server rendering."
 }
 ```
 
@@ -155,7 +165,7 @@ Produces `output.html`:
 <html>
   <body>
     <h1>Hello FAST</h1>
-    <p>Server-side rendered with WebAssembly.</p>
+    <p>Ahead-of-time server rendering.</p>
   </body>
 </html>
 ```
@@ -164,7 +174,7 @@ Produces `output.html`:
 
 Run `npm run bench:server -w @microsoft/fast-build` from the monorepo root.
 It measures fresh generated-module import/first render, warm CPU/wall time,
-GC, memory and generated size. Historical comparison results are recorded in
+GC, memory and generated size. The current command and measurement boundaries are in
 [server modules](./docs/server-modules.md).
 
 ### Missing or omitted state
@@ -407,8 +417,8 @@ rendering, or the template format version, and is not a slot-contract manifest.
 
 #### Structured errors
 
-Failing render, conversion, composition, and metadata-validation APIs throw actual
-JavaScript `Error` objects, retaining the existing human-readable `message`.
+Failing compilation, conversion, composition, and metadata-validation APIs throw
+actual JavaScript `Error` objects with a human-readable `message` and stable `code`.
 Both WASM modules export this TypeScript interface (not a runtime constructor):
 
 ```ts
@@ -421,9 +431,12 @@ interface FastBuildError extends Error {
 }
 ```
 
+The build WASM interface additionally exposes `sourceKind?: "css"` for errors
+located in separately supplied CSS.
+
 Use `code`, such as `unclosed-binding`, `repeat-not-array`, or `missing-template`,
-instead of parsing messages. The complete code lists are documented with the
-[renderer errors](../../crates/microsoft-fast-build/README.md#error-handling)
+instead of parsing messages. See the
+[compiler and native error contracts](../../crates/microsoft-fast-build/README.md#error-handling)
 and [converter errors](../../crates/microsoft-fast-convert/README.md#error-codes).
 
 Locations use one-based lines and UTF-16 columns, with a UTF-16 highlight `length`.
@@ -433,7 +446,7 @@ binding including its delimiters; an unclosed binding highlights its opening
 delimiters. Unlike successful binding metadata, these are error-token ranges,
 not trimmed expression ranges.
 
-Entry-render and conversion coordinates refer to the original HTML argument,
+Entry-compilation and conversion coordinates refer to the original HTML argument,
 even after code-sample escaping, inner-template extraction, or publisher-attribute
 rewriting. Light DOM remains in its caller's source. Errors in separately supplied
 custom-element definitions include `templateName` and use coordinates within that
@@ -448,11 +461,13 @@ filesystem errors, and unsafe separately supplied CSS. A known `templateName`
 can still be present without coordinates. `parse_f_templates` remains permissive:
 it does not gain strict syntax validation or new failures.
 
-For a direct `render(html, stateJson)` call, an integration can report:
+A build integration can report compilation diagnostics:
 
 ```js
+import { compileServerModule } from "@microsoft/fast-build/server.js";
+
 try {
-    render(html, stateJson);
+    compileServerModule(html, templates);
 } catch (error) {
     if (!(error instanceof Error)) throw error;
     const location = error.line === undefined
@@ -461,6 +476,11 @@ try {
     console.error(`${location} [${error.code}]: ${error.message}`);
 }
 ```
+
+Generated JavaScript render exports reject invalid state/options with `TypeError`.
+Runtime failures do not promise authored source coordinates; do not assume every
+request error has the compiler's structured fields. Native artifact loading and
+rendering return the separate `NativeRenderError` contract.
 
 See the [migration guide](./docs/migration/plugin-integrations.md#structured-errors)
 when updating consumers that previously caught strings.
@@ -544,7 +564,10 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 
 ## Convert
 
-`fast convert` converts FAST declarative template files using the converter WASM module in `wasm/convert/`. Supported syntax names, output extensions, and default output suffixes are read from the converter WASM metadata so the Rust converter remains the source of truth for syntax targets.
+`fast convert` supports browser template conversion and linked server JavaScript.
+Browser targets use the converter WASM module in `wasm/convert/`; `server-js`
+uses the build compiler to link named definitions into one server module.
+Syntax names and output metadata come from their respective Rust/WASM compilers.
 
 ```shell
 fast convert --syntax=webui-prerelease --templates=example.html
@@ -552,22 +575,33 @@ fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template
 fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
 fast convert --syntax=fast-v3-ts --templates=example.html \
     --type-source=MyElement --type-source-import=./my-element.js
+fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
 ```
 
 ### Convert options
 
 | Option | Default | Description |
 |---|---|---|
-| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, or `fast-v3-ts` |
-| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates to convert. An exact single file path is also accepted. Loads the converter WASM module once for the whole batch. |
-| `--output="<path>"` | Next to source | Output file path. `webui-prerelease` defaults to `*.webui.html`; `webui-framework-prerelease` defaults to `*.webui-framework.html`; `fast-v3-ts` defaults to `*.template.ts`. Any `*` in the output path is replaced with the input basename without extension. Every file matched by `--templates` is written under `--output`'s directory (or next to its source if `--output` is omitted). |
+| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, `fast-v3-ts`, or `server-js` |
+| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates. An exact single file path is also accepted. Browser targets convert each file; `server-js` collects named `<f-template>` definitions into one registry. |
+| `--output="<path>"` | Browser: next to source; server: `server.mjs` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-js` writes one `.mjs` module, defaults to the current directory, and rejects `*` in the output path. |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
 | `--typed[=true/false]` | `false` | Only for `fast-v3-ts`. Add an explicit `ElementViewTemplate<TSource>` export annotation and type-only import. Explicit false overrides configured true. |
 | `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
 | `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
-Only matched `.html` files are converted; non-`.html` files and directories are never matched. The output extension must match the selected syntax: `.html` for `webui-prerelease`/`webui-framework-prerelease` and `.ts` for `fast-v3-ts`. The output parent directory is created automatically if it doesn't exist (`mkdir -p` semantics), and an existing output file is rejected unless `--overwrite` or `"overwrite": true` is used. When a `--templates` pattern matches zero files, a warning is printed but the command does not fail unless every pattern matches zero files.
+Only matched `.html` files are converted; non-`.html` files and directories are
+never matched. Output extensions are `.html` for the WebUI targets, `.ts` for
+`fast-v3-ts`, and `.mjs` for `server-js`. Missing output parent directories are
+created, and replacing an existing file requires `--overwrite` or
+`"overwrite": true`. Browser targets warn about unmatched patterns; an invocation
+with no matches completes without writing files.
+
+`server-js` requires at least one named definition, rejects duplicate names and
+TypeScript conversion options, and emits an empty entry with the linked component
+registry. Use `renderHost` or `renderShadow` for those components; use
+`compileServerModule(entry, templates)` to compile a complete page entry.
 
 `webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
 

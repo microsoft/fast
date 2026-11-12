@@ -36,9 +36,10 @@ of the request dependency graph:
 
 ```js
 // Build time
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { compileServerModule } from "@microsoft/fast-build/server.js";
 
+await mkdir("./generated", { recursive: true });
 await writeFile(
     "./generated/server.mjs",
     compileServerModule("<my-card></my-card>", {
@@ -64,6 +65,8 @@ Existing HTML bytes, server coercion and hydration markers are preserved.
 
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
+This compiles a registry with an empty entry; use `renderHost` or `renderShadow`
+for its components, or `compileServerModule` to compile page entry HTML.
 Browser template/style conversion, authored classes and explicit registration
 remain separate. See the
 [server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
@@ -378,7 +381,9 @@ The propagation is implemented by the build-time renderer in `@microsoft/fast-bu
 
 ## Using `@microsoft/fast-build`
 
-The `@microsoft/fast-build` package renders declarative FAST syntax for integration with existing backends, powered by a WebAssembly core. It implements the rendering contract described above.
+The `@microsoft/fast-build` package compiles declarative FAST syntax with a
+build-time Rust/WASM compiler. Generated JavaScript or native Rust artifacts
+implement the rendering contract without request-time WASM or HTML parsing.
 
 :::note
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that can render FASTElement using the `fast_v3` plugin.
@@ -392,7 +397,8 @@ npm install --save @microsoft/fast-build
 
 ### CLI Usage
 
-The `fast build` command renders an entry HTML file with a JSON state file:
+The `fast build` command compiles and renders an entry HTML file with an optional
+JSON state file:
 
 ```shell
 fast build --entry=index.html --state=state.json --output=output.html --templates="./components/**/*.html"
@@ -401,10 +407,11 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 | Option | Default | Description |
 |---|---|---|
 | `--entry` | `index.html` | Entry HTML template to render |
-| `--state` | `state.json` | JSON file containing the initial state |
+| `--state` | `{}` when omitted | Optional JSON state file; no `state.json` is loaded implicitly. An explicit path must exist. |
 | `--output` | `output.html` | Where to write the rendered HTML |
 | `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |
 | `--attribute-name-strategy` | `camelCase` | How to map attribute names to properties |
+| `--markers_v2[=true/false]` | `false` | Emit indexed FAST Element 2.x markers instead of default data-free markers |
 | `--config` | `fast-build.config.json` | Path to a configuration file |
 
 ### Example
@@ -427,7 +434,7 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 ```json
 {
     "title": "Hello FAST",
-    "message": "Server-rendered with WebAssembly"
+    "message": "Ahead-of-time server rendering"
 }
 ```
 

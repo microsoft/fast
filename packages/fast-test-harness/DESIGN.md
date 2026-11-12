@@ -52,7 +52,7 @@ flowchart TD
     E --> F["waitForStability()"]
     B -- SSR --> G["POST /generate-fixture"]
     G --> H["Server: vite.ssrLoadModule('entry-server.js')"]
-    H --> I["Server: render(queryObj)"]
+    H --> I["Server: await render(queryObj)"]
     I --> J["Server: assemble ssr.html, cache in memory"]
     J --> K["page.goto('/ssr-testId.html')"]
     K --> F
@@ -179,7 +179,7 @@ The harness does **not** contain the SSR entry files itself — they live in the
 | ------ | ------- | --------- |
 | `test/index.html` | Consumer | CSR entry page — loads the component registration script |
 | `test/ssr.html` | Consumer | SSR template with comment placeholders (`<!--fixture-->`, `<!--templates-->`, etc.) |
-| `test/src/entry-server.ts` | Consumer | Exports a `render(queryObj)` function that returns `{ template, fixture, preloadLinks }` |
+| `test/src/entry-server.ts` | Consumer | Exports `render(queryObj)`, returning `{ template, fixture, preloadLinks }` or a promise of that result; the server awaits either |
 | `test/src/entry-client.ts` | Consumer | Registers components for DSD hydration in the browser |
 | `test/vite.config.ts` | Consumer | Vite configuration (can import the shared one from this package) |
 
@@ -230,7 +230,7 @@ sequenceDiagram
     S->>S: Read ssr.html template
     S->>V: ssrLoadModule("&lt;base&gt;/src/entry-server.js")
     V-->>S: entry-server module
-    S->>E: render(body)
+    S->>E: await render(body)
     E-->>S: { template, fixture, preloadLinks }
     S->>S: Replace placeholders in ssr.html
     S->>V: transformIndexHtml(url, assembled)
@@ -295,6 +295,9 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 4. Extracts `<body>` content from the rendered document.
 5. Returns `{ template, fixture, preloadLinks }`.
 
+Compilation/rendering failures are logged and fall back to raw entry HTML.
+Initialization still throws when the required compiler package is unavailable.
+
 **Shadow root attributes:** When parsing f-templates, the WASM `parse_f_templates` output may include `shadowrootAttributes` (e.g. `shadowrootdelegatesfocus`) sourced from the template generation step. If any non-default attributes are present beyond `shadowrootmode`, the `templatesMap` entry for that tag uses the object form `{ content, shadowrootAttributes }` so the renderer can propagate them onto the emitted `<template shadowroot...>` element. Tags with only the default `shadowrootmode` use the bare string form.
 
 ---
@@ -344,4 +347,6 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
 
-The SSR fixture generator now returns `Promise<RenderResult>`; call `await render(queryObj)`. It compiles arbitrary test fixture HTML on demand as development tooling. Production servers must compile their templates during the build and import generated modules instead.
+The SSR fixture generator returns `Promise<RenderResult>`; call `await render(queryObj)`.
+It compiles arbitrary test HTML on demand as development tooling. Production
+servers compile during the build and import generated modules or load native artifacts.

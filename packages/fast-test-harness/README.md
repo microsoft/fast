@@ -269,7 +269,15 @@ before `>`.
 
 ## SSR renderer
 
-**`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object whose render function is asynchronous compatible with the server's `entry-server.ts` contract. It uses the build-time WASM parser/compiler and generated JavaScript to produce declarative shadow DOM, including wrapper tags whose opening or closing `>` is preceded by ASCII whitespace.
+**`createSSRRenderer(options)`** scans for component build artifacts and returns
+`{ render }`, whose asynchronous `render(queryObj)` returns `Promise<RenderResult>`.
+It uses the build-time WASM parser/compiler and generated JavaScript to produce
+declarative shadow DOM, including wrapper tags whose opening or closing `>` is
+preceded by ASCII whitespace. The server awaits rendering and also accepts
+synchronous custom renderers.
+
+Fixture compilation/rendering failures are logged and fall back to raw entry
+HTML. Check server diagnostics when a fixture unexpectedly renders client-side.
 
 | Option | Type | Description |
 | -------- | ------ | ------------- |
@@ -293,4 +301,8 @@ before `>`.
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
 
-The SSR fixture generator now returns `Promise<RenderResult>`; call `await render(queryObj)`. It compiles arbitrary test fixture HTML on demand as development tooling. Production servers must compile their templates during the build and import generated modules instead.
+This is an **API-breaking migration in a minor prerelease**; direct callers must
+use `await render(queryObj)`. See the [migration guide](./docs/migration/aot-fixtures.md).
+The fixture generator compiles arbitrary test HTML on demand as development
+tooling. Production servers compile during their build and import generated
+modules, or load compiled artifacts in the supported native Rust host.

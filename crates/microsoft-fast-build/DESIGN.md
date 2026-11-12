@@ -60,9 +60,9 @@ Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
 For this target the JavaScript helper owns complete JSON-shaped state validation,
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
-eval or browser dependencies. Generated entry/host/shadow exports synchronously
-return complete strings. Existing markup, whitespace, escaping and markers remain
-byte-preserved.
+eval or browser dependencies. Generated entry/template/host/shadow exports
+synchronously return complete strings. Existing markup, whitespace, escaping and
+markers remain byte-preserved.
 
 The helper contract version is checked on import; deployments regenerate modules
 and deploy compatible helpers together. The compiler fingerprint hashes source

@@ -18,6 +18,8 @@ It is a build-time API and loads the compiler WASM.
 The `server-js` conversion target accepts a registry of named `<f-template>`
 files and emits one `.mjs` file, defaulting to `server.mjs`. It rejects wildcard
 output paths, duplicate names, empty registries and browser TypeScript options.
+The entry is empty: use `renderHost` or `renderShadow` for registered components.
+Compile page entry HTML through `compileServerModule` when `renderEntry` is needed.
 Existing `fast-v3-ts` template/stylesheet conversion remains separate.
 Stylesheet composition and source-provenance mapping remain build-tool concerns:
 pass composed metadata into the compiler and map its structured coordinates
@@ -68,9 +70,8 @@ Bindings/directives inside HTML comments remain unsupported.
 
 Generation eagerly visits directive and light-DOM bodies, including skipped
 branches and empty repeats, and rejects malformed syntax with existing error
-codes, UTF-16 line/column/length and template names. This is intentionally earlier
-than the lazy renderer's error timing. Runtime repeat values must still be arrays
-(or missing); a present non-array produces `repeat-not-array`.
+codes, UTF-16 line/column/length and template names. Runtime repeat values must
+still be arrays (or missing); a present non-array produces `repeat-not-array`.
 
 ## Compatibility and migration
 
@@ -151,6 +152,7 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   body index and envelope field, including unreachable bodies. It never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
   fail; condition/static-value trees have additional 64-level schema bounds.
+  Artifacts accept at most one million bodies and one million total body operations.
   The compiler validates native output with the same loader before returning it.
 - `CompiledArtifact` owns immutable reference-counted storage, is `Send + Sync`,
   and supports cheap clones across worker threads. Input artifact bytes, authored

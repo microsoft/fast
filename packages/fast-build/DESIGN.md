@@ -38,7 +38,10 @@ presence overrides config, including empty paths. Boolean options are validated.
 
 `fast convert --syntax=server-js` links all named template inputs into one ESM
 module. It rejects duplicate names, empty registries, wildcard output paths and
-browser-only TypeScript options. Target metadata comes from compiler WASM.
+browser-only TypeScript options. The default output is `server.mjs` in the current
+directory. Its entry is empty; consumers call `renderHost`/`renderShadow`, or use
+`compileServerModule` with entry HTML for complete pages.
+Target metadata comes from compiler WASM.
 Browser conversion and CSS conversion remain in the independent converter crate.
 
 ## Files
@@ -156,7 +159,7 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ---
 
-## Converter output rules
+## Browser converter output rules
 
 The opt-in `typed` CLI/config boolean is passed as the appended optional WASM
 argument. It annotates template/style exports with FAST types for
@@ -189,7 +192,7 @@ use normal current-working-directory resolution; config-provided paths are
 resolved relative to the config file before the default suffix or `*`
 replacement is applied.
 
-Before loading converter WASM, the CLI validates that:
+Before conversion, the CLI validates that:
 
 - The selected syntax is supported.
 - `templates` is provided.
@@ -201,13 +204,15 @@ Before loading converter WASM, the CLI validates that:
 The output parent directory is created automatically (`mkdir -p` semantics) if
 it does not exist; only an existing non-directory at that path is rejected. A
 glob pattern that matches zero files produces a warning (not an error) naming
-the pattern, and the command only fails if every pattern produces zero matches
-across the whole invocation.
+the pattern. If every pattern has zero matches, browser conversion completes
+without writing any files. The server registry target instead rejects an empty
+registry.
 
-The converter WASM contract is `convert_template(template: string, syntax:
-string): string` plus `convert_template_with_options(template: string, syntax:
-string, typeSource?: string, typeSourceImport?: string): string` and
-`convert_syntax_metadata(): string`. The CLI always calls
+The converter WASM exposes `convert_template(template: string, syntax: string)`
+and `convert_template_with_options(template: string, syntax: string,
+typeSource?: string, typeSourceImport?: string, typed?: boolean)`. Both return
+a `ConvertResult` with `output: string` and `warnings: string[]` getters.
+`convert_syntax_metadata(): string` supplies target metadata. The CLI always calls
 `convert_template_with_options`, passing through `--type-source` /
 `--type-source-import` (or their config equivalents) as `typeSource` /
 `typeSourceImport`, which are `undefined` when not provided. Rust owns FAST
