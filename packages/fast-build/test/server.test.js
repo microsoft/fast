@@ -144,6 +144,36 @@ test("AOT lowers existing comparisons without JavaScript coercion changes", asyn
     await parity("<test-el></test-el>", { "test-el": body }, states);
 });
 
+test("AOT numeric comparisons preserve syntax without pathological backtracking", () => {
+    execFileSync(
+        process.execPath,
+        [
+            "--input-type=module",
+            "-e",
+            `
+                import assert from "node:assert/strict";
+                import { compare } from ${JSON.stringify(runtime)};
+                for (const [input, value] of [
+                    ["+1", 1], ["-1", -1], [".5", 0.5], ["-.5", -0.5],
+                    ["1.", 1], ["1.e2", 100], ["1.5E+2", 150],
+                    ["1e-2", 0.01], ["0001.50", 1.5], ["-0", 0],
+                ]) {
+                    assert.equal(compare(input, value, ">="), true, input);
+                    assert.equal(compare(input, value, "<="), true, input);
+                }
+                for (const input of [".", "1..0", "1e", "1e+", "0x10", " 1", "1 "]) {
+                    assert.equal(compare(input, 100, ">"), input > "100", input);
+                    assert.equal(compare(input, 100, "<"), input < "100", input);
+                }
+                const invalid = "9".repeat(100_000) + "x";
+                assert.equal(compare(invalid, "9", ">"), true);
+                assert.equal(compare("9", invalid, "<"), true);
+            `,
+        ],
+        { timeout: 2_000, stdio: "pipe" },
+    );
+});
+
 test("AOT preserves number formatting, nullish omission and boolean attributes", async () => {
     const body = `<input disabled="{{value}}" title="before {{value}} after" ?hidden="{{value}}">
 {{value}}<test-child :value="{{value}}"></test-child>`;

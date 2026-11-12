@@ -226,7 +226,7 @@ function numeric(value) {
     }
     if (
         typeof value === "string" &&
-        /^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value)
+        /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value)
     ) {
         return Number(value);
     }
