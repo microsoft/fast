@@ -128,11 +128,11 @@ Local qualification on Node 22.22.1, macOS arm64, three samples, 200 instances a
 
 | Workload | AOT cold | Direct cold | Prepared cold | AOT warm | Direct warm | Prepared warm |
 |---|---:|---:|---:|---:|---:|---:|
-| Static | 1.20 | 4.68 | 7.23 | 0.005 | 0.207 | 0.115 |
-| Binding-heavy | 2.68 | 7.36 | 9.29 | 0.367 | 1.164 | 1.149 |
-| Repeated components | 3.83 | 8.77 | 10.81 | 0.550 | 1.809 | 1.782 |
-| Nested components | 2.18 | 6.35 | 8.81 | 0.150 | 0.769 | 0.661 |
-| Large inherited state | 8.04 | 7.91 | 10.51 | 1.168 | 1.400 | 1.253 |
+| Static | 1.01 | 4.76 | 7.08 | 0.005 | 0.213 | 0.115 |
+| Binding-heavy | 2.83 | 7.27 | 9.25 | 0.361 | 1.173 | 1.189 |
+| Repeated components | 3.87 | 9.00 | 10.92 | 0.546 | 1.819 | 1.804 |
+| Nested components | 2.30 | 6.31 | 8.84 | 0.151 | 0.766 | 0.659 |
+| Large inherited state | 8.22 | 7.98 | 10.53 | 1.198 | 1.441 | 1.275 |
 
 AOT source ranged from approximately 3.4 KB to 166 KB, plus a shared helper of
 approximately 11 KB, versus a 954 KB compiler/renderer WASM binary. These are
