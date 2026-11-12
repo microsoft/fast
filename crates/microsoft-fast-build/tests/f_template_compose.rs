@@ -1,8 +1,7 @@
 mod common;
+use crate::common::render_template_with_locator;
 use common::make_locator;
-use microsoft_fast_build::{
-    compose_f_template_styles, render_template_with_locator, Locator, RenderError,
-};
+use microsoft_fast_build::{compose_f_template_styles, Locator, RenderError};
 
 // ── success paths ──────────────────────────────────────────────────────────
 
