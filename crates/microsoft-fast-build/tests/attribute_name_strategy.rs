@@ -1,11 +1,10 @@
 mod common;
-use common::{make_locator, empty_root};
-use microsoft_fast_build::{
-    render_with_locator,
-    render_template_with_locator,
-    render_entry_with_locator,
-    RenderConfig, AttributeNameStrategy, JsonValue,
+use crate::common::{
+    render_entry_with_locator, render_template_with_locator, render_with_locator,
+    AttributeNameStrategy, RenderConfig,
 };
+use common::{empty_root, make_locator};
+use microsoft_fast_build::JsonValue;
 use std::collections::HashMap;
 
 fn camel_config() -> RenderConfig {
@@ -26,8 +25,12 @@ fn test_camelcase_dashed_attribute() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("hello"), "dashed attr should be camelCased: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("hello"),
+        "dashed attr should be camelCased: {result}"
+    );
 }
 
 #[test]
@@ -38,8 +41,12 @@ fn test_camelcase_multi_dashed_attribute() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("world"), "multi-dashed attr should be camelCased: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("world"),
+        "multi-dashed attr should be camelCased: {result}"
+    );
 }
 
 #[test]
@@ -50,8 +57,12 @@ fn test_camelcase_no_dash_unchanged() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("true"), "no-dash attr should stay as-is: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("true"),
+        "no-dash attr should stay as-is: {result}"
+    );
 }
 
 // ── camelCase strategy: lookup table attributes are unaffected ─────────────
@@ -64,8 +75,12 @@ fn test_camelcase_aria_uses_lookup() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("true"), "aria-* should use lookup table: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("true"),
+        "aria-* should use lookup table: {result}"
+    );
 }
 
 #[test]
@@ -76,8 +91,12 @@ fn test_camelcase_html_attr_uses_lookup() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("5"), "HTML lookup attrs should use lookup table: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("5"),
+        "HTML lookup attrs should use lookup table: {result}"
+    );
 }
 
 #[test]
@@ -88,8 +107,12 @@ fn test_camelcase_data_attr_uses_dataset() {
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert!(result.contains("1990"), "data-* should use dataset grouping: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("1990"),
+        "data-* should use dataset grouping: {result}"
+    );
 }
 
 // ── none strategy: preserves current behavior ─────────────────────────────────
@@ -102,8 +125,12 @@ fn test_none_strategy_dashed_attr_stays_dashed() {
         &empty_root(),
         &locator,
         Some(&none_config()),
-    ).unwrap();
-    assert!(result.contains("hello"), "none strategy should not convert: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("hello"),
+        "none strategy should not convert: {result}"
+    );
 }
 
 #[test]
@@ -114,8 +141,12 @@ fn test_none_strategy_multi_dashed_attr_preserved() {
         &empty_root(),
         &locator,
         Some(&none_config()),
-    ).unwrap();
-    assert!(result.contains("42"), "none strategy should preserve dashes: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("42"),
+        "none strategy should preserve dashes: {result}"
+    );
 }
 
 // ── default config matches camelCase strategy ─────────────────────────────────
@@ -128,14 +159,19 @@ fn test_default_config_matches_camel_case() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     let result_camel = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
         Some(&camel_config()),
-    ).unwrap();
-    assert_eq!(result_default, result_camel, "default should match camelCase strategy");
+    )
+    .unwrap();
+    assert_eq!(
+        result_default, result_camel,
+        "default should match camelCase strategy"
+    );
 }
 
 // ── camelCase with binding resolution ─────────────────────────────────────────
@@ -152,8 +188,12 @@ fn test_camelcase_with_binding_attr() {
         &root_val,
         &locator,
         Some(&config),
-    ).unwrap();
-    assert!(result.contains("resolved"), "binding should resolve and key should be camelCased: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("resolved"),
+        "binding should resolve and key should be camelCased: {result}"
+    );
 }
 
 // ── camelCase with template_with_locator_and_config API ───────────────────────
@@ -167,8 +207,12 @@ fn test_camelcase_template_api() {
         r#"{}"#,
         &locator,
         Some(&config),
-    ).unwrap();
-    assert!(result.contains("hello"), "template API with config should work: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("hello"),
+        "template API with config should work: {result}"
+    );
 }
 
 // ── camelCase with entry-level rendering ──────────────────────────────────────
@@ -182,9 +226,13 @@ fn test_camelcase_entry_level() {
         &empty_root(),
         &locator,
         Some(&config),
-    ).unwrap();
+    )
+    .unwrap();
     // Entry-level builds child state from attrs with camelCase, so foo-bar → fooBar = "static"
-    assert!(result.contains("static"), "entry-level should use camelCase config for child state: {result}");
+    assert!(
+        result.contains("static"),
+        "entry-level should use camelCase config for child state: {result}"
+    );
 }
 
 // ── camelCase with nested custom elements ─────────────────────────────────────
@@ -192,7 +240,10 @@ fn test_camelcase_entry_level() {
 #[test]
 fn test_camelcase_nested_custom_elements() {
     let locator = make_locator(&[
-        ("my-outer", r#"<my-inner inner-prop="{{outerProp}}"></my-inner>"#),
+        (
+            "my-outer",
+            r#"<my-inner inner-prop="{{outerProp}}"></my-inner>"#,
+        ),
         ("my-inner", "<span>{{innerProp}}</span>"),
     ]);
     let config = camel_config();
@@ -201,8 +252,12 @@ fn test_camelcase_nested_custom_elements() {
         r#"{}"#,
         &locator,
         Some(&config),
-    ).unwrap();
-    assert!(result.contains("hello"), "camelCase should work through nested elements: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("hello"),
+        "camelCase should work through nested elements: {result}"
+    );
 }
 
 // ── camelCase: :prop bindings are not affected ────────────────────────────────
@@ -219,8 +274,12 @@ fn test_camelcase_colon_prop_stays_lowercased() {
         &root_val,
         &locator,
         Some(&config),
-    ).unwrap();
-    assert!(result.contains("val"), ":prop should be lowercased, not camelCased: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("val"),
+        ":prop should be lowercased, not camelCased: {result}"
+    );
 }
 
 // ── camelCase: state key override ─────────────────────────────────────────────
@@ -237,6 +296,10 @@ fn test_camelcase_attr_overrides_root_state() {
         &root_val,
         &locator,
         Some(&config),
-    ).unwrap();
-    assert!(result.contains("from attr"), "attr should override root state: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("from attr"),
+        "attr should override root state: {result}"
+    );
 }

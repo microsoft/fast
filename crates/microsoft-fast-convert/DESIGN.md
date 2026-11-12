@@ -22,6 +22,13 @@ convert_stylesheet(stylesheet, syntax, export_name)
 
 The implementation intentionally uses a small hand scanner instead of an HTML parser, matching the dependency style of `microsoft-fast-build`.
 
+The Node conversion CLI additionally exposes `server-js`, a registry-level target
+owned by `microsoft-fast-build`. Its structural plans and server expression rules
+are not reconstructed through this crate's browser-oriented converters.
+`server_syntax_metadata` in the build crate supplies that target's metadata;
+the existing syntax metadata below describes this crate's targets only.
+This keeps the crate dependency direction unchanged.
+
 Every `convert_template`/`convert_template_with_options` call (for every syntax
 target) returns `ConvertOutput { output: String, warnings: Vec<ConvertWarning> }`
 rather than a bare string, so the shape is uniform at the API boundary. In

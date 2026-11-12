@@ -1,5 +1,10 @@
 # Renderer performance baselines
 
+These are historical measurements of the retired native/WASM renderer.
+The commands below describe their original provenance and are not supported
+by the current compiler-only crate. Use `npm run bench:server -w @microsoft/fast-build`
+for current AOT execution measurements; output baselines still run in the Node suite.
+
 Run all commands from the repository root. These are explicit measurements,
 not portable timing assertions or automatically refreshed golden files.
 
