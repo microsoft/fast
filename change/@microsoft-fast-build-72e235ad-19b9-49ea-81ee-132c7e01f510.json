@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Compile shared byte-preserving server instructions to ahead-of-time JavaScript or reusable native Rust artifacts, replacing request-time source rendering and prepared lifecycle APIs.",
+  "comment": "Introduce an API-breaking prerelease migration to shared server instructions for JavaScript and native Rust: replace source-rendering and prepared APIs, require JSON-shaped state, and regenerate artifacts with the deployed compiler.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

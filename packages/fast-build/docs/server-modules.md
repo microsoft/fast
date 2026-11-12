@@ -74,6 +74,11 @@ than the lazy renderer's error timing. Runtime repeat values must still be array
 
 ## Compatibility and migration
 
+This minor prerelease release contains an **API-breaking migration**: public
+source-rendering/prepared APIs are removed, harness rendering becomes asynchronous,
+and request state is restricted. Consumers must migrate and regenerate compiled
+output, not only update package versions.
+
 Deploy generated modules and compatible server helpers together. Generated code
 checks the helper `runtimeVersion` on import and reports a clear incompatibility.
 The compiler fingerprint is exported for build manifests; it does not require
@@ -181,6 +186,58 @@ Only native Rust hosting is supported here. No stable C ABI, unmanaged
 allocation/error ownership convention, .NET binding or working C# host is
 provided. Those are follow-up integration work over this Rust executor, not a
 separate C# implementation of HTML/expression semantics.
+
+### Target resource contracts
+
+Shared rendering semantics do not guarantee that both targets accept the same
+workload. JS AOT exposes no FAST state-depth/node, body-depth, step or output
+budgets; its JavaScript host still imposes stack, string and memory limits.
+Native execution has these additional public bounds:
+
+| Resource | Native contract |
+|---|---|
+| State nesting | Root depth is zero; depth 64 is accepted and depth 65 is rejected, including unused state |
+| State values | At most 1,000,000 values, counting the root and every array item/object value, but not object keys |
+| Body nesting | Root body depth is zero; 128 nested calls are accepted and the next fails |
+| Execution steps | Default 1,000,000; `max_steps` counts body operations, attribute recipes and repeat iterations |
+| Output | Default 64 MiB; `max_output_bytes` counts UTF-8 bytes, not characters |
+
+Configured step/output limits are inclusive; exceeding a limit returns
+`render-limit` without partial output. State-limit failures return `invalid-state`.
+Budgets reset on each call, including after errors. Workload qualification when
+switching targets must include these bounds, not only successful HTML parity.
+Tightening defaults, rejecting previously accepted state, or changing normalization
+or coercion is a consumer compatibility change even if ordinary snapshots match.
+
+### Deployment and native API evolution
+
+The exact compiler fingerprint is a fail-fast deployment contract, not just
+informational metadata. Matching package versions do not establish artifact
+compatibility. Every separately deployed build must supply artifacts matching
+its own native library; future encodings may reject older artifacts but must
+never silently reinterpret them. Do not edit identity/version fields to bypass
+validation.
+
+Load/validate replacement artifacts before application-owned atomic activation.
+Reject incompatible candidates without replacing the active program, and keep
+old `CompiledArtifact` clones for in-flight requests. With a native-library upgrade,
+old workers finish using their existing library/handles while new workers load
+newly generated matching artifacts. Rust handles are not transferable across
+processes or native-library versions.
+
+Native methods borrow `&JsonValue` and `&NativeRenderOptions` only for the call;
+they do not retain caller-owned request data. The current state copies and
+allocation strategy are implementation details, not a permanent copying
+requirement. Optimization can reduce them while preserving borrowed input
+signatures, independently owned output/error values, `Send + Sync` artifact
+sharing, request isolation, error categories/no-partial-output behavior and
+rendering semantics. Changing those public guarantees requires a Rust consumer
+migration, independently of whether .NET bindings exist.
+
+The first C ABI/.NET binding must specify handle lifetimes, allocation/free,
+error transport and cancellation before publication. Adding that binding over
+the native executor should be additive; it must not redefine rendering semantics
+or introduce another renderer in C#.
 
 ## Qualification and measurements
 

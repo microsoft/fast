@@ -291,6 +291,167 @@ fn finite_conditional_cycles_render_and_unbounded_cycles_fail_safely() {
 }
 
 #[test]
+fn state_depth_boundary_is_native_specific_and_includes_unused_state() {
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact("ok", &common::make_locator(&[])).unwrap())
+            .unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    for depth in [64, 65] {
+        let state = (0..depth).fold(JsonValue::Number(0.0), |value, _| {
+            JsonValue::Array(vec![value])
+        });
+        let state_json = format!("{}0{}", "[".repeat(depth), "]".repeat(depth));
+        let native = artifact.render_entry(&state, &Default::default());
+        let parsed = parse_render_state(&state_json);
+        if depth == 64 {
+            assert_eq!(native.unwrap(), "ok");
+            assert!(parsed.is_ok());
+        } else {
+            assert_eq!(native.unwrap_err().code, "invalid-state");
+            assert_eq!(parsed.unwrap_err().code, "invalid-state");
+        }
+        assert_eq!(
+            js(&source, &state_json, json!({}), "entry", ""),
+            json!({"value":"ok"})
+        );
+    }
+}
+
+#[test]
+fn state_value_limit_counts_the_root_and_is_request_local() {
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact("ok", &common::make_locator(&[])).unwrap())
+            .unwrap();
+    let mut state = JsonValue::Array(vec![JsonValue::Null; 999_999]);
+    assert_eq!(
+        artifact.render_entry(&state, &Default::default()).unwrap(),
+        "ok"
+    );
+    if let JsonValue::Array(values) = &mut state {
+        values.push(JsonValue::Null);
+    }
+    assert_eq!(
+        artifact
+            .render_entry(&state, &Default::default())
+            .unwrap_err()
+            .code,
+        "invalid-state"
+    );
+    assert_eq!(
+        artifact
+            .render_entry(&JsonValue::Null, &Default::default())
+            .unwrap(),
+        "ok"
+    );
+}
+
+#[test]
+fn step_and_utf8_output_budgets_accept_exact_limits_and_reset_after_errors() {
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact("é", &common::make_locator(&[])).unwrap())
+            .unwrap();
+    let state = JsonValue::Null;
+    let exact = NativeRenderOptions {
+        max_steps: 1,
+        max_output_bytes: 2,
+        ..Default::default()
+    };
+    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), "é");
+    for options in [
+        NativeRenderOptions {
+            max_steps: 0,
+            ..exact.clone()
+        },
+        NativeRenderOptions {
+            max_output_bytes: 1,
+            ..exact.clone()
+        },
+    ] {
+        assert_eq!(
+            artifact.render_entry(&state, &options).unwrap_err().code,
+            "render-limit"
+        );
+        assert_eq!(artifact.render_entry(&state, &exact).unwrap(), "é");
+    }
+    assert_eq!(
+        js(
+            &artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
+            "null",
+            json!({}),
+            "entry",
+            "",
+        ),
+        json!({"value":"é"})
+    );
+}
+
+#[test]
+fn native_body_depth_accepts_128_nested_calls_but_not_129() {
+    let bytes = compile_server_artifact("ok", &common::make_locator(&[])).unwrap();
+    let original: Value = serde_json::from_slice(&bytes).unwrap();
+    for depth in [128, 129] {
+        let mut ir = original.clone();
+        ir["entry"] = json!(0);
+        ir["bodies"] = json!((0..depth)
+            .map(|index| json!([["call", index + 1]]))
+            .chain(std::iter::once(json!([["literal", "ok"]])))
+            .collect::<Vec<_>>());
+        let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
+        let native = artifact.render_entry(&JsonValue::Null, &Default::default());
+        if depth == 128 {
+            assert_eq!(native.unwrap(), "ok");
+        } else {
+            assert_eq!(native.unwrap_err().code, "render-limit");
+        }
+        assert_eq!(
+            js(
+                &artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
+                "null",
+                json!({}),
+                "entry",
+                "",
+            ),
+            json!({"value":"ok"})
+        );
+    }
+}
+
+#[test]
+fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
+    let locator = common::make_locator(&[]);
+    let old = compile_server_artifact("old {{value}}", &locator).unwrap();
+    let new = compile_server_artifact("new {{value}}", &locator).unwrap();
+    let mut active = CompiledArtifact::load(&old).unwrap();
+    let in_flight = active.clone();
+    let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
+    let completed = active.render_entry(&state, &Default::default()).unwrap();
+    let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
+    incompatible["compilerId"] = json!("another-deployment");
+    assert_eq!(
+        CompiledArtifact::load(incompatible.to_string().as_bytes())
+            .unwrap_err()
+            .code,
+        "incompatible-artifact"
+    );
+    assert_eq!(
+        active.render_entry(&state, &Default::default()).unwrap(),
+        "old request"
+    );
+    active = CompiledArtifact::load(&new).unwrap();
+    drop((locator, old, new));
+    assert_eq!(
+        active.render_entry(&state, &Default::default()).unwrap(),
+        "new request"
+    );
+    assert_eq!(
+        in_flight.render_entry(&state, &Default::default()).unwrap(),
+        "old request"
+    );
+    drop((active, in_flight, state));
+    assert_eq!(completed, "old request");
+}
+
+#[test]
 fn artifact_ownership_is_send_sync_and_concurrent_requests_are_isolated() {
     fn send_sync<T: Send + Sync>() {}
     send_sync::<CompiledArtifact>();

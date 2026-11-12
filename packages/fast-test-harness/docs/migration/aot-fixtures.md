@@ -2,6 +2,9 @@
 
 ## AOT fixture generation
 
+This is an **API-breaking migration in a minor prerelease release**, not a
+drop-in dependency update. Migrate direct callers before upgrading.
+
 `createSSRRenderer(options)` still returns `{ render }`, but `render(query)`
 now returns `Promise<RenderResult>` instead of `RenderResult`:
 

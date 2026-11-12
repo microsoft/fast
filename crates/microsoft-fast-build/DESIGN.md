@@ -98,6 +98,15 @@ See the [deployment/error contract](../../packages/fast-build/docs/server-module
 Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
 They must be rebuilt with the deployed native library on upgrades.
 
+Minor prerelease release metadata does not waive API migration. Future native
+allocation optimizations must preserve borrowed request inputs, independently
+owned complete output/errors, artifact `Send + Sync`, request isolation and
+rendering semantics, or explicitly introduce a consumer migration. Limits and
+state normalization/rejection are also public contracts; JS has no equivalent
+FAST budgets. Load replacements before application-owned activation and retain
+old handles/workers for in-flight requests rather than reinterpreting artifacts
+from another compiler/library build.
+
 Native Rust is supported now. A stable C ABI, .NET bindings, cross-language memory
 ownership and C# hosting are deferred; this change supplies none of those APIs.
 There is no independent C# implementation of rendering semantics.

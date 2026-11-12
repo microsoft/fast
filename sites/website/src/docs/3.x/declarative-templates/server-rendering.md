@@ -106,6 +106,14 @@ request-time WASM exports and source-rendering Rust functions are removed.
 Rebuild modules/artifacts when upgrading; old prepared artifacts cannot be loaded
 by the new implementation.
 
+This is an **API-breaking migration classified as a minor prerelease release**,
+not a drop-in upgrade. Migrate removed APIs, normalize request state and await
+test-harness rendering before updating consumers. Native artifacts require the
+exact deployed compiler/library fingerprint, not just a matching package version.
+Load replacements before activation and retain old workers/handles for in-flight
+requests. Native state/execution/output limits differ from JS host limits, so
+switching targets requires workload qualification as well as markup parity.
+
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` when migrating previous
 non-entry `render`/`render_with_templates` calls to preserve their different

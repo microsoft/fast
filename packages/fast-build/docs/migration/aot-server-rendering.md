@@ -3,6 +3,9 @@
 ## Request-time source rendering to compiled server targets
 
 This prerelease makes a breaking replacement of the previous renderer.
+It is classified as a **minor prerelease release, not a drop-in upgrade**.
+Updating the dependency alone is insufficient: migrate removed public APIs,
+normalize accepted state, await harness rendering, and regenerate compiled output.
 One compiler-owned representation now supports generated JavaScript and native
 Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
@@ -68,6 +71,13 @@ Native applications do **not** need a JavaScript execution environment:
 4. Share immutable artifact clones across worker threads. Keep retired program
    clones alive for in-flight requests during deployment activation.
 
+The artifact fingerprint must match the deployed native library exactly, even
+when package versions match. Validate/load replacements before activating them;
+an incompatible candidate must not replace the active program. For library
+upgrades, let old workers finish with their loaded handles and deploy new workers
+with newly generated matching artifacts. Do not patch artifact identity fields
+or transfer Rust handles across library versions/processes.
+
 Loading and rendering never reparse authored HTML or execute JavaScript. The
 new artifact contains shared compiler-owned executable operations, not the old
 prepared source metadata. Old prepared artifacts must be rebuilt from source.
@@ -93,6 +103,15 @@ State must be acyclic, with finite numbers, well-formed Unicode, dense arrays
 and plain/null-prototype objects containing enumerable own data properties.
 Nested `undefined`, functions, symbols and non-enumerable properties are rejected.
 No getter or `toJSON` is invoked. Omitted root state becomes `{}`.
+
+Native and JS targets share rendering semantics, not identical workload limits.
+Native state is limited to depth 64 (root depth zero) and one million values
+including the root; execution also bounds nested body calls, steps and UTF-8 output
+bytes. JS AOT exposes no equivalent FAST budgets and remains subject to its host's
+stack/memory limits. Check workload acceptance when switching targets; see the
+[target resource contracts](../server-modules.md#target-resource-contracts).
+Future tighter defaults, state rejection or normalization/coercion changes can
+require an API migration even when ordinary HTML snapshots remain identical.
 
 Options are `attributeNameStrategy: "camelCase" | "none"`, `markersV2: boolean`
 and `dsd: string[]`. Omit `dsd` to select all components; `[]` selects none.

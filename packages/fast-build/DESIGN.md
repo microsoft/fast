@@ -22,6 +22,13 @@ ownership and request-local state/error/resource limits are documented in the
 [native contract](./docs/server-modules.md#native-rust-artifact-target).
 There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
+Minor prerelease classification does not make removed APIs a drop-in upgrade.
+State acceptance/normalization, native resource defaults, artifact fingerprint
+checks, borrowed request inputs, owned results/errors and thread-safe artifact
+reuse are compatibility contracts. Allocation reductions may remain internal;
+changing those guarantees requires consumer migration. Native budgets do not
+imply equivalent FAST budgets in the JS target.
+
 ## CLI
 
 `fast build` loads entry/registry files, compiles AOT source, imports that source,
