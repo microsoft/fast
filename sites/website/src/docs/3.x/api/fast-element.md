@@ -97,6 +97,17 @@ Defines metadata for a FASTElement.
 </td></tr>
 <tr><td>
 
+[HostDirective](../fast-element.hostdirective/)
+
+
+</td><td>
+
+A directive that binds attributes, properties, and events on a view's host.
+
+
+</td></tr>
+<tr><td>
+
 [HTMLBindingDirective](../fast-element.htmlbindingdirective/)
 
 
@@ -466,6 +477,17 @@ Creates a function that can be used to filter a Node array, selecting only eleme
 </td><td>
 
 Enables human-readable FAST debug messages.
+
+
+</td></tr>
+<tr><td>
+
+[host(bindings)](../fast-element.host/)
+
+
+</td><td>
+
+Applies bindings to a template's host element without a wrapping template tag.
 
 
 </td></tr>
@@ -2095,6 +2117,17 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 </td><td>
 
 Resolves an element template from a composed definition.
+
+
+</td></tr>
+<tr><td>
+
+[HostBindings](../fast-element.hostbindings/)
+
+
+</td><td>
+
+Attributes, properties, and events to bind on a template's host element. Keys use the same aspect prefixes as HTML template bindings.
 
 
 </td></tr>

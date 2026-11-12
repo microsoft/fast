@@ -86,6 +86,10 @@
       "types": "./dist/dts/templating/html.d.ts",
       "default": "./dist/esm/templating/html.js"
     },
+    "./host.js": {
+      "types": "./dist/dts/templating/host.d.ts",
+      "default": "./dist/esm/templating/host.js"
+    },
     "./hydration.js": {
       "types": "./dist/dts/hydration/exports.d.ts",
       "default": "./dist/esm/hydration/exports.js"

@@ -231,6 +231,17 @@ impl Iterator for InstructionCursor<'_> {
                     self.pos = source.len();
                     return Some(Instruction::Literal(at..source.len()));
                 };
+                if read_tag_name(source, at)
+                    .is_some_and(|name| name.eq_ignore_ascii_case("f-host"))
+                {
+                    self.pos = end;
+                    if !source[at..end - 1].trim_end().ends_with('/') {
+                        if let Some((_, after)) = crate::locator::find_html_end_tag(source, "f-host", end) {
+                            self.pos = after;
+                        }
+                    }
+                    return Some(Instruction::Literal(at..at));
+                }
                 self.pos = style_element_end(source, at).unwrap_or(end);
                 if end < self.pos {
                     self.literal = Some(end..self.pos);

@@ -23,7 +23,7 @@ are not used. Importing both shares a single metadata implementation.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 79.65 KB | 24.15 KB | 21.47 KB |
+| CDN Rollup Bundle | 80.53 KB | 24.36 KB | 21.65 KB |
 | FASTElement (@microsoft/fast-element/fast-element.js) | 25.77 KB | 8.14 KB | 7.33 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.75 KB | 2.51 KB | 2.23 KB |
@@ -34,11 +34,11 @@ are not used. Importing both shares a single metadata implementation.
 | slotted (@microsoft/fast-element/slotted.js) | 4.10 KB | 1.61 KB | 1.39 KB |
 | volatile (@microsoft/fast-element/volatile.js) | 6.84 KB | 2.54 KB | 2.26 KB |
 | when (@microsoft/fast-element/when.js) | 1.98 KB | 781 B | 630 B |
-| html (@microsoft/fast-element/html.js) | 30.91 KB | 10.34 KB | 9.32 KB |
+| html (@microsoft/fast-element/html.js) | 31.75 KB | 10.58 KB | 9.54 KB |
 | repeat (@microsoft/fast-element/repeat.js) | 31.69 KB | 10.24 KB | 9.25 KB |
 | css (@microsoft/fast-element/css.js) | 2.43 KB | 1.00 KB | 911 B |
-| enableHydration (@microsoft/fast-element/hydration.js) | 51.43 KB | 15.84 KB | 14.24 KB |
-| declarativeTemplate (@microsoft/fast-element/declarative.js) | 65.62 KB | 20.96 KB | 18.73 KB |
+| enableHydration (@microsoft/fast-element/hydration.js) | 52.29 KB | 16.08 KB | 14.46 KB |
+| declarativeTemplate (@microsoft/fast-element/declarative.js) | 67.23 KB | 21.44 KB | 19.15 KB |
 | ArrayObserver (@microsoft/fast-element/arrays.js) | 12.58 KB | 4.47 KB | 4.04 KB |
 | observerMap (@microsoft/fast-element/observer-map.js) | 24.36 KB | 8.58 KB | 7.76 KB |
 | attributeMap (@microsoft/fast-element/attribute-map.js) | 17.70 KB | 6.27 KB | 5.67 KB |

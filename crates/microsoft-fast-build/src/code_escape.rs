@@ -67,7 +67,7 @@ const CODE_ELEMENT: &str = "code";
 /// inside a code sample, while leaving every non-directive element
 /// (including user-authored custom elements) functional as part of
 /// the rendered sample.
-const DIRECTIVE_TAGS: &[&str] = &["f-when", "f-repeat"];
+const DIRECTIVE_TAGS: &[&str] = &["f-when", "f-repeat", "f-host"];
 
 /// Apply `<code>` code-sample escape preprocessing to an HTML string.
 /// Returns a new string with `{` / `}` characters replaced by their

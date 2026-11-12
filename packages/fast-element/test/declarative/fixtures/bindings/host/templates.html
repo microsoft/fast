@@ -59,3 +59,11 @@
         <span>{{text}}</span>
     </template>
 </f-template>
+<f-template name="host-directive-element">
+    <template data-host-label="{{text}}">
+        <span>{{text}}</span>
+        <f-host role="button" tabindex="0"></f-host><style>.x { color:red; }</style>
+        <f-host class="prefix {{text}}" data-host-label="{{hostTitle}}" attr="{{hostAttr}}" ?disabled="{{isDisabled}}" :title="{hostTitle}" @click="{handleClick()}"></f-host>
+        <span title="{{text}}"></span>
+    </template>
+</f-template>

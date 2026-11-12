@@ -409,6 +409,16 @@ When the tag function is called it invokes `ViewTemplate.create(strings, values)
 
 No DOM nodes are created at this point; compilation is deferred.
 
+`host(bindings)` returns a registered `HostDirective`. Its `createHTML()` registers
+the factory and returns an empty string. The compiler expands host directives into
+ordinary `HTMLBindingDirective` factories with target ID `"h"`, before content
+factories. For each binding key, only the last host binding is retained, overriding
+earlier directives and outer `<template>` bindings before observers or event handlers
+are created. Binding policies, observation, event handling, and unbinding use the
+ordinary binding lifecycle without creating a DOM node. The declarative parser lowers
+`<f-host>` attributes to the same directive; the core compiler does not interpret
+declarative element names.
+
 See [docs/architecture/html-tagged-template-literal.md](./docs/architecture/html-tagged-template-literal.md) for more detail on directives and the `Markup`/`Parser` helpers.
 
 ---
@@ -624,7 +634,9 @@ the imperative `html` API:
   publisher supplies the definition template and later duplicates do not
   reassign it.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
-  shape used by `ViewTemplate.create()`. Its string scanning does not reliably
+  shape used by `ViewTemplate.create()`. Its scanner handles the earliest binding
+  or directive before skipping non-binding single braces such as CSS blocks.
+  Its string scanning does not reliably
   exclude HTML comments; bindings and FAST directive markup inside comments are
   unsupported. Authors must remove unused bound markup rather than comment it out.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
