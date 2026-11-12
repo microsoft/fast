@@ -1,149 +1,61 @@
-# Design — @microsoft/fast-build
+# Design - @microsoft/fast-build
 
-This document describes the internal architecture of the `@microsoft/fast-build` package.
+**Dependency policy:** FAST packages must remain free of regular npm dependencies.
+Development, peer and optional dependencies are separate.
 
-**Dependency policy:** FAST packages must always be dependency-free. Do not
-declare regular npm `dependencies` that would be installed with the package.
-This restriction applies only to the `dependencies` field; `devDependencies`,
-`peerDependencies`, and `optionalDependencies` are explicitly excluded.
+## Build and execution ownership
 
----
+`server.js` loads compiler WASM only at build time and delegates all HTML
+parsing/lowering to Rust. `compileServerModule` returns ESM importing
+`server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
+native Rust executor. Both use the same compiler-owned executable IR.
+The helper is the JavaScript target's request engine. It has no imports or compiler,
+WASM, parser, browser, serialization or source-evaluation dependency.
+See [the full module/state contract](./docs/server-modules.md).
 
-## High-level overview
+The old source-rendering Rust/WASM APIs, prepared file/cache/watch host,
+prepared piece formats and simulated stream APIs are removed, not hidden behind
+compatibility exports. Native `CompiledArtifact` loading/rendering does not parse
+authored HTML or execute JavaScript. Version/compiler/helper metadata and all
+executable references/opcodes are validated on load; immutable `Send + Sync`
+ownership and request-local state/error/resource limits are documented in the
+[native contract](./docs/server-modules.md#native-rust-artifact-target).
+There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
-Bindings and FAST directive markup inside HTML comments are unsupported by the
-declarative rendering contract. The renderer and client use string scanning that
-does not reliably exclude comment contents; authors must remove unused bound
-markup rather than comment it out. No comment filtering or validation is implied.
+Minor prerelease classification does not make removed APIs a drop-in upgrade.
+State acceptance/normalization, native resource defaults, artifact fingerprint
+checks, borrowed request inputs, owned results/errors and thread-safe artifact
+reuse are compatibility contracts. Allocation reductions may remain internal;
+changing those guarantees requires consumer migration. Native budgets do not
+imply equivalent FAST budgets in the JS target.
 
-`@microsoft/fast-build` is a Node.js CLI tool that server-side renders FAST declarative HTML templates and converts FAST declarative template files to other supported syntaxes. It delegates template rendering to a WebAssembly module compiled from the [`microsoft-fast-build`](../../crates/microsoft-fast-build) Rust crate and conversion to the `microsoft-fast-convert` WASM module generated under `wasm/convert/`. The Node.js layer is responsible only for:
+## CLI
 
-1. Dispatching `fast build` and `fast convert`
-2. Parsing CLI arguments and loading configuration
-3. Locating and parsing template HTML files (glob scanning + `<f-template>` extraction)
-4. Loading the entry HTML file and optional state JSON file
-5. Calling the WASM renderer in HTML or stream mode
-6. Validating converter paths and calling the converter WASM
-7. Writing the rendered or converted output file, or raw stream chunks to stdout
+`fast build` loads entry/registry files, compiles AOT source, imports that source,
+parses optional state JSON, executes `renderEntry` and writes complete HTML.
+It is a build tool, not a request handler. The `--aot` and `--stream` flags
+are rejected with migration errors; `stream` is no longer a configuration key.
+Omitted state becomes an empty object, without implicitly loading state.json.
+Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
+presence overrides config, including empty paths. Boolean options are validated.
 
-```
-fast build [options]
-        │
-        ▼
-  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy, --markers_v2, --config, --stream
-        │
-        ├─ loadConfig(configPath)             ← load fast-build.config.json
-        │       │
-        │       ├─ explicit --config path     ← error if file missing
-        │       └─ default CWD lookup         ← silent fallback if missing
-        │
-        ├─ resolveOption(args, config, …)     ← CLI args override config values
-        ├─ resolveBooleanOption(args, config, "stream")
-        │
-        ├─ wasm = require(BUILD_WASM_MODULE)   ← load WASM first
-        │
-        ├─ resolvePattern(pattern, wasm)  ← for each comma-separated --templates glob
-        │       │
-        │       ├─ staticPrefixDir(pattern)  ← determine which dir to walk
-        │       ├─ walkHtmlFiles(dir)        ← collect .html files
-        │       ├─ globMatch(pattern, file)  ← filter by pattern
-        │       └─ parseFTemplates(html, filePath, wasm)
-        │                │
-        │                └─ wasm.parse_f_templates(html)  ← Rust parses <f-template>
-        │
-        ├─ fs.readFileSync(entry)   ← entry HTML template
-        ├─ fs.readFileSync(state)   ← state JSON, only when explicitly provided
-        │       └─ omitted state → WASM receives no state and renders with {}
-        │
-        ▼
-  stream?
-     ├─ false
-     │    ├─ templates loaded → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, false, markers_v2)
-     │    └─ no templates     → wasm.render(entry, state?)
-     │              ▼
-     │        fs.writeFileSync(output, rendered)
-     └─ true  → wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state?, strategy, true, markers_v2)
-                    ▼
-              JSON.parse(chunksJson) → process.stdout.write(chunk)
-```
+`fast convert --syntax=server-js` links all named template inputs into one ESM
+module. It rejects duplicate names, empty registries, wildcard output paths and
+browser-only TypeScript options. Target metadata comes from compiler WASM.
+Browser conversion and CSS conversion remain in the independent converter crate.
 
-`fast convert` uses the same CLI/config merge pattern but loads `fast-convert.config.json` by default:
-
-```
-fast convert [options]
-        │
-        ▼
-  parseArgs(argv)        ← --syntax, --templates, --output, --overwrite,
-        │                  --type-source, --type-source-import, --config
-        │
-        ├─ loadConfig(configPath)             ← load fast-convert.config.json
-        ├─ resolveOption(args, config, …)     ← CLI args override config values
-        ├─ resolvePresenceBooleanOption(args, config, "overwrite")
-        ├─ error if --templates is missing
-        ├─ wasm = require(CONVERT_WASM_MODULE) ← load wasm/convert/microsoft_fast_convert.js (once, even for a single file)
-        │
-        └─ runConvertBatch: resolveTemplateFiles(pattern) per comma-separated
-                  pattern, dedupe matches, warn (not error) on zero matches, then for
-                  each matched file: validate syntax/output paths and extensions,
-                  wasm.convert_template_with_options(templateHtml, syntax, typeSource, typeSourceImport), write output
-        ▼
-  fs.writeFileSync(output, converted)   ← output parent directory is created (mkdir -p) if missing
-```
-
----
-
-## Module map
+## Files
 
 | File | Role |
-|------|------|
-| `bin/fast.js` | CLI entry point — argument parsing, config file loading, file I/O, template scanning, WASM dispatch |
-| `prepared.js` / `prepared.d.ts` | Opt-in asynchronous prepared renderer, portable file store, bounded cache, immutable manifests and development watching |
-| `build-wasm.cjs` | Package build helper that builds the renderer WASM and converter WASM into `wasm/convert/` |
-| `wasm/microsoft_fast_build.js` | WASM-generated JS bindings for the Rust renderer |
-| `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary |
-| `wasm/convert/microsoft_fast_convert.js` | WASM-generated JS bindings for the Rust converter |
-| `wasm/convert/microsoft_fast_convert_bg.wasm` | Compiled Rust converter binary |
-| `test/performance/fixtures.mjs` | Generates WASM workloads from the shared Rust benchmark corpus |
-| `test/performance/render-entry.mjs` | Fresh-child WASM timing, memory, hash comparison, and opt-in scaling checks |
-| `test/performance/performance.test.mjs` | Byte/hash/marker parity against pre-optimization goldens in both marker modes |
-
----
-
-## Configuration file — `loadConfig`
-
-The CLI supports optional JSON configuration files that provide default values for command options. `fast build` loads `fast-build.config.json` by default. `fast convert` loads `fast-convert.config.json` by default. This avoids repeating long argument lists in scripts and CI pipelines.
-
-### Resolution order
-
-1. If `--config=<path>` is provided, that file is loaded. An error is raised if the file does not exist.
-2. If `--config` is not provided, the command-specific default config in the current working directory is loaded if it exists. If it does not exist, no config is applied (silent fallback).
-
-### Merge semantics
-
-CLI arguments always take precedence over config file values. The merge uses **presence-based** checking (`hasOwnProperty`), not truthiness, so an explicit `--entry=` on the command line will override a config file's `entry` value even if the CLI value is an empty string.
-
-When a value is not provided by either source, built-in defaults apply (`index.html`, `output.html`). State is optional: if neither CLI nor config provides `state`, the CLI does not look for a state file and calls WASM without a state value, which renders as `{}`. This is a breaking change from earlier CLI behavior that implicitly loaded `state.json` from the current working directory when present.
-
-### Path resolution
-
-File paths read from the config file (`entry`, `state`, `output`, and `templates`) are resolved relative to the **config file's directory**, not the current working directory. This ensures configs work correctly regardless of where the CLI is invoked from.
-
-CLI-provided paths are resolved relative to the current working directory (the default Node.js behaviour).
-
-### Validation
-
-The config file must be a JSON object. Build config keys must be one of `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, `markers_v2`, or `stream`; `markers_v2` and `stream` must be JSON booleans and other values must be strings. Convert config keys must be one of `syntax`, `templates`, `output`, `overwrite`, `type-source`, or `type-source-import`; `overwrite` must be a JSON boolean and other values must be strings. Unknown keys and invalid value types produce an error referencing the config file path.
-
-### Helpers
-
-| Function | Role |
-|----------|------|
-| `loadConfig(configPath)` | Reads, parses, and validates the config file. Returns `{ config, configDir }`. |
-| `resolveOption(args, config, configDir, key, defaultValue)` | Returns the CLI arg if present, otherwise the config value (with path resolution), otherwise the default. The caller separately tracks whether `state` was explicitly provided so an explicit missing state file errors while omitted state is passed through to WASM as `{}`. |
-| `resolveBooleanOption(args, config, key)` | Resolves boolean options such as `stream`, with CLI values taking precedence over config booleans. |
-| `resolvePresenceBooleanOption(args, config, key)` | Resolves presence-only booleans such as converter `overwrite`, where CLI presence always means `true`. |
-
----
+|---|---|
+| `server.js` / `server.d.ts` | Build-time JS/native-artifact compiler, ServerTemplateDefinition and generated-module types |
+| `server-runtime.mjs` | JavaScript target's server-only request helper implementation |
+| `bin/fast.js` | CLI/configuration, glob scanning and file I/O |
+| `build-wasm.cjs` | Builds the compiler and converter WASM wrappers |
+| `wasm/` | Generated build-time bindings and binaries |
+| `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
+| `test/native-artifact.test.js` | Node/WASM-compiled artifact deployed to a source-free native Rust host |
+| `test/performance/` | Shared output-baseline tests and fresh-process AOT measurements |
 
 ## Template loading — `parseFTemplates`
 
@@ -169,10 +81,10 @@ is needed. Format version 1 remains compatible: renderers do not consume spans
 and continue accepting older records without them. Regenerate older metadata
 when authored diagnostics need locations.
 
-Plugins can call the exported `render_shadow_root` directly for a complete DSD
+Plugins compile server ESM and call its `renderShadow` for a complete DSD
 fragment using resolved component state, without creating a throwaway host or
 slicing serialized HTML. Host/light-DOM ownership stays with the caller.
-Normal/stream/fragment paths share native shadow rendering and marker scopes.
+Entry/host/fragment exports share generated shadow functions and fresh marker scopes.
 
 The additive `extract_template_slots(html, templateName)` export returns JSON
 `TemplateSlot` records (`name`, `line`, `column`) from the original complete HTML,
@@ -209,9 +121,9 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 ```
 
 - The `name` attribute value becomes the element name key in the templates map.
-- The inner content of the `<template>` child element becomes the raw template string sent to the WASM renderer.
-- Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the WASM renderer applies to the emitted Declarative Shadow DOM `<template>`.
-- Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The WASM renderer merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
+- The inner content of the `<template>` child element becomes the raw template string sent to the compiler.
+- Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the compiler applies to the emitted Declarative Shadow DOM `<template>`.
+- Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The compiler merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.
 - The Rust parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
@@ -345,309 +257,21 @@ runs test files concurrently and `convert-fixtures.test.js` clears the shared
 
 ---
 
-## WASM integration
 
-Stylesheet delivery composition is native-owned. The renderer WASM's
-`compose_f_template_styles_with_options(html, options)` accepts an inline/external
-discriminated union and returns a handle retaining `.html` and source provenance.
-Mapping methods accept UTF-16 document spans or document/selected-content
-diagnostics and return JSON identifying HTML, CSS, or generated text. Generated
-markup never receives authored coordinates; invalid/cross-source ranges fail.
-The versioned `source_map` JSON exposes original inputs and insertion offsets.
-Consumers retain the handle and file association until mapping is complete,
-then free it. No parsing or coordinate conversion is duplicated in JavaScript.
+## Diagnostics and qualification
 
-Generated inline fallbacks use `data-fast-ssr-style`; external composition uses
-caller-supplied public URLs. Both insert first without rewriting existing source.
-Adoption, fallback removal, CSP nonce handling, and asset serving are not
-implemented by this API. Conversion preserves raw CSS and link/marker attributes;
-CSS-looking binding syntax is no longer interpreted in style bodies.
+Compile failures preserve structured codes, authored UTF-16 coordinates and
+template names. Malformed skipped bodies fail during compilation.
+Runtime invalid state/options throw TypeError; a present non-array repeat
+throws `repeat-not-array`. Runtime value errors need not carry source coordinates.
+Build-tool composition mappings remain independent of request execution.
 
-The build WASM module exposes rendering and metadata functions; the CLI uses the entry renderer when templates are loaded or streaming is requested:
-
-| Function | Used when |
-|----------|-----------|
-| `wasm.render(entry, state?)` | No custom element templates. Omitted state renders as `{}`. |
-| `wasm.render_with_templates(entry, templatesJson, state?, strategy, markers_v2?)` | JS consumers that need non-entry template rendering with custom elements. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
-| `wasm.render_entry_with_templates(entry, templatesJson, state?, strategy, stream?, markers_v2?)` | CLI entry HTML rendering when at least one template was loaded, and CLI `--stream` rendering when `stream` is `true`. Omitted state renders as `{}`. `strategy` is `"camelCase"` or `"none"`. With `stream: true`, returns a JSON array string of raw HTML chunks. `markers_v2` emits FAST Element 2.x indexed hydration markers. |
-| `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
-| `wasm.extract_template_slots(html, name)` | Inspecting a selected definition's authored slot declarations and original line/UTF-16-column locations, without rendering |
-| `wasm.render_shadow_root(name, templatesJson, state?, strategy?, markers_v2?)` | Plugins that own their host and light DOM, passing resolved component state |
-
-`templatesJson` is a JSON-stringified object mapping element names to template metadata objects. Each object contains the raw inner template string extracted from `<template>` inside `<f-template>`, any forwarded `shadowrootAttributes`, and a `hostAttributes` array carrying the attributes declared on the inner `<template>` element. The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM, copying `shadowroot*` attributes to the emitted `<template>` and merging `hostAttributes` onto the rendered host element opening tag (author host attributes win on conflicts; client-only attrs and `{{expr}}` / `?name="{{expr}}"` bindings are handled by the WASM renderer — see the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details). It normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
-
-See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for details on the Rust rendering pipeline.
-
-Normal and compatibility-stream rendering share a forward Rust event scanner
-and atomic plain-tag handler. Discovery stops at the next tag or binding instead
-of performing independent searches over the remaining entry suffix for every
-host. Existing WASM positional arguments remain compatible. This does not make
-rendering asynchronous or introduce prepared/compiled template handles.
-
-The converter WASM module is loaded from
-`wasm/convert/microsoft_fast_convert.js` and must export `convert_template(template,
-syntax)`, `convert_template_with_options(template, syntax, typeSource?,
-typeSourceImport?, typed?)`, and `convert_syntax_metadata()`. `convert_template_with_options`
-receives the source `.html` template contents, the selected syntax
-(`webui-prerelease`, `webui-framework-prerelease`, or `fast-v3-ts`), and optional `typeSource` /
-`typeSourceImport` strings, returning a `{ output, warnings }` object (`output` the
-converted file contents, `warnings` an array of warning message strings — currently
-only populated when `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children`
-directive) and throwing on conversion or validation errors (including `type-source`
-misuse). The CLI writes `output` to the resolved output file and prints each
-`warnings` entry to stderr as `Warning: <message>` without failing the command.
-
-### Structured diagnostics
-
-Both WASM wrappers construct native JavaScript `Error` objects with unchanged
-display messages, a stable `code`, and optional `line`, `column`, `length`, and
-`templateName`. Generated declarations export `FastBuildError` from each module.
-The CLI already prefers `error.message`, preserving its existing stderr format.
-See the [public contract and code lists](./README.md#structured-errors).
-
-Rust scanners capture source ranges on failure. Recursive slices rebase those
-ranges explicitly; template-definition boundaries assign names and stop entry
-rebasing. The renderer reverses only its known code-sample expansions on the
-error path. Conversion preserves the extracted template offset and reverses the
-publisher opening-tag rewrite. No integration searches snippets or reparses
-messages. Non-HTML failures omit coordinates. Metadata discovery remains
-permissive, successful output/warnings are unchanged, and fast-element's client
-runtime is not modified.
-
----
-
-## Stream output
-
-`--stream`, `--stream=true`, and `--stream=false` are parsed as CLI boolean
-forms. `fast-build.config.json` also accepts `"stream": true` or
-`"stream": false`. CLI arguments take precedence, so `--stream=false` disables
-streaming even when the config enables it.
-
-When streaming is enabled, the CLI always calls
-`wasm.render_entry_with_templates(..., true)`, passing `{}` for `templatesJson`
-when no templates were loaded. With `stream` set to `true`, the WASM export
-returns a JSON array string. The CLI validates that the parsed value is an array
-of strings and writes each chunk to stdout without separators.
-
-Streaming mode does not write `--output`, does not print `Built: ...`, and does
-not warn when `--templates` is omitted. Non-streaming output remains unchanged.
-Chunk construction happens in Rust before the WASM call returns, so this is
-simulated streaming rather than a lazy Node.js `ReadableStream`.
-
-## Performance validation
-
-`bench:render` runs the packaged WASM export in fresh child processes. Each child
-warms up with at most 1,000 instances by default, forces GC, measures one synchronous render, and reports wall/CPU time,
-JSON stringify time, input/output sizes, and before/after memory. OS peak RSS
-comes from `process.resourceUsage()`; the parent samples RSS every 100 ms on
-macOS/Linux because a timer in the blocked child cannot observe the render.
-Peak memory includes warmup and verification. Internal WASM phases and memory
-pages are not exposed and are not claimed as measured.
-
-Both the Rust and Node generators read
-`crates/microsoft-fast-build/benches/fixtures/corpus.json`. Normal package tests
-compare output hashes, byte counts, marker counts, and joined legacy chunks
-against a shared pre-optimization golden at 0/1/2/1,000 instances in both marker
-modes. Native tests verify the same golden, preventing fixture generators from
-drifting unnoticed.
-
-Benchmark reports are explicitly written to new files only. `--compare` checks
-byte/hash parity and reports speedups; `--check-scaling` is opt-in for stable
-hosts, not enabled in normal PR tests. See the crate's
-[`benchmark baseline guide`](../../crates/microsoft-fast-build/benchmark-baselines/README.md)
-for exact commands, workload sizes, measurement limitations, and later milestones.
-
-Post-scanner profiling combines bounded measurements of the actual packaged
-WASM with separate symbolized native render/locator phases. Repeat fixtures
-and attribute-overlay controls exposed the cost of copying child state; native
-setup percentages are not treated as end-to-end WASM percentages. The recorded
-outputs are checked against native rendering. Profiling does not alter this
-package's production build, exports, or streaming behavior.
-
-The Rust renderer now uses private borrowed state views for normal, simulated
-stream, and shadow-fragment rendering. Custom elements store only attribute
-overrides and read inherited values through their parent; bindings and repeat
-items borrow existing JSON values. Dataset updates copy only the affected branch,
-and per-iteration scope vectors still allocate. Null masking, parent-context
-attribute evaluation, loop shadowing, and both hydration marker formats retain
-their previous behavior. Package exports, WASM signatures, CLI options, and JSON
-state formats are unchanged in existing APIs. The optional prepared API below
-adds explicitly owned cross-request reuse.
-
-Private structural render plans now cache literal/content/tag operations,
-directive boundaries and expressions, repeat aliases, and custom-element author
-attributes. A locator compiles each used definition lazily; each executed
-directive/light-DOM body is compiled on first use and reused. State, loop values,
-marker counters, and configuration are never cached. Native locator mutation
-invalidates plans so newly registered components are recognized, and serialized
-static DSD attributes are retained per definition.
-
-One-shot entries execute through the shared instruction cursor without building
-an entry instruction vector. Cached plans collect that same cursor, so parsing
-and evaluation are not duplicated. Definition/body caching still begins on first
-use; there is no adaptive second-use promotion policy. Native registration skips
-invalidation scans until plans exist, and scans only once per registration batch
-unless rendering initializes more plans between mutations.
-
-Normal, simulated-stream, and shadow-fragment paths share these plans. Content
-bindings append directly into their current buffer; attribute-value and boolean
-expression evaluators remain shared with the existing implementation. There is
-no change to existing one-shot WASM APIs. Those exports still rebuild their
-locator for each call; cross-request retention uses the separate prepared API.
-Cold single-use definitions can pay compilation overhead and retain more metadata.
-
-Native allocation baselines are collected by an opt-in Rust development example
-and a fresh-process runner under the crate's `benches/` directory. The npm CLI
-and shipped WASM do not use its allocator or feature. Shared output hashes
-preserve cross-language parity; native current-thread allocation volume and
-peak newly-live heap must not be presented as Node RSS or WASM memory usage.
-Cold render measurements include first-use compilation; retained bytes can include
-locator-owned plans as well as output, not just the returned HTML allocation.
-
-## Prepared renderer — `prepared.js`
-
-The module separates storage-neutral compilation/execution from filesystem
-hosting. `compileArtifacts` accepts transformed named entries and definitions,
-creates one Rust `PreparedCompiler` for the registry, and returns manifest/byte
-artifacts without filesystem access. `createPreparedRuntime` validates a manifest
-and accepts an asynchronous piece-ID loader. JavaScript does not duplicate template
-parsing, instruction compilation, or native artifact decoding.
-
-`compileArtifacts(sources, { previous })` exposes the same identity-based reuse
-boundary to every build host. FAST validates compatible previous results and
-artifact integrity, then constructs a complete candidate without mutating prior
-results. Unchanged instructions are not compiled again; identity scanning/hashing
-and manifest construction still occur. Ownership is explicit and build-scoped,
-with no global cache or bundler-specific lifecycle. Preparation-result bytes are
-not charged to the runtime's native-piece budget.
-
-A version-2 manifest maps entry names and component names to piece IDs, with a
-compiler fingerprint, checksums, conservative dependencies, and a complete
-generation hash. The runtime validates/copies manifests before publication. Its
-cache, deduplicated pending loads, lease accounting, and disposal are shared across
-all entries in that runtime, not across unrelated runtimes or WASM instances.
-Applications that need an aggregate many-entry budget create one explicit runtime.
-Storage adapters supply bytes, not native handles or alternate validation logic.
-
-`prepareRenderer` and `loadRenderer` provide the single-entry filesystem adapter;
-they are not the required build-tool integration path. This adapter alone owns
-source files, persistence, refresh serialization, and optional filesystem watching.
-Different entries must not compete for one fixed `manifest.json`; use distinct
-single-entry directories or a multi-entry manifest/runtime.
-
-The host persists `<input/compiler hash>.fast-artifact.json` files before atomically
-replacing `manifest.json`. Component calls reference names, not copied child content, so a changed
-child can reuse unchanged callers. Registry additions/removals affect only source
-pieces mentioning those names. Unchanged artifacts are not rewritten.
-
-Every `render` captures its manifest before awaiting I/O. It loads the chosen entry's
-DSD-policy-required dependency closure in bounded parallel batches, deduplicating
-cycles/shared loads. This includes statically referenced skipped branches, but
-excludes unreachable definitions and excluded shadow definitions/transitives.
-Authored light-DOM dependencies belong to the caller piece, so selected descendants
-remain reachable even when their enclosing host's shadow is excluded. It is not
-an expanded state-dependent render tree. After loading,
-a request-local WASM `PreparedProgram` pins the same immutable piece records and
-uses the existing evaluator. There is no synchronous filesystem access, render
-restart on misses, second state-evaluation pass, or true network streaming.
-
-Request-local DSD allowlists are execution configuration, not registry variants or
-piece identities. Excluded component instructions render authored host/light DOM
-with caller state and do not apply template host defaults or evaluate shadow
-content. Complete registry membership remains available for immutable plan
-classification independently of loaded definitions. Native linking validates
-that classification against the full registry; selected missing definitions fail
-rather than silently becoming ordinary elements.
-`renderShadowRoot` begins with the requested component's dependency graph, not an
-unrelated entry, and reuses the native fragment helper with resolved component
-state and fresh markers. A known excluded root returns empty output; unknown
-names fail. Excluded fragments validate request inputs but perform no artifact
-I/O. Normal, chunk, and fragment paths share selection/hydration semantics.
-
-`runtime.snapshot` returns an immutable activation handle with its generation and
-`drained` promise. Reader counts start before asynchronous loads and end after
-native programs/leases are released, on success or failure. Replacement retires
-the old handle; its promise resolves when no accepted reader remains. Disposal
-retires and drains the current handle too. Activation identity is separate from
-content generation, preserving A-to-B-to-A behavior. `activate` still returns the
-generation string. No callback can throw into a render or activation.
-
-The byte-budgeted LRU cache holds generated WASM `PreparedPiece` handles.
-Acquisitions reserve leases before concurrent loads finish; active leases cannot
-be evicted. The default 32 MiB estimated Rust-piece budget can be temporarily
-exceeded by active requests. Zero budget evicts every unpinned piece. Releasing
-request programs before leases allows eviction to free records safely. Source
-inputs, adapter-retained artifact bytes, JS objects, compiler work, I/O buffers,
-allocator overhead and output are
-outside this budget. Disposal waits for requests/refreshes and frees the cache;
-it does not shrink WASM linear memory or delete artifacts.
-
-`refresh` serializes updates and activates a new immutable snapshot only after
-successful preparation/publication. Failed updates reject and leave the prior
-snapshot active. Candidate watchers are installed before publication and replace
-old watchers only on success. Opt-in development watching observes parent
-directories and filters declared files, surviving editor rename-based replacement.
-It coalesces events during refresh without timers. Production uses explicit refresh.
-Content/compiler identities establish correctness; watcher events only trigger
-checking, and an explicit refresh remains necessary if filesystem events are lost.
-Old artifacts remain available to old requests/processes; cross-process cleanup
-belongs to deployment management after those readers finish.
-
-The Rust API remains responsible for artifact decoding/validation, source
-provenance, state/marker semantics and registry classification. The Node package
-adds no runtime npm dependencies. Preparation and artifact loading have costs;
-the API does not promise a cold-start or small-one-shot performance improvement.
-
-Build-tool adapters publish all candidate bytes before `runtime.activate` and
-retain old bytes until old readers drain. They own transform failures, HMR events,
-server-only output emission and relative deployment paths; they do not enable a
-second FAST watcher. Manifest validation is eager, artifact loading is lazy and
-checksummed. Snapshot drain handles provide runtime-owned lifetime accounting,
-while adapters retain IDs shared with current/other undrained activations and own
-deletion policy. Other runtimes/processes require separate coordination. A valid
-manifest cannot guarantee that backing storage will deliver every required piece.
-The executable Vite fixture exercises those generic APIs, not a Vite-specific
-runtime path. Its source maps use native normalized filesystem paths, while
-Vite imports, transform requests and module-graph lookups use Vite-normalized
-module IDs. Hook inputs are converted back to native paths before source lookup,
-so Windows separators do not bypass preprocessing or HMR invalidation.
-The prepared benchmark separates compilation, cold disk loading, warmed requests,
-process initialization and many-entry cache retention, including policy-specific
-entry/fragment load counts and validated incremental preparation.
-
----
-
-## Error handling
-
-| Condition | Behaviour |
-|-----------|-----------|
-| `--config` file not found (explicit) | Print error to stderr; exit code 1 |
-| Default `fast-build.config.json` not found | Silent; no config applied |
-| Config file is invalid JSON | Print error to stderr; exit code 1 |
-| Config file is not a JSON object | Print error to stderr; exit code 1 |
-| Config file has unknown key | Print error to stderr; exit code 1 |
-| Config file has non-string value | Print error to stderr; exit code 1 |
-| `--entry` file not found | Print error to stderr; exit code 1 |
-| Explicit `--state` or config `state` file not found | Print error to stderr; exit code 1 |
-| State omitted | Do not check `state.json`; render with an empty state object (`{}`); breaking change from earlier implicit `state.json` loading |
-| `--templates` not provided | Warning to stderr in non-streaming mode; rendering continues without custom elements |
-| `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
-| `--stream` value is not `true`, `false`, or empty | Print error to stderr; exit code 1 |
-| Convert `--syntax` omitted or unsupported | Print error with supported syntaxes to stderr; exit code 1 |
-| Convert `--templates` omitted | Print error to stderr; exit code 1 |
-| Convert `--templates` pattern matches no files | Warning to stderr; pattern is skipped, not an error |
-| Convert output extension does not match syntax | Print error to stderr; exit code 1 |
-| Convert output parent directory missing | Created automatically (`mkdir -p` semantics) |
-| Convert output path is a directory | Print error to stderr; exit code 1 |
-| Convert output exists without overwrite | Print error to stderr; exit code 1 |
-| Convert `--type-source` used with a syntax other than `fast-v3-ts` | Converter WASM throws; printed to stderr; exit code 1 |
-| Convert `--type-source-import` used without `--type-source` | Converter WASM throws; printed to stderr; exit code 1 |
-| Convert `--type-source` is not a dotted identifier | Converter WASM throws; printed to stderr; exit code 1 |
-| Converter WASM export missing | Print error to stderr; exit code 1 |
-| Converter WASM throws | Print error to stderr; exit code 1 |
-| Pattern matches no files | Warning to stderr; pattern is skipped |
-| `<f-template>` without `name` | Warning to stderr; template is skipped |
-| Duplicate template name across files | Warning to stderr; later entry overwrites earlier |
-| Streaming WASM export missing | Print error to stderr; exit code 1 |
-| Streaming WASM return is not a JSON string array | Print error to stderr; exit code 1 |
-| WASM render error | Print error to stderr; exit code 1 |
+Historical prepared-renderer output hashes remain frozen test data, not a
+retained execution backend. Existing Rust rendering assertions run on loaded native artifacts and generated
+JavaScript through test-only adapters, retaining their original expected bytes.
+Dedicated native tests cover immutable cross-thread reuse, all render APIs,
+DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
+relocates generated ESM, then renders without authored inputs or compilation.
+The benchmark reports AOT import/first render, warmed CPU/wall time, process
+memory/GC, source bytes and output hashes. Historical direct/prepared comparisons
+are recorded in server-modules.md and are no longer runnable shipping paths.

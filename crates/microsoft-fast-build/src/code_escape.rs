@@ -53,8 +53,8 @@
 /// `<code />` style self-closing form is handled correctly even though
 /// the parser also recognises the explicit XHTML-style self-close.
 const VOID_ELEMENTS: &[&str] = &[
-    "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
-    "param", "source", "track", "wbr",
+    "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source",
+    "track", "wbr",
 ];
 
 const CODE_ELEMENT: &str = "code";
@@ -86,7 +86,10 @@ pub(crate) fn authored_offset(source: &str, escaped: &str, offset: usize) -> usi
     let mut original_at = 0;
     let mut escaped_at = 0;
     while escaped_at < offset {
-        let ch = source[original_at..].chars().next().expect("escaped source has an original");
+        let ch = source[original_at..]
+            .chars()
+            .next()
+            .expect("escaped source has an original");
         let width = if escaped[escaped_at..].starts_with(ch) {
             ch.len_utf8()
         } else {
@@ -169,8 +172,7 @@ fn transform_code_sample_elements(html: &str, transform: impl Fn(&str) -> String
             continue;
         }
 
-        let close_start =
-            find_matching_close_tag(html, opening.content_start, CODE_ELEMENT);
+        let close_start = find_matching_close_tag(html, opening.content_start, CODE_ELEMENT);
         let inner = &html[opening.content_start..close_start];
         result.push_str(&transform(inner));
         pos = close_start;
@@ -518,8 +520,7 @@ mod tests {
     #[test]
     fn preserves_bindings_outside_code() {
         let input = "<h1>{{a}}</h1><code>{{b}}</code><p>{{c}}</p>";
-        let expected =
-            "<h1>{{a}}</h1><code>&#123;&#123;b&#125;&#125;</code><p>{{c}}</p>";
+        let expected = "<h1>{{a}}</h1><code>&#123;&#123;b&#125;&#125;</code><p>{{c}}</p>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -556,16 +557,14 @@ mod tests {
         // be neutralised so `button @click="{handler()}"` renders
         // literally when written as text inside `<code>`.
         let input = "<code>button @click=\"{handler()}\" /button</code>";
-        let expected =
-            "<code>button @click=\"&#123;handler()&#125;\" /button</code>";
+        let expected = "<code>button @click=\"&#123;handler()&#125;\" /button</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
     #[test]
     fn code_with_attributes_on_the_code_element() {
         let input = "<code class=\"hl\" lang=\"html\">{{x}}</code>";
-        let expected =
-            "<code class=\"hl\" lang=\"html\">&#123;&#123;x&#125;&#125;</code>";
+        let expected = "<code class=\"hl\" lang=\"html\">&#123;&#123;x&#125;&#125;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -594,8 +593,7 @@ mod tests {
 
     #[test]
     fn escapes_literal_f_repeat_directive_inside_code() {
-        let input =
-            "<code><f-repeat value=\"{{items}}\">i</f-repeat></code>";
+        let input = "<code><f-repeat value=\"{{items}}\">i</f-repeat></code>";
         let expected = "<code>&lt;f-repeat value=\"&#123;&#123;items&#125;&#125;\"&gt;i&lt;/f-repeat&gt;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
@@ -605,8 +603,7 @@ mod tests {
         // The XHTML-style self-close form `<f-when … />` is also
         // matched by the directive scanner.
         let input = "<code><f-when value=\"{{flag}}\" /></code>";
-        let expected =
-            "<code>&lt;f-when value=\"&#123;&#123;flag&#125;&#125;\" /&gt;</code>";
+        let expected = "<code>&lt;f-when value=\"&#123;&#123;flag&#125;&#125;\" /&gt;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -617,7 +614,8 @@ mod tests {
         // after the DOM round-trip and re-activate the directive. The
         // server-side escape must therefore be case-insensitive.
         let input = "<code><F-When value=\"{{flag}}\">x</F-When></code>";
-        let expected = "<code>&lt;F-When value=\"&#123;&#123;flag&#125;&#125;\"&gt;x&lt;/F-When&gt;</code>";
+        let expected =
+            "<code>&lt;F-When value=\"&#123;&#123;flag&#125;&#125;\"&gt;x&lt;/F-When&gt;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -652,8 +650,7 @@ mod tests {
         // the browser doesn't see a stray `>` in the entity-decoded
         // text content of the surrounding `<code>` element.
         let input = "<code><f-when value=\"x > 5\">y</f-when></code>";
-        let expected =
-            "<code>&lt;f-when value=\"x &gt; 5\"&gt;y&lt;/f-when&gt;</code>";
+        let expected = "<code>&lt;f-when value=\"x &gt; 5\"&gt;y&lt;/f-when&gt;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -663,8 +660,7 @@ mod tests {
         // re-parsed by the browser as the start of a new tag once the
         // outer entity is decoded; the angle escape rewrites it too.
         let input = "<code><f-when value=\"a < b\">y</f-when></code>";
-        let expected =
-            "<code>&lt;f-when value=\"a &lt; b\"&gt;y&lt;/f-when&gt;</code>";
+        let expected = "<code>&lt;f-when value=\"a &lt; b\"&gt;y&lt;/f-when&gt;</code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -679,8 +675,7 @@ mod tests {
         // as a live DOM element; only brace-binding text in its
         // attributes is neutralised.
         let input = "<code><button class=\"demo\">click</button></code>";
-        let expected =
-            "<code><button class=\"demo\">click</button></code>";
+        let expected = "<code><button class=\"demo\">click</button></code>";
         assert_eq!(escape_code_sample_elements(input), expected);
     }
 
@@ -690,8 +685,7 @@ mod tests {
         // angle brackets are not rewritten, but binding-like text in
         // their attribute values is neutralised so the parser doesn't
         // wire up a live binding to the rendered element.
-        let input =
-            "<code><my-widget data-x=\"{{value}}\">label</my-widget></code>";
+        let input = "<code><my-widget data-x=\"{{value}}\">label</my-widget></code>";
         let expected =
             "<code><my-widget data-x=\"&#123;&#123;value&#125;&#125;\">label</my-widget></code>";
         assert_eq!(escape_code_sample_elements(input), expected);
@@ -739,8 +733,7 @@ mod tests {
         // After one pass the directive tags carry entity-encoded
         // angles and the braces are entity-encoded; a second pass
         // finds nothing new to escape.
-        let input =
-            "<code><f-when value=\"{{x}}\">y</f-when></code>";
+        let input = "<code><f-when value=\"{{x}}\">y</f-when></code>";
         let once = escape_code_sample_elements(input);
         let twice = escape_code_sample_elements(&once);
         assert_eq!(once, twice);
@@ -751,8 +744,7 @@ mod tests {
         // Real elements inside `<code>` round-trip unchanged on the
         // second pass — only the braces in their attributes are
         // escaped on the first pass, and nothing else changes.
-        let input =
-            "<code><button class=\"demo\">click {{x}}</button></code>";
+        let input = "<code><button class=\"demo\">click {{x}}</button></code>";
         let once = escape_code_sample_elements(input);
         let twice = escape_code_sample_elements(&once);
         assert_eq!(once, twice);

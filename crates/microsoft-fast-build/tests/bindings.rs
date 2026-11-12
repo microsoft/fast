@@ -3,18 +3,27 @@ use common::ok;
 
 #[test]
 fn test_content_binding() {
-    assert_eq!(ok("<p>{{greeting}}</p>", r#"{"greeting": "Hello, World!"}"#), "<p>Hello, World!</p>");
+    assert_eq!(
+        ok("<p>{{greeting}}</p>", r#"{"greeting": "Hello, World!"}"#),
+        "<p>Hello, World!</p>"
+    );
 }
 
 #[test]
 fn test_unescaped_html() {
-    assert_eq!(ok("<div>{{{html}}}</div>", r#"{"html": "<b>bold</b>"}"#), "<div><b>bold</b></div>");
+    assert_eq!(
+        ok("<div>{{{html}}}</div>", r#"{"html": "<b>bold</b>"}"#),
+        "<div><b>bold</b></div>"
+    );
 }
 
 #[test]
 fn test_html_escaping() {
     assert_eq!(
-        ok("<p>{{code}}</p>", r#"{"code": "<script>alert('xss')</script>"}"#),
+        ok(
+            "<p>{{code}}</p>",
+            r#"{"code": "<script>alert('xss')</script>"}"#
+        ),
         "<p>&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;</p>",
     );
 }
@@ -23,7 +32,10 @@ fn test_html_escaping() {
 
 #[test]
 fn test_array_index_access() {
-    assert_eq!(ok("{{list.0}}", r#"{"list": ["first", "second"]}"#), "first");
+    assert_eq!(
+        ok("{{list.0}}", r#"{"list": ["first", "second"]}"#),
+        "first"
+    );
 }
 
 #[test]
@@ -45,7 +57,10 @@ fn test_array_length_empty() {
 
 #[test]
 fn test_array_length_nested() {
-    assert_eq!(ok("{{user.orders.length}}", r#"{"user": {"orders": [1, 2]}}"#), "2");
+    assert_eq!(
+        ok("{{user.orders.length}}", r#"{"user": {"orders": [1, 2]}}"#),
+        "2"
+    );
 }
 
 // ── dot-notation — two levels ─────────────────────────────────────────────────
@@ -59,7 +74,10 @@ fn test_two_level_dot() {
 
 #[test]
 fn test_three_level_dot() {
-    assert_eq!(ok("{{foo.bar.bat}}", r#"{"foo": {"bar": {"bat": "deep"}}}"#), "deep");
+    assert_eq!(
+        ok("{{foo.bar.bat}}", r#"{"foo": {"bar": {"bat": "deep"}}}"#),
+        "deep"
+    );
 }
 
 #[test]
@@ -71,7 +89,10 @@ fn test_three_level_dot_number() {
 
 #[test]
 fn test_four_level_dot() {
-    assert_eq!(ok("{{a.b.c.d}}", r#"{"a": {"b": {"c": {"d": "very deep"}}}}"#), "very deep");
+    assert_eq!(
+        ok("{{a.b.c.d}}", r#"{"a": {"b": {"c": {"d": "very deep"}}}}"#),
+        "very deep"
+    );
 }
 
 // ── mixed array index and object access ───────────────────────────────────────
@@ -79,7 +100,10 @@ fn test_four_level_dot() {
 #[test]
 fn test_array_then_object() {
     assert_eq!(
-        ok("{{users.0.name}}", r#"{"users": [{"name": "Alice"}, {"name": "Bob"}]}"#),
+        ok(
+            "{{users.0.name}}",
+            r#"{"users": [{"name": "Alice"}, {"name": "Bob"}]}"#
+        ),
         "Alice",
     );
 }
@@ -87,7 +111,10 @@ fn test_array_then_object() {
 #[test]
 fn test_array_then_object_second_item() {
     assert_eq!(
-        ok("{{users.1.name}}", r#"{"users": [{"name": "Alice"}, {"name": "Bob"}]}"#),
+        ok(
+            "{{users.1.name}}",
+            r#"{"users": [{"name": "Alice"}, {"name": "Bob"}]}"#
+        ),
         "Bob",
     );
 }
