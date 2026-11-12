@@ -1,8 +1,9 @@
-use microsoft_fast_build::{
-    parse_f_templates, render_entry_template_stream_with_locator,
-    render_entry_template_with_locator, render_shadow_root_template_with_locator, render_template,
-    Locator, RenderConfig,
+mod common;
+use crate::common::{
+    render_entry_template_stream_with_locator, render_entry_template_with_locator,
+    render_shadow_root_template_with_locator, render_template, RenderConfig,
 };
+use microsoft_fast_build::{parse_f_templates, Locator};
 use std::collections::HashMap;
 
 #[test]
@@ -164,7 +165,8 @@ fn metadata_retains_nested_repeat_aliases_and_does_not_invent_state_declarations
 fn authored_expression(source: &str, binding: &microsoft_fast_build::BindingMetadata) -> String {
     let span = binding.span;
     String::from_utf16(
-        &source.encode_utf16()
+        &source
+            .encode_utf16()
             .skip(span.start.offset)
             .take(span.end.offset - span.start.offset)
             .collect::<Vec<_>>(),
@@ -176,9 +178,15 @@ fn authored_expression(source: &str, binding: &microsoft_fast_build::BindingMeta
 fn metadata_spans_reference_the_full_input_across_templates_and_duplicate_attributes() {
     let source = "🌍\r\n<f-template name=\"card-one\">\r\n<template title='{{ title }}'>\r\n\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>\r\n</template></f-template>\r\n<f-template name=\"card-two\"><template>{{ title }}</template></f-template>";
     let templates = parse_f_templates(source);
-    let bindings: Vec<_> = templates.iter().flat_map(|template| &template.bindings).collect();
+    let bindings: Vec<_> = templates
+        .iter()
+        .flat_map(|template| &template.bindings)
+        .collect();
     assert_eq!(
-        bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
+        bindings
+            .iter()
+            .map(|binding| binding.expression.as_str())
+            .collect::<Vec<_>>(),
         ["title", "title", "café", "title", "title"],
     );
     let mut cursor = 0;
@@ -189,13 +197,20 @@ fn metadata_spans_reference_the_full_input_across_templates_and_duplicate_attrib
     }
     assert_eq!(
         bindings[0].span.start,
-        microsoft_fast_build::SourcePosition { offset: 54, line: 3, column: 21 },
+        microsoft_fast_build::SourcePosition {
+            offset: 54,
+            line: 3,
+            column: 21
+        },
     );
     assert_eq!(bindings[0].span.end.column, 26);
     assert_eq!(bindings[1].span.start.line, 4);
     assert_eq!(bindings[1].span.start.column, 25);
     assert_eq!(bindings[4].span.start.line, 6);
-    assert_eq!(templates[0].content, "\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>".trim());
+    assert_eq!(
+        templates[0].content,
+        "\t😀<b data-text=\"pré {{ title }} &amp; {{ café }}\">{{ title }}</b>".trim()
+    );
 }
 
 #[test]
@@ -209,8 +224,18 @@ fn metadata_spans_survive_code_samples_and_nested_repeat_aliases() {
     let templates = parse_f_templates(source);
     let bindings = &templates[0].bindings;
     assert_eq!(
-        bindings.iter().map(|binding| binding.expression.as_str()).collect::<Vec<_>>(),
-        ["items", "item.children", "item.visible", "save(item.id, '{{literal}}')", "item.name", "html"],
+        bindings
+            .iter()
+            .map(|binding| binding.expression.as_str())
+            .collect::<Vec<_>>(),
+        [
+            "items",
+            "item.children",
+            "item.visible",
+            "save(item.id, '{{literal}}')",
+            "item.name",
+            "html"
+        ],
     );
     for binding in bindings {
         assert_eq!(authored_expression(source, binding), binding.expression);

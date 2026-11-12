@@ -1,8 +1,9 @@
-import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { defineConfig } from "vite";
+import type { ServerModule, ServerState } from "@microsoft/fast-build/server.js";
 import {
     BENCH_TREE_CONFIG,
     buildTree,
@@ -17,6 +18,10 @@ const base = buildId ? `/${buildId}/` : "/";
 // Load the WASM module for SSR rendering at build time.
 const require = createRequire(import.meta.url);
 const wasm = require("@microsoft/fast-build/wasm/microsoft_fast_build.js");
+const { compileServerModule } = require("@microsoft/fast-build/server.js");
+const runtime = pathToFileURL(
+    require.resolve("@microsoft/fast-build/server-runtime.mjs"),
+).href;
 
 /**
  * Parse `<f-template>` elements from an HTML string using the WASM module.
@@ -32,52 +37,53 @@ function parseTemplates(html: string): Record<string, string> {
     return map;
 }
 
-/**
- * Render a single custom element's SSR output using the WASM crate.
- * Returns the rendered HTML fragment (the custom element with its
- * injected declarative shadow DOM).
- */
-function wasmRender(entry: string, templatesJson: string, state: string): string {
-    return wasm.render_entry_with_templates(entry, templatesJson, state, "none");
-}
-
-// Pre-load and cache entry/state/templates per scenario so the per-node
-// render functions only call into WASM with varying state when needed.
 interface ScenarioCache {
-    entry: string;
-    state: string;
-    templates: Record<string, string>;
-    /** Pre-stringified templates JSON for WASM calls. */
-    templatesJson: string;
+    state: ServerState;
+    server: ServerModule;
     /** Pre-rendered HTML for scenarios with static state. */
     cachedHtml?: string;
 }
 
 const scenarioCaches: Record<string, ScenarioCache> = {};
 
-function loadScenario(name: string): ScenarioCache {
+async function loadScenario(name: string): Promise<ScenarioCache> {
     if (scenarioCaches[name]) return scenarioCaches[name];
 
     const scenarioDir = resolve(benchmarksDir, name);
     const entry = readFileSync(resolve(scenarioDir, "hydration/entry.html"), "utf8");
-    const state = readFileSync(resolve(scenarioDir, "hydration/state.json"), "utf8");
+    const state = JSON.parse(
+        readFileSync(resolve(scenarioDir, "hydration/state.json"), "utf8"),
+    );
     const templateHtml = readFileSync(resolve(scenarioDir, "template.html"), "utf8");
     const templates = parseTemplates(templateHtml);
 
-    const cache: ScenarioCache = {
-        entry,
-        state,
-        templates,
-        templatesJson: JSON.stringify(templates),
-    };
+    const source = compileServerModule(entry, templates, runtime);
+    const server = await import(
+        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+    );
+    const cache: ScenarioCache = { state, server };
     scenarioCaches[name] = cache;
     return cache;
 }
 
+await Promise.all(
+    [
+        "attr-reflect",
+        "basic",
+        "bind-event",
+        "dot-syntax",
+        "ref-slotted",
+        "repeat",
+        "when",
+    ].map(loadScenario),
+);
+
 function renderCached(name: string): string {
-    const cache = loadScenario(name);
+    const cache = scenarioCaches[name];
     if (!cache.cachedHtml) {
-        cache.cachedHtml = wasmRender(cache.entry, cache.templatesJson, cache.state);
+        cache.cachedHtml = cache.server.renderEntry(cache.state, {
+            attributeNameStrategy: "none",
+        });
     }
     return cache.cachedHtml;
 }
@@ -86,10 +92,12 @@ function renderCached(name: string): string {
 // cache a single rendered string. attr-reflect varies state per node.
 const scenarioRenders: Record<string, (index: number) => string> = {
     "attr-reflect"(index: number): string {
-        const cache = loadScenario("attr-reflect");
+        const cache = scenarioCaches["attr-reflect"];
         const count = `${index + 1}`;
-        const state = JSON.stringify({ label: `item-${count}`, count });
-        return wasmRender(cache.entry, cache.templatesJson, state);
+        return cache.server.renderEntry(
+            { label: `item-${count}`, count },
+            { attributeNameStrategy: "none" },
+        );
     },
     basic: () => renderCached("basic"),
     "bind-event": () => renderCached("bind-event"),

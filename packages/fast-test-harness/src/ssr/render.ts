@@ -1,5 +1,5 @@
 /**
- * SSR rendering powered by `@microsoft/fast-build`'s WASM renderer.
+ * SSR fixture generation powered by `@microsoft/fast-build`'s AOT compiler.
  *
  * Provides a high-level `createSSRRenderer()` factory that scans for
  * component build artifacts (f-templates, stylesheets) and returns a
@@ -33,7 +33,7 @@
 import { globSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 export interface ComponentRegistration {
     /**
@@ -201,7 +201,7 @@ export function renderTemplate(rawTemplate: string, styles: string): string {
 }
 
 /**
- * Build the entry HTML that the WASM renderer processes.
+ * Build the entry HTML supplied to the fixture compiler.
  * Constructs either a raw HTML fixture or a single custom element
  * from the query parameters.
  * @internal
@@ -249,7 +249,7 @@ export function buildEntryHtml(queryObj: Record<string, string>): string {
 }
 
 /**
- * Build the state JSON for the WASM renderer from the query
+ * Build fixture state from the query
  * parameters. Includes attribute values and normalised (hyphen-
  * stripped) variants so bindings like `{{arialabel}}` resolve for
  * an `aria-label` HTML attribute.
@@ -280,10 +280,8 @@ export function buildState(queryObj: Record<string, string>): Record<string, unk
 }
 
 /**
- * Create an SSR renderer that uses `@microsoft/fast-build`'s WASM
- * module to render f-templates into declarative shadow DOM on each
- * request, with full expression evaluation and nested component
- * support.
+ * Create an SSR fixture generator. Each authored fixture is compiled to server
+ * JavaScript before execution; this development tool is not a production server.
  *
  * Supports two modes:
  * - **`packageName`**: Scans a monolithic package's dist directory for
@@ -292,7 +290,7 @@ export function buildState(queryObj: Record<string, string>): Record<string, unk
  *   with flat exports.
  */
 export function createSSRRenderer(options: SSRRendererOptions): {
-    render: (queryObj: Record<string, string>) => RenderResult;
+    render: (queryObj: Record<string, string>) => Promise<RenderResult>;
 } {
     const { tagPrefix } = options;
 
@@ -308,7 +306,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     if (!wasm) {
         throw new Error(
             "@microsoft/fast-build is required for SSR rendering. " +
-                "Install it as a dependency to enable WASM-based template rendering.",
+                "Install it as a dependency to enable AOT fixture compilation.",
         );
     }
 
@@ -379,7 +377,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
             const tagName = `${tagPrefix}-${name}`;
             const attrs = entry.shadowrootAttributes ?? [];
             // Use the object format when there are extra shadowroot attributes
-            // beyond the default shadowrootmode, so the WASM renderer can
+            // beyond the default shadowrootmode, so the compiler can
             // propagate them (e.g. shadowrootdelegatesfocus) onto the DSD
             // <template> element.
             const hasExtraAttrs = attrs.some(
@@ -392,7 +390,11 @@ export function createSSRRenderer(options: SSRRendererOptions): {
             console.warn(`No named template found for ${tagPrefix}-${name}`);
         }
     }
-    const templatesJson = JSON.stringify(templatesMap);
+    const require = createRequire(import.meta.url);
+    const { compileServerModule } = require("@microsoft/fast-build/server.js");
+    const runtime = pathToFileURL(
+        require.resolve("@microsoft/fast-build/server-runtime.mjs"),
+    ).href;
 
     // Concatenate all f-templates (with styles) for client hydration.
     const allFTemplates = [...fTemplatesByName.values()].join("\n");
@@ -410,55 +412,29 @@ export function createSSRRenderer(options: SSRRendererOptions): {
     const preloadLinks = preloadParts.join("\n");
 
     return {
-        render(queryObj: Record<string, string> = {}): RenderResult {
+        async render(queryObj: Record<string, string> = {}): Promise<RenderResult> {
             const entryHtml = buildEntryHtml(queryObj);
             const state = buildState(queryObj);
 
             let fixture = "";
             if (entryHtml) {
                 try {
-                    const rendered: string = wasm.render_entry_with_templates(
+                    const source = compileServerModule(
                         `<html><body>${entryHtml}</body></html>`,
-                        templatesJson,
-                        JSON.stringify(state),
-                        "camelCase",
+                        templatesMap,
+                        runtime,
                     );
+                    const server = await import(
+                        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+                    );
+                    const rendered: string = server.renderEntry(state);
 
                     // Extract body content from the rendered document.
                     const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
                     fixture = bodyMatch?.[1] ?? entryHtml;
-
-                    // The WASM renderer only injects DSD for top-level
-                    // custom elements. Inject DSD for any nested custom
-                    // elements that have templates but weren't rendered.
-                    for (const nestedTag of Object.keys(templatesMap)) {
-                        // Match opening tags that don't already have a
-                        // DSD <template> as their first child.
-                        const openTagRe = new RegExp(
-                            `(<${nestedTag}(?=[\\s>/])[^>]*>)(?!\\s*<template[\\s>])`,
-                            "g",
-                        );
-
-                        fixture = fixture.replace(openTagRe, (_, open: string) => {
-                            // Render this element in isolation.
-                            const solo: string = wasm.render_with_templates(
-                                `${open}</${nestedTag}>`,
-                                templatesJson,
-                                "{}",
-                                "camelCase",
-                            );
-                            // Extract the DSD that was injected.
-                            const dsdStart = solo.indexOf("<template shadowrootmode");
-                            const dsdEnd = solo.lastIndexOf("</template>");
-                            if (dsdStart !== -1 && dsdEnd > dsdStart) {
-                                return `${open}${solo.slice(dsdStart, dsdEnd + "</template>".length)}`;
-                            }
-                            return open;
-                        });
-                    }
                 } catch (e) {
                     // Fall back to the raw entry HTML if rendering fails.
-                    console.error("WASM render failed:", e);
+                    console.error("SSR fixture compilation/render failed:", e);
                     fixture = entryHtml;
                 }
             }
