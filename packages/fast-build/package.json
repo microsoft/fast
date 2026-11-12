@@ -17,6 +17,11 @@
     "url": "https://github.com/microsoft/fast/issues/new/choose"
   },
   "exports": {
+    "./server.js": {
+      "types": "./server.d.ts",
+      "default": "./server.js"
+    },
+    "./server-runtime.mjs": "./server-runtime.mjs",
     "./prepared.js": {
       "types": "./prepared.d.ts",
       "default": "./prepared.js"
@@ -30,6 +35,9 @@
     "fast": "bin/fast.js"
   },
   "files": [
+    "server.js",
+    "server.d.ts",
+    "server-runtime.mjs",
     "prepared.js",
     "prepared.d.ts",
     "bin",
@@ -45,9 +53,10 @@
   ],
   "scripts": {
     "build": "node build-wasm.cjs",
-    "test:node": "node --test test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/prepared.test.js test/prepared-incremental.test.js test/prepared-loading.test.js test/prepared-vite.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs ../../crates/microsoft-fast-build/benches/profile-allocations.test.mjs",
+    "test:node": "node --test test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/prepared.test.js test/prepared-incremental.test.js test/prepared-loading.test.js test/prepared-vite.test.js test/server.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs ../../crates/microsoft-fast-build/benches/profile-allocations.test.mjs",
     "bench:prepared": "node test/performance/prepared-renderer.mjs",
     "bench:render": "node test/performance/render-entry.mjs",
+    "bench:server": "node test/performance/server-renderer.mjs",
     "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js"
   },
   "engines": {

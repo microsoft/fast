@@ -132,6 +132,39 @@ this is not a single buffered sink for the entire component tree.
 
 ---
 
+## Ahead-of-time server ESM — `aot.rs`
+
+`compile_server_module(entry, locator, runtime_import)` consumes the same structural
+`RenderPlan` used by normal/prepared execution. It eagerly lowers bodies to named
+JavaScript functions, preserving source rebasing and rejecting deferred syntax
+failures during generation. It emits ordinary conditionals/loops, compiled path
+segments, literal markup/CSS and symbolic calls into a finite component registry;
+it never recursively expands component definitions. Identical authored element
+operations share generated functions to avoid duplicating entry-host code.
+Boolean lowering uses the existing evaluator's operator scanners, including its
+server-specific precedence/coercion, rather than the browser converter's grammar.
+Host/shadow attribute parsing, reflection-name mappings, binding counts and
+shadow-root serialization stay in Rust at compile time.
+
+The generated module imports only `server-runtime.mjs` from the npm package.
+That shared server-only helper handles request validation, own-property path
+lookup, borrowed parent-state overlays, escaping/display/comparison primitives,
+and hydration counters. It has no imports, WASM, HTML parser or source evaluator.
+Every call validates JSON-shaped state without JSON serialization, creates fresh
+request context and returns a complete synchronous string. Generated functions
+do not retain request data. Helper `SERVER_RUNTIME_VERSION` is checked at import;
+the compiler fingerprint is exported for build manifests. Incompatible helper
+changes require a version increment and regeneration.
+
+This backend preserves existing rendered bytes, not browser JavaScript coercion.
+Strict generation-time validation is deliberately earlier than lazy execution.
+The existing APIs remain comparison/migration baselines during qualification.
+The Node conversion CLI exposes this registry-level target as `server-js` using
+`server_syntax_metadata`; the browser converter crate does not acquire a renderer
+dependency or independently reinterpret server expressions. See
+[`packages/fast-build/docs/server-modules.md`](../../packages/fast-build/docs/server-modules.md)
+for the state contract, differential/browser coverage and measurement boundaries.
+
 ## Prepared pieces — `prepared.rs`
 
 The optional prepared path separates immutable compilation from request execution.

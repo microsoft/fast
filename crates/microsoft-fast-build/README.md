@@ -23,6 +23,31 @@ cargo add microsoft-fast-build
 
 ## Usage
 
+### Compile server JavaScript ahead of time
+
+`compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
+with `renderEntry`, `renderHost` and `renderShadow` exports. Templates are trusted
+build inputs; the generated module imports the FAST-owned server helper rather
+than WASM, browser classes or a runtime template parser:
+
+```rust
+use microsoft_fast_build::{compile_server_module, Locator};
+
+let mut locator = Locator::from_templates(Default::default());
+locator.add_template("my-card", "<h2>{{title}}</h2>");
+let source = compile_server_module(
+    "<my-card></my-card>",
+    &locator,
+    "@microsoft/fast-build/server-runtime.mjs",
+)?;
+```
+
+Write `source` as a server `.mjs` build artifact. Requests pass JSON-shaped state
+directly to the generated functions. Existing server markup/coercion is preserved;
+generation eagerly diagnoses malformed skipped bodies.
+See the [server module contract](../../packages/fast-build/docs/server-modules.md)
+for helper compatibility, state validation and qualification.
+
 ### Render with a JSON string
 
 ```rust

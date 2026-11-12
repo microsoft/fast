@@ -12,7 +12,7 @@ const CONVERT_WASM_MODULE = path.join(
 );
 const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
 const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
-const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite", "typed"]);
+const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite", "typed", "aot"]);
 const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
@@ -627,6 +627,38 @@ async function runConvert(args) {
     const typeSource = resolveOption(args, config, configDir, "type-source");
     const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
     const typed = resolveBooleanOption(args, config, "typed");
+    if (syntax === "server-js") {
+        if (!templatesArg) {
+            throw new Error("Missing required --templates.");
+        }
+        if (typed || typeSource || typeSourceImport) {
+            throw new Error("server-js emits JavaScript; TypeScript conversion options do not apply.");
+        }
+        const output = outputArg || "server.mjs";
+        const build = require(BUILD_WASM_MODULE);
+        const target = JSON.parse(build.server_syntax_metadata());
+        const metadata = { [target.syntax]: target };
+        if (output.includes("*")) {
+            throw new Error("server-js requires one output module for the complete template registry.");
+        }
+        validateConvertOutput(output, syntax, overwrite, metadata);
+        const templates = Object.create(null);
+        for (const pattern of templatesArg.split(",").map(value => value.trim())) {
+            for (const { name, ...definition } of resolvePattern(pattern, build)) {
+                if (Object.hasOwn(templates, name)) {
+                    throw new Error(`Duplicate template name "${name}".`);
+                }
+                templates[name] = definition;
+            }
+        }
+        if (Object.keys(templates).length === 0) {
+            throw new Error("server-js requires at least one named template.");
+        }
+        const { compileServerModule } = require("../server.js");
+        fs.writeFileSync(output, compileServerModule("", templates), "utf8");
+        process.stdout.write(`Converted server registry: ${output}\n`);
+        return;
+    }
     const wasm = loadConvertWasm();
     const syntaxMetadata = loadConvertSyntaxMetadata(wasm);
     const syntaxList = convertSyntaxList(syntaxMetadata);
@@ -681,6 +713,7 @@ async function runBuild(args) {
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
     const markersV2 = resolveBooleanOption(args, config, "markers_v2");
     const stream = resolveBooleanOption(args, config, "stream");
+    const aot = resolveBooleanOption(args, {}, "aot");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(
@@ -742,6 +775,28 @@ async function runBuild(args) {
     }
 
     // Render
+    if (aot) {
+        if (stream) {
+            throw new Error("AOT rendering produces a complete string; --stream is unsupported.");
+        }
+        const { pathToFileURL } = require("node:url");
+        const { compileServerModule } = require("../server.js");
+        const source = compileServerModule(
+            entryContent,
+            templatesMap,
+            pathToFileURL(require.resolve("../server-runtime.mjs")).href,
+        );
+        const server = await import(
+            `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+        );
+        const rendered = server.renderEntry(
+            stateContent === undefined ? undefined : JSON.parse(stateContent),
+            { attributeNameStrategy: attributeNameStrategy || undefined, markersV2 },
+        );
+        fs.writeFileSync(output, rendered, "utf8");
+        process.stdout.write(`Built with AOT: ${output}\n`);
+        return;
+    }
     if (stream) {
         if (typeof wasm.render_entry_with_templates !== "function") {
             process.stderr.write(
@@ -827,6 +882,8 @@ function writeBuildUsage() {
         "                         an empty state object.\n" +
         "  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n" +
         "                         of writing an output file.\n" +
+        "  --aot                 Compile and execute server JavaScript instead\n" +
+        "                         of request-time WASM (qualification mode).\n" +
         '  --attribute-name-strategy="camelCase"\n' +
         "                         Strategy for mapping attribute names to property names.\n" +
         '                         "camelCase" (default) or "none".\n' +
@@ -842,7 +899,11 @@ function writeBuildUsage() {
 }
 
 function writeConvertUsage() {
-    const syntaxMetadata = loadConvertSyntaxMetadata(loadConvertWasm());
+    const serverTarget = JSON.parse(require(BUILD_WASM_MODULE).server_syntax_metadata());
+    const syntaxMetadata = {
+        ...loadConvertSyntaxMetadata(loadConvertWasm()),
+        [serverTarget.syntax]: serverTarget,
+    };
     const syntaxList = convertSyntaxList(syntaxMetadata);
     const defaultOutputs = Object.values(syntaxMetadata)
         .map(metadata => `"*${metadata.suffix}" for ${metadata.syntax}`)
@@ -853,6 +914,9 @@ function writeConvertUsage() {
         "Options:\n" +
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
+        "                         server-js compiles the complete registry into\n" +
+        "                         one server.mjs module (or --output), without\n" +
+        "                         importing browser classes at request time.\n" +
         '  --templates="<glob>"   Required. Glob pattern(s) for FAST declarative\n' +
         "                         .html files to convert in one pass. Separate\n" +
         "                         multiple patterns with commas. Loads the\n" +

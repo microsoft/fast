@@ -39,6 +39,54 @@ Within your JavaScript or TypeScript code, you can then import library APIs like
 import { render } from '@microsoft/fast-build';
 ```
 
+## Ahead-of-time server modules
+
+Compile trusted templates during the server build, then import the emitted ESM
+in the request handler. The generated module and its server-only helper have no
+WASM, browser-class, template-parser, or runtime source-evaluation dependency:
+
+```js
+// Build time
+import { writeFile } from "node:fs/promises";
+import { compileServerModule } from "@microsoft/fast-build/server.js";
+
+await writeFile(
+    "./generated/server.mjs",
+    compileServerModule("<my-card></my-card>", {
+        "my-card": "<h2>{{title}}</h2>",
+    }),
+);
+```
+
+```js
+// Request time
+import { renderEntry, renderHost, renderShadow } from "./generated/server.mjs";
+
+const html = renderEntry({ title: "Request-specific state" });
+const host = renderHost("my-card", { title: "A complete host" });
+const dsd = renderShadow("my-card", { title: "Only the shadow template" });
+```
+
+For named `<f-template>` files, the conversion CLI links the whole matched
+registry into one module:
+
+```sh
+fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
+```
+
+Use the existing browser conversion target separately with the authored component
+class and explicit registration. AOT does not change browser hydration.
+State must be acyclic JSON-shaped data, with finite numbers and well-formed
+Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
+and implicit `toJSON()` conversion are rejected rather than invoked.
+Rendering is synchronous and preserves existing HTML bytes and server coercion;
+arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
+
+See [the server module contract and qualification results](./docs/server-modules.md)
+for selection, diagnostics, deployment compatibility, migration, and measurement
+boundaries. Existing runtime/prepared APIs remain available during qualification;
+this is not a commitment to maintain two request-time backends permanently.
+
 ## Prepared template pieces
 
 The opt-in Node API separates preparation from request state. Existing WASM exports

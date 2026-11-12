@@ -29,6 +29,46 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
+## Ahead-of-Time Server JavaScript
+
+Compile templates during the server build to keep WASM and template parsing out
+of the request dependency graph:
+
+```js
+// Build time
+import { writeFile } from "node:fs/promises";
+import { compileServerModule } from "@microsoft/fast-build/server.js";
+
+await writeFile(
+    "./generated/server.mjs",
+    compileServerModule("<my-card></my-card>", {
+        "my-card": "<h2>{{title}}</h2>",
+    }),
+);
+```
+
+```js
+// Request time
+import { renderEntry, renderShadow } from "./generated/server.mjs";
+
+const html = renderEntry({ title: "Request-specific state" });
+const dsd = renderShadow("my-card", { title: "Component state" });
+```
+
+The generated module imports only the FAST server helper. Bundle that helper
+with the server or deploy it from the matching `@microsoft/fast-build` package.
+Keep compiler/helper artifacts together and regenerate on upgrades.
+State must be acyclic JSON-shaped data, with finite numbers and ordinary data
+properties; getters, functions, class instances and nested `undefined` are rejected.
+Existing HTML bytes, server coercion and hydration markers are preserved.
+
+For named template files, use
+`fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
+Browser template/style conversion, authored classes and explicit registration
+remain separate. See the
+[server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
+for options, state restrictions and migration details.
+
 ## Reusing Prepared Templates
 
 For a long-running Node server, `@microsoft/fast-build/prepared.js` separates

@@ -96,6 +96,8 @@ fast convert [options]
 
 | File | Role |
 |------|------|
+| `server.js` / `server.d.ts` | Build-time compiler API and generated server-module contract |
+| `server-runtime.mjs` | Dependency-free request helpers imported by generated ESM; never imports the compiler |
 | `bin/fast.js` | CLI entry point — argument parsing, config file loading, file I/O, template scanning, WASM dispatch |
 | `prepared.js` / `prepared.d.ts` | Opt-in asynchronous prepared renderer, portable file store, bounded cache, immutable manifests and development watching |
 | `build-wasm.cjs` | Package build helper that builds the renderer WASM and converter WASM into `wasm/convert/` |
@@ -106,6 +108,31 @@ fast convert [options]
 | `test/performance/fixtures.mjs` | Generates WASM workloads from the shared Rust benchmark corpus |
 | `test/performance/render-entry.mjs` | Fresh-child WASM timing, memory, hash comparison, and opt-in scaling checks |
 | `test/performance/performance.test.mjs` | Byte/hash/marker parity against pre-optimization goldens in both marker modes |
+
+---
+
+## AOT server target
+
+The Node `compileServerModule` API loads the renderer WASM at build time and
+delegates lowering/emission to Rust's `aot.rs`. `fast convert --syntax=server-js`
+collects a complete named registry and emits one server ESM file; target metadata
+comes from the build crate's `server_syntax_metadata` export. This dispatch is
+separate from the browser converter, avoiding a circular crate dependency or a
+second server parser in `fast-convert`.
+
+Generated modules import only `server-runtime.mjs`. Request execution validates
+JSON-shaped state, uses compiled lookups/control flow and returns complete strings
+without serialization, WASM, browser classes, template parsing or source evaluation.
+Compiler/helper compatibility, state restrictions and exact existing markup are
+specified in [`docs/server-modules.md`](./docs/server-modules.md).
+Legacy runtime/prepared APIs remain qualification/migration baselines.
+
+`fast build --aot` compiles and immediately executes generated source for build-time
+qualification. It does not persist the module and rejects stream mode. FAST
+Element's fixture builder uses it by default, keeping the existing browser suite
+on AOT-produced SSR output. `test/server.test.js` differentially checks every
+fixture and focused cases against reused prepared execution. `bench:server`
+compares direct WASM, reused prepared artifacts and generated ESM in fresh children.
 
 ---
 
