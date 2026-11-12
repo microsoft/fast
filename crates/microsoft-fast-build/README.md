@@ -83,6 +83,19 @@ attributes. Construct a `Locator` with `from_metadata`, `from_templates` or
 CSS in memory with original-source mapping. These APIs and authored slot analysis
 remain build-time tools and require no browser classes.
 
+### Host bindings
+
+An empty `<f-host>` inside a component definition applies its attributes to the
+component's host using the same rules as host attributes on `<template>`:
+
+```html
+<f-host role="button" title="{{label}}" @click="{activate()}"></f-host>
+<span>{{label}}</span>
+```
+
+The directive is omitted from shadow output and does not consume hydration marker
+indexes. Event and single-brace property bindings remain client-only.
+
 ### Authored slot declarations
 
 ```rust

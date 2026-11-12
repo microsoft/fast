@@ -29,9 +29,25 @@ impl TemplateDefinition {
     pub(crate) fn new(
         content: &str,
         shadowroot_attributes: Vec<(String, Option<String>)>,
-        host_attributes: Vec<(String, Option<String>)>,
+        mut host_attributes: Vec<(String, Option<String>)>,
     ) -> Self {
         let escaped = escape_code_sample_elements(content);
+        let mut position = 0;
+        while let Some(start) = find_html_start_tag(&escaped, "f-host", position) {
+            let Some(end) = find_tag_end(&escaped, start) else {
+                break;
+            };
+            for attribute in parse_element_attributes(&escaped[start..end]) {
+                if let Some(existing) = host_attributes.iter_mut().find(|existing| {
+                    existing.0.eq_ignore_ascii_case(&attribute.0)
+                }) {
+                    *existing = attribute;
+                } else {
+                    host_attributes.push(attribute);
+                }
+            }
+            position = end;
+        }
         Self {
             original_content: (escaped != content).then(|| content.to_string()),
             content: escaped,

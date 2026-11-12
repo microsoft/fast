@@ -14,6 +14,8 @@ interface Syntax {
     repeatDirectiveClose: string;
     whenDirectiveOpen: string;
     whenDirectiveClose: string;
+    hostDirectiveOpen: string;
+    hostDirectiveClose: string;
     attributeDirectivePrefix: string;
 }
 
@@ -31,12 +33,16 @@ const defaultSyntax: Syntax = {
     repeatDirectiveOpen: "<f-repeat",
     whenDirectiveClose: "</f-when>",
     whenDirectiveOpen: "<f-when",
+    hostDirectiveClose: "</f-host>",
+    hostDirectiveOpen: "<f-host",
 };
 
 export const attributeDirectivePrefix = defaultSyntax.attributeDirectivePrefix;
 export const clientSideCloseExpression = defaultSyntax.clientSideCloseExpression;
 export const clientSideOpenExpression = defaultSyntax.clientSideOpenExpression;
 export const closeExpression = defaultSyntax.closeExpression;
+export const hostDirectiveClose = defaultSyntax.hostDirectiveClose;
+export const hostDirectiveOpen = defaultSyntax.hostDirectiveOpen;
 
 /**
  * Event argument accessor for declarative event bindings.

@@ -1,0 +1,7 @@
+{
+    "type": "minor",
+    "comment": "Add host() bindings for tagged templates and the declarative f-host directive.",
+    "packageName": "@microsoft/fast-element",
+    "email": "863023+radium-v@users.noreply.github.com",
+    "dependentChangeType": "none"
+}

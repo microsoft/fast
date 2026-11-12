@@ -2,6 +2,54 @@ mod common;
 use crate::common::{render_entry_template_with_locator, render_template_with_locator};
 use common::make_locator_with_host_attrs;
 
+#[test]
+fn host_directive_matches_template_host_attributes_without_changing_markers() {
+    let directive = make_locator_with_host_attrs(&[(
+        "my-el",
+        r#"<span>{{greeting}}</span><f-host role="button" title="{{greeting}}" ?disabled="{{disabled}}" @click="{handleClick()}" :tabindex="{tabIndex}"></f-host><span title="{{greeting}}"></span>"#,
+        &[("role", Some("group"))],
+    )]);
+    let template = make_locator_with_host_attrs(&[(
+        "my-el",
+        r#"<span>{{greeting}}</span><span title="{{greeting}}"></span>"#,
+        &[
+            ("role", Some("button")),
+            ("title", Some("{{greeting}}")),
+            ("?disabled", Some("{{disabled}}")),
+            ("@click", Some("{handleClick()}")),
+            (":tabindex", Some("{tabIndex}")),
+        ],
+    )]);
+    let entry = "<my-el></my-el>";
+    let state = r#"{"greeting":"Hello", "disabled":true}"#;
+    assert_eq!(
+        render_entry_template_with_locator(entry, state, &directive, None).unwrap(),
+        render_entry_template_with_locator(entry, state, &template, None).unwrap(),
+    );
+    assert_eq!(
+        render_template_with_locator(entry, state, &directive, None).unwrap(),
+        render_template_with_locator(entry, state, &template, None).unwrap(),
+    );
+}
+
+#[test]
+fn host_directive_code_samples_do_not_apply_host_defaults() {
+    let locator = make_locator_with_host_attrs(&[(
+        "my-el",
+        r#"<code><f-host title="{{greeting}}"></f-host></code><f-host role="button"></f-host>"#,
+        &[],
+    )]);
+    let result = render_entry_template_with_locator(
+        "<my-el></my-el>",
+        r#"{"greeting":"Hello"}"#,
+        &locator,
+        None,
+    ).unwrap();
+    assert!(result.starts_with(r#"<my-el role="button">"#), "{result}");
+    assert!(result.contains("&lt;f-host"), "{result}");
+    assert!(!result.contains("<f-host"), "{result}");
+}
+
 // ── static template host attribute propagation ────────────────────────────────
 
 #[test]
