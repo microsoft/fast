@@ -148,6 +148,9 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   contract match. The artifact is an implementation format, not a stable ABI or
   cross-version interchange promise. Regenerate and deploy matching native
   library/artifacts together; package version alone is insufficient.
+  The fingerprint includes authored Rust source, build script, manifest and
+  lockfile paths/bytes. Cargo-packaged builds use the preserved `Cargo.toml.orig`
+  as the manifest input, so packaging normalization alone does not change identity.
 - Load validates every opcode, operand shape, static value, component reference,
   body index and envelope field, including unreachable bodies. It never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
@@ -253,9 +256,11 @@ generated JavaScript, preserving its expected bytes. `native_artifacts.rs` adds
 entry/template/host/shadow conformance, both marker formats, DSD all/none/subsets,
 nested/repeated components, coercion/escaping, invalid state/artifacts, recursion
 and concurrent reuse. `node --test packages/fast-build/test/native-artifact.test.js`
-deploys actual Node/WASM-compiled bytes to a standalone native example with no
-JavaScript engine on its executable search path. Neither backend regenerates its
-own expected-output oracle. Native performance is not claimed by the
+deploys actual Node/WASM-compiled bytes to workspace and verified Cargo-packaged
+native examples with no JavaScript engine on their executable search path.
+It also verifies that changing the packaged authored manifest rebuilds the host
+and rejects the original artifact. Neither backend regenerates its own
+expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
 
 Run the AOT benchmark from the repository root after building:

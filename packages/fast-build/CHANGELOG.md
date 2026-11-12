@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Tue, 10 Nov 2026 21:34:48 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 12 Nov 2026 07:56:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.17.0
+
+Thu, 12 Nov 2026 07:56:25 GMT
+
+### Minor changes
+
+- Introduce an API-breaking prerelease migration to shared server instructions for JavaScript and native Rust: replace source-rendering and prepared APIs, require JSON-shaped state, and regenerate artifacts with the deployed compiler. (7559015+janechu@users.noreply.github.com)
 
 ## 0.16.0
 
