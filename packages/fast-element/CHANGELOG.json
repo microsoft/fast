@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 12 Nov 2026 07:56:25 GMT",
+      "version": "3.1.4",
+      "tag": "@microsoft/fast-element_v3.1.4",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ff8b082aa66298ee66aac391d87ca21c40b334a4",
+            "comment": "Qualify declarative hydration fixtures using ahead-of-time server output."
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Nov 2026 04:24:47 GMT",
       "version": "3.1.4",
       "tag": "@microsoft/fast-element_v3.1.4",

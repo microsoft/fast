@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Thu, 12 Nov 2026 07:56:25 GMT",
+      "version": "0.6.0",
+      "tag": "@microsoft/fast-test-harness_v0.6.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "ff8b082aa66298ee66aac391d87ca21c40b334a4",
+            "comment": "Introduce an API-breaking prerelease migration to AOT fixture generation: `render()` now returns `Promise<RenderResult>`, so direct callers must await it."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.17.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 09 Oct 2026 21:33:43 GMT",
       "version": "0.5.1",
       "tag": "@microsoft/fast-test-harness_v0.5.1",

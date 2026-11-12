@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Thu, 01 Oct 2026 05:10:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 12 Nov 2026 07:56:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.6.0
+
+Thu, 12 Nov 2026 07:56:25 GMT
+
+### Minor changes
+
+- Introduce an API-breaking prerelease migration to AOT fixture generation: `render()` now returns `Promise<RenderResult>`, so direct callers must await it. (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.17.0
 
 ## 0.5.1
 
