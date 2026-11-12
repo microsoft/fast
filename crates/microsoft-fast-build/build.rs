@@ -23,9 +23,15 @@ fn main() {
     let mut hash = Sha256::new();
     println!("cargo:rerun-if-changed=src");
     for file in files {
-        println!("cargo:rerun-if-changed={}", file.display());
+        // Cargo preserves the authored manifest when normalizing a packaged crate.
+        let source = if file == Path::new("Cargo.toml") && Path::new("Cargo.toml.orig").is_file() {
+            Path::new("Cargo.toml.orig")
+        } else {
+            file.as_path()
+        };
+        println!("cargo:rerun-if-changed={}", source.display());
         let name = file.to_string_lossy().replace('\\', "/");
-        let bytes = std::fs::read(&file).expect("compiler fingerprint input");
+        let bytes = std::fs::read(source).expect("compiler fingerprint input");
         hash.update((name.len() as u64).to_le_bytes());
         hash.update(name.as_bytes());
         hash.update((bytes.len() as u64).to_le_bytes());

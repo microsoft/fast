@@ -66,7 +66,10 @@ markers remain byte-preserved.
 
 The helper contract version is checked on import; deployments regenerate modules
 and deploy compatible helpers together. The compiler fingerprint hashes source
-paths/bytes, manifest and lockfile, independently of package version.
+paths/bytes, the authored manifest and lockfile, independently of package version.
+Packaged crates hash Cargo's preserved `Cargo.toml.orig` under the same logical
+`Cargo.toml` path, so manifest normalization does not change compiler identity.
+Changes to authored inputs still invalidate artifacts.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; generated code retains no request state.
 

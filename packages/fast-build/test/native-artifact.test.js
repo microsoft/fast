@@ -84,3 +84,89 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
         fs.rmSync(directory, { recursive: true, force: true });
     }
 });
+
+test("packaged Rust crates accept artifacts from the matching Node compiler", () => {
+    const root = path.resolve(__dirname, "../../..");
+    const crate = path.join(root, "crates/microsoft-fast-build");
+    const target = path.join(crate, "target");
+    execFileSync(
+        "cargo",
+        [
+            "package",
+            "--manifest-path",
+            path.join(crate, "Cargo.toml"),
+            "--target-dir",
+            target,
+            "--allow-dirty",
+            "--locked",
+            "--offline",
+        ],
+        { encoding: "utf8", timeout: 180_000, stdio: ["ignore", "pipe", "pipe"] },
+    );
+    const packaged = path.join(
+        target,
+        "package",
+        `microsoft-fast-build-${require("../package.json").version}`,
+    );
+    assert.ok(fs.existsSync(path.join(packaged, "Cargo.toml.orig")));
+    const buildHost = () => {
+        const build = execFileSync(
+            "cargo",
+            [
+                "build",
+                "--quiet",
+                "--locked",
+                "--offline",
+                "--manifest-path",
+                path.join(packaged, "Cargo.toml"),
+                "--target-dir",
+                target,
+                "--example",
+                "native-render",
+                "--message-format=json",
+            ],
+            { encoding: "utf8", timeout: 120_000 },
+        );
+        const executable = build
+            .trim()
+            .split("\n")
+            .map(line => JSON.parse(line))
+            .find(message => message.executable)?.executable;
+        assert.ok(executable, "cargo emitted the packaged native host");
+        return executable;
+    };
+    const executable = buildHost();
+    const directory = fs.mkdtempSync(path.join(__dirname, ".packaged-native-"));
+    try {
+        const artifact = path.join(directory, "server.fast");
+        fs.writeFileSync(artifact, compileServerArtifact("<p>{{title}}</p>"));
+        const html = execFileSync(executable, [artifact], {
+            encoding: "utf8",
+            input: JSON.stringify({ title: "Packaged & native" }),
+            env: { ...process.env, PATH: "" },
+            timeout: 10_000,
+        });
+        assert.equal(html, "<p>Packaged &amp; native</p>");
+
+        const manifest = path.join(packaged, "Cargo.toml.orig");
+        const original = fs.readFileSync(manifest, "utf8");
+        try {
+            fs.appendFileSync(manifest, "\n# Changed compiler input.\n");
+            buildHost();
+            assert.throws(
+                () =>
+                    execFileSync(executable, [artifact], {
+                        input: "{}",
+                        stdio: ["pipe", "pipe", "pipe"],
+                        timeout: 10_000,
+                    }),
+                error => error.stderr.toString().includes("incompatible-artifact"),
+            );
+        } finally {
+            fs.writeFileSync(manifest, original);
+            buildHost();
+        }
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
+    }
+});
