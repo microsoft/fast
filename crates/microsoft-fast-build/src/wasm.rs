@@ -78,6 +78,31 @@ pub fn prepared_compiler_id() -> String {
     crate::PREPARED_COMPILER_ID.to_string()
 }
 
+/// Generate synchronous server ESM at build time; request execution needs no WASM.
+#[wasm_bindgen]
+pub fn compile_server_module(
+    entry: &str,
+    templates_json: &str,
+    runtime_import: Option<String>,
+) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let locator = Locator::from_template_definitions(templates);
+    crate::compile_server_module(
+        entry,
+        &locator,
+        runtime_import.as_deref().unwrap_or("@microsoft/fast-build/server-runtime.mjs"),
+    ).map_err(render_error)
+}
+
+/// Metadata for the registry-level server target exposed by the conversion CLI.
+#[wasm_bindgen]
+pub fn server_syntax_metadata() -> String {
+    format!(
+        r#"{{"syntax":"server-js","extension":".mjs","suffix":".server.mjs","runtimeVersion":{}}}"#,
+        crate::SERVER_RUNTIME_VERSION,
+    )
+}
+
 fn prepared_definition(
     template_json: &str,
 ) -> Result<(String, Vec<(String, Option<String>)>, Vec<(String, Option<String>)>), JsValue> {

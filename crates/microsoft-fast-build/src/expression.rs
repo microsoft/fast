@@ -37,7 +37,7 @@ pub fn evaluate(expr: &str, root: &dyn State, loop_vars: &LoopVars<'_>) -> bool 
     val.map(|v| v.is_truthy()).unwrap_or(false)
 }
 
-fn find_binary_op(expr: &str, op: &str) -> Option<usize> {
+pub(crate) fn find_binary_op(expr: &str, op: &str) -> Option<usize> {
     let bytes = expr.as_bytes();
     let op_bytes = op.as_bytes();
     let mut i = 0;
@@ -50,7 +50,7 @@ fn find_binary_op(expr: &str, op: &str) -> Option<usize> {
     None
 }
 
-fn find_comparison_op(expr: &str, op: &str) -> Option<usize> {
+pub(crate) fn find_comparison_op(expr: &str, op: &str) -> Option<usize> {
     let bytes = expr.as_bytes();
     let op_bytes = op.as_bytes();
     let mut i = 0;

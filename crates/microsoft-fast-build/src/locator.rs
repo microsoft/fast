@@ -302,6 +302,10 @@ impl Locator {
         self.templates.contains_key(element_name)
     }
 
+    pub(crate) fn template_names(&self) -> impl Iterator<Item = &str> {
+        self.templates.keys().map(String::as_str)
+    }
+
     pub(crate) fn from_prepared(
         templates: HashMap<String, Arc<TemplateDefinition>>,
     ) -> Self {
