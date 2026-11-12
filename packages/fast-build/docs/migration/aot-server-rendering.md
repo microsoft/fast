@@ -11,6 +11,18 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
+### Choose the matching replacement
+
+Compile authored inputs at build time, then select the matching render context:
+
+| Previous API | Migration |
+|---|---|
+| WASM `render_entry_with_templates` | Compile the entry; call generated `renderEntry` for entry-host rules. |
+| WASM `render` / `render_with_templates` | Call generated `renderTemplate` to preserve template-context root-host rules. |
+| `render_shadow_root` | Call generated `renderShadow(name, componentState)` for a resolved-state DSD fragment. |
+| Native Rust source rendering | Compile an artifact, load `CompiledArtifact`, and call its corresponding render method (`render_entry`, `render_template`, `render_host` or `render_shadow`). |
+| Prepared APIs/artifacts | Rebuild authored sources into generated ESM or native artifacts; move lifecycle and activation responsibilities to the application. |
+
 ### Build once, render with request state
 
 Use `renderEntry` for entry-host attribute handling and `renderTemplate`
