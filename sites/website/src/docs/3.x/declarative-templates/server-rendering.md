@@ -253,6 +253,11 @@ for `map_span`, `map_location`, lifetime, and static-attribute restrictions.
 
 ## Host Attribute Propagation
 
+Attributes declared on `<f-host>` use the same host-default propagation rules as
+attributes on the component's `<template>`. The directive is omitted from the
+shadow root and does not consume content-binding marker indexes. Event and
+client-only property bindings activate in the browser during hydration.
+
 Missing or null attribute bindings omit the attribute, rather than serializing
 an empty value. Explicit empty strings stay present. This also applies to
 bindings embedded in literal attribute values. Hydration counts still include

@@ -225,6 +225,15 @@ HostAutofocus.define({
     template: declarativeTemplate(),
 });
 
+export class HostDirectiveElement extends HostPermutationBase {
+    @attr
+    override text: string = "host directive";
+}
+HostDirectiveElement.define({
+    name: "host-directive-element",
+    template: declarativeTemplate(),
+});
+
 const hydration = enableHydration();
 void hydration.whenHydrated().then(() => {
     (window as any).hydrationCompleted = true;

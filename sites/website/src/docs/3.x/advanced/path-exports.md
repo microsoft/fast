@@ -41,6 +41,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | `@microsoft/fast-element/dom.js` | DOM abstraction and DOM aspect APIs. | `./dist/esm/dom.js` | `./dist/dts/dom.d.ts` |
 | `@microsoft/fast-element/fast-element.js` | FASTElement and the customElement decorator. | `./dist/esm/components/fast-element.js` | `./dist/dts/components/fast-element.d.ts` |
 | `@microsoft/fast-element/html.js` | HTML template tag APIs. | `./dist/esm/templating/html.js` | `./dist/dts/templating/html.d.ts` |
+| `@microsoft/fast-element/host.js` | Host binding directive APIs. | `./dist/esm/templating/host.js` | `./dist/dts/templating/host.d.ts` |
 | `@microsoft/fast-element/hydration.js` | Path-only opt-in hydration APIs. | `./dist/esm/hydration/exports.js` | `./dist/dts/hydration/exports.d.ts` |
 | `@microsoft/fast-element/notifier.js` | Notifier APIs. | `./dist/esm/observation/notifier.js` | `./dist/dts/observation/notifier.d.ts` |
 | `@microsoft/fast-element/observable.js` | Observable decorator and Observable APIs. | `./dist/esm/observation/observable.js` | `./dist/dts/observation/observable.d.ts` |

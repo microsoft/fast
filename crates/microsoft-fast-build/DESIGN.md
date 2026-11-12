@@ -10,6 +10,12 @@ the same IR for the supported native Rust executor. There is one HTML/expression
 lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
 
+`TemplateDefinition::new` collects empty `<f-host>` directives into the definition's
+host attributes. Later directives override earlier defaults with the same name.
+Source text is retained for metadata; `InstructionCursor` omits the directive
+during lowering without advancing hydration binding counts.
+Code-sample preprocessing escapes `<f-host>` alongside the other element directives.
+
 ## Modules
 
 | Module | Responsibility |

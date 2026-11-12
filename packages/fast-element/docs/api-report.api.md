@@ -582,12 +582,18 @@ export const fastElementRegistry: FASTElementRegistry;
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
 
 // @public
+export function host<TSource = any, TParent = any>(bindings: HostBindings<TSource, TParent>): CaptureType<TSource, TParent>;
+
+// @public
 export interface HostBehavior<TSource = any> {
     addedCallback?(controller: HostController<TSource>): void;
     connectedCallback?(controller: HostController<TSource>): void;
     disconnectedCallback?(controller: HostController<TSource>): void;
     removedCallback?(controller: HostController<TSource>): void;
 }
+
+// @public
+export type HostBindings<TSource = any, TParent = any> = Record<string, Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | string | number | boolean | null | undefined>;
 
 // @public
 export interface HostController<TSource = any> extends ExpressionController<TSource> {
@@ -597,6 +603,19 @@ export interface HostController<TSource = any> extends ExpressionController<TSou
     mainStyles: ElementStyles | null;
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+}
+
+// @public
+export class HostDirective<TSource = any, TParent = any> implements HTMLDirective, ViewBehaviorFactory {
+    constructor(bindings: HostBindings<TSource, TParent>);
+    createBehavior(): ViewBehavior<TSource, TParent>;
+    // @internal (undocumented)
+    createBindingFactories(): HTMLBindingDirective[];
+    createHTML(add: AddViewBehaviorFactory): string;
+    id: string;
+    policy: DOMPolicy;
+    targetNodeId: string;
+    targetTagName: string | null;
 }
 
 // @public
