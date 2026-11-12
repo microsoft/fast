@@ -3,8 +3,6 @@ use std::fmt;
 /// An error encountered while rendering a FAST HTML template.
 #[derive(Debug)]
 pub enum RenderError {
-    /// A prepared template artifact is incompatible, corrupt or incorrectly linked.
-    InvalidPreparedArtifact { message: String },
     /// Invalid stylesheet composition options or source mapping coordinates.
     InvalidComposition { message: String },
     /// Template metadata has an unsupported version, missing name or duplicate name.
@@ -18,7 +16,10 @@ pub enum RenderError {
     /// `{{}}` — the expression between `{{` and `}}` is empty.
     EmptyBinding { context: ErrorContext },
     /// A required directive binding is not present in the provided state.
-    MissingState { binding: String, context: ErrorContext },
+    MissingState {
+        binding: String,
+        context: ErrorContext,
+    },
     /// A directive (`<f-when>` / `<f-repeat>`) has no matching closing tag.
     UnclosedDirective { tag: String, context: ErrorContext },
     /// A directive is missing a valid `value="{{…}}"` attribute.
@@ -26,7 +27,10 @@ pub enum RenderError {
     /// `<f-repeat value="{{expr}}">` — expression is not in `item in list` format.
     InvalidRepeatExpression { expr: String, context: ErrorContext },
     /// `<f-repeat>` binding resolves to a value that is not a JSON array.
-    NotAnArray { binding: String, context: ErrorContext },
+    NotAnArray {
+        binding: String,
+        context: ErrorContext,
+    },
     /// The state string passed to `render_template` is not valid JSON.
     JsonParse { message: String },
     /// Two or more template files resolve to the same element name.
@@ -44,7 +48,10 @@ pub enum RenderError {
     /// `compose_f_template_styles` CSS contains a case-insensitive `</style` raw-text terminator.
     UnsafeStyleContent { context: ErrorContext },
     /// A validation error annotated with its authored HTML location.
-    Located { error: Box<RenderError>, context: ErrorContext },
+    Located {
+        error: Box<RenderError>,
+        context: ErrorContext,
+    },
 }
 
 /// One-based UTF-16 coordinates and a UTF-16 highlight length.
@@ -78,9 +85,14 @@ impl fmt::Display for ErrorContext {
 
 impl From<String> for ErrorContext {
     fn from(snippet: String) -> Self {
-        Self { inner: Box::new(ErrorContextData {
-            snippet, source: None, range: 0..0, template_name: None,
-        }) }
+        Self {
+            inner: Box::new(ErrorContextData {
+                snippet,
+                source: None,
+                range: 0..0,
+                template_name: None,
+            }),
+        }
     }
 }
 
@@ -96,7 +108,6 @@ impl RenderError {
     /// A stable, machine-readable error code.
     pub fn code(&self) -> &'static str {
         match self.kind() {
-            Self::InvalidPreparedArtifact { .. } => "invalid-prepared-artifact",
             Self::InvalidComposition { .. } => "invalid-composition",
             Self::InvalidTemplateMetadata { .. } => "invalid-template-metadata",
             Self::UnknownTemplate { .. } => "missing-template",
@@ -139,7 +150,11 @@ impl RenderError {
         if self.context()?.source.is_none() {
             return None;
         }
-        Some(if matches!(self.kind(), Self::UnsafeStyleContent { .. }) { "css" } else { "html" })
+        Some(if matches!(self.kind(), Self::UnsafeStyleContent { .. }) {
+            "css"
+        } else {
+            "html"
+        })
     }
 
     /// The separately supplied template containing the error, when known.
@@ -183,7 +198,10 @@ impl RenderError {
     }
 
     pub(crate) fn at(self, source: &str, at: usize) -> Self {
-        Self::Located { error: Box::new(self), context: template_context(source, at) }
+        Self::Located {
+            error: Box::new(self),
+            context: template_context(source, at),
+        }
     }
 
     pub(crate) fn rebase(mut self, source: &str, offset: usize) -> Self {
@@ -200,8 +218,10 @@ impl RenderError {
         if let Some(context) = self.context_mut() {
             if context.template_name.is_none() {
                 if let Some(escaped) = &context.source {
-                    let start = crate::code_escape::authored_offset(source, escaped, context.range.start);
-                    let end = crate::code_escape::authored_offset(source, escaped, context.range.end);
+                    let start =
+                        crate::code_escape::authored_offset(source, escaped, context.range.start);
+                    let end =
+                        crate::code_escape::authored_offset(source, escaped, context.range.end);
                     context.range = start..end;
                     context.source = Some(source.to_string());
                 }
@@ -223,7 +243,6 @@ impl RenderError {
 impl fmt::Display for RenderError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::InvalidPreparedArtifact { message } => write!(f, "invalid prepared artifact: {message}"),
             Self::InvalidComposition { message } => write!(f, "invalid composition: {message}"),
             Self::Located { error, .. } => error.fmt(f),
             Self::InvalidTemplateMetadata { message } => write!(f, "invalid template metadata: {message}"),
@@ -340,18 +359,26 @@ pub(crate) fn template_context(template: &str, at: usize) -> ErrorContext {
     let highlight_end = if tail.starts_with('<') {
         crate::attribute::find_tag_end(template, at).unwrap_or(at + 1)
     } else if tail.starts_with("{{{") {
-        tail[3..].find("}}}").map(|end| at + 3 + end + 3).unwrap_or(at + 3)
+        tail[3..]
+            .find("}}}")
+            .map(|end| at + 3 + end + 3)
+            .unwrap_or(at + 3)
     } else if tail.starts_with("{{") {
-        tail[2..].find("}}").map(|end| at + 2 + end + 2).unwrap_or(at + 2)
+        tail[2..]
+            .find("}}")
+            .map(|end| at + 2 + end + 2)
+            .unwrap_or(at + 2)
     } else {
         at + tail.chars().next().map(char::len_utf8).unwrap_or(0)
     };
-    ErrorContext { inner: Box::new(ErrorContextData {
-        snippet: format!("{prefix}{}{suffix}", &template[start..end]),
-        source: Some(template.to_string()),
-        range: at..highlight_end,
-        template_name: None,
-    }) }
+    ErrorContext {
+        inner: Box::new(ErrorContextData {
+            snippet: format!("{prefix}{}{suffix}", &template[start..end]),
+            source: Some(template.to_string()),
+            range: at..highlight_end,
+            template_name: None,
+        }),
+    }
 }
 
 /// Truncate `s` to at most `max` chars, appending `…` if truncated.

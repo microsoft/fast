@@ -128,3 +128,5 @@ npm run serve
 ```
 
 This starts Vite on `http://localhost:5173` with hot reload.
+
+Hydration scenarios compile server ESM once during Vite configuration and reuse its render functions for varying per-node state. WASM is used only for build-time parsing/compilation, not rendering.

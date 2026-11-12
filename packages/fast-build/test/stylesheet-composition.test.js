@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const { test } = require("node:test");
 const typescript = require("typescript");
 const { chromium } = require("@playwright/test");
-const wasm = require("../wasm/microsoft_fast_build.js");
+const wasm = require("./render-server.cjs");
 const convert = require("../wasm/convert/microsoft_fast_convert.js");
 
 const syntaxes = ["webui-prerelease", "webui-framework-prerelease", "fast-v3-ts"];

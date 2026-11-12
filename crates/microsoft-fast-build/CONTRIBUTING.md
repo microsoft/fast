@@ -1,76 +1,19 @@
 # Contributing to microsoft-fast-build
 
-## Prerequisites
-
-- [Rust](https://www.rust-lang.org/tools/install) (current stable toolchain, including the HTML parser dependencies)
-- Cargo (included with Rust)
-
-## Setup
-
-```bash
-git clone https://github.com/microsoft/fast
-cd fast/crates/microsoft-fast-build
-```
-
-## Running Tests
-
-```bash
-cargo test
-```
-
-This runs both unit tests (embedded in each source module) and integration tests (in `tests/`). The integration tests include filesystem-based tests that read from `tests/fixtures/`.
-
-### Integration test files
-
-| File | What it covers |
-|------|---------------|
-| `tests/bindings.rs` | `{{}}` and `{{{}}}` content bindings |
-| `tests/f_when.rs` | `<f-when>` expressions, chained operators |
-| `tests/f_repeat.rs` | `<f-repeat>` iteration |
-| `tests/nested_directives.rs` | Mixed/nested `<f-when>` + `<f-repeat>` |
-| `tests/single_brace.rs` | Single-brace passthrough |
-| `tests/errors.rs` | All `RenderError` variants |
-| `tests/custom_elements.rs` | Custom elements and `Locator` |
-| `tests/common/mod.rs` | Shared helpers (`ok`, `err`, `make_locator`, `empty_root`) |
-| `tests/performance.rs` | Shared benchmark corpus byte/hash/marker parity and normal/stream equivalence |
-| `tests/template_slots.rs` | Authored slot scope, namespaces, entity decoding, source coordinates, parser recovery, and selection errors |
-
-### Performance benchmarks
-
-From the monorepo root:
+Rust, Cargo and Node.js are required. Run commands from the monorepo root:
 
 ```sh
-cargo bench --manifest-path crates/microsoft-fast-build/Cargo.toml --bench render
+cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
+npm run build -w @microsoft/fast-build
+npm run test:node -w @microsoft/fast-build
+npm run bench:server -w @microsoft/fast-build
 ```
 
-See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for fixture
-sizes, packaged WASM comparisons, profiling limitations, and explicit baseline
-recording. Timing thresholds are opt-in rather than assertions in normal tests.
-
-## Building
-
-```bash
-cargo build
-```
-
-## Source File Overview
-
-| File | Purpose |
-|------|---------|
-| `src/lib.rs` | Public API: `render_template`, `render`, `render_with_locator`, `render_template_with_locator` |
-| `src/json.rs` | `JsonValue` enum and hand-rolled JSON string parser |
-| `src/context.rs` | Value resolution: `resolve_value`, `get_nested_property` |
-| `src/expression.rs` | f-when expression evaluator (`\|\|`, `&&`, comparisons, `!`) |
-| `src/attribute.rs` | Tag/attribute parsing: `find_str`, `find_directive`, `find_tag_end`, `extract_directive_expr`, `extract_directive_content_range`, `read_tag_name_slice`, `parse_element_attributes` |
-| `src/content.rs` | `{{}}` and `{{{}}}` binding renderers, `html_escape` |
-| `src/directive.rs` | `Directive` / `RenderEvent` enums, `next_event`, `render_when`, `render_repeat`, `render_custom_element` |
-| `src/plan.rs` | Shared instruction cursor, private cached plans, lazy bodies, and cache-reuse tests |
-| `src/prepared.rs` | Batch compiler, portable pieces, validated flat body artifacts, and entry/fragment programs separating registry membership from DSD-required definitions |
-| `src/config.rs` | Attribute/marker configuration and request-local DSD selection independent of registration |
-| `build.rs` | Compiler fingerprint for invalidating incompatible generated pieces |
-| `src/node.rs` | `render_node` / `render_plan` — transient and cached instruction evaluation |
-| `src/renderer.rs` | Thin entry points that call `render_node` |
-| `src/locator.rs` | `Locator` — template content and metadata, lazy plans, mutation invalidation, and filesystem scanning |
-| `src/error.rs` | `RenderError` enum with all variants and `Display` implementation |
-| `tests/` | Integration tests split by feature area (see above) |
-| `tests/fixtures/` | HTML template files used by integration tests |
+Compiler, metadata, stylesheet composition, authored slot analysis and filesystem
+tests run natively. Rendering assertions compare loaded native artifacts with
+generated JavaScript using test-only adapters in tests/common. The shared
+performance corpus under benches/fixtures has byte/hash regression assertions
+in the Node suite. See the package's
+[measurement guide](../../packages/fast-build/docs/server-modules.md#qualification-and-measurements)
+for the current JavaScript benchmark and its measurement boundaries.
+See [DESIGN.md](./DESIGN.md) for current ownership and the module map.

@@ -53,7 +53,8 @@ exhaustive `RenderError` / `ConvertError` matches accordingly.
 ## Caller-owned host markup
 
 Replace throwaway-host rendering and substring extraction with
-`render_shadow_root` (WASM) or `render_shadow_root_*_with_locator` (Rust).
+the generated module's `renderShadow(name, componentState)` export.
+Compile that module at build time.
 Pass resolved component state and insert the returned complete DSD `<template>`
 into the host you own. The fragment does not include host/default attributes
 or light-DOM children.

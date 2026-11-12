@@ -73,7 +73,7 @@ flowchart TD
 | `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
 | `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Exports `definitionAsyncResolver`, `shadowOptionsToAttributes`, and the `ShadowOptionsResolver` type for resolving per-component shadow DOM options. Static wrapper stripping and style-marker injection recognize browser-valid `<template>` tags with ASCII whitespace before `>` in opening and closing tags. |
 | `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files. Shares the shadow-options resolution pipeline with `generate-templates.ts`. |
-| `src/ssr/render.ts` | `createSSRRenderer` factory — scans for component build artifacts and uses the `@microsoft/fast-build` WASM module to produce SSR output |
+| `src/ssr/render.ts` | `createSSRRenderer` factory — scans component artifacts, compiles fixture JavaScript with build-time WASM and executes the generated module asynchronously |
 | `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
@@ -255,11 +255,11 @@ When `debug` is enabled, the server also writes fixtures to `temp/ssr-<testId>.h
 
 ## SSR Rendering
 
-The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to render f-templates into declarative shadow DOM on each request, with full expression evaluation and nested component support.
+The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns `{ render }` compatible with the server's `entry-server.ts` contract. The asynchronous render function compiles fixture JavaScript with build-time WASM and executes the generated module. This supports dynamically authored development fixtures; production servers compile during their build.
 
 ### createSSRRenderer
 
-`createSSRRenderer(options: SSRRendererOptions)` returns `{ render(queryObj) => RenderResult }`.
+`createSSRRenderer(options: SSRRendererOptions)` returns `{ render(queryObj) => Promise<RenderResult> }`.
 
 **Options:**
 
@@ -282,15 +282,16 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 2. Loads the `@microsoft/fast-build` WASM module (throws if not installed).
 3. Collects f-template and stylesheet artifacts for all components.
 4. Injects stylesheet `<link>` tags into f-templates (replaces `{{styles}}` placeholder or strips the marker when styles URL is empty).
-5. Parses f-templates into the WASM templates map (`tagName → inner template content`), including wrappers with ASCII whitespace before `>` in opening and closing tags.
-6. Loads CEM default state per-package, keyed by tag name.
+5. Parses f-templates into the compiler's templates map (`tagName → inner template content`), including wrappers with ASCII whitespace before `>` in opening and closing tags.
+6. Resolves the server compiler API and runtime helper.
 7. Concatenates all styled f-templates for client hydration.
+8. Builds theme/component stylesheet preload links.
 
 **Per-request `render(queryObj)` flow:**
 
 1. Builds entry HTML from `queryObj` — either raw HTML (`queryObj.html`) or a constructed element (`queryObj.tagName`, `queryObj.attributes`, `queryObj.innerHTML`). Attributes with `false`, `null`, or `undefined` values are omitted; other values are HTML-escaped.
-2. Builds state JSON from attributes (including hyphen-stripped variants for camelCase bindings).
-3. Calls the WASM `render_entry_with_templates()` to produce full HTML with declarative shadow DOM.
+2. Builds JSON-shaped state from attributes (including hyphen-stripped variants for camelCase bindings).
+3. Compiles the fixture with `compileServerModule`, imports the generated module, and calls its `renderEntry(state)` to produce HTML with declarative shadow DOM.
 4. Extracts `<body>` content from the rendered document.
 5. Returns `{ template, fixture, preloadLinks }`.
 
@@ -342,3 +343,5 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
+
+The SSR fixture generator now returns `Promise<RenderResult>`; call `await render(queryObj)`. It compiles arbitrary test fixture HTML on demand as development tooling. Production servers must compile their templates during the build and import generated modules instead.
