@@ -53,6 +53,34 @@ For simplicity, examples throughout the documentation will assume the library ha
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
 
+## Host bindings
+
+Interpolate `host()` into an `html` template to bind attributes, properties, and
+events on the component itself without a wrapping `<template>` tag:
+
+```ts
+import { host, html } from "@microsoft/fast-element";
+
+const template = html<MyElement>`
+    ${host<MyElement>({
+        role: "button",
+        "aria-label": component => component.label,
+        "@click": component => component.activate(),
+    })}
+    <span>${component => component.label}</span>
+`;
+```
+
+Keys use the usual `:property`, `?booleanAttribute`, and `@event` prefixes.
+Values can be static values, expressions, or binding objects such as `oneTime()`.
+The focused import is `@microsoft/fast-element/host.js`.
+Declarative templates use an empty `<f-host>` element with the same binding
+syntax as other elements. Neither form adds an element to the rendered view.
+Host bindings override bindings with the same key on a wrapping `<template>`.
+If multiple host directives bind the same key, only the last binding is active.
+Use host bindings in the component's own view, not in `when()` or `repeat()`
+child templates, which do not have a host binding target.
+
 ## Slot fallback
 
 A false `when()` without an else template, or an empty content binding, does not

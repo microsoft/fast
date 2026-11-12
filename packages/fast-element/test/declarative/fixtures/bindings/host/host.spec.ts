@@ -1,6 +1,97 @@
 import { expect, test } from "@playwright/test";
+import type { HostDirectiveElement } from "./main.js";
 
 test.describe("Host Bindings Hydration", async () => {
+    test.describe("prerendered f-host", () => {
+        test.use({ javaScriptEnabled: false });
+
+        test("applies host attributes without emitting a directive element", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/bindings/host/");
+            const element = page.locator("host-directive-element");
+            await expect(element).toHaveAttribute("role", "button");
+            await expect(element).toHaveAttribute("tabindex", "0");
+            await expect(element).toHaveAttribute("class", "prefix host directive");
+            await expect(element).toHaveAttribute("data-host-label", "tooltip");
+            await expect(element).toHaveAttribute("attr", "value");
+            await expect(element).toHaveAttribute("disabled", "");
+            await expect(element.locator("span").first()).toHaveText("host directive");
+            await expect(element.locator("span").last()).toHaveAttribute(
+                "title",
+                "host directive",
+            );
+            await expect(element.locator("f-host")).toHaveCount(0);
+            await expect(element.locator("style")).toHaveCount(1);
+        });
+    });
+
+    test("hydrates f-host bindings and renders new client-only instances", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/bindings/host/");
+        await page.waitForFunction(() => (window as any).hydrationCompleted === true);
+        const element = page.locator("host-directive-element");
+        expect(
+            await element.evaluate(
+                (component: HostDirectiveElement) => component.$fastController.isHydrated,
+            ),
+        ).toBe(true);
+        await expect(element).toHaveAttribute("title", "permutation tooltip");
+        await element.dispatchEvent("click");
+        expect(
+            await element.evaluate(
+                (component: HostDirectiveElement) => component.clickCount,
+            ),
+        ).toBe(1);
+
+        await element.evaluate((component: HostDirectiveElement) => {
+            component.text = "outer update";
+        });
+        await expect(element.locator("span").first()).toHaveText("outer update");
+        await expect(element).toHaveAttribute("data-host-label", "tooltip");
+
+        await element.evaluate((component: HostDirectiveElement) => {
+            component.text = "updated host";
+            component.hostTitle = "updated title";
+            component.hostAttr = "updated value";
+            component.isDisabled = false;
+        });
+        await expect(element).toHaveAttribute("class", "prefix updated host");
+        await expect(element).toHaveAttribute("title", "updated title");
+        await expect(element).toHaveAttribute("data-host-label", "updated title");
+        await expect(element).toHaveAttribute("attr", "updated value");
+        await expect(element).not.toHaveAttribute("disabled");
+        await expect(element.locator("span").first()).toHaveText("updated host");
+        await expect(element.locator("span").last()).toHaveAttribute(
+            "title",
+            "updated host",
+        );
+        await expect(element.locator("f-host")).toHaveCount(0);
+
+        await page.evaluate(() => {
+            const component = document.createElement("host-directive-element");
+            component.id = "client-host";
+            document.body.appendChild(component);
+        });
+        const client = page.locator("#client-host");
+        await expect(client).toHaveAttribute("role", "button");
+        await expect(client).toHaveAttribute("tabindex", "0");
+        await expect(client).toHaveAttribute("class", "prefix host directive");
+        await expect(client).toHaveAttribute("data-host-label", "permutation tooltip");
+        await expect(client.locator("span").first()).toHaveText("host directive");
+        await expect(client.locator("f-host")).toHaveCount(0);
+        await expect(client.locator("style")).toHaveJSProperty(
+            "textContent",
+            ".x { color:red; }",
+        );
+        expect(
+            await client.evaluate(
+                (component: HostDirectiveElement) => component.$fastController.isHydrated,
+            ),
+        ).toBe(false);
+    });
+
     test.describe("should restart marker indexes inside the template after host bindings", () => {
         test("single host event binding with content text binding", async ({ page }) => {
             const hydrationCompleted = page.waitForFunction(

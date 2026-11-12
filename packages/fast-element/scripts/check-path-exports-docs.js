@@ -37,6 +37,7 @@ const exportDescriptions = {
     "./dom.js": "DOM abstraction and DOM aspect APIs.",
     "./fast-element.js": "FASTElement and the customElement decorator.",
     "./html.js": "HTML template tag APIs.",
+    "./host.js": "Host binding directive APIs.",
     "./hydration.js": "Path-only opt-in hydration APIs.",
     "./notifier.js": "Notifier APIs.",
     "./observable.js": "Observable decorator and Observable APIs.",

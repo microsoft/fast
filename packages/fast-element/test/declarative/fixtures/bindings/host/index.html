@@ -17,7 +17,8 @@ host-all-types-element,
 host-perm-attr-first,
 host-perm-bool-first,
 host-perm-prop-first,
-host-autofocus {
+host-autofocus,
+host-directive-element {
     display: block;
     margin: 10px 0;
     padding: 10px;
@@ -39,6 +40,10 @@ host-autofocus {
         <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm prop first<!--fe:/b--></span></template></host-perm-prop-first>
         <!-- biome-ignore lint/a11y/noAutofocus: deliberate fixture verifying author-provided host attribute propagation through SSR -->
         <host-autofocus autofocus tabindex="0"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-autofocus>
+        <host-directive-element text="host directive" data-host-label="tooltip" role="button" tabindex="0" class="prefix host directive" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->host directive<!--fe:/b--></span>
+        <style>.x { color:red; }</style>
+
+        <span title="host directive" data-fe="1"></span></template></host-directive-element>
 <!-- biome-ignore-all format: SSR renderer requires multi-line <template> layout for binding marker placement -->
 <f-template name="host-event-element">
     <template @click="{handleClick()}">
@@ -98,6 +103,14 @@ host-autofocus {
 <f-template name="host-autofocus">
     <template tabindex="0">
         <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-directive-element">
+    <template data-host-label="{{text}}">
+        <span>{{text}}</span>
+        <f-host role="button" tabindex="0"></f-host><style>.x { color:red; }</style>
+        <f-host class="prefix {{text}}" data-host-label="{{hostTitle}}" attr="{{hostAttr}}" ?disabled="{{isDisabled}}" :title="{hostTitle}" @click="{handleClick()}"></f-host>
+        <span title="{{text}}"></span>
     </template>
 </f-template>
 

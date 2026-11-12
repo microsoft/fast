@@ -75,6 +75,9 @@ pub(crate) fn next_event(
                     }
                 }
                 if let Some(name) = read_tag_name_slice(template, pos) {
+                    if name.eq_ignore_ascii_case("f-host") {
+                        return Some(RenderEvent::PlainTag(pos));
+                    }
                     if is_custom_element(name)
                         && locator.map_or(false, |loc| loc.has_template(name))
                     {

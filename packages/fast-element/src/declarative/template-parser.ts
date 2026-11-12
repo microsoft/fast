@@ -1,5 +1,10 @@
 import type { Schema } from "../components/schema.js";
+import { DOM } from "../dom.js";
 import { children } from "../templating/children.js";
+import { Compiler } from "../templating/compiler.js";
+import { type HostBindings, host } from "../templating/host.js";
+import type { HTMLBindingDirective } from "../templating/html-binding-directive.js";
+import { Parser } from "../templating/markup.js";
 import { elements } from "../templating/node-observation.js";
 import { ref } from "../templating/ref.js";
 import { repeat } from "../templating/repeat.js";
@@ -153,6 +158,35 @@ export class TemplateParser {
         context: TemplateResolutionContext,
     ): void {
         switch (behaviorConfig.name) {
+            case "host": {
+                const attributes = innerHTML.slice(
+                    behaviorConfig.openingTagStartIndex + "<f-host".length,
+                    behaviorConfig.openingTagEndIndex,
+                );
+                const { strings, values } = this.resolveStringsAndValues(
+                    rootPropertyName,
+                    `<template${attributes}</template>`,
+                    context,
+                );
+                const template = this.createTemplate(strings, values);
+                const element = document.createElement("template");
+                element.innerHTML = DOM.policy.createHTML(template.html as string);
+                const bindings: HostBindings = Object.create(null);
+
+                for (const attribute of element.content.firstElementChild!.attributes) {
+                    const parts = Parser.parse(attribute.value, template.factories);
+                    if (parts === null) {
+                        bindings[attribute.name] = attribute.value;
+                        continue;
+                    }
+
+                    const directive = Compiler.aggregate(parts) as HTMLBindingDirective;
+                    bindings[directive.sourceAspect] = directive.dataBinding;
+                }
+
+                externalValues.push(host(bindings));
+                break;
+            }
             case "when": {
                 const expressionChain = getExpressionChain(behaviorConfig.value);
 
@@ -219,6 +253,9 @@ export class TemplateParser {
                     repeat((x, c) => binding(x, c), this.createTemplate(strings, values)),
                 );
 
+                break;
+            }
+            default: {
                 break;
             }
         }

@@ -27,6 +27,12 @@ reuse are compatibility contracts. Allocation reductions may remain internal;
 changing those guarantees requires consumer migration. Native budgets do not
 imply equivalent FAST budgets in the JS target.
 
+Component definition construction collects `<f-host>` attributes as host defaults.
+The shared instruction cursor omits the directive and its closing tag during
+lowering, so generated JavaScript and native artifact rendering retain the same
+host-attribute and hydration-index rules as outer `<template>` host attributes.
+The stored source remains unchanged for source locations.
+
 ## CLI
 
 `fast build` loads entry/registry files, compiles AOT source, imports that source,

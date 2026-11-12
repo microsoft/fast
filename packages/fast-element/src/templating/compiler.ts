@@ -1,10 +1,12 @@
 import { oneTime } from "../binding/one-time.js";
 import { oneWay } from "../binding/one-way.js";
 import { DOM } from "../dom.js";
+import { DOMAspect } from "../dom-aspect.js";
 import type { DOMPolicy } from "../dom-policy.js";
 import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
+import { HostDirective } from "./host.js";
 import { HTMLBindingDirective } from "./html-binding-directive.js";
 import {
     type Aspected,
@@ -385,10 +387,6 @@ export const Compiler = {
             template = html;
         }
 
-        if (!template.content.firstChild && !template.content.lastChild) {
-            template.content.appendChild(document.createComment(""));
-        }
-
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
 
@@ -398,6 +396,42 @@ export const Compiler = {
             policy,
         );
         compileAttributes(context, "", template, /* host */ "h", 0, true);
+
+        for (const id in factories) {
+            const factory = factories[id];
+            if (factory instanceof HostDirective) {
+                for (const binding of factory.createBindingFactories()) {
+                    context.addFactory(
+                        binding as CompiledViewBehaviorFactory,
+                        "",
+                        "h",
+                        0,
+                        template.tagName,
+                    );
+                }
+            }
+        }
+
+        const hostAspects = new Set<string>();
+        for (let i = context.factories.length - 1; i >= 0; --i) {
+            const factory = context.factories[i];
+            if (factory instanceof HTMLBindingDirective && factory.sourceAspect) {
+                const aspect =
+                    factory.aspectType === DOMAspect.attribute ||
+                    factory.aspectType === DOMAspect.booleanAttribute
+                        ? factory.sourceAspect.toLowerCase()
+                        : factory.sourceAspect;
+                if (hostAspects.has(aspect)) {
+                    context.factories.splice(i, 1);
+                } else {
+                    hostAspects.add(aspect);
+                }
+            }
+        }
+
+        if (!fragment.firstChild) {
+            fragment.appendChild(document.createComment(""));
+        }
 
         if (
             // If the first node in a fragment is a marker, that means it's an unstable first node,

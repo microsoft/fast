@@ -142,6 +142,7 @@ export {
 } from "./templating/children.js";
 // Templating
 export { type CompilationStrategy, Compiler } from "./templating/compiler.js";
+export { type HostBindings, HostDirective, host } from "./templating/host.js";
 export {
     type ContentTemplate,
     type ContentView,
