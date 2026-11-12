@@ -4,7 +4,10 @@ use common::ok;
 #[test]
 fn test_single_brace_passthrough() {
     assert_eq!(
-        ok(r#"<button @click="{handleClick()}">{{label}}</button>"#, r#"{"label": "Click me"}"#),
+        ok(
+            r#"<button @click="{handleClick()}">{{label}}</button>"#,
+            r#"{"label": "Click me"}"#
+        ),
         r#"<button @click="{handleClick()}">Click me</button>"#,
     );
 }
@@ -12,7 +15,10 @@ fn test_single_brace_passthrough() {
 #[test]
 fn test_single_brace_attribute_directive() {
     assert_eq!(
-        ok(r#"<slot f-slotted="{slottedNodes}"></slot><span>{{text}}</span>"#, r#"{"text": "hello"}"#),
+        ok(
+            r#"<slot f-slotted="{slottedNodes}"></slot><span>{{text}}</span>"#,
+            r#"{"text": "hello"}"#
+        ),
         r#"<slot f-slotted="{slottedNodes}"></slot><span>hello</span>"#,
     );
 }
@@ -20,7 +26,10 @@ fn test_single_brace_attribute_directive() {
 #[test]
 fn test_single_brace_nested_object_arg() {
     assert_eq!(
-        ok(r#"<button @click="{handler({key: 'val'})}">{{text}}</button>"#, r#"{"text": "go"}"#),
+        ok(
+            r#"<button @click="{handler({key: 'val'})}">{{text}}</button>"#,
+            r#"{"text": "go"}"#
+        ),
         r#"<button @click="{handler({key: 'val'})}">go</button>"#,
     );
 }

@@ -1,16 +1,28 @@
 mod common;
-use common::{ok, make_locator};
-use microsoft_fast_build::{render_with_locator, JsonValue};
+use crate::common::render_with_locator;
+use common::{make_locator, ok};
+use microsoft_fast_build::JsonValue;
 use std::collections::HashMap;
 
 fn state(entries: Vec<(&str, JsonValue)>) -> JsonValue {
-    JsonValue::Object(entries.into_iter().map(|(k, v)| (k.to_string(), v)).collect())
+    JsonValue::Object(
+        entries
+            .into_iter()
+            .map(|(k, v)| (k.to_string(), v))
+            .collect(),
+    )
 }
 
-fn str_val(s: &str) -> JsonValue { JsonValue::String(s.to_string()) }
-fn bool_val(b: bool) -> JsonValue { JsonValue::Bool(b) }
+fn str_val(s: &str) -> JsonValue {
+    JsonValue::String(s.to_string())
+}
+fn bool_val(b: bool) -> JsonValue {
+    JsonValue::Bool(b)
+}
 
-fn empty() -> JsonValue { JsonValue::Object(HashMap::new()) }
+fn empty() -> JsonValue {
+    JsonValue::Object(HashMap::new())
+}
 
 // ── Content bindings — dataset.X reads state["dataset"]["X"] ─────────────────
 
@@ -18,7 +30,10 @@ fn empty() -> JsonValue { JsonValue::Object(HashMap::new()) }
 #[test]
 fn test_dataset_content_binding() {
     assert_eq!(
-        ok(r#"<p>{{dataset.name}}</p>"#, r#"{"dataset": {"name": "Alice"}}"#),
+        ok(
+            r#"<p>{{dataset.name}}</p>"#,
+            r#"{"dataset": {"name": "Alice"}}"#
+        ),
         r#"<p>Alice</p>"#,
     );
 }
@@ -50,25 +65,27 @@ fn test_data_attr_maps_to_dataset_state() {
         &empty(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"data-date-of-birth="1990-01-01""#), "resolved: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"data-date-of-birth="1990-01-01""#),
+        "resolved: {result}"
+    );
 }
 
 /// `data-date-of-birth="{{dob}}"` — value from parent binding — reaches the
 /// shadow template as `{{dataset.dateOfBirth}}`.
 #[test]
 fn test_data_attr_from_parent_binding() {
-    let locator = make_locator(&[(
-        "test-el",
-        r#"<span>{{dataset.dateOfBirth}}</span>"#,
-    )]);
+    let locator = make_locator(&[("test-el", r#"<span>{{dataset.dateOfBirth}}</span>"#)]);
     let root = state(vec![("dob", str_val("1990-01-01"))]);
     let result = render_with_locator(
         r#"<test-el data-date-of-birth="{{dob}}"></test-el>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("1990-01-01"), "content binding: {result}");
 }
 
@@ -84,7 +101,8 @@ fn test_multiple_data_attrs_in_dataset() {
         &empty(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("Ada"), "firstName: {result}");
     assert!(result.contains("Lovelace"), "lastName: {result}");
 }
@@ -101,7 +119,8 @@ fn test_non_data_attrs_remain_top_level() {
         &empty(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains(r#"class="card""#), "cls: {result}");
     assert!(result.contains(r#"data-id="42""#), "dataset.id: {result}");
 }

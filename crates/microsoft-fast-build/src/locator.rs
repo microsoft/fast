@@ -1,16 +1,9 @@
+use crate::attribute::{find_tag_end, parse_element_attribute_parts, parse_element_attributes};
+use crate::code_escape::escape_code_sample_elements;
+use crate::error::RenderError;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, OnceLock};
-use crate::attribute::{find_tag_end, parse_element_attribute_parts, parse_element_attributes};
-use crate::error::RenderError;
-use crate::code_escape::escape_code_sample_elements;
-use crate::plan::RenderPlan;
-
-#[cfg(test)]
-std::thread_local! {
-    static INVALIDATION_VISITS: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
-}
 
 /// A parsed definition with versioned, descriptive binding metadata.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -23,15 +16,12 @@ pub struct FTemplate {
     pub bindings: Vec<crate::BindingMetadata>,
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug)]
 pub(crate) struct TemplateDefinition {
     pub(crate) content: String,
     pub(crate) original_content: Option<String>,
     pub(crate) shadowroot_attributes: Vec<(String, Option<String>)>,
     pub(crate) host_attributes: Vec<(String, Option<String>)>,
-    #[serde(skip)]
-    pub(crate) plan: OnceLock<RenderPlan>,
-    #[serde(skip)]
     shadowroot_markup: OnceLock<String>,
 }
 
@@ -47,7 +37,6 @@ impl TemplateDefinition {
             content: escaped,
             shadowroot_attributes,
             host_attributes,
-            plan: OnceLock::new(),
             shadowroot_markup: OnceLock::new(),
         }
     }
@@ -56,10 +45,6 @@ impl TemplateDefinition {
         self.shadowroot_markup.get_or_init(|| {
             crate::directive::build_shadowroot_template_attrs(&self.shadowroot_attributes)
         })
-    }
-
-    pub(crate) fn shadowroot_markup_bytes(&self) -> usize {
-        self.shadowroot_markup().len()
     }
 }
 
@@ -70,7 +55,6 @@ impl Clone for TemplateDefinition {
             original_content: self.original_content.clone(),
             shadowroot_attributes: self.shadowroot_attributes.clone(),
             host_attributes: self.host_attributes.clone(),
-            plan: OnceLock::new(),
             shadowroot_markup: OnceLock::new(),
         }
     }
@@ -78,7 +62,6 @@ impl Clone for TemplateDefinition {
 
 pub struct Locator {
     templates: HashMap<String, Arc<TemplateDefinition>>,
-    has_plans: AtomicBool,
 }
 
 impl Locator {
@@ -86,16 +69,18 @@ impl Locator {
     pub fn from_metadata(templates: Vec<FTemplate>) -> Result<Self, RenderError> {
         let mut definitions = HashMap::new();
         for template in templates {
-            let name = template.name.ok_or_else(|| {
-                RenderError::InvalidTemplateMetadata {
+            let name = template
+                .name
+                .ok_or_else(|| RenderError::InvalidTemplateMetadata {
                     message: "a template definition requires a name".to_string(),
-                }
-            })?;
+                })?;
             if template.format_version != crate::TEMPLATE_FORMAT_VERSION {
                 return Err(RenderError::InvalidTemplateMetadata {
                     message: format!(
                         "unsupported formatVersion {} for '{}': expected {}",
-                        template.format_version, name, crate::TEMPLATE_FORMAT_VERSION,
+                        template.format_version,
+                        name,
+                        crate::TEMPLATE_FORMAT_VERSION,
                     ),
                 });
             }
@@ -106,7 +91,11 @@ impl Locator {
             }
             definitions.insert(
                 name,
-                (template.content, template.shadowroot_attributes, template.host_attributes),
+                (
+                    template.content,
+                    template.shadowroot_attributes,
+                    template.host_attributes,
+                ),
             );
         }
         Ok(Self::from_template_definitions(definitions))
@@ -171,17 +160,17 @@ impl Locator {
             let (_, template) = entries.into_iter().next().expect(
                 "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
             );
-            templates.insert(element, Arc::new(TemplateDefinition::new(
-                &template.content,
-                template.shadowroot_attributes,
-                template.host_attributes,
-            )));
+            templates.insert(
+                element,
+                Arc::new(TemplateDefinition::new(
+                    &template.content,
+                    template.shadowroot_attributes,
+                    template.host_attributes,
+                )),
+            );
         }
 
-        Ok(Locator {
-            templates,
-            has_plans: AtomicBool::new(false),
-        })
+        Ok(Locator { templates })
     }
 
     /// Create a Locator from an explicit map (useful for testing without filesystem).
@@ -194,14 +183,14 @@ impl Locator {
     pub fn from_templates(templates: HashMap<String, String>) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, content)| (name, Arc::new(TemplateDefinition::new(
-                &content, Vec::new(), Vec::new(),
-            ))))
+            .map(|(name, content)| {
+                (
+                    name,
+                    Arc::new(TemplateDefinition::new(&content, Vec::new(), Vec::new())),
+                )
+            })
             .collect();
-        Locator {
-            templates,
-            has_plans: AtomicBool::new(false),
-        }
+        Locator { templates }
     }
 
     /// Create a Locator from explicit template metadata.
@@ -222,15 +211,20 @@ impl Locator {
     ) -> Self {
         let templates = templates
             .into_iter()
-            .map(|(name, (content, shadowroot_attributes, host_attributes))| (
-                name,
-                Arc::new(TemplateDefinition::new(&content, shadowroot_attributes, host_attributes)),
-            ))
+            .map(
+                |(name, (content, shadowroot_attributes, host_attributes))| {
+                    (
+                        name,
+                        Arc::new(TemplateDefinition::new(
+                            &content,
+                            shadowroot_attributes,
+                            host_attributes,
+                        )),
+                    )
+                },
+            )
             .collect();
-        Locator {
-            templates,
-            has_plans: AtomicBool::new(false),
-        }
+        Locator { templates }
     }
 
     /// Add a template directly.
@@ -242,10 +236,10 @@ impl Locator {
     /// attributes from the source `<f-template>`'s inner `<template>` should
     /// be merged onto the host element opening tag.
     pub fn add_template(&mut self, element_name: &str, content: &str) {
-        self.invalidate_plans();
-        self.templates.insert(element_name.to_string(), Arc::new(TemplateDefinition::new(
-            content, Vec::new(), Vec::new(),
-        )));
+        self.templates.insert(
+            element_name.to_string(),
+            Arc::new(TemplateDefinition::new(content, Vec::new(), Vec::new())),
+        );
     }
 
     /// Add a template directly with shadowroot-prefixed attributes and host
@@ -266,21 +260,28 @@ impl Locator {
         shadowroot_attrs: &[(String, Option<String>)],
         host_attrs: &[(String, Option<String>)],
     ) {
-        self.invalidate_plans();
-        self.templates.insert(element_name.to_string(), Arc::new(TemplateDefinition::new(
-            content,
-            collect_shadowroot_attributes(shadowroot_attrs),
-            host_attrs.to_vec(),
-        )));
+        self.templates.insert(
+            element_name.to_string(),
+            Arc::new(TemplateDefinition::new(
+                content,
+                collect_shadowroot_attributes(shadowroot_attrs),
+                host_attrs.to_vec(),
+            )),
+        );
     }
 
     pub fn get_template(&self, element_name: &str) -> Option<&str> {
-        self.templates.get(element_name).map(|template| template.content.as_str())
+        self.templates
+            .get(element_name)
+            .map(|template| template.content.as_str())
     }
 
     pub(crate) fn authored_template(&self, element_name: &str) -> Option<&str> {
         self.templates.get(element_name).map(|template| {
-            template.original_content.as_deref().unwrap_or(&template.content)
+            template
+                .original_content
+                .as_deref()
+                .unwrap_or(&template.content)
         })
     }
 
@@ -302,37 +303,15 @@ impl Locator {
         self.templates.contains_key(element_name)
     }
 
-    pub(crate) fn from_prepared(
-        templates: HashMap<String, Arc<TemplateDefinition>>,
-    ) -> Self {
-        Self { templates, has_plans: AtomicBool::new(true) }
-    }
-
-    pub(crate) fn render_plan(&self, element_name: &str) -> Option<&RenderPlan> {
-        self.templates.get(element_name).map(|template| {
-            template.plan.get_or_init(|| {
-                // OnceLock publishes the plan; the flag only skips unnecessary invalidation.
-                self.has_plans.store(true, Ordering::Relaxed);
-                RenderPlan::compile(&template.content, Some(self))
-            })
-        })
+    pub(crate) fn template_names(&self) -> impl Iterator<Item = &str> {
+        self.templates.keys().map(String::as_str)
     }
 
     pub(crate) fn shadowroot_markup(&self, element_name: &str) -> &str {
-        self.templates.get(element_name).expect("template was found")
+        self.templates
+            .get(element_name)
+            .expect("template was found")
             .shadowroot_markup()
-    }
-
-    fn invalidate_plans(&mut self) {
-        if !self.has_plans.swap(false, Ordering::Relaxed) {
-            return;
-        }
-        // Registering a formerly unknown element changes event classification in other definitions.
-        for template in self.templates.values_mut() {
-            #[cfg(test)]
-            INVALIDATION_VISITS.with(|visits| visits.set(visits.get() + 1));
-            Arc::make_mut(template).plan.take();
-        }
     }
 }
 
@@ -364,7 +343,8 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
         let inner_html = &html[inner_start..inner_end];
         let (content_range, host_tag) = extract_template_content(inner_html);
         let content = &inner_html[content_range.clone()];
-        let host_attributes = host_tag.as_ref()
+        let host_attributes = host_tag
+            .as_ref()
             .map(|range| parse_element_attribute_parts(&inner_html[range.clone()]))
             .unwrap_or_default();
         let bindings = crate::binding_metadata::collect_bindings(
@@ -378,7 +358,10 @@ pub fn parse_f_templates(html: &str) -> Vec<FTemplate> {
             name,
             content: content.to_string(),
             shadowroot_attributes,
-            host_attributes: host_attributes.into_iter().map(|attr| (attr.name, attr.value)).collect(),
+            host_attributes: host_attributes
+                .into_iter()
+                .map(|attr| (attr.name, attr.value))
+                .collect(),
             format_version: crate::TEMPLATE_FORMAT_VERSION,
             bindings,
         });
@@ -453,7 +436,11 @@ pub(crate) fn find_html_end_tag(html: &str, tag_name: &str, from: usize) -> Opti
     None
 }
 
-pub(crate) fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, expected: &[u8]) -> bool {
+pub(crate) fn starts_with_ascii_case_insensitive(
+    bytes: &[u8],
+    start: usize,
+    expected: &[u8],
+) -> bool {
     let end = start + expected.len();
 
     if end > bytes.len() {
@@ -468,12 +455,12 @@ pub(crate) fn starts_with_ascii_case_insensitive(bytes: &[u8], start: usize, exp
 
 pub(crate) fn is_html_tag_name_boundary(byte: Option<u8>) -> bool {
     matches!(byte, Some(b'>') | Some(b'/'))
-        || byte
-            .map(|byte| byte.is_ascii_whitespace())
-            .unwrap_or(false)
+        || byte.map(|byte| byte.is_ascii_whitespace()).unwrap_or(false)
 }
 
-fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(String, Option<String>)> {
+fn collect_shadowroot_attributes(
+    attrs: &[(String, Option<String>)],
+) -> Vec<(String, Option<String>)> {
     let mut results = Vec::new();
     let mut seen = Vec::new();
     for (name, value) in attrs {
@@ -491,7 +478,9 @@ fn collect_shadowroot_attributes(attrs: &[(String, Option<String>)]) -> Vec<(Str
 ///
 /// If no `<template>` element is found, returns the trimmed input with an
 /// absent opening-tag range. All ranges are byte offsets into `html`.
-fn extract_template_content(html: &str) -> (std::ops::Range<usize>, Option<std::ops::Range<usize>>) {
+fn extract_template_content(
+    html: &str,
+) -> (std::ops::Range<usize>, Option<std::ops::Range<usize>>) {
     let template = find_html_start_tag(html, "template", 0).and_then(|open| {
         let tag_end = find_tag_end(html, open)?;
         let (close, _) = find_html_end_tag(html, "template", tag_end)?;
@@ -502,7 +491,6 @@ fn extract_template_content(html: &str) -> (std::ops::Range<usize>, Option<std::
     let start = range.start + content.len() - content.trim_start().len();
     (start..start + content.trim().len(), host_tag)
 }
-
 
 fn normalize_path(path: &str) -> String {
     let normalized = path.replace('\\', "/");
@@ -537,7 +525,11 @@ fn walk_html_files(dir: &Path, result: &mut Vec<std::path::PathBuf>) -> std::io:
     walk_html_files_inner(dir, result, 0)
 }
 
-fn walk_html_files_inner(dir: &Path, result: &mut Vec<std::path::PathBuf>, depth: usize) -> std::io::Result<()> {
+fn walk_html_files_inner(
+    dir: &Path,
+    result: &mut Vec<std::path::PathBuf>,
+    depth: usize,
+) -> std::io::Result<()> {
     if depth > MAX_DIR_DEPTH {
         return Ok(());
     }
@@ -628,92 +620,60 @@ mod tests {
     use super::*;
 
     #[test]
-    fn incremental_registration_skips_uninitialized_plan_invalidation() {
-        INVALIDATION_VISITS.with(|visits| visits.set(0));
-        let mut locator = Locator::from_templates(HashMap::new());
-        for i in 0..512 {
-            locator.add_template(&format!("plain-{i}"), "<b>plain</b>");
-            locator.add_template_with_attrs(
-                &format!("attributed-{i}"),
-                "<b>attributed</b>",
-                &[("shadowrootmode".into(), Some("open".into()))],
-                &[],
-            );
-        }
-        assert_eq!(locator.templates.len(), 1024);
-        assert_eq!(INVALIDATION_VISITS.with(|visits| visits.get()), 0);
-    }
-
-    #[test]
-    fn concurrent_plan_initialization_invalidates_once_per_registration_batch() {
-        INVALIDATION_VISITS.with(|visits| visits.set(0));
-        let mut locator = Locator::from_templates(HashMap::from([(
-            "my-list".into(),
-            "<new-item></new-item>".into(),
-        )]));
-        std::thread::scope(|scope| {
-            scope
-                .spawn(|| {
-                    crate::render_entry_template_with_locator(
-                        "<my-list></my-list>",
-                        "{}",
-                        &locator,
-                        None,
-                    )
-                    .unwrap()
-                })
-                .join()
-                .unwrap();
-        });
-        locator.add_template("new-item", "<b>first</b>");
-        locator.add_template_with_attrs("other-item", "<i>other</i>", &[], &[]);
-        assert_eq!(INVALIDATION_VISITS.with(|visits| visits.get()), 1);
-        let html = crate::render_entry_template_with_locator(
-            "<my-list></my-list>",
-            "{}",
-            &locator,
-            None,
-        )
-        .unwrap();
-        assert!(html.contains("<b>first</b>"));
-        locator.add_template("new-item", "<b>replacement</b>");
-        assert_eq!(INVALIDATION_VISITS.with(|visits| visits.get()), 4);
-        let html = crate::render_entry_template_with_locator(
-            "<my-list></my-list>",
-            "{}",
-            &locator,
-            None,
-        )
-        .unwrap();
-        assert!(html.contains("<b>replacement</b>"));
-        assert!(!html.contains("<b>first</b>"));
-    }
-
-    #[test]
     fn test_glob_star() {
-        assert!(glob_match("tests/fixtures/*.html", "tests/fixtures/my-button.html"));
-        assert!(!glob_match("tests/fixtures/*.html", "tests/fixtures/duplicate/my-button.html"));
+        assert!(glob_match(
+            "tests/fixtures/*.html",
+            "tests/fixtures/my-button.html"
+        ));
+        assert!(!glob_match(
+            "tests/fixtures/*.html",
+            "tests/fixtures/duplicate/my-button.html"
+        ));
     }
 
     #[test]
     fn test_glob_double_star() {
-        assert!(glob_match("tests/fixtures/**/*.html", "tests/fixtures/my-button.html"));
-        assert!(glob_match("tests/fixtures/**/*.html", "tests/fixtures/duplicate/my-button.html"));
-        assert!(!glob_match("tests/fixtures/**/*.html", "tests/fixtures/my-button.txt"));
+        assert!(glob_match(
+            "tests/fixtures/**/*.html",
+            "tests/fixtures/my-button.html"
+        ));
+        assert!(glob_match(
+            "tests/fixtures/**/*.html",
+            "tests/fixtures/duplicate/my-button.html"
+        ));
+        assert!(!glob_match(
+            "tests/fixtures/**/*.html",
+            "tests/fixtures/my-button.txt"
+        ));
     }
 
     #[test]
     fn test_glob_question_mark() {
-        assert!(glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-x.html"));
-        assert!(!glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-xy.html"));
+        assert!(glob_match(
+            "tests/fixtures/my-?.html",
+            "tests/fixtures/my-x.html"
+        ));
+        assert!(!glob_match(
+            "tests/fixtures/my-?.html",
+            "tests/fixtures/my-xy.html"
+        ));
     }
 
     #[test]
     fn test_glob_exact_path() {
         // An exact path (no wildcards) must match only itself.
-        assert!(glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-button.html"));
-        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-badge.html"));
-        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/duplicate/my-button.html"));
+        assert!(glob_match(
+            "tests/fixtures/my-button.html",
+            "tests/fixtures/my-button.html"
+        ));
+        assert!(!glob_match(
+            "tests/fixtures/my-button.html",
+            "tests/fixtures/my-badge.html"
+        ));
+        assert!(!glob_match(
+            "tests/fixtures/my-button.html",
+            "tests/fixtures/duplicate/my-button.html"
+        ));
     }
 
     #[test]
@@ -871,23 +831,19 @@ mod tests {
     #[test]
     fn test_add_template_with_attrs_shadowroot_and_host() {
         let mut locator = Locator::from_templates(std::collections::HashMap::new());
-        let shadowroot_attrs = vec![
-            ("shadowrootmode".to_string(), Some("closed".to_string())),
-        ];
+        let shadowroot_attrs = vec![("shadowrootmode".to_string(), Some("closed".to_string()))];
         let host_attrs = vec![
             ("tabindex".to_string(), Some("0".to_string())),
             ("?disabled".to_string(), Some("{{isDisabled}}".to_string())),
         ];
 
-        locator.add_template_with_attrs(
-            "my-el",
-            "<span>x</span>",
-            &shadowroot_attrs,
-            &host_attrs,
-        );
+        locator.add_template_with_attrs("my-el", "<span>x</span>", &shadowroot_attrs, &host_attrs);
 
         assert_eq!(locator.get_template("my-el"), Some("<span>x</span>"));
-        assert_eq!(locator.get_shadowroot_attributes("my-el"), shadowroot_attrs.as_slice());
+        assert_eq!(
+            locator.get_shadowroot_attributes("my-el"),
+            shadowroot_attrs.as_slice()
+        );
         assert_eq!(locator.get_host_attributes("my-el"), host_attrs.as_slice());
     }
 
@@ -901,7 +857,8 @@ mod tests {
 
     #[test]
     fn test_extract_template_content_with_attrs() {
-        let html = "<template tabindex=\"0\" ?disabled=\"{{isDisabled}}\"><span>x</span></template>";
+        let html =
+            "<template tabindex=\"0\" ?disabled=\"{{isDisabled}}\"><span>x</span></template>";
         let (content, tag) = extract_template_content(html);
         assert_eq!(&html[content], "<span>x</span>");
         assert_eq!(
@@ -918,6 +875,9 @@ mod tests {
         let html = "<template tabindex=\"0\"><span>x</span></template \n\t>";
         let (content, tag) = extract_template_content(html);
         assert_eq!(&html[content], "<span>x</span>");
-        assert_eq!(parse_element_attributes(&html[tag.unwrap()]), vec![("tabindex".to_string(), Some("0".to_string()))]);
+        assert_eq!(
+            parse_element_attributes(&html[tag.unwrap()]),
+            vec![("tabindex".to_string(), Some("0".to_string()))]
+        );
     }
 }

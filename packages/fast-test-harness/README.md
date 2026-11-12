@@ -146,14 +146,14 @@ MyButton.define({
 **`entry-server.ts`** exports a `render()` function that the server calls for each `setTemplate()` request. It returns three strings that get injected into `ssr.html`:
 
 ```ts
-export function render(queryObj: Record<string, string>): {
+export async function render(queryObj: Record<string, string>): Promise<{
     template: string;    // <f-template> HTML → <!--templates-->
     fixture: string;     // rendered element HTML → <!--fixture-->
     preloadLinks: string; // <link> tags → <!--stylespreload-->
-};
+}>;
 ```
 
-Use `createSSRRenderer` from the harness to build the `render()` function. It scans for component build artifacts (f-templates, stylesheets) and uses the `@microsoft/fast-build` WASM renderer to produce declarative shadow DOM on each request.
+Use `createSSRRenderer` from the harness to build the `render()` function. It scans for component build artifacts (f-templates, stylesheets) and uses the `@microsoft/fast-build` AOT fixture compiler to produce declarative shadow DOM on each request.
 
 **Multi-component package** (all components in one package):
 
@@ -269,7 +269,15 @@ before `>`.
 
 ## SSR renderer
 
-**`createSSRRenderer(options)`** scans for component build artifacts and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to parse f-templates and render them into declarative shadow DOM, including wrapper tags whose opening or closing `>` is preceded by ASCII whitespace.
+**`createSSRRenderer(options)`** scans for component build artifacts and returns
+`{ render }`, whose asynchronous `render(queryObj)` returns `Promise<RenderResult>`.
+It uses the build-time WASM parser/compiler and generated JavaScript to produce
+declarative shadow DOM, including wrapper tags whose opening or closing `>` is
+preceded by ASCII whitespace. The server awaits rendering and also accepts
+synchronous custom renderers.
+
+Fixture compilation/rendering failures are logged and fall back to raw entry
+HTML. Check server diagnostics when a fixture unexpectedly renders client-side.
 
 | Option | Type | Description |
 | -------- | ------ | ------------- |
@@ -292,3 +300,9 @@ before `>`.
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
+
+This is an **API-breaking migration in a minor prerelease**; direct callers must
+use `await render(queryObj)`. See the [migration guide](./docs/migration/aot-fixtures.md).
+The fixture generator compiles arbitrary test HTML on demand as development
+tooling. Production servers compile during their build and import generated
+modules, or load compiled artifacts in the supported native Rust host.
