@@ -73,7 +73,7 @@ flowchart TD
 | `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
 | `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Exports `definitionAsyncResolver`, `shadowOptionsToAttributes`, and the `ShadowOptionsResolver` type for resolving per-component shadow DOM options. Static wrapper stripping and style-marker injection recognize browser-valid `<template>` tags with ASCII whitespace before `>` in opening and closing tags. |
 | `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files. Shares the shadow-options resolution pipeline with `generate-templates.ts`. |
-| `src/ssr/render.ts` | `createSSRRenderer` factory — scans for component build artifacts and uses the `@microsoft/fast-build` WASM module to produce SSR output |
+| `src/ssr/render.ts` | `createSSRRenderer` factory — scans component artifacts, compiles fixture JavaScript with build-time WASM and executes the generated module asynchronously |
 | `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
@@ -255,7 +255,7 @@ When `debug` is enabled, the server also writes fixtures to `temp/ssr-<testId>.h
 
 ## SSR Rendering
 
-The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns a `{ render }` object compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to render f-templates into declarative shadow DOM on each request, with full expression evaluation and nested component support.
+The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns a `{ render }` object whose render function is asynchronous compatible with the server's `entry-server.ts` contract. It uses the `@microsoft/fast-build` WASM module to render f-templates into declarative shadow DOM on each request, with full expression evaluation and nested component support.
 
 ### createSSRRenderer
 
@@ -342,3 +342,5 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
+
+The SSR fixture generator now returns `Promise<RenderResult>`; call `await render(queryObj)`. It compiles arbitrary test fixture HTML on demand as development tooling. Production servers must compile their templates during the build and import generated modules instead.
