@@ -1,9 +1,10 @@
 mod common;
-use common::{ok, make_locator, empty_root};
-use microsoft_fast_build::{
+use crate::common::{
     render, render_entry_with_locator, render_entry_with_locator_without_state,
-    render_template_without_state, render_with_locator, JsonValue,
+    render_template_without_state, render_with_locator,
 };
+use common::{empty_root, make_locator, ok};
+use microsoft_fast_build::JsonValue;
 use std::collections::HashMap;
 
 // ── empty and whitespace-only templates ───────────────────────────────────────
@@ -32,8 +33,8 @@ fn test_empty_state_object() {
 
 #[test]
 fn test_render_template_without_state_uses_empty_object() {
-    let result = render_template_without_state("<h1>{{title}}</h1>", None)
-        .expect("render without state");
+    let result =
+        render_template_without_state("<h1>{{title}}</h1>", None).expect("render without state");
     assert_eq!(result, "<h1></h1>");
 }
 
@@ -45,8 +46,8 @@ fn test_missing_dot_path_content_with_empty_state_renders_empty() {
 
 #[test]
 fn test_missing_dot_path_content_without_state_renders_empty() {
-    let result = render_template_without_state("<p>{{ foo.bar }}</p>", None)
-        .expect("render without state");
+    let result =
+        render_template_without_state("<p>{{ foo.bar }}</p>", None).expect("render without state");
     assert_eq!(result, "<p></p>");
 }
 
@@ -77,7 +78,10 @@ fn test_bound_attribute_value_is_html_escaped() {
         r#"<div title="{{value}}"></div>"#,
         r#"{"value": "a \"quote\" & <tag>"}"#,
     );
-    assert_eq!(result, r#"<div title="a &quot;quote&quot; &amp; &lt;tag&gt;"></div>"#);
+    assert_eq!(
+        result,
+        r#"<div title="a &quot;quote&quot; &amp; &lt;tag&gt;"></div>"#
+    );
 }
 
 #[test]
@@ -114,7 +118,10 @@ fn test_render_entry_with_locator_without_state_uses_empty_object() {
     let locator = make_locator(&[("my-el", "<span>{{label}}</span>")]);
     let result = render_entry_with_locator_without_state("<my-el></my-el>", &locator, None)
         .expect("render entry without state");
-    assert!(result.contains("<span>"), "shadow content rendered: {result}");
+    assert!(
+        result.contains("<span>"),
+        "shadow content rendered: {result}"
+    );
     assert!(result.contains("<!--fe:b--><!--fe:/b-->"));
 }
 
@@ -163,7 +170,10 @@ fn test_multiple_root_custom_elements() {
     ]);
     let mut state_map = HashMap::new();
     state_map.insert("title".to_string(), JsonValue::String("Home".to_string()));
-    state_map.insert("copyright".to_string(), JsonValue::String("2025".to_string()));
+    state_map.insert(
+        "copyright".to_string(),
+        JsonValue::String("2025".to_string()),
+    );
     let root = JsonValue::Object(state_map);
 
     let result = render_entry_with_locator(
@@ -171,9 +181,14 @@ fn test_multiple_root_custom_elements() {
         &root,
         &locator,
         None,
-    ).expect("render multiple root custom elements");
-    let home_index = result.find("Home").expect("header content 'Home' must be present");
-    let copyright_index = result.find("2025").expect("footer content '2025' must be present");
+    )
+    .expect("render multiple root custom elements");
+    let home_index = result
+        .find("Home")
+        .expect("header content 'Home' must be present");
+    let copyright_index = result
+        .find("2025")
+        .expect("footer content '2025' must be present");
     assert!(
         home_index < copyright_index,
         "header content must appear before footer content: {result}"
@@ -182,16 +197,14 @@ fn test_multiple_root_custom_elements() {
 
 #[test]
 fn test_multiple_root_custom_elements_with_text_between() {
-    let locator = make_locator(&[
-        ("my-a", "<span>A</span>"),
-        ("my-b", "<span>B</span>"),
-    ]);
+    let locator = make_locator(&[("my-a", "<span>A</span>"), ("my-b", "<span>B</span>")]);
     let result = render_entry_with_locator(
         "<my-a></my-a> separator <my-b></my-b>",
         &empty_root(),
         &locator,
         None,
-    ).expect("render multiple root elements with text between");
+    )
+    .expect("render multiple root elements with text between");
 
     let a_index = result.find("<span>A</span>");
     let separator_index = result.find("separator");
@@ -222,15 +235,14 @@ fn test_root_element_attr_overrides_root_state() {
     state_map.insert("color".to_string(), JsonValue::String("blue".to_string()));
     let root = JsonValue::Object(state_map);
 
-    let result = render_entry_with_locator(
-        r#"<my-el color="red"></my-el>"#,
-        &root,
-        &locator,
-        None,
-    ).expect("render element with attr override");
+    let result = render_entry_with_locator(r#"<my-el color="red"></my-el>"#, &root, &locator, None)
+        .expect("render element with attr override");
     // Per-element attribute value ("red") must win over root state ("blue").
     assert!(result.contains("red"), "attr override: {result}");
-    assert!(!result.contains("blue"), "root state must not override attr: {result}");
+    assert!(
+        !result.contains("blue"),
+        "root state must not override attr: {result}"
+    );
 }
 
 #[test]
@@ -241,12 +253,8 @@ fn test_root_element_accesses_root_state_keys() {
     state_map.insert("user".to_string(), JsonValue::String("Alice".to_string()));
     let root = JsonValue::Object(state_map);
 
-    let result = render_entry_with_locator(
-        "<my-el></my-el>",
-        &root,
-        &locator,
-        None,
-    ).expect("render element accessing root state");
+    let result = render_entry_with_locator("<my-el></my-el>", &root, &locator, None)
+        .expect("render element accessing root state");
     assert!(result.contains("Alice"), "root state accessible: {result}");
 }
 
@@ -264,8 +272,12 @@ fn test_root_element_binding_attr_resolves_from_root_state() {
         &root,
         &locator,
         None,
-    ).expect("render element with binding attr forwarded from root state");
-    assert!(result.contains("Hello"), "binding resolved into child state: {result}");
+    )
+    .expect("render element with binding attr forwarded from root state");
+    assert!(
+        result.contains("Hello"),
+        "binding resolved into child state: {result}"
+    );
 }
 
 // ── array length access ───────────────────────────────────────────────────────
@@ -306,7 +318,8 @@ fn test_unknown_custom_element_passes_through() {
         &empty_root(),
         &locator,
         None,
-    ).expect("render unknown custom element passes through");
+    )
+    .expect("render unknown custom element passes through");
     // No template → element is left verbatim.
     assert_eq!(result, r#"<my-unknown label="Hi"></my-unknown>"#);
 }
@@ -336,7 +349,10 @@ fn test_f_when_missing_key_is_falsy() {
 #[test]
 fn test_nested_custom_element_inside_shadow() {
     let locator = make_locator(&[
-        ("my-outer", r#"<div><my-inner label="nested"></my-inner></div>"#),
+        (
+            "my-outer",
+            r#"<div><my-inner label="nested"></my-inner></div>"#,
+        ),
         ("my-inner", "<span>{{label}}</span>"),
     ]);
     let result = render_with_locator("<my-outer></my-outer>", &empty_root(), &locator, None)
@@ -355,6 +371,7 @@ fn test_render_with_json_value_directly() {
     let mut map = HashMap::new();
     map.insert("greeting".to_string(), JsonValue::String("Hi".to_string()));
     let state = JsonValue::Object(map);
-    let result = render("<p>{{greeting}}</p>", &state, None).expect("render with JsonValue directly");
+    let result =
+        render("<p>{{greeting}}</p>", &state, None).expect("render with JsonValue directly");
     assert_eq!(result, "<p>Hi</p>");
 }

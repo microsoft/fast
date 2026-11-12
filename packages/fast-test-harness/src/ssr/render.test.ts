@@ -150,26 +150,26 @@ test.describe("createSSRRenderer", () => {
         assert.ok(typeof renderer.render === "function");
     });
 
-    test("should return a RenderResult from render()", () => {
+    test("should return a RenderResult from render()", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({ tagName: "test-widget", innerHTML: "hello" });
+        const result = await render({ tagName: "test-widget", innerHTML: "hello" });
 
         assert.ok("template" in result, "result should have template");
         assert.ok("fixture" in result, "result should have fixture");
         assert.ok("preloadLinks" in result, "result should have preloadLinks");
     });
 
-    test("should render a custom element tag in the fixture", () => {
+    test("should render a custom element tag in the fixture", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({ tagName: "test-widget", innerHTML: "content" });
+        const result = await render({ tagName: "test-widget", innerHTML: "content" });
 
         assert.ok(
             result.fixture.includes("<test-widget"),
@@ -181,13 +181,13 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should include attributes in the rendered fixture", () => {
+    test("should include attributes in the rendered fixture", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({
+        const result = await render({
             tagName: "test-widget",
             attributes: JSON.stringify({ label: "Test", disabled: true }),
         });
@@ -202,14 +202,14 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should include theme stylesheet in preloadLinks", () => {
+    test("should include theme stylesheet in preloadLinks", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
             themeStylesheet: "/theme.css",
         });
 
-        const result = render({ tagName: "test-widget" });
+        const result = await render({ tagName: "test-widget" });
 
         assert.ok(
             result.preloadLinks.includes("/theme.css"),
@@ -217,13 +217,13 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should not include theme link in preloadLinks when themeStylesheet is omitted", () => {
+    test("should not include theme link in preloadLinks when themeStylesheet is omitted", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({ tagName: "test-widget" });
+        const result = await render({ tagName: "test-widget" });
 
         assert.ok(
             !result.preloadLinks.includes('rel="stylesheet"'),
@@ -231,13 +231,13 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should handle raw HTML via the html key", () => {
+    test("should handle raw HTML via the html key", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({
+        const result = await render({
             html: "<test-widget>raw html</test-widget>",
         });
 
@@ -247,18 +247,18 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should return empty fixture for empty query", () => {
+    test("should return empty fixture for empty query", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({});
+        const result = await render({});
 
         assert.strictEqual(result.fixture, "");
     });
 
-    test("should work with monolithic packageName mode", () => {
+    test("should work with monolithic packageName mode", async () => {
         // The test harness itself doesn't have component subdirectories,
         // so the template map will be empty — but the factory should not throw.
         const { render } = createSSRRenderer({
@@ -269,20 +269,20 @@ test.describe("createSSRRenderer", () => {
 
         assert.ok(typeof render === "function");
 
-        const result = render({ tagName: "fast-widget", innerHTML: "hello" });
+        const result = await render({ tagName: "fast-widget", innerHTML: "hello" });
 
-        // Without matching templates the WASM renderer should still produce output.
+        // Without matching templates the generated server module should still produce output.
         assert.ok("fixture" in result);
     });
 
-    test("should propagate shadowrootdelegatesfocus to DSD output", () => {
+    test("should propagate shadowrootdelegatesfocus to DSD output", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             packageName: "@microsoft/fast-test-harness",
             distDir: "test/src/test-widget",
         });
 
-        const result = render({ tagName: "test-input", innerHTML: "" });
+        const result = await render({ tagName: "test-input", innerHTML: "" });
 
         assert.ok(
             result.fixture.includes("shadowrootdelegatesfocus"),
@@ -290,13 +290,13 @@ test.describe("createSSRRenderer", () => {
         );
     });
 
-    test("should not include shadowrootdelegatesfocus for components without it", () => {
+    test("should not include shadowrootdelegatesfocus for components without it", async () => {
         const { render } = createSSRRenderer({
             tagPrefix: "test",
             components: [{ name: "widget", packageName: "@microsoft/fast-test-harness" }],
         });
 
-        const result = render({ tagName: "test-widget", innerHTML: "hello" });
+        const result = await render({ tagName: "test-widget", innerHTML: "hello" });
 
         assert.ok(
             !result.fixture.includes("shadowrootdelegatesfocus"),

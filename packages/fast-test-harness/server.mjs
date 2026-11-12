@@ -356,7 +356,7 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
                         `${route.base}src/entry-server.js`,
                     );
 
-                    const { template, fixture, preloadLinks } = render(body);
+                    const { template, fixture, preloadLinks } = await render(body);
 
                     const styleTags = (body.styles || [])
                         .map(s => `<style>${s}</style>`)

@@ -10,39 +10,6 @@ pub enum JsonValue {
     Object(HashMap<String, JsonValue>),
 }
 
-impl JsonValue {
-    pub fn is_truthy(&self) -> bool {
-        match self {
-            JsonValue::Null => false,
-            JsonValue::Bool(b) => *b,
-            // NaN is falsy in JavaScript; `n != 0.0` alone returns true for NaN
-            // because NaN is not equal to anything (including itself).
-            JsonValue::Number(n) => *n != 0.0 && !n.is_nan(),
-            JsonValue::String(s) => !s.is_empty(),
-            // Arrays are always truthy in JavaScript, even empty ones.
-            JsonValue::Array(_) => true,
-            JsonValue::Object(_) => true,
-        }
-    }
-
-    pub fn to_display_string(&self) -> String {
-        match self {
-            JsonValue::Null => String::new(),
-            JsonValue::Bool(b) => b.to_string(),
-            JsonValue::Number(n) => {
-                if *n == n.floor() && n.abs() < 1e15 {
-                    format!("{}", *n as i64)
-                } else {
-                    format!("{}", n)
-                }
-            }
-            JsonValue::String(s) => s.clone(),
-            JsonValue::Array(_) => "[Array]".to_string(),
-            JsonValue::Object(_) => "[Object]".to_string(),
-        }
-    }
-}
-
 #[derive(Debug)]
 pub struct JsonError {
     pub message: String,
@@ -61,7 +28,9 @@ pub fn parse(input: &str) -> Result<JsonValue, JsonError> {
     let (value, rest) = parse_value(input)?;
     let rest = rest.trim();
     if !rest.is_empty() {
-        return Err(JsonError { message: format!("Unexpected trailing content: {}", rest) });
+        return Err(JsonError {
+            message: format!("Unexpected trailing content: {}", rest),
+        });
     }
     Ok(value)
 }
@@ -97,9 +66,15 @@ pub(crate) fn json_string_array(items: &[String]) -> String {
 fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
     let input = input.trim_start();
     if input.is_empty() {
-        return Err(JsonError { message: "Unexpected end of input".to_string() });
+        return Err(JsonError {
+            message: "Unexpected end of input".to_string(),
+        });
     }
-    match input.chars().next().expect("input is non-empty; checked above") {
+    match input
+        .chars()
+        .next()
+        .expect("input is non-empty; checked above")
+    {
         '{' => parse_object(input),
         '[' => parse_array(input),
         '"' => {
@@ -110,32 +85,42 @@ fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
             if let Some(rest) = input.strip_prefix("true") {
                 Ok((JsonValue::Bool(true), rest))
             } else {
-                Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
+                Err(JsonError {
+                    message: format!("Invalid token: {}", &input[..input.len().min(10)]),
+                })
             }
         }
         'f' => {
             if let Some(rest) = input.strip_prefix("false") {
                 Ok((JsonValue::Bool(false), rest))
             } else {
-                Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
+                Err(JsonError {
+                    message: format!("Invalid token: {}", &input[..input.len().min(10)]),
+                })
             }
         }
         'n' => {
             if let Some(rest) = input.strip_prefix("null") {
                 Ok((JsonValue::Null, rest))
             } else {
-                Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
+                Err(JsonError {
+                    message: format!("Invalid token: {}", &input[..input.len().min(10)]),
+                })
             }
         }
         c if c == '-' || c.is_ascii_digit() => parse_number(input),
-        c => Err(JsonError { message: format!("Unexpected character: '{}'", c) }),
+        c => Err(JsonError {
+            message: format!("Unexpected character: '{}'", c),
+        }),
     }
 }
 
 fn parse_object(input: &str) -> Result<(JsonValue, &str), JsonError> {
     let input = input.trim_start();
     if !input.starts_with('{') {
-        return Err(JsonError { message: "Expected '{'".to_string() });
+        return Err(JsonError {
+            message: "Expected '{'".to_string(),
+        });
     }
     let mut rest = input[1..].trim_start();
     let mut map = HashMap::new();
@@ -147,16 +132,26 @@ fn parse_object(input: &str) -> Result<(JsonValue, &str), JsonError> {
         let (key, after_key) = parse_string(rest)?;
         rest = after_key.trim_start();
         if !rest.starts_with(':') {
-            return Err(JsonError { message: "Expected ':'".to_string() });
+            return Err(JsonError {
+                message: "Expected ':'".to_string(),
+            });
         }
         rest = rest[1..].trim_start();
         let (value, after_value) = parse_value(rest)?;
         map.insert(key, value);
         rest = after_value.trim_start();
         match rest.chars().next() {
-            Some(',') => { rest = rest[1..].trim_start(); }
-            Some('}') => { return Ok((JsonValue::Object(map), &rest[1..])); }
-            _ => return Err(JsonError { message: "Expected ',' or '}'".to_string() }),
+            Some(',') => {
+                rest = rest[1..].trim_start();
+            }
+            Some('}') => {
+                return Ok((JsonValue::Object(map), &rest[1..]));
+            }
+            _ => {
+                return Err(JsonError {
+                    message: "Expected ',' or '}'".to_string(),
+                })
+            }
         }
     }
 }
@@ -164,7 +159,9 @@ fn parse_object(input: &str) -> Result<(JsonValue, &str), JsonError> {
 fn parse_array(input: &str) -> Result<(JsonValue, &str), JsonError> {
     let input = input.trim_start();
     if !input.starts_with('[') {
-        return Err(JsonError { message: "Expected '['".to_string() });
+        return Err(JsonError {
+            message: "Expected '['".to_string(),
+        });
     }
     let mut rest = input[1..].trim_start();
     let mut arr = Vec::new();
@@ -177,16 +174,26 @@ fn parse_array(input: &str) -> Result<(JsonValue, &str), JsonError> {
         arr.push(value);
         rest = after_value.trim_start();
         match rest.chars().next() {
-            Some(',') => { rest = rest[1..].trim_start(); }
-            Some(']') => { return Ok((JsonValue::Array(arr), &rest[1..])); }
-            _ => return Err(JsonError { message: "Expected ',' or ']'".to_string() }),
+            Some(',') => {
+                rest = rest[1..].trim_start();
+            }
+            Some(']') => {
+                return Ok((JsonValue::Array(arr), &rest[1..]));
+            }
+            _ => {
+                return Err(JsonError {
+                    message: "Expected ',' or ']'".to_string(),
+                })
+            }
         }
     }
 }
 
 fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
     if !input.starts_with('"') {
-        return Err(JsonError { message: "Expected '\"'".to_string() });
+        return Err(JsonError {
+            message: "Expected '\"'".to_string(),
+        });
     }
     let bytes = input.as_bytes();
     let mut i = 1;
@@ -199,7 +206,9 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
             b'\\' => {
                 i += 1;
                 if i >= bytes.len() {
-                    return Err(JsonError { message: "Unexpected end of string escape".to_string() });
+                    return Err(JsonError {
+                        message: "Unexpected end of string escape".to_string(),
+                    });
                 }
                 match bytes[i] {
                     b'"' => s.push('"'),
@@ -212,7 +221,9 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
                     b'f' => s.push('\x0C'),
                     b'u' => {
                         if i + 4 >= bytes.len() {
-                            return Err(JsonError { message: "Invalid unicode escape".to_string() });
+                            return Err(JsonError {
+                                message: "Invalid unicode escape".to_string(),
+                            });
                         }
                         let hex = &input[i + 1..i + 5];
                         let code_point = u32::from_str_radix(hex, 16).map_err(|_| JsonError {
@@ -225,7 +236,9 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
                         i += 4;
                     }
                     c => {
-                        return Err(JsonError { message: format!("Unknown escape sequence: \\{}", c as char) });
+                        return Err(JsonError {
+                            message: format!("Unknown escape sequence: \\{}", c as char),
+                        });
                     }
                 }
                 i += 1;
@@ -252,7 +265,9 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
             }
         }
     }
-    Err(JsonError { message: "Unterminated string".to_string() })
+    Err(JsonError {
+        message: "Unterminated string".to_string(),
+    })
 }
 
 fn parse_number(input: &str) -> Result<(JsonValue, &str), JsonError> {
@@ -294,8 +309,8 @@ mod tests {
     fn test_parse_object() {
         let v = parse(r#"{"name": "Alice", "age": 30}"#).unwrap();
         if let JsonValue::Object(map) = v {
-            assert_eq!(map.get("name").unwrap().to_display_string(), "Alice");
-            assert_eq!(map.get("age").unwrap().to_display_string(), "30");
+            assert_eq!(map.get("name").unwrap(), &JsonValue::String("Alice".into()));
+            assert_eq!(map.get("age").unwrap(), &JsonValue::Number(30.0));
         } else {
             panic!("Expected object");
         }
@@ -306,7 +321,7 @@ mod tests {
         let v = parse(r#"[1, 2, 3]"#).unwrap();
         if let JsonValue::Array(arr) = v {
             assert_eq!(arr.len(), 3);
-            assert_eq!(arr[0].to_display_string(), "1");
+            assert_eq!(arr[0], JsonValue::Number(1.0));
         } else {
             panic!("Expected array");
         }
@@ -331,10 +346,7 @@ mod tests {
 
     #[test]
     fn test_json_string_array_escapes_control_characters() {
-        let json = json_string_array(&[
-            "first".to_string(),
-            "line\u{000b}separator".to_string(),
-        ]);
+        let json = json_string_array(&["first".to_string(), "line\u{000b}separator".to_string()]);
 
         assert_eq!(json, "[\"first\",\"line\\u000bseparator\"]");
         assert!(parse(&json).is_ok());
@@ -367,8 +379,8 @@ mod tests {
     fn test_parse_string_emoji_in_object() {
         let v = parse(r#"{"label": "⭐ star", "emoji": "🎉"}"#).unwrap();
         if let JsonValue::Object(map) = v {
-            assert_eq!(map["label"].to_display_string(), "⭐ star");
-            assert_eq!(map["emoji"].to_display_string(), "🎉");
+            assert_eq!(map["label"], JsonValue::String("⭐ star".into()));
+            assert_eq!(map["emoji"], JsonValue::String("🎉".into()));
         } else {
             panic!("Expected object");
         }
@@ -393,64 +405,5 @@ mod tests {
     #[test]
     fn test_parse_null() {
         assert!(matches!(parse("null").unwrap(), JsonValue::Null));
-    }
-
-    // --- is_truthy tests (JavaScript semantics) ---
-
-    #[test]
-    fn test_is_truthy_null_is_false() {
-        assert!(!JsonValue::Null.is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_false_bool_is_false() {
-        assert!(!JsonValue::Bool(false).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_true_bool_is_true() {
-        assert!(JsonValue::Bool(true).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_zero_is_false() {
-        assert!(!JsonValue::Number(0.0).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_nan_is_false() {
-        assert!(!JsonValue::Number(f64::NAN).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_nonzero_number_is_true() {
-        assert!(JsonValue::Number(1.0).is_truthy());
-        assert!(JsonValue::Number(-1.0).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_empty_string_is_false() {
-        assert!(!JsonValue::String(String::new()).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_nonempty_string_is_true() {
-        assert!(JsonValue::String("hello".to_string()).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_empty_array_is_true() {
-        // In JavaScript, [] is truthy even though it is empty.
-        assert!(JsonValue::Array(vec![]).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_nonempty_array_is_true() {
-        assert!(JsonValue::Array(vec![JsonValue::Null]).is_truthy());
-    }
-
-    #[test]
-    fn test_is_truthy_empty_object_is_true() {
-        assert!(JsonValue::Object(HashMap::new()).is_truthy());
     }
 }

@@ -1,25 +1,39 @@
 mod common;
-use common::{make_locator, empty_root};
-use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError, RenderConfig, AttributeNameStrategy};
+use crate::common::{
+    render_entry_template_with_locator, render_template, render_template_with_locator,
+    render_with_locator, AttributeNameStrategy, RenderConfig,
+};
+use common::{empty_root, make_locator};
+use microsoft_fast_build::{Locator, RenderError};
 
 #[test]
 fn nested_state_overrides_preserve_nulls_dataset_siblings_and_parent_state() {
-    use microsoft_fast_build::{render_entry_stream_with_locator, render_entry_with_locator, JsonValue};
+    use crate::common::{render_entry_stream_with_locator, render_entry_with_locator};
+    use microsoft_fast_build::JsonValue;
     use std::collections::HashMap;
 
     let locator = make_locator(&[
-        ("my-outer", r#"<my-inner label="{{other}}" :selected="{{absent}}" data-name="local"></my-inner><i data-label="{{label}}" data-keep="{{dataset.keep}}"></i>"#),
-        ("my-inner", r#"<b data-label="{{label}}" data-selected="{{selected}}" data-name="{{dataset.name}}" data-keep="{{dataset.keep}}" data-other="{{other}}"></b>"#),
+        (
+            "my-outer",
+            r#"<my-inner label="{{other}}" :selected="{{absent}}" data-name="local"></my-inner><i data-label="{{label}}" data-keep="{{dataset.keep}}"></i>"#,
+        ),
+        (
+            "my-inner",
+            r#"<b data-label="{{label}}" data-selected="{{selected}}" data-name="{{dataset.name}}" data-keep="{{dataset.keep}}" data-other="{{other}}"></b>"#,
+        ),
     ]);
     let root = JsonValue::Object(HashMap::from([
         ("label".into(), JsonValue::String("root".into())),
         ("other".into(), JsonValue::String("child".into())),
         ("selected".into(), JsonValue::String("parent".into())),
         ("absent".into(), JsonValue::Null),
-        ("dataset".into(), JsonValue::Object(HashMap::from([
-            ("name".into(), JsonValue::String("root".into())),
-            ("keep".into(), JsonValue::String("inherited".into())),
-        ]))),
+        (
+            "dataset".into(),
+            JsonValue::Object(HashMap::from([
+                ("name".into(), JsonValue::String("root".into())),
+                ("keep".into(), JsonValue::String("inherited".into())),
+            ])),
+        ),
     ]));
     let before = root.clone();
     for mode in [false, true] {
@@ -27,8 +41,12 @@ fn nested_state_overrides_preserve_nulls_dataset_siblings_and_parent_state() {
         let entry = r#"<my-outer label="outer"></my-outer>"#;
         let html = render_entry_with_locator(entry, &root, &locator, Some(&config)).unwrap();
         assert!(html.contains(r#"<b data-label="child" data-name="local" data-keep="inherited" data-other="child""#), "{html}");
-        assert!(html.contains(r#"<i data-label="outer" data-keep="inherited""#), "{html}");
-        let chunks = render_entry_stream_with_locator(entry, &root, &locator, Some(&config)).unwrap();
+        assert!(
+            html.contains(r#"<i data-label="outer" data-keep="inherited""#),
+            "{html}"
+        );
+        let chunks =
+            render_entry_stream_with_locator(entry, &root, &locator, Some(&config)).unwrap();
         assert_eq!(chunks.concat(), html);
         assert_eq!(root, before);
     }
@@ -36,22 +54,37 @@ fn nested_state_overrides_preserve_nulls_dataset_siblings_and_parent_state() {
 
 #[test]
 fn attribute_overlays_do_not_inherit_array_root_indices_or_length() {
-    let locator = make_locator(&[
-        ("my-item", r#"<b data-first="{{0.name}}" data-length="{{length}}" data-label="{{label}}"></b>"#),
-    ]);
+    let locator = make_locator(&[(
+        "my-item",
+        r#"<b data-first="{{0.name}}" data-length="{{length}}" data-label="{{label}}"></b>"#,
+    )]);
     for mode in [false, true] {
         let config = RenderConfig::new().with_markers_v2(mode);
         for (entry, expected) in [
-            ("<my-item></my-item>", r#"<b data-first="first" data-length="1""#),
-            (r#"<my-item label="override"></my-item>"#, r#"<b data-label="override""#),
+            (
+                "<my-item></my-item>",
+                r#"<b data-first="first" data-length="1""#,
+            ),
+            (
+                r#"<my-item label="override"></my-item>"#,
+                r#"<b data-label="override""#,
+            ),
         ] {
             let html = render_entry_template_with_locator(
-                entry, r#"[{"name":"first"}]"#, &locator, Some(&config),
-            ).unwrap();
+                entry,
+                r#"[{"name":"first"}]"#,
+                &locator,
+                Some(&config),
+            )
+            .unwrap();
             assert!(html.contains(expected), "{html}");
-            let chunks = microsoft_fast_build::render_entry_template_stream_with_locator(
-                entry, r#"[{"name":"first"}]"#, &locator, Some(&config),
-            ).unwrap();
+            let chunks = crate::common::render_entry_template_stream_with_locator(
+                entry,
+                r#"[{"name":"first"}]"#,
+                &locator,
+                Some(&config),
+            )
+            .unwrap();
             assert_eq!(chunks.concat(), html);
         }
     }
@@ -67,9 +100,16 @@ fn test_custom_element_string_attr() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<my-button label="Click me">"#), "open tag: {result}");
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<my-button label="Click me">"#),
+        "open tag: {result}"
+    );
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow: {result}"
+    );
     assert!(result.contains("Click me"), "rendered: {result}");
     assert!(result.contains("</template>"), "close template: {result}");
     assert!(result.contains("</my-button>"), "close tag: {result}");
@@ -86,8 +126,12 @@ fn test_custom_element_boolean_attr() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("<button disabled></button>"), "rendered: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("<button disabled></button>"),
+        "rendered: {result}"
+    );
 }
 
 #[test]
@@ -98,7 +142,8 @@ fn test_custom_element_number_attr() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("42"), "rendered: {result}");
 }
 
@@ -110,7 +155,8 @@ fn test_custom_element_property_binding_rename() {
         r#"{"bar": "hello"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("hello"), "rendered: {result}");
 }
 
@@ -119,14 +165,16 @@ fn test_custom_element_property_binding_rename() {
 #[test]
 fn test_custom_element_self_closing() {
     let locator = make_locator(&[("my-button", "<button>{{label}}</button>")]);
-    let result = render_with_locator(
-        r#"<my-button label="Hi" />"#,
-        &empty_root(),
-        &locator,
-        None,
-    ).unwrap();
-    assert!(result.starts_with(r#"<my-button label="Hi">"#), "open tag: {result}");
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
+    let result =
+        render_with_locator(r#"<my-button label="Hi" />"#, &empty_root(), &locator, None).unwrap();
+    assert!(
+        result.starts_with(r#"<my-button label="Hi">"#),
+        "open tag: {result}"
+    );
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow: {result}"
+    );
     assert!(result.contains("</my-button>"), "close tag: {result}");
 }
 
@@ -138,9 +186,16 @@ fn test_custom_element_with_children() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
-    assert!(result.contains(r#"<div class="layout"><slot></slot></div>"#), "shadow content: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow: {result}"
+    );
+    assert!(
+        result.contains(r#"<div class="layout"><slot></slot></div>"#),
+        "shadow content: {result}"
+    );
     assert!(result.contains("light DOM content"), "light DOM: {result}");
     assert!(result.contains("</my-layout>"), "close tag: {result}");
 }
@@ -153,8 +208,12 @@ fn test_f_template_shadowroot_defaults_remain_open() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
@@ -165,20 +224,29 @@ fn test_f_template_shadowrootmode_forwarded_with_legacy_shadowroot() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_legacy_shadowroot_value_mirrors_to_mode() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-legacy-closed.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-legacy-closed.html"]).unwrap();
     let result = render_with_locator(
         r#"<shadowroot-legacy-closed></shadowroot-legacy-closed>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
@@ -189,7 +257,8 @@ fn test_f_template_additional_shadowroot_attrs_forwarded() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(
         result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable="true">"#),
         "shadow attrs: {result}"
@@ -204,8 +273,12 @@ fn test_f_template_explicit_shadowroot_value_is_preserved() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
@@ -216,20 +289,29 @@ fn test_f_template_boolean_shadowrootmode_defaults_to_open() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_boolean_shadowroot_defaults_to_open() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-shadowroot.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-boolean-shadowroot.html"]).unwrap();
     let result = render_with_locator(
         r#"<shadowroot-boolean-shadowroot></shadowroot-boolean-shadowroot>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
@@ -240,56 +322,83 @@ fn test_f_template_empty_shadowrootmode_defaults_to_open() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_empty_shadowroot_defaults_to_open() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-shadowroot.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-empty-shadowroot.html"]).unwrap();
     let result = render_with_locator(
         r#"<shadowroot-empty-shadowroot></shadowroot-empty-shadowroot>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_boolean_shadowroot_mirrors_closed_mode() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-boolean-shadowroot.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-closed-boolean-shadowroot.html"])
+            .unwrap();
     let result = render_with_locator(
         r#"<shadowroot-closed-boolean-shadowroot></shadowroot-closed-boolean-shadowroot>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_empty_shadowroot_mirrors_closed_mode() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-closed-empty-shadowroot.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-closed-empty-shadowroot.html"])
+            .unwrap();
     let result = render_with_locator(
         r#"<shadowroot-closed-empty-shadowroot></shadowroot-closed-empty-shadowroot>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
 fn test_f_template_empty_shadowrootmode_mirrors_closed_shadowroot() {
-    let locator = Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode-closed-shadowroot.html"]).unwrap();
+    let locator =
+        Locator::from_patterns(&["tests/fixtures/shadowroot-empty-mode-closed-shadowroot.html"])
+            .unwrap();
     let result = render_with_locator(
         r#"<shadowroot-empty-mode-closed-shadowroot></shadowroot-empty-mode-closed-shadowroot>"#,
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#), "shadow attrs: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        "shadow attrs: {result}"
+    );
 }
 
 #[test]
@@ -300,7 +409,8 @@ fn test_f_template_shadowroot_attr_values_are_escaped() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(
         result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootserializable="a&quot;b&amp;c">"#),
         "shadow attrs: {result}"
@@ -317,8 +427,12 @@ fn test_custom_element_no_template_passthrough() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert_eq!(result, r#"<unknown-element foo="bar">content</unknown-element>"#);
+    )
+    .unwrap();
+    assert_eq!(
+        result,
+        r#"<unknown-element foo="bar">content</unknown-element>"#
+    );
 }
 
 #[test]
@@ -327,7 +441,8 @@ fn test_custom_element_no_locator_passthrough() {
         r#"<my-button label="Click me">content</my-button>"#,
         r#"{}"#,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert_eq!(result, r#"<my-button label="Click me">content</my-button>"#);
 }
 
@@ -346,7 +461,8 @@ fn test_locator_from_patterns() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("Click me"), "rendered: {result}");
 }
 
@@ -357,7 +473,8 @@ fn test_locator_duplicate_template_error() {
     let result = Locator::from_patterns(&["tests/fixtures/**/*.html"]);
     assert!(
         matches!(result, Err(RenderError::DuplicateTemplate { .. })),
-        "expected DuplicateTemplate error, got: {:?}", result.err()
+        "expected DuplicateTemplate error, got: {:?}",
+        result.err()
     );
 }
 
@@ -366,7 +483,10 @@ fn test_locator_duplicate_template_error() {
 #[test]
 fn test_custom_element_nested() {
     let locator = make_locator(&[
-        ("my-card", r#"<div class="card"><h2>{{title}}</h2><my-badge count="5"></my-badge></div>"#),
+        (
+            "my-card",
+            r#"<div class="card"><h2>{{title}}</h2><my-badge count="5"></my-badge></div>"#,
+        ),
         ("my-badge", "<span>{{count}}</span>"),
     ]);
     let result = render_with_locator(
@@ -374,7 +494,8 @@ fn test_custom_element_nested() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("Hello"), "heading: {result}");
     assert!(result.contains("5"), "badge: {result}");
 }
@@ -404,15 +525,20 @@ fn test_locator_multiple_templates_in_file() {
         &empty_root(),
         &locator,
         None,
-    ).unwrap();
-    assert!(result_a.contains("Hello"), "my-multi-a rendered: {result_a}");
+    )
+    .unwrap();
+    assert!(
+        result_a.contains("Hello"),
+        "my-multi-a rendered: {result_a}"
+    );
 
     let result_b = render_template_with_locator(
         r#"<my-multi-b count="7"></my-multi-b>"#,
         r#"{}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result_b.contains("7"), "my-multi-b rendered: {result_b}");
 }
 
@@ -421,14 +547,20 @@ fn test_locator_nameless_f_template_does_not_register() {
     // no-name.html has an <f-template> without a name attribute
     // It should emit a warning to stderr but NOT error and NOT register any template
     let locator = Locator::from_patterns(&["tests/fixtures/no-name.html"]).unwrap();
-    assert!(!locator.has_template("no-name"), "should not register nameless template");
+    assert!(
+        !locator.has_template("no-name"),
+        "should not register nameless template"
+    );
 }
 
 #[test]
 fn test_locator_name_from_f_template_attribute_not_file_stem() {
     // my-button.html has <f-template name="my-button"> — name comes from attribute, not stem
     let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
-    assert!(locator.has_template("my-button"), "should find my-button by name attribute");
+    assert!(
+        locator.has_template("my-button"),
+        "should find my-button by name attribute"
+    );
 }
 
 // ── attribute name → lowercase normalisation ──────────────────────────────────
@@ -443,7 +575,8 @@ fn test_custom_element_kebab_attr_hyphens_preserved() {
         "{}",
         &locator,
         Some(&none_config),
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("42"), "kebab attr resolved: {result}");
 }
 
@@ -457,7 +590,8 @@ fn test_custom_element_multi_word_kebab_attrs() {
         "{}",
         &locator,
         Some(&none_config),
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("true"), "show-details: {result}");
     assert!(result.contains("false"), "enable-continue: {result}");
 }
@@ -468,16 +602,26 @@ fn test_custom_element_multi_word_kebab_attrs() {
 fn test_custom_element_colon_property_in_state_not_html() {
     // `:prop` bindings are NOT rendered as HTML attributes but their resolved value
     // IS added to the child element's rendering state.
-    let locator = make_locator(&[("my-btn", "<button>{{label}}</button><span>{{myprop}}</span>")]);
+    let locator = make_locator(&[(
+        "my-btn",
+        "<button>{{label}}</button><span>{{myprop}}</span>",
+    )]);
     let result = render_template_with_locator(
         r#"<my-btn label="OK" :myProp="{{value}}"></my-btn>"#,
         r#"{"value": "passed"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("OK"), "label: {result}");
-    assert!(!result.contains(":myProp"), "colon attr stripped from HTML: {result}");
-    assert!(result.contains("passed"), "prop value in child state: {result}");
+    assert!(
+        !result.contains(":myProp"),
+        "colon attr stripped from HTML: {result}"
+    );
+    assert!(
+        result.contains("passed"),
+        "prop value in child state: {result}"
+    );
 }
 
 #[test]
@@ -489,7 +633,8 @@ fn test_custom_element_event_binding_skipped() {
         "{}",
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("OK"), "label: {result}");
     // The @click binding should not appear in element state or cause an error
 }
@@ -506,7 +651,8 @@ fn test_root_custom_element_receives_full_state() {
         r#"{"selecteduser":"John","heading":"Hello"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("John"), "root state key resolved: {result}");
 }
 
@@ -515,10 +661,7 @@ fn test_root_custom_element_full_state_with_nested_child() {
     // Root element gets full state; its template passes a slice of that state to a
     // nested child via :prop. This mirrors the my-parent-b / my-child scenario.
     let locator = make_locator(&[
-        (
-            "my-parent-b",
-            r#"<my-child :items="{{items}}"></my-child>"#,
-        ),
+        ("my-parent-b", r#"<my-child :items="{{items}}"></my-child>"#),
         (
             "my-child",
             r#"<f-repeat value="{{item in items}}"><span>{{item.text}}</span></f-repeat>"#,
@@ -529,7 +672,8 @@ fn test_root_custom_element_full_state_with_nested_child() {
         r#"{"items":[{"text":"Item 1"},{"text":"Item 2"}]}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("Item 1"), "first item rendered: {result}");
     assert!(result.contains("Item 2"), "second item rendered: {result}");
 }
@@ -541,10 +685,7 @@ fn test_root_custom_elements_full_scenario() {
     // to a nested my-child via :items.
     let locator = make_locator(&[
         ("my-parent-a", "<span>{{selecteduser}}</span>"),
-        (
-            "my-parent-b",
-            r#"<my-child :items="{{items}}"></my-child>"#,
-        ),
+        ("my-parent-b", r#"<my-child :items="{{items}}"></my-child>"#),
         (
             "my-child",
             r#"<f-repeat value="{{item in items}}"><li>{{item.text}}</li></f-repeat>"#,
@@ -557,7 +698,10 @@ fn test_root_custom_elements_full_scenario() {
         None,
     ).unwrap();
     assert!(result.contains("Hello world"), "heading binding: {result}");
-    assert!(result.contains("John"), "selecteduser in my-parent-a: {result}");
+    assert!(
+        result.contains("John"),
+        "selecteduser in my-parent-a: {result}"
+    );
     assert!(result.contains("Item 1"), "item 1 in my-child: {result}");
     assert!(result.contains("Item 2"), "item 2 in my-child: {result}");
 }
@@ -567,7 +711,10 @@ fn test_nested_custom_element_inherits_parent_state() {
     // Nested elements (inside a shadow template) inherit the parent element's state
     // so unbound state keys propagate through the element tree automatically.
     let locator = make_locator(&[
-        ("outer-el", r#"<inner-el label="{{innerLabel}}"></inner-el>"#),
+        (
+            "outer-el",
+            r#"<inner-el label="{{innerLabel}}"></inner-el>"#,
+        ),
         ("inner-el", "<span>{{label}} {{rootKey}}</span>"),
     ]);
     // inner-el's template references {{rootKey}}. Since state propagates through
@@ -577,9 +724,16 @@ fn test_nested_custom_element_inherits_parent_state() {
         r#"{"innerLabel":"Nested","rootKey":"Available"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("Nested"), "label from attr binding: {result}");
-    assert!(result.contains("Available"), "rootKey propagated to nested child: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("Nested"),
+        "label from attr binding: {result}"
+    );
+    assert!(
+        result.contains("Available"),
+        "rootKey propagated to nested child: {result}"
+    );
 }
 
 // ── state propagation to all descendant child elements ────────────────────────
@@ -599,18 +753,28 @@ fn test_unbound_state_propagates_to_child_elements() {
         r#"{"text":"Hello world"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     // Both my-el and my-child-el should render "Hello world"
     let hello_count = result.matches("Hello world").count();
-    assert!(hello_count >= 2, "expected 'Hello world' in both elements, found {hello_count}: {result}");
+    assert!(
+        hello_count >= 2,
+        "expected 'Hello world' in both elements, found {hello_count}: {result}"
+    );
 }
 
 #[test]
 fn test_state_propagates_through_multiple_levels() {
     // State should flow through three levels of nesting.
     let locator = make_locator(&[
-        ("level-one", "<span>L1:{{msg}}</span><level-two></level-two>"),
-        ("level-two", "<span>L2:{{msg}}</span><level-three></level-three>"),
+        (
+            "level-one",
+            "<span>L1:{{msg}}</span><level-two></level-two>",
+        ),
+        (
+            "level-two",
+            "<span>L2:{{msg}}</span><level-three></level-three>",
+        ),
         ("level-three", "<span>L3:{{msg}}</span>"),
     ]);
     let result = render_entry_template_with_locator(
@@ -618,13 +782,23 @@ fn test_state_propagates_through_multiple_levels() {
         r#"{"msg":"deep"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     // Hydration markers wrap each binding, so check for the resolved value "deep"
     // within each level's shadow template.
     let deep_count = result.matches("deep").count();
-    assert!(deep_count >= 3, "expected 'deep' at least 3 times (all levels), found {deep_count}: {result}");
-    assert!(result.contains("<level-two>"), "level 2 element present: {result}");
-    assert!(result.contains("<level-three>"), "level 3 element present: {result}");
+    assert!(
+        deep_count >= 3,
+        "expected 'deep' at least 3 times (all levels), found {deep_count}: {result}"
+    );
+    assert!(
+        result.contains("<level-two>"),
+        "level 2 element present: {result}"
+    );
+    assert!(
+        result.contains("<level-three>"),
+        "level 3 element present: {result}"
+    );
 }
 
 #[test]
@@ -640,9 +814,16 @@ fn test_child_attr_overrides_propagated_state() {
         r#"{"color":"red"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("blue"), "attr value overrides propagated state: {result}");
-    assert!(!result.contains("red"), "propagated state key overridden by attr: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("blue"),
+        "attr value overrides propagated state: {result}"
+    );
+    assert!(
+        !result.contains("red"),
+        "propagated state key overridden by attr: {result}"
+    );
 }
 
 #[test]
@@ -658,8 +839,12 @@ fn test_non_entry_render_also_propagates_state() {
         r#"{"title":"Propagated"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("Propagated"), "state propagates via non-entry rendering: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("Propagated"),
+        "state propagates via non-entry rendering: {result}"
+    );
 }
 
 // ── entry-level custom element attribute resolution ───────────────────────────
@@ -674,9 +859,16 @@ fn test_root_custom_element_primitive_binding_resolved() {
         r#"{"text":"Hello world"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"text="Hello world""#), "primitive binding resolved: {result}");
-    assert!(result.contains("Hello world"), "template still renders state: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"text="Hello world""#),
+        "primitive binding resolved: {result}"
+    );
+    assert!(
+        result.contains("Hello world"),
+        "template still renders state: {result}"
+    );
 }
 
 #[test]
@@ -687,8 +879,12 @@ fn test_root_custom_element_missing_binding_attr_omitted() {
         "{}",
         &locator,
         None,
-    ).unwrap();
-    assert!(!result.contains("text="), "missing binding attr omitted: {result}");
+    )
+    .unwrap();
+    assert!(
+        !result.contains("text="),
+        "missing binding attr omitted: {result}"
+    );
     assert!(result.contains("<!--fe:b--><!--fe:/b-->"));
 }
 
@@ -701,8 +897,12 @@ fn test_root_custom_element_boolean_attr_binding_truthy() {
         r#"{"show":true}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(" disabled"), "boolean attr rendered when true: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(" disabled"),
+        "boolean attr rendered when true: {result}"
+    );
     assert!(!result.contains("?disabled"), "? prefix stripped: {result}");
 }
 
@@ -715,8 +915,12 @@ fn test_root_custom_element_boolean_attr_binding_falsy() {
         r#"{"show":false}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(!result.contains("disabled"), "boolean attr omitted when false: {result}");
+    )
+    .unwrap();
+    assert!(
+        !result.contains("disabled"),
+        "boolean attr omitted when false: {result}"
+    );
 }
 
 #[test]
@@ -729,9 +933,16 @@ fn test_root_custom_element_non_primitive_binding_stripped() {
         r#"{"list":["a","b"],"data":{"key":"val"}}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(!result.contains("list="), "array binding stripped: {result}");
-    assert!(!result.contains("data="), "object binding stripped: {result}");
+    )
+    .unwrap();
+    assert!(
+        !result.contains("list="),
+        "array binding stripped: {result}"
+    );
+    assert!(
+        !result.contains("data="),
+        "object binding stripped: {result}"
+    );
 }
 
 #[test]
@@ -743,9 +954,16 @@ fn test_root_custom_element_static_attrs_kept() {
         r#"{"ignored": true}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains(r#"id="main""#), "id attribute kept: {result}");
-    assert!(result.contains(r#"class="app""#), "class attribute kept: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains(r#"id="main""#),
+        "id attribute kept: {result}"
+    );
+    assert!(
+        result.contains(r#"class="app""#),
+        "class attribute kept: {result}"
+    );
 }
 
 #[test]
@@ -757,10 +975,17 @@ fn test_root_custom_element_mixed_attrs() {
         r#"{"name":"Alice","items":["x","y"]}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains(r#"id="root""#), "static id kept: {result}");
-    assert!(result.contains(r#"name="Alice""#), "primitive binding resolved: {result}");
-    assert!(!result.contains("items="), "array binding stripped: {result}");
+    assert!(
+        result.contains(r#"name="Alice""#),
+        "primitive binding resolved: {result}"
+    );
+    assert!(
+        !result.contains("items="),
+        "array binding stripped: {result}"
+    );
 }
 
 #[test]
@@ -778,10 +1003,17 @@ fn test_nested_custom_element_binding_attrs_not_stripped() {
         r#"{"name":"Bob"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     // The inner element is nested (not entry-level), so its resolved attr IS rendered.
-    assert!(result.contains(r#"label="Bob""#), "nested element attr rendered: {result}");
-    assert!(result.contains("Bob"), "inner template renders label: {result}");
+    assert!(
+        result.contains(r#"label="Bob""#),
+        "nested element attr rendered: {result}"
+    );
+    assert!(
+        result.contains("Bob"),
+        "inner template renders label: {result}"
+    );
 }
 
 #[test]
@@ -798,8 +1030,12 @@ fn test_custom_element_repeat_from_colon_binding() {
         r#"{"items":["a","b","c"]}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(!result.contains(":items"), "colon attr not in HTML: {result}");
+    )
+    .unwrap();
+    assert!(
+        !result.contains(":items"),
+        "colon attr not in HTML: {result}"
+    );
     assert!(result.contains(">a<"), "rendered a: {result}");
     assert!(result.contains(">b<"), "rendered b: {result}");
     assert!(result.contains(">c<"), "rendered c: {result}");
@@ -816,7 +1052,8 @@ fn test_custom_element_repeat_empty_array_from_colon_binding() {
         r#"{"items":[]}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(!result.contains("<span>"), "no items: {result}");
 }
 
@@ -830,8 +1067,12 @@ fn test_custom_element_object_from_colon_binding() {
         r#"{"config":{"title":"Hello"}}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(!result.contains(":config"), "colon attr not in HTML: {result}");
+    )
+    .unwrap();
+    assert!(
+        !result.contains(":config"),
+        "colon attr not in HTML: {result}"
+    );
     assert!(result.contains("Hello"), "rendered: {result}");
 }
 
@@ -848,8 +1089,12 @@ fn test_root_element_per_element_attr_available_in_template() {
         r#"{"shared":"yes"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("earth"), "per-element attr available in template: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("earth"),
+        "per-element attr available in template: {result}"
+    );
 }
 
 #[test]
@@ -862,9 +1107,16 @@ fn test_root_element_attr_overrides_root_state_key() {
         r#"{"color":"red"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("blue"), "attr value overrides root state: {result}");
-    assert!(!result.contains("red"), "root state key not used when attr present: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("blue"),
+        "attr value overrides root state: {result}"
+    );
+    assert!(
+        !result.contains("red"),
+        "root state key not used when attr present: {result}"
+    );
 }
 
 #[test]
@@ -877,23 +1129,33 @@ fn test_root_element_root_state_available_alongside_attr() {
         r#"{"shared":"context"}"#,
         &locator,
         None,
-    ).unwrap();
-    assert!(result.contains("mars"), "per-element attr rendered: {result}");
-    assert!(result.contains("context"), "root state key still accessible: {result}");
+    )
+    .unwrap();
+    assert!(
+        result.contains("mars"),
+        "per-element attr rendered: {result}"
+    );
+    assert!(
+        result.contains("context"),
+        "root state key still accessible: {result}"
+    );
 }
 
 #[test]
 fn test_root_element_boolean_attr_available_in_template() {
     // A boolean (no-value) attribute on an entry element should be available as
     // true in the child template.
-    let locator = make_locator(&[("my-el", r#"<f-when value="{{show}}"><span>visible</span></f-when>"#)]);
-    let result = render_entry_template_with_locator(
-        r#"<my-el show></my-el>"#,
-        r#"{}"#,
-        &locator,
-        None,
-    ).unwrap();
-    assert!(result.contains("visible"), "boolean attr resolves to true in template: {result}");
+    let locator = make_locator(&[(
+        "my-el",
+        r#"<f-when value="{{show}}"><span>visible</span></f-when>"#,
+    )]);
+    let result =
+        render_entry_template_with_locator(r#"<my-el show></my-el>"#, r#"{}"#, &locator, None)
+            .unwrap();
+    assert!(
+        result.contains("visible"),
+        "boolean attr resolves to true in template: {result}"
+    );
 }
 
 #[test]
@@ -906,7 +1168,8 @@ fn test_root_elements_with_different_per_element_attrs() {
         r#"{"shared":"yes"}"#,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("earth"), "first element attr: {result}");
     assert!(result.contains("mars"), "second element attr: {result}");
 }
@@ -924,7 +1187,8 @@ fn test_custom_element_json_array_attr() {
         "{}",
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains(">a<"), "rendered a: {result}");
     assert!(result.contains(">b<"), "rendered b: {result}");
     assert!(result.contains(">c<"), "rendered c: {result}");
@@ -941,7 +1205,8 @@ fn test_custom_element_empty_array_attr() {
         "{}",
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(!result.contains("<span>"), "no items: {result}");
 }
 
@@ -953,7 +1218,8 @@ fn test_custom_element_json_object_attr() {
         "{}",
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
     assert!(result.contains("Hello"), "rendered: {result}");
 }
 
@@ -962,12 +1228,12 @@ fn test_custom_element_invalid_json_attr_falls_back_to_string() {
     // An attribute value that looks like JSON but is invalid should remain a string,
     // not cause a parse error or panic.
     let locator = make_locator(&[("my-el", r#"<span>{{items}}</span>"#)]);
-    let result = render_template_with_locator(
-        r#"<my-el items='["a",]'></my-el>"#,
-        "{}",
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_template_with_locator(r#"<my-el items='["a",]'></my-el>"#, "{}", &locator, None)
+            .unwrap();
     // Invalid JSON falls back to the raw string value
-    assert!(result.contains(r#"["a",]"#), "invalid JSON kept as string: {result}");
+    assert!(
+        result.contains(r#"["a",]"#),
+        "invalid JSON kept as string: {result}"
+    );
 }

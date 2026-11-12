@@ -4,9 +4,9 @@ std::thread_local! {
 }
 
 /// Find the first occurrence of `pat` in `s[from..]`, returning the absolute index.
+#[cfg(test)]
 pub(crate) fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
-    let found = s[from..].find(pat).map(|i| i + from);
-    #[cfg(test)]
+    let found = s.get(from..)?.find(pat).map(|at| at + from);
     SEARCH_BYTES.with(|counter| {
         counter.set(counter.get() + found.map_or(s.len() - from, |at| at - from + pat.len()));
     });
@@ -164,8 +164,10 @@ pub(crate) fn extract_directive_content_range(
                 return Some((tag_end..at, at + close_tag.len()));
             }
         } else if template[at..].starts_with(&open_tag)
-            && matches!(template.as_bytes().get(at + open_tag.len()),
-                Some(b' ' | b'>' | b'\n' | b'\t' | b'\r'))
+            && matches!(
+                template.as_bytes().get(at + open_tag.len()),
+                Some(b' ' | b'>' | b'\n' | b'\t' | b'\r')
+            )
         {
             depth += 1;
         }
@@ -199,10 +201,7 @@ pub(crate) fn read_tag_name_slice(template: &str, lt_pos: usize) -> Option<&str>
     }
 
     let name_start = i;
-    while i < bytes.len()
-        && !bytes[i].is_ascii_whitespace()
-        && bytes[i] != b'>'
-        && bytes[i] != b'/'
+    while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' && bytes[i] != b'/'
     {
         i += 1;
     }
@@ -291,53 +290,19 @@ pub(crate) fn kebab_to_camel(s: &str) -> String {
 ///
 /// Examples: `"data-date-of-birth"` → `"dataset.dateOfBirth"`, `"data-name"` → `"dataset.name"`
 pub(crate) fn data_attr_to_dataset_key(name: &str) -> Option<String> {
-    name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
+    name.strip_prefix("data-")
+        .map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
 }
 
-/// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
-/// single-brace values and all other content unchanged.
-/// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
-/// either renders the bare attribute name (if true) or omits the attribute (if false).
-/// If a normal attribute binding cannot be resolved, the whole attribute is omitted.
-pub(crate) fn resolve_attribute_bindings_in_tag(
-    tag: &str,
-    root: &dyn crate::context::State,
-    loop_vars: &crate::context::LoopVars<'_>,
-) -> String {
-    match AttributePlan::new(tag) {
-        Some(plan) => plan.resolve(root, loop_vars),
-        None => tag.to_string(),
-    }
-}
-
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug)]
 pub(crate) struct AttributePlan {
     tag_name: String,
     attributes: Vec<ParsedAttribute>,
     self_closing: bool,
     closing_gt: bool,
-    capacity: usize,
 }
 
 impl AttributePlan {
-    pub(crate) fn memory_bytes(&self) -> usize {
-        self.tag_name.capacity()
-            + self.attributes.capacity() * std::mem::size_of::<ParsedAttribute>()
-            + self.attributes.iter().map(|attribute| {
-                attribute.name.capacity() + attribute.raw.capacity()
-                    + attribute.value.as_ref().map_or(0, String::capacity)
-            }).sum::<usize>()
-    }
-
-    pub(crate) fn validate(&self, source: &str) -> Result<(), crate::RenderError> {
-        if self.capacity > source.len()
-            || self.attributes.iter().any(|attribute| attribute.value_start > source.len())
-        {
-            return Err(crate::prepared::invalid("invalid prepared attribute offsets"));
-        }
-        Ok(())
-    }
-
     pub(crate) fn new(tag: &str) -> Option<Self> {
         let trimmed = tag.trim_end();
         let self_closing = trimmed.ends_with("/>");
@@ -346,7 +311,6 @@ impl AttributePlan {
             attributes: parse_element_attribute_parts(tag),
             self_closing,
             closing_gt: self_closing || trimmed.ends_with('>'),
-            capacity: tag.len(),
         })
     }
 
@@ -376,129 +340,6 @@ impl AttributePlan {
         }
         out
     }
-
-    pub(crate) fn resolve(
-        &self,
-        root: &dyn crate::context::State,
-        loop_vars: &crate::context::LoopVars<'_>,
-    ) -> String {
-        use crate::expression::evaluate;
-
-        let mut result = String::with_capacity(self.capacity);
-        result.push('<');
-        result.push_str(&self.tag_name);
-
-        for attr in &self.attributes {
-            let name = &attr.name;
-            if name.starts_with('?') {
-                if let Some(v) = attr.value.as_deref() {
-                    let trimmed = v.trim();
-                    if trimmed.starts_with("{{")
-                        && trimmed.ends_with("}}")
-                        && trimmed.len() > 4
-                    {
-                        let expr = trimmed[2..trimmed.len() - 2].trim();
-                        if evaluate(expr, root, loop_vars) {
-                            result.push(' ');
-                            result.push_str(&name[1..]);
-                        }
-                    }
-                }
-                continue;
-            }
-
-            match attr.value.as_deref() {
-                None => {
-                    result.push(' ');
-                    result.push_str(&attr.raw);
-                }
-                Some(v) if v.contains("{{") => {
-                    if let Some(expr) = single_attribute_binding(v) {
-                        if is_boolean_attribute(name) {
-                            if let Some(crate::json::JsonValue::Bool(enabled)) =
-                                crate::context::resolve_value(expr, root, loop_vars).as_deref()
-                            {
-                                if *enabled {
-                                    result.push(' ');
-                                    result.push_str(name);
-                                }
-                                continue;
-                            }
-                        }
-                    }
-                    if let Some(resolved) = resolve_attribute_value(v, root, loop_vars) {
-                        append_quoted_attribute(&mut result, name, &resolved);
-                    }
-                }
-                Some(_) => {
-                    result.push(' ');
-                    result.push_str(&attr.raw);
-                }
-            }
-        }
-
-        if self.self_closing {
-            result.push_str(" />");
-        } else if self.closing_gt {
-            result.push('>');
-        }
-
-        result
-    }
-}
-
-pub(crate) fn append_quoted_attribute(out: &mut String, name: &str, value: &str) {
-    out.push(' ');
-    out.push_str(name);
-    out.push_str("=\"");
-    append_double_quote_escaped(out, value);
-    out.push('"');
-}
-
-fn append_double_quote_escaped(out: &mut String, value: &str) {
-    for ch in value.chars() {
-        match ch {
-            '"' => out.push_str("&quot;"),
-            _ => out.push(ch),
-        }
-    }
-}
-
-pub(crate) fn resolve_attribute_value(
-    value: &str,
-    root: &dyn crate::context::State,
-    loop_vars: &crate::context::LoopVars<'_>,
-) -> Option<String> {
-    use crate::content::html_escape;
-    use crate::context::resolve_value;
-
-    let mut result = String::with_capacity(value.len());
-    let mut pos = 0;
-    loop {
-        let dbl = match find_str(value, "{{", pos) {
-            None => {
-                result.push_str(&value[pos..]);
-                return Some(result);
-            }
-            Some(idx) => idx,
-        };
-        let inner_start = dbl + 2;
-        let end = match find_str(value, "}}", inner_start) {
-            None => {
-                result.push_str(&value[pos..]);
-                return Some(result);
-            }
-            Some(idx) => idx,
-        };
-        let expr = value[inner_start..end].trim();
-        let resolved = resolve_value(expr, root, loop_vars)?;
-        if matches!(resolved.as_ref(), crate::json::JsonValue::Null) {
-            return None;
-        }
-        result.push_str(&value[pos..dbl]);
-        result.push_str(&html_escape(&resolved.to_display_string()));
-        pos = end + 2;
-    }
 }
 
 pub(crate) fn single_attribute_binding(value: &str) -> Option<&str> {
@@ -512,12 +353,37 @@ pub(crate) fn single_attribute_binding(value: &str) -> Option<&str> {
 
 pub(crate) fn is_boolean_attribute(name: &str) -> bool {
     [
-        "allowfullscreen", "async", "autofocus", "autoplay", "checked", "controls",
-        "default", "defer", "disabled", "formnovalidate", "hidden", "inert", "ismap",
-        "itemscope", "loop", "multiple", "muted", "nomodule", "novalidate", "open",
-        "playsinline", "readonly", "required", "reversed", "selected",
-        "shadowrootclonable", "shadowrootdelegatesfocus", "shadowrootserializable",
-    ].iter().any(|attribute| name.eq_ignore_ascii_case(attribute))
+        "allowfullscreen",
+        "async",
+        "autofocus",
+        "autoplay",
+        "checked",
+        "controls",
+        "default",
+        "defer",
+        "disabled",
+        "formnovalidate",
+        "hidden",
+        "inert",
+        "ismap",
+        "itemscope",
+        "loop",
+        "multiple",
+        "muted",
+        "nomodule",
+        "novalidate",
+        "open",
+        "playsinline",
+        "readonly",
+        "required",
+        "reversed",
+        "selected",
+        "shadowrootclonable",
+        "shadowrootdelegatesfocus",
+        "shadowrootserializable",
+    ]
+    .iter()
+    .any(|attribute| name.eq_ignore_ascii_case(attribute))
 }
 
 /// Remove all FAST client-only binding attributes from an opening tag string:
@@ -533,20 +399,6 @@ pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
     match AttributePlan::new(tag) {
         Some(plan) => plan.stripped(),
         None => tag.to_string(),
-    }
-}
-
-/// Insert a hydration marker attribute just before the closing `>` or `/>`.
-pub(crate) fn inject_hydration_marker(tag: &str, marker: &str) -> String {
-    let marker = format!(" {}", marker);
-    let trimmed = tag.trim_end();
-    if trimmed.ends_with("/>") {
-        let base = trimmed[..trimmed.len() - 2].trim_end();
-        format!("{}{} />", base, marker)
-    } else if trimmed.ends_with('>') {
-        format!("{}{}>", &trimmed[..trimmed.len() - 1], marker)
-    } else {
-        format!("{}{}", tag, marker)
     }
 }
 
@@ -588,7 +440,9 @@ fn is_skippable_tag(name: &str, locator: Option<&crate::locator::Locator>) -> bo
     if name.starts_with("f-") {
         return true;
     }
-    locator.map_or(false, |loc| is_custom_element(name) && loc.has_template(name))
+    locator.map_or(false, |loc| {
+        is_custom_element(name) && loc.has_template(name)
+    })
 }
 
 /// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
@@ -601,7 +455,7 @@ pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<St
         .collect()
 }
 
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
+#[derive(Debug)]
 pub(crate) struct ParsedAttribute {
     pub name: String,
     pub value: Option<String>,
@@ -621,7 +475,8 @@ pub(crate) fn parse_element_attribute_parts(open_tag: &str) -> Vec<ParsedAttribu
     }
 
     // Skip tag name (first word).
-    while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' && bytes[i] != b'/' {
+    while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' && bytes[i] != b'/'
+    {
         i += 1;
     }
 
