@@ -13,9 +13,7 @@ The helper is the JavaScript target's request engine. It has no imports or compi
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-The old source-rendering Rust/WASM APIs, prepared file/cache/watch host,
-prepared piece formats and simulated stream APIs are removed, not hidden behind
-compatibility exports. Native `CompiledArtifact` loading/rendering does not parse
+Native `CompiledArtifact` loading/rendering does not parse
 authored HTML or execute JavaScript. Version/compiler/helper metadata and all
 executable references/opcodes are validated on load; immutable `Send + Sync`
 ownership and request-local state/error/resource limits are documented in the
@@ -33,8 +31,7 @@ imply equivalent FAST budgets in the JS target.
 
 `fast build` loads entry/registry files, compiles AOT source, imports that source,
 parses optional state JSON, executes `renderEntry` and writes complete HTML.
-It is a build tool, not a request handler. The `--aot` and `--stream` flags
-are rejected with migration errors; `stream` is no longer a configuration key.
+It is a build tool, not a request handler, and always produces complete HTML.
 Omitted state becomes an empty object, without implicitly loading state.json.
 Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
 presence overrides config, including empty paths. Boolean options are validated.
@@ -266,12 +263,12 @@ Runtime invalid state/options throw TypeError; a present non-array repeat
 throws `repeat-not-array`. Runtime value errors need not carry source coordinates.
 Build-tool composition mappings remain independent of request execution.
 
-Historical prepared-renderer output hashes remain frozen test data, not a
-retained execution backend. Existing Rust rendering assertions run on loaded native artifacts and generated
-JavaScript through test-only adapters, retaining their original expected bytes.
+Frozen output hashes provide regression contracts. Rust rendering assertions run
+on loaded native artifacts and generated JavaScript through test-only adapters,
+retaining their original expected bytes.
 Dedicated native tests cover immutable cross-thread reuse, all render APIs,
 DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
 relocates generated ESM, then renders without authored inputs or compilation.
 The benchmark reports AOT import/first render, warmed CPU/wall time, process
-memory/GC, source bytes and output hashes. Historical direct/prepared comparisons
-are recorded in server-modules.md and are no longer runnable shipping paths.
+memory/GC, source bytes and output hashes. See server-modules.md for the current
+benchmark command and measurement boundaries.

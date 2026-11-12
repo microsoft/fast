@@ -132,12 +132,11 @@ format version 1 remain unchanged.
 
 ## Breaking migration
 
-Previous source-render/stream functions, `RenderConfig`, `DsdSelection` and
-prepared artifact/program APIs are removed. JavaScript hosts compile ESM and
-invoke its render exports. Native hosts compile artifacts and use `CompiledArtifact`
-with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
-For former non-entry render calls, use `renderTemplate`/`render_template` to retain
-their distinct root-host attribute contract. No JavaScript engine is embedded.
+This minor prerelease update requires an API migration. JavaScript hosts compile
+ESM and invoke its render exports. Native hosts compile artifacts and use
+`CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
+Use `renderTemplate`/`render_template` for template-context root-host attributes.
+Native rendering does not require JavaScript.
 Rendered markup and hydration markers are unchanged.
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
 

@@ -40,7 +40,7 @@ The IR contains executable literal writes, prelowered attribute recipes, segment
 paths, typed static values, condition opcodes, repeats and body/component references.
 It contains no source ranges, authored body strings or runtime expression grammar.
 Literal markup is output data, never reparsed. Repeat expression text is diagnostic
-only. There are no lazy source plans, prepared pieces or stream sinks.
+only.
 Deferred scanner instructions reconstruct source errors directly during lowering;
 they never invoke a renderer. Diagnostics are rebased through nested bodies and
 code escaping to authored UTF-16 coordinates and definition names.
@@ -250,8 +250,8 @@ load/render native artifacts, requiring byte-identical results before checking t
 original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
-Legacy chunk-boundary, prepared lifecycle and native allocation benchmarks are
-retired. Node tests retain 438 distinct frozen output contracts captured from
-439 passing historical comparisons, plus the shared performance corpus baseline.
-Browser fixtures hydrate AOT output. `bench:server` measures the supported backend;
-pre-retirement comparisons remain documented as historical evidence.
+Node tests enforce 438 distinct frozen output contracts and the shared
+performance corpus baseline.
+Browser fixtures hydrate AOT output. `bench:server` measures generated JavaScript;
+its CPU, memory and size measurement boundaries are documented in the package's
+server-modules.md.

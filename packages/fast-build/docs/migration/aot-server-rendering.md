@@ -11,26 +11,13 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
-| Removed API | Replacement |
-|---|---|
-| WASM `render_entry_with_templates` | Compile an entry and import its `renderEntry` |
-| WASM `render`, `render_with_templates` | Generated `renderTemplate`, preserving template-context root host attributes |
-| WASM `render_shadow_root` | Generated `renderShadow(name, componentState, options)` |
-| Native Rust source `render*` functions | Build `compile_server_artifact`, load `CompiledArtifact`, call its render methods |
-| Rust `RenderConfig`, `DsdSelection` | `NativeRenderOptions`; `dsd: None` all / `Some(vec![])` none |
-| Old Rust `AttributeNameStrategy` configuration | Typed `NativeRenderOptions::attribute_name_strategy` |
-| `PreparedCompiler`, `PreparedPiece`, `PreparedProgram` | Build-time `compileServerModule` or Rust `compile_server_module` |
-| `prepared.js`, including preparation/loading/cache/watch/activation APIs | Application-owned build pipeline and generated ESM imports |
-| Prepared manifest/piece formats and compiler identity exports | Recompile authored sources to ESM or new executable artifacts; formats are not interchangeable |
-| Stream/chunk-array APIs and `--stream`/`stream` config | Complete synchronous HTML strings |
-| `fast build --aot` qualification flag | `fast build` always uses AOT; remove the flag |
-| `PreparedTemplateDefinition` | `ServerTemplateDefinition` from `server.js` |
-
 ### Build once, render with request state
 
-Use `renderEntry` for previous `render_entry*` functions and `renderTemplate`
-for previous non-entry `render*` functions. Their different root-host attribute
-contracts remain intact; both exports execute the same generated functions.
+Use `renderEntry` for entry-host attribute handling and `renderTemplate`
+for template-context root-host attributes. Both render complete synchronous HTML.
+Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
+always compiles and executes AOT; remove `--aot`, `--stream` and `stream`
+configuration from build scripts.
 
 ```js
 // Build pipeline: load/compose templates before compiling.
@@ -79,8 +66,8 @@ with newly generated matching artifacts. Do not patch artifact identity fields
 or transfer Rust handles across library versions/processes.
 
 Loading and rendering never reparse authored HTML or execute JavaScript. The
-new artifact contains shared compiler-owned executable operations, not the old
-prepared source metadata. Old prepared artifacts must be rebuilt from source.
+artifact contains shared compiler-owned executable operations. Regenerate
+artifacts from authored inputs with the deployed compiler.
 Options retain DSD and both marker formats. Errors are recoverable typed values,
 with validation and recursion/step/output bounds; see the complete
 [native contract](../server-modules.md#native-rust-artifact-target).
@@ -90,7 +77,6 @@ no separate C# rendering semantic implementation is introduced.
 
 Deploy generated modules and compatible `server-runtime.mjs` together; bundle
 the helper or install the matching package on the server. Regenerate on upgrades.
-Old prepared artifacts cannot be upgraded in place: rebuild from authored inputs.
 Applications own watching, dependency invalidation, module caching, atomic
 activation, retention for in-flight requests and shutdown. Multiple entries can
 be emitted as separate modules sharing the same helper.

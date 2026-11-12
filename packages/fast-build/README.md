@@ -63,11 +63,10 @@ and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous and preserves existing HTML bytes and server coercion;
 arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
 
-See [the server module contract and qualification results](./docs/server-modules.md)
+See [the server module contract and benchmark guide](./docs/server-modules.md)
 for selection, diagnostics, deployment compatibility, migration, and measurement
 boundaries.
 
-The previous source-rendering/WASM and prepared lifecycle APIs are removed.
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
@@ -95,8 +94,8 @@ The build-time Rust `compile_server_artifact` produces the identical format.
 
 Deploy artifacts with the exact compiler-matching native library; loading
 validates versions, fingerprint, opcodes and references. Artifacts have immutable
-thread-safe ownership and reusable request-independent instructions, not source
-metadata or old prepared manifests. See the [native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
+thread-safe ownership and reusable request-independent instructions. See the
+[native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
 and [Rust usage](../../crates/microsoft-fast-build/README.md).
 Native Rust is supported now; a stable C ABI/.NET binding is deferred. This does
 not provide a C# renderer or claim working .NET interoperability.

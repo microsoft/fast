@@ -101,10 +101,7 @@ follow-up work. This release does not provide a C# host or separate C# semantics
 ## Migration from request-time source rendering
 
 Generated server JavaScript and native Rust artifact rendering are supported
-targets of the shared compiler. The previous prepared renderer/piece formats,
-request-time WASM exports and source-rendering Rust functions are removed.
-Rebuild modules/artifacts when upgrading; old prepared artifacts cannot be loaded
-by the new implementation.
+targets of the shared compiler. Rebuild modules/artifacts when upgrading.
 
 This is an **API-breaking migration classified as a minor prerelease release**,
 not a drop-in upgrade. Migrate removed APIs, normalize request state and await
@@ -115,10 +112,8 @@ requests. Native state/execution/output limits differ from JS host limits, so
 switching targets requires workload qualification as well as markup parity.
 
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
-for component-state DSD fragments. Use `renderTemplate` when migrating previous
-non-entry `render`/`render_with_templates` calls to preserve their different
-root-host attribute handling. Each returns a complete synchronous string;
-the previous precomputed chunk-array APIs and `--stream` flag are removed.
+for component-state DSD fragments. Use `renderTemplate` for template-context
+root-host attribute handling. Each returns a complete synchronous string.
 `fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
@@ -262,9 +257,9 @@ omitted attributes, so reactive updates can add them later. Use `?name` for
 client/server truthy/falsy boolean bindings; JSON booleans on known HTML boolean
 attributes also use presence on the server, while ARIA booleans stay textual.
 
-Build-time plugins can use `render_shadow_root` from the
-`@microsoft/fast-build/wasm/microsoft_fast_build.js` export to render a complete
-DSD `<template>` with resolved component state and no throwaway host/light DOM.
+Build-time plugins can compile a server module with `compileServerModule` and
+call its generated `renderShadow(name, componentState)` export for a complete
+DSD `<template>` with resolved component state and no synthesized host/light DOM.
 `parse_f_templates` exposes versioned binding descriptions, including lexical
 repeat scopes, authored expression spans, and explicit unknown state
 types/optionality. Spans use half-open ranges in the complete original HTML input,
@@ -467,11 +462,11 @@ elements or plain tags. This optimization preserves rendered bytes and both
 the default hydration markers and the opt-in `markers_v2` format; existing
 callers need no changes.
 
-The WASM renderer is still synchronous. `--stream` writes precomputed chunks,
-not incrementally generated output, so it does not unblock the Node event loop
-or reduce time to the first chunk. Contributors can compare native and packaged
-WASM workloads using the
-[FAST Build benchmark guide](https://github.com/microsoft/fast/blob/main/crates/microsoft-fast-build/benchmark-baselines/README.md).
+`fast build` synchronously compiles and renders complete HTML as a build tool.
+Production servers compile modules or artifacts during their build rather than
+parsing templates during requests. Contributors can measure generated JavaScript
+with the current
+[benchmark guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#qualification-and-measurements).
 
 ### Configuration File
 
