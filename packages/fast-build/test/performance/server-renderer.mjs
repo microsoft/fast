@@ -35,45 +35,17 @@ if (args.worker) {
 }
 
 async function worker() {
+    assert.equal(args.worker, "aot", "Only the AOT backend is supported.");
     const source = JSON.parse(
         await fs.readFile(path.join(args.directory, "input.json"), "utf8"),
     );
     const iterations = integer("iterations");
     const memoryBefore = process.memoryUsage();
     const start = performance.now();
-    let render;
-    let wasm;
-    let program;
-    if (args.worker === "aot") {
-        const module = await import(
-            pathToFileURL(path.join(args.directory, "server.mjs")).href
-        );
-        render = () => module.renderEntry(source.state);
-    } else {
-        wasm = require("../../wasm/microsoft_fast_build.js");
-        if (args.worker === "prepared") {
-            const pieces = JSON.parse(
-                await fs.readFile(path.join(args.directory, "pieces.json"), "utf8"),
-            );
-            const entry = wasm.PreparedPiece.load(Buffer.from(pieces.entry, "base64"));
-            program = new wasm.PreparedProgram(entry);
-            entry.free();
-            for (const [name, bytes] of Object.entries(pieces.templates)) {
-                const piece = wasm.PreparedPiece.load(Buffer.from(bytes, "base64"));
-                program.add_template(name, piece);
-                piece.free();
-            }
-            render = () => program.render(JSON.stringify(source.state), "", false, false);
-        } else {
-            const templates = JSON.stringify(source.templates);
-            render = () =>
-                wasm.render_entry_with_templates(
-                    source.entry,
-                    templates,
-                    JSON.stringify(source.state),
-                );
-        }
-    }
+    const module = await import(
+        pathToFileURL(path.join(args.directory, "server.mjs")).href
+    );
+    const render = () => module.renderEntry(source.state);
     const html = render();
     const firstRenderMs = performance.now() - start;
     const memoryAfterFirst = process.memoryUsage();
@@ -104,8 +76,6 @@ async function worker() {
     const memoryAfterWarm = process.memoryUsage();
     globalThis.gc?.();
     const memoryRetained = process.memoryUsage();
-    const wasmLinearBytes = wasm?.__wasm?.memory?.buffer.byteLength ?? null;
-    program?.free();
     console.log(
         JSON.stringify({
             firstRenderMs,
@@ -119,7 +89,6 @@ async function worker() {
             memoryWarm,
             memoryAfterWarm,
             memoryRetained,
-            wasmLinearBytes,
             outputBytes: Buffer.byteLength(html),
             outputHash: hash(html),
         }),
@@ -131,7 +100,6 @@ async function main() {
     const instances = integer("instances");
     integer("iterations");
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-server-bench-"));
-    const wasm = require("../../wasm/microsoft_fast_build.js");
     const { compileServerModule } = require("../../server.js");
     const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
     const workloads = {
@@ -170,59 +138,28 @@ async function main() {
             await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
             const source = compileServerModule(input.entry, input.templates, runtime);
             await fs.writeFile(path.join(directory, "server.mjs"), source);
-            const compiler = new wasm.PreparedCompiler(
-                JSON.stringify(Object.keys(input.templates)),
-            );
-            const entry = compiler.compile(JSON.stringify(input.entry));
-            const pieces = {
-                entry: Buffer.from(entry.serialize()).toString("base64"),
-                templates: {},
-            };
-            entry.free();
-            for (const [name, template] of Object.entries(input.templates)) {
-                const piece = compiler.compile(JSON.stringify(template));
-                pieces.templates[name] = Buffer.from(piece.serialize()).toString(
-                    "base64",
-                );
-                piece.free();
-            }
-            compiler.free();
-            await fs.writeFile(
-                path.join(directory, "pieces.json"),
-                JSON.stringify(pieces),
-            );
             const record = {
                 generatedBytes: Buffer.byteLength(source),
-                preparedBytes: Buffer.byteLength(JSON.stringify(pieces)),
-                modes: { aot: [], direct: [], prepared: [] },
+                modes: { aot: [] },
             };
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                const modes = ["aot", "direct", "prepared"];
-                // Rotate order to avoid consistently favoring one backend.
-                for (let offset = 0; offset < modes.length; offset++) {
-                    const mode = modes[(sample + offset) % modes.length];
-                    const result = JSON.parse(
-                        execFileSync(
-                            process.execPath,
-                            [
-                                "--expose-gc",
-                                fileURLToPath(import.meta.url),
-                                `--worker=${mode}`,
-                                `--directory=${directory}`,
-                                `--iterations=${args.iterations}`,
-                            ],
-                            { encoding: "utf8" },
-                        ),
-                    );
-                    expected ??= result.outputHash;
-                    assert.equal(
-                        result.outputHash,
-                        expected,
-                        `${name}/${mode} output differs`,
-                    );
-                    record.modes[mode].push(result);
-                }
+                const result = JSON.parse(
+                    execFileSync(
+                        process.execPath,
+                        [
+                            "--expose-gc",
+                            fileURLToPath(import.meta.url),
+                            "--worker=aot",
+                            `--directory=${directory}`,
+                            `--iterations=${args.iterations}`,
+                        ],
+                        { encoding: "utf8" },
+                    ),
+                );
+                expected ??= result.outputHash;
+                assert.equal(result.outputHash, expected, `${name}/aot output differs`);
+                record.modes.aot.push(result);
             }
             results.workloads[name] = record;
         }

@@ -8,13 +8,24 @@ use microsoft_fast_build::RenderError;
 fn test_error_unclosed_double_brace() {
     let e = err("Hello {{name", r#"{"name": "World"}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedBinding { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedBinding { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("{{name"), "should show partial expr: {msg}");
-    assert!(msg.contains("Hello {{name"), "should show template context: {msg}");
+    assert!(
+        msg.contains("Hello {{name"),
+        "should show template context: {msg}"
+    );
     assert_eq!(e.code(), "unclosed-binding");
-    assert_eq!(e.location(), Some(microsoft_fast_build::ErrorLocation {
-        line: 1, column: 7, length: 2,
-    }));
+    assert_eq!(
+        e.location(),
+        Some(microsoft_fast_build::ErrorLocation {
+            line: 1,
+            column: 7,
+            length: 2,
+        })
+    );
     assert_eq!(e.template_name(), None);
     assert_eq!(msg, "unclosed binding '{{name': no closing '}}' found to end the expression — template: \"Hello {{name\"");
 }
@@ -23,7 +34,10 @@ fn test_error_unclosed_double_brace() {
 fn test_error_unclosed_double_brace_midway() {
     let e = err("<p>Welcome, {{user</p>", r#"{"user": "Alice"}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedBinding { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedBinding { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("{{user"), "should show partial expr: {msg}");
 }
 
@@ -31,9 +45,15 @@ fn test_error_unclosed_double_brace_midway() {
 fn test_error_unclosed_triple_brace() {
     let e = err("Content: {{{html", r#"{"html": "<b>hi</b>"}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedUnescapedBinding { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedUnescapedBinding { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("{{{html"), "should show partial expr: {msg}");
-    assert!(msg.contains("Content: {{{html"), "should show template context: {msg}");
+    assert!(
+        msg.contains("Content: {{{html"),
+        "should show template context: {msg}"
+    );
 }
 
 // ── empty bindings ────────────────────────────────────────────────────────────
@@ -42,24 +62,42 @@ fn test_error_unclosed_triple_brace() {
 fn test_error_empty_double_brace() {
     let e = err("<p>{{}}</p>", r#"{}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::EmptyBinding { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("empty binding"), "should describe the issue: {msg}");
-    assert!(msg.contains("<p>{{}}"), "should show template context: {msg}");
+    assert!(
+        matches!(e, RenderError::EmptyBinding { .. }),
+        "wrong variant: {msg}"
+    );
+    assert!(
+        msg.contains("empty binding"),
+        "should describe the issue: {msg}"
+    );
+    assert!(
+        msg.contains("<p>{{}}"),
+        "should show template context: {msg}"
+    );
 }
 
 #[test]
 fn test_error_empty_triple_brace() {
     let e = err("{{{}}}", r#"{}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::EmptyBinding { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("empty binding"), "should describe the issue: {msg}");
+    assert!(
+        matches!(e, RenderError::EmptyBinding { .. }),
+        "wrong variant: {msg}"
+    );
+    assert!(
+        msg.contains("empty binding"),
+        "should describe the issue: {msg}"
+    );
 }
 
 #[test]
 fn test_error_whitespace_only_binding() {
     let e = err("{{   }}", r#"{}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::EmptyBinding { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::EmptyBinding { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 // ── missing content values ────────────────────────────────────────────────────
@@ -84,21 +122,42 @@ fn test_missing_nested_property_renders_empty() {
 
 #[test]
 fn test_error_unclosed_f_when() {
-    let e = err(r#"<f-when value="{{show}}">content with no close"#, r#"{"show": true}"#);
+    let e = err(
+        r#"<f-when value="{{show}}">content with no close"#,
+        r#"{"show": true}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedDirective { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedDirective { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("f-when"), "should name the tag: {msg}");
-    assert!(msg.contains("</f-when>"), "should name the missing close tag: {msg}");
-    assert!(msg.contains("<f-when"), "should show template context: {msg}");
+    assert!(
+        msg.contains("</f-when>"),
+        "should name the missing close tag: {msg}"
+    );
+    assert!(
+        msg.contains("<f-when"),
+        "should show template context: {msg}"
+    );
 }
 
 #[test]
 fn test_error_unclosed_f_repeat() {
-    let e = err(r#"<f-repeat value="{{item in items}}">no close"#, r#"{"items": ["a"]}"#);
+    let e = err(
+        r#"<f-repeat value="{{item in items}}">no close"#,
+        r#"{"items": ["a"]}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedDirective { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedDirective { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("f-repeat"), "should name the tag: {msg}");
-    assert!(msg.contains("</f-repeat>"), "should name the missing close tag: {msg}");
+    assert!(
+        msg.contains("</f-repeat>"),
+        "should name the missing close tag: {msg}"
+    );
 }
 
 #[test]
@@ -109,7 +168,10 @@ fn test_error_unclosed_nested_directive() {
         r#"{"a": true, "b": true}"#,
     );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::UnclosedDirective { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::UnclosedDirective { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 // ── missing value attribute ───────────────────────────────────────────────────
@@ -118,51 +180,93 @@ fn test_error_unclosed_nested_directive() {
 fn test_error_f_when_no_value_attr() {
     let e = err("<f-when>content</f-when>", r#"{}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingValueAttribute { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::MissingValueAttribute { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("f-when"), "should name the tag: {msg}");
-    assert!(msg.contains("value="), "should mention the missing attribute: {msg}");
-    assert!(msg.contains("<f-when>"), "should show template context: {msg}");
+    assert!(
+        msg.contains("value="),
+        "should mention the missing attribute: {msg}"
+    );
+    assert!(
+        msg.contains("<f-when>"),
+        "should show template context: {msg}"
+    );
 }
 
 #[test]
 fn test_error_f_repeat_no_value_attr() {
     let e = err("<f-repeat>content</f-repeat>", r#"{}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingValueAttribute { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::MissingValueAttribute { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("f-repeat"), "should name the tag: {msg}");
 }
 
 #[test]
 fn test_error_f_when_unquoted_value() {
     // value attribute present but not wrapped in {{}}
-    let e = err(r#"<f-when value="show">content</f-when>"#, r#"{"show": true}"#);
+    let e = err(
+        r#"<f-when value="show">content</f-when>"#,
+        r#"{"show": true}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::MissingValueAttribute { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::MissingValueAttribute { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 // ── invalid repeat expression ─────────────────────────────────────────────────
 
 #[test]
 fn test_error_repeat_expr_no_in_keyword() {
-    let e = err(r#"<f-repeat value="{{items}}"><span>x</span></f-repeat>"#, r#"{"items": ["a"]}"#);
+    let e = err(
+        r#"<f-repeat value="{{items}}"><span>x</span></f-repeat>"#,
+        r#"{"items": ["a"]}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::InvalidRepeatExpression { .. }), "wrong variant: {msg}");
-    assert!(msg.contains("item in list"), "should describe the expected format: {msg}");
-    assert!(msg.contains("items"), "should include the bad expression: {msg}");
+    assert!(
+        matches!(e, RenderError::InvalidRepeatExpression { .. }),
+        "wrong variant: {msg}"
+    );
+    assert!(
+        msg.contains("item in list"),
+        "should describe the expected format: {msg}"
+    );
+    assert!(
+        msg.contains("items"),
+        "should include the bad expression: {msg}"
+    );
 }
 
 #[test]
 fn test_error_repeat_expr_missing_list() {
-    let e = err(r#"<f-repeat value="{{item in }}"><span>x</span></f-repeat>"#, r#"{}"#);
+    let e = err(
+        r#"<f-repeat value="{{item in }}"><span>x</span></f-repeat>"#,
+        r#"{}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::InvalidRepeatExpression { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::InvalidRepeatExpression { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 #[test]
 fn test_error_repeat_expr_missing_var() {
-    let e = err(r#"<f-repeat value="{{ in items}}"><span>x</span></f-repeat>"#, r#"{"items": ["a"]}"#);
+    let e = err(
+        r#"<f-repeat value="{{ in items}}"><span>x</span></f-repeat>"#,
+        r#"{"items": ["a"]}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::InvalidRepeatExpression { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::InvalidRepeatExpression { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 // ── not an array ──────────────────────────────────────────────────────────────
@@ -174,7 +278,10 @@ fn test_error_repeat_not_an_array_string() {
         r#"{"name": "Alice"}"#,
     );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::NotAnArray { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("name"), "should name the binding: {msg}");
     assert!(msg.contains("f-repeat"), "should mention f-repeat: {msg}");
 }
@@ -186,7 +293,10 @@ fn test_error_repeat_not_an_array_object() {
         r#"{"config": {"key": "val"}}"#,
     );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::NotAnArray { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("config"), "should name the binding: {msg}");
 }
 
@@ -197,14 +307,23 @@ fn test_error_repeat_not_an_array_bool() {
         r#"{"flag": true}"#,
     );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::NotAnArray { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 #[test]
 fn test_error_repeat_not_an_array_null() {
-    let e = err(r#"<f-repeat value="{{item in items}}">{{item}}</f-repeat>"#, r#"{"items": null}"#);
+    let e = err(
+        r#"<f-repeat value="{{item in items}}">{{item}}</f-repeat>"#,
+        r#"{"items": null}"#,
+    );
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::NotAnArray { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::NotAnArray { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("items"), "should name the binding: {msg}");
 }
 
@@ -214,7 +333,10 @@ fn test_error_repeat_not_an_array_null() {
 fn test_error_invalid_json_bare_word() {
     let e = err("{{x}}", "not json at all");
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::JsonParse { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::JsonParse { .. }),
+        "wrong variant: {msg}"
+    );
     assert!(msg.contains("JSON"), "should mention JSON: {msg}");
 }
 
@@ -222,14 +344,20 @@ fn test_error_invalid_json_bare_word() {
 fn test_error_invalid_json_unclosed_object() {
     let e = err("{{x}}", r#"{"x": 1"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::JsonParse { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::JsonParse { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 #[test]
 fn test_error_invalid_json_trailing_comma() {
     let e = err("{{x}}", r#"{"x": 1,}"#);
     let msg = e.to_string();
-    assert!(matches!(e, RenderError::JsonParse { .. }), "wrong variant: {msg}");
+    assert!(
+        matches!(e, RenderError::JsonParse { .. }),
+        "wrong variant: {msg}"
+    );
 }
 
 // ── error propagation from nested directives ──────────────────────────────────

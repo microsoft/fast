@@ -25,7 +25,7 @@ for (const fixtureName of fixtures) {
     // Step 1: render shadow DOM via fast-build CLI using config file
     execFileSync(
         process.execPath,
-        [fastBin, "build", "--aot", `--config=${configFile}`, ...passthroughArgs],
+        [fastBin, "build", `--config=${configFile}`, ...passthroughArgs],
         { stdio: "inherit" },
     );
 

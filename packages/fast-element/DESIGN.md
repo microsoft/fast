@@ -643,7 +643,7 @@ and hydratable `ViewTemplate` support are installed exclusively by
 [`docs/declarative/design.md`](./docs/declarative/design.md) for the detailed
 architecture.
 
-Declarative fixture builds use `fast build --aot` to produce the same SSR markup
+Declarative fixture builds use `fast build` to produce the same SSR markup
 through generated server JavaScript. The existing browser fixture suite therefore
 qualifies hydration/node reuse and subsequent reactive updates against AOT output.
 Server compilation/execution remains owned by `fast-build`; no browser runtime

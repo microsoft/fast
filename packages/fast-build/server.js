@@ -4,7 +4,7 @@
  * Compile trusted declarative HTML to synchronous server ESM.
  * The returned module imports only the server runtime, not this build-time API.
  * @param {string} entry
- * @param {Record<string, string | import("./prepared.js").PreparedTemplateDefinition>} [templates]
+ * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
  * @param {string} [runtimeImport]
  * @returns {string}
  */

@@ -5,10 +5,11 @@ use crate::attribute::{
 use crate::attribute_lookup::{aria_attr_to_property_key, html_attr_to_property_key};
 use crate::code_escape::escape_code_sample_elements;
 use crate::content::html_escape;
+use crate::directive::Directive;
 use crate::error::{template_context, RenderError};
 use crate::expression::{find_binary_op, find_comparison_op};
 use crate::locator::Locator;
-use crate::plan::{Body, Element, Instruction, RenderPlan, Tag};
+use crate::plan::{Body, Element, Instruction, RenderPlan, Repeat, Tag, When};
 
 /// Compatibility identity for the generated module's server-only helper contract.
 pub const SERVER_RUNTIME_VERSION: u32 = 1;
@@ -292,22 +293,28 @@ impl Emitter<'_> {
                     code.push_str(&format!("out += b{element_id}(r,l,o,h,e);\n"));
                 }
                 Instruction::Deferred(directive) => {
-                    let empty = crate::empty_state();
-                    // Reuse the normal diagnostic, but report it during generation even in skipped bodies.
-                    crate::node::render_node(
-                        &source[directive.position()..],
-                        &empty,
-                        &[],
-                        Some(self.locator),
-                        None,
-                        false,
-                        &crate::RenderConfig::default(),
-                    )
-                    .map_err(|error| error.rebase(source, directive.position()))?;
-                    return Err(RenderError::InvalidTemplateMetadata {
-                        message: format!("unsupported server instruction {directive:?}"),
-                    }
-                    .at(source, directive.position()));
+                    let at = directive.position();
+                    return Err(match directive {
+                        Directive::DoubleBrace(_) | Directive::TripleBrace(_) => {
+                            let triple = matches!(directive, Directive::TripleBrace(_));
+                            let start = at + if triple { 3 } else { 2 };
+                            let delimiter = if triple { "}}}" } else { "}}" };
+                            let context = template_context(source, at);
+                            if source[start..].contains(delimiter) {
+                                RenderError::EmptyBinding { context }
+                            } else {
+                                let expr = crate::error::truncate(&source[start..], 30);
+                                if triple {
+                                    RenderError::UnclosedUnescapedBinding { expr, context }
+                                } else {
+                                    RenderError::UnclosedBinding { expr, context }
+                                }
+                            }
+                        }
+                        Directive::When(_) => When::parse(source, at).unwrap_err(),
+                        Directive::Repeat(_) => Repeat::parse(source, at).unwrap_err(),
+                        Directive::CustomElement(_) => Element::parse(source, at).unwrap_err(),
+                    });
                 }
             }
             code.push_str("}\n");
@@ -550,15 +557,17 @@ pub fn compile_server_module(
          {functions}\n\
          export function renderEntry(state,options) {{\n\
          const [r,o] = $.request(state,options);\nreturn b{entry_id}(r,[],o,null,true);\n}}\n\
+         export function renderTemplate(state,options) {{\n\
+         const [r,o] = $.request(state,options);\nreturn b{entry_id}(r,[],o,null,false);\n}}\n\
          export function renderHost(name,state,options) {{\n\
          const [r,o] = $.request(state,options);\n\
-         if(!Object.hasOwn(hosts,name)) throw new Error(\"Unknown component: \" + name);\n\
+         if(!Object.hasOwn(hosts,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
          return hosts[name](r,[],o,null,true);\n}}\n\
          export function renderShadow(name,state,options) {{\n\
          const [r,o] = $.request(state,options);\n\
-         if(!Object.hasOwn(shadows,name)) throw new Error(\"Unknown component: \" + name);\n\
+         if(!Object.hasOwn(shadows,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
          return $.selected(o,name) ? shadowTags[name] + shadows[name](r,[],o,$.scope(o),false) + \"</template>\" : \"\";\n}}\n",
-        js(runtime_import), js(crate::PREPARED_COMPILER_ID),
+        js(runtime_import), js(crate::SERVER_COMPILER_ID),
         names.iter().map(|name| js(name)).collect::<Vec<_>>().join(","),
         shadows.join(","), hosts.join(","), shadow_attrs.join(","),
     ))

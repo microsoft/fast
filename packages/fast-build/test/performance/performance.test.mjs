@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 import { fixture, outputStats } from "./fixtures.mjs";
 
-const wasm = createRequire(import.meta.url)("../../wasm/microsoft_fast_build.js");
+const require = createRequire(import.meta.url);
+const { compileServerModule } = require("../../server.js");
+const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
 const baseline = JSON.parse(
     readFileSync(
         new URL(
@@ -16,19 +19,13 @@ const baseline = JSON.parse(
 );
 
 for (const record of baseline) {
-    test(`${record.case}/${record.mode}/${record.count}`, () => {
+    test(`${record.case}/${record.mode}/${record.count}`, async () => {
         const input = fixture(record.case, record.count, record.payload, record.rootKeys);
-        const args = [
-            input.entry,
-            JSON.stringify(input.templates),
-            JSON.stringify(input.state),
-            "camelCase",
-        ];
-        const html = wasm.render_entry_with_templates(
-            ...args,
-            false,
-            record.mode === "v2",
+        const source = compileServerModule(input.entry, input.templates, runtime);
+        const server = await import(
+            `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
         );
+        const html = server.renderEntry(input.state, { markersV2: record.mode === "v2" });
         const {
             case: _case,
             count: _count,
@@ -38,11 +35,5 @@ for (const record of baseline) {
             ...expected
         } = record;
         assert.deepEqual(outputStats(html), expected);
-        const chunks = JSON.parse(
-            wasm.render_entry_with_templates(...args, true, record.mode === "v2"),
-        );
-        assert.ok(chunks.every(chunk => typeof chunk === "string" && chunk.length > 0));
-        assert.equal(chunks.join(""), html);
-        assert.equal(wasm.render_with_templates(...args, record.mode === "v2"), html);
     });
 }

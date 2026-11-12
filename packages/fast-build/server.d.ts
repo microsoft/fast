@@ -1,4 +1,9 @@
-import type { PreparedTemplateDefinition } from "./prepared.js";
+export interface ServerTemplateDefinition {
+    content: string;
+    shadowrootAttributes?: { name: string; value: string | null }[] | null;
+    hostAttributes?: { name: string; value: string | null }[] | null;
+    formatVersion?: 1;
+}
 
 export type ServerState =
     | null
@@ -21,6 +26,8 @@ export interface ServerModule {
     readonly runtimeVersion: number;
     readonly components: readonly string[];
     renderEntry(state?: ServerState, options?: ServerRenderOptions): string;
+    /** Preserve template-context root host attributes rather than entry-host rules. */
+    renderTemplate(state?: ServerState, options?: ServerRenderOptions): string;
     renderHost(name: string, state?: ServerState, options?: ServerRenderOptions): string;
     renderShadow(
         name: string,
@@ -32,6 +39,6 @@ export interface ServerModule {
 /** Build-time only. State-independent output; generation eagerly validates all bodies. */
 export function compileServerModule(
     entry: string,
-    templates?: Record<string, string | PreparedTemplateDefinition>,
+    templates?: Record<string, string | ServerTemplateDefinition>,
     runtimeImport?: string,
 ): string;

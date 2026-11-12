@@ -5,10 +5,33 @@ const os = require("node:os");
 const path = require("node:path");
 const { test } = require("node:test");
 const { pathToFileURL } = require("node:url");
+const { createHash } = require("node:crypto");
 const { compileServerModule } = require("../server.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
+const baseline = require("./server-baseline.json");
+const hash = value => createHash("sha256").update(value).digest("hex");
+
+test("retired renderer APIs cannot be loaded from the compiler package", () => {
+    assert.throws(
+        () => require("@microsoft/fast-build/prepared.js"),
+        error => error.code === "ERR_PACKAGE_PATH_NOT_EXPORTED",
+    );
+    for (const name of [
+        "render",
+        "render_with_templates",
+        "render_entry_with_templates",
+        "render_shadow_root",
+        "PreparedCompiler",
+        "PreparedPiece",
+        "PreparedProgram",
+        "prepared_compiler_id",
+        "validate_prepared_request",
+    ]) {
+        assert.equal(Object.hasOwn(wasm, name), false, `${name} is retired`);
+    }
+});
 
 async function compile(entry, templates = {}) {
     const source = compileServerModule(entry, templates, runtime);
@@ -20,29 +43,10 @@ async function compile(entry, templates = {}) {
 
 async function parity(entry, templates, states, options = {}) {
     const { module } = await compile(entry, templates);
-    const compiler = new wasm.PreparedCompiler(JSON.stringify(Object.keys(templates)));
-    const piece = compiler.compile(JSON.stringify(entry));
-    const program = new wasm.PreparedProgram(piece);
-    try {
-        for (const [name, definition] of Object.entries(templates)) {
-            const template = compiler.compile(JSON.stringify(definition));
-            program.add_template(name, template);
-            template.free();
-        }
-        for (const state of states) {
-            const expected = program.render(
-                JSON.stringify(state),
-                options.attributeNameStrategy,
-                false,
-                options.markersV2 || false,
-                options.dsd === undefined ? undefined : JSON.stringify(options.dsd),
-            );
-            assert.equal(module.renderEntry(state, options), expected);
-        }
-    } finally {
-        program.free();
-        piece.free();
-        compiler.free();
+    for (const state of states) {
+        const key = hash(JSON.stringify([entry, templates, state, options]));
+        assert.ok(Object.hasOwn(baseline, key), "missing historical output contract");
+        assert.equal(hash(module.renderEntry(state, options)), baseline[key]);
     }
     return module;
 }
@@ -241,11 +245,7 @@ test("AOT host and shadow exports retain selection and request isolation", async
     for (const value of ["first", "second", ""]) {
         assert.equal(
             module.renderHost("test-el", { value }),
-            wasm.render_entry_with_templates(
-                "<test-el></test-el>",
-                JSON.stringify({ "test-el": "{{value}}" }),
-                JSON.stringify({ value }),
-            ),
+            `<test-el><template shadowrootmode="open" shadowroot="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
         );
         assert.equal(
             module.renderShadow("test-el", { value }),
@@ -266,6 +266,22 @@ test("AOT host and shadow exports retain selection and request isolation", async
             error => error.code === "repeat-not-array",
         );
     }
+});
+
+test("AOT preserves the distinct template-context root host attribute contract", async () => {
+    const { module } = await compile('<test-el list="{{items}}"></test-el>', {
+        "test-el": "{{list}}",
+    });
+    const shadow =
+        '<template shadowrootmode="open" shadowroot="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
+    assert.equal(
+        module.renderEntry({ items: ["one", "two"] }),
+        `<test-el>${shadow}</test-el>`,
+    );
+    assert.equal(
+        module.renderTemplate({ items: ["one", "two"] }),
+        `<test-el list="[Array]">${shadow}</test-el>`,
+    );
 });
 
 test("AOT rejects unsupported state without invoking getters or toJSON", async () => {

@@ -20,9 +20,8 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "templates",
     "attribute-name-strategy",
     "markers_v2",
-    "stream",
 ]);
-const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["markers_v2", "stream"]);
+const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["markers_v2"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "typed",
     "syntax",
@@ -696,6 +695,11 @@ async function runConvert(args) {
 }
 
 async function runBuild(args) {
+    for (const flag of ["aot", "stream"]) {
+        if (Object.hasOwn(args, flag)) {
+            throw new Error(`--${flag} has been retired. Builds always use AOT and write a complete HTML file.`);
+        }
+    }
     const { config, configDir } = loadConfig(
         Object.prototype.hasOwnProperty.call(args, "config") ? args["config"] : undefined,
         BUILD_DEFAULT_CONFIG_FILENAME,
@@ -712,8 +716,6 @@ async function runBuild(args) {
         Object.prototype.hasOwnProperty.call(config, "state");
     const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
     const markersV2 = resolveBooleanOption(args, config, "markers_v2");
-    const stream = resolveBooleanOption(args, config, "stream");
-    const aot = resolveBooleanOption(args, {}, "aot");
 
     if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(
@@ -722,17 +724,15 @@ async function runBuild(args) {
         process.exit(1);
     }
 
-    // Load WASM module first — needed for both template parsing and rendering.
+    // Load WASM module first — needed only for parsing and compilation.
     const wasm = require(BUILD_WASM_MODULE);
 
     // Resolve template files
     const templatesMap = {};
     if (!templatesArg) {
-        if (!stream) {
-            process.stderr.write(
-                "Warning: --templates was not provided. No custom element templates will be loaded.\n"
-            );
-        }
+        process.stderr.write(
+            "Warning: --templates was not provided. No custom element templates will be loaded.\n"
+        );
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
@@ -760,7 +760,7 @@ async function runBuild(args) {
     }
     const entryContent = fs.readFileSync(entry, "utf8");
 
-    // Read state only when explicitly provided; omitted state is handled by WASM as `{}`.
+    // Read state only when explicitly provided; omitted state is handled by the generated module as `{}`.
     let stateContent;
     if (stateWasProvided) {
         if (stateFile === undefined || stateFile === "" || !fs.existsSync(stateFile)) {
@@ -774,86 +774,20 @@ async function runBuild(args) {
         stateContent = fs.readFileSync(stateFile, "utf8");
     }
 
-    // Render
-    if (aot) {
-        if (stream) {
-            throw new Error("AOT rendering produces a complete string; --stream is unsupported.");
-        }
-        const { pathToFileURL } = require("node:url");
-        const { compileServerModule } = require("../server.js");
-        const source = compileServerModule(
-            entryContent,
-            templatesMap,
-            pathToFileURL(require.resolve("../server-runtime.mjs")).href,
-        );
-        const server = await import(
-            `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-        );
-        const rendered = server.renderEntry(
-            stateContent === undefined ? undefined : JSON.parse(stateContent),
-            { attributeNameStrategy: attributeNameStrategy || undefined, markersV2 },
-        );
-        fs.writeFileSync(output, rendered, "utf8");
-        process.stdout.write(`Built with AOT: ${output}\n`);
-        return;
-    }
-    if (stream) {
-        if (typeof wasm.render_entry_with_templates !== "function") {
-            process.stderr.write(
-                "Error: Streaming requires render_entry_with_templates to be exported by the WASM module.\n"
-            );
-            process.exit(1);
-        }
-
-        const renderedChunks = wasm.render_entry_with_templates(
-            entryContent,
-            JSON.stringify(templatesMap),
-            stateContent,
-            attributeNameStrategy || "",
-            true,
-            markersV2,
-        );
-
-        /** @type {unknown} */
-        let chunks;
-        try {
-            chunks = JSON.parse(renderedChunks);
-        } catch (e) {
-            process.stderr.write(
-                `Error: Streaming renderer returned invalid JSON: ${e.message}\n`
-            );
-            process.exit(1);
-        }
-
-        if (
-            !Array.isArray(chunks) ||
-            chunks.some((chunk) => typeof chunk !== "string")
-        ) {
-            process.stderr.write(
-                "Error: Streaming renderer must return a JSON array of strings.\n"
-            );
-            process.exit(1);
-        }
-
-        for (const chunk of chunks) {
-            process.stdout.write(chunk);
-        }
-        return;
-    }
-
-    let rendered;
-    if (Object.keys(templatesMap).length > 0) {
-        rendered = wasm.render_entry_with_templates(
-            entryContent,
-            JSON.stringify(templatesMap),
-            stateContent,
-            attributeNameStrategy || "",
-            false,
-            markersV2,
-        );
-    } else {
-        rendered = wasm.render(entryContent, stateContent);
-    }
+    const { pathToFileURL } = require("node:url");
+    const { compileServerModule } = require("../server.js");
+    const source = compileServerModule(
+        entryContent,
+        templatesMap,
+        pathToFileURL(require.resolve("../server-runtime.mjs")).href,
+    );
+    const server = await import(
+        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+    );
+    const rendered = server.renderEntry(
+        stateContent === undefined ? undefined : JSON.parse(stateContent),
+        { attributeNameStrategy: attributeNameStrategy || undefined, markersV2 },
+    );
 
     // Write output
     fs.writeFileSync(output, rendered, "utf8");
@@ -880,10 +814,6 @@ function writeBuildUsage() {
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
-        "  --stream[=true|false]  Write rendered HTML chunks to stdout instead\n" +
-        "                         of writing an output file.\n" +
-        "  --aot                 Compile and execute server JavaScript instead\n" +
-        "                         of request-time WASM (qualification mode).\n" +
         '  --attribute-name-strategy="camelCase"\n' +
         "                         Strategy for mapping attribute names to property names.\n" +
         '                         "camelCase" (default) or "none".\n' +

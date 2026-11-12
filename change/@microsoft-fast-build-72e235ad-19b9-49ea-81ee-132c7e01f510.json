@@ -1,6 +1,6 @@
 {
-  "type": "minor",
-  "comment": "Add ahead-of-time server JavaScript compilation with byte-preserving rendering.",
+  "type": "major",
+  "comment": "Replace native Rust, request-time WASM and prepared rendering with byte-preserving ahead-of-time server JavaScript.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
