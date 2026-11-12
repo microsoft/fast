@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
 
-The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. Its build-time compiler is powered by Rust/WASM and emits server JavaScript with zero runtime npm dependencies.
+The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. Its Rust/WASM build-time compiler lowers one executable representation for server JavaScript (zero runtime npm dependencies) and supported native Rust artifact rendering.
 
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
@@ -67,8 +67,39 @@ See [the server module contract and qualification results](./docs/server-modules
 for selection, diagnostics, deployment compatibility, migration, and measurement
 boundaries.
 
-This is a breaking replacement of native/WASM rendering and prepared artifacts,
-not an additional backend. See [migration](./docs/migration/aot-server-rendering.md).
+The previous source-rendering/WASM and prepared lifecycle APIs are removed.
+Native Rust applications use the shared compiled-artifact target below.
+See [migration](./docs/migration/aot-server-rendering.md).
+
+## Native Rust compiled artifacts
+
+Compile at build time with `compileServerArtifact` from `server.js`:
+
+```js
+import { writeFile } from "node:fs/promises";
+import { compileServerArtifact } from "@microsoft/fast-build/server.js";
+
+await writeFile(
+    "./generated/server.fast",
+    compileServerArtifact("<my-card></my-card>", {
+        "my-card": "<h2>{{title}}</h2>",
+    }),
+);
+```
+
+The `microsoft-fast-build` Rust crate loads those bytes with `CompiledArtifact::load`
+and renders request-local `JsonValue` state via `render_entry`, `render_template`,
+`render_host` or `render_shadow`. Native startup and requests need no authored
+templates, compiler WASM, JavaScript engine or HTML parser invocation.
+The build-time Rust `compile_server_artifact` produces the identical format.
+
+Deploy artifacts with the exact compiler-matching native library; loading
+validates versions, fingerprint, opcodes and references. Artifacts have immutable
+thread-safe ownership and reusable request-independent instructions, not source
+metadata or old prepared manifests. See the [native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
+and [Rust usage](../../crates/microsoft-fast-build/README.md).
+Native Rust is supported now; a stable C ABI/.NET binding is deferred. This does
+not provide a C# renderer or claim working .NET interoperability.
 
 ## CLI usage
 

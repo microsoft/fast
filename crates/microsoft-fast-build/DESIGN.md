@@ -3,16 +3,20 @@
 ## Compilation pipeline
 
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
-`compile_server_module(entry, locator, runtime_import)` preprocesses code samples,
-scans structural instructions and eagerly lowers every body into named JavaScript
-functions. It returns ESM; the crate has no native or WASM execution backend.
+`server_ir::lower` preprocesses code samples, scans structural instructions and
+eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
+emits named JavaScript functions from this IR; `compile_server_artifact` serializes
+the same IR for the supported native Rust executor. There is one HTML/expression
+lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
 
 ## Modules
 
 | Module | Responsibility |
 |---|---|
-| `aot.rs` | Server ESM lowering, generated component registry, host/default precedence |
+| `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
+| `aot.rs` | Server ESM emission from the shared executable IR |
+| `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
 | `expression.rs` | Operator scanning for compile-time condition lowering |
@@ -32,9 +36,12 @@ The browser conversion crate remains independent.
 ## Emission and diagnostics
 
 Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
-No lazy executable plans, prepared pieces, artifact loaders, runtime expression
-evaluator, native state frames or stream sink remain.
-Deferred scanner instructions reconstruct source errors directly in the emitter;
+The IR contains executable literal writes, prelowered attribute recipes, segmented
+paths, typed static values, condition opcodes, repeats and body/component references.
+It contains no source ranges, authored body strings or runtime expression grammar.
+Literal markup is output data, never reparsed. Repeat expression text is diagnostic
+only. There are no lazy source plans, prepared pieces or stream sinks.
+Deferred scanner instructions reconstruct source errors directly during lowering;
 they never invoke a renderer. Diagnostics are rebased through nested bodies and
 code escaping to authored UTF-16 coordinates and definition names.
 Compilation limits structural nesting to 128 levels. Symbolic registry references
@@ -42,14 +49,15 @@ permit finite cyclic component definitions without recursive code expansion.
 Identical element operations share emitted functions.
 
 Conditions lower using the established server operator scanners; arbitrary
-JavaScript expressions are never spliced into output. Rust owns static
+JavaScript expressions are never spliced into output. The shared lowering owns static
 attributes, naming rules, body structure, literal CSS/markup and hydration binding
-counts. State paths become segment arrays; repeats become JavaScript loops.
+counts. State paths become segment arrays. The emitter turns repeats into JavaScript
+loops; the native executor iterates the same body references.
 
 ## Request execution
 
 Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
-That single JavaScript engine owns complete JSON-shaped state validation,
+For this target the JavaScript helper owns complete JSON-shaped state validation,
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
 eval or browser dependencies. Generated entry/host/shadow exports synchronously
@@ -61,6 +69,38 @@ and deploy compatible helpers together. The compiler fingerprint hashes source
 paths/bytes, manifest and lockfile, independently of package version.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; generated code retains no request state.
+
+### Native artifact execution
+
+`CompiledArtifact::load` parses the artifact envelope, not authored HTML. It
+requires exact format/version, compiler fingerprint and helper contract identity,
+then validates every opcode, operand shape, static value, component reference and
+body index, including unreachable bodies. Unknown fields/opcodes and invalid
+references fail. JSON nesting is bounded by the deserializer; schema validation
+also bounds condition/static-value nesting. The compiler checks emitted native
+artifacts through this loader before returning them.
+
+Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
+bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
+DSD selection and hydration counters never enter the artifact. Typed `JsonValue`
+input is validated/normalized and copied per request; this is not a zero-copy
+memory claim. Parent overlays retain own-property masking, nulls and dataset
+siblings. Comparison, display and marker semantics match the generated target.
+All four APIs return owned complete strings or recoverable `NativeRenderError`.
+No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
+
+State is limited to 64 nesting levels and one million values. Execution has a
+hard 128-body-call depth bound, with configurable default one-million-step and
+64 MiB output limits. Finite conditional component cycles are supported through
+symbolic references; unbounded request expansion returns `render-limit`, not
+stack overflow or truncated success. Failed requests cannot mutate later calls.
+See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
+They must be rebuilt with the deployed native library on upgrades.
+
+Native Rust is supported now. A stable C ABI, .NET bindings, cross-language memory
+ownership and C# hosting are deferred; this change supplies none of those APIs.
+There is no independent C# implementation of rendering semantics.
 
 ## Plugin integration boundaries
 
@@ -101,7 +141,7 @@ the FAST Element client runtime.
 Bindings and directives inside HTML comments remain unsupported.
 
 Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
-`Locator::from_metadata` validates native versions/names/duplicates; WASM render
+`Locator::from_metadata` validates native versions/names/duplicates; WASM compiler
 exports validate explicit per-definition `formatVersion` before constructing
 the locator. Unversioned string/metadata maps remain compatible. The CLI retains
 metadata fields when mapping parsed definitions, and WASM custom declarations
@@ -189,15 +229,18 @@ now retain their separate CSS coordinates rather than claiming HTML positions.
 
 Once validated, the function locates the byte offset of the inner `<template>` tag's closing `>` (via `attribute::find_tag_end`) and builds the output by string concatenation: `template_html[..inner_tag_end]` + `"<style>"` + `css` + `"</style>"` + `template_html[inner_tag_end..]`. No re-serialization occurs, so the outer wrapper's attributes, the inner `<template>`'s attributes, any existing inner content, and any surrounding document content are preserved byte-for-byte.
 
-The resulting string is valid `<f-template>` source: it can be written to a file and discovered by `Locator::from_patterns`, or fed directly to `locator::parse_f_templates`, and rendered through the normal `render_*_with_locator` pipeline like any other template definition.
+The resulting string is valid `<f-template>` source: it can be written to a file and discovered by `Locator::from_patterns`, or fed directly to `locator::parse_f_templates`, and compiled through the shared lowering like any other template definition.
 
 ---
 
 
 ## Coverage and performance
 
-Existing Rust rendering assertions compile and execute generated JavaScript
-through test-only adapters; those adapters are not public APIs or another renderer.
+Existing Rust rendering assertions compile and execute generated JavaScript and
+load/render native artifacts, requiring byte-identical results before checking the
+original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
+render targets, both marker formats, DSD selection, state/ownership/errors,
+recursive graphs and malformed artifacts. These adapters are test-only.
 Legacy chunk-boundary, prepared lifecycle and native allocation benchmarks are
 retired. Node tests retain 438 distinct frozen output contracts captured from
 439 passing historical comparisons, plus the shared performance corpus baseline.

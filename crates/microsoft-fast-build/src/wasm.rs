@@ -88,6 +88,14 @@ pub fn compile_server_module(
     .map_err(render_error)
 }
 
+/// Build-time only: emit the shared executable IR for a native Rust deployment.
+#[wasm_bindgen]
+pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<u8>, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    crate::compile_server_artifact(entry, &Locator::from_template_definitions(templates))
+        .map_err(render_error)
+}
+
 /// Metadata for the registry-level server target exposed by the conversion CLI.
 #[wasm_bindgen]
 pub fn server_syntax_metadata() -> String {

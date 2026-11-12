@@ -18,5 +18,8 @@ It no longer invokes request-time WASM rendering or injects shadow roots with
 a post-render regular-expression pass.
 
 This is development tooling for dynamically authored fixtures. Production SSR
-should compile during the build and import generated modules, as described in
+should compile during the build and import generated modules, or load compiled
+artifacts in the supported native Rust host, as described in
 the [fast-build migration](../../../fast-build/docs/migration/aot-server-rendering.md).
+The harness itself continues to use generated JavaScript; native Rust support
+does not add a C ABI or working .NET binding.

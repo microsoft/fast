@@ -42,3 +42,9 @@ export function compileServerModule(
     templates?: Record<string, string | ServerTemplateDefinition>,
     runtimeImport?: string,
 ): string;
+
+/** Build-time only. Load with the exact compiler-matching native Rust library. */
+export function compileServerArtifact(
+    entry: string,
+    templates?: Record<string, string | ServerTemplateDefinition>,
+): Uint8Array;

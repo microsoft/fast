@@ -1,9 +1,11 @@
 # Migrating from previous versions
 
-## Request-time rendering to generated server JavaScript
+## Request-time source rendering to compiled server targets
 
 This prerelease makes a breaking replacement of the previous renderer.
-Both Rust crates remain build-time tools. Rendered HTML, coercion, escaping,
+One compiler-owned representation now supports generated JavaScript and native
+Rust artifact execution. The converter crate remains build-time tooling.
+Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
 | Removed API | Replacement |
@@ -11,11 +13,12 @@ whitespace, host attributes and hydration markers remain unchanged.
 | WASM `render_entry_with_templates` | Compile an entry and import its `renderEntry` |
 | WASM `render`, `render_with_templates` | Generated `renderTemplate`, preserving template-context root host attributes |
 | WASM `render_shadow_root` | Generated `renderShadow(name, componentState, options)` |
-| Native Rust `render*` functions | Rust `compile_server_module`; execute generated ESM in JavaScript |
-| Rust `RenderConfig`, `AttributeNameStrategy`, `DsdSelection` | Generated module's `ServerRenderOptions` |
+| Native Rust source `render*` functions | Build `compile_server_artifact`, load `CompiledArtifact`, call its render methods |
+| Rust `RenderConfig`, `DsdSelection` | `NativeRenderOptions`; `dsd: None` all / `Some(vec![])` none |
+| Old Rust `AttributeNameStrategy` configuration | Typed `NativeRenderOptions::attribute_name_strategy` |
 | `PreparedCompiler`, `PreparedPiece`, `PreparedProgram` | Build-time `compileServerModule` or Rust `compile_server_module` |
 | `prepared.js`, including preparation/loading/cache/watch/activation APIs | Application-owned build pipeline and generated ESM imports |
-| Prepared manifest/piece formats and compiler identity exports | Recompile authored sources; generated `compilerId` and `runtimeVersion` |
+| Prepared manifest/piece formats and compiler identity exports | Recompile authored sources to ESM or new executable artifacts; formats are not interchangeable |
 | Stream/chunk-array APIs and `--stream`/`stream` config | Complete synchronous HTML strings |
 | `fast build --aot` qualification flag | `fast build` always uses AOT; remove the flag |
 | `PreparedTemplateDefinition` | `ServerTemplateDefinition` from `server.js` |
@@ -48,10 +51,32 @@ const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
 For named files, use `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
-For native compilation, build a `Locator` and call
-`compile_server_module(entry, &locator, runtime_import)`. The crate does not embed
-a JavaScript engine. Native-only applications must provide a JavaScript execution
-environment or continue using their previous release until migrated.
+For Rust build-time ESM generation, build a `Locator` and call
+`compile_server_module(entry, &locator, runtime_import)`.
+
+### Native-only migration
+
+Native applications do **not** need a JavaScript execution environment:
+
+1. Move source loading/composition into the build and call
+   `compile_server_artifact(entry, &locator)` (Rust), or `compileServerArtifact`
+   from `server.js` (Node/WASM build tooling).
+2. Deploy the bytes and exact compiler-matching `microsoft-fast-build` native
+   library together. Load once with `CompiledArtifact::load`.
+3. Pass request `JsonValue` state and `NativeRenderOptions` to `render_entry`,
+   `render_template`, `render_host` or `render_shadow`.
+4. Share immutable artifact clones across worker threads. Keep retired program
+   clones alive for in-flight requests during deployment activation.
+
+Loading and rendering never reparse authored HTML or execute JavaScript. The
+new artifact contains shared compiler-owned executable operations, not the old
+prepared source metadata. Old prepared artifacts must be rebuilt from source.
+Options retain DSD and both marker formats. Errors are recoverable typed values,
+with validation and recursion/step/output bounds; see the complete
+[native contract](../server-modules.md#native-rust-artifact-target).
+Native Rust is supported now. Stable C ABI/.NET hosting and its unmanaged
+ownership/error contract are deferred, not claimed as working in this release;
+no separate C# rendering semantic implementation is introduced.
 
 Deploy generated modules and compatible `server-runtime.mjs` together; bundle
 the helper or install the matching package on the server. Regenerate on upgrades.

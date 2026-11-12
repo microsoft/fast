@@ -1,7 +1,8 @@
 //! Build-time compiler and template tooling for FAST declarative HTML.
 //!
-//! Generate server ESM with [`compile_server_module`]; execute that module in
-//! JavaScript with JSON-shaped state. This crate does not execute rendering.
+//! Generate server ESM with [`compile_server_module`], or compile a native
+//! executable with [`compile_server_artifact`] and load it with [`CompiledArtifact`].
+//! Both targets consume the same compiler-owned executable representation.
 
 mod aot;
 mod attribute;
@@ -15,7 +16,9 @@ mod expression;
 mod f_template;
 mod json;
 mod locator;
+mod native;
 mod plan;
+mod server_ir;
 mod template_slots;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
@@ -29,6 +32,11 @@ pub use f_template::{
 };
 pub use json::{JsonError, JsonValue};
 pub use locator::{parse_f_templates, FTemplate, Locator};
+pub use native::{
+    compile_server_artifact, parse_render_state, AttributeNameStrategy, CompiledArtifact,
+    NativeRenderError, NativeRenderOptions,
+};
+pub use server_ir::ARTIFACT_VERSION as SERVER_ARTIFACT_VERSION;
 pub use template_slots::{extract_template_slots, TemplateSlot};
 
 /// Version of generated template metadata; unversioned maps remain supported.

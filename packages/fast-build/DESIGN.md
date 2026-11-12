@@ -6,14 +6,21 @@ Development, peer and optional dependencies are separate.
 ## Build and execution ownership
 
 `server.js` loads compiler WASM only at build time and delegates all HTML
-parsing/lowering to Rust. It returns ESM importing `server-runtime.mjs`.
-The helper is the sole request execution engine. It has no imports or compiler,
+parsing/lowering to Rust. `compileServerModule` returns ESM importing
+`server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
+native Rust executor. Both use the same compiler-owned executable IR.
+The helper is the JavaScript target's request engine. It has no imports or compiler,
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-The native Rust evaluator, WASM render exports, prepared file/cache/watch host,
-portable instruction artifacts and simulated stream APIs are removed, not hidden
-behind compatibility exports.
+The old source-rendering Rust/WASM APIs, prepared file/cache/watch host,
+prepared piece formats and simulated stream APIs are removed, not hidden behind
+compatibility exports. Native `CompiledArtifact` loading/rendering does not parse
+authored HTML or execute JavaScript. Version/compiler/helper metadata and all
+executable references/opcodes are validated on load; immutable `Send + Sync`
+ownership and request-local state/error/resource limits are documented in the
+[native contract](./docs/server-modules.md#native-rust-artifact-target).
+There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
 ## CLI
 
@@ -34,12 +41,13 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 
 | File | Role |
 |---|---|
-| `server.js` / `server.d.ts` | Build-time compiler, ServerTemplateDefinition and generated-module types |
-| `server-runtime.mjs` | The single server-only request helper implementation |
+| `server.js` / `server.d.ts` | Build-time JS/native-artifact compiler, ServerTemplateDefinition and generated-module types |
+| `server-runtime.mjs` | JavaScript target's server-only request helper implementation |
 | `bin/fast.js` | CLI/configuration, glob scanning and file I/O |
 | `build-wasm.cjs` | Builds the compiler and converter WASM wrappers |
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
+| `test/native-artifact.test.js` | Node/WASM-compiled artifact deployed to a source-free native Rust host |
 | `test/performance/` | Shared output-baseline tests and fresh-process AOT measurements |
 
 ## Template loading — `parseFTemplates`
@@ -252,8 +260,10 @@ throws `repeat-not-array`. Runtime value errors need not carry source coordinate
 Build-tool composition mappings remain independent of request execution.
 
 Historical prepared-renderer output hashes remain frozen test data, not a
-retained execution backend. Existing native/Node rendering assertions run on
-generated JavaScript through test-only adapters. Vite integration builds and
+retained execution backend. Existing Rust rendering assertions run on loaded native artifacts and generated
+JavaScript through test-only adapters, retaining their original expected bytes.
+Dedicated native tests cover immutable cross-thread reuse, all render APIs,
+DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
 relocates generated ESM, then renders without authored inputs or compilation.
 The benchmark reports AOT import/first render, warmed CPU/wall time, process
 memory/GC, source bytes and output hashes. Historical direct/prepared comparisons

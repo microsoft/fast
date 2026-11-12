@@ -2,7 +2,7 @@
 name = "microsoft-fast-build"
 version = "0.16.0"
 edition = "2021"
-description = "Build-time compiler for FAST declarative HTML templates and ahead-of-time server JavaScript modules."
+description = "FAST declarative HTML compiler with ahead-of-time JavaScript and native Rust artifact rendering."
 license = "MIT"
 readme = "README.md"
 homepage = "https://www.fast.design/"

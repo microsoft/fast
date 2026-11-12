@@ -1,6 +1,9 @@
 #![allow(dead_code)]
 use super::configuration::*;
-use microsoft_fast_build::{compile_server_module, JsonValue, Locator, RenderError};
+use microsoft_fast_build::{
+    compile_server_artifact, compile_server_module, CompiledArtifact, JsonValue, Locator,
+    NativeRenderOptions, RenderError,
+};
 use serde_json::{json, Value};
 use std::collections::HashMap;
 use std::io::Write;
@@ -50,6 +53,28 @@ fn execute(
 ) -> Result<String, RenderError> {
     let source = compile_server_module(template, locator, "__FAST_TEST_RUNTIME__")?;
     let config = config.cloned().unwrap_or_default();
+    let native_options = NativeRenderOptions {
+        markers_v2: config.markers_v2,
+        dsd: match &config.dsd_selection {
+            DsdSelection::All => None,
+            DsdSelection::Only(names) => Some(names.iter().cloned().collect()),
+        },
+        attribute_name_strategy: if config.attribute_name_strategy == AttributeNameStrategy::None {
+            microsoft_fast_build::AttributeNameStrategy::None
+        } else {
+            microsoft_fast_build::AttributeNameStrategy::CamelCase
+        },
+        ..Default::default()
+    };
+    let artifact = CompiledArtifact::load(&compile_server_artifact(template, locator)?)
+        .expect("compiler output must load natively");
+    let native_result = if let Some(name) = shadow {
+        artifact.render_shadow(name, root, &native_options)
+    } else if entry {
+        artifact.render_entry(root, &native_options)
+    } else {
+        artifact.render_template(root, &native_options)
+    };
     let dsd = match config.dsd_selection {
         DsdSelection::All => Value::Null,
         DsdSelection::Only(names) => json!(names),
@@ -86,6 +111,11 @@ fn execute(
     );
     let result: Value = serde_json::from_slice(&output.stdout).unwrap();
     if let Some(error) = result.get("error") {
+        assert_eq!(
+            native_result.as_ref().unwrap_err().code,
+            error["code"].as_str().unwrap(),
+            "native/JS failure contract"
+        );
         if error["code"] == "repeat-not-array" {
             return Err(RenderError::NotAnArray {
                 binding: error["message"].as_str().unwrap_or("").to_string(),
@@ -96,7 +126,13 @@ fn execute(
             message: error["message"].as_str().unwrap_or("").to_string(),
         });
     }
-    Ok(result["value"].as_str().unwrap().to_string())
+    let result = result["value"].as_str().unwrap().to_string();
+    assert_eq!(
+        native_result.expect("native execution must match successful JS"),
+        result,
+        "loaded native artifact and generated JS must preserve identical bytes"
+    );
+    Ok(result)
 }
 
 pub fn render(

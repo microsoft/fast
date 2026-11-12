@@ -1,7 +1,8 @@
 # microsoft-fast-build
 
 Build-time Rust compiler and template tooling for FAST declarative HTML.
-Both native Rust and WASM builds generate JavaScript; neither executes request rendering.
+One compiler-owned executable representation supports generated server JavaScript
+and native Rust artifact rendering. Native requests need no JavaScript engine.
 
 ```sh
 cargo add microsoft-fast-build
@@ -33,6 +34,44 @@ directly to the generated functions. Existing server markup/coercion is preserve
 generation eagerly diagnoses malformed skipped bodies.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for helper compatibility, state validation and qualification.
+
+### Compile and deploy native Rust artifacts
+
+```rust
+use microsoft_fast_build::{
+    compile_server_artifact, parse_render_state, CompiledArtifact, Locator,
+    NativeRenderOptions,
+};
+
+// Build time: source parsing/lowering happens here, never in the request host.
+let mut locator = Locator::from_templates(Default::default());
+locator.add_template("my-card", "<h2>{{title}}</h2>");
+let bytes = compile_server_artifact("<my-card></my-card>", &locator)?;
+// Persist bytes in the application build/deployment pipeline.
+
+// Server startup: only the compiled artifact and matching Rust library are needed.
+let program = CompiledArtifact::load(&bytes)?;
+let state = parse_render_state(r#"{"title":"Request-specific state"}"#)?;
+let html = program.render_entry(&state, &NativeRenderOptions::default())?;
+```
+
+`render_template`, `render_host` and `render_shadow` preserve the corresponding
+generated-module APIs. `render_shadow` accepts resolved component state and emits
+only DSD. `CompiledArtifact::emit_server_module(runtime_import)` can emit the JS
+target from the exact loaded IR as a build-time operation.
+
+Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
+threads; each call validates/copies state and owns its counters, overlays and
+returned `String`. Input bytes and the build-time locator may be dropped after
+loading. Errors are recoverable `NativeRenderError { code, message }`; no partial
+HTML is returned. Load validates all references/opcodes and requires the exact
+compiler fingerprint, artifact version and runtime contract. Regenerate artifacts
+and deploy the matching library together. State/execution/output limits and
+deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+
+The Node build-time `compileServerArtifact` API emits the same artifact bytes.
+No request-time WASM rendering, stable C ABI or working .NET bindings are provided.
+.NET/C ABI hosting is a follow-up, not a separate C# semantic implementation.
 
 
 ## Template tooling
@@ -93,17 +132,17 @@ format version 1 remain unchanged.
 
 ## Breaking migration
 
-All native render/stream functions, `RenderConfig`, `DsdSelection`,
-`AttributeNameStrategy` and prepared artifact/program APIs have been removed.
-Compile ESM and invoke its `renderEntry`, `renderHost` or `renderShadow`
-functions from JavaScript. For former non-entry render calls, use the generated
-`renderTemplate` export to retain their distinct root-host attribute contract.
-No JavaScript engine is embedded in the Rust crate.
+Previous source-render/stream functions, `RenderConfig`, `DsdSelection` and
+prepared artifact/program APIs are removed. JavaScript hosts compile ESM and
+invoke its render exports. Native hosts compile artifacts and use `CompiledArtifact`
+with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
+For former non-entry render calls, use `renderTemplate`/`render_template` to retain
+their distinct root-host attribute contract. No JavaScript engine is embedded.
 Rendered markup and hydration markers are unchanged.
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
 
 ## Contributing
 
 From the monorepo root, run `cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml`.
-Node.js is required for rendering assertions: tests execute generated modules
-instead of maintaining a second Rust evaluator.
+Node.js is required for cross-backend assertions: tests execute real generated
+modules alongside loaded native artifacts and retain the original expected bytes.

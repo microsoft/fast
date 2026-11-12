@@ -69,13 +69,42 @@ remain separate. See the
 [server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
 for options, state restrictions and migration details.
 
-## Migration from request-time WASM
+## Native Rust Compiled Artifacts
 
-Generated server JavaScript is the only fast-build execution backend.
-The prepared renderer, portable instruction manifests, request-time WASM exports
-and native Rust render functions have been removed. Both Rust crates remain
-build-time compilation/conversion tools. Rebuild generated modules when upgrading;
-old prepared artifacts cannot be loaded by this implementation.
+JavaScript AOT is one target, not a requirement for native servers. The same
+Rust-owned executable representation can be compiled during the build with
+`compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
+`compile_server_artifact`. Deploy those bytes and the exact compiler-matching
+`microsoft-fast-build` native library together:
+
+```rust
+use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
+
+let program = CompiledArtifact::load(&std::fs::read("generated/server.fast")?)?;
+let state = parse_render_state(r#"{"title":"Native request"}"#)?;
+let html = program.render_entry(&state, &NativeRenderOptions::default())?;
+```
+
+`render_template`, `render_host` and `render_shadow` supply the corresponding
+template-context, complete-host and resolved-state DSD-fragment APIs. Artifacts
+own immutable thread-safe instructions and can be shared across requests.
+Loading validates version/compiler/helper identity, operations and references;
+rendering owns request-local state, counters and output. Neither loading nor
+rendering executes JavaScript or reparses authored HTML. Escaping, nested state,
+DSD selection and both hydration formats conform to the generated JS target.
+
+Native errors are recoverable, with state/recursion/step/output limits. See the
+[native deployment and memory/error contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+Native Rust hosting is supported now; a stable C ABI and .NET bindings are
+follow-up work. This release does not provide a C# host or separate C# semantics.
+
+## Migration from request-time source rendering
+
+Generated server JavaScript and native Rust artifact rendering are supported
+targets of the shared compiler. The previous prepared renderer/piece formats,
+request-time WASM exports and source-rendering Rust functions are removed.
+Rebuild modules/artifacts when upgrading; old prepared artifacts cannot be loaded
+by the new implementation.
 
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` when migrating previous
@@ -83,7 +112,7 @@ non-entry `render`/`render_with_templates` calls to preserve their different
 root-host attribute handling. Each returns a complete synchronous string;
 the previous precomputed chunk-array APIs and `--stream` flag are removed.
 `fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
-The application owns build invalidation, module loading and deployment activation.
+The application owns build invalidation, module/artifact loading and deployment activation.
 See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
 
 ## The Rendering Contract

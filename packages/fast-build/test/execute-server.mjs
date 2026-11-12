@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
 
-// Test-only bridge: existing native assertions execute the generated JS backend.
+// Test-only bridge: Rust conformance assertions also execute generated JavaScript.
 const input = JSON.parse(readFileSync(0, "utf8"));
 try {
+    const state =
+        input.stateJson === undefined ? input.state : JSON.parse(input.stateJson);
     const server = await import(
         `data:text/javascript;base64,${Buffer.from(
             input.source.replace(
@@ -11,11 +13,13 @@ try {
             ),
         ).toString("base64")}`
     );
-    const value = input.shadow
-        ? server.renderShadow(input.shadow, input.state, input.options)
-        : input.template
-          ? server.renderTemplate(input.state, input.options)
-          : server.renderEntry(input.state, input.options);
+    const value = input.host
+        ? server.renderHost(input.host, state, input.options)
+        : input.shadow
+          ? server.renderShadow(input.shadow, state, input.options)
+          : input.template
+            ? server.renderTemplate(state, input.options)
+            : server.renderEntry(state, input.options);
     process.stdout.write(JSON.stringify({ value }));
 } catch (error) {
     process.stdout.write(
