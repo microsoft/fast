@@ -14,6 +14,7 @@ if ((!wasmPath && !convertWasmPath) || !recordPath) {
 }
 
 const calls = [];
+globalThis[Symbol.for("fast-build-test-calls")] = calls;
 
 const stub = {
     parse_f_templates(html) {
@@ -38,38 +39,24 @@ const stub = {
             },
         ]);
     },
-    render(entry, state) {
-        calls.push({ name: "render", entry, state });
-        return "<h1>Non-stream</h1>";
-    },
-    render_entry_with_templates(
-        entry,
-        templatesJson,
-        state,
-        attributeNameStrategy,
-        stream,
-        markersV2,
-    ) {
-        calls.push({
-            name: "render_entry_with_templates",
-            entry,
-            templatesJson,
-            state,
-            attributeNameStrategy,
-            stream,
-            markersV2,
-        });
-        if (!stream) {
-            return "<my-el>Non-stream</my-el>";
-        }
-        let title = "";
-        try {
-            title = JSON.parse(state || "{}").title || "";
-        } catch {}
-        if (entry.includes("my-el")) {
-            return JSON.stringify(["<my-el>", title, "</my-el>"]);
-        }
-        return JSON.stringify(["<h1>", title, "</h1>"]);
+    compile_server_module(entry, templatesJson) {
+        calls.push({ name: "compile_server_module", entry, templatesJson });
+        return `
+            export function renderEntry(state, options) {
+                globalThis[Symbol.for("fast-build-test-calls")].push({
+                    name: "renderEntry",
+                    entry: ${JSON.stringify(entry)},
+                    templatesJson: ${JSON.stringify(templatesJson)},
+                    state,
+                    ...options,
+                });
+                return ${JSON.stringify(
+                    entry.includes("my-el")
+                        ? "<my-el>Non-stream</my-el>"
+                        : "<h1>Non-stream</h1>",
+                )};
+            }
+        `;
     },
 };
 

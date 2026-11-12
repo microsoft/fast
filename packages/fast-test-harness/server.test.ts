@@ -27,7 +27,7 @@ async function createTestRoot(workspace: string, name: string) {
         writeFile(resolve(source, "entry-client.js"), "export {};"),
         writeFile(
             resolve(source, "entry-server.js"),
-            `export function render(body) {
+            `export ${name === "first" ? "async " : ""}function render(body) {
                 return {
                     template: "",
                     fixture: \`<p data-route="${name}">\${body.tagName}</p>\`,
@@ -40,7 +40,7 @@ async function createTestRoot(workspace: string, name: string) {
     return root;
 }
 
-test("serves independent CSR and SSR roots under separate routes", async t => {
+test("serves independent CSR and synchronous/asynchronous SSR roots", async t => {
     const workspace = await mkdtemp(resolve(tmpdir(), "fast-test-harness-"));
     const firstRoot = await createTestRoot(workspace, "first");
     const secondRoot = await createTestRoot(workspace, "second");
