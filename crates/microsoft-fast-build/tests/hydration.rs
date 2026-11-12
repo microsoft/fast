@@ -1,8 +1,7 @@
 mod common;
+use crate::common::{render_stream_with_locator, render_with_locator, RenderConfig};
 use common::make_locator;
-use microsoft_fast_build::{
-    render_stream_with_locator, render_with_locator, JsonValue, RenderConfig,
-};
+use microsoft_fast_build::JsonValue;
 use std::collections::HashMap;
 
 fn hand_root(entries: Vec<(&str, JsonValue)>) -> JsonValue {
@@ -13,10 +12,18 @@ fn hand_root(entries: Vec<(&str, JsonValue)>) -> JsonValue {
     JsonValue::Object(map)
 }
 
-fn str_val(s: &str) -> JsonValue { JsonValue::String(s.to_string()) }
-fn bool_val(b: bool) -> JsonValue { JsonValue::Bool(b) }
-fn arr_val(items: Vec<JsonValue>) -> JsonValue { JsonValue::Array(items) }
-fn empty() -> JsonValue { hand_root(vec![]) }
+fn str_val(s: &str) -> JsonValue {
+    JsonValue::String(s.to_string())
+}
+fn bool_val(b: bool) -> JsonValue {
+    JsonValue::Bool(b)
+}
+fn arr_val(items: Vec<JsonValue>) -> JsonValue {
+    JsonValue::Array(items)
+}
+fn empty() -> JsonValue {
+    hand_root(vec![])
+}
 
 #[test]
 fn test_hydration_markers_v2() {
@@ -38,17 +45,26 @@ fn test_hydration_markers_v2() {
         &root,
         &locator,
         Some(&config),
-    ).unwrap();
+    )
+    .unwrap();
     let streamed = render_stream_with_locator(
         "<test-element></test-element>",
         &root,
         &locator,
         Some(&config),
-    ).unwrap().concat();
+    )
+    .unwrap()
+    .concat();
 
     assert_eq!(streamed, result);
-    assert!(result.contains("data-fe-b-0"), "single attribute marker: {result}");
-    assert!(result.contains("data-fe-c-1-2"), "compact attribute marker: {result}");
+    assert!(
+        result.contains("data-fe-b-0"),
+        "single attribute marker: {result}"
+    );
+    assert!(
+        result.contains("data-fe-c-1-2"),
+        "compact attribute marker: {result}"
+    );
     assert!(
         result.contains("<!--fe-b$$start$$3$$fast-build$$fe-b-->"),
         "repeat content marker: {result}"
@@ -75,13 +91,18 @@ fn test_hydration_simple_content_binding() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Content binding
-    assert!(result.contains(
-        "<!--fe:b-->Hello world<!--fe:/b-->"
-    ), "content binding markers: {result}");
-    assert!(result.contains(r#"shadowroot="open""#), "shadowroot: {result}");
+    assert!(
+        result.contains("<!--fe:b-->Hello world<!--fe:/b-->"),
+        "content binding markers: {result}"
+    );
+    assert!(
+        result.contains(r#"shadowroot="open""#),
+        "shadowroot: {result}"
+    );
 }
 
 /// Multiple `{{a}} {{b}}` content bindings share the same scope UUID with
@@ -89,23 +110,23 @@ fn test_hydration_simple_content_binding() {
 #[test]
 fn test_hydration_multiple_content_bindings() {
     let locator = make_locator(&[("test-element", "{{a}} {{b}}")]);
-    let root = hand_root(vec![
-        ("a", str_val("Hello")),
-        ("b", str_val("World")),
-    ]);
+    let root = hand_root(vec![("a", str_val("Hello")), ("b", str_val("World"))]);
     let result = render_with_locator(
         r#"<test-element a="Hello" b="World"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains(
-        "<!--fe:b-->Hello<!--fe:/b-->"
-    ), "binding 0: {result}");
-    assert!(result.contains(
-        "<!--fe:b-->World<!--fe:/b-->"
-    ), "binding 1: {result}");
+    assert!(
+        result.contains("<!--fe:b-->Hello<!--fe:/b-->"),
+        "binding 0: {result}"
+    );
+    assert!(
+        result.contains("<!--fe:b-->World<!--fe:/b-->"),
+        "binding 1: {result}"
+    );
 }
 
 // ── Attribute bindings (compact format) ───────────────────────────────────────
@@ -121,12 +142,19 @@ fn test_hydration_attribute_binding_compact() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
-    assert!(result.contains(r#"type="checkbox""#), "resolved attr: {result}");
+    assert!(
+        result.contains(r#"type="checkbox""#),
+        "resolved attr: {result}"
+    );
     // Boolean `disabled` is NOT a binding — no extra marker for it
-    assert!(!result.contains(r#"data-fe="2""#), "should not have count 2: {result}");
+    assert!(
+        !result.contains(r#"data-fe="2""#),
+        "should not have count 2: {result}"
+    );
 }
 
 /// Missing `{{expr}}` attribute values are omitted rather than rendered empty.
@@ -142,28 +170,34 @@ fn test_hydration_missing_attribute_binding_omits_attribute() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
     assert!(shadow.contains(r#"data-fe="2""#), "count marker: {result}");
     assert!(shadow.contains(r#"type="text""#), "resolved attr: {result}");
-    assert!(shadow.contains(r#"class="static""#), "static attr: {result}");
+    assert!(
+        shadow.contains(r#"class="static""#),
+        "static attr: {result}"
+    );
     assert!(!shadow.contains("value="), "missing attr omitted: {result}");
 }
 
 /// Single-brace `@click="{handler()}"` event binding — count marker present, attr stripped.
 #[test]
 fn test_hydration_event_binding_compact() {
-    let locator = make_locator(&[("test-element", r#"<button @click="{handleClick()}">Label</button>"#)]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<button @click="{handleClick()}">Label</button>"#,
+    )]);
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
-    assert!(!result.contains(r#"@click"#), "event attr stripped: {result}");
+    assert!(
+        !result.contains(r#"@click"#),
+        "event attr stripped: {result}"
+    );
     assert!(result.contains("Label"), "label: {result}");
 }
 
@@ -175,12 +209,8 @@ fn test_hydration_multiple_event_bindings() {
         "test-element",
         r#"<button @click="{handleA()}">A</button><button @click="{handleB()}">B</button>"#,
     )]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert_eq!(
         result.matches(r#"data-fe="1""#).count(),
@@ -194,16 +224,18 @@ fn test_hydration_multiple_event_bindings() {
 /// single-brace binding. Count marker present, attribute stripped from rendered HTML.
 #[test]
 fn test_hydration_f_slotted_stripped() {
-    let locator = make_locator(&[("test-element", r#"<slot f-slotted="{slottedNodes}"></slot>"#)]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<slot f-slotted="{slottedNodes}"></slot>"#,
+    )]);
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
-    assert!(!result.contains("f-slotted"), "f-slotted attr stripped: {result}");
+    assert!(
+        !result.contains("f-slotted"),
+        "f-slotted attr stripped: {result}"
+    );
     assert!(result.contains("<slot"), "slot element present: {result}");
 }
 
@@ -212,12 +244,8 @@ fn test_hydration_f_slotted_stripped() {
 #[test]
 fn test_hydration_f_ref_stripped() {
     let locator = make_locator(&[("test-element", r#"<video f-ref="{video}"></video>"#)]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
     assert!(!result.contains("f-ref"), "f-ref attr stripped: {result}");
@@ -229,15 +257,14 @@ fn test_hydration_f_ref_stripped() {
 #[test]
 fn test_hydration_f_children_stripped() {
     let locator = make_locator(&[("test-element", r#"<ul f-children="{listItems}"></ul>"#)]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
-    assert!(!result.contains("f-children"), "f-children attr stripped: {result}");
+    assert!(
+        !result.contains("f-children"),
+        "f-children attr stripped: {result}"
+    );
     assert!(result.contains("<ul"), "ul element present: {result}");
 }
 
@@ -255,11 +282,21 @@ fn test_hydration_f_slotted_with_double_brace_attr() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains(r#"data-fe="2""#), "count marker with count 2: {result}");
-    assert!(!result.contains("f-slotted"), "f-slotted attr stripped: {result}");
-    assert!(result.contains(r#"class="active""#), "resolved class attr: {result}");
+    assert!(
+        result.contains(r#"data-fe="2""#),
+        "count marker with count 2: {result}"
+    );
+    assert!(
+        !result.contains("f-slotted"),
+        "f-slotted attr stripped: {result}"
+    );
+    assert!(
+        result.contains(r#"class="active""#),
+        "resolved class attr: {result}"
+    );
 }
 
 /// Mixed: attribute binding + content binding on the same element.
@@ -268,23 +305,28 @@ fn test_hydration_f_slotted_with_double_brace_attr() {
 #[test]
 fn test_hydration_attr_and_content_binding() {
     let locator = make_locator(&[("test-element", r#"<span class="{{cls}}">{{text}}</span>"#)]);
-    let root = hand_root(vec![
-        ("cls", str_val("foo")),
-        ("text", str_val("bar")),
-    ]);
+    let root = hand_root(vec![("cls", str_val("foo")), ("text", str_val("bar"))]);
     let result = render_with_locator(
         r#"<test-element cls="foo" text="bar"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains(r#"data-fe="1""#), "attr count marker: {result}");
-    assert!(result.contains(r#"class="foo""#), "resolved class attr: {result}");
+    assert!(
+        result.contains(r#"data-fe="1""#),
+        "attr count marker: {result}"
+    );
+    assert!(
+        result.contains(r#"class="foo""#),
+        "resolved class attr: {result}"
+    );
     // Content binding follows after attribute binding
-    assert!(result.contains(
-        "<!--fe:b-->bar<!--fe:/b-->"
-    ), "content binding at index 1: {result}");
+    assert!(
+        result.contains("<!--fe:b-->bar<!--fe:/b-->"),
+        "content binding at index 1: {result}"
+    );
 }
 
 // ── f-when directive ──────────────────────────────────────────────────────────
@@ -299,7 +341,8 @@ fn test_hydration_f_when_truthy() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Outer when binding
     assert!(result.contains("<!--fe:b-->"), "start marker: {result}");
@@ -317,15 +360,21 @@ fn test_hydration_f_when_falsy() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    let shadow_start = result.find(r#"shadowroot="open">"#).expect("no shadow template");
+    let shadow_start = result
+        .find(r#"shadowroot="open">"#)
+        .expect("no shadow template");
     let shadow_end = result.find("</template>").expect("no close template");
     let shadow = &result[shadow_start..shadow_end];
 
     assert!(shadow.contains("<!--fe:b-->"), "start: {shadow}");
     assert!(shadow.contains("<!--fe:/b-->"), "end: {shadow}");
-    assert!(!shadow.contains("Hello"), "content must be absent: {shadow}");
+    assert!(
+        !shadow.contains("Hello"),
+        "content must be absent: {shadow}"
+    );
 }
 
 /// Two bindings before and after an f-when; the when consumes one index.
@@ -345,17 +394,20 @@ fn test_hydration_content_then_when() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Bindings: {{before}}, f-when, {{after}} — sequential
-    assert!(result.contains(
-        "<!--fe:b-->A<!--fe:/b-->"
-    ), "before: {result}");
+    assert!(
+        result.contains("<!--fe:b-->A<!--fe:/b-->"),
+        "before: {result}"
+    );
     assert!(result.contains("<!--fe:b-->"), "when start: {result}");
     assert!(result.contains("<!--fe:/b-->"), "when end: {result}");
-    assert!(result.contains(
-        "<!--fe:b-->B<!--fe:/b-->"
-    ), "after: {result}");
+    assert!(
+        result.contains("<!--fe:b-->B<!--fe:/b-->"),
+        "after: {result}"
+    );
 }
 
 // ── f-repeat directive ────────────────────────────────────────────────────────
@@ -377,7 +429,8 @@ fn test_hydration_f_repeat_basic() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Outer scope: f-repeat wrapped in content binding markers
     assert!(result.contains("<!--fe:b-->"), "outer start: {result}");
@@ -394,10 +447,14 @@ fn test_hydration_f_repeat_basic() {
         "expected two item end markers: {result}"
     );
     // Per-item scope: {{item}} content binding
-    assert!(result.contains("<!--fe:b-->Foo<!--fe:/b-->"),
-        "foo binding: {result}");
-    assert!(result.contains("<!--fe:b-->Bar<!--fe:/b-->"),
-        "bar binding: {result}");
+    assert!(
+        result.contains("<!--fe:b-->Foo<!--fe:/b-->"),
+        "foo binding: {result}"
+    );
+    assert!(
+        result.contains("<!--fe:b-->Bar<!--fe:/b-->"),
+        "bar binding: {result}"
+    );
 }
 
 /// f-repeat with inner f-when: nested scope markers.
@@ -407,17 +464,15 @@ fn test_hydration_f_repeat_with_inner_when() {
         "test-element",
         "<f-repeat value=\"{{item in list}}\"><f-when value=\"{{item.show}}\"><li>{{item.text}}</li></f-when></f-repeat>",
     )]);
-    let first = hand_root(vec![
-        ("show", bool_val(true)),
-        ("text", str_val("Foo")),
-    ]);
+    let first = hand_root(vec![("show", bool_val(true)), ("text", str_val("Foo"))]);
     let root = hand_root(vec![("list", arr_val(vec![first]))]);
     let result = render_with_locator(
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Outer scope: f-repeat wrapped in content binding markers
     assert!(result.contains("<!--fe:b-->"), "outer start: {result}");
@@ -426,8 +481,10 @@ fn test_hydration_f_repeat_with_inner_when() {
     // Item scope: f-when wrapped in content binding markers
     assert!(result.contains("<!--fe:b-->"), "when start: {result}");
     // When body scope: {{item.text}} content binding
-    assert!(result.contains("<!--fe:b-->Foo<!--fe:/b-->"),
-        "text binding: {result}");
+    assert!(
+        result.contains("<!--fe:b-->Foo<!--fe:/b-->"),
+        "text binding: {result}"
+    );
 }
 
 /// Empty f-repeat: outer binding markers only, no item markers.
@@ -443,13 +500,11 @@ fn test_hydration_f_repeat_empty() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
-    assert_eq!(
-        shadow.trim(),
-        "<!--fe:b--><!--fe:/b-->"
-    );
+    assert_eq!(shadow.trim(), "<!--fe:b--><!--fe:/b-->");
 }
 
 /// f-repeat with a single item: exactly one start/end pair.
@@ -459,16 +514,14 @@ fn test_hydration_f_repeat_single_item() {
         "test-element",
         "<ul><f-repeat value=\"{{item in list}}\"><li>{{item}}</li></f-repeat></ul>",
     )]);
-    let root = hand_root(vec![(
-        "list",
-        arr_val(vec![str_val("Only")]),
-    )]);
+    let root = hand_root(vec![("list", arr_val(vec![str_val("Only")]))]);
     let result = render_with_locator(
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     assert_eq!(
         result.matches("<!--fe:r-->").count(),
@@ -480,8 +533,10 @@ fn test_hydration_f_repeat_single_item() {
         1,
         "expected one item end marker: {result}"
     );
-    assert!(result.contains("<!--fe:b-->Only<!--fe:/b-->"),
-        "item binding: {result}");
+    assert!(
+        result.contains("<!--fe:b-->Only<!--fe:/b-->"),
+        "item binding: {result}"
+    );
 }
 
 /// f-repeat with many items: marker counts match item count.
@@ -498,7 +553,8 @@ fn test_hydration_f_repeat_many_items() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     assert_eq!(
         result.matches("<!--fe:r-->").count(),
@@ -511,8 +567,10 @@ fn test_hydration_f_repeat_many_items() {
         "expected five item end markers: {result}"
     );
     for i in 0..5 {
-        assert!(result.contains(&format!("<!--fe:b-->Item{i}<!--fe:/b-->")),
-            "item {i} binding: {result}");
+        assert!(
+            result.contains(&format!("<!--fe:b-->Item{i}<!--fe:/b-->")),
+            "item {i} binding: {result}"
+        );
     }
 }
 
@@ -533,9 +591,13 @@ fn test_hydration_multiple_attr_bindings() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains(r#"data-fe="3""#), "three bindings: {result}");
+    assert!(
+        result.contains(r#"data-fe="3""#),
+        "three bindings: {result}"
+    );
 }
 
 // ── f-ref / f-slotted (single-brace directive attrs) ─────────────────────────
@@ -545,15 +607,14 @@ fn test_hydration_multiple_attr_bindings() {
 #[test]
 fn test_hydration_f_ref_compact() {
     let locator = make_locator(&[("test-element", r#"<video f-ref="{video}"></video>"#)]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert!(result.contains(r#"data-fe="1""#), "count marker: {result}");
-    assert!(!result.contains("f-ref"), "f-ref stripped from output: {result}");
+    assert!(
+        !result.contains("f-ref"),
+        "f-ref stripped from output: {result}"
+    );
 }
 
 /// `f-slotted="{...}"` on multiple elements: incrementing start indices.
@@ -563,12 +624,8 @@ fn test_hydration_f_slotted_compact() {
         "test-element",
         r#"<slot f-slotted="{nodes}"></slot><slot name="foo" f-slotted="{foo}"></slot>"#,
     )]);
-    let result = render_with_locator(
-        r#"<test-element></test-element>"#,
-        &empty(),
-        &locator,
-        None,
-    ).unwrap();
+    let result =
+        render_with_locator(r#"<test-element></test-element>"#, &empty(), &locator, None).unwrap();
 
     assert_eq!(
         result.matches(r#"data-fe="1""#).count(),
@@ -595,14 +652,21 @@ fn test_hydration_repeat_index() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains("<!--fe:b-->0<!--fe:/b-->"),
-        "index 0: {result}");
-    assert!(result.contains("<!--fe:b-->1<!--fe:/b-->"),
-        "index 1: {result}");
-    assert!(result.contains("<!--fe:b-->2<!--fe:/b-->"),
-        "index 2: {result}");
+    assert!(
+        result.contains("<!--fe:b-->0<!--fe:/b-->"),
+        "index 0: {result}"
+    );
+    assert!(
+        result.contains("<!--fe:b-->1<!--fe:/b-->"),
+        "index 1: {result}"
+    );
+    assert!(
+        result.contains("<!--fe:b-->2<!--fe:/b-->"),
+        "index 2: {result}"
+    );
 }
 
 // ── Nested custom elements ─────────────────────────────────────────────────────
@@ -611,7 +675,10 @@ fn test_hydration_repeat_index() {
 #[test]
 fn test_hydration_nested_custom_elements() {
     let locator = make_locator(&[
-        ("parent-element", r#"<child-element label="hello"></child-element>"#),
+        (
+            "parent-element",
+            r#"<child-element label="hello"></child-element>"#,
+        ),
         ("child-element", r#"<span>{{label}}</span>"#),
     ]);
     let result = render_with_locator(
@@ -619,14 +686,20 @@ fn test_hydration_nested_custom_elements() {
         &empty(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // Both elements have their own shadow templates
     let shadow_count = result.matches(r#"shadowroot="open""#).count();
-    assert_eq!(shadow_count, 2, "both elements should have shadow templates: {result}");
+    assert_eq!(
+        shadow_count, 2,
+        "both elements should have shadow templates: {result}"
+    );
     // child-element has its own shadow scope
-    assert!(result.contains("<!--fe:b-->hello<!--fe:/b-->"),
-        "child shadow content binding: {result}");
+    assert!(
+        result.contains("<!--fe:b-->hello<!--fe:/b-->"),
+        "child shadow content binding: {result}"
+    );
 }
 
 /// Custom element with `{{expr}}` attribute binding inside another element's shadow:
@@ -634,7 +707,10 @@ fn test_hydration_nested_custom_elements() {
 #[test]
 fn test_hydration_nested_element_attr_binding() {
     let locator = make_locator(&[
-        ("parent-element", r#"<child-element label="{{title}}"></child-element>"#),
+        (
+            "parent-element",
+            r#"<child-element label="{{title}}"></child-element>"#,
+        ),
         ("child-element", r#"<span>{{label}}</span>"#),
     ]);
     let root = hand_root(vec![("title", str_val("Hi"))]);
@@ -643,17 +719,24 @@ fn test_hydration_nested_element_attr_binding() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     // child-element has attr binding for label="{{title}}" → data-fe="1"
-    assert!(result.contains(r#"data-fe="1""#), "attr binding on child-element: {result}");
+    assert!(
+        result.contains(r#"data-fe="1""#),
+        "attr binding on child-element: {result}"
+    );
     assert!(result.contains(r#"label="Hi""#), "resolved attr: {result}");
 }
 
 #[test]
 fn test_hydration_nested_element_missing_attr_binding_omits_attribute() {
     let locator = make_locator(&[
-        ("parent-element", r#"<child-element label="{{missing}}"></child-element>"#),
+        (
+            "parent-element",
+            r#"<child-element label="{{missing}}"></child-element>"#,
+        ),
         ("child-element", r#"<span>{{label}}</span>"#),
     ]);
     let result = render_with_locator(
@@ -661,9 +744,13 @@ fn test_hydration_nested_element_missing_attr_binding_omits_attribute() {
         &empty(),
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
-    assert!(result.contains(r#"data-fe="1""#), "attr binding marker remains: {result}");
+    assert!(
+        result.contains(r#"data-fe="1""#),
+        "attr binding marker remains: {result}"
+    );
     assert!(!result.contains("label="), "missing attr omitted: {result}");
     assert!(result.contains("<!--fe:b--><!--fe:/b-->"));
 }
@@ -680,11 +767,15 @@ fn test_hydration_triple_brace() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     assert!(result.contains("<!--fe:b-->"), "start: {result}");
     assert!(result.contains("<!--fe:/b-->"), "end: {result}");
-    assert!(result.contains("bold-content"), "unescaped content: {result}");
+    assert!(
+        result.contains("bold-content"),
+        "unescaped content: {result}"
+    );
 }
 
 // ── Boolean attribute bindings (?attr="{{expr}}") ────────────────────────────
@@ -699,11 +790,15 @@ fn test_hydration_bool_attr_true() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
     assert!(shadow.contains("disabled"), "disabled present: {result}");
-    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+    assert!(
+        !shadow.contains("?disabled"),
+        "no ?disabled prefix: {result}"
+    );
     assert!(shadow.contains(r#"data-fe="1""#), "count marker: {result}");
 }
 
@@ -717,7 +812,8 @@ fn test_hydration_bool_attr_false() {
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
     assert!(!shadow.contains("disabled"), "disabled absent: {result}");
@@ -727,31 +823,42 @@ fn test_hydration_bool_attr_false() {
 /// `?disabled="{{!isenabled}}"` with `isEnabled: false` → renders `disabled`.
 #[test]
 fn test_hydration_bool_attr_negation_true() {
-    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#)]);
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#,
+    )]);
     let root = hand_root(vec![("isEnabled", bool_val(false))]);
     let result = render_with_locator(
         r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
     assert!(shadow.contains("disabled"), "disabled present: {result}");
-    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+    assert!(
+        !shadow.contains("?disabled"),
+        "no ?disabled prefix: {result}"
+    );
 }
 
 /// `?disabled="{{!isenabled}}"` with `isEnabled: true` → attribute is omitted.
 #[test]
 fn test_hydration_bool_attr_negation_false() {
-    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#)]);
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#,
+    )]);
     let root = hand_root(vec![("isEnabled", bool_val(true))]);
     let result = render_with_locator(
         r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
         None,
-    ).unwrap();
+    )
+    .unwrap();
 
     let shadow = extract_shadow(&result);
     assert!(!shadow.contains("disabled"), "disabled absent: {result}");
@@ -760,7 +867,10 @@ fn test_hydration_bool_attr_negation_false() {
 /// `?disabled="{{activegroup == currentgroup}}"` with equal values → renders `disabled`.
 #[test]
 fn test_hydration_bool_attr_expression_true() {
-    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#)]);
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#,
+    )]);
     let root = hand_root(vec![
         ("activeGroup", str_val("work")),
         ("currentGroup", str_val("work")),
@@ -774,13 +884,19 @@ fn test_hydration_bool_attr_expression_true() {
 
     let shadow = extract_shadow(&result);
     assert!(shadow.contains("disabled"), "disabled present: {result}");
-    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+    assert!(
+        !shadow.contains("?disabled"),
+        "no ?disabled prefix: {result}"
+    );
 }
 
 /// `?disabled="{{activegroup == currentgroup}}"` with unequal values → attribute is omitted.
 #[test]
 fn test_hydration_bool_attr_expression_false() {
-    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#)]);
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#,
+    )]);
     let root = hand_root(vec![
         ("activeGroup", str_val("work")),
         ("currentGroup", str_val("home")),
@@ -800,7 +916,8 @@ fn test_hydration_bool_attr_expression_false() {
 
 /// Extract the first shadow template content from a rendered result string.
 fn extract_shadow(result: &str) -> &str {
-    let start = result.find(r#"shadowroot="open">"#)
+    let start = result
+        .find(r#"shadowroot="open">"#)
         .map(|i| i + r#"shadowroot="open">"#.len())
         .unwrap_or(0);
     let end = result.find("</template>").unwrap_or(result.len());

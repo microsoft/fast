@@ -1,255 +1,112 @@
-# Design — microsoft-fast-build
+# Design - microsoft-fast-build
 
-This document explains how the crate works internally: the data flow, the key data structures, and the design decisions behind each module.
+## Compilation pipeline
 
----
+Trusted authored HTML and a finite named `Locator` registry are build inputs.
+`server_ir::lower` preprocesses code samples, scans structural instructions and
+eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
+emits named JavaScript functions from this IR; `compile_server_artifact` serializes
+the same IR for the supported native Rust executor. There is one HTML/expression
+lowering pipeline, not a second native template compiler.
+The browser conversion crate remains independent.
 
-## High-level overview
+## Modules
 
-The crate takes a **FAST declarative HTML template** and optional **JSON state**
-and produces static HTML or precomputed stream chunks. Omitted state is an empty
-object (`{}`). A lightweight scanner compiles template structure into reusable
-in-memory instructions, not a DOM. Evaluation resolves fresh state and creates
-fresh hydration scopes; plans never store rendered HTML or request state.
+| Module | Responsibility |
+|---|---|
+| `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
+| `aot.rs` | Server ESM emission from the shared executable IR |
+| `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
+| `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
+| `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
+| `expression.rs` | Operator scanning for compile-time condition lowering |
+| `attribute.rs` | HTML attribute parsing, stripping, binding counts and naming |
+| `attribute_lookup.rs` | ARIA/global attribute-to-property mapping tables |
+| `content.rs` | Compile-time HTML escaping |
+| `locator.rs` | Authored/escaped definitions, metadata and glob scanning |
+| `json.rs` | Build-time template metadata and static JSON literal parsing |
+| `code_escape.rs` | Literal code-sample preprocessing and source rebasing |
+| `binding_metadata.rs` | Descriptive bindings, scopes and UTF-16 source spans |
+| `f_template.rs` | In-memory stylesheet composition and provenance |
+| `template_slots.rs` | Standards-based authored slot discovery |
+| `error.rs` | Structured compiler/tooling diagnostics |
+| `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
+| `build.rs` | Deterministic `SERVER_COMPILER_ID` fingerprint |
 
-```
-render_template(template, state_str)
-        │
-        ▼
-   json::parse(state_str)          ← hand-rolled JSON parser → JsonValue
-        │
-        ▼
-  renderer::render(template, root)      ← code-sample preprocessing
-        │
-        ▼
-  plan::InstructionCursor(template, locator)
-        ├─ One-shot entry: execute directly
-        └─ Reusable definition/body: collect into a cached RenderPlan
-        │
-        ▼
-  node::render_plan / streaming::stream_plan
-        ├─ Literal / Tag / Binding → append or evaluate
-        ├─ When / Repeat → lazily compiled body plan, reused per item
-        └─ CustomElement → cached Locator plan, fresh HydrationScope
+## Emission and diagnostics
 
-  Result: output string or precomputed chunks
-```
+Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
+The IR contains executable literal writes, prelowered attribute recipes, segmented
+paths, typed static values, condition opcodes, repeats and body/component references.
+It contains no source ranges, authored body strings or runtime expression grammar.
+Literal markup is output data, never reparsed. Repeat expression text is diagnostic
+only. There are no lazy source plans, prepared pieces or stream sinks.
+Deferred scanner instructions reconstruct source errors directly during lowering;
+they never invoke a renderer. Diagnostics are rebased through nested bodies and
+code escaping to authored UTF-16 coordinates and definition names.
+Compilation limits structural nesting to 128 levels. Symbolic registry references
+permit finite cyclic component definitions without recursive code expansion.
+Identical element operations share emitted functions.
 
----
+Conditions lower using the established server operator scanners; arbitrary
+JavaScript expressions are never spliced into output. The shared lowering owns static
+attributes, naming rules, body structure, literal CSS/markup and hydration binding
+counts. State paths become segment arrays. The emitter turns repeats into JavaScript
+loops; the native executor iterates the same body references.
 
-## Module map
+## Request execution
 
-| Module | Role |
-|--------|------|
-| `lib.rs` | Public API surface — render functions, stream render functions, `pub use` re-exports, and config types |
-| `renderer.rs` | Thin entry points converting the public API into `render_node` or `stream_node` calls. All entry points preprocess the top-level `template` string through `escape_code_sample_elements` before either path so `{`/`}` characters (and the angle brackets of FAST directive tags such as `<f-when>` / `<f-repeat>`) inside any `<code>` element are entity-escaped before binding/directive scanning |
-| `plan.rs` | Shared instruction cursor, cached plans, lazy bodies, and parsed tag/directive metadata |
-| `prepared.rs` | Explicit batch compiler, portable pieces, validated flat artifacts, shared immutable program snapshots |
-| `build.rs` | Deterministic compiler fingerprint over Rust sources, manifest and lockfile |
-| `node.rs` | Plan evaluation and shared atomic plain-tag handling; content bindings append directly into the current output buffer |
-| `streaming.rs` | Evaluation of the same plans into precomputed non-empty HTML chunks |
-| `directive.rs` | `Directive` / `RenderEvent` enums, monotonic `next_event` scanner, and directive renderers |
-| `content.rs` | Binding diagnostics and shared HTML escaping |
-| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
-| `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
-| `config.rs` | `RenderConfig` struct, `AttributeNameStrategy` enum, and `markers_v2` option — rendering configuration options |
-| `context.rs` | State value resolution: dot-path access, loop-variable scoping |
-| `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
-| `hydration.rs` | `HydrationScope` — binding index tracking and v3 data-free or opt-in v2 indexed marker generation per template scope |
-| `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser. Stored template bodies are first run through `escape_code_sample_elements` so `{`/`}` characters and the angle brackets of FAST directive tags (`<f-when>`, `<f-repeat>`) inside `<code>` elements are entity-escaped and therefore not interpreted as binding delimiters or directives. Also captures the inner `<template>` element's attributes as **host attributes** for propagation onto the rendered host element opening tag. |
-| `code_escape.rs` | `escape_code_sample_elements` — auto-escape preprocessor used by both `renderer.rs` and `locator.rs`. Walks the HTML and, inside every `<code>` element (including nested ones and attribute values of descendants), replaces `{` → `&#123;` and `}` → `&#125;` so that binding-like syntax in code samples renders literally. Additionally rewrites the `<` / `>` of every FAST directive tag (`<f-when>`, `</f-when>`, `<f-repeat>`, `</f-repeat>`) it finds inside `<code>` as `&lt;` / `&gt;`, so authors can write directives literally without manual entity escaping; tag-name matching is case-insensitive. Real HTML elements (`<button>`) and custom elements (`<my-widget>`) inside `<code>` keep their angle brackets and continue to render as live DOM elements. The brace half of the escape mirrors the JavaScript-side `escapeBracesInCodeElements` in `@microsoft/fast-html`; the directive-tag angle escape is server-only because the DOM serializer re-encodes `<`/`>` in text content so the client never sees a raw directive tag inside `<code>`. Modeled on Microsoft WebUI's `webui-press` markdown renderer, which auto-escapes the same characters inside code spans and code fences |
-| `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `f_template.rs` | `compose_f_template_styles` — in-memory insertion of a `<style>` element into an `<f-template>` definition's inner `<template>`, with no filesystem requirement |
-| `template_slots.rs` | Authored slot analysis using HTML tokenization/tree construction and original byte locations, isolated from rendering |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, `parse_f_templates`, `compose_f_template_styles`, and `escape_code_samples` (a stand-alone wrapper around `escape_code_sample_elements` for build-time tooling that injects raw author HTML — for example `<f-template>` definitions — into a rendered page outside the normal `render_*` pipeline) to JavaScript |
+Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
+For this target the JavaScript helper owns complete JSON-shaped state validation,
+own-property lookup, loop frames, borrowed child overlays, comparison/display,
+escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
+eval or browser dependencies. Generated entry/host/shadow exports synchronously
+return complete strings. Existing markup, whitespace, escaping and markers remain
+byte-preserved.
 
----
+The helper contract version is checked on import; deployments regenerate modules
+and deploy compatible helpers together. The compiler fingerprint hashes source
+paths/bytes, manifest and lockfile, independently of package version.
+Applications own watching, rebuilds, module activation and in-flight deployment
+lifecycle; generated code retains no request state.
 
-## Compilation and plan execution — `plan.rs` / `node.rs`
+### Native artifact execution
 
-`render_node` executes one-shot entries directly from `InstructionCursor`, without
-allocating an entry instruction vector. `RenderPlan::compile` collects that same
-cursor for reusable definitions and bodies. `render_plan` executes the collected
-instructions through the same evaluator:
+`CompiledArtifact::load` parses the artifact envelope, not authored HTML. It
+requires exact format/version, compiler fingerprint and helper contract identity,
+then validates every opcode, operand shape, static value, component reference and
+body index, including unreachable bodies. Unknown fields/opcodes and invalid
+references fail. JSON nesting is bounded by the deserializer; schema validation
+also bounds condition/static-value nesting. The compiler checks emitted native
+artifacts through this loader before returning them.
 
-```
-fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool, config: &RenderConfig) → Result<String>
-```
+Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
+bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
+DSD selection and hydration counters never enter the artifact. Typed `JsonValue`
+input is validated/normalized and copied per request; this is not a zero-copy
+memory claim. Parent overlays retain own-property masking, nulls and dataset
+siblings. Comparison, display and marker semantics match the generated target.
+All four APIs return owned complete strings or recoverable `NativeRenderError`.
+No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
 
-Named definitions keep a `OnceLock<RenderPlan>` inside their private locator
-record. Each directive or light-DOM body stores a source range and its own lazy
-plan. The first executed iteration compiles the body; later iterations and
-native renders using the same locator reuse it. Skipped bodies stay uncompiled.
-The existing one-shot path adds no global cache or generated file. The optional
-prepared-piece path below exposes explicit ownership and portable artifacts.
+State is limited to 64 nesting levels and one million values. Execution has a
+hard 128-body-call depth bound, with configurable default one-million-step and
+64 MiB output limits. Finite conditional component cycles are supported through
+symbolic references; unbounded request expansion returns `render-limit`, not
+stack overflow or truncated success. Failed requests cannot mutate later calls.
+See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
+They must be rebuilt with the deployed native library on upgrades.
 
-Instructions describe literal ranges, trimmed content expressions, parsed plain
-tags and original binding counts, conditionals, repeat aliases/collections, and
-known custom elements with their parsed author attributes. Evaluation still uses
-the existing boolean-expression and attribute-value evaluators. Those expressions
-are not a new expression language or fully compiled expression bytecode.
-
-Source ranges refer to the unchanged, code-escaped template owned by the locator
-or current call. Syntax failures are deferred until execution reaches them, so
-skipped branches and empty repeats retain their prior error behavior. Diagnostics
-are reconstructed per failure and rebased to authored source as before. Missing
-custom-element closing tags are still diagnosed after shadow rendering.
-
-Plans contain no configuration or state values. Hydration counters, attribute
-name strategies, parent-context attribute evaluation, loop variables, and child
-overlays are supplied during each execution. `OnceLock` permits native concurrent
-reads without sharing request state. Adding/replacing a locator definition clears
-all definition/body plans: a formerly unknown element may now require expansion.
-An atomic mutation guard skips the scan until a plan has been initialized, so
-incremental population is not quadratic. After invalidation, further registration
-also skips the scan until rendering initializes another plan. The guard does not
-publish plan contents; `OnceLock` provides that synchronization.
-Static serialized DSD attributes are cached separately per definition.
-
-Existing WASM exports still construct a locator for each call. Reuse occurs
-between instances within that call; native callers can reuse a locator across
-calls. Compilation retains metadata memory and can cost more for small single-use
-definitions. It does not imply a cross-request WASM cache or a universal speedup.
-
-The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
-
-- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe` marker is added.
-- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe` marker injected when inside a parent hydration scope.
-
-**Child state** is built the same way regardless of `is_entry`: the current root state is always used as a base, with per-element attributes overlaid on top. This ensures all unbound state keys propagate through to every descendant custom element automatically.
-
-`renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
-
-The instruction cursor advances using `next_event`, retaining the existing
-permissive scanner and raw-style handling. Cached execution walks prepared
-instructions without rediscovering events or directive body boundaries; one-shot
-execution prepares and consumes each instruction immediately.
-`render_tag` resolves attributes atomically and emits the configured marker;
-content bindings borrow strings and append escaped text/markers directly into the
-current output buffer. Recursive directives still materialize their own strings;
-this is not a single buffered sink for the entire component tree.
-
----
-
-## Prepared pieces — `prepared.rs`
-
-The optional prepared path separates immutable compilation from request execution.
-`PreparedCompiler` constructs the name registry once per batch; `identity` hashes
-authored source, host/shadow attributes, format/compiler identity, and membership
-of custom element names present in that source. This includes unresolved names:
-registering one later changes affected identities. Unrelated names and referenced
-components' contents do not enter a caller's identity.
-
-`compile` collects the existing instruction cursor and eagerly prepares each
-directive/light-DOM body, but does not expand referenced components or evaluate
-state. Invalid syntax remains a deferred instruction, even inside skipped bodies.
-The optional path limits structural body depth to 128. Existing one-shot paths
-retain their previous lazy compilation behavior and have no new preparation limit.
-
-Pieces share `Arc<TemplateDefinition>` records. `PreparedProgram` links an
-entry piece and definition map, validates registry membership, and executes
-the same normal/chunk evaluators. Requests supply fresh state, overlays, loop frames,
-configuration and hydration counters. No rendered values enter the piece.
-Mutable legacy locators use copy-on-write records when invalidating shared work;
-prepared program locators remain private and immutable.
-
-DSD selection is request-local execution configuration, separate from registered
-name membership. Excluded components preserve authored hosts and caller-scoped
-light DOM without applying template host defaults or evaluating shadow content.
-Selected descendants in that light DOM still render. Normal and chunk execution
-must match equivalent unregistered-element output without changing immutable
-instruction classification. Prepared shadow-fragment execution shares the existing
-fragment helper, shadow metadata and fresh hydration scope; a known excluded root
-returns no fragment, while an unknown root remains an error.
-
-`PreparedProgram::new` retains strict dependency-closed linking.
-`new_with_registry` additionally accepts complete immutable registered-name
-membership independently of loaded definitions. Every loaded piece's classification
-is checked against that full registry, not merely names whose shadow pieces were
-loaded. Execution verifies the conservative DSD-required closure before rendering:
-excluded shadows need no definition, but selected missing definitions remain
-errors. Authored light-DOM dependencies reside in the caller's piece, so excluding
-an enclosing shadow does not hide selected descendants. No policy-specific
-artifacts, source reparsing, or second state evaluation is needed.
-
-Serialization uses a versioned JSON envelope with a flat list of body-plan records
-identified by absolute source offsets. Instruction ranges within a plan remain
-relative to its body. `OnceLock` caches are omitted from individual records and
-restored from the flat list. This avoids deeply nested JSON or redundant ASTs.
-Loading verifies compiler/format identity, source identity/escaping, registry
-classifications, source/attribute ranges, deferred positions and body completeness
-before constructing the program. Artifact files are trusted application build
-outputs, not an untrusted-template sandbox or signed-code format.
-
-`build.rs` hashes source paths/bytes, the crate manifest and dependency lockfile;
-`PREPARED_COMPILER_ID` therefore changes when renderer sources change even before
-a package version bump. Paths are relative and normalized for Windows. The
-fingerprint deliberately prefers conservative invalidation over stale reuse.
-Both instruction format and compiler identity must match at load time.
-
-Filesystem persistence, asynchronous graph loading, memory admission, manifest
-publication and development watching belong to the Node host, not WASM.
-The host can prune registered dependency edges using the request's DSD allowlist;
-registry membership itself remains complete. Excluded fragments validate native
-request configuration/state and return empty output without loading a root piece.
-`PreparedPiece::memory_bytes` estimates retained Rust structures/string capacities;
-it excludes allocator overhead, host objects, request temporaries and output.
-Native callers can implement their own persistence/cache policy with the same
-piece format and immutable program ownership.
-
-## Simulated streaming — `streaming.rs`
-
-Nullable attribute values are resolved by the shared attribute helper before
-serializing a tag: a missing/null segment omits the whole attribute, but an
-explicit empty string is retained. Known HTML boolean attributes bound to JSON
-booleans use presence; other booleans remain textual values. Hydration counts
-come from the original source tag, not the surviving attributes. Host-default
-deduplication also considers source author names so an omitted author binding
-cannot be replaced by a template default.
-
-`stream_node` executes the same cursor directly for entries, while `stream_plan`
-executes retained plans. Both share cached bodies and `node::render_tag` with
-normal evaluation, but return
-`Vec<String>` instead of a single `String`. Streaming is simulated: every chunk
-is prepared in memory before the API returns. The invariant is that
-`chunks.join("")` matches the equivalent non-streamed render, including the
-same top-level `escape_code_sample_elements` preprocessing performed by
-`renderer.rs`.
-
-The streaming loop flushes literal HTML before each content binding or custom
-element, omits empty chunks, and resolves attribute bindings while the complete
-opening tag is still in the current chunk. This prevents streamed consumers from
-receiving a partial tag.
-
-Custom elements are split conservatively:
-
-1. The opening tag is rendered with any attribute bindings resolved.
-2. The full Declarative Shadow DOM `<template>` is rendered into the same
-   opening chunk.
-3. Light DOM children are streamed recursively.
-4. The custom element closing tag is appended to the final light DOM chunk, or
-   to the opening chunk when the element has no children.
-
-The shadow template itself is not streamed independently. Keeping it with the
-opening tag ensures custom element constructors can discover Declarative Shadow
-DOM as soon as the element is parsed.
-
-Streaming custom-element rendering uses the same directive helpers as the
-non-streamed path: child state is built from root state plus author attributes,
-the host opening tag is produced by `build_element_open_tag`, and inner
-`<template>` host attributes are merged with `merge_template_host_attrs`.
-Author attributes still win, client-only host attributes are skipped, and
-template-host bindings resolve against the child state.
-
----
+Native Rust is supported now. A stable C ABI, .NET bindings, cross-language memory
+ownership and C# hosting are deferred; this change supplies none of those APIs.
+There is no independent C# implementation of rendering semantics.
 
 ## Plugin integration boundaries
 
-`render_shadow_root_*_with_locator` returns just the DSD `<template>` for a
-named definition and resolved component state. Normal, stream, and fragment
-rendering share `directive::render_shadow_content`, with a fresh hydration scope
-and no extra fragment allocation on whole-host paths. The fragment API does
+Generated `renderShadow` returns just the DSD `<template>` for a
+named definition and resolved component state. Entry, host and fragment
+exports share generated shadow functions and fresh hydration scopes. The fragment API does
 not create host attributes or light DOM; nested hosts still follow normal rules.
 
 `binding_metadata.rs` reuses render-event discovery, tag attributes, directive
@@ -284,7 +141,7 @@ the FAST Element client runtime.
 Bindings and directives inside HTML comments remain unsupported.
 
 Public `FTemplate` records carry `TEMPLATE_FORMAT_VERSION` and binding metadata.
-`Locator::from_metadata` validates native versions/names/duplicates; WASM render
+`Locator::from_metadata` validates native versions/names/duplicates; WASM compiler
 exports validate explicit per-definition `formatVersion` before constructing
 the locator. Unversioned string/metadata maps remain compatible. The CLI retains
 metadata fields when mapping parsed definitions, and WASM custom declarations
@@ -326,475 +183,6 @@ arbitrary transformed string back to its original source. Selection errors reuse
 alone returns an empty collection. Neither rendering nor existing binding
 metadata is routed through the standards parser.
 
-## Finding the next event — `directive::next_event`
-
-Compilation and binding metadata use this scanner; prepared-plan execution does
-not rescan the source to discover events.
-
-`next_event` recognizes plain HTML opening tags and five directive kinds:
-
-- `{{{` — triple-brace unescaped binding
-- `{{` — double-brace escaped binding (shadowed if `{{{` starts at the same position)
-- `<f-when` — conditional directive
-- `<f-repeat` — repeat directive
-- a custom element tag known to the `Locator`
-
-It returns `RenderEvent::PlainTag(position)`, `RenderEvent::Directive(Directive)`,
-or `None`. At `<`, directive prefixes retain their existing tag-boundary rules;
-known custom elements are looked up using a borrowed tag-name slice, without
-allocating a name string for discovery. Unknown custom elements remain plain
-tags. At `{`, triple braces take precedence over double braces.
-
-Returning plain tags as events is essential: fixing only directive discovery
-would still rescan long suffixes before each adjacent plain tag. Both rendering
-loops consume each event once, and no second discovery pass occurs before
-dispatch. This removes the quadratic absent-pattern searches for adjacent
-known hosts and plain tags. It does not claim that every recursive renderer
-path is linear: matching directive bodies, dataset branch copies, and repeated
-template/attribute parsing remain separate optimization targets.
-
-The scanner intentionally preserves the old string-scanner semantics rather
-than introducing DOM parsing rules. For example, directives inside HTML
-comments are not suppressed. Bindings and FAST directive markup inside comments
-are unsupported; commenting out bound markup does not disable parsing, and no
-comment filtering or validation is performed. Differential tests compare
-discovery with the pre-optimization scanner at every UTF-8 boundary across
-generated fragment pairs, including malformed tags, single braces, quotes, and directive-name
-prefixes.
-
-### Single-brace passthrough
-
-FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). In most rendering contexts these pass through the server renderer **unchanged** — `next_event` skips over them so their `}` characters do not accidentally close a `{{binding}}`.
-
-The problem is that a single-brace expression may contain `}}` inside it (e.g. `{handler({key: val})}`) which would be misread as the closing delimiter of a `{{binding}}`.
-
-When the cursor reaches a single `{`, `attribute::skip_single_brace_expr`
-tracks nested braces and quoted strings to locate its end. Directive discovery
-resumes after the expression. The legacy plain-tag pass could still process
-tags inside a client expression, so `next_event` performs a bounded plain-tag
-search within that expression and returns the first such tag before resuming.
-This deliberately preserves that permissive behavior. Unclosed expressions
-retain the existing one-byte fallback; this milestone does not change errors
-or promise linear handling of every malformed input.
-
-### Attribute directive stripping in Declarative Shadow DOM
-
-Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe` binding count still includes them so the FAST runtime allocates the correct binding slots.
-
----
-
-## Content bindings — `content.rs`
-
-Both binders share the same structure: find the opening delimiter, find the closing delimiter, trim and validate the expression, resolve it from state, and return the rendered value plus the new cursor position.
-
-### `render_double_brace` (`{{expr}}`)
-- Resolves the expression via `context::resolve_value`.
-- Passes the result through `html_escape` before appending.
-- HTML escapes: `&`, `<`, `>`, `"`, `'`.
-
-### `render_triple_brace` (`{{{expr}}}`)
-- Same resolution, but skips HTML escaping — used for injecting raw HTML.
-
-Both return `RenderError::EmptyBinding` for blank expressions and `RenderError::UnclosedBinding`/`UnclosedUnescapedBinding` if no closing delimiter is found. If the expression does not resolve in state, the content binding renders an empty string.
-
----
-
-## State resolution — `context.rs`
-
-`resolve_value(expr, root, loop_vars)` resolves an expression string to an
-`Option<Cow<'_, JsonValue>>`. The private `State` view accepts either a borrowed
-`JsonValue` root or a `ChildState` overlay; public render APIs still accept the
-same `JsonValue` references and JSON inputs.
-
-**Resolution order:**
-1. Scan `loop_vars` in reverse (innermost scope first). If the expression matches a variable name exactly, return its value.
-2. If the expression is `varname.prop.path`, and `varname` matches a loop variable, apply `get_nested_property` to the loop variable's value with the remaining path.
-3. Fall back to `root.lookup(expr)`.
-
-`get_nested_property` walks dot-separated path segments without allocating a
-segment vector. Object properties and numeric array indices (e.g. `list.0`)
-return borrowed values, including whole objects and arrays. Only a final array
-`length` segment synthesizes an owned `JsonValue::Number`; additional segments
-after `length` do not resolve (for example, `items.length.foo`).
-
-`ChildState` stores only attribute-derived overrides and a borrowed object parent.
-Lookup checks the first path segment in the overrides before consulting the
-parent. An explicit null or an overridden object missing a nested property masks
-the parent; this is not a recursive merge. Non-object parents are not inherited
-when attributes create an object child state. An element without state-relevant
-attributes still passes its root through unchanged.
-
-Parent fallback walks the overlay chain, trading additional inherited-key lookups
-in deeply nested attributed elements for elimination of whole-root copies.
-
-Attribute expressions resolve against the parent state and loop scope, not the
-partially constructed child. `data-*` attributes use copy-on-write for the
-`dataset` branch only, preserving inherited siblings without copying unrelated
-root fields. Dataset members remain owned `JsonValue`s, so inserting a structured
-bound value can still copy that value.
-
-Callers decide how to handle unresolved values:
-- Content bindings (`{{expr}}` / `{{{expr}}}`) render an empty string.
-- HTML attribute bindings omit the entire attribute.
-- `<f-repeat>` treats a missing list binding as an empty array and renders zero iterations; present non-array values return `RenderError::NotAnArray`.
-- `<f-when>` evaluates a missing binding as falsy.
-
-### Loop variable scoping
-
-`LoopVars` is a slice of borrowed names and `Cow<JsonValue>` values. Each
-`<f-repeat>` iteration builds a small vector of references to outer values and
-the current item, plus an owned numeric `$index`; neither the collection nor
-item payloads are cloned. Reverse lookup preserves innermost alias and `$index`
-precedence. A matching alias masks outer scopes even when its requested nested
-property is missing. Root state remains accessible for unshadowed keys.
-
----
-
-## Conditional rendering — `<f-when>`
-
-`render_when` in `directive.rs`:
-
-1. Uses the body range and expression prepared by `plan::When`.
-2. The compiler extracts those with `extract_directive_content_range` and `extract_directive_expr`.
-3. Calls `expression::evaluate(expr, root, loop_vars)`.
-4. If true: lazily obtains the body plan and recursively calls `render_plan`.
-5. If false: returns an empty string.
-
----
-
-## Expression evaluation — `expression.rs`
-
-`evaluate(expr, root, loop_vars) → bool` uses a recursive descent strategy without building a parse tree.
-
-**Precedence (lowest to highest):**
-1. `||` — found first, splits into left/right and short-circuits.
-2. `&&` — found second, splits into left/right and short-circuits.
-3. Comparison: `>=`, `<=`, `==`, `!=`, `>`, `<` — matched in that order to avoid `>` matching `>=`.
-4. Unary `!` — prefix negation.
-5. Bare identifier — truthy check via `JsonValue::is_truthy`.
-
-Because `||` is sought before `&&`, the recursive split on `||` runs first. Each sub-expression is then re-evaluated, where `&&` is split next. This means `&&` binds tighter than `||` — matching standard operator precedence. Chaining (`a && b && c`, `a || b || c`) works naturally through the same recursion.
-
-**`find_binary_op`** does a simple left-to-right byte scan — the first occurrence of `||` or `&&` is the split point. This gives left-associativity.
-
-**`find_comparison_op`** adds one guard: when matching single-char `<` or `>`, it checks that the next character is not `=` so it does not match the first character of `<=` / `>=`.
-
----
-
-## Array iteration — `<f-repeat>`
-
-`render_repeat` in `directive.rs`:
-
-1. Uses the body range and end position prepared by `plan::Repeat`.
-2. Compilation parses `value="{{item in items}}"` with `parse_repeat_expr`; the existing separator rules remain unchanged.
-3. Resolves the list expression. Missing values are treated as an empty array. Present non-array values return `RenderError::NotAnArray`.
-4. Each iteration builds borrowed loop variables and evaluates the same lazily compiled body plan, with a fresh item hydration scope when active.
-5. Uses `Iterator::collect::<Result<String, _>>()` to short-circuit on the first error in any iteration.
-
----
-
-## Nested directives — `attribute::extract_directive_content_range`
-
-During compilation, `extract_directive_content_range` tracks nesting depth to
-find the closing `</f-when>` or `</f-repeat>`:
-
-- Start at depth 1 (for the outer opening tag).
-- Scan forward for the next opening tag of the same name **or** the next closing tag.
-- An opening tag increments depth; a closing tag decrements it.
-- Return when depth reaches 0.
-
-This handles arbitrarily deep nesting of the same directive type.
-
----
-
-## Custom elements — `directive.rs` + `attribute.rs`
-
-A custom element is any opening tag whose name contains a hyphen, excluding `f-when` and `f-repeat` (`attribute::is_custom_element`). The renderer only acts on custom elements that have a matching template in the `Locator`.
-
-### `render_custom_element`
-
-1. **Locate the tag boundary** — `find_tag_end` finds the `>` that closes the opening tag, respecting quoted attribute values.
-2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
-3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
-4. **Build child state** — a borrowed view of the **current object root state**
-   supplies inherited values, while per-element HTML attributes populate a small
-   override map (attribute-derived values take precedence). Unbound state keys
-   propagate to descendant custom elements without copying the root. When there
-   are no state-relevant attributes (only `@event`, `?bool`, or directive
-   attributes), the root is passed through directly, including non-object roots.
-   - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
-   - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
-   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`. When the `attribute-name-strategy` is set to `"camelCase"`, dashed attribute names that are not handled by specialized lookup tables are converted to camelCase instead: `selected-user-id` becomes `selectedUserId`.
-   - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
-   - `aria-*` attributes (e.g. `aria-disabled`) are **converted to their camelCase ARIA property name** using the `attribute_lookup::aria_attr_to_property_key` lookup table (`aria-disabled` → `ariaDisabled`, `aria-valuenow` → `ariaValueNow`). This follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention on `Element`. A static lookup table is used instead of algorithmic conversion because ARIA attribute names do not place dashes at word boundaries (e.g. `aria-valuenow`, not `aria-value-now`). Templates reference the camelCase form: `{{ariaDisabled}}`.
-   - HTML attributes whose property name differs from the attribute name (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`) are **converted to their camelCase DOM property name** using the `attribute_lookup::html_attr_to_property_key` lookup table. Attributes whose names already match (e.g. `disabled`, `title`) are not in the table and pass through as-is.
-   - No value (boolean attribute) → `Bool(true)`
-   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects); if the binding is missing, the child-state value becomes `JsonValue::Null`, which displays as empty content
-   - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
-   - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
-5. **Render the shadow template** through the locator's cached plan, with child state as root and a **fresh `HydrationScope`** (always active).
-6. **Render light DOM children** using the body range prepared by `extract_directive_content_range` and a shared lazy body plan. Light DOM retains parent state and loop scope.
-7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
-   - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
-     - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
-     - **Non-primitives** (`Array`, `Object`, `Null`) and missing values — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
-     - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
-     - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
-     - No `data-fe` marker is added — root elements at entry level have no parent hydration scope.
-   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe="N"` is injected.
-8. **Template host attribute propagation.** Attributes declared on the inner `<template>` element of the source `<f-template>` are merged onto the rendered host opening tag built in step 7. `merge_template_host_attrs` (in `directive.rs`) splices the surviving attributes in just before the closing `>`, resolving any bindings against `child_root` — the same child state used to render the shadow template (the root state with the host element's HTML attributes overlaid).
-   - **Client-only attrs are skipped**: any template host attr whose name starts with `@` (event) or `:` (property binding), or whose lowercased name is `f-ref`, `f-slotted`, or `f-children`, is dropped — none of these have any meaning on a server-rendered host element.
-   - **Author attributes win.** Attributes already present on the host element opening tag (the author markup) are preserved verbatim. Template host attrs whose lowercased name matches an existing author attribute are skipped. For `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` (without the leading `?`).
-   - **Static `name="value"`** → emitted verbatim with the value HTML-escaped. **Static boolean `name`** (no `=`) → emitted bare.
-   - **`name="{{expr}}"`** → resolved against `child_root`. `String` / `Number` / `Bool` values are emitted as `name="value"` (HTML-escaped); `Array` / `Object` / `Null` and missing values are stripped.
-   - **`?name="{{expr}}"`** → evaluated as a boolean against `child_root`; the bare `name` (without the leading `?`) is emitted when truthy and skipped when falsy.
-   - Applies to **both** root entry-level custom elements (`is_entry: true`) and nested custom elements (`is_entry: false`).
-   - **No `data-fe` hydration marker is allocated** for propagated template host attrs — they are static or initial-render-only attributes on the host element, not client-side bindings.
-
-   *Worked example.* Given the template
-   ```html
-   <f-template name="my-el">
-       <template tabindex="0" ?disabled="{{isDisabled}}">…</template>
-   </f-template>
-   ```
-   the author markup `<my-el disabled></my-el>` and state `{"isDisabled": false}` render as
-   ```html
-   <my-el disabled tabindex="0">…</my-el>
-   ```
-   — the author's `disabled` is preserved verbatim, the template's `?disabled` is dropped by the dedupe rule, and `tabindex="0"` is appended.
-9. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
-10. **Emit Declarative Shadow DOM** with hydration attributes:
-   ```html
-   <my-button label="Hi">
-     <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
-     [light DOM children]
-   </my-button>
-   ```
-   The `<template>` receives any `shadowroot*` attributes declared on the source `<f-template>`. The renderer normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
-
-   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe="N"` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
-
-Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
-
-If a custom element has no matching template, `next_event` treats it as a plain
-tag rather than expanding it. Existing plain-tag attribute handling still applies.
-
----
-
-## Configuration — `config.rs`
-
-The `RenderConfig` struct holds configuration options that affect rendering behaviour. It is threaded through the rendering pipeline from the public API entry points down to `render_node` and the directive renderers.
-
-### `attribute-name-strategy`
-
-Controls how HTML attribute names are mapped to state property names when building child state for custom elements. Two strategies are available:
-
-| Strategy | Behaviour | Example |
-|----------|-----------|---------|
-| `"camelCase"` (default) | Dashed attribute names are converted to camelCase. | `foo-bar` → `fooBar` → `{{fooBar}}` |
-| `"none"` | Attribute names are lowercased as-is. Dashes are preserved. | `foo-bar` → `foo-bar` → `{{foo-bar}}` |
-
-The `camelCase` strategy only applies to attributes that are **not** already handled by a specialized conversion:
-
-- `data-*` attributes always use the `dataset.*` grouping with camelCase (MDN convention), regardless of the strategy.
-- `aria-*` attributes always use the ARIA reflection lookup table (e.g. `aria-valuenow` → `ariaValueNow`), regardless of the strategy.
-- HTML global attributes with known property name differences (e.g. `tabindex` → `tabIndex`) always use the lookup table, regardless of the strategy.
-- `:prop` property bindings are always lowercased, regardless of the strategy.
-
-This means the strategy only affects "plain" custom element attributes like `selected-user-id`, `show-details`, or `foo-bar`.
-
-### API
-
-All render functions accept `config: Option<&RenderConfig>` as their last parameter. Pass `None` for defaults, or `Some(&config)` for custom configuration:
-
-- `render(template, state, config)`
-- `render_without_state(template, config)`
-- `render_template(template, state_str, config)`
-- `render_template_without_state(template, config)`
-- `render_template_stream(template, state_str, config)`
-- `render_template_stream_without_state(template, config)`
-- `render_stream(template, state, config)`
-- `render_stream_without_state(template, config)`
-- `render_with_locator(template, state, locator, config)`
-- `render_with_locator_without_state(template, locator, config)`
-- `render_stream_with_locator(template, state, locator, config)`
-- `render_stream_with_locator_without_state(template, locator, config)`
-- `render_template_with_locator(template, state_str, locator, config)`
-- `render_template_with_locator_without_state(template, locator, config)`
-- `render_template_stream_with_locator(template, state_str, locator, config)`
-- `render_template_stream_with_locator_without_state(template, locator, config)`
-- `render_entry_with_locator(template, state, locator, config)`
-- `render_entry_with_locator_without_state(template, locator, config)`
-- `render_entry_stream_with_locator(template, state, locator, config)`
-- `render_entry_stream_with_locator_without_state(template, locator, config)`
-- `render_entry_template_with_locator(template, state_str, locator, config)`
-- `render_entry_template_with_locator_without_state(template, locator, config)`
-- `render_entry_template_stream_with_locator(template, state_str, locator, config)`
-- `render_entry_template_stream_with_locator_without_state(template, locator, config)`
-
-The streaming APIs return `Result<Vec<String>, RenderError>` and otherwise use the same configuration and state semantics as their non-streaming equivalents. The `*_without_state` APIs render with an empty object root state. In WASM, the state parameter is optional for `render`, `render_with_templates`, and `render_entry_with_templates`; omitted state also uses an empty object. The template-rendering WASM exports accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`) and an optional `markers_v2` boolean. `render_entry_with_templates` also accepts an optional `stream` boolean:
-
-- `render_with_templates(entry, templates_json, state?, attribute_name_strategy?, markers_v2?)`
-- `render_entry_with_templates(entry, templates_json, state?, attribute_name_strategy?, stream?, markers_v2?)`
-
----
-
-## Hydration markers — `hydration.rs`
-
-When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and emits **data-free markers** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
-
-### Scopes
-
-A **template scope** is a `HydrationScope` that carries a single field:
-- `binding_idx: usize` — the next binding index to allocate (increments for each binding in this scope)
-
-Scope boundaries are:
-| Context | Scope |
-|---|---|
-| Custom element shadow template | Fresh `HydrationScope` (binding_idx = 0) |
-| `f-when` truthy body | Fresh `HydrationScope` (binding_idx reset to 0) |
-| `f-repeat` item template | Fresh `HydrationScope` per item (binding_idx reset to 0) |
-
-Scopes carry no numeric ID. Markers are data-free and paired by balanced depth counting.
-
-### Content binding markers
-
-When `hydration` is `Some`, plan evaluation wraps each `{{expr}}` / `{{{expr}}}` result:
-
-```
-<!--fe:b-->VALUE<!--fe:/b-->
-```
-
-The markers are data-free and paired by balanced depth counting. The sequential
-factory pointer on the client derives factory-to-node mappings from DFS traversal
-order.
-
-### Attribute binding markers
-
-Plain opening tags are prepared by the compiler and processed atomically
-by `node::render_tag`, shared with simulated streaming. For each
-tag with `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
-
-1. Compilation counts both types from the parsed original attributes.
-2. The scope's `binding_idx` is advanced by the total count.
-3. `AttributePlan::resolve` resolves each attribute binding:
-   - `?attr="{{expr}}"` — **boolean binding**: if truthy, emit the bare attribute name; otherwise omit it.
-   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped. If `expr` is missing, the entire attribute is omitted, though the hydration binding count still includes it.
-   - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
-4. `inject_hydration_marker` inserts the configured attribute marker before the closing `>` of the tag.
-
-Atomic tag compilation keeps attribute expressions out of the content instruction
-stream. Counts come from source attributes, even when a value is omitted.
-
-### Dataset bindings — `attribute::data_attr_to_dataset_key`
-
-FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: a camelCase property (e.g. `dateOfBirth`) corresponds to a kebab-case `data-*` HTML attribute (e.g. `data-date-of-birth`).
-
-When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name starts with `data-` is routed into a nested `"dataset"` object rather than a top-level key:
-
-```
-data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01-01"
-```
-
-`attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
-
-The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
-
-### ARIA attribute bindings — `attribute_lookup::aria_attr_to_property_key`
-
-ARIA attributes follow the [Element ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention: a camelCase property (e.g. `ariaDisabled`) corresponds to an `aria-*` HTML attribute (e.g. `aria-disabled`).
-
-When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name matches a known ARIA attribute is converted to its camelCase property name and stored as a top-level state key:
-
-```
-aria-disabled="true"    →  state["ariaDisabled"] = "true"
-aria-valuenow="50"      →  state["ariaValueNow"] = "50"
-```
-
-`attribute_lookup::aria_attr_to_property_key` uses a static lookup table (a `match` block) rather than algorithmic conversion. This is necessary because ARIA attribute names do not use dashes at word boundaries — for example, `aria-valuenow` (not `aria-value-now`) maps to `ariaValueNow`. The lookup table covers all ARIA attributes defined in the [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes). Unrecognised `aria-*` attributes fall through to the default lowercased-key path.
-
-### HTML attribute-to-property mappings — `attribute_lookup::html_attr_to_property_key`
-
-Some HTML attributes have DOM property names that differ from their attribute names (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`, `contenteditable` → `contentEditable`).
-
-When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose lowercased name matches the lookup table is stored under its camelCase property name instead:
-
-```
-tabindex="0"             →  state["tabIndex"] = "0"
-readonly="true"          →  state["readOnly"] = "true"
-contenteditable="true"   →  state["contentEditable"] = "true"
-```
-
-`attribute_lookup::html_attr_to_property_key` uses the same static lookup table approach as the ARIA table. Only attributes where the property name differs from the attribute name are included — attributes like `disabled`, `title`, and `hidden` whose names match exactly are not in the table and pass through as-is.
-
-### `f-when` markers
-
-```
-<!--fe:b-->
-[inner content in child scope, or empty if falsy]
-<!--fe:/b-->
-```
-
-The binding index is allocated from the outer (parent) scope's `binding_idx`. The markers are data-free and paired by balanced depth counting.
-
-### `f-repeat` markers
-
-```
-<!--fe:b-->
-<!--fe:r-->
-  [item 0 rendered with fresh binding_idx = 0]
-<!--fe:/r-->
-<!--fe:r-->
-  [item 1 rendered with fresh binding_idx = 0]
-<!--fe:/r-->
-<!--fe:/b-->
-```
-
-The outer `<!--fe:b-->` / `<!--fe:/b-->` markers wrap the entire repeat directive. Each item is wrapped in `<!--fe:r-->` / `<!--fe:/r-->` markers. All markers are data-free; pairing uses balanced depth counting. Each item gets its own fresh `HydrationScope`, so per-item content bindings restart at index 0.
-
-### `$index` in `f-repeat`
-
-Each iteration pushes `("$index", JsonValue::Number(i as f64))` into `loop_vars`, making `{{$index}}` available in repeat templates in both hydration and non-hydration modes.
-
----
-
-## The Locator — `locator.rs`
-
-`Locator` is a `HashMap<String, String>` mapping element names to their template HTML strings.
-
-### `from_patterns`
-
-For each glob pattern:
-1. Find the **static prefix directory** — the longest directory path before any wildcard character (`*`, `?`). This avoids walking the entire filesystem.
-2. Recursively walk that directory collecting all `.html` files (`walk_html_files`). The walk is bounded to a maximum depth of 50 directories (`MAX_DIR_DEPTH`) and skips symlinks to prevent infinite loops from symlink cycles.
-3. Normalise path separators to `/` and strip a leading `./`, then test each file path against the glob pattern.
-4. For each matching file, read its content and call `parse_f_templates` to extract all `<f-template>` elements.
-5. The **element name** is the `name` attribute of each `<f-template>` element (e.g. `name="my-button"`). A single file may declare multiple templates.
-6. `<f-template>` elements missing a `name` attribute emit a warning to stderr and are ignored.
-7. If two `<f-template>` elements across different files share the same name → `RenderError::DuplicateTemplate`.
-
-### `<f-template>` parsing (`parse_f_templates`, `parse_element_attributes`, `extract_template_content`)
-
-`parse_f_templates(html)` scans for real `<f-template>` start tags using browser tag-name boundaries. For each match:
-- Verifies the character after `<f-template` is ASCII whitespace, `/`, or `>` to avoid matching non-`f-template` tags such as `<f-template-x>`.
-- Extracts the attribute string between `<f-template` and `>`, allowing ASCII whitespace before the closing `>`.
-- Uses `parse_element_attributes` to get the `name` attribute value (supports both `"` and `'` quoting).
-- Collects all unique `shadowroot`-prefixed attributes from the `<f-template>` opening tag, preserving boolean attributes as `None` and lowercasing attribute names.
-- Extracts the inner HTML between `>` and a matching `</f-template>` end tag, allowing ASCII whitespace before the closing `>`.
-- Calls `extract_template_content` on the inner HTML to get the content **and the attributes** declared on the inner `<template>` element. The returned attribute list is preserved as the template's **host attributes**, available later via `Locator::get_host_attributes` and merged onto the rendered host opening tag by `merge_template_host_attrs` (see the **Custom elements** section above).
-
-Returns a `Vec<FTemplate>` containing the optional name, template content, the collected shadowroot attributes, and the inner `<template>` element's host attributes. The locator stores the shadowroot attributes with the template definition so custom-element rendering can apply them to the emitted Declarative Shadow DOM `<template>`, and stores the host attributes so they can be merged onto the rendered host element opening tag.
-
-### Glob matching
-
-Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_chars`:
-
-- Paths and patterns are split on `/` into segments.
-- `**` is handled at the segment level: it can consume **zero or more** path segments by trying both "consume none" (advance pattern, keep path) and "consume one" (keep pattern, advance path) via backtracking.
-- `*` is handled at the character level within a single segment: it tries matching 0 through N characters by iterating over all possible split points.
-- `?` matches exactly one character.
-
----
 
 ## In-memory `<f-template>` CSS composition — `f_template.rs`
 
@@ -841,237 +229,20 @@ now retain their separate CSS coordinates rather than claiming HTML positions.
 
 Once validated, the function locates the byte offset of the inner `<template>` tag's closing `>` (via `attribute::find_tag_end`) and builds the output by string concatenation: `template_html[..inner_tag_end]` + `"<style>"` + `css` + `"</style>"` + `template_html[inner_tag_end..]`. No re-serialization occurs, so the outer wrapper's attributes, the inner `<template>`'s attributes, any existing inner content, and any surrounding document content are preserved byte-for-byte.
 
-The resulting string is valid `<f-template>` source: it can be written to a file and discovered by `Locator::from_patterns`, or fed directly to `locator::parse_f_templates`, and rendered through the normal `render_*_with_locator` pipeline like any other template definition.
+The resulting string is valid `<f-template>` source: it can be written to a file and discovered by `Locator::from_patterns`, or fed directly to `locator::parse_f_templates`, and compiled through the shared lowering like any other template definition.
 
 ---
 
-## WASM bindings — `wasm.rs`
 
-`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes these functions to JavaScript via `wasm-bindgen`:
+## Coverage and performance
 
-| Export | Signature | Description |
-|--------|-----------|-------------|
-| `render` | `(entry: &str, state?: string) → String` | Render a template with no custom elements; omitted state is `{}` |
-| `render_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render a template with a pre-built `{name: content}` templates map using non-entry semantics; omitted state is `{}`. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
-| `render_entry_with_templates` | `(entry: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, stream?: bool, markers_v2?: bool) → String` | Render top-level entry HTML with a pre-built `{name: content}` templates map; omitted state is `{}`. When `stream` is `true`, returns a JSON array string of stream chunks instead of HTML. `markers_v2` selects indexed FAST Element 2.x hydration markers. |
-| `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
-| `extract_template_slots` | `(html: &str, template_name: &str) → String` (throws on error) | Inspect one definition's authored HTML slots as `{name, line, column}` JSON records |
-| `render_shadow_root` | `(element_name: &str, templates_json: &str, state?: string, attribute_name_strategy?: string, markers_v2?: bool) → String` | Render only the complete DSD template using resolved component state; no host or light DOM |
-| `compose_f_template_styles` | `(template_html: &str, css: &str) → String` (throws on error) | Insert `<style>{css}</style>` as the first child of the inner `<template>` of a single `<f-template>` definition; throws a JS error (the `RenderError` display message) on any validation failure |
-
-### `parse_f_templates`
-
-Calls `locator::parse_f_templates` (the same function used by `Locator::from_patterns`) and serialises the result to a JSON string:
-
-```json
-[
-  {
-    "name": "my-button",
-    "content": "<button>{{label}}</button>",
-    "shadowrootAttributes": [{"name": "shadowrootmode", "value": "closed"}],
-    "hostAttributes": [],
-    "formatVersion": 1,
-    "bindings": [{
-      "name": "label", "expression": "label", "kind": "content",
-      "paths": ["label"], "scope": [], "type": null, "optional": null
-    }]
-  },
-  {
-    "name": null,
-    "content": "<span>unnamed</span>",
-    "shadowrootAttributes": [],
-    "hostAttributes": [],
-    "formatVersion": 1,
-    "bindings": []
-  }
-]
-```
-
-`name` is `null` when the `<f-template>` element has no `name` attribute. The `shadowrootAttributes` array preserves forwarded `shadowroot*` attributes as `{name, value}` metadata, using `null` for boolean attributes. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
-
-### `render_with_templates`
-
-Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator` when state is provided, or the no-state equivalent when it is omitted. This preserves the original non-entry semantics for existing JS consumers.
-
-### `render_entry_with_templates`
-
-Accepts the same arguments as `render_with_templates`, plus an optional fifth
-`stream` boolean. With `stream` omitted or `false`, it calls
-`render_entry_template_with_locator` when state is provided, or the no-state
-equivalent when it is omitted. Root-level custom elements therefore receive
-entry opening-tag handling, matching CLI entry rendering. With `stream` set to
-`true`, it calls the entry streaming APIs and serializes the resulting
-`Vec<String>` as a JSON array string. JavaScript callers parse the array before
-writing the raw chunks.
-
----
-
-## JSON parsing — `json.rs`
-
-A hand-rolled recursive-descent parser. No external crates.
-
-`parse(input)` calls `parse_value` which dispatches on the first character:
-
-| First char | Parser |
-|---|---|
-| `{` | `parse_object` |
-| `[` | `parse_array` |
-| `"` | `parse_string` |
-| `t` / `f` | `true` / `false` literals |
-| `n` | `null` |
-| `-` / digit | `parse_number` |
-
-`parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes. Non-ASCII literal characters (e.g. emoji, accented letters) are decoded as multi-byte UTF-8 sequences — the full byte sequence for each code point is consumed before advancing, avoiding the corruption that would result from casting individual bytes to `char`.
-
-`parse_number` handles integer and decimal forms. All numbers are stored as `f64`. This matches JavaScript `number` semantics but means integers larger than 2^53 lose precision. For typical template state (IDs, counts, display values) this is not a concern; very large integers should be passed as strings.
-
-`JsonValue::to_display_string` converts a value to its display form: integers are formatted without a decimal point (via `as i64`), arrays display as `[Array]`, objects as `[Object]`.
-
-`JsonValue::is_truthy` mirrors JavaScript's truthiness rules:
-
-| Value | Truthy? | Notes |
-|---|---|---|
-| `null` | ✗ | |
-| `false` | ✗ | |
-| `0` (number) | ✗ | |
-| `NaN` (number) | ✗ | `NaN` is falsy in JavaScript |
-| `""` (empty string) | ✗ | |
-| `true` | ✓ | |
-| Non-zero number | ✓ | |
-| Non-empty string | ✓ | |
-| Array (any) | ✓ | `[]` is truthy in JavaScript, even when empty |
-| Object (any) | ✓ | `{}` is truthy in JavaScript, even when empty |
-
----
-
-## Error handling — `error.rs`
-
-`RenderError` retains its display explanations and context snippets, adding stable
-`code()`, optional authored `location()`, and `template_name()` accessors.
-`Located` wraps validation variants that previously carried no source information;
-`kind()` exposes the underlying variant. Context-bearing variants use boxed
-`ErrorContext` so diagnostic metadata does not enlarge successful `Result` values.
-Source strings/ranges are captured only on failure, not per successful binding.
-
-`template_context(template, at)` takes care to:
-- Walk backwards up to 20 bytes (to a UTF-8 character boundary) for pre-error context.
-- Walk forwards up to 60 bytes for post-error context.
-- Add `…` ellipsis markers when the snippet is not at the string boundaries.
-
-`truncate(s, max)` truncates an expression to `max` characters with a trailing `…` to keep error messages readable.
-
-Recursive when/repeat bodies borrow source ranges and explicitly rebase errors;
-light-DOM children rebase past their host opening tag. A separate locator template
-finalizes its own original-content coordinates and name, preventing callers from
-rebasing them into an entry or parent definition. Locator definitions retain an
-extra original string only when code-sample escaping changed it. On failure,
-`authored_offset` reverses the preprocessor's four known brace/angle expansions;
-successful renders build no source map. UTF-16 coordinates reuse metadata's
-`SourceLocations` scanner. Streaming follows the same source boundaries.
-
-The WASM wrapper creates native JavaScript `Error` objects and attaches optional
-coordinates only for HTML failures. Invalid state/metadata/configuration,
-filesystem, missing-source, and separately supplied CSS errors do not claim HTML
-coordinates. Code lists and public semantics are in the
-[README](./README.md#error-handling). `parse_f_templates` stays permissive.
-
----
-
-## Design decisions
-
-**Rendering remains scanner-based.** The JSON parser, glob matcher, rendering HTML
-scanner, and expression evaluator are hand-rolled. The separate slot-analysis API
-uses `html5gum`, `html5ever`, and RcDom as runtime dependencies for standards-based
-HTML semantics and source locations. These dependencies do not replace or run on
-rendering paths. Criterion, serde_json, and SHA-256
-are development-only dependencies for benchmarks and parity tests.
-The native-only `allocation-counter` development dependency is used by the
-opt-in allocation example and its isolated integration test;
-wasm-bindgen remains a WASM-target dependency.
-
-**Private structural plans, not a DOM.** Instructions reference source byte ranges
-and retain parsed tag/directive metadata. Cache lifetime follows the locator;
-native callers can amortize compilation while one-shot calls pay its cost.
-
-**Recursive plan evaluation.** Directive and component renderers evaluate reusable
-body/definition plans, retaining the full feature set inside nested scopes.
-
-**Automatic state propagation.** Every custom element — whether at the entry level or deeply nested — receives the current root state as a base for its child state. Per-element HTML attributes are overlaid on top, overriding any matching keys. This means unbound state keys automatically propagate through the entire element tree without requiring explicit attribute bindings on every intermediate element. For example, a `{{text}}` binding in a grandchild element resolves from the same state as the root element, unless an ancestor explicitly overrides `text` via an attribute.
-
-**`Option<&Locator>` threading.** The locator is an optional parameter on all internal functions. Passing `None` disables custom element expansion entirely, preserving backward compatibility for callers that use `render` / `render_template`.
-
-**`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
-
-**Hydration marker formats.** Comment markers are data-free by default (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`). When `RenderConfig.markers_v2` is enabled, `HydrationScope` emits FAST Element 2.x indexed comment markers and `data-fe-b-N` / `data-fe-c-START-COUNT` attribute markers instead.
-
-**Atomic tag processing for attribute bindings.** Plain opening tags are compiled
-as complete units, so attribute bindings cannot be
-mistaken for content bindings. Normal and simulated-stream rendering use
-the same helper rather than maintaining two tag-processing implementations.
-
-**`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` for malformed templates, invalid JSON, invalid repeat expressions, and invalid directive state. Missing optional values are handled by binding context: content bindings render empty output, attribute bindings omit the attribute, `<f-when>` treats the value as falsy, and `<f-repeat>` treats a missing list binding as an empty array while still erroring when a present value is not an array.
-
-**Left-to-right event discovery.** One forward scan recognizes the next tag or
-binding and stops immediately. It does not independently search the remaining
-suffix for absent directive patterns at every host. The compatibility reference
-exists only in unit tests; no slow renderer or feature flag ships.
-
-## Performance and parity coverage
-
-`benches/fixtures/corpus.json` defines shared fixture recipes for URL-bound
-sibling hosts, repeated custom elements with nested conditionals, bound plain
-elements, many definitions, and large root state with/without attribute overlays.
-Native Criterion and Node/WASM runs cover both marker modes. The native fixture
-generator is reused by Rust integration tests; the Node generator consumes the
-same recipes, with cross-language parity checked against one pre-optimization
-golden at 0/1/2/1,000 instances.
-
-`src/directive-scan-tests.rs` retains the old directive search for differential
-testing only. A test-only `find_str` counter records its logical search spans:
-the four absent literal patterns scan 30,030,000 bytes across 1,000 adjacent
-15-byte hosts, while event discovery for 20,000 hosts performs no such searches.
-The counter measures those pattern-search ranges, not CPU instructions or
-all renderer work.
-
-See [`benchmark-baselines/README.md`](benchmark-baselines/README.md) for commands,
-timing/RSS methodology, explicit scaling checks, and baseline provenance.
-Historical post-scanner profiles identified whole-root cloning in
-`build_custom_element_child_root` as the dominant repeat/attribute-overlay cost:
-each attributed repeated child copied the root's entire items array. The current
-renderer replaces that copy with borrowed child overlays, borrowed lookup
-results, and borrowed repeat values. The no-attribute path remains intact.
-Feature-gated allocation regressions verify that unused inherited payload does
-not increase attributed-child allocations and that doubling repeated children
-does not recreate quadratic allocation growth. These checks cover allocation
-volume, not universal timing or memory guarantees.
-
-CPU profiling reuses Criterion's `--profile-time` mode with opt-in debug symbols and
-frame pointers; that path introduces no production counters or allocator changes.
-Native locator and render phases are sampled separately so a
-hot function within a cheap setup phase is not mistaken for the dominant
-end-to-end cost. Native stack frequencies do not measure WASM allocations.
-Rust integration tests verify the recorded WASM outputs against native rendering
-without imposing machine-specific timing thresholds.
-
-`examples/profile-allocations.rs` is gated by `allocation-profiling` and uses
-`allocation-counter` only in its development executable. It measures one
-synchronous phase on the current thread, after preparing the shared fixture
-and any pre-parsed state/locator. The output or new locator is retained at the
-measurement boundary; hashing, JSON serialization, and locator validation
-rendering happen afterward. First-use render measurements include lazy plan
-construction and retain cached locator metadata alongside the output; they are
-not warm-cache measurements. Separate integration-test processes avoid counting
-other tests' allocations. The library never installs this allocator.
-
-The Node orchestration under `benches/` discovers the example executable from
-Cargo JSON, launches a fresh process for each of 30 requests, and rejects mixed
-source/binary/lockfile provenance or duplicate records. Reports distinguish
-cumulative allocation volume from peak newly-live heap, exclude pre-existing
-inputs, and are not RSS or WASM measurements. They establish a baseline for
-borrowed state overlays, not an allocation reduction already delivered.
-
-Prepared WASM handles and explicitly owned multi-entry host sessions are available
-through the prepared APIs. Whole-tree buffered sinks, true streaming and workers
-remain separate potential milestones. Prepared lifecycle benchmarks must measure
-preparation, loading and warm execution separately; the native allocation baseline
-does not establish their latency or process-memory behavior.
+Existing Rust rendering assertions compile and execute generated JavaScript and
+load/render native artifacts, requiring byte-identical results before checking the
+original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
+render targets, both marker formats, DSD selection, state/ownership/errors,
+recursive graphs and malformed artifacts. These adapters are test-only.
+Legacy chunk-boundary, prepared lifecycle and native allocation benchmarks are
+retired. Node tests retain 438 distinct frozen output contracts captured from
+439 passing historical comparisons, plus the shared performance corpus baseline.
+Browser fixtures hydrate AOT output. `bench:server` measures the supported backend;
+pre-retirement comparisons remain documented as historical evidence.

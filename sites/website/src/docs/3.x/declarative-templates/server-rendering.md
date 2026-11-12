@@ -29,92 +29,91 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
-## Reusing Prepared Templates
+## Ahead-of-Time Server JavaScript
 
-For a long-running Node server, `@microsoft/fast-build/prepared.js` separates
-template preparation from request state:
-
-```js
-import { prepareRenderer } from "@microsoft/fast-build/prepared.js";
-
-const renderer = await prepareRenderer({
-    entryFile: "./entry.html",
-    templateFiles: ["./components.html"],
-    cacheDirectory: "./.fast-prepared",
-});
-
-const html = await renderer.render({ title: "Request-specific state" });
-```
-
-Preparation writes versioned instructions and a manifest, not rendered state.
-A separate server process can call `loadRenderer({ manifestPath })` with the
-generated directory and no authored template files. Disk I/O is asynchronous;
-loaded pieces are retained in a bounded cache and can be reloaded after eviction.
-The host preloads the entry's DSD-policy-required referenced-template graph,
-including selected references in skipped branches, before synchronous WASM
-execution. It does not evaluate conditions early.
-
-Call `await renderer.refresh()` to activate source changes or a replacement
-generated manifest. Content/compiler identities regenerate affected pieces;
-requests already running retain their original snapshot. Development can opt
-into file watching with `watch: true`; production refresh is explicit.
-Call `await renderer.dispose()` at shutdown to stop watchers, wait for active
-work, and release cached allocations. This does not necessarily shrink WASM memory.
-Existing synchronous APIs, CLI behavior, hydration markers and precomputed chunk
-boundaries remain unchanged. See
-[prepared template pieces](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#prepared-template-pieces)
-for deployment compatibility, update failures, memory-budget exclusions and
-artifact retention.
-
-### Build tools and selective rendering
-
-When a build tool already owns transformed templates, watching and asset emission,
-use `compileArtifacts({ entries, templates })` and
-`createPreparedRuntime({ manifest, loadArtifact, maxMemoryBytes })` instead of
-starting a filesystem watcher. The compiler accepts named entry strings and returns
-a multi-entry manifest plus piece-ID-to-byte artifacts. One runtime shares its
-cache and budget across all entries:
+Compile templates during the server build to keep WASM and template parsing out
+of the request dependency graph:
 
 ```js
-const html = await runtime.render("home", state, { dsd: ["my-card"] });
-const fragment = await runtime.renderShadowRoot("my-card", componentState);
+// Build time
+import { writeFile } from "node:fs/promises";
+import { compileServerModule } from "@microsoft/fast-build/server.js";
+
+await writeFile(
+    "./generated/server.mjs",
+    compileServerModule("<my-card></my-card>", {
+        "my-card": "<h2>{{title}}</h2>",
+    }),
+);
 ```
 
-For the next transformed batch, call
-`compileArtifacts(nextSources, { previous: prepared })` with the last complete
-result. FAST validates reuse, recalculates registry-sensitive identities and
-assembles a complete candidate without recompiling unchanged instructions.
-Input scanning/hashing still occurs. Invalid reuse rejects; retrying without
-`previous` explicitly recompiles. This API has no global cache, filesystem or
-bundler-specific assumptions.
+```js
+// Request time
+import { renderEntry, renderShadow } from "./generated/server.mjs";
 
-DSD selection is per request, not a different registry or compilation. Excluded
-components render their authored host/light DOM without template host defaults
-or shadow evaluation; selected descendants in that light DOM still render.
-`dsd: []` disables component shadow rendering and loads only the entry piece.
-Mixed selections skip excluded shadow definitions and their shadow-only
-dependencies while preserving the complete registry for classification validation.
-Fragment rendering accepts resolved
-component state and returns a complete DSD template with correct metadata/markers,
-without synthesizing a host or rendering caller-owned light DOM.
-Known excluded fragments return empty output with no artifact loading after
-request validation. Unknown names and missing/corrupt required artifacts still
-fail; excluded unused artifact bytes are not read.
+const html = renderEntry({ title: "Request-specific state" });
+const dsd = renderShadow("my-card", { title: "Component state" });
+```
 
-Emit `<id>.fast-artifact.json` files and the versioned manifest with the **server**
-build, never into the client graph. Resolve them relative to the deployed server
-output so relocation does not depend on original source paths. Generate and serve
-with matching compiler fingerprints; a package version alone is insufficient.
-For HMR, publish every new artifact before calling `runtime.activate(manifest)`,
-retain old artifacts for in-flight requests, and drain the runtime on shutdown.
-Capture `const old = runtime.snapshot` before activation and await `old.drained`
-to know when that activation's accepted readers have finished, including failed
-requests and requests blocked in loading. The handle is unique per activation,
-even when a generation is reactivated, and disposal retires the current handle.
-The application—not FAST—deletes backing objects, preserving IDs referenced by
-the current or any other undrained snapshot and coordinating other server workers.
-The filesystem wrapper remains a convenient single-entry host; different entries
-must not compete for its one `manifest.json`.
+The generated module imports only the FAST server helper. Bundle that helper
+with the server or deploy it from the matching `@microsoft/fast-build` package.
+Keep compiler/helper artifacts together and regenerate on upgrades.
+State must be acyclic JSON-shaped data, with finite numbers and ordinary data
+properties; getters, functions, class instances and nested `undefined` are rejected.
+Existing HTML bytes, server coercion and hydration markers are preserved.
+
+For named template files, use
+`fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
+Browser template/style conversion, authored classes and explicit registration
+remain separate. See the
+[server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
+for options, state restrictions and migration details.
+
+## Native Rust Compiled Artifacts
+
+JavaScript AOT is one target, not a requirement for native servers. The same
+Rust-owned executable representation can be compiled during the build with
+`compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
+`compile_server_artifact`. Deploy those bytes and the exact compiler-matching
+`microsoft-fast-build` native library together:
+
+```rust
+use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
+
+let program = CompiledArtifact::load(&std::fs::read("generated/server.fast")?)?;
+let state = parse_render_state(r#"{"title":"Native request"}"#)?;
+let html = program.render_entry(&state, &NativeRenderOptions::default())?;
+```
+
+`render_template`, `render_host` and `render_shadow` supply the corresponding
+template-context, complete-host and resolved-state DSD-fragment APIs. Artifacts
+own immutable thread-safe instructions and can be shared across requests.
+Loading validates version/compiler/helper identity, operations and references;
+rendering owns request-local state, counters and output. Neither loading nor
+rendering executes JavaScript or reparses authored HTML. Escaping, nested state,
+DSD selection and both hydration formats conform to the generated JS target.
+
+Native errors are recoverable, with state/recursion/step/output limits. See the
+[native deployment and memory/error contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+Native Rust hosting is supported now; a stable C ABI and .NET bindings are
+follow-up work. This release does not provide a C# host or separate C# semantics.
+
+## Migration from request-time source rendering
+
+Generated server JavaScript and native Rust artifact rendering are supported
+targets of the shared compiler. The previous prepared renderer/piece formats,
+request-time WASM exports and source-rendering Rust functions are removed.
+Rebuild modules/artifacts when upgrading; old prepared artifacts cannot be loaded
+by the new implementation.
+
+Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
+for component-state DSD fragments. Use `renderTemplate` when migrating previous
+non-entry `render`/`render_with_templates` calls to preserve their different
+root-host attribute handling. Each returns a complete synchronous string;
+the previous precomputed chunk-array APIs and `--stream` flag are removed.
+`fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
+The application owns build invalidation, module/artifact loading and deployment activation.
+See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
 
 ## The Rendering Contract
 

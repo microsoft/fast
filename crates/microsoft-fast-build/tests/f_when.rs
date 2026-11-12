@@ -4,7 +4,10 @@ use common::ok;
 #[test]
 fn test_f_when_truthy() {
     assert_eq!(
-        ok(r#"<f-when value="{{show}}"><span>Visible</span></f-when>"#, r#"{"show": true}"#),
+        ok(
+            r#"<f-when value="{{show}}"><span>Visible</span></f-when>"#,
+            r#"{"show": true}"#
+        ),
         "<span>Visible</span>",
     );
 }
@@ -12,7 +15,10 @@ fn test_f_when_truthy() {
 #[test]
 fn test_f_when_falsy() {
     assert_eq!(
-        ok(r#"<f-when value="{{show}}"><span>Hidden</span></f-when>"#, r#"{"show": false}"#),
+        ok(
+            r#"<f-when value="{{show}}"><span>Hidden</span></f-when>"#,
+            r#"{"show": false}"#
+        ),
         "",
     );
 }
@@ -20,7 +26,10 @@ fn test_f_when_falsy() {
 #[test]
 fn test_f_when_negation() {
     assert_eq!(
-        ok(r#"<f-when value="{{!hidden}}"><span>Visible</span></f-when>"#, r#"{"hidden": false}"#),
+        ok(
+            r#"<f-when value="{{!hidden}}"><span>Visible</span></f-when>"#,
+            r#"{"hidden": false}"#
+        ),
         "<span>Visible</span>",
     );
 }
@@ -28,7 +37,10 @@ fn test_f_when_negation() {
 #[test]
 fn test_f_when_equality_string() {
     assert_eq!(
-        ok(r#"<f-when value="{{status == 'active'}}"><span>Active</span></f-when>"#, r#"{"status": "active"}"#),
+        ok(
+            r#"<f-when value="{{status == 'active'}}"><span>Active</span></f-when>"#,
+            r#"{"status": "active"}"#
+        ),
         "<span>Active</span>",
     );
 }
@@ -36,7 +48,10 @@ fn test_f_when_equality_string() {
 #[test]
 fn test_f_when_equality_bool() {
     assert_eq!(
-        ok(r#"<f-when value="{{flag == true}}"><span>Yes</span></f-when>"#, r#"{"flag": true}"#),
+        ok(
+            r#"<f-when value="{{flag == true}}"><span>Yes</span></f-when>"#,
+            r#"{"flag": true}"#
+        ),
         "<span>Yes</span>",
     );
 }
@@ -44,7 +59,10 @@ fn test_f_when_equality_bool() {
 #[test]
 fn test_f_when_not_equal() {
     assert_eq!(
-        ok(r#"<f-when value="{{status != 'inactive'}}"><span>Not Inactive</span></f-when>"#, r#"{"status": "active"}"#),
+        ok(
+            r#"<f-when value="{{status != 'inactive'}}"><span>Not Inactive</span></f-when>"#,
+            r#"{"status": "active"}"#
+        ),
         "<span>Not Inactive</span>",
     );
 }
@@ -52,7 +70,10 @@ fn test_f_when_not_equal() {
 #[test]
 fn test_f_when_or() {
     assert_eq!(
-        ok(r#"<f-when value="{{a || b}}"><span>Either</span></f-when>"#, r#"{"a": false, "b": true}"#),
+        ok(
+            r#"<f-when value="{{a || b}}"><span>Either</span></f-when>"#,
+            r#"{"a": false, "b": true}"#
+        ),
         "<span>Either</span>",
     );
 }
@@ -60,11 +81,17 @@ fn test_f_when_or() {
 #[test]
 fn test_f_when_and() {
     assert_eq!(
-        ok(r#"<f-when value="{{a && b}}"><span>Both</span></f-when>"#, r#"{"a": true, "b": true}"#),
+        ok(
+            r#"<f-when value="{{a && b}}"><span>Both</span></f-when>"#,
+            r#"{"a": true, "b": true}"#
+        ),
         "<span>Both</span>",
     );
     assert_eq!(
-        ok(r#"<f-when value="{{a && b}}"><span>Both</span></f-when>"#, r#"{"a": true, "b": false}"#),
+        ok(
+            r#"<f-when value="{{a && b}}"><span>Both</span></f-when>"#,
+            r#"{"a": true, "b": false}"#
+        ),
         "",
     );
 }
@@ -72,11 +99,17 @@ fn test_f_when_and() {
 #[test]
 fn test_f_when_numeric_comparison() {
     assert_eq!(
-        ok(r#"<f-when value="{{count > 3}}"><span>Many</span></f-when>"#, r#"{"count": 5}"#),
+        ok(
+            r#"<f-when value="{{count > 3}}"><span>Many</span></f-when>"#,
+            r#"{"count": 5}"#
+        ),
         "<span>Many</span>",
     );
     assert_eq!(
-        ok(r#"<f-when value="{{count < 3}}"><span>Few</span></f-when>"#, r#"{"count": 5}"#),
+        ok(
+            r#"<f-when value="{{count < 3}}"><span>Few</span></f-when>"#,
+            r#"{"count": 5}"#
+        ),
         "",
     );
 }
@@ -86,7 +119,10 @@ fn test_f_when_numeric_comparison() {
 #[test]
 fn test_when_array_length_gt_zero() {
     assert_eq!(
-        ok(r#"<f-when value="{{items.length > 0}}">has items</f-when>"#, r#"{"items": ["x"]}"#),
+        ok(
+            r#"<f-when value="{{items.length > 0}}">has items</f-when>"#,
+            r#"{"items": ["x"]}"#
+        ),
         "has items",
     );
 }
@@ -94,7 +130,10 @@ fn test_when_array_length_gt_zero() {
 #[test]
 fn test_when_array_length_zero() {
     assert_eq!(
-        ok(r#"<f-when value="{{items.length > 0}}">has items</f-when>"#, r#"{"items": []}"#),
+        ok(
+            r#"<f-when value="{{items.length > 0}}">has items</f-when>"#,
+            r#"{"items": []}"#
+        ),
         "",
     );
 }

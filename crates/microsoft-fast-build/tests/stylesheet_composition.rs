@@ -1,7 +1,8 @@
+mod common;
+use crate::common::{render_entry_template_stream_with_locator, render_template_with_locator};
 use microsoft_fast_build::{
     compose_f_template_styles, compose_f_template_styles_with_options, parse_f_templates,
-    render_entry_template_stream_with_locator, render_template_with_locator, CompositionSource,
-    ErrorLocation, Locator, Stylesheet,
+    CompositionSource, ErrorLocation, Locator, Stylesheet,
 };
 
 fn inline<'a>(css: &'a str, style_id: Option<&'a str>) -> Stylesheet<'a> {

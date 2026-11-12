@@ -35,24 +35,6 @@ impl DsdSelection {
             Self::Only(names) => names.contains(name),
         }
     }
-
-    #[cfg(any(target_arch = "wasm32", test))]
-    pub(crate) fn from_json(source: &str) -> Result<Self, crate::RenderError> {
-        let invalid = || crate::RenderError::InvalidTemplateMetadata {
-            message: "dsd selection must be a JSON array of component-name strings".into(),
-        };
-        match crate::json::parse(source).map_err(|_| invalid())? {
-            crate::JsonValue::Array(values) => values
-                .into_iter()
-                .map(|value| match value {
-                    crate::JsonValue::String(name) => Ok(name),
-                    _ => Err(invalid()),
-                })
-                .collect::<Result<_, _>>()
-                .map(Self::Only),
-            _ => Err(invalid()),
-        }
-    }
 }
 
 /// Configuration options for the FAST template renderer.
@@ -90,28 +72,5 @@ impl RenderConfig {
     pub fn with_dsd_selection(mut self, selection: DsdSelection) -> Self {
         self.dsd_selection = selection;
         self
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn selection_json_requires_an_array_of_strings() {
-        for source in ["{", "null", "{}", r#""card""#, "[1]", r#"["card",false]"#] {
-            assert_eq!(
-                DsdSelection::from_json(source).unwrap_err().code(),
-                "invalid-template-metadata",
-            );
-        }
-        assert_eq!(
-            DsdSelection::from_json("[]").unwrap(),
-            DsdSelection::Only(Default::default())
-        );
-        assert_eq!(
-            DsdSelection::from_json(r#"["card","card"]"#).unwrap(),
-            DsdSelection::Only(["card".into()].into()),
-        );
     }
 }

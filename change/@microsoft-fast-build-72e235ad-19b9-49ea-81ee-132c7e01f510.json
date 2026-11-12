@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Compile shared byte-preserving server instructions to ahead-of-time JavaScript or reusable native Rust artifacts, replacing request-time source rendering and prepared lifecycle APIs.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
