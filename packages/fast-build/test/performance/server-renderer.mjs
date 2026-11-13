@@ -18,13 +18,18 @@ const { values: args } = parseArgs({
         samples: { type: "string", default: "3" },
         iterations: { type: "string", default: "100" },
         instances: { type: "string", default: "200" },
+        warmup: { type: "string", default: "20" },
+        "profile-directory": { type: "string" },
         output: { type: "string" },
     },
 });
 const hash = text => createHash("sha256").update(text).digest("hex");
-const integer = name => {
+const integer = (name, minimum = 1) => {
     const value = Number(args[name]);
-    assert.ok(Number.isSafeInteger(value) && value > 0, `${name} must be positive`);
+    assert.ok(
+        Number.isSafeInteger(value) && value >= minimum,
+        `${name} must be ${minimum === 0 ? "nonnegative" : "positive"}`,
+    );
     return value;
 };
 
@@ -35,41 +40,59 @@ if (args.worker) {
 }
 
 async function worker() {
+    const workerSetupMs = performance.now();
     assert.equal(args.worker, "aot", "Only the AOT backend is supported.");
-    const source = JSON.parse(
-        await fs.readFile(path.join(args.directory, "input.json"), "utf8"),
-    );
+    const readStart = performance.now();
+    const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
+    const inputReadMs = performance.now() - readStart;
+    const parseStart = performance.now();
+    const source = JSON.parse(input);
+    const inputParseMs = performance.now() - parseStart;
     const iterations = integer("iterations");
+    const warmupIterations = integer("warmup", 0);
     const memoryBefore = process.memoryUsage();
-    const start = performance.now();
+    const importStart = performance.now();
     const module = await import(
         pathToFileURL(path.join(args.directory, "server.mjs")).href
     );
+    const moduleImportMs = performance.now() - importStart;
     const render = () => module.renderEntry(source.state);
+    const firstStart = performance.now();
     const html = render();
-    const firstRenderMs = performance.now() - start;
+    const firstRenderMs = performance.now() - firstStart;
     const memoryAfterFirst = process.memoryUsage();
-    for (let index = 0; index < 20; index++) {
-        render();
+    const output = await writeOutput(html);
+    let latest = html;
+    const warmupStart = performance.now();
+    for (let index = 0; index < warmupIterations; index++) {
+        latest = render();
     }
+    const warmupMs = performance.now() - warmupStart;
+    assert.equal(latest, html, "warmup output differs from first render");
     globalThis.gc?.();
     const memoryWarm = process.memoryUsage();
     let gcCount = 0;
     let gcMs = 0;
+    let warmStart;
+    let warmEnd;
     const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
-            gcCount++;
-            gcMs += entry.duration;
+            if (entry.startTime >= warmStart && entry.startTime < warmEnd) {
+                gcCount++;
+                gcMs += entry.duration;
+            }
         }
     });
     observer.observe({ entryTypes: ["gc"] });
     const cpu = process.cpuUsage();
-    const warmStart = performance.now();
+    warmStart = performance.now();
     for (let index = 0; index < iterations; index++) {
-        render();
+        latest = render();
     }
-    const warmMs = performance.now() - warmStart;
+    warmEnd = performance.now();
+    const warmMs = warmEnd - warmStart;
     const cpuUsed = process.cpuUsage(cpu);
+    assert.equal(latest, html, "warm output differs from first render");
     await new Promise(resolve => setImmediate(resolve));
     await new Promise(resolve => setImmediate(resolve));
     observer.disconnect();
@@ -78,7 +101,15 @@ async function worker() {
     const memoryRetained = process.memoryUsage();
     console.log(
         JSON.stringify({
+            reportVersion: 2,
+            workerSetupMs,
+            inputReadMs,
+            inputParseMs,
+            moduleImportMs,
             firstRenderMs,
+            coldImportAndRenderMs: moduleImportMs + firstRenderMs,
+            warmupMs,
+            warmupIterations,
             warmMsPerRender: warmMs / iterations,
             cpuMsPerRender: (cpuUsed.user + cpuUsed.system) / 1000 / iterations,
             iterations,
@@ -89,19 +120,43 @@ async function worker() {
             memoryWarm,
             memoryAfterWarm,
             memoryRetained,
-            outputBytes: Buffer.byteLength(html),
-            outputHash: hash(html),
+            ...output,
         }),
     );
+}
+
+async function writeOutput(html) {
+    const encodeStart = performance.now();
+    const bytes = Buffer.from(html, "utf8");
+    const utf8EncodeMs = performance.now() - encodeStart;
+    const writeStart = performance.now();
+    await fs.writeFile(path.join(args.directory, "rendered.html"), bytes);
+    const outputWriteMs = performance.now() - writeStart;
+    return {
+        utf8EncodeMs,
+        outputWriteMs,
+        outputBytes: bytes.length,
+        outputHash: hash(bytes),
+    };
 }
 
 async function main() {
     const samples = integer("samples");
     const instances = integer("instances");
-    integer("iterations");
-    const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-server-bench-"));
+    const iterations = integer("iterations");
+    const warmupIterations = integer("warmup", 0);
+    let profileDirectory;
+    if (args["profile-directory"]) {
+        const root = path.resolve(args["profile-directory"]);
+        await fs.mkdir(root, { recursive: true });
+        profileDirectory = await fs.mkdtemp(path.join(root, "fast-server-profile-"));
+    }
+    const compilerStart = performance.now();
     const { compileServerModule } = require("../../server.js");
+    require("../../wasm/microsoft_fast_build.js");
+    const compilerLoadMs = performance.now() - compilerStart;
     const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
+    const workloadStart = performance.now();
     const workloads = {
         static: {
             entry: "<bench-static></bench-static>".repeat(instances),
@@ -152,40 +207,73 @@ async function main() {
         largeState: fixture("large_state_overlay", instances, 1, 2000),
     };
     const results = {
+        reportVersion: 2,
         node: process.version,
         platform: `${process.platform}/${process.arch}`,
         samples,
         instances,
+        iterations,
+        warmupIterations,
+        compilerLoadMs,
+        workloadSetupMs: performance.now() - workloadStart,
+        profileDirectory,
         runtimeBytes: (await fs.stat(require.resolve("../../server-runtime.mjs"))).size,
         wasmBytes: (
             await fs.stat(require.resolve("../../wasm/microsoft_fast_build_bg.wasm"))
         ).size,
         workloads: {},
     };
+    const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-server-bench-"));
     try {
         for (const [name, input] of Object.entries(workloads)) {
+            const inputStart = performance.now();
             await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
+            const inputWriteMs = performance.now() - inputStart;
+            const compileStart = performance.now();
             const source = compileServerModule(input.entry, input.templates, runtime);
+            const compileMs = performance.now() - compileStart;
+            const writeStart = performance.now();
             await fs.writeFile(path.join(directory, "server.mjs"), source);
+            const artifactWriteMs = performance.now() - writeStart;
             const record = {
+                inputWriteMs,
+                compileMs,
+                artifactWriteMs,
                 generatedBytes: Buffer.byteLength(source),
                 modes: { aot: [] },
             };
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                const result = JSON.parse(
-                    execFileSync(
-                        process.execPath,
-                        [
-                            "--expose-gc",
-                            fileURLToPath(import.meta.url),
-                            "--worker=aot",
-                            `--directory=${directory}`,
-                            `--iterations=${args.iterations}`,
-                        ],
-                        { encoding: "utf8" },
-                    ),
+                const profileName = `${name}-${sample + 1}.cpuprofile`;
+                const processStart = performance.now();
+                const response = execFileSync(
+                    process.execPath,
+                    [
+                        "--expose-gc",
+                        ...(profileDirectory
+                            ? [
+                                  "--cpu-prof",
+                                  `--cpu-prof-dir=${profileDirectory}`,
+                                  `--cpu-prof-name=${profileName}`,
+                              ]
+                            : []),
+                        fileURLToPath(import.meta.url),
+                        "--worker=aot",
+                        `--directory=${directory}`,
+                        `--iterations=${iterations}`,
+                        `--warmup=${warmupIterations}`,
+                    ],
+                    {
+                        encoding: "utf8",
+                        env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
+                    },
                 );
+                const workerProcessMs = performance.now() - processStart;
+                const result = { ...JSON.parse(response), workerProcessMs };
+                if (profileDirectory) {
+                    result.cpuProfile = path.join(profileDirectory, profileName);
+                    await fs.stat(result.cpuProfile);
+                }
                 expected ??= result.outputHash;
                 assert.equal(result.outputHash, expected, `${name}/aot output differs`);
                 record.modes.aot.push(result);

@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Separate cold, warm and delivery timings in the server benchmark and add optional CPU profiles.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
