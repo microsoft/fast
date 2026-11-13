@@ -22,6 +22,38 @@ keywords:
 
 When working with a custom element's shadow DOM, you often need references to structural pieces within the template. FAST Element provides directives that reference and manipulate elements in the template and control rendering based on conditions or data.
 
+## Host Bindings
+
+Use `host()` inside an `html` template to bind the component's host element.
+It replaces the need to wrap the template in a `<template>` tag solely for host
+attributes and event bindings:
+
+```ts
+import { host, html } from "@microsoft/fast-element";
+
+const template = html<MyElement>`
+  ${host<MyElement>({
+    role: "button",
+    "aria-label": component => component.label,
+    ":tabIndex": 0,
+    "?disabled": component => component.disabled,
+    "@click": component => component.activate(),
+  })}
+  <span>${component => component.label}</span>
+`;
+```
+
+The object keys use the same binding prefixes as HTML attributes: `:` for
+properties, `?` for boolean attributes, and `@` for events. Values can be static,
+binding expressions, or binding objects such as `oneTime()` and `listener()`.
+Bindings update and unbind with the containing view. The directive creates no
+element or content placeholder.
+
+Place `host()` in the component's own template. Templates rendered by `when()`
+and `repeat()` do not receive the component's host binding target.
+You can also import the directive from `@microsoft/fast-element/host.js`.
+For declarative HTML, use [`<f-host>`](../declarative-templates/f-templates.md#host-bindings).
+
 ## Rendering Directives
 
 Rendering directives control what renders based on conditions or data. FAST Element provides two: `repeat` and `when`.

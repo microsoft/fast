@@ -5,6 +5,12 @@
 
 The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. Its Rust/WASM build-time compiler lowers one executable representation for server JavaScript (zero runtime npm dependencies) and supported native Rust artifact rendering.
 
+An empty `<f-host>` in a component template supplies host attributes using the
+same rules as attributes on the wrapping `<template>`. The directive does not
+appear in rendered shadow DOM or consume hydration marker indexes. Static and
+server-evaluated attributes are applied to the host; client-only bindings activate
+in the browser.
+
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
 
 ## Installation

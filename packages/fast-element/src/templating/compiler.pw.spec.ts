@@ -730,6 +730,61 @@ test.describe("The template compiler", () => {
     });
 
     test.describe("when compiling hosts", () => {
+        test("compiles host directives without changing neighboring targets", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { host, html } = await import("/main.js");
+                let clicks = 0;
+                const source = {
+                    text: "content",
+                    hidden: true,
+                    click() {
+                        clicks++;
+                        return true;
+                    },
+                };
+                const template = html`
+                    <span>${(model: typeof source) => model.text}</span>
+                    ${host({
+                        role: "button",
+                        "?hidden": (model: typeof source) => model.hidden,
+                        "@click": (model: typeof source) => model.click(),
+                    })}
+                    <span title=${(model: typeof source) => model.text}></span>
+                `;
+                const targetIds = template
+                    .compile()
+                    .factories.map(
+                        (factory: { targetNodeId: string }) => factory.targetNodeId,
+                    );
+                const target = document.createElement("div");
+                const view = template.create(target);
+                view.bind(source);
+                view.appendTo(target);
+                target.click();
+
+                return {
+                    targetIds,
+                    role: target.getAttribute("role"),
+                    hidden: target.hasAttribute("hidden"),
+                    clicks,
+                    hostDirectives: target.querySelectorAll("f-host").length,
+                    content: target.querySelector("span")!.textContent,
+                    title: target.querySelectorAll("span")[1].getAttribute("title"),
+                };
+            });
+
+            expect(result.targetIds).toEqual(["h", "h", "h", "r.1.0", "r.3"]);
+            expect(result.role).toBe("button");
+            expect(result.hidden).toBe(true);
+            expect(result.clicks).toBe(1);
+            expect(result.hostDirectives).toBe(0);
+            expect(result.content).toBe("content");
+            expect(result.title).toBe("content");
+        });
+
         const hostScenarioTypes = [
             "no",
             "a single",

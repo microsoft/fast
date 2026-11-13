@@ -119,6 +119,35 @@ Boolean bindings also support expressions with comparison operators:
 <button ?disabled="{{status == 'locked'}}">Submit</button>
 ```
 
+## Host Bindings
+
+Use `<f-host>` to apply attributes, properties, and events to the component's
+host rather than to an element in its shadow root:
+
+```html
+<f-template name="action-button">
+    <template>
+        <f-host
+            role="button"
+            tabindex="0"
+            aria-label="{{label}}"
+            ?disabled="{{disabled}}"
+            @click="{activate()}">
+        </f-host>
+        <span>{{label}}</span>
+    </template>
+</f-template>
+```
+
+`<f-host>` uses the usual declarative binding syntax and is not rendered as an
+element. Give it an explicit closing tag and leave its content empty. Place it in
+the component's own template, outside `<f-when>` and `<f-repeat>` bodies.
+Bindings on the outer `<template>` remain supported.
+For bindings with the same key, `<f-host>` overrides the outer `<template>`,
+and the last `<f-host>` wins. Overridden bindings are inactive.
+This syntax resolves to the same [`host()` directive](../getting-started/html-directives.md#host-bindings)
+used in tagged templates.
+
 ## Event Bindings
 
 Event bindings use the `@` prefix and single curly braces (client-only). The handler name must include parentheses `()`:

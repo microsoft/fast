@@ -11,6 +11,8 @@ import {
     closeExpression,
     eventArgAccessor,
     executionContextAccessor,
+    hostDirectiveClose,
+    hostDirectiveOpen,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -115,7 +117,7 @@ export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
  * Declarative template directive names.
  * @public
  */
-export type TemplateDirective = "when" | "repeat";
+export type TemplateDirective = "when" | "repeat" | "host";
 
 /**
  * Template directive behavior configuration.
@@ -328,6 +330,7 @@ export function getIndexOfNextMatchingTag(
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
     const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
     const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+    const hostIndex = innerHTML.indexOf(hostDirectiveOpen);
 
     const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
 
@@ -343,11 +346,23 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
         openingTagStartIndex = whenIndex;
     }
 
-    const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
-    const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
-        openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
+    if (
+        hostIndex !== -1 &&
+        (openingTagStartIndex === -1 || hostIndex < openingTagStartIndex)
+    ) {
+        openingTag = hostDirectiveOpen;
+        closingTag = hostDirectiveClose;
+        directiveTag = "host";
+        openingTagStartIndex = hostIndex;
+    }
 
-    const directiveValue = getNextDataBindingBehavior(innerHTML);
+    const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
+    const openingTagEndIndex =
+        parseOpeningTagForCodeEscape(innerHTML, openingTagStartIndex)?.tagEnd ??
+        openingTagStartIndex;
+
+    const directiveValue =
+        directiveTag === "host" ? null : getNextDataBindingBehavior(innerHTML);
 
     const matchingCloseTagIndex = getIndexOfNextMatchingTag(
         openingTagStartSlice,
@@ -359,10 +374,12 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
     return {
         type: "templateDirective",
         name: directiveTag,
-        value: innerHTML.slice(
-            directiveValue.openingEndIndex,
-            directiveValue.closingStartIndex,
-        ),
+        value: directiveValue
+            ? innerHTML.slice(
+                  directiveValue.openingEndIndex,
+                  directiveValue.closingStartIndex,
+              )
+            : "",
         openingTagStartIndex,
         openingTagEndIndex,
         closingTagStartIndex: matchingCloseTagIndex,
@@ -552,17 +569,31 @@ export function getNextBehavior(
         const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
         const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
         const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
-        const directiveBindingOpen =
+        const hostDirectiveIndex = currentSlice.indexOf(hostDirectiveOpen);
+        let directiveBindingOpen =
             whenDirectiveIndex === -1
                 ? repeatDirectiveIndex
                 : repeatDirectiveIndex === -1
                   ? whenDirectiveIndex
                   : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
-        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
-
+        if (
+            hostDirectiveIndex !== -1 &&
+            (directiveBindingOpen === -1 || hostDirectiveIndex < directiveBindingOpen)
+        ) {
+            directiveBindingOpen = hostDirectiveIndex;
+        }
         if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
             return null;
         }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
         if (
             dataBindingOpen !== -1 &&
@@ -571,13 +602,6 @@ export function getNextBehavior(
         ) {
             offset = nextDataBindingBehavior.closingEndIndex + offset;
             continue;
-        }
-
-        if (
-            directiveBindingOpen !== -1 &&
-            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
-        ) {
-            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
         }
 
         return offsetDataBinding(nextDataBindingBehavior, offset);

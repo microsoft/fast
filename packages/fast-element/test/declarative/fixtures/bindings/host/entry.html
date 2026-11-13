@@ -17,7 +17,8 @@ host-all-types-element,
 host-perm-attr-first,
 host-perm-bool-first,
 host-perm-prop-first,
-host-autofocus {
+host-autofocus,
+host-directive-element {
     display: block;
     margin: 10px 0;
     padding: 10px;
@@ -55,6 +56,7 @@ host-autofocus {
         ></host-perm-prop-first>
         <!-- biome-ignore lint/a11y/noAutofocus: deliberate fixture verifying author-provided host attribute propagation through SSR -->
         <host-autofocus autofocus></host-autofocus>
+        <host-directive-element text="host directive"></host-directive-element>
         <script type="module" src="./main.ts"></script>
     </body>
 </html>
