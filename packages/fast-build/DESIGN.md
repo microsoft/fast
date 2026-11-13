@@ -74,6 +74,17 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts; authored-manifest changes remain incompatible |
 | `test/performance/` | Shared output-baseline tests and fresh-process AOT measurements |
 
+### Benchmark phase ownership
+
+The version-2 benchmark report measures compiler loading, fixture setup,
+per-workload compilation/artifact writing, child setup/input loading, module
+import, isolated first render, explicit warmup, warm rendering and UTF-8/file
+delivery separately. Child samples disable Node's compile cache; optional CPU
+profiles persist independently of temporary benchmark files. Warm GC events are
+scoped to the measured loop, and output comparisons run outside render timers.
+Historical combined cold timings use `coldImportAndRenderMs`, not the version-2
+`firstRenderMs`. This is benchmark tooling, not a rendering API or runtime change.
+
 ## Template loading — `parseFTemplates`
 
 Parsed definitions now include versioned binding metadata. The JavaScript layer

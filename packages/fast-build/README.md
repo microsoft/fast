@@ -76,6 +76,12 @@ See [the server module contract and benchmark guide](./docs/server-modules.md)
 for selection, diagnostics, deployment compatibility, migration, and measurement
 boundaries.
 
+For contributors, the repository's `bench:server` script reports compilation,
+startup/import, first render, warm rendering and UTF-8/file delivery separately.
+The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
+documents configurable warmup, optional CPU profiles and historical report
+comparison.
+
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
