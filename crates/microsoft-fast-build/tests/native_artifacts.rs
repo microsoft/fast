@@ -47,6 +47,97 @@ fn js(source: &str, state: &str, options: Value, target: &str, name: &str) -> Va
 }
 
 #[test]
+fn static_markup_does_not_expand_into_per_tag_rendering_code() {
+    let locator = common::make_locator(&[]);
+    for count in [64, 256] {
+        let entry = "<section class=\"panel\"><h2>Static &amp; text</h2><p title='fixed'>Payload</p><br /></section>\n".repeat(count);
+        let bytes = compile_server_artifact(&entry, &locator).unwrap();
+        let ir: Value = serde_json::from_slice(&bytes).unwrap();
+        let body = &ir["bodies"][ir["entry"].as_u64().unwrap() as usize];
+        assert_eq!(
+            body,
+            &json!([["literal", entry]]),
+            "invariant static tags should form one literal run"
+        );
+        let artifact = CompiledArtifact::load(&bytes).unwrap();
+        let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+        assert!(
+            source.len() < entry.len() * 3 / 2,
+            "static output expanded into generalized JavaScript"
+        );
+        assert_eq!(
+            artifact
+                .render_entry(&common::empty_root(), &Default::default())
+                .unwrap(),
+            entry
+        );
+        assert_eq!(
+            json!({"value":entry}),
+            js(&source, "{}", json!({}), "entry", "")
+        );
+    }
+}
+
+#[test]
+fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
+    let prefix = "<section class='fixed'>Static &amp; text<br /></section>\n";
+    let variant = "<p  title='raw &amp;' :value=\"static\"> spaced </p>";
+    let stripped = "<p title='raw &amp;'> spaced </p>";
+    let suffix = "\n<svg viewBox='0 0 1 1'><path d='M0 0' /></svg>";
+    let template = format!("{prefix}{variant}<b title=\"{{{{label}}}}\">{{{{label}}}}</b>{suffix}");
+    let locator = common::make_locator_with_host_attrs(&[(
+        "test-static",
+        &template,
+        &[("title", Some("A < & \" default"))],
+    )]);
+    let entry = "<test-static></test-static>";
+    let bytes = compile_server_artifact(entry, &locator).unwrap();
+    let artifact = CompiledArtifact::load(&bytes).unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let state_json = r#"{"label":"<&"}"#;
+    let state = parse_render_state(state_json).unwrap();
+    for v2 in [false, true] {
+        let options = NativeRenderOptions {
+            markers_v2: v2,
+            ..Default::default()
+        };
+        let bound = if v2 {
+            "<b title=\"&lt;&amp;\" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b-->&lt;&amp;<!--fe-b$$end$$1$$fast-build$$fe-b--></b>"
+        } else {
+            "<b title=\"&lt;&amp;\" data-fe=\"1\"><!--fe:b-->&lt;&amp;<!--fe:/b--></b>"
+        };
+        let shadow = format!("<template shadowrootmode=\"open\" shadowroot=\"open\">{prefix}{stripped}{bound}{suffix}</template>");
+        let expected =
+            format!("<test-static title=\"A &lt; &amp; &quot; default\">{shadow}</test-static>");
+        assert_eq!(artifact.render_entry(&state, &options).unwrap(), expected);
+        assert_eq!(
+            artifact
+                .render_shadow("test-static", &state, &options)
+                .unwrap(),
+            shadow
+        );
+        assert_eq!(
+            json!({"value":expected}),
+            js(&source, state_json, json!({"markersV2":v2}), "entry", "")
+        );
+        let deselected = NativeRenderOptions {
+            dsd: Some(vec![]),
+            ..options
+        };
+        assert_eq!(
+            artifact.render_entry(&state, &deselected).unwrap(),
+            "<test-static></test-static>"
+        );
+        let plain =
+            CompiledArtifact::load(&compile_server_artifact(&template, &locator).unwrap()).unwrap();
+        assert_eq!(
+            plain.render_template(&state, &deselected).unwrap(),
+            format!("{prefix}{variant}<b title=\"&lt;&amp;\">&lt;&amp;</b>{suffix}")
+        );
+    }
+}
+
+#[test]
 fn instance_constants_do_not_duplicate_javascript_element_functions() {
     let locator = common::make_locator(&[(
         "test-item",

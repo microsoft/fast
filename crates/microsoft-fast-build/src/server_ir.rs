@@ -100,6 +100,22 @@ fn literal(text: impl Into<String>) -> Value {
     json!(["literal", text.into()])
 }
 
+fn append(ops: &mut Vec<Value>, op: Value) {
+    if op[0] == "literal" {
+        let text = op[1].as_str().unwrap();
+        if text.is_empty() {
+            return;
+        }
+        if let Some(last) = ops.last_mut().filter(|last| last[0] == "literal") {
+            if let Value::String(previous) = &mut last[1] {
+                previous.push_str(text);
+                return;
+            }
+        }
+    }
+    ops.push(op);
+}
+
 // 0: ordinary tag; 1: entry host; 2: template host defaults.
 fn attribute(name: &str, val: Option<&str>, raw: &str, mode: u8) -> Value {
     if let Some(bare) = name.strip_prefix('?') {
@@ -163,17 +179,24 @@ fn attribute(name: &str, val: Option<&str>, raw: &str, mode: u8) -> Value {
 }
 
 fn attributes(raw: &str, strip: bool, mode: u8) -> Vec<Value> {
-    parse_element_attribute_parts(raw)
-        .into_iter()
-        .filter(|attr| !strip || !client_only(&attr.name))
-        .map(|attr| attribute(&attr.name, attr.value.as_deref(), &attr.raw, mode))
-        .collect()
+    let mut parts = Vec::new();
+    for attr in parse_element_attribute_parts(raw) {
+        if !strip || !client_only(&attr.name) {
+            append(
+                &mut parts,
+                attribute(&attr.name, attr.value.as_deref(), &attr.raw, mode),
+            );
+        }
+    }
+    parts
 }
 
 fn resolved_tag(raw: &str, strip: bool) -> Vec<Value> {
     let name = crate::attribute::read_tag_name(raw, 0).unwrap();
     let mut parts = vec![literal(format!("<{name}"))];
-    parts.extend(attributes(raw, strip, 0));
+    for attr in attributes(raw, strip, 0) {
+        append(&mut parts, attr);
+    }
     parts
 }
 
@@ -190,7 +213,7 @@ fn tag(source: &str, tag: &Tag) -> Value {
         vec![literal(raw)]
     } else {
         let mut parts = resolved_tag(raw, false);
-        parts.push(literal(ending));
+        append(&mut parts, literal(ending));
         parts
     };
     let hydrated = if tag.total_bindings == 0 {
@@ -238,9 +261,16 @@ impl Lowerer<'_> {
         }
         let mut ops = Vec::new();
         for instruction in RenderPlan::compile(source, Some(self.locator)).instructions {
-            ops.push(match instruction {
+            let op = match instruction {
                 Instruction::Literal(range) => literal(&source[range]),
-                Instruction::Tag(t) => json!(["tag", tag(source, &t)]),
+                Instruction::Tag(t) => {
+                    let raw = &source[t.range.clone()];
+                    if t.total_bindings == 0 && raw == t.stripped {
+                        literal(raw)
+                    } else {
+                        json!(["tag", tag(source, &t)])
+                    }
+                }
                 Instruction::Binding {
                     expression,
                     escaped,
@@ -295,7 +325,8 @@ impl Lowerer<'_> {
                         Directive::CustomElement(_) => Element::parse(source, at).unwrap_err(),
                     });
                 }
-            });
+            };
+            append(&mut ops, op);
         }
         Ok(self.intern(ops))
     }
@@ -385,7 +416,9 @@ impl Lowerer<'_> {
             resolved_tag(&el.base, true)
         };
         let mut entry = vec![literal(format!("<{}", el.name))];
-        entry.extend(attributes(&el.base, true, 1));
+        for attr in attributes(&el.base, true, 1) {
+            append(&mut entry, attr);
+        }
         Ok(json!(["element", {
             "name":el.name, "body":body, "closing":&source[children.range.end..el.after],
             "opening":tag(source, &el.opening), "props":props, "entry":entry, "normal":normal,

@@ -275,11 +275,18 @@ fn tag(value: &Value) -> String {
 }
 
 fn body(name: &str, ops: &Value, shared: &SharedElements, parameterized: bool) -> String {
+    let operations = ops.as_array().unwrap();
+    if operations.is_empty() || (operations.len() == 1 && operations[0][0] == "literal") {
+        let output = operations
+            .first()
+            .map_or_else(|| "\"\"".into(), |op| js(&op[1]));
+        return format!("function {name}(r,l,o,h,e) {{ return {output}; }}\n");
+    }
     let mut code = format!(
         "function {name}(r,l,o,h,e{}) {{\nlet out = \"\";\n",
         if parameterized { ",p" } else { "" }
     );
-    for op in ops.as_array().unwrap() {
+    for op in operations {
         code.push_str("{\n");
         match op[0].as_str().unwrap() {
             "literal" => code.push_str(&format!("out += {};\n", op[1])),
