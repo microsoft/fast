@@ -20,7 +20,7 @@ on:
 jobs:
   test_js:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright 1.56.1 does not support Ubuntu 26.04.
     env:
       PLAYWRIGHT_BROWSERS_PATH: 0
 

@@ -27,7 +27,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # Playwright 1.56.1 does not support Ubuntu 26.04.
+        os: [ubuntu-24.04, windows-latest, macos-latest]
 
     env:
       PLAYWRIGHT_BROWSERS_PATH: 0

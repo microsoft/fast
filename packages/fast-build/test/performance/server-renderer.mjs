@@ -108,6 +108,18 @@ async function main() {
             templates: { "bench-static": "<h2>Static</h2><p>No bindings</p>" },
             state: {},
         },
+        uniqueHosts: {
+            entry: Array.from(
+                { length: instances },
+                (_, index) =>
+                    `<bench-unique index="${index}" data-label="item-${index}" style="--index:${index}"></bench-unique>`,
+            ).join(""),
+            templates: {
+                "bench-unique":
+                    '<article title="{{index}}">{{index}}/{{dataset.label}}</article>',
+            },
+            state: {},
+        },
         bindings: fixture("plain_bound_elements", instances),
         repeated: fixture("repeat_custom_elements", instances),
         nested: {
