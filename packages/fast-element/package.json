@@ -46,6 +46,10 @@
       "types": "./dist/dts/templating/children.d.ts",
       "default": "./dist/esm/templating/children.js"
     },
+    "./connection-guard.js": {
+      "types": "./dist/dts/components/connection-guard.d.ts",
+      "default": "./dist/esm/components/connection-guard.js"
+    },
     "./context.js": {
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"

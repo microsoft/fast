@@ -53,6 +53,17 @@ The runtime behavior for child node observation.
 </td></tr>
 <tr><td>
 
+[ConnectionGuard](../fast-element.connectionguard/)
+
+
+</td><td>
+
+Guards asynchronous work against disconnecting or reconnecting a component.
+
+
+</td></tr>
+<tr><td>
+
 [DefaultExecutionContext](../fast-element.defaultexecutioncontext/)
 
 

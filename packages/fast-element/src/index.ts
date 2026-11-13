@@ -26,6 +26,7 @@ export {
     nullableNumberConverter,
     type ValueConverter,
 } from "./components/attributes.js";
+export { ConnectionGuard } from "./components/connection-guard.js";
 export type { ElementControllerStrategy } from "./components/element-controller.js";
 export {
     ElementController,

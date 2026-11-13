@@ -207,6 +207,12 @@ export type ComputedState<T> = ReadonlyState<T> & Disposable & {
 export function computedState<T>(initialize: ComputedInitializer<T>, name?: string): ComputedState<T>;
 
 // @public
+export class ConnectionGuard {
+    constructor(controller: HostController);
+    capture(): () => boolean;
+}
+
+// @public
 export type Constructable<T = {}> = {
     new (...args: any[]): T;
 };

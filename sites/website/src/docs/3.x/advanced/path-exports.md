@@ -31,6 +31,7 @@ Run `npm run doc:path-exports -w @microsoft/fast-element` after changing package
 | `@microsoft/fast-element/attribute-map.js` | Schema-driven attribute map extension. | `./dist/esm/declarative/attribute-map.js` | `./dist/dts/declarative/attribute-map.d.ts` |
 | `@microsoft/fast-element/binding.js` | Binding directives and binding helpers. | `./dist/esm/binding/exports.js` | `./dist/dts/binding/exports.d.ts` |
 | `@microsoft/fast-element/children.js` | children directive. | `./dist/esm/templating/children.js` | `./dist/dts/templating/children.d.ts` |
+| `@microsoft/fast-element/connection-guard.js` | Opt-in connection-generation guard for asynchronous work. | `./dist/esm/components/connection-guard.js` | `./dist/dts/components/connection-guard.d.ts` |
 | `@microsoft/fast-element/context.js` | Path-only context protocol APIs. | `./dist/esm/context.js` | `./dist/dts/context.d.ts` |
 | `@microsoft/fast-element/css.js` | CSS template tag APIs. | `./dist/esm/styles/css.js` | `./dist/dts/styles/css.d.ts` |
 | `@microsoft/fast-element/debug.js` | Debug message helpers. | `./dist/esm/debug.js` | `./dist/dts/debug.d.ts` |
