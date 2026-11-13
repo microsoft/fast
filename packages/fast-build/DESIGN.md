@@ -13,6 +13,15 @@ The helper is the JavaScript target's request engine. It has no imports or compi
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
+Rust interns identical executable bodies and factors repeated JavaScript element
+shapes into shared functions with instance-specific constant records. Different
+indexes, dataset values or inline styles do not require another executable
+function when their recipes and light DOM match. Single-use shapes remain
+directly emitted, and compound property literals retain per-call ownership.
+This is an internal compiler optimization; exported APIs, helper contract,
+artifact schema, rendering bytes and hydration behavior are unchanged. Existing
+compiler fingerprint checks still require artifacts to be regenerated on upgrade.
+
 Native `CompiledArtifact` loading/rendering does not parse
 authored HTML or execute JavaScript. Version/compiler/helper metadata and all
 executable references/opcodes are validated on load; immutable `Send + Sync`
@@ -275,5 +284,6 @@ Dedicated native tests cover immutable cross-thread reuse, all render APIs,
 DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
 relocates generated ESM, then renders without authored inputs or compilation.
 The benchmark reports AOT import/first render, warmed CPU/wall time, process
-memory/GC, source bytes and output hashes. See server-modules.md for the current
+memory/GC, source bytes and output hashes. Its unique-host workload varies static
+instance attributes to exercise shared element code. See server-modules.md for the current
 benchmark command and measurement boundaries.
