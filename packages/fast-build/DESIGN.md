@@ -22,6 +22,14 @@ This is an internal compiler optimization; exported APIs, helper contract,
 artifact schema, rendering bytes and hydration behavior are unchanged. Existing
 compiler fingerprint checks still require artifacts to be regenerated on upgrade.
 
+Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
+writes and attribute fragments are joined, and ordinary tags become literal bytes
+only when hydration cannot change their output. Literal-only JavaScript bodies
+return constants directly. Tags with whitespace/stripping differences, markers,
+bindings, nested components or host semantics retain the required execution.
+The large-static-template benchmark covers distinct definitions with small bound
+regions; this optimization does not change the public rendering or artifact APIs.
+
 Native `CompiledArtifact` loading/rendering does not parse
 authored HTML or execute JavaScript. Version/compiler/helper metadata and all
 executable references/opcodes are validated on load; immutable `Send + Sync`
