@@ -47,6 +47,88 @@ fn js(source: &str, state: &str, options: Value, target: &str, name: &str) -> Va
 }
 
 #[test]
+fn instance_constants_do_not_duplicate_javascript_element_functions() {
+    let locator = common::make_locator(&[(
+        "test-item",
+        "<article title=\"{{index}}\">{{index}}/{{dataset.x}}</article>",
+    )]);
+    for count in [64, 256] {
+        let entry = (0..count)
+            .map(|index| {
+                format!("<test-item index=\"{index}\" data-x=\"value-{index}\" style=\"--index:{index}\"></test-item>")
+            })
+            .collect::<String>();
+        let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+        assert!(
+            source.matches("function ").count() < 16,
+            "instance constants duplicated executable functions for {count} hosts"
+        );
+        let artifact =
+            CompiledArtifact::load(&compile_server_artifact(&entry, &locator).unwrap()).unwrap();
+        let native = artifact
+            .render_entry(&common::empty_root(), &Default::default())
+            .unwrap();
+        assert_eq!(
+            json!({"value":native}),
+            js(&source, "{}", json!({}), "entry", "")
+        );
+        assert!(native.contains(&format!("value-{}", count - 1)));
+    }
+}
+
+#[test]
+fn shared_element_shapes_preserve_overlays_light_dom_and_marker_modes() {
+    let locator = common::make_locator_with_host_attrs(&[
+        ("test-parent", "<test-item index=\"first\" data-x=\"one\" foo-bar=\"camel-one\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item><test-item index=\"second\" data-x=\"two\" foo-bar=\"camel-two\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item>", &[]),
+        ("test-item", "{{index}}/{{dataset.x}}/{{dataset.base}}/{{fooBar}}/{{foo-bar}}/{{item.name}}", &[("role", Some("group")), ("title", Some("default")), ("data-fe", Some("authored"))]),
+    ]);
+    let source = compile_server_module(
+        "<test-parent></test-parent>",
+        &locator,
+        "__FAST_TEST_RUNTIME__",
+    )
+    .unwrap();
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("<test-parent></test-parent>", &locator).unwrap(),
+    )
+    .unwrap();
+    for state_json in [
+        r#"{"title":"<&","item":{"name":"first request"}}"#,
+        r#"{"title":null,"item":{"name":"second request"}}"#,
+    ] {
+        let state = parse_render_state(state_json).unwrap();
+        for v2 in [false, true] {
+            for strategy in [
+                AttributeNameStrategy::CamelCase,
+                AttributeNameStrategy::None,
+            ] {
+                for dsd in [None, Some(vec!["test-parent".to_string()])] {
+                    let options = NativeRenderOptions {
+                        markers_v2: v2,
+                        attribute_name_strategy: strategy,
+                        dsd: dsd.clone(),
+                        ..Default::default()
+                    };
+                    let mut js_options = json!({
+                        "markersV2":v2,
+                        "attributeNameStrategy":if strategy == AttributeNameStrategy::None {"none"} else {"camelCase"},
+                    });
+                    if let Some(names) = dsd {
+                        js_options["dsd"] = json!(names);
+                    }
+                    let native = artifact.render_entry(&state, &options).unwrap();
+                    assert_eq!(
+                        json!({"value":native}),
+                        js(&source, state_json, js_options, "entry", ""),
+                        "{state_json}, {options:?}"
+                    );
+                }
+            }
+        }
+    }
+}
+
+#[test]
 fn all_render_targets_share_state_markers_selection_and_bytes() {
     let locator = locator();
     let entry = "<f-repeat value=\"{{item in items}}\"><test-card :item=\"{{item}}\" label=\"{{label}}\" foo-bar=\"custom\">{{$index}}/{{item.name}}</test-card></f-repeat>";
