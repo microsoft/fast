@@ -108,6 +108,23 @@ async function main() {
             templates: { "bench-static": "<h2>Static</h2><p>No bindings</p>" },
             state: {},
         },
+        largeStaticTemplates: {
+            entry: Array.from(
+                { length: instances },
+                (_, index) => `<bench-static-${index}></bench-static-${index}>`,
+            ).join(""),
+            templates: Object.fromEntries(
+                Array.from({ length: instances }, (_, index) => [
+                    `bench-static-${index}`,
+                    `<h2>Definition ${index}</h2>${(
+                        '<section class="panel"><p>' +
+                            "Static text &amp; markup ".repeat(20) +
+                            "</p><br /></section>\n"
+                    ).repeat(20)}<b>{{label}}</b>`,
+                ]),
+            ),
+            state: { label: "Small bound region & escaped text" },
+        },
         uniqueHosts: {
             entry: Array.from(
                 { length: instances },

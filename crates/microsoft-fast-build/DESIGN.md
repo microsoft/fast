@@ -50,6 +50,16 @@ Identical lowered bodies, including empty light DOM, share numeric references in
 both targets. Bodies are interned only after lowering, so malformed source still
 receives eager authored diagnostics.
 
+Lowering folds ordinary tags with no bindings into literal writes only when
+their plain and hydrated bytes are identical. Adjacent literal writes and static
+attribute fragments are coalesced in place before interning. Whitespace or
+client-attribute differences retain the tag operation; binding counts, nested
+components, host defaults and DSD selection remain executable boundaries.
+The JavaScript emitter returns literal-only and empty bodies directly, without
+hydration branches or an output accumulator. Both targets use the same compacted
+IR with unchanged opcodes. Native output, depth and step limits remain enforced;
+compacted operations require fewer execution steps.
+
 The JavaScript emitter additionally groups element operations by executable
 shape: component identity, light-DOM body, attribute recipes, paths, defaults and
 marker counts. Instance-specific literal attribute output and primitive property
