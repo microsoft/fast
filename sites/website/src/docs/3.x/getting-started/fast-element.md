@@ -227,7 +227,7 @@ LabelElement.define({
 
 The behavior sees the restored `label` and derives a fallback without overwriting the supplied property (including an explicit empty string). It also runs on reconnect. Keep preparation repeatable, and distinguish it from one-time effects: do not blindly repeat storage writes or telemetry on every connection.
 
-DOM lookups belong after `super.connectedCallback()` on the normal synchronous path when a template is available. Pre-bind preparation is synchronous model work, not an awaited readiness hook; it does not defer rendering or hydration.
+DOM lookups belong after `super.connectedCallback()` on the ordinary already-resolved synchronous-template path. If template resolution is pending, the callback returning does not establish view readiness: wait for template availability and confirm `$fastController.isConnected`, observing its transition as needed before view-dependent work. Pre-bind preparation is synchronous model work, not an awaited readiness hook; it does not defer rendering or hydration.
 
 ### Guarding Asynchronous Completions
 
@@ -278,9 +278,12 @@ export class StatusElement extends FASTElement {
 
 - Capturing while disconnected produces a predicate that never becomes valid.
 - Capturing in a pre-bind host behavior can become valid after binding completes only if the guard's own connected behavior has already run; it is false during preparation. Construct the guard before registering preparation behaviors that capture it.
+- Capturing before the guard's connected behavior runs produces a predicate that never becomes valid.
 - Disconnecting invalidates that episode's predicates permanently, even if the element later reconnects.
 
 For ordinary asynchronous work, capture after `super.connectedCallback()` and before starting the work, as shown above. Check immediately before each state or DOM mutation, including error handling. The predicate is only a guard: it does not cancel a request, unsubscribe event listeners, or order multiple requests within the same episode. Manage cancellation and subscription cleanup separately. No asynchronous lifecycle or hydration delay is introduced.
+
+Neither `ConnectionGuard` nor connection or hydration status establishes application-specific content or transport readiness. Bound shadow DOM does not prove that streamed or projected light DOM has finished arriving. Track that readiness separately in your application.
 
 ## Defining the Element
 
@@ -344,7 +347,7 @@ In addition to the features described above, `FASTElement` provides a number of 
 
 Every `FASTElement` instance exposes a `$fastController` property that references the internal `ElementController` driving the element's lifecycle and reactivity. Most components do not need to access it directly, but one member is commonly used inside `*Changed` callbacks: `isConnected`.
 
-The `isConnected` property on the controller reports `true` after FAST has connected the element, which happens during `super.connectedCallback()`. It is distinct from the platform's `Node.isConnected`, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already `true`, but FAST has not yet bound the template or wired up the reactivity system. Reading from `this.elementInternals` or dispatching events during that window can produce inconsistent results.
+The `isConnected` property on the controller reports `true` after FAST has connected the element, which happens during `super.connectedCallback()` on the ordinary already-resolved synchronous-template path. It is distinct from the platform's `Node.isConnected`, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already `true`, but FAST has not yet bound the template or wired up the reactivity system. Reading from `this.elementInternals` or dispatching events during that window can produce inconsistent results.
 
 For this reason, `*Changed` callbacks that touch the DOM typically guard against running before the controller has connected:
 

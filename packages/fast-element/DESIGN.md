@@ -259,8 +259,9 @@ logging, telemetry, or a devtools panel.
 
 #### Initialization ordering and connection guards
 
-The normal connection path is synchronous: restore captured public pre-upgrade
-properties, connect registered host behaviors, bind the view (or rebind on
+With an already-resolved template, the ordinary connection path is synchronous:
+restore captured public pre-upgrade properties, connect registered host
+behaviors, bind the view (or rebind on
 reconnection), then mark the controller connected. Constructor defaults are not
 necessarily the values supplied before upgrade. Deriving state before
 `super.connectedCallback()` can therefore use defaults before replay; deriving
@@ -272,8 +273,12 @@ For synchronous pre-bind preparation, register a `HostBehavior` with
 binding. It runs again on reconnect: keep derivation repeatable, preserve supplied
 values when applying defaults, and separately control effects such as storage
 writes or telemetry. DOM lookups and ordinary post-bind work belong after
-`super.connectedCallback()` when the template is available. This ordering adds
-no awaited lifecycle hook, readiness promise, or hydration deferral.
+`super.connectedCallback()` on that already-resolved synchronous-template path.
+If template resolution is pending, the callback returning does not establish
+view readiness: wait for template availability and confirm controller
+`isConnected`, observing its transition as needed before view-dependent work.
+This ordering adds no awaited lifecycle hook, readiness promise, or hydration
+deferral.
 
 `ConnectionGuard`, exported from the root and
 `@microsoft/fast-element/connection-guard.js`, is an opt-in application helper.
@@ -283,7 +288,8 @@ a predicate that is true only while that captured episode is fully
 controller-connected. A pre-bind behavior capture can become valid after
 binding only if the guard's own connected behavior has already run: construct
 the guard before registering preparation behaviors that capture it. A
-disconnected capture never revives, and disconnect/reconnect permanently
+capture made before the guard's connected behavior runs never revives.
+A disconnected capture never revives, and disconnect/reconnect permanently
 invalidates older captures. Checking only current `isConnected`
 cannot distinguish an old request from work started in the new episode.
 
@@ -292,6 +298,10 @@ before awaiting, and check the predicate immediately before mutating state or
 DOM. Always delegate disconnection to `super.disconnectedCallback()`. The helper
 guards completion; it does not abort requests or unsubscribe listeners, and it
 does not delay binding or alter style ownership.
+Neither the guard nor connection or hydration status establishes
+application-specific content or transport readiness. Bound shadow DOM does not
+prove that streamed or projected light DOM has finished arriving; applications
+must track that separately.
 
 #### Extensions
 
