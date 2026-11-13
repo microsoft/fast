@@ -12,7 +12,9 @@ use crate::expression::{find_binary_op, find_comparison_op};
 use crate::plan::{Body, Element, Instruction, RenderPlan, Repeat, Tag, When};
 use crate::Locator;
 use serde_json::{json, Value};
+use std::collections::hash_map::DefaultHasher;
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
 
 pub const ARTIFACT_VERSION: u32 = 1;
 
@@ -202,10 +204,26 @@ fn tag(source: &str, tag: &Tag) -> Value {
 struct Lowerer<'a> {
     locator: &'a Locator,
     bodies: Vec<Value>,
+    body_keys: HashMap<u64, Vec<usize>>,
     elements: HashMap<String, usize>,
 }
 
 impl Lowerer<'_> {
+    fn intern(&mut self, ops: Vec<Value>) -> usize {
+        let body = Value::Array(ops);
+        let mut hash = DefaultHasher::new();
+        body.hash(&mut hash);
+        let key = hash.finish();
+        let candidates = self.body_keys.entry(key).or_default();
+        if let Some(id) = candidates.iter().find(|id| self.bodies[**id] == body) {
+            return *id;
+        }
+        let id = self.bodies.len();
+        self.bodies.push(body);
+        candidates.push(id);
+        id
+    }
+
     fn body(&mut self, source: &str, body: &Body, depth: usize) -> Result<usize, RenderError> {
         self.plan(&source[body.range.clone()], depth)
             .map_err(|e| e.rebase(source, body.range.start))
@@ -218,8 +236,6 @@ impl Lowerer<'_> {
             }
             .at(source, 0));
         }
-        let id = self.bodies.len();
-        self.bodies.push(Value::Null);
         let mut ops = Vec::new();
         for instruction in RenderPlan::compile(source, Some(self.locator)).instructions {
             ops.push(match instruction {
@@ -248,10 +264,8 @@ impl Lowerer<'_> {
                     let element_id = if let Some(id) = self.elements.get(authored) {
                         *id
                     } else {
-                        let element_id = self.bodies.len();
-                        self.bodies.push(Value::Null);
                         let op = self.element(source, &element, depth + 1)?;
-                        self.bodies[element_id] = json!([op]);
+                        let element_id = self.intern(vec![op]);
                         self.elements.insert(authored.into(), element_id);
                         element_id
                     };
@@ -283,8 +297,7 @@ impl Lowerer<'_> {
                 }
             });
         }
-        self.bodies[id] = json!(ops);
-        Ok(id)
+        Ok(self.intern(ops))
     }
 
     fn element(&mut self, source: &str, el: &Element, depth: usize) -> Result<Value, RenderError> {
@@ -386,6 +399,7 @@ pub(crate) fn lower(entry: &str, locator: &Locator) -> Result<Value, RenderError
     let mut compiler = Lowerer {
         locator,
         bodies: Vec::new(),
+        body_keys: HashMap::new(),
         elements: HashMap::new(),
     };
     let source = crate::code_escape::escape_code_sample_elements(entry);

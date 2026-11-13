@@ -46,7 +46,18 @@ they never invoke a renderer. Diagnostics are rebased through nested bodies and
 code escaping to authored UTF-16 coordinates and definition names.
 Compilation limits structural nesting to 128 levels. Symbolic registry references
 permit finite cyclic component definitions without recursive code expansion.
-Identical element operations share emitted functions.
+Identical lowered bodies, including empty light DOM, share numeric references in
+both targets. Bodies are interned only after lowering, so malformed source still
+receives eager authored diagnostics.
+
+The JavaScript emitter additionally groups element operations by executable
+shape: component identity, light-DOM body, attribute recipes, paths, defaults and
+marker counts. Instance-specific literal attribute output and primitive property
+operands live in generated constant records passed to shared functions. Shapes
+used only once retain direct emission. Compound property literals remain
+constructed per invocation because child dataset overlays can mutate local
+objects. This factoring is compiler-owned, requires no new runtime helper, and
+does not change the artifact schema or native execution semantics.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
@@ -256,5 +267,7 @@ recursive graphs and malformed artifacts. These adapters are test-only.
 Node tests enforce 438 distinct frozen output contracts and the shared
 performance corpus baseline.
 Browser fixtures hydrate AOT output. `bench:server` measures generated JavaScript;
+its unique-host workload varies indexes, dataset values and inline styles to
+exercise structural sharing rather than only byte-identical hosts;
 its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.
