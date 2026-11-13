@@ -166,6 +166,153 @@ test.describe("The ElementController", () => {
     });
 
     test.describe("during connect", () => {
+        for (const initialization of ["pre-upgrade", "late-own"]) {
+            test(`restores ${initialization} properties before behaviors and first binding`, async ({
+                page,
+            }) => {
+                await page.goto("/");
+
+                const result = await page.evaluate(async initialization => {
+                    // @ts-expect-error: Client module.
+                    const { FASTElement, Observable, html, uniqueElementName } =
+                        await import("/main.js");
+
+                    const events: Array<{
+                        phase: string;
+                        message: string;
+                        derived: string;
+                        connected: boolean;
+                        hasOwnMessage: boolean;
+                    }> = [];
+                    const completed: Array<{
+                        text: string;
+                        connected: boolean;
+                        bound: boolean;
+                    }> = [];
+                    const name = uniqueElementName();
+                    let element: any;
+
+                    const snapshot = (phase: string, source: any) => {
+                        events.push({
+                            phase,
+                            message: source.message,
+                            derived: source.derived,
+                            connected: source.$fastController.isConnected,
+                            hasOwnMessage: Object.prototype.hasOwnProperty.call(
+                                source,
+                                "message",
+                            ),
+                        });
+                    };
+
+                    class ControllerTest extends FASTElement {
+                        public constructor() {
+                            super();
+                            this.$fastController.addBehavior({
+                                connectedCallback(controller: any) {
+                                    controller.source.derived = `derived:${controller.source.message}`;
+                                    snapshot("behavior", controller.source);
+                                },
+                            });
+                        }
+
+                        public connectedCallback() {
+                            super.connectedCallback();
+                            completed.push({
+                                text: this.shadowRoot?.textContent ?? "",
+                                connected: this.$fastController.isConnected,
+                                bound: this.$fastController.view?.isBound ?? false,
+                            });
+                        }
+                    }
+
+                    Observable.defineProperty(ControllerTest.prototype, "message");
+                    Observable.defineProperty(ControllerTest.prototype, "derived");
+
+                    if (initialization === "pre-upgrade") {
+                        element = document.createElement(name);
+                        element.message = "initial";
+                    }
+
+                    await ControllerTest.define({
+                        name,
+                        template: html<any>`<span>${x => {
+                            snapshot("template", x);
+                            return x.derived;
+                        }}</span>`,
+                    });
+
+                    if (initialization === "pre-upgrade") {
+                        customElements.upgrade(element);
+                    } else {
+                        element = document.createElement(name);
+                        Object.defineProperty(element, "message", {
+                            configurable: true,
+                            enumerable: true,
+                            value: "initial",
+                            writable: true,
+                        });
+                    }
+
+                    try {
+                        document.body.appendChild(element);
+                        const firstView = element.$fastController.view;
+                        const firstSpan = element.shadowRoot.querySelector("span");
+                        element.remove();
+                        element.message = "reconnected";
+                        document.body.appendChild(element);
+
+                        return {
+                            events,
+                            completed,
+                            sameView: element.$fastController.view === firstView,
+                            sameSpan:
+                                element.shadowRoot.querySelector("span") === firstSpan,
+                        };
+                    } finally {
+                        element.remove();
+                    }
+                }, initialization);
+
+                expect(result.events).toEqual([
+                    {
+                        phase: "behavior",
+                        message: "initial",
+                        derived: "derived:initial",
+                        connected: false,
+                        hasOwnMessage: false,
+                    },
+                    {
+                        phase: "template",
+                        message: "initial",
+                        derived: "derived:initial",
+                        connected: false,
+                        hasOwnMessage: false,
+                    },
+                    {
+                        phase: "behavior",
+                        message: "reconnected",
+                        derived: "derived:reconnected",
+                        connected: false,
+                        hasOwnMessage: false,
+                    },
+                    {
+                        phase: "template",
+                        message: "reconnected",
+                        derived: "derived:reconnected",
+                        connected: false,
+                        hasOwnMessage: false,
+                    },
+                ]);
+                expect(result.completed).toEqual([
+                    { text: "derived:initial", connected: true, bound: true },
+                    { text: "derived:reconnected", connected: true, bound: true },
+                ]);
+                expect(result.sameView).toBe(true);
+                expect(result.sameSpan).toBe(true);
+            });
+        }
+
         test("does not rebind converted attribute backing fields through converters", async ({
             page,
         }) => {
