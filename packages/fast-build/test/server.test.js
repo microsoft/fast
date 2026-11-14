@@ -298,6 +298,103 @@ test("AOT host and shadow exports retain selection and request isolation", async
     }
 });
 
+test("compiled access plans preserve lexical precedence, indexes and root masking", async () => {
+    const helper = await import(runtime);
+    const [root] = helper.request({
+        item: { part: { name: "root" } },
+        items: [{ name: "array" }],
+        $index: 7,
+    });
+    const access = helper.access(
+        ["item", "part", "name"],
+        [
+            [1, 2],
+            [2, 1],
+        ],
+    );
+    const outer = helper.loop(null, 1);
+    outer.value.value = { name: "outer" };
+    outer.index.value = 3;
+    const inner = helper.loop(outer, 2);
+    inner.value.value = { part: null };
+    inner.index.value = 4;
+    assert.equal(access(root, null), "root");
+    assert.equal(access(root, outer), "outer");
+    assert.equal(access(root, inner), undefined);
+    inner.value.value = { part: { name: "inner" } };
+    assert.equal(access(root, inner), "inner");
+    assert.equal(access(root, outer), "outer");
+    assert.equal(helper.access(["$index"], [[0, 1]])(root, inner), 4);
+    const indexAlias = helper.loop(inner, 0);
+    indexAlias.value.value = "must be masked";
+    indexAlias.index.value = 5;
+    assert.equal(helper.access(["$index"], [[0, 1]])(root, indexAlias), 5);
+    assert.equal(helper.access(["items", "+00", "name"], [])(root, inner), "array");
+    assert.equal(helper.access(["items", "length"], [])(root, inner), 1);
+    assert.equal(helper.access(["items", "length", "name"], [])(root, inner), undefined);
+    const [arrayRoot] = helper.request([{ name: "array" }]);
+    assert.equal(helper.access(["+00"], [])(arrayRoot, null), arrayRoot.values[0]);
+    assert.equal(helper.access(["length"], [])(arrayRoot, null), 1);
+    assert.equal(helper.access(["map"], [])(arrayRoot, null), undefined);
+    const [ownNames] = helper.request(
+        JSON.parse('{"constructor":"own","__proto__":"data"}'),
+    );
+    assert.equal(helper.access(["constructor"], [])(ownNames, null), "own");
+    assert.equal(helper.access(["__proto__"], [])(ownNames, null), "data");
+    const child = helper.child(root, [["item", null, null]]);
+    assert.equal(access(child, null), undefined);
+});
+
+test("repeat frames are reused across items and omitted for empty data", async () => {
+    const probe = `import * as helper from ${JSON.stringify(runtime)};
+export * from ${JSON.stringify(runtime)};
+export let frames = 0;
+export function loop(...args) { frames++; return helper.loop(...args); }`;
+    const probeUrl = `data:text/javascript;base64,${Buffer.from(probe).toString("base64")}`;
+    const source = compileServerModule(
+        '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
+        {},
+        probeUrl,
+    );
+    const module = await import(
+        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+    );
+    assert.equal(module.renderEntry({}), "");
+    assert.equal(module.renderEntry({ items: [] }), "");
+    const measured = await import(probeUrl);
+    assert.equal(measured.frames, 0);
+    assert.equal(module.renderEntry({ items: [1, 2, 3] }), "123");
+    assert.equal(measured.frames, 1);
+    assert.equal(module.renderEntry({ items: [4, 5] }), "45");
+    assert.equal(measured.frames, 2);
+});
+
+test("shared bodies and component shadows do not capture repeat scopes", async () => {
+    const { module } = await compile(
+        '{{item.name}}/{{$index}};<f-repeat value="{{item in items}}">{{item.name}}/{{$index}};<test-child :name="{{item.name}}">{{item.name}}/{{$index}}</test-child></f-repeat>{{item.name}}/{{$index}}',
+        { "test-child": "{{name}}/{{item.name}}/{{$index}}" },
+    );
+    const state = {
+        item: { name: "root" },
+        $index: 9,
+        items: [{ name: "one" }, { name: "two" }],
+    };
+    const plain = module.renderEntry(state);
+    assert.equal(
+        plain,
+        'root/9;one/0;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
+    );
+    assert.equal(module.renderEntry(state), plain);
+    assert.equal(
+        module.renderEntry(state, { dsd: [] }),
+        'root/9;one/0;<test-child :name="one">one/0</test-child>two/1;<test-child :name="two">two/1</test-child>root/9',
+    );
+    const { module: proto } = await compile(
+        '<f-repeat value="{{__proto__ in items}}">{{__proto__.name}}</f-repeat>',
+    );
+    assert.equal(proto.renderEntry({ items: [{ name: "safe" }] }), "safe");
+});
+
 test("AOT preserves the distinct template-context root host attribute contract", async () => {
     const { module } = await compile('<test-el list="{{items}}"></test-el>', {
         "test-el": "{{list}}",

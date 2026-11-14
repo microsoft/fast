@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Compile path and lexical alias access plans and reuse request-local repeat frames.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

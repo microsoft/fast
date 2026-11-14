@@ -1,4 +1,4 @@
-export const runtimeVersion = 1;
+export const runtimeVersion = 2;
 
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
@@ -90,17 +90,21 @@ export function request(state = {}, options = {}) {
     ];
 }
 
-function nested(value, path) {
-    for (let index = 0; index < path.length; index++) {
+function nested(value, path, start = 0, indexes) {
+    for (let index = start; index < path.length; index++) {
         const key = path[index];
         if (Array.isArray(value)) {
             if (key === "length") {
                 return index === path.length - 1 ? value.length : undefined;
             }
-            if (!/^\+?\d+$/.test(key)) {
+            const arrayIndex = indexes
+                ? indexes[index]
+                : /^\+?\d+$/.test(key)
+                  ? Number(key)
+                  : null;
+            if (arrayIndex === null) {
                 return undefined;
             }
-            const arrayIndex = Number(key);
             value =
                 arrayIndex < value.length && own(value, arrayIndex)
                     ? value[arrayIndex]
@@ -121,15 +125,80 @@ export function get(root, loops, path) {
             name.length <= path.length &&
             name.every((segment, index) => segment === path[index])
         ) {
-            return nested(value, path.slice(name.length));
+            return nested(value, path, name.length);
         }
     }
+    return getRoot(root, path);
+}
+
+function getRoot(root, path, indexes) {
     for (let frame = root; frame; frame = frame.parent) {
-        const value = nested(frame.values, path);
+        const value = nested(frame.values, path, 0, indexes);
         if (value !== undefined || (object(frame.values) && own(frame.values, path[0]))) {
             return value;
         }
     }
+}
+
+export function access(path, aliases) {
+    const indexes = path.map(key => (/^\+?\d+$/.test(key) ? Number(key) : null));
+    const rootAccess =
+        path.length === 1
+            ? root => rootKey(root, path[0], indexes[0])
+            : root => getRoot(root, path, indexes);
+    if (aliases.length === 0) {
+        return rootAccess;
+    }
+    if (aliases.length === 1) {
+        const [slot, start] = aliases[0];
+        return (root, loops) => {
+            const binding = loops?.values[slot];
+            return binding
+                ? nested(binding.value, path, start, indexes)
+                : rootAccess(root);
+        };
+    }
+    return (root, loops) => {
+        let selected;
+        let start = 0;
+        if (loops) {
+            for (const [slot, length] of aliases) {
+                const binding = loops.values[slot];
+                if (binding && (!selected || binding.depth > selected.depth)) {
+                    selected = binding;
+                    start = length;
+                }
+            }
+        }
+        return selected ? nested(selected.value, path, start, indexes) : rootAccess(root);
+    };
+}
+
+function rootKey(root, key, index) {
+    for (let frame = root; frame; frame = frame.parent) {
+        const values = frame.values;
+        if (object(values) && own(values, key)) {
+            return values[key];
+        }
+        if (Array.isArray(values)) {
+            if (key === "length") return values.length;
+            if (index !== null && index < values.length && own(values, index)) {
+                const value = values[index];
+                if (value !== undefined) return value;
+            }
+        }
+    }
+}
+
+export function loop(parent, slot) {
+    // The implicit $index slot must outrank its iteration's named alias.
+    const depth = (parent?.depth ?? 0) + 2;
+    const values = Object.create(parent?.values ?? null);
+    const value = { depth: depth - 1, value: undefined };
+    const index = { depth, value: 0 };
+    values[slot] = value;
+    values[0] = index;
+    return { values, depth, value, index };
 }
 
 export function child(root, entries) {
@@ -139,7 +208,7 @@ export function child(root, entries) {
             values[key] = value === undefined ? null : value;
         } else {
             if (!own(values, key)) {
-                const inherited = get(root, [], [key]);
+                const inherited = getRoot(root, [key]);
                 values[key] = inherited === undefined ? Object.create(null) : inherited;
                 if (object(values[key])) {
                     values[key] = Object.assign(Object.create(null), values[key]);

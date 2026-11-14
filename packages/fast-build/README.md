@@ -85,6 +85,12 @@ comparison.
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
+The JavaScript emitter now prepares path/alias accessors at module import and
+reuses request-local repeat frames across iterations. The server helper contract
+is version 2: regenerate compiled modules/artifacts and deploy the matching
+helper/native library together. State, rendering bytes and public render APIs
+are unchanged. Contributor benchmarks include deep paths and nested repeats.
+
 ## Native Rust compiled artifacts
 
 Compile at build time with `compileServerArtifact` from `server.js`:
