@@ -74,6 +74,10 @@ compiler fingerprint, artifact version and runtime contract. Regenerate artifact
 and deploy the matching library together. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
+Escaped text bindings write directly into the request's bounded UTF-8 output
+buffer, stopping on the first write that exceeds its byte budget. Results remain
+complete owned strings, not a streaming API; failed calls return no partial HTML.
+
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
 No request-time WASM rendering, stable C ABI or working .NET bindings are provided.
 .NET/C ABI hosting is a follow-up, not a separate C# semantic implementation.

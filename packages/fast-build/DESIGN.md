@@ -64,6 +64,19 @@ IR opcodes/schema remain unchanged; native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
+### Output assembly and escaping
+
+Generated JavaScript retains returned child strings and `+=` assembly.
+Escaping reuses an immutable module-level entity table and replacement function,
+instead of constructing a mapping for each matched character. Rendering retains
+no request-sized output buffers or scratch storage between calls.
+
+The shared Rust escaping implementation writes unchanged UTF-8 spans and entities
+to a fallible sink. Native text bindings use the executor's bounded output string
+directly, avoiding an escaped intermediate and stopping on output-limit errors.
+Attribute intermediates remain. Complete owned results, exact bytes, step counts
+and error/request isolation are unchanged; there is no streaming API change.
+
 ## CLI
 
 `fast build` loads entry/registry files, compiles AOT source, imports that source,
@@ -104,6 +117,10 @@ profiles persist independently of temporary benchmark files. Warm GC events are
 scoped to the measured loop, and output comparisons run outside render timers.
 Historical combined cold timings use `coldImportAndRenderMs`, not the version-2
 `firstRenderMs`. This is benchmark tooling, not a rendering API or runtime change.
+An escape-heavy Unicode text/attribute workload exercises output allocation.
+Additional warm render-to-UTF-8 wall/CPU timings include string materialization
+and Buffer creation, rather than shifting those costs outside the measured call.
+They run after the string-only loop and its GC/memory observations.
 
 ## Template loading — `parseFTemplates`
 
