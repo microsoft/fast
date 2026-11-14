@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 14 Nov 2026 05:37:38 GMT",
+      "version": "3.1.4",
+      "tag": "@microsoft/fast-element_v3.1.4",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "994a9f0ee322f58666ff054cacff082774747555",
+            "comment": "Qualify server benchmark input and output boundaries and browser hydration."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Nov 2026 07:56:25 GMT",
       "version": "3.1.4",
       "tag": "@microsoft/fast-element_v3.1.4",
