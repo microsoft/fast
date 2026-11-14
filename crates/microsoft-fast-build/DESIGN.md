@@ -113,6 +113,12 @@ siblings. Comparison, display and marker semantics match the generated target.
 All four APIs return owned complete strings or recoverable `NativeRenderError`.
 No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
 
+The separate, nonpublished
+[`microsoft-fast-build-node`](../microsoft-fast-build-node/DESIGN.md) crate
+provides experimental source-built N-API hosting without changing this executor.
+Its JSON/Buffer transport preserves native validation, copies, limits and
+ownership; it is not a typed-IR or state-allocation optimization.
+
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
 64 MiB output limits. Finite conditional component cycles are supported through

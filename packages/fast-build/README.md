@@ -82,6 +82,11 @@ The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.
 
+Contributors can source-build the opt-in
+[experimental native Node host](../../crates/microsoft-fast-build-node/README.md)
+and compare matched JSON-to-UTF-8 output with `bench:server -- --native=<addon-path>`.
+It is not a published npm backend or automatic fallback.
+
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 

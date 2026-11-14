@@ -326,3 +326,51 @@ load/render/delivery lifecycle, not parent compilation. Temporary input,
 generated-module and rendered-output files are removed after the run.
 Profiled runs have instrumentation and exit-time profile-writing overhead;
 do not compare them as equivalent to unprofiled timing samples.
+
+### Experimental native Node measurements
+
+The [source-built N-API prototype](../../../crates/microsoft-fast-build-node/README.md)
+is explicitly opt-in and not a published package backend. Build it first:
+
+```sh
+npm run test:native -w @microsoft/fast-build
+npm run bench:server -w @microsoft/fast-build -- --native=../../crates/microsoft-fast-build-node/target/release/fast-build.node --samples=3 --iterations=100 --instances=200
+```
+
+The default remains AOT-only. A missing/incompatible addon fails explicitly,
+without fallback. Addon paths are relative to the benchmark process working
+directory (`packages/fast-build` with the workspace command above).
+With `--native`, each workload also compiles a native artifact
+and reports `compileArtifactMs`, `artifactWriteNativeMs` and `artifactBytes`.
+Each fresh native child loads one addon and one immutable program. Reports add:
+
+| Field | Boundary |
+|---|---|
+| `moduleImportMs` | Native addon loading for native samples; unchanged ESM import for AOT |
+| `artifactReadMs`, `artifactLoadMs` | Native artifact file read, then envelope parsing/validation/owned IR construction; zero for AOT |
+| `stateEncodeMs` | Preparation of the shared UTF-8 state JSON Buffer, outside render loops |
+| `warmJsonToUtf8WarmupMs` | Extra JSON-to-UTF-8 loop warmup using the configured `warmupIterations`, followed by optional forced GC |
+| `warmJsonToUtf8MsPerRender`, `warmJsonToUtf8CpuMsPerRender` | Separate warm loop from identical JSON Buffer input to complete UTF-8 Buffer output, including decoding, native/JS validation, rendering and output encoding |
+
+For this matched loop, AOT explicitly decodes/parses the Buffer, renders a
+fresh JSON-shaped object and encodes its string. Native parses/normalizes state
+and returns an owned UTF-8 Buffer through N-API. Serialization into the shared
+input Buffer and file/network delivery are excluded for both. Final bytes must
+match the first result and hashes must match across backends.
+
+Ordinary `firstRenderMs` and `warmMsPerRender` retain backend-call boundaries:
+AOT receives a prepared object and returns a string; native receives JSON bytes
+and returns UTF-8 bytes. **Do not treat those raw times as equivalent output
+pipelines.** Native `utf8EncodeMs` is zero because encoding is already inside
+the native call. `coldImportAndRenderMs` still sums only import and first render;
+it excludes native artifact loading and state encoding, so it is not total
+native cold startup. Use the individual phases or full worker lifecycle as
+appropriate, without double-counting aggregates.
+
+Memory snapshots refer to the ordinary render loop, before the extra matched
+loop; retained outputs are strings or Buffers depending on backend. Native IR
+and other Rust allocations are not fully represented by V8 heap statistics.
+Node CPU profiles expose JavaScript/N-API call boundaries, not detailed Rust
+stacks. The existing executor still traverses JSON IR and copies normalized
+state; this prototype does not promise a speedup, WebUI equivalence, prebuilt
+packaging or production API stability.

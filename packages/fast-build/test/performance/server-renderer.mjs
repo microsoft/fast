@@ -19,6 +19,7 @@ const { values: args } = parseArgs({
         iterations: { type: "string", default: "100" },
         instances: { type: "string", default: "200" },
         warmup: { type: "string", default: "20" },
+        native: { type: "string" },
         "profile-directory": { type: "string" },
         output: { type: "string" },
     },
@@ -41,7 +42,7 @@ if (args.worker) {
 
 async function worker() {
     const workerSetupMs = performance.now();
-    assert.equal(args.worker, "aot", "Only the AOT backend is supported.");
+    assert.ok(["aot", "native"].includes(args.worker), "Unknown benchmark backend.");
     const readStart = performance.now();
     const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
     const inputReadMs = performance.now() - readStart;
@@ -51,12 +52,41 @@ async function worker() {
     const iterations = integer("iterations");
     const warmupIterations = integer("warmup", 0);
     const memoryBefore = process.memoryUsage();
-    const importStart = performance.now();
-    const module = await import(
-        pathToFileURL(path.join(args.directory, "server.mjs")).href
-    );
-    const moduleImportMs = performance.now() - importStart;
-    const render = () => module.renderEntry(source.state);
+    let stateJson;
+    let stateEncodeMs = 0;
+    if (args.native) {
+        const encodeStart = performance.now();
+        stateJson = Buffer.from(JSON.stringify(source.state));
+        stateEncodeMs = performance.now() - encodeStart;
+    }
+    let render;
+    let renderJsonToUtf8;
+    let moduleImportMs;
+    let artifactReadMs = 0;
+    let artifactLoadMs = 0;
+    if (args.worker === "native") {
+        assert.ok(args.native, "Native samples require an explicit addon path.");
+        const readStart = performance.now();
+        const artifact = await fs.readFile(path.join(args.directory, "server.fast"));
+        artifactReadMs = performance.now() - readStart;
+        const importStart = performance.now();
+        const { NativeProgram } = require(path.resolve(args.native));
+        moduleImportMs = performance.now() - importStart;
+        const loadStart = performance.now();
+        const program = new NativeProgram(artifact);
+        artifactLoadMs = performance.now() - loadStart;
+        render = () => program.renderEntry(stateJson);
+        renderJsonToUtf8 = render;
+    } else {
+        const importStart = performance.now();
+        const module = await import(
+            pathToFileURL(path.join(args.directory, "server.mjs")).href
+        );
+        moduleImportMs = performance.now() - importStart;
+        render = () => module.renderEntry(source.state);
+        renderJsonToUtf8 = () =>
+            Buffer.from(module.renderEntry(JSON.parse(stateJson.toString("utf8"))));
+    }
     const firstStart = performance.now();
     const html = render();
     const firstRenderMs = performance.now() - firstStart;
@@ -68,7 +98,7 @@ async function worker() {
         latest = render();
     }
     const warmupMs = performance.now() - warmupStart;
-    assert.equal(latest, html, "warmup output differs from first render");
+    assertOutput(latest, html, "warmup output differs from first render");
     globalThis.gc?.();
     const memoryWarm = process.memoryUsage();
     let gcCount = 0;
@@ -92,13 +122,30 @@ async function worker() {
     warmEnd = performance.now();
     const warmMs = warmEnd - warmStart;
     const cpuUsed = process.cpuUsage(cpu);
-    assert.equal(latest, html, "warm output differs from first render");
+    assertOutput(latest, html, "warm output differs from first render");
     await new Promise(resolve => setImmediate(resolve));
     await new Promise(resolve => setImmediate(resolve));
     observer.disconnect();
     const memoryAfterWarm = process.memoryUsage();
     globalThis.gc?.();
     const memoryRetained = process.memoryUsage();
+    let warmJsonToUtf8WarmupMs;
+    let warmJsonToUtf8MsPerRender;
+    let warmJsonToUtf8CpuMsPerRender;
+    if (args.native) {
+        const warmupStart = performance.now();
+        for (let index = 0; index < warmupIterations; index++) renderJsonToUtf8();
+        warmJsonToUtf8WarmupMs = performance.now() - warmupStart;
+        globalThis.gc?.();
+        const cpu = process.cpuUsage();
+        const start = performance.now();
+        let bytes;
+        for (let index = 0; index < iterations; index++) bytes = renderJsonToUtf8();
+        warmJsonToUtf8MsPerRender = (performance.now() - start) / iterations;
+        const used = process.cpuUsage(cpu);
+        warmJsonToUtf8CpuMsPerRender = (used.user + used.system) / 1000 / iterations;
+        assert.deepEqual(bytes, Buffer.isBuffer(html) ? html : Buffer.from(html));
+    }
     console.log(
         JSON.stringify({
             reportVersion: 2,
@@ -106,12 +153,18 @@ async function worker() {
             inputReadMs,
             inputParseMs,
             moduleImportMs,
+            artifactReadMs,
+            artifactLoadMs,
+            stateEncodeMs,
             firstRenderMs,
             coldImportAndRenderMs: moduleImportMs + firstRenderMs,
             warmupMs,
             warmupIterations,
             warmMsPerRender: warmMs / iterations,
             cpuMsPerRender: (cpuUsed.user + cpuUsed.system) / 1000 / iterations,
+            warmJsonToUtf8WarmupMs,
+            warmJsonToUtf8MsPerRender,
+            warmJsonToUtf8CpuMsPerRender,
             iterations,
             gcCount,
             gcMs,
@@ -125,10 +178,18 @@ async function worker() {
     );
 }
 
+function assertOutput(actual, expected, message) {
+    if (Buffer.isBuffer(expected)) {
+        assert.deepEqual(actual, expected, message);
+    } else {
+        assert.equal(actual, expected, message);
+    }
+}
+
 async function writeOutput(html) {
     const encodeStart = performance.now();
-    const bytes = Buffer.from(html, "utf8");
-    const utf8EncodeMs = performance.now() - encodeStart;
+    const bytes = Buffer.isBuffer(html) ? html : Buffer.from(html, "utf8");
+    const utf8EncodeMs = Buffer.isBuffer(html) ? 0 : performance.now() - encodeStart;
     const writeStart = performance.now();
     await fs.writeFile(path.join(args.directory, "rendered.html"), bytes);
     const outputWriteMs = performance.now() - writeStart;
@@ -152,7 +213,7 @@ async function main() {
         profileDirectory = await fs.mkdtemp(path.join(root, "fast-server-profile-"));
     }
     const compilerStart = performance.now();
-    const { compileServerModule } = require("../../server.js");
+    const { compileServerModule, compileServerArtifact } = require("../../server.js");
     require("../../wasm/microsoft_fast_build.js");
     const compilerLoadMs = performance.now() - compilerStart;
     const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
@@ -217,6 +278,10 @@ async function main() {
         compilerLoadMs,
         workloadSetupMs: performance.now() - workloadStart,
         profileDirectory,
+        nativeAddon: args.native ? path.resolve(args.native) : undefined,
+        nativeBytes: args.native
+            ? (await fs.stat(path.resolve(args.native))).size
+            : undefined,
         runtimeBytes: (await fs.stat(require.resolve("../../server-runtime.mjs"))).size,
         wasmBytes: (
             await fs.stat(require.resolve("../../wasm/microsoft_fast_build_bg.wasm"))
@@ -242,41 +307,62 @@ async function main() {
                 generatedBytes: Buffer.byteLength(source),
                 modes: { aot: [] },
             };
+            if (args.native) {
+                const compileStart = performance.now();
+                const artifact = compileServerArtifact(input.entry, input.templates);
+                record.compileArtifactMs = performance.now() - compileStart;
+                const writeStart = performance.now();
+                await fs.writeFile(path.join(directory, "server.fast"), artifact);
+                record.artifactWriteNativeMs = performance.now() - writeStart;
+                record.artifactBytes = artifact.length;
+                record.modes.native = [];
+            }
             let expected;
-            for (let sample = 0; sample < samples; sample++) {
-                const profileName = `${name}-${sample + 1}.cpuprofile`;
-                const processStart = performance.now();
-                const response = execFileSync(
-                    process.execPath,
-                    [
-                        "--expose-gc",
-                        ...(profileDirectory
-                            ? [
-                                  "--cpu-prof",
-                                  `--cpu-prof-dir=${profileDirectory}`,
-                                  `--cpu-prof-name=${profileName}`,
-                              ]
-                            : []),
-                        fileURLToPath(import.meta.url),
-                        "--worker=aot",
-                        `--directory=${directory}`,
-                        `--iterations=${iterations}`,
-                        `--warmup=${warmupIterations}`,
-                    ],
-                    {
-                        encoding: "utf8",
-                        env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
-                    },
-                );
-                const workerProcessMs = performance.now() - processStart;
-                const result = { ...JSON.parse(response), workerProcessMs };
-                if (profileDirectory) {
-                    result.cpuProfile = path.join(profileDirectory, profileName);
-                    await fs.stat(result.cpuProfile);
+            for (const backend of Object.keys(record.modes)) {
+                for (let sample = 0; sample < samples; sample++) {
+                    const profileName = args.native
+                        ? `${name}-${backend}-${sample + 1}.cpuprofile`
+                        : `${name}-${sample + 1}.cpuprofile`;
+                    const processStart = performance.now();
+                    const response = execFileSync(
+                        process.execPath,
+                        [
+                            "--expose-gc",
+                            ...(profileDirectory
+                                ? [
+                                      "--cpu-prof",
+                                      `--cpu-prof-dir=${profileDirectory}`,
+                                      `--cpu-prof-name=${profileName}`,
+                                  ]
+                                : []),
+                            fileURLToPath(import.meta.url),
+                            `--worker=${backend}`,
+                            `--directory=${directory}`,
+                            `--iterations=${iterations}`,
+                            `--warmup=${warmupIterations}`,
+                            ...(args.native
+                                ? [`--native=${path.resolve(args.native)}`]
+                                : []),
+                        ],
+                        {
+                            encoding: "utf8",
+                            env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
+                        },
+                    );
+                    const workerProcessMs = performance.now() - processStart;
+                    const result = { ...JSON.parse(response), workerProcessMs };
+                    if (profileDirectory) {
+                        result.cpuProfile = path.join(profileDirectory, profileName);
+                        await fs.stat(result.cpuProfile);
+                    }
+                    expected ??= result.outputHash;
+                    assert.equal(
+                        result.outputHash,
+                        expected,
+                        `${name}/${backend} output differs`,
+                    );
+                    record.modes[backend].push(result);
                 }
-                expected ??= result.outputHash;
-                assert.equal(result.outputHash, expected, `${name}/aot output differs`);
-                record.modes.aot.push(result);
             }
             results.workloads[name] = record;
         }

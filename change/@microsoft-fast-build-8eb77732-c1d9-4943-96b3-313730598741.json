@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Add an opt-in source-built native Node prototype and matched JSON-to-UTF-8 benchmarks.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

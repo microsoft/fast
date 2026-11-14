@@ -37,6 +37,13 @@ ownership and request-local state/error/resource limits are documented in the
 [native contract](./docs/server-modules.md#native-rust-artifact-target).
 There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
+The nonpublished `microsoft-fast-build-node` crate hosts this unchanged executor
+through a source-built, opt-in N-API prototype. Inputs are JSON Buffers and
+outputs are owned UTF-8 Buffers; handles are isolate-local and failed calls are
+recoverable. No prebuilt distribution, default backend change, npm export or
+automatic fallback is introduced. See its
+[ownership and transport design](../../crates/microsoft-fast-build-node/DESIGN.md).
+
 Minor prerelease classification does not make removed APIs a drop-in upgrade.
 State acceptance/normalization, native resource defaults, artifact fingerprint
 checks, borrowed request inputs, owned results/errors and thread-safe artifact
@@ -84,6 +91,12 @@ profiles persist independently of temporary benchmark files. Warm GC events are
 scoped to the measured loop, and output comparisons run outside render timers.
 Historical combined cold timings use `coldImportAndRenderMs`, not the version-2
 `firstRenderMs`. This is benchmark tooling, not a rendering API or runtime change.
+
+An explicit `--native=<addon-path>` additionally measures library import,
+artifact loading and state encoding, and verifies byte parity across backends.
+Raw backend calls have different representations; the extra
+`warmJsonToUtf8MsPerRender` loop includes JSON decoding and complete UTF-8 output
+for both. Native typed-IR/state-allocation optimization is deliberately deferred.
 
 ## Template loading — `parseFTemplates`
 
