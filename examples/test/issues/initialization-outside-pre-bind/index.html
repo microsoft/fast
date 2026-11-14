@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Consumer initialization outside the pre-bind phase</title>
+    </head>
+    <body>
+        <h1>Consumer initialization outside the pre-bind phase</h1>
+        <p>
+            Author ordering misuse, not a confirmed FAST-core bug. Every unknown host
+            receives public input SUPPLIED before registration. The intended first output
+            is Derived: SUPPLIED.
+        </p>
+        <p>
+            First-bound witnesses copy actual shadow DOM synchronously after the
+            component's parent view binds. They do not measure paint, streamed content, or
+            projected-content readiness.
+        </p>
+        <button id="run" type="button">Upgrade supplied hosts</button>
+        <p id="status" role="status">Not started</p>
+        <section id="before-replay">
+            <h2>Unsafe: derive before super.connectedCallback()</h2>
+            <p>First-bound output: <output class="first-output"></output></p>
+            <p>Restored input: <output class="restored-input"></output></p>
+            <div class="host"></div>
+        </section>
+        <section id="after-bind">
+            <h2>Unsafe: derive after super.connectedCallback()</h2>
+            <p>First-bound output: <output class="first-output"></output></p>
+            <p>Restored input: <output class="restored-input"></output></p>
+            <div class="host"></div>
+        </section>
+        <section id="pre-bind">
+            <h2>Control: constructor-registered HostBehavior</h2>
+            <p>First-bound output: <output class="first-output"></output></p>
+            <p>Restored input: <output class="restored-input"></output></p>
+            <div class="host"></div>
+        </section>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

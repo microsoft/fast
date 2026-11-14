@@ -130,3 +130,30 @@ should be treated as a bug — push the selector into the adapter instead.
 
 For app-specific tests that don't generalize, add a co-located
 `*.pw.spec.ts` next to the source in the app's package, not here.
+
+## Opt-in consumer ordering reproduction
+
+`issues/initialization-outside-pre-bind/` is a self-contained generic consumer misuse
+example with its own HTML, TypeScript entrypoint, co-located browser spec, TypeScript
+config, and standalone Playwright config. It is outside default `testDir: "./tests"`
+and does not use or modify Todo adapters, application logic, or shared server ports.
+See [the opt-in command and expected failures](./README.md#opt-in-initialization-ordering-reproduction).
+
+Unknown hosts receive a public observable input before registration. The unsafe
+variants derive either before property replay or after the first template binding.
+The correct control registers a `HostBehavior` in its constructor so derivation
+runs after replay and before binding. This illustrates author lifecycle ordering,
+not a confirmed new FAST-core defect.
+
+The shared witness base calls `super.connectedCallback()` and immediately copies
+the actual rendered shadow DOM into a write-once, browser-visible output. The late
+variant derives only after that base callback returns. Queue completion exposes
+restored inputs and corrected live output separately; it cannot overwrite the
+first-bound witnesses. No DOM observers or subscriptions are created by the fixture.
+The measured boundary is the synchronous parent binding, not first paint or the
+readiness of streamed/projected content.
+
+All three browsers run with one worker, zero retries, and a Playwright-owned Vite
+server on port 5193. The config supplies the explicit fixture root to Vite because
+`npx` can normalize a nested working directory to the npm workspace root. Two
+unmasked failing assertions and one passing control per browser are intentional.

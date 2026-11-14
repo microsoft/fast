@@ -64,3 +64,33 @@ Spec files use the `*.pw.spec.ts` suffix so Playwright picks them up while leavi
 ## CI
 
 The `test:e2e` script is run as a separate step in [`.github/workflows/ci-validate-pr.yml`](../../.github/workflows/ci-validate-pr.yml) after unit tests, gated on the same `npx playwright install --with-deps` invocation that already runs there.
+
+## Opt-in initialization ordering reproduction
+
+[`issues/initialization-outside-pre-bind/`](./issues/initialization-outside-pre-bind/)
+is a standalone, intentionally failing consumer-author ordering example, **not a
+confirmed FAST-core bug**. It does not change the Todo suite or default discovery.
+From the monorepo root, with dependencies and all three Playwright browsers installed:
+
+```bash
+npm run build:tsc -w @microsoft/fast-element
+npx tsc -p examples/test/issues/initialization-outside-pre-bind/tsconfig.json
+npm exec -w @microsoft/fast-examples-e2e -- playwright test --config=issues/initialization-outside-pre-bind/playwright.config.ts
+```
+
+Expected result: **6 failures and 3 passes** across Chromium, Firefox, and WebKit.
+Each browser fails both unsafe variants with expected `Derived: SUPPLIED`, received
+`Derived: DEFAULT`; the constructor-registered pre-bind `HostBehavior` control passes.
+The standalone Vite server uses port **5193** and is owned/stopped by Playwright.
+
+The page's button creates unknown connected hosts with public `input = "SUPPLIED"`
+before registration. Deriving before `super.connectedCallback()` uses constructor
+defaults before FAST replays the input, leaving the derived display wrong. Deriving
+after it uses the restored input but is too late for the first binding; the live DOM
+subsequently corrects through FAST's update queue. The control derives after replay
+and before binding, using the existing `HostBehavior` phase.
+
+Immutable browser-visible witnesses copy actual shadow DOM synchronously when the
+parent view has finished binding, before late derivation. Tests assert those first
+outputs, not eventual corrected DOM as a substitute. This is not a paint metric or
+a guarantee about streamed/projected-content readiness.
