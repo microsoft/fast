@@ -2,6 +2,61 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Sat, 14 Nov 2026 05:37:38 GMT",
+      "version": "0.18.0",
+      "tag": "@microsoft/fast-build_v0.18.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "994a9f0ee322f58666ff054cacff082774747555",
+            "comment": "Qualify server benchmark input and output boundaries and browser hydration."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "761bbfc829c596dc49d477d3e58268aac6ac0348",
+            "comment": "Separate cold, warm and delivery timings in the server benchmark and add optional CPU profiles."
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4c9eb13be8561ff473bd578632ba98590f1bf61b",
+            "comment": "Add immutable prepared-state snapshots for repeated JavaScript and native Rust rendering."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "93f5d0f6c9f4ef8070dc83507c5d35fa9730767e",
+            "comment": "Reduce server rendering allocations when escaping HTML output."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "5dc3aab8156a8e54a0547200561f5d126fcf50f8",
+            "comment": "Compile path and lexical alias access plans and reuse request-local repeat frames."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4c2d586286d581d4f1c2189f5821c74fbda48c3e",
+            "comment": "Reduce generated code and rendering work for static template markup."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "56c4c3a958362945dca537dd8f229ccba64a0992",
+            "comment": "Reduce generated server code for repeated component shapes with instance-specific attributes."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Nov 2026 07:56:25 GMT",
       "version": "0.17.0",
       "tag": "@microsoft/fast-build_v0.17.0",

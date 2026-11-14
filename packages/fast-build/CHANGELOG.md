@@ -1,8 +1,23 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Thu, 12 Nov 2026 07:56:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 14 Nov 2026 05:37:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.18.0
+
+Sat, 14 Nov 2026 05:37:38 GMT
+
+### Minor changes
+
+- Add immutable prepared-state snapshots for repeated JavaScript and native Rust rendering. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Reduce server rendering allocations when escaping HTML output. (7559015+janechu@users.noreply.github.com)
+- Compile path and lexical alias access plans and reuse request-local repeat frames. (7559015+janechu@users.noreply.github.com)
+- Reduce generated code and rendering work for static template markup. (7559015+janechu@users.noreply.github.com)
+- Reduce generated server code for repeated component shapes with instance-specific attributes. (7559015+janechu@users.noreply.github.com)
 
 ## 0.17.0
 
