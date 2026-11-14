@@ -1,5 +1,8 @@
 //! Immutable native execution of compiler artifacts; never parses template HTML.
-use crate::{content::html_escape, JsonValue as J, Locator, RenderError};
+use crate::{
+    content::{html_escape, write_html_escaped},
+    JsonValue as J, Locator, RenderError,
+};
 use serde_json::Value as V;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -644,11 +647,11 @@ impl<'a> Executor<'a> {
                     self.boundary(scope, "start", binding, false)?;
                     if op[0] == "binding" {
                         let text = text(get(root, loops, &op[1]).as_ref());
-                        self.push(&if op[2] == true {
-                            html_escape(&text)
+                        if op[2] == true {
+                            write_html_escaped(&text, |span| self.push(span))?;
                         } else {
-                            text
-                        })?;
+                            self.push(&text)?;
+                        }
                     } else if op[0] == "when" {
                         if condition(&op[1], root, loops) {
                             self.body(

@@ -136,6 +136,14 @@ siblings. Comparison, display and marker semantics match the generated target.
 All four APIs return owned complete strings or recoverable `NativeRenderError`.
 No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
 
+Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
+Text bindings append unchanged spans and exact entity spellings directly to the
+executor's bounded output string, without allocating an escaped intermediate.
+Each span uses the existing output-byte check; escaping adds no execution steps.
+Errors discard the private partial buffer rather than exposing truncated HTML.
+Attribute construction can still allocate intermediate strings. No output buffer
+or request-sized scratch storage is retained between calls.
+
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
 64 MiB output limits. Finite conditional component cycles are supported through

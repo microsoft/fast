@@ -63,6 +63,11 @@ test("benchmark isolates import, first render and warm render timings", async ()
             `import { performance } from "node:perf_hooks";
 globalThis.benchmarkClock = 0;
 Object.defineProperty(performance, "now", { value: () => globalThis.benchmarkClock });
+const from = Buffer.from;
+Buffer.from = function(value, ...args) {
+    if (value === ${JSON.stringify(text)}) globalThis.benchmarkClock += 5;
+    return from.call(this, value, ...args);
+};
 `,
         );
         await fs.writeFile(
@@ -99,6 +104,8 @@ export function renderEntry(state) {
         assert.equal(result.warmupIterations, 20);
         assert.equal(result.warmupMs, 140);
         assert.equal(result.warmMsPerRender, 7);
+        assert.equal(result.utf8EncodeMs, 5);
+        assert.equal(result.warmUtf8MsPerRender, 12);
         const bytes = await fs.readFile(path.join(directory, "rendered.html"));
         assert.deepEqual(bytes, Buffer.from(text));
         assert.equal(result.outputBytes, bytes.length);
@@ -109,13 +116,17 @@ export function renderEntry(state) {
 test("benchmark rejects output changes after the first render", async () => {
     await withBenchmarkDirectory(async directory => {
         await fs.writeFile(path.join(directory, "input.json"), '{"state":{}}');
-        await fs.writeFile(
-            path.join(directory, "server.mjs"),
-            `let calls = 0;
-export function renderEntry() { return ++calls === 1 ? "cold" : "changed"; }
+        for (const [warmup, stableCalls, phase] of [
+            [20, 1, "warmup"],
+            [0, 1, "warm"],
+            [0, 3, "warm UTF-8"],
+        ]) {
+            await fs.writeFile(
+                path.join(directory, "server.mjs"),
+                `let calls = 0;
+export function renderEntry() { return ++calls <= ${stableCalls} ? "cold" : "changed"; }
 `,
-        );
-        for (const warmup of [20, 0]) {
+            );
             assert.throws(
                 () =>
                     execFileSync(
@@ -125,13 +136,11 @@ export function renderEntry() { return ++calls === 1 ? "cold" : "changed"; }
                             "--worker=aot",
                             `--directory=${directory}`,
                             `--warmup=${warmup}`,
+                            "--iterations=2",
                         ],
                         { encoding: "utf8", stdio: "pipe" },
                     ),
-                error =>
-                    error.stderr.includes(
-                        `${warmup === 0 ? "warm" : "warmup"} output differs`,
-                    ),
+                error => error.stderr.includes(`${phase} output differs`),
             );
         }
     });
@@ -172,6 +181,8 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                     "utf8EncodeMs",
                     "outputWriteMs",
                     "workerProcessMs",
+                    "warmUtf8MsPerRender",
+                    "warmUtf8CpuMsPerRender",
                 ]) {
                     assert.ok(Number.isFinite(sample[phase]), `${phase} is missing`);
                     assert.ok(sample[phase] >= 0, `${phase} must be nonnegative`);

@@ -99,6 +99,15 @@ async function worker() {
     const memoryAfterWarm = process.memoryUsage();
     globalThis.gc?.();
     const memoryRetained = process.memoryUsage();
+    const utf8Cpu = process.cpuUsage();
+    const utf8Start = performance.now();
+    let latestBytes;
+    for (let index = 0; index < iterations; index++) {
+        latestBytes = Buffer.from(render(), "utf8");
+    }
+    const warmUtf8Ms = performance.now() - utf8Start;
+    const utf8CpuUsed = process.cpuUsage(utf8Cpu);
+    assert.equal(hash(latestBytes), output.outputHash, "warm UTF-8 output differs");
     console.log(
         JSON.stringify({
             reportVersion: 2,
@@ -112,6 +121,9 @@ async function worker() {
             warmupIterations,
             warmMsPerRender: warmMs / iterations,
             cpuMsPerRender: (cpuUsed.user + cpuUsed.system) / 1000 / iterations,
+            warmUtf8MsPerRender: warmUtf8Ms / iterations,
+            warmUtf8CpuMsPerRender:
+                (utf8CpuUsed.user + utf8CpuUsed.system) / 1000 / iterations,
             iterations,
             gcCount,
             gcMs,
@@ -193,6 +205,16 @@ async function main() {
             state: {},
         },
         bindings: fixture("plain_bound_elements", instances),
+        escapedBindings: {
+            entry: '<f-repeat value="{{item in items}}"><p title="{{item}}">{{item}}</p></f-repeat>',
+            templates: {},
+            state: {
+                items: Array.from(
+                    { length: instances },
+                    (_, index) => `${index}: ${"caf\u00e9 \u{1f600} &<>\"'".repeat(100)}`,
+                ),
+            },
+        },
         deepPaths: {
             entry: "<p>{{profile.name}}/{{profile.items.+00.title}}/{{profile.items.length}}</p>".repeat(
                 instances,

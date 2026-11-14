@@ -258,16 +258,15 @@ export function text(value) {
     return Array.isArray(value) ? "[Array]" : object(value) ? "[Object]" : String(value);
 }
 
-export const htmlEscape = value =>
-    value.replace(/[&<>"']/g, character => {
-        return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-        }[character];
-    });
+const htmlEntities = Object.freeze({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+});
+const htmlEntity = character => htmlEntities[character];
+export const htmlEscape = value => value.replace(/[&<>"']/g, htmlEntity);
 
 export const truthy = value => Boolean(value);
 
