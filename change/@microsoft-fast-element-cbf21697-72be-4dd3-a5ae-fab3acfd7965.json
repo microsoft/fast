@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Add observed array equality contracts and an opt-in deepMerge CPU workload.",
+  "packageName": "@microsoft/fast-element",
+  "email": "lhi25wy@163.com",
+  "dependentChangeType": "none"
+}
