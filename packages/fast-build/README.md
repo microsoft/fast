@@ -83,6 +83,10 @@ covers text and attribute output.
 The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.
+Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
+requests, include output byte throughput, and record state hashes, rendering
+options and output-structure diagnostics. These qualify measurement boundaries;
+they do not change rendering or establish cross-renderer output equivalence.
 
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).

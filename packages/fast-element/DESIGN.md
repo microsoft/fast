@@ -648,6 +648,11 @@ through generated server JavaScript. The existing browser fixture suite therefor
 qualifies hydration/node reuse and subsequent reactive updates against AOT output.
 Server compilation/execution remains owned by `fast-build`; no browser runtime
 or hydration implementation changes are required.
+The content fixture also gates component registration until it captures parsed
+server shadow roots and bound/raw-content nodes, verifies their identity after
+hydration, and checks escape-heavy Unicode/whitespace text updates. This is a
+semantic qualification gate separate from server byte hashes and benchmark
+throughput; it does not compare different renderers.
 
 ---
 
