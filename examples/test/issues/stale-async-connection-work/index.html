@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Stale async connection work — consumer misuse</title>
+    </head>
+    <body>
+        <h1>Stale async connection work — consumer misuse</h1>
+        <p>
+            Mount, detach, then mount the same FASTElement. Resolve request 2 before
+            request 1: checking isConnected alone lets the old result overwrite the new
+            result. This is not a guaranteed FAST-core bug.
+        </p>
+        <button id="mount" type="button" disabled>Mount same element</button>
+        <button id="detach" type="button" disabled>Detach element</button>
+        <p>
+            Controller:
+            <output id="connection" aria-label="Connection">disconnected</output>
+        </p>
+        <p>
+            Requests started: <output id="count" aria-label="Requests started">0</output>
+        </p>
+        <div id="host"></div>
+        <h2>Manually controlled requests</h2>
+        <ol id="requests"></ol>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

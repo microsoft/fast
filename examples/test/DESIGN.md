@@ -130,3 +130,29 @@ should be treated as a bug — push the selector into the adapter instead.
 
 For app-specific tests that don't generalize, add a co-located
 `*.pw.spec.ts` next to the source in the app's package, not here.
+
+## Opt-in consumer lifetime reproduction
+
+`issues/stale-async-connection-work/` is an independently authored, intentionally
+red example, outside the default `./tests` discovery directory. Its standalone
+config runs Chromium, Firefox, and WebKit with one worker, zero retries, and a
+dedicated Vite server on `127.0.0.1:5195`. It does not modify the Todo suite.
+Unlike the shared app suite, this self-contained fixture uses native controls
+and direct black-box UI selectors rather than a Todo adapter.
+
+One real FASTElement instance is detached and reattached. Each connection starts
+a manually resolved Promise; the consumer checks `$fastController.isConnected`
+before applying its result. Resolving the second request and then the first
+demonstrates that a boolean cannot identify the lifetime that started the work:
+the old completion overwrites the current value while the controller is connected.
+Passing controls cover same-connection completion and completion while detached.
+No network, timers, arbitrary delays, or framework internals drive the tests.
+
+This is consumer misuse, not a newly guaranteed FAST-core bug. It motivates
+opt-in connection-lifetime guarding, such as the proposed `ConnectionGuard`
+in draft FAST #7817, which is not available on this main baseline. No guard or
+generation-token fix is implemented here. Rejecting or cancelling stale work is
+different from cleaning up resources on disconnect, and neither a connection
+boolean nor a lifetime guard establishes content readiness.
+
+See the [opt-in run instructions](./README.md#opt-in-intentionally-red-reproduction).

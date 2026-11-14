@@ -64,3 +64,41 @@ Spec files use the `*.pw.spec.ts` suffix so Playwright picks them up while leavi
 ## CI
 
 The `test:e2e` script is run as a separate step in [`.github/workflows/ci-validate-pr.yml`](../../.github/workflows/ci-validate-pr.yml) after unit tests, gated on the same `npx playwright install --with-deps` invocation that already runs there.
+
+## Opt-in intentionally red reproduction
+
+[`issues/stale-async-connection-work/`](./issues/stale-async-connection-work/)
+demonstrates consumer misuse of `$fastController.isConnected` as an async
+lifetime guard. It is not a newly guaranteed FAST-core bug and is excluded from
+the default Todo suite. A single FASTElement is reused across detach/reattach;
+manually resolving request 2 before request 1 lets the old result overwrite the
+current one even though the controller is connected.
+
+From the monorepo root, after installing dependencies:
+
+```bash
+npx playwright install chromium firefox webkit
+npm run build:tsc -w @microsoft/fast-element
+npx tsc -p examples/test/issues/stale-async-connection-work/tsconfig.json
+npm exec -w @microsoft/fast-examples-e2e -- playwright test --config=issues/stale-async-connection-work/playwright.config.ts
+```
+
+Expected outcome: **3 failing stale-overwrite assertions and 6 passing controls**
+(one red test and two controls per browser), with exit code 1. Each red assertion
+expects `Current connection result` but receives `Old connection result`.
+The standalone config uses Chromium, Firefox, and WebKit, one worker, zero retries,
+and port `5195`; Playwright starts and stops Vite automatically.
+
+For manual reproduction, serve the explicit fixture root:
+
+```bash
+npx vite examples/test/issues/stale-async-connection-work --host 127.0.0.1 --port 5195 --strictPort
+```
+
+Open `http://127.0.0.1:5195`, mount, detach, mount the same element again, resolve
+request 2, then resolve request 1. The value incorrectly changes from current to
+old. Same-connection completion and resolving while disconnected work correctly.
+This motivates an opt-in connection-lifetime guard, such as proposed
+`ConnectionGuard` in draft FAST #7817 (not present on this main baseline); the
+fixture deliberately includes no fix. Rejecting/cancelling stale work is distinct
+from resource cleanup on disconnect or waiting for content readiness.
