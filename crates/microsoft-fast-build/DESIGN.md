@@ -75,6 +75,29 @@ attributes, naming rules, body structure, literal CSS/markup and hydration bindi
 counts. State paths become segment arrays. The emitter turns repeats into JavaScript
 loops; the native executor iterates the same body references.
 
+### Compiled JavaScript access plans
+
+The emitter interns distinct paths into module-level accessors. Matching repeat
+alias prefixes are resolved to numeric slots; slot zero is reserved for
+`$index`. The helper prepares array-index decoding once at module import.
+Single-key root access and single-candidate lexical access use specialized
+functions; multiple matching prefixes select the newest active binding, not
+the longest prefix. Missing/null nested values still mask parent fallback.
+
+Each nonempty repeat invocation owns one frame with internal prototype-linked slot
+storage and mutable alias/index cells reused across its iterations. This
+replaces per-iteration loop-array copying. Only compiler-owned frame cells
+change; caller state and module-level accessor metadata remain independent.
+Shared bodies receive the active frame rather than capturing a lexical context,
+so interning does not multiply functions for different repeat scopes.
+Component shadows and host defaults start without caller repeat aliases;
+light DOM retains its caller frame.
+
+This is JavaScript target emission/hosting, not a new IR opcode or a native
+executor rewrite. Helper contract version 2 distinguishes the new frame and
+accessor ABI; artifact schema version 1 remains unchanged. Regenerate both
+target artifacts with the upgraded compiler and deploy matching helpers/libraries.
+
 ## Request execution
 
 Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.

@@ -193,6 +193,29 @@ async function main() {
             state: {},
         },
         bindings: fixture("plain_bound_elements", instances),
+        deepPaths: {
+            entry: "<p>{{profile.name}}/{{profile.items.+00.title}}/{{profile.items.length}}</p>".repeat(
+                instances,
+            ),
+            templates: {},
+            state: { profile: { name: "Deep & escaped", items: [{ title: "First" }] } },
+        },
+        nestedRepeats: {
+            entry: '<f-repeat value="{{group in groups}}"><f-repeat value="{{row in group.rows}}"><f-repeat value="{{cell in row.cells}}"><p>{{group.name}}/{{row.name}}/{{cell.name}}/{{$index}}/{{label}}</p></f-repeat></f-repeat></f-repeat>',
+            templates: {},
+            state: {
+                label: "Root & fallback",
+                groups: Array.from({ length: instances }, (_, group) => ({
+                    name: `Group ${group}`,
+                    rows: Array.from({ length: 3 }, (_, row) => ({
+                        name: `Row ${row}`,
+                        cells: Array.from({ length: 3 }, (_, cell) => ({
+                            name: `Cell ${cell}`,
+                        })),
+                    })),
+                })),
+            },
+        },
         repeated: fixture("repeat_custom_elements", instances),
         nested: {
             entry: "<bench-root></bench-root>".repeat(instances),
