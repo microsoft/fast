@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Host behaviors after template resolution</title>
+    </head>
+    <body>
+        <h1>Host behaviors after template resolution</h1>
+        <section>
+            <h2>Template supplied before registration</h2>
+            <div id="ready-host"></div>
+            <p>Connected callbacks: <output id="ready-connected">0</output></p>
+            <p>Disconnected callbacks: <output id="ready-disconnected">0</output></p>
+            <button id="ready-detach" type="button" disabled>
+                Detach ready component
+            </button>
+            <button id="ready-reconnect" type="button" disabled>
+                Reconnect ready component
+            </button>
+        </section>
+        <section>
+            <h2>Template supplied after connection</h2>
+            <div id="pending-host"></div>
+            <p>Connected callbacks: <output id="pending-connected">0</output></p>
+            <p>Disconnected callbacks: <output id="pending-disconnected">0</output></p>
+            <button id="resolve-template" type="button" disabled>
+                Resolve pending template
+            </button>
+            <button id="pending-detach" type="button" disabled>
+                Detach pending component
+            </button>
+            <button id="pending-reconnect" type="button" disabled>
+                Reconnect pending component
+            </button>
+        </section>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

@@ -61,6 +61,29 @@ Adapters wrap the per-app DOM differences (e.g. SSR app uses a nested `<todo-ite
 
 Spec files use the `*.pw.spec.ts` suffix so Playwright picks them up while leaving the `*.spec.ts` suffix free for future Node-based tests.
 
+## Opt-in pending-template issue reproduction
+
+```bash
+npm run build:tsc -w @microsoft/fast-element
+npm exec -w @microsoft/fast-examples-e2e -- playwright test --config=issues/host-behaviors-lost-on-template-resolution/playwright.config.ts
+```
+
+The fixture registers two components with constructor-added host behaviors. One
+definition has its template before registration; the other receives its template
+after connection through the public `FASTElementDefinition.template` property.
+This undefined-to-defined transition is also covered by the framework's existing
+controller tests.
+
+Resolving the pending template replaces the controller without retaining the
+constructor's host behaviors. The control's disconnect/reconnect callbacks run,
+but the pending component's cleanup callback is missing and its reconnect callback
+never runs again. The counters on the page record actual behavior callbacks.
+
+The cleanup and reconnect assertions intentionally fail in Chromium, Firefox, and
+WebKit. This is a reproduction, not a library fix or a deferred-hydration API.
+The standalone configuration uses port 5199 and is excluded from the default
+Todo E2E suite.
+
 ## CI
 
 The `test:e2e` script is run as a separate step in [`.github/workflows/ci-validate-pr.yml`](../../.github/workflows/ci-validate-pr.yml) after unit tests, gated on the same `npx playwright install --with-deps` invocation that already runs there.

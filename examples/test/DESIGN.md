@@ -130,3 +130,16 @@ should be treated as a bug — push the selector into the adapter instead.
 
 For app-specific tests that don't generalize, add a co-located
 `*.pw.spec.ts` next to the source in the app's package, not here.
+
+## Opt-in pending-template issue reproduction
+
+`issues/host-behaviors-lost-on-template-resolution/` isolates the supported
+undefined-to-defined definition template transition. Constructor-added host
+behaviors update visible connection and cleanup counters. A matching eager-template
+control proves the same behavior registration works without controller replacement.
+
+The standalone tests require the behaviors to remain active after template
+resolution and intentionally fail when disconnect and reconnect callbacks disappear.
+They use real components and public definition/behavior APIs, not private controller
+state or mocked lifecycle calls. Their own configuration does not enter the default
+Todo suite or mutate SSR application state.
