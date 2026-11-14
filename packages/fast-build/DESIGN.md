@@ -149,6 +149,19 @@ render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
 
+Boundary-normalized measurements identify the execution target as generated
+JavaScript and record marker/naming options. State-only JSON serialization is
+timed once outside rendering, with byte length and SHA-256 checked against the
+parent's fixture. A separately warmed JSON-text-to-UTF-8 loop includes parsing,
+validation, rendering and encoding for ordinary or fresh-preparation calls.
+Reused snapshots omit that loop because they are not fresh JSON requests.
+Cold import-to-UTF-8 sums import, any one-time preparation, first rendering and
+encoding without double-counting fresh preparation. Output-byte throughput
+uses the corresponding complete boundary; string-only throughput is logical
+output size, not encoded delivery. Lexical host/marker/DSD counts are diagnostics,
+not DOM equivalence. Frozen byte tests and browser hydration/node-identity tests
+remain independent qualification gates; no rendering contract is normalized away.
+
 ## Template loading — `parseFTemplates`
 
 Parsed definitions now include versioned binding metadata. The JavaScript layer

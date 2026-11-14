@@ -57,6 +57,7 @@ async function withBenchmarkDirectory(run) {
 test("benchmark isolates import, first render and warm render timings", async () => {
     await withBenchmarkDirectory(async directory => {
         const text = "<b>caf\u00e9 \u{1f600}</b>";
+        const stateJson = JSON.stringify({ text });
         const preload = path.join(directory, "clock.mjs");
         await fs.writeFile(
             preload,
@@ -67,6 +68,16 @@ const from = Buffer.from;
 Buffer.from = function(value, ...args) {
     if (value === ${JSON.stringify(text)}) globalThis.benchmarkClock += 5;
     return from.call(this, value, ...args);
+};
+const parse = JSON.parse;
+JSON.parse = function(value, ...args) {
+    if (value === ${JSON.stringify(stateJson)}) globalThis.benchmarkClock += 3;
+    return parse.call(this, value, ...args);
+};
+const stringify = JSON.stringify;
+JSON.stringify = function(value, ...args) {
+    if (value?.text === ${JSON.stringify(text)}) globalThis.benchmarkClock += 2;
+    return stringify.call(this, value, ...args);
 };
 `,
         );
@@ -99,6 +110,10 @@ export function renderEntry(state) {
             ),
         );
         assert.equal(result.firstRenderMs, 11);
+        assert.deepEqual(result.renderOptions, {
+            markersV2: false,
+            attributeNameStrategy: "camelCase",
+        });
         assert.equal(result.moduleImportMs, 37);
         assert.equal(result.coldImportAndRenderMs, 48);
         assert.equal(result.warmupIterations, 20);
@@ -106,10 +121,118 @@ export function renderEntry(state) {
         assert.equal(result.warmMsPerRender, 7);
         assert.equal(result.utf8EncodeMs, 5);
         assert.equal(result.warmUtf8MsPerRender, 12);
+        assert.equal(result.stateSerializeMs, 2);
+        assert.equal(result.stateJsonBytes, Buffer.byteLength(stateJson));
+        assert.equal(result.warmJsonUtf8MsPerRender, 15);
+        assert.equal(result.coldImportToUtf8Ms, 53);
         const bytes = await fs.readFile(path.join(directory, "rendered.html"));
         assert.deepEqual(bytes, Buffer.from(text));
         assert.equal(result.outputBytes, bytes.length);
         assert.equal(result.outputHash, createHash("sha256").update(bytes).digest("hex"));
+        assert.equal(result.warmStringBytesPerSecond, (bytes.length * 1000) / 7);
+        assert.equal(result.warmUtf8BytesPerSecond, (bytes.length * 1000) / 12);
+        assert.equal(result.warmJsonUtf8BytesPerSecond, (bytes.length * 1000) / 15);
+    });
+});
+
+test("reused preparation is included in cold delivery but not a fresh JSON request", async () => {
+    await withBenchmarkDirectory(async directory => {
+        const preload = path.join(directory, "clock.mjs");
+        await fs.writeFile(
+            preload,
+            `import { performance } from "node:perf_hooks";
+globalThis.benchmarkClock = 0;
+Object.defineProperty(performance, "now", { value: () => globalThis.benchmarkClock });
+`,
+        );
+        await fs.writeFile(path.join(directory, "input.json"), '{"state":{"text":"ok"}}');
+        await fs.writeFile(
+            path.join(directory, "server.mjs"),
+            `globalThis.benchmarkClock += 37;
+export function prepareState(state) { globalThis.benchmarkClock += 13; return state; }
+export function renderEntryPrepared(state) { globalThis.benchmarkClock += 7; return state.text; }
+export function renderEntry(state) { return state.text; }
+`,
+        );
+        for (const mode of ["plain", "prepared", "prepare-per-render"]) {
+            const result = JSON.parse(
+                execFileSync(
+                    process.execPath,
+                    [
+                        "--import",
+                        pathToFileURL(preload).href,
+                        benchmark,
+                        "--worker=aot",
+                        `--directory=${directory}`,
+                        "--iterations=2",
+                        `--state-mode=${mode}`,
+                    ],
+                    { encoding: "utf8" },
+                ),
+            );
+            const reused = mode === "prepared";
+            if (mode === "plain") {
+                assert.equal(result.warmMsPerRender, 0);
+                assert.equal(result.warmStringBytesPerSecond, null);
+                assert.equal(result.warmUtf8BytesPerSecond, null);
+                assert.equal(result.warmJsonUtf8BytesPerSecond, null);
+                continue;
+            }
+            assert.equal(result.prepareStateMs, reused ? 13 : undefined);
+            assert.equal(result.coldImportAndRenderMs, reused ? 44 : 57);
+            assert.equal(result.coldImportToUtf8Ms, 57);
+            assert.equal(result.warmMsPerRender, reused ? 7 : 20);
+            assert.equal(result.warmUtf8MsPerRender, reused ? 7 : 20);
+            assert.equal(result.warmJsonUtf8MsPerRender, reused ? undefined : 20);
+            if (reused) {
+                assert.equal(result.warmJsonUtf8BytesPerSecond, undefined);
+            }
+        }
+    });
+});
+
+test("benchmark records and applies marker and attribute naming options", async () => {
+    await withBenchmarkDirectory(async directory => {
+        const input = {
+            entry: '<bench-options aria-label="{{label}}"></bench-options>',
+            templates: {
+                "bench-options": '<p data-label="{{label}}">{{label}}</p>',
+            },
+            state: { label: "caf\u00e9 \u{1f600} &<>\"'" },
+        };
+        const source = compileServerModule(input.entry, input.templates, runtime);
+        await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
+        await fs.writeFile(path.join(directory, "server.mjs"), source);
+        const server = await import(pathToFileURL(path.join(directory, "server.mjs")));
+        for (const markersV2 of [false, true]) {
+            const options = { markersV2, attributeNameStrategy: "none" };
+            const expected = server.renderEntry(input.state, options);
+            const result = JSON.parse(
+                execFileSync(
+                    process.execPath,
+                    [
+                        benchmark,
+                        "--worker=aot",
+                        `--directory=${directory}`,
+                        "--iterations=2",
+                        "--warmup=0",
+                        "--attribute-name-strategy=none",
+                        ...(markersV2 ? ["--markers-v2"] : []),
+                    ],
+                    { encoding: "utf8" },
+                ),
+            );
+            assert.deepEqual(result.renderOptions, options);
+            assert.equal(
+                await fs.readFile(path.join(directory, "rendered.html"), "utf8"),
+                expected,
+            );
+            assert.equal(result.outputHash, outputStats(expected).sha256);
+            assert.equal(result.outputStructure.hosts, 1);
+            assert.equal(result.outputStructure.dsdRoots, 1);
+            assert.ok(result.outputStructure.bindings > 0);
+            assert.ok(result.outputStructure.attributeMarkers > 0);
+        }
     });
 });
 
@@ -120,6 +243,8 @@ test("benchmark rejects output changes after the first render", async () => {
             [20, 1, "warmup"],
             [0, 1, "warm"],
             [0, 3, "warm UTF-8"],
+            [0, 5, "warm JSON-to-UTF-8"],
+            [2, 7, "JSON-to-UTF-8 warmup"],
         ]) {
             await fs.writeFile(
                 path.join(directory, "server.mjs"),
@@ -158,12 +283,19 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                     "--instances=1",
                     "--warmup=0",
                     "--state-mode=all",
+                    "--markers-v2",
+                    "--attribute-name-strategy=none",
                     `--profile-directory=${path.join(directory, "profiles")}`,
                 ],
                 { encoding: "utf8" },
             ),
         );
         assert.equal(result.reportVersion, 2);
+        assert.equal(result.executionTarget, "generated-javascript");
+        assert.deepEqual(result.renderOptions, {
+            markersV2: true,
+            attributeNameStrategy: "none",
+        });
         assert.equal(result.warmupIterations, 0);
         assert.ok(Number.isFinite(result.compilerLoadMs));
         for (const record of Object.values(result.workloads)) {
@@ -182,7 +314,14 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                 if (sample.stateMode === "prepared") {
                     assert.ok(sample.prepareStateMs >= 0);
                     assert.ok(sample.memoryAfterPrepare.heapUsed > 0);
+                    assert.equal(sample.warmJsonUtf8MsPerRender, undefined);
+                } else {
+                    assert.ok(sample.warmJsonUtf8MsPerRender >= 0);
+                    assert.ok(sample.warmJsonUtf8CpuMsPerRender >= 0);
                 }
+                assert.equal(sample.stateJsonHash, first.stateJsonHash);
+                assert.deepEqual(sample.outputStructure, first.outputStructure);
+                assert.ok(sample.outputStructure.dsdRoots >= 0);
                 for (const phase of [
                     "workerSetupMs",
                     "inputReadMs",
@@ -194,6 +333,8 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                     "workerProcessMs",
                     "warmUtf8MsPerRender",
                     "warmUtf8CpuMsPerRender",
+                    "stateSerializeMs",
+                    "coldImportToUtf8Ms",
                 ]) {
                     assert.ok(Number.isFinite(sample[phase]), `${phase} is missing`);
                     assert.ok(sample[phase] >= 0, `${phase} must be nonnegative`);

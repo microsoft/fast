@@ -313,6 +313,11 @@ DSD selection, state rejection, diagnostics, cyclic graphs and every authored
 declarative fixture. Fresh-process execution disables WASM instantiation and
 JSON parsing. Normal FAST Element fixture builds use AOT output, so the existing
 browser suite exercises hydration and reactive updates against generated output.
+The content-binding fixture additionally pauses component registration, checks
+the browser-parsed server DOM, and verifies that hydration retains the same
+shadow root, bound text node and unescaped-content element. Its reactive update
+checks literal Unicode, HTML-significant characters and whitespace without
+turning the text into elements.
 
 `cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml` also executes
 the original rendering assertion corpus through loaded native artifacts and
@@ -337,11 +342,88 @@ The `deepPaths` workload covers nested object paths, numeric array access and
 array length. `nestedRepeats` covers three active lexical aliases, `$index` and
 root lookup across nested iterations. These supplement the existing static,
 host, binding, repeated-component, nested-component and large-state workloads.
-All supplied state is still validated per render; these are complete render
-measurements, not lookup-only microbenchmarks. GC observations and memory
+In default `plain` mode, all supplied state is validated per render; these are
+complete render measurements, not lookup-only microbenchmarks. GC observations and memory
 snapshots are allocation indicators, not exact allocated-byte totals.
 `escapedBindings` adds dense escaping of all five special characters in Unicode
 text and attributes. It helps expose allocation and UTF-8 materialization costs.
+
+### Comparable input/output boundaries
+
+Reports identify `executionTarget: "generated-javascript"`; these are synchronous
+generated-JavaScript calls, not native Rust rendering. Parent and worker records
+include `renderOptions`. Defaults remain v3 markers, `camelCase` attribute naming
+and DSD for all components. Select the other supported marker/naming contracts
+without changing renderer behavior:
+
+```sh
+npm run bench:server -w @microsoft/fast-build -- --markers-v2 --attribute-name-strategy=none
+```
+
+`--attribute-name-strategy` accepts `camelCase` or `none`; `--markers-v2` selects
+indexed markers. Compare identical options, templates, parsed state and state
+mode. Every worker reports `stateJsonBytes` and `stateJsonHash` for the state-only
+JSON text; the parent verifies its hash against the fixture. The existing
+`inputParseMs` instead parses the entire fixture file, including templates and
+entry markup, and is **not** per-request state parsing.
+
+| Request input -> result | Complete warm boundary |
+|---|---|
+| Already-parsed JSON-shaped object -> JS string | `warmMsPerRender`: validation and rendering |
+| Already-parsed JSON-shaped object -> UTF-8 Buffer | `warmUtf8MsPerRender`: validation, rendering, string materialization and encoding |
+| JSON text -> UTF-8 Buffer | `warmJsonUtf8MsPerRender`: state-only `JSON.parse`, validation, rendering, materialization and encoding |
+| Reused prepared handle -> string/Buffer | Existing string/UTF-8 fields in `prepared` mode; preparation is paid separately |
+
+JSON-to-UTF-8 measurements run after the object-input loops, with their own
+`--warmup` calls and output checks outside timers. `jsonUtf8WarmupMs` reports that
+warmup; `warmJsonUtf8CpuMsPerRender` reports measured-loop CPU. Fresh-preparation
+mode includes preparation on every JSON request. Reused-prepared mode omits JSON
+timings/throughput rather than pretending a cached handle represents fresh input.
+All JSON inputs come from this benchmark's JSON fixture corpus; this is not a
+recommendation to serialize arbitrary caller objects to bypass state rejection.
+
+`stateSerializeMs` measures one state-only `JSON.stringify` outside these loops.
+It is a setup observation, not a warm per-request serialization average. If
+another object-input API serializes/parses internally, retain that work inside
+its object-to-result timer; do not compare a string-returning call against a
+Buffer-returning call or subtract that API's conversion work. File I/O, fixture
+generation, compilation, import and browser bundling are not warm requests.
+
+`warmStringBytesPerSecond`, `warmUtf8BytesPerSecond` and, when applicable,
+`warmJsonUtf8BytesPerSecond` divide delivered output bytes by the matching mean
+wall time in seconds. Zero-duration timers yield `null`, not infinite throughput.
+String-only throughput uses the output's logical UTF-8 size but does not measure
+encoding. Report latency **and** byte counts/rates: extra output can increase
+bytes/second without improving equivalent application work.
+
+`coldImportToUtf8Ms` sums import, one-time preparation (if reused), first rendering
+and first encoding. It includes preparation exactly once in all modes. This is a
+sum of isolated phases, not contiguous request latency, and excludes process/input
+loading, fixture serialization, forced GC and file writing. Do not add it to its
+constituent timings or to `coldImportAndRenderMs`.
+
+### Qualifying output differences
+
+Each sample retains its exact UTF-8 hash and byte count. `outputStructure`
+contains lexical counts of benchmark custom-element hosts, binding/repeat
+markers, attribute-marker attributes and DSD roots. These counts help locate
+extra markup; they are not an HTML parser, general element counts or proof of
+semantic/hydration equivalence. Text or raw HTML that resembles markup can
+contribute matches. Cross-mode/sample hashes only establish byte consistency
+within this backend; independent frozen baseline tests detect contract changes.
+
+For comparisons with another renderer, retain both original outputs and their
+backend-specific frozen byte contracts. Investigate DSD attributes/selection,
+host defaults, binding/repeat marker placement, escaping, whitespace, missing
+values and state coercion before interpreting a latency ratio. Do not strip
+markers, reserialize HTML or change a public renderer's bytes to force equality.
+Use browser-parsed attributes/text and actual FAST hydration/reactive updates to
+qualify semantics independently. The server corpus covers both marker formats,
+host/naming/DSD options and coercion; browser fixtures cover the active client
+hydration contract. Passing those gates does not itself qualify another
+renderer's output. No cross-renderer speedup is claimed by this benchmark.
+
+### State reuse and phase reporting
 
 To compare ordinary rendering, snapshot reuse and fresh preparation:
 
@@ -381,13 +463,16 @@ The JSON report uses `reportVersion: 2` and separates these wall-clock phases:
 | `compileMs`, `artifactWriteMs` | Per-workload template compilation and UTF-8 generated-module file writing |
 | `workerSetupMs` | Node process time origin to worker entry, including Node and benchmark-harness initialization; not the parent's OS spawn latency |
 | `inputReadMs`, `inputParseMs` | Child fixture-file read and JSON parsing, outside rendering |
+| `stateSerializeMs` | State-only JSON serialization, outside request loops |
 | `moduleImportMs` | Generated module and server-helper import |
 | `firstRenderMs` | First synchronous render call only; includes any V8 lazy compilation on first use |
 | `coldImportAndRenderMs` | Sum of module import and first render, not startup or request-fixture loading |
+| `coldImportToUtf8Ms` | Sum of import, one-time preparation if applicable, first render and encoding |
 | `utf8EncodeMs`, `outputWriteMs` | First result's string materialization/UTF-8 Buffer conversion and local file open/write/close |
 | `warmupMs`, `warmupIterations` | Explicit untimed-for-throughput warmup, default 20 calls; configure with `--warmup=N`, including zero |
 | `warmMsPerRender`, `cpuMsPerRender` | Average wall/CPU time for `--iterations=N` warm synchronous render calls |
 | `warmUtf8MsPerRender`, `warmUtf8CpuMsPerRender` | Average wall/CPU time for a subsequent `--iterations=N` loop rendering and converting each result into a UTF-8 Buffer; no file writing |
+| `warmJsonUtf8MsPerRender`, `warmJsonUtf8CpuMsPerRender` | Average wall/CPU time for a separately warmed state-JSON-parse/render/UTF-8 loop; absent for reused snapshots |
 | `workerProcessMs` | Parent-observed full child lifecycle, including spawn, setup, phases, validation, GC, report transfer and optional profile flushing |
 
 Version 1 reports had no version field and used `firstRenderMs` for **import plus
@@ -418,6 +503,9 @@ explicit collections around it. Memory snapshots retain the cold and latest
 warm strings; they are not exact allocated-byte counts. Heap metrics do not
 represent total WASM allocation; RSS includes native memory. Generated source
 size is not a minified/bundled-size claim.
+State-only serialized JSON is now also retained across the measured loops; take
+that additional live input into account when comparing historical memory reports.
+The string-loop memory/GC observations do not cover the later UTF-8/JSON loops.
 
 To collect optional Node CPU profiles for every child sample:
 
