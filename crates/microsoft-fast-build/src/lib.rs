@@ -34,7 +34,7 @@ pub use json::{JsonError, JsonValue};
 pub use locator::{parse_f_templates, FTemplate, Locator};
 pub use native::{
     compile_server_artifact, parse_render_state, AttributeNameStrategy, CompiledArtifact,
-    NativeRenderError, NativeRenderOptions,
+    NativeRenderError, NativeRenderOptions, PreparedState,
 };
 pub use server_ir::ARTIFACT_VERSION as SERVER_ARTIFACT_VERSION;
 pub use template_slots::{extract_template_slots, TemplateSlot};

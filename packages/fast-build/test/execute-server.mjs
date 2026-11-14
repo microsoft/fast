@@ -13,13 +13,19 @@ try {
             ),
         ).toString("base64")}`
     );
-    const value = input.host
-        ? server.renderHost(input.host, state, input.options)
+    const method = input.host
+        ? "renderHost"
         : input.shadow
-          ? server.renderShadow(input.shadow, state, input.options)
+          ? "renderShadow"
           : input.template
-            ? server.renderTemplate(state, input.options)
-            : server.renderEntry(state, input.options);
+            ? "renderTemplate"
+            : "renderEntry";
+    const args = input.host || input.shadow ? [input.host || input.shadow] : [];
+    const value = server[method](...args, state, input.options);
+    const prepared = server.prepareState(state);
+    if (server[`${method}Prepared`](...args, prepared, input.options) !== value) {
+        throw new Error("Prepared output differs from ordinary output");
+    }
     process.stdout.write(JSON.stringify({ value }));
 } catch (error) {
     process.stdout.write(

@@ -11,6 +11,25 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
+### Prepared snapshots and helper contract version 3
+
+Regenerate both JavaScript modules and native artifacts and deploy the matching
+helper/library. Version-2 modules intentionally fail the version-3 helper check.
+Existing ordinary render methods keep validating supplied state on every call;
+the executable IR schema remains version 1.
+
+For opt-in reuse, call generated `prepareState` once, then use the corresponding
+`render*Prepared` method. Do not pass a handle to an ordinary method or serialize
+it. Snapshots copy input rather than taking ownership or freezing caller data;
+create a new snapshot after input changes. Artifacts sharing one helper instance
+can share snapshots; separate helpers/workers cannot.
+
+Rust callers can construct `PreparedState::new(&state)` or `from_json(json)` and
+call `render_*_prepared`. Snapshots own immutable shared data; ordinary signatures,
+execution budgets and output/error ownership remain intact. These snapshots are
+not the retired prepared compiler/program APIs and cannot load their artifacts.
+See the [complete ownership contract](../server-modules.md#prepared-state-snapshots).
+
 ### Choose the matching replacement
 
 Compile authored inputs at build time, then select the matching render context:
@@ -21,7 +40,7 @@ Compile authored inputs at build time, then select the matching render context:
 | WASM `render` / `render_with_templates` | Call generated `renderTemplate` to preserve template-context root-host rules. |
 | `render_shadow_root` | Call generated `renderShadow(name, componentState)` for a resolved-state DSD fragment. |
 | Native Rust source rendering | Compile an artifact, load `CompiledArtifact`, and call its corresponding render method (`render_entry`, `render_template`, `render_host` or `render_shadow`). |
-| Prepared APIs/artifacts | Rebuild authored sources into generated ESM or native artifacts; move lifecycle and activation responsibilities to the application. |
+| Legacy prepared compiler/program APIs/artifacts | Rebuild authored sources into generated ESM or native artifacts; move lifecycle and activation responsibilities to the application. |
 
 ### Build once, render with request state
 
