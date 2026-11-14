@@ -61,6 +61,31 @@ Adapters wrap the per-app DOM differences (e.g. SSR app uses a nested `<todo-ite
 
 Spec files use the `*.pw.spec.ts` suffix so Playwright picks them up while leaving the `*.spec.ts` suffix free for future Node-based tests.
 
+## Opt-in issue reproductions
+
+The shared conditional stylesheet example is separate from the Todo suite:
+
+```bash
+npm run build:tsc -w @microsoft/fast-element
+npm exec -w @microsoft/fast-examples-e2e -- playwright test --config=issues/shared-style-owner-conditions/playwright.config.ts
+```
+
+Its control test verifies that an overflow menu receives the shared styles when
+enabled on its own. The reproduction enables both features, then disables the
+action buttons while leaving the menu visible. Two independent conditional host
+behaviors manage the same `ElementStyles` on one host; removing one condition's
+styles also removes the other feature's styles.
+
+The final assertion intentionally requires the menu to remain blue and currently
+fails because its background becomes gray. Do not mark it as an expected failure:
+this branch is a red reproduction, not a library fix. The standalone configuration
+runs in Chromium, Firefox, and WebKit on port 5191 without starting the Todo apps
+or changing their SSR state. It is not discovered by the default E2E suite.
+
+FAST's attachment bookkeeping is target-based, not a reference count of independent
+owners. This demonstrates the conflict in a consumer's conditional behaviors; it
+does not imply that every `removeStyles()` call should preserve an attachment.
+
 ## CI
 
 The `test:e2e` script is run as a separate step in [`.github/workflows/ci-validate-pr.yml`](../../.github/workflows/ci-validate-pr.yml) after unit tests, gated on the same `npx playwright install --with-deps` invocation that already runs there.

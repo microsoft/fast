@@ -130,3 +130,19 @@ should be treated as a bug — push the selector into the adapter instead.
 
 For app-specific tests that don't generalize, add a co-located
 `*.pw.spec.ts` next to the source in the app's package, not here.
+
+## Opt-in issue reproductions
+
+`issues/shared-style-owner-conditions/` contains a standalone browser example and
+co-located Playwright tests. It uses real FAST components, observable conditions,
+and host behaviors; tests interact only through controls and assert visible
+computed styling, without reading attachment internals.
+
+Both behaviors receive the same stylesheet instance and track their own condition.
+The controller deduplicates its attachment by target, but does not count behavior
+owners. Disabling one feature therefore detaches styles still needed by the other.
+A passing single-feature control isolates the intentionally failing overlap case.
+
+The issue configuration is explicitly selected, independent of the default Todo
+projects, adapters, and global setup/teardown. It runs on its own Vite server and
+does not change the library or make the normal E2E suite intentionally red.
