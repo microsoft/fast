@@ -44,6 +44,26 @@ reuse are compatibility contracts. Allocation reductions may remain internal;
 changing those guarantees requires consumer migration. Native budgets do not
 imply equivalent FAST budgets in the JS target.
 
+### Compiled access and repeat frames
+
+The Rust emitter interns path accessors and resolves potential lexical aliases
+into numeric slots. The helper caches array-index decoding at module import,
+specializes single-key root and single-alias lookups, and selects the newest
+matching alias when dotted prefixes overlap. It preserves own-property masking,
+nulls, array access and parent fallback without slicing paths per lookup.
+
+A nonempty repeat owns a request-local prototype-linked slot frame with alias/index cells
+reused across iterations, instead of copying loop arrays for every item.
+Internal slot storage has no application prototype; caller state is not mutated
+or retained by module accessors. Shared bodies accept the active frame.
+Component shadows/defaults reset lexical scope while light DOM retains it.
+
+The helper contract is now version 2; generated/native artifacts must be
+regenerated and deployed with matching helpers/libraries. Rendering APIs and
+IR opcodes/schema remain unchanged; native execution is not optimized here.
+The benchmark adds deep-path and three-level-repeat workloads alongside the
+unchanged existing workloads, reporting warm CPU, observed GC and memory.
+
 ## CLI
 
 `fast build` loads entry/registry files, compiles AOT source, imports that source,

@@ -87,6 +87,16 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
+The current helper contract is version 2. Generated JavaScript prepares path
+accessors and numeric alias slots at module import, including array-index
+decoding. Repeats reuse request-local alias/index cells rather than copying
+loop arrays per iteration. The newest matching alias wins, including implicit
+`$index` precedence; missing nested values do not fall through to older aliases
+or parent state. Shared bodies do not capture a frame, and component shadows
+reset caller lexical scope. Rendering/state APIs and IR schema version 1 are
+unchanged. Regenerate both target artifacts on upgrade and deploy the compatible
+helper/native library; older generated modules fail the import-time version check.
+
 For a JavaScript server build:
 
 1. Move template loading/composition and `compileServerModule` into the build.
@@ -268,6 +278,14 @@ Run the AOT benchmark from the repository root after building:
 ```sh
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
 ```
+
+The `deepPaths` workload covers nested object paths, numeric array access and
+array length. `nestedRepeats` covers three active lexical aliases, `$index` and
+root lookup across nested iterations. These supplement the existing static,
+host, binding, repeated-component, nested-component and large-state workloads.
+All supplied state is still validated per render; these are complete render
+measurements, not lookup-only microbenchmarks. GC observations and memory
+snapshots are allocation indicators, not exact allocated-byte totals.
 
 Each sample runs in a fresh Node child with Node's module compile cache disabled.
 This isolates process-local first use, not a cold operating-system file cache.

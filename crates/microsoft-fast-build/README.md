@@ -35,6 +35,11 @@ generation eagerly diagnoses malformed skipped bodies.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for helper compatibility, state validation and qualification.
 
+Generated JavaScript uses module-level path accessors and reusable request-local
+repeat frames. Helper contract version 2 requires regenerated modules/artifacts
+and matching deployed helpers/libraries. The executable IR schema and native
+render APIs remain unchanged.
+
 ### Compile and deploy native Rust artifacts
 
 ```rust
