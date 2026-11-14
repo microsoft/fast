@@ -4,6 +4,7 @@ use crate::{
     JsonValue as J, Locator, RenderError,
 };
 use serde_json::Value as V;
+use std::borrow::Cow;
 use std::collections::HashMap;
 use std::sync::Arc;
 
@@ -63,6 +64,29 @@ fn invalid() -> NativeRenderError {
         "invalid-artifact",
         "Malformed FAST server executable artifact",
     )
+}
+
+/// An owned, immutable validated state snapshot, independent of any artifact.
+/// Clones share storage; dropping the final clone releases it.
+#[derive(Clone, Debug)]
+pub struct PreparedState {
+    values: Arc<J>,
+}
+
+impl PreparedState {
+    /// Validate, normalize and copy without retaining or modifying caller data.
+    pub fn new(state: &J) -> Result<Self, NativeRenderError> {
+        Ok(Self {
+            values: Arc::new(normalized(state, 0, &mut 1_000_000)?),
+        })
+    }
+
+    /// Parse and validate JSON once into an owned snapshot.
+    pub fn from_json(json: &str) -> Result<Self, NativeRenderError> {
+        Ok(Self {
+            values: Arc::new(parse_render_state(json)?),
+        })
+    }
 }
 
 /// Compile ahead of time to a versioned executable artifact, not template metadata.
@@ -138,6 +162,24 @@ impl CompiledArtifact {
         )
     }
 
+    /// Render without repeating validation or copying the snapshot's root.
+    pub fn render_entry_prepared(
+        &self,
+        state: &PreparedState,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        self.execute(index(&self.ir["entry"]), &state.values, options, true)
+    }
+
+    /// Prepared-state rendering with template-context root-host rules.
+    pub fn render_template_prepared(
+        &self,
+        state: &PreparedState,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        self.execute(index(&self.ir["entry"]), &state.values, options, false)
+    }
+
     pub fn render_host(
         &self,
         name: &str,
@@ -148,7 +190,22 @@ impl CompiledArtifact {
         let component = self.component(name)?;
         self.execute(
             component["host"].as_u64().unwrap() as usize,
-            state,
+            &state,
+            options,
+            true,
+        )
+    }
+
+    /// Render a named host using an immutable validated snapshot.
+    pub fn render_host_prepared(
+        &self,
+        name: &str,
+        state: &PreparedState,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        self.execute(
+            index(&self.component(name)?["host"]),
+            &state.values,
             options,
             true,
         )
@@ -162,6 +219,25 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
         let state = normalized(state, 0, &mut 1_000_000)?;
+        self.execute_shadow(name, &state, options)
+    }
+
+    /// Render only DSD using an immutable validated snapshot.
+    pub fn render_shadow_prepared(
+        &self,
+        name: &str,
+        state: &PreparedState,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        self.execute_shadow(name, &state.values, options)
+    }
+
+    fn execute_shadow(
+        &self,
+        name: &str,
+        state: &J,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
         let component = self.component(name)?;
         if !selected(options, name) {
             return Ok(String::new());
@@ -171,7 +247,7 @@ impl CompiledArtifact {
         executor.body(
             component["shadow"].as_u64().unwrap() as usize,
             &Frame {
-                values: state,
+                values: Cow::Borrowed(state),
                 parent: None,
             },
             &[],
@@ -197,13 +273,13 @@ impl CompiledArtifact {
         entry: bool,
     ) -> Result<String, NativeRenderError> {
         let state = normalized(state, 0, &mut 1_000_000)?;
-        self.execute(id, state, options, entry)
+        self.execute(id, &state, options, entry)
     }
 
     fn execute(
         &self,
         id: usize,
-        state: J,
+        state: &J,
         options: &NativeRenderOptions,
         entry: bool,
     ) -> Result<String, NativeRenderError> {
@@ -211,7 +287,7 @@ impl CompiledArtifact {
         executor.body(
             id,
             &Frame {
-                values: state,
+                values: Cow::Borrowed(state),
                 parent: None,
             },
             &[],
@@ -299,7 +375,7 @@ fn decoded(v: &V) -> J {
 }
 
 struct Frame<'a> {
-    values: J,
+    values: Cow<'a, J>,
     parent: Option<&'a Frame<'a>>,
 }
 type Loops = [(Vec<String>, J)];
@@ -337,7 +413,7 @@ fn get(root: &Frame<'_>, loops: &Loops, path: &V) -> Option<J> {
     while let Some(current) = frame {
         let val = nested(&current.values, path);
         if val.is_some()
-            || matches!(&current.values, J::Object(values) if values.contains_key(string(&path[0])))
+            || matches!(current.values.as_ref(), J::Object(values) if values.contains_key(string(&path[0])))
         {
             return val;
         }
@@ -722,8 +798,8 @@ impl<'a> Executor<'a> {
                         }
                     }
                     let child = Frame {
-                        values: J::Object(values),
-                        parent: matches!(root.values, J::Object(_)).then_some(root),
+                        values: Cow::Owned(J::Object(values)),
+                        parent: matches!(root.values.as_ref(), J::Object(_)).then_some(root),
                     };
                     let child = if props.is_empty() { root } else { &child };
                     // JS computes shadow before host attributes. Keep error ordering

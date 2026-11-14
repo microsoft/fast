@@ -20,9 +20,18 @@ const { values: args } = parseArgs({
         instances: { type: "string", default: "200" },
         warmup: { type: "string", default: "20" },
         "profile-directory": { type: "string" },
+        "state-mode": { type: "string", default: "plain" },
         output: { type: "string" },
     },
 });
+const stateModes = ["plain", "prepared", "prepare-per-render"];
+assert.ok([...stateModes, "all"].includes(args["state-mode"]), "Invalid state mode.");
+const modeKey = mode =>
+    mode === "plain"
+        ? "aot"
+        : mode === "prepared"
+          ? "aotPrepared"
+          : "aotPreparePerRender";
 const hash = text => createHash("sha256").update(text).digest("hex");
 const integer = (name, minimum = 1) => {
     const value = Number(args[name]);
@@ -56,7 +65,29 @@ async function worker() {
         pathToFileURL(path.join(args.directory, "server.mjs")).href
     );
     const moduleImportMs = performance.now() - importStart;
-    const render = () => module.renderEntry(source.state);
+    const stateMode = args["state-mode"];
+    assert.ok(stateModes.includes(stateMode), "Worker requires one state mode.");
+    let prepared;
+    let preparation;
+    if (stateMode === "prepared") {
+        globalThis.gc?.();
+        const memoryBeforePrepare = process.memoryUsage();
+        const start = performance.now();
+        prepared = module.prepareState(source.state);
+        const prepareStateMs = performance.now() - start;
+        globalThis.gc?.();
+        preparation = {
+            prepareStateMs,
+            memoryBeforePrepare,
+            memoryAfterPrepare: process.memoryUsage(),
+        };
+    }
+    const render =
+        stateMode === "plain"
+            ? () => module.renderEntry(source.state)
+            : stateMode === "prepared"
+              ? () => module.renderEntryPrepared(prepared)
+              : () => module.renderEntryPrepared(module.prepareState(source.state));
     const firstStart = performance.now();
     const html = render();
     const firstRenderMs = performance.now() - firstStart;
@@ -108,9 +139,18 @@ async function worker() {
     const warmUtf8Ms = performance.now() - utf8Start;
     const utf8CpuUsed = process.cpuUsage(utf8Cpu);
     assert.equal(hash(latestBytes), output.outputHash, "warm UTF-8 output differs");
+    if (stateMode !== "plain") {
+        assert.equal(
+            module.renderEntry(source.state),
+            html,
+            "prepared output differs from ordinary output",
+        );
+    }
     console.log(
         JSON.stringify({
             reportVersion: 2,
+            stateMode,
+            ...preparation,
             workerSetupMs,
             inputReadMs,
             inputParseMs,
@@ -157,6 +197,7 @@ async function main() {
     const instances = integer("instances");
     const iterations = integer("iterations");
     const warmupIterations = integer("warmup", 0);
+    const modes = args["state-mode"] === "all" ? stateModes : [args["state-mode"]];
     let profileDirectory;
     if (args["profile-directory"]) {
         const root = path.resolve(args["profile-directory"]);
@@ -259,6 +300,7 @@ async function main() {
         instances,
         iterations,
         warmupIterations,
+        stateModes: modes,
         compilerLoadMs,
         workloadSetupMs: performance.now() - workloadStart,
         profileDirectory,
@@ -285,43 +327,50 @@ async function main() {
                 compileMs,
                 artifactWriteMs,
                 generatedBytes: Buffer.byteLength(source),
-                modes: { aot: [] },
+                modes: Object.fromEntries(modes.map(mode => [modeKey(mode), []])),
             };
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                const profileName = `${name}-${sample + 1}.cpuprofile`;
-                const processStart = performance.now();
-                const response = execFileSync(
-                    process.execPath,
-                    [
-                        "--expose-gc",
-                        ...(profileDirectory
-                            ? [
-                                  "--cpu-prof",
-                                  `--cpu-prof-dir=${profileDirectory}`,
-                                  `--cpu-prof-name=${profileName}`,
-                              ]
-                            : []),
-                        fileURLToPath(import.meta.url),
-                        "--worker=aot",
-                        `--directory=${directory}`,
-                        `--iterations=${iterations}`,
-                        `--warmup=${warmupIterations}`,
-                    ],
-                    {
-                        encoding: "utf8",
-                        env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
-                    },
-                );
-                const workerProcessMs = performance.now() - processStart;
-                const result = { ...JSON.parse(response), workerProcessMs };
-                if (profileDirectory) {
-                    result.cpuProfile = path.join(profileDirectory, profileName);
-                    await fs.stat(result.cpuProfile);
+                for (const stateMode of sample % 2 ? [...modes].reverse() : modes) {
+                    const profileName = `${name}-${stateMode}-${sample + 1}.cpuprofile`;
+                    const processStart = performance.now();
+                    const response = execFileSync(
+                        process.execPath,
+                        [
+                            "--expose-gc",
+                            ...(profileDirectory
+                                ? [
+                                      "--cpu-prof",
+                                      `--cpu-prof-dir=${profileDirectory}`,
+                                      `--cpu-prof-name=${profileName}`,
+                                  ]
+                                : []),
+                            fileURLToPath(import.meta.url),
+                            "--worker=aot",
+                            `--directory=${directory}`,
+                            `--iterations=${iterations}`,
+                            `--warmup=${warmupIterations}`,
+                            `--state-mode=${stateMode}`,
+                        ],
+                        {
+                            encoding: "utf8",
+                            env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
+                        },
+                    );
+                    const workerProcessMs = performance.now() - processStart;
+                    const result = { ...JSON.parse(response), workerProcessMs };
+                    if (profileDirectory) {
+                        result.cpuProfile = path.join(profileDirectory, profileName);
+                        await fs.stat(result.cpuProfile);
+                    }
+                    expected ??= result.outputHash;
+                    assert.equal(
+                        result.outputHash,
+                        expected,
+                        `${name}/aot output differs`,
+                    );
+                    record.modes[modeKey(stateMode)].push(result);
                 }
-                expected ??= result.outputHash;
-                assert.equal(result.outputHash, expected, `${name}/aot output differs`);
-                record.modes.aot.push(result);
             }
             results.workloads[name] = record;
         }

@@ -20,11 +20,20 @@ export interface ServerRenderOptions {
     dsd?: readonly string[];
 }
 
+declare const preparedStateBrand: unique symbol;
+
+/** Opaque immutable snapshot owned by the generated module's runtime instance. */
+export interface PreparedServerState {
+    readonly [preparedStateBrand]: true;
+}
+
 /** Exports of a generated server ESM module. */
 export interface ServerModule {
     readonly compilerId: string;
     readonly runtimeVersion: number;
     readonly components: readonly string[];
+    /** Copy, validate and normalize once. Dropping the handle allows collection. */
+    prepareState(state?: ServerState): PreparedServerState;
     renderEntry(state?: ServerState, options?: ServerRenderOptions): string;
     /** Preserve template-context root host attributes rather than entry-host rules. */
     renderTemplate(state?: ServerState, options?: ServerRenderOptions): string;
@@ -32,6 +41,24 @@ export interface ServerModule {
     renderShadow(
         name: string,
         state?: ServerState,
+        options?: ServerRenderOptions,
+    ): string;
+    renderEntryPrepared(
+        state: PreparedServerState,
+        options?: ServerRenderOptions,
+    ): string;
+    renderTemplatePrepared(
+        state: PreparedServerState,
+        options?: ServerRenderOptions,
+    ): string;
+    renderHostPrepared(
+        name: string,
+        state: PreparedServerState,
+        options?: ServerRenderOptions,
+    ): string;
+    renderShadowPrepared(
+        name: string,
+        state: PreparedServerState,
         options?: ServerRenderOptions,
     ): string;
 }

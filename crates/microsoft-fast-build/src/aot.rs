@@ -3,7 +3,7 @@ use serde_json::{json, Value};
 use std::collections::HashMap;
 
 /// Compatibility identity for the generated module's server-only helper contract.
-pub const SERVER_RUNTIME_VERSION: u32 = 2;
+pub const SERVER_RUNTIME_VERSION: u32 = 3;
 
 fn js(value: &Value) -> String {
     if let Some(index) = value.get("parameter").and_then(Value::as_u64) {
@@ -457,26 +457,32 @@ pub(crate) fn emit(ir: &Value, runtime_import: &str) -> String {
         .join("\n");
     let shapes = shared.emit(&mut accesses);
     let accessors = accesses.declarations.join("");
+    let renders = [("", "request"), ("Prepared", "preparedRequest")]
+        .iter()
+        .map(|(suffix, request)| format!(
+            "export function renderEntry{suffix}(state,options) {{\nconst [r,o] = $.{request}(state,options);\nreturn {};\n}}\n\
+             export function renderTemplate{suffix}(state,options) {{\nconst [r,o] = $.{request}(state,options);\nreturn {};\n}}\n\
+             export function renderHost{suffix}(name,state,options) {{\nconst [r,o] = $.{request}(state,options);\n\
+             if(!Object.hasOwn(hosts,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
+             return hosts[name](r,null,o,null,true);\n}}\n\
+             export function renderShadow{suffix}(name,state,options) {{\nconst [r,o] = $.{request}(state,options);\n\
+             if(!Object.hasOwn(shadows,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
+             return $.selected(o,name) ? shadowTags[name] + shadows[name](r,null,o,$.scope(o),false) + \"</template>\" : \"\";\n}}\n",
+            shared.call(entry, "r,null,o,null,true"), shared.call(entry, "r,null,o,null,false"),
+        ))
+        .collect::<String>();
     format!(
         "import * as $ from {};\n\
          if($.runtimeVersion !== {SERVER_RUNTIME_VERSION}) throw new Error(\"Incompatible FAST server runtime; regenerate server modules.\");\n\
          export const compilerId = {};\n\
          export const runtimeVersion = {SERVER_RUNTIME_VERSION};\n\
+         export const prepareState = $.prepareState;\n\
          export const components = Object.freeze({});\n\
          const shadows = Object.fromEntries([{}]);\n\
          const hosts = Object.fromEntries([{}]);\n\
          const shadowTags = Object.fromEntries([{}]);\n\
-         {accessors}{shapes}{functions}\n\
-         export function renderEntry(state,options) {{\nconst [r,o] = $.request(state,options);\nreturn {};\n}}\n\
-         export function renderTemplate(state,options) {{\nconst [r,o] = $.request(state,options);\nreturn {};\n}}\n\
-         export function renderHost(name,state,options) {{\nconst [r,o] = $.request(state,options);\n\
-         if(!Object.hasOwn(hosts,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
-         return hosts[name](r,null,o,null,true);\n}}\n\
-         export function renderShadow(name,state,options) {{\nconst [r,o] = $.request(state,options);\n\
-         if(!Object.hasOwn(shadows,name)) throw Object.assign(new Error(\"Unknown component: \" + name),{{code:\"missing-template\",templateName:name}});\n\
-         return $.selected(o,name) ? shadowTags[name] + shadows[name](r,null,o,$.scope(o),false) + \"</template>\" : \"\";\n}}\n",
+         {accessors}{shapes}{functions}\n{renders}",
         serde_json::to_string(runtime_import).unwrap(), ir["compilerId"], serde_json::to_string(&names).unwrap(),
         registry("shadow", true), registry("host", true), registry("tag", false),
-        shared.call(entry, "r,null,o,null,true"), shared.call(entry, "r,null,o,null,false"),
     )
 }
