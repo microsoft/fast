@@ -77,7 +77,9 @@ for selection, diagnostics, deployment compatibility, migration, and measurement
 boundaries.
 
 For contributors, the repository's `bench:server` script reports compilation,
-startup/import, first render, warm rendering and UTF-8/file delivery separately.
+startup/import, first render, warm string rendering, warm render-to-UTF-8 and
+first-result UTF-8/file delivery separately. An escape-heavy Unicode workload
+covers text and attribute output.
 The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.

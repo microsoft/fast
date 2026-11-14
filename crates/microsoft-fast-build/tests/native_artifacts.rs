@@ -559,6 +559,47 @@ fn step_and_utf8_output_budgets_accept_exact_limits_and_reset_after_errors() {
 }
 
 #[test]
+fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    for (value, expected) in [
+        ("", ""),
+        ("unchanged é😀尾", "unchanged é😀尾"),
+        ("é😀&<>\"'&amp;尾", "é😀&amp;&lt;&gt;&quot;&#39;&amp;amp;尾"),
+        ("&&", "&amp;&amp;"),
+    ] {
+        let state_json = json!({"value":value}).to_string();
+        let state = parse_render_state(&state_json).unwrap();
+        let exact = NativeRenderOptions {
+            max_steps: 1,
+            max_output_bytes: expected.len(),
+            ..Default::default()
+        };
+        let held = artifact.render_entry(&state, &exact).unwrap();
+        assert_eq!(held, expected);
+        assert_eq!(
+            js(&source, &state_json, json!({}), "entry", ""),
+            json!({"value":expected})
+        );
+        if !expected.is_empty() {
+            let short = NativeRenderOptions {
+                max_output_bytes: expected.len() - 1,
+                ..exact.clone()
+            };
+            assert_eq!(
+                artifact.render_entry(&state, &short).unwrap_err().code,
+                "render-limit"
+            );
+        }
+        assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+        assert_eq!(held, expected);
+    }
+}
+
+#[test]
 fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let bytes = compile_server_artifact("ok", &common::make_locator(&[])).unwrap();
     let original: Value = serde_json::from_slice(&bytes).unwrap();
