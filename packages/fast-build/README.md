@@ -89,9 +89,26 @@ See [migration](./docs/migration/aot-server-rendering.md).
 
 The JavaScript emitter now prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. The server helper contract
-is version 2: regenerate compiled modules/artifacts and deploy the matching
-helper/native library together. State, rendering bytes and public render APIs
-are unchanged. Contributor benchmarks include deep paths and nested repeats.
+is version 3: regenerate compiled modules/artifacts and deploy the matching
+helper/native library together. Ordinary state/rendering contracts are unchanged.
+Contributor benchmarks include deep paths and nested repeats.
+
+For large unchanged state reused across calls, generated modules also export
+an explicit immutable snapshot path:
+
+```js
+import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
+
+const snapshot = prepareState({ title: "Shared immutable state" });
+const html = renderEntryPrepared(snapshot);
+```
+
+Preparation validates, normalizes and copies without freezing or retaining the
+original input. `renderTemplatePrepared`, `renderHostPrepared` and
+`renderShadowPrepared` use the same snapshot. Handles work across artifacts
+sharing one helper instance, are not serializable, and become collectible when
+no longer referenced. Keep ordinary methods for changing request state.
+See [ownership, native equivalents and measurement](./docs/server-modules.md#prepared-state-snapshots).
 
 ## Native Rust compiled artifacts
 

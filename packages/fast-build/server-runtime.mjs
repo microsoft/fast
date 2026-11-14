@@ -1,10 +1,10 @@
-export const runtimeVersion = 2;
+export const runtimeVersion = 3;
 
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
     value !== null && typeof value === "object" && !Array.isArray(value);
 
-function validate(value, ancestors = new Set()) {
+function validate(value, ancestors = new Set(), copy = false) {
     if (typeof value === "string" && !value.isWellFormed()) {
         throw new TypeError("SSR strings must contain well-formed Unicode.");
     }
@@ -33,6 +33,7 @@ function validate(value, ancestors = new Set()) {
         throw new TypeError("SSR arrays must be dense and have no extra properties.");
     }
     const count = array ? value.length : keys.length;
+    const snapshot = copy ? (array ? [] : Object.create(null)) : null;
     let changes;
     for (let index = 0; index < count; index++) {
         const key = keys[index];
@@ -46,12 +47,15 @@ function validate(value, ancestors = new Set()) {
         if (!descriptor.enumerable || !own(descriptor, "value")) {
             throw new TypeError("SSR state requires enumerable data properties.");
         }
-        const normalized = validate(descriptor.value, ancestors);
-        if (!Object.is(normalized, descriptor.value)) {
+        const normalized = validate(descriptor.value, ancestors, copy);
+        if (copy) {
+            snapshot[key] = normalized;
+        } else if (!Object.is(normalized, descriptor.value)) {
             (changes ??= []).push([key, normalized]);
         }
     }
     ancestors.delete(value);
+    if (copy) return Object.freeze(snapshot);
     if (changes) {
         const normalized = array
             ? value.slice()
@@ -64,8 +68,29 @@ function validate(value, ancestors = new Set()) {
     return value;
 }
 
+const preparedStates = new WeakMap();
+class PreparedState {}
+
+export function prepareState(state = {}) {
+    const values = validate(state, new Set(), true);
+    const handle = Object.freeze(new PreparedState());
+    preparedStates.set(handle, { values });
+    return handle;
+}
+
+export function preparedRequest(state, options = {}) {
+    const snapshot = preparedStates.get(state);
+    if (!snapshot) {
+        throw new TypeError("Expected a prepared SSR state from this runtime.");
+    }
+    return requestOptions(snapshot.values, options);
+}
+
 export function request(state = {}, options = {}) {
-    state = validate(state);
+    return requestOptions(validate(state), options);
+}
+
+function requestOptions(state, options) {
     const strategy = options.attributeNameStrategy ?? "camelCase";
     if (strategy !== "camelCase" && strategy !== "none") {
         throw new TypeError("attributeNameStrategy must be camelCase or none.");
@@ -203,18 +228,21 @@ export function loop(parent, slot) {
 
 export function child(root, entries) {
     const values = Object.create(null);
+    let copied;
     for (const [key, group, value] of entries) {
         if (group === null) {
             values[key] = value === undefined ? null : value;
+            copied?.delete(key);
         } else {
             if (!own(values, key)) {
                 const inherited = getRoot(root, [key]);
                 values[key] = inherited === undefined ? Object.create(null) : inherited;
-                if (object(values[key])) {
-                    values[key] = Object.assign(Object.create(null), values[key]);
-                }
             }
             if (object(values[key])) {
+                if (!copied?.has(key)) {
+                    values[key] = Object.assign(Object.create(null), values[key]);
+                    (copied ??= new Set()).add(key);
+                }
                 values[key][group] = value === undefined ? null : value;
             }
         }

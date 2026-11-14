@@ -36,9 +36,9 @@ See the [server module contract](../../packages/fast-build/docs/server-modules.m
 for helper compatibility, state validation and qualification.
 
 Generated JavaScript uses module-level path accessors and reusable request-local
-repeat frames. Helper contract version 2 requires regenerated modules/artifacts
-and matching deployed helpers/libraries. The executable IR schema and native
-render APIs remain unchanged.
+repeat frames. Helper contract version 3 requires regenerated modules/artifacts
+and matching deployed helpers/libraries. The executable IR schema remains version 1.
+Existing render APIs remain available, with additive prepared-state methods.
 
 ### Compile and deploy native Rust artifacts
 
@@ -66,7 +66,7 @@ only DSD. `CompiledArtifact::emit_server_module(runtime_import)` can emit the JS
 target from the exact loaded IR as a build-time operation.
 
 Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
-threads; each call validates/copies state and owns its counters, overlays and
+threads; each ordinary call validates/copies state and owns its counters, overlays and
 returned `String`. Input bytes and the build-time locator may be dropped after
 loading. Errors are recoverable `NativeRenderError { code, message }`; no partial
 HTML is returned. Load validates all references/opcodes and requires the exact
@@ -77,6 +77,22 @@ deployment trust are specified in the [native contract](../../packages/fast-buil
 Escaped text bindings write directly into the request's bounded UTF-8 output
 buffer, stopping on the first write that exceeds its byte budget. Results remain
 complete owned strings, not a streaming API; failed calls return no partial HTML.
+
+For unchanged state reused across calls, validate and copy once:
+
+```rust
+use microsoft_fast_build::{PreparedState, NativeRenderOptions};
+
+let snapshot = PreparedState::from_json(r#"{"title":"Shared immutable state"}"#)?;
+let html = program.render_entry_prepared(&snapshot, &NativeRenderOptions::default())?;
+```
+
+`PreparedState::new(&state)` copies typed input instead. All four render methods
+have `_prepared` counterparts. Snapshots are artifact-independent, `Send + Sync`
+and cheaply cloneable; dropping the final clone releases their owned memory.
+Execution limits still reset per call. Keep ordinary methods for mutable
+request-specific state; preparation allocates a retained copy and is not free.
+See [prepared ownership and measurement](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
 No request-time WASM rendering, stable C ABI or working .NET bindings are provided.

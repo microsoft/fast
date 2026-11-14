@@ -94,8 +94,9 @@ Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
 This is JavaScript target emission/hosting, not a new IR opcode or a native
-executor rewrite. Helper contract version 2 distinguishes the new frame and
-accessor ABI; artifact schema version 1 remains unchanged. Regenerate both
+executor rewrite. Helper contract version 2 introduced the frame/accessor ABI;
+version 3 adds prepared-state requests. Artifact schema version 1 remains unchanged.
+Regenerate both
 target artifacts with the upgraded compiler and deploy matching helpers/libraries.
 
 ## Request execution
@@ -115,7 +116,21 @@ Packaged crates hash Cargo's preserved `Cargo.toml.orig` under the same logical
 `Cargo.toml` path, so manifest normalization does not change compiler identity.
 Changes to authored inputs still invalidate artifacts.
 Applications own watching, rebuilds, module activation and in-flight deployment
-lifecycle; generated code retains no request state.
+lifecycle; ordinary calls retain no request state.
+
+### Prepared-state snapshots
+
+Generated modules export `prepareState` and four `render*Prepared` counterparts.
+The helper reuses its validator with copy/freeze enabled: every container is
+copied, negative zero is normalized, and the complete copy is recursively frozen.
+A private `WeakMap` associates an opaque frozen handle with the snapshot.
+Prepared requests check map membership, reject forged/foreign handles, and reuse
+the same generated bodies with fresh options, overlays, loops and marker scopes.
+Handles can cross artifacts sharing one helper instance, not helper instances or
+processes. Dropping handles allows garbage collection; there is no native external
+memory or explicit disposal API. Ordinary methods still validate on every call.
+Dataset overlays copy borrowed objects before merging, including explicit
+`:dataset` property bindings, so neither caller data nor snapshots are mutated.
 
 ### Native artifact execution
 
@@ -130,11 +145,21 @@ artifacts through this loader before returning them.
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
 DSD selection and hydration counters never enter the artifact. Typed `JsonValue`
-input is validated/normalized and copied per request; this is not a zero-copy
+input is validated/normalized and copied per ordinary request; this is not a zero-copy
 memory claim. Parent overlays retain own-property masking, nulls and dataset
 siblings. Comparison, display and marker semantics match the generated target.
 All four APIs return owned complete strings or recoverable `NativeRenderError`.
 No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
+
+`PreparedState::new` uses that same normalizer once; `from_json` reuses the bounded
+JSON parser. Private `Arc<JsonValue>` storage owns the immutable result and is
+`Send + Sync`, cloneable and artifact-independent. Four `render_*_prepared`
+methods borrow its root through the existing executor's `Cow` frame; child
+overlays remain owned. Normal calls still normalize/copy before execution.
+Lookups and overlays can still allocate. State depth/node checks happen during
+preparation; body depth, step and output budgets reset and apply on every render.
+Dropping the last snapshot clone frees it; no serialization or cross-version
+handle interchange is provided.
 
 Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
 Text bindings append unchanged spans and exact entity spellings directly to the

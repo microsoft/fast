@@ -34,6 +34,8 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `renderShadow(name, state?, options?)`: renders only its DSD template, with no
   host attributes or caller-owned light DOM synthesized.
 - `components`, `compilerId`, `runtimeVersion`: registry and compatibility metadata.
+- `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
+  `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
 
 Options are `attributeNameStrategy: "camelCase" | "none"`, `markersV2: boolean`,
 and `dsd: string[]`. Omitting `dsd` selects every component; `[]` selects none.
@@ -56,7 +58,7 @@ Functions, dates/class instances, inherited application properties, accessors,
 non-enumerable/symbol properties, sparse/extended arrays and nested `undefined`
 are rejected. Normalize these explicitly before rendering. Proxies and concurrent
 state mutation are outside the contract; validation is not an untrusted-object
-sandbox. Validation checks the complete supplied graph on every call, including
+sandbox. Ordinary methods validate the complete supplied graph on every call, including
 unused state; it has measurable CPU/allocation cost.
 
 Expression compilation preserves the existing server grammar, lookup, alias
@@ -73,10 +75,56 @@ branches and empty repeats, and rejects malformed syntax with existing error
 codes, UTF-16 line/column/length and template names. Runtime repeat values must
 still be arrays (or missing); a present non-array produces `repeat-not-array`.
 
+## Prepared-state snapshots
+
+For unchanged state rendered repeatedly, generated modules expose a separate
+opt-in path; ordinary methods retain their validation contract:
+
+```js
+import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
+const input = { title: "Reusable state" };
+const snapshot = prepareState(input);
+input.title = "A later request"; // Does not alter the snapshot.
+const html = renderEntryPrepared(snapshot);
+```
+
+Preparation validates the complete graph using the same rules as ordinary
+rendering, normalizes negative zero, copies all containers and recursively
+freezes the copy, not the input. It never invokes getters or `toJSON`.
+The result is an opaque `PreparedServerState` handle. All four render methods
+have `Prepared`-suffixed counterparts with the same argument order, but a required
+handle instead of optional ordinary state. Rendering still returns complete
+owned strings; options, overlays, counters and loops are fresh per call.
+
+Handles are associated with one **runtime helper instance**, not one artifact.
+Modules sharing that instance may reuse a handle, even across entries.
+Forged, proxied or other-helper handles fail with `TypeError`; ordinary render
+methods do not accept handles. Handles cannot be serialized or sent to another
+worker/process. There is no explicit disposal or native external-memory handle:
+dropping references permits garbage collection. Applications control snapshot
+retention, including shared use across requests. Never share user-specific state
+with unrelated requests.
+
+Native Rust provides `PreparedState::new(&JsonValue)` and
+`PreparedState::from_json(&str)`. Both own a validated normalized copy; the JSON
+constructor reuses `parse_render_state`. `render_entry_prepared`,
+`render_template_prepared`, `render_host_prepared` and `render_shadow_prepared`
+borrow the snapshot and otherwise retain the ordinary method signatures.
+The private immutable `Arc` is `Send + Sync`, artifact-independent and cheaply
+cloneable; dropping its final clone releases it. Native depth/node state limits
+apply during construction. Body-depth, step and UTF-8 output budgets reset on
+every prepared render, including after errors. No serialized snapshot or
+cross-version handle interchange is provided. Lookups/overlays can still allocate.
+
+Preparation has CPU and retained-memory costs. Prefer ordinary calls when state
+changes every request. Measure preparation plus repeated renders, render-to-UTF-8
+cost and snapshot retention before opting in; the benchmark modes below include
+fresh preparation on every call as a control.
+
 ## Compatibility and migration
 
 This minor prerelease release contains an **API-breaking migration**: public
-source-rendering/prepared APIs are removed, harness rendering becomes asynchronous,
+legacy source-rendering/prepared-program APIs are removed, harness rendering becomes asynchronous,
 and request state is restricted. Consumers must migrate and regenerate compiled
 output, not only update package versions.
 
@@ -87,14 +135,15 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
-The current helper contract is version 2. Generated JavaScript prepares path
+The current helper contract is version 3, adding explicit snapshot requests.
+Generated JavaScript prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
-reset caller lexical scope. Rendering/state APIs and IR schema version 1 are
-unchanged. Regenerate both target artifacts on upgrade and deploy the compatible
+reset caller lexical scope. Ordinary state/rendering contracts and IR schema
+version 1 remain unchanged; prepared methods are additive. Regenerate both target artifacts on upgrade and deploy the compatible
 helper/native library; older generated modules fail the import-time version check.
 
 For a JavaScript server build:
@@ -146,7 +195,7 @@ generated-module APIs. `NativeRenderOptions` uses `markers_v2`,
 `dsd: Option<Vec<String>>` (`None` all, `Some(vec![])` none).
 There is no implicit state; pass an empty object when appropriate.
 `parse_render_state` validates request JSON, or construct the public `JsonValue`
-type directly. All calls reject nonfinite numbers even in unused state and
+type directly. Ordinary calls and snapshot construction reject nonfinite numbers even in unused state and
 normalize negative zero without mutating caller data. Rust strings/maps/arrays
 provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 
@@ -171,7 +220,7 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   and supports cheap clones across worker threads. Input artifact bytes, authored
   sources and locators can be released after load. The application owns atomic
   activation and keeps older clones alive for in-flight requests.
-- Each render validates/normalizes and copies the request state (64 nesting
+- Each ordinary render validates/normalizes and copies the request state (64 nesting
   levels, at most one million values), and owns transient overlays, loops,
   hydration counters and the returned `String`. State must not be mutated
   concurrently. This is not a zero-copy claim; peak memory includes the loaded
@@ -293,6 +342,29 @@ measurements, not lookup-only microbenchmarks. GC observations and memory
 snapshots are allocation indicators, not exact allocated-byte totals.
 `escapedBindings` adds dense escaping of all five special characters in Unicode
 text and attributes. It helps expose allocation and UTF-8 materialization costs.
+
+To compare ordinary rendering, snapshot reuse and fresh preparation:
+
+```sh
+npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --state-mode=all
+```
+
+`--state-mode` defaults to `plain`; other values are `prepared`,
+`prepare-per-render` and `all`. Reports retain version 2 and add `stateModes`.
+Workload `modes` keys are `aot`, `aotPrepared` and `aotPreparePerRender`.
+Each sample/mode uses a separate fresh child; mode order alternates by sample.
+Hashes match across modes and an untimed ordinary call verifies prepared output.
+The original input remains live for that comparison.
+
+Reused mode reports `prepareStateMs` before the first render, plus
+`memoryBeforePrepare` and `memoryAfterPrepare` around forced GC outside that
+timer. Its `firstRenderMs` and `coldImportAndRenderMs` exclude preparation:
+add `prepareStateMs` when comparing total cold setup. Fresh-preparation mode
+includes preparation in each render timer. Approximate warm-rate reuse crossover
+is `ceil(prepareStateMs / (plainWarmMs - preparedWarmMs))` only if savings are
+positive; it excludes cold-render differences and is not a latency guarantee.
+Memory deltas include VM/GC effects and retained source plus snapshot, not exact
+snapshot allocation counts. Small or render-dominated state may not benefit.
 
 Each sample runs in a fresh Node child with Node's module compile cache disabled.
 This isolates process-local first use, not a cold operating-system file cache.

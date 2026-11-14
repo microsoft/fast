@@ -157,6 +157,7 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                     "--iterations=2",
                     "--instances=1",
                     "--warmup=0",
+                    "--state-mode=all",
                     `--profile-directory=${path.join(directory, "profiles")}`,
                 ],
                 { encoding: "utf8" },
@@ -171,7 +172,17 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
             assert.ok(Number.isFinite(record.artifactWriteMs));
             const [first, second] = record.modes.aot;
             assert.equal(first.outputHash, second.outputHash);
-            for (const sample of record.modes.aot) {
+            assert.deepEqual(Object.keys(record.modes), [
+                "aot",
+                "aotPrepared",
+                "aotPreparePerRender",
+            ]);
+            for (const sample of Object.values(record.modes).flat()) {
+                assert.equal(sample.outputHash, first.outputHash);
+                if (sample.stateMode === "prepared") {
+                    assert.ok(sample.prepareStateMs >= 0);
+                    assert.ok(sample.memoryAfterPrepare.heapUsed > 0);
+                }
                 for (const phase of [
                     "workerSetupMs",
                     "inputReadMs",

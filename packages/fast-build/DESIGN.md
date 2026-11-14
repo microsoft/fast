@@ -58,11 +58,32 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-The helper contract is now version 2; generated/native artifacts must be
+Helper contract version 2 introduced these accessors/frames; version 3 adds
+prepared-state requests. Generated/native artifacts must be
 regenerated and deployed with matching helpers/libraries. Rendering APIs and
 IR opcodes/schema remain unchanged; native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
+
+### Prepared-state ownership
+
+`prepareState` and the four generated `render*Prepared` exports provide explicit
+reuse of unchanged state. The existing validator optionally copies/freezes every
+container in the same traversal; ordinary validation stays enabled per call.
+Opaque handles are privately branded by helper-instance `WeakMap` membership.
+Snapshots are immutable, independent of input mutations, and usable with any
+artifact importing that helper instance. They cannot be forged, serialized,
+transferred between runtime instances, or passed as ordinary state. Dropping
+handles permits collection; no request object identity is used as a validation
+cache. Options, scopes, loops and child overlays stay request-local.
+Dataset merges clone explicitly bound borrowed objects before writing.
+
+Native `PreparedState` reuses Rust's existing normalizer and stores the owned
+result in a private `Arc`. The existing executor borrows that root using `Cow`,
+while retaining owned child overlays and all execution/output budgets.
+Its four prepared methods do not clone/revalidate the root. Snapshot clones
+are `Send + Sync`, artifact-independent and freed after the last owner drops.
+This adds target-specific ownership wrappers, not another renderer or validator.
 
 ### Output assembly and escaping
 
@@ -121,6 +142,12 @@ An escape-heavy Unicode text/attribute workload exercises output allocation.
 Additional warm render-to-UTF-8 wall/CPU timings include string materialization
 and Buffer creation, rather than shifting those costs outside the measured call.
 They run after the string-only loop and its GC/memory observations.
+`--state-mode=all` compares ordinary calls, one reusable prepared snapshot, and
+preparing a new snapshot per call in separate child processes with alternating
+mode order. It reports preparation time and before/after-GC memory outside
+render timing; only reused snapshots skip per-call validation. Default mode is
+still `plain`. Compare preparation plus rendering and retained memory, not
+prepared throughput alone.
 
 ## Template loading — `parseFTemplates`
 

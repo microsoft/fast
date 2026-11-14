@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add immutable prepared-state snapshots for repeated JavaScript and native Rust rendering.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

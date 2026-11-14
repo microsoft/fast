@@ -2,7 +2,7 @@ mod common;
 
 use microsoft_fast_build::{
     compile_server_artifact, compile_server_module, parse_render_state, AttributeNameStrategy,
-    CompiledArtifact, JsonValue, Locator, NativeRenderOptions,
+    CompiledArtifact, JsonValue, Locator, NativeRenderOptions, PreparedState,
 };
 use serde_json::{json, Value};
 use std::io::Write;
@@ -229,6 +229,7 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
     assert_eq!(source, artifact.emit_server_module("__FAST_TEST_RUNTIME__"));
     let state_json = r#"{"label":"& < > \" ' 😀","items":[{"name":"one"},{"name":null},false],"item":{"name":"resolved"},"dataset":{"inherited":"yes"},"fooBar":"camel","foo-bar":"dash"}"#;
     let state = parse_render_state(state_json).unwrap();
+    let prepared = PreparedState::new(&state).unwrap();
     for v2 in [false, true] {
         for strategy in [
             AttributeNameStrategy::CamelCase,
@@ -258,6 +259,14 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
                         _ => artifact.render_shadow("test-card", &state, &options),
                     }
                     .unwrap();
+                    let reused = match target {
+                        "entry" => artifact.render_entry_prepared(&prepared, &options),
+                        "template" => artifact.render_template_prepared(&prepared, &options),
+                        "host" => artifact.render_host_prepared("test-card", &prepared, &options),
+                        _ => artifact.render_shadow_prepared("test-card", &prepared, &options),
+                    }
+                    .unwrap();
+                    assert_eq!(native, reused, "{target}, {options:?}");
                     let javascript =
                         js(&source, state_json, js_options.clone(), target, "test-card");
                     assert_eq!(json!({"value":native}), javascript, "{target}, {options:?}");
@@ -476,12 +485,15 @@ fn state_depth_boundary_is_native_specific_and_includes_unused_state() {
         let state_json = format!("{}0{}", "[".repeat(depth), "]".repeat(depth));
         let native = artifact.render_entry(&state, &Default::default());
         let parsed = parse_render_state(&state_json);
+        let prepared = PreparedState::new(&state);
         if depth == 64 {
             assert_eq!(native.unwrap(), "ok");
             assert!(parsed.is_ok());
+            assert!(prepared.is_ok());
         } else {
             assert_eq!(native.unwrap_err().code, "invalid-state");
             assert_eq!(parsed.unwrap_err().code, "invalid-state");
+            assert_eq!(prepared.unwrap_err().code, "invalid-state");
         }
         assert_eq!(
             js(&source, &state_json, json!({}), "entry", ""),
@@ -500,6 +512,7 @@ fn state_value_limit_counts_the_root_and_is_request_local() {
         artifact.render_entry(&state, &Default::default()).unwrap(),
         "ok"
     );
+    assert!(PreparedState::new(&state).is_ok());
     if let JsonValue::Array(values) = &mut state {
         values.push(JsonValue::Null);
     }
@@ -511,11 +524,109 @@ fn state_value_limit_counts_the_root_and_is_request_local() {
         "invalid-state"
     );
     assert_eq!(
+        PreparedState::new(&state).unwrap_err().code,
+        "invalid-state"
+    );
+    assert_eq!(
         artifact
             .render_entry(&JsonValue::Null, &Default::default())
             .unwrap(),
         "ok"
     );
+}
+
+#[test]
+fn prepared_state_owns_validated_data_across_artifacts_threads_and_failed_requests() {
+    fn send_sync<T: Send + Sync>() {}
+    send_sync::<PreparedState>();
+    let locator = common::make_locator(&[]);
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact("{{label}}", &locator).unwrap()).unwrap();
+    let other =
+        CompiledArtifact::load(&compile_server_artifact("{{zero}}/{{label}}", &locator).unwrap())
+            .unwrap();
+    let mut raw = parse_render_state(r#"{"label":"first<&é","zero":-0}"#).unwrap();
+    let prepared = PreparedState::new(&raw).unwrap();
+    if let JsonValue::Object(values) = &mut raw {
+        values.insert("label".into(), JsonValue::String("changed".into()));
+        values.insert("unused".into(), JsonValue::Number(f64::NAN));
+    }
+    assert_eq!(PreparedState::new(&raw).unwrap_err().code, "invalid-state");
+    assert_eq!(
+        artifact
+            .render_entry(&raw, &Default::default())
+            .unwrap_err()
+            .code,
+        "invalid-state"
+    );
+    drop(raw);
+    let expected = "first&lt;&amp;é";
+    let exact = NativeRenderOptions {
+        max_steps: 1,
+        max_output_bytes: expected.len(),
+        ..Default::default()
+    };
+    let held = artifact.render_entry_prepared(&prepared, &exact).unwrap();
+    for options in [
+        NativeRenderOptions {
+            max_steps: 0,
+            ..exact.clone()
+        },
+        NativeRenderOptions {
+            max_output_bytes: expected.len() - 1,
+            ..exact.clone()
+        },
+    ] {
+        assert_eq!(
+            artifact
+                .render_entry_prepared(&prepared, &options)
+                .unwrap_err()
+                .code,
+            "render-limit"
+        );
+        assert_eq!(
+            artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+            expected
+        );
+    }
+    assert_eq!(held, expected);
+    assert_eq!(
+        artifact
+            .render_host_prepared("missing", &prepared, &exact)
+            .unwrap_err()
+            .code,
+        "missing-template"
+    );
+    assert_eq!(
+        artifact
+            .render_shadow_prepared("missing", &prepared, &exact)
+            .unwrap_err()
+            .code,
+        "missing-template"
+    );
+    let cloned = prepared.clone();
+    drop(prepared);
+    std::thread::scope(|scope| {
+        let first = scope.spawn(|| artifact.render_entry_prepared(&cloned, &exact).unwrap());
+        let second = scope.spawn(|| {
+            other
+                .render_entry_prepared(&cloned, &Default::default())
+                .unwrap()
+        });
+        assert_eq!(first.join().unwrap(), expected);
+        assert_eq!(second.join().unwrap(), format!("0/{expected}"));
+    });
+    let parsed = PreparedState::from_json(r#"{"label":"parsed"}"#).unwrap();
+    assert_eq!(
+        artifact.render_entry_prepared(&parsed, &exact).unwrap(),
+        "parsed"
+    );
+    for json in ["invalid", r#"{"unused":"\ud800"}"#, r#"{"unused":1e9999}"#] {
+        assert_eq!(
+            PreparedState::from_json(json).unwrap_err().code,
+            "invalid-state"
+        );
+    }
 }
 
 #[test]

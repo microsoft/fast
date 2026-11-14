@@ -445,6 +445,7 @@ test("AOT rejects unsupported state without invoking getters or toJSON", async (
         { [Symbol("key")]: 1 },
     ]) {
         assert.throws(() => module.renderEntry(state), TypeError);
+        assert.throws(() => module.prepareState(state), TypeError);
     }
     assert.equal(invoked, false);
     assert.equal(module.renderEntry({ value: "safe" }), "safe");
@@ -457,6 +458,176 @@ test("AOT rejects unsupported state without invoking getters or toJSON", async (
         { attributeNameStrategy: "bad" },
     ]) {
         assert.throws(() => module.renderEntry({}, options), TypeError);
+    }
+});
+
+test("prepared snapshots isolate nested input and work across modules and render targets", async () => {
+    const { module } = await compile(
+        '<test-el data-name="{{label}}">{{label}}</test-el>',
+        {
+            "test-el": {
+                content:
+                    '{{label}}/{{value}}/{{dataset.inherited}}<f-repeat value="{{item in items}}">{{item.name}}/{{$index}};</f-repeat><test-child :item="{{item}}"></test-child>',
+                hostAttributes: [{ name: "title", value: "{{label}}" }],
+            },
+            "test-child": "{{item.name}}/{{label}}",
+        },
+    );
+    const state = {
+        label: "before & text",
+        value: -0,
+        dataset: { inherited: "root" },
+        item: { name: "child" },
+        items: [{ name: "first" }, { name: "second" }],
+    };
+    const methods = ["renderEntry", "renderTemplate", "renderHost", "renderShadow"];
+    const snapshots = [];
+    for (const markersV2 of [false, true]) {
+        for (const attributeNameStrategy of ["none", "camelCase"]) {
+            for (const dsd of [undefined, [], ["test-el"]]) {
+                const options = { markersV2, attributeNameStrategy, dsd };
+                for (const method of methods) {
+                    const args =
+                        method === "renderHost" || method === "renderShadow"
+                            ? ["test-el"]
+                            : [];
+                    snapshots.push({
+                        method,
+                        args,
+                        options,
+                        expected: module[method](...args, state, options),
+                    });
+                }
+            }
+        }
+    }
+    const prepared = module.prepareState(state);
+    state.label = "changed";
+    state.dataset.inherited = "changed";
+    state.item.name = "changed";
+    state.items.push({ name: "third" });
+    Object.defineProperty(state.items[0], "name", {
+        get() {
+            throw new Error("getter must not be invoked");
+        },
+    });
+    for (const { method, args, options, expected } of snapshots) {
+        assert.equal(module[`${method}Prepared`](...args, prepared, options), expected);
+    }
+    assert.throws(() => module.renderEntry(state), TypeError);
+    const { module: other } = await compile("<aside>{{label}}</aside>");
+    assert.equal(other.renderEntryPrepared(prepared), "<aside>before &amp; text</aside>");
+    assert.equal(
+        other.renderEntryPrepared(other.prepareState({ label: "new" })),
+        "<aside>new</aside>",
+    );
+    assert.equal(other.renderEntryPrepared(prepared), "<aside>before &amp; text</aside>");
+});
+
+test("prepared methods reject forged or foreign handles and validate options each call", async () => {
+    const { module } = await compile("{{value}}/{{items.0}}/{{zero}}");
+    const state = { value: "kept", items: ["nested"], zero: -0 };
+    const prepared = module.prepareState(state);
+    const helper = await import(runtime);
+    const [{ values }] = helper.preparedRequest(prepared);
+    assert.throws(
+        () => Object.defineProperty(values.items, "0", { value: "changed" }),
+        TypeError,
+    );
+    assert.throws(() => Object.setPrototypeOf(values, { value: "changed" }), TypeError);
+    assert.equal(Object.is(values.zero, -0), false);
+    const foreign = await import(
+        `data:text/javascript;base64,${Buffer.from(fs.readFileSync(require.resolve("../server-runtime.mjs"))).toString("base64")}`
+    );
+    for (const fake of [
+        undefined,
+        null,
+        {},
+        state,
+        { ...prepared },
+        Object.create(Object.getPrototypeOf(prepared)),
+        new Proxy(prepared, {}),
+        foreign.prepareState(state),
+    ]) {
+        assert.throws(() => module.renderEntryPrepared(fake), TypeError);
+    }
+    assert.throws(() => module.renderEntry(prepared), TypeError);
+    for (const options of [
+        { dsd: [1] },
+        { markersV2: "yes" },
+        { attributeNameStrategy: "bad" },
+    ]) {
+        assert.throws(() => module.renderEntryPrepared(prepared, options), TypeError);
+    }
+    for (const value of [null, false, "string", 3, [-0], { value: -0 }, {}]) {
+        assert.equal(
+            module.renderEntryPrepared(module.prepareState(value)),
+            module.renderEntry(value),
+        );
+    }
+    assert.equal(module.renderEntryPrepared(prepared), "kept/nested/0");
+    assert.equal(module.renderEntryPrepared(module.prepareState()), "//");
+});
+
+test("dataset overlays never mutate explicitly bound objects, including prepared state", async () => {
+    for (const attrs of [
+        ':dataset="{{dataset}}" data-x="local" data-y="second"',
+        'data-x="overridden" :dataset="{{dataset}}" data-y="second"',
+    ]) {
+        const { module } = await compile(`<test-el ${attrs}></test-el>`, {
+            "test-el": "{{dataset.x}}/{{dataset.y}}/{{dataset.kept}}",
+        });
+        const state = { dataset: { x: "original", kept: "kept" } };
+        const plain = module.renderEntry(state);
+        assert.deepEqual(state.dataset, { x: "original", kept: "kept" });
+        assert.equal(module.renderEntryPrepared(module.prepareState(state)), plain);
+        assert.deepEqual(state.dataset, { x: "original", kept: "kept" });
+    }
+});
+
+test("server module types distinguish prepared handles from ordinary state", () => {
+    const ts = require("typescript");
+    const directory = fs.mkdtempSync(path.join(__dirname, "server-types-"));
+    try {
+        const filename = path.join(directory, "consumer.mts");
+        fs.writeFileSync(
+            filename,
+            `
+import type { ServerModule, PreparedServerState } from "../../server.js";
+declare const server: ServerModule;
+const state: PreparedServerState = server.prepareState({ value: -0 });
+const html: string = server.renderEntryPrepared(state);
+server.renderTemplatePrepared(state);
+server.renderHostPrepared("test-el", state);
+server.renderShadowPrepared("test-el", state, { markersV2: true });
+// @ts-expect-error Ordinary data cannot bypass validation.
+server.renderEntryPrepared({});
+// @ts-expect-error A handle is not ordinary JSON-shaped state.
+server.renderEntry(state);
+// @ts-expect-error The opaque brand cannot be forged structurally.
+const fake: PreparedServerState = {};
+`,
+        );
+        const program = ts.createProgram([filename], {
+            target: ts.ScriptTarget.ESNext,
+            module: ts.ModuleKind.NodeNext,
+            moduleResolution: ts.ModuleResolutionKind.NodeNext,
+            strict: true,
+            noEmit: true,
+            types: [],
+        });
+        const diagnostics = ts.getPreEmitDiagnostics(program);
+        assert.equal(
+            diagnostics.length,
+            0,
+            ts.formatDiagnosticsWithColorAndContext(diagnostics, {
+                getCurrentDirectory: () => directory,
+                getCanonicalFileName: filename => filename,
+                getNewLine: () => "\n",
+            }),
+        );
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
     }
 });
 
@@ -534,7 +705,12 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
             WebAssembly.compile = WebAssembly.instantiate = () => { throw new Error("WASM used"); };
             JSON.parse = () => { throw new Error("JSON parsing used"); };
             const module = await import(${JSON.stringify(pathToFileURL(filename).href)});
-            process.stdout.write(module.renderEntry({items:["one","two"]}));
+            const state = {items:["one","two"]};
+            const html = module.renderEntry(state);
+            if (module.renderEntryPrepared(module.prepareState(state)) !== html) {
+                throw new Error("Prepared output differs");
+            }
+            process.stdout.write(html);
         `;
         assert.match(
             execFileSync(process.execPath, ["--input-type=module", "-e", script], {
@@ -558,12 +734,16 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
 });
 
 test("AOT rejects a mismatched helper contract on module import", async () => {
-    const helper = "data:text/javascript,export const runtimeVersion = 0;";
-    const source = compileServerModule("static", {}, helper);
-    await assert.rejects(
-        import(`data:text/javascript;base64,${Buffer.from(source).toString("base64")}`),
-        /Incompatible FAST server runtime/,
-    );
+    for (const version of [0, 2]) {
+        const helper = `data:text/javascript,export const runtimeVersion = ${version};`;
+        const source = compileServerModule("static", {}, helper);
+        await assert.rejects(
+            import(
+                `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+            ),
+            /Incompatible FAST server runtime/,
+        );
+    }
 });
 
 test("AOT preserves every authored declarative fixture byte for byte", async () => {
