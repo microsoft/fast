@@ -20,6 +20,7 @@ The browser conversion crate remains independent.
 | `aot.rs` | Semantic server ESM emission from the shared executable IR |
 | `server_plan.rs` | Stable tagged wire encoding and native name-to-index decoding |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
+| `native/plan.rs` | Typed native operations, numeric reference resolution, decoded operands and on-demand IR reconstruction |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
 | `expression.rs` | Operator scanning for compile-time condition lowering |
@@ -75,9 +76,10 @@ or emit rendering functions, accessors or loops. The helper validates all record
 and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution is unchanged; its loader resolves semantic template names into
+The native loader resolves semantic template names into
 private body indices and derives the private host/shadow operations once, then
-applies complete existing IR validation. Reconstructed component metadata has a
+applies complete existing IR validation before preparing typed execution operations.
+Reconstructed component metadata has a
 64 MiB expansion budget so shared wire definitions cannot multiply without bound.
 
 Conditions lower using the established server operator scanners; arbitrary
@@ -156,6 +158,31 @@ references fail. JSON nesting is bounded by the deserializer; schema validation
 also bounds condition/static-value nesting. The compiler checks emitted native
 artifacts through this loader before returning them.
 
+After complete eager validation, `native/plan.rs` prepares immutable enums for
+operations, attributes, conditions and operands. Body references remain numeric;
+symbolic element references resolve once to component vector indices. Public
+named-host/shadow calls use a lookup map whose names share `Arc<str>` storage with
+the component table. Paths retain their exact object keys plus predecoded optional
+array indices; repeat aliases remain prepared string prefixes for the existing
+request-local loop machinery. Request-time dispatch does not inspect JSON fields
+or decode static values. Large enum variants are boxed to avoid inflating literal
+and body records.
+
+The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
+operands are cloned per evaluation, preserving the previous ownership model.
+Only static numeric spellings are retained as leaf metadata, in sorted-object
+traversal order, to preserve JS emission even for noncanonical numeric strings.
+`emit_server_module` reconstructs temporary private indexed IR and uses the existing
+AOT emitter to produce semantic `fast-server-js` schema 1; it is still supported
+and does not introduce a second executor/compiler.
+Load peak memory includes both transient JSON and the prepared plan, and emission
+temporarily adds reconstructed JSON plus emitter tables/source. Retained memory
+includes vectors/boxes, prepared paths, static values, numeric spelling metadata
+and the component-name lookup, not raw-plus-typed instruction graphs.
+These tradeoffs require measurement; no dispatch speedup or memory saving is
+claimed. Existing `fast-server-native` semantic schema-1 assets load unchanged
+with no compiler-build key.
+
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
 DSD selection and hydration counters never enter the artifact. Typed `JsonValue`
@@ -211,10 +238,6 @@ Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Lookups still clone values, and composite attributes retain a request-local list
-of scalar values until that attribute is written. Array/object operands immediately
-drop their cloned contents and retain only empty container display tags, avoiding
-accumulation of whole state graphs when a later operand suppresses the attribute.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is
@@ -223,7 +246,7 @@ retained between calls.
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
 64 MiB output limits. Finite conditional component cycles are supported through
-symbolic references; unbounded request expansion returns `render-limit`, not
+resolved numeric references; unbounded request expansion returns `render-limit`, not
 stack overflow or truncated success. Failed requests cannot mutate later calls.
 See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
