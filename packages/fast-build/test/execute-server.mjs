@@ -26,7 +26,7 @@ try {
     if (server[`${method}Prepared`](...args, prepared, input.options) !== value) {
         throw new Error("Prepared output differs from ordinary output");
     }
-    const json = input.stateJson ?? JSON.stringify(state);
+    const json = input.stateJson ?? JSON.stringify(state === undefined ? {} : state);
     if (server[`${method}Json`](...args, json, input.options) !== value) {
         throw new Error("Owned JSON output differs from ordinary output");
     }

@@ -611,6 +611,33 @@ test("owned JSON normalizes its fresh graph without producing a reusable snapsho
     assert.equal(Object.hasOwn(Object.prototype, "value"), false);
 });
 
+test("conformance bridge preserves omitted object state across all render targets", async () => {
+    const { module, source } = await compile("<test-default></test-default>", {
+        "test-default": "{{value}}",
+    });
+    for (const method of [
+        "renderEntry",
+        "renderTemplate",
+        "renderHost",
+        "renderShadow",
+    ]) {
+        const name = /Host|Shadow/.test(method) ? "test-default" : undefined;
+        const result = JSON.parse(
+            execFileSync(process.execPath, [require.resolve("./execute-server.mjs")], {
+                input: JSON.stringify({
+                    source,
+                    host: method === "renderHost" ? name : undefined,
+                    shadow: method === "renderShadow" ? name : undefined,
+                    template: method === "renderTemplate",
+                }),
+                encoding: "utf8",
+            }),
+        );
+        assert.equal(result.error, undefined);
+        assert.equal(result.value, module[method](...(name ? [name] : [])));
+    }
+});
+
 test("unchanged schema 1 modules retain their old exports with the upgraded helper", async () => {
     const source = fs.readFileSync(
         path.join(__dirname, "fixtures/server-schema1.txt"),
