@@ -260,7 +260,9 @@ fn test_f_template_additional_shadowroot_attrs_forwarded() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable="true">"#),
+        result.contains(
+            r#"<template shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable="true">"#
+        ),
         "shadow attrs: {result}"
     );
 }
@@ -412,7 +414,9 @@ fn test_f_template_shadowroot_attr_values_are_escaped() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowrootserializable="a&quot;b&amp;c">"#),
+        result.contains(
+            r#"<template shadowrootmode="open" shadowrootserializable="a&quot;b&amp;c">"#
+        ),
         "shadow attrs: {result}"
     );
 }
