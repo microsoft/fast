@@ -634,27 +634,39 @@ async function runConvert(args) {
             throw new Error("server-js emits JavaScript; TypeScript conversion options do not apply.");
         }
         const output = outputArg || "server.mjs";
-        const build = require(BUILD_WASM_MODULE);
-        const target = JSON.parse(build.server_syntax_metadata());
-        const metadata = { [target.syntax]: target };
+        const metadata = { "server-js": { extension: ".mjs" } };
         if (output.includes("*")) {
             throw new Error("server-js requires one output module for the complete template registry.");
         }
         validateConvertOutput(output, syntax, overwrite, metadata);
-        const templates = Object.create(null);
+        const sources = [];
+        const filenames = [];
         for (const pattern of templatesArg.split(",").map(value => value.trim())) {
-            for (const { name, ...definition } of resolvePattern(pattern, build)) {
-                if (Object.hasOwn(templates, name)) {
-                    throw new Error(`Duplicate template name "${name}".`);
-                }
-                templates[name] = definition;
+            for (const filename of resolveTemplateFiles(pattern)) {
+                sources.push(fs.readFileSync(filename, "utf8"));
+                filenames.push(filename);
             }
         }
-        if (Object.keys(templates).length === 0) {
-            throw new Error("server-js requires at least one named template.");
+        const { writeServerModule } = require("../server.js");
+        try {
+            writeServerModule(
+                output,
+                { entry: "", templateSources: sources },
+                {
+                    overwrite,
+                    onWarning({ sourceIndex, content }) {
+                        process.stderr.write(
+                            `Warning: <f-template> without a 'name' attribute in '${filenames[sourceIndex]}': ${content.trim()}\n`,
+                        );
+                    },
+                },
+            );
+        } catch (error) {
+            if (error.code === "missing-template-sources") {
+                throw new Error("server-js requires at least one named template.");
+            }
+            throw error;
         }
-        const { compileServerModule } = require("../server.js");
-        fs.writeFileSync(output, compileServerModule("", templates), "utf8");
         process.stdout.write(`Converted server registry: ${output}\n`);
         return;
     }
