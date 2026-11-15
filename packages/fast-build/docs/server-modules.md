@@ -181,6 +181,9 @@ records exact authored inputs and every emitted file's exact bytes, not hashes
 or compiler keys. An existing directory must have exactly the recorded regular
 files, with identical bytes and configuration. Missing, changed, symlinked,
 unmanaged or unsupported manifests fail closed; they are not repaired.
+Manifest JSON must round-trip its exact UTF-8 bytes before input comparison.
+Malformed bytes cannot authorize reuse through lossy replacement characters;
+legitimate UTF-8 U+FFFD characters remain supported.
 An identical managed deployment is reused without importing WASM or parsing raw
 template sources. Changed authored inputs require a new explicit directory.
 

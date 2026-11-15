@@ -200,6 +200,15 @@ function readAssetFile(filename, code) {
 }
 
 /** @param {Buffer} bytes */
+function parseManifestJson(bytes) {
+    const text = bytes.toString("utf8");
+    if (!Buffer.from(text, "utf8").equals(bytes)) {
+        throw new SyntaxError("Invalid UTF-8 in server asset manifest.");
+    }
+    return JSON.parse(text);
+}
+
+/** @param {Buffer} bytes */
 function readManifest(bytes) {
     const invalid = () =>
         assetError(
@@ -208,8 +217,7 @@ function readManifest(bytes) {
         );
     let manifest;
     try {
-        if (!Buffer.from(bytes.toString("utf8"), "utf8").equals(bytes)) throw invalid();
-        manifest = JSON.parse(bytes.toString("utf8"));
+        manifest = parseManifestJson(bytes);
         if (
             !hasKeys(manifest, [
                 "format",
@@ -553,7 +561,7 @@ function writeServerAssets(outputDirectory, inputs, options = {}) {
             if (!recorded) invalid();
             let manifest;
             try {
-                manifest = JSON.parse(recorded.bytes.toString("utf8"));
+                manifest = parseManifestJson(recorded.bytes);
             } catch {
                 invalid();
             }

@@ -247,6 +247,81 @@ test("modular publication is immutable, source-free and fail-closed across upgra
     });
 });
 
+test("modular persistence rejects invalid UTF-8 even when replacement characters match inputs", async () => {
+    await inDirectory(async directory => {
+        const destination = path.join(directory, "deployment");
+        const authored = { entry: "<p>A</p>" };
+        const configuration = { runtimeImport: runtime };
+        writeServerAssets(destination, authored, configuration);
+        const before = Object.fromEntries(
+            fs.readdirSync(destination).map(filename => {
+                const full = path.join(destination, filename);
+                fs.utimesSync(full, new Date(946684800000), new Date(946684800000));
+                return [filename, snapshot(full)];
+            }),
+        );
+        const manifestPath = path.join(destination, "server.inputs.json");
+        const corrupt = Buffer.from(before["server.inputs.json"].bytes);
+        const entryAt = corrupt.indexOf(Buffer.from(authored.entry));
+        assert.notEqual(entryAt, -1);
+        corrupt[entryAt + 3] = 0xff;
+        fs.writeFileSync(manifestPath, corrupt);
+        const corruptedManifest = snapshot(manifestPath);
+        const script = `${disableCompiler}
+            let compilerCalls = 0;
+            const guardedLoad = Module._load;
+            Module._load = function(request, ...args) {
+                if (/wasm|microsoft_fast_build/i.test(request)) compilerCalls++;
+                return guardedLoad.call(this, request, ...args);
+            };
+            const request = JSON.parse(process.argv[2]);
+            const {writeServerAssets} = require(process.argv[1]);
+            (async () => {
+                const write = () => writeServerAssets(request.destination, request.inputs, {runtimeImport:request.runtime});
+                if (request.reject) {
+                    assert.throws(write, {code:"invalid-server-asset-manifest"});
+                } else {
+                    assert.equal(write().reused, true);
+                    const module = await import(require("node:url").pathToFileURL(request.destination + "/server.mjs").href);
+                    assert.equal(module.renderEntry(), request.inputs.entry);
+                }
+                assert.equal(compilerCalls, 0);
+            })().catch(error => { console.error(error); process.exitCode = 1; });`;
+        const withoutCompiler = (destination, inputs, reject = false) =>
+            execFileSync(
+                process.execPath,
+                [
+                    "-e",
+                    script,
+                    serverPath,
+                    JSON.stringify({ destination, inputs, reject, runtime }),
+                ],
+                { stdio: "pipe", timeout: 10_000 },
+            );
+        withoutCompiler(destination, { entry: "<p>\uFFFD</p>" }, true);
+        unchanged(manifestPath, corruptedManifest);
+        for (const [filename, recorded] of Object.entries(before)) {
+            if (filename !== "server.inputs.json") {
+                unchanged(path.join(destination, filename), recorded);
+            }
+        }
+        fs.writeFileSync(manifestPath, before["server.inputs.json"].bytes);
+        fs.utimesSync(
+            manifestPath,
+            new Date(946684800000),
+            new Date(before["server.inputs.json"].mtimeMs),
+        );
+        withoutCompiler(destination, authored);
+        for (const [filename, recorded] of Object.entries(before)) {
+            unchanged(path.join(destination, filename), recorded);
+        }
+        const validReplacement = path.join(directory, "valid-replacement");
+        const replacementInputs = { entry: "<p>\uFFFD</p>" };
+        writeServerAssets(validReplacement, replacementInputs, configuration);
+        withoutCompiler(validReplacement, replacementInputs);
+    });
+});
+
 test("failed modular staging never publishes a partial directory", async () => {
     await inDirectory(async directory => {
         const destination = path.join(directory, "deployment");
