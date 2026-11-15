@@ -31,6 +31,20 @@ Shared host-default metadata is compiled once per component template. Component
 templates with different defaults or shadow options retain shared content bodies
 instead of expanding them repeatedly.
 
+The optional modular emitter serializes those same locally numbered plans into
+semantic-name ESM files. Its entry is only imports plus the same helper launcher.
+The dependency manifest records symbolic component references, including external
+custom elements; it does not drive another renderer or carry compiler identity.
+Static ESM linking eagerly rejects absent imported files, while the existing helper
+validates all tables. Finite symbolic component cycles are not plan-reference cycles.
+
+`writeServerAssets` manages an immutable deployment directory, staging a complete
+file set before one directory rename. Its separate authored-input manifest stores
+exact output snapshots and validates every file before reuse without WASM. Changed
+inputs require a new explicit directory, avoiding mixed files and cached dependency
+URLs. It deliberately does not grow an incremental dependency compiler, rewrite
+untouched supported assets on upgrades, or alter the existing single-file writers.
+
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes
 only when hydration cannot change their output. Literal-only plan bodies

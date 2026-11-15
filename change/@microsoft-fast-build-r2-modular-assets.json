@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add optional semantic-name modular flat-plan deployments with immutable, compiler-free managed reuse.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

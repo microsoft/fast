@@ -1,5 +1,20 @@
 # Migrating from previous versions
 
+## Optional modular deployment adoption
+
+`compileServerAssets`/`compile_server_assets` add a build-time layout choice for
+semantic schema-1 assets. Generated entries expose the ordinary render and prepared
+APIs and use the same executor, named operation objects, and complete DSD component
+template references as single-file modules.
+
+Adopt managed modular output with `writeServerAssets` and a new explicit deployment
+directory. Retain the complete file set and `server.inputs.json`; identical authored
+inputs reuse it without loading the compiler across compatible upgrades. Changed
+inputs require another new directory, not in-place overwrite. Old numeric-plan
+deployments still require the semantic migration below; snapshots do not make an
+unsupported runtime/schema compatible.
+See [the modular contract](../server-modules.md#modular-deployments).
+
 ## Generated rendering functions or numeric plans to semantic plans
 
 Rebuild legacy JavaScript modules/native artifacts once. The generated module

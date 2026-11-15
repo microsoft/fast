@@ -18,6 +18,24 @@ function compileServerModule(
 }
 
 /**
+ * Compile the same flat plans as independent semantic-name modules.
+ * @param {string} entry
+ * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
+ * @param {string} [runtimeImport]
+ * @returns {import("./server.js").ServerAssets}
+ */
+function compileServerAssets(
+    entry,
+    templates = {},
+    runtimeImport = "@microsoft/fast-build/server-runtime.mjs",
+) {
+    const wasm = require("./wasm/microsoft_fast_build.js");
+    return JSON.parse(
+        wasm.compile_server_assets(entry, JSON.stringify(templates), runtimeImport),
+    );
+}
+
+/**
  * Compile trusted declarative HTML to a native Rust executable artifact.
  * Deploy with a native Rust library supporting the emitted artifact schema.
  * @param {string} entry
@@ -469,9 +487,198 @@ function writeServerArtifact(outputPath, inputs, options = {}) {
     return writeServerAsset(outputPath, inputs, options, "server-artifact");
 }
 
+/**
+ * Publish a complete modular deployment by one directory rename.
+ * Existing destinations are immutable: exact authored-input reuse needs no compiler.
+ * @param {string} outputDirectory
+ * @param {import("./server.js").ServerAssetInputs} inputs
+ * @param {import("./server.js").ServerAssetsWriteOptions} [options]
+ * @returns {import("./server.js").ServerAssetWriteResult}
+ */
+function writeServerAssets(outputDirectory, inputs, options = {}) {
+    const fs = require("node:fs");
+    const path = require("node:path");
+    const { randomUUID } = require("node:crypto");
+    if (typeof outputDirectory !== "string" || !outputDirectory) {
+        throw assetError(
+            "invalid-server-asset-inputs",
+            "Expected a nonempty deployment directory.",
+            true,
+        );
+    }
+    if (
+        !isRecord(options) ||
+        Object.keys(options).some(key => !["runtimeImport", "onWarning"].includes(key)) ||
+        (options.runtimeImport !== undefined &&
+            typeof options.runtimeImport !== "string") ||
+        (options.onWarning !== undefined && typeof options.onWarning !== "function")
+    ) {
+        throw assetError(
+            "invalid-server-asset-options",
+            "Modular assets require a new destination, not an overwrite option.",
+            true,
+        );
+    }
+    const canonical = canonicalInputs(inputs);
+    const runtimeImport = options.runtimeImport ?? defaultRuntimeImport;
+    const destination = path.resolve(outputDirectory);
+    const manifestPath = path.join(destination, "server.inputs.json");
+    const lockPath = `${destination}.lock`;
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    let lock;
+    try {
+        lock = fs.openSync(lockPath, "wx");
+    } catch (error) {
+        if (/** @type {any} */ (error).code === "EEXIST") {
+            throw assetError(
+                "server-asset-locked",
+                `Server asset is locked: ${destination}`,
+            );
+        }
+        throw error;
+    }
+    const lockStat = fs.fstatSync(lock);
+    let staging;
+    try {
+        const previous = fs.lstatSync(destination, { throwIfNoEntry: false });
+        if (previous) {
+            const invalid = () => {
+                throw assetError(
+                    "invalid-server-asset-manifest",
+                    "Invalid or incomplete modular deployment.",
+                );
+            };
+            if (!previous.isDirectory() || previous.isSymbolicLink()) invalid();
+            const recorded = readAssetFile(manifestPath, "invalid-server-asset-manifest");
+            if (!recorded) invalid();
+            let manifest;
+            try {
+                manifest = JSON.parse(recorded.bytes.toString("utf8"));
+            } catch {
+                invalid();
+            }
+            if (
+                !hasKeys(manifest, [
+                    "format",
+                    "version",
+                    "inputs",
+                    "runtimeImport",
+                    "files",
+                ]) ||
+                manifest.format !== "fast-server-assets-inputs" ||
+                manifest.version !== 1 ||
+                typeof manifest.runtimeImport !== "string" ||
+                !isRecord(manifest.files) ||
+                !Object.hasOwn(manifest.files, "server.mjs") ||
+                !Object.hasOwn(manifest.files, "entry.plan.mjs") ||
+                !Object.hasOwn(manifest.files, "server.manifest.json")
+            ) {
+                invalid();
+            }
+            const recordedInputs = canonicalInputs(manifest.inputs);
+            if (JSON.stringify(recordedInputs) !== JSON.stringify(manifest.inputs))
+                invalid();
+            const filenames = Object.keys(manifest.files);
+            for (const filename of filenames) {
+                if (
+                    !/^(?:server\.mjs|entry\.plan\.mjs|server\.manifest\.json|component-[a-z0-9_~-]*\.plan\.mjs)$/.test(
+                        filename,
+                    ) ||
+                    typeof manifest.files[filename] !== "string"
+                ) {
+                    invalid();
+                }
+                const expected = Buffer.from(manifest.files[filename], "base64");
+                if (expected.toString("base64") !== manifest.files[filename]) invalid();
+                const actual = readAssetFile(
+                    path.join(destination, filename),
+                    "server-asset-output-mismatch",
+                );
+                if (!actual || !actual.bytes.equals(expected)) {
+                    throw assetError(
+                        "server-asset-output-mismatch",
+                        `Server asset differs from its snapshot: ${filename}`,
+                    );
+                }
+            }
+            if (
+                JSON.stringify(fs.readdirSync(destination).sort()) !==
+                JSON.stringify([...filenames, "server.inputs.json"].sort())
+            ) {
+                invalid();
+            }
+            if (manifest.runtimeImport !== runtimeImport) {
+                throw assetError(
+                    "server-asset-configuration-mismatch",
+                    "Runtime import changed; choose a new deployment directory.",
+                );
+            }
+            if (JSON.stringify(manifest.inputs) !== JSON.stringify(canonical)) {
+                throw assetError(
+                    "server-asset-new-destination-required",
+                    "Authored inputs changed; choose a new deployment directory.",
+                );
+            }
+            return { reused: true, manifestPath };
+        }
+        const compileInputs =
+            "templateSources" in canonical
+                ? { entry: canonical.entry, templateSources: inputs.templateSources }
+                : canonical;
+        const templates = templatesFromInputs(compileInputs, options.onWarning);
+        const assets = compileServerAssets(canonical.entry, templates, runtimeImport);
+        const snapshots = Object.fromEntries(
+            Object.entries(assets.files).map(([filename, source]) => [
+                filename,
+                Buffer.from(source).toString("base64"),
+            ]),
+        );
+        const manifest = {
+            format: "fast-server-assets-inputs",
+            version: 1,
+            inputs: canonical,
+            runtimeImport,
+            files: snapshots,
+        };
+        staging = `${destination}.${process.pid}.${randomUUID()}.stage`;
+        fs.mkdirSync(staging);
+        const files = {
+            ...assets.files,
+            "server.inputs.json": `${JSON.stringify(manifest, null, 4)}\n`,
+        };
+        for (const [filename, source] of Object.entries(files)) {
+            const fd = fs.openSync(path.join(staging, filename), "wx");
+            try {
+                fs.writeFileSync(fd, source);
+                fs.fsyncSync(fd);
+            } finally {
+                fs.closeSync(fd);
+            }
+        }
+        if (fs.lstatSync(destination, { throwIfNoEntry: false })) {
+            throw assetError(
+                "server-asset-locked",
+                "Deployment destination appeared during write.",
+            );
+        }
+        fs.renameSync(staging, destination);
+        staging = undefined;
+        return { reused: false, manifestPath };
+    } finally {
+        if (staging) fs.rmSync(staging, { recursive: true, force: true });
+        fs.closeSync(lock);
+        const current = fs.lstatSync(lockPath, { throwIfNoEntry: false });
+        if (current?.ino === lockStat.ino && current.dev === lockStat.dev) {
+            fs.unlinkSync(lockPath);
+        }
+    }
+}
+
 module.exports = {
     compileServerModule,
+    compileServerAssets,
     compileServerArtifact,
     writeServerModule,
+    writeServerAssets,
     writeServerArtifact,
 };

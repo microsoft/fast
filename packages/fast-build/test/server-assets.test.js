@@ -4,7 +4,13 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { test } = require("node:test");
 const { pathToFileURL } = require("node:url");
-const { writeServerArtifact, writeServerModule } = require("../server.js");
+const {
+    compileServerAssets,
+    compileServerModule,
+    writeServerArtifact,
+    writeServerAssets,
+    writeServerModule,
+} = require("../server.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
 const serverPath = require.resolve("../server.js");
@@ -22,6 +28,356 @@ const inputs = {
     entry: "<p>{{title}}</p>",
     templates: { "unused-card": "<span>{{title}}</span>" },
 };
+
+test("modular assets isolate component bytes and match every render context", async () => {
+    await inDirectory(async directory => {
+        const definitions = {
+            "asset-parent": {
+                content:
+                    '<f-repeat value="{{item in items}}"><asset-child :item="{{item}}" data-key="{{item.name}}">{{item.name}}/{{$index}}</asset-child></f-repeat><f-when value="{{show}}">{{{raw}}}</f-when>',
+                hostAttributes: [{ name: "title", value: "{{title}}" }],
+            },
+            "asset-child": {
+                content: "<b>{{item.name}}/{{dataset.key}}</b>",
+                hostAttributes: [{ name: "role", value: "group" }],
+                shadowrootAttributes: [{ name: "shadowrootmode", value: "open" }],
+            },
+        };
+        const entry = '<asset-parent title="{{title}}"></asset-parent>';
+        const assets = compileServerAssets(entry, definitions, runtime);
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const fresh = execFileSync(
+                process.execPath,
+                [
+                    "-e",
+                    "const {compileServerAssets}=require(process.argv[1]); process.stdout.write(JSON.stringify(compileServerAssets(...JSON.parse(process.argv[2]))));",
+                    serverPath,
+                    JSON.stringify([entry, definitions, runtime]),
+                ],
+                { encoding: "utf8" },
+            );
+            assert.deepEqual(JSON.parse(fresh), assets);
+        }
+        const reversed = compileServerAssets(
+            entry,
+            Object.fromEntries(Object.entries(definitions).reverse()),
+            runtime,
+        );
+        assert.deepEqual(assets, reversed);
+        const unrelated = compileServerAssets(
+            entry,
+            { ...definitions, "aaa-unrelated": "<p>{{unused}}</p>" },
+            runtime,
+        );
+        for (const filename of [
+            "entry.plan.mjs",
+            "component-asset-parent.plan.mjs",
+            "component-asset-child.plan.mjs",
+        ]) {
+            assert.equal(assets.files[filename], unrelated.files[filename]);
+        }
+        const changed = compileServerAssets(
+            entry,
+            {
+                ...definitions,
+                "asset-child": {
+                    ...definitions["asset-child"],
+                    content: "<em>{{item.name}}</em>",
+                },
+            },
+            runtime,
+        );
+        assert.equal(
+            assets.files["component-asset-parent.plan.mjs"],
+            changed.files["component-asset-parent.plan.mjs"],
+        );
+        assert.notEqual(
+            assets.files["component-asset-child.plan.mjs"],
+            changed.files["component-asset-child.plan.mjs"],
+        );
+        const changedDefaults = compileServerAssets(
+            entry,
+            {
+                ...definitions,
+                "asset-child": {
+                    ...definitions["asset-child"],
+                    hostAttributes: [{ name: "role", value: "note" }],
+                },
+            },
+            runtime,
+        );
+        assert.notEqual(
+            assets.files["component-asset-parent.plan.mjs"],
+            changedDefaults.files["component-asset-parent.plan.mjs"],
+        );
+        const deployment = path.join(directory, "modular");
+        writeServerAssets(
+            deployment,
+            { entry, templates: definitions },
+            { runtimeImport: runtime },
+        );
+        const modular = await import(
+            pathToFileURL(path.join(deployment, assets.entry)).href
+        );
+        const single = await import(
+            `data:text/javascript;base64,${Buffer.from(
+                compileServerModule(entry, definitions, runtime),
+            ).toString("base64")}`
+        );
+        for (const state of [
+            {
+                title: '&<"é',
+                items: [{ name: "<one>" }, { name: "two" }],
+                show: true,
+                raw: "<i>raw</i>",
+            },
+            { title: null, items: [], show: false, raw: "" },
+        ]) {
+            for (const markersV2 of [false, true]) {
+                for (const dsd of [undefined, [], ["asset-child"]]) {
+                    const configuration = { markersV2, dsd };
+                    const prepared = modular.prepareState(state);
+                    for (const method of [
+                        "renderEntry",
+                        "renderTemplate",
+                        "renderHost",
+                        "renderShadow",
+                    ]) {
+                        const args =
+                            method === "renderHost" || method === "renderShadow"
+                                ? ["asset-parent", state, configuration]
+                                : [state, configuration];
+                        assert.equal(modular[method](...args), single[method](...args));
+                        args[args.length - 2] = prepared;
+                        assert.equal(
+                            modular[`${method}Prepared`](...args),
+                            single[`${method}Prepared`](...args),
+                        );
+                    }
+                }
+            }
+        }
+        assert.equal(
+            writeServerAssets(
+                deployment,
+                { entry, templates: definitions },
+                { runtimeImport: runtime },
+            ).reused,
+            true,
+        );
+        const childTable = await import(
+            pathToFileURL(path.join(deployment, "component-asset-child.plan.mjs")).href
+        );
+        childTable.plan.strings.fill("mutated after loading");
+        const request = { title: "isolated", items: [{ name: "first" }], show: false };
+        assert.equal(modular.renderEntry(request), single.renderEntry(request));
+    });
+});
+
+test("modular publication is immutable, source-free and fail-closed across upgrades", async () => {
+    await inDirectory(async directory => {
+        const destination = path.join(directory, "deployment");
+        const configuration = { runtimeImport: runtime };
+        writeServerAssets(destination, inputs, configuration);
+        const before = Object.fromEntries(
+            fs.readdirSync(destination).map(filename => {
+                const full = path.join(destination, filename);
+                fs.utimesSync(full, new Date(946684800000), new Date(946684800000));
+                return [filename, snapshot(full)];
+            }),
+        );
+        const script = `${disableCompiler}
+            const {writeServerAssets} = require(process.argv[1]);
+            const result = writeServerAssets(process.argv[2], JSON.parse(process.argv[3]), {runtimeImport:process.argv[4]});
+            assert.equal(result.reused, true);
+            import(require("node:url").pathToFileURL(process.argv[2] + "/server.mjs").href).then(module => {
+                assert.equal(module.renderEntry({title:"source & free"}), "<p>source &amp; free</p>");
+            }).catch(error => { console.error(error); process.exitCode = 1; });`;
+        execFileSync(process.execPath, [
+            "-e",
+            script,
+            serverPath,
+            destination,
+            JSON.stringify(inputs),
+            runtime,
+        ]);
+        for (const [filename, recorded] of Object.entries(before)) {
+            unchanged(path.join(destination, filename), recorded);
+        }
+        assert.throws(
+            () =>
+                writeServerAssets(
+                    destination,
+                    { ...inputs, entry: "<b>{{title}}</b>" },
+                    configuration,
+                ),
+            { code: "server-asset-new-destination-required" },
+        );
+        assert.throws(
+            () =>
+                writeServerAssets(destination, inputs, {
+                    runtimeImport: "./different.mjs",
+                }),
+            { code: "server-asset-configuration-mismatch" },
+        );
+        assert.throws(
+            () =>
+                writeServerAssets(destination, inputs, {
+                    ...configuration,
+                    overwrite: true,
+                }),
+            { code: "invalid-server-asset-options" },
+        );
+        const dependency = path.join(destination, "component-unused-card.plan.mjs");
+        fs.appendFileSync(dependency, "\n");
+        assert.throws(() => writeServerAssets(destination, inputs, configuration), {
+            code: "server-asset-output-mismatch",
+        });
+        fs.writeFileSync(dependency, before["component-unused-card.plan.mjs"].bytes);
+        fs.unlinkSync(dependency);
+        assert.throws(() => writeServerAssets(destination, inputs, configuration), {
+            code: "server-asset-output-mismatch",
+        });
+        await assert.rejects(
+            import(pathToFileURL(path.join(destination, "server.mjs")).href),
+            {
+                code: "ERR_MODULE_NOT_FOUND",
+            },
+        );
+    });
+});
+
+test("failed modular staging never publishes a partial directory", async () => {
+    await inDirectory(async directory => {
+        const destination = path.join(directory, "deployment");
+        const write = fs.writeFileSync;
+        let writes = 0;
+        fs.writeFileSync = function (filename, ...args) {
+            if (++writes === 3) throw new Error("injected modular write failure");
+            return write.call(this, filename, ...args);
+        };
+        try {
+            assert.throws(
+                () => writeServerAssets(destination, inputs, { runtimeImport: runtime }),
+                /injected modular write failure/,
+            );
+        } finally {
+            fs.writeFileSync = write;
+        }
+        assert.deepEqual(fs.readdirSync(directory), []);
+    });
+});
+
+test("modular linking validates unused tables eagerly but permits symbolic component cycles", async () => {
+    await inDirectory(async directory => {
+        const definitions = {
+            "cycle-a": "<cycle-b></cycle-b>",
+            "cycle-b": "<cycle-a></cycle-a>",
+        };
+        const destination = path.join(directory, "valid");
+        writeServerAssets(
+            destination,
+            { entry: "<cycle-a></cycle-a>", templates: definitions },
+            { runtimeImport: runtime },
+        );
+        const module = await import(
+            pathToFileURL(path.join(destination, "server.mjs")).href
+        );
+        assert.equal(module.renderEntry({}, { dsd: [] }), "<cycle-a></cycle-a>");
+        const broken = path.join(directory, "broken");
+        writeServerAssets(broken, inputs, { runtimeImport: runtime });
+        fs.writeFileSync(
+            path.join(broken, "component-unused-card.plan.mjs"),
+            `export const plan = ${JSON.stringify({
+                format: "fast-server-plan",
+                version: 1,
+                strings: [],
+                code: [18, 0],
+                offsets: [0],
+                root: 0,
+                host: 0,
+                tag: 0,
+            })};\n`,
+        );
+        await assert.rejects(
+            import(pathToFileURL(path.join(broken, "server.mjs")).href),
+            /Invalid or incompatible FAST server plan/,
+        );
+        const malformed = path.join(directory, "malformed");
+        assert.throws(() =>
+            writeServerAssets(
+                malformed,
+                {
+                    entry: "",
+                    templates: { unused: '<f-when value="{{false}}">{{oops</f-when>' },
+                },
+                { runtimeImport: runtime },
+            ),
+        );
+        assert.equal(fs.existsSync(malformed), false);
+    });
+});
+
+test("modular assets preserve historical declarative fixture bytes", async () => {
+    const { createHash } = require("node:crypto");
+    const wasm = require("../wasm/microsoft_fast_build.js");
+    const baseline = require("./server-baseline.json");
+    const root = path.resolve(__dirname, "../../fast-element/test/declarative/fixtures");
+    await inDirectory(async directory => {
+        const configs = fs
+            .readdirSync(root, { recursive: true })
+            .filter(filename => path.basename(filename) === "fast-build.config.json");
+        for (const [index, filename] of configs.entries()) {
+            const fixture = path.dirname(path.join(root, filename));
+            const config = JSON.parse(fs.readFileSync(path.join(root, filename), "utf8"));
+            const entry = fs.readFileSync(
+                path.resolve(fixture, config.entry || "entry.html"),
+                "utf8",
+            );
+            const templates = Object.fromEntries(
+                JSON.parse(
+                    wasm.parse_f_templates(
+                        fs.readFileSync(path.join(fixture, "templates.html"), "utf8"),
+                    ),
+                )
+                    .filter(template => template.name)
+                    .map(({ name, ...metadata }) => [name, metadata]),
+            );
+            const state = config.state
+                ? JSON.parse(fs.readFileSync(path.resolve(fixture, config.state), "utf8"))
+                : {};
+            const destination = path.join(directory, `fixture-${index}`);
+            writeServerAssets(
+                destination,
+                { entry, templates },
+                { runtimeImport: runtime },
+            );
+            const module = await import(
+                pathToFileURL(path.join(destination, "server.mjs")).href
+            );
+            for (const markersV2 of [false, true]) {
+                const options = {
+                    markersV2,
+                    attributeNameStrategy: config["attribute-name-strategy"],
+                };
+                const key = createHash("sha256")
+                    .update(JSON.stringify([entry, templates, state, options]))
+                    .digest("hex");
+                assert.ok(
+                    Object.hasOwn(baseline, key),
+                    `Missing historical fixture: ${filename}`,
+                );
+                assert.equal(
+                    createHash("sha256")
+                        .update(module.renderEntry(state, options))
+                        .digest("hex"),
+                    baseline[key],
+                    filename,
+                );
+            }
+        }
+    });
+});
 
 async function inDirectory(run) {
     const directory = fs.mkdtempSync(path.join(__dirname, ".server-assets-"));

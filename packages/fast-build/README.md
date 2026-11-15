@@ -89,6 +89,28 @@ and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous and preserves existing HTML bytes and server coercion;
 arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
 
+### Optional modular deployments
+
+`compileServerAssets(entry, templates, runtimeImport?)` emits the same schema-1
+flat plans as separate `component-<semantic-name>.plan.mjs` files, an entry plan,
+a thin `server.mjs` registry and a dependency manifest. It uses the existing
+server helper, not another renderer. Unrelated registry additions do not change
+existing component plan names or bytes. Component host/shadow defaults are
+compiled into their callers, so changing those defaults also changes dependent
+plans. State is supplied only at rendering time.
+
+For managed publication, use `writeServerAssets("./generated/release-1", inputs,
+options?)`. It stages all files and publishes the directory with one rename.
+The destination must be absent, or an intact deployment with identical authored
+inputs and runtime import. Identical inputs reuse every byte without loading
+the compiler, including across upgrades. Changed inputs require a **new explicit
+destination**; no in-place incremental rebuild or overwrite is provided.
+Do not mutate imported modules behind cached Node ESM URLs.
+
+Single-file writers and supported old JS/native decoders are unchanged. Modular
+output is optional and not a rendering-speed claim; additional imports can make
+cold startup slower. See [deployment details](./docs/server-modules.md#modular-deployments).
+
 See [the server module contract and benchmark guide](./docs/server-modules.md)
 for selection, diagnostics, deployment compatibility, migration, and measurement
 boundaries.
