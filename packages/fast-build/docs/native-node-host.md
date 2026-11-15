@@ -64,7 +64,13 @@ State errors precede options errors and missing-template lookup; budget errors
 return no partial Buffer. Errors retain native `code` values and requests recover.
 
 Artifacts own their decoded storage; input Buffers are borrowed only during the
-synchronous call. Each output moves its Rust `Vec<u8>` through napi-rs's Buffer
+synchronous call. The facade rejects artifact, state and options Buffers backed
+by `SharedArrayBuffer` before entering native code; worker writes must never race
+Rust byte reads. It checks the intrinsic backing store, not a caller-shadowable
+`.buffer` property. Plain Uint8Array inputs are not accepted. Shared options
+produce `invalid-options` after state validation; shared state/artifacts produce
+`invalid-state`/`invalid-artifact`. The low-level addon is a trusted internal
+transport and must only be called through this facade. Each output moves its Rust `Vec<u8>` through napi-rs's Buffer
 ownership/finalizer implementation, independent of the program and later requests.
 No hand-written unsafe ownership transfer, global renderer or request scratch is
 used. napi-rs/Node manage Buffer external memory and finalization. Each worker
@@ -80,9 +86,9 @@ This candidate requires exact native-state prerequisite
 the hosting commit does not duplicate native execution changes.
 
 The locally built macOS arm64 release addon is 787,648 bytes before stripping.
-The current npm dry-run tarball is 404,926 compressed / 1,122,561 unpacked bytes,
+The current npm dry-run tarball is 405,100 compressed / 1,123,285 unpacked bytes,
 including existing WASM assets; its three added facade/types/build-script files
-total 5,503 bytes and it contains no `.node` binaries. These local source-mode
+total 6,227 bytes and it contains no `.node` binaries. These local source-mode
 figures are not an all-platform native tarball estimate.
 Node-API 8 is requested and the package requires Node >=22.18.0. Only the current
 macOS arm64/Node installation is tested; Windows, Linux glibc/musl, other

@@ -1,14 +1,30 @@
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
+import { types } from "node:util";
 import { preparedRequest, prepareState } from "./server-runtime.mjs";
+
+const bufferBackingStore = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(Uint8Array.prototype),
+    "buffer",
+).get;
+
+function sharedBuffer(value) {
+    return (
+        Buffer.isBuffer(value) &&
+        types.isSharedArrayBuffer(bufferBackingStore.call(value))
+    );
+}
 
 function jsonInput(value, code) {
     if (
         (typeof value !== "string" && !Buffer.isBuffer(value)) ||
-        (typeof value === "string" && !value.isWellFormed())
+        (typeof value === "string" && !value.isWellFormed()) ||
+        sharedBuffer(value)
     ) {
         throw Object.assign(
-            new TypeError("Expected well-formed JSON text or a strict UTF-8 Buffer."),
+            new TypeError(
+                "Expected well-formed JSON text or an unshared strict UTF-8 Buffer.",
+            ),
             { code },
         );
     }
@@ -47,8 +63,13 @@ export function loadNativeHost(addonPath) {
         #program;
 
         constructor(artifact) {
-            if (!Buffer.isBuffer(artifact)) {
-                throw new TypeError("Expected executable artifact bytes as a Buffer.");
+            if (!Buffer.isBuffer(artifact) || sharedBuffer(artifact)) {
+                throw Object.assign(
+                    new TypeError(
+                        "Expected executable artifact bytes as an unshared Buffer.",
+                    ),
+                    { code: "invalid-artifact" },
+                );
             }
             this.#program = new addon.NativeProgram(artifact);
         }
@@ -56,7 +77,10 @@ export function loadNativeHost(addonPath) {
         #render(method, state, options, name) {
             state = jsonInput(state, "invalid-state");
             // Let Rust validate JSON state before reporting malformed options.
-            if (typeof options === "string" && !options.isWellFormed()) {
+            if (
+                (typeof options === "string" && !options.isWellFormed()) ||
+                sharedBuffer(options)
+            ) {
                 options = Buffer.from([0xff]);
             } else if (
                 options !== undefined &&
