@@ -23,6 +23,46 @@ const inputs = {
     templates: { "unused-card": "<span>{{title}}</span>" },
 };
 
+test("old managed schema 1 export lists are reused unchanged; JSON adoption is explicit", async () => {
+    await inDirectory(async directory => {
+        const output = path.join(directory, "server.mjs");
+        const source = {
+            entry: "<test-old></test-old>",
+            templates: { "test-old": "<p>{{value}}</p>" },
+        };
+        const configuration = { runtimeImport: "../../server-runtime.mjs" };
+        const result = writeServerModule(output, source, configuration);
+        const oldBytes = fs.readFileSync(
+            path.join(__dirname, "fixtures/server-schema1.txt"),
+        );
+        const manifest = JSON.parse(fs.readFileSync(result.manifestPath, "utf8"));
+        manifest.outputBase64 = oldBytes.toString("base64");
+        fs.writeFileSync(output, oldBytes);
+        fs.writeFileSync(result.manifestPath, `${JSON.stringify(manifest, null, 4)}\n`);
+        const before = stampPair(output, result.manifestPath);
+        assert.equal(
+            withoutCompiler(targets[0], output, source, {
+                ...configuration,
+                overwrite: true,
+            }).reused,
+            true,
+        );
+        unchanged(output, before.output);
+        unchanged(result.manifestPath, before.manifest);
+        const old = await import(pathToFileURL(output).href);
+        assert.equal(Object.hasOwn(old, "renderEntryJson"), false);
+        const next = path.join(directory, "server-json.mjs");
+        assert.equal(writeServerModule(next, source, configuration).reused, false);
+        const current = await import(pathToFileURL(next).href);
+        assert.equal(
+            current.renderEntryJson('{"value":"<&"}'),
+            old.renderEntry({ value: "<&" }),
+        );
+        unchanged(output, before.output);
+        unchanged(result.manifestPath, before.manifest);
+    });
+});
+
 async function inDirectory(run) {
     const directory = fs.mkdtempSync(path.join(__dirname, ".server-assets-"));
     try {
