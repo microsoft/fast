@@ -14,6 +14,8 @@ const baseline = require("./server-modern-baseline.json");
 const contextBaseline = require("./server-json-context-modern-baseline.json");
 const hash = value => createHash("sha256").update(value).digest("hex");
 
+require("./retained-schema1.test.js");
+
 test("retired renderer APIs cannot be loaded from the compiler package", () => {
     assert.throws(
         () => require("@microsoft/fast-build/prepared.js"),
