@@ -1,0 +1,12 @@
+{
+    "root": false,
+    "extends": ["../../../../../biome.jsonc"],
+    "overrides": [
+        {
+            // Retain the independently generated baseline module byte-for-byte.
+            "includes": ["legacy-schema1.mjs"],
+            "formatter": { "enabled": false },
+            "assist": { "enabled": false }
+        }
+    ]
+}

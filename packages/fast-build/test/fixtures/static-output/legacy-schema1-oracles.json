@@ -1,0 +1,131 @@
+{
+    "cases": [
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" first &amp; &lt; 😀\nlast \" data-fe=\"1\"><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></h2><!--fe:b--><i><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></i><!--fe:/b--><!--fe:b--><!--fe:r--><b><!--fe:b-->one<!--fe:/b--></b><!--fe:/r--><!--fe:r--><b><!--fe:b-->two<!--fe:/b--></b><!--fe:/r--><!--fe:/b--><qualified-nested data-fe=\"1\"><template shadowrootmode=\"open\" shadowroot=\"open\"><strong><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></strong></template></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>\n<qualified-closed><template shadowrootmode=\"closed\" shadowroot=\"closed\" shadowrootdelegatesfocus><span>closed</span></template></qualified-closed>\n<qualified-conflict><template shadowrootmode=\"closed\" shadowroot=\"open\" shadowrootserializable=\"a&quot;b&amp;c\"><span>conflict</span></template></qualified-conflict>\n<qualified-legacy><template shadowrootmode=\"closed\" shadowroot=\"closed\"><span>legacy input</span></template></qualified-legacy>",
+            "method": "renderEntry",
+            "name": "qualified-card",
+            "options": {},
+            "state": {
+                "items": ["one", "two"],
+                "label": " first & < 😀\nlast ",
+                "show": true
+            }
+        },
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" first &amp; &lt; 😀\nlast \" data-fe=\"1\"><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></h2><!--fe:b--><i><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></i><!--fe:/b--><!--fe:b--><!--fe:r--><b><!--fe:b-->one<!--fe:/b--></b><!--fe:/r--><!--fe:r--><b><!--fe:b-->two<!--fe:/b--></b><!--fe:/r--><!--fe:/b--><qualified-nested data-fe=\"1\"><template shadowrootmode=\"open\" shadowroot=\"open\"><strong><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></strong></template></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>\n<qualified-closed><template shadowrootmode=\"closed\" shadowroot=\"closed\" shadowrootdelegatesfocus><span>closed</span></template></qualified-closed>\n<qualified-conflict><template shadowrootmode=\"closed\" shadowroot=\"open\" shadowrootserializable=\"a&quot;b&amp;c\"><span>conflict</span></template></qualified-conflict>\n<qualified-legacy><template shadowrootmode=\"closed\" shadowroot=\"closed\"><span>legacy input</span></template></qualified-legacy>",
+            "method": "renderTemplate",
+            "name": "qualified-card",
+            "options": {},
+            "state": {
+                "items": ["one", "two"],
+                "label": " first & < 😀\nlast ",
+                "show": true
+            }
+        },
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" first &amp; &lt; 😀\nlast \" data-fe=\"1\"><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></h2><!--fe:b--><i><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></i><!--fe:/b--><!--fe:b--><!--fe:r--><b><!--fe:b-->one<!--fe:/b--></b><!--fe:/r--><!--fe:r--><b><!--fe:b-->two<!--fe:/b--></b><!--fe:/r--><!--fe:/b--><qualified-nested data-fe=\"1\"><template shadowrootmode=\"open\" shadowroot=\"open\"><strong><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></strong></template></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>",
+            "method": "renderHost",
+            "name": "qualified-card",
+            "options": {},
+            "state": {
+                "items": ["one", "two"],
+                "label": " first & < 😀\nlast ",
+                "show": true
+            }
+        },
+        {
+            "html": "<template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" first &amp; &lt; 😀\nlast \" data-fe=\"1\"><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></h2><!--fe:b--><i><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></i><!--fe:/b--><!--fe:b--><!--fe:r--><b><!--fe:b-->one<!--fe:/b--></b><!--fe:/r--><!--fe:r--><b><!--fe:b-->two<!--fe:/b--></b><!--fe:/r--><!--fe:/b--><qualified-nested data-fe=\"1\"><template shadowrootmode=\"open\" shadowroot=\"open\"><strong><!--fe:b--> first &amp; &lt; 😀\nlast <!--fe:/b--></strong></template></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template>",
+            "method": "renderShadow",
+            "name": "qualified-card",
+            "options": {},
+            "state": {
+                "items": ["one", "two"],
+                "label": " first & < 😀\nlast ",
+                "show": true
+            }
+        },
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" changed &amp; &lt; &#39; 😀\n \" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b--> changed &amp; &lt; &#39; 😀\n <!--fe-b$$end$$1$$fast-build$$fe-b--></h2><!--fe-b$$start$$2$$fast-build$$fe-b--><!--fe-b$$end$$2$$fast-build$$fe-b--><!--fe-b$$start$$3$$fast-build$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><b><!--fe-b$$start$$0$$fast-build$$fe-b-->three<!--fe-b$$end$$0$$fast-build$$fe-b--></b><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$3$$fast-build$$fe-b--><qualified-nested data-fe-b-4></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>\n<qualified-closed></qualified-closed>\n<qualified-conflict></qualified-conflict>\n<qualified-legacy></qualified-legacy>",
+            "method": "renderEntry",
+            "name": "qualified-card",
+            "options": {
+                "attributeNameStrategy": "none",
+                "dsd": ["qualified-card"],
+                "markersV2": true
+            },
+            "state": {
+                "items": ["three"],
+                "label": " changed & < ' 😀\n ",
+                "show": false
+            }
+        },
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" changed &amp; &lt; &#39; 😀\n \" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b--> changed &amp; &lt; &#39; 😀\n <!--fe-b$$end$$1$$fast-build$$fe-b--></h2><!--fe-b$$start$$2$$fast-build$$fe-b--><!--fe-b$$end$$2$$fast-build$$fe-b--><!--fe-b$$start$$3$$fast-build$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><b><!--fe-b$$start$$0$$fast-build$$fe-b-->three<!--fe-b$$end$$0$$fast-build$$fe-b--></b><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$3$$fast-build$$fe-b--><qualified-nested data-fe-b-4></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>\n<qualified-closed></qualified-closed>\n<qualified-conflict></qualified-conflict>\n<qualified-legacy></qualified-legacy>",
+            "method": "renderTemplate",
+            "name": "qualified-card",
+            "options": {
+                "attributeNameStrategy": "none",
+                "dsd": ["qualified-card"],
+                "markersV2": true
+            },
+            "state": {
+                "items": ["three"],
+                "label": " changed & < ' 😀\n ",
+                "show": false
+            }
+        },
+        {
+            "html": "<qualified-card role=\"group\" title=\"default &amp; &lt;\"><template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" changed &amp; &lt; &#39; 😀\n \" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b--> changed &amp; &lt; &#39; 😀\n <!--fe-b$$end$$1$$fast-build$$fe-b--></h2><!--fe-b$$start$$2$$fast-build$$fe-b--><!--fe-b$$end$$2$$fast-build$$fe-b--><!--fe-b$$start$$3$$fast-build$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><b><!--fe-b$$start$$0$$fast-build$$fe-b-->three<!--fe-b$$end$$0$$fast-build$$fe-b--></b><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$3$$fast-build$$fe-b--><qualified-nested data-fe-b-4></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template></qualified-card>",
+            "method": "renderHost",
+            "name": "qualified-card",
+            "options": {
+                "attributeNameStrategy": "none",
+                "dsd": ["qualified-card"],
+                "markersV2": true
+            },
+            "state": {
+                "items": ["three"],
+                "label": " changed & < ' 😀\n ",
+                "show": false
+            }
+        },
+        {
+            "html": "<template shadowrootmode=\"open\" shadowroot=\"open\" shadowrootdelegatesfocus shadowrootclonable=\"\" shadowrootserializable=\"\"><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\" changed &amp; &lt; &#39; 😀\n \" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b--> changed &amp; &lt; &#39; 😀\n <!--fe-b$$end$$1$$fast-build$$fe-b--></h2><!--fe-b$$start$$2$$fast-build$$fe-b--><!--fe-b$$end$$2$$fast-build$$fe-b--><!--fe-b$$start$$3$$fast-build$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><b><!--fe-b$$start$$0$$fast-build$$fe-b-->three<!--fe-b$$end$$0$$fast-build$$fe-b--></b><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$3$$fast-build$$fe-b--><qualified-nested data-fe-b-4></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template></template>",
+            "method": "renderShadow",
+            "name": "qualified-card",
+            "options": {
+                "attributeNameStrategy": "none",
+                "dsd": ["qualified-card"],
+                "markersV2": true
+            },
+            "state": {
+                "items": ["three"],
+                "label": " changed & < ' 😀\n ",
+                "show": false
+            }
+        },
+        {
+            "html": "<qualified-card></qualified-card>\n<qualified-closed></qualified-closed>\n<qualified-conflict></qualified-conflict>\n<qualified-legacy></qualified-legacy>",
+            "method": "renderEntry",
+            "name": "qualified-card",
+            "options": {
+                "dsd": []
+            },
+            "state": {
+                "items": ["one", "two"],
+                "label": " first & < 😀\nlast ",
+                "show": true
+            }
+        }
+    ],
+    "provenance": {
+        "baselineCommit": "58c27f483db57a49e644389e9181d2340d1cd019",
+        "compilerSourceTree": "f33af9f43ca43a9a07c53e38953ca92bd4ada778",
+        "generator": "Baseline compile_server_module; unchanged sources extracted using git archive. Native baseline artifact rendering independently supplies expected HTML.",
+        "runtimeImport": "../../../server-runtime.mjs",
+        "moduleSha256": "1cfaf8645341b6a9f382f93cea5dd945a5fd7c8eb487741beb8822c078d0b4ed",
+        "compilerOutputSha256": "1cfaf8645341b6a9f382f93cea5dd945a5fd7c8eb487741beb8822c078d0b4ed",
+        "inputSha256": "ac9939a0ad0178720eab8e2b084de805d69ab12ad18a7f88a74dc2ff4557f4b7",
+        "preservation": "Byte-for-byte unchanged compile_server_module output. Fixture-only Biome formatter/assist override preserves this historical asset; linting remains enabled."
+    }
+}
