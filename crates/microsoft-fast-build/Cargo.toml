@@ -22,6 +22,16 @@ markup5ever_rcdom = "0.5.0-unofficial"
 serde = "1"
 serde_json = "1"
 
+[features]
+node-host = ["dep:napi", "dep:napi-derive", "dep:napi-build", "serde/derive"]
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+napi = { version = "3", default-features = false, features = ["napi8"], optional = true }
+napi-derive = { version = "3", optional = true }
+
+[build-dependencies]
+napi-build = { version = "2", optional = true }
+
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
 
