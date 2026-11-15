@@ -88,6 +88,25 @@ invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-tim
 rebuild into `fast-server-native` semantic schema 1. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
+For fresh JSON requests, use `render_entry_json(json, options)` instead of
+`parse_render_state(json)` followed by `render_entry(&state, options)`. It builds
+owned validated state directly and renders without a second normalized copy:
+
+```rust
+let html = program.render_entry_json(
+    r#"{"title":"Request-specific state"}"#,
+    &NativeRenderOptions::default(),
+)?;
+```
+
+`render_template_json`, `render_host_json` and `render_shadow_json` follow the
+same naming/argument order as their typed counterparts. This is an additive
+migration; typed input still validates/copies, and prepared input retains its
+explicit snapshot ownership. Native lookups, repeat items/lexical frames and
+direct child properties now borrow request state. Dataset merges remain
+copy-on-write. All modes keep complete input validation, resource budgets,
+owned results and error recovery.
+
 Text and attribute values write directly into the request's bounded UTF-8 output
 buffer, including escaped spans and scalar formatting. Composite attributes check
 for missing/null bindings before writing, preserving whole-attribute suppression.

@@ -1,5 +1,6 @@
 //! Immutable native execution of compiler artifacts; never parses template HTML.
 use crate::{content::write_html_escaped, JsonValue as J, Locator, RenderError};
+use serde::de::{Deserialize, Deserializer, MapAccess, SeqAccess, Visitor};
 use serde_json::Value as V;
 use std::borrow::Cow;
 use std::collections::HashMap;
@@ -152,6 +153,48 @@ impl CompiledArtifact {
         )
     }
 
+    /// Parse, fully validate and render fresh owned JSON without a snapshot copy.
+    pub fn render_entry_json(
+        &self,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(index(&self.ir["entry"]), &state, options, true)
+    }
+
+    /// Fresh JSON rendering with template-context root-host rules.
+    pub fn render_template_json(
+        &self,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(index(&self.ir["entry"]), &state, options, false)
+    }
+
+    /// Parse and validate before resolving the named host, matching typed input.
+    pub fn render_host_json(
+        &self,
+        name: &str,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(index(&self.component(name)?["host"]), &state, options, true)
+    }
+
+    /// Fresh JSON rendering of only the selected component's DSD.
+    pub fn render_shadow_json(
+        &self,
+        name: &str,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute_shadow(name, &state, options)
+    }
+
     /// Root template mode preserves the non-entry host attribute contract.
     pub fn render_template(
         &self,
@@ -251,10 +294,11 @@ impl CompiledArtifact {
         executor.body(
             component["shadow"].as_u64().unwrap() as usize,
             &Frame {
-                values: Cow::Borrowed(state),
+                base: Some(state),
+                values: HashMap::new(),
                 parent: None,
             },
-            &[],
+            None,
             &mut Some(0),
             false,
             0,
@@ -291,10 +335,11 @@ impl CompiledArtifact {
         executor.body(
             id,
             &Frame {
-                values: Cow::Borrowed(state),
+                base: Some(state),
+                values: HashMap::new(),
                 parent: None,
             },
-            &[],
+            None,
             &mut None,
             entry,
             0,
@@ -305,18 +350,94 @@ impl CompiledArtifact {
 
 /// Parse request JSON with finite numbers and a bounded nesting depth.
 pub fn parse_render_state(json: &str) -> Result<J, NativeRenderError> {
-    let value: V = serde_json::from_str(json).map_err(|e| error("invalid-state", e.to_string()))?;
-    fn convert(v: V) -> J {
-        match v {
-            V::Null => J::Null,
-            V::Bool(v) => J::Bool(v),
-            V::Number(v) => J::Number(v.as_f64().unwrap()),
-            V::String(v) => J::String(v),
-            V::Array(v) => J::Array(v.into_iter().map(convert).collect()),
-            V::Object(v) => J::Object(v.into_iter().map(|(k, v)| (k, convert(v))).collect()),
+    let state: RequestValue =
+        serde_json::from_str(json).map_err(|e| error("invalid-state", e.to_string()))?;
+    // Count retained values after duplicate-key replacement. Parse errors, including
+    // invalid unused/overwritten Unicode and numbers, still precede budget errors.
+    fn validate(v: &J, depth: usize, remaining: &mut usize) -> Result<(), NativeRenderError> {
+        if depth > 64 || *remaining == 0 {
+            return Err(error("invalid-state", "State exceeds nesting/node limits"));
         }
+        *remaining -= 1;
+        match v {
+            J::Array(values) => {
+                for value in values {
+                    validate(value, depth + 1, remaining)?;
+                }
+            }
+            J::Object(values) => {
+                for value in values.values() {
+                    validate(value, depth + 1, remaining)?;
+                }
+            }
+            _ => {}
+        }
+        Ok(())
     }
-    normalized(&convert(value), 0, &mut 1_000_000)
+    validate(&state.0, 0, &mut 1_000_000)?;
+    Ok(state.0)
+}
+
+// Deserialize directly into request storage, without an intermediate serde value
+// tree, map conversion, string/key copies or a second normalized snapshot.
+struct RequestValue(J);
+
+impl<'de> Deserialize<'de> for RequestValue {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct RequestVisitor;
+        impl<'de> Visitor<'de> for RequestVisitor {
+            type Value = RequestValue;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("JSON state")
+            }
+            fn visit_unit<E: serde::de::Error>(self) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::Null))
+            }
+            fn visit_bool<E: serde::de::Error>(self, value: bool) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::Bool(value)))
+            }
+            fn visit_i64<E: serde::de::Error>(self, value: i64) -> Result<Self::Value, E> {
+                self.visit_f64(value as f64)
+            }
+            fn visit_u64<E: serde::de::Error>(self, value: u64) -> Result<Self::Value, E> {
+                self.visit_f64(value as f64)
+            }
+            fn visit_f64<E: serde::de::Error>(self, value: f64) -> Result<Self::Value, E> {
+                if !value.is_finite() {
+                    return Err(E::custom("State numbers must be finite"));
+                }
+                Ok(RequestValue(J::Number(if value == 0.0 {
+                    0.0
+                } else {
+                    value
+                })))
+            }
+            fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::String(value.into())))
+            }
+            fn visit_string<E: serde::de::Error>(self, value: String) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::String(value)))
+            }
+            fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+                let mut values = Vec::new();
+                while let Some(RequestValue(value)) = seq.next_element()? {
+                    values.push(value);
+                }
+                Ok(RequestValue(J::Array(values)))
+            }
+            fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<Self::Value, A::Error> {
+                let mut values = HashMap::new();
+                while let Some((key, RequestValue(value))) =
+                    map.next_entry::<String, RequestValue>()?
+                {
+                    values.insert(key, value);
+                }
+                Ok(RequestValue(J::Object(values)))
+            }
+        }
+        deserializer.deserialize_any(RequestVisitor)
+    }
 }
 
 fn normalized(state: &J, depth: usize, remaining: &mut usize) -> Result<J, NativeRenderError> {
@@ -379,19 +500,27 @@ fn decoded(v: &V) -> J {
 }
 
 struct Frame<'a> {
-    values: Cow<'a, J>,
+    base: Option<&'a J>,
+    values: HashMap<&'a str, Cow<'a, J>>,
     parent: Option<&'a Frame<'a>>,
 }
-type Loops = [(Vec<String>, J)];
+struct LoopFrame<'a> {
+    prefix: &'a [V],
+    item: &'a J,
+    index: J,
+    parent: Option<&'a LoopFrame<'a>>,
+}
+type Loops<'a> = Option<&'a LoopFrame<'a>>;
 
-fn nested(value: &J, path: &[V]) -> Option<J> {
+fn nested<'a>(value: &'a J, path: &[V]) -> Option<Cow<'a, J>> {
     let mut value = value;
     for (at, key) in path.iter().enumerate() {
         let key = string(key);
         match value {
             J::Array(values) => {
                 if key == "length" {
-                    return (at == path.len() - 1).then_some(J::Number(values.len() as f64));
+                    return (at == path.len() - 1)
+                        .then_some(Cow::Owned(J::Number(values.len() as f64)));
                 }
                 let digits = key.strip_prefix('+').unwrap_or(key);
                 if digits.is_empty() || !digits.bytes().all(|b| b.is_ascii_digit()) {
@@ -403,41 +532,52 @@ fn nested(value: &J, path: &[V]) -> Option<J> {
             _ => return None,
         }
     }
-    Some(value.clone())
+    Some(Cow::Borrowed(value))
 }
 
-fn get(root: &Frame<'_>, loops: &Loops, path: &V) -> Option<J> {
+fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &V) -> Option<Cow<'a, J>> {
     let path = array(path);
-    for (prefix, value) in loops.iter().rev() {
-        if prefix.len() <= path.len() && prefix.iter().zip(path).all(|(a, b)| a == string(b)) {
-            return nested(value, &path[prefix.len()..]);
+    while let Some(current) = loops {
+        if string(&path[0]) == "$index" {
+            return nested(&current.index, &path[1..]);
         }
+        if current.prefix.len() <= path.len()
+            && current.prefix.iter().zip(path).all(|(a, b)| a == b)
+        {
+            return nested(current.item, &path[current.prefix.len()..]);
+        }
+        loops = current.parent;
     }
     let mut frame = Some(root);
     while let Some(current) = frame {
-        let val = nested(&current.values, path);
-        if val.is_some()
-            || matches!(current.values.as_ref(), J::Object(values) if values.contains_key(string(&path[0])))
-        {
-            return val;
+        if let Some(value) = current.values.get(string(&path[0])) {
+            return nested(value, &path[1..]);
+        }
+        if let Some(base) = current.base {
+            let val = nested(base, path);
+            if val.is_some()
+                || matches!(base, J::Object(values) if values.contains_key(string(&path[0])))
+            {
+                return val;
+            }
         }
         frame = current.parent;
     }
     None
 }
 
-fn text(value: Option<&J>) -> String {
+fn text(value: Option<&J>) -> Cow<'_, str> {
     match value {
-        None | Some(J::Null) => String::new(),
-        Some(J::Bool(v)) => v.to_string(),
+        None | Some(J::Null) => "".into(),
+        Some(J::Bool(v)) => v.to_string().into(),
         Some(J::Number(v)) => {
             if *v == 0.0 {
                 "0".into()
             } else {
-                v.to_string()
+                v.to_string().into()
             }
         }
-        Some(J::String(v)) => v.clone(),
+        Some(J::String(v)) => Cow::Borrowed(v),
         Some(J::Array(_)) => "[Array]".into(),
         Some(J::Object(_)) => "[Object]".into(),
     }
@@ -451,11 +591,11 @@ fn truthy(value: Option<&J>) -> bool {
         _ => true,
     }
 }
-fn operand(v: &V, root: &Frame<'_>, loops: &Loops) -> Option<J> {
+fn operand<'a>(v: &V, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
     if v[0] == "path" {
         get(root, loops, &v[1])
     } else {
-        Some(decoded(&v[1]))
+        Some(Cow::Owned(decoded(&v[1])))
     }
 }
 fn numeric(v: &J) -> Option<f64> {
@@ -478,12 +618,12 @@ fn equal(a: &J, b: &J) -> bool {
         _ => false,
     }
 }
-fn condition(v: &V, root: &Frame<'_>, loops: &Loops) -> bool {
+fn condition(v: &V, root: &Frame<'_>, loops: Loops<'_>) -> bool {
     match string(&v[0]) {
         "||" => condition(&v[1], root, loops) | condition(&v[2], root, loops),
         "&&" => condition(&v[1], root, loops) & condition(&v[2], root, loops),
-        "not" => !truthy(get(root, loops, &v[1]).as_ref()),
-        "truthy" => truthy(get(root, loops, &v[1]).as_ref()),
+        "not" => !truthy(get(root, loops, &v[1]).as_deref()),
+        "truthy" => truthy(get(root, loops, &v[1]).as_deref()),
         "compare" => {
             let a = get(root, loops, &v[2]);
             let b = operand(&v[3], root, loops);
@@ -585,7 +725,7 @@ impl<'a> Executor<'a> {
     fn number(&mut self, n: f64) -> Result<(), NativeRenderError> {
         write!(self, "{n}").map_err(|_| error("render-limit", "Output byte limit exceeded"))
     }
-    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: &Loops) -> Result<(), NativeRenderError> {
+    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: Loops<'_>) -> Result<(), NativeRenderError> {
         match string(&v[0]) {
             "literal" => self.push(string(&v[1])),
             "conditional" => {
@@ -597,15 +737,15 @@ impl<'a> Executor<'a> {
             "attribute" => {
                 let val = get(root, loops, &v[2]);
                 if v[3] == true {
-                    if let Some(J::Bool(value)) = val {
-                        if value {
+                    if let Some(J::Bool(value)) = val.as_deref() {
+                        if *value {
                             self.push(" ")?;
                             self.push(string(&v[1]))?;
                         }
                         return Ok(());
                     }
                 }
-                match val.as_ref() {
+                match val.as_deref() {
                     None | Some(J::Null) => return Ok(()),
                     Some(J::Array(_) | J::Object(_)) if v[4] == true => return Ok(()),
                     _ => {}
@@ -613,7 +753,7 @@ impl<'a> Executor<'a> {
                 self.push(" ")?;
                 self.push(string(&v[1]))?;
                 self.push("=\"")?;
-                match val.as_ref() {
+                match val.as_deref() {
                     Some(J::Number(n)) if v[4] == true => self.number(*n)?,
                     value => self.value(value, true)?,
                 }
@@ -625,13 +765,10 @@ impl<'a> Executor<'a> {
                 let mut values = Vec::new();
                 for part in array(&v[2]) {
                     if part[0] != "literal" {
-                        match get(root, loops, &part[1]) {
+                        let value = get(root, loops, &part[1]);
+                        match value.as_deref() {
                             None | Some(J::Null) => return Ok(()),
-                            // Display only needs the container tag. Drop cloned contents
-                            // before resolving the next operand.
-                            Some(J::Array(_)) => values.push(J::Array(Vec::new())),
-                            Some(J::Object(_)) => values.push(J::Object(HashMap::new())),
-                            Some(value) => values.push(value),
+                            Some(_) => values.push(value.unwrap()),
                         }
                     }
                 }
@@ -650,7 +787,7 @@ impl<'a> Executor<'a> {
                         }
                         self.push(&text[start..])?;
                     } else {
-                        self.value(values.next(), true)?;
+                        self.value(values.next().map(|value| &**value), true)?;
                     }
                 }
                 self.push("\"")
@@ -662,7 +799,7 @@ impl<'a> Executor<'a> {
         &mut self,
         values: &V,
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
     ) -> Result<(), NativeRenderError> {
         for value in array(values) {
             self.tick()?;
@@ -722,7 +859,7 @@ impl<'a> Executor<'a> {
         &mut self,
         v: &V,
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
         scope: &mut Option<usize>,
     ) -> Result<(), NativeRenderError> {
         if scope.is_none() {
@@ -741,7 +878,7 @@ impl<'a> Executor<'a> {
         &mut self,
         id: usize,
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
         scope: &mut Option<usize>,
         entry: bool,
         depth: usize,
@@ -760,9 +897,14 @@ impl<'a> Executor<'a> {
                 "call" => self.body(index(&op[1]), root, loops, scope, entry, depth + 1)?,
                 "binding" | "when" | "repeat" => {
                     // Repeat validation precedes opening hydration markers.
+                    let collection = if op[0] == "repeat" {
+                        get(root, loops, &op[2])
+                    } else {
+                        None
+                    };
                     let items = if op[0] == "repeat" {
-                        match get(root, loops, &op[2]) {
-                            None => Vec::new(),
+                        match collection.as_deref() {
+                            None => &[][..],
                             Some(J::Array(v)) => v,
                             _ => {
                                 return Err(error(
@@ -772,7 +914,7 @@ impl<'a> Executor<'a> {
                             }
                         }
                     } else {
-                        Vec::new()
+                        &[][..]
                     };
                     let binding = scope.unwrap_or(0);
                     if let Some(index) = scope {
@@ -780,7 +922,7 @@ impl<'a> Executor<'a> {
                     }
                     self.boundary(scope, "start", binding, false)?;
                     if op[0] == "binding" {
-                        self.value(get(root, loops, &op[1]).as_ref(), op[2] == true)?;
+                        self.value(get(root, loops, &op[1]).as_deref(), op[2] == true)?;
                     } else if op[0] == "when" {
                         if condition(&op[1], root, loops) {
                             self.body(
@@ -793,19 +935,19 @@ impl<'a> Executor<'a> {
                             )?;
                         }
                     } else {
-                        for (i, item) in items.into_iter().enumerate() {
+                        for (i, item) in items.iter().enumerate() {
                             self.tick()?;
                             self.boundary(scope, "start", i, true)?;
-                            let mut child_loops = loops.to_vec();
-                            child_loops.push((
-                                array(&op[1]).iter().map(|v| string(v).into()).collect(),
+                            let child_loops = LoopFrame {
+                                prefix: array(&op[1]),
                                 item,
-                            ));
-                            child_loops.push((vec!["$index".into()], J::Number(i as f64)));
+                                index: J::Number(i as f64),
+                                parent: loops,
+                            };
                             self.body(
                                 index(&op[4]),
                                 root,
-                                &child_loops,
+                                Some(&child_loops),
                                 &mut scope.map(|_| 0),
                                 false,
                                 depth + 1,
@@ -837,22 +979,26 @@ impl<'a> Executor<'a> {
                                 1
                             }],
                         );
-                        let val = operand(&prop[3], root, loops).unwrap_or(J::Null);
+                        let val = operand(&prop[3], root, loops).unwrap_or(Cow::Owned(J::Null));
                         if prop[2].is_null() {
-                            values.insert(key.into(), val);
+                            values.insert(key, val);
                         } else {
-                            let value = values.entry(key.to_string()).or_insert_with(|| {
-                                get(root, &[], &serde_json::json!([key]))
-                                    .unwrap_or(J::Object(HashMap::new()))
+                            let value = values.entry(key).or_insert_with(|| {
+                                get(root, None, &serde_json::json!([key]))
+                                    .unwrap_or(Cow::Owned(J::Object(HashMap::new())))
                             });
-                            if let J::Object(group) = value {
-                                group.insert(string(&prop[2]).into(), val);
+                            if matches!(value.as_ref(), J::Object(_)) {
+                                if let J::Object(group) = value.to_mut() {
+                                    group.insert(string(&prop[2]).into(), val.into_owned());
+                                }
                             }
                         }
                     }
                     let child = Frame {
-                        values: Cow::Owned(J::Object(values)),
-                        parent: matches!(root.values.as_ref(), J::Object(_)).then_some(root),
+                        base: None,
+                        values,
+                        parent: (root.base.is_none() || matches!(root.base, Some(J::Object(_))))
+                            .then_some(root),
                     };
                     let child = if props.is_empty() { root } else { &child };
                     // JS computes shadow before host attributes. Keep error ordering
@@ -861,7 +1007,7 @@ impl<'a> Executor<'a> {
                     self.body(
                         index(&self.ir["components"][name]["shadow"]),
                         child,
-                        &[],
+                        None,
                         &mut Some(0),
                         false,
                         depth + 1,
@@ -883,7 +1029,7 @@ impl<'a> Executor<'a> {
                     for default in array(&el["defaults"]) {
                         self.tick()?;
                         if hydration_attribute.as_deref() != Some(string(&default[0])) {
-                            self.attr(&default[1], child, &[])?;
+                            self.attr(&default[1], child, None)?;
                         }
                     }
                     self.push(">")?;

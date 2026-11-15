@@ -75,6 +75,18 @@ fn execute(
     } else {
         artifact.render_template(root, &native_options)
     };
+    let state_json = value(root).to_string();
+    let fresh_result = if let Some(name) = shadow {
+        artifact.render_shadow_json(name, &state_json, &native_options)
+    } else if entry {
+        artifact.render_entry_json(&state_json, &native_options)
+    } else {
+        artifact.render_template_json(&state_json, &native_options)
+    };
+    assert_eq!(
+        fresh_result, native_result,
+        "fresh JSON/native typed conformance"
+    );
     let dsd = match config.dsd_selection {
         DsdSelection::All => Value::Null,
         DsdSelection::Only(names) => json!(names),

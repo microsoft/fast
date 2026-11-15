@@ -435,6 +435,34 @@ switching targets must include these bounds, not only successful HTML parity.
 Tightening defaults, rejecting previously accepted state, or changing normalization
 or coercion is a consumer compatibility change even if ordinary snapshots match.
 
+### Fresh native JSON requests
+
+For one-use JSON state, migrate from `parse_render_state(json)` followed by
+`render_entry(&state, options)` to `render_entry_json(json, options)`. Matching
+`render_template_json(json, options)`, `render_host_json(name, json, options)`
+and `render_shadow_json(name, json, options)` methods are additive. No artifact
+rebuild is needed: native schema 2 is unchanged. Typed methods keep their
+validate/normalize/copy contract; prepared methods keep immutable snapshot reuse.
+The minimal native example now uses the fresh JSON method.
+
+Fresh JSON is deserialized directly into owned request storage, with finite-number
+and negative-zero normalization, rather than converting a generic serde value and
+copying a normalized snapshot. The entire JSON document is still parsed and
+validated, including unused values and overwritten duplicate keys. Depth/node
+budgets count only the final retained tree (last duplicate key wins), using a
+nonallocating validation traversal after parsing. Malformed JSON, invalid Unicode
+and overflowing numbers precede state-budget/lookup/execution errors as before.
+
+The single native executor borrows resolved values, repeat collections/items,
+stack-linked lexical frames, parent bases and direct child properties. Synthetic
+array lengths and transformed dataset merges can own values; merge mutation uses
+copy-on-write. Alias precedence, own-null masking, DSD scope resets and caller
+light-DOM scope are unchanged. References remain request-local and bounded by
+existing recursion limits. No request-key cache, weak hashing, unsafe lifetime
+extension, retained scratch storage or new public crate is involved. Outputs and
+errors remain complete independently owned values. This is not a zero-allocation
+claim and does not change npm JavaScript request execution.
+
 ### Deployment and native API evolution
 
 Supported execution schemas establish artifact compatibility, not compiler
@@ -490,6 +518,47 @@ It also verifies that changing the packaged authored manifest rebuilds the host
 and can still load the original supported artifact. Neither backend regenerates its own
 expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
+
+### Native state-ownership selectors
+
+The deterministic `native-state-benchmark` example separates `lookup`, `repeat`,
+`same-alias` and `overlay` fixtures. Hold count fixed and vary payload bytes
+(for example 0, 1,024 and 131,072) to hold rendered bytes constant while increasing
+state-backed object/outer-alias payloads. Select `fresh-json` (parse + validate +
+render), `typed` (validate + normalized copy + render), or `prepared` (render only).
+Preparation, artifact compilation/loading, verification and result destruction
+are outside each measured call; one fresh-JSON warmup precedes the samples.
+Every iteration must produce identical complete UTF-8 output. These selectors
+isolate workload shapes, not causal shares when mechanisms interact.
+
+Build without running measurements:
+
+```sh
+CARGO_BUILD_JOBS=2 cargo build --release --manifest-path crates/microsoft-fast-build/Cargo.toml --example native-state-benchmark
+```
+
+Only under an exclusive quiet measurement lease, invoke the prebuilt executable:
+
+```sh
+crates/microsoft-fast-build/target/release/examples/native-state-benchmark repeat prepared 100 131072 100
+```
+
+Repeat each selector/boundary against the fixed baseline using the same runner,
+machine, rendered bytes and sample counts. Timings are unqualified until those
+paired runs exist; no speedup is claimed here. Existing repository tooling has no
+native allocation counter, so the report explicitly returns
+`allocationCounters: null`. Use an external allocator profiler under the same
+lease to count allocations/bytes for scalar-only versus payload-scaled cases;
+do not add unsafe allocator hooks solely to obtain timings.
+
+For the fixed baseline, copy only this benchmark example into a separate owned
+baseline worktree and adapt both `render_entry_json` call sites to
+`parse_render_state` followed by `render_entry`, within the same timing boundary.
+Keep fixture/setup/verification code unchanged. The baseline has no fresh JSON
+method; that adapter measures its original extra normalization/copy rather than
+silently substituting prepared reuse.
+
+### JavaScript flat-plan benchmark
 
 Run the flat-plan benchmark from the repository root after building:
 
