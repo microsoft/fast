@@ -106,7 +106,9 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
         } else {
             "<b title=\"&lt;&amp;\" data-fe=\"1\"><!--fe:b-->&lt;&amp;<!--fe:/b--></b>"
         };
-        let shadow = format!("<template shadowrootmode=\"open\">{prefix}{stripped}{bound}{suffix}</template>");
+        let shadow = format!(
+            "<template shadowrootmode=\"open\">{prefix}{stripped}{bound}{suffix}</template>"
+        );
         let expected =
             format!("<test-static title=\"A &lt; &amp; &quot; default\">{shadow}</test-static>");
         assert_eq!(artifact.render_entry(&state, &options).unwrap(), expected);
