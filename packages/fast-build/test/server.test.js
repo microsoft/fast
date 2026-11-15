@@ -845,6 +845,90 @@ test("flat plan loading rejects invalid rules and owns independent plan data", a
     }
 });
 
+test("flat plan cache hits reuse prepared rows while retaining reference validation", async () => {
+    const { createServerRenderer } = await import(runtime);
+    let rowIterations = 0;
+    class InstrumentedCode extends Array {
+        [Symbol.iterator]() {
+            rowIterations++;
+            return super[Symbol.iterator]();
+        }
+    }
+    const rows = [
+        [0, 0],
+        [0, 1],
+        [0, 2],
+        [18, 0, 2, 0, 2, 0],
+        [26, 3],
+        [0, 3],
+        [18, 4, 4],
+    ];
+    let offset = 0;
+    const offsets = rows.map(row => {
+        const start = offset;
+        offset += row.length;
+        return start;
+    });
+    const plan = {
+        format: "fast-server-plan",
+        version: 1,
+        strings: ["A", "unused", "B", "also unused"],
+        code: new InstrumentedCode(...rows.flat()),
+        offsets,
+        root: 6,
+    };
+    const renderer = createServerRenderer(plan, []);
+    assert.equal(rowIterations, rows.length, "Each rule is unpacked only once");
+    plan.strings.fill("mutated");
+    plan.code.fill(999);
+    plan.offsets.fill(999);
+    assert.equal(renderer.renderEntry({}), "ABABAABABA");
+    assert.equal(renderer.renderTemplate({}), "ABABAABABA");
+    const prepared = renderer.prepareState({});
+    assert.equal(renderer.renderEntryPrepared(prepared), "ABABAABABA");
+    assert.equal(renderer.renderTemplatePrepared(prepared), "ABABAABABA");
+
+    const invalid = codeRows => ({
+        format: "fast-server-plan",
+        version: 1,
+        strings: ["A"],
+        code: codeRows.flat(),
+        offsets: codeRows.map((_, index) =>
+            codeRows.slice(0, index).reduce((sum, row) => sum + row.length, 0),
+        ),
+        root: 0,
+    });
+    for (const codeRows of [
+        [
+            [18, 1],
+            [0, 0],
+            [26, 1],
+        ],
+        [
+            [18, 1],
+            [0, 0],
+            [26, 3],
+            [18, 2],
+        ],
+        [[18, 1], [0, 0], [999]],
+        [
+            [18, 1],
+            [0, 0],
+            [26, 99],
+        ],
+        [
+            [18, 1],
+            [0, 0],
+            [0, 0.5],
+        ],
+    ]) {
+        assert.throws(
+            () => createServerRenderer(invalid(codeRows), []),
+            /Invalid or incompatible FAST server plan/,
+        );
+    }
+});
+
 test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {
     const { module } = await compile(
         '<json-parent :payload="{{payload}}">{{label}}</json-parent>',

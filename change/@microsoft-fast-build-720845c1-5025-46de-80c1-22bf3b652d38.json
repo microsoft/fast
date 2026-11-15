@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Avoid unpacking operands again when reusing prepared flat-plan rules while preserving eager validation.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

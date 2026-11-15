@@ -19,6 +19,9 @@ state-independent plans and one helper call, not generated rendering functions.
 The helper validates all rules/references and prepares typed execution closures
 at module load, including unreachable rules and cycle detection. Mutable input
 tables are copied before activation. There is no generated-function fallback.
+Cached rules still validate each reference's ID and opcode before reuse, but do
+not unpack another operand array. Eager validation and cycle rejection remain
+unchanged, including unused rules and nonconsecutive references.
 Compound property literals retain per-call ownership. Published object/prepared
 APIs and their validation/snapshot ownership are unchanged.
 

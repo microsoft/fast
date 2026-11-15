@@ -538,9 +538,10 @@ export function createServerRenderer(entry, definitions) {
                 .map(reference => build(reference, kinds));
 
         function build(id, kinds) {
-            const [kind, ...args] = row(id, kinds);
+            const operation = row(id, kinds);
             if (compiled.has(id)) return compiled.get(id);
             if (visiting.has(id)) invalid();
+            const [kind, ...args] = operation;
             visiting.add(id);
             if (own(lengths, kind) && args.length !== lengths[kind]) invalid();
             let run;

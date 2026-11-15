@@ -56,6 +56,11 @@ const host = renderHost("my-card", { title: "A complete host" });
 const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 ```
 
+The helper reuses prepared rules without unpacking their operands again.
+It still validates every reference and eagerly rejects invalid or cyclic rules.
+This internal loader change supports unchanged schema-1 modules and does not
+rewrite managed assets or add exports.
+
 Use generated `renderTemplate` for template-context root-host attribute handling,
 or `renderEntry` for entry-host rules.
 
