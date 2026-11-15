@@ -1,5 +1,10 @@
 # microsoft-fast-build
 
+The optional `node-host` feature exposes JSON-first synchronous Node-API hosting
+from this same crate. It is explicitly source-built, not a default backend or a
+prebuilt platform distribution. See the
+[build, lifetime and qualification guide](../../packages/fast-build/docs/native-node-host.md).
+
 Build-time Rust compiler and template tooling for FAST declarative HTML.
 One compiler-owned executable representation supports semantic server JavaScript
 and native Rust artifact rendering. Native requests need no JavaScript engine.

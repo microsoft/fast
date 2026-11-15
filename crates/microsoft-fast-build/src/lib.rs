@@ -17,6 +17,8 @@ mod f_template;
 mod json;
 mod locator;
 mod native;
+#[cfg(all(feature = "node-host", not(target_arch = "wasm32")))]
+mod node;
 mod plan;
 mod server_ir;
 mod server_plan;

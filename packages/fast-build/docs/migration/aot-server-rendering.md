@@ -1,5 +1,14 @@
 # Migrating from previous versions
 
+## Opt-in source-built Node hosting
+
+Existing JavaScript imports and prepared-state handles do not change. The new
+`native-host.mjs` entrypoint explicitly loads a caller-selected local addon and
+accepts JSON strings or strict UTF-8 Buffers, returning owned Buffers. Object
+callers must use the explicit validated serializer, not arbitrary `JSON.stringify`.
+See the [build and migration contract](../native-node-host.md); prebuilt platform
+coverage and end-to-end performance are not qualified.
+
 ## Generated rendering functions or numeric plans to semantic plans
 
 Rebuild legacy JavaScript modules/native artifacts once. The generated module

@@ -9,6 +9,11 @@ The `fast-build` package renders the declarative HTML template syntax of [`@micr
 
 ## Installation
 
+For an explicitly selected JSON-first native Node backend, see the
+[source-built hosting guide](./docs/native-node-host.md). It uses this package and
+the existing build crate; no prebuilt all-platform qualification or measured
+end-to-end win is claimed. JavaScript remains the default explicit alternative.
+
 ### From NPM
 
 To install the latest `@microsoft/fast-build` package using `npm`:
