@@ -1,5 +1,3 @@
-export const runtimeVersion = 5;
-
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
     value !== null && typeof value === "object" && !Array.isArray(value);
@@ -836,7 +834,6 @@ export function createServerRenderer(entry, definitions) {
     }
     const body = load(entry).shadow;
     return Object.freeze({
-        runtimeVersion,
         components: Object.freeze([...components.keys()]),
         prepareState,
         renderEntry(state, options) {

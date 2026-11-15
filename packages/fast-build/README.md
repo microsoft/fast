@@ -24,6 +24,8 @@ Published object-input and prepared-state APIs are unchanged. Legacy fingerprint
 artifacts need a one-time migration; retain new supported assets across compiler
 upgrades using the persistent writer below. See the
 [upgrade guide](./docs/migration/aot-server-rendering.md).
+Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
+uses supported plan schemas instead.
 
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no

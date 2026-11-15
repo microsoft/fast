@@ -2,9 +2,6 @@ use crate::{Locator, RenderError};
 use serde_json::{json, Value};
 use std::collections::HashMap;
 
-/// Informational helper release metadata, not a generated plan compatibility gate.
-pub const SERVER_RUNTIME_VERSION: u32 = 5;
-
 struct FlatPlan<'a> {
     bodies: &'a Value,
     strings: Vec<String>,
@@ -262,7 +259,6 @@ fn launcher(runtime_import: &str, data: &str) -> String {
     format!(
         "import * as $ from {};\n\
          {data}\
-         export const runtimeVersion = $.runtimeVersion;\n\
          const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(entryPlan,componentPlans);\n\
          export {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}};\n",
         serde_json::to_string(runtime_import).unwrap(),

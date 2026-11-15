@@ -29,8 +29,6 @@ export interface PreparedServerState {
 
 /** Exports of a generated server ESM module. */
 export interface ServerModule {
-    /** Informational release metadata supplied by the imported helper runtime. */
-    readonly runtimeVersion: number;
     readonly components: readonly string[];
     /** Copy, validate and normalize once. Dropping the handle allows collection. */
     prepareState(state?: ServerState): PreparedServerState;

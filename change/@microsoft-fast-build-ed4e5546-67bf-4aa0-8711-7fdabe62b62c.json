@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Render flat template plans without compiler fingerprints and reuse persisted server assets until authored template inputs change.",
+  "comment": "Render flat template plans without compiler fingerprints or runtime version metadata and reuse persisted server assets until authored template inputs change.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

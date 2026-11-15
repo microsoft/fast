@@ -607,6 +607,8 @@ import type { ServerModule, PreparedServerState } from "../../server.js";
 declare const server: ServerModule;
 const state: PreparedServerState = server.prepareState({ value: -0 });
 const html: string = server.renderEntryPrepared(state);
+// @ts-expect-error Compatibility is schema-based, not helper release metadata.
+server.runtimeVersion;
 server.renderTemplatePrepared(state);
 server.renderHostPrepared("test-el", state);
 server.renderShadowPrepared("test-el", state, { markersV2: true });
@@ -743,17 +745,17 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
     }
 });
 
-test("stable flat plans render with compatible helper release versions", async () => {
+test("stable flat plans render without helper release metadata", async () => {
     const entry = '<stable-el :value="{{value}}">{{value}}</stable-el>';
     const templates = { "stable-el": "<b>{{value}}</b>" };
     const runtimeImport = "./compatible-runtime.mjs";
     const source = compileServerModule(entry, templates, runtimeImport);
     const { module: expected } = await compile(entry, templates);
     const state = { value: "<&" };
-    for (const version of [0, 4, 6, 100]) {
+    for (const version of [undefined, 0, 4, 6, 100]) {
         const helper = `data:text/javascript;base64,${Buffer.from(
             `export { createServerRenderer } from ${JSON.stringify(runtime)};
-             export const runtimeVersion = ${version};`,
+             ${version === undefined ? "" : `export const runtimeVersion = ${version};`}`,
         ).toString("base64")}`;
         const resolvedSource = source.replace(
             JSON.stringify(runtimeImport),
@@ -762,7 +764,7 @@ test("stable flat plans render with compatible helper release versions", async (
         const module = await import(
             `data:text/javascript;base64,${Buffer.from(resolvedSource).toString("base64")}`
         );
-        assert.equal(module.runtimeVersion, version);
+        assert.equal(Object.hasOwn(module, "runtimeVersion"), false);
         assert.equal(Object.hasOwn(module, "compilerId"), false);
         const prepared = module.prepareState(state);
         state.value = "mutated";
@@ -790,6 +792,19 @@ test("stable flat plans render with compatible helper release versions", async (
         }
         state.value = "<&";
     }
+    const legacySource = `${source.replace(
+        JSON.stringify(runtimeImport),
+        JSON.stringify(runtime),
+    )}\nexport const runtimeVersion = $.runtimeVersion;`;
+    const legacy = await import(
+        `data:text/javascript;base64,${Buffer.from(legacySource).toString("base64")}`
+    );
+    assert.equal(legacy.runtimeVersion, undefined);
+    assert.equal(legacy.renderEntry(state), expected.renderEntry(state));
+    assert.equal(
+        legacy.renderEntryPrepared(legacy.prepareState(state)),
+        expected.renderEntry(state),
+    );
 });
 
 test("flat plans preserve rendering exports without compiler identity or release literals", async () => {
@@ -797,15 +812,15 @@ test("flat plans preserve rendering exports without compiler identity or release
     assert.match(source, /fast-server-plan/);
     assert.doesNotMatch(
         source,
-        /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion\s*(?:[!=]=|=\s*\d)/i,
+        /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion/i,
     );
-    assert.match(source, /export const runtimeVersion = \$\.runtimeVersion;/);
     assert.equal(module.renderEntry({ value: "ordinary" }), "ordinary");
     assert.equal(
         module.renderEntryPrepared(module.prepareState({ value: "prepared" })),
         "prepared",
     );
     for (const name of [
+        "runtimeVersion",
         "renderEntryJson",
         "renderTemplateJson",
         "renderHostJson",
@@ -827,6 +842,7 @@ test("flat plan loading rejects invalid rules and owns independent plan data", a
     };
     const renderer = createServerRenderer(plan, []);
     assert.equal(Object.hasOwn(renderer, "compilerId"), false);
+    assert.equal(Object.hasOwn(renderer, "runtimeVersion"), false);
     assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
     plan.strings[0] = "mutated";
     plan.code.fill(0);

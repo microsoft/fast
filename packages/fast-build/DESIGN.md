@@ -31,7 +31,7 @@ The large-static-template benchmark covers distinct definitions with small bound
 regions; this optimization does not change the public rendering or artifact APIs.
 
 Native `CompiledArtifact` loading/rendering does not parse
-authored HTML or execute JavaScript. Version/compiler/helper metadata and all
+authored HTML or execute JavaScript. Artifact format/schema and all
 executable references/opcodes are validated on load; immutable `Send + Sync`
 ownership and request-local state/error/resource limits are documented in the
 [native contract](./docs/server-modules.md#native-rust-artifact-target).
@@ -60,6 +60,7 @@ Component shadows/defaults reset lexical scope while light DOM retains it.
 
 Flat plans preserve published object/prepared APIs. Supported artifact schemas,
 not compiler fingerprints or helper-build versions, determine compatibility.
+Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
 assets. Native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the

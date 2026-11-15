@@ -14,7 +14,13 @@ Native execution is unchanged; the hash-free native envelope uses schema 2.
 Compiler fingerprints and literal helper-build equality checks are removed.
 Native loading validates supported execution schemas rather than source/manifest
 identity. Generated `compilerId` and Rust `SERVER_COMPILER_ID` are removed;
-runtime metadata is diagnostic only.
+generated/helper `runtimeVersion`, the `ServerModule.runtimeVersion` type member,
+Rust `SERVER_RUNTIME_VERSION` and the conversion target's `runtimeVersion`
+metadata field are also removed. Remove consumer imports/reads of these fields;
+use supported plan/artifact schemas for compatibility. Retained generated modules
+that read `$.runtimeVersion` still render with the new helper, but that old export
+is now `undefined`. Newly compiled modules omit it. Persistent writers continue
+retaining unchanged assets rather than invalidating them for this API removal.
 
 For strict template-only updates, migrate file generation to `writeServerModule`
 or `writeServerArtifact` and retain each asset with its `.inputs.json` manifest.

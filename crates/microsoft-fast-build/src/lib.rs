@@ -23,7 +23,7 @@ mod template_slots;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
-pub use aot::{compile_server_module, SERVER_RUNTIME_VERSION};
+pub use aot::compile_server_module;
 pub use binding_metadata::{BindingMetadata, BindingScope, SourcePosition, SourceSpan};
 pub use error::{ErrorContext, ErrorLocation, RenderError};
 pub use f_template::{

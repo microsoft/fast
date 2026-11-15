@@ -41,6 +41,8 @@ The plan loader prepares path accessors and reusable request-local repeat frames
 JavaScript plan schema 1 and native artifact schema 2 are independent of compiler
 build identity. The compiler fingerprint and helper-build equality checks are removed.
 Published object-input and prepared-state APIs remain unchanged.
+The diagnostic `SERVER_RUNTIME_VERSION` constant and generated `runtimeVersion`
+metadata are removed; use supported schemas for compatibility.
 
 ### Compile and deploy native Rust artifacts
 

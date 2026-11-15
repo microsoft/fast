@@ -39,7 +39,7 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `renderHost(name, state?, options?)`: renders a complete named component host.
 - `renderShadow(name, state?, options?)`: renders only its DSD template, with no
   host attributes or caller-owned light DOM synthesized.
-- `components`, `runtimeVersion`: registry and runtime-derived diagnostic metadata.
+- `components`: registered component names.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
 
@@ -137,8 +137,8 @@ request-time source rendering and retired prepared compiler/program APIs.
 
 Generated code no longer exports a compiler fingerprint or compares a literal
 helper-build version on import. The helper validates the supported plan schema;
-`runtimeVersion` is read from that helper as diagnostic metadata. Native loading
-also uses explicit supported schemas rather than compiler-build identity.
+no runtime release metadata is emitted or exported. Native loading also uses
+explicit supported schemas rather than compiler-build identity.
 Unknown schemas fail safely. Retain supported published decoders across runtime
 upgrades instead of invalidating unchanged assets on every compiler change.
 

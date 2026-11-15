@@ -108,8 +108,8 @@ synchronously return complete strings. Existing markup, whitespace, escaping and
 markers remain byte-preserved.
 
 Generated JavaScript carries no compiler fingerprint or literal helper-build
-version check. The helper validates the plan schema; its `runtimeVersion` is
-diagnostic metadata, not a rebuild key. Native artifacts likewise identify a
+version check or runtime release metadata. The helper validates the plan schema,
+not a helper release number. Native artifacts likewise identify a
 supported execution schema, not compiler source, manifest or lockfile bytes.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; ordinary calls retain no request state.
