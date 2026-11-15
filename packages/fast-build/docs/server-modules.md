@@ -204,6 +204,8 @@ JSON-to-UTF-8 boundaries, not JSON input with an object-only or reused-snapshot 
 For unchanged state rendered repeatedly, generated modules expose a separate
 opt-in path; ordinary methods retain their validation contract:
 
+### Persistent writer contract
+
 ```js
 import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
 const input = { title: "Reusable state" };
@@ -293,6 +295,58 @@ assets and their authored-input manifests, in source control or a persistent
 build cache. Unchanged authored inputs reuse those bytes rather than compiling
 again. Compiler identity, package version and timestamps are not rebuild keys.
 
+Raw-source writers default to rejecting duplicate names/empty registries and
+canonicalizing source order. Explicit `templateSourcePolicy: "overwrite"`
+preserves ordered sources and multiplicity, permits empty registries, and makes
+later definitions replace earlier definitions with a warning. `fast build
+--server-module=generated/page.mjs` selects this policy to retain its existing
+registry semantics. State and render options never enter this input manifest.
+Keep the module and sidecar together; corruption and deployment changes fail
+closed rather than silently compiling over an incompatible pair.
+
+### Build preparation measurements
+
+Measure full CLI processes, not renderer calls. Run these only under an exclusive
+quiet measurement lease, after correctness builds. Keep the same entry, registry,
+state, marker options and selected variants in every command. The example assumes
+an application's `index.html`, `state.json` and `components/**/*.html`; substitute
+the same available corpus in every invocation. This is not scenario-project
+qualification, a reduced-coverage preparation workflow or a throughput claim.
+
+From the repository root, create a separate output directory per cache state:
+
+```sh
+mkdir -p .build-preparation/empty .build-preparation/exact .build-preparation/fallback
+node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/reference.html
+
+# Empty: no retained pair. Use a new directory for each repeated sample.
+/usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/empty/output.html --server-module=.build-preparation/empty/page.mjs
+
+# Exact: populate outside timing, then measure an unchanged full build.
+node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/exact/output.html --server-module=.build-preparation/exact/page.mjs
+/usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/exact/output.html --server-module=.build-preparation/exact/page.mjs
+
+# Fallback: valid retained pair with different authored inputs and the same runtime.
+node -e 'const {pathToFileURL}=require("node:url"); require("./packages/fast-build/server.js").writeServerModule(".build-preparation/fallback/page.mjs", {entry:"<p>fallback source</p>",templateSources:[],templateSourcePolicy:"overwrite"}, {overwrite:true,runtimeImport:pathToFileURL(require.resolve("./packages/fast-build/server-runtime.mjs")).href});'
+/usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/fallback/output.html --server-module=.build-preparation/fallback/page.mjs
+
+# Validate complete outputs and account for module, sidecar and HTML bytes outside timing.
+cmp .build-preparation/reference.html .build-preparation/empty/output.html
+cmp .build-preparation/reference.html .build-preparation/exact/output.html
+cmp .build-preparation/reference.html .build-preparation/fallback/output.html
+wc -c .build-preparation/{empty,exact,fallback}/page.mjs .build-preparation/{empty,exact,fallback}/page.mjs.inputs.json .build-preparation/{empty,exact,fallback}/output.html
+```
+
+`/usr/bin/time -l` on macOS reports whole-process wall/user/system CPU and peak
+resident memory; on Linux use `/usr/bin/time -v`. Restore/save/network costs are
+not included: measure those separately for the actual cache transport, including
+compressed bytes. Sidecars contain an exact base64 output snapshot plus raw inputs,
+so account for their storage amplification, not just module size. Re-seed fallback
+inputs and use new empty directories before repeated samples. Missing output
+restoration is a separate exact-input case; remove only the managed module before
+the measured exact build, keeping its sidecar. Never count this build-time reuse
+as a warm request-renderer gain.
+
 Use synchronous `writeServerModule(outputPath, inputs, options?)` for ESM or
 `writeServerArtifact(outputPath, inputs, options?)` for native bytes. Create the
 destination directory first. Both return `{ reused, manifestPath }`; the sidecar
@@ -315,8 +369,9 @@ const result = writeServerModule(
 
 Inputs accept an `entry` string and either a `templates` registry (strings or
 `ServerTemplateDefinition` values), or `templateSources`, an array of complete
-authored `<f-template>` source strings. Registry names and raw source texts are
-sorted for comparison; duplicate source texts are retained. Exact content,
+authored `<f-template>` source strings. Registry names and strict-policy raw source
+texts are sorted for comparison; overwrite-policy sources retain their order.
+Duplicate source texts are retained. Exact content,
 whitespace, line endings and attribute ordering matter. Optional attribute lists
 and metadata format defaults are normalized; compiler-derived bindings and source
 locations are excluded. Paths are not authored inputs.
@@ -334,6 +389,10 @@ a fresh compiler cannot reconstruct arbitrary previous output.
 `overwrite` defaults to `false`. Unchanged managed reuse is idempotent; replacing
 an existing asset after template edits, or adopting an unmanaged destination,
 requires `overwrite: true`. JavaScript options also accept `runtimeImport`.
+Set `includeBytes: true` to receive owned `result.bytes` captured under the
+writer's lock, on misses, hits and snapshot restoration. Render/import these bytes
+instead of reopening a shared output path after another build can replace it.
+Without this option, the result retains its existing `reused`/`manifestPath` shape.
 Changing the runtime import or target kind at a managed destination is rejected
 even with overwrite; use a new destination or explicitly reset the retained pair.
 Malformed manifests and output bytes that differ from their stored snapshots

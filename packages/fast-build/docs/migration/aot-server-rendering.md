@@ -80,6 +80,12 @@ loading or raw-template parsing. The sidecar contains an exact output-byte copy,
 not a fingerprint. This increases build-storage size, not runtime dependencies.
 Pure `compileServerModule`/`compileServerArtifact` calls remain available, but
 cannot reuse historical encodings without persisted assets.
+Existing `fast build` scripts need no changes. To opt into retained preparation,
+add `--server-module=generated/page.mjs` (or the `server-module` config key) and
+cache both that file and its `.inputs.json` sidecar. Request state and render
+options are not preparation inputs. New ordered overwrite-policy sidecars need
+the writer supporting that policy; strict conversion sidecars are unchanged.
+The plan/helper execution schema and rendered bytes do not change.
 The earlier source-rendering migration below is separate.
 
 ## Request-time source rendering to compiled server targets
@@ -129,7 +135,8 @@ Compile authored inputs at build time, then select the matching render context:
 Use `renderEntry` for entry-host attribute handling and `renderTemplate`
 for template-context root-host attributes. Both render complete synchronous HTML.
 Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
-always compiles and executes server modules; remove `--aot`, `--stream` and `stream`
+always executes server modules (compiling fresh unless persistence is selected);
+remove `--aot`, `--stream` and `stream`
 configuration from build scripts.
 
 Earlier versions implicitly loaded `state.json` when no state path was supplied.

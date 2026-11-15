@@ -85,16 +85,25 @@ export type ServerAssetInputs =
           entry: string;
           templates?: Record<string, string | ServerTemplateDefinition>;
           templateSources?: never;
+          templateSourcePolicy?: never;
       }
     | {
           entry: string;
           templateSources: readonly string[];
           templates?: never;
+          /**
+           * Preserve CLI build semantics: source order matters, later duplicate
+           * definitions overwrite earlier ones, and an empty registry is allowed.
+           * Omitted rejects duplicates/empty registries and canonicalizes source order.
+           */
+          templateSourcePolicy?: "overwrite";
       };
 
 export interface ServerAssetWriteOptions {
     /** Existing changed or unmanaged output requires explicit permission to replace. */
     overwrite?: boolean;
+    /** Return owned output bytes captured under the writer lock, without reopening the path. */
+    includeBytes?: boolean;
     /** Nameless-template diagnostics, emitted only when raw sources are parsed. */
     onWarning?: (warning: { sourceIndex: number; content: string }) => void;
 }
@@ -108,6 +117,8 @@ export interface ServerAssetWriteResult {
     /** Includes exact-byte restoration when an unchanged managed output is missing. */
     reused: boolean;
     manifestPath: string;
+    /** Present only with includeBytes; independent of subsequent output-file changes. */
+    bytes?: Uint8Array;
 }
 
 /**
