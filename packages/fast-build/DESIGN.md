@@ -57,6 +57,17 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
+Component property plans select naming keys and ordered overlay operations at
+module load. Ordinary properties bypass group dispatch; grouped writes use
+request-local copy flags and clone borrowed objects only before modification.
+Explicit replacement resets ownership for subsequent grouped writes. No
+per-request property tuples or mapped property arrays are constructed.
+Composite attributes specialize short recipes and concatenate longer recipes
+without mapped fragment arrays. Every operand still executes in authored order,
+including after a missing fragment; missing fragments omit the complete attribute.
+Plan metadata retains no request data, and compound literals stay request-owned.
+These loader specializations leave helper version 5 and both schemas unchanged.
+
 Helper contract version 5 replaces generated functions and object/prepared
 JavaScript APIs with flat plans and four required JSON-string methods.
 Generated/native artifacts must be

@@ -65,6 +65,12 @@ it does not emit rendering functions, accessors or loops. The helper validates
 all records/references and prepares execution closures once. Compound property
 literals retain per-request ownership. Native lowering/opcodes are unchanged.
 
+The JavaScript helper also specializes component overlay keys/group operations
+and short composite-attribute recipes during plan loading. It avoids request-time
+property tuples and mapped attribute fragments, while preserving ordered reads,
+explicit-property precedence and borrowed-group copy-on-write. This is internal
+helper execution specialization, not emitted JavaScript or a schema/ABI change.
+
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
 attributes, naming rules, body structure, literal CSS/markup and hydration binding

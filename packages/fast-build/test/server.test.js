@@ -771,6 +771,65 @@ test("compiled nonfinite literals do not relax JSON request validation", async (
     assert.throws(() => module.renderEntryJson('{"value":1e400}'), TypeError);
 });
 
+test("component overlays and composite attributes avoid per-request mapped arrays", async () => {
+    const { module } = await compile(
+        '<plan-card :payload="{{payload}}" :dataset="{{dataset}}" data-x="{{label}}" foo-bar="{{label}}"></plan-card>',
+        {
+            "plan-card":
+                '<p title="prefix-{{payload.name}}/{{dataset.x}}-suffix">{{fooBar}}/{{foo-bar}}</p>',
+        },
+    );
+    const json = '{"payload":{"name":"<&"},"dataset":{"kept":"safe"},"label":"label &"}';
+    for (const attributeNameStrategy of ["camelCase", "none"]) {
+        const options = { attributeNameStrategy };
+        const expected = module.renderEntryJson(json, options);
+        const map = Array.prototype.map;
+        let actual;
+        try {
+            Array.prototype.map = () => {
+                throw new Error("Per-request property/attribute map");
+            };
+            actual = module.renderEntryJson(json, options);
+        } finally {
+            Array.prototype.map = map;
+        }
+        assert.equal(actual, expected);
+    }
+});
+
+test("planned dataset assignments reset ownership after an explicit replacement", async () => {
+    const { module } = await compile(
+        '<plan-dataset :dataset="{{dataset}}" data-x="before" :dataset="{{replacement}}" data-y="after"></plan-dataset><i title="{{dataset.x}}/{{dataset.kept}}"></i>',
+        {
+            "plan-dataset":
+                '<span title="{{dataset.x}}/{{dataset.y}}/{{dataset.kept}}"></span>',
+        },
+    );
+    const json =
+        '{"dataset":{"x":"original","kept":"parent"},"replacement":{"x":"replacement","kept":"fresh"}}';
+    for (const attributeNameStrategy of ["camelCase", "none"]) {
+        const html = module.renderEntryJson(json, { attributeNameStrategy });
+        assert.match(html, /title="replacement\/after\/fresh"/);
+        assert.ok(html.endsWith('<i title="original/parent"></i>'));
+    }
+});
+
+test("planned ordinary properties mask parent values and keep special keys own", async () => {
+    const { module } = await compile(
+        '<plan-mask :value="{{missing}}" :__proto__="{{payload}}" :constructor="{{payload}}"></plan-mask>',
+        {
+            "plan-mask":
+                '<p title="{{value}}" data-proto="{{__proto__.name}}" data-constructor="{{constructor.name}}"></p>',
+        },
+    );
+    const json = '{"value":"outer","payload":{"name":"own"}}';
+    for (const attributeNameStrategy of ["camelCase", "none"]) {
+        const html = module.renderEntryJson(json, { attributeNameStrategy });
+        assert.doesNotMatch(html, /title=/);
+        assert.match(html, /data-proto="own" data-constructor="own"/);
+    }
+});
+
 test("Flat-plan preserves every authored declarative fixture byte for byte", async () => {
     const root = path.resolve(__dirname, "../../fast-element/test/declarative/fixtures");
     const configs = fs

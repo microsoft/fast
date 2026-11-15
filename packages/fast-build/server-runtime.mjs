@@ -190,6 +190,102 @@ export function child(root, entries) {
     return { values, parent: object(root.values) ? root : null };
 }
 
+function planChild(props, strategy) {
+    const keys = props.map(prop => prop[strategy]);
+    if (props.every(prop => prop.group === null)) {
+        const getters = props.map(prop => prop.value);
+        return (root, loops) => {
+            const values = Object.create(null);
+            for (let index = 0; index < keys.length; index++) {
+                values[keys[index]] = getters[index](root, loops) ?? null;
+            }
+            return { values, parent: object(root.values) ? root : null };
+        };
+    }
+    const slots = new Map();
+    for (let index = 0; index < props.length; index++) {
+        if (props[index].group !== null && !slots.has(keys[index])) {
+            slots.set(keys[index], slots.size);
+        }
+    }
+    const steps = props.map((prop, index) => {
+        const key = keys[index];
+        const slot = slots.get(key);
+        const getter = prop.value;
+        if (prop.group === null) {
+            return (root, loops, values, copied) => {
+                values[key] = getter(root, loops) ?? null;
+                if (copied && slot !== undefined) copied[slot] = false;
+                return copied;
+            };
+        }
+        const inherited = access([key], []);
+        const group = prop.group;
+        return (root, loops, values, copied) => {
+            const value = getter(root, loops);
+            if (!own(values, key)) {
+                const initial = inherited(root);
+                values[key] = initial === undefined ? Object.create(null) : initial;
+            }
+            if (object(values[key])) {
+                if (!copied?.[slot]) {
+                    values[key] = Object.assign(Object.create(null), values[key]);
+                    (copied ??= [])[slot] = true;
+                }
+                values[key][group] = value ?? null;
+            }
+            return copied;
+        };
+    });
+    return (root, loops) => {
+        const values = Object.create(null);
+        let copied;
+        for (const step of steps) copied = step(root, loops, values, copied);
+        return { values, parent: object(root.values) ? root : null };
+    };
+}
+
+function planComposite(parts) {
+    if (parts.length === 0) return () => "";
+    if (parts.length === 1) return (r, l) => parts[0](r, l) ?? null;
+    if (parts.length === 2) {
+        const [first, second] = parts;
+        return (r, l) => {
+            const a = first(r, l);
+            const b = second(r, l);
+            return a === null || a === undefined || b === null || b === undefined
+                ? null
+                : a + b;
+        };
+    }
+    if (parts.length === 3) {
+        const [first, second, third] = parts;
+        return (r, l) => {
+            const a = first(r, l);
+            const b = second(r, l);
+            const c = third(r, l);
+            return a === null ||
+                a === undefined ||
+                b === null ||
+                b === undefined ||
+                c === null ||
+                c === undefined
+                ? null
+                : a + b + c;
+        };
+    }
+    return (r, l) => {
+        let output = "";
+        let missing = false;
+        for (const part of parts) {
+            const value = part(r, l);
+            if (value === null || value === undefined) missing = true;
+            else output += value;
+        }
+        return missing ? null : output;
+    };
+}
+
 export function number(value) {
     if (value === Infinity || value === -Infinity) {
         return value < 0 ? "-inf" : "inf";
@@ -606,9 +702,8 @@ export function createServerRenderer(entry, definitions, compilerId) {
                 }
                 case 16: {
                     const name = string(args[0]);
-                    const parts = refs(args[1], attrs);
-                    run = (r, l) =>
-                        quoted(name, composite(parts.map(part => part(r, l))));
+                    const value = planComposite(refs(args[1], attrs));
+                    run = (r, l) => quoted(name, value(r, l));
                     break;
                 }
                 case 17: {
@@ -697,6 +792,10 @@ export function createServerRenderer(entry, definitions, compilerId) {
                     const closing = string(args[2]);
                     const opening = build(args[3], [19]);
                     const props = refs(args[4], [24]);
+                    const camelChild = props.length ? planChild(props, "camel") : null;
+                    const noneChild = props.every(prop => prop.camel === prop.none)
+                        ? camelChild
+                        : planChild(props, "none");
                     const entryAttrs = refs(args[5], attrs);
                     const normalAttrs = refs(args[6], attrs);
                     const bindings = count(args[7]);
@@ -708,12 +807,9 @@ export function createServerRenderer(entry, definitions, compilerId) {
                         }
                         const component = components.get(name);
                         if (!component) missing(name);
-                        const childRoot = props.length
-                            ? child(
-                                  r,
-                                  props.map(prop => prop(r, l, o)),
-                              )
-                            : r;
+                        const makeChild =
+                            o.strategy === "camelCase" ? camelChild : noneChild;
+                        const childRoot = makeChild ? makeChild(r, l) : r;
                         const shadow = component.shadow(
                             childRoot,
                             null,
@@ -747,11 +843,7 @@ export function createServerRenderer(entry, definitions, compilerId) {
                     const none = string(args[1]);
                     const group = args[2] === -1 ? null : string(args[2]);
                     const value = build(args[3], operands);
-                    run = (r, l, o) => [
-                        o.strategy === "camelCase" ? camel : none,
-                        group,
-                        value(r, l),
-                    ];
+                    run = { camel, none, group, value };
                     break;
                 }
                 case 25:
