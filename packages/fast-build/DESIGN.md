@@ -136,6 +136,15 @@ These changes do not alter the generated-JavaScript request path or the
 
 ### Output assembly and escaping
 
+The shared Rust DSD serializer omits `shadowroot` only when its resolved value
+equals `shadowrootmode`. Standard-mode resolution and explicit conflicting aliases
+are unchanged; other DSD attributes and every other output byte remain untouched.
+This is the sole policy for newly compiled assets, not a runtime minifier or an
+optional second rendering implementation. Already loaded/persisted artifacts keep
+their literal tags and exact bytes. The
+[migration guide](./docs/migration/standard-dsd-output.md) documents legacy consumers,
+retained frozen oracles and real three-browser qualification.
+
 Loaded execution closures retain returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,
 instead of constructing a mapping for each matched character. Rendering retains
@@ -206,6 +215,7 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
 | `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts, including frozen UTF-8 workload contracts; authored-manifest changes preserve compatible assets |
+| `test/static-output.test.mjs` | Actual emitted HTML delivered to Chromium, Firefox and WebKit; DSD, hydration identity, reactive updates and whitespace-sensitive layout |
 | `test/performance/` | Shared output-baseline tests and fresh-process flat-plan measurements |
 
 ### Benchmark phase ownership

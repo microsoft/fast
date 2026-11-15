@@ -115,7 +115,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
         } else {
             "<b title=\"&lt;&amp;\" data-fe=\"1\"><!--fe:b-->&lt;&amp;<!--fe:/b--></b>"
         };
-        let shadow = format!("<template shadowrootmode=\"open\" shadowroot=\"open\">{prefix}{stripped}{bound}{suffix}</template>");
+        let shadow = format!("<template shadowrootmode=\"open\">{prefix}{stripped}{bound}{suffix}</template>");
         let expected =
             format!("<test-static title=\"A &lt; &amp; &quot; default\">{shadow}</test-static>");
         assert_eq!(artifact.render_entry(&state, &options).unwrap(), expected);
@@ -301,13 +301,13 @@ fn native_output_has_explicit_literal_byte_contracts() {
     drop(bytes);
     let state = parse_render_state(r#"{"x":"<&","raw":"<i>raw</i>"}"#).unwrap();
     assert_eq!(artifact.render_entry(&state, &Default::default()).unwrap(),
-        "<test-text><template shadowrootmode=\"open\" shadowroot=\"open\"><b title=\"&lt;&amp;\" data-fe=\"1\"><!--fe:b-->&lt;&amp;<!--fe:/b-->/<!--fe:b--><i>raw</i><!--fe:/b--></b></template></test-text>");
+        "<test-text><template shadowrootmode=\"open\"><b title=\"&lt;&amp;\" data-fe=\"1\"><!--fe:b-->&lt;&amp;<!--fe:/b-->/<!--fe:b--><i>raw</i><!--fe:/b--></b></template></test-text>");
     let v2 = NativeRenderOptions {
         markers_v2: true,
         ..Default::default()
     };
     assert_eq!(artifact.render_shadow("test-text", &state, &v2).unwrap(),
-        "<template shadowrootmode=\"open\" shadowroot=\"open\"><b title=\"&lt;&amp;\" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b-->&lt;&amp;<!--fe-b$$end$$1$$fast-build$$fe-b-->/<!--fe-b$$start$$2$$fast-build$$fe-b--><i>raw</i><!--fe-b$$end$$2$$fast-build$$fe-b--></b></template>");
+        "<template shadowrootmode=\"open\"><b title=\"&lt;&amp;\" data-fe-b-0><!--fe-b$$start$$1$$fast-build$$fe-b-->&lt;&amp;<!--fe-b$$end$$1$$fast-build$$fe-b-->/<!--fe-b$$start$$2$$fast-build$$fe-b--><i>raw</i><!--fe-b$$end$$2$$fast-build$$fe-b--></b></template>");
 }
 
 #[test]

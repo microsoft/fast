@@ -10,8 +10,8 @@ const { compileServerModule } = require("../server.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
-const baseline = require("./server-baseline.json");
-const contextBaseline = require("./server-json-context-baseline.json");
+const baseline = require("./server-modern-baseline.json");
+const contextBaseline = require("./server-json-context-modern-baseline.json");
 const hash = value => createHash("sha256").update(value).digest("hex");
 
 test("retired renderer APIs cannot be loaded from the compiler package", () => {
@@ -280,11 +280,11 @@ test("AOT host and shadow exports retain selection and request isolation", async
     for (const value of ["first", "second", ""]) {
         assert.equal(
             module.renderHost("test-el", { value }),
-            `<test-el><template shadowrootmode="open" shadowroot="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
+            `<test-el><template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
         );
         assert.equal(
             module.renderShadow("test-el", { value }),
-            `<template shadowrootmode="open" shadowroot="open"><!--fe:b-->${value}<!--fe:/b--></template>`,
+            `<template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template>`,
         );
     }
     assert.equal(module.renderShadow("test-el", {}, { dsd: [] }), "");
@@ -396,7 +396,7 @@ test("shared bodies and component shadows do not capture repeat scopes", async (
     const plain = module.renderEntry(state);
     assert.equal(
         plain,
-        'root/9;one/0;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
+        'root/9;one/0;<test-child><template shadowrootmode="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
     );
     assert.equal(module.renderEntry(state), plain);
     assert.equal(
@@ -414,7 +414,7 @@ test("AOT preserves the distinct template-context root host attribute contract",
         "test-el": "{{list}}",
     });
     const shadow =
-        '<template shadowrootmode="open" shadowroot="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
+        '<template shadowrootmode="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
     assert.equal(
         module.renderEntry({ items: ["one", "two"] }),
         `<test-el>${shadow}</test-el>`,

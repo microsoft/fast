@@ -82,6 +82,8 @@ State must be acyclic JSON-shaped data, with finite numbers and well-formed
 Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
 and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous; arrays render as `[Array]`.
+Compiled Declarative Shadow DOM uses standard `shadowrootmode`, omitting an
+equal-valued legacy `shadowroot` alias. Explicit conflicting aliases are preserved.
 
 See [the server module contract](./docs/server-modules.md)
 for render options, state validation, diagnostics and deployment requirements.
@@ -559,7 +561,13 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
-Any `shadowroot*` attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. The CLI normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+The compiler resolves `shadowrootmode` from its non-empty authored value, then a
+non-empty legacy `shadowroot` value, then `"open"`. It emits the standard
+`shadowrootmode` attribute and omits a redundant same-value legacy alias. Explicit
+conflicting values remain intact, and all other `shadowroot*` attributes retain
+their values and order. No whitespace, hydration markers, escaping, host defaults
+or template content is minified. This is an intentional new-compilation output
+change; see [migration and browser qualification](./docs/migration/standard-dsd-output.md).
 
 ### Attribute name strategy
 

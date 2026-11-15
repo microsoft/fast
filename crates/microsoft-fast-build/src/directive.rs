@@ -147,7 +147,9 @@ pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]
 
     let mut out = String::new();
     append_template_attr_value(&mut out, "shadowrootmode", &mode);
-    append_template_attr_value(&mut out, "shadowroot", &legacy_shadowroot);
+    if legacy_shadowroot != mode {
+        append_template_attr_value(&mut out, "shadowroot", &legacy_shadowroot);
+    }
     for (name, value) in forwarded {
         append_template_attr(&mut out, &name, &value);
     }

@@ -1,0 +1,14 @@
+<qualified-card role="group" title="default &amp; &lt;"><template shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable="" shadowrootserializable=""><style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first
+	second &amp; &lt; 
+</pre><div class="inline"><span>A</span> <span>B</span>
+<span>C</span></div><textarea>  first
+	second &amp; &lt; 
+</textarea><h2 title=" first &amp; &lt; 😀
+last " data-fe="1"><!--fe:b--> first &amp; &lt; 😀
+last <!--fe:/b--></h2><!--fe:b--><i><!--fe:b--> first &amp; &lt; 😀
+last <!--fe:/b--></i><!--fe:/b--><!--fe:b--><!--fe:r--><b><!--fe:b-->one<!--fe:/b--></b><!--fe:/r--><!--fe:r--><b><!--fe:b-->two<!--fe:/b--></b><!--fe:/r--><!--fe:/b--><qualified-nested data-fe="1"><template shadowrootmode="open"><strong><!--fe:b--> first &amp; &lt; 😀
+last <!--fe:/b--></strong></template></qualified-nested><slot>fallback</slot><template id="scope"><span>  scoped
+ text </span></template></template></qualified-card>
+<qualified-closed><template shadowrootmode="closed" shadowrootdelegatesfocus><span>closed</span></template></qualified-closed>
+<qualified-conflict><template shadowrootmode="closed" shadowroot="open" shadowrootserializable="a&quot;b&amp;c"><span>conflict</span></template></qualified-conflict>
+<qualified-legacy><template shadowrootmode="closed"><span>legacy input</span></template></qualified-legacy>
