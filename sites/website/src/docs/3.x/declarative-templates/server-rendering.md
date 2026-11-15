@@ -63,6 +63,23 @@ State must be acyclic JSON-shaped data, with finite numbers and ordinary data
 properties; getters, functions, class instances and nested `undefined` are rejected.
 Existing HTML bytes, server coercion and hydration markers are preserved.
 
+For incoming JSON text, use the explicit generated JSON-input methods:
+
+```js
+import { renderEntryJson } from "./generated/server.mjs";
+
+const html = renderEntryJson('{"title":"Fresh request state"}');
+```
+
+`renderTemplateJson`, `renderHostJson` and `renderShadowJson` preserve the
+corresponding contexts and options. Each call parses a required string without
+a reviver, validates all keys/values for finite numbers and well-formed Unicode,
+and normalizes negative zero. Request-owned data needs no snapshot copying or
+freezing and is not retained. Malformed JSON raises `SyntaxError`; invalid decoded
+state or non-string input raises `TypeError`. Keep object methods for already-parsed
+state and prepared methods for immutable state reuse. Regenerate modules/native
+artifacts for helper contract version 4; native execution is unchanged.
+
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
 This compiles a registry with an empty entry; use `renderHost` or `renderShadow`

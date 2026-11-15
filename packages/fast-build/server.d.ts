@@ -43,6 +43,11 @@ export interface ServerModule {
         state?: ServerState,
         options?: ServerRenderOptions,
     ): string;
+    /** Parse fresh JSON internally and validate every value without snapshot copying. */
+    renderEntryJson(json: string, options?: ServerRenderOptions): string;
+    renderTemplateJson(json: string, options?: ServerRenderOptions): string;
+    renderHostJson(name: string, json: string, options?: ServerRenderOptions): string;
+    renderShadowJson(name: string, json: string, options?: ServerRenderOptions): string;
     renderEntryPrepared(
         state: PreparedServerState,
         options?: ServerRenderOptions,

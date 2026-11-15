@@ -36,9 +36,13 @@ See the [server module contract](../../packages/fast-build/docs/server-modules.m
 for helper compatibility, state validation and qualification.
 
 Generated JavaScript uses module-level path accessors and reusable request-local
-repeat frames. Helper contract version 3 requires regenerated modules/artifacts
+repeat frames. Helper contract version 4 requires regenerated modules/artifacts
 and matching deployed helpers/libraries. The executable IR schema remains version 1.
-Existing render APIs remain available, with additive prepared-state methods.
+Existing render APIs remain available, with prepared-state methods and explicit
+`renderEntryJson`, `renderTemplateJson`, `renderHostJson` and `renderShadowJson`.
+These JS exports parse a required JSON string inside the helper-owned request,
+retain full Unicode/finite-number rejection and reuse the same AOT bodies.
+Object-input and native execution contracts are unchanged.
 
 ### Compile and deploy native Rust artifacts
 

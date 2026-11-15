@@ -11,6 +11,25 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
+### Fresh JSON requests and helper contract version 4
+
+Regenerate JavaScript modules and native artifacts and deploy matching
+helpers/libraries. Version-3 generated modules fail the version-4 helper check.
+Native IR schema remains version 1, with unchanged native state and execution
+ownership, but helper identity/compiler fingerprint still require regeneration.
+Custom JavaScript helpers must provide `jsonRequest` in addition to prior helpers.
+
+All ordinary/prepared method signatures and AOT bodies remain unchanged.
+For fresh JSON strings, select generated `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` or `renderShadowJson` explicitly. They parse without a reviver,
+validate all finite-number/Unicode requirements and normalize negative zero in
+request-owned data. No parsed graph is cached, frozen or copied into a snapshot.
+
+Keep object methods for already-parsed state and prepared methods for immutable
+state reuse. Do not pass a live object, parser callback or byte buffer as JSON
+input. Malformed JSON produces `SyntaxError`; non-string input and invalid
+decoded state produce `TypeError`. Browser hydration and output bytes are unchanged.
+
 ### Prepared snapshots and helper contract version 3
 
 Regenerate both JavaScript modules and native artifacts and deploy the matching
