@@ -29,7 +29,7 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
-## Ahead-of-Time Server JavaScript
+## JSON-only Flat-Plan Server JavaScript
 
 Compile templates during the server build to keep WASM and template parsing out
 of the request dependency graph:
@@ -50,39 +50,33 @@ await writeFile(
 
 ```js
 // Request time
-import { renderEntry, renderShadow } from "./generated/server.mjs";
+import { renderEntryJson, renderShadowJson } from "./generated/server.mjs";
 
-const html = renderEntry({ title: "Request-specific state" });
-const dsd = renderShadow("my-card", { title: "Component state" });
+const html = renderEntryJson('{"title":"Request-specific state"}');
+const dsd = renderShadowJson("my-card", '{"title":"Component state"}');
 ```
 
 The generated module imports only the FAST server helper. Bundle that helper
 with the server or deploy it from the matching `@microsoft/fast-build` package.
 Keep compiler/helper artifacts together and regenerate on upgrades.
-State must be acyclic JSON-shaped data, with finite numbers and ordinary data
-properties; getters, functions, class instances and nested `undefined` are rejected.
+Request input must be primitive JSON text containing finite numbers and
+well-formed Unicode. Live object inputs are rejected rather than serialized.
 Existing HTML bytes, server coercion and hydration markers are preserved.
 
-For incoming JSON text, use the explicit generated JSON-input methods:
-
-```js
-import { renderEntryJson } from "./generated/server.mjs";
-
-const html = renderEntryJson('{"title":"Fresh request state"}');
-```
-
-`renderTemplateJson`, `renderHostJson` and `renderShadowJson` preserve the
-corresponding contexts and options. Each call parses a required string without
-a reviver, validates all keys/values for finite numbers and well-formed Unicode,
-and normalizes negative zero. Request-owned data needs no snapshot copying or
-freezing and is not retained. Malformed JSON raises `SyntaxError`; invalid decoded
-state or non-string input raises `TypeError`. Keep object methods for already-parsed
-state and prepared methods for immutable state reuse. Regenerate modules/native
-artifacts for helper contract version 4; native execution is unchanged.
+Generated ESM contains flat string/rule tables. The helper validates and loads
+them into execution closures once; generated AOT functions and object/prepared
+JavaScript APIs are removed. Use `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` or `renderShadowJson` with required JSON text.
+Each call parses without a reviver, validates all keys/values for finite numbers
+and well-formed Unicode, and normalizes negative zero in owned data.
+Malformed JSON raises `SyntaxError`; invalid decoded/non-string input raises
+`TypeError`. For already-parsed JSON data, serialize explicitly before calling.
+Regenerate modules/native artifacts for helper contract version 5; native
+execution and prepared-state APIs are unchanged.
 
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
-This compiles a registry with an empty entry; use `renderHost` or `renderShadow`
+This compiles a registry with an empty entry; use `renderHostJson` or `renderShadowJson`
 for its components, or `compileServerModule` to compile page entry HTML.
 Browser template/style conversion, authored classes and explicit registration
 remain separate. See the
@@ -91,7 +85,7 @@ for options, state restrictions and migration details.
 
 ## Native Rust Compiled Artifacts
 
-JavaScript AOT is one target, not a requirement for native servers. The same
+JavaScript flat plans are one target, not a requirement for native servers. The same
 Rust-owned executable representation can be compiled during the build with
 `compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
 `compile_server_artifact`. Deploy those bytes and the exact compiler-matching
@@ -131,10 +125,10 @@ Load replacements before activation and retain old workers/handles for in-flight
 requests. Native state/execution/output limits differ from JS host limits, so
 switching targets requires workload qualification as well as markup parity.
 
-Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
-for component-state DSD fragments. Use `renderTemplate` for template-context
+Use `renderEntryJson` for entries, `renderHostJson` for named hosts and `renderShadowJson`
+for component-state DSD fragments. Use `renderTemplateJson` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
-`fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
+`fast build` now always compiles and executes flat plans JavaScript; remove `--aot`.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
 
@@ -278,7 +272,7 @@ client/server truthy/falsy boolean bindings; JSON booleans on known HTML boolean
 attributes also use presence on the server, while ARIA booleans stay textual.
 
 Build-time plugins can compile a server module with `compileServerModule` and
-call its generated `renderShadow(name, componentState)` export for a complete
+call its generated `renderShadowJson(name, componentState)` export for a complete
 DSD `<template>` with resolved component state and no synthesized host/light DOM.
 `parse_f_templates` exposes versioned binding descriptions, including lexical
 repeat scopes, authored expression spans, and explicit unknown state

@@ -43,24 +43,19 @@ await writeFile(
 
 ```js
 // Request time
-import { renderEntry, renderHost, renderShadow } from "./generated/server.mjs";
+import { renderEntryJson, renderHostJson, renderShadowJson } from "./generated/server.mjs";
 
-const html = renderEntry({ title: "Request-specific state" });
-const host = renderHost("my-card", { title: "A complete host" });
-const dsd = renderShadow("my-card", { title: "Only the shadow template" });
-```
-
-Use generated `renderTemplate` for template-context root-host attribute handling,
-or `renderEntry` for entry-host rules.
-
-For fresh JSON text, select the generated JSON-input method explicitly:
-
-```js
-import { renderEntryJson, renderHostJson } from "./generated/server.mjs";
-
-const html = renderEntryJson('{"title":"Fresh JSON state"}');
+const html = renderEntryJson('{"title":"Request-specific state"}');
 const host = renderHostJson("my-card", '{"title":"A complete host"}');
+const dsd = renderShadowJson("my-card", '{"title":"Only the shadow template"}');
 ```
+
+Use generated `renderTemplateJson` for template-context root-host attribute handling,
+or `renderEntryJson` for entry-host rules.
+
+Generated ESM contains flat, state-independent string/rule tables. The helper
+loads them into execution closures once; generated AOT functions and all
+object/prepared JavaScript request APIs have been removed.
 
 `renderTemplateJson` and `renderShadowJson` preserve the corresponding contexts
 and options. Parsing happens once per call without a reviver; the helper owns the
@@ -68,9 +63,9 @@ result and skips checks already guaranteed by JSON parsing. It still validates
 every key/value, including unused state, for finite numbers and well-formed
 Unicode and normalizes negative zero. JSON overflow such as `1e400` is rejected.
 There is no snapshot copying/freezing, implicit object serialization, parser
-callback or byte-input overload. Keep the object methods when state is already
-parsed; prepared methods remain the separate unchanged-state reuse path.
-Regenerate modules/native artifacts for **helper contract version 4**.
+callback or byte-input overload. Pass JSON text directly; applications with
+already-parsed JSON data must serialize explicitly before calling these methods.
+Regenerate modules/native artifacts for **helper contract version 5**.
 
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
@@ -79,15 +74,14 @@ registry into one module:
 fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
 ```
 
-The registry target compiles an empty entry; call `renderHost` or `renderShadow`
+The registry target compiles an empty entry; call `renderHostJson` or `renderShadowJson`
 for a registered component. To render a complete page entry, pass its HTML to
 `compileServerModule`.
 
 Use the existing browser conversion target separately with the authored component
-class and explicit registration. AOT does not change browser hydration.
-State must be acyclic JSON-shaped data, with finite numbers and well-formed
-Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
-and implicit `toJSON()` conversion are rejected rather than invoked.
+class and explicit registration. Flat plans do not change browser hydration.
+Input must be a primitive JSON string, decoding to finite numbers and well-formed
+Unicode. Live objects and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous and preserves existing HTML bytes and server coercion;
 arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
 
@@ -102,40 +96,21 @@ covers text and attribute output.
 The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.
-Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
-requests, include output byte throughput, and record state hashes, rendering
-options and output-structure diagnostics.
-Use `--request-input=json` versus `--request-input=owned-json` to compare fresh
-JSON boundaries, including parsing in first/warm request timings. The default is
-`object`. Ordinary-mode reports also include both JSON-to-UTF-8 APIs, with CPU,
-throughput and memory observations and alternating comparison order. These qualify measurement boundaries;
-they do not change rendering or establish cross-renderer output equivalence.
+Version-3 reports label `flat-plan-javascript` and `owned-json`. Every primary
+first/warm request includes fresh JSON parsing and full residual validation.
+The object/prepared modes and `--state-mode`, `--request-input`, `--json-first`
+switches have been removed. Reports retain CPU, throughput, memory, state hashes,
+rendering options and output-structure diagnostics. These qualify measurement
+boundaries, not cross-renderer output equivalence.
 
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
-The JavaScript emitter now prepares path/alias accessors at module import and
+The flat-plan helper prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. The server helper contract
-is version 4: regenerate compiled modules/artifacts and deploy the matching
-helper/native library together. Ordinary state/rendering contracts are unchanged.
+is version 5: regenerate compiled modules/artifacts and deploy the matching
+helper/native library together. Output semantics and native execution are unchanged.
 Contributor benchmarks include deep paths and nested repeats.
-
-For large unchanged state reused across calls, generated modules also export
-an explicit immutable snapshot path:
-
-```js
-import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
-
-const snapshot = prepareState({ title: "Shared immutable state" });
-const html = renderEntryPrepared(snapshot);
-```
-
-Preparation validates, normalizes and copies without freezing or retaining the
-original input. `renderTemplatePrepared`, `renderHostPrepared` and
-`renderShadowPrepared` use the same snapshot. Handles work across artifacts
-sharing one helper instance, are not serializable, and become collectible when
-no longer referenced. Keep ordinary methods for changing request state.
-See [ownership, native equivalents and measurement](./docs/server-modules.md#prepared-state-snapshots).
 
 ## Native Rust compiled artifacts
 
@@ -359,8 +334,8 @@ const source = compileServerModule("", templates);
 ```
 
 ```js
-import { renderShadow } from "./generated/server.mjs";
-const shadowRootHtml = renderShadow("my-card", componentState);
+import { renderShadowJson } from "./generated/server.mjs";
+const shadowRootHtml = renderShadowJson("my-card", JSON.stringify(componentState));
 ```
 
 The result is the complete DSD `<template>` fragment, with hydration markers
@@ -658,7 +633,7 @@ with no matches completes without writing files.
 
 `server-js` requires at least one named definition, rejects duplicate names and
 TypeScript conversion options, and emits an empty entry with the linked component
-registry. Use `renderHost` or `renderShadow` for those components; use
+registry. Use `renderHostJson` or `renderShadowJson` for those components; use
 `compileServerModule(entry, templates)` to compile a complete page entry.
 
 `webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.

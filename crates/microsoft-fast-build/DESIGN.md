@@ -5,7 +5,7 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits named JavaScript functions from this IR; `compile_server_artifact` serializes
+emits flat string/code/offset tables in server ESM from this IR; `compile_server_artifact` serializes
 the same IR for the supported native Rust executor. There is one HTML/expression
 lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
@@ -15,7 +15,7 @@ The browser conversion crate remains independent.
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
-| `aot.rs` | Server ESM emission from the shared executable IR |
+| `aot.rs` | Flat-plan server ESM emission from the shared executable IR |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
@@ -55,29 +55,24 @@ their plain and hydrated bytes are identical. Adjacent literal writes and static
 attribute fragments are coalesced in place before interning. Whitespace or
 client-attribute differences retain the tag operation; binding counts, nested
 components, host defaults and DSD selection remain executable boundaries.
-The JavaScript emitter returns literal-only and empty bodies directly, without
-hydration branches or an output accumulator. Both targets use the same compacted
+The JavaScript plan loader specializes literal-only bodies into constant closures. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The JavaScript emitter additionally groups element operations by executable
-shape: component identity, light-DOM body, attribute recipes, paths, defaults and
-marker counts. Instance-specific literal attribute output and primitive property
-operands live in generated constant records passed to shared functions. Shapes
-used only once retain direct emission. Compound property literals remain
-constructed per invocation because child dataset overlays can mutate local
-objects. This factoring is compiler-owned, requires no new runtime helper, and
-does not change the artifact schema or native execution semantics.
+The JavaScript emitter locally numbers flat rules per entry/component and interns
+their string tables. ESM embeds only these plans and calls the helper's loader;
+it does not emit rendering functions, accessors or loops. The helper validates
+all records/references and prepares execution closures once. Compound property
+literals retain per-request ownership. Native lowering/opcodes are unchanged.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
 attributes, naming rules, body structure, literal CSS/markup and hydration binding
-counts. State paths become segment arrays. The emitter turns repeats into JavaScript
-loops; the native executor iterates the same body references.
+counts. State paths become segment arrays. The plan loader prepares repeat closures; the native executor iterates the same body references.
 
 ### Compiled JavaScript access plans
 
-The emitter interns distinct paths into module-level accessors. Matching repeat
+The plan loader prepares path accessors at module load. Matching repeat
 alias prefixes are resolved to numeric slots; slot zero is reserved for
 `$index`. The helper prepares array-index decoding once at module import.
 Single-key root access and single-candidate lexical access use specialized
@@ -93,17 +88,15 @@ so interning does not multiply functions for different repeat scopes.
 Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
-This is JavaScript target emission/hosting, not a new IR opcode or a native
-executor rewrite. Helper contract version 2 introduced the frame/accessor ABI;
-version 3 added prepared-state requests and version 4 adds four generated
-JSON-input render exports. Artifact schema version 1 remains unchanged.
-Regenerate both
-target artifacts with the upgraded compiler and deploy matching helpers/libraries.
+This is a JavaScript backend replacement, not a native executor rewrite.
+Helper contract version 5 removes generated AOT bodies and object/prepared
+JavaScript request APIs. Flat plan schema and native artifact schema remain
+version 1; regenerate both artifacts and deploy matching helpers/libraries.
 
 ## Request execution
 
 Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
-For this target the JavaScript helper owns complete JSON-shaped state validation,
+For this target the helper owns JSON-string parsing and full residual validation,
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
@@ -119,27 +112,13 @@ Changes to authored inputs still invalidate artifacts.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; ordinary calls retain no request state.
 
-Generated JSON-input methods select the helper's owned parse/validation boundary,
-then call the same AOT bodies as object/prepared methods. Intrinsic JSON parsing
-without a reviver establishes plain acyclic/dense ownership; remaining full-graph
-checks retain finite-number/Unicode rejection and negative-zero normalization.
-No caller object is serialized or implicitly coerced and no parsed state is
-retained. This is JavaScript hosting, not a second lowering pipeline or native
-executor change. Both artifact targets must be regenerated for helper version 4.
-
-### Prepared-state snapshots
-
-Generated modules export `prepareState` and four `render*Prepared` counterparts.
-The helper reuses its validator with copy/freeze enabled: every container is
-copied, negative zero is normalized, and the complete copy is recursively frozen.
-A private `WeakMap` associates an opaque frozen handle with the snapshot.
-Prepared requests check map membership, reject forged/foreign handles, and reuse
-the same generated bodies with fresh options, overlays, loops and marker scopes.
-Handles can cross artifacts sharing one helper instance, not helper instances or
-processes. Dropping handles allows garbage collection; there is no native external
-memory or explicit disposal API. Ordinary methods still validate on every call.
-Dataset overlays copy borrowed objects before merging, including explicit
-`:dataset` property bindings, so neither caller data nor snapshots are mutated.
+The only JavaScript render methods are `renderEntryJson`,
+`renderTemplateJson`, `renderHostJson` and `renderShadowJson`.
+Intrinsic parsing without a reviver establishes plain acyclic/dense ownership.
+Every key/value still receives Unicode/finite-number validation and negative-zero
+normalization. No caller objects are coerced/serialized and no snapshots are
+copied, frozen, branded or cached. The general object validator and JavaScript
+prepared APIs are removed. Native state/ownership/execution are unchanged.
 
 ### Native artifact execution
 
@@ -202,9 +181,9 @@ There is no independent C# implementation of rendering semantics.
 
 ## Plugin integration boundaries
 
-Generated `renderShadow` returns just the DSD `<template>` for a
+Generated `renderShadowJson` returns just the DSD `<template>` for a
 named definition and resolved component state. Entry, host and fragment
-exports share generated shadow functions and fresh hydration scopes. The fragment API does
+exports share loaded shadow closures and fresh hydration scopes. The fragment API does
 not create host attributes or light DOM; nested hosts still follow normal rules.
 
 `binding_metadata.rs` reuses render-event discovery, tag attributes, directive
@@ -341,7 +320,7 @@ render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
 Node tests enforce 438 distinct frozen output contracts and the shared
 performance corpus baseline.
-Browser fixtures hydrate AOT output. `bench:server` measures generated JavaScript;
+Browser fixtures hydrate flat-plan output. `bench:server` measures generated JavaScript;
 its unique-host workload varies indexes, dataset values and inline styles to
 exercise structural sharing rather than only byte-identical hosts;
 its CPU, memory and size measurement boundaries are documented in the package's

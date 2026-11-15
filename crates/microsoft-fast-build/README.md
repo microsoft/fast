@@ -13,7 +13,7 @@ cargo add microsoft-fast-build
 ### Compile server JavaScript ahead of time
 
 `compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
-with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
+with `renderEntryJson`, `renderTemplateJson`, `renderHostJson` and `renderShadowJson` exports.
 Templates are trusted build inputs; the generated module imports the FAST-owned
 server helper rather than WASM, browser classes or a runtime template parser:
 
@@ -29,20 +29,21 @@ let source = compile_server_module(
 )?;
 ```
 
-Write `source` as a server `.mjs` build artifact. Requests pass JSON-shaped state
-directly to the generated functions. Existing server markup/coercion is preserved;
+Write `source` as a server `.mjs` build artifact. Requests pass primitive JSON strings
+to the loaded flat-plan renderer. Existing server markup/coercion is preserved;
 generation eagerly diagnoses malformed skipped bodies.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for helper compatibility, state validation and qualification.
 
-Generated JavaScript uses module-level path accessors and reusable request-local
-repeat frames. Helper contract version 4 requires regenerated modules/artifacts
-and matching deployed helpers/libraries. The executable IR schema remains version 1.
-Existing render APIs remain available, with prepared-state methods and explicit
-`renderEntryJson`, `renderTemplateJson`, `renderHostJson` and `renderShadowJson`.
-These JS exports parse a required JSON string inside the helper-owned request,
-retain full Unicode/finite-number rejection and reuse the same AOT bodies.
-Object-input and native execution contracts are unchanged.
+Generated ESM embeds flat string/code/offset tables, not rendering functions.
+The helper prepares accessors, rule closures and repeat frames at load time.
+The only JavaScript request APIs are `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` and `renderShadowJson`. They require JSON strings, parse
+without a reviver, validate all keys/values for Unicode/finite numbers and
+normalize negative zero. Object/prepared JavaScript APIs are removed.
+Helper contract version 5 requires regenerated modules/native artifacts and
+matching helpers/libraries. Native IR schema 1, execution and prepared-state
+ownership remain unchanged.
 
 ### Compile and deploy native Rust artifacts
 
@@ -96,7 +97,7 @@ have `_prepared` counterparts. Snapshots are artifact-independent, `Send + Sync`
 and cheaply cloneable; dropping the final clone releases their owned memory.
 Execution limits still reset per call. Keep ordinary methods for mutable
 request-specific state; preparation allocates a retained copy and is not free.
-See [prepared ownership and measurement](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
+See [prepared ownership and measurement](../../packages/fast-build/docs/server-modules.md#native-prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
 No request-time WASM rendering, stable C ABI or working .NET bindings are provided.
@@ -164,7 +165,7 @@ format version 1 remain unchanged.
 This minor prerelease update requires an API migration. JavaScript hosts compile
 ESM and invoke its render exports. Native hosts compile artifacts and use
 `CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
-Use `renderTemplate`/`render_template` for template-context root-host attributes.
+Use `renderTemplateJson`/`render_template` for template-context root-host attributes.
 Native rendering does not require JavaScript.
 Rendered markup and hydration markers are unchanged.
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).

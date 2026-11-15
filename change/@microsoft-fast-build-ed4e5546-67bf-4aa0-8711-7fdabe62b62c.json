@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Add explicit owned JSON request methods that avoid redundant object validation and snapshot copying while preserving rendering behavior.",
+  "comment": "Replace generated AOT functions and object/prepared JavaScript inputs with JSON-only flat server plans.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"
