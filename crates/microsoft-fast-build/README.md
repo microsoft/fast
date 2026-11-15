@@ -183,7 +183,13 @@ ESM and invoke its render exports. Native hosts compile artifacts and use
 `CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
 Use `renderTemplate`/`render_template` for template-context root-host attributes.
 Native rendering does not require JavaScript.
-Rendered markup and hydration markers are unchanged.
+Hydration markers and all nonredundant markup are unchanged. Newly compiled DSD
+omits the legacy `shadowroot` alias when it equals the standard `shadowrootmode`
+value. Explicit conflicting aliases and other DSD attributes remain intact;
+legacy-only input still resolves the standard mode. Existing supported artifacts
+keep their exact bytes. This intentional output migration requires standard DSD
+support, not a new FAST Element release. See
+[DSD migration and qualification](../../packages/fast-build/docs/migration/standard-dsd-output.md).
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
 The guide also describes the earlier breaking migration from request-time source
 rendering; that is separate from this backend replacement.

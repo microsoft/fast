@@ -355,7 +355,7 @@ test("shadow-only rendering returns the exact DSD fragment without a host or lig
         assert.equal(whole, `<test-card>${fragment}<b>light</b></test-card>`);
         assert.match(
             fragment,
-            /^<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus>/,
+            /^<template shadowrootmode="open" shadowrootdelegatesfocus>/,
         );
         assert.throws(
             () => wasm.render_shadow_root("missing-card", templates),
