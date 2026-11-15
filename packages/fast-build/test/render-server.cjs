@@ -5,8 +5,9 @@ const { compileServerModule } = require("../server.js");
 
 // Keep pre-existing byte/diagnostic assertions on the single generated-JS engine.
 function execute(entry, templates = "{}", state, strategy, markersV2, shadow, nested) {
+    let parsed;
     try {
-        if (state !== undefined) JSON.parse(state);
+        parsed = state === undefined ? undefined : JSON.parse(state);
     } catch (error) {
         error.code = "invalid-state-json";
         throw error;
@@ -20,7 +21,7 @@ function execute(entry, templates = "{}", state, strategy, markersV2, shadow, ne
         execFileSync(process.execPath, [require.resolve("./execute-server.mjs")], {
             input: JSON.stringify({
                 source,
-                stateJson: state ?? "{}",
+                state: parsed,
                 options: {
                     attributeNameStrategy: strategy || undefined,
                     markersV2: markersV2 || false,

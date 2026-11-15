@@ -760,7 +760,7 @@ async function runBuild(args) {
     }
     const entryContent = fs.readFileSync(entry, "utf8");
 
-    // Keep state as JSON text so the renderer owns parsing and validation.
+    // Read state only when explicitly provided; omitted state is handled by the generated module as `{}`.
     let stateContent;
     if (stateWasProvided) {
         if (stateFile === undefined || stateFile === "" || !fs.existsSync(stateFile)) {
@@ -784,8 +784,8 @@ async function runBuild(args) {
     const server = await import(
         `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
     );
-    const rendered = server.renderEntryJson(
-        stateContent ?? "{}",
+    const rendered = server.renderEntry(
+        stateContent === undefined ? undefined : JSON.parse(stateContent),
         { attributeNameStrategy: attributeNameStrategy || undefined, markersV2 },
     );
 

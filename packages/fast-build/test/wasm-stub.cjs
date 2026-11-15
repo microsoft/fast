@@ -42,9 +42,9 @@ const stub = {
     compile_server_module(entry, templatesJson) {
         calls.push({ name: "compile_server_module", entry, templatesJson });
         return `
-            export function renderEntryJson(state, options) {
+            export function renderEntry(state, options) {
                 globalThis[Symbol.for("fast-build-test-calls")].push({
-                    name: "renderEntryJson",
+                    name: "renderEntry",
                     entry: ${JSON.stringify(entry)},
                     templatesJson: ${JSON.stringify(templatesJson)},
                     state,

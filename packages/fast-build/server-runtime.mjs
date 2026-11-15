@@ -1,46 +1,93 @@
 export const runtimeVersion = 5;
 
-const parseJson = JSON.parse;
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
     value !== null && typeof value === "object" && !Array.isArray(value);
 
-function normalizeJson(value) {
-    if (typeof value === "string") {
-        if (!value.isWellFormed()) {
-            throw new TypeError("SSR strings must contain well-formed Unicode.");
-        }
-    } else if (typeof value === "number") {
-        if (!Number.isFinite(value)) {
-            throw new TypeError("SSR state must be acyclic JSON-shaped data.");
-        }
+function validate(value, ancestors = new Set(), copy = false) {
+    if (typeof value === "string" && !value.isWellFormed()) {
+        throw new TypeError("SSR strings must contain well-formed Unicode.");
+    }
+    if (
+        value === null ||
+        typeof value === "string" ||
+        typeof value === "boolean" ||
+        (typeof value === "number" && Number.isFinite(value))
+    ) {
         return value === 0 ? 0 : value;
-    } else if (Array.isArray(value)) {
-        for (let index = 0; index < value.length; index++) {
-            const item = value[index];
-            normalizeJson(item);
-            if (Object.is(item, -0)) value[index] = 0;
+    }
+    if (
+        typeof value !== "object" ||
+        ancestors.has(value) ||
+        (Array.isArray(value)
+            ? Object.getPrototypeOf(value) !== Array.prototype
+            : Object.getPrototypeOf(value) !== Object.prototype &&
+              Object.getPrototypeOf(value) !== null)
+    ) {
+        throw new TypeError("SSR state must be acyclic JSON-shaped data.");
+    }
+    ancestors.add(value);
+    const keys = Reflect.ownKeys(value);
+    const array = Array.isArray(value);
+    if (array && keys.length !== value.length + 1) {
+        throw new TypeError("SSR arrays must be dense and have no extra properties.");
+    }
+    const count = array ? value.length : keys.length;
+    const snapshot = copy ? (array ? [] : Object.create(null)) : null;
+    let changes;
+    for (let index = 0; index < count; index++) {
+        const key = keys[index];
+        if (typeof key !== "string" || !key.isWellFormed()) {
+            throw new TypeError("SSR property names must contain well-formed Unicode.");
         }
-    } else if (value !== null && typeof value === "object") {
-        for (const key of Object.keys(value)) {
-            if (!key.isWellFormed()) {
-                throw new TypeError(
-                    "SSR property names must contain well-formed Unicode.",
-                );
-            }
-            const item = value[key];
-            normalizeJson(item);
-            if (Object.is(item, -0)) value[key] = 0;
+        if (array && key !== String(index)) {
+            throw new TypeError("SSR arrays must be dense and have no extra properties.");
         }
+        const descriptor = Object.getOwnPropertyDescriptor(value, key);
+        if (!descriptor.enumerable || !own(descriptor, "value")) {
+            throw new TypeError("SSR state requires enumerable data properties.");
+        }
+        const normalized = validate(descriptor.value, ancestors, copy);
+        if (copy) {
+            snapshot[key] = normalized;
+        } else if (!Object.is(normalized, descriptor.value)) {
+            (changes ??= []).push([key, normalized]);
+        }
+    }
+    ancestors.delete(value);
+    if (copy) return Object.freeze(snapshot);
+    if (changes) {
+        const normalized = array
+            ? value.slice()
+            : Object.assign(Object.create(null), value);
+        for (const [key, item] of changes) {
+            normalized[key] = item;
+        }
+        return normalized;
     }
     return value;
 }
 
-export function jsonRequest(json, options = {}) {
-    if (typeof json !== "string") {
-        throw new TypeError("Expected SSR state as a JSON string.");
+const preparedStates = new WeakMap();
+class PreparedState {}
+
+export function prepareState(state = {}) {
+    const values = validate(state, new Set(), true);
+    const handle = Object.freeze(new PreparedState());
+    preparedStates.set(handle, { values });
+    return handle;
+}
+
+export function preparedRequest(state, options = {}) {
+    const snapshot = preparedStates.get(state);
+    if (!snapshot) {
+        throw new TypeError("Expected a prepared SSR state from this runtime.");
     }
-    return requestOptions(normalizeJson(parseJson(json)), options);
+    return requestOptions(snapshot.values, options);
+}
+
+export function request(state = {}, options = {}) {
+    return requestOptions(validate(state), options);
 }
 
 function requestOptions(state, options) {
@@ -188,102 +235,6 @@ export function child(root, entries) {
         }
     }
     return { values, parent: object(root.values) ? root : null };
-}
-
-function planChild(props, strategy) {
-    const keys = props.map(prop => prop[strategy]);
-    if (props.every(prop => prop.group === null)) {
-        const getters = props.map(prop => prop.value);
-        return (root, loops) => {
-            const values = Object.create(null);
-            for (let index = 0; index < keys.length; index++) {
-                values[keys[index]] = getters[index](root, loops) ?? null;
-            }
-            return { values, parent: object(root.values) ? root : null };
-        };
-    }
-    const slots = new Map();
-    for (let index = 0; index < props.length; index++) {
-        if (props[index].group !== null && !slots.has(keys[index])) {
-            slots.set(keys[index], slots.size);
-        }
-    }
-    const steps = props.map((prop, index) => {
-        const key = keys[index];
-        const slot = slots.get(key);
-        const getter = prop.value;
-        if (prop.group === null) {
-            return (root, loops, values, copied) => {
-                values[key] = getter(root, loops) ?? null;
-                if (copied && slot !== undefined) copied[slot] = false;
-                return copied;
-            };
-        }
-        const inherited = access([key], []);
-        const group = prop.group;
-        return (root, loops, values, copied) => {
-            const value = getter(root, loops);
-            if (!own(values, key)) {
-                const initial = inherited(root);
-                values[key] = initial === undefined ? Object.create(null) : initial;
-            }
-            if (object(values[key])) {
-                if (!copied?.[slot]) {
-                    values[key] = Object.assign(Object.create(null), values[key]);
-                    (copied ??= [])[slot] = true;
-                }
-                values[key][group] = value ?? null;
-            }
-            return copied;
-        };
-    });
-    return (root, loops) => {
-        const values = Object.create(null);
-        let copied;
-        for (const step of steps) copied = step(root, loops, values, copied);
-        return { values, parent: object(root.values) ? root : null };
-    };
-}
-
-function planComposite(parts) {
-    if (parts.length === 0) return () => "";
-    if (parts.length === 1) return (r, l) => parts[0](r, l) ?? null;
-    if (parts.length === 2) {
-        const [first, second] = parts;
-        return (r, l) => {
-            const a = first(r, l);
-            const b = second(r, l);
-            return a === null || a === undefined || b === null || b === undefined
-                ? null
-                : a + b;
-        };
-    }
-    if (parts.length === 3) {
-        const [first, second, third] = parts;
-        return (r, l) => {
-            const a = first(r, l);
-            const b = second(r, l);
-            const c = third(r, l);
-            return a === null ||
-                a === undefined ||
-                b === null ||
-                b === undefined ||
-                c === null ||
-                c === undefined
-                ? null
-                : a + b + c;
-        };
-    }
-    return (r, l) => {
-        let output = "";
-        let missing = false;
-        for (const part of parts) {
-            const value = part(r, l);
-            if (value === null || value === undefined) missing = true;
-            else output += value;
-        }
-        return missing ? null : output;
-    };
 }
 
 export function number(value) {
@@ -702,8 +653,9 @@ export function createServerRenderer(entry, definitions, compilerId) {
                 }
                 case 16: {
                     const name = string(args[0]);
-                    const value = planComposite(refs(args[1], attrs));
-                    run = (r, l) => quoted(name, value(r, l));
+                    const parts = refs(args[1], attrs);
+                    run = (r, l) =>
+                        quoted(name, composite(parts.map(part => part(r, l))));
                     break;
                 }
                 case 17: {
@@ -792,10 +744,6 @@ export function createServerRenderer(entry, definitions, compilerId) {
                     const closing = string(args[2]);
                     const opening = build(args[3], [19]);
                     const props = refs(args[4], [24]);
-                    const camelChild = props.length ? planChild(props, "camel") : null;
-                    const noneChild = props.every(prop => prop.camel === prop.none)
-                        ? camelChild
-                        : planChild(props, "none");
                     const entryAttrs = refs(args[5], attrs);
                     const normalAttrs = refs(args[6], attrs);
                     const bindings = count(args[7]);
@@ -807,9 +755,12 @@ export function createServerRenderer(entry, definitions, compilerId) {
                         }
                         const component = components.get(name);
                         if (!component) missing(name);
-                        const makeChild =
-                            o.strategy === "camelCase" ? camelChild : noneChild;
-                        const childRoot = makeChild ? makeChild(r, l) : r;
+                        const childRoot = props.length
+                            ? child(
+                                  r,
+                                  props.map(prop => prop(r, l, o)),
+                              )
+                            : r;
                         const shadow = component.shadow(
                             childRoot,
                             null,
@@ -843,7 +794,11 @@ export function createServerRenderer(entry, definitions, compilerId) {
                     const none = string(args[1]);
                     const group = args[2] === -1 ? null : string(args[2]);
                     const value = build(args[3], operands);
-                    run = { camel, none, group, value };
+                    run = (r, l, o) => [
+                        o.strategy === "camelCase" ? camel : none,
+                        group,
+                        value(r, l),
+                    ];
                     break;
                 }
                 case 25:
@@ -884,22 +839,47 @@ export function createServerRenderer(entry, definitions, compilerId) {
         compilerId,
         runtimeVersion,
         components: Object.freeze([...components.keys()]),
-        renderEntryJson(json, options) {
-            const [r, o] = jsonRequest(json, options);
+        prepareState,
+        renderEntry(state, options) {
+            const [r, o] = request(state, options);
             return body(r, null, o, null, true);
         },
-        renderTemplateJson(json, options) {
-            const [r, o] = jsonRequest(json, options);
+        renderTemplate(state, options) {
+            const [r, o] = request(state, options);
             return body(r, null, o, null, false);
         },
-        renderHostJson(name, json, options) {
-            const [r, o] = jsonRequest(json, options);
+        renderHost(name, state, options) {
+            const [r, o] = request(state, options);
             const component = components.get(name);
             if (!component) missing(name);
             return component.host(r, null, o, null, true);
         },
-        renderShadowJson(name, json, options) {
-            const [r, o] = jsonRequest(json, options);
+        renderShadow(name, state, options) {
+            const [r, o] = request(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return selected(o, name)
+                ? component.tag +
+                      component.shadow(r, null, o, scope(o), false) +
+                      "</template>"
+                : "";
+        },
+        renderEntryPrepared(state, options) {
+            const [r, o] = preparedRequest(state, options);
+            return body(r, null, o, null, true);
+        },
+        renderTemplatePrepared(state, options) {
+            const [r, o] = preparedRequest(state, options);
+            return body(r, null, o, null, false);
+        },
+        renderHostPrepared(name, state, options) {
+            const [r, o] = preparedRequest(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return component.host(r, null, o, null, true);
+        },
+        renderShadowPrepared(name, state, options) {
+            const [r, o] = preparedRequest(state, options);
             const component = components.get(name);
             if (!component) missing(name);
             return selected(o, name)

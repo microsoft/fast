@@ -17,15 +17,18 @@ To install the latest `@microsoft/fast-build` package using `npm`:
 npm install --save @microsoft/fast-build
 ```
 
-## Ahead-of-time server modules
+## Compiled flat-plan server modules
 
-This minor prerelease contains an **API-breaking migration**, not a drop-in
-dependency update. Follow the [upgrade guide](./docs/migration/aot-server-rendering.md)
-and regenerate compiled outputs when upgrading.
+This update replaces generated rendering functions with flat template plans.
+Published object-input and prepared-state APIs are unchanged. Regenerate compiled
+outputs and deploy the matching helper when upgrading; see the
+[upgrade guide](./docs/migration/aot-server-rendering.md).
 
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
-WASM, browser-class, template-parser, or runtime source-evaluation dependency:
+WASM, browser-class, template-parser, or runtime source-evaluation dependency.
+The ESM embeds string/instruction tables; its helper validates them and creates
+execution closures once at module load, with no generated-function fallback:
 
 ```js
 // Build time
@@ -43,29 +46,15 @@ await writeFile(
 
 ```js
 // Request time
-import { renderEntryJson, renderHostJson, renderShadowJson } from "./generated/server.mjs";
+import { renderEntry, renderHost, renderShadow } from "./generated/server.mjs";
 
-const html = renderEntryJson('{"title":"Request-specific state"}');
-const host = renderHostJson("my-card", '{"title":"A complete host"}');
-const dsd = renderShadowJson("my-card", '{"title":"Only the shadow template"}');
+const html = renderEntry({ title: "Request-specific state" });
+const host = renderHost("my-card", { title: "A complete host" });
+const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 ```
 
-Use generated `renderTemplateJson` for template-context root-host attribute handling,
-or `renderEntryJson` for entry-host rules.
-
-Generated ESM contains flat, state-independent string/rule tables. The helper
-loads them into execution closures once; generated AOT functions and all
-object/prepared JavaScript request APIs have been removed.
-
-`renderTemplateJson` and `renderShadowJson` preserve the corresponding contexts
-and options. Parsing happens once per call without a reviver; the helper owns the
-result and skips checks already guaranteed by JSON parsing. It still validates
-every key/value, including unused state, for finite numbers and well-formed
-Unicode and normalizes negative zero. JSON overflow such as `1e400` is rejected.
-There is no snapshot copying/freezing, implicit object serialization, parser
-callback or byte-input overload. Pass JSON text directly; applications with
-already-parsed JSON data must serialize explicitly before calling these methods.
-Regenerate modules/native artifacts for **helper contract version 5**.
+Use generated `renderTemplate` for template-context root-host attribute handling,
+or `renderEntry` for entry-host rules.
 
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
@@ -74,14 +63,15 @@ registry into one module:
 fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
 ```
 
-The registry target compiles an empty entry; call `renderHostJson` or `renderShadowJson`
+The registry target compiles an empty entry; call `renderHost` or `renderShadow`
 for a registered component. To render a complete page entry, pass its HTML to
 `compileServerModule`.
 
 Use the existing browser conversion target separately with the authored component
 class and explicit registration. Flat plans do not change browser hydration.
-Input must be a primitive JSON string, decoding to finite numbers and well-formed
-Unicode. Live objects and implicit `toJSON()` conversion are rejected rather than invoked.
+State must be acyclic JSON-shaped data, with finite numbers and well-formed
+Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
+and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous and preserves existing HTML bytes and server coercion;
 arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
 
@@ -96,21 +86,39 @@ covers text and attribute output.
 The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.
-Version-3 reports label `flat-plan-javascript` and `owned-json`. Every primary
-first/warm request includes fresh JSON parsing and full residual validation.
-The object/prepared modes and `--state-mode`, `--request-input`, `--json-first`
-switches have been removed. Reports retain CPU, throughput, memory, state hashes,
-rendering options and output-structure diagnostics. These qualify measurement
-boundaries, not cross-renderer output equivalence.
+Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
+requests, include output byte throughput, and record state hashes, rendering
+options and output-structure diagnostics. These qualify measurement boundaries;
+they do not change rendering or establish cross-renderer output equivalence.
 
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
-The flat-plan helper prepares path/alias accessors at module import and
+The flat-plan loader prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. The server helper contract
 is version 5: regenerate compiled modules/artifacts and deploy the matching
-helper/native library together. Output semantics and native execution are unchanged.
+helper/native library together. Ordinary state/rendering contracts are unchanged.
 Contributor benchmarks include deep paths and nested repeats.
+Plans still embed the compiler compatibility fingerprint and change when authored
+templates or compilation inputs change. Flat plans alone do not introduce stable
+modular asset packaging or eliminate generated-asset invalidation.
+
+For large unchanged state reused across calls, generated modules also export
+an explicit immutable snapshot path:
+
+```js
+import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
+
+const snapshot = prepareState({ title: "Shared immutable state" });
+const html = renderEntryPrepared(snapshot);
+```
+
+Preparation validates, normalizes and copies without freezing or retaining the
+original input. `renderTemplatePrepared`, `renderHostPrepared` and
+`renderShadowPrepared` use the same snapshot. Handles work across artifacts
+sharing one helper instance, are not serializable, and become collectible when
+no longer referenced. Keep ordinary methods for changing request state.
+See [ownership, native equivalents and measurement](./docs/server-modules.md#prepared-state-snapshots).
 
 ## Native Rust compiled artifacts
 
@@ -334,8 +342,8 @@ const source = compileServerModule("", templates);
 ```
 
 ```js
-import { renderShadowJson } from "./generated/server.mjs";
-const shadowRootHtml = renderShadowJson("my-card", JSON.stringify(componentState));
+import { renderShadow } from "./generated/server.mjs";
+const shadowRootHtml = renderShadow("my-card", componentState);
 ```
 
 The result is the complete DSD `<template>` fragment, with hydration markers
@@ -633,7 +641,7 @@ with no matches completes without writing files.
 
 `server-js` requires at least one named definition, rejects duplicate names and
 TypeScript conversion options, and emits an empty entry with the linked component
-registry. Use `renderHostJson` or `renderShadowJson` for those components; use
+registry. Use `renderHost` or `renderShadow` for those components; use
 `compileServerModule(entry, templates)` to compile a complete page entry.
 
 `webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.

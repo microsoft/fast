@@ -3,7 +3,7 @@ import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { defineConfig } from "vite";
-import type { ServerModule } from "@microsoft/fast-build/server.js";
+import type { ServerModule, ServerState } from "@microsoft/fast-build/server.js";
 import {
     BENCH_TREE_CONFIG,
     buildTree,
@@ -38,7 +38,7 @@ function parseTemplates(html: string): Record<string, string> {
 }
 
 interface ScenarioCache {
-    state: string;
+    state: ServerState;
     server: ServerModule;
     /** Pre-rendered HTML for scenarios with static state. */
     cachedHtml?: string;
@@ -51,7 +51,9 @@ async function loadScenario(name: string): Promise<ScenarioCache> {
 
     const scenarioDir = resolve(benchmarksDir, name);
     const entry = readFileSync(resolve(scenarioDir, "hydration/entry.html"), "utf8");
-    const state = readFileSync(resolve(scenarioDir, "hydration/state.json"), "utf8");
+    const state = JSON.parse(
+        readFileSync(resolve(scenarioDir, "hydration/state.json"), "utf8"),
+    );
     const templateHtml = readFileSync(resolve(scenarioDir, "template.html"), "utf8");
     const templates = parseTemplates(templateHtml);
 
@@ -79,7 +81,7 @@ await Promise.all(
 function renderCached(name: string): string {
     const cache = scenarioCaches[name];
     if (!cache.cachedHtml) {
-        cache.cachedHtml = cache.server.renderEntryJson(cache.state, {
+        cache.cachedHtml = cache.server.renderEntry(cache.state, {
             attributeNameStrategy: "none",
         });
     }
@@ -92,8 +94,8 @@ const scenarioRenders: Record<string, (index: number) => string> = {
     "attr-reflect"(index: number): string {
         const cache = scenarioCaches["attr-reflect"];
         const count = `${index + 1}`;
-        return cache.server.renderEntryJson(
-            JSON.stringify({ label: `item-${count}`, count }),
+        return cache.server.renderEntry(
+            { label: `item-${count}`, count },
             { attributeNameStrategy: "none" },
         );
     },

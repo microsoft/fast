@@ -1,8 +1,23 @@
 # Migrating from previous versions
 
+## Generated rendering functions to flat plans
+
+Regenerate JavaScript modules/native artifacts and deploy the matching
+version-5 helper/library. The generated module now embeds flat template tables
+loaded by the helper instead of specialized rendering functions.
+Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
+`prepareState` and all four `render*Prepared` methods remain unchanged, as do
+`ServerState`, `PreparedServerState`, validation and snapshot ownership.
+No JSON-only request API or consumer serialization migration is required.
+Native execution and artifact schema remain unchanged.
+
+The compiler fingerprint remains embedded compatibility metadata. Flat plans
+do not provide stable modular asset packaging or make edited templates produce
+unchanged assets. The earlier source-rendering migration below is separate.
+
 ## Request-time source rendering to compiled server targets
 
-This prerelease makes a breaking replacement of the previous renderer.
+The earlier source-rendering prerelease made a breaking replacement of the previous renderer.
 It is classified as a **minor prerelease release, not a drop-in upgrade**.
 Updating the dependency alone is insufficient: migrate removed public APIs,
 normalize accepted state, await harness rendering, and regenerate compiled output.
@@ -11,32 +26,24 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
-### Generated AOT/object APIs to JSON-only flat plans (helper version 5)
+### Prepared snapshots and helper contract version 3
 
-Regenerate JavaScript modules and native artifacts and deploy matching
-helpers/libraries. Version-4 generated modules fail the version-5 helper check.
-Native IR schema remains version 1 and native execution/ownership are unchanged,
-but exact helper identity/compiler fingerprint still require regeneration.
+Regenerate both JavaScript modules and native artifacts and deploy the matching
+helper/library. Version-2 modules intentionally fail the version-3 helper check.
+Existing ordinary render methods keep validating supplied state on every call;
+the executable IR schema remains version 1.
 
-Generated AOT bodies are replaced by flat string/code/offset tables loaded into
-closures once. No AOT fallback, object validator, `prepareState`,
-`render*Prepared`, `ServerState` or `PreparedServerState` remains in JavaScript.
-Use the corresponding `renderEntryJson`, `renderTemplateJson`,
-`renderHostJson` or `renderShadowJson` method with required JSON text.
-Callers owning already-parsed JSON data must serialize explicitly; pass incoming
-JSON text directly rather than parsing and serializing it first.
+For opt-in reuse, call generated `prepareState` once, then use the corresponding
+`render*Prepared` method. Do not pass a handle to an ordinary method or serialize
+it. Snapshots copy input rather than taking ownership or freezing caller data;
+create a new snapshot after input changes. Artifacts sharing one helper instance
+can share snapshots; separate helpers/workers cannot.
 
-Each call parses without a reviver, validates every key/value for finite numbers
-and well-formed Unicode, and normalizes negative zero in request-owned data.
-Malformed JSON raises `SyntaxError`; non-string/invalid decoded input raises
-`TypeError`. Custom JavaScript helpers must implement `createServerRenderer`
-with the JSON-only exports and version-1 flat plan contract.
-Native `PreparedState`/`render_*_prepared` APIs remain unchanged.
-
-The benchmark report is now version 3, with `flat-plan-javascript`,
-`owned-json` and `flatPlanJson` samples. Removed `--state-mode`,
-`--request-input` and `--json-first` switches are not compatibility aliases.
-Compare equivalent fresh-JSON-to-result boundaries when evaluating older data.
+Rust callers can construct `PreparedState::new(&state)` or `from_json(json)` and
+call `render_*_prepared`. Snapshots own immutable shared data; ordinary signatures,
+execution budgets and output/error ownership remain intact. These snapshots are
+not the retired prepared compiler/program APIs and cannot load their artifacts.
+See the [complete ownership contract](../server-modules.md#prepared-state-snapshots).
 
 ### Choose the matching replacement
 
@@ -44,18 +51,18 @@ Compile authored inputs at build time, then select the matching render context:
 
 | Previous API | Migration |
 |---|---|
-| WASM `render_entry_with_templates` | Compile the entry; call generated `renderEntryJson` for entry-host rules. |
-| WASM `render` / `render_with_templates` | Call generated `renderTemplateJson` to preserve template-context root-host rules. |
-| `render_shadow_root` | Call generated `renderShadowJson(name, componentState)` for a resolved-state DSD fragment. |
+| WASM `render_entry_with_templates` | Compile the entry; call generated `renderEntry` for entry-host rules. |
+| WASM `render` / `render_with_templates` | Call generated `renderTemplate` to preserve template-context root-host rules. |
+| `render_shadow_root` | Call generated `renderShadow(name, componentState)` for a resolved-state DSD fragment. |
 | Native Rust source rendering | Compile an artifact, load `CompiledArtifact`, and call its corresponding render method (`render_entry`, `render_template`, `render_host` or `render_shadow`). |
 | Legacy prepared compiler/program APIs/artifacts | Rebuild authored sources into generated ESM or native artifacts; move lifecycle and activation responsibilities to the application. |
 
 ### Build once, render with request state
 
-Use `renderEntryJson` for entry-host attribute handling and `renderTemplateJson`
+Use `renderEntry` for entry-host attribute handling and `renderTemplate`
 for template-context root-host attributes. Both render complete synchronous HTML.
 Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
-always compiles and executes flat plans; remove `--aot`, `--stream` and `stream`
+always compiles and executes server modules; remove `--aot`, `--stream` and `stream`
 configuration from build scripts.
 
 ```js
@@ -74,10 +81,10 @@ await writeFile(
 
 ```js
 // Server: no compiler or WASM import.
-import { renderEntryJson, renderShadowJson } from "./generated/server.mjs";
+import { renderEntry, renderShadow } from "./generated/server.mjs";
 
-const html = renderEntryJson('{"title":"Request-specific state"}');
-const dsd = renderShadowJson("my-card", '{"title":"Component state"}');
+const html = renderEntry({ title: "Request-specific state" });
+const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
 For named files, use `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
@@ -134,7 +141,7 @@ state becomes `{}`; native methods require an explicit `JsonValue`.
 Native and JS targets share rendering semantics, not identical workload limits.
 Native state is limited to depth 64 (root depth zero) and one million values
 including the root; execution also bounds nested body calls, steps and UTF-8 output
-bytes. JavaScript plans expose no equivalent FAST budgets and remain subject to the host's
+bytes. JS flat plans expose no equivalent FAST budgets and remain subject to their host's
 stack/memory limits. Check workload acceptance when switching targets; see the
 [target resource contracts](../server-modules.md#target-resource-contracts).
 Future tighter defaults, state rejection or normalization/coercion changes can

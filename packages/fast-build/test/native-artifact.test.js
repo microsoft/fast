@@ -68,7 +68,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
                 env: { ...process.env, PATH: "" },
                 timeout: 10_000,
             });
-            assert.equal(html, server.renderEntryJson(JSON.stringify(state)));
+            assert.equal(html, server.renderEntry(state));
         }
         fs.writeFileSync(artifact, JSON.stringify({ ...ir, compilerId: "incompatible" }));
         assert.throws(

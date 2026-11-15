@@ -153,7 +153,7 @@ export async function render(queryObj: Record<string, string>): Promise<{
 }>;
 ```
 
-Use `createSSRRenderer` from the harness to build the `render()` function. It scans for component build artifacts (f-templates, stylesheets), compiles flat server plans with `@microsoft/fast-build`, and explicitly serializes fixture state for its JSON-only renderer. The fixture API is unchanged.
+Use `createSSRRenderer` from the harness to build the `render()` function. It scans for component build artifacts (f-templates, stylesheets) and uses the `@microsoft/fast-build` AOT fixture compiler to produce declarative shadow DOM on each request.
 
 **Multi-component package** (all components in one package):
 

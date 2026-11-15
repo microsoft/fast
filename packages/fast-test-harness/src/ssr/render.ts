@@ -427,9 +427,7 @@ export function createSSRRenderer(options: SSRRendererOptions): {
                     const server = await import(
                         `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
                     );
-                    const rendered: string = server.renderEntryJson(
-                        JSON.stringify(state),
-                    );
+                    const rendered: string = server.renderEntry(state);
 
                     // Extract body content from the rendered document.
                     const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);

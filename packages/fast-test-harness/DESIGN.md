@@ -291,7 +291,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 1. Builds entry HTML from `queryObj` — either raw HTML (`queryObj.html`) or a constructed element (`queryObj.tagName`, `queryObj.attributes`, `queryObj.innerHTML`). Attributes with `false`, `null`, or `undefined` values are omitted; other values are HTML-escaped.
 2. Builds JSON-shaped state from attributes (including hyphen-stripped variants for camelCase bindings).
-3. Compiles flat plans with `compileServerModule`, imports their ESM, and calls `renderEntryJson(JSON.stringify(state))` to produce HTML with declarative shadow DOM. The JavaScript renderer accepts only JSON text; fixture state serialization is explicit.
+3. Compiles the fixture with `compileServerModule`, imports the generated module, and calls its `renderEntry(state)` to produce HTML with declarative shadow DOM.
 4. Extracts `<body>` content from the rendered document.
 5. Returns `{ template, fixture, preloadLinks }`.
 

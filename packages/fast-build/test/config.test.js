@@ -879,7 +879,7 @@ describe("config file loading", () => {
         );
 
         const { calls } = runWithStubbedWasm([], dir);
-        const renderCall = calls.find(call => call.name === "renderEntryJson");
+        const renderCall = calls.find(call => call.name === "renderEntry");
 
         assert.ok(renderCall);
         assert.equal(renderCall.markersV2, true);
@@ -901,7 +901,7 @@ describe("config file loading", () => {
         );
 
         const { calls } = runWithStubbedWasm(["--markers_v2"], dir);
-        const renderCall = calls.find(call => call.name === "renderEntryJson");
+        const renderCall = calls.find(call => call.name === "renderEntry");
 
         assert.ok(renderCall);
         assert.equal(renderCall.markersV2, true);

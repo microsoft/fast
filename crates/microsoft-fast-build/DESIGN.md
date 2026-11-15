@@ -5,7 +5,7 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits flat string/code/offset tables in server ESM from this IR; `compile_server_artifact` serializes
+emits flat string/code/offset tables in ESM from this IR; `compile_server_artifact` serializes
 the same IR for the supported native Rust executor. There is one HTML/expression
 lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
@@ -55,26 +55,24 @@ their plain and hydrated bytes are identical. Adjacent literal writes and static
 attribute fragments are coalesced in place before interning. Whitespace or
 client-attribute differences retain the tag operation; binding counts, nested
 components, host defaults and DSD selection remain executable boundaries.
-The JavaScript plan loader specializes literal-only bodies into constant closures. Both targets use the same compacted
+The JavaScript plan loader returns literal-only and empty bodies directly, without
+hydration branches or an output accumulator. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The JavaScript emitter locally numbers flat rules per entry/component and interns
-their string tables. ESM embeds only these plans and calls the helper's loader;
-it does not emit rendering functions, accessors or loops. The helper validates
-all records/references and prepares execution closures once. Compound property
-literals retain per-request ownership. Native lowering/opcodes are unchanged.
-
-The JavaScript helper also specializes component overlay keys/group operations
-and short composite-attribute recipes during plan loading. It avoids request-time
-property tuples and mapped attribute fragments, while preserving ordered reads,
-explicit-property precedence and borrowed-group copy-on-write. This is internal
-helper execution specialization, not emitted JavaScript or a schema/ABI change.
+The emitter locally numbers flat rules per entry/component and interns strings.
+ESM embeds only these plans and calls the helper's loader; it does not emit
+rendering functions, accessors or loops. The helper validates all records and
+references, detects cycles and prepares execution closures once. Compound
+property literals remain request-owned. Object validation and prepared snapshots
+are unchanged; overlay/attribute specialization is not part of this baseline.
+Native execution and artifact schema are unchanged.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
 attributes, naming rules, body structure, literal CSS/markup and hydration binding
-counts. State paths become segment arrays. The plan loader prepares repeat closures; the native executor iterates the same body references.
+counts. State paths become segment arrays. The plan loader prepares repeat
+closures; the native executor iterates the same body references.
 
 ### Compiled JavaScript access plans
 
@@ -95,16 +93,17 @@ Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
 This is a JavaScript backend replacement, not a native executor rewrite.
-Helper contract version 5 removes generated AOT bodies and object/prepared
-JavaScript request APIs. Flat plan schema and native artifact schema remain
-version 1; regenerate both artifacts and deploy matching helpers/libraries.
+Helper contract version 5 introduces flat plans while preserving published
+object/prepared APIs. Flat plan and native artifact schemas remain version 1.
+Regenerate both
+target artifacts with the upgraded compiler and deploy matching helpers/libraries.
 
 ## Request execution
 
 Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
-For this target the helper owns JSON-string parsing and full residual validation,
+For this target the JavaScript helper owns complete JSON-shaped state validation,
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
-escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
+escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
 synchronously return complete strings. Existing markup, whitespace, escaping and
 markers remain byte-preserved.
@@ -118,13 +117,19 @@ Changes to authored inputs still invalidate artifacts.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; ordinary calls retain no request state.
 
-The only JavaScript render methods are `renderEntryJson`,
-`renderTemplateJson`, `renderHostJson` and `renderShadowJson`.
-Intrinsic parsing without a reviver establishes plain acyclic/dense ownership.
-Every key/value still receives Unicode/finite-number validation and negative-zero
-normalization. No caller objects are coerced/serialized and no snapshots are
-copied, frozen, branded or cached. The general object validator and JavaScript
-prepared APIs are removed. Native state/ownership/execution are unchanged.
+### Prepared-state snapshots
+
+Generated modules export `prepareState` and four `render*Prepared` counterparts.
+The helper reuses its validator with copy/freeze enabled: every container is
+copied, negative zero is normalized, and the complete copy is recursively frozen.
+A private `WeakMap` associates an opaque frozen handle with the snapshot.
+Prepared requests check map membership, reject forged/foreign handles, and reuse
+the same generated bodies with fresh options, overlays, loops and marker scopes.
+Handles can cross artifacts sharing one helper instance, not helper instances or
+processes. Dropping handles allows garbage collection; there is no native external
+memory or explicit disposal API. Ordinary methods still validate on every call.
+Dataset overlays copy borrowed objects before merging, including explicit
+`:dataset` property bindings, so neither caller data nor snapshots are mutated.
 
 ### Native artifact execution
 
@@ -187,9 +192,9 @@ There is no independent C# implementation of rendering semantics.
 
 ## Plugin integration boundaries
 
-Generated `renderShadowJson` returns just the DSD `<template>` for a
+Generated `renderShadow` returns just the DSD `<template>` for a
 named definition and resolved component state. Entry, host and fragment
-exports share loaded shadow closures and fresh hydration scopes. The fragment API does
+exports share generated shadow functions and fresh hydration scopes. The fragment API does
 not create host attributes or light DOM; nested hosts still follow normal rules.
 
 `binding_metadata.rs` reuses render-event discovery, tag attributes, directive
@@ -326,8 +331,8 @@ render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
 Node tests enforce 438 distinct frozen output contracts and the shared
 performance corpus baseline.
-Browser fixtures hydrate flat-plan output. `bench:server` measures generated JavaScript;
+Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
 its unique-host workload varies indexes, dataset values and inline styles to
-exercise structural sharing rather than only byte-identical hosts;
+exercise component plans rather than only byte-identical hosts;
 its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.

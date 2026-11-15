@@ -265,8 +265,8 @@ fn launcher(ir: &Value, runtime_import: &str, data: &str) -> String {
          {data}\
          export const compilerId = {};\n\
          export const runtimeVersion = {SERVER_RUNTIME_VERSION};\n\
-         const {{renderEntryJson,renderTemplateJson,renderHostJson,renderShadowJson,components}} = $.createServerRenderer(entryPlan,componentPlans,compilerId);\n\
-         export {{renderEntryJson,renderTemplateJson,renderHostJson,renderShadowJson,components}};\n",
+         const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(entryPlan,componentPlans,compilerId);\n\
+         export {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}};\n",
         serde_json::to_string(runtime_import).unwrap(),
         ir["compilerId"],
     )
