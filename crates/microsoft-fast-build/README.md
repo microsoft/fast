@@ -35,10 +35,21 @@ generation eagerly diagnoses malformed skipped bodies.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for helper compatibility, state validation and qualification.
 
-Generated JavaScript uses module-level path accessors and reusable request-local
-repeat frames. Helper contract version 3 requires regenerated modules/artifacts
-and matching deployed helpers/libraries. The executable IR schema remains version 1.
-Existing render APIs remain available, with additive prepared-state methods.
+Generated JavaScript contains flat string/rule tables, prepared once by the
+server-only helper without evaluating generated execution source.
+Helper contract version 4 requires regenerated modules/artifacts and matching
+deployed helpers/libraries. The native IR schema remains version 1.
+Existing render and prepared-state APIs remain available.
+
+For stable modular output, call
+`compile_server_assets(entry, &locator, runtime_import)`. Its `ServerAssets`
+result contains an `entry` filename and a sorted `files` map with an entry
+launcher, entry plan, per-component plan modules and a deployment manifest.
+Static files have deterministic local IDs and semantic filenames; unrelated
+definitions and separately supplied request state do not rewrite them.
+Write only files whose bytes changed and activate a complete compatible
+deployment atomically. Compiler identity belongs to the manifest/launcher;
+native artifact fingerprint checks remain unchanged.
 
 ### Compile and deploy native Rust artifacts
 

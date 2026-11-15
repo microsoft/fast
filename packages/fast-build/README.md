@@ -53,6 +53,55 @@ const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 Use generated `renderTemplate` for template-context root-host attribute handling,
 or `renderEntry` for entry-host rules.
 
+## Stable modular server assets
+
+The compiler now emits flat string/instruction tables instead of per-binding
+execution source. Both single-file and modular output use the same helper-owned
+executor; there is no legacy JavaScript execution backend.
+Regenerate existing outputs for **helper contract version 4**.
+
+Use `compileServerAssets` for stable semantic filenames and independently
+numbered component tables. Request state remains separate:
+
+```js
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { compileServerAssets } from "@microsoft/fast-build/server.js";
+
+const assets = compileServerAssets("<my-card></my-card>", {
+    "my-card": "<h2>{{title}}</h2>",
+});
+for (const [name, source] of Object.entries(assets.files)) {
+    const filename = path.join("./generated", name);
+    await mkdir(path.dirname(filename), { recursive: true });
+    const previous = await readFile(filename, "utf8").catch(error => {
+        if (error.code === "ENOENT") return null;
+        throw error;
+    });
+    if (previous !== source) await writeFile(filename, source);
+}
+```
+
+Import `./generated/server.mjs` and use the same render methods shown above.
+The output includes `entry.plan.mjs`, `component-my-card.plan.mjs` and
+`server.manifest.json`. Unchanged templates produce unchanged static names/bytes;
+changing one component or adding an unrelated definition does not renumber the
+others. The manifest/launcher retain compiler and runtime compatibility identity.
+No hash is required in public asset filenames.
+
+Different request state changes rendered HTML, not these static assets.
+State embedded in authored `initial-state` attributes is still template input
+and changes assets; pass dynamic state to render methods instead, with the
+intended component-property/default precedence.
+Nested application state remains supported without a mandatory flattening pass.
+
+Deploy the complete launcher/manifest/dependency set atomically and revalidate
+mutable stable URLs; unchanged filenames do not permit stale mixed-version
+deployments or immutable caching of mutable content.
+Node activation needs a fresh deployment directory or new process/worker, since
+overwriting a file does not invalidate its ESM module cache.
+See [the version-4 migration](./docs/migration/aot-server-rendering.md#flat-plans-and-stable-assets-helper-contract-version-4).
+
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
 
@@ -83,6 +132,8 @@ covers text and attribute output.
 The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
 documents configurable warmup, optional CPU profiles and historical report
 comparison.
+Use `--asset-layout=modular` to measure actual multi-file loading rather than the
+default single-file plan. Both run the same flat-plan executor.
 Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
 requests, include output byte throughput, and record state hashes, rendering
 options and output-structure diagnostics. These qualify measurement boundaries;

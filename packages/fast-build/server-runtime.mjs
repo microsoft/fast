@@ -1,4 +1,4 @@
-export const runtimeVersion = 3;
+export const runtimeVersion = 4;
 
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
@@ -433,4 +433,455 @@ export function marker(scope, count) {
             ? `data-fe-b-${index}`
             : `data-fe-c-${index}-${count}`
         : `data-fe="${count}"`;
+}
+
+/**
+ * Load compiler-owned flat tables once, without evaluating generated source.
+ * Application state is supplied only to the returned render methods.
+ */
+export function createServerRenderer(entry, definitions, compilerId) {
+    const components = new Map();
+    const invalid = () => {
+        throw new TypeError("Invalid or incompatible FAST server plan.");
+    };
+    const missing = name => {
+        throw Object.assign(new Error(`Unknown component: ${name}`), {
+            code: "missing-template",
+            templateName: name,
+        });
+    };
+
+    function load(plan) {
+        if (
+            plan?.format !== "fast-server-plan" ||
+            plan.version !== 1 ||
+            !Array.isArray(plan.strings) ||
+            plan.strings.some(value => typeof value !== "string") ||
+            !Array.isArray(plan.code) ||
+            !plan.code.every(Number.isSafeInteger) ||
+            !Array.isArray(plan.offsets) ||
+            plan.offsets.length === 0 ||
+            plan.offsets[0] !== 0 ||
+            plan.offsets.some(
+                (offset, index) =>
+                    !Number.isSafeInteger(offset) ||
+                    offset < 0 ||
+                    offset >= plan.code.length ||
+                    (index > 0 && offset <= plan.offsets[index - 1]),
+            )
+        ) {
+            invalid();
+        }
+        const strings = plan.strings.slice();
+        const rows = plan.offsets.map((offset, index) =>
+            plan.code.slice(offset, plan.offsets[index + 1]),
+        );
+        const row = (id, kinds) => {
+            if (
+                !Number.isSafeInteger(id) ||
+                id < 0 ||
+                id >= rows.length ||
+                (kinds && !kinds.includes(rows[id][0]))
+            ) {
+                invalid();
+            }
+            return rows[id];
+        };
+        const string = id => {
+            if (id < 0 || id >= strings.length) invalid();
+            return strings[id];
+        };
+        const path = id => row(id, [1]).slice(1).map(string);
+        const aliases = [["$index"]];
+        for (const operation of rows) {
+            if (operation[0] === 22) {
+                const name = path(operation[1]);
+                if (
+                    !aliases.some(
+                        alias =>
+                            alias.length === name.length &&
+                            alias.every((segment, index) => segment === name[index]),
+                    )
+                ) {
+                    aliases.push(name);
+                }
+            }
+        }
+        const conditions = [8, 9, 10, 11, 12];
+        const operands = [1, 2, 3, 4, 5, 6, 7];
+        const attrs = [0, 13, 14, 15, 16];
+        const operations = [0, 19, 20, 21, 22, 23, 26];
+        const lengths = {
+            0: 1,
+            2: 0,
+            3: 1,
+            4: 1,
+            5: 1,
+            8: 1,
+            9: 1,
+            10: 2,
+            11: 2,
+            12: 3,
+            13: 4,
+            14: 2,
+            15: 1,
+            16: 2,
+            19: 4,
+            20: 2,
+            21: 2,
+            22: 4,
+            23: 10,
+            24: 4,
+            25: 2,
+            26: 1,
+        };
+        const compiled = new Map();
+        const visiting = new Set();
+        const boolean = value => {
+            if (value !== 0 && value !== 1) invalid();
+            return value === 1;
+        };
+        const count = value => {
+            if (value < 0) invalid();
+            return value;
+        };
+        const refs = (id, kinds) =>
+            row(id, [17])
+                .slice(1)
+                .map(reference => build(reference, kinds));
+
+        function build(id, kinds) {
+            const [kind, ...args] = row(id, kinds);
+            if (compiled.has(id)) return compiled.get(id);
+            if (visiting.has(id)) invalid();
+            visiting.add(id);
+            if (own(lengths, kind) && args.length !== lengths[kind]) invalid();
+            let run;
+            switch (kind) {
+                case 0:
+                case 5: {
+                    const value = string(args[0]);
+                    run = () => value;
+                    break;
+                }
+                case 1: {
+                    if (args.length === 0) invalid();
+                    const segments = args.map(string);
+                    const slots = aliases.flatMap((alias, slot) =>
+                        alias.length <= segments.length &&
+                        alias.every((segment, index) => segment === segments[index])
+                            ? [[slot, alias.length]]
+                            : [],
+                    );
+                    run = access(segments, slots);
+                    break;
+                }
+                case 2:
+                    run = () => null;
+                    break;
+                case 3: {
+                    const value = boolean(args[0]);
+                    run = () => value;
+                    break;
+                }
+                case 4: {
+                    const encoded = string(args[0]);
+                    const value =
+                        encoded === "inf"
+                            ? Infinity
+                            : encoded === "-inf"
+                              ? -Infinity
+                              : Number(encoded);
+                    if (Number.isNaN(value) && encoded !== "NaN") invalid();
+                    run = () => value;
+                    break;
+                }
+                case 6: {
+                    const values = args.map(reference => build(reference, operands));
+                    run = (r, l) => values.map(value => value(r, l));
+                    break;
+                }
+                case 7: {
+                    if (args.length % 2 !== 0) invalid();
+                    const entries = [];
+                    for (let index = 0; index < args.length; index += 2) {
+                        entries.push([
+                            string(args[index]),
+                            build(args[index + 1], operands),
+                        ]);
+                    }
+                    run = (r, l) =>
+                        Object.fromEntries(
+                            entries.map(([key, value]) => [key, value(r, l)]),
+                        );
+                    break;
+                }
+                case 8:
+                case 9: {
+                    const value = build(args[0], [1]);
+                    run =
+                        kind === 8
+                            ? (r, l) => !truthy(value(r, l))
+                            : (r, l) => truthy(value(r, l));
+                    break;
+                }
+                case 10:
+                case 11: {
+                    const left = build(args[0], conditions);
+                    const right = build(args[1], conditions);
+                    run =
+                        kind === 10
+                            ? (r, l) => left(r, l) && right(r, l)
+                            : (r, l) => left(r, l) || right(r, l);
+                    break;
+                }
+                case 12: {
+                    const operator = string(args[0]);
+                    if (!["==", "!=", ">", "<", ">=", "<="].includes(operator)) {
+                        invalid();
+                    }
+                    const left = build(args[1], [1]);
+                    const right = build(args[2], operands);
+                    run = (r, l) => compare(left(r, l), right(r, l), operator);
+                    break;
+                }
+                case 13: {
+                    const name = string(args[0]);
+                    const value = build(args[1], [1]);
+                    const isBoolean = boolean(args[2]);
+                    const primitive = boolean(args[3]);
+                    run = (r, l) => attribute(name, value(r, l), isBoolean, primitive);
+                    break;
+                }
+                case 14: {
+                    const condition = build(args[0], conditions);
+                    const literal = string(args[1]);
+                    run = (r, l) => (condition(r, l) ? literal : "");
+                    break;
+                }
+                case 15: {
+                    const value = build(args[0], [1]);
+                    run = (r, l) => segment(value(r, l));
+                    break;
+                }
+                case 16: {
+                    const name = string(args[0]);
+                    const parts = refs(args[1], attrs);
+                    run = (r, l) =>
+                        quoted(name, composite(parts.map(part => part(r, l))));
+                    break;
+                }
+                case 17: {
+                    const values = args.map(reference => build(reference));
+                    run = (r, l, o, h, e) => values.map(value => value(r, l, o, h, e));
+                    break;
+                }
+                case 18: {
+                    const steps = args.map(reference => build(reference, operations));
+                    if (steps.length === 1 && row(args[0])[0] === 0) {
+                        run = steps[0];
+                    } else {
+                        run = (r, l, o, h, e) => {
+                            let output = "";
+                            for (const step of steps) output += step(r, l, o, h, e);
+                            return output;
+                        };
+                    }
+                    break;
+                }
+                case 19: {
+                    const plain = refs(args[0], attrs);
+                    const hydrated = refs(args[1], attrs);
+                    const bindings = count(args[2]);
+                    const ending = string(args[3]);
+                    run = (r, l, o, h) => {
+                        let output = "";
+                        for (const part of h ? hydrated : plain) output += part(r, l);
+                        if (h && bindings) output += ` ${marker(h, bindings)}${ending}`;
+                        return output;
+                    };
+                    break;
+                }
+                case 20: {
+                    const value = build(args[0], [1]);
+                    const escaped = boolean(args[1]);
+                    run = (r, l, o, h) => {
+                        const index = h ? h.index++ : 0;
+                        const output = text(value(r, l));
+                        const content = escaped ? htmlEscape(output) : output;
+                        return h ? start(h, index) + content + end(h, index) : content;
+                    };
+                    break;
+                }
+                case 21: {
+                    const condition = build(args[0], conditions);
+                    const body = build(args[1], [18]);
+                    run = (r, l, o, h) => {
+                        const index = h ? h.index++ : 0;
+                        const output = condition(r, l)
+                            ? body(r, l, o, h ? scope(o) : null, false)
+                            : "";
+                        return h ? start(h, index) + output + end(h, index) : output;
+                    };
+                    break;
+                }
+                case 22: {
+                    const name = path(args[0]);
+                    const slot = aliases.findIndex(
+                        alias =>
+                            alias.length === name.length &&
+                            alias.every((segment, index) => segment === name[index]),
+                    );
+                    const value = build(args[1], [1]);
+                    const expression = string(args[2]);
+                    const body = build(args[3], [18]);
+                    run = (r, l, o, h) => {
+                        const items = list(value(r, l), expression);
+                        const binding = h ? h.index++ : 0;
+                        let output = h ? start(h, binding) : "";
+                        const next = items.length ? loop(l, slot) : null;
+                        for (let index = 0; index < items.length; index++) {
+                            next.value.value = items[index];
+                            next.index.value = index;
+                            if (h) output += repeatStart(h, index);
+                            output += body(r, next, o, h ? scope(o) : null, false);
+                            if (h) output += repeatEnd(h, index);
+                        }
+                        return h ? output + end(h, binding) : output;
+                    };
+                    break;
+                }
+                case 23: {
+                    const name = string(args[0]);
+                    const light = build(args[1], [18]);
+                    const closing = string(args[2]);
+                    const opening = build(args[3], [19]);
+                    const props = refs(args[4], [24]);
+                    const entryAttrs = refs(args[5], attrs);
+                    const normalAttrs = refs(args[6], attrs);
+                    const bindings = count(args[7]);
+                    const defaults = refs(args[8], [25]);
+                    const shadowTag = string(args[9]);
+                    run = (r, l, o, h, e) => {
+                        if (!selected(o, name)) {
+                            return opening(r, l, o, h) + light(r, l, o, h, e) + closing;
+                        }
+                        const component = components.get(name);
+                        if (!component) missing(name);
+                        const childRoot = props.length
+                            ? child(
+                                  r,
+                                  props.map(prop => prop(r, l, o)),
+                              )
+                            : r;
+                        const shadow = component.shadow(
+                            childRoot,
+                            null,
+                            o,
+                            scope(o),
+                            false,
+                        );
+                        let output = "";
+                        let hydrationAttribute = null;
+                        for (const part of e ? entryAttrs : normalAttrs) {
+                            output += part(r, l);
+                        }
+                        if (!e && bindings && h) {
+                            const hydration = marker(h, bindings);
+                            hydrationAttribute = hydration.split("=")[0];
+                            output += ` ${hydration}`;
+                        }
+                        for (const part of defaults) {
+                            if (part.name !== hydrationAttribute) {
+                                output += part.run(childRoot, null);
+                            }
+                        }
+                        output += `>${shadowTag}${shadow}</template>`;
+                        output += light(r, l, o, h, false);
+                        return `${output}</${name}>`;
+                    };
+                    break;
+                }
+                case 24: {
+                    const camel = string(args[0]);
+                    const none = string(args[1]);
+                    const group = args[2] === -1 ? null : string(args[2]);
+                    const value = build(args[3], operands);
+                    run = (r, l, o) => [
+                        o.strategy === "camelCase" ? camel : none,
+                        group,
+                        value(r, l),
+                    ];
+                    break;
+                }
+                case 25:
+                    run = {
+                        name: string(args[0]),
+                        run: build(args[1], attrs),
+                    };
+                    break;
+                case 26:
+                    run = build(args[0], [18]);
+                    break;
+                default:
+                    invalid();
+            }
+            visiting.delete(id);
+            compiled.set(id, run);
+            return run;
+        }
+
+        // Validate even unreachable records before activating an asset.
+        for (let id = 0; id < rows.length; id++) build(id);
+        return {
+            shadow: build(plan.root, [18]),
+            host: plan.host === undefined ? null : build(plan.host, [18]),
+            tag: plan.tag === undefined ? null : string(plan.tag),
+        };
+    }
+
+    if (!Array.isArray(definitions) || typeof compilerId !== "string") invalid();
+    for (const [name, plan] of definitions) {
+        if (typeof name !== "string" || components.has(name)) invalid();
+        const component = load(plan);
+        if (!component.host || component.tag === null) invalid();
+        components.set(name, component);
+    }
+    const body = load(entry).shadow;
+    const renderers = {
+        compilerId,
+        runtimeVersion,
+        components: Object.freeze([...components.keys()]),
+        prepareState,
+    };
+    for (const [suffix, makeRequest] of [
+        ["", request],
+        ["Prepared", preparedRequest],
+    ]) {
+        renderers[`renderEntry${suffix}`] = (state, options) => {
+            const [r, o] = makeRequest(state, options);
+            return body(r, null, o, null, true);
+        };
+        renderers[`renderTemplate${suffix}`] = (state, options) => {
+            const [r, o] = makeRequest(state, options);
+            return body(r, null, o, null, false);
+        };
+        renderers[`renderHost${suffix}`] = (name, state, options) => {
+            const [r, o] = makeRequest(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return component.host(r, null, o, null, true);
+        };
+        renderers[`renderShadow${suffix}`] = (name, state, options) => {
+            const [r, o] = makeRequest(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return selected(o, name)
+                ? component.tag +
+                      component.shadow(r, null, o, scope(o), false) +
+                      "</template>"
+                : "";
+        };
+    }
+    return Object.freeze(renderers);
 }

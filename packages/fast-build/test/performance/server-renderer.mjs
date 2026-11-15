@@ -23,6 +23,7 @@ const { values: args } = parseArgs({
         "state-mode": { type: "string", default: "plain" },
         "markers-v2": { type: "boolean", default: false },
         "attribute-name-strategy": { type: "string", default: "camelCase" },
+        "asset-layout": { type: "string", default: "single" },
         output: { type: "string" },
     },
 });
@@ -32,6 +33,7 @@ assert.ok(
     ["camelCase", "none"].includes(args["attribute-name-strategy"]),
     "Invalid attribute name strategy.",
 );
+assert.ok(["single", "modular"].includes(args["asset-layout"]), "Invalid asset layout.");
 const renderOptions = {
     markersV2: args["markers-v2"],
     attributeNameStrategy: args["attribute-name-strategy"],
@@ -206,7 +208,8 @@ async function worker() {
     console.log(
         JSON.stringify({
             reportVersion: 2,
-            executionTarget: "generated-javascript",
+            executionTarget: "flat-plan-javascript",
+            assetLayout: args["asset-layout"],
             renderOptions,
             stateMode,
             ...preparation,
@@ -284,7 +287,7 @@ async function main() {
         profileDirectory = await fs.mkdtemp(path.join(root, "fast-server-profile-"));
     }
     const compilerStart = performance.now();
-    const { compileServerModule } = require("../../server.js");
+    const { compileServerAssets, compileServerModule } = require("../../server.js");
     require("../../wasm/microsoft_fast_build.js");
     const compilerLoadMs = performance.now() - compilerStart;
     const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
@@ -373,7 +376,8 @@ async function main() {
     };
     const results = {
         reportVersion: 2,
-        executionTarget: "generated-javascript",
+        executionTarget: "flat-plan-javascript",
+        assetLayout: args["asset-layout"],
         renderOptions,
         node: process.version,
         platform: `${process.platform}/${process.arch}`,
@@ -398,16 +402,32 @@ async function main() {
             await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
             const inputWriteMs = performance.now() - inputStart;
             const compileStart = performance.now();
-            const source = compileServerModule(input.entry, input.templates, runtime);
+            const files =
+                args["asset-layout"] === "modular"
+                    ? compileServerAssets(input.entry, input.templates, runtime).files
+                    : {
+                          "server.mjs": compileServerModule(
+                              input.entry,
+                              input.templates,
+                              runtime,
+                          ),
+                      };
             const compileMs = performance.now() - compileStart;
             const writeStart = performance.now();
-            await fs.writeFile(path.join(directory, "server.mjs"), source);
+            for (const [filename, source] of Object.entries(files)) {
+                await fs.writeFile(path.join(directory, filename), source);
+            }
             const artifactWriteMs = performance.now() - writeStart;
             const record = {
                 inputWriteMs,
                 compileMs,
                 artifactWriteMs,
-                generatedBytes: Buffer.byteLength(source),
+                generatedBytes: Object.values(files).reduce(
+                    (bytes, source) => bytes + Buffer.byteLength(source),
+                    0,
+                ),
+                generatedModules: Object.keys(files).filter(name => name.endsWith(".mjs"))
+                    .length,
                 modes: Object.fromEntries(modes.map(mode => [modeKey(mode), []])),
             };
             const expectedStateHash = hash(JSON.stringify(input.state));
@@ -433,6 +453,7 @@ async function main() {
                             `--iterations=${iterations}`,
                             `--warmup=${warmupIterations}`,
                             `--state-mode=${stateMode}`,
+                            `--asset-layout=${args["asset-layout"]}`,
                             ...(renderOptions.markersV2 ? ["--markers-v2"] : []),
                             `--attribute-name-strategy=${renderOptions.attributeNameStrategy}`,
                         ],

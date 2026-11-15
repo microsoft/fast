@@ -1,8 +1,8 @@
 # Ahead-of-time server modules
 
 One Rust-owned lowering produces the executable representation for two supported
-targets: generated JavaScript functions and native Rust compiled artifacts.
-JavaScript AOT is a target, not a requirement for native request execution.
+targets: flat JavaScript execution tables and native Rust compiled artifacts.
+JavaScript execution is a target, not a requirement for native requests.
 
 ## Compilation and execution
 
@@ -46,6 +46,44 @@ fail. Each request owns its counters, loop frames, selection and child overlays.
 Finite cyclic registries compile without expanding component references.
 Rendering an actually unbounded recursive component tree is still an error in
 the application, not an instruction to truncate output.
+
+### Stable modular assets
+
+`compileServerAssets(entry, templates, runtimeImport?)` returns
+`{ entry: "server.mjs", files: Record<string, string> }`.
+Write the files under one deployment directory and import the entry launcher.
+It exports the same `ServerModule` contract as `compileServerModule`.
+The latter remains the single-file encoding of the same flat-plan executor,
+not the retired direct source emitter.
+
+Each static plan exports a flat string table, numeric rule vector and rule
+offsets. Bodies, conditions, attributes, typed literal values and references
+are already lowered; load prepares typed closures without template/expression
+parsing or source evaluation. Request rendering uses the existing state,
+lexical-frame, coercion, escaping and hydration helpers.
+Nested state need not be flattened or converted to strings.
+
+Component filename encoding preserves lowercase letters/digits/hyphens/
+underscores and encodes other UTF-8 bytes, avoiding traversal and
+case-insensitive collisions. IDs are assigned locally from ordered traversal,
+not a global registry counter. Symbolic component references permit cycles
+without imports between static component modules.
+
+Static component/entry-plan files contain no request state, compiler fingerprint,
+helper version or runtime import path. Compiler/helper identity and component
+dependencies live in the entry launcher/deployment manifest. Changing actual
+host defaults or entry text may change dependent plans; changing only component
+shadow content leaves a caller's symbolic references unchanged.
+Authored initial-state text remains literal compile input.
+
+The compiler does not write files or choose cache policy. Applications compare
+bytes to avoid touching unchanged files and atomically deploy the complete set.
+Stable names need URL revalidation or deployment-versioned directories, not
+immutable caching of mutable URLs. Load trusted compiler-generated plans only;
+do not patch table versions or native fingerprint fields to accept old artifacts.
+Node caches ESM by resolved URL. Overwriting files or adding a query only to the
+launcher does not reload unchanged dependency URLs. Activate a fresh deployment
+directory or new process/worker; do not reinterpret an existing loaded renderer.
 
 ## State and byte-preserving semantics
 
@@ -135,14 +173,16 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
-The current helper contract is version 3, adding explicit snapshot requests.
-Generated JavaScript prepares path
+The current helper contract is version 4, replacing generated execution source
+with flat string/numeric-rule tables. The helper validates and prepares typed
+execution closures once at load time. The old direct source emitter is removed,
+not retained as an optional backend. Generated JavaScript prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
-reset caller lexical scope. Ordinary state/rendering contracts and IR schema
+reset caller lexical scope. ordinary state/rendering contracts and IR schema
 version 1 remain unchanged; prepared methods are additive. Regenerate both target artifacts on upgrade and deploy the compatible
 helper/native library; older generated modules fail the import-time version check.
 
@@ -338,6 +378,12 @@ Run the AOT benchmark from the repository root after building:
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
 ```
 
+Use `--asset-layout=modular` to include the actual multi-file import/deployment
+layout; the default is `single`. Reports record `assetLayout`, total generated
+file bytes and `generatedModules`. Modular byte totals include the manifest.
+The historical `aot` state-mode keys remain for report compatibility, not as an
+alternate execution backend.
+
 The `deepPaths` workload covers nested object paths, numeric array access and
 array length. `nestedRepeats` covers three active lexical aliases, `$index` and
 root lookup across nested iterations. These supplement the existing static,
@@ -350,8 +396,8 @@ text and attributes. It helps expose allocation and UTF-8 materialization costs.
 
 ### Comparable input/output boundaries
 
-Reports identify `executionTarget: "generated-javascript"`; these are synchronous
-generated-JavaScript calls, not native Rust rendering. Parent and worker records
+Reports identify `executionTarget: "flat-plan-javascript"`; these are synchronous
+compiled-plan JavaScript calls, not native Rust rendering. Parent and worker records
 include `renderOptions`. Defaults remain v3 markers, `camelCase` attribute naming
 and DSD for all components. Select the other supported marker/naming contracts
 without changing renderer behavior:

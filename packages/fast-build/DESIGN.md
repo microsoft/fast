@@ -6,26 +6,36 @@ Development, peer and optional dependencies are separate.
 ## Build and execution ownership
 
 `server.js` loads compiler WASM only at build time and delegates all HTML
-parsing/lowering to Rust. `compileServerModule` returns ESM importing
-`server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
-native Rust executor. Both use the same compiler-owned executable IR.
-The helper is the JavaScript target's request engine. It has no imports or compiler,
-WASM, parser, browser, serialization or source-evaluation dependency.
+parsing/lowering to Rust. `compileServerModule` returns ESM containing flat
+string/instruction tables and importing `server-runtime.mjs`.
+`compileServerAssets` partitions the same tables into stable entry/component files
+and a deployment manifest. `compileServerArtifact` returns bytes for the supported
+native Rust executor. All use the same compiler-owned executable IR.
+The helper prepares typed execution closures once at module load and owns the
+JavaScript target's request engine. It has no imports or compiler, WASM, template
+parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-Rust interns identical executable bodies and factors repeated JavaScript element
-shapes into shared functions with instance-specific constant records. Different
-indexes, dataset values or inline styles do not require another executable
-function when their recipes and light DOM match. Single-use shapes remain
-directly emitted, and compound property literals retain per-call ownership.
-This is an internal compiler optimization; exported APIs, helper contract,
-artifact schema, rendering bytes and hydration behavior are unchanged. Existing
-compiler fingerprint checks still require artifacts to be regenerated on upgrade.
+Rust interns identical executable bodies. JavaScript emission encodes local
+body/rule references in flat numeric arrays rather than generating functions or
+expression source for every binding/body. The old source emitter is replaced,
+not retained as an optional backend. Compound property literals still have
+per-call ownership. Helper contract version 4 requires regenerated artifacts;
+render signatures, native IR schema, rendering bytes and hydration are unchanged.
+Existing native compiler fingerprint checks still apply.
+
+Each modular component is traversed independently, with local deterministic
+string/rule IDs and symbolic cross-component references. Unrelated definitions
+cannot renumber it; changing request state cannot change compiled files.
+Static files omit global compiler/helper metadata and runtime import paths.
+The entry launcher and manifest carry deployment identity. Authored initial-state
+text remains compile input: callers must supply dynamic state separately to avoid
+state-dependent asset churn. Applications own writing changed files, stale-cache
+invalidation and atomic activation of a complete compatible deployment.
 
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes
-only when hydration cannot change their output. Literal-only JavaScript bodies
-return constants directly. Tags with whitespace/stripping differences, markers,
+only when hydration cannot change their output. Literal-only JavaScript bodies are prepared as constant-returning closures. Tags with whitespace/stripping differences, markers,
 bindings, nested components or host semantics retain the required execution.
 The large-static-template benchmark covers distinct definitions with small bound
 regions; this optimization does not change the public rendering or artifact APIs.
@@ -46,8 +56,8 @@ imply equivalent FAST budgets in the JS target.
 
 ### Compiled access and repeat frames
 
-The Rust emitter interns path accessors and resolves potential lexical aliases
-into numeric slots. The helper caches array-index decoding at module import,
+The Rust emitter encodes segmented paths and repeat aliases in flat tables.
+The helper resolves aliases into numeric slots and caches array-index decoding at module import,
 specializes single-key root and single-alias lookups, and selects the newest
 matching alias when dotted prefixes overlap. It preserves own-property masking,
 nulls, array access and parent fallback without slicing paths per lookup.
@@ -58,8 +68,9 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Helper contract version 2 introduced these accessors/frames; version 3 adds
-prepared-state requests. Generated/native artifacts must be
+Helper contract version 2 introduced accessors/frames; version 3 added
+prepared-state requests and version 4 replaces generated execution source with
+flat tables. Generated/native artifacts must be
 regenerated and deployed with matching helpers/libraries. Rendering APIs and
 IR opcodes/schema remain unchanged; native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
@@ -87,7 +98,7 @@ This adds target-specific ownership wrappers, not another renderer or validator.
 
 ### Output assembly and escaping
 
-Generated JavaScript retains returned child strings and `+=` assembly.
+The JavaScript helper retains returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,
 instead of constructing a mapping for each matched character. Rendering retains
 no request-sized output buffers or scratch storage between calls.
@@ -119,7 +130,7 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 
 | File | Role |
 |---|---|
-| `server.js` / `server.d.ts` | Build-time JS/native-artifact compiler, ServerTemplateDefinition and generated-module types |
+| `server.js` / `server.d.ts` | Build-time module/modular-asset/native-artifact compiler and public types |
 | `server-runtime.mjs` | JavaScript target's server-only request helper implementation |
 | `bin/fast.js` | CLI/configuration, glob scanning and file I/O |
 | `build-wasm.cjs` | Builds the compiler and converter WASM wrappers |
@@ -149,8 +160,8 @@ render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
 
-Boundary-normalized measurements identify the execution target as generated
-JavaScript and record marker/naming options. State-only JSON serialization is
+Boundary-normalized measurements identify the execution target as
+`flat-plan-javascript` and record marker/naming options. State-only JSON serialization is
 timed once outside rendering, with byte length and SHA-256 checked against the
 parent's fixture. A separately warmed JSON-text-to-UTF-8 loop includes parsing,
 validation, rendering and encoding for ordinary or fresh-preparation calls.
