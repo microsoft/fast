@@ -1,4 +1,6 @@
-export const runtimeVersion = 3;
+export const runtimeVersion = 4;
+
+const parseJson = JSON.parse;
 
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
@@ -88,6 +90,44 @@ export function preparedRequest(state, options = {}) {
 
 export function request(state = {}, options = {}) {
     return requestOptions(validate(state), options);
+}
+
+function normalizeJson(value) {
+    if (typeof value === "string") {
+        if (!value.isWellFormed()) {
+            throw new TypeError("SSR strings must contain well-formed Unicode.");
+        }
+    } else if (typeof value === "number") {
+        if (!Number.isFinite(value)) {
+            throw new TypeError("SSR state must be acyclic JSON-shaped data.");
+        }
+        return value === 0 ? 0 : value;
+    } else if (Array.isArray(value)) {
+        for (let index = 0; index < value.length; index++) {
+            const item = value[index];
+            normalizeJson(item);
+            if (Object.is(item, -0)) value[index] = 0;
+        }
+    } else if (value !== null && typeof value === "object") {
+        for (const key of Object.keys(value)) {
+            if (!key.isWellFormed()) {
+                throw new TypeError(
+                    "SSR property names must contain well-formed Unicode.",
+                );
+            }
+            const item = value[key];
+            normalizeJson(item);
+            if (Object.is(item, -0)) value[key] = 0;
+        }
+    }
+    return value;
+}
+
+export function jsonRequest(json, options = {}) {
+    if (typeof json !== "string") {
+        throw new TypeError("Expected SSR state as a JSON string.");
+    }
+    return requestOptions(normalizeJson(parseJson(json)), options);
 }
 
 function requestOptions(state, options) {

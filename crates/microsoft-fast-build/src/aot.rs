@@ -3,7 +3,7 @@ use serde_json::{json, Value};
 use std::collections::HashMap;
 
 /// Compatibility identity for the generated module's server-only helper contract.
-pub const SERVER_RUNTIME_VERSION: u32 = 3;
+pub const SERVER_RUNTIME_VERSION: u32 = 4;
 
 fn js(value: &Value) -> String {
     if let Some(index) = value.get("parameter").and_then(Value::as_u64) {
@@ -457,7 +457,11 @@ pub(crate) fn emit(ir: &Value, runtime_import: &str) -> String {
         .join("\n");
     let shapes = shared.emit(&mut accesses);
     let accessors = accesses.declarations.join("");
-    let renders = [("", "request"), ("Prepared", "preparedRequest")]
+    let renders = [
+        ("", "request"),
+        ("Prepared", "preparedRequest"),
+        ("Json", "jsonRequest"),
+    ]
         .iter()
         .map(|(suffix, request)| format!(
             "export function renderEntry{suffix}(state,options) {{\nconst [r,o] = $.{request}(state,options);\nreturn {};\n}}\n\

@@ -36,6 +36,9 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `components`, `compilerId`, `runtimeVersion`: registry and compatibility metadata.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
+- `renderEntryJson(json, options?)`, `renderTemplateJson(json, options?)`,
+  `renderHostJson(name, json, options?)`, `renderShadowJson(name, json, options?)`:
+  explicit fresh JSON-string requests using the same generated bodies.
 
 Options are `attributeNameStrategy: "camelCase" | "none"`, `markersV2: boolean`,
 and `dsd: string[]`. Omitting `dsd` selects every component; `[]` selects none.
@@ -53,7 +56,8 @@ State is acyclic JSON-shaped data: null, booleans, finite numbers, well-formed
 Unicode strings, dense arrays and plain objects (including null-prototype
 objects) with enumerable own data properties. Omitted root state becomes `{}`.
 Negative zero renders as serialized JSON zero did previously.
-Only branches requiring that normalization are copied; caller state is never mutated.
+Object-input methods copy only branches requiring that normalization;
+caller state is never mutated.
 Functions, dates/class instances, inherited application properties, accessors,
 non-enumerable/symbol properties, sparse/extended arrays and nested `undefined`
 are rejected. Normalize these explicitly before rendering. Proxies and concurrent
@@ -74,6 +78,31 @@ Generation eagerly visits directive and light-DOM bodies, including skipped
 branches and empty repeats, and rejects malformed syntax with existing error
 codes, UTF-16 line/column/length and template names. Runtime repeat values must
 still be arrays (or missing); a present non-array produces `repeat-not-array`.
+
+## Fresh JSON-string requests
+
+JSON methods require a primitive string and parse it without a reviver inside
+the helper-owned request boundary. JSON parsing guarantees acyclic plain
+containers, dense arrays and enumerable own data properties, so the helper
+omits prototype/descriptor/symbol/cycle checks for that freshly parsed graph.
+Every key/value is still visited, including unused state, to reject nonfinite
+numbers and malformed Unicode. `JSON.parse("1e400")` yields Infinity and is
+rejected, as are escaped lone surrogates in keys or values.
+Negative zero is normalized in the owned graph without cloning/freezing it.
+
+Malformed JSON raises `SyntaxError`; non-string input or invalid state raises
+`TypeError`. Existing repeat/unknown-template errors, options and rendering
+contexts are unchanged. Input objects are never implicitly serialized/coerced;
+byte input and caller-supplied parsers/revivers are not accepted.
+The helper captures its JSON parser at initialization, so later replacement of
+`JSON.parse` does not replace this boundary. As with other helpers, an environment
+with tampered built-in intrinsics before initialization is outside the contract.
+
+Each call parses fresh data and retains no graph after rendering. These methods
+are for incoming JSON, not an implicit validation bypass for live objects or a
+prepared-state cache. Object and prepared APIs retain their full validation
+rules; prepared snapshots remain the explicit unchanged-state reuse path.
+Native parse/normalization/ownership contracts are not optimized by these JS APIs.
 
 ## Prepared-state snapshots
 
@@ -135,7 +164,8 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
-The current helper contract is version 3, adding explicit snapshot requests.
+The current helper contract is version 4, adding explicit fresh JSON requests
+alongside the version-3 snapshot APIs.
 Generated JavaScript prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
@@ -337,6 +367,21 @@ Run the AOT benchmark from the repository root after building:
 ```sh
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
 ```
+
+The default `--request-input=object` retains already-parsed primary requests.
+Use `--request-input=json` for `JSON.parse` plus ordinary rendering, or
+`--request-input=owned-json` for the explicit JSON API. Both fresh-JSON modes
+include parsing in first/warm rendering and UTF-8 delivery and require
+`--state-mode=plain`. Parent/worker records label `requestInput`, so do not
+compare different input boundaries as if they were the same request.
+
+Ordinary state mode also reports paired `warmJsonUtf8*` and
+`warmOwnedJsonUtf8*` timings/CPU/throughput and separate memory observations
+after forced GC. Each API parses fresh input, not a reused snapshot.
+`jsonRequestOrder` records the secondary loop order; `--json-first=alternate`
+is the default, while `ordinary` or `owned` explicitly fixes that order.
+Prepared reuse has no fresh-JSON loop; fresh preparation retains its separate
+ordinary-parse-plus-preparation boundary.
 
 The `deepPaths` workload covers nested object paths, numeric array access and
 array length. `nestedRepeats` covers three active lexical aliases, `$index` and

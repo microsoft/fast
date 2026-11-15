@@ -89,49 +89,70 @@ export function renderEntry(state) {
     globalThis.benchmarkClock += ++calls === 1 ? 11 : 7;
     return state.text;
 }
+export function renderEntryJson(json) { return renderEntry(JSON.parse(json)); }
 `,
         );
         await fs.writeFile(
             path.join(directory, "input.json"),
             JSON.stringify({ state: { text } }),
         );
-        const result = JSON.parse(
-            execFileSync(
-                process.execPath,
-                [
-                    "--import",
-                    pathToFileURL(preload).href,
-                    benchmark,
-                    "--worker=aot",
-                    `--directory=${directory}`,
-                    "--iterations=3",
-                ],
-                { encoding: "utf8" },
-            ),
-        );
-        assert.equal(result.firstRenderMs, 11);
-        assert.deepEqual(result.renderOptions, {
-            markersV2: false,
-            attributeNameStrategy: "camelCase",
-        });
-        assert.equal(result.moduleImportMs, 37);
-        assert.equal(result.coldImportAndRenderMs, 48);
-        assert.equal(result.warmupIterations, 20);
-        assert.equal(result.warmupMs, 140);
-        assert.equal(result.warmMsPerRender, 7);
-        assert.equal(result.utf8EncodeMs, 5);
-        assert.equal(result.warmUtf8MsPerRender, 12);
-        assert.equal(result.stateSerializeMs, 2);
-        assert.equal(result.stateJsonBytes, Buffer.byteLength(stateJson));
-        assert.equal(result.warmJsonUtf8MsPerRender, 15);
-        assert.equal(result.coldImportToUtf8Ms, 53);
-        const bytes = await fs.readFile(path.join(directory, "rendered.html"));
-        assert.deepEqual(bytes, Buffer.from(text));
-        assert.equal(result.outputBytes, bytes.length);
-        assert.equal(result.outputHash, createHash("sha256").update(bytes).digest("hex"));
-        assert.equal(result.warmStringBytesPerSecond, (bytes.length * 1000) / 7);
-        assert.equal(result.warmUtf8BytesPerSecond, (bytes.length * 1000) / 12);
-        assert.equal(result.warmJsonUtf8BytesPerSecond, (bytes.length * 1000) / 15);
+        for (const requestInput of ["object", "json", "owned-json"]) {
+            const parsingMs = requestInput === "object" ? 0 : 3;
+            const result = JSON.parse(
+                execFileSync(
+                    process.execPath,
+                    [
+                        "--import",
+                        pathToFileURL(preload).href,
+                        benchmark,
+                        "--worker=aot",
+                        `--directory=${directory}`,
+                        "--iterations=3",
+                        `--request-input=${requestInput}`,
+                        `--json-first=${requestInput === "json" ? "owned" : "ordinary"}`,
+                    ],
+                    { encoding: "utf8" },
+                ),
+            );
+            assert.equal(result.firstRenderMs, 11 + parsingMs);
+            assert.equal(result.requestInput, requestInput);
+            assert.deepEqual(result.renderOptions, {
+                markersV2: false,
+                attributeNameStrategy: "camelCase",
+            });
+            assert.equal(result.moduleImportMs, 37);
+            assert.equal(result.coldImportAndRenderMs, 48 + parsingMs);
+            assert.equal(result.warmupIterations, 20);
+            assert.equal(result.warmupMs, 140 + 20 * parsingMs);
+            assert.equal(result.warmMsPerRender, 7 + parsingMs);
+            assert.equal(result.utf8EncodeMs, 5);
+            assert.equal(result.warmUtf8MsPerRender, 12 + parsingMs);
+            assert.equal(result.stateSerializeMs, 2);
+            assert.equal(result.stateJsonBytes, Buffer.byteLength(stateJson));
+            assert.equal(result.warmJsonUtf8MsPerRender, 15);
+            assert.equal(result.warmOwnedJsonUtf8MsPerRender, 15);
+            assert.deepEqual(
+                result.jsonRequestOrder,
+                requestInput === "json" ? ["owned", "ordinary"] : ["ordinary", "owned"],
+            );
+            assert.equal(result.coldImportToUtf8Ms, 53 + parsingMs);
+            const bytes = await fs.readFile(path.join(directory, "rendered.html"));
+            assert.deepEqual(bytes, Buffer.from(text));
+            assert.equal(result.outputBytes, bytes.length);
+            assert.equal(
+                result.outputHash,
+                createHash("sha256").update(bytes).digest("hex"),
+            );
+            assert.equal(
+                result.warmStringBytesPerSecond,
+                (bytes.length * 1000) / (7 + parsingMs),
+            );
+            assert.equal(
+                result.warmUtf8BytesPerSecond,
+                (bytes.length * 1000) / (12 + parsingMs),
+            );
+            assert.equal(result.warmJsonUtf8BytesPerSecond, (bytes.length * 1000) / 15);
+        }
     });
 });
 
@@ -311,6 +332,17 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
             ]);
             for (const sample of Object.values(record.modes).flat()) {
                 assert.equal(sample.outputHash, first.outputHash);
+                if (sample.stateMode === "plain") {
+                    assert.ok(sample.warmOwnedJsonUtf8MsPerRender >= 0);
+                    assert.ok(sample.warmOwnedJsonUtf8CpuMsPerRender >= 0);
+                    assert.ok(sample.ownedJsonUtf8MemoryRetained.heapUsed > 0);
+                    assert.deepEqual(
+                        sample.jsonRequestOrder,
+                        sample === first ? ["ordinary", "owned"] : ["owned", "ordinary"],
+                    );
+                } else {
+                    assert.equal(sample.warmOwnedJsonUtf8MsPerRender, undefined);
+                }
                 if (sample.stateMode === "prepared") {
                     assert.ok(sample.prepareStateMs >= 0);
                     assert.ok(sample.memoryAfterPrepare.heapUsed > 0);

@@ -10,7 +10,8 @@ parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
 native Rust executor. Both use the same compiler-owned executable IR.
 The helper is the JavaScript target's request engine. It has no imports or compiler,
-WASM, parser, browser, serialization or source-evaluation dependency.
+WASM, template parser, browser, serialization or source-evaluation dependency.
+Only explicitly selected JSON-input methods use the intrinsic JSON data parser.
 See [the full module/state contract](./docs/server-modules.md).
 
 Rust interns identical executable bodies and factors repeated JavaScript element
@@ -58,8 +59,9 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Helper contract version 2 introduced these accessors/frames; version 3 adds
-prepared-state requests. Generated/native artifacts must be
+Helper contract version 2 introduced these accessors/frames; version 3 added
+prepared-state requests and version 4 adds fresh JSON-input methods.
+Generated/native artifacts must be
 regenerated and deployed with matching helpers/libraries. Rendering APIs and
 IR opcodes/schema remain unchanged; native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
@@ -84,6 +86,22 @@ while retaining owned child overlays and all execution/output budgets.
 Its four prepared methods do not clone/revalidate the root. Snapshot clones
 are `Send + Sync`, artifact-independent and freed after the last owner drops.
 This adds target-specific ownership wrappers, not another renderer or validator.
+
+### Fresh JSON request ownership
+
+Four generated `render*Json` methods reuse the existing AOT bodies and rendering
+options. The helper captures `JSON.parse` at initialization and parses an explicit
+string without a reviver. Parsed graphs are request-owned, acyclic, plain and
+dense, so their traversal omits arbitrary-object prototype/descriptor/symbol and
+cycle checks. Every key/value still receives Unicode/finite-number validation,
+including unused state, and negative zero is normalized in the owned graph.
+No graph is copied/frozen into a snapshot or cached by identity.
+
+Object-input and prepared-state validation are unchanged. JSON methods do not
+implicitly serialize/coerce caller objects, accept parser callbacks or decode
+bytes. The parser is intrinsic data parsing, not request-time template compilation.
+Native ownership/execution and IR opcodes/schema remain unchanged; helper version 4
+and compiler fingerprint checks require regenerated modules/native artifacts.
 
 ### Output assembly and escaping
 
@@ -161,6 +179,13 @@ uses the corresponding complete boundary; string-only throughput is logical
 output size, not encoded delivery. Lexical host/marker/DSD counts are diagnostics,
 not DOM equivalence. Frozen byte tests and browser hydration/node-identity tests
 remain independent qualification gates; no rendering contract is normalized away.
+
+The benchmark's `--request-input=json` and `--request-input=owned-json` select
+fresh JSON boundaries for the primary first/warm render and UTF-8 measurements.
+Both include parsing and validation. Ordinary-mode secondary JSON-to-UTF-8 loops
+also compare both APIs with alternating order across samples, recording CPU,
+throughput and retained-memory observations separately. Object input remains the
+default; JSON primary modes require ordinary state rather than prepared reuse.
 
 ## Template loading — `parseFTemplates`
 

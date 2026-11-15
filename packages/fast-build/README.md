@@ -53,6 +53,25 @@ const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 Use generated `renderTemplate` for template-context root-host attribute handling,
 or `renderEntry` for entry-host rules.
 
+For fresh JSON text, select the generated JSON-input method explicitly:
+
+```js
+import { renderEntryJson, renderHostJson } from "./generated/server.mjs";
+
+const html = renderEntryJson('{"title":"Fresh JSON state"}');
+const host = renderHostJson("my-card", '{"title":"A complete host"}');
+```
+
+`renderTemplateJson` and `renderShadowJson` preserve the corresponding contexts
+and options. Parsing happens once per call without a reviver; the helper owns the
+result and skips checks already guaranteed by JSON parsing. It still validates
+every key/value, including unused state, for finite numbers and well-formed
+Unicode and normalizes negative zero. JSON overflow such as `1e400` is rejected.
+There is no snapshot copying/freezing, implicit object serialization, parser
+callback or byte-input overload. Keep the object methods when state is already
+parsed; prepared methods remain the separate unchanged-state reuse path.
+Regenerate modules/native artifacts for **helper contract version 4**.
+
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
 
@@ -85,7 +104,11 @@ documents configurable warmup, optional CPU profiles and historical report
 comparison.
 Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
 requests, include output byte throughput, and record state hashes, rendering
-options and output-structure diagnostics. These qualify measurement boundaries;
+options and output-structure diagnostics.
+Use `--request-input=json` versus `--request-input=owned-json` to compare fresh
+JSON boundaries, including parsing in first/warm request timings. The default is
+`object`. Ordinary-mode reports also include both JSON-to-UTF-8 APIs, with CPU,
+throughput and memory observations and alternating comparison order. These qualify measurement boundaries;
 they do not change rendering or establish cross-renderer output equivalence.
 
 Native Rust applications use the shared compiled-artifact target below.
@@ -93,7 +116,7 @@ See [migration](./docs/migration/aot-server-rendering.md).
 
 The JavaScript emitter now prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. The server helper contract
-is version 3: regenerate compiled modules/artifacts and deploy the matching
+is version 4: regenerate compiled modules/artifacts and deploy the matching
 helper/native library together. Ordinary state/rendering contracts are unchanged.
 Contributor benchmarks include deep paths and nested repeats.
 

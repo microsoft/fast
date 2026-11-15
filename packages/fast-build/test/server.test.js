@@ -47,6 +47,10 @@ async function parity(entry, templates, states, options = {}) {
         const key = hash(JSON.stringify([entry, templates, state, options]));
         assert.ok(Object.hasOwn(baseline, key), "missing historical output contract");
         assert.equal(hash(module.renderEntry(state, options)), baseline[key]);
+        assert.equal(
+            hash(module.renderEntryJson(JSON.stringify(state), options)),
+            baseline[key],
+        );
     }
     return module;
 }
@@ -461,6 +465,126 @@ test("AOT rejects unsupported state without invoking getters or toJSON", async (
     }
 });
 
+test("JSON methods preserve all rendering contexts, options and nested scopes", async () => {
+    const { module } = await compile(
+        '<json-parent :payload="{{payload}}">{{label}}</json-parent>',
+        {
+            "json-parent": {
+                content:
+                    '{{label}}/{{payload.value}}<f-repeat value="{{item in payload.items}}"><json-child :item="{{item}}" data-x="{{item.name}}">{{item.name}}/{{$index}}</json-child></f-repeat>{{{raw}}}',
+                hostAttributes: [{ name: "title", value: "{{label}}" }],
+            },
+            "json-child": "{{item.name}}/{{dataset.x}}",
+        },
+    );
+    for (const json of [
+        '{"label":"< & \\uD83D\\uDE00","payload":{"value":-0,"items":[{"name":"one"},{"name":"two"}]},"raw":"<i>raw</i>"}',
+        '{"label":null,"payload":{"value":null,"items":[]}}',
+        '{"payload":{"items":[null,{},false,0]}}',
+    ]) {
+        const state = JSON.parse(json);
+        for (const markersV2 of [false, true]) {
+            for (const attributeNameStrategy of ["none", "camelCase"]) {
+                for (const dsd of [undefined, [], ["json-child"]]) {
+                    const options = { markersV2, attributeNameStrategy, dsd };
+                    for (const method of [
+                        "renderEntry",
+                        "renderTemplate",
+                        "renderHost",
+                        "renderShadow",
+                    ]) {
+                        const args =
+                            method === "renderHost" || method === "renderShadow"
+                                ? ["json-parent"]
+                                : [];
+                        assert.equal(
+                            module[`${method}Json`](...args, json, options),
+                            module[method](...args, state, options),
+                        );
+                    }
+                }
+            }
+        }
+    }
+    assert.throws(
+        () => module.renderHostJson("missing", "{}"),
+        error => error.code === "missing-template",
+    );
+    assert.throws(
+        () => module.renderEntryJson('{"payload":{"items":null}}'),
+        error => error.code === "repeat-not-array",
+    );
+});
+
+test("JSON methods validate unused values and reject implicit input conversion", async () => {
+    const { module } = await compile("static");
+    for (const json of [
+        "1e400",
+        '{"unused":[{"number":-1e400}]}',
+        '{"unused":"\\ud800"}',
+        '{"\\udfff":"well-formed value"}',
+    ]) {
+        assert.throws(() => module.renderEntryJson(json), TypeError);
+    }
+    for (const json of ["", "{", "undefined"]) {
+        assert.throws(() => module.renderEntryJson(json), SyntaxError);
+    }
+    let invoked = false;
+    const input = {
+        toString() {
+            invoked = true;
+            return "{}";
+        },
+    };
+    for (const value of [undefined, null, {}, input, Object("{}")]) {
+        assert.throws(() => module.renderEntryJson(value), TypeError);
+    }
+    assert.equal(invoked, false);
+    for (const options of [
+        { dsd: [1] },
+        { markersV2: "yes" },
+        { attributeNameStrategy: "bad" },
+    ]) {
+        assert.throws(() => module.renderEntryJson("{}", options), TypeError);
+    }
+    assert.throws(() => module.renderEntry({ unused: Infinity }), TypeError);
+});
+
+test("owned JSON normalizes negative zero without copying or prototype pollution", async () => {
+    const helper = await import(runtime);
+    const json = '{"__proto__":{"zero":-0},"constructor":"own","array":[-0,{"zero":-0}]}';
+    const [{ values }] = helper.jsonRequest(json);
+    assert.equal(Object.getPrototypeOf(values), Object.prototype);
+    assert.ok(Object.hasOwn(values, "__proto__"));
+    assert.equal(values.constructor, "own");
+    assert.equal(Object.is(values.__proto__.zero, -0), false);
+    assert.equal(Object.is(values.array[0], -0), false);
+    assert.equal(Object.is(values.array[1].zero, -0), false);
+    assert.equal(Object.isFrozen(values), false);
+    values.array[1].zero = 99;
+    const [{ values: next }] = helper.jsonRequest(json);
+    assert.equal(next.array[1].zero, 0, "JSON requests do not retain parsed state");
+    assert.equal({}.zero, undefined);
+    const [{ values: zero }] = helper.jsonRequest("-0");
+    assert.equal(Object.is(zero, -0), false);
+    for (const json of ["null", "true", '"text"', "42", "[]"]) {
+        assert.deepEqual(helper.jsonRequest(json)[0].values, JSON.parse(json));
+    }
+});
+
+test("JSON requests retain the parser captured at helper initialization", async () => {
+    const { module } = await compile("{{value}}");
+    const parse = JSON.parse;
+    try {
+        JSON.parse = () => {
+            throw new Error("replacement parser must not be invoked");
+        };
+        assert.equal(module.renderEntryJson('{"value":"safe"}'), "safe");
+    } finally {
+        JSON.parse = parse;
+    }
+});
+
 test("prepared snapshots isolate nested input and work across modules and render targets", async () => {
     const { module } = await compile(
         '<test-el data-name="{{label}}">{{label}}</test-el>',
@@ -600,6 +724,14 @@ const html: string = server.renderEntryPrepared(state);
 server.renderTemplatePrepared(state);
 server.renderHostPrepared("test-el", state);
 server.renderShadowPrepared("test-el", state, { markersV2: true });
+const jsonHtml: string = server.renderEntryJson("{}");
+server.renderTemplateJson("{}");
+server.renderHostJson("test-el", "{}", { markersV2: true });
+server.renderShadowJson("test-el", "{}");
+// @ts-expect-error JSON input must be an explicit string.
+server.renderEntryJson({});
+// @ts-expect-error JSON input cannot be omitted.
+server.renderEntryJson();
 // @ts-expect-error Ordinary data cannot bypass validation.
 server.renderEntryPrepared({});
 // @ts-expect-error A handle is not ordinary JSON-shaped state.
@@ -726,7 +858,7 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
         assert.equal((source.match(/\bimport\b/g) || []).length, 1);
         assert.doesNotMatch(
             fs.readFileSync(require.resolve("../server-runtime.mjs"), "utf8"),
-            /\bimport\b|\brequire\b|\beval\b|new Function|WebAssembly|JSON\.parse/,
+            /\bimport\b|\brequire\b|\beval\b|new Function|WebAssembly/,
         );
     } finally {
         fs.rmSync(directory, { recursive: true, force: true });
@@ -734,7 +866,7 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
 });
 
 test("AOT rejects a mismatched helper contract on module import", async () => {
-    for (const version of [0, 2]) {
+    for (const version of [0, 2, 3]) {
         const helper = `data:text/javascript,export const runtimeVersion = ${version};`;
         const source = compileServerModule("static", {}, helper);
         await assert.rejects(

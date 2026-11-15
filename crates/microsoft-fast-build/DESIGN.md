@@ -95,7 +95,8 @@ light DOM retains its caller frame.
 
 This is JavaScript target emission/hosting, not a new IR opcode or a native
 executor rewrite. Helper contract version 2 introduced the frame/accessor ABI;
-version 3 adds prepared-state requests. Artifact schema version 1 remains unchanged.
+version 3 added prepared-state requests and version 4 adds four generated
+JSON-input render exports. Artifact schema version 1 remains unchanged.
 Regenerate both
 target artifacts with the upgraded compiler and deploy matching helpers/libraries.
 
@@ -104,7 +105,7 @@ target artifacts with the upgraded compiler and deploy matching helpers/librarie
 Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
 For this target the JavaScript helper owns complete JSON-shaped state validation,
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
-escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
+escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
 synchronously return complete strings. Existing markup, whitespace, escaping and
 markers remain byte-preserved.
@@ -117,6 +118,14 @@ Packaged crates hash Cargo's preserved `Cargo.toml.orig` under the same logical
 Changes to authored inputs still invalidate artifacts.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; ordinary calls retain no request state.
+
+Generated JSON-input methods select the helper's owned parse/validation boundary,
+then call the same AOT bodies as object/prepared methods. Intrinsic JSON parsing
+without a reviver establishes plain acyclic/dense ownership; remaining full-graph
+checks retain finite-number/Unicode rejection and negative-zero normalization.
+No caller object is serialized or implicitly coerced and no parsed state is
+retained. This is JavaScript hosting, not a second lowering pipeline or native
+executor change. Both artifact targets must be regenerated for helper version 4.
 
 ### Prepared-state snapshots
 

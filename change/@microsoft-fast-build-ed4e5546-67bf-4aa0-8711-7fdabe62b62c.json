@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add explicit owned JSON request methods that avoid redundant object validation and snapshot copying while preserving rendering behavior.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -23,6 +23,8 @@ const { values: args } = parseArgs({
         "state-mode": { type: "string", default: "plain" },
         "markers-v2": { type: "boolean", default: false },
         "attribute-name-strategy": { type: "string", default: "camelCase" },
+        "json-first": { type: "string", default: "alternate" },
+        "request-input": { type: "string", default: "object" },
         output: { type: "string" },
     },
 });
@@ -31,6 +33,18 @@ assert.ok([...stateModes, "all"].includes(args["state-mode"]), "Invalid state mo
 assert.ok(
     ["camelCase", "none"].includes(args["attribute-name-strategy"]),
     "Invalid attribute name strategy.",
+);
+assert.ok(
+    ["ordinary", "owned", "alternate"].includes(args["json-first"]),
+    "Invalid JSON order.",
+);
+assert.ok(
+    ["object", "json", "owned-json"].includes(args["request-input"]),
+    "Invalid request input.",
+);
+assert.ok(
+    args["request-input"] === "object" || args["state-mode"] === "plain",
+    "JSON request input requires plain state mode.",
 );
 const renderOptions = {
     markersV2: args["markers-v2"],
@@ -97,7 +111,11 @@ async function worker() {
     }
     const render =
         stateMode === "plain"
-            ? () => module.renderEntry(source.state, renderOptions)
+            ? args["request-input"] === "owned-json"
+                ? () => module.renderEntryJson(stateJson, renderOptions)
+                : args["request-input"] === "json"
+                  ? () => module.renderEntry(JSON.parse(stateJson), renderOptions)
+                  : () => module.renderEntry(source.state, renderOptions)
             : stateMode === "prepared"
               ? () => module.renderEntryPrepared(prepared, renderOptions)
               : () =>
@@ -158,43 +176,60 @@ async function worker() {
     assert.equal(hash(latestBytes), output.outputHash, "warm UTF-8 output differs");
     let jsonDelivery;
     if (stateMode !== "prepared") {
-        const renderJson = () => {
+        const ordinaryJson = () => {
             const state = JSON.parse(stateJson);
             return stateMode === "plain"
                 ? module.renderEntry(state, renderOptions)
                 : module.renderEntryPrepared(module.prepareState(state), renderOptions);
         };
-        const jsonWarmupStart = performance.now();
-        for (let index = 0; index < warmupIterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
+        const methods = [["ordinary", ordinaryJson]];
+        if (stateMode === "plain" && typeof module.renderEntryJson === "function") {
+            methods.push([
+                "owned",
+                () => module.renderEntryJson(stateJson, renderOptions),
+            ]);
+            if (args["json-first"] === "owned") methods.reverse();
         }
-        const jsonUtf8WarmupMs = performance.now() - jsonWarmupStart;
-        if (warmupIterations > 0) {
+        jsonDelivery = { jsonRequestOrder: methods.map(([name]) => name) };
+        for (const [name, renderJson] of methods) {
+            const boundary = name === "owned" ? "owned JSON-to-UTF-8" : "JSON-to-UTF-8";
+            const jsonWarmupStart = performance.now();
+            for (let index = 0; index < warmupIterations; index++) {
+                latestBytes = Buffer.from(renderJson(), "utf8");
+            }
+            const warmupMs = performance.now() - jsonWarmupStart;
+            if (warmupIterations > 0) {
+                assert.equal(
+                    hash(latestBytes),
+                    output.outputHash,
+                    `${boundary} warmup output differs`,
+                );
+            }
+            globalThis.gc?.();
+            const memoryBefore = process.memoryUsage();
+            const jsonCpu = process.cpuUsage();
+            const jsonStart = performance.now();
+            for (let index = 0; index < iterations; index++) {
+                latestBytes = Buffer.from(renderJson(), "utf8");
+            }
+            const msPerRender = (performance.now() - jsonStart) / iterations;
+            const jsonCpuUsed = process.cpuUsage(jsonCpu);
             assert.equal(
                 hash(latestBytes),
                 output.outputHash,
-                "JSON-to-UTF-8 warmup output differs",
+                `warm ${boundary} output differs`,
             );
+            globalThis.gc?.();
+            const prefix = name === "owned" ? "OwnedJson" : "Json";
+            const lowerPrefix = name === "owned" ? "ownedJson" : "json";
+            jsonDelivery[`${lowerPrefix}Utf8WarmupMs`] = warmupMs;
+            jsonDelivery[`${lowerPrefix}Utf8MemoryBefore`] = memoryBefore;
+            jsonDelivery[`${lowerPrefix}Utf8MemoryRetained`] = process.memoryUsage();
+            jsonDelivery[`warm${prefix}Utf8MsPerRender`] = msPerRender;
+            jsonDelivery[`warm${prefix}Utf8CpuMsPerRender`] =
+                (jsonCpuUsed.user + jsonCpuUsed.system) / 1000 / iterations;
+            jsonDelivery[`warm${prefix}Utf8BytesPerSecond`] = throughput(msPerRender);
         }
-        const jsonCpu = process.cpuUsage();
-        const jsonStart = performance.now();
-        for (let index = 0; index < iterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
-        }
-        const warmJsonUtf8MsPerRender = (performance.now() - jsonStart) / iterations;
-        const jsonCpuUsed = process.cpuUsage(jsonCpu);
-        assert.equal(
-            hash(latestBytes),
-            output.outputHash,
-            "warm JSON-to-UTF-8 output differs",
-        );
-        jsonDelivery = {
-            jsonUtf8WarmupMs,
-            warmJsonUtf8MsPerRender,
-            warmJsonUtf8CpuMsPerRender:
-                (jsonCpuUsed.user + jsonCpuUsed.system) / 1000 / iterations,
-            warmJsonUtf8BytesPerSecond: throughput(warmJsonUtf8MsPerRender),
-        };
     }
     if (stateMode !== "plain") {
         assert.equal(
@@ -209,6 +244,7 @@ async function worker() {
             executionTarget: "generated-javascript",
             renderOptions,
             stateMode,
+            requestInput: args["request-input"],
             ...preparation,
             workerSetupMs,
             inputReadMs,
@@ -382,6 +418,7 @@ async function main() {
         iterations,
         warmupIterations,
         stateModes: modes,
+        requestInput: args["request-input"],
         compilerLoadMs,
         workloadSetupMs: performance.now() - workloadStart,
         profileDirectory,
@@ -433,6 +470,8 @@ async function main() {
                             `--iterations=${iterations}`,
                             `--warmup=${warmupIterations}`,
                             `--state-mode=${stateMode}`,
+                            `--json-first=${args["json-first"] === "alternate" ? (sample % 2 ? "owned" : "ordinary") : args["json-first"]}`,
+                            `--request-input=${args["request-input"]}`,
                             ...(renderOptions.markersV2 ? ["--markers-v2"] : []),
                             `--attribute-name-strategy=${renderOptions.attributeNameStrategy}`,
                         ],
