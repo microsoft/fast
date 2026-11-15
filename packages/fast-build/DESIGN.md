@@ -10,7 +10,7 @@ parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
 native Rust executor. Both use the same compiler-owned executable IR.
 The helper is the JavaScript target's request engine. It has no imports or compiler,
-WASM, parser, browser, serialization or source-evaluation dependency.
+WASM, template-parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
 Rust encodes the shared executable IR as stable semantic operation objects with
@@ -77,6 +77,23 @@ Compiler implementation changes do not force regeneration of existing supported
 assets. Native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
+
+### Fresh JSON request ownership
+
+The four explicit `render*Json` exports parse required JSON strings without a reviver
+inside the helper. One iterative full-graph traversal checks finite numbers and Unicode
+keys/values, normalizing negative zero in the owned graph. Parsing already establishes
+plain acyclic containers, dense arrays and own data properties; the arbitrary-object
+validator and snapshot copier are not called. Pending containers cost up to graph width
+in request-local memory; deep unused graphs do not recurse through the JavaScript stack.
+All three input boundaries feed the same four target wrappers and flat execution closures.
+Options, scopes and overlays stay fresh; parsed state is neither frozen nor retained.
+Object-input validation and prepared-state ownership remain unchanged.
+
+JS plan schema 1 and native schema 2 decoders remain supported. New compiler emission
+adds export names, not opcodes or compiler keys. Persisted old modules keep their original
+exports and exact bytes; adopting JSON names requires an explicit new output destination,
+not invalidating template-only reuse on a dependency update.
 
 ### Prepared-state ownership
 
@@ -177,6 +194,13 @@ mode order. It reports preparation time and before/after-GC memory outside
 render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
+
+`owned-json` is an additional input mode for the same flat executor, not another
+renderer. It passes fresh JSON text into `renderEntryJson` for first/warm/UTF-8
+loops; these timers and GC/memory include owned parsing/full traversal. Input-boundary
+labels prevent conflating these with object-only calls. The separate JSON-to-UTF-8
+loop compares against ordinary external parsing/full validation on identical bytes.
+Snapshot modes remain independent controls. No speedup is assumed without measurement.
 
 Boundary-normalized measurements identify the execution target as flat-plan
 JavaScript and record marker/naming options. State-only JSON serialization is

@@ -48,6 +48,10 @@ async function parity(entry, templates, states, options = {}) {
         const key = hash(JSON.stringify([entry, templates, state, options]));
         assert.ok(Object.hasOwn(baseline, key), "missing historical output contract");
         assert.equal(hash(module.renderEntry(state, options)), baseline[key]);
+        assert.equal(
+            hash(module.renderEntryJson(JSON.stringify(state), options)),
+            baseline[key],
+        );
     }
     return module;
 }
@@ -471,6 +475,176 @@ test("AOT rejects unsupported state without invoking getters or toJSON", async (
     }
 });
 
+test("owned JSON methods preserve all contexts, options, coercion and request isolation", async () => {
+    const { module } = await compile("<test-json></test-json>", {
+        "test-json": {
+            content: `{{label}}/{{value}}/{{items}}/{{record}}/{{__proto__.label}}/{{constructor}}/{{prototype}}/{{toString}}
+<test-child :dataset="{{dataset}}" data-local="local" :value="{{value}}"></test-child>
+<f-repeat value="{{item in items}}">{{item.label}}/{{$index}}</f-repeat>`,
+            hostAttributes: [{ name: "title", value: "{{label}}" }],
+        },
+        "test-child": "{{dataset.inherited}}/{{dataset.local}}/{{value}}",
+    });
+    const json = `{"label":"<&😀","value":-0,"items":[{"label":"one"},null,{}],
+        "record":{},"dataset":{"inherited":"root"},"__proto__":{"label":"own"},
+        "constructor":"own constructor","prototype":"own prototype","toString":"own string"}`;
+    for (const markersV2 of [false, true]) {
+        for (const attributeNameStrategy of ["none", "camelCase"]) {
+            for (const dsd of [undefined, [], ["test-child"]]) {
+                const options = { markersV2, attributeNameStrategy, dsd };
+                for (const method of [
+                    "renderEntry",
+                    "renderTemplate",
+                    "renderHost",
+                    "renderShadow",
+                ]) {
+                    const args = /Host|Shadow/.test(method) ? ["test-json"] : [];
+                    const state = JSON.parse(json);
+                    const expected = module[method](...args, state, options);
+                    assert.equal(
+                        module[`${method}Json`](...args, json, options),
+                        expected,
+                    );
+                    const prepared = module.prepareState(state);
+                    assert.equal(
+                        module[`${method}Prepared`](...args, prepared, options),
+                        expected,
+                    );
+                    assert.equal(state.dataset.local, undefined);
+                    assert.ok(Object.is(state.value, -0));
+                }
+            }
+        }
+    }
+    for (const json of ["null", "true", "false", "-0", '"text"', "[]", "{}"]) {
+        assert.equal(module.renderEntryJson(json), module.renderEntry(JSON.parse(json)));
+    }
+    const missing = '{"label":null}';
+    assert.equal(
+        module.renderEntryJson(missing),
+        module.renderEntry(JSON.parse(missing)),
+    );
+    assert.throws(
+        () => module.renderEntryJson('{"items":null}'),
+        error => error.code === "repeat-not-array",
+    );
+    const first = module.renderEntryJson(json);
+    module.renderEntryJson('{"label":"other","items":[]}');
+    assert.equal(module.renderEntryJson(json), first);
+    assert.equal(Object.hasOwn(Object.prototype, "label"), false);
+});
+
+test("owned JSON validates unused fields and rejects implicit input conversion", async () => {
+    const { module } = await compile("fixed", { "test-json": "fixed" });
+    let invoked = false;
+    const input = {
+        toString() {
+            invoked = true;
+            return "{}";
+        },
+    };
+    for (const method of [
+        "renderEntryJson",
+        "renderTemplateJson",
+        "renderHostJson",
+        "renderShadowJson",
+    ]) {
+        const args = /Host|Shadow/.test(method) ? ["test-json"] : [];
+        for (const json of [
+            "1e400",
+            '{"unused":[{"overflow":-1e400}]}',
+            '"\\ud800"',
+            '{"unused":{"value":"\\udfff"}}',
+            '{"unused":{"\\ud800":null}}',
+            '{"unused":[{"nested":["\\ud800"]}]}',
+        ]) {
+            assert.throws(() => module[method](...args, json, { dsd: [] }), TypeError);
+        }
+        for (const json of ["", "{", "[1,]", "undefined"]) {
+            assert.throws(() => module[method](...args, json), SyntaxError);
+        }
+        for (const json of [undefined, null, {}, [], 1, input, Buffer.from("{}")]) {
+            assert.throws(() => module[method](...args, json), TypeError);
+        }
+        for (const options of [
+            { dsd: [1] },
+            { markersV2: "yes" },
+            { attributeNameStrategy: "bad" },
+        ]) {
+            assert.throws(() => module[method](...args, "{}", options), TypeError);
+        }
+        assert.equal(typeof module[method](...args, "{}", { dsd: [] }), "string");
+    }
+    assert.equal(invoked, false);
+    assert.throws(
+        () => module.renderHostJson("unknown", "{}"),
+        error => error.code === "missing-template",
+    );
+    assert.throws(
+        () => module.renderShadowJson("unknown", "{}"),
+        error => error.code === "missing-template",
+    );
+    assert.equal(
+        module.renderEntryJson(`{"unused":${"[".repeat(10000)}-0${"]".repeat(10000)}}`),
+        "fixed",
+    );
+    assert.throws(
+        () =>
+            module.renderEntryJson(
+                `{"unused":${"[".repeat(10000)}1e400${"]".repeat(10000)}}`,
+            ),
+        TypeError,
+    );
+});
+
+test("owned JSON normalizes its fresh graph without producing a reusable snapshot", async () => {
+    const { jsonRequest } = await import(runtime);
+    const json = '{"array":[-0,{"nested":-0}],"__proto__":{"value":-0}}';
+    const [first] = jsonRequest(json);
+    const [second] = jsonRequest(json);
+    assert.ok(Object.is(jsonRequest("-0")[0].values, 0));
+    assert.ok(Object.is(first.values.array[0], 0));
+    assert.ok(Object.is(first.values.array[1].nested, 0));
+    assert.ok(Object.is(first.values.__proto__.value, 0));
+    first.values.array[1].nested = 4;
+    assert.equal(second.values.array[1].nested, 0);
+    assert.equal(Object.hasOwn(Object.prototype, "value"), false);
+});
+
+test("unchanged schema 1 modules retain their old exports with the upgraded helper", async () => {
+    const source = fs.readFileSync(
+        path.join(__dirname, "fixtures/server-schema1.txt"),
+        "utf8",
+    );
+    const old = await import(
+        `data:text/javascript;base64,${Buffer.from(
+            source.replace('"../../server-runtime.mjs"', JSON.stringify(runtime)),
+        ).toString("base64")}`
+    );
+    const { module } = await compile("<test-old></test-old>", {
+        "test-old": "<p>{{value}}</p>",
+    });
+    for (const method of [
+        "renderEntry",
+        "renderTemplate",
+        "renderHost",
+        "renderShadow",
+    ]) {
+        const args = /Host|Shadow/.test(method) ? ["test-old"] : [];
+        assert.equal(Object.hasOwn(old, `${method}Json`), false);
+        for (const markersV2 of [false, true]) {
+            const state = { value: "<&" };
+            const options = { markersV2 };
+            const expected = module[method](...args, state, options);
+            assert.equal(old[method](...args, state, options), expected);
+            assert.equal(
+                old[`${method}Prepared`](...args, old.prepareState(state), options),
+                expected,
+            );
+        }
+    }
+});
+
 test("prepared snapshots isolate nested input and work across modules and render targets", async () => {
     const { module } = await compile(
         '<test-el data-name="{{label}}">{{label}}</test-el>',
@@ -612,6 +786,16 @@ server.runtimeVersion;
 server.renderTemplatePrepared(state);
 server.renderHostPrepared("test-el", state);
 server.renderShadowPrepared("test-el", state, { markersV2: true });
+const jsonHtml: string = server.renderEntryJson('{"value":0}');
+server.renderTemplateJson("{}");
+server.renderHostJson("test-el", "{}");
+server.renderShadowJson("test-el", "{}", { markersV2: true });
+// @ts-expect-error JSON methods require explicit text, not arbitrary objects.
+server.renderEntryJson({});
+// @ts-expect-error JSON methods do not accept prepared handles.
+server.renderHostJson("test-el", state);
+// @ts-expect-error JSON input is required, unlike ordinary root state.
+server.renderShadowJson("test-el");
 // @ts-expect-error Ordinary data cannot bypass validation.
 server.renderEntryPrepared({});
 // @ts-expect-error A handle is not ordinary JSON-shaped state.
@@ -738,7 +922,7 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
         assert.equal((source.match(/\bimport\b/g) || []).length, 1);
         assert.doesNotMatch(
             fs.readFileSync(require.resolve("../server-runtime.mjs"), "utf8"),
-            /\bimport\b|\brequire\b|\beval\b|new Function|WebAssembly|JSON\.parse/,
+            /\bimport\b|\brequire\b|\beval\b|new Function|WebAssembly/,
         );
     } finally {
         fs.rmSync(directory, { recursive: true, force: true });
@@ -826,7 +1010,7 @@ test("flat plans preserve rendering exports without compiler identity or release
         "renderHostJson",
         "renderShadowJson",
     ]) {
-        assert.equal(Object.hasOwn(module, name), false);
+        assert.equal(typeof module[name], "function");
     }
 });
 
@@ -1095,6 +1279,10 @@ test("flat plans preserve frozen AOT hashes across contexts and state modes", as
                             contextBaseline[JSON.stringify([json, options, method])];
                         assert.equal(
                             hash(module[method](...args, state, options)),
+                            expected,
+                        );
+                        assert.equal(
+                            hash(module[`${method}Json`](...args, json, options)),
                             expected,
                         );
                         assert.equal(
