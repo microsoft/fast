@@ -161,6 +161,10 @@ and renders request-local `JsonValue` state via `render_entry`, `render_template
 `render_host` or `render_shadow`. Native startup and requests need no authored
 templates, compiler WASM, JavaScript engine or HTML parser invocation.
 The build-time Rust `compile_server_artifact` produces the identical format.
+Native text/attribute values and scalars write directly into request-local bounded
+UTF-8 output; composite attributes retain whole-attribute missing/null suppression.
+Output budgets return errors without partial HTML, and no buffer capacity is
+retained between requests. This does not change the JavaScript rendering backend.
 
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable

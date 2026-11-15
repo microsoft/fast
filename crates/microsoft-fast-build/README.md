@@ -88,9 +88,11 @@ invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-tim
 rebuild into `fast-server-native` semantic schema 1. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
-Escaped text bindings write directly into the request's bounded UTF-8 output
-buffer, stopping on the first write that exceeds its byte budget. Results remain
-complete owned strings, not a streaming API; failed calls return no partial HTML.
+Text and attribute values write directly into the request's bounded UTF-8 output
+buffer, including escaped spans and scalar formatting. Composite attributes check
+for missing/null bindings before writing, preserving whole-attribute suppression.
+Results remain complete owned strings, not a streaming API; failed calls return
+no partial HTML. Buffers are request-local, with no retained capacity hints.
 
 For unchanged state reused across calls, validate and copy once:
 

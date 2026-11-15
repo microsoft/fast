@@ -803,6 +803,152 @@ fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
 }
 
 #[test]
+fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
+    let entry = r#"<i title='pre "&amp;/{{value}}/{{tail}}' data-value="{{value}}" ?hidden="{{flag}}"></i><a href="{{url}}">{{scalar}}</a>"#;
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let state_json = r#"{"value":"é😀&<>\"'/","tail":"尾","flag":true,"url":3.5,"scalar":false}"#;
+    let state = parse_render_state(state_json).unwrap();
+    let expected = r#"<i title="pre &quot;&amp;/é😀&amp;&lt;&gt;&quot;&#39;//尾" data-value="é😀&amp;&lt;&gt;&quot;&#39;/" hidden></i><a href="3.5">false</a>"#;
+    assert_eq!(
+        js(&source, state_json, json!({}), "entry", ""),
+        json!({"value":expected})
+    );
+    let exact = NativeRenderOptions {
+        max_output_bytes: expected.len(),
+        ..Default::default()
+    };
+    let held = artifact.render_entry(&state, &exact).unwrap();
+    assert_eq!(held, expected);
+    for max_output_bytes in [0, 1, 20, expected.len() - 1] {
+        let short = NativeRenderOptions {
+            max_output_bytes,
+            ..exact.clone()
+        };
+        assert_eq!(
+            artifact.render_entry(&state, &short).unwrap_err().code,
+            "render-limit"
+        );
+    }
+    // The large first part must not produce a budget error when the later
+    // part suppresses the attribute. The independent huge value still fails.
+    let huge = "&\"é😀".repeat(100_000);
+    let suppressed = parse_render_state(&json!({"value":huge}).to_string()).unwrap();
+    let composite = CompiledArtifact::load(
+        &compile_server_artifact(
+            r#"<i title="pre {{value}}/{{missing}}"></i>"#,
+            &common::make_locator(&[]),
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let tiny = NativeRenderOptions {
+        max_output_bytes: 7,
+        ..Default::default()
+    };
+    assert_eq!(
+        composite.render_entry(&suppressed, &tiny).unwrap(),
+        "<i></i>"
+    );
+    for template in [
+        r#"<i title="{{value}}"></i>"#,
+        r#"<i title="pre {{value}}/{{value}}"></i>"#,
+        "{{value}}",
+        "{{{value}}}",
+    ] {
+        let artifact = CompiledArtifact::load(
+            &compile_server_artifact(template, &common::make_locator(&[])).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            artifact.render_entry(&suppressed, &tiny).unwrap_err().code,
+            "render-limit"
+        );
+    }
+    for value in [
+        json!(null),
+        json!(false),
+        json!([]),
+        json!({}),
+        json!(-0.0),
+        json!(1e23),
+    ] {
+        let state_json = json!({"value":value,"tail":"ok","url":value,"scalar":value}).to_string();
+        let state = parse_render_state(&state_json).unwrap();
+        assert_eq!(
+            json!({"value":artifact.render_entry(&state, &Default::default()).unwrap()}),
+            js(&source, &state_json, json!({}), "entry", "")
+        );
+    }
+    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+    assert_eq!(held, expected);
+}
+
+#[test]
+fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
+    let locator = common::make_locator_with_host_attrs(&[
+        (
+            "test-outer",
+            "outer<test-inner title=\"{{large}}\"></test-inner>",
+            &[("title", Some("{{large}}"))],
+        ),
+        (
+            "test-inner",
+            "inner<f-repeat value=\"{{item in items}}\">{{item}}</f-repeat>",
+            &[("data-default", Some("{{large}}"))],
+        ),
+    ]);
+    let entry = "<test-outer title=\"{{large}}\"></test-outer>";
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let invalid_json = json!({"large":"&".repeat(100_000),"items":false}).to_string();
+    let invalid = parse_render_state(&invalid_json).unwrap();
+    let options = NativeRenderOptions {
+        // Shadow prefixes fit, but either host attribute does not.
+        max_output_bytes: 16,
+        ..Default::default()
+    };
+    let failed = artifact.render_entry(&invalid, &options).unwrap_err();
+    assert_eq!(failed.code, "repeat-not-array");
+    assert_eq!(
+        js(&source, &invalid_json, json!({}), "entry", "")["error"]["code"],
+        "repeat-not-array"
+    );
+    let prefix_limit = NativeRenderOptions {
+        max_output_bytes: 9,
+        ..options.clone()
+    };
+    assert_eq!(
+        artifact
+            .render_entry(&invalid, &prefix_limit)
+            .unwrap_err()
+            .code,
+        "render-limit"
+    );
+    let valid_json = r#"{"large":"é&","items":["尾"]}"#;
+    let valid = parse_render_state(valid_json).unwrap();
+    let held = artifact.render_entry(&valid, &Default::default()).unwrap();
+    assert_eq!(
+        json!({"value":held}),
+        js(&source, valid_json, json!({}), "entry", "")
+    );
+    let exact = NativeRenderOptions {
+        max_output_bytes: held.len(),
+        ..Default::default()
+    };
+    assert_eq!(artifact.render_entry(&valid, &exact).unwrap(), held);
+    assert_eq!(
+        artifact.render_entry(&invalid, &options).unwrap_err().code,
+        failed.code
+    );
+    assert_eq!(artifact.render_entry(&valid, &exact).unwrap(), held);
+}
+
+#[test]
 fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let bytes = compile_server_artifact("ok", &common::make_locator(&[])).unwrap();
     let original: Value = serde_json::from_slice(&bytes).unwrap();

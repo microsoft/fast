@@ -106,10 +106,16 @@ instead of constructing a mapping for each matched character. Rendering retains
 no request-sized output buffers or scratch storage between calls.
 
 The shared Rust escaping implementation writes unchanged UTF-8 spans and entities
-to a fallible sink. Native text bindings use the executor's bounded output string
-directly, avoiding an escaped intermediate and stopping on output-limit errors.
-Attribute intermediates remain. Complete owned results, exact bytes, step counts
-and error/request isolation are unchanged; there is no streaming API change.
+to a fallible sink. Native text/attribute bindings use the executor's bounded
+output string directly, and finite scalars format into that same sink. Composite
+attributes resolve bindings before writing so missing/null parts suppress the
+whole attribute; authored literal entities and quote handling stay unchanged.
+Lookups and composite scalar-value lists still allocate; container operands drop
+cloned contents immediately and retain only their display tags, not state graphs.
+Shadow split/append assembly
+retains shadow-before-host error order. No capacity hints are retained. Complete
+owned results, exact bytes, step counts and error/request isolation are unchanged;
+there is no streaming API or JavaScript output-assembly change.
 
 ## CLI
 
@@ -138,7 +144,7 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `build-wasm.cjs` | Builds the compiler and converter WASM wrappers |
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
-| `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts; authored-manifest changes remain incompatible |
+| `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts, including frozen UTF-8 workload contracts; authored-manifest changes remain incompatible |
 | `test/performance/` | Shared output-baseline tests and fresh-process flat-plan measurements |
 
 ### Benchmark phase ownership
