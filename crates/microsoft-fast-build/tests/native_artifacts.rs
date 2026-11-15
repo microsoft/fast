@@ -49,6 +49,9 @@ fn js(source: &str, state: &str, options: Value, target: &str, name: &str) -> Va
 #[test]
 fn static_markup_does_not_expand_into_per_tag_rendering_code() {
     let locator = common::make_locator(&[]);
+    let module_overhead = compile_server_module("", &locator, "__FAST_TEST_RUNTIME__")
+        .unwrap()
+        .len();
     for count in [64, 256] {
         let entry = "<section class=\"panel\"><h2>Static &amp; text</h2><p title='fixed'>Payload</p><br /></section>\n".repeat(count);
         let bytes = compile_server_artifact(&entry, &locator).unwrap();
@@ -62,7 +65,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         let artifact = CompiledArtifact::load(&bytes).unwrap();
         let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
         assert!(
-            source.len() < entry.len() * 3 / 2,
+            source.len() < module_overhead + entry.len() * 3 / 2,
             "static output expanded into generalized JavaScript"
         );
         assert_eq!(
@@ -151,7 +154,7 @@ fn instance_constants_do_not_duplicate_javascript_element_functions() {
             .collect::<String>();
         let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
         assert!(
-            source.matches("function ").count() < 16,
+            source.matches("function ").count() - source.matches("export function ").count() < 8,
             "instance constants duplicated executable functions for {count} hosts"
         );
         let artifact =

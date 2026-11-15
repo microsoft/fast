@@ -10,21 +10,20 @@ parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
 native Rust executor. Both use the same compiler-owned executable IR.
 The helper is the JavaScript target's request engine. It has no imports or compiler,
-WASM, parser, browser, serialization or source-evaluation dependency.
+WASM, template parser, browser, serialization or source-evaluation dependency.
+All JavaScript render methods accept JSON text and use the intrinsic data parser.
 See [the full module/state contract](./docs/server-modules.md).
 
-Rust interns identical executable bodies and factors repeated JavaScript element
-shapes into shared functions with instance-specific constant records. Different
-indexes, dataset values or inline styles do not require another executable
-function when their recipes and light DOM match. Single-use shapes remain
-directly emitted, and compound property literals retain per-call ownership.
-This is an internal compiler optimization; exported APIs, helper contract,
-artifact schema, rendering bytes and hydration behavior are unchanged. Existing
-compiler fingerprint checks still require artifacts to be regenerated on upgrade.
+Rust lowers the shared executable IR into flat string, numeric-code and offset
+tables, with local rule IDs per entry/component. Generated ESM contains these
+state-independent plans and one helper call, not generated rendering functions.
+The helper validates all rules/references and prepares typed execution closures
+at module load, including unreachable rules and cycle detection. Mutable input
+tables are copied before activation. There is no AOT-function fallback.
 
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes
-only when hydration cannot change their output. Literal-only JavaScript bodies
+only when hydration cannot change their output. Literal-only plan bodies
 return constants directly. Tags with whitespace/stripping differences, markers,
 bindings, nested components or host semantics retain the required execution.
 The large-static-template benchmark covers distinct definitions with small bound
@@ -46,7 +45,7 @@ imply equivalent FAST budgets in the JS target.
 
 ### Compiled access and repeat frames
 
-The Rust emitter interns path accessors and resolves potential lexical aliases
+The flat-plan loader prepares path accessors and resolves potential lexical aliases
 into numeric slots. The helper caches array-index decoding at module import,
 specializes single-key root and single-alias lookups, and selects the newest
 matching alias when dotted prefixes overlap. It preserves own-property masking,
@@ -58,25 +57,26 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Helper contract version 2 introduced these accessors/frames; version 3 adds
-prepared-state requests. Generated/native artifacts must be
-regenerated and deployed with matching helpers/libraries. Rendering APIs and
-IR opcodes/schema remain unchanged; native execution is not optimized here.
+Component property plans select naming keys and ordered overlay operations at
+module load. Ordinary properties bypass group dispatch; grouped writes use
+request-local copy flags and clone borrowed objects only before modification.
+Explicit replacement resets ownership for subsequent grouped writes. No
+per-request property tuples or mapped property arrays are constructed.
+Composite attributes specialize short recipes and concatenate longer recipes
+without mapped fragment arrays. Every operand still executes in authored order,
+including after a missing fragment; missing fragments omit the complete attribute.
+Plan metadata retains no request data, and compound literals stay request-owned.
+These loader specializations leave helper version 5 and both schemas unchanged.
+
+Helper contract version 5 replaces generated functions and object/prepared
+JavaScript APIs with flat plans and four required JSON-string methods.
+Generated/native artifacts must be
+regenerated and deployed with matching helpers/libraries. Native IR opcodes/schema
+and native execution remain unchanged.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
-### Prepared-state ownership
-
-`prepareState` and the four generated `render*Prepared` exports provide explicit
-reuse of unchanged state. The existing validator optionally copies/freezes every
-container in the same traversal; ordinary validation stays enabled per call.
-Opaque handles are privately branded by helper-instance `WeakMap` membership.
-Snapshots are immutable, independent of input mutations, and usable with any
-artifact importing that helper instance. They cannot be forged, serialized,
-transferred between runtime instances, or passed as ordinary state. Dropping
-handles permits collection; no request object identity is used as a validation
-cache. Options, scopes, loops and child overlays stay request-local.
-Dataset merges clone explicitly bound borrowed objects before writing.
+### Native prepared-state ownership
 
 Native `PreparedState` reuses Rust's existing normalizer and stores the owned
 result in a private `Arc`. The existing executor borrows that root using `Cow`,
@@ -85,9 +85,26 @@ Its four prepared methods do not clone/revalidate the root. Snapshot clones
 are `Send + Sync`, artifact-independent and freed after the last owner drops.
 This adds target-specific ownership wrappers, not another renderer or validator.
 
+### Fresh JSON request ownership
+
+Four generated `render*Json` methods execute loaded plans with the same rendering
+options. Object-input and prepared JavaScript APIs and their general validator,
+snapshot brand/cache and cloning/freezing paths have been removed.
+The helper captures `JSON.parse` at initialization and parses an explicit
+string without a reviver. Parsed graphs are request-owned, acyclic, plain and
+dense, so their traversal omits arbitrary-object prototype/descriptor/symbol and
+cycle checks. Every key/value still receives Unicode/finite-number validation,
+including unused state, and negative zero is normalized in the owned graph.
+No graph is copied/frozen into a snapshot or cached by identity.
+
+JSON methods do not implicitly serialize/coerce caller objects, accept parser callbacks or decode
+bytes. The parser is intrinsic data parsing, not request-time template compilation.
+Native ownership/execution and IR opcodes/schema remain unchanged; helper version 5
+and compiler fingerprint checks require regenerated modules/native artifacts.
+
 ### Output assembly and escaping
 
-Generated JavaScript retains returned child strings and `+=` assembly.
+Loaded plan closures retain returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,
 instead of constructing a mapping for each matched character. Rendering retains
 no request-sized output buffers or scratch storage between calls.
@@ -100,8 +117,8 @@ and error/request isolation are unchanged; there is no streaming API change.
 
 ## CLI
 
-`fast build` loads entry/registry files, compiles AOT source, imports that source,
-parses optional state JSON, executes `renderEntry` and writes complete HTML.
+`fast build` loads entry/registry files, compiles flat plans, imports their ESM,
+passes state JSON directly to `renderEntryJson` and writes complete HTML.
 It is a build tool, not a request handler, and always produces complete HTML.
 Omitted state becomes an empty object, without implicitly loading state.json.
 Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
@@ -110,7 +127,7 @@ presence overrides config, including empty paths. Boolean options are validated.
 `fast convert --syntax=server-js` links all named template inputs into one ESM
 module. It rejects duplicate names, empty registries, wildcard output paths and
 browser-only TypeScript options. The default output is `server.mjs` in the current
-directory. Its entry is empty; consumers call `renderHost`/`renderShadow`, or use
+directory. Its entry is empty; consumers call `renderHostJson`/`renderShadowJson`, or use
 `compileServerModule` with entry HTML for complete pages.
 Target metadata comes from compiler WASM.
 Browser conversion and CSS conversion remain in the independent converter crate.
@@ -126,41 +143,21 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
 | `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts; authored-manifest changes remain incompatible |
-| `test/performance/` | Shared output-baseline tests and fresh-process AOT measurements |
+| `test/performance/` | Shared output-baseline tests and fresh-process flat-plan measurements |
 
 ### Benchmark phase ownership
 
-The version-2 benchmark report measures compiler loading, fixture setup,
-per-workload compilation/artifact writing, child setup/input loading, module
-import, isolated first render, explicit warmup, warm rendering and UTF-8/file
-delivery separately. Child samples disable Node's compile cache; optional CPU
-profiles persist independently of temporary benchmark files. Warm GC events are
-scoped to the measured loop, and output comparisons run outside render timers.
-Historical combined cold timings use `coldImportAndRenderMs`, not the version-2
-`firstRenderMs`. This is benchmark tooling, not a rendering API or runtime change.
-An escape-heavy Unicode text/attribute workload exercises output allocation.
-Additional warm render-to-UTF-8 wall/CPU timings include string materialization
-and Buffer creation, rather than shifting those costs outside the measured call.
-They run after the string-only loop and its GC/memory observations.
-`--state-mode=all` compares ordinary calls, one reusable prepared snapshot, and
-preparing a new snapshot per call in separate child processes with alternating
-mode order. It reports preparation time and before/after-GC memory outside
-render timing; only reused snapshots skip per-call validation. Default mode is
-still `plain`. Compare preparation plus rendering and retained memory, not
-prepared throughput alone.
-
-Boundary-normalized measurements identify the execution target as generated
-JavaScript and record marker/naming options. State-only JSON serialization is
-timed once outside rendering, with byte length and SHA-256 checked against the
-parent's fixture. A separately warmed JSON-text-to-UTF-8 loop includes parsing,
-validation, rendering and encoding for ordinary or fresh-preparation calls.
-Reused snapshots omit that loop because they are not fresh JSON requests.
-Cold import-to-UTF-8 sums import, any one-time preparation, first rendering and
-encoding without double-counting fresh preparation. Output-byte throughput
-uses the corresponding complete boundary; string-only throughput is logical
-output size, not encoded delivery. Lexical host/marker/DSD counts are diagnostics,
-not DOM equivalence. Frozen byte tests and browser hydration/node-identity tests
-remain independent qualification gates; no rendering contract is normalized away.
+Version-3 reports identify `flat-plan-javascript` with `owned-json` input.
+Each first/warm request includes parsing, full Unicode/finite-number validation
+and rendering; the UTF-8 loop also materializes/encodes the result.
+Object-input, prepared-state and paired legacy JSON modes have been removed.
+State serialization and fixture-file parsing remain setup observations outside
+request timers. The parent verifies state/output hashes across fresh processes.
+Import includes plan validation and closure preparation, and cold delivery sums
+import, first JSON request and encoding without adding constituent phases twice.
+Warm CPU, scoped GC, memory, byte throughput and lexical output diagnostics
+remain separate. Frozen contracts and browser hydration tests qualify behavior;
+memory snapshots are not exact allocation totals.
 
 ## Template loading — `parseFTemplates`
 
@@ -186,10 +183,10 @@ is needed. Format version 1 remains compatible: renderers do not consume spans
 and continue accepting older records without them. Regenerate older metadata
 when authored diagnostics need locations.
 
-Plugins compile server ESM and call its `renderShadow` for a complete DSD
+Plugins compile server ESM and call its `renderShadowJson` for a complete DSD
 fragment using resolved component state, without creating a throwaway host or
 slicing serialized HTML. Host/light-DOM ownership stays with the caller.
-Entry/host/fragment exports share generated shadow functions and fresh marker scopes.
+Entry/host/fragment exports share loaded shadow closures and fresh marker scopes.
 
 The additive `extract_template_slots(html, templateName)` export returns JSON
 `TemplateSlot` records (`name`, `line`, `column`) from the original complete HTML,
@@ -379,7 +376,7 @@ retaining their original expected bytes.
 Dedicated native tests cover immutable cross-thread reuse, all render APIs,
 DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
 relocates generated ESM, then renders without authored inputs or compilation.
-The benchmark reports AOT import/first render, warmed CPU/wall time, process
+The benchmark reports plan import/first render, warmed CPU/wall time, process
 memory/GC, source bytes and output hashes. Its unique-host workload varies static
 instance attributes to exercise shared element code. See server-modules.md for the current
 benchmark command and measurement boundaries.
