@@ -94,6 +94,26 @@ for missing/null bindings before writing, preserving whole-attribute suppression
 Results remain complete owned strings, not a streaming API; failed calls return
 no partial HTML. Buffers are request-local, with no retained capacity hints.
 
+For fresh JSON requests, use `render_entry_json(json, options)` instead of
+`parse_render_state(json)` followed by `render_entry(&state, options)`. It builds
+owned validated state directly and renders without a second normalized copy:
+
+```rust
+let html = program.render_entry_json(
+    r#"{"title":"Request-specific state"}"#,
+    &NativeRenderOptions::default(),
+)?;
+```
+
+`render_template_json`, `render_host_json` and `render_shadow_json` follow the
+same naming/argument order as their typed counterparts. This is an additive
+migration; typed input still validates/copies, and prepared input retains its
+explicit snapshot ownership. Native lookups, repeat items/lexical frames and
+direct child properties now borrow request state. Dataset merges remain
+copy-on-write. All modes keep complete input validation, resource budgets,
+owned results and error recovery.
+
+
 For unchanged state reused across calls, validate and copy once:
 
 ```rust

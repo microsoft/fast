@@ -166,6 +166,14 @@ UTF-8 output; composite attributes retain whole-attribute missing/null suppressi
 Output budgets return errors without partial HTML, and no buffer capacity is
 retained between requests. This does not change the JavaScript rendering backend.
 
+Rust hosts receiving fresh JSON can use `render_entry_json`, `render_template_json`,
+`render_host_json` or `render_shadow_json` to parse and fully validate owned state
+without the typed methods' extra normalized copy. Existing typed and prepared
+methods remain compatible. Native lookups/repeats and direct child properties
+borrow request storage; results remain complete owned UTF-8 strings. See the
+[fresh JSON migration](./docs/server-modules.md#fresh-native-json-requests).
+These native-only changes do not accelerate the npm JavaScript request path.
+
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable
 thread-safe ownership and reusable request-independent instructions. See the
