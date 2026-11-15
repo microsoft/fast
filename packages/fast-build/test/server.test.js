@@ -743,23 +743,63 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
     }
 });
 
-test("flat plans reject a mismatched helper contract on module import", async () => {
-    for (const version of [0, 2, 3, 4]) {
-        const helper = `data:text/javascript,export const runtimeVersion = ${version};`;
-        const source = compileServerModule("static", {}, helper);
-        await assert.rejects(
-            import(
-                `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-            ),
-            /Incompatible FAST server runtime/,
+test("stable flat plans render with compatible helper release versions", async () => {
+    const entry = '<stable-el :value="{{value}}">{{value}}</stable-el>';
+    const templates = { "stable-el": "<b>{{value}}</b>" };
+    const runtimeImport = "./compatible-runtime.mjs";
+    const source = compileServerModule(entry, templates, runtimeImport);
+    const { module: expected } = await compile(entry, templates);
+    const state = { value: "<&" };
+    for (const version of [0, 4, 6, 100]) {
+        const helper = `data:text/javascript;base64,${Buffer.from(
+            `export { createServerRenderer } from ${JSON.stringify(runtime)};
+             export const runtimeVersion = ${version};`,
+        ).toString("base64")}`;
+        const resolvedSource = source.replace(
+            JSON.stringify(runtimeImport),
+            JSON.stringify(helper),
         );
+        const module = await import(
+            `data:text/javascript;base64,${Buffer.from(resolvedSource).toString("base64")}`
+        );
+        assert.equal(module.runtimeVersion, version);
+        assert.equal(Object.hasOwn(module, "compilerId"), false);
+        const prepared = module.prepareState(state);
+        state.value = "mutated";
+        for (const markersV2 of [false, true]) {
+            const options = { markersV2 };
+            for (const method of [
+                "renderEntry",
+                "renderTemplate",
+                "renderHost",
+                "renderShadow",
+            ]) {
+                const args =
+                    method === "renderHost" || method === "renderShadow"
+                        ? ["stable-el"]
+                        : [];
+                assert.equal(
+                    module[method](...args, state, options),
+                    expected[method](...args, state, options),
+                );
+                assert.equal(
+                    module[`${method}Prepared`](...args, prepared, options),
+                    expected[method](...args, { value: "<&" }, options),
+                );
+            }
+        }
+        state.value = "<&";
     }
 });
 
-test("flat plans preserve ordinary and prepared exports without generated functions", async () => {
+test("flat plans preserve rendering exports without compiler identity or release literals", async () => {
     const { module, source } = await compile("{{value}}");
     assert.match(source, /fast-server-plan/);
-    assert.doesNotMatch(source, /\bfunction\b|=>/);
+    assert.doesNotMatch(
+        source,
+        /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion\s*(?:[!=]=|=\s*\d)/i,
+    );
+    assert.match(source, /export const runtimeVersion = \$\.runtimeVersion;/);
     assert.equal(module.renderEntry({ value: "ordinary" }), "ordinary");
     assert.equal(
         module.renderEntryPrepared(module.prepareState({ value: "prepared" })),
@@ -785,17 +825,23 @@ test("flat plan loading rejects invalid rules and owns independent plan data", a
         offsets: [0, 4, 6, 9, 11],
         root: 0,
     };
-    const renderer = createServerRenderer(plan, [], "test");
+    const renderer = createServerRenderer(plan, []);
+    assert.equal(Object.hasOwn(renderer, "compilerId"), false);
     assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
     plan.strings[0] = "mutated";
     plan.code.fill(0);
     assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
     for (const invalid of [
+        { ...plan, format: "unknown-plan" },
+        { ...plan, version: undefined },
         { ...plan, version: 2 },
         { ...plan, offsets: [0, -1] },
         { ...plan, code: [18, 1, 26, 0], offsets: [0, 2], root: 0 },
     ]) {
-        assert.throws(() => createServerRenderer(invalid, [], "test"), TypeError);
+        assert.throws(
+            () => createServerRenderer(invalid, []),
+            /Invalid or incompatible FAST server plan/,
+        );
     }
 });
 

@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Replace generated server rendering functions with flat template plans while preserving object-input and prepared-state APIs.",
+  "comment": "Render flat template plans without compiler fingerprints and reuse persisted server assets until authored template inputs change.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

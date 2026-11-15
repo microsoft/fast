@@ -39,7 +39,7 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `renderHost(name, state?, options?)`: renders a complete named component host.
 - `renderShadow(name, state?, options?)`: renders only its DSD template, with no
   host attributes or caller-owned light DOM synthesized.
-- `components`, `compilerId`, `runtimeVersion`: registry and compatibility metadata.
+- `components`, `runtimeVersion`: registry and runtime-derived diagnostic metadata.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
 
@@ -130,32 +130,32 @@ fresh preparation on every call as a control.
 ## Compatibility and migration
 
 The flat-plan replacement preserves published object-input and prepared-state
-APIs, state acceptance and ownership. Regenerate compiled outputs and deploy the
-matching helper; updating the dependency without rebuilding is insufficient.
+APIs, state acceptance and ownership. Rebuild legacy outputs once and deploy a
+helper that supports the generated plan schema.
 The upgrade guide separately describes the earlier API-breaking migration from
 request-time source rendering and retired prepared compiler/program APIs.
 
-Deploy generated modules and compatible server helpers together. Generated code
-checks the helper `runtimeVersion` on import and reports a clear incompatibility.
-The compiler fingerprint is exported for build manifests; it does not require
-loading WASM during a request. Increment the helper contract version for
-incompatible compiler/helper changes and regenerate modules on upgrades to
-maintain compiler/helper compatibility.
+Generated code no longer exports a compiler fingerprint or compares a literal
+helper-build version on import. The helper validates the supported plan schema;
+`runtimeVersion` is read from that helper as diagnostic metadata. Native loading
+also uses explicit supported schemas rather than compiler-build identity.
+Unknown schemas fail safely. Retain supported published decoders across runtime
+upgrades instead of invalidating unchanged assets on every compiler change.
 
-The current helper contract is version 5, replacing generated rendering functions
-with flat plans while preserving the existing snapshot methods. The loader prepares path
+Flat plans replace generated rendering functions while preserving the existing
+snapshot methods. The loader prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
 reset caller lexical scope. Ordinary state/rendering contracts and IR schema
-version 1 remain unchanged. Regenerate both target artifacts on upgrade and deploy the compatible
-helper/native library; older generated modules fail the import-time version check.
+semantics remain unchanged. Legacy fingerprinted assets require a one-time
+migration; compiler-only updates do not invalidate the new supported formats.
 
 For a JavaScript server build:
 
-1. Move template loading/composition and `compileServerModule` into the build.
+1. Move template loading/composition and `writeServerModule` into the build.
 2. Deploy/bundle the generated ESM plus its server helper.
 3. Call `renderEntry(state)` for complete entries.
 4. Call `renderShadow(name, componentState, options)` for DSD fragments.
@@ -166,12 +166,70 @@ Browser classes/registration and hydration configuration are unchanged.
 
 ### Generated asset stability
 
-Flat plans remain state-independent build artifacts, but they still embed a
-compiler fingerprint and helper contract version. Template edits change plan
-data; compiler or helper changes can require regeneration. Changing the runtime
-import specifier also changes generated ESM. This format does not introduce
-stable modular filenames/manifests or eliminate content changes and cache
-invalidation. The fingerprint is compatibility metadata, not a per-run timestamp.
+Flat plans contain no compiler fingerprint or literal helper-build version.
+Identical inputs compile deterministically, but a pure compilation call cannot
+recover an older output after the compiler changes its encoding. Strict
+template-only stability therefore requires retaining the existing generated
+assets and their authored-input manifests, in source control or a persistent
+build cache. Unchanged authored inputs reuse those bytes rather than compiling
+again. Compiler identity, package version and timestamps are not rebuild keys.
+
+Use synchronous `writeServerModule(outputPath, inputs, options?)` for ESM or
+`writeServerArtifact(outputPath, inputs, options?)` for native bytes. Create the
+destination directory first. Both return `{ reused, manifestPath }`; the sidecar
+is `${outputPath}.inputs.json`.
+
+```js
+import { mkdir } from "node:fs/promises";
+import { writeServerModule } from "@microsoft/fast-build/server.js";
+
+await mkdir("./generated", { recursive: true });
+const result = writeServerModule(
+    "./generated/server.mjs",
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
+);
+```
+
+Inputs accept an `entry` string and either a `templates` registry (strings or
+`ServerTemplateDefinition` values), or `templateSources`, an array of complete
+authored `<f-template>` source strings. Registry names and raw source texts are
+sorted for comparison; duplicate source texts are retained. Exact content,
+whitespace, line endings and attribute ordering matter. Optional attribute lists
+and metadata format defaults are normalized; compiler-derived bindings and source
+locations are excluded. Paths are not authored inputs.
+
+The manifest records canonical authored inputs, asset kind, deployment
+configuration and exact base64 output bytes. It contains no hashes or checksums.
+The output snapshot costs approximately 133% of the asset's byte size, in addition
+to the input copy; sidecars are build storage, not runtime dependencies.
+
+Unchanged managed assets retain both files' bytes and timestamps without loading
+WASM or parsing templates. If only the output is missing, its retained snapshot
+restores the exact bytes. Losing both files loses the historical encoding:
+a fresh compiler cannot reconstruct arbitrary previous output.
+
+`overwrite` defaults to `false`. Unchanged managed reuse is idempotent; replacing
+an existing asset after template edits, or adopting an unmanaged destination,
+requires `overwrite: true`. JavaScript options also accept `runtimeImport`.
+Changing the runtime import or target kind at a managed destination is rejected
+even with overwrite; use a new destination or explicitly reset the retained pair.
+Malformed manifests and output bytes that differ from their stored snapshots
+also fail closed rather than silently recompiling.
+
+The `server-js` conversion CLI uses raw source inputs so reuse precedes
+compiler-dependent parsing. Existing CLI output files still require
+`--overwrite`, including cache hits; that flag permits replacement, not forced
+regeneration. Preserve sidecars when copying or caching build outputs.
+
+Writers use exclusive output-specific locks and sibling staging files, compile
+before replacement and roll back caught publication failures. Two filesystem
+renames cannot publish the asset/manifest pair atomically. An interrupted writer
+can leave a lock or mismatched pair; recover explicitly from retained known-good
+files rather than deleting evidence and silently rebuilding unchanged inputs.
 
 Native hosts use the artifact target below. See
 [the upgrade guide](./migration/aot-server-rendering.md).
@@ -217,15 +275,11 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 
 ### Compatibility, errors and memory
 
-- The artifact envelope identifies `format: "fast-server"`, `version:
-  SERVER_ARTIFACT_VERSION` (currently 1), `compilerId` and `runtimeVersion`.
-  Load requires an **exact compiler fingerprint**, format/version and helper
-  contract match. The artifact is an implementation format, not a stable ABI or
-  cross-version interchange promise. Regenerate and deploy matching native
-  library/artifacts together; package version alone is insufficient.
-  The fingerprint includes authored Rust source, build script, manifest and
-  lockfile paths/bytes. Cargo-packaged builds use the preserved `Cargo.toml.orig`
-  as the manifest input, so packaging normalization alone does not change identity.
+- The artifact envelope identifies `format: "fast-server"` and execution schema
+  version 2. Legacy schema 1 requires a one-time rebuild. It contains no compiler
+  fingerprint or JavaScript helper-build version. Native loading accepts supported schemas and validates
+  their complete operations/references. Source, manifest and lockfile changes
+  do not invalidate an otherwise supported artifact.
 - Load validates every opcode, operand shape, static value, component reference,
   body index and envelope field, including unreachable bodies. It never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
@@ -293,18 +347,17 @@ or coercion is a consumer compatibility change even if ordinary snapshots match.
 
 ### Deployment and native API evolution
 
-The exact compiler fingerprint is a fail-fast deployment contract, not just
-informational metadata. Matching package versions do not establish artifact
-compatibility. Every separately deployed build must supply artifacts matching
-its own native library; future encodings may reject older artifacts but must
-never silently reinterpret them. Do not edit identity/version fields to bypass
-validation.
+Supported execution schemas establish artifact compatibility, not compiler
+fingerprints or package versions. Libraries must retain supported published
+decoders so existing assets survive compiler-only upgrades. Unknown versions
+must fail rather than being silently reinterpreted. Do not edit schema fields
+to bypass validation.
 
 Load/validate replacement artifacts before application-owned atomic activation.
 Reject incompatible candidates without replacing the active program, and keep
 old `CompiledArtifact` clones for in-flight requests. With a native-library upgrade,
 old workers finish using their existing library/handles while new workers load
-newly generated matching artifacts. Rust handles are not transferable across
+supported artifacts, reusing unchanged assets. Rust handles are not transferable across
 processes or native-library versions.
 
 Native methods borrow `&JsonValue` and `&NativeRenderOptions` only for the call;
@@ -344,7 +397,7 @@ and concurrent reuse. `node --test packages/fast-build/test/native-artifact.test
 deploys actual Node/WASM-compiled bytes to workspace and verified Cargo-packaged
 native examples with no JavaScript engine on their executable search path.
 It also verifies that changing the packaged authored manifest rebuilds the host
-and rejects the original artifact. Neither backend regenerates its own
+and can still load the original supported artifact. Neither backend regenerates its own
 expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
 

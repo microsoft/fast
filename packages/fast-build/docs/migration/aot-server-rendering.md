@@ -2,18 +2,28 @@
 
 ## Generated rendering functions to flat plans
 
-Regenerate JavaScript modules/native artifacts and deploy the matching
-version-5 helper/library. The generated module now embeds flat template tables
+Rebuild legacy JavaScript modules/native artifacts once. The generated module
+now embeds flat template tables
 loaded by the helper instead of specialized rendering functions.
 Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
 `prepareState` and all four `render*Prepared` methods remain unchanged, as do
 `ServerState`, `PreparedServerState`, validation and snapshot ownership.
 No JSON-only request API or consumer serialization migration is required.
-Native execution and artifact schema remain unchanged.
+Native execution is unchanged; the hash-free native envelope uses schema 2.
 
-The compiler fingerprint remains embedded compatibility metadata. Flat plans
-do not provide stable modular asset packaging or make edited templates produce
-unchanged assets. The earlier source-rendering migration below is separate.
+Compiler fingerprints and literal helper-build equality checks are removed.
+Native loading validates supported execution schemas rather than source/manifest
+identity. Generated `compilerId` and Rust `SERVER_COMPILER_ID` are removed;
+runtime metadata is diagnostic only.
+
+For strict template-only updates, migrate file generation to `writeServerModule`
+or `writeServerArtifact` and retain each asset with its `.inputs.json` manifest.
+These writers compare authored inputs and reuse existing bytes before compiler
+loading or raw-template parsing. The sidecar contains an exact output-byte copy,
+not a fingerprint. This increases build-storage size, not runtime dependencies.
+Pure `compileServerModule`/`compileServerArtifact` calls remain available, but
+cannot reuse historical encodings without persisted assets.
+The earlier source-rendering migration below is separate.
 
 ## Request-time source rendering to compiled server targets
 
@@ -26,12 +36,12 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
-### Prepared snapshots and helper contract version 3
+### Prepared snapshots
 
-Regenerate both JavaScript modules and native artifacts and deploy the matching
-helper/library. Version-2 modules intentionally fail the version-3 helper check.
-Existing ordinary render methods keep validating supplied state on every call;
-the executable IR schema remains version 1.
+Rebuild outputs from the earlier source renderer once and deploy a helper/library
+that supports their execution schema. Generated JavaScript uses plan schema 1;
+hash-free native artifacts use schema 2. Ordinary render methods keep validating
+supplied state on every call. Helper release versions are not asset rebuild keys.
 
 For opt-in reuse, call generated `prepareState` once, then use the corresponding
 `render*Prepared` method. Do not pass a handle to an ordinary method or serialize
@@ -67,15 +77,17 @@ configuration from build scripts.
 
 ```js
 // Build pipeline: load/compose templates before compiling.
-import { mkdir, writeFile } from "node:fs/promises";
-import { compileServerModule } from "@microsoft/fast-build/server.js";
+import { mkdir } from "node:fs/promises";
+import { writeServerModule } from "@microsoft/fast-build/server.js";
 
 await mkdir("./generated", { recursive: true });
-await writeFile(
+writeServerModule(
     "./generated/server.mjs",
-    compileServerModule("<my-card></my-card>", {
-        "my-card": "<h2>{{title}}</h2>",
-    }),
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
 );
 ```
 
@@ -98,23 +110,25 @@ Native applications do **not** need a JavaScript execution environment:
 1. Move source loading/composition into the build and call
    `compile_server_artifact(entry, &locator)` (Rust), or `compileServerArtifact`
    from `server.js` (Node/WASM build tooling).
-2. Deploy the bytes and exact compiler-matching `microsoft-fast-build` native
-   library together. Load once with `CompiledArtifact::load`.
+2. Deploy the bytes and a `microsoft-fast-build` native library that supports their
+   schema. Load once with `CompiledArtifact::load`.
 3. Pass request `JsonValue` state and `NativeRenderOptions` to `render_entry`,
    `render_template`, `render_host` or `render_shadow`.
 4. Share immutable artifact clones across worker threads. Keep retired program
    clones alive for in-flight requests during deployment activation.
 
-The artifact fingerprint must match the deployed native library exactly, even
-when package versions match. Validate/load replacements before activating them;
+The artifact schema must be supported by the deployed native library.
+Compiler-only changes no longer invalidate supported artifacts.
+Validate/load replacements before activating them;
 an incompatible candidate must not replace the active program. For library
 upgrades, let old workers finish with their loaded handles and deploy new workers
-with newly generated matching artifacts. Do not patch artifact identity fields
+with supported retained artifacts. Do not patch artifact schema fields
 or transfer Rust handles across library versions/processes.
 
 Loading and rendering never reparse authored HTML or execute JavaScript. The
-artifact contains shared compiler-owned executable operations. Regenerate
-artifacts from authored inputs with the deployed compiler.
+artifact contains shared compiler-owned executable operations. Reuse retained
+artifacts until authored inputs change; pure Rust compilation requires
+application-owned persistence for cross-compiler byte stability.
 Options retain DSD and both marker formats. Errors are recoverable typed values,
 with validation and recursion/step/output bounds; see the complete
 [native contract](../server-modules.md#native-rust-artifact-target).
@@ -123,7 +137,8 @@ ownership/error contract are deferred, not claimed as working in this release;
 no separate C# rendering semantic implementation is introduced.
 
 Deploy generated modules and compatible `server-runtime.mjs` together; bundle
-the helper or install the matching package on the server. Regenerate on upgrades.
+the helper or install a compatible package on the server. Retain supported
+generated assets across compiler-only upgrades.
 Applications own watching, dependency invalidation, module caching, atomic
 activation, retention for in-flight requests and shutdown. Multiple entries can
 be emitted as separate modules sharing the same helper.

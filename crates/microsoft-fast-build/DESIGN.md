@@ -31,7 +31,6 @@ The browser conversion crate remains independent.
 | `template_slots.rs` | Standards-based authored slot discovery |
 | `error.rs` | Structured compiler/tooling diagnostics |
 | `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
-| `build.rs` | Deterministic `SERVER_COMPILER_ID` fingerprint |
 
 ## Emission and diagnostics
 
@@ -93,10 +92,10 @@ Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
 This is a JavaScript backend replacement, not a native executor rewrite.
-Helper contract version 5 introduces flat plans while preserving published
-object/prepared APIs. Flat plan and native artifact schemas remain version 1.
-Regenerate both
-target artifacts with the upgraded compiler and deploy matching helpers/libraries.
+Flat plans preserve published object/prepared APIs. Artifact schemas are
+versioned independently of compiler builds. Loaders validate the formats they
+support; compiler source or helper implementation changes are not artifact
+identity checks.
 
 ## Request execution
 
@@ -108,12 +107,10 @@ eval or browser dependencies. Generated entry/template/host/shadow exports
 synchronously return complete strings. Existing markup, whitespace, escaping and
 markers remain byte-preserved.
 
-The helper contract version is checked on import; deployments regenerate modules
-and deploy compatible helpers together. The compiler fingerprint hashes source
-paths/bytes, the authored manifest and lockfile, independently of package version.
-Packaged crates hash Cargo's preserved `Cargo.toml.orig` under the same logical
-`Cargo.toml` path, so manifest normalization does not change compiler identity.
-Changes to authored inputs still invalidate artifacts.
+Generated JavaScript carries no compiler fingerprint or literal helper-build
+version check. The helper validates the plan schema; its `runtimeVersion` is
+diagnostic metadata, not a rebuild key. Native artifacts likewise identify a
+supported execution schema, not compiler source, manifest or lockfile bytes.
 Applications own watching, rebuilds, module activation and in-flight deployment
 lifecycle; ordinary calls retain no request state.
 
@@ -134,7 +131,7 @@ Dataset overlays copy borrowed objects before merging, including explicit
 ### Native artifact execution
 
 `CompiledArtifact::load` parses the artifact envelope, not authored HTML. It
-requires exact format/version, compiler fingerprint and helper contract identity,
+requires a supported format/schema,
 then validates every opcode, operand shape, static value, component reference and
 body index, including unreachable bodies. Unknown fields/opcodes and invalid
 references fail. JSON nesting is bounded by the deserializer; schema validation
@@ -175,7 +172,9 @@ symbolic references; unbounded request expansion returns `render-limit`, not
 stack overflow or truncated success. Failed requests cannot mutate later calls.
 See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
-They must be rebuilt with the deployed native library on upgrades.
+Compiler-only upgrades do not require rebuilding supported artifacts.
+Future loaders must retain supported published schema decoders to preserve
+unchanged assets; unsupported formats fail rather than being reinterpreted.
 
 Minor prerelease release metadata does not waive API migration. Future native
 allocation optimizations must preserve borrowed request inputs, independently

@@ -38,7 +38,7 @@ ownership and request-local state/error/resource limits are documented in the
 There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
 Minor prerelease classification does not make removed APIs a drop-in upgrade.
-State acceptance/normalization, native resource defaults, artifact fingerprint
+State acceptance/normalization, native resource defaults, artifact format
 checks, borrowed request inputs, owned results/errors and thread-safe artifact
 reuse are compatibility contracts. Allocation reductions may remain internal;
 changing those guarantees requires consumer migration. Native budgets do not
@@ -58,10 +58,10 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Helper contract version 5 replaces generated rendering functions with flat plans
-while preserving version-3 object/prepared APIs. Generated/native artifacts must be
-regenerated and deployed with matching helpers/libraries. Rendering APIs and
-IR opcodes/schema remain unchanged; native execution is not optimized here.
+Flat plans preserve published object/prepared APIs. Supported artifact schemas,
+not compiler fingerprints or helper-build versions, determine compatibility.
+Compiler implementation changes do not force regeneration of existing supported
+assets. Native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 

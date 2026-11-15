@@ -20,8 +20,9 @@ npm install --save @microsoft/fast-build
 ## Compiled flat-plan server modules
 
 This update replaces generated rendering functions with flat template plans.
-Published object-input and prepared-state APIs are unchanged. Regenerate compiled
-outputs and deploy the matching helper when upgrading; see the
+Published object-input and prepared-state APIs are unchanged. Legacy fingerprinted
+artifacts need a one-time migration; retain new supported assets across compiler
+upgrades using the persistent writer below. See the
 [upgrade guide](./docs/migration/aot-server-rendering.md).
 
 Compile trusted templates during the server build, then import the emitted ESM
@@ -32,15 +33,17 @@ execution closures once at module load, with no generated-function fallback:
 
 ```js
 // Build time
-import { mkdir, writeFile } from "node:fs/promises";
-import { compileServerModule } from "@microsoft/fast-build/server.js";
+import { mkdir } from "node:fs/promises";
+import { writeServerModule } from "@microsoft/fast-build/server.js";
 
 await mkdir("./generated", { recursive: true });
-await writeFile(
+writeServerModule(
     "./generated/server.mjs",
-    compileServerModule("<my-card></my-card>", {
-        "my-card": "<h2>{{title}}</h2>",
-    }),
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
 );
 ```
 
@@ -64,8 +67,8 @@ fast convert --syntax=server-js --templates="./components/**/*.html" --output=".
 ```
 
 The registry target compiles an empty entry; call `renderHost` or `renderShadow`
-for a registered component. To render a complete page entry, pass its HTML to
-`compileServerModule`.
+for a registered component. To generate a complete page module, pass its HTML as
+`entry` to `writeServerModule`; use `compileServerModule` for fresh in-memory compilation.
 
 Use the existing browser conversion target separately with the authored component
 class and explicit registration. Flat plans do not change browser hydration.
@@ -95,13 +98,16 @@ Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
 The flat-plan loader prepares path/alias accessors at module import and
-reuses request-local repeat frames across iterations. The server helper contract
-is version 5: regenerate compiled modules/artifacts and deploy the matching
-helper/native library together. Ordinary state/rendering contracts are unchanged.
+reuses request-local repeat frames across iterations. Compatibility is based on
+supported plan schemas, not compiler fingerprints or helper-build versions.
+Ordinary state/rendering contracts are unchanged.
 Contributor benchmarks include deep paths and nested repeats.
-Plans still embed the compiler compatibility fingerprint and change when authored
-templates or compilation inputs change. Flat plans alone do not introduce stable
-modular asset packaging or eliminate generated-asset invalidation.
+Persist both the generated asset and its `.inputs.json` sidecar in source control
+or a build cache. `writeServerModule` reuses their exact bytes when authored inputs
+are unchanged, before loading the compiler. The manifest stores exact inputs and
+an output-byte snapshot, not hashes, compiler versions or timestamps.
+`compileServerModule` remains a low-level pure compiler; repeatedly invoking it
+without retained outputs cannot guarantee stability across encoder changes.
 
 For large unchanged state reused across calls, generated modules also export
 an explicit immutable snapshot path:
@@ -122,18 +128,20 @@ See [ownership, native equivalents and measurement](./docs/server-modules.md#pre
 
 ## Native Rust compiled artifacts
 
-Compile at build time with `compileServerArtifact` from `server.js`:
+Write stable native assets at build time with `writeServerArtifact` from `server.js`:
 
 ```js
-import { mkdir, writeFile } from "node:fs/promises";
-import { compileServerArtifact } from "@microsoft/fast-build/server.js";
+import { mkdir } from "node:fs/promises";
+import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
 await mkdir("./generated", { recursive: true });
-await writeFile(
+writeServerArtifact(
     "./generated/server.fast",
-    compileServerArtifact("<my-card></my-card>", {
-        "my-card": "<h2>{{title}}</h2>",
-    }),
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
 );
 ```
 
@@ -143,8 +151,8 @@ and renders request-local `JsonValue` state via `render_entry`, `render_template
 templates, compiler WASM, JavaScript engine or HTML parser invocation.
 The build-time Rust `compile_server_artifact` produces the identical format.
 
-Deploy artifacts with the exact compiler-matching native library; loading
-validates versions, fingerprint, opcodes and references. Artifacts have immutable
+Deploy artifacts with a native library supporting their execution schema; loading
+validates the format, schema, opcodes and references. Artifacts have immutable
 thread-safe ownership and reusable request-independent instructions. See the
 [native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
 and [Rust usage](../../crates/microsoft-fast-build/README.md).

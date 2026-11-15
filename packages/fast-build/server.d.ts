@@ -29,7 +29,7 @@ export interface PreparedServerState {
 
 /** Exports of a generated server ESM module. */
 export interface ServerModule {
-    readonly compilerId: string;
+    /** Informational release metadata supplied by the imported helper runtime. */
     readonly runtimeVersion: number;
     readonly components: readonly string[];
     /** Copy, validate and normalize once. Dropping the handle allows collection. */
@@ -70,8 +70,57 @@ export function compileServerModule(
     runtimeImport?: string,
 ): string;
 
-/** Build-time only. Load with the exact compiler-matching native Rust library. */
+/** Build-time only. Load with a native library supporting the emitted artifact schema. */
 export function compileServerArtifact(
     entry: string,
     templates?: Record<string, string | ServerTemplateDefinition>,
 ): Uint8Array;
+
+/** Authored inputs only; raw sources are parsed by Rust on a persistent cache miss. */
+export type ServerAssetInputs =
+    | {
+          entry: string;
+          templates?: Record<string, string | ServerTemplateDefinition>;
+          templateSources?: never;
+      }
+    | {
+          entry: string;
+          templateSources: readonly string[];
+          templates?: never;
+      };
+
+export interface ServerAssetWriteOptions {
+    /** Existing changed or unmanaged output requires explicit permission to replace. */
+    overwrite?: boolean;
+    /** Nameless-template diagnostics, emitted only when raw sources are parsed. */
+    onWarning?: (warning: { sourceIndex: number; content: string }) => void;
+}
+
+export interface ServerModuleWriteOptions extends ServerAssetWriteOptions {
+    /** Persisted deployment configuration; cannot change for a managed asset. */
+    runtimeImport?: string;
+}
+
+export interface ServerAssetWriteResult {
+    /** Includes exact-byte restoration when an unchanged managed output is missing. */
+    reused: boolean;
+    manifestPath: string;
+}
+
+/**
+ * Synchronously persist server ESM and an exact authored-input/output-byte sidecar.
+ * Unchanged managed output is reused before loading the compiler. Corruption and
+ * deployment changes fail closed even when overwrite is enabled.
+ */
+export function writeServerModule(
+    outputPath: string,
+    inputs: ServerAssetInputs,
+    options?: ServerModuleWriteOptions,
+): ServerAssetWriteResult;
+
+/** Native counterpart of writeServerModule; no runtime import configuration. */
+export function writeServerArtifact(
+    outputPath: string,
+    inputs: ServerAssetInputs,
+    options?: ServerAssetWriteOptions,
+): ServerAssetWriteResult;

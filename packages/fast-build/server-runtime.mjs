@@ -426,7 +426,7 @@ export function marker(scope, count) {
  * Load compiler-owned flat tables once, without evaluating generated source.
  * Application state is supplied only to the returned render methods.
  */
-export function createServerRenderer(entry, definitions, compilerId) {
+export function createServerRenderer(entry, definitions) {
     const components = new Map();
     const invalid = () => {
         throw new TypeError("Invalid or incompatible FAST server plan.");
@@ -827,7 +827,7 @@ export function createServerRenderer(entry, definitions, compilerId) {
         };
     }
 
-    if (!Array.isArray(definitions) || typeof compilerId !== "string") invalid();
+    if (!Array.isArray(definitions)) invalid();
     for (const [name, plan] of definitions) {
         if (typeof name !== "string" || components.has(name)) invalid();
         const component = load(plan);
@@ -836,7 +836,6 @@ export function createServerRenderer(entry, definitions, compilerId) {
     }
     const body = load(entry).shadow;
     return Object.freeze({
-        compilerId,
         runtimeVersion,
         components: Object.freeze([...components.keys()]),
         prepareState,

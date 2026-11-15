@@ -38,8 +38,8 @@ See the [server module contract](../../packages/fast-build/docs/server-modules.m
 for helper compatibility, state validation and qualification.
 
 The plan loader prepares path accessors and reusable request-local repeat frames.
-Helper contract version 5 requires regenerated modules/artifacts
-and matching deployed helpers/libraries. The executable IR schema remains version 1.
+JavaScript plan schema 1 and native artifact schema 2 are independent of compiler
+build identity. The compiler fingerprint and helper-build equality checks are removed.
 Published object-input and prepared-state APIs remain unchanged.
 
 ### Compile and deploy native Rust artifacts
@@ -56,7 +56,7 @@ locator.add_template("my-card", "<h2>{{title}}</h2>");
 let bytes = compile_server_artifact("<my-card></my-card>", &locator)?;
 // Persist bytes in the application build/deployment pipeline.
 
-// Server startup: only the compiled artifact and matching Rust library are needed.
+// Server startup: compiled bytes and a schema-compatible Rust library.
 let program = CompiledArtifact::load(&bytes)?;
 let state = parse_render_state(r#"{"title":"Request-specific state"}"#)?;
 let html = program.render_entry(&state, &NativeRenderOptions::default())?;
@@ -71,9 +71,10 @@ Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
 threads; each ordinary call validates/copies state and owns its counters, overlays and
 returned `String`. Input bytes and the build-time locator may be dropped after
 loading. Errors are recoverable `NativeRenderError { code, message }`; no partial
-HTML is returned. Load validates all references/opcodes and requires the exact
-compiler fingerprint, artifact version and runtime contract. Regenerate artifacts
-and deploy the matching library together. State/execution/output limits and
+HTML is returned. Load validates all references/opcodes and requires a
+supported execution schema. Compiler-only updates do not
+invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-time
+rebuild into schema 2. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
 Escaped text bindings write directly into the request's bounded UTF-8 output
@@ -97,6 +98,10 @@ request-specific state; preparation allocates a retained copy and is not free.
 See [prepared ownership and measurement](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
+For strict template-only file updates, use the npm package's `writeServerArtifact`
+and retain its asset plus authored-input manifest, or implement equivalent
+application-owned persistence around Rust compilation. Pure compilation does not
+recover an older encoding after the compiler changes.
 No request-time WASM rendering, stable C ABI or working .NET bindings are provided.
 .NET/C ABI hosting is a follow-up, not a separate C# semantic implementation.
 
@@ -159,8 +164,8 @@ format version 1 remain unchanged.
 
 ## Compatibility and migration
 
-This flat-plan update preserves published rendering APIs but requires regenerated
-modules/artifacts and matching helpers/libraries. JavaScript hosts compile
+This update preserves published rendering APIs and removes compiler fingerprint
+metadata. Legacy artifacts require a one-time format migration. JavaScript hosts compile
 ESM and invoke its render exports. Native hosts compile artifacts and use
 `CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
 Use `renderTemplate`/`render_template` for template-context root-host attributes.

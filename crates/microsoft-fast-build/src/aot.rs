@@ -2,7 +2,7 @@ use crate::{Locator, RenderError};
 use serde_json::{json, Value};
 use std::collections::HashMap;
 
-/// Compatibility identity for the generated module's server-only helper contract.
+/// Informational helper release metadata, not a generated plan compatibility gate.
 pub const SERVER_RUNTIME_VERSION: u32 = 5;
 
 struct FlatPlan<'a> {
@@ -258,17 +258,14 @@ fn component_plan(ir: &Value, component: &Value) -> Value {
     plan.serialize(root, Some(host), Some(tag))
 }
 
-fn launcher(ir: &Value, runtime_import: &str, data: &str) -> String {
+fn launcher(runtime_import: &str, data: &str) -> String {
     format!(
         "import * as $ from {};\n\
-         if($.runtimeVersion !== {SERVER_RUNTIME_VERSION}) throw new Error(\"Incompatible FAST server runtime; regenerate server modules.\");\n\
          {data}\
-         export const compilerId = {};\n\
-         export const runtimeVersion = {SERVER_RUNTIME_VERSION};\n\
-         const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(entryPlan,componentPlans,compilerId);\n\
+         export const runtimeVersion = $.runtimeVersion;\n\
+         const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(entryPlan,componentPlans);\n\
          export {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}};\n",
         serde_json::to_string(runtime_import).unwrap(),
-        ir["compilerId"],
     )
 }
 
@@ -290,7 +287,6 @@ pub(crate) fn emit(ir: &Value, runtime_import: &str) -> String {
         .map(|(name, component)| json!([name, component_plan(ir, component)]))
         .collect::<Vec<_>>();
     launcher(
-        ir,
         runtime_import,
         &format!(
             "const entryPlan = {};\nconst componentPlans = {};\n",
