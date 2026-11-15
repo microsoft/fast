@@ -5,7 +5,7 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits named JavaScript functions from this IR; `compile_server_artifact` serializes
+emits flat string/code/offset tables in ESM from this IR; `compile_server_artifact` serializes
 the same IR for the supported native Rust executor. There is one HTML/expression
 lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
@@ -15,7 +15,7 @@ The browser conversion crate remains independent.
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
-| `aot.rs` | Server ESM emission from the shared executable IR |
+| `aot.rs` | Flat-plan server ESM emission from the shared executable IR |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
@@ -55,29 +55,28 @@ their plain and hydrated bytes are identical. Adjacent literal writes and static
 attribute fragments are coalesced in place before interning. Whitespace or
 client-attribute differences retain the tag operation; binding counts, nested
 components, host defaults and DSD selection remain executable boundaries.
-The JavaScript emitter returns literal-only and empty bodies directly, without
+The JavaScript plan loader returns literal-only and empty bodies directly, without
 hydration branches or an output accumulator. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The JavaScript emitter additionally groups element operations by executable
-shape: component identity, light-DOM body, attribute recipes, paths, defaults and
-marker counts. Instance-specific literal attribute output and primitive property
-operands live in generated constant records passed to shared functions. Shapes
-used only once retain direct emission. Compound property literals remain
-constructed per invocation because child dataset overlays can mutate local
-objects. This factoring is compiler-owned, requires no new runtime helper, and
-does not change the artifact schema or native execution semantics.
+The emitter locally numbers flat rules per entry/component and interns strings.
+ESM embeds only these plans and calls the helper's loader; it does not emit
+rendering functions, accessors or loops. The helper validates all records and
+references, detects cycles and prepares execution closures once. Compound
+property literals remain request-owned. Object validation and prepared snapshots
+are unchanged; overlay/attribute specialization is not part of this baseline.
+Native execution and artifact schema are unchanged.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
 attributes, naming rules, body structure, literal CSS/markup and hydration binding
-counts. State paths become segment arrays. The emitter turns repeats into JavaScript
-loops; the native executor iterates the same body references.
+counts. State paths become segment arrays. The plan loader prepares repeat
+closures; the native executor iterates the same body references.
 
 ### Compiled JavaScript access plans
 
-The emitter interns distinct paths into module-level accessors. Matching repeat
+The plan loader prepares path accessors at module load. Matching repeat
 alias prefixes are resolved to numeric slots; slot zero is reserved for
 `$index`. The helper prepares array-index decoding once at module import.
 Single-key root access and single-candidate lexical access use specialized
@@ -93,9 +92,9 @@ so interning does not multiply functions for different repeat scopes.
 Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
-This is JavaScript target emission/hosting, not a new IR opcode or a native
-executor rewrite. Helper contract version 2 introduced the frame/accessor ABI;
-version 3 adds prepared-state requests. Artifact schema version 1 remains unchanged.
+This is a JavaScript backend replacement, not a native executor rewrite.
+Helper contract version 5 introduces flat plans while preserving published
+object/prepared APIs. Flat plan and native artifact schemas remain version 1.
 Regenerate both
 target artifacts with the upgraded compiler and deploy matching helpers/libraries.
 
@@ -332,8 +331,8 @@ render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
 Node tests enforce 438 distinct frozen output contracts and the shared
 performance corpus baseline.
-Browser fixtures hydrate AOT output. `bench:server` measures generated JavaScript;
+Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
 its unique-host workload varies indexes, dataset values and inline styles to
-exercise structural sharing rather than only byte-identical hosts;
+exercise component plans rather than only byte-identical hosts;
 its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.

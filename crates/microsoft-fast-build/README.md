@@ -1,7 +1,7 @@
 # microsoft-fast-build
 
 Build-time Rust compiler and template tooling for FAST declarative HTML.
-One compiler-owned executable representation supports generated server JavaScript
+One compiler-owned executable representation supports flat-plan server JavaScript
 and native Rust artifact rendering. Native requests need no JavaScript engine.
 
 ```sh
@@ -10,12 +10,14 @@ cargo add microsoft-fast-build
 
 ## Usage
 
-### Compile server JavaScript ahead of time
+### Compile flat-plan server JavaScript
 
 `compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
 with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
 Templates are trusted build inputs; the generated module imports the FAST-owned
-server helper rather than WASM, browser classes or a runtime template parser:
+server helper rather than WASM, browser classes or a runtime template parser.
+It embeds string/instruction tables, not generated rendering functions; the
+helper validates those tables and creates execution closures at module load:
 
 ```rust
 use microsoft_fast_build::{compile_server_module, Locator};
@@ -30,15 +32,15 @@ let source = compile_server_module(
 ```
 
 Write `source` as a server `.mjs` build artifact. Requests pass JSON-shaped state
-directly to the generated functions. Existing server markup/coercion is preserved;
+directly to the generated module's exports. Existing server markup/coercion is preserved;
 generation eagerly diagnoses malformed skipped bodies.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for helper compatibility, state validation and qualification.
 
-Generated JavaScript uses module-level path accessors and reusable request-local
-repeat frames. Helper contract version 3 requires regenerated modules/artifacts
+The plan loader prepares path accessors and reusable request-local repeat frames.
+Helper contract version 5 requires regenerated modules/artifacts
 and matching deployed helpers/libraries. The executable IR schema remains version 1.
-Existing render APIs remain available, with additive prepared-state methods.
+Published object-input and prepared-state APIs remain unchanged.
 
 ### Compile and deploy native Rust artifacts
 
@@ -155,15 +157,18 @@ conflicting opening tag. Rendering, `parse_f_templates`, binding metadata, and
 format version 1 remain unchanged.
 
 
-## Breaking migration
+## Compatibility and migration
 
-This minor prerelease update requires an API migration. JavaScript hosts compile
+This flat-plan update preserves published rendering APIs but requires regenerated
+modules/artifacts and matching helpers/libraries. JavaScript hosts compile
 ESM and invoke its render exports. Native hosts compile artifacts and use
 `CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
 Use `renderTemplate`/`render_template` for template-context root-host attributes.
 Native rendering does not require JavaScript.
 Rendered markup and hydration markers are unchanged.
 See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
+The guide also describes the earlier breaking migration from request-time source
+rendering; that is separate from this backend replacement.
 
 ## Error handling
 

@@ -1,8 +1,23 @@
 # Migrating from previous versions
 
+## Generated rendering functions to flat plans
+
+Regenerate JavaScript modules/native artifacts and deploy the matching
+version-5 helper/library. The generated module now embeds flat template tables
+loaded by the helper instead of specialized rendering functions.
+Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
+`prepareState` and all four `render*Prepared` methods remain unchanged, as do
+`ServerState`, `PreparedServerState`, validation and snapshot ownership.
+No JSON-only request API or consumer serialization migration is required.
+Native execution and artifact schema remain unchanged.
+
+The compiler fingerprint remains embedded compatibility metadata. Flat plans
+do not provide stable modular asset packaging or make edited templates produce
+unchanged assets. The earlier source-rendering migration below is separate.
+
 ## Request-time source rendering to compiled server targets
 
-This prerelease makes a breaking replacement of the previous renderer.
+The earlier source-rendering prerelease made a breaking replacement of the previous renderer.
 It is classified as a **minor prerelease release, not a drop-in upgrade**.
 Updating the dependency alone is insufficient: migrate removed public APIs,
 normalize accepted state, await harness rendering, and regenerate compiled output.
@@ -47,7 +62,7 @@ Compile authored inputs at build time, then select the matching render context:
 Use `renderEntry` for entry-host attribute handling and `renderTemplate`
 for template-context root-host attributes. Both render complete synchronous HTML.
 Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
-always compiles and executes AOT; remove `--aot`, `--stream` and `stream`
+always compiles and executes server modules; remove `--aot`, `--stream` and `stream`
 configuration from build scripts.
 
 ```js
@@ -126,7 +141,7 @@ state becomes `{}`; native methods require an explicit `JsonValue`.
 Native and JS targets share rendering semantics, not identical workload limits.
 Native state is limited to depth 64 (root depth zero) and one million values
 including the root; execution also bounds nested body calls, steps and UTF-8 output
-bytes. JS AOT exposes no equivalent FAST budgets and remains subject to its host's
+bytes. JS flat plans expose no equivalent FAST budgets and remain subject to their host's
 stack/memory limits. Check workload acceptance when switching targets; see the
 [target resource contracts](../server-modules.md#target-resource-contracts).
 Future tighter defaults, state rejection or normalization/coercion changes can

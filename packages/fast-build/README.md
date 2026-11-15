@@ -17,15 +17,18 @@ To install the latest `@microsoft/fast-build` package using `npm`:
 npm install --save @microsoft/fast-build
 ```
 
-## Ahead-of-time server modules
+## Compiled flat-plan server modules
 
-This minor prerelease contains an **API-breaking migration**, not a drop-in
-dependency update. Follow the [upgrade guide](./docs/migration/aot-server-rendering.md)
-and regenerate compiled outputs when upgrading.
+This update replaces generated rendering functions with flat template plans.
+Published object-input and prepared-state APIs are unchanged. Regenerate compiled
+outputs and deploy the matching helper when upgrading; see the
+[upgrade guide](./docs/migration/aot-server-rendering.md).
 
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
-WASM, browser-class, template-parser, or runtime source-evaluation dependency:
+WASM, browser-class, template-parser, or runtime source-evaluation dependency.
+The ESM embeds string/instruction tables; its helper validates them and creates
+execution closures once at module load, with no generated-function fallback:
 
 ```js
 // Build time
@@ -65,7 +68,7 @@ for a registered component. To render a complete page entry, pass its HTML to
 `compileServerModule`.
 
 Use the existing browser conversion target separately with the authored component
-class and explicit registration. AOT does not change browser hydration.
+class and explicit registration. Flat plans do not change browser hydration.
 State must be acyclic JSON-shaped data, with finite numbers and well-formed
 Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
 and implicit `toJSON()` conversion are rejected rather than invoked.
@@ -91,11 +94,14 @@ they do not change rendering or establish cross-renderer output equivalence.
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
-The JavaScript emitter now prepares path/alias accessors at module import and
+The flat-plan loader prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. The server helper contract
-is version 3: regenerate compiled modules/artifacts and deploy the matching
+is version 5: regenerate compiled modules/artifacts and deploy the matching
 helper/native library together. Ordinary state/rendering contracts are unchanged.
 Contributor benchmarks include deep paths and nested repeats.
+Plans still embed the compiler compatibility fingerprint and change when authored
+templates or compilation inputs change. Flat plans alone do not introduce stable
+modular asset packaging or eliminate generated-asset invalidation.
 
 For large unchanged state reused across calls, generated modules also export
 an explicit immutable snapshot path:

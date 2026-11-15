@@ -1,8 +1,8 @@
-# Ahead-of-time server modules
+# Compiled flat-plan server modules
 
 One Rust-owned lowering produces the executable representation for two supported
-targets: generated JavaScript functions and native Rust compiled artifacts.
-JavaScript AOT is a target, not a requirement for native request execution.
+targets: flat-plan JavaScript and native Rust compiled artifacts.
+JavaScript is a target, not a requirement for native request execution.
 
 ## Compilation and execution
 
@@ -14,6 +14,12 @@ The optional helper specifier defaults to
 `@microsoft/fast-build/server-runtime.mjs`; bundlers can resolve or bundle that
 server-only module. Do not import `server.js` into the request dependency graph.
 It is a build-time API and loads the compiler WASM.
+
+Generated ESM embeds flat string, numeric-instruction and offset tables rather
+than rendering functions. The helper validates all rules/references and creates
+execution closures once during module loading. Requests execute those closures;
+they do not compile templates or evaluate source. The published object/prepared
+APIs and state ownership contracts below are unchanged.
 
 The `server-js` conversion target accepts a registry of named `<f-template>`
 files and emits one `.mjs` file, defaulting to `server.mjs`. It rejects wildcard
@@ -123,10 +129,11 @@ fresh preparation on every call as a control.
 
 ## Compatibility and migration
 
-This minor prerelease release contains an **API-breaking migration**: public
-legacy source-rendering/prepared-program APIs are removed, harness rendering becomes asynchronous,
-and request state is restricted. Consumers must migrate and regenerate compiled
-output, not only update package versions.
+The flat-plan replacement preserves published object-input and prepared-state
+APIs, state acceptance and ownership. Regenerate compiled outputs and deploy the
+matching helper; updating the dependency without rebuilding is insufficient.
+The upgrade guide separately describes the earlier API-breaking migration from
+request-time source rendering and retired prepared compiler/program APIs.
 
 Deploy generated modules and compatible server helpers together. Generated code
 checks the helper `runtimeVersion` on import and reports a clear incompatibility.
@@ -135,15 +142,15 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
-The current helper contract is version 3, adding explicit snapshot requests.
-Generated JavaScript prepares path
+The current helper contract is version 5, replacing generated rendering functions
+with flat plans while preserving the existing snapshot methods. The loader prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
 reset caller lexical scope. Ordinary state/rendering contracts and IR schema
-version 1 remain unchanged; prepared methods are additive. Regenerate both target artifacts on upgrade and deploy the compatible
+version 1 remain unchanged. Regenerate both target artifacts on upgrade and deploy the compatible
 helper/native library; older generated modules fail the import-time version check.
 
 For a JavaScript server build:
@@ -156,6 +163,15 @@ For a JavaScript server build:
 Rendering is synchronous and produces complete strings. The application owns
 rebuilds, module activation, asset delivery and in-flight deployment lifecycle.
 Browser classes/registration and hydration configuration are unchanged.
+
+### Generated asset stability
+
+Flat plans remain state-independent build artifacts, but they still embed a
+compiler fingerprint and helper contract version. Template edits change plan
+data; compiler or helper changes can require regeneration. Changing the runtime
+import specifier also changes generated ESM. This format does not introduce
+stable modular filenames/manifests or eliminate content changes and cache
+invalidation. The fingerprint is compatibility metadata, not a per-run timestamp.
 
 Native hosts use the artifact target below. See
 [the upgrade guide](./migration/aot-server-rendering.md).
@@ -256,7 +272,7 @@ separate C# implementation of HTML/expression semantics.
 ### Target resource contracts
 
 Shared rendering semantics do not guarantee that both targets accept the same
-workload. JS AOT exposes no FAST state-depth/node, body-depth, step or output
+workload. JS flat plans expose no FAST state-depth/node, body-depth, step or output
 budgets; its JavaScript host still imposes stack, string and memory limits.
 Native execution has these additional public bounds:
 
@@ -311,7 +327,7 @@ or introduce another renderer in C#.
 contracts, both marker formats, both naming strategies, mixed
 DSD selection, state rejection, diagnostics, cyclic graphs and every authored
 declarative fixture. Fresh-process execution disables WASM instantiation and
-JSON parsing. Normal FAST Element fixture builds use AOT output, so the existing
+JSON parsing. Normal FAST Element fixture builds use flat-plan output, so the existing
 browser suite exercises hydration and reactive updates against generated output.
 The content-binding fixture additionally pauses component registration, checks
 the browser-parsed server DOM, and verifies that hydration retains the same
@@ -332,7 +348,7 @@ and rejects the original artifact. Neither backend regenerates its own
 expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
 
-Run the AOT benchmark from the repository root after building:
+Run the flat-plan benchmark from the repository root after building:
 
 ```sh
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
@@ -350,8 +366,8 @@ text and attributes. It helps expose allocation and UTF-8 materialization costs.
 
 ### Comparable input/output boundaries
 
-Reports identify `executionTarget: "generated-javascript"`; these are synchronous
-generated-JavaScript calls, not native Rust rendering. Parent and worker records
+Reports identify `executionTarget: "flat-plan-javascript"`; these are synchronous
+loaded-plan calls, not native Rust rendering. Parent and worker records
 include `renderOptions`. Defaults remain v3 markers, `camelCase` attribute naming
 and DSD for all components. Select the other supported marker/naming contracts
 without changing renderer behavior:
@@ -433,7 +449,7 @@ npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --
 
 `--state-mode` defaults to `plain`; other values are `prepared`,
 `prepare-per-render` and `all`. Reports retain version 2 and add `stateModes`.
-Workload `modes` keys are `aot`, `aotPrepared` and `aotPreparePerRender`.
+Workload `modes` keys are `flatPlan`, `flatPlanPrepared` and `flatPlanPreparePerRender`.
 Each sample/mode uses a separate fresh child; mode order alternates by sample.
 Hashes match across modes and an untimed ordinary call verifies prepared output.
 The original input remains live for that comparison.

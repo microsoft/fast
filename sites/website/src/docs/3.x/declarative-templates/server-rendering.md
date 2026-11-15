@@ -29,7 +29,7 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
-## Ahead-of-Time Server JavaScript
+## Compiled Flat-Plan Server JavaScript
 
 Compile templates during the server build to keep WASM and template parsing out
 of the request dependency graph:
@@ -56,6 +56,12 @@ const html = renderEntry({ title: "Request-specific state" });
 const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
+Generated ESM embeds flat template instruction tables, not rendering functions.
+The server helper validates and loads them once. Published object-input and
+prepared-state methods are unchanged; regenerate modules/artifacts for the
+version-5 helper. Flat plans still contain compiler compatibility metadata and
+change when template inputs change; they do not eliminate asset invalidation.
+
 The generated module imports only the FAST server helper. Bundle that helper
 with the server or deploy it from the matching `@microsoft/fast-build` package.
 Keep compiler/helper artifacts together and regenerate on upgrades.
@@ -74,7 +80,7 @@ for options, state restrictions and migration details.
 
 ## Native Rust Compiled Artifacts
 
-JavaScript AOT is one target, not a requirement for native servers. The same
+Flat-plan JavaScript is one target, not a requirement for native servers. The same
 Rust-owned executable representation can be compiled during the build with
 `compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
 `compile_server_artifact`. Deploy those bytes and the exact compiler-matching
@@ -106,7 +112,7 @@ follow-up work. This release does not provide a C# host or separate C# semantics
 Generated server JavaScript and native Rust artifact rendering are supported
 targets of the shared compiler. Rebuild modules/artifacts when upgrading.
 
-This is an **API-breaking migration classified as a minor prerelease release**,
+This earlier migration was an **API-breaking migration classified as a minor prerelease release**,
 not a drop-in upgrade. Migrate removed APIs, normalize request state and await
 test-harness rendering before updating consumers. Native artifacts require the
 exact deployed compiler/library fingerprint, not just a matching package version.
@@ -117,7 +123,7 @@ switching targets requires workload qualification as well as markup parity.
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
-`fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
+`fast build` always compiles and executes server JavaScript; remove `--aot`.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
 
