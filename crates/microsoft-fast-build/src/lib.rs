@@ -41,6 +41,3 @@ pub use template_slots::{extract_template_slots, TemplateSlot};
 
 /// Version of generated template metadata; unversioned maps remain supported.
 pub const TEMPLATE_FORMAT_VERSION: u32 = 1;
-
-/// Fingerprint of the build-time compiler inputs.
-pub const SERVER_COMPILER_ID: &str = env!("FAST_BUILD_COMPILER_ID");
