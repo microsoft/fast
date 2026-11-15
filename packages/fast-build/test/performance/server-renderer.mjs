@@ -26,7 +26,7 @@ const { values: args } = parseArgs({
         output: { type: "string" },
     },
 });
-const stateModes = ["plain", "prepared", "prepare-per-render"];
+const stateModes = ["plain", "prepared", "prepare-per-render", "owned-json"];
 assert.ok([...stateModes, "all"].includes(args["state-mode"]), "Invalid state mode.");
 assert.ok(
     ["camelCase", "none"].includes(args["attribute-name-strategy"]),
@@ -41,7 +41,9 @@ const modeKey = mode =>
         ? "flatPlan"
         : mode === "prepared"
           ? "flatPlanPrepared"
-          : "flatPlanPreparePerRender";
+          : mode === "owned-json"
+            ? "flatPlanOwnedJson"
+            : "flatPlanPreparePerRender";
 const hash = text => createHash("sha256").update(text).digest("hex");
 const integer = (name, minimum = 1) => {
     const value = Number(args[name]);
@@ -103,11 +105,13 @@ async function worker() {
             ? () => module.renderEntry(source.state, renderOptions)
             : stateMode === "prepared"
               ? () => module.renderEntryPrepared(prepared, renderOptions)
-              : () =>
-                    module.renderEntryPrepared(
-                        module.prepareState(source.state),
-                        renderOptions,
-                    );
+              : stateMode === "owned-json"
+                ? () => module.renderEntryJson(stateJson, renderOptions)
+                : () =>
+                      module.renderEntryPrepared(
+                          module.prepareState(source.state),
+                          renderOptions,
+                      );
     const firstStart = performance.now();
     const html = render();
     const firstRenderMs = performance.now() - firstStart;
@@ -162,6 +166,9 @@ async function worker() {
     let jsonDelivery;
     if (stateMode !== "prepared") {
         const renderJson = () => {
+            if (stateMode === "owned-json") {
+                return module.renderEntryJson(stateJson, renderOptions);
+            }
             const state = JSON.parse(stateJson);
             return stateMode === "plain"
                 ? module.renderEntry(state, renderOptions)
@@ -203,7 +210,7 @@ async function worker() {
         assert.equal(
             module.renderEntry(source.state, renderOptions),
             html,
-            "prepared output differs from ordinary output",
+            "selected state mode output differs from ordinary output",
         );
     }
     console.log(
@@ -213,6 +220,12 @@ async function worker() {
                 args.worker === "aot" ? "generated-javascript" : "flat-plan-javascript",
             renderOptions,
             stateMode,
+            requestInput:
+                stateMode === "owned-json"
+                    ? "json-text"
+                    : stateMode === "prepared"
+                      ? "prepared-snapshot"
+                      : "object",
             ...preparation,
             workerSetupMs,
             inputReadMs,
