@@ -73,9 +73,12 @@ are not part of the wire format. Shared content remains shared even when
 component defaults or shadow options differ. ESM embeds this semantic data and calls the
 helper's loader; it does not expose numeric opcodes, string tables or offsets,
 or emit rendering functions, accessors or loops. The helper validates all records
-and references, detects template cycles and prepares execution closures once. Compound
-property literals remain request-owned. Object validation and prepared snapshots
-are unchanged; overlay/attribute specialization is not part of this baseline.
+and references, detects template cycles and prepares execution closures once.
+The helper prepares ordered property assignments and composite attribute arities.
+Grouped writes copy borrowed datasets once after inheritance or an explicit
+replacement, without request-local property triples or ownership tracking
+containers. Compound property literals are request-owned; missing/null values
+mask parent properties.
 The native loader resolves semantic template names into
 private body indices and derives the private host/shadow operations once, then
 applies complete existing IR validation before preparing typed execution operations.

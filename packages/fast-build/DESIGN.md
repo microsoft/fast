@@ -31,6 +31,17 @@ Shared host-default metadata is compiled once per component template. Component
 templates with different defaults or shadow options retain shared content bodies
 instead of expanding them repeatedly.
 
+The loader prepares ordered component assignments for compiler-owned property
+names under each naming strategy. Grouped writes copy borrowed objects once per
+assignment run; explicit replacement starts a new ownership run. Missing ordinary
+properties mask parent values with null. No property triples, mapped value
+arrays or ownership sets are allocated during execution. Array/object literal
+operands are fresh per call, with own special keys and standard array/object prototypes.
+Composite attributes select arity-specific execution for up to three fragments and
+an allocation-free fragment loop otherwise. Every fragment is evaluated in order,
+even after a missing fragment, before quote replacement. Dynamic fragments are
+HTML-escaped. These recipes are private execution plans for `fast-server-js` schema 1.
+
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes
 only when hydration cannot change their output. Literal-only plan bodies
