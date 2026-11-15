@@ -74,7 +74,11 @@ The targets identify themselves as `fast-server-js` (plan schema 1) and
 format names. The one-time migration requires regenerating old assets and sidecars.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
-assets. Native execution is not optimized here.
+assets. Native loading now prepares typed operations with numeric component/body
+targets and decoded static operands; it retains no raw JSON instruction graph.
+This changes dispatch only, not the native state/overlay/output machinery.
+Build-time `emit_server_module` reconstructs transient IR for the existing emitter.
+See [native upgrade and measurement guidance](./docs/migration/typed-native-plans.md).
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
