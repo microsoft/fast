@@ -138,7 +138,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
 }
 
 #[test]
-fn instance_constants_do_not_duplicate_javascript_element_functions() {
+fn flat_plans_do_not_generate_per_instance_javascript_functions() {
     let locator = common::make_locator(&[(
         "test-item",
         "<article title=\"{{index}}\">{{index}}/{{dataset.x}}</article>",
@@ -150,10 +150,7 @@ fn instance_constants_do_not_duplicate_javascript_element_functions() {
             })
             .collect::<String>();
         let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
-        assert!(
-            source.matches("function ").count() < 16,
-            "instance constants duplicated executable functions for {count} hosts"
-        );
+        assert!(!source.contains("function "));
         let artifact =
             CompiledArtifact::load(&compile_server_artifact(&entry, &locator).unwrap()).unwrap();
         let native = artifact
@@ -168,7 +165,7 @@ fn instance_constants_do_not_duplicate_javascript_element_functions() {
 }
 
 #[test]
-fn shared_element_shapes_preserve_overlays_light_dom_and_marker_modes() {
+fn flat_element_plans_preserve_overlays_light_dom_and_marker_modes() {
     let locator = common::make_locator_with_host_attrs(&[
         ("test-parent", "<test-item index=\"first\" data-x=\"one\" foo-bar=\"camel-one\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item><test-item index=\"second\" data-x=\"two\" foo-bar=\"camel-two\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item>", &[]),
         ("test-item", "{{index}}/{{dataset.x}}/{{dataset.base}}/{{fooBar}}/{{foo-bar}}/{{item.name}}", &[("role", Some("group")), ("title", Some("default")), ("data-fe", Some("authored"))]),

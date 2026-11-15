@@ -18,6 +18,24 @@ function compileServerModule(
 }
 
 /**
+ * Compile trusted declarative HTML to stable modular server ESM assets.
+ * @param {string} entry
+ * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
+ * @param {string} [runtimeImport]
+ * @returns {import("./server.js").ServerAssets}
+ */
+function compileServerAssets(
+    entry,
+    templates = {},
+    runtimeImport = "@microsoft/fast-build/server-runtime.mjs",
+) {
+    const wasm = require("./wasm/microsoft_fast_build.js");
+    return JSON.parse(
+        wasm.compile_server_assets(entry, JSON.stringify(templates), runtimeImport),
+    );
+}
+
+/**
  * Compile trusted declarative HTML to a native Rust executable artifact.
  * Deploy with the exact compiler-matching microsoft-fast-build Rust library.
  * @param {string} entry
@@ -29,4 +47,4 @@ function compileServerArtifact(entry, templates = {}) {
     return wasm.compile_server_artifact(entry, JSON.stringify(templates));
 }
 
-module.exports = { compileServerModule, compileServerArtifact };
+module.exports = { compileServerModule, compileServerAssets, compileServerArtifact };

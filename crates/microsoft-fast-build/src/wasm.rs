@@ -88,6 +88,25 @@ pub fn compile_server_module(
     .map_err(render_error)
 }
 
+/// Build-time only: emit stable modular plans and their ESM launcher as JSON.
+#[wasm_bindgen]
+pub fn compile_server_assets(
+    entry: &str,
+    templates_json: &str,
+    runtime_import: Option<String>,
+) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let assets = crate::compile_server_assets(
+        entry,
+        &Locator::from_template_definitions(templates),
+        runtime_import
+            .as_deref()
+            .unwrap_or("@microsoft/fast-build/server-runtime.mjs"),
+    )
+    .map_err(render_error)?;
+    Ok(assets.to_json())
+}
+
 /// Build-time only: emit the shared executable IR for a native Rust deployment.
 #[wasm_bindgen]
 pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<u8>, JsValue> {

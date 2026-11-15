@@ -11,6 +11,36 @@ Rust artifact execution. The converter crate remains build-time tooling.
 Rendered HTML, coercion, escaping,
 whitespace, host attributes and hydration markers remain unchanged.
 
+### Flat plans and stable assets: helper contract version 4
+
+Recompile all JavaScript modules and native artifacts, and deploy matching
+helpers/libraries. Version-3 generated modules intentionally fail the
+version-4 helper check. Native IR schema remains version 1, but the helper
+identity and exact compiler fingerprint still require regeneration.
+
+`compileServerModule` preserves its signature and generated render/prepared
+exports, but its ESM now contains flat data tables loaded by the shared helper.
+The former direct source emitter is removed. Request state and rendered
+HTML semantics are unchanged; this is an artifact/helper ABI migration.
+Custom runtime imports must provide the version-4 `createServerRenderer`
+contract, not merely override individual version-3 helper functions.
+
+For modular deployment, replace the build's single-file write with
+`compileServerAssets(entry, templates, runtimeImport?)` and write its
+`files` map under one directory. Import its `entry` (`server.mjs`) as before.
+Compare file bytes before writing to leave unchanged assets untouched.
+Remove stale files only as part of application-owned deployment cleanup;
+activate the entry, manifest and dependencies atomically.
+Use a fresh deployment directory or new process/worker for Node activation:
+overwriting a stable filename does not invalidate its existing ESM cache entry.
+
+Static filenames are semantic, not content-hashed. Keep cache digests private
+or use deployment-versioned directories if immutable caching is required.
+Do not let stable URLs serve mixed compiler/runtime deployments.
+Keep dynamic request/bootstrap state outside compiled markup; authored
+`initial-state` text remains a real template input and affects asset bytes.
+No new crate, npm package, browser class or hydration migration is needed.
+
 ### Prepared snapshots and helper contract version 3
 
 Regenerate both JavaScript modules and native artifacts and deploy the matching

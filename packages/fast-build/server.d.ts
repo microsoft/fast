@@ -75,3 +75,16 @@ export function compileServerArtifact(
     entry: string,
     templates?: Record<string, string | ServerTemplateDefinition>,
 ): Uint8Array;
+
+/** Stable relative deployment filenames mapped to their complete UTF-8 text. */
+export interface ServerAssets {
+    entry: "server.mjs";
+    files: Record<string, string>;
+}
+
+/** Build-time only. Eagerly validates all templates and emits locally numbered plans. */
+export function compileServerAssets(
+    entry: string,
+    templates?: Record<string, string | ServerTemplateDefinition>,
+    runtimeImport?: string,
+): ServerAssets;

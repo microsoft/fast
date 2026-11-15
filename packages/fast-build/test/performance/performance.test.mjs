@@ -283,6 +283,7 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                     "--instances=1",
                     "--warmup=0",
                     "--state-mode=all",
+                    "--asset-layout=modular",
                     "--markers-v2",
                     "--attribute-name-strategy=none",
                     `--profile-directory=${path.join(directory, "profiles")}`,
@@ -291,7 +292,8 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
             ),
         );
         assert.equal(result.reportVersion, 2);
-        assert.equal(result.executionTarget, "generated-javascript");
+        assert.equal(result.executionTarget, "flat-plan-javascript");
+        assert.equal(result.assetLayout, "modular");
         assert.deepEqual(result.renderOptions, {
             markersV2: true,
             attributeNameStrategy: "none",
@@ -299,6 +301,7 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
         assert.equal(result.warmupIterations, 0);
         assert.ok(Number.isFinite(result.compilerLoadMs));
         for (const record of Object.values(result.workloads)) {
+            assert.ok(record.generatedModules >= 2);
             assert.ok(Number.isFinite(record.inputWriteMs));
             assert.ok(Number.isFinite(record.compileMs));
             assert.ok(Number.isFinite(record.artifactWriteMs));

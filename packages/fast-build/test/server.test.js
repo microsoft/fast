@@ -6,7 +6,7 @@ const path = require("node:path");
 const { test } = require("node:test");
 const { pathToFileURL } = require("node:url");
 const { createHash } = require("node:crypto");
-const { compileServerModule } = require("../server.js");
+const { compileServerAssets, compileServerModule } = require("../server.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
@@ -346,10 +346,12 @@ test("compiled access plans preserve lexical precedence, indexes and root maskin
 });
 
 test("repeat frames are reused across items and omitted for empty data", async () => {
-    const probe = `import * as helper from ${JSON.stringify(runtime)};
-export * from ${JSON.stringify(runtime)};
-export let frames = 0;
-export function loop(...args) { frames++; return helper.loop(...args); }`;
+    const probe = fs
+        .readFileSync(require.resolve("../server-runtime.mjs"), "utf8")
+        .replace(
+            "export function loop(parent, slot) {",
+            "export let frames = 0;\nexport function loop(parent, slot) {\nframes++;",
+        );
     const probeUrl = `data:text/javascript;base64,${Buffer.from(probe).toString("base64")}`;
     const source = compileServerModule(
         '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
@@ -734,7 +736,7 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
 });
 
 test("AOT rejects a mismatched helper contract on module import", async () => {
-    for (const version of [0, 2]) {
+    for (const version of [0, 2, 3]) {
         const helper = `data:text/javascript,export const runtimeVersion = ${version};`;
         const source = compileServerModule("static", {}, helper);
         await assert.rejects(
@@ -744,6 +746,170 @@ test("AOT rejects a mismatched helper contract on module import", async () => {
             /Incompatible FAST server runtime/,
         );
     }
+});
+
+async function withAssets(entry, templates, run) {
+    const assets = compileServerAssets(entry, templates, runtime);
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fast-server-assets-"));
+    try {
+        for (const [name, source] of Object.entries(assets.files)) {
+            const filename = path.join(directory, name);
+            fs.mkdirSync(path.dirname(filename), { recursive: true });
+            fs.writeFileSync(filename, source);
+        }
+        const module = await import(pathToFileURL(path.join(directory, assets.entry)));
+        await run(module, assets, directory);
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
+    }
+}
+
+test("modular assets preserve all render methods and prepared-state semantics", async () => {
+    const entry = '<asset-parent :items="{{items}}"></asset-parent>';
+    const templates = {
+        "asset-parent": {
+            content:
+                '<f-repeat value="{{item in items}}"><asset-child :item="{{item}}" data-x="{{item.label}}">{{item.label}}:{{$index}}</asset-child></f-repeat>',
+            hostAttributes: [{ name: "role", value: "group" }],
+        },
+        "asset-child": {
+            content:
+                '<f-when value="{{item.show}}"><b title="prefix {{item.label}}">{{item.label}}/{{dataset.x}}</b></f-when>{{{raw}}}',
+            hostAttributes: [{ name: "title", value: "{{item.label}}" }],
+        },
+    };
+    const { module: single } = await compile(entry, templates);
+    await withAssets(entry, templates, async (modular, assets) => {
+        const snapshot = JSON.stringify(assets);
+        for (const state of [
+            { items: [] },
+            {
+                items: [
+                    { label: "<&\u{1f600}", show: true },
+                    { label: "second", show: false },
+                ],
+                raw: "<i>raw</i>",
+            },
+        ]) {
+            for (const markersV2 of [false, true]) {
+                for (const dsd of [undefined, [], ["asset-child"]]) {
+                    const options = { markersV2, dsd, attributeNameStrategy: "none" };
+                    const prepared = single.prepareState(state);
+                    for (const method of ["renderEntry", "renderTemplate"]) {
+                        assert.equal(
+                            modular[method](state, options),
+                            single[method](state, options),
+                        );
+                        assert.equal(
+                            modular[`${method}Prepared`](prepared, options),
+                            single[method](state, options),
+                        );
+                    }
+                    for (const method of ["renderHost", "renderShadow"]) {
+                        for (const name of modular.components) {
+                            assert.equal(
+                                modular[method](name, state, options),
+                                single[method](name, state, options),
+                            );
+                            assert.equal(
+                                modular[`${method}Prepared`](name, prepared, options),
+                                single[method](name, state, options),
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        assert.equal(JSON.stringify(assets), snapshot, "requests cannot change assets");
+        assert.throws(
+            () => modular.renderEntry({ items: null }),
+            error => error.code === "repeat-not-array",
+        );
+        assert.throws(
+            () => modular.renderHost("missing"),
+            error => error.code === "missing-template",
+        );
+        assert.throws(() => modular.renderEntry({ unused: Infinity }), TypeError);
+    });
+});
+
+test("stable assets ignore registry order and isolate unrelated definition changes", () => {
+    const entry = "<stable-parent></stable-parent>";
+    const templates = {
+        "stable-parent": "<stable-child></stable-child>",
+        "stable-child": "<b>{{label}}</b>",
+    };
+    const first = compileServerAssets(entry, templates, runtime);
+    assert.deepEqual(compileServerAssets(entry, templates, runtime), first);
+    assert.deepEqual(
+        compileServerAssets(
+            entry,
+            Object.fromEntries(Object.entries(templates).reverse()),
+            runtime,
+        ),
+        first,
+    );
+    const extended = compileServerAssets(
+        entry,
+        { ...templates, "unrelated-child": "<p>Unrelated</p>" },
+        runtime,
+    );
+    const changed = compileServerAssets(
+        entry,
+        { ...templates, "stable-child": "<i>{{label}}</i>" },
+        runtime,
+    );
+    const alternateHelper = compileServerAssets(entry, templates, "./different.mjs");
+    const staticFiles = Object.keys(first.files).filter(
+        name => name !== first.entry && !name.endsWith(".json"),
+    );
+    for (const name of staticFiles) {
+        assert.equal(extended.files[name], first.files[name], name);
+        assert.equal(alternateHelper.files[name], first.files[name], name);
+    }
+    assert.equal(
+        staticFiles.filter(name => changed.files[name] !== first.files[name]).length,
+        1,
+        "only the changed component content is rewritten",
+    );
+});
+
+test("flat plan loading rejects invalid rules and retains an independent snapshot", async () => {
+    const { createServerRenderer } = await import(runtime);
+    const plan = {
+        format: "fast-server-plan",
+        version: 1,
+        strings: ["<p>", "label", "</p>"],
+        code: [18, 1, 2, 3, 0, 0, 20, 4, 1, 0, 2, 1, 1],
+        offsets: [0, 4, 6, 9, 11],
+        root: 0,
+    };
+    const renderer = createServerRenderer(plan, [], "test");
+    assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
+    plan.strings[0] = "mutated";
+    plan.code.fill(0);
+    assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
+    for (const invalid of [
+        { ...plan, version: 2 },
+        { ...plan, offsets: [0, -1] },
+        {
+            ...plan,
+            code: [18, 1, 26, 0],
+            offsets: [0, 2],
+            root: 0,
+        },
+    ]) {
+        assert.throws(() => createServerRenderer(invalid, [], "test"), TypeError);
+    }
+});
+
+test("compiled nonfinite comparison literals do not relax request state validation", async () => {
+    const { module } = await compile(
+        '<f-when value="{{value != NaN}}">nan</f-when><f-when value="{{value < inf}}">inf</f-when>',
+    );
+    assert.equal(module.renderEntry({ value: 1 }), "naninf");
+    assert.throws(() => module.renderEntry({ value: NaN }), TypeError);
+    assert.throws(() => module.renderEntry({ value: Infinity }), TypeError);
 });
 
 test("AOT preserves every authored declarative fixture byte for byte", async () => {

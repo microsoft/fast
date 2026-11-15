@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Replace generated server execution source with flat plans and stable modular assets; regenerate compiled outputs for runtime contract version 4.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
