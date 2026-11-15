@@ -53,6 +53,12 @@ authored host defaults use optional `host-attributes` metadata, not generated ho
 templates or separate shadow/tag references.
 Changing that private layout does not require changing generated files or schema.
 
+The JavaScript helper prepares ordered component assignments and composite
+attribute recipes from existing schema 1 plans, without changing emitted source.
+Upgrading it does not require recompiling or rewriting immutable managed assets.
+Compound property literals stay request-owned; grouped dataset writes retain
+copy-on-write behavior. Native schema 1 decoding and execution are unchanged.
+
 ### Compile and deploy native Rust artifacts
 
 ```rust
