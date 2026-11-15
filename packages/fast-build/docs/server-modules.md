@@ -1,8 +1,8 @@
-# Ahead-of-time server modules
+# JSON-only flat-plan server modules
 
 One Rust-owned lowering produces the executable representation for two supported
-targets: generated JavaScript functions and native Rust compiled artifacts.
-JavaScript AOT is a target, not a requirement for native request execution.
+targets: flat-plan JavaScript modules and native Rust compiled artifacts.
+JavaScript hosting is not required for native request execution.
 
 ## Compilation and execution
 
@@ -18,8 +18,8 @@ It is a build-time API and loads the compiler WASM.
 The `server-js` conversion target accepts a registry of named `<f-template>`
 files and emits one `.mjs` file, defaulting to `server.mjs`. It rejects wildcard
 output paths, duplicate names, empty registries and browser TypeScript options.
-The entry is empty: use `renderHost` or `renderShadow` for registered components.
-Compile page entry HTML through `compileServerModule` when `renderEntry` is needed.
+The entry is empty: use `renderHostJson` or `renderShadowJson` for registered components.
+Compile page entry HTML through `compileServerModule` when `renderEntryJson` is needed.
 Existing `fast-v3-ts` template/stylesheet conversion remains separate.
 Stylesheet composition and source-provenance mapping remain build-tool concerns:
 pass composed metadata into the compiler and map its structured coordinates
@@ -27,15 +27,17 @@ through the composition result.
 
 Generated exports are described by `ServerModule` in `server.d.ts`:
 
-- `renderEntry(state?, options?)`: renders the compiled entry.
-- `renderTemplate(state?, options?)`: renders the compiled source with
-  template-context root-host attribute rules.
-- `renderHost(name, state?, options?)`: renders a complete named component host.
-- `renderShadow(name, state?, options?)`: renders only its DSD template, with no
-  host attributes or caller-owned light DOM synthesized.
-- `components`, `compilerId`, `runtimeVersion`: registry and compatibility metadata.
-- `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
-  `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
+- `renderEntryJson(json, options?)`: compiled entry-host rules.
+- `renderTemplateJson(json, options?)`: template-context root-host rules.
+- `renderHostJson(name, json, options?)`: complete named component host.
+- `renderShadowJson(name, json, options?)`: resolved-state DSD fragment.
+- `components`, `compilerId`, `runtimeVersion`: registry/compatibility metadata.
+
+JSON input is required. Object methods, `prepareState`, all `render*Prepared`
+methods and their public state/handle types are removed. Generated ESM embeds
+flat string/code/offset tables, not generated render functions. The helper
+validates every rule/reference, detects cycles and prepares typed closures at
+module load. Plan data is copied before activation; no AOT fallback exists.
 
 Options are `attributeNameStrategy: "camelCase" | "none"`, `markersV2: boolean`,
 and `dsd: string[]`. Omitting `dsd` selects every component; `[]` selects none.
@@ -49,17 +51,12 @@ the application, not an instruction to truncate output.
 
 ## State and byte-preserving semantics
 
-State is acyclic JSON-shaped data: null, booleans, finite numbers, well-formed
-Unicode strings, dense arrays and plain objects (including null-prototype
-objects) with enumerable own data properties. Omitted root state becomes `{}`.
-Negative zero renders as serialized JSON zero did previously.
-Only branches requiring that normalization are copied; caller state is never mutated.
-Functions, dates/class instances, inherited application properties, accessors,
-non-enumerable/symbol properties, sparse/extended arrays and nested `undefined`
-are rejected. Normalize these explicitly before rendering. Proxies and concurrent
-state mutation are outside the contract; validation is not an untrusted-object
-sandbox. Ordinary methods validate the complete supplied graph on every call, including
-unused state; it has measurable CPU/allocation cost.
+All JavaScript request state is primitive JSON text. Parsing without a reviver
+establishes plain, acyclic, dense containers; full residual validation rejects
+nonfinite numbers and malformed Unicode in all keys/values, including unused
+state. Negative zero is normalized in the request-owned graph. The runtime does
+not serialize caller objects or cache/freeze snapshots. Omitted JSON is rejected;
+the build CLI explicitly supplies `"{}"` when no state file is provided.
 
 Expression compilation preserves the existing server grammar, lookup, alias
 shadowing, comparison and display conversion. It does not evaluate arbitrary
@@ -75,35 +72,31 @@ branches and empty repeats, and rejects malformed syntax with existing error
 codes, UTF-16 line/column/length and template names. Runtime repeat values must
 still be arrays (or missing); a present non-array produces `repeat-not-array`.
 
-## Prepared-state snapshots
+## Fresh JSON-string requests
 
-For unchanged state rendered repeatedly, generated modules expose a separate
-opt-in path; ordinary methods retain their validation contract:
+JSON methods require a primitive string and parse it without a reviver inside
+the helper-owned request boundary. JSON parsing guarantees acyclic plain
+containers, dense arrays and enumerable own data properties, so the helper
+omits prototype/descriptor/symbol/cycle checks for that freshly parsed graph.
+Every key/value is still visited, including unused state, to reject nonfinite
+numbers and malformed Unicode. `JSON.parse("1e400")` yields Infinity and is
+rejected, as are escaped lone surrogates in keys or values.
+Negative zero is normalized in the owned graph without cloning/freezing it.
 
-```js
-import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
-const input = { title: "Reusable state" };
-const snapshot = prepareState(input);
-input.title = "A later request"; // Does not alter the snapshot.
-const html = renderEntryPrepared(snapshot);
-```
+Malformed JSON raises `SyntaxError`; non-string input or invalid state raises
+`TypeError`. Existing repeat/unknown-template errors, options and rendering
+contexts are unchanged. Input objects are never implicitly serialized/coerced;
+byte input and caller-supplied parsers/revivers are not accepted.
+The helper captures its JSON parser at initialization, so later replacement of
+`JSON.parse` does not replace this boundary. As with other helpers, an environment
+with tampered built-in intrinsics before initialization is outside the contract.
 
-Preparation validates the complete graph using the same rules as ordinary
-rendering, normalizes negative zero, copies all containers and recursively
-freezes the copy, not the input. It never invokes getters or `toJSON`.
-The result is an opaque `PreparedServerState` handle. All four render methods
-have `Prepared`-suffixed counterparts with the same argument order, but a required
-handle instead of optional ordinary state. Rendering still returns complete
-owned strings; options, overlays, counters and loops are fresh per call.
+Each call parses fresh data and retains no graph after rendering. These methods
+are the only JavaScript request path. Live object inputs and prepared JavaScript
+snapshots are no longer supported.
+Native parse/normalization/ownership contracts are not optimized by these JS APIs.
 
-Handles are associated with one **runtime helper instance**, not one artifact.
-Modules sharing that instance may reuse a handle, even across entries.
-Forged, proxied or other-helper handles fail with `TypeError`; ordinary render
-methods do not accept handles. Handles cannot be serialized or sent to another
-worker/process. There is no explicit disposal or native external-memory handle:
-dropping references permits garbage collection. Applications control snapshot
-retention, including shared use across requests. Never share user-specific state
-with unrelated requests.
+## Native prepared-state snapshots
 
 Native Rust provides `PreparedState::new(&JsonValue)` and
 `PreparedState::from_json(&str)`. Both own a validated normalized copy; the JSON
@@ -116,10 +109,8 @@ apply during construction. Body-depth, step and UTF-8 output budgets reset on
 every prepared render, including after errors. No serialized snapshot or
 cross-version handle interchange is provided. Lookups/overlays can still allocate.
 
-Preparation has CPU and retained-memory costs. Prefer ordinary calls when state
-changes every request. Measure preparation plus repeated renders, render-to-UTF-8
-cost and snapshot retention before opting in; the benchmark modes below include
-fresh preparation on every call as a control.
+Native preparation has CPU and retained-memory costs. Its APIs and executor
+remain unchanged; the JavaScript benchmark below does not measure native reuse.
 
 ## Compatibility and migration
 
@@ -135,23 +126,20 @@ loading WASM during a request. Increment the helper contract version for
 incompatible compiler/helper changes and regenerate modules on upgrades to
 maintain compiler/helper compatibility.
 
-The current helper contract is version 3, adding explicit snapshot requests.
-Generated JavaScript prepares path
-accessors and numeric alias slots at module import, including array-index
-decoding. Repeats reuse request-local alias/index cells rather than copying
-loop arrays per iteration. The newest matching alias wins, including implicit
-`$index` precedence; missing nested values do not fall through to older aliases
-or parent state. Shared bodies do not capture a frame, and component shadows
-reset caller lexical scope. Ordinary state/rendering contracts and IR schema
-version 1 remain unchanged; prepared methods are additive. Regenerate both target artifacts on upgrade and deploy the compatible
-helper/native library; older generated modules fail the import-time version check.
+The current helper contract is version 5. Version-4 generated functions and
+object/prepared JavaScript requests must be migrated and regenerated.
+Flat plan schema and native IR schema remain version 1; native execution is
+unchanged, but both artifacts require matching compiler/helper identities.
+The loader prepares path accessors/alias slots and numeric array decoding once.
+Repeats reuse request-local frames, shadows reset lexical scope, and overlays
+preserve parent state. Rendering bytes and browser hydration remain unchanged.
 
 For a JavaScript server build:
 
 1. Move template loading/composition and `compileServerModule` into the build.
 2. Deploy/bundle the generated ESM plus its server helper.
-3. Call `renderEntry(state)` for complete entries.
-4. Call `renderShadow(name, componentState, options)` for DSD fragments.
+3. Call `renderEntryJson(stateJson)` for complete entries.
+4. Call `renderShadowJson(name, componentStateJson, options)` for DSD fragments.
 
 Rendering is synchronous and produces complete strings. The application owns
 rebuilds, module activation, asset delivery and in-flight deployment lifecycle.
@@ -256,7 +244,7 @@ separate C# implementation of HTML/expression semantics.
 ### Target resource contracts
 
 Shared rendering semantics do not guarantee that both targets accept the same
-workload. JS AOT exposes no FAST state-depth/node, body-depth, step or output
+workload. JavaScript plans expose no FAST state-depth/node, body-depth, step or output
 budgets; its JavaScript host still imposes stack, string and memory limits.
 Native execution has these additional public bounds:
 
@@ -310,8 +298,8 @@ or introduce another renderer in C#.
 `node --test packages/fast-build/test/server.test.js` checks frozen SHA-256 output
 contracts, both marker formats, both naming strategies, mixed
 DSD selection, state rejection, diagnostics, cyclic graphs and every authored
-declarative fixture. Fresh-process execution disables WASM instantiation and
-JSON parsing. Normal FAST Element fixture builds use AOT output, so the existing
+declarative fixture. Fresh-process execution disables WASM/template compilation
+while retaining required JSON data parsing. FAST Element fixture builds use flat-plan output, so the existing
 browser suite exercises hydration and reactive updates against generated output.
 The content-binding fixture additionally pauses component registration, checks
 the browser-parsed server DOM, and verifies that hydration retains the same
@@ -332,17 +320,22 @@ and rejects the original artifact. Neither backend regenerates its own
 expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
 
-Run the AOT benchmark from the repository root after building:
+Run the flat-plan benchmark from the repository root after building:
 
 ```sh
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
 ```
 
+Version-3 reports contain only `flatPlanJson` samples and identify
+`requestInput: "owned-json"`. First/warm string and UTF-8 requests always include
+fresh parsing and full residual validation. `--state-mode`, `--request-input`
+and `--json-first` are removed; no old renderer/input mode is retained.
+
 The `deepPaths` workload covers nested object paths, numeric array access and
 array length. `nestedRepeats` covers three active lexical aliases, `$index` and
 root lookup across nested iterations. These supplement the existing static,
 host, binding, repeated-component, nested-component and large-state workloads.
-In default `plain` mode, all supplied state is validated per render; these are
+All supplied JSON state is parsed and validated per render; these are
 complete render measurements, not lookup-only microbenchmarks. GC observations and memory
 snapshots are allocation indicators, not exact allocated-byte totals.
 `escapedBindings` adds dense escaping of all five special characters in Unicode
@@ -350,8 +343,8 @@ text and attributes. It helps expose allocation and UTF-8 materialization costs.
 
 ### Comparable input/output boundaries
 
-Reports identify `executionTarget: "generated-javascript"`; these are synchronous
-generated-JavaScript calls, not native Rust rendering. Parent and worker records
+Reports identify `executionTarget: "flat-plan-javascript"`; these are synchronous
+loaded-plan calls, not native Rust rendering. Parent and worker records
 include `renderOptions`. Defaults remain v3 markers, `camelCase` attribute naming
 and DSD for all components. Select the other supported marker/naming contracts
 without changing renderer behavior:
@@ -361,26 +354,19 @@ npm run bench:server -w @microsoft/fast-build -- --markers-v2 --attribute-name-s
 ```
 
 `--attribute-name-strategy` accepts `camelCase` or `none`; `--markers-v2` selects
-indexed markers. Compare identical options, templates, parsed state and state
-mode. Every worker reports `stateJsonBytes` and `stateJsonHash` for the state-only
+indexed markers. Compare identical options, templates and JSON request state.
+Every worker reports `stateJsonBytes` and `stateJsonHash` for the state-only
 JSON text; the parent verifies its hash against the fixture. The existing
 `inputParseMs` instead parses the entire fixture file, including templates and
 entry markup, and is **not** per-request state parsing.
 
 | Request input -> result | Complete warm boundary |
 |---|---|
-| Already-parsed JSON-shaped object -> JS string | `warmMsPerRender`: validation and rendering |
-| Already-parsed JSON-shaped object -> UTF-8 Buffer | `warmUtf8MsPerRender`: validation, rendering, string materialization and encoding |
-| JSON text -> UTF-8 Buffer | `warmJsonUtf8MsPerRender`: state-only `JSON.parse`, validation, rendering, materialization and encoding |
-| Reused prepared handle -> string/Buffer | Existing string/UTF-8 fields in `prepared` mode; preparation is paid separately |
+| JSON text -> JS string | `warmMsPerRender`: parsing, validation and rendering |
+| JSON text -> UTF-8 Buffer | `warmUtf8MsPerRender`: parsing, validation, rendering, materialization and encoding |
 
-JSON-to-UTF-8 measurements run after the object-input loops, with their own
-`--warmup` calls and output checks outside timers. `jsonUtf8WarmupMs` reports that
-warmup; `warmJsonUtf8CpuMsPerRender` reports measured-loop CPU. Fresh-preparation
-mode includes preparation on every JSON request. Reused-prepared mode omits JSON
-timings/throughput rather than pretending a cached handle represents fresh input.
-All JSON inputs come from this benchmark's JSON fixture corpus; this is not a
-recommendation to serialize arbitrary caller objects to bypass state rejection.
+Both loops use fresh JSON requests; there is no prepared-state/ordinary-input
+comparison or secondary legacy JSON loop.
 
 `stateSerializeMs` measures one state-only `JSON.stringify` outside these loops.
 It is a setup observation, not a warm per-request serialization average. If
@@ -389,16 +375,15 @@ its object-to-result timer; do not compare a string-returning call against a
 Buffer-returning call or subtract that API's conversion work. File I/O, fixture
 generation, compilation, import and browser bundling are not warm requests.
 
-`warmStringBytesPerSecond`, `warmUtf8BytesPerSecond` and, when applicable,
-`warmJsonUtf8BytesPerSecond` divide delivered output bytes by the matching mean
-wall time in seconds. Zero-duration timers yield `null`, not infinite throughput.
+`warmStringBytesPerSecond` and `warmUtf8BytesPerSecond` divide delivered output
+bytes by the matching mean wall time in seconds. Zero-duration timers yield
+`null`, not infinite throughput.
 String-only throughput uses the output's logical UTF-8 size but does not measure
 encoding. Report latency **and** byte counts/rates: extra output can increase
 bytes/second without improving equivalent application work.
 
-`coldImportToUtf8Ms` sums import, one-time preparation (if reused), first rendering
-and first encoding. It includes preparation exactly once in all modes. This is a
-sum of isolated phases, not contiguous request latency, and excludes process/input
+`coldImportToUtf8Ms` sums plan/helper import, first JSON rendering and encoding.
+This is a sum of isolated phases, not contiguous request latency, and excludes process/input
 loading, fixture serialization, forced GC and file writing. Do not add it to its
 constituent timings or to `coldImportAndRenderMs`.
 
@@ -423,30 +408,7 @@ host/naming/DSD options and coercion; browser fixtures cover the active client
 hydration contract. Passing those gates does not itself qualify another
 renderer's output. No cross-renderer speedup is claimed by this benchmark.
 
-### State reuse and phase reporting
-
-To compare ordinary rendering, snapshot reuse and fresh preparation:
-
-```sh
-npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --state-mode=all
-```
-
-`--state-mode` defaults to `plain`; other values are `prepared`,
-`prepare-per-render` and `all`. Reports retain version 2 and add `stateModes`.
-Workload `modes` keys are `aot`, `aotPrepared` and `aotPreparePerRender`.
-Each sample/mode uses a separate fresh child; mode order alternates by sample.
-Hashes match across modes and an untimed ordinary call verifies prepared output.
-The original input remains live for that comparison.
-
-Reused mode reports `prepareStateMs` before the first render, plus
-`memoryBeforePrepare` and `memoryAfterPrepare` around forced GC outside that
-timer. Its `firstRenderMs` and `coldImportAndRenderMs` exclude preparation:
-add `prepareStateMs` when comparing total cold setup. Fresh-preparation mode
-includes preparation in each render timer. Approximate warm-rate reuse crossover
-is `ceil(prepareStateMs / (plainWarmMs - preparedWarmMs))` only if savings are
-positive; it excludes cold-render differences and is not a latency guarantee.
-Memory deltas include VM/GC effects and retained source plus snapshot, not exact
-snapshot allocation counts. Small or render-dominated state may not benefit.
+### Phase reporting
 
 Each sample runs in a fresh Node child with Node's module compile cache disabled.
 This isolates process-local first use, not a cold operating-system file cache.
@@ -454,7 +416,7 @@ Workload shapes are unchanged across samples. The compiler loads once in the
 parent, and each workload compiles and writes its generated artifact once before
 the child samples start.
 
-The JSON report uses `reportVersion: 2` and separates these wall-clock phases:
+The JSON report uses `reportVersion: 3` and separates these wall-clock phases:
 
 | Field | Boundary |
 |---|---|
@@ -467,12 +429,11 @@ The JSON report uses `reportVersion: 2` and separates these wall-clock phases:
 | `moduleImportMs` | Generated module and server-helper import |
 | `firstRenderMs` | First synchronous render call only; includes any V8 lazy compilation on first use |
 | `coldImportAndRenderMs` | Sum of module import and first render, not startup or request-fixture loading |
-| `coldImportToUtf8Ms` | Sum of import, one-time preparation if applicable, first render and encoding |
+| `coldImportToUtf8Ms` | Sum of plan/helper import, first JSON render and encoding |
 | `utf8EncodeMs`, `outputWriteMs` | First result's string materialization/UTF-8 Buffer conversion and local file open/write/close |
 | `warmupMs`, `warmupIterations` | Explicit untimed-for-throughput warmup, default 20 calls; configure with `--warmup=N`, including zero |
 | `warmMsPerRender`, `cpuMsPerRender` | Average wall/CPU time for `--iterations=N` warm synchronous render calls |
 | `warmUtf8MsPerRender`, `warmUtf8CpuMsPerRender` | Average wall/CPU time for a subsequent `--iterations=N` loop rendering and converting each result into a UTF-8 Buffer; no file writing |
-| `warmJsonUtf8MsPerRender`, `warmJsonUtf8CpuMsPerRender` | Average wall/CPU time for a separately warmed state-JSON-parse/render/UTF-8 loop; absent for reused snapshots |
 | `workerProcessMs` | Parent-observed full child lifecycle, including spawn, setup, phases, validation, GC, report transfer and optional profile flushing |
 
 Version 1 reports had no version field and used `firstRenderMs` for **import plus
@@ -484,7 +445,7 @@ aggregate fields to their constituent phases.
 UTF-8 conversion and file delivery occur after the first render and before
 warmup. File writing measures operating-system-cached local delivery, not
 `fsync`, network latency or durable storage. Warm rendering includes complete
-state validation and string construction, but excludes import, JSON parsing,
+JSON parsing, state validation and string construction, but excludes import,
 UTF-8 conversion, file delivery and output verification. The final warmup and
 warm results are checked against the first result outside the render timers;
 repeated samples must have the same SHA-256 hash of the delivered UTF-8 bytes.
@@ -492,7 +453,8 @@ repeated samples must have the same SHA-256 hash of the delivered UTF-8 bytes.
 The additional warm UTF-8 loop runs after string-only timing and its memory/GC
 observations. Its time includes rendering, string flattening and Buffer creation;
 do not add it to string-only render time. Its final UTF-8 output hash is checked
-outside the timer. These additive fields retain report version 2. Compare the
+outside the timer. Version 3 changes primary input to fresh JSON; compare against
+an equivalent fresh-JSON boundary in older reports, not default object/prepared timings. Compare the
 same boundary on the same host/runtime; faster string assembly alone does not
 establish faster UTF-8 delivery.
 
@@ -505,7 +467,7 @@ represent total WASM allocation; RSS includes native memory. Generated source
 size is not a minified/bundled-size claim.
 State-only serialized JSON is now also retained across the measured loops; take
 that additional live input into account when comparing historical memory reports.
-The string-loop memory/GC observations do not cover the later UTF-8/JSON loops.
+The string-loop memory/GC observations do not cover the later UTF-8 loop.
 
 To collect optional Node CPU profiles for every child sample:
 

@@ -3,8 +3,8 @@ import { readFileSync } from "node:fs";
 // Test-only bridge: Rust conformance assertions also execute generated JavaScript.
 const input = JSON.parse(readFileSync(0, "utf8"));
 try {
-    const state =
-        input.stateJson === undefined ? input.state : JSON.parse(input.stateJson);
+    const stateJson =
+        input.stateJson ?? JSON.stringify(input.state === undefined ? {} : input.state);
     const server = await import(
         `data:text/javascript;base64,${Buffer.from(
             input.source.replace(
@@ -14,18 +14,14 @@ try {
         ).toString("base64")}`
     );
     const method = input.host
-        ? "renderHost"
+        ? "renderHostJson"
         : input.shadow
-          ? "renderShadow"
+          ? "renderShadowJson"
           : input.template
-            ? "renderTemplate"
-            : "renderEntry";
+            ? "renderTemplateJson"
+            : "renderEntryJson";
     const args = input.host || input.shadow ? [input.host || input.shadow] : [];
-    const value = server[method](...args, state, input.options);
-    const prepared = server.prepareState(state);
-    if (server[`${method}Prepared`](...args, prepared, input.options) !== value) {
-        throw new Error("Prepared output differs from ordinary output");
-    }
+    const value = server[method](...args, stateJson, input.options);
     process.stdout.write(JSON.stringify({ value }));
 } catch (error) {
     process.stdout.write(

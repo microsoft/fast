@@ -20,14 +20,11 @@ const { values: args } = parseArgs({
         instances: { type: "string", default: "200" },
         warmup: { type: "string", default: "20" },
         "profile-directory": { type: "string" },
-        "state-mode": { type: "string", default: "plain" },
         "markers-v2": { type: "boolean", default: false },
         "attribute-name-strategy": { type: "string", default: "camelCase" },
         output: { type: "string" },
     },
 });
-const stateModes = ["plain", "prepared", "prepare-per-render"];
-assert.ok([...stateModes, "all"].includes(args["state-mode"]), "Invalid state mode.");
 assert.ok(
     ["camelCase", "none"].includes(args["attribute-name-strategy"]),
     "Invalid attribute name strategy.",
@@ -36,12 +33,6 @@ const renderOptions = {
     markersV2: args["markers-v2"],
     attributeNameStrategy: args["attribute-name-strategy"],
 };
-const modeKey = mode =>
-    mode === "plain"
-        ? "aot"
-        : mode === "prepared"
-          ? "aotPrepared"
-          : "aotPreparePerRender";
 const hash = text => createHash("sha256").update(text).digest("hex");
 const integer = (name, minimum = 1) => {
     const value = Number(args[name]);
@@ -60,7 +51,11 @@ if (args.worker) {
 
 async function worker() {
     const workerSetupMs = performance.now();
-    assert.equal(args.worker, "aot", "Only the AOT backend is supported.");
+    assert.equal(
+        args.worker,
+        "flat-plan",
+        "Only the flat-plan JSON backend is supported.",
+    );
     const readStart = performance.now();
     const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
     const inputReadMs = performance.now() - readStart;
@@ -78,33 +73,7 @@ async function worker() {
         pathToFileURL(path.join(args.directory, "server.mjs")).href
     );
     const moduleImportMs = performance.now() - importStart;
-    const stateMode = args["state-mode"];
-    assert.ok(stateModes.includes(stateMode), "Worker requires one state mode.");
-    let prepared;
-    let preparation;
-    if (stateMode === "prepared") {
-        globalThis.gc?.();
-        const memoryBeforePrepare = process.memoryUsage();
-        const start = performance.now();
-        prepared = module.prepareState(source.state);
-        const prepareStateMs = performance.now() - start;
-        globalThis.gc?.();
-        preparation = {
-            prepareStateMs,
-            memoryBeforePrepare,
-            memoryAfterPrepare: process.memoryUsage(),
-        };
-    }
-    const render =
-        stateMode === "plain"
-            ? () => module.renderEntry(source.state, renderOptions)
-            : stateMode === "prepared"
-              ? () => module.renderEntryPrepared(prepared, renderOptions)
-              : () =>
-                    module.renderEntryPrepared(
-                        module.prepareState(source.state),
-                        renderOptions,
-                    );
+    const render = () => module.renderEntryJson(stateJson, renderOptions);
     const firstStart = performance.now();
     const html = render();
     const firstRenderMs = performance.now() - firstStart;
@@ -156,60 +125,12 @@ async function worker() {
     const warmUtf8Ms = performance.now() - utf8Start;
     const utf8CpuUsed = process.cpuUsage(utf8Cpu);
     assert.equal(hash(latestBytes), output.outputHash, "warm UTF-8 output differs");
-    let jsonDelivery;
-    if (stateMode !== "prepared") {
-        const renderJson = () => {
-            const state = JSON.parse(stateJson);
-            return stateMode === "plain"
-                ? module.renderEntry(state, renderOptions)
-                : module.renderEntryPrepared(module.prepareState(state), renderOptions);
-        };
-        const jsonWarmupStart = performance.now();
-        for (let index = 0; index < warmupIterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
-        }
-        const jsonUtf8WarmupMs = performance.now() - jsonWarmupStart;
-        if (warmupIterations > 0) {
-            assert.equal(
-                hash(latestBytes),
-                output.outputHash,
-                "JSON-to-UTF-8 warmup output differs",
-            );
-        }
-        const jsonCpu = process.cpuUsage();
-        const jsonStart = performance.now();
-        for (let index = 0; index < iterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
-        }
-        const warmJsonUtf8MsPerRender = (performance.now() - jsonStart) / iterations;
-        const jsonCpuUsed = process.cpuUsage(jsonCpu);
-        assert.equal(
-            hash(latestBytes),
-            output.outputHash,
-            "warm JSON-to-UTF-8 output differs",
-        );
-        jsonDelivery = {
-            jsonUtf8WarmupMs,
-            warmJsonUtf8MsPerRender,
-            warmJsonUtf8CpuMsPerRender:
-                (jsonCpuUsed.user + jsonCpuUsed.system) / 1000 / iterations,
-            warmJsonUtf8BytesPerSecond: throughput(warmJsonUtf8MsPerRender),
-        };
-    }
-    if (stateMode !== "plain") {
-        assert.equal(
-            module.renderEntry(source.state, renderOptions),
-            html,
-            "prepared output differs from ordinary output",
-        );
-    }
     console.log(
         JSON.stringify({
-            reportVersion: 2,
-            executionTarget: "generated-javascript",
+            reportVersion: 3,
+            executionTarget: "flat-plan-javascript",
             renderOptions,
-            stateMode,
-            ...preparation,
+            requestInput: "owned-json",
             workerSetupMs,
             inputReadMs,
             inputParseMs,
@@ -219,11 +140,7 @@ async function worker() {
             moduleImportMs,
             firstRenderMs,
             coldImportAndRenderMs: moduleImportMs + firstRenderMs,
-            coldImportToUtf8Ms:
-                moduleImportMs +
-                (preparation?.prepareStateMs ?? 0) +
-                firstRenderMs +
-                output.utf8EncodeMs,
+            coldImportToUtf8Ms: moduleImportMs + firstRenderMs + output.utf8EncodeMs,
             warmupMs,
             warmupIterations,
             warmMsPerRender: warmMs / iterations,
@@ -233,7 +150,6 @@ async function worker() {
                 (utf8CpuUsed.user + utf8CpuUsed.system) / 1000 / iterations,
             warmStringBytesPerSecond: throughput(warmMs / iterations),
             warmUtf8BytesPerSecond: throughput(warmUtf8Ms / iterations),
-            ...jsonDelivery,
             iterations,
             gcCount,
             gcMs,
@@ -276,7 +192,6 @@ async function main() {
     const instances = integer("instances");
     const iterations = integer("iterations");
     const warmupIterations = integer("warmup", 0);
-    const modes = args["state-mode"] === "all" ? stateModes : [args["state-mode"]];
     let profileDirectory;
     if (args["profile-directory"]) {
         const root = path.resolve(args["profile-directory"]);
@@ -372,8 +287,8 @@ async function main() {
         largeState: fixture("large_state_overlay", instances, 1, 2000),
     };
     const results = {
-        reportVersion: 2,
-        executionTarget: "generated-javascript",
+        reportVersion: 3,
+        executionTarget: "flat-plan-javascript",
         renderOptions,
         node: process.version,
         platform: `${process.platform}/${process.arch}`,
@@ -381,7 +296,7 @@ async function main() {
         instances,
         iterations,
         warmupIterations,
-        stateModes: modes,
+        requestInput: "owned-json",
         compilerLoadMs,
         workloadSetupMs: performance.now() - workloadStart,
         profileDirectory,
@@ -408,13 +323,13 @@ async function main() {
                 compileMs,
                 artifactWriteMs,
                 generatedBytes: Buffer.byteLength(source),
-                modes: Object.fromEntries(modes.map(mode => [modeKey(mode), []])),
+                modes: { flatPlanJson: [] },
             };
             const expectedStateHash = hash(JSON.stringify(input.state));
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                for (const stateMode of sample % 2 ? [...modes].reverse() : modes) {
-                    const profileName = `${name}-${stateMode}-${sample + 1}.cpuprofile`;
+                {
+                    const profileName = `${name}-json-${sample + 1}.cpuprofile`;
                     const processStart = performance.now();
                     const response = execFileSync(
                         process.execPath,
@@ -428,11 +343,10 @@ async function main() {
                                   ]
                                 : []),
                             fileURLToPath(import.meta.url),
-                            "--worker=aot",
+                            "--worker=flat-plan",
                             `--directory=${directory}`,
                             `--iterations=${iterations}`,
                             `--warmup=${warmupIterations}`,
-                            `--state-mode=${stateMode}`,
                             ...(renderOptions.markersV2 ? ["--markers-v2"] : []),
                             `--attribute-name-strategy=${renderOptions.attributeNameStrategy}`,
                         ],
@@ -446,7 +360,7 @@ async function main() {
                     assert.equal(
                         result.stateJsonHash,
                         expectedStateHash,
-                        `${name}/aot input state differs`,
+                        `${name}/flatPlanJson input state differs`,
                     );
                     if (profileDirectory) {
                         result.cpuProfile = path.join(profileDirectory, profileName);
@@ -456,9 +370,9 @@ async function main() {
                     assert.equal(
                         result.outputHash,
                         expected,
-                        `${name}/aot output differs`,
+                        `${name}/flatPlanJson output differs`,
                     );
-                    record.modes[modeKey(stateMode)].push(result);
+                    record.modes.flatPlanJson.push(result);
                 }
             }
             results.workloads[name] = record;
