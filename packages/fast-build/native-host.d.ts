@@ -1,6 +1,7 @@
 /// <reference types="node" />
 
 export interface NativeProgram {
+    /** JSON Buffers must not be backed by SharedArrayBuffer. */
     renderEntryJson(state: string | Buffer, options?: string | Buffer): Buffer;
     renderTemplateJson(state: string | Buffer, options?: string | Buffer): Buffer;
     renderHostJson(
@@ -15,7 +16,7 @@ export interface NativeProgram {
     ): Buffer;
 }
 
-/** Explicit local addon path. Unsupported/missing addons throw without fallback. */
+/** Explicit local addon path. Artifact Buffers must not be backed by SharedArrayBuffer. */
 export function loadNativeHost(
     addonPath: string,
 ): new (

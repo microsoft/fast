@@ -239,6 +239,71 @@ test("artifact rejection is explicit and caller bytes are not retained", () => {
     assert.deepEqual(output, Buffer.from(js.renderEntry(state)));
 });
 
+test("shared backing stores are rejected before native reads, with request recovery", async () => {
+    const shared = new SharedArrayBuffer(
+        Math.max(artifact.length, Buffer.byteLength(json)),
+    );
+    const bytes = Buffer.from(shared);
+    const shadowed = Buffer.from(shared);
+    Object.defineProperty(shadowed, "buffer", {
+        get() {
+            throw new Error("The intrinsic backing-store check must not invoke getters.");
+        },
+    });
+    const control = new SharedArrayBuffer(4);
+    const signal = new Int32Array(control);
+    const worker = new Worker(
+        `
+        const { parentPort, workerData } = require("node:worker_threads");
+        const bytes = new Uint8Array(workerData.shared);
+        const signal = new Int32Array(workerData.control);
+        parentPort.postMessage("ready");
+        while (Atomics.load(signal, 0) === 0) bytes[0] ^= 1;
+    `,
+        { eval: true, workerData: { shared, control } },
+    );
+    const exited = new Promise((resolve, reject) => {
+        worker.once("error", reject);
+        worker.once("exit", code =>
+            code === 0 ? resolve() : reject(new Error(`worker exit ${code}`)),
+        );
+    });
+    try {
+        await new Promise((resolve, reject) => {
+            worker.once("message", resolve);
+            worker.once("error", reject);
+        });
+        const program = new NativeProgram(artifact);
+        for (const input of [bytes, shadowed]) {
+            assert.throws(() => new NativeProgram(input), { code: "invalid-artifact" });
+            for (const context of contexts) {
+                assert.throws(() => render(program, context, input), {
+                    code: "invalid-state",
+                });
+                assert.throws(() => render(program, context, "{", input), {
+                    code: "invalid-state",
+                });
+                assert.throws(() => render(program, context, json, input), {
+                    code: "invalid-options",
+                });
+                assert.deepEqual(
+                    render(program, context, json),
+                    Buffer.from(jsRender(context, state)),
+                );
+            }
+        }
+        assert.throws(() => new NativeProgram(new Uint8Array(shared)), {
+            code: "invalid-artifact",
+        });
+        assert.throws(() => program.renderEntryJson(new Uint8Array(shared)), {
+            code: "invalid-state",
+        });
+    } finally {
+        Atomics.store(signal, 0, 1);
+        await exited;
+    }
+});
+
 test("owned output survives program collection, forced GC and independent workers", async () => {
     assert.equal(typeof global.gc, "function");
     const expected = Buffer.from(js.renderEntry(state));
