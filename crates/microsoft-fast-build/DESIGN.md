@@ -205,7 +205,9 @@ directly to the executor's bounded output string, without display/escaped string
 Finite numbers format through its fallible `fmt::Write` implementation; boolean,
 null and container display values use fixed strings. Composite attributes resolve
 their binding values first so a later missing/null value suppresses the entire
-attribute before any output-budget check. Authored composite literals only replace
+attribute before any output-budget check. This preflight retains no operand vector;
+the output pass resolves immutable borrowed values again without cloning payloads.
+Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
