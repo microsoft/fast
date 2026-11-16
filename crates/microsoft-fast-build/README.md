@@ -76,7 +76,11 @@ let html = program.render_entry(&state, &NativeRenderOptions::default())?;
 `render_template`, `render_host` and `render_shadow` preserve the corresponding
 generated-module APIs. `render_shadow` accepts resolved component state and emits
 only DSD. `CompiledArtifact::emit_server_module(runtime_import)` can emit the JS
-target from the exact loaded IR as a build-time operation.
+target from the loaded semantics as a build-time operation. Loading prepares typed
+operations, numeric body/component references, array-index metadata and decoded
+static operands; rendering no longer interprets JSON instruction fields.
+Emission reconstructs transient serialized IR, including original static-number
+spellings, rather than retaining a second graph.
 
 Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
 threads; each ordinary call validates/copies state and owns its counters, overlays and
@@ -93,6 +97,14 @@ buffer, including escaped spans and scalar formatting. Composite attributes chec
 for missing/null bindings before writing, preserving whole-attribute suppression.
 Results remain complete owned strings, not a streaming API; failed calls return
 no partial HTML. Buffers are request-local, with no retained capacity hints.
+
+Existing `fast-server-native` and `fast-server-js` semantic schema-1 assets remain
+usable unchanged; this internal native-plan change requires no recompilation or
+API migration. Load peak memory includes semantic decoding/private IR expansion
+and transient private JSON plus the typed plan before JSON is dropped;
+JS emission temporarily reconstructs private IR. Neither load cost nor retained-memory
+improvement is assumed. State copying, child overlays and output ownership/budgets
+are unchanged. See [upgrade and measurement guidance](../../packages/fast-build/docs/migration/typed-native-plans.md).
 
 For unchanged state reused across calls, validate and copy once:
 

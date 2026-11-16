@@ -383,11 +383,19 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 - Each ordinary render validates/normalizes and copies the request state (64 nesting
   levels, at most one million values), and owns transient overlays, loops,
   hydration counters and the returned `String`. State must not be mutated
-  concurrently. This is not a zero-copy claim; peak memory includes the loaded
-  JSON IR, request state/overlays, attribute intermediates and full output.
+  concurrently. This is not a zero-copy claim; request peak memory includes the
+  typed artifact plan, request state/overlays, attribute intermediates and full output.
   Caller input sizes and deployment concurrency still need application limits.
   Allocations use Rust's allocator; allocation exhaustion follows the host
   allocator's policy (which may abort), not a portable recoverable OOM guarantee.
+- After complete eager validation, loading replaces transient JSON with immutable
+  typed operations, numeric component/body references, prepared path indices and
+  decoded static operands. Static-number spelling metadata preserves build-time
+  JS emission. No second raw instruction graph is retained. Loading temporarily
+  holds JSON plus the typed plan; `emit_server_module` reconstructs transient IR
+  for the existing emitter. Include these load/emission peaks in memory accounting,
+  not just warmed rendering. Semantic schema-1 native and JS assets remain
+  supported unchanged; see [the upgrade guide](./migration/typed-native-plans.md).
 - Escaped text bindings append unchanged UTF-8 spans and entities directly to
   the bounded output string, without first allocating the full escaped value.
   Each write checks the byte budget; a failure discards private partial output.
