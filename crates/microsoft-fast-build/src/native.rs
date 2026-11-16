@@ -762,20 +762,17 @@ impl<'a> Executor<'a> {
             "quoted" => {
                 // A missing later binding suppresses the whole attribute, even when
                 // an earlier value would exceed the output budget.
-                let mut values = Vec::new();
                 for part in array(&v[2]) {
                     if part[0] != "literal" {
                         let value = get(root, loops, &part[1]);
-                        if value.is_none() || matches!(value.as_deref(), Some(J::Null)) {
+                        if matches!(value.as_deref(), None | Some(J::Null)) {
                             return Ok(());
                         }
-                        values.push(value.unwrap());
                     }
                 }
                 self.push(" ")?;
                 self.push(string(&v[1]))?;
                 self.push("=\"")?;
-                let mut values = values.iter();
                 for part in array(&v[2]) {
                     if part[0] == "literal" {
                         let text = string(&part[1]);
@@ -787,7 +784,7 @@ impl<'a> Executor<'a> {
                         }
                         self.push(&text[start..])?;
                     } else {
-                        self.value(values.next().map(|value| value.as_ref()), true)?;
+                        self.value(get(root, loops, &part[1]).as_deref(), true)?;
                     }
                 }
                 self.push("\"")

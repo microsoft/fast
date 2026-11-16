@@ -216,10 +216,11 @@ attribute before any output-budget check. Authored composite literals only repla
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Composite attributes retain a request-local list of borrowed operands and owned
-synthetic values until that attribute is written. Container operands borrow their
-existing storage rather than cloning state graphs when a later operand suppresses
-the attribute.
+Composite attributes preflight missing/null operands without retaining a
+per-binding list, then resolve the immutable borrowed operands again while
+writing. Container operands borrow existing storage; synthetic values are
+request-local and short-lived. Suppressed attributes do not accumulate values or
+allocation proportional to the number of bindings.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is
