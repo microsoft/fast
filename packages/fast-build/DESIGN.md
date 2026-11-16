@@ -157,6 +157,10 @@ Module/sidecar paths cannot overlap authored inputs or HTML output.
 Glob discovery/file reads occur on hits; parser diagnostics occur only on misses.
 CLI modules record the installed helper's absolute import URL; package/compiler
 versions and hashes never become asset/invalidation keys.
+Preparation uses the current semantic `fast-server-js` schema: named operation
+objects, named templates and one complete DSD template reference per component.
+It neither introduces a private numeric wire format nor rewrites retained assets
+merely because the installed compiler changes.
 
 `fast convert --syntax=server-js` links all named template inputs into one ESM
 module. It rejects duplicate names, empty registries, wildcard output paths and
