@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Write native attribute and scalar values directly into bounded request-local output while preserving exact HTML and recoverable errors.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

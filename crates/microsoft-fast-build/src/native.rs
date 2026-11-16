@@ -1,11 +1,9 @@
 //! Immutable native execution of compiler artifacts; never parses template HTML.
-use crate::{
-    content::{html_escape, write_html_escaped},
-    JsonValue as J, Locator, RenderError,
-};
+use crate::{content::write_html_escaped, JsonValue as J, Locator, RenderError};
 use serde_json::Value as V;
 use std::borrow::Cow;
 use std::collections::HashMap;
+use std::fmt::Write;
 use std::sync::Arc;
 
 /// Attribute-to-state mapping for custom element attributes.
@@ -526,61 +524,17 @@ fn condition(v: &V, root: &Frame<'_>, loops: &Loops) -> bool {
     }
 }
 
-fn attr(v: &V, root: &Frame<'_>, loops: &Loops) -> String {
-    match string(&v[0]) {
-        "literal" => string(&v[1]).into(),
-        "conditional" => {
-            if condition(&v[1], root, loops) {
-                string(&v[2]).into()
-            } else {
-                String::new()
-            }
-        }
-        "attribute" => {
-            let val = get(root, loops, &v[2]);
-            let name = string(&v[1]);
-            if v[3] == true {
-                if let Some(J::Bool(value)) = val {
-                    return if value {
-                        format!(" {name}")
-                    } else {
-                        String::new()
-                    };
-                }
-            }
-            match val.as_ref() {
-                None | Some(J::Null) => String::new(),
-                Some(J::Array(_) | J::Object(_)) if v[4] == true => String::new(),
-                Some(J::Number(n)) if v[4] == true => {
-                    format!(" {name}=\"{}\"", html_escape(&n.to_string()))
-                }
-                val => format!(" {name}=\"{}\"", html_escape(&text(val))),
-            }
-        }
-        "quoted" => {
-            let mut out = String::new();
-            for part in array(&v[2]) {
-                if part[0] == "literal" {
-                    out.push_str(string(&part[1]));
-                } else {
-                    let value = get(root, loops, &part[1]);
-                    if value.is_none() || matches!(value, Some(J::Null)) {
-                        return String::new();
-                    }
-                    out.push_str(&html_escape(&text(value.as_ref())));
-                }
-            }
-            format!(" {}=\"{}\"", string(&v[1]), out.replace('"', "&quot;"))
-        }
-        _ => unreachable!("validated attribute"),
-    }
-}
-
 struct Executor<'a> {
     ir: &'a V,
     options: &'a NativeRenderOptions,
     out: String,
     steps: usize,
+}
+
+impl Write for Executor<'_> {
+    fn write_str(&mut self, text: &str) -> std::fmt::Result {
+        self.push(text).map_err(|_| std::fmt::Error)
+    }
 }
 
 impl<'a> Executor<'a> {
@@ -606,6 +560,104 @@ impl<'a> Executor<'a> {
         self.steps += 1;
         Ok(())
     }
+    fn value(&mut self, value: Option<&J>, escaped: bool) -> Result<(), NativeRenderError> {
+        let text = match value {
+            None | Some(J::Null) => "",
+            Some(J::Bool(true)) => "true",
+            Some(J::Bool(false)) => "false",
+            Some(J::Number(n)) => {
+                return if *n == 0.0 {
+                    self.push("0")
+                } else {
+                    self.number(*n)
+                }
+            }
+            Some(J::String(v)) => v,
+            Some(J::Array(_)) => "[Array]",
+            Some(J::Object(_)) => "[Object]",
+        };
+        if escaped {
+            write_html_escaped(text, |span| self.push(span))
+        } else {
+            self.push(text)
+        }
+    }
+    fn number(&mut self, n: f64) -> Result<(), NativeRenderError> {
+        write!(self, "{n}").map_err(|_| error("render-limit", "Output byte limit exceeded"))
+    }
+    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: &Loops) -> Result<(), NativeRenderError> {
+        match string(&v[0]) {
+            "literal" => self.push(string(&v[1])),
+            "conditional" => {
+                if condition(&v[1], root, loops) {
+                    self.push(string(&v[2]))?;
+                }
+                Ok(())
+            }
+            "attribute" => {
+                let val = get(root, loops, &v[2]);
+                if v[3] == true {
+                    if let Some(J::Bool(value)) = val {
+                        if value {
+                            self.push(" ")?;
+                            self.push(string(&v[1]))?;
+                        }
+                        return Ok(());
+                    }
+                }
+                match val.as_ref() {
+                    None | Some(J::Null) => return Ok(()),
+                    Some(J::Array(_) | J::Object(_)) if v[4] == true => return Ok(()),
+                    _ => {}
+                }
+                self.push(" ")?;
+                self.push(string(&v[1]))?;
+                self.push("=\"")?;
+                match val.as_ref() {
+                    Some(J::Number(n)) if v[4] == true => self.number(*n)?,
+                    value => self.value(value, true)?,
+                }
+                self.push("\"")
+            }
+            "quoted" => {
+                // A missing later binding suppresses the whole attribute, even when
+                // an earlier value would exceed the output budget.
+                let mut values = Vec::new();
+                for part in array(&v[2]) {
+                    if part[0] != "literal" {
+                        match get(root, loops, &part[1]) {
+                            None | Some(J::Null) => return Ok(()),
+                            // Display only needs the container tag. Drop cloned contents
+                            // before resolving the next operand.
+                            Some(J::Array(_)) => values.push(J::Array(Vec::new())),
+                            Some(J::Object(_)) => values.push(J::Object(HashMap::new())),
+                            Some(value) => values.push(value),
+                        }
+                    }
+                }
+                self.push(" ")?;
+                self.push(string(&v[1]))?;
+                self.push("=\"")?;
+                let mut values = values.iter();
+                for part in array(&v[2]) {
+                    if part[0] == "literal" {
+                        let text = string(&part[1]);
+                        let mut start = 0;
+                        for (at, _) in text.match_indices('"') {
+                            self.push(&text[start..at])?;
+                            self.push("&quot;")?;
+                            start = at + 1;
+                        }
+                        self.push(&text[start..])?;
+                    } else {
+                        self.value(values.next(), true)?;
+                    }
+                }
+                self.push("\"")
+            }
+            _ => unreachable!("validated attribute"),
+        }
+    }
     fn attrs(
         &mut self,
         values: &V,
@@ -614,7 +666,7 @@ impl<'a> Executor<'a> {
     ) -> Result<(), NativeRenderError> {
         for value in array(values) {
             self.tick()?;
-            self.push(&attr(value, root, loops))?;
+            self.attr(value, root, loops)?;
         }
         Ok(())
     }
@@ -728,12 +780,7 @@ impl<'a> Executor<'a> {
                     }
                     self.boundary(scope, "start", binding, false)?;
                     if op[0] == "binding" {
-                        let text = text(get(root, loops, &op[1]).as_ref());
-                        if op[2] == true {
-                            write_html_escaped(&text, |span| self.push(span))?;
-                        } else {
-                            self.push(&text)?;
-                        }
+                        self.value(get(root, loops, &op[1]).as_ref(), op[2] == true)?;
                     } else if op[0] == "when" {
                         if condition(&op[1], root, loops) {
                             self.body(
@@ -836,7 +883,7 @@ impl<'a> Executor<'a> {
                     for default in array(&el["defaults"]) {
                         self.tick()?;
                         if hydration_attribute.as_deref() != Some(string(&default[0])) {
-                            self.push(&attr(&default[1], child, &[]))?;
+                            self.attr(&default[1], child, &[])?;
                         }
                     }
                     self.push(">")?;
