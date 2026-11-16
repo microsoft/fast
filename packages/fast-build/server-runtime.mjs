@@ -1,5 +1,3 @@
-export const runtimeVersion = 3;
-
 const own = (value, key) => Object.hasOwn(value, key);
 const object = value =>
     value !== null && typeof value === "object" && !Array.isArray(value);
@@ -141,19 +139,6 @@ function nested(value, path, start = 0, indexes) {
         }
     }
     return value;
-}
-
-export function get(root, loops, path) {
-    for (let index = loops.length - 1; index >= 0; index--) {
-        const [name, value] = loops[index];
-        if (
-            name.length <= path.length &&
-            name.every((segment, index) => segment === path[index])
-        ) {
-            return nested(value, path, name.length);
-        }
-    }
-    return getRoot(root, path);
 }
 
 function getRoot(root, path, indexes) {
@@ -433,4 +418,434 @@ export function marker(scope, count) {
             ? `data-fe-b-${index}`
             : `data-fe-c-${index}-${count}`
         : `data-fe="${count}"`;
+}
+
+/**
+ * Lower stable semantic operations once, without evaluating generated source.
+ * Application state is supplied only to the returned render methods.
+ */
+export function createServerRenderer(plan) {
+    const components = new Map();
+    const invalid = () => {
+        throw new TypeError("Invalid or incompatible FAST server plan.");
+    };
+    const missing = name => {
+        throw Object.assign(new Error(`Unknown component: ${name}`), {
+            code: "missing-template",
+            templateName: name,
+        });
+    };
+
+    const fields = (value, names) => {
+        if (
+            !object(value) ||
+            Object.keys(value).length !== names.length ||
+            names.some(name => !own(value, name))
+        ) {
+            invalid();
+        }
+        return value;
+    };
+    const array = value => {
+        if (!Array.isArray(value)) invalid();
+        for (let index = 0; index < value.length; index++) {
+            if (!own(value, index)) invalid();
+        }
+        return value;
+    };
+    const record = (value, length) => {
+        if (array(value).length !== length) invalid();
+        return value;
+    };
+    const string = value => {
+        if (typeof value !== "string") invalid();
+        return value;
+    };
+    const boolean = value => {
+        if (typeof value !== "boolean") invalid();
+        return value;
+    };
+    const count = value => {
+        if (!Number.isSafeInteger(value) || value < 0 || value > 1_000_000) invalid();
+        return value;
+    };
+    fields(plan, ["format", "version", "entry", "templates", "components"]);
+    if (plan.format !== "fast-server-js" || plan.version !== 1) invalid();
+    if (!object(plan.templates) || !object(plan.components)) invalid();
+    const templates = new Map(Object.entries(plan.templates));
+    if (templates.size >= 1_000_000 || templates.has("")) invalid();
+    const aliases = [["$index"]];
+    const path = value => {
+        if (!array(value).length) invalid();
+        return value.map(string);
+    };
+    let total = 0;
+    for (const body of [plan.entry, ...templates.values()]) {
+        for (const op of array(body)) {
+            if (++total > 1_000_000) invalid();
+            array(op);
+            if (op[0] === "repeat") {
+                const name = path(op[1]);
+                if (!aliases.some(alias => samePath(alias, name))) aliases.push(name);
+            }
+        }
+    }
+    function samePath(left, right) {
+        return left.length === right.length && left.every((part, i) => part === right[i]);
+    }
+    function lookup(value) {
+        const segments = path(value);
+        const slots = aliases.flatMap((alias, slot) =>
+            alias.length <= segments.length &&
+            alias.every((segment, index) => segment === segments[index])
+                ? [[slot, alias.length]]
+                : [],
+        );
+        return access(segments, slots);
+    }
+    function literal(node, depth = 0) {
+        if (depth > 64) invalid();
+        array(node);
+        if (node[0] === "null") {
+            record(node, 1);
+            return () => null;
+        }
+        record(node, 2);
+        switch (node[0]) {
+            case "bool": {
+                const value = boolean(node[1]);
+                return () => value;
+            }
+            case "string": {
+                const value = string(node[1]);
+                return () => value;
+            }
+            case "number": {
+                const encoded = string(node[1]);
+                const value =
+                    encoded === "inf"
+                        ? Infinity
+                        : encoded === "-inf"
+                          ? -Infinity
+                          : Number(encoded);
+                if (Number.isNaN(value) && encoded !== "NaN") invalid();
+                return () => value;
+            }
+            case "array": {
+                const values = array(node[1]).map(value => literal(value, depth + 1));
+                return () => values.map(value => value());
+            }
+            case "object": {
+                if (!object(node[1])) invalid();
+                const values = Object.entries(node[1]).map(([key, value]) => [
+                    key,
+                    literal(value, depth + 1),
+                ]);
+                return () =>
+                    Object.fromEntries(values.map(([key, value]) => [key, value()]));
+            }
+            default:
+                invalid();
+        }
+    }
+    function operand(node) {
+        record(node, 2);
+        if (node[0] === "path") return lookup(node[1]);
+        if (node[0] === "value") return literal(node[1]);
+        invalid();
+    }
+    function condition(node, depth = 0) {
+        if (depth > 64) invalid();
+        array(node);
+        if (node[0] === "&&" || node[0] === "||") {
+            record(node, 3);
+            const left = condition(node[1], depth + 1);
+            const right = condition(node[2], depth + 1);
+            return node[0] === "&&"
+                ? (r, l) => left(r, l) && right(r, l)
+                : (r, l) => left(r, l) || right(r, l);
+        }
+        if (node[0] === "not" || node[0] === "truthy") {
+            record(node, 2);
+            const value = lookup(node[1]);
+            return node[0] === "not"
+                ? (r, l) => !truthy(value(r, l))
+                : (r, l) => truthy(value(r, l));
+        }
+        if (node[0] === "compare") {
+            record(node, 4);
+            const operator = string(node[1]);
+            if (!["==", "!=", ">", "<", ">=", "<="].includes(operator)) invalid();
+            const left = lookup(node[2]);
+            const right = operand(node[3]);
+            return (r, l) => compare(left(r, l), right(r, l), operator);
+        }
+        invalid();
+    }
+    function attr(node) {
+        array(node);
+        switch (node[0]) {
+            case "literal": {
+                record(node, 2);
+                const value = string(node[1]);
+                return () => value;
+            }
+            case "attribute": {
+                record(node, 5);
+                const name = string(node[1]);
+                const value = lookup(node[2]);
+                const isBoolean = boolean(node[3]);
+                const primitive = boolean(node[4]);
+                return (r, l) => attribute(name, value(r, l), isBoolean, primitive);
+            }
+            case "conditional": {
+                record(node, 3);
+                const test = condition(node[1]);
+                const value = string(node[2]);
+                return (r, l) => (test(r, l) ? value : "");
+            }
+            case "quoted": {
+                record(node, 3);
+                const name = string(node[1]);
+                const parts = array(node[2]).map(part => {
+                    record(part, 2);
+                    if (part[0] === "literal") return attr(part);
+                    if (part[0] !== "segment") invalid();
+                    const value = lookup(part[1]);
+                    return (r, l) => segment(value(r, l));
+                });
+                return (r, l) => quoted(name, composite(parts.map(part => part(r, l))));
+            }
+            default:
+                invalid();
+        }
+    }
+    const attrs = values => array(values).map(attr);
+    function tag(value) {
+        fields(value, ["plain", "hydrated", "count", "ending"]);
+        const plain = attrs(value.plain);
+        const hydrated = attrs(value.hydrated);
+        const bindings = count(value.count);
+        const ending = string(value.ending);
+        return (r, l, o, h) => {
+            let output = "";
+            for (const part of h ? hydrated : plain) output += part(r, l);
+            if (h && bindings) output += ` ${marker(h, bindings)}${ending}`;
+            return output;
+        };
+    }
+    const compiled = new Map();
+    const visiting = new Set();
+    function template(name) {
+        string(name);
+        if (!templates.has(name) || visiting.has(name) || visiting.size > 256) invalid();
+        if (compiled.has(name)) return compiled.get(name);
+        visiting.add(name);
+        const run = bodyOf(templates.get(name));
+        visiting.delete(name);
+        compiled.set(name, run);
+        return run;
+    }
+    function operation(node) {
+        array(node);
+        switch (node[0]) {
+            case "literal":
+                return attr(node);
+            case "template":
+                record(node, 2);
+                return template(node[1]);
+            case "tag":
+                record(node, 2);
+                return tag(node[1]);
+            case "binding": {
+                record(node, 3);
+                const value = lookup(node[1]);
+                const escaped = boolean(node[2]);
+                return (r, l, o, h) => {
+                    const index = h ? h.index++ : 0;
+                    const output = text(value(r, l));
+                    const content = escaped ? htmlEscape(output) : output;
+                    return h ? start(h, index) + content + end(h, index) : content;
+                };
+            }
+            case "when": {
+                record(node, 3);
+                const test = condition(node[1]);
+                const body = template(node[2]);
+                return (r, l, o, h) => {
+                    const index = h ? h.index++ : 0;
+                    const output = test(r, l)
+                        ? body(r, l, o, h ? scope(o) : null, false)
+                        : "";
+                    return h ? start(h, index) + output + end(h, index) : output;
+                };
+            }
+            case "repeat": {
+                record(node, 5);
+                const name = path(node[1]);
+                const slot = aliases.findIndex(alias => samePath(alias, name));
+                const value = lookup(node[2]);
+                const expression = string(node[3]);
+                const body = template(node[4]);
+                return (r, l, o, h) => {
+                    const items = list(value(r, l), expression);
+                    const binding = h ? h.index++ : 0;
+                    let output = h ? start(h, binding) : "";
+                    const next = items.length ? loop(l, slot) : null;
+                    for (let index = 0; index < items.length; index++) {
+                        next.value.value = items[index];
+                        next.index.value = index;
+                        if (h) output += repeatStart(h, index);
+                        output += body(r, next, o, h ? scope(o) : null, false);
+                        if (h) output += repeatEnd(h, index);
+                    }
+                    return h ? output + end(h, binding) : output;
+                };
+            }
+            case "element": {
+                record(node, 2);
+                const element = fields(node[1], [
+                    "name",
+                    "body",
+                    "closing",
+                    "opening",
+                    "props",
+                    "entry",
+                    "normal",
+                    "count",
+                    "defaults",
+                    "shadowTag",
+                ]);
+                const name = string(element.name);
+                if (!own(plan.components, name)) invalid();
+                const light = template(element.body);
+                const closing = string(element.closing);
+                const opening = tag(element.opening);
+                const props = array(element.props).map(prop => {
+                    record(prop, 4);
+                    const camel = string(prop[0]);
+                    const none = string(prop[1]);
+                    const group = prop[2] === null ? null : string(prop[2]);
+                    const value = operand(prop[3]);
+                    return (r, l, o) => [
+                        o.strategy === "camelCase" ? camel : none,
+                        group,
+                        value(r, l),
+                    ];
+                });
+                const entryAttrs = attrs(element.entry);
+                const normalAttrs = attrs(element.normal);
+                const bindings = count(element.count);
+                const defaults = array(element.defaults).map(part => {
+                    record(part, 2);
+                    return { name: string(part[0]), run: attr(part[1]) };
+                });
+                const shadowTag = string(element.shadowTag);
+                return (r, l, o, h, e) => {
+                    if (!selected(o, name)) {
+                        return opening(r, l, o, h) + light(r, l, o, h, e) + closing;
+                    }
+                    const component = components.get(name);
+                    if (!component) missing(name);
+                    const childRoot = props.length
+                        ? child(
+                              r,
+                              props.map(prop => prop(r, l, o)),
+                          )
+                        : r;
+                    const shadow = component.shadow(childRoot, null, o, scope(o), false);
+                    let output = "";
+                    let hydrationAttribute = null;
+                    for (const part of e ? entryAttrs : normalAttrs) output += part(r, l);
+                    if (!e && bindings && h) {
+                        const hydration = marker(h, bindings);
+                        hydrationAttribute = hydration.split("=")[0];
+                        output += ` ${hydration}`;
+                    }
+                    for (const part of defaults) {
+                        if (part.name !== hydrationAttribute) {
+                            output += part.run(childRoot, null);
+                        }
+                    }
+                    output += `>${shadowTag}${shadow}</template>`;
+                    output += light(r, l, o, h, false);
+                    return `${output}</${name}>`;
+                };
+            }
+            default:
+                invalid();
+        }
+    }
+    function bodyOf(values) {
+        const steps = array(values).map(operation);
+        if (steps.length === 1 && values[0][0] === "literal") return steps[0];
+        return (r, l, o, h, e) => {
+            let output = "";
+            for (const step of steps) output += step(r, l, o, h, e);
+            return output;
+        };
+    }
+    for (const name of templates.keys()) template(name);
+    for (const [name, value] of Object.entries(plan.components)) {
+        if (!name) invalid();
+        fields(value, ["shadow", "host", "tag"]);
+        components.set(name, {
+            shadow: template(value.shadow),
+            host: template(value.host),
+            tag: string(value.tag),
+        });
+    }
+    const body = bodyOf(plan.entry);
+    return Object.freeze({
+        components: Object.freeze([...components.keys()]),
+        prepareState,
+        renderEntry(state, options) {
+            const [r, o] = request(state, options);
+            return body(r, null, o, null, true);
+        },
+        renderTemplate(state, options) {
+            const [r, o] = request(state, options);
+            return body(r, null, o, null, false);
+        },
+        renderHost(name, state, options) {
+            const [r, o] = request(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return component.host(r, null, o, null, true);
+        },
+        renderShadow(name, state, options) {
+            const [r, o] = request(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return selected(o, name)
+                ? component.tag +
+                      component.shadow(r, null, o, scope(o), false) +
+                      "</template>"
+                : "";
+        },
+        renderEntryPrepared(state, options) {
+            const [r, o] = preparedRequest(state, options);
+            return body(r, null, o, null, true);
+        },
+        renderTemplatePrepared(state, options) {
+            const [r, o] = preparedRequest(state, options);
+            return body(r, null, o, null, false);
+        },
+        renderHostPrepared(name, state, options) {
+            const [r, o] = preparedRequest(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return component.host(r, null, o, null, true);
+        },
+        renderShadowPrepared(name, state, options) {
+            const [r, o] = preparedRequest(state, options);
+            const component = components.get(name);
+            if (!component) missing(name);
+            return selected(o, name)
+                ? component.tag +
+                      component.shadow(r, null, o, scope(o), false) +
+                      "</template>"
+                : "";
+        },
+    });
 }

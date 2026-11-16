@@ -36,9 +36,17 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     const bytes = compileServerArtifact(entry, templates);
     assert.ok(bytes instanceof Uint8Array);
     const ir = JSON.parse(Buffer.from(bytes).toString("utf8"));
-    assert.equal(ir.format, "fast-server");
+    assert.equal(ir.format, "fast-server-native");
     assert.equal(ir.version, 1);
-    assert.ok(Array.isArray(ir.bodies));
+    assert.deepEqual(Object.keys(ir).sort(), [
+        "components",
+        "entry",
+        "format",
+        "templates",
+        "version",
+    ]);
+    assert.ok(Array.isArray(ir.entry));
+    assert.equal(typeof ir.templates, "object");
     assert.equal(Buffer.from(bytes).includes(Buffer.from("f-when")), false);
     const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
     const server = await import(
@@ -46,8 +54,6 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
             compileServerModule(entry, templates, runtime),
         ).toString("base64")}`
     );
-    assert.equal(ir.compilerId, server.compilerId);
-    assert.equal(ir.runtimeVersion, server.runtimeVersion);
     const directory = path.relative(
         process.cwd(),
         path.join(__dirname, `.native-artifact-${process.pid}`),
@@ -70,7 +76,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
             });
             assert.equal(html, server.renderEntry(state));
         }
-        fs.writeFileSync(artifact, JSON.stringify({ ...ir, compilerId: "incompatible" }));
+        fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 2 }));
         assert.throws(
             () =>
                 execFileSync(executable, [artifact], {
@@ -85,7 +91,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     }
 });
 
-test("packaged Rust crates accept artifacts from the matching Node compiler", () => {
+test("packaged Rust crates accept compatible native assets after authored-manifest-only changes", () => {
     const root = path.resolve(__dirname, "../../..");
     const crate = path.join(root, "crates/microsoft-fast-build");
     const target = path.join(crate, "target");
@@ -109,6 +115,7 @@ test("packaged Rust crates accept artifacts from the matching Node compiler", ()
         `microsoft-fast-build-${require("../package.json").version}`,
     );
     assert.ok(fs.existsSync(path.join(packaged, "Cargo.toml.orig")));
+    const hostTarget = path.join(packaged, "native-host-target");
     const buildHost = () => {
         const build = execFileSync(
             "cargo",
@@ -120,7 +127,7 @@ test("packaged Rust crates accept artifacts from the matching Node compiler", ()
                 "--manifest-path",
                 path.join(packaged, "Cargo.toml"),
                 "--target-dir",
-                target,
+                hostTarget,
                 "--example",
                 "native-render",
                 "--message-format=json",
@@ -151,17 +158,30 @@ test("packaged Rust crates accept artifacts from the matching Node compiler", ()
         const manifest = path.join(packaged, "Cargo.toml.orig");
         const original = fs.readFileSync(manifest, "utf8");
         try {
-            fs.appendFileSync(manifest, "\n# Changed compiler input.\n");
-            buildHost();
-            assert.throws(
-                () =>
-                    execFileSync(executable, [artifact], {
-                        input: "{}",
-                        stdio: ["pipe", "pipe", "pipe"],
-                        timeout: 10_000,
-                    }),
-                error => error.stderr.toString().includes("incompatible-artifact"),
+            fs.appendFileSync(manifest, "\n# Changed authored manifest only.\n");
+            execFileSync(
+                "cargo",
+                [
+                    "clean",
+                    "--quiet",
+                    "--offline",
+                    "--manifest-path",
+                    path.join(packaged, "Cargo.toml"),
+                    "--target-dir",
+                    hostTarget,
+                    "--package",
+                    "microsoft-fast-build",
+                ],
+                { encoding: "utf8", timeout: 10_000 },
             );
+            const rebuiltExecutable = buildHost();
+            const rebuiltHtml = execFileSync(rebuiltExecutable, [artifact], {
+                encoding: "utf8",
+                input: JSON.stringify({ title: "Packaged & native" }),
+                env: { ...process.env, PATH: "" },
+                timeout: 10_000,
+            });
+            assert.equal(rebuiltHtml, html);
         } finally {
             fs.writeFileSync(manifest, original);
             buildHost();
