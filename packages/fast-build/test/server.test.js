@@ -11,6 +11,7 @@ const wasm = require("../wasm/microsoft_fast_build.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
 const baseline = require("./server-baseline.json");
+const contextBaseline = require("./server-json-context-baseline.json");
 const hash = value => createHash("sha256").update(value).digest("hex");
 
 test("retired renderer APIs cannot be loaded from the compiler package", () => {
@@ -346,27 +347,36 @@ test("compiled access plans preserve lexical precedence, indexes and root maskin
 });
 
 test("repeat frames are reused across items and omitted for empty data", async () => {
-    const probe = `import * as helper from ${JSON.stringify(runtime)};
-export * from ${JSON.stringify(runtime)};
-export let frames = 0;
-export function loop(...args) { frames++; return helper.loop(...args); }`;
-    const probeUrl = `data:text/javascript;base64,${Buffer.from(probe).toString("base64")}`;
-    const source = compileServerModule(
-        '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
-        {},
-        probeUrl,
-    );
-    const module = await import(
-        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-    );
-    assert.equal(module.renderEntry({}), "");
-    assert.equal(module.renderEntry({ items: [] }), "");
-    const measured = await import(probeUrl);
-    assert.equal(measured.frames, 0);
-    assert.equal(module.renderEntry({ items: [1, 2, 3] }), "123");
-    assert.equal(measured.frames, 1);
-    assert.equal(module.renderEntry({ items: [4, 5] }), "45");
-    assert.equal(measured.frames, 2);
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fast-loop-probe-"));
+    try {
+        const filename = path.join(directory, "helper.mjs");
+        const probe = fs
+            .readFileSync(require.resolve("../server-runtime.mjs"), "utf8")
+            .replace(
+                "export function loop(parent, slot) {",
+                "export let frames = 0;\nexport function loop(parent, slot) { frames++;",
+            );
+        fs.writeFileSync(filename, probe);
+        const probeUrl = pathToFileURL(filename).href;
+        const source = compileServerModule(
+            '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
+            {},
+            probeUrl,
+        );
+        const module = await import(
+            `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
+        );
+        assert.equal(module.renderEntry({}), "");
+        assert.equal(module.renderEntry({ items: [] }), "");
+        const measured = await import(probeUrl);
+        assert.equal(measured.frames, 0);
+        assert.equal(module.renderEntry({ items: [1, 2, 3] }), "123");
+        assert.equal(measured.frames, 1);
+        assert.equal(module.renderEntry({ items: [4, 5] }), "45");
+        assert.equal(measured.frames, 2);
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
+    }
 });
 
 test("shared bodies and component shadows do not capture repeat scopes", async () => {
@@ -597,6 +607,8 @@ import type { ServerModule, PreparedServerState } from "../../server.js";
 declare const server: ServerModule;
 const state: PreparedServerState = server.prepareState({ value: -0 });
 const html: string = server.renderEntryPrepared(state);
+// @ts-expect-error Compatibility is schema-based, not helper release metadata.
+server.runtimeVersion;
 server.renderTemplatePrepared(state);
 server.renderHostPrepared("test-el", state);
 server.renderShadowPrepared("test-el", state, { markersV2: true });
@@ -733,15 +745,264 @@ test("AOT executes in a fresh process with WASM and template parsing disabled", 
     }
 });
 
-test("AOT rejects a mismatched helper contract on module import", async () => {
-    for (const version of [0, 2]) {
-        const helper = `data:text/javascript,export const runtimeVersion = ${version};`;
-        const source = compileServerModule("static", {}, helper);
-        await assert.rejects(
-            import(
-                `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-            ),
-            /Incompatible FAST server runtime/,
+test("stable flat plans render without helper release metadata", async () => {
+    const entry = '<stable-el :value="{{value}}">{{value}}</stable-el>';
+    const templates = { "stable-el": "<b>{{value}}</b>" };
+    const runtimeImport = "./compatible-runtime.mjs";
+    const source = compileServerModule(entry, templates, runtimeImport);
+    const { module: expected } = await compile(entry, templates);
+    const state = { value: "<&" };
+    for (const version of [undefined, 0, 4, 6, 100]) {
+        const helper = `data:text/javascript;base64,${Buffer.from(
+            `export { createServerRenderer } from ${JSON.stringify(runtime)};
+             ${version === undefined ? "" : `export const runtimeVersion = ${version};`}`,
+        ).toString("base64")}`;
+        const resolvedSource = source.replace(
+            JSON.stringify(runtimeImport),
+            JSON.stringify(helper),
+        );
+        const module = await import(
+            `data:text/javascript;base64,${Buffer.from(resolvedSource).toString("base64")}`
+        );
+        assert.equal(Object.hasOwn(module, "runtimeVersion"), false);
+        assert.equal(Object.hasOwn(module, "compilerId"), false);
+        const prepared = module.prepareState(state);
+        state.value = "mutated";
+        for (const markersV2 of [false, true]) {
+            const options = { markersV2 };
+            for (const method of [
+                "renderEntry",
+                "renderTemplate",
+                "renderHost",
+                "renderShadow",
+            ]) {
+                const args =
+                    method === "renderHost" || method === "renderShadow"
+                        ? ["stable-el"]
+                        : [];
+                assert.equal(
+                    module[method](...args, state, options),
+                    expected[method](...args, state, options),
+                );
+                assert.equal(
+                    module[`${method}Prepared`](...args, prepared, options),
+                    expected[method](...args, { value: "<&" }, options),
+                );
+            }
+        }
+        state.value = "<&";
+    }
+    const legacySource = `${source.replace(
+        JSON.stringify(runtimeImport),
+        JSON.stringify(runtime),
+    )}\nexport const runtimeVersion = $.runtimeVersion;`;
+    const legacy = await import(
+        `data:text/javascript;base64,${Buffer.from(legacySource).toString("base64")}`
+    );
+    assert.equal(legacy.runtimeVersion, undefined);
+    assert.equal(legacy.renderEntry(state), expected.renderEntry(state));
+    assert.equal(
+        legacy.renderEntryPrepared(legacy.prepareState(state)),
+        expected.renderEntry(state),
+    );
+});
+
+test("flat plans preserve rendering exports without compiler identity or release literals", async () => {
+    const { module, source } = await compile("{{value}}");
+    assert.match(source, /"format":"fast-server-js"/);
+    assert.doesNotMatch(
+        source,
+        /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion/i,
+    );
+    assert.equal(module.renderEntry({ value: "ordinary" }), "ordinary");
+    assert.equal(
+        module.renderEntryPrepared(module.prepareState({ value: "prepared" })),
+        "prepared",
+    );
+    for (const name of [
+        "runtimeVersion",
+        "renderEntryJson",
+        "renderTemplateJson",
+        "renderHostJson",
+        "renderShadowJson",
+    ]) {
+        assert.equal(Object.hasOwn(module, name), false);
+    }
+});
+
+test("semantic plans hide execution tables and share their schema across targets", async () => {
+    const { source, module } = await compile("<p>{{label}}</p>");
+    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
+    assert.deepEqual(plan, {
+        format: "fast-server-js",
+        version: 1,
+        entry: [
+            ["literal", "<p>"],
+            ["binding", ["label"], true],
+            ["literal", "</p>"],
+        ],
+        fragments: {},
+        components: {},
+    });
+    const native = JSON.parse(
+        Buffer.from(
+            require("../server.js").compileServerArtifact("<p>{{label}}</p>"),
+        ).toString(),
+    );
+    assert.deepEqual(native, { ...plan, format: "fast-server-native" });
+    assert.equal(module.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
+});
+
+test("semantic plan loading rejects invalid rules and owns independent plan data", async () => {
+    const { createServerRenderer } = await import(runtime);
+    const plan = {
+        format: "fast-server-js",
+        version: 1,
+        entry: [
+            ["literal", "<p>"],
+            ["fragment", "value"],
+            ["literal", "</p>"],
+        ],
+        fragments: { value: [["binding", ["label"], true]] },
+        components: {},
+    };
+    const renderer = createServerRenderer(plan);
+    assert.equal(Object.hasOwn(renderer, "compilerId"), false);
+    assert.equal(Object.hasOwn(renderer, "runtimeVersion"), false);
+    assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
+    for (const format of ["fast-server-plan", "fast-server-native", undefined]) {
+        assert.throws(
+            () => createServerRenderer({ ...plan, format }),
+            /Invalid or incompatible FAST server plan/,
+        );
+    }
+    for (const invalid of [
+        { ...plan, format: "unknown-plan" },
+        { ...plan, version: undefined },
+        { ...plan, version: 0 },
+        { ...plan, version: 2 },
+        { ...plan, code: [18, 1] },
+        { ...plan, entry: [["fragment", "missing"]] },
+        { ...plan, entry: [["binding", [], true]] },
+        { ...plan, entry: [["binding", ["label"], 1]] },
+        { ...plan, entry: [["literal", "text", "extra"]] },
+        { ...plan, entry: [["call", 0]] },
+        {
+            ...plan,
+            entry: [["when", ["compare", "evil", ["x"], ["path", ["y"]]], "value"]],
+        },
+        { ...plan, fragments: { unused: [["unknown"]] } },
+        { ...plan, fragments: { value: [["fragment", "value"]] } },
+        {
+            ...plan,
+            fragments: { value: [["fragment", "other"]], other: [["fragment", "value"]] },
+        },
+        { ...plan, components: { bad: { shadow: "value", host: "missing", tag: "" } } },
+    ]) {
+        assert.throws(
+            () => createServerRenderer(invalid),
+            /Invalid or incompatible FAST server plan/,
+        );
+    }
+    plan.entry[0][1] = "mutated";
+    plan.fragments.value[0][1][0] = "different";
+    assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
+});
+
+test("semantic fragment names are opaque and sharing stays compact", async () => {
+    const { createServerRenderer } = await import(runtime);
+    const fragments = Object.create(null);
+    fragments.__proto__ = [["binding", ["label"], true]];
+    const renderer = createServerRenderer({
+        format: "fast-server-js",
+        version: 1,
+        entry: [
+            ["fragment", "__proto__"],
+            ["fragment", "__proto__"],
+        ],
+        fragments,
+        components: {},
+    });
+    assert.equal(renderer.renderEntry({ label: "<" }), "&lt;&lt;");
+    const { source } = await compile("<test-el></test-el>".repeat(1000), {
+        "test-el": "<b>{{label}}</b>",
+    });
+    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
+    assert.ok(Object.keys(plan.fragments).length < 10);
+    assert.equal(plan.entry.length, 1000);
+});
+
+test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {
+    const { module } = await compile(
+        '<json-parent :payload="{{payload}}">{{label}}</json-parent>',
+        {
+            "json-parent": {
+                content:
+                    '{{label}}/{{payload.value}}<f-repeat value="{{item in payload.items}}"><json-child :item="{{item}}" data-x="{{item.name}}">{{item.name}}/{{$index}}</json-child></f-repeat>{{{raw}}}',
+                hostAttributes: [{ name: "title", value: "{{label}}" }],
+            },
+            "json-child": "{{item.name}}/{{dataset.x}}",
+        },
+    );
+    for (const json of [
+        '{"label":"< & \\uD83D\\uDE00","payload":{"value":-0,"items":[{"name":"one"},{"name":"two"}]},"raw":"<i>raw</i>"}',
+        '{"label":null,"payload":{"value":null,"items":[]}}',
+        '{"payload":{"items":[null,{},false,0]}}',
+    ]) {
+        const state = JSON.parse(json);
+        const prepared = module.prepareState(state);
+        for (const markersV2 of [false, true]) {
+            for (const attributeNameStrategy of ["none", "camelCase"]) {
+                for (const dsd of [undefined, [], ["json-child"]]) {
+                    const options = { markersV2, attributeNameStrategy, dsd };
+                    for (const method of [
+                        "renderEntry",
+                        "renderTemplate",
+                        "renderHost",
+                        "renderShadow",
+                    ]) {
+                        const args =
+                            method === "renderHost" || method === "renderShadow"
+                                ? ["json-parent"]
+                                : [];
+                        const expected =
+                            contextBaseline[JSON.stringify([json, options, method])];
+                        assert.equal(
+                            hash(module[method](...args, state, options)),
+                            expected,
+                        );
+                        assert.equal(
+                            hash(module[`${method}Prepared`](...args, prepared, options)),
+                            expected,
+                        );
+                    }
+                }
+            }
+        }
+    }
+});
+
+test("flat plan source is identical across repeated and fresh-process compilations", () => {
+    const entry = "<stable-a></stable-a><stable-b></stable-b>";
+    const templates = {
+        "stable-a":
+            '<f-repeat value="{{item in items}}"><stable-b :value="{{item.name}}"></stable-b></f-repeat>',
+        "stable-b":
+            '<b>{{value}}</b><f-when value="{{show}}"><stable-a></stable-a></f-when>',
+    };
+    const expected = compileServerModule(entry, templates, runtime);
+    assert.equal(compileServerModule(entry, templates, runtime), expected);
+    const script = `
+        const { compileServerModule } = require(${JSON.stringify(path.resolve(__dirname, "../server.js"))});
+        process.stdout.write(compileServerModule(...JSON.parse(require("node:fs").readFileSync(0, "utf8"))));
+    `;
+    for (let index = 0; index < 2; index++) {
+        assert.equal(
+            execFileSync(process.execPath, ["-e", script], {
+                input: JSON.stringify([entry, templates, runtime]),
+                encoding: "utf8",
+            }),
+            expected,
         );
     }
 });
