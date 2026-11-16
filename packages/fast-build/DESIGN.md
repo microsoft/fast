@@ -81,7 +81,7 @@ The targets identify themselves as `fast-server-js` (plan schema 1) and
 format names. The one-time migration requires regenerating old assets and sidecars.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
-assets. Native execution is not optimized here.
+assets. Native state borrowing and fresh JSON execution are described below.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
@@ -112,7 +112,7 @@ Four native `render_*_json` methods deserialize fresh JSON directly into owned
 normalization happens during parsing; a separate nonallocating depth/node check
 counts the final tree after duplicate-key replacement and preserves full parse
 validation/error precedence. Typed native requests retain their normalized copy.
-These changes do not alter the generated-JavaScript request path or schema-2
+These changes do not alter the generated-JavaScript request path or semantic schema-1
 artifact decoding.
 
 ### Output assembly and escaping

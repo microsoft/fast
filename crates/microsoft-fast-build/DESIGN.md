@@ -82,7 +82,7 @@ or emit rendering functions, accessors or loops. The helper validates all record
 and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution is unchanged; its loader resolves semantic template names into
+The native loader resolves semantic template names into
 private body indices and derives the private host/shadow operations once, then
 applies complete existing IR validation. Reconstructed component metadata has a
 64 MiB expansion budget so shared wire definitions cannot multiply without bound.
@@ -216,10 +216,10 @@ attribute before any output-budget check. Authored composite literals only repla
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Lookups still clone values, and composite attributes retain a request-local list
-of scalar values until that attribute is written. Array/object operands immediately
-drop their cloned contents and retain only empty container display tags, avoiding
-accumulation of whole state graphs when a later operand suppresses the attribute.
+Composite attributes retain a request-local list of borrowed operands and owned
+synthetic values until that attribute is written. Container operands borrow their
+existing storage rather than cloning state graphs when a later operand suppresses
+the attribute.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is

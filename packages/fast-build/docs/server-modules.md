@@ -441,7 +441,8 @@ For one-use JSON state, migrate from `parse_render_state(json)` followed by
 `render_entry(&state, options)` to `render_entry_json(json, options)`. Matching
 `render_template_json(json, options)`, `render_host_json(name, json, options)`
 and `render_shadow_json(name, json, options)` methods are additive. No artifact
-rebuild is needed: native schema 2 is unchanged. Typed methods keep their
+rebuild is needed for supported `fast-server-native` semantic schema 1 artifacts.
+Typed methods keep their
 validate/normalize/copy contract; prepared methods keep immutable snapshot reuse.
 The minimal native example now uses the fresh JSON method.
 

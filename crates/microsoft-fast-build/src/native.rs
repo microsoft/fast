@@ -766,10 +766,10 @@ impl<'a> Executor<'a> {
                 for part in array(&v[2]) {
                     if part[0] != "literal" {
                         let value = get(root, loops, &part[1]);
-                        match value.as_deref() {
-                            None | Some(J::Null) => return Ok(()),
-                            Some(_) => values.push(value.unwrap()),
+                        if value.is_none() || matches!(value.as_deref(), Some(J::Null)) {
+                            return Ok(());
                         }
+                        values.push(value.unwrap());
                     }
                 }
                 self.push(" ")?;
@@ -787,7 +787,7 @@ impl<'a> Executor<'a> {
                         }
                         self.push(&text[start..])?;
                     } else {
-                        self.value(values.next().map(|value| &**value), true)?;
+                        self.value(values.next().map(|value| value.as_ref()), true)?;
                     }
                 }
                 self.push("\"")

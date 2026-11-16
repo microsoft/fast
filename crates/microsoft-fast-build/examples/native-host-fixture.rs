@@ -15,6 +15,7 @@ fn main() {
     println!(
         "{}",
         serde_json::json!({
+            "crateVersion": env!("CARGO_PKG_VERSION"),
             "artifact": String::from_utf8(artifact).unwrap(),
             "source": program.emit_server_module("__FAST_TEST_RUNTIME__"),
         })

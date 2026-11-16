@@ -13,6 +13,11 @@ assert.ok(
     "Set Cargo-emitted FAST_NATIVE_ADDON and FAST_NATIVE_FIXTURE",
 );
 const fixture = JSON.parse(execFileSync(fixtureExecutable, { encoding: "utf8" }));
+assert.equal(
+    fixture.crateVersion,
+    JSON.parse(readFileSync(new URL("../package.json", import.meta.url))).version,
+    "Build the fixture from matching current crate/package sources",
+);
 const artifact = Buffer.from(fixture.artifact);
 const NativeProgram = loadNativeHost(addon);
 const runtime = new URL("../server-runtime.mjs", import.meta.url).href;
@@ -58,9 +63,13 @@ test("published entrypoint and untimed boundary adapters expose the tested facad
     }
 });
 
-test("source-built schema 2 addon and generated JS agree across four contexts", () => {
+test("source-built semantic schema 1 addon and generated JS agree across four contexts", () => {
     const program = new NativeProgram(artifact);
-    assert.equal(JSON.parse(fixture.artifact).version, 2);
+    const plan = JSON.parse(fixture.artifact);
+    assert.equal(plan.format, "fast-server-native");
+    assert.equal(plan.version, 1);
+    assert.ok(Array.isArray(plan.entry));
+    assert.ok(Array.isArray(plan.templates[plan.components["test-card"]]));
     for (const context of contexts) {
         const frozen =
             context === "Shadow"
@@ -218,15 +227,22 @@ test("artifact rejection is explicit and caller bytes are not retained", () => {
     for (const malformed of [
         "{}",
         "{",
-        JSON.stringify({ ...JSON.parse(fixture.artifact), version: 1 }),
+        JSON.stringify({ ...JSON.parse(fixture.artifact), version: 2 }),
     ]) {
         assert.throws(() => new NativeProgram(Buffer.from(malformed)));
     }
-    const unsupported = { ...JSON.parse(fixture.artifact), version: 1 };
+    const unsupported = { ...JSON.parse(fixture.artifact), version: 2 };
     assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(unsupported))), {
         code: "incompatible-artifact",
     });
-    const brokenReference = { ...JSON.parse(fixture.artifact), entry: 999999 };
+    const { entry: _entry, ...missingEntry } = JSON.parse(fixture.artifact);
+    assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(missingEntry))), {
+        code: "invalid-artifact",
+    });
+    const brokenReference = {
+        ...JSON.parse(fixture.artifact),
+        entry: [{ type: "template", name: "missing-template" }],
+    };
     assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(brokenReference))), {
         code: "invalid-artifact",
     });
@@ -254,7 +270,7 @@ test("shared backing stores are rejected before native reads, with request recov
     const signal = new Int32Array(control);
     const worker = new Worker(
         `
-        const { parentPort, workerData } = require("node:worker_threads");
+        const { parentPort, workerData, threadId } = require("node:worker_threads");
         const bytes = new Uint8Array(workerData.shared);
         const signal = new Int32Array(workerData.control);
         parentPort.postMessage("ready");
@@ -327,23 +343,40 @@ test("owned output survives program collection, forced GC and independent worker
             const Program = loadNativeHost(workerData.addon);
             const p = new Program(Buffer.from(workerData.artifact));
             for (let i = 0; i < 32; i++) p.renderEntryJson(workerData.json);
-            parentPort.postMessage(p.renderEntryJson(workerData.json).toString("base64"));
+            parentPort.postMessage({
+                threadId,
+                output: p.renderEntryJson(workerData.json).toString("base64"),
+            });
         })().catch(e => { throw e; });
     `,
                 { eval: true, workerData: { module, addon, artifact, json } },
             ),
     );
+    const threadIds = new Set(workers.map(worker => worker.threadId));
+    assert.equal(threadIds.size, 4);
     await Promise.all(
         workers.map(
             worker =>
                 new Promise((resolve, reject) => {
-                    worker.once("message", result => {
-                        assert.deepEqual(Buffer.from(result, "base64"), expected);
+                    let messages = 0;
+                    const threadId = worker.threadId;
+                    worker.on("message", result => {
+                        messages++;
+                        assert.equal(result.threadId, threadId);
+                        assert.deepEqual(Buffer.from(result.output, "base64"), expected);
                     });
                     worker.once("error", reject);
-                    worker.once("exit", code =>
-                        code === 0 ? resolve() : reject(new Error(`worker exit ${code}`)),
-                    );
+                    worker.once("exit", code => {
+                        if (code !== 0 || messages !== 1) {
+                            reject(
+                                new Error(
+                                    `worker exit ${code}, proof messages ${messages}`,
+                                ),
+                            );
+                        } else {
+                            resolve();
+                        }
+                    });
                 }),
         ),
     );
