@@ -23,7 +23,7 @@ This update replaces generated rendering functions with semantic template plans.
 Published object-input and prepared-state APIs are unchanged. Legacy fingerprinted
 artifacts need a one-time migration; retain new supported assets across compiler
 upgrades using the persistent writer below. See the
-[upgrade guide](./docs/migration/aot-server-rendering.md).
+[migration guidance](./docs/migration.md).
 Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
 uses supported plan schemas instead.
 Both new semantic formats start at version 1: `fast-server-js` for JavaScript
@@ -106,7 +106,7 @@ options and output-structure diagnostics. These qualify measurement boundaries;
 they do not change rendering or establish cross-renderer output equivalence.
 
 Native Rust applications use the shared compiled-artifact target below.
-See [migration](./docs/migration/aot-server-rendering.md).
+See [migration guidance](./docs/migration.md).
 
 The semantic-plan loader prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. Compatibility is based on
@@ -177,13 +177,13 @@ These native-only changes do not accelerate the npm JavaScript request path.
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable
 typed operations with numeric resolved targets; existing semantic schema-1 assets
-remain usable unchanged. Rust's `CompiledArtifact::emit_server_module` is removed;
+remain usable unchanged. Native artifacts are execution-only;
 generate JavaScript from authored templates using Rust `compile_server_module`
 or Node `compileServerModule` at build time instead. Node APIs are unchanged.
 Load/decode has transient memory costs; state ownership and output/resource limits
 are unchanged. No native performance
 improvement is claimed before qualification. See the
-[typed-native upgrade guide](./docs/migration/typed-native-plans.md).
+[migration guidance](./docs/migration.md).
 
 Artifacts have immutable thread-safe ownership and reusable request-independent
 instructions. See the
@@ -277,7 +277,7 @@ JSON booleans use presence/absence; ordinary attributes (including ARIA)
 retain textual booleans. Use `?name` for browser-side truthy/falsy bindings.
 Author bindings resolving to absence still override template-host defaults.
 These intentional output changes are described in the
-[plugin migration guide](./docs/migration/plugin-integrations.md).
+[migration guidance](./docs/migration.md).
 
 ### Stylesheet delivery composition
 
@@ -361,7 +361,7 @@ Unsafe CSS errors now expose `sourceKind: "css"` and locations in the separately
 supplied CSS. Stylesheet bodies are treated as literal HTML raw text throughout
 build parsing, rendering, metadata discovery, and conversion, including
 template-looking strings. See the
-[migration notes](./docs/migration/stylesheet-composition.md).
+[migration guidance](./docs/migration.md).
 
 ### APIs for build-time plugins
 
@@ -564,7 +564,7 @@ Runtime failures do not promise authored source coordinates; do not assume every
 request error has the compiler's structured fields. Native artifact loading and
 rendering return the separate `NativeRenderError` contract.
 
-See the [migration guide](./docs/migration/plugin-integrations.md#structured-errors)
+See the [migration guidance](./docs/migration.md)
 when updating consumers that previously caught strings.
 
 ### Custom element templates

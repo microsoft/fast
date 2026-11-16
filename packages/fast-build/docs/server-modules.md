@@ -321,7 +321,7 @@ can leave a lock or mismatched pair; recover explicitly from retained known-good
 files rather than deleting evidence and silently rebuilding unchanged inputs.
 
 Native hosts use the artifact target below. See
-[the upgrade guide](./migration/aot-server-rendering.md).
+[migration guidance](./migration.md).
 
 ## Native Rust artifact target
 
@@ -337,8 +337,8 @@ segmented paths, typed static values, condition opcodes, repeats, prelowered
 attribute recipes and symbolic component/body references. It does not contain
 authored template bodies for later compilation or source offsets used as executable
 instructions. Repeat expression text is diagnostic-only; it is never evaluated.
-Literal output markup is not reparsed. Loaded native artifacts are execution-only:
-`CompiledArtifact::emit_server_module` is removed. Generate the JavaScript target
+Literal output markup is not reparsed. Loaded native artifacts are execution-only.
+Generate the JavaScript target
 from authored templates with Rust `compile_server_module(entry, &locator, runtime_import)`
 or Node `compileServerModule(entry, templates)` at build time. A native artifact
 alone is no longer sufficient for the Rust JavaScript-generation API; retain the
@@ -396,10 +396,10 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   typed operations, numeric component/body references, prepared path indices and
   decoded static operands. No second raw instruction graph or emission-only numeric
   spelling metadata is retained. Loading temporarily holds JSON plus the typed plan;
-  include that peak in memory accounting, not just warmed rendering. The removed
-  native-to-JavaScript conversion API has no reconstruction path in native plans.
+  include that peak in memory accounting, not just warmed rendering. Native plans
+  have no JavaScript-generation reconstruction path.
   Semantic schema-1 native and JS assets remain
-  supported unchanged; see [the upgrade guide](./migration/typed-native-plans.md).
+  supported unchanged; see [migration guidance](./migration.md).
 - Escaped text bindings append unchanged UTF-8 spans and entities directly to
   the bounded output string, without first allocating the full escaped value.
   Each write checks the byte budget; a failure discards private partial output.

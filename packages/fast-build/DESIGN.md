@@ -46,11 +46,9 @@ ownership and request-local state/error/resource limits are documented in the
 [native contract](./docs/server-modules.md#native-rust-artifact-target).
 There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
-Minor prerelease classification does not make removed APIs a drop-in upgrade.
 State acceptance/normalization, native resource defaults, artifact format
 checks, borrowed request inputs, owned results/errors and thread-safe artifact
-reuse are compatibility contracts. Allocation reductions may remain internal;
-changing those guarantees requires consumer migration. Native budgets do not
+reuse are compatibility contracts. Native budgets do not
 imply equivalent FAST budgets in the JS target.
 
 ### Compiled access and repeat frames
@@ -70,21 +68,18 @@ Component shadows/defaults reset lexical scope while light DOM retains it.
 Semantic plans preserve published object/prepared APIs. Supported artifact schemas,
 not compiler fingerprints or helper-build versions, determine compatibility.
 The targets identify themselves as `fast-server-js` (plan schema 1) and
-`fast-server-native` (native schema 1); loaders reject experimental layouts and other
-format names. The one-time migration requires regenerating old assets and sidecars.
+`fast-server-native` (native schema 1); loaders reject unsupported layouts and other
+format names.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
-assets. Native loading now prepares typed operations with numeric component/body
+assets. Native loading prepares typed operations with numeric component/body
 targets and decoded static operands; it retains no raw JSON instruction graph.
-This changes dispatch only, not the native state/overlay/output machinery.
-Native artifacts are execution-only. The Rust
-`CompiledArtifact::emit_server_module` method is removed; build-time JavaScript
-generation uses `compile_server_module` with the original authored templates and
+Typed dispatch uses the native state/overlay/output machinery.
+Native artifacts are execution-only. Build-time JavaScript
+generation uses `compile_server_module` with authored templates and a
 locator. Native plans retain no reconstruction code or emission-only numeric
-spellings. Node compiler/renderer APIs and supported artifact schemas are unchanged.
-See [native upgrade and measurement guidance](./docs/migration/typed-native-plans.md).
-The benchmark adds deep-path and three-level-repeat workloads alongside the
-unchanged existing workloads, reporting warm CPU, observed GC and memory.
+spellings. Benchmarks cover deep paths, three-level repeats and core workloads,
+reporting warm CPU, observed GC and memory.
 
 ### Prepared-state ownership
 
@@ -220,8 +215,8 @@ entity spelling are preserved.
 Location discovery remains Rust-owned. The CLI retains spans with the rest of
 the binding metadata; no expression search or JavaScript coordinate conversion
 is needed. Format version 1 remains compatible: renderers do not consume spans
-and continue accepting older records without them. Regenerate older metadata
-when authored diagnostics need locations.
+and continue accepting older records without them. Authored diagnostics require
+metadata carrying spans.
 
 Plugins compile server ESM and call its `renderShadow` for a complete DSD
 fragment using resolved component state, without creating a throwaway host or

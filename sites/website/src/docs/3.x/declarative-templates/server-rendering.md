@@ -114,16 +114,10 @@ Native errors are recoverable, with state/recursion/step/output limits. See the
 Native Rust hosting is supported now; a stable C ABI and .NET bindings are
 follow-up work. This release does not provide a C# host or separate C# semantics.
 
-### Native-to-JavaScript API migration
-
-Rust's `CompiledArtifact::emit_server_module` is removed. Loaded native artifacts
-are execution-only; generate JavaScript at build time using the existing
-`compile_server_module(entry, &locator, runtime_import)` function instead.
-This requires the original authored templates and locator, not only native artifact
-bytes. Generate both targets during the build if both are needed. Node's
-`compileServerModule` API, native rendering methods and supported semantic schema-1
-assets are unchanged.
-See the [typed-native migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/typed-native-plans.md).
+Loaded native artifacts are execution-only. Generate JavaScript at build time with
+Rust's `compile_server_module(entry, &locator, runtime_import)` or Node's
+`compileServerModule` from authored templates. Generate both targets during the
+build if both are needed.
 
 ## Migration from request-time source rendering
 
@@ -144,7 +138,7 @@ for component-state DSD fragments. Use `renderTemplate` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
 `fast build` always compiles and executes server JavaScript; remove `--aot`.
 The application owns build invalidation, module/artifact loading and deployment activation.
-See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
+See the [migration guidance](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
 
 ## The Rendering Contract
 
@@ -296,7 +290,7 @@ one line break. Bindings inside HTML comments remain unsupported. Persist the fu
 record to retain version checks; this metadata does not replace application
 state declarations. See the
 [FAST Build integration APIs](https://github.com/microsoft/fast/blob/main/packages/fast-build/README.md#apis-for-build-time-plugins)
-and [migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/plugin-integrations.md).
+and [migration guidance](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
 
 Failed build-time render, conversion, and composition calls throw JavaScript
 `Error` objects with their existing `message`, a stable `code` (for example

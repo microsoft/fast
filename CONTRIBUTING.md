@@ -139,6 +139,11 @@ If you are merging a pull request, be sure to use the pull request title as the 
 ### Documenting breaking changes
 
 Make sure to document the migration strategy in a migration document in the package(s) that has breaking changes, eg. `packages/fast-element/docs/migration/fast-element-3.md`.
+List each guide in the affected package/crate's stable `docs/migration.md` index.
+Root documents such as README.md and other durable documentation may link to that
+index rather than individual guides. Related npm packages and Rust crates may share
+an index. DESIGN.md describes only current APIs and internals; do not put migration
+instructions, removed-API history or migration links there.
 
 Example of how to format a migration document:
 
@@ -187,6 +192,13 @@ This single command:
 No commit, push, npm publish, or git tag is made by `npm run bump`.
 
 #### 4. Review the result
+
+Review migration guidance for each publishing package. Guides are per-publish, not
+a permanent archive: delete guides from previous publishes and remove their
+entries from `docs/migration.md`, while retaining guidance for the publish being
+prepared. Keep the stable index even if no guides remain, with a no-migrations
+message, so root-document links remain valid. This cleanup is a release-preparation
+step; `npm run bump` and the publish pipelines do not perform it automatically.
 
 ```bash
 git status

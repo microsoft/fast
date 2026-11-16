@@ -75,8 +75,7 @@ let html = program.render_entry(&state, &NativeRenderOptions::default())?;
 
 `render_template`, `render_host` and `render_shadow` preserve the corresponding
 generated-module APIs. `render_shadow` accepts resolved component state and emits
-only DSD. Loaded native artifacts are execution-only;
-`CompiledArtifact::emit_server_module` has been removed. To generate JavaScript,
+only DSD. Loaded native artifacts are execution-only. To generate JavaScript,
 call `compile_server_module(entry, &locator, runtime_import)` from the original
 authored templates at build time. Loading prepares typed
 operations, numeric body/component references, array-index metadata and decoded
@@ -120,12 +119,11 @@ copy-on-write. All modes keep complete input validation, resource budgets,
 owned results and error recovery.
 
 Existing `fast-server-native` and `fast-server-js` semantic schema-1 assets remain
-usable unchanged; no artifact recompilation is required. Rust callers of the removed
-native-to-JavaScript conversion method must migrate to the build-time compiler.
+usable unchanged; no artifact recompilation is required.
 Load peak memory includes semantic decoding/private IR expansion and transient
 private JSON plus the typed plan before JSON is dropped. Neither load cost nor
 retained-memory improvement is assumed. State copying, child overlays and output
-ownership/budgets are unchanged. See [upgrade and measurement guidance](../../packages/fast-build/docs/migration/typed-native-plans.md).
+ownership/budgets are unchanged. See [migration guidance](../../packages/fast-build/docs/migration.md).
 
 For unchanged state reused across calls, validate and copy once:
 
@@ -217,7 +215,7 @@ ESM and invoke its render exports. Native hosts compile artifacts and use
 Use `renderTemplate`/`render_template` for template-context root-host attributes.
 Native rendering does not require JavaScript.
 Rendered markup and hydration markers are unchanged.
-See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
+See [migration guidance](../../packages/fast-build/docs/migration.md).
 The guide also describes the earlier breaking migration from request-time source
 rendering; that is separate from this backend replacement.
 

@@ -106,7 +106,6 @@ so interning does not multiply functions for different repeat scopes.
 Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
-This is a JavaScript backend replacement, not a native executor rewrite.
 Semantic plans preserve published object/prepared APIs. Artifact schemas are
 versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
@@ -169,18 +168,15 @@ or decode static values. Large enum variants are boxed to avoid inflating litera
 and body records.
 
 The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
-operands are cloned per evaluation, preserving the previous ownership model.
-Loaded native artifacts are execution-only: `CompiledArtifact::emit_server_module`
-is removed. JavaScript generation uses `compile_server_module` directly from
-authored templates and a locator at build time. Native plans retain neither
-IR-reconstruction code nor original static numeric spellings needed only by that
-removed conversion API.
+operands are cloned per evaluation. Loaded native artifacts are execution-only.
+JavaScript generation uses `compile_server_module` directly from authored
+templates and a locator at build time. Native plans retain neither
+IR-reconstruction code nor emission-only static numeric spellings.
 Load peak memory includes both transient JSON and the prepared plan. Retained
 memory includes vectors/boxes, prepared paths, static values and the component-name
 lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
-no dispatch speedup or memory saving is assumed. The Rust API removal requires
-consumer migration, but existing `fast-server-native` semantic schema-1 assets
-load unchanged with no compiler-build key.
+no dispatch speedup or memory saving is assumed. Supported `fast-server-native`
+semantic schema-1 assets load with no compiler-build key.
 
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
@@ -249,18 +245,16 @@ resolved numeric references; unbounded request expansion returns `render-limit`,
 stack overflow or truncated success. Failed requests cannot mutate later calls.
 See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
-Compiler-only upgrades do not require rebuilding supported artifacts.
-Future loaders must retain supported published schema decoders to preserve
-unchanged assets; unsupported formats fail rather than being reinterpreted.
+Compiler build identity does not invalidate supported artifacts. Loading uses
+explicitly supported schema decoders; unsupported formats fail rather than being
+reinterpreted.
 
-Minor prerelease release metadata does not waive API migration. Future native
-allocation optimizations must preserve borrowed request inputs, independently
-owned complete output/errors, artifact `Send + Sync`, request isolation and
-rendering semantics, or explicitly introduce a consumer migration. Limits and
-state normalization/rejection are also public contracts; JS has no equivalent
-FAST budgets. Load replacements before application-owned activation and retain
-old handles/workers for in-flight requests rather than reinterpreting artifacts
-from another compiler/library build.
+Native API contracts include borrowed request inputs, independently owned complete
+output/errors, artifact `Send + Sync`, request isolation and rendering semantics.
+Limits and state normalization/rejection are also public contracts; JS has no
+equivalent FAST budgets. Load replacements before application-owned activation and
+retain old handles/workers for in-flight requests rather than reinterpreting
+artifacts from another compiler/library build.
 
 Native Rust is supported now. A stable C ABI, .NET bindings, cross-language memory
 ownership and C# hosting are deferred; this change supplies none of those APIs.
