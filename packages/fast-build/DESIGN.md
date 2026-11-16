@@ -60,6 +60,8 @@ Component shadows/defaults reset lexical scope while light DOM retains it.
 
 Flat plans preserve published object/prepared APIs. Supported artifact schemas,
 not compiler fingerprints or helper-build versions, determine compatibility.
+The targets identify themselves as `fast-server-js` (plan schema 1) and
+`fast-server-native` (native schema 2); loaders reject other format names.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
 assets. Native execution is not optimized here.

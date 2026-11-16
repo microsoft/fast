@@ -96,6 +96,8 @@ Flat plans preserve published object/prepared APIs. Artifact schemas are
 versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
+JavaScript plans use `fast-server-js` schema 1; native artifacts use
+`fast-server-native` schema 2. Format identifiers are target-specific and strict.
 
 ## Request execution
 

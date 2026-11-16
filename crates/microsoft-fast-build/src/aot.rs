@@ -228,7 +228,7 @@ impl<'a> FlatPlan<'a> {
             code.extend(rule);
         }
         let mut plan = json!({
-            "format":"fast-server-plan", "version":1,
+            "format":"fast-server-js", "version":1,
             "strings":self.strings, "code":code, "offsets":offsets, "root":root,
         });
         if let Some(host) = host {

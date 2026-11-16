@@ -11,16 +11,25 @@ Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
 No JSON-only request API or consumer serialization migration is required.
 Native execution is unchanged; the hash-free native envelope uses schema 2.
 
+The format names are `fast-server-js` (JavaScript plan schema 1) and
+`fast-server-native` (native artifact schema 2). The earlier experimental
+`fast-server-plan` and `fast-server` names are not accepted. Regenerate those
+assets before using the renamed loaders. For persistent writers, explicitly
+remove the old generated asset and its `.inputs.json` sidecar together before
+rebuilding; unchanged authored inputs otherwise reuse the old bytes. Deploy
+regenerated assets with their matching helper/native loader.
+
 Compiler fingerprints and literal helper-build equality checks are removed.
 Native loading validates supported execution schemas rather than source/manifest
 identity. Generated `compilerId` and Rust `SERVER_COMPILER_ID` are removed;
 generated/helper `runtimeVersion`, the `ServerModule.runtimeVersion` type member,
 Rust `SERVER_RUNTIME_VERSION` and the conversion target's `runtimeVersion`
 metadata field are also removed. Remove consumer imports/reads of these fields;
-use supported plan/artifact schemas for compatibility. Retained generated modules
-that read `$.runtimeVersion` still render with the new helper, but that old export
-is now `undefined`. Newly compiled modules omit it. Persistent writers continue
-retaining unchanged assets rather than invalidating them for this API removal.
+use supported plan/artifact schemas for compatibility. Within the supported
+format, a generated module that reads `$.runtimeVersion` still renders, but that
+old export is now `undefined`. Newly compiled modules omit it. The metadata
+removal itself does not invalidate persisted assets; the format rename above
+requires explicit regeneration of earlier experimental assets.
 
 For strict template-only updates, migrate file generation to `writeServerModule`
 or `writeServerArtifact` and retain each asset with its `.inputs.json` manifest.

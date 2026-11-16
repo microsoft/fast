@@ -114,7 +114,7 @@ impl CompiledArtifact {
         crate::aot::emit(&self.ir, runtime_import)
     }
 
-    /// Load without HTML/expression parsing. Supports the hash-free `fast-server`
+    /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
     /// schema 2, independently of compiler builds and JavaScript helper versions.
     /// Legacy schema 1 and unknown schemas require an explicit artifact migration.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
@@ -122,13 +122,13 @@ impl CompiledArtifact {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
         }
         let ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
-        if ir["format"] != "fast-server"
+        if ir["format"] != "fast-server-native"
             // Decoder support is explicit, not coupled to the current emitter version.
             || !matches!(ir["version"].as_u64(), Some(2))
         {
             return Err(error(
                 "incompatible-artifact",
-                "Unsupported FAST server artifact format/schema; native loader supports fast-server schema 2",
+                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 2",
             ));
         }
         validate_artifact(&ir)?;

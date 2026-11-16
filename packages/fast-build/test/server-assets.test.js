@@ -227,7 +227,7 @@ for (const target of targets) {
                 );
             } else {
                 const artifact = JSON.parse(original.output.bytes);
-                assert.equal(artifact.format, "fast-server");
+                assert.equal(artifact.format, "fast-server-native");
                 assert.equal(artifact.version, 2);
                 assertHashFree(artifact);
                 assert.ok(Array.isArray(artifact.bodies));

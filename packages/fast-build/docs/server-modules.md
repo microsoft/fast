@@ -137,6 +137,7 @@ request-time source rendering and retired prepared compiler/program APIs.
 
 Generated code no longer exports a compiler fingerprint or compares a literal
 helper-build version on import. The helper validates the supported plan schema;
+JavaScript plans use `format: "fast-server-js"` with schema version 1.
 no runtime release metadata is emitted or exported. Native loading also uses
 explicit supported schemas rather than compiler-build identity.
 Unknown schemas fail safely. Retain supported published decoders across runtime
@@ -275,7 +276,7 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 
 ### Compatibility, errors and memory
 
-- The artifact envelope identifies `format: "fast-server"` and execution schema
+- The artifact envelope identifies `format: "fast-server-native"` and execution schema
   version 2. Legacy schema 1 requires a one-time rebuild. It contains no compiler
   fingerprint or JavaScript helper-build version. Native loading accepts supported schemas and validates
   their complete operations/references. Source, manifest and lockfile changes

@@ -809,7 +809,7 @@ test("stable flat plans render without helper release metadata", async () => {
 
 test("flat plans preserve rendering exports without compiler identity or release literals", async () => {
     const { module, source } = await compile("{{value}}");
-    assert.match(source, /fast-server-plan/);
+    assert.match(source, /"format":"fast-server-js"/);
     assert.doesNotMatch(
         source,
         /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion/i,
@@ -833,7 +833,7 @@ test("flat plans preserve rendering exports without compiler identity or release
 test("flat plan loading rejects invalid rules and owns independent plan data", async () => {
     const { createServerRenderer } = await import(runtime);
     const plan = {
-        format: "fast-server-plan",
+        format: "fast-server-js",
         version: 1,
         strings: ["<p>", "label", "</p>"],
         code: [18, 1, 2, 3, 0, 0, 20, 4, 1, 0, 2, 1, 1],
@@ -844,6 +844,12 @@ test("flat plan loading rejects invalid rules and owns independent plan data", a
     assert.equal(Object.hasOwn(renderer, "compilerId"), false);
     assert.equal(Object.hasOwn(renderer, "runtimeVersion"), false);
     assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
+    for (const format of ["fast-server-plan", "fast-server-native", undefined]) {
+        assert.throws(
+            () => createServerRenderer({ ...plan, format }, []),
+            /Invalid or incompatible FAST server plan/,
+        );
+    }
     plan.strings[0] = "mutated";
     plan.code.fill(0);
     assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");

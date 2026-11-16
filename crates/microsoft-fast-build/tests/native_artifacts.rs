@@ -325,7 +325,7 @@ fn numbers_and_comparisons_match_generated_javascript() {
 
 #[test]
 fn native_schema_two_loads_without_compiler_or_helper_build_metadata() {
-    let bytes = br#"{"format":"fast-server","version":2,"entry":0,"bodies":[[["binding",["value"],true]]],"components":{}}"#;
+    let bytes = br#"{"format":"fast-server-native","version":2,"entry":0,"bodies":[[["binding",["value"],true]]],"components":{}}"#;
     let artifact = CompiledArtifact::load(bytes).unwrap();
     let state = parse_render_state(r#"{"value":"Compatible & native"}"#).unwrap();
     assert_eq!(
@@ -349,6 +349,8 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
         ("version", json!(2.5)),
         ("version", json!(null)),
         ("format", json!("metadata")),
+        ("format", json!("fast-server")),
+        ("format", json!("fast-server-js")),
     ] {
         let mut v = original.clone();
         v[field] = value;

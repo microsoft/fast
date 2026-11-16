@@ -36,7 +36,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     const bytes = compileServerArtifact(entry, templates);
     assert.ok(bytes instanceof Uint8Array);
     const ir = JSON.parse(Buffer.from(bytes).toString("utf8"));
-    assert.equal(ir.format, "fast-server");
+    assert.equal(ir.format, "fast-server-native");
     assert.equal(ir.version, 2);
     assert.deepEqual(Object.keys(ir).sort(), [
         "bodies",

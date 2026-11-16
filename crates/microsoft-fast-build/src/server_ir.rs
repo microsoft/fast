@@ -452,7 +452,7 @@ pub(crate) fn lower(entry: &str, locator: &Locator) -> Result<Value, RenderError
         components.insert(name.into(), json!({"shadow":shadow,"host":host,"tag":format!("<template{}>", locator.shadowroot_markup(name))}));
     }
     Ok(json!({
-        "format":"fast-server", "version":ARTIFACT_VERSION, "entry":entry_id,
+        "format":"fast-server-native", "version":ARTIFACT_VERSION, "entry":entry_id,
         "bodies":compiler.bodies, "components":components
     }))
 }

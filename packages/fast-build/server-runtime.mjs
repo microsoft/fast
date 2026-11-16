@@ -438,7 +438,7 @@ export function createServerRenderer(entry, definitions) {
 
     function load(plan) {
         if (
-            plan?.format !== "fast-server-plan" ||
+            plan?.format !== "fast-server-js" ||
             plan.version !== 1 ||
             !Array.isArray(plan.strings) ||
             plan.strings.some(value => typeof value !== "string") ||
