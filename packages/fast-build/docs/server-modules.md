@@ -204,8 +204,6 @@ JSON-to-UTF-8 boundaries, not JSON input with an object-only or reused-snapshot 
 For unchanged state rendered repeatedly, generated modules expose a separate
 opt-in path; ordinary methods retain their validation contract:
 
-### Persistent writer contract
-
 ```js
 import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
 const input = { title: "Reusable state" };
@@ -306,8 +304,9 @@ closed rather than silently compiling over an incompatible pair.
 
 ### Build preparation measurements
 
-Measure full CLI processes, not renderer calls. Run these only under an exclusive
-quiet measurement lease, after correctness builds. Keep the same entry, registry,
+Measure full CLI processes, not renderer calls. Run these only in a coordinated
+quiet measurement window, after correctness builds; record other machine activity.
+Keep the same entry, registry,
 state, marker options and selected variants in every command. The example assumes
 an application's `index.html`, `state.json` and `components/**/*.html`; substitute
 the same available corpus in every invocation. This is not scenario-project
@@ -316,7 +315,7 @@ qualification, a reduced-coverage preparation workflow or a throughput claim.
 From the repository root, create a separate output directory per cache state:
 
 ```sh
-mkdir -p .build-preparation/empty .build-preparation/exact .build-preparation/fallback
+mkdir -p .build-preparation/empty .build-preparation/exact .build-preparation/fallback .build-preparation/restoration
 node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/reference.html
 
 # Empty: no retained pair. Use a new directory for each repeated sample.
@@ -330,11 +329,17 @@ node packages/fast-build/bin/fast.js build --entry=index.html --templates="compo
 node -e 'const {pathToFileURL}=require("node:url"); require("./packages/fast-build/server.js").writeServerModule(".build-preparation/fallback/page.mjs", {entry:"<p>fallback source</p>",templateSources:[],templateSourcePolicy:"overwrite"}, {overwrite:true,runtimeImport:pathToFileURL(require.resolve("./packages/fast-build/server-runtime.mjs")).href});'
 /usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/fallback/output.html --server-module=.build-preparation/fallback/page.mjs
 
+# Restoration: seed outside timing, then remove only the managed module.
+node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/restoration/output.html --server-module=.build-preparation/restoration/page.mjs
+rm .build-preparation/restoration/page.mjs
+/usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/restoration/output.html --server-module=.build-preparation/restoration/page.mjs
+
 # Validate complete outputs and account for module, sidecar and HTML bytes outside timing.
 cmp .build-preparation/reference.html .build-preparation/empty/output.html
 cmp .build-preparation/reference.html .build-preparation/exact/output.html
 cmp .build-preparation/reference.html .build-preparation/fallback/output.html
-wc -c .build-preparation/{empty,exact,fallback}/page.mjs .build-preparation/{empty,exact,fallback}/page.mjs.inputs.json .build-preparation/{empty,exact,fallback}/output.html
+cmp .build-preparation/reference.html .build-preparation/restoration/output.html
+wc -c .build-preparation/{empty,exact,fallback,restoration}/page.mjs .build-preparation/{empty,exact,fallback,restoration}/page.mjs.inputs.json .build-preparation/{empty,exact,fallback,restoration}/output.html
 ```
 
 `/usr/bin/time -l` on macOS reports whole-process wall/user/system CPU and peak
