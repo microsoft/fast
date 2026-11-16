@@ -110,7 +110,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
 test("native output preserves frozen UTF-8 workload contracts", async () => {
     const executable = nativeExecutable();
     const { fixture, outputStats } = await import("./performance/fixtures.mjs");
-    const baseline = require("../../../crates/microsoft-fast-build/benches/fixtures/expected-baseline.json");
+    const baseline = require("../../../crates/microsoft-fast-build/benches/fixtures/expected-modern-baseline.json");
     const directory = path.join(__dirname, `.native-frozen-${process.pid}`);
     fs.mkdirSync(directory);
     try {

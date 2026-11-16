@@ -959,7 +959,7 @@ test("semantic components reference complete shadow templates without host bookk
         template0: [
             {
                 type: "literal",
-                html: '<template shadowrootmode="open" shadowroot="open">',
+                html: '<template shadowrootmode="open">',
             },
             { type: "literal", html: "<p>" },
             { type: "binding", path: ["label"], escape: true },
@@ -974,7 +974,7 @@ test("semantic components reference complete shadow templates without host bookk
     );
     assert.deepEqual(native, { ...plan, format: "fast-server-native" });
     const shadow =
-        '<template shadowrootmode="open" shadowroot="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
+        '<template shadowrootmode="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
     assert.equal(module.renderShadow("my-card", { label: "<&" }), shadow);
     assert.equal(
         module.renderHost("my-card", { label: "<&" }),

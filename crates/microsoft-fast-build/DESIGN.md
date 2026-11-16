@@ -370,6 +370,9 @@ Node tests enforce modern frozen output contracts and the shared
 performance corpus baseline; original legacy hash baselines remain retained.
 `tests/static_output.rs` loads a retained legacy artifact and checks independent
 old/new complete-output oracles and no-DSD controls. The package's
+retained-output fixtures transcribe historical private IR into the current
+semantic schema without changing the frozen HTML oracles; retired layouts are
+not accepted by the loaders. The package's
 `test:static-output` delivers actual JS output matching the native oracle to
 Chromium, Firefox and WebKit, verifying parser-created open/closed DSD, flags,
 hydration/node identity, updates and whitespace-sensitive content/layout.
