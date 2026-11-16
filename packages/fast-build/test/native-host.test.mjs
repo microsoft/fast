@@ -270,7 +270,7 @@ test("shared backing stores are rejected before native reads, with request recov
     const signal = new Int32Array(control);
     const worker = new Worker(
         `
-        const { parentPort, workerData, threadId } = require("node:worker_threads");
+        const { parentPort, workerData } = require("node:worker_threads");
         const bytes = new Uint8Array(workerData.shared);
         const signal = new Int32Array(workerData.control);
         parentPort.postMessage("ready");
@@ -320,7 +320,7 @@ test("shared backing stores are rejected before native reads, with request recov
     }
 });
 
-test("owned output survives program collection, forced GC and independent workers", async () => {
+test("owned output survives program collection, forced GC and independent workers", async t => {
     assert.equal(typeof global.gc, "function");
     const expected = Buffer.from(js.renderEntry(state));
     const retained = [];
@@ -337,7 +337,7 @@ test("owned output survives program collection, forced GC and independent worker
         () =>
             new Worker(
                 `
-        const { parentPort, workerData } = require("node:worker_threads");
+        const { parentPort, workerData, threadId } = require("node:worker_threads");
         (async () => {
             const { loadNativeHost } = await import(workerData.module);
             const Program = loadNativeHost(workerData.addon);
@@ -374,6 +374,14 @@ test("owned output survives program collection, forced GC and independent worker
                                 ),
                             );
                         } else {
+                            t.diagnostic(
+                                JSON.stringify({
+                                    workerThreadId: threadId,
+                                    messages,
+                                    exitCode: code,
+                                    outputBytes: expected.length,
+                                }),
+                            );
                             resolve();
                         }
                     });
