@@ -77,7 +77,11 @@ Compiler implementation changes do not force regeneration of existing supported
 assets. Native loading now prepares typed operations with numeric component/body
 targets and decoded static operands; it retains no raw JSON instruction graph.
 This changes dispatch only, not the native state/overlay/output machinery.
-Build-time `emit_server_module` reconstructs transient IR for the existing emitter.
+Native artifacts are execution-only. The Rust
+`CompiledArtifact::emit_server_module` method is removed; build-time JavaScript
+generation uses `compile_server_module` with the original authored templates and
+locator. Native plans retain no reconstruction code or emission-only numeric
+spellings. Node compiler/renderer APIs and supported artifact schemas are unchanged.
 See [native upgrade and measurement guidance](./docs/migration/typed-native-plans.md).
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.

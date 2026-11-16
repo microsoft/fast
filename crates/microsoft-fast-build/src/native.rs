@@ -110,18 +110,22 @@ pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>
 
 /// A validated, immutable, `Send + Sync` executable. Clones share owned artifact
 /// storage; requests own all transient state and output. No JavaScript is used.
+/// Generate JavaScript from authored templates with [`crate::compile_server_module`],
+/// not from a loaded native artifact.
+///
+/// ```compile_fail
+/// use microsoft_fast_build::CompiledArtifact;
+///
+/// fn emit(artifact: &CompiledArtifact) {
+///     artifact.emit_server_module("runtime.mjs");
+/// }
+/// ```
 #[derive(Clone, Debug)]
 pub struct CompiledArtifact {
     plan: Arc<Plan>,
 }
 
 impl CompiledArtifact {
-    /// Emit JavaScript by reconstructing this plan's validated executable IR.
-    /// The temporary IR is not retained; this is build-time code generation.
-    pub fn emit_server_module(&self, runtime_import: &str) -> String {
-        crate::aot::emit(&self.plan.wire(), runtime_import)
-    }
-
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
     /// semantic schema 1, independently of private execution layouts.
     /// Experimental layouts and unknown schemas require explicit regeneration.
@@ -548,7 +552,7 @@ fn truthy(value: Option<&J>) -> bool {
 fn operand<'a>(v: &Operand, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
     match v {
         Operand::Path(path) => get(root, loops, path),
-        Operand::Value { value, .. } => Some(Cow::Owned(value.clone())),
+        Operand::Value(value) => Some(Cow::Owned(value.clone())),
     }
 }
 fn numeric(v: &J) -> Option<f64> {

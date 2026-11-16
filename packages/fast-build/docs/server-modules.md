@@ -337,8 +337,12 @@ segmented paths, typed static values, condition opcodes, repeats, prelowered
 attribute recipes and symbolic component/body references. It does not contain
 authored template bodies for later compilation or source offsets used as executable
 instructions. Repeat expression text is diagnostic-only; it is never evaluated.
-Literal output markup is not reparsed. `CompiledArtifact::emit_server_module`
-can generate the JavaScript target from the exact loaded IR at build time.
+Literal output markup is not reparsed. Loaded native artifacts are execution-only:
+`CompiledArtifact::emit_server_module` is removed. Generate the JavaScript target
+from authored templates with Rust `compile_server_module(entry, &locator, runtime_import)`
+or Node `compileServerModule(entry, templates)` at build time. A native artifact
+alone is no longer sufficient for the Rust JavaScript-generation API; retain the
+authored build inputs or an independently generated JavaScript module.
 
 ```rust
 use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
@@ -390,11 +394,11 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   allocator's policy (which may abort), not a portable recoverable OOM guarantee.
 - After complete eager validation, loading replaces transient JSON with immutable
   typed operations, numeric component/body references, prepared path indices and
-  decoded static operands. Static-number spelling metadata preserves build-time
-  JS emission. No second raw instruction graph is retained. Loading temporarily
-  holds JSON plus the typed plan; `emit_server_module` reconstructs transient IR
-  for the existing emitter. Include these load/emission peaks in memory accounting,
-  not just warmed rendering. Semantic schema-1 native and JS assets remain
+  decoded static operands. No second raw instruction graph or emission-only numeric
+  spelling metadata is retained. Loading temporarily holds JSON plus the typed plan;
+  include that peak in memory accounting, not just warmed rendering. The removed
+  native-to-JavaScript conversion API has no reconstruction path in native plans.
+  Semantic schema-1 native and JS assets remain
   supported unchanged; see [the upgrade guide](./migration/typed-native-plans.md).
 - Escaped text bindings append unchanged UTF-8 spans and entities directly to
   the bounded output string, without first allocating the full escaped value.

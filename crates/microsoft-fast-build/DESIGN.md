@@ -20,7 +20,7 @@ The browser conversion crate remains independent.
 | `aot.rs` | Semantic server ESM emission from the shared executable IR |
 | `server_plan.rs` | Stable tagged wire encoding and native name-to-index decoding |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
-| `native/plan.rs` | Typed native operations, numeric reference resolution, decoded operands and on-demand IR reconstruction |
+| `native/plan.rs` | Execution-only typed native operations, numeric reference resolution and decoded operands |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
 | `expression.rs` | Operator scanning for compile-time condition lowering |
@@ -170,18 +170,17 @@ and body records.
 
 The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
 operands are cloned per evaluation, preserving the previous ownership model.
-Only static numeric spellings are retained as leaf metadata, in sorted-object
-traversal order, to preserve JS emission even for noncanonical numeric strings.
-`emit_server_module` reconstructs temporary private indexed IR and uses the existing
-AOT emitter to produce semantic `fast-server-js` schema 1; it is still supported
-and does not introduce a second executor/compiler.
-Load peak memory includes both transient JSON and the prepared plan, and emission
-temporarily adds reconstructed JSON plus emitter tables/source. Retained memory
-includes vectors/boxes, prepared paths, static values, numeric spelling metadata
-and the component-name lookup, not raw-plus-typed instruction graphs.
-These tradeoffs require measurement; no dispatch speedup or memory saving is
-claimed. Existing `fast-server-native` semantic schema-1 assets load unchanged
-with no compiler-build key.
+Loaded native artifacts are execution-only: `CompiledArtifact::emit_server_module`
+is removed. JavaScript generation uses `compile_server_module` directly from
+authored templates and a locator at build time. Native plans retain neither
+IR-reconstruction code nor original static numeric spellings needed only by that
+removed conversion API.
+Load peak memory includes both transient JSON and the prepared plan. Retained
+memory includes vectors/boxes, prepared paths, static values and the component-name
+lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
+no dispatch speedup or memory saving is assumed. The Rust API removal requires
+consumer migration, but existing `fast-server-native` semantic schema-1 assets
+load unchanged with no compiler-build key.
 
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,

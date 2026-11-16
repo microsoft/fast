@@ -1,7 +1,6 @@
 //! Typed private execution of decoded semantic artifacts.
-//! JSON exists only during loading or JS emission.
+//! JSON instructions exist only during loading.
 use super::{J, V};
-use serde_json::json;
 use std::collections::HashMap;
 use std::sync::Arc;
 
@@ -59,7 +58,7 @@ fn segment(key: &str) -> Segment {
 #[derive(Debug)]
 pub(super) enum Operand {
     Path(Path),
-    Value { value: J, numbers: Vec<String> },
+    Value(J),
 }
 
 impl Operand {
@@ -67,21 +66,7 @@ impl Operand {
         if v[0] == "path" {
             Self::Path(path(&v[1]))
         } else {
-            let mut numbers = Vec::new();
-            number_spellings(&v[1], &mut numbers);
-            Self::Value {
-                value: decoded(&v[1]),
-                numbers,
-            }
-        }
-    }
-
-    fn wire(&self) -> V {
-        match self {
-            Self::Path(p) => json!(["path", wire_path(p)]),
-            Self::Value { value, numbers } => {
-                json!(["value", wire_value(value, &mut numbers.iter())])
-            }
+            Self::Value(decoded(&v[1]))
         }
     }
 }
@@ -108,17 +93,6 @@ impl Comparison {
             _ => unreachable!("validated comparison"),
         }
     }
-
-    fn wire(self) -> &'static str {
-        match self {
-            Self::Equal => "==",
-            Self::NotEqual => "!=",
-            Self::Greater => ">",
-            Self::Less => "<",
-            Self::GreaterEqual => ">=",
-            Self::LessEqual => "<=",
-        }
-    }
 }
 
 #[derive(Debug)]
@@ -143,16 +117,6 @@ impl Condition {
                 Box::new(Operand::load(&v[3])),
             ),
             _ => unreachable!("validated condition"),
-        }
-    }
-
-    fn wire(&self) -> V {
-        match self {
-            Self::Or(a, b) => json!(["||", a.wire(), b.wire()]),
-            Self::And(a, b) => json!(["&&", a.wire(), b.wire()]),
-            Self::Not(p) => json!(["not", wire_path(p)]),
-            Self::Truthy(p) => json!(["truthy", wire_path(p)]),
-            Self::Compare(op, p, v) => json!(["compare", op.wire(), wire_path(p), v.wire()]),
         }
     }
 }
@@ -205,38 +169,10 @@ impl Attribute {
             _ => unreachable!("validated attribute"),
         }
     }
-
-    fn wire(&self) -> V {
-        match self {
-            Self::Literal(s) => json!(["literal", s]),
-            Self::Conditional(c, s) => json!(["conditional", c.wire(), s]),
-            Self::Bound {
-                name,
-                path,
-                boolean,
-                property,
-            } => json!(["attribute", name, wire_path(path), boolean, property]),
-            Self::Quoted(name, parts) => json!([
-                "quoted",
-                name,
-                parts
-                    .iter()
-                    .map(|p| match p {
-                        Part::Literal(s) => json!(["literal", s]),
-                        Part::Segment(p) => json!(["segment", wire_path(p)]),
-                    })
-                    .collect::<Vec<_>>()
-            ]),
-        }
-    }
 }
 
 fn attrs(v: &V) -> Vec<Attribute> {
     array(v).iter().map(Attribute::load).collect()
-}
-
-fn wire_attrs(v: &[Attribute]) -> Vec<V> {
-    v.iter().map(Attribute::wire).collect()
 }
 
 #[derive(Debug)]
@@ -255,13 +191,6 @@ impl Tag {
             count: index(&v["count"]),
             ending: string(&v["ending"]).into(),
         }
-    }
-
-    fn wire(&self) -> V {
-        json!({
-            "plain": wire_attrs(&self.plain), "hydrated": wire_attrs(&self.hydrated),
-            "count": self.count, "ending": self.ending,
-        })
     }
 }
 
@@ -405,115 +334,15 @@ impl Plan {
             names,
         }
     }
-
-    /// Reconstruct compiler IR on demand; never retain a second graph.
-    pub fn wire(&self) -> V {
-        let bodies: Vec<Vec<V>> = self
-            .bodies
-            .iter()
-            .map(|body| {
-                body.iter()
-                    .map(|op| match op {
-                        Operation::Literal(s) => json!(["literal", s]),
-                        Operation::Tag(t) => json!(["tag", t.wire()]),
-                        Operation::Call(id) => json!(["call", id]),
-                        Operation::Dynamic(op) => match op.as_ref() {
-                            Dynamic::Binding(p, escape) => json!(["binding", wire_path(p), escape]),
-                            Dynamic::When(c, id) => json!(["when", c.wire(), id]),
-                            Dynamic::Repeat {
-                                alias, path, diagnostic, body,
-                            } => json!(["repeat", alias, wire_path(path), diagnostic, body]),
-                        },
-                        Operation::Element(el) => json!(["element", {
-                            "name": self.components[el.component].name.as_ref(),
-                            "body": el.body, "closing": el.closing,
-                            "opening": el.opening.wire(),
-                            "props": el.props.iter().map(|p| json!([
-                                p.keys[0][0].key, p.keys[1][0].key, p.group, p.value.wire(),
-                            ])).collect::<Vec<_>>(),
-                            "entry": wire_attrs(&el.entry), "normal": wire_attrs(&el.normal),
-                            "count": el.count,
-                            "defaults": el.defaults.iter().map(|(k, a)| json!([k, a.wire()])).collect::<Vec<_>>(),
-                            "shadowTag": el.shadow_tag,
-                        }]),
-                    })
-                    .collect()
-            })
-            .collect();
-        let components: serde_json::Map<String, V> = self
-            .components
-            .iter()
-            .map(|c| {
-                (
-                    c.name.to_string(),
-                    json!({"shadow": c.shadow, "host": c.host, "tag": c.tag}),
-                )
-            })
-            .collect();
-        json!({
-            "entry": self.entry,
-            "bodies": bodies, "components": components,
-        })
-    }
-}
-
-fn wire_path(p: &[Segment]) -> Vec<&str> {
-    p.iter().map(|s| s.key.as_str()).collect()
-}
-
-// Static numeric spellings affect JS emission (for example "inf" vs "Infinity").
-// Keep only that leaf metadata, not a second raw instruction/value graph.
-fn number_spellings(v: &V, numbers: &mut Vec<String>) {
-    match string(&v[0]) {
-        "number" => {
-            numbers.push(string(&v[1]).into());
-        }
-        "array" => {
-            for v in array(&v[1]) {
-                number_spellings(v, numbers);
-            }
-        }
-        "object" => {
-            let mut entries: Vec<_> = v[1].as_object().unwrap().iter().collect();
-            entries.sort_unstable_by(|a, b| a.0.cmp(b.0));
-            for (_, v) in entries {
-                number_spellings(v, numbers);
-            }
-        }
-        _ => {}
-    }
-}
-
-fn wire_value(v: &J, numbers: &mut std::slice::Iter<'_, String>) -> V {
-    match v {
-        J::Null => json!(["null"]),
-        J::Bool(v) => json!(["bool", v]),
-        J::Number(_) => json!(["number", numbers.next().unwrap()]),
-        J::String(v) => json!(["string", v]),
-        J::Array(v) => json!([
-            "array",
-            v.iter().map(|v| wire_value(v, numbers)).collect::<Vec<_>>()
-        ]),
-        J::Object(v) => {
-            let mut entries: Vec<_> = v.iter().collect();
-            entries.sort_unstable_by(|a, b| a.0.cmp(b.0));
-            json!([
-                "object",
-                entries
-                    .into_iter()
-                    .map(|(k, v)| (k.clone(), wire_value(v, numbers)))
-                    .collect::<serde_json::Map<_, _>>()
-            ])
-        }
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
     #[test]
-    fn prepared_plan_roundtrips_wire_without_retaining_json_and_resolves_numeric_targets() {
+    fn prepared_plan_owns_decoded_values_and_resolves_numeric_targets() {
         let attributes = json!([
             ["literal", "fixed"],
             [
@@ -570,6 +399,7 @@ mod tests {
         });
         super::super::validate_artifact(&ir).unwrap();
         let prepared = Plan::load(&ir);
+        drop(ir);
         let Operation::Element(element) = &prepared.bodies[1][4] else {
             panic!("element was not decoded");
         };
@@ -586,7 +416,7 @@ mod tests {
             panic!("binding was not decoded");
         };
         assert_eq!(path[1].array_index, Some(0));
-        let Operand::Value { value, numbers } = &element.props[0].value else {
+        let Operand::Value(value) = &element.props[0].value else {
             panic!("static operand was not decoded");
         };
         let J::Object(object) = value else {
@@ -596,10 +426,9 @@ mod tests {
             panic!("static array")
         };
         assert!(matches!(values[0], J::Number(n) if n == 1.0));
-        assert_eq!(numbers, &["01.00", "-0", "Infinity"]);
-        let wire = prepared.wire();
-        assert_eq!(wire, ir);
-        super::super::validate_artifact(&wire).unwrap();
-        assert_eq!(Plan::load(&wire).wire(), ir);
+        assert!(matches!(values[1], J::Bool(true)));
+        assert!(matches!(values[2], J::Null));
+        assert!(matches!(&values[3], J::String(value) if value == "<&"));
+        assert!(matches!(object["z"], J::Number(n) if n == f64::INFINITY));
     }
 }

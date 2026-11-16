@@ -177,8 +177,11 @@ These native-only changes do not accelerate the npm JavaScript request path.
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable
 typed operations with numeric resolved targets; existing semantic schema-1 assets
-remain usable unchanged. Load/decode and on-demand JS emission have transient memory costs;
-state ownership and output/resource limits are unchanged. No native performance
+remain usable unchanged. Rust's `CompiledArtifact::emit_server_module` is removed;
+generate JavaScript from authored templates using Rust `compile_server_module`
+or Node `compileServerModule` at build time instead. Node APIs are unchanged.
+Load/decode has transient memory costs; state ownership and output/resource limits
+are unchanged. No native performance
 improvement is claimed before qualification. See the
 [typed-native upgrade guide](./docs/migration/typed-native-plans.md).
 
