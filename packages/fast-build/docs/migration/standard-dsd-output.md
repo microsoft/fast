@@ -31,6 +31,11 @@ add configuration and compatibility surface for a small delivery saving.
   previously generated assets/compiler output until the application can migrate.
 - Existing supported ESM/native artifacts still render their exact old bytes.
   No schema change, loader rewrite or client package release is required.
+  Supported assets use the current `fast-server-js` / `fast-server-native`
+  semantic operation-object schema 1, with required `entry`, named `templates`,
+  component references to complete DSD templates and optional `host-attributes`.
+  This does not restore the retired indexed JS plans or version-2 private native
+  IR. Recompile those historical formats using the current compiler.
 - `writeServerModule` and `writeServerArtifact` intentionally reuse unchanged
   managed assets even after a compiler upgrade. To explicitly migrate unchanged
   input, remove both the application-owned generated asset and its `.inputs.json`
@@ -67,6 +72,11 @@ Original `server-baseline.json`, `server-json-context-baseline.json` and benchma
 counterparts freeze the selected new contract; `legacy.fast`, `legacy.html` and
 `modern.html` retain explicit compatibility/browser oracles. Browser assertions,
 not regex normalization, establish the bounded semantic qualification.
+The retained-output JS/native fixtures were mechanically transcribed from the
+historical baseline's private IR to the current semantic schema; their provenance
+records both historical and current hashes. They are not represented as unchanged
+historical compiler output. The independently frozen HTML expectations remain
+unchanged, and compiler-produced current assets must match the modern oracle.
 
 The fixture reports raw rendered UTF-16/UTF-8 sizes and gzip/Brotli sizes, excluding
 external scripts, initial state and page assembly. It verifies exact HTTP delivery

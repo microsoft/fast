@@ -144,6 +144,9 @@ optional second rendering implementation. Already loaded/persisted artifacts kee
 their literal tags and exact bytes. The
 [migration guide](./docs/migration/standard-dsd-output.md) documents legacy consumers,
 retained frozen oracles and real three-browser qualification.
+Retained-output fixtures use the current semantic schema; historical private
+layouts were transcribed for this fixture only, not re-enabled in either loader.
+Their independent HTML oracles remain frozen.
 
 Loaded execution closures retain returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,

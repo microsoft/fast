@@ -121,11 +121,15 @@
     "provenance": {
         "baselineCommit": "58c27f483db57a49e644389e9181d2340d1cd019",
         "compilerSourceTree": "f33af9f43ca43a9a07c53e38953ca92bd4ada778",
-        "generator": "Baseline compile_server_module; unchanged sources extracted using git archive. Native baseline artifact rendering independently supplies expected HTML.",
+        "generator": "Frozen baseline58 private IR mechanically transcribed to the pinned main server_plan::encode semantic operation-object schema. Not fresh compiler output; all independent baseline HTML oracles remain unchanged.",
         "runtimeImport": "../../../server-runtime.mjs",
-        "moduleSha256": "1cfaf8645341b6a9f382f93cea5dd945a5fd7c8eb487741beb8822c078d0b4ed",
         "compilerOutputSha256": "1cfaf8645341b6a9f382f93cea5dd945a5fd7c8eb487741beb8822c078d0b4ed",
         "inputSha256": "ac9939a0ad0178720eab8e2b084de805d69ab12ad18a7f88a74dc2ff4557f4b7",
-        "preservation": "Byte-for-byte unchanged compile_server_module output. Fixture-only Biome formatter/assist override preserves this historical asset; linting remains enabled."
+        "preservation": "Current-schema fixtures freeze legacy literal output. Historical indexed JS and version-2 native layouts are unsupported, not restored by this candidate.",
+        "historicalModuleSha256": "1cfaf8645341b6a9f382f93cea5dd945a5fd7c8eb487741beb8822c078d0b4ed",
+        "historicalNativeSha256": "ddc5b364c8dde4d0d87f155aeed636ee66ec918c2b87eb5bd711772e5e153908",
+        "moduleSha256": "82a2f30dbf97ee6575babbb6c911e251641d8f05938b088ab153fe771a9dbec5",
+        "nativeSha256": "90620d27086355b936bf86415f991170e441380e65efe82e7cee385385e498bc",
+        "semanticSchemaSource": "921926c4065d03aacb07104ac758bdb2036c21bd"
     }
 }

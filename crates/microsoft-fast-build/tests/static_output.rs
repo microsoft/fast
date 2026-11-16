@@ -1,5 +1,6 @@
 use microsoft_fast_build::{
-    compile_server_artifact, parse_render_state, CompiledArtifact, Locator, NativeRenderOptions,
+    compile_server_artifact, parse_render_state, AttributeNameStrategy, CompiledArtifact, Locator,
+    NativeRenderOptions,
 };
 use serde_json::{json, Value};
 use std::io::Write;
@@ -72,6 +73,38 @@ fn qualified_static_output_oracles() {
         program.render_entry(&state, &no_dsd).unwrap(),
         retained.render_entry(&state, &no_dsd).unwrap(),
     );
+    let oracles: Value = serde_json::from_slice(
+        &std::fs::read(directory.join("legacy-schema1-oracles.json")).unwrap(),
+    )
+    .unwrap();
+    for record in oracles["cases"].as_array().unwrap() {
+        let state = parse_render_state(&record["state"].to_string()).unwrap();
+        let options = NativeRenderOptions {
+            markers_v2: record["options"]["markersV2"].as_bool().unwrap_or(false),
+            dsd: record["options"]["dsd"].as_array().map(|names| {
+                names
+                    .iter()
+                    .map(|name| name.as_str().unwrap().to_owned())
+                    .collect()
+            }),
+            attribute_name_strategy: if record["options"]["attributeNameStrategy"] == "none" {
+                AttributeNameStrategy::None
+            } else {
+                AttributeNameStrategy::CamelCase
+            },
+            ..Default::default()
+        };
+        let name = record["name"].as_str().unwrap();
+        let output = match record["method"].as_str().unwrap() {
+            "renderEntry" => retained.render_entry(&state, &options),
+            "renderTemplate" => retained.render_template(&state, &options),
+            "renderHost" => retained.render_host(name, &state, &options),
+            "renderShadow" => retained.render_shadow(name, &state, &options),
+            method => panic!("Unexpected oracle method: {method}"),
+        }
+        .unwrap();
+        assert_eq!(output, record["html"].as_str().unwrap());
+    }
     for artifact in [&program, &retained] {
         for selected in [true, false] {
             let options = if selected {
