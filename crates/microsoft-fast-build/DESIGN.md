@@ -144,8 +144,8 @@ owned graph iteratively for finite numbers and well-formed Unicode keys/values, 
 normalizes negative zero in place. It does not clone/freeze or repeat arbitrary-object
 descriptor/prototype validation. All input boundaries share one set of target wrappers
 and execution closures; native parsing/execution and artifact schemas are unchanged.
-Previously emitted schema 1 ESM remains loadable, with its original export list.
-No compiler identity or new opcode forces replacement of managed supported assets.
+Previously emitted semantic schema 1 ESM remains loadable, with its original export list.
+No compiler identity or new operation forces replacement of managed supported assets.
 Consumers select a new output destination to adopt new export names.
 
 ### Prepared-state snapshots

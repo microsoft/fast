@@ -93,10 +93,10 @@ pass. The same executor preserves all output, options, coercion and hydration by
 Keep object methods for already-parsed state and prepared methods for unchanged reuse.
 JSON parsing and full traversal still have costs; measure matched request boundaries.
 
-Previously managed schema 1 modules remain usable unchanged but retain their original
+Previously managed semantic schema 1 modules remain usable unchanged but retain their original
 export lists without the new JSON names. To opt in, explicitly emit/activate a new
 destination and retain its own sidecar; do not rewrite unchanged managed assets on
-dependency upgrades. Native schema 2 assets require no change. See
+dependency upgrades. Native semantic schema 1 assets require no change. See
 [JSON ownership and adoption](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
 
 For named template files, use

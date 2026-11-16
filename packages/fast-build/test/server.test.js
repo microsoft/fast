@@ -638,7 +638,7 @@ test("conformance bridge preserves omitted object state across all render target
     }
 });
 
-test("unchanged schema 1 modules retain their old exports with the upgraded helper", async () => {
+test("unchanged semantic schema 1 modules retain their old exports with the upgraded helper", async () => {
     const source = fs.readFileSync(
         path.join(__dirname, "fixtures/server-schema1.txt"),
         "utf8",
@@ -1220,8 +1220,8 @@ test("flat plans preserve rendering exports without compiler identity or release
         module.renderEntryPrepared(module.prepareState({ value: "prepared" })),
         "prepared",
     );
+    assert.equal(Object.hasOwn(module, "runtimeVersion"), false);
     for (const name of [
-        "runtimeVersion",
         "renderEntryJson",
         "renderTemplateJson",
         "renderHostJson",
@@ -1385,6 +1385,11 @@ test("semantic components reference complete shadow templates without host bookk
         module.renderHostPrepared("my-card", prepared),
         `<my-card>${shadow}</my-card>`,
     );
+    assert.equal(module.renderShadowJson("my-card", '{"label":"<&"}'), shadow);
+    assert.equal(
+        module.renderHostJson("my-card", '{"label":"<&"}'),
+        `<my-card>${shadow}</my-card>`,
+    );
 });
 
 test("component template metadata preserves host defaults and owns captured values", async () => {
@@ -1424,6 +1429,23 @@ test("component template metadata preserves host defaults and owns captured valu
     assert.equal(renderer.renderHost("my-card", { label: "<" }), host);
     assert.equal(renderer.renderShadow("my-card", { label: "<" }), shadow);
     assert.equal(renderer.renderHost("my-card", {}, { dsd: [] }), "<my-card></my-card>");
+    for (const markersV2 of [false, true]) {
+        for (const dsd of [undefined, [], ["my-card"]]) {
+            const options = { markersV2, dsd };
+            for (const method of [
+                "renderEntry",
+                "renderTemplate",
+                "renderHost",
+                "renderShadow",
+            ]) {
+                const args = /Host|Shadow/.test(method) ? ["my-card"] : [];
+                assert.equal(
+                    renderer[`${method}Json`](...args, '{"label":"<"}', options),
+                    renderer[method](...args, { label: "<" }, options),
+                );
+            }
+        }
+    }
     for (const invalid of [
         { ...plan, components: { "my-card": "missing" } },
         { ...plan, entry: [{ type: "component", name: "missing" }] },
@@ -1457,6 +1479,7 @@ test("component template metadata preserves host defaults and owns captured valu
     body[2].path[0] = "other";
     plan.components["my-card"] = "missing";
     assert.equal(renderer.renderEntry({ label: "<" }), host);
+    assert.equal(renderer.renderEntryJson('{"label":"<"}'), host);
 });
 
 test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {
