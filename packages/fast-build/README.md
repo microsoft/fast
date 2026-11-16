@@ -79,10 +79,10 @@ snapshot copy, freezing, arbitrary-object descriptor pass or retained request gr
 Output, lookup/coercion, options and hydration bytes match the corresponding object APIs.
 Use object methods for already-parsed state and prepared methods for snapshot reuse.
 
-Existing managed schema 1 modules remain usable unchanged, but their old export lists
+Existing managed semantic schema 1 modules remain usable unchanged, but their old export lists
 do not acquire JSON method names merely by upgrading the helper. To opt in, explicitly
 compile to a new destination; unchanged managed assets and sidecars are never rewritten
-to add exports. Native schema 2 artifacts remain supported without regeneration.
+to add exports. Native semantic schema 1 artifacts remain supported without regeneration.
 See [JSON ownership and adoption](./docs/server-modules.md#owned-fresh-json-requests).
 
 For named `<f-template>` files, the conversion CLI links the whole matched

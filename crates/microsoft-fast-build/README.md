@@ -57,7 +57,7 @@ New ESM emission also exports `renderEntryJson`, `renderTemplateJson`,
 `renderHostJson` and `renderShadowJson`. These required-string input methods
 reuse the same helper executor after owned parsing and lighter full-graph validation.
 They are JavaScript request APIs, not new Rust/native render methods.
-Existing managed JavaScript schema 1 and native schema 2 assets remain loadable unchanged;
+Existing managed JavaScript and native semantic schema 1 assets remain loadable unchanged;
 old ESM export lists lack the JSON names. Opt in at a new explicit output destination,
 without rewriting unchanged managed assets or adding compiler-version keys.
 
