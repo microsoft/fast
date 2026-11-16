@@ -38,10 +38,10 @@ const renderOptions = {
 };
 const modeKey = mode =>
     mode === "plain"
-        ? "aot"
+        ? "flatPlan"
         : mode === "prepared"
-          ? "aotPrepared"
-          : "aotPreparePerRender";
+          ? "flatPlanPrepared"
+          : "flatPlanPreparePerRender";
 const hash = text => createHash("sha256").update(text).digest("hex");
 const integer = (name, minimum = 1) => {
     const value = Number(args[name]);
@@ -60,7 +60,10 @@ if (args.worker) {
 
 async function worker() {
     const workerSetupMs = performance.now();
-    assert.equal(args.worker, "aot", "Only the AOT backend is supported.");
+    assert.ok(
+        ["aot", "flat-plan"].includes(args.worker),
+        "Worker requires an AOT or flat-plan module.",
+    );
     const readStart = performance.now();
     const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
     const inputReadMs = performance.now() - readStart;
@@ -206,7 +209,8 @@ async function worker() {
     console.log(
         JSON.stringify({
             reportVersion: 2,
-            executionTarget: "generated-javascript",
+            executionTarget:
+                args.worker === "aot" ? "generated-javascript" : "flat-plan-javascript",
             renderOptions,
             stateMode,
             ...preparation,
@@ -373,7 +377,7 @@ async function main() {
     };
     const results = {
         reportVersion: 2,
-        executionTarget: "generated-javascript",
+        executionTarget: "flat-plan-javascript",
         renderOptions,
         node: process.version,
         platform: `${process.platform}/${process.arch}`,
@@ -428,7 +432,7 @@ async function main() {
                                   ]
                                 : []),
                             fileURLToPath(import.meta.url),
-                            "--worker=aot",
+                            "--worker=flat-plan",
                             `--directory=${directory}`,
                             `--iterations=${iterations}`,
                             `--warmup=${warmupIterations}`,
@@ -446,7 +450,7 @@ async function main() {
                     assert.equal(
                         result.stateJsonHash,
                         expectedStateHash,
-                        `${name}/aot input state differs`,
+                        `${name}/flat-plan input state differs`,
                     );
                     if (profileDirectory) {
                         result.cpuProfile = path.join(profileDirectory, profileName);
@@ -456,7 +460,7 @@ async function main() {
                     assert.equal(
                         result.outputHash,
                         expected,
-                        `${name}/aot output differs`,
+                        `${name}/flat-plan output differs`,
                     );
                     record.modes[modeKey(stateMode)].push(result);
                 }

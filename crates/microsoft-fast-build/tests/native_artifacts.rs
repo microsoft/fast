@@ -324,14 +324,33 @@ fn numbers_and_comparisons_match_generated_javascript() {
 }
 
 #[test]
+fn native_schema_two_loads_without_compiler_or_helper_build_metadata() {
+    let bytes = br#"{"format":"fast-server-native","version":2,"entry":0,"bodies":[[["binding",["value"],true]]],"components":{}}"#;
+    let artifact = CompiledArtifact::load(bytes).unwrap();
+    let state = parse_render_state(r#"{"value":"Compatible & native"}"#).unwrap();
+    assert_eq!(
+        artifact.render_entry(&state, &Default::default()).unwrap(),
+        "Compatible &amp; native"
+    );
+    let emitted = compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap();
+    let expected: Value = serde_json::from_slice(bytes).unwrap();
+    assert_eq!(serde_json::from_slice::<Value>(&emitted).unwrap(), expected);
+}
+
+#[test]
 fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     let bytes = compile_server_artifact("{{x}}", &common::make_locator(&[])).unwrap();
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for (field, value) in [
+        ("version", json!(1)),
+        ("version", json!(3)),
         ("version", json!(99)),
-        ("runtimeVersion", json!(99)),
-        ("compilerId", json!("old")),
+        ("version", json!("2")),
+        ("version", json!(2.5)),
+        ("version", json!(null)),
         ("format", json!("metadata")),
+        ("format", json!("fast-server")),
+        ("format", json!("fast-server-js")),
     ] {
         let mut v = original.clone();
         v[field] = value;
@@ -342,7 +361,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
             "incompatible-artifact"
         );
     }
-    for mutate in 0..10 {
+    for mutate in 0..16 {
         let mut v = original.clone();
         match mutate {
             0 => v["entry"] = json!(999),
@@ -356,7 +375,16 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
             6 => v["unexpected"] = json!(true),
             7 => v["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
             8 => v["bodies"][0][0] = json!(["binding", ["x"], true, "extra"]),
-            _ => v["bodies"][0][0] = json!(["element", {}]),
+            9 => v["bodies"][0][0] = json!(["element", {}]),
+            10 => v["bodies"][0][0] = json!(["repeat", ["items"], ["item"], "item in items", 999]),
+            11 => v["bodies"][0][0] = json!(["when", ["truthy", ["x"]], 999]),
+            12 => v["components"] = json!({"bad":{"shadow":0,"host":999,"tag":""}}),
+            13 => v["bodies"]
+                .as_array_mut()
+                .unwrap()
+                .push(json!([["call", 999]])),
+            14 => v["bodies"][0][0] = json!(["call", -1]),
+            _ => v["bodies"][0][0] = json!(["call", 0.5]),
         }
         assert_eq!(
             CompiledArtifact::load(v.to_string().as_bytes())
@@ -751,7 +779,7 @@ fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
     let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
     let completed = active.render_entry(&state, &Default::default()).unwrap();
     let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
-    incompatible["compilerId"] = json!("another-deployment");
+    incompatible["version"] = json!(3);
     assert_eq!(
         CompiledArtifact::load(incompatible.to_string().as_bytes())
             .unwrap_err()

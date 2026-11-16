@@ -291,7 +291,7 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
             ),
         );
         assert.equal(result.reportVersion, 2);
-        assert.equal(result.executionTarget, "generated-javascript");
+        assert.equal(result.executionTarget, "flat-plan-javascript");
         assert.deepEqual(result.renderOptions, {
             markersV2: true,
             attributeNameStrategy: "none",
@@ -302,12 +302,12 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
             assert.ok(Number.isFinite(record.inputWriteMs));
             assert.ok(Number.isFinite(record.compileMs));
             assert.ok(Number.isFinite(record.artifactWriteMs));
-            const [first, second] = record.modes.aot;
+            const [first, second] = record.modes.flatPlan;
             assert.equal(first.outputHash, second.outputHash);
             assert.deepEqual(Object.keys(record.modes), [
-                "aot",
-                "aotPrepared",
-                "aotPreparePerRender",
+                "flatPlan",
+                "flatPlanPrepared",
+                "flatPlanPreparePerRender",
             ]);
             for (const sample of Object.values(record.modes).flat()) {
                 assert.equal(sample.outputHash, first.outputHash);

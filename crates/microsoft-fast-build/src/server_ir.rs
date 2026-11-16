@@ -16,7 +16,8 @@ use std::collections::hash_map::DefaultHasher;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 
-pub const ARTIFACT_VERSION: u32 = 1;
+/// Native artifact schema emitted by this compiler, independent of compiler builds.
+pub const ARTIFACT_VERSION: u32 = 2;
 
 pub(crate) fn path(expression: &str) -> Value {
     json!(expression.trim().split('.').collect::<Vec<_>>())
@@ -451,8 +452,7 @@ pub(crate) fn lower(entry: &str, locator: &Locator) -> Result<Value, RenderError
         components.insert(name.into(), json!({"shadow":shadow,"host":host,"tag":format!("<template{}>", locator.shadowroot_markup(name))}));
     }
     Ok(json!({
-        "format":"fast-server", "version":ARTIFACT_VERSION, "compilerId":crate::SERVER_COMPILER_ID,
-        "runtimeVersion":crate::SERVER_RUNTIME_VERSION, "entry":entry_id,
+        "format":"fast-server-native", "version":ARTIFACT_VERSION, "entry":entry_id,
         "bodies":compiler.bodies, "components":components
     }))
 }
