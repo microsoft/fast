@@ -739,13 +739,18 @@ test("component recipes copy each borrowed dataset once per assignment run", asy
     }
 });
 
-test("compound recipe operands remain fresh, including own special literal keys", async () => {
-    const { module } = await compile(
+test("semantic recipe operands remain fresh, including own special literal keys", async () => {
+    const source = compileServerModule(
         '<recipe-card :payload=\'{"__proto__":{"name":"own"},"constructor":"ctor","items":[{"name":"fresh"}]}\'></recipe-card>',
         {
             "recipe-card":
                 "{{payload.__proto__.name}}/{{payload.constructor}}/{{payload.items.0.name}}",
         },
+        runtime,
+    );
+    const { createServerRenderer } = await import(runtime);
+    const module = createServerRenderer(
+        JSON.parse(source.match(/const plan = (.*);\n/)[1]),
     );
     const create = Object.create;
     const frames = [];
