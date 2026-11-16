@@ -6,7 +6,10 @@ const { test } = require("node:test");
 const { pathToFileURL } = require("node:url");
 const { compileServerArtifact, compileServerModule } = require("../server.js");
 
-test("Node-compiled executable artifacts deploy to a source-free native Rust host", async () => {
+let executable;
+
+function nativeExecutable() {
+    if (executable) return executable;
     const root = path.resolve(__dirname, "../../..");
     const manifest = path.join(root, "crates/microsoft-fast-build/Cargo.toml");
     const build = execFileSync(
@@ -22,16 +25,21 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
         ],
         { encoding: "utf8", timeout: 120_000 },
     );
-    const executable = build
+    executable = build
         .trim()
         .split("\n")
         .map(line => JSON.parse(line))
         .find(message => message.executable)?.executable;
     assert.ok(executable, "cargo emitted the native example host");
+    return executable;
+}
+
+test("Node-compiled executable artifacts deploy to a source-free native Rust host", async () => {
+    const executable = nativeExecutable();
     const entry = "<native-card></native-card>";
     const templates = {
         "native-card":
-            '<f-when value="{{show}}"><b title="{{label}}">{{label}}</b></f-when><f-repeat value="{{item in items}}">{{item}}/{{$index}}</f-repeat>',
+            '<f-when value="{{show}}"><b title="{{label}}" data-parts=\'pre "&amp;/{{label}}/{{tail}}\'>{{label}}</b><a href="{{url}}">{{scalar}}</a></f-when><f-repeat value="{{item in items}}">{{item}}/{{$index}}</f-repeat>',
     };
     const bytes = compileServerArtifact(entry, templates);
     assert.ok(bytes instanceof Uint8Array);
@@ -63,7 +71,15 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
         const artifact = path.join(directory, "server.fast");
         fs.writeFileSync(artifact, bytes);
         for (const state of [
-            { show: true, label: `<&"'😀`, items: ["one", null, { x: 1 }] },
+            {
+                show: true,
+                label: `<&"'😀`,
+                tail: "é尾",
+                url: 3.5,
+                scalar: false,
+                items: ["one", null, { x: 1 }],
+            },
+            { show: true, label: "&".repeat(10_000), tail: null, url: {}, scalar: [] },
             { show: false, items: [] },
             {},
         ]) {
@@ -91,10 +107,51 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     }
 });
 
+test("native output preserves frozen UTF-8 workload contracts", async () => {
+    const executable = nativeExecutable();
+    const { fixture, outputStats } = await import("./performance/fixtures.mjs");
+    const baseline = require("../../../crates/microsoft-fast-build/benches/fixtures/expected-baseline.json");
+    const directory = path.join(__dirname, `.native-frozen-${process.pid}`);
+    fs.mkdirSync(directory);
+    try {
+        const artifact = path.join(directory, "server.fast");
+        for (const record of baseline.filter(record => record.mode === "v3")) {
+            const input = fixture(
+                record.case,
+                record.count,
+                record.payload,
+                record.rootKeys,
+            );
+            fs.writeFileSync(
+                artifact,
+                compileServerArtifact(input.entry, input.templates),
+            );
+            const html = execFileSync(executable, [artifact], {
+                encoding: "utf8",
+                input: JSON.stringify(input.state),
+                env: { ...process.env, PATH: "" },
+                maxBuffer: record.outputBytes + 64 * 1024,
+                timeout: 10_000,
+            });
+            const {
+                case: _case,
+                count: _count,
+                mode: _mode,
+                payload: _payload,
+                rootKeys: _root,
+                ...expected
+            } = record;
+            assert.deepEqual(outputStats(html), expected);
+        }
+    } finally {
+        fs.rmSync(directory, { recursive: true, force: true });
+    }
+});
+
 test("packaged Rust crates accept compatible native assets after authored-manifest-only changes", () => {
     const root = path.resolve(__dirname, "../../..");
     const crate = path.join(root, "crates/microsoft-fast-build");
-    const target = path.join(crate, "target");
+    const target = path.join(crate, "target", "packaged-native");
     execFileSync(
         "cargo",
         [

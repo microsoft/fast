@@ -176,12 +176,23 @@ Dropping the last snapshot clone frees it; no serialization or cross-version
 handle interchange is provided.
 
 Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
-Text bindings append unchanged spans and exact entity spellings directly to the
-executor's bounded output string, without allocating an escaped intermediate.
+Text and attribute bindings append unchanged spans and exact entity spellings
+directly to the executor's bounded output string, without display/escaped strings.
+Finite numbers format through its fallible `fmt::Write` implementation; boolean,
+null and container display values use fixed strings. Composite attributes resolve
+their binding values first so a later missing/null value suppresses the entire
+attribute before any output-budget check. Authored composite literals only replace
+quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Attribute construction can still allocate intermediate strings. No output buffer
-or request-sized scratch storage is retained between calls.
+Lookups still clone values, and composite attributes retain a request-local list
+of scalar values until that attribute is written. Array/object operands immediately
+drop their cloned contents and retain only empty container display tags, avoiding
+accumulation of whole state graphs when a later operand suppresses the attribute.
+Component shadows still render
+before host attributes and use the existing split/append assembly, preserving first
+error order. No output buffer, capacity hint or request-sized scratch storage is
+retained between calls.
 
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
