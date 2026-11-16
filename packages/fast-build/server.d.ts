@@ -27,7 +27,7 @@ export interface PreparedServerState {
     readonly [preparedStateBrand]: true;
 }
 
-/** Exports of a generated server ESM module. */
+/** Exports of newly generated ESM; older persisted modules may lack additive exports. */
 export interface ServerModule {
     readonly components: readonly string[];
     /** Copy, validate and normalize once. Dropping the handle allows collection. */
@@ -41,6 +41,11 @@ export interface ServerModule {
         state?: ServerState,
         options?: ServerRenderOptions,
     ): string;
+    /** Parse and fully validate fresh JSON without copying or retaining its graph. */
+    renderEntryJson(json: string, options?: ServerRenderOptions): string;
+    renderTemplateJson(json: string, options?: ServerRenderOptions): string;
+    renderHostJson(name: string, json: string, options?: ServerRenderOptions): string;
+    renderShadowJson(name: string, json: string, options?: ServerRenderOptions): string;
     renderEntryPrepared(
         state: PreparedServerState,
         options?: ServerRenderOptions,

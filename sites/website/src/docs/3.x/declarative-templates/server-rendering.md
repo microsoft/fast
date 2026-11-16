@@ -74,6 +74,31 @@ State must be acyclic JSON-shaped data, with finite numbers and ordinary data
 properties; getters, functions, class instances and nested `undefined` are rejected.
 Existing HTML bytes, server coercion and hydration markers are preserved.
 
+### Fresh JSON request input
+
+Newly emitted modules expose `renderEntryJson(json, options?)`,
+`renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
+`renderShadowJson(name, json, options?)` for input that arrives as JSON text:
+
+```js
+import { renderEntryJson } from "./generated/server-json.mjs";
+const html = renderEntryJson('{"title":"Fresh request"}');
+```
+
+Pass a required string, not an object, prepared handle or Buffer. The helper parses
+without a reviver and validates every field, including unused values. Non-finite
+overflow and lone-surrogate keys/values fail; negative zero is normalized in the
+fresh owned graph. There is no snapshot copy/freezing or arbitrary-object descriptor
+pass. The same executor preserves all output, options, coercion and hydration bytes.
+Keep object methods for already-parsed state and prepared methods for unchanged reuse.
+JSON parsing and full traversal still have costs; measure matched request boundaries.
+
+Previously managed semantic schema 1 modules remain usable unchanged but retain their original
+export lists without the new JSON names. To opt in, explicitly emit/activate a new
+destination and retain its own sidecar; do not rewrite unchanged managed assets on
+dependency upgrades. Native semantic schema 1 assets require no change. See
+[JSON ownership and adoption](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
+
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
 This compiles a registry with an empty entry; use `renderHost` or `renderShadow`
