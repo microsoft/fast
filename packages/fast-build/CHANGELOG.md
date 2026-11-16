@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Sat, 14 Nov 2026 05:37:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 16 Nov 2026 04:58:49 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.19.0
+
+Mon, 16 Nov 2026 04:58:49 GMT
+
+### Minor changes
+
+- Render stable semantic template plans with named operation fields and single component template references in fast-server-js and fast-server-native formats, and reuse persisted server assets until authored template inputs change. (7559015+janechu@users.noreply.github.com)
+- Write native attribute and scalar values directly into bounded request-local output while preserving exact HTML and recoverable errors. (7559015+janechu@users.noreply.github.com)
 
 ## 0.18.0
 
