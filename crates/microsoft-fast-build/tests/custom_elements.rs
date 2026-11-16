@@ -107,7 +107,7 @@ fn test_custom_element_string_attr() {
         "open tag: {result}"
     );
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow: {result}"
     );
     assert!(result.contains("Click me"), "rendered: {result}");
@@ -172,7 +172,7 @@ fn test_custom_element_self_closing() {
         "open tag: {result}"
     );
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow: {result}"
     );
     assert!(result.contains("</my-button>"), "close tag: {result}");
@@ -189,7 +189,7 @@ fn test_custom_element_with_children() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow: {result}"
     );
     assert!(
@@ -211,7 +211,7 @@ fn test_f_template_shadowroot_defaults_remain_open() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow attrs: {result}"
     );
 }
@@ -227,7 +227,7 @@ fn test_f_template_shadowrootmode_forwarded_with_legacy_shadowroot() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        result.contains(r#"<template shadowrootmode="closed">"#),
         "shadow attrs: {result}"
     );
 }
@@ -244,7 +244,7 @@ fn test_f_template_legacy_shadowroot_value_mirrors_to_mode() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        result.contains(r#"<template shadowrootmode="closed">"#),
         "shadow attrs: {result}"
     );
 }
@@ -260,7 +260,9 @@ fn test_f_template_additional_shadowroot_attrs_forwarded() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus shadowrootclonable="true">"#),
+        result.contains(
+            r#"<template shadowrootmode="open" shadowrootdelegatesfocus shadowrootclonable="true">"#
+        ),
         "shadow attrs: {result}"
     );
 }
@@ -292,7 +294,7 @@ fn test_f_template_boolean_shadowrootmode_defaults_to_open() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow attrs: {result}"
     );
 }
@@ -309,7 +311,7 @@ fn test_f_template_boolean_shadowroot_defaults_to_open() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow attrs: {result}"
     );
 }
@@ -325,7 +327,7 @@ fn test_f_template_empty_shadowrootmode_defaults_to_open() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow attrs: {result}"
     );
 }
@@ -342,7 +344,7 @@ fn test_f_template_empty_shadowroot_defaults_to_open() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#),
+        result.contains(r#"<template shadowrootmode="open">"#),
         "shadow attrs: {result}"
     );
 }
@@ -360,7 +362,7 @@ fn test_f_template_boolean_shadowroot_mirrors_closed_mode() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        result.contains(r#"<template shadowrootmode="closed">"#),
         "shadow attrs: {result}"
     );
 }
@@ -378,7 +380,7 @@ fn test_f_template_empty_shadowroot_mirrors_closed_mode() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        result.contains(r#"<template shadowrootmode="closed">"#),
         "shadow attrs: {result}"
     );
 }
@@ -396,7 +398,7 @@ fn test_f_template_empty_shadowrootmode_mirrors_closed_shadowroot() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="closed" shadowroot="closed">"#),
+        result.contains(r#"<template shadowrootmode="closed">"#),
         "shadow attrs: {result}"
     );
 }
@@ -412,7 +414,9 @@ fn test_f_template_shadowroot_attr_values_are_escaped() {
     )
     .unwrap();
     assert!(
-        result.contains(r#"<template shadowrootmode="open" shadowroot="open" shadowrootserializable="a&quot;b&amp;c">"#),
+        result.contains(
+            r#"<template shadowrootmode="open" shadowrootserializable="a&quot;b&amp;c">"#
+        ),
         "shadow attrs: {result}"
     );
 }
