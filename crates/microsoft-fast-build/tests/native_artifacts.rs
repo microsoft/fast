@@ -267,6 +267,14 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
                     }
                     .unwrap();
                     assert_eq!(native, reused, "{target}, {options:?}");
+                    let fresh = match target {
+                        "entry" => artifact.render_entry_json(state_json, &options),
+                        "template" => artifact.render_template_json(state_json, &options),
+                        "host" => artifact.render_host_json("test-card", state_json, &options),
+                        _ => artifact.render_shadow_json("test-card", state_json, &options),
+                    }
+                    .unwrap();
+                    assert_eq!(native, fresh, "fresh {target}, {options:?}");
                     let javascript =
                         js(&source, state_json, js_options.clone(), target, "test-card");
                     assert_eq!(json!({"value":native}), javascript, "{target}, {options:?}");
@@ -605,6 +613,23 @@ fn state_value_limit_counts_the_root_and_is_request_local() {
         "ok"
     );
     assert!(PreparedState::new(&state).is_ok());
+    let mut json = format!("[{}null]", "null,".repeat(999_998));
+    assert_eq!(
+        artifact
+            .render_entry_json(&json, &Default::default())
+            .unwrap(),
+        "ok"
+    );
+    json.insert_str(1, "null,");
+    assert_eq!(
+        artifact
+            .render_entry_json(&json, &Default::default())
+            .unwrap_err()
+            .code,
+        "invalid-state"
+    );
+    // Budgets count the final retained tree, not overwritten duplicate values.
+    assert!(parse_render_state(&format!(r#"{{"unused":{json},"unused":null}}"#)).is_ok());
     if let JsonValue::Array(values) = &mut state {
         values.push(JsonValue::Null);
     }
@@ -625,6 +650,253 @@ fn state_value_limit_counts_the_root_and_is_request_local() {
             .unwrap(),
         "ok"
     );
+}
+
+#[test]
+fn fresh_json_preserves_normalization_full_validation_and_error_precedence() {
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("{{zero}}/{{label}}", &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let state_json = r#"{"zero":-0,"label":"first","label":"<&😀é","unused":{"constructor":null,"__proto__":[true,9007199254740993,1e-300]}}"#;
+    let parsed = parse_render_state(state_json).unwrap();
+    if let JsonValue::Object(values) = &parsed {
+        assert!(matches!(values.get("zero"), Some(JsonValue::Number(n)) if !n.is_sign_negative()));
+    }
+    let expected = "0/&lt;&amp;😀é";
+    assert_eq!(
+        artifact
+            .render_entry_json(state_json, &Default::default())
+            .unwrap(),
+        expected
+    );
+    assert_eq!(
+        artifact.render_entry(&parsed, &Default::default()).unwrap(),
+        expected
+    );
+    for json in [
+        r#"{"unused":"\ud800","unused":null}"#,
+        r#"{"unused":1e999,"unused":null}"#,
+        r#"{"zero":0} trailing"#,
+    ] {
+        assert_eq!(
+            artifact
+                .render_entry_json(json, &Default::default())
+                .unwrap_err()
+                .code,
+            "invalid-state"
+        );
+        assert_eq!(
+            artifact
+                .render_host_json("missing", json, &Default::default())
+                .unwrap_err()
+                .code,
+            "invalid-state"
+        );
+        let unselected = NativeRenderOptions {
+            dsd: Some(vec![]),
+            ..Default::default()
+        };
+        assert_eq!(
+            artifact
+                .render_shadow_json("missing", json, &unselected)
+                .unwrap_err()
+                .code,
+            "invalid-state"
+        );
+    }
+    for depth in [64, 65] {
+        let json = format!("{}0{}", "[".repeat(depth), "]".repeat(depth));
+        let result = artifact.render_entry_json(&json, &Default::default());
+        assert_eq!(result.is_ok(), depth == 64);
+    }
+    let json = format!(
+        r#"{{"deep":{}0{},"bad":"\ud800"}}"#,
+        "[".repeat(65),
+        "]".repeat(65)
+    );
+    let parser_error = serde_json::from_str::<Value>(&json)
+        .unwrap_err()
+        .to_string();
+    assert_eq!(parse_render_state(&json).unwrap_err().message, parser_error);
+    assert_eq!(
+        artifact
+            .render_entry_json(state_json, &Default::default())
+            .unwrap(),
+        expected
+    );
+}
+
+#[test]
+fn borrowed_composite_attributes_preserve_bounded_output_and_suppression() {
+    let entry = r#"<div title="start {{value}}/{{items.length}}/{{flag}}/{{zero}}/{{object}}/{{last}}"></div>"#;
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    for (value, last, expected) in [
+        (
+            "<&😀".to_owned(),
+            json!("tail"),
+            "<div title=\"start &lt;&amp;😀/2/true/0/[Object]/tail\"></div>",
+        ),
+        ("<&😀".repeat(4096), Value::Null, "<div></div>"),
+    ] {
+        let json = json!({
+            "value":value, "items":[1,2], "flag":true, "zero":-0.0,
+            "object":{"payload":"must not be cloned"}, "last":last
+        })
+        .to_string();
+        let state = parse_render_state(&json).unwrap();
+        let prepared = PreparedState::from_json(&json).unwrap();
+        let exact = NativeRenderOptions {
+            max_output_bytes: expected.len(),
+            ..Default::default()
+        };
+        assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+        assert_eq!(
+            artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+            expected
+        );
+        assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
+        let short = NativeRenderOptions {
+            max_output_bytes: expected.len() - 1,
+            ..Default::default()
+        };
+        assert_eq!(
+            artifact.render_entry_json(&json, &short).unwrap_err().code,
+            "render-limit"
+        );
+        assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
+    }
+}
+
+#[test]
+fn borrowed_nested_repeats_keep_exact_step_budgets_and_recover() {
+    let entry = r#"<f-repeat value="{{item in groups}}"><f-repeat value="{{item in item.items}}">{{item.label}}</f-repeat></f-repeat>"#;
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let json = json!({
+        "groups": vec![json!({"items":vec![json!({"label":"é"});4]});3]
+    })
+    .to_string();
+    let state = parse_render_state(&json).unwrap();
+    let prepared = PreparedState::from_json(&json).unwrap();
+    // One outer repeat plus three (iteration + repeat + four pairs of
+    // inner iteration/binding). Lexical-frame management consumes no steps.
+    let exact = NativeRenderOptions {
+        max_steps: 31,
+        max_output_bytes: 24,
+        ..Default::default()
+    };
+    let short = NativeRenderOptions {
+        max_steps: 30,
+        ..exact.clone()
+    };
+    let expected = "é".repeat(12);
+    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+    assert_eq!(
+        artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+        expected
+    );
+    assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
+    assert_eq!(
+        artifact.render_entry_json(&json, &short).unwrap_err().code,
+        "render-limit"
+    );
+    assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
+}
+
+#[test]
+fn nested_repeat_payloads_preserve_aliases_overlay_masking_and_owned_results() {
+    let locator = common::make_locator(&[(
+        "borrow-leaf",
+        "{{item.label}}/{{outer.label}}/{{dataset.keep}}/{{dataset.note}}/{{masked.value}}",
+    )]);
+    let entry = r#"<f-repeat value="{{outer in groups}}">{{outer.label}}:<f-repeat value="{{inner in outer.items}}">{{outer.label}}/{{inner.label}}/{{$index}}<borrow-leaf :item="{{inner}}" :outer="{{outer}}" :masked="{{inner.masked}}" data-note="{{inner.label}}">caller {{outer.label}}/{{inner.label}}</borrow-leaf><f-repeat value="{{outer in inner.children}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat><f-repeat value="{{outer in outer.items}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat>"#;
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
+    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let mut previous = None;
+    for payload_bytes in [0, 1024, 131_072] {
+        let payload = "é".repeat(payload_bytes / 2);
+        let state_json = json!({
+            "groups": (0..3).map(|i| json!({
+                "label": format!("outer-{i}"),
+                "payload": payload,
+                "items": (0..4).map(|j| json!({
+                    "label": format!("inner-{j}"),
+                    "masked": null,
+                    "payload": payload,
+                    "children": [{"label":"deep<&😀","payload":payload}]
+                })).collect::<Vec<_>>()
+            })).collect::<Vec<_>>(),
+            "dataset": {"keep":"retained"},
+            "masked": {"value":"must-not-leak"}
+        })
+        .to_string();
+        let state = parse_render_state(&state_json).unwrap();
+        let original = state.clone();
+        let prepared = PreparedState::from_json(&state_json).unwrap();
+        for v2 in [false, true] {
+            for dsd in [None, Some(vec![])] {
+                let options = NativeRenderOptions {
+                    markers_v2: v2,
+                    dsd: dsd.clone(),
+                    ..Default::default()
+                };
+                let html = artifact.render_entry_json(&state_json, &options).unwrap();
+                assert_eq!(artifact.render_entry(&state, &options).unwrap(), html);
+                assert_eq!(
+                    artifact.render_entry_prepared(&prepared, &options).unwrap(),
+                    html
+                );
+                let mut js_options = json!({"markersV2":v2});
+                if let Some(names) = dsd {
+                    js_options["dsd"] = json!(names);
+                }
+                assert_eq!(
+                    json!({"value":html}),
+                    js(&source, &state_json, js_options, "entry", "")
+                );
+                assert!(!html.contains("must-not-leak"));
+                let exact = NativeRenderOptions {
+                    max_output_bytes: html.len(),
+                    ..options.clone()
+                };
+                assert_eq!(
+                    artifact.render_entry_json(&state_json, &exact).unwrap(),
+                    html
+                );
+                let short = NativeRenderOptions {
+                    max_output_bytes: html.len() - 1,
+                    ..exact
+                };
+                assert_eq!(
+                    artifact
+                        .render_entry_json(&state_json, &short)
+                        .unwrap_err()
+                        .code,
+                    "render-limit"
+                );
+                if !v2 && options.dsd.is_none() {
+                    if let Some(ref previous) = previous {
+                        assert_eq!(previous, &html);
+                    }
+                    previous = Some(html);
+                }
+            }
+        }
+        assert_eq!(state, original);
+        assert_eq!(
+            artifact
+                .render_entry_prepared(&prepared, &Default::default())
+                .unwrap(),
+            previous.as_ref().unwrap().as_str()
+        );
+    }
 }
 
 #[test]

@@ -9,6 +9,11 @@ The `fast-build` package renders the declarative HTML template syntax of [`@micr
 
 ## Installation
 
+For an explicitly selected JSON-first native Node backend, see the
+[source-built hosting guide](./docs/native-node-host.md). It uses this package and
+the existing build crate; no prebuilt all-platform qualification or measured
+end-to-end win is claimed. JavaScript remains the default explicit alternative.
+
 ### From NPM
 
 To install the latest `@microsoft/fast-build` package using `npm`:
@@ -165,6 +170,14 @@ Native text/attribute values and scalars write directly into request-local bound
 UTF-8 output; composite attributes retain whole-attribute missing/null suppression.
 Output budgets return errors without partial HTML, and no buffer capacity is
 retained between requests. This does not change the JavaScript rendering backend.
+
+Rust hosts receiving fresh JSON can use `render_entry_json`, `render_template_json`,
+`render_host_json` or `render_shadow_json` to parse and fully validate owned state
+without the typed methods' extra normalized copy. Existing typed and prepared
+methods remain compatible. Native lookups/repeats and direct child properties
+borrow request storage; results remain complete owned UTF-8 strings. See the
+[fresh JSON migration](./docs/server-modules.md#fresh-native-json-requests).
+These native-only changes do not accelerate the npm JavaScript request path.
 
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable

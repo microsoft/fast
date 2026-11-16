@@ -5,6 +5,13 @@ Development, peer and optional dependencies are separate.
 
 ## Build and execution ownership
 
+`native-host.mjs` is an opt-in local source-built Node-API facade; importing it
+does not load/download an addon or change the JavaScript backend. Callers select
+an addon path and supply JSON strings/UTF-8 Buffers. The explicit object serializer
+reuses runtime descriptor validation; native rendering uses the existing crate's
+fresh JSON path. There are no regular npm dependencies or platform packages.
+See [ownership, errors and qualification](./docs/native-node-host.md).
+
 `server.js` loads compiler WASM only at build time and delegates all HTML
 parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
@@ -74,7 +81,7 @@ The targets identify themselves as `fast-server-js` (plan schema 1) and
 format names. The one-time migration requires regenerating old assets and sidecars.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
-assets. Native execution is not optimized here.
+assets. Native state borrowing and fresh JSON execution are described below.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
@@ -92,11 +99,21 @@ cache. Options, scopes, loops and child overlays stay request-local.
 Dataset merges clone explicitly bound borrowed objects before writing.
 
 Native `PreparedState` reuses Rust's existing normalizer and stores the owned
-result in a private `Arc`. The existing executor borrows that root using `Cow`,
-while retaining owned child overlays and all execution/output budgets.
+result in a private `Arc`. The existing executor borrows roots, resolved values,
+repeat collections/items and stack-linked lexical frames. Component overlays
+borrow direct properties and parent bases; transformed dataset objects use
+copy-on-write. All execution/output budgets and scope/masking rules remain.
 Its four prepared methods do not clone/revalidate the root. Snapshot clones
 are `Send + Sync`, artifact-independent and freed after the last owner drops.
 This adds target-specific ownership wrappers, not another renderer or validator.
+
+Four native `render_*_json` methods deserialize fresh JSON directly into owned
+`JsonValue` storage and execute it without a snapshot/root copy. Number
+normalization happens during parsing; a separate nonallocating depth/node check
+counts the final tree after duplicate-key replacement and preserves full parse
+validation/error precedence. Typed native requests retain their normalized copy.
+These changes do not alter the generated-JavaScript request path or semantic schema-1
+artifact decoding.
 
 ### Output assembly and escaping
 

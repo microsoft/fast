@@ -14,6 +14,13 @@ The browser conversion crate remains independent.
 
 ## Modules
 
+Optional `node.rs` is only a synchronous JSON/Buffer Node-API transport, enabled
+by `node-host` on non-WASM targets. It calls the validated fresh JSON methods
+without serde state re-conversion or a duplicate executor. All transient state
+remains request-local; napi-rs owns output Buffer finalization. Default compiler,
+native Rust and WASM targets do not activate this feature. See the
+[host contract](../../packages/fast-build/docs/native-node-host.md).
+
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
@@ -75,7 +82,7 @@ or emit rendering functions, accessors or loops. The helper validates all record
 and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution is unchanged; its loader resolves semantic template names into
+The native loader resolves semantic template names into
 private body indices and derives the private host/shadow operations once, then
 applies complete existing IR validation. Reconstructed component metadata has a
 64 MiB expansion budget so shared wire definitions cannot multiply without bound.
@@ -168,12 +175,36 @@ No JavaScript engine or HTML/expression parsing is involved in loading/rendering
 `PreparedState::new` uses that same normalizer once; `from_json` reuses the bounded
 JSON parser. Private `Arc<JsonValue>` storage owns the immutable result and is
 `Send + Sync`, cloneable and artifact-independent. Four `render_*_prepared`
-methods borrow its root through the existing executor's `Cow` frame; child
-overlays remain owned. Normal calls still normalize/copy before execution.
-Lookups and overlays can still allocate. State depth/node checks happen during
+methods borrow its root through the existing executor. Normal calls still
+normalize/copy before execution. State depth/node checks happen during
 preparation; body depth, step and output budgets reset and apply on every render.
 Dropping the last snapshot clone frees it; no serialization or cross-version
 handle interchange is provided.
+
+Native lookups return `Cow<JsonValue>`: existing values borrow request storage;
+only synthetic array lengths and decoded artifact literals need owned values.
+String display borrows strings. Repeats borrow collections/items and link
+stack-local alias/index frames to their enclosing frame, reusing the artifact's
+alias path without copying names or outer loop payloads. Recursive scopes are
+bounded by the existing body-depth limit; no reference escapes execution.
+Component frames borrow their parent base and direct property operands, with a
+small request-local override map. Own-null properties, including missing bound
+operands, mask parent fallback.
+Override names borrow immutable artifact metadata rather than copying per host.
+Dataset transformations use copy-on-write for the merged object only; they never
+mutate borrowed request values. Shadows/defaults reset loop scope; caller light
+DOM keeps its original scope. Artifact storage is not changed by this mechanism.
+
+Four `render_*_json` methods parse fresh owned request state and pass it directly
+to that same executor. A serde visitor builds `JsonValue` directly, normalizing
+finite numbers and negative zero, without an intermediate `serde_json::Value`,
+map conversion, normalized clone or `Arc` snapshot. A nonallocating traversal
+then checks depth/value budgets on the final retained tree. Counting during
+parsing would reject overwritten duplicate-key subtrees that the existing parser
+accepts; complete parsing also preserves parse-error precedence, including invalid
+unused/overwritten Unicode and numbers. Typed-input copying and prepared snapshot
+ownership remain unchanged. JSON input and results/errors are independently
+owned; no request-key hashing/cache, unsafe code or retained scope arena is used.
 
 Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
 Text and attribute bindings append unchanged spans and exact entity spellings
@@ -185,10 +216,11 @@ attribute before any output-budget check. Authored composite literals only repla
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Lookups still clone values, and composite attributes retain a request-local list
-of scalar values until that attribute is written. Array/object operands immediately
-drop their cloned contents and retain only empty container display tags, avoiding
-accumulation of whole state graphs when a later operand suppresses the attribute.
+Composite attributes preflight missing/null operands without retaining a
+per-binding list, then resolve the immutable borrowed operands again while
+writing. Container operands borrow existing storage; synthetic values are
+request-local and short-lived. Suppressed attributes do not accumulate values or
+allocation proportional to the number of bindings.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is
