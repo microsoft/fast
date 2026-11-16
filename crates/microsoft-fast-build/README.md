@@ -55,8 +55,10 @@ Changing that private layout does not require changing generated files or schema
 
 `compile_server_assets(entry, &locator, runtime_import)` returns `ServerAssets`:
 the `server.mjs` entry and a sorted map of complete deployment files. Component
-plans have semantic filenames and local IDs; the entry imports them and invokes
-the same flat executor. A schema-1 dependency manifest records component references.
+plans have semantic filenames and locally assigned, disjoint template names; the
+entry combines the semantic objects and invokes the ordinary executor. Each
+component references one complete DSD template, with optional `host-attributes`.
+A schema-1 dependency manifest records component references.
 Host/shadow defaults remain compiled into actual callers. Unrelated definitions
 do not renumber existing plans, but changed defaults can change their dependants.
 This optional layout adds no native schema or renderer. Publish its whole file set

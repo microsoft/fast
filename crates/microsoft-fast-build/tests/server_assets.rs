@@ -38,7 +38,7 @@ fn component_cycles_remain_symbolic_and_diagnostics_are_eager() {
         serde_json::from_str(&assets.files["server.manifest.json"]).unwrap();
     assert_eq!(
         manifest["dependencies"]["component-a-card.plan.mjs"],
-        serde_json::json!(["a-card", "b-card"])
+        serde_json::json!(["b-card"])
     );
     locator.add_template(
         "unused-broken",
@@ -49,6 +49,33 @@ fn component_cycles_remain_symbolic_and_diagnostics_are_eager() {
     assert_eq!(single.code(), modular.code());
     assert_eq!(single.location(), modular.location());
     assert_eq!(single.template_name(), modular.template_name());
+}
+
+#[test]
+fn shared_shadow_content_with_different_defaults_does_not_change_existing_assets() {
+    let mut locator = Locator::from_templates(Default::default());
+    let content = "<f-when value=\"{{show}}\"><h2>{{title}}</h2></f-when>";
+    locator.add_template("z-card", content);
+    let before = compile_server_assets("<z-card></z-card>", &locator, "./runtime.mjs").unwrap();
+    locator.add_template_with_attrs(
+        "a-card",
+        content,
+        &[],
+        &[("role".into(), Some("note".into()))],
+    );
+    let after = compile_server_assets("<z-card></z-card>", &locator, "./runtime.mjs").unwrap();
+    for filename in ["entry.plan.mjs", "component-z-card.plan.mjs"] {
+        assert_eq!(before.files[filename], after.files[filename]);
+    }
+    let another_entry = compile_server_assets(
+        "<f-when value=\"{{show}}\"><z-card></z-card></f-when>",
+        &locator,
+        "./runtime.mjs",
+    )
+    .unwrap();
+    for filename in ["component-a-card.plan.mjs", "component-z-card.plan.mjs"] {
+        assert_eq!(after.files[filename], another_entry.files[filename]);
+    }
 }
 
 #[test]

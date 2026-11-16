@@ -80,11 +80,17 @@ private body indices and derives the private host/shadow operations once, then
 applies complete existing IR validation. Reconstructed component metadata has a
 64 MiB expansion budget so shared wire definitions cannot multiply without bound.
 
-`compile_server_assets` serializes these exact entry/component plans independently.
+`compile_server_assets` uses the same semantic encoder with entry-only and
+single-component scopes after whole-registry lowering. This keeps local template
+traversal independent of unrelated definitions, including shared shadow content
+with different defaults. Disjoint namespaces allow the entry launcher to combine
+templates without changing named operations, complete DSD references or optional
+`host-attributes` metadata. Sharing is retained within each component, but not
+across separate component files.
 Semantic names use injective UTF-8 byte escaping, never a hash or global rule ID.
 The thin ESM registry and dependency manifest change when registry membership
 changes, not the unchanged component modules. Dependencies are symbolic component
-names collected from element rules; external names remain subject to existing DSD
+names collected from element and component operations; external names remain subject to existing DSD
 selection semantics. Static imports link the complete registry eagerly and use
 the same helper validation/closure preparation. No new native format is introduced.
 

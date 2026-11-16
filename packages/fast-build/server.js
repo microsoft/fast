@@ -18,7 +18,7 @@ function compileServerModule(
 }
 
 /**
- * Compile the same flat plans as independent semantic-name modules.
+ * Compile the same semantic plans as independent semantic-name modules.
  * @param {string} entry
  * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
  * @param {string} [runtimeImport]

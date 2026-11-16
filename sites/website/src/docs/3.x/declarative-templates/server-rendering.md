@@ -58,7 +58,9 @@ const html = renderEntry({ title: "Request-specific state" });
 const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
-Generated ESM embeds flat template instruction tables, not rendering functions.
+Generated ESM embeds semantic operation objects and named templates, not rendering
+functions or numeric instruction tables. Components reference a single complete
+DSD template with optional host-default metadata.
 The server helper validates and loads them once. Published object-input and
 prepared-state methods are unchanged. Compiler fingerprints and literal
 helper-build checks are removed; supported plan/artifact schemas govern loading.
@@ -87,7 +89,7 @@ for options, state restrictions and migration details.
 
 `compileServerAssets(entry, templates, runtimeImport?)` returns semantic-name
 component plan modules, a separate entry plan, a thin `server.mjs` registry and
-dependency manifest. It uses the same flat executor and render exports as
+dependency manifest. It uses the same semantic schema-1 executor and render exports as
 single-file output. Unrelated registry edits leave existing component bytes
 unchanged; changed host/shadow defaults can also change dependent plans.
 

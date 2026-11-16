@@ -145,17 +145,19 @@ the application, not an instruction to truncate output.
 
 `compileServerAssets(entry, templates, runtimeImport?)` returns `{ entry, files }`.
 `entry` is `"server.mjs"`; `files` maps relative semantic filenames to UTF-8
-source. Every component owns its schema-1 flat strings/code/offsets. The thin
-entry imports one entry plan and every registry plan and calls the existing
-`createServerRenderer`. `server.manifest.json` version 1 describes the entry,
+source. Every component owns semantic schema-1 operation objects and named
+templates, not numeric instructions, string tables or offsets. Component names
+reference one complete DSD template with optional `host-attributes` metadata.
+The thin entry combines independently scoped, disjoint template maps and calls
+the existing `createServerRenderer` once. `server.manifest.json` version 1 describes the entry,
 runtime import, component filenames and sorted symbolic dependency names.
 Component self-references and finite registry cycles are legal. Unknown external
 custom elements remain render-time errors only when selected for DSD; they can
 remain authored light DOM when excluded. Missing imported assets and malformed
-tables fail during module import, including unreachable component plans.
+templates fail during module import, including unreachable component plans.
 
 Semantic filenames contain no hashes, compiler identity, absolute paths or state.
-Instruction numbering is local, so unrelated registry edits leave existing plans
+Template naming is local, so unrelated registry edits leave existing plans
 byte-identical. Changed shadow content changes that component; changed host or
 shadow-root defaults can also change callers because those recipes are compiled
 at host occurrences. The manifest describes those actual dependencies; it is
@@ -198,13 +200,15 @@ a promise of crash-durable distributed storage or protection from noncooperating
 writers. The manifest is integrity bookkeeping for trusted deployment bytes,
 not a signature or a request-time file watcher.
 
-The existing single-file writers and JS schema-1/native schema-2 decoders remain
+The existing single-file writers and semantic JS/native schema-1 decoders remain
 unchanged. Old cached modules expose the same ordinary/prepared methods as the new
 modular entry; this addition requires no new generated named exports or blanket
 recompilation. Adopt modular output only for newly compiled assets at a new
 destination. Request/default/bootstrap-state precedence and hydration are unchanged.
 This is an optional deployment layout, not a runtime speedup: it adds imports and
-does not reduce per-component plan duplication already present in one module.
+does not share prepared execution closures across entries. Unlike a single-file
+plan, separate component files do not share identical shadow bodies with one
+another, so a single deployment can be larger.
 Repeated entries can reuse the same component source files, but callers using
 `compileServerAssets` must publish a complete, consistently linked release.
 

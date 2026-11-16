@@ -31,12 +31,15 @@ Shared host-default metadata is compiled once per component template. Component
 templates with different defaults or shadow options retain shared content bodies
 instead of expanding them repeatedly.
 
-The optional modular emitter serializes those same locally numbered plans into
-semantic-name ESM files. Its entry is only imports plus the same helper launcher.
+The optional modular emitter uses the same semantic encoder for the entry and
+each component independently, then assigns disjoint, locally stable template
+names. Each component still references one complete DSD template, including
+optional `host-attributes` metadata. Its entry imports and combines those semantic
+objects before invoking the same helper launcher; no numeric wire tables return.
 The dependency manifest records symbolic component references, including external
 custom elements; it does not drive another renderer or carry compiler identity.
 Static ESM linking eagerly rejects absent imported files, while the existing helper
-validates all tables. Finite symbolic component cycles are not plan-reference cycles.
+validates all templates. Finite symbolic component cycles are not template cycles.
 
 `writeServerAssets` manages an immutable deployment directory, staging a complete
 file set before one directory rename. Its separate authored-input manifest stores

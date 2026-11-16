@@ -74,11 +74,13 @@ impl ModuleTemplates<'_> {
                     "template" => Some("name"),
                     "when" | "repeat" => Some("template"),
                     "element" => {
-                        self.dependencies.insert(op["name"].as_str().unwrap().into());
+                        self.dependencies
+                            .insert(op["name"].as_str().unwrap().into());
                         Some("body")
                     }
                     "component" => {
-                        self.dependencies.insert(op["name"].as_str().unwrap().into());
+                        self.dependencies
+                            .insert(op["name"].as_str().unwrap().into());
                         None
                     }
                     _ => None,
@@ -102,19 +104,19 @@ pub fn compile_server_assets(
     runtime_import: &str,
 ) -> Result<ServerAssets, RenderError> {
     let ir = crate::server_ir::lower(entry, locator)?;
-    let plan = crate::server_plan::encode(&ir, "fast-server-js", crate::server_plan::JS_VERSION);
     let mut files = BTreeMap::new();
     let mut dependencies = BTreeMap::new();
     let mut components = BTreeMap::new();
     let mut imports = String::from("import {plan as entryPlan} from \"./entry.plan.mjs\";\n");
     let mut registry = Vec::new();
     let mut modules = vec![(None, "entry.plan.mjs".to_string())];
-    for name in plan["components"].as_object().unwrap().keys() {
+    for name in ir["components"].as_object().unwrap().keys() {
         let filename = component_filename(name);
         components.insert(name.clone(), filename.clone());
         modules.push((Some(name.as_str()), filename));
     }
     for (name, filename) in modules {
+        let plan = crate::server_plan::encode_module(&ir, name);
         let mut local = ModuleTemplates {
             source: &plan["templates"],
             prefix: name.map_or_else(

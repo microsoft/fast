@@ -131,7 +131,26 @@ impl Encoder {
     }
 }
 
+enum Scope<'a> {
+    All,
+    Entry,
+    Component(&'a str),
+}
+
 pub(crate) fn encode(ir: &V, format: &str, version: u32) -> V {
+    encode_scope(ir, format, version, Scope::All)
+}
+
+pub(crate) fn encode_module(ir: &V, component: Option<&str>) -> V {
+    encode_scope(
+        ir,
+        "fast-server-js",
+        JS_VERSION,
+        component.map_or(Scope::Entry, Scope::Component),
+    )
+}
+
+fn encode_scope(ir: &V, format: &str, version: u32, scope: Scope<'_>) -> V {
     let bodies = ir["bodies"].as_array().unwrap();
     let mut encoder = Encoder {
         ids: HashMap::new(),
@@ -146,9 +165,17 @@ pub(crate) fn encode(ir: &V, format: &str, version: u32) -> V {
             host = bodies[host][0][1].as_u64().unwrap() as usize;
             encoder.hosts.insert(host, name.clone());
         }
-        definitions.push((name, c, bodies[host][0][1]["defaults"].clone()));
+        if matches!(scope, Scope::All)
+            || matches!(scope, Scope::Component(selected) if selected == name.as_str())
+        {
+            definitions.push((name, c, bodies[host][0][1]["defaults"].clone()));
+        }
     }
-    let entry = encoder.body(&bodies[ir["entry"].as_u64().unwrap() as usize]);
+    let entry = if matches!(scope, Scope::Component(_)) {
+        Vec::new()
+    } else {
+        encoder.body(&bodies[ir["entry"].as_u64().unwrap() as usize])
+    };
     let mut components = Map::new();
     let mut shared = HashMap::new();
     for (name, c, defaults) in definitions {

@@ -91,10 +91,11 @@ arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
 
 ### Optional modular deployments
 
-`compileServerAssets(entry, templates, runtimeImport?)` emits the same schema-1
-flat plans as separate `component-<semantic-name>.plan.mjs` files, an entry plan,
+`compileServerAssets(entry, templates, runtimeImport?)` emits the same semantic
+schema-1 plans as separate `component-<semantic-name>.plan.mjs` files, an entry plan,
 a thin `server.mjs` registry and a dependency manifest. It uses the existing
-server helper, not another renderer. Unrelated registry additions do not change
+server helper, not another renderer. Named operation objects and single complete
+DSD component references are preserved. Unrelated registry additions do not change
 existing component plan names or bytes. Component host/shadow defaults are
 compiled into their callers, so changing those defaults also changes dependent
 plans. State is supplied only at rendering time.
@@ -107,7 +108,7 @@ the compiler, including across upgrades. Changed inputs require a **new explicit
 destination**; no in-place incremental rebuild or overwrite is provided.
 Do not mutate imported modules behind cached Node ESM URLs.
 
-Single-file writers and supported old JS/native decoders are unchanged. Modular
+Single-file writers and semantic JS/native schema-1 decoders are unchanged. Modular
 output is optional and not a rendering-speed claim; additional imports can make
 cold startup slower. See [deployment details](./docs/server-modules.md#modular-deployments).
 

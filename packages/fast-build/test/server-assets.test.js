@@ -168,7 +168,9 @@ test("modular assets isolate component bytes and match every render context", as
         const childTable = await import(
             pathToFileURL(path.join(deployment, "component-asset-child.plan.mjs")).href
         );
-        childTable.plan.strings.fill("mutated after loading");
+        for (const body of Object.values(childTable.plan.templates)) {
+            body.length = 0;
+        }
         const request = { title: "isolated", items: [{ name: "first" }], show: false };
         assert.equal(modular.renderEntry(request), single.renderEntry(request));
     });
@@ -364,14 +366,17 @@ test("modular linking validates unused tables eagerly but permits symbolic compo
         fs.writeFileSync(
             path.join(broken, "component-unused-card.plan.mjs"),
             `export const plan = ${JSON.stringify({
-                format: "fast-server-plan",
+                format: "fast-server-js",
                 version: 1,
-                strings: [],
-                code: [18, 0],
-                offsets: [0],
-                root: 0,
-                host: 0,
-                tag: 0,
+                entry: [],
+                templates: {
+                    "component:unused": [
+                        { type: "literal", html: '<template shadowrootmode="open">' },
+                        { type: "template", name: "missing" },
+                        { type: "literal", html: "</template>" },
+                    ],
+                },
+                components: { "unused-card": "component:unused" },
             })};\n`,
         );
         await assert.rejects(

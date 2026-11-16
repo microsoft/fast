@@ -74,7 +74,7 @@ export interface ServerAssets {
     files: Record<string, string>;
 }
 
-/** Same schema/executor as compileServerModule, with separately numbered plan modules. */
+/** Same schema/executor as compileServerModule, with separately named template modules. */
 export function compileServerAssets(
     entry: string,
     templates?: Record<string, string | ServerTemplateDefinition>,
