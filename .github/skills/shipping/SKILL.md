@@ -29,7 +29,7 @@ Read these documents for additional context when needed:
 
 Read these documents, they are located at the root of the specific package or crate, e.g. `packages/<package>/<file>.md` and relate to the package/crates they are located in. When making changes in the package/crate afterwards update these files if necessary.
 
-- `DESIGN.md` - Explains only current APIs, architecture and internals, without migration history or migration links.
+- `DESIGN.md` - Documents current APIs, architecture and internals.
 - `README.md` - Explains how a developer/agent would use this package/crate.
 - `docs/migration.md` - Stable index of migration guides for the current publish; root docs may link here.
 
@@ -186,9 +186,8 @@ When introducing breaking changes:
 1. Select `major` as the change type when running `npm run change`.
 2. Document the migration strategy in `packages/<package>/docs/migration/<migration-name>.md`.
 3. List the guide in the package's stable `docs/migration.md` index. Root docs and
-   other durable documentation link to that index, not directly to individual guides.
-4. Keep DESIGN.md focused on current APIs and internals; do not add migration
-   instructions, removed-API history or links to migration guides there.
+   other durable documentation link to that index.
+4. Keep DESIGN.md focused on current APIs and internals.
 
 Format for a migration document:
 
@@ -205,15 +204,15 @@ If the breaking change is significant or requires multiple PRs, open a [discussi
 
 ## Per-publish cleanup
 
-Migration guidance belongs to one publish, not a permanent historical archive.
+Scope migration guidance to the current publish.
 During release preparation, review and delete guides from previous publishes and
 remove their entries from `docs/migration.md`. Retain guides for the publish being
 prepared. Keep the index even when no guides remain, with an explicit no-migrations
 message, so root-document links stay valid. Related npm/Rust targets may share an
 index.
 
-This is a documented release-preparation step, not an automatic cleanup hook or
-permission to publish. Follow the [publishing workflow](../../../CONTRIBUTING.md#publishing).
+Perform this cleanup during release preparation, following the
+[publishing workflow](../../../CONTRIBUTING.md#publishing).
 
 # Documentation
 
