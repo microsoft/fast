@@ -40,7 +40,15 @@ shadow template; loaders derive their host wrappers without generated host templ
 or separate shadow/tag references. Authored host defaults remain explicit metadata.
 The helper validates this semantic data and creates execution
 closures once at module load, with no generated-function fallback. Internal
-execution optimizations do not change the stored schema:
+execution optimizations do not change the stored schema.
+
+The helper also prepares component property assignments and composite attributes
+once, avoiding per-render property tuples and attribute parts arrays. Existing
+semantic JavaScript schema 1 assets remain usable unchanged with the upgraded
+helper; no recompilation, new exports or output-file rewrite is required.
+Native schema 1 assets and rendering APIs are unchanged.
+
+For example:
 
 ```js
 // Build time
