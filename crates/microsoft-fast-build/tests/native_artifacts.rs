@@ -46,6 +46,15 @@ fn js(source: &str, state: &str, options: Value, target: &str, name: &str) -> Va
     serde_json::from_slice(&output.stdout).unwrap()
 }
 
+fn js_semantic_plan(plan: &Value) -> String {
+    let mut plan = plan.clone();
+    plan["format"] = json!("fast-server-js");
+    format!(
+        "import {{ createServerRenderer }} from \"__FAST_TEST_RUNTIME__\";\n\
+         export const {{ prepareState, renderEntry, renderTemplate, renderHost, renderShadow, renderEntryPrepared, renderTemplatePrepared, renderHostPrepared, renderShadowPrepared }} = createServerRenderer({plan});"
+    )
+}
+
 #[test]
 fn static_markup_does_not_expand_into_per_tag_rendering_code() {
     let locator = common::make_locator(&[]);
@@ -60,7 +69,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
             "invariant static tags should form one literal run"
         );
         let artifact = CompiledArtifact::load(&bytes).unwrap();
-        let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+        let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
         assert!(
             source.len() < entry.len() * 3 / 2,
             "static output expanded into generalized JavaScript"
@@ -93,7 +102,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
     let entry = "<test-static></test-static>";
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
     let state_json = r#"{"label":"<&"}"#;
     let state = parse_render_state(state_json).unwrap();
     for v2 in [false, true] {
@@ -226,7 +235,6 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
     let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    assert_eq!(source, artifact.emit_server_module("__FAST_TEST_RUNTIME__"));
     let state_json = r#"{"label":"& < > \" ' 😀","items":[{"name":"one"},{"name":null},false],"item":{"name":"resolved"},"dataset":{"inherited":"yes"},"fooBar":"camel","foo-bar":"dash"}"#;
     let state = parse_render_state(state_json).unwrap();
     let prepared = PreparedState::new(&state).unwrap();
@@ -362,10 +370,7 @@ fn component_templates_share_content_but_preserve_distinct_host_defaults() {
         .values()
         .all(Value::is_string));
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    assert_eq!(
-        artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
-        compile_server_module("", &locator, "__FAST_TEST_RUNTIME__").unwrap()
-    );
+    let source = compile_server_module("", &locator, "__FAST_TEST_RUNTIME__").unwrap();
     let state = parse_render_state(r#"{"label":"<&"}"#).unwrap();
     let one = artifact
         .render_host("one-card", &state, &Default::default())
@@ -377,6 +382,12 @@ fn component_templates_share_content_but_preserve_distinct_host_defaults() {
     assert!(two.starts_with("<two-card role=\"note\">"));
     assert!(one.ends_with("<!--fe:b-->&lt;&amp;<!--fe:/b--></template></one-card>"));
     assert!(two.ends_with("<!--fe:b-->&lt;&amp;<!--fe:/b--></template></two-card>"));
+    for (name, expected) in [("one-card", one), ("two-card", two)] {
+        assert_eq!(
+            js(&source, r#"{"label":"<&"}"#, json!({}), "host", name),
+            json!({"value":expected}),
+        );
+    }
 }
 
 #[test]
@@ -401,6 +412,291 @@ fn shared_component_metadata_has_a_bounded_native_expansion() {
             .code,
         "invalid-artifact"
     );
+}
+
+#[test]
+fn unreachable_semantic_templates_reject_bad_operations_refs_and_static_trees_eagerly() {
+    let original = json!({
+        "format":"fast-server-native", "version":1,
+        "entry":[{"type":"literal","html":"ok"}],
+        "templates":{"unused":[]},
+        "components":{},
+    });
+    for bad in [
+        json!({"type":"unknown"}),
+        json!({"type":"template","name":u64::MAX}),
+        json!({"type":"template","name":"missing"}),
+        json!({"type":"when","condition":{"type":"truthy","path":["x"]},"template":-1}),
+        json!({"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":1.0}),
+        json!({"type":"when","condition":{"type":"compare","operator":"==","path":["x"],
+            "value":{"type":"value","value":{"type":"object","value":{"unused":{"type":"array","value":[{"type":"number","value":"not-a-number"}]}}}}},
+            "template":"unused"}),
+        json!({"type":"when","condition":{"type":"compare","operator":"==","path":["x"],
+            "value":{"type":"value","value":{"type":"object","value":{"unused":{"type":"array","value":[{"type":"string","value":false}]}}}}},
+            "template":"unused"}),
+        json!({"type":"when","condition":{"type":"compare","operator":"==","path":["x"],
+            "value":{"type":"value","value":{"type":"array","value":[{"type":"eval","value":"0"}]}}},
+            "template":"unused"}),
+    ] {
+        let mut ir = original.clone();
+        ir["templates"]["unused"] = json!([bad]);
+        assert_eq!(
+            CompiledArtifact::load(ir.to_string().as_bytes())
+                .unwrap_err()
+                .code,
+            "invalid-artifact",
+            "{ir}",
+        );
+    }
+    for reference in [json!(u64::MAX), json!(-1), json!(0.5), json!("missing")] {
+        let mut ir = original.clone();
+        ir["components"]["unused"] = reference;
+        assert_eq!(
+            CompiledArtifact::load(ir.to_string().as_bytes())
+                .unwrap_err()
+                .code,
+            "invalid-artifact",
+        );
+    }
+}
+
+#[test]
+fn typed_dispatch_preserves_exact_logical_charges_and_js_parity_in_all_contexts() {
+    let ir = json!({
+        "format":"fast-server-native", "version":1,
+        "entry":[
+                {"type":"tag","plain":[{"type":"literal","html":"<i>"}], "hydrated":[],
+                    "count":0,"ending":""},
+                {"type":"when","condition":{"type":"truthy","path":["show"]},"template":"when"},
+                {"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"repeat"},
+                {"type":"element","name":"x-card","body":"light","closing":"</x-card>",
+                    "opening":{"plain":[{"type":"literal","html":"<x-card>"}],"hydrated":[],
+                        "count":0,"ending":""},
+                    "props":[{"camelCase":"value","unchanged":"value","dataset":null,
+                        "value":{"type":"value","value":{"type":"number","value":"01.00"}}}],
+                    "entry":[{"type":"literal","html":"<x-card"}],"normal":[{"type":"literal","html":"<x-card"}],
+                    "count":0,"defaults":[{"name":"role","attribute":{"type":"literal","html":" role=\"group\""}}]},
+        ],
+        "templates":{
+            "when":[{"type":"template","name":"literal"}],
+            "repeat":[{"type":"binding","path":["item","x"],"escape":true}],
+            "light":[{"type":"literal","html":"L"}],
+            "literal":[{"type":"literal","html":"W"}],
+            "card":[
+                {"type":"host-attributes","attributes":[{"name":"role","attribute":{"type":"literal","html":" role=\"group\""}}]},
+                {"type":"literal","html":"<template>"},
+                {"type":"binding","path":["value"],"escape":true},
+                {"type":"literal","html":"</template>"},
+            ],
+        },
+        "components":{"x-card":"card"},
+    });
+    let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
+    let source = js_semantic_plan(&ir);
+    let state_json = r#"{"show":true,"items":[{"x":"&"},{"x":"é"}],"value":"root"}"#;
+    let state = parse_render_state(state_json).unwrap();
+    let prepared = PreparedState::new(&state).unwrap();
+    let expected =
+        "<i>W&amp;é<x-card role=\"group\"><template><!--fe:b-->1<!--fe:/b--></template>L</x-card>";
+    let exact = NativeRenderOptions {
+        max_steps: 16,
+        max_output_bytes: expected.len(),
+        ..Default::default()
+    };
+    for target in ["entry", "template"] {
+        let ordinary = |options: &NativeRenderOptions| match target {
+            "entry" => artifact.render_entry(&state, options),
+            "template" => artifact.render_template(&state, options),
+            _ => unreachable!(),
+        };
+        let snapshot = |options: &NativeRenderOptions| match target {
+            "entry" => artifact.render_entry_prepared(&prepared, options),
+            "template" => artifact.render_template_prepared(&prepared, options),
+            _ => unreachable!(),
+        };
+        assert_eq!(ordinary(&exact).unwrap(), expected);
+        assert_eq!(snapshot(&exact).unwrap(), expected);
+        for short in [
+            NativeRenderOptions {
+                max_steps: 15,
+                ..exact.clone()
+            },
+            NativeRenderOptions {
+                max_output_bytes: expected.len() - 1,
+                ..exact.clone()
+            },
+        ] {
+            assert_eq!(ordinary(&short).unwrap_err().code, "render-limit");
+            assert_eq!(snapshot(&short).unwrap_err().code, "render-limit");
+        }
+        assert_eq!(ordinary(&exact).unwrap(), expected);
+        assert_eq!(
+            js(&source, state_json, json!({}), target, "x-card"),
+            json!({"value":expected}),
+        );
+    }
+    let shadow = "<template><!--fe:b-->root<!--fe:/b--></template>";
+    let host = format!("<x-card role=\"group\">{shadow}</x-card>");
+    assert_eq!(
+        artifact
+            .render_host("x-card", &state, &Default::default())
+            .unwrap(),
+        host,
+    );
+    assert_eq!(
+        artifact
+            .render_host_prepared("x-card", &prepared, &Default::default())
+            .unwrap(),
+        host,
+    );
+    assert_eq!(
+        js(&source, state_json, json!({}), "host", "x-card"),
+        json!({"value":host}),
+    );
+    let exact = NativeRenderOptions {
+        max_steps: 1,
+        max_output_bytes: shadow.len(),
+        ..Default::default()
+    };
+    assert_eq!(
+        artifact.render_shadow("x-card", &state, &exact).unwrap(),
+        shadow
+    );
+    assert_eq!(
+        artifact
+            .render_shadow_prepared("x-card", &prepared, &exact)
+            .unwrap(),
+        shadow
+    );
+    assert_eq!(
+        js(&source, state_json, json!({}), "shadow", "x-card"),
+        json!({"value":shadow}),
+    );
+}
+
+#[test]
+fn prepared_numeric_path_segments_keep_object_keys_and_repeat_masking() {
+    let entry = "{{values.+01}}/{{values.000}}/{{values.length}}/{{object.+01}}/{{object.length}}/{{values.999999999999999999999999999999}}/<f-repeat value=\"{{item in items}}\">{{item.name}}<f-repeat value=\"{{item in item.children}}\">{{item.name}}/{{$index}}</f-repeat>{{item.name}};</f-repeat>";
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let state_json = r#"{"values":["zero","one"],"object":{"+01":"key","length":"own"},"item":{"name":"parent"},"items":[{"name":"outer","children":[{"name":"inner"},{}]}]}"#;
+    let state = parse_render_state(state_json).unwrap();
+    let expected = "one/zero/2/key/own//outerinner/0/1outer;";
+    assert_eq!(
+        artifact.render_entry(&state, &Default::default()).unwrap(),
+        expected
+    );
+    assert_eq!(
+        js(
+            &compile_server_module(entry, &common::make_locator(&[]), "__FAST_TEST_RUNTIME__")
+                .unwrap(),
+            state_json,
+            json!({}),
+            "entry",
+            ""
+        ),
+        json!({"value":expected}),
+    );
+}
+
+#[test]
+fn typed_element_dispatch_keeps_shadow_before_host_failure_precedence() {
+    let locator = common::make_locator_with_host_attrs(&[(
+        "test-order",
+        "<f-repeat value=\"{{item in items}}\">{{item}}</f-repeat>",
+        &[("title", Some("oversized host attribute"))],
+    )]);
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("<test-order></test-order>", &locator).unwrap(),
+    )
+    .unwrap();
+    let state = parse_render_state(r#"{"items":null}"#).unwrap();
+    let prepared = PreparedState::new(&state).unwrap();
+    let zero_output = NativeRenderOptions {
+        max_output_bytes: 0,
+        ..Default::default()
+    };
+    for result in [
+        artifact.render_entry(&state, &zero_output),
+        artifact.render_template(&state, &zero_output),
+        artifact.render_host("test-order", &state, &zero_output),
+        artifact.render_entry_prepared(&prepared, &zero_output),
+        artifact.render_template_prepared(&prepared, &zero_output),
+        artifact.render_host_prepared("test-order", &prepared, &zero_output),
+    ] {
+        assert_eq!(result.unwrap_err().code, "repeat-not-array");
+    }
+    // The shadow-only API writes its template tag before evaluating the body.
+    assert_eq!(
+        artifact
+            .render_shadow("test-order", &state, &zero_output)
+            .unwrap_err()
+            .code,
+        "render-limit",
+    );
+    let skipped = NativeRenderOptions {
+        dsd: Some(vec![]),
+        ..zero_output
+    };
+    assert_eq!(
+        artifact
+            .render_shadow_prepared("test-order", &prepared, &skipped)
+            .unwrap(),
+        "",
+    );
+    assert_eq!(
+        artifact.render_entry(&state, &skipped).unwrap_err().code,
+        "render-limit"
+    );
+    let valid = parse_render_state(r#"{"items":["ok"]}"#).unwrap();
+    assert!(artifact
+        .render_entry(&valid, &Default::default())
+        .unwrap()
+        .contains("ok"));
+}
+
+#[test]
+fn typed_static_operands_are_isolated_across_concurrent_contexts() {
+    let locator = common::make_locator_with_host_attrs(&[(
+        "test-static-data",
+        "{{dataset.base}}/{{dataset.label}}/{{label}}",
+        &[("title", Some("{{label}}"))],
+    )]);
+    let entry = "<test-static-data :dataset='{\"base\":\"static\",\"number\":1}' data-label=\"{{label}}\" label=\"{{label}}\"></test-static-data>";
+    let bytes = compile_server_artifact(entry, &locator).unwrap();
+    let artifact = CompiledArtifact::load(&bytes).unwrap();
+    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    drop((bytes, locator));
+    std::thread::scope(|scope| {
+        for i in 0..4 {
+            let artifact = artifact.clone();
+            let source = &source;
+            scope.spawn(move || {
+                let state_json = json!({"label":format!("request-{i}"),"dataset":{"base":"root","label":"resolved"}}).to_string();
+                let state = parse_render_state(&state_json).unwrap();
+                let prepared = PreparedState::new(&state).unwrap();
+                let options = NativeRenderOptions { markers_v2:i%2 == 0, ..Default::default() };
+                let entry = artifact.render_entry(&state, &options).unwrap();
+                let template = artifact.render_template(&state, &options).unwrap();
+                let host = artifact.render_host("test-static-data", &state, &options).unwrap();
+                let shadow = artifact.render_shadow("test-static-data", &state, &options).unwrap();
+                for _ in 0..2 {
+                    let short = NativeRenderOptions { max_steps:0, ..options.clone() };
+                    assert_eq!(artifact.render_entry_prepared(&prepared, &short).unwrap_err().code, "render-limit");
+                    assert_eq!(artifact.render_entry_prepared(&prepared, &options).unwrap(), entry);
+                    assert_eq!(artifact.render_template_prepared(&prepared, &options).unwrap(), template);
+                    assert_eq!(artifact.render_host_prepared("test-static-data", &prepared, &options).unwrap(), host);
+                    assert_eq!(artifact.render_shadow_prepared("test-static-data", &prepared, &options).unwrap(), shadow);
+                }
+                assert_eq!(
+                    js(source, &state_json, json!({"markersV2":options.markers_v2}), "entry", ""),
+                    json!({"value":entry}),
+                );
+            });
+        }
+    });
 }
 
 #[test]
@@ -577,7 +873,8 @@ fn state_depth_boundary_is_native_specific_and_includes_unused_state() {
     let artifact =
         CompiledArtifact::load(&compile_server_artifact("ok", &common::make_locator(&[])).unwrap())
             .unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source =
+        compile_server_module("ok", &common::make_locator(&[]), "__FAST_TEST_RUNTIME__").unwrap();
     for depth in [64, 65] {
         let state = (0..depth).fold(JsonValue::Number(0.0), |value, _| {
             JsonValue::Array(vec![value])
@@ -774,7 +1071,7 @@ fn nested_repeat_payloads_preserve_aliases_overlay_masking_and_owned_results() {
     let entry = r#"<f-repeat value="{{outer in groups}}">{{outer.label}}:<f-repeat value="{{inner in outer.items}}">{{outer.label}}/{{inner.label}}/{{$index}}<borrow-leaf :item="{{inner}}" :outer="{{outer}}" :masked="{{inner.masked}}" data-note="{{inner.label}}">caller {{outer.label}}/{{inner.label}}</borrow-leaf><f-repeat value="{{outer in inner.children}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat><f-repeat value="{{outer in outer.items}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat>"#;
     let artifact =
         CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
     let mut previous = None;
     for payload_bytes in [0, 1024, 131_072] {
         let payload = "é".repeat(payload_bytes / 2);
@@ -979,7 +1276,8 @@ fn step_and_utf8_output_budgets_accept_exact_limits_and_reset_after_errors() {
     }
     assert_eq!(
         js(
-            &artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
+            &compile_server_module("é", &common::make_locator(&[]), "__FAST_TEST_RUNTIME__")
+                .unwrap(),
             "null",
             json!({}),
             "entry",
@@ -995,7 +1293,12 @@ fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
         &compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap(),
     )
     .unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source = compile_server_module(
+        "{{value}}",
+        &common::make_locator(&[]),
+        "__FAST_TEST_RUNTIME__",
+    )
+    .unwrap();
     for (value, expected) in [
         ("", ""),
         ("unchanged é😀尾", "unchanged é😀尾"),
@@ -1037,7 +1340,8 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
         &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
     )
     .unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source =
+        compile_server_module(entry, &common::make_locator(&[]), "__FAST_TEST_RUNTIME__").unwrap();
     let state_json = r#"{"value":"é😀&<>\"'/","tail":"尾","flag":true,"url":3.5,"scalar":false}"#;
     let state = parse_render_state(state_json).unwrap();
     let expected = r#"<i title="pre &quot;&amp;/é😀&amp;&lt;&gt;&quot;&#39;//尾" data-value="é😀&amp;&lt;&gt;&quot;&#39;/" hidden></i><a href="3.5">false</a>"#;
@@ -1195,7 +1499,7 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let entry = "<test-outer title=\"{{large}}\"></test-outer>";
     let artifact =
         CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
-    let source = artifact.emit_server_module("__FAST_TEST_RUNTIME__");
+    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
     let invalid_json = json!({"large":"&".repeat(100_000),"items":false}).to_string();
     let invalid = parse_render_state(&invalid_json).unwrap();
     let options = NativeRenderOptions {
@@ -1285,13 +1589,7 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
             assert_eq!(native.unwrap_err().code, "render-limit");
         }
         assert_eq!(
-            js(
-                &artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
-                "null",
-                json!({}),
-                "entry",
-                "",
-            ),
+            js(&js_semantic_plan(&ir), "null", json!({}), "entry", "",),
             json!({"value":"ok"})
         );
     }
