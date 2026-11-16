@@ -1051,6 +1051,10 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
     };
     let held = artifact.render_entry(&state, &exact).unwrap();
     assert_eq!(held, expected);
+    assert_eq!(
+        artifact.render_entry_json(state_json, &exact).unwrap(),
+        expected
+    );
     for max_output_bytes in [0, 1, 20, expected.len() - 1] {
         let short = NativeRenderOptions {
             max_output_bytes,
@@ -1060,11 +1064,19 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
             artifact.render_entry(&state, &short).unwrap_err().code,
             "render-limit"
         );
+        assert_eq!(
+            artifact
+                .render_entry_json(state_json, &short)
+                .unwrap_err()
+                .code,
+            "render-limit"
+        );
     }
     // The large first part must not produce a budget error when the later
     // part suppresses the attribute. The independent huge value still fails.
     let huge = "&\"é😀".repeat(100_000);
-    let suppressed = parse_render_state(&json!({"value":huge}).to_string()).unwrap();
+    let suppressed_json = json!({"value":huge}).to_string();
+    let suppressed = parse_render_state(&suppressed_json).unwrap();
     let composite = CompiledArtifact::load(
         &compile_server_artifact(
             r#"<i title="pre {{value}}/{{missing}}"></i>"#,
@@ -1081,6 +1093,12 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
         composite.render_entry(&suppressed, &tiny).unwrap(),
         "<i></i>"
     );
+    assert_eq!(
+        composite
+            .render_entry_json(&suppressed_json, &tiny)
+            .unwrap(),
+        "<i></i>"
+    );
     for template in [
         r#"<i title="{{value}}"></i>"#,
         r#"<i title="pre {{value}}/{{value}}"></i>"#,
@@ -1095,6 +1113,13 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
             artifact.render_entry(&suppressed, &tiny).unwrap_err().code,
             "render-limit"
         );
+        assert_eq!(
+            artifact
+                .render_entry_json(&suppressed_json, &tiny)
+                .unwrap_err()
+                .code,
+            "render-limit"
+        );
     }
     for value in [
         json!(null),
@@ -1107,12 +1132,50 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
         let state_json = json!({"value":value,"tail":"ok","url":value,"scalar":value}).to_string();
         let state = parse_render_state(&state_json).unwrap();
         assert_eq!(
+            artifact
+                .render_entry_json(&state_json, &Default::default())
+                .unwrap(),
+            artifact.render_entry(&state, &Default::default()).unwrap()
+        );
+        assert_eq!(
             json!({"value":artifact.render_entry(&state, &Default::default()).unwrap()}),
             js(&source, &state_json, json!({}), "entry", "")
         );
     }
     assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
     assert_eq!(held, expected);
+}
+
+#[test]
+fn bounded_composite_attributes_keep_borrowed_and_synthetic_repeat_values() {
+    let entry = r#"<f-repeat value="{{group in groups}}"><i title="{{group.values.length}}/{{group.label}}/{{group.values}}">{{group.values.length}}</i></f-repeat>"#;
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let json = r#"{"groups":[{"values":[null,true],"label":"<&😀"}]}"#;
+    let state = parse_render_state(json).unwrap();
+    let prepared = PreparedState::from_json(json).unwrap();
+    let expected = r#"<i title="2/&lt;&amp;😀/[Array]">2</i>"#;
+    let exact = NativeRenderOptions {
+        max_output_bytes: expected.len(),
+        ..Default::default()
+    };
+    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+    assert_eq!(
+        artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+        expected
+    );
+    assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
+    let short = NativeRenderOptions {
+        max_output_bytes: expected.len() - 1,
+        ..exact.clone()
+    };
+    assert_eq!(
+        artifact.render_entry_json(json, &short).unwrap_err().code,
+        "render-limit"
+    );
+    assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
 }
 
 #[test]
@@ -1143,6 +1206,12 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let failed = artifact.render_entry(&invalid, &options).unwrap_err();
     assert_eq!(failed.code, "repeat-not-array");
     assert_eq!(
+        artifact
+            .render_entry_json(&invalid_json, &options)
+            .unwrap_err(),
+        failed
+    );
+    assert_eq!(
         js(&source, &invalid_json, json!({}), "entry", "")["error"]["code"],
         "repeat-not-array"
     );
@@ -1153,6 +1222,13 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     assert_eq!(
         artifact
             .render_entry(&invalid, &prefix_limit)
+            .unwrap_err()
+            .code,
+        "render-limit"
+    );
+    assert_eq!(
+        artifact
+            .render_entry_json(&invalid_json, &prefix_limit)
             .unwrap_err()
             .code,
         "render-limit"
@@ -1170,10 +1246,18 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     };
     assert_eq!(artifact.render_entry(&valid, &exact).unwrap(), held);
     assert_eq!(
+        artifact.render_entry_json(valid_json, &exact).unwrap(),
+        held
+    );
+    assert_eq!(
         artifact.render_entry(&invalid, &options).unwrap_err().code,
         failed.code
     );
     assert_eq!(artifact.render_entry(&valid, &exact).unwrap(), held);
+    assert_eq!(
+        artifact.render_entry_json(valid_json, &exact).unwrap(),
+        held
+    );
 }
 
 #[test]

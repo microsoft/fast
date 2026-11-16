@@ -105,8 +105,8 @@ Four native `render_*_json` methods deserialize fresh JSON directly into owned
 normalization happens during parsing; a separate nonallocating depth/node check
 counts the final tree after duplicate-key replacement and preserves full parse
 validation/error precedence. Typed native requests retain their normalized copy.
-These changes do not alter the generated-JavaScript request path or schema-2
-artifact decoding.
+These changes do not alter the generated-JavaScript request path or the
+`fast-server-native` semantic schema 1 contract.
 
 ### Output assembly and escaping
 

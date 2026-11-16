@@ -113,7 +113,6 @@ direct child properties now borrow request state. Dataset merges remain
 copy-on-write. All modes keep complete input validation, resource budgets,
 owned results and error recovery.
 
-
 For unchanged state reused across calls, validate and copy once:
 
 ```rust

@@ -725,12 +725,7 @@ impl<'a> Executor<'a> {
     fn number(&mut self, n: f64) -> Result<(), NativeRenderError> {
         write!(self, "{n}").map_err(|_| error("render-limit", "Output byte limit exceeded"))
     }
-    fn attr(
-        &mut self,
-        v: &V,
-        root: &Frame<'_>,
-        loops: Loops<'_>,
-    ) -> Result<(), NativeRenderError> {
+    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: Loops<'_>) -> Result<(), NativeRenderError> {
         match string(&v[0]) {
             "literal" => self.push(string(&v[1])),
             "conditional" => {

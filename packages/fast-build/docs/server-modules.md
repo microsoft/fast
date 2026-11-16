@@ -441,8 +441,8 @@ For one-use JSON state, migrate from `parse_render_state(json)` followed by
 `render_entry(&state, options)` to `render_entry_json(json, options)`. Matching
 `render_template_json(json, options)`, `render_host_json(name, json, options)`
 and `render_shadow_json(name, json, options)` methods are additive. No artifact
-rebuild is needed: native schema 2 is unchanged. Typed methods keep their
-validate/normalize/copy contract; prepared methods keep immutable snapshot reuse.
+rebuild is needed: `fast-server-native` semantic schema 1 is unchanged. Typed methods
+keep their validate/normalize/copy contract; prepared methods keep immutable snapshot reuse.
 The minimal native example now uses the fresh JSON method.
 
 Fresh JSON is deserialized directly into owned request storage, with finite-number
@@ -537,7 +537,7 @@ Build without running measurements:
 CARGO_BUILD_JOBS=2 cargo build --release --manifest-path crates/microsoft-fast-build/Cargo.toml --example native-state-benchmark
 ```
 
-Only under an exclusive quiet measurement lease, invoke the prebuilt executable:
+Only during a coordinator-assigned quiet sampling slot, invoke the prebuilt executable:
 
 ```sh
 crates/microsoft-fast-build/target/release/examples/native-state-benchmark repeat prepared 100 131072 100
@@ -548,7 +548,7 @@ machine, rendered bytes and sample counts. Timings are unqualified until those
 paired runs exist; no speedup is claimed here. Existing repository tooling has no
 native allocation counter, so the report explicitly returns
 `allocationCounters: null`. Use an external allocator profiler under the same
-lease to count allocations/bytes for scalar-only versus payload-scaled cases;
+sampling slot to count allocations/bytes for scalar-only versus payload-scaled cases;
 do not add unsafe allocator hooks solely to obtain timings.
 
 For the fixed baseline, copy only this benchmark example into a separate owned
