@@ -176,7 +176,17 @@ These native-only changes do not accelerate the npm JavaScript request path.
 
 Deploy artifacts with a native library supporting their execution schema; loading
 validates the format, schema, opcodes and references. Artifacts have immutable
-thread-safe ownership and reusable request-independent instructions. See the
+typed operations with numeric resolved targets; existing semantic schema-1 assets
+remain usable unchanged. Rust's `CompiledArtifact::emit_server_module` is removed;
+generate JavaScript from authored templates using Rust `compile_server_module`
+or Node `compileServerModule` at build time instead. Node APIs are unchanged.
+Load/decode has transient memory costs; state ownership and output/resource limits
+are unchanged. No native performance
+improvement is claimed before qualification. See the
+[typed-native upgrade guide](./docs/migration/typed-native-plans.md).
+
+Artifacts have immutable thread-safe ownership and reusable request-independent
+instructions. See the
 [native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
 and [Rust usage](../../crates/microsoft-fast-build/README.md).
 Native Rust is supported now; a stable C ABI/.NET binding is deferred. This does

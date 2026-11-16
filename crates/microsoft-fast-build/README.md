@@ -75,8 +75,14 @@ let html = program.render_entry(&state, &NativeRenderOptions::default())?;
 
 `render_template`, `render_host` and `render_shadow` preserve the corresponding
 generated-module APIs. `render_shadow` accepts resolved component state and emits
-only DSD. `CompiledArtifact::emit_server_module(runtime_import)` can emit the JS
-target from the exact loaded IR as a build-time operation.
+only DSD. Loaded native artifacts are execution-only;
+`CompiledArtifact::emit_server_module` has been removed. To generate JavaScript,
+call `compile_server_module(entry, &locator, runtime_import)` from the original
+authored templates at build time. Loading prepares typed
+operations, numeric body/component references, array-index metadata and decoded
+static operands; rendering no longer interprets JSON instruction fields.
+Native plans retain neither a second instruction graph nor emission-only numeric
+spellings or IR-reconstruction code.
 
 Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
 threads; each ordinary call validates/copies state and owns its counters, overlays and
@@ -112,6 +118,14 @@ explicit snapshot ownership. Native lookups, repeat items/lexical frames and
 direct child properties now borrow request state. Dataset merges remain
 copy-on-write. All modes keep complete input validation, resource budgets,
 owned results and error recovery.
+
+Existing `fast-server-native` and `fast-server-js` semantic schema-1 assets remain
+usable unchanged; no artifact recompilation is required. Rust callers of the removed
+native-to-JavaScript conversion method must migrate to the build-time compiler.
+Load peak memory includes semantic decoding/private IR expansion and transient
+private JSON plus the typed plan before JSON is dropped. Neither load cost nor
+retained-memory improvement is assumed. State copying, child overlays and output
+ownership/budgets are unchanged. See [upgrade and measurement guidance](../../packages/fast-build/docs/migration/typed-native-plans.md).
 
 For unchanged state reused across calls, validate and copy once:
 

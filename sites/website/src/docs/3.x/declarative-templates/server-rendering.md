@@ -114,6 +114,17 @@ Native errors are recoverable, with state/recursion/step/output limits. See the
 Native Rust hosting is supported now; a stable C ABI and .NET bindings are
 follow-up work. This release does not provide a C# host or separate C# semantics.
 
+### Native-to-JavaScript API migration
+
+Rust's `CompiledArtifact::emit_server_module` is removed. Loaded native artifacts
+are execution-only; generate JavaScript at build time using the existing
+`compile_server_module(entry, &locator, runtime_import)` function instead.
+This requires the original authored templates and locator, not only native artifact
+bytes. Generate both targets during the build if both are needed. Node's
+`compileServerModule` API, native rendering methods and supported semantic schema-1
+assets are unchanged.
+See the [typed-native migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/typed-native-plans.md).
+
 ## Migration from request-time source rendering
 
 Generated server JavaScript and native Rust artifact rendering are supported
