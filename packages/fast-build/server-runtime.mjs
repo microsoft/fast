@@ -469,18 +469,18 @@ export function createServerRenderer(plan) {
         if (!Number.isSafeInteger(value) || value < 0 || value > 1_000_000) invalid();
         return value;
     };
-    fields(plan, ["format", "version", "entry", "fragments", "components"]);
+    fields(plan, ["format", "version", "entry", "templates", "components"]);
     if (plan.format !== "fast-server-js" || plan.version !== 1) invalid();
-    if (!object(plan.fragments) || !object(plan.components)) invalid();
-    const fragments = new Map(Object.entries(plan.fragments));
-    if (fragments.size >= 1_000_000 || fragments.has("")) invalid();
+    if (!object(plan.templates) || !object(plan.components)) invalid();
+    const templates = new Map(Object.entries(plan.templates));
+    if (templates.size >= 1_000_000 || templates.has("")) invalid();
     const aliases = [["$index"]];
     const path = value => {
         if (!array(value).length) invalid();
         return value.map(string);
     };
     let total = 0;
-    for (const body of [plan.entry, ...fragments.values()]) {
+    for (const body of [plan.entry, ...templates.values()]) {
         for (const op of array(body)) {
             if (++total > 1_000_000) invalid();
             array(op);
@@ -636,12 +636,12 @@ export function createServerRenderer(plan) {
     }
     const compiled = new Map();
     const visiting = new Set();
-    function fragment(name) {
+    function template(name) {
         string(name);
-        if (!fragments.has(name) || visiting.has(name) || visiting.size > 256) invalid();
+        if (!templates.has(name) || visiting.has(name) || visiting.size > 256) invalid();
         if (compiled.has(name)) return compiled.get(name);
         visiting.add(name);
-        const run = bodyOf(fragments.get(name));
+        const run = bodyOf(templates.get(name));
         visiting.delete(name);
         compiled.set(name, run);
         return run;
@@ -651,9 +651,9 @@ export function createServerRenderer(plan) {
         switch (node[0]) {
             case "literal":
                 return attr(node);
-            case "fragment":
+            case "template":
                 record(node, 2);
-                return fragment(node[1]);
+                return template(node[1]);
             case "tag":
                 record(node, 2);
                 return tag(node[1]);
@@ -671,7 +671,7 @@ export function createServerRenderer(plan) {
             case "when": {
                 record(node, 3);
                 const test = condition(node[1]);
-                const body = fragment(node[2]);
+                const body = template(node[2]);
                 return (r, l, o, h) => {
                     const index = h ? h.index++ : 0;
                     const output = test(r, l)
@@ -686,7 +686,7 @@ export function createServerRenderer(plan) {
                 const slot = aliases.findIndex(alias => samePath(alias, name));
                 const value = lookup(node[2]);
                 const expression = string(node[3]);
-                const body = fragment(node[4]);
+                const body = template(node[4]);
                 return (r, l, o, h) => {
                     const items = list(value(r, l), expression);
                     const binding = h ? h.index++ : 0;
@@ -718,7 +718,7 @@ export function createServerRenderer(plan) {
                 ]);
                 const name = string(element.name);
                 if (!own(plan.components, name)) invalid();
-                const light = fragment(element.body);
+                const light = template(element.body);
                 const closing = string(element.closing);
                 const opening = tag(element.opening);
                 const props = array(element.props).map(prop => {
@@ -785,13 +785,13 @@ export function createServerRenderer(plan) {
             return output;
         };
     }
-    for (const name of fragments.keys()) fragment(name);
+    for (const name of templates.keys()) template(name);
     for (const [name, value] of Object.entries(plan.components)) {
         if (!name) invalid();
         fields(value, ["shadow", "host", "tag"]);
         components.set(name, {
-            shadow: fragment(value.shadow),
-            host: fragment(value.host),
+            shadow: template(value.shadow),
+            host: template(value.host),
             tag: string(value.tag),
         });
     }

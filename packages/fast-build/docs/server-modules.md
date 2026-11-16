@@ -15,7 +15,7 @@ The optional helper specifier defaults to
 server-only module. Do not import `server.js` into the request dependency graph.
 It is a build-time API and loads the compiler WASM.
 
-Generated ESM embeds semantic tagged operations and named fragments rather
+Generated ESM embeds semantic tagged operations and named templates rather
 than rendering functions or numeric execution tables. The helper validates all rules/references and creates
 execution closures once during module loading. Requests execute those closures;
 they do not compile templates or evaluate source. The published object/prepared
@@ -34,7 +34,7 @@ The JavaScript and native targets share these semantic fields:
         ["binding", ["label"], true],
         ["literal", "</p>"]
     ],
-    "fragments": {},
+    "templates": {},
     "components": {}
 }
 ```
@@ -44,22 +44,22 @@ For native artifacts, only the envelope identity differs:
 plan to `createServerRenderer(plan)`; native hosts pass serialized bytes to
 `CompiledArtifact::load`.
 
-`entry` is an ordered list of operations. `fragments` maps opaque names to other
+`entry` is an ordered list of operations. `templates` maps opaque names to other
 operation lists, keeping reused bodies shared instead of recursively expanding
 them. Names are references, not execution indices; consumers must not interpret
 their spelling or order. Components map authored names to `{ shadow, host, tag }`:
-the first two name fragments, while `tag` is the opening shadow-template markup.
+the first two name templates, while `tag` is the opening shadow-template markup.
 Unknown envelope fields, operations and references are rejected, including in
-unreachable fragments. Loaders own any string interning, offsets, numeric
+unreachable templates. Loaders own any string interning, offsets, numeric
 instructions, native indices, accessors or execution closures they need.
 
 | Operation | Meaning |
 |---|---|
 | `["literal", text]` | Output literal markup/text. |
 | `["binding", path, escaped]` | Output a state path; `escaped` is a boolean controlling HTML escaping. |
-| `["fragment", name]` | Execute a shared fragment in the current context. |
-| `["when", condition, fragment]` | Execute a fragment if a condition is true, preserving hydration boundaries. |
-| `["repeat", alias, collection, diagnostic, fragment]` | Repeat a fragment with lexical alias/index scope; the diagnostic string identifies invalid collections. |
+| `["template", name]` | Execute a shared template in the current context. |
+| `["when", condition, template]` | Execute a template if a condition is true, preserving hydration boundaries. |
+| `["repeat", alias, collection, diagnostic, template]` | Repeat a template with lexical alias/index scope; the diagnostic string identifies invalid collections. |
 | `["tag", descriptor]` | Render ordinary or hydrated tag attributes. |
 | `["element", descriptor]` | Render a registered component, its property overlays, host attributes, shadow and light DOM. |
 
@@ -79,7 +79,7 @@ is the closing tag delimiter. Attribute operations are literal text,
 Quoted parts are literal text or `["segment", path]`.
 
 Element descriptors have `{ name, body, closing, opening, props, entry, normal,
-count, defaults, shadowTag }`. `body` names the light-DOM fragment, `opening` is a
+count, defaults, shadowTag }`. `body` names the light-DOM template, `opening` is a
 tag descriptor, `entry`/`normal` are host attribute-operation lists, and `count`
 preserves host hydration markers. Ordered `props` entries are
 `[camelCaseName, unchangedName, datasetKeyOrNull, operand]`; ordered `defaults`
@@ -356,7 +356,7 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
   their complete operations/references. Source, manifest and lockfile changes
   do not invalidate an otherwise supported artifact.
 - Load validates every opcode, operand shape, static value, component reference,
-  fragment reference and envelope field, including unreachable bodies. It resolves
+  template reference and envelope field, including unreachable bodies. It resolves
   names to private body indices once at load time and never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
   fail; condition/static-value trees have additional 64-level schema bounds.

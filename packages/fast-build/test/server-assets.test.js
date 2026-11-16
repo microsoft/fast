@@ -231,7 +231,7 @@ for (const target of targets) {
                 assert.equal(artifact.version, 1);
                 assertHashFree(artifact);
                 assert.ok(Array.isArray(artifact.entry));
-                assert.equal(typeof artifact.fragments, "object");
+                assert.equal(typeof artifact.templates, "object");
             }
             assert.deepEqual(withoutCompiler(target, output, inputs), {
                 reused: true,

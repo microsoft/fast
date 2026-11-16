@@ -8,7 +8,7 @@ pub const NATIVE_VERSION: u32 = 1;
 
 fn references(op: &mut Value, mut reference: impl FnMut(&mut Value)) {
     match op[0].as_str() {
-        Some("call" | "fragment") => reference(&mut op[1]),
+        Some("call") => reference(&mut op[1]),
         Some("when") => reference(&mut op[2]),
         Some("repeat") => reference(&mut op[4]),
         Some("element") => reference(&mut op[1]["body"]),
@@ -23,7 +23,7 @@ pub(crate) fn encode(ir: &Value, format: &str, version: u32) -> Value {
             pending.push(id);
             next
         });
-        json!(format!("fragment{id}"))
+        json!(format!("template{id}"))
     }
     fn body(mut body: Value, ids: &mut HashMap<usize, usize>, pending: &mut Vec<usize>) -> Value {
         for op in body.as_array_mut().unwrap() {
@@ -32,7 +32,7 @@ pub(crate) fn encode(ir: &Value, format: &str, version: u32) -> Value {
                 *value = name(id, ids, pending);
             });
             if op[0] == "call" {
-                op[0] = json!("fragment");
+                op[0] = json!("template");
             }
         }
         body
@@ -52,40 +52,40 @@ pub(crate) fn encode(ir: &Value, format: &str, version: u32) -> Value {
             component[field] = name(id, &mut ids, &mut pending);
         }
     }
-    let mut fragments = Map::new();
+    let mut templates = Map::new();
     let mut index = 0;
     while index < pending.len() {
         let value = body(bodies[pending[index]].clone(), &mut ids, &mut pending);
-        fragments.insert(format!("fragment{index}"), value);
+        templates.insert(format!("template{index}"), value);
         index += 1;
     }
     json!({
         "format":format, "version":version, "entry":entry,
-        "fragments":fragments, "components":components,
+        "templates":templates, "components":components,
     })
 }
 
 pub(crate) fn decode(mut plan: Value) -> Result<Value, ()> {
     let fields = plan.as_object().ok_or(())?;
     if fields.len() != 5
-        || !["format", "version", "entry", "fragments", "components"]
+        || !["format", "version", "entry", "templates", "components"]
             .iter()
             .all(|name| fields.contains_key(*name))
     {
         return Err(());
     }
-    let Value::Object(fragments) = plan["fragments"].take() else {
+    let Value::Object(templates) = plan["templates"].take() else {
         return Err(());
     };
-    if fragments.len() >= 1_000_000 || fragments.keys().any(String::is_empty) {
+    if templates.len() >= 1_000_000 || templates.keys().any(String::is_empty) {
         return Err(());
     }
-    let ids: HashMap<String, usize> = fragments
+    let ids: HashMap<String, usize> = templates
         .keys()
         .enumerate()
         .map(|(id, name)| (name.clone(), id))
         .collect();
-    let mut bodies: Vec<Value> = fragments.into_values().collect();
+    let mut bodies: Vec<Value> = templates.into_values().collect();
     let entry = bodies.len();
     bodies.push(plan["entry"].take());
     let resolve = |value: &mut Value| -> Result<(), ()> {
@@ -98,7 +98,7 @@ pub(crate) fn decode(mut plan: Value) -> Result<Value, ()> {
             let fields = op.as_array_mut().ok_or(())?;
             let kind = fields.first().and_then(Value::as_str).ok_or(())?;
             let reference = match kind {
-                "fragment" => {
+                "template" => {
                     if fields.len() != 2 {
                         return Err(());
                     }
@@ -130,7 +130,7 @@ pub(crate) fn decode(mut plan: Value) -> Result<Value, ()> {
         }
     }
     let fields = plan.as_object_mut().unwrap();
-    fields.remove("fragments");
+    fields.remove("templates");
     fields.remove("format");
     fields.remove("version");
     plan["entry"] = json!(entry);
@@ -156,8 +156,8 @@ mod tests {
         });
         let expected = json!({
             "format":"fast-server-native", "version":1,
-            "entry":[["fragment","fragment0"],["fragment","fragment0"]],
-            "fragments":{"fragment0":[["literal","shared"]]}, "components":{},
+            "entry":[["template","template0"],["template","template0"]],
+            "templates":{"template0":[["literal","shared"]]}, "components":{},
         });
         assert_eq!(
             encode(&first, "fast-server-native", NATIVE_VERSION),
@@ -178,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    fn shared_fragment_graph_is_not_recursively_expanded() {
+    fn shared_template_graph_is_not_recursively_expanded() {
         let mut bodies = vec![json!([["literal", "shared"]])];
         for id in 0..50 {
             bodies.push(json!([["call", id], ["call", id]]));
@@ -188,7 +188,7 @@ mod tests {
             "fast-server-native",
             NATIVE_VERSION,
         );
-        assert_eq!(plan["fragments"].as_object().unwrap().len(), 50);
+        assert_eq!(plan["templates"].as_object().unwrap().len(), 50);
         assert!(plan.to_string().len() < 5_000);
     }
 }

@@ -3,7 +3,7 @@
 ## Generated rendering functions or numeric plans to semantic plans
 
 Rebuild legacy JavaScript modules/native artifacts once. The generated module
-now embeds semantic tagged operations and named fragment references
+now embeds semantic tagged operations and named template references
 loaded by the helper instead of specialized rendering functions.
 Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
 `prepareState` and all four `render*Prepared` methods remain unchanged, as do
@@ -22,6 +22,9 @@ regenerated assets with their matching helper/native loader. This is a one-time
 semantic format transition. Future internal lowering/execution optimizations do
 not change the wire schema. Only incompatible changes to semantic operations or
 their meaning require a new version.
+The reusable-operation map is `templates`, and `["template", name]` invokes a
+named template. Regenerate development artifacts from revisions using the
+unpublished `fragments` spelling; the initial semantic schema remains version 1.
 
 Compiler fingerprints and literal helper-build equality checks are removed.
 Native loading validates supported execution schemas rather than source/manifest

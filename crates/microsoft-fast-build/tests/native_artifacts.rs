@@ -325,7 +325,7 @@ fn numbers_and_comparisons_match_generated_javascript() {
 
 #[test]
 fn native_semantic_schema_loads_without_execution_tables_or_build_metadata() {
-    let bytes = br#"{"format":"fast-server-native","version":1,"entry":[["binding",["value"],true]],"fragments":{},"components":{}}"#;
+    let bytes = br#"{"format":"fast-server-native","version":1,"entry":[["binding",["value"],true]],"templates":{},"components":{}}"#;
     let artifact = CompiledArtifact::load(bytes).unwrap();
     let state = parse_render_state(r#"{"value":"Compatible & native"}"#).unwrap();
     assert_eq!(
@@ -362,12 +362,12 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
             "incompatible-artifact"
         );
     }
-    for mutate in 0..16 {
+    for mutate in 0..17 {
         let mut v = original.clone();
         match mutate {
             0 => v["entry"] = json!(999),
             1 => v["entry"][0][0] = json!("eval"),
-            2 => v["entry"][0] = json!(["fragment", "missing"]),
+            2 => v["entry"][0] = json!(["template", "missing"]),
             3 => v["entry"][0] = json!(["binding", [], true]),
             4 => {
                 v["entry"][0] = json!([
@@ -386,9 +386,10 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
             }
             11 => v["entry"][0] = json!(["when", ["truthy", ["x"]], "missing"]),
             12 => v["components"] = json!({"bad":{"shadow":0,"host":999,"tag":""}}),
-            13 => v["fragments"] = json!({"unused":[["fragment", "missing"]]}),
+            13 => v["templates"] = json!({"unused":[["template", "missing"]]}),
             14 => v["entry"][0] = json!(["call", 0]),
-            _ => v["entry"][0] = json!(["fragment", 0]),
+            15 => v["entry"][0] = json!(["fragment", "missing"]),
+            _ => v["entry"][0] = json!(["template", 0]),
         }
         assert_eq!(
             CompiledArtifact::load(v.to_string().as_bytes())
@@ -748,17 +749,17 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for depth in [128, 129] {
         let mut ir = original.clone();
-        ir["entry"] = json!([["fragment", "next0"]]);
-        let mut fragments = serde_json::Map::new();
+        ir["entry"] = json!([["template", "next0"]]);
+        let mut templates = serde_json::Map::new();
         for index in 0..depth {
             let body = if index + 1 == depth {
                 json!([["literal", "ok"]])
             } else {
-                json!([["fragment", format!("next{}", index + 1)]])
+                json!([["template", format!("next{}", index + 1)]])
             };
-            fragments.insert(format!("next{index}"), body);
+            templates.insert(format!("next{index}"), body);
         }
-        ir["fragments"] = json!(fragments);
+        ir["templates"] = json!(templates);
         let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
         let native = artifact.render_entry(&JsonValue::Null, &Default::default());
         if depth == 128 {

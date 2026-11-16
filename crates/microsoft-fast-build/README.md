@@ -16,7 +16,7 @@ cargo add microsoft-fast-build
 with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
 Templates are trusted build inputs; the generated module imports the FAST-owned
 server helper rather than WASM, browser classes or a runtime template parser.
-It embeds stable tagged operations and named fragments, not numeric execution
+It embeds stable tagged operations and named templates, not numeric execution
 tables or generated rendering functions. The helper validates those operations
 and creates execution closures at module load:
 

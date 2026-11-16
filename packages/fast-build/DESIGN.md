@@ -14,12 +14,12 @@ WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
 Rust encodes the shared executable IR as stable semantic tagged operations,
-named fragment references and component descriptors. Generated ESM contains one
+named template references and component descriptors. Generated ESM contains one
 state-independent plan and one helper call, not generated rendering functions,
 numeric opcodes, string tables or offsets. Both targets use the same semantic
 encoding; the JS helper compiles execution closures and the native loader resolves
-fragment names into its private indexed IR. Internal execution layout changes do
-not change the wire schema. The helper validates even unreachable fragments and
+template names into its private indexed IR. Internal execution layout changes do
+not change the wire schema. The helper validates even unreachable templates and
 detects reference cycles before activation. Captured values are independent of
 later input mutation. There is no generated-function fallback.
 Compound property literals retain per-call ownership. Published object/prepared

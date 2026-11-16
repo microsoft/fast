@@ -34,7 +34,7 @@ Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
 WASM, browser-class, template-parser, or runtime source-evaluation dependency.
 The ESM embeds tagged operations such as `["literal", "<p>"]` and
-`["binding", ["title"], true]`. Shared bodies use named fragments, not numeric
+`["binding", ["title"], true]`. Shared bodies use named templates, not numeric
 execution indices. The helper validates this semantic data and creates execution
 closures once at module load, with no generated-function fallback. Internal
 execution optimizations do not change the stored schema:

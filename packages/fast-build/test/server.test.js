@@ -841,7 +841,7 @@ test("semantic plans hide execution tables and share their schema across targets
             ["binding", ["label"], true],
             ["literal", "</p>"],
         ],
-        fragments: {},
+        templates: {},
         components: {},
     });
     const native = JSON.parse(
@@ -860,10 +860,10 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
         version: 1,
         entry: [
             ["literal", "<p>"],
-            ["fragment", "value"],
+            ["template", "value"],
             ["literal", "</p>"],
         ],
-        fragments: { value: [["binding", ["label"], true]] },
+        templates: { value: [["binding", ["label"], true]] },
         components: {},
     };
     const renderer = createServerRenderer(plan);
@@ -882,7 +882,8 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
         { ...plan, version: 0 },
         { ...plan, version: 2 },
         { ...plan, code: [18, 1] },
-        { ...plan, entry: [["fragment", "missing"]] },
+        { ...plan, entry: [["template", "missing"]] },
+        { ...plan, entry: [["fragment", "value"]] },
         { ...plan, entry: [["binding", [], true]] },
         { ...plan, entry: [["binding", ["label"], 1]] },
         { ...plan, entry: [["literal", "text", "extra"]] },
@@ -891,11 +892,11 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
             ...plan,
             entry: [["when", ["compare", "evil", ["x"], ["path", ["y"]]], "value"]],
         },
-        { ...plan, fragments: { unused: [["unknown"]] } },
-        { ...plan, fragments: { value: [["fragment", "value"]] } },
+        { ...plan, templates: { unused: [["unknown"]] } },
+        { ...plan, templates: { value: [["template", "value"]] } },
         {
             ...plan,
-            fragments: { value: [["fragment", "other"]], other: [["fragment", "value"]] },
+            templates: { value: [["template", "other"]], other: [["template", "value"]] },
         },
         { ...plan, components: { bad: { shadow: "value", host: "missing", tag: "" } } },
     ]) {
@@ -905,22 +906,22 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
         );
     }
     plan.entry[0][1] = "mutated";
-    plan.fragments.value[0][1][0] = "different";
+    plan.templates.value[0][1][0] = "different";
     assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
 });
 
-test("semantic fragment names are opaque and sharing stays compact", async () => {
+test("semantic template names are opaque and sharing stays compact", async () => {
     const { createServerRenderer } = await import(runtime);
-    const fragments = Object.create(null);
-    fragments.__proto__ = [["binding", ["label"], true]];
+    const templates = Object.create(null);
+    templates.__proto__ = [["binding", ["label"], true]];
     const renderer = createServerRenderer({
         format: "fast-server-js",
         version: 1,
         entry: [
-            ["fragment", "__proto__"],
-            ["fragment", "__proto__"],
+            ["template", "__proto__"],
+            ["template", "__proto__"],
         ],
-        fragments,
+        templates,
         components: {},
     });
     assert.equal(renderer.renderEntry({ label: "<" }), "&lt;&lt;");
@@ -928,7 +929,7 @@ test("semantic fragment names are opaque and sharing stays compact", async () =>
         "test-el": "<b>{{label}}</b>",
     });
     const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
-    assert.ok(Object.keys(plan.fragments).length < 10);
+    assert.ok(Object.keys(plan.templates).length < 10);
     assert.equal(plan.entry.length, 1000);
 });
 

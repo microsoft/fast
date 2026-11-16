@@ -49,7 +49,7 @@ code escaping to authored UTF-16 coordinates and definition names.
 Compilation limits structural nesting to 128 levels. Symbolic registry references
 permit finite cyclic component definitions without recursive code expansion.
 Identical lowered bodies, including empty light DOM, share private numeric references.
-The wire encoder gives fragments deterministic opaque names in traversal order,
+The wire encoder gives templates deterministic opaque names in traversal order,
 independent of private body numbering. It never expands shared bodies recursively:
 encoding and decoding retain graph-sized storage. Bodies are interned only after lowering, so malformed source still
 receives eager authored diagnostics.
@@ -64,14 +64,14 @@ hydration branches or an output accumulator. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The emitter serializes tagged operations, inline entry operations, named fragment
+The emitter serializes tagged operations, inline entry operations, named template
 bodies and component descriptors. ESM embeds this semantic data and calls the
 helper's loader; it does not expose numeric opcodes, string tables or offsets,
 or emit rendering functions, accessors or loops. The helper validates all records
-and references, detects fragment cycles and prepares execution closures once. Compound
+and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution is unchanged; its loader resolves semantic fragment names into
+Native execution is unchanged; its loader resolves semantic template names into
 private body indices once, then applies complete existing IR validation.
 
 Conditions lower using the established server operator scanners; arbitrary

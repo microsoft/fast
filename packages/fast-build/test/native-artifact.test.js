@@ -42,11 +42,11 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
         "components",
         "entry",
         "format",
-        "fragments",
+        "templates",
         "version",
     ]);
     assert.ok(Array.isArray(ir.entry));
-    assert.equal(typeof ir.fragments, "object");
+    assert.equal(typeof ir.templates, "object");
     assert.equal(Buffer.from(bytes).includes(Buffer.from("f-when")), false);
     const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
     const server = await import(
