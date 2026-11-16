@@ -86,12 +86,12 @@ keys/values, normalizing negative zero in the owned graph. Parsing already estab
 plain acyclic containers, dense arrays and own data properties; the arbitrary-object
 validator and snapshot copier are not called. Pending containers cost up to graph width
 in request-local memory; deep unused graphs do not recurse through the JavaScript stack.
-All three input boundaries feed the same four target wrappers and flat execution closures.
+All three input boundaries feed the same four target wrappers and semantic execution closures.
 Options, scopes and overlays stay fresh; parsed state is neither frozen nor retained.
 Object-input validation and prepared-state ownership remain unchanged.
 
-JS plan schema 1 and native schema 2 decoders remain supported. New compiler emission
-adds export names, not opcodes or compiler keys. Persisted old modules keep their original
+JavaScript and native semantic schema 1 decoders remain supported. New compiler emission
+adds export names, not operations or compiler keys. Persisted old modules keep their original
 exports and exact bytes; adopting JSON names requires an explicit new output destination,
 not invalidating template-only reuse on a dependency update.
 
@@ -195,7 +195,7 @@ render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
 
-`owned-json` is an additional input mode for the same flat executor, not another
+`owned-json` is an additional input mode for the same semantic executor, not another
 renderer. It passes fresh JSON text into `renderEntryJson` for first/warm/UTF-8
 loops; these timers and GC/memory include owned parsing/full traversal. Input-boundary
 labels prevent conflating these with object-only calls. The separate JSON-to-UTF-8

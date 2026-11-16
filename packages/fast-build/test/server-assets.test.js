@@ -23,7 +23,7 @@ const inputs = {
     templates: { "unused-card": "<span>{{title}}</span>" },
 };
 
-test("old managed schema 1 export lists are reused unchanged; JSON adoption is explicit", async () => {
+test("old managed semantic schema 1 export lists are reused unchanged; JSON adoption is explicit", async () => {
     await inDirectory(async directory => {
         const output = path.join(directory, "server.mjs");
         const source = {
