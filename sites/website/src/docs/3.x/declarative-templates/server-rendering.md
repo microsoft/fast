@@ -29,22 +29,24 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
-## Ahead-of-Time Server JavaScript
+## Compiled Flat-Plan Server JavaScript
 
 Compile templates during the server build to keep WASM and template parsing out
 of the request dependency graph:
 
 ```js
 // Build time
-import { mkdir, writeFile } from "node:fs/promises";
-import { compileServerModule } from "@microsoft/fast-build/server.js";
+import { mkdir } from "node:fs/promises";
+import { writeServerModule } from "@microsoft/fast-build/server.js";
 
 await mkdir("./generated", { recursive: true });
-await writeFile(
+writeServerModule(
     "./generated/server.mjs",
-    compileServerModule("<my-card></my-card>", {
-        "my-card": "<h2>{{title}}</h2>",
-    }),
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
 );
 ```
 
@@ -56,9 +58,18 @@ const html = renderEntry({ title: "Request-specific state" });
 const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
+Generated ESM embeds flat template instruction tables, not rendering functions.
+The server helper validates and loads them once. Published object-input and
+prepared-state methods are unchanged. Compiler fingerprints and literal
+helper-build checks are removed; supported plan/artifact schemas govern loading.
+For strict template-only asset updates, use `writeServerModule` or
+`writeServerArtifact` at build time and persist the asset plus its `.inputs.json`
+manifest. Unchanged authored inputs reuse exact existing bytes without compilation.
+Low-level pure compiler calls do not provide cross-encoder persistence.
+
 The generated module imports only the FAST server helper. Bundle that helper
 with the server or deploy it from the matching `@microsoft/fast-build` package.
-Keep compiler/helper artifacts together and regenerate on upgrades.
+Retain supported generated assets across compiler-only upgrades.
 State must be acyclic JSON-shaped data, with finite numbers and ordinary data
 properties; getters, functions, class instances and nested `undefined` are rejected.
 Existing HTML bytes, server coercion and hydration markers are preserved.
@@ -74,11 +85,13 @@ for options, state restrictions and migration details.
 
 ## Native Rust Compiled Artifacts
 
-JavaScript AOT is one target, not a requirement for native servers. The same
+Flat-plan JavaScript is one target, not a requirement for native servers. The same
 Rust-owned executable representation can be compiled during the build with
 `compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
-`compile_server_artifact`. Deploy those bytes and the exact compiler-matching
-`microsoft-fast-build` native library together:
+`compile_server_artifact`. For cross-compiler file stability, use
+`writeServerArtifact` with retained sidecars or equivalent application-owned
+Rust persistence. Deploy bytes with a `microsoft-fast-build` native library that
+supports their schema:
 
 ```rust
 use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
@@ -91,7 +104,7 @@ let html = program.render_entry(&state, &NativeRenderOptions::default())?;
 `render_template`, `render_host` and `render_shadow` supply the corresponding
 template-context, complete-host and resolved-state DSD-fragment APIs. Artifacts
 own immutable thread-safe instructions and can be shared across requests.
-Loading validates version/compiler/helper identity, operations and references;
+Loading validates supported execution schemas, operations and references;
 rendering owns request-local state, counters and output. Neither loading nor
 rendering executes JavaScript or reparses authored HTML. Escaping, nested state,
 DSD selection and both hydration formats conform to the generated JS target.
@@ -104,12 +117,13 @@ follow-up work. This release does not provide a C# host or separate C# semantics
 ## Migration from request-time source rendering
 
 Generated server JavaScript and native Rust artifact rendering are supported
-targets of the shared compiler. Rebuild modules/artifacts when upgrading.
+targets of the shared compiler. Rebuild legacy modules/artifacts once, then retain
+supported generated assets across compiler-only upgrades.
 
-This is an **API-breaking migration classified as a minor prerelease release**,
+This earlier migration was an **API-breaking migration classified as a minor prerelease release**,
 not a drop-in upgrade. Migrate removed APIs, normalize request state and await
 test-harness rendering before updating consumers. Native artifacts require the
-exact deployed compiler/library fingerprint, not just a matching package version.
+supported native execution schema, not a compiler/library fingerprint.
 Load replacements before activation and retain old workers/handles for in-flight
 requests. Native state/execution/output limits differ from JS host limits, so
 switching targets requires workload qualification as well as markup parity.
@@ -117,7 +131,7 @@ switching targets requires workload qualification as well as markup parity.
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
-`fast build` now always compiles and executes AOT JavaScript; remove `--aot`.
+`fast build` always compiles and executes server JavaScript; remove `--aot`.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [breaking migration guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration/aot-server-rendering.md).
 
