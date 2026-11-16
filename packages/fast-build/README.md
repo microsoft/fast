@@ -17,24 +17,27 @@ To install the latest `@microsoft/fast-build` package using `npm`:
 npm install --save @microsoft/fast-build
 ```
 
-## Compiled flat-plan server modules
+## Compiled semantic server modules
 
-This update replaces generated rendering functions with flat template plans.
+This update replaces generated rendering functions with semantic template plans.
 Published object-input and prepared-state APIs are unchanged. Legacy fingerprinted
 artifacts need a one-time migration; retain new supported assets across compiler
 upgrades using the persistent writer below. See the
 [upgrade guide](./docs/migration/aot-server-rendering.md).
 Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
 uses supported plan schemas instead.
-JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 2. Earlier experimental format names require
+JavaScript plans use `fast-server-js` schema 2; native artifacts use
+`fast-server-native` schema 3. Earlier experimental formats/layouts require
 regeneration as described in the upgrade guide.
 
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
 WASM, browser-class, template-parser, or runtime source-evaluation dependency.
-The ESM embeds string/instruction tables; its helper validates them and creates
-execution closures once at module load, with no generated-function fallback:
+The ESM embeds tagged operations such as `["literal", "<p>"]` and
+`["binding", ["title"], true]`. Shared bodies use named fragments, not numeric
+execution indices. The helper validates this semantic data and creates execution
+closures once at module load, with no generated-function fallback. Internal
+execution optimizations do not change the stored schema:
 
 ```js
 // Build time
@@ -102,7 +105,7 @@ they do not change rendering or establish cross-renderer output equivalence.
 Native Rust applications use the shared compiled-artifact target below.
 See [migration](./docs/migration/aot-server-rendering.md).
 
-The flat-plan loader prepares path/alias accessors at module import and
+The semantic-plan loader prepares path/alias accessors at module import and
 reuses request-local repeat frames across iterations. Compatibility is based on
 supported plan schemas, not compiler fingerprints or helper-build versions.
 Ordinary state/rendering contracts are unchanged.

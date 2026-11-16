@@ -1,23 +1,27 @@
 # Migrating from previous versions
 
-## Generated rendering functions to flat plans
+## Generated rendering functions or numeric plans to semantic plans
 
 Rebuild legacy JavaScript modules/native artifacts once. The generated module
-now embeds flat template tables
+now embeds semantic tagged operations and named fragment references
 loaded by the helper instead of specialized rendering functions.
 Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
 `prepareState` and all four `render*Prepared` methods remain unchanged, as do
 `ServerState`, `PreparedServerState`, validation and snapshot ownership.
 No JSON-only request API or consumer serialization migration is required.
-Native execution is unchanged; the hash-free native envelope uses schema 2.
+Native execution is unchanged; the semantic native envelope uses schema 3.
 
-The format names are `fast-server-js` (JavaScript plan schema 1) and
-`fast-server-native` (native artifact schema 2). The earlier experimental
-`fast-server-plan` and `fast-server` names are not accepted. Regenerate those
-assets before using the renamed loaders. For persistent writers, explicitly
+The format names are `fast-server-js` (JavaScript semantic schema 2) and
+`fast-server-native` (native semantic schema 3). The earlier numeric JavaScript
+schema 1, indexed native schema 2, and experimental `fast-server-plan` and
+`fast-server` names are not accepted. Regenerate those
+assets before using the semantic loaders. For persistent writers, explicitly
 remove the old generated asset and its `.inputs.json` sidecar together before
 rebuilding; unchanged authored inputs otherwise reuse the old bytes. Deploy
-regenerated assets with their matching helper/native loader.
+regenerated assets with their matching helper/native loader. This is a one-time
+semantic format transition. Future internal lowering/execution optimizations do
+not change the wire schema. Only incompatible changes to semantic operations or
+their meaning require a new version.
 
 Compiler fingerprints and literal helper-build equality checks are removed.
 Native loading validates supported execution schemas rather than source/manifest
@@ -54,8 +58,8 @@ whitespace, host attributes and hydration markers remain unchanged.
 ### Prepared snapshots
 
 Rebuild outputs from the earlier source renderer once and deploy a helper/library
-that supports their execution schema. Generated JavaScript uses plan schema 1;
-hash-free native artifacts use schema 2. Ordinary render methods keep validating
+that supports their execution schema. Generated JavaScript uses semantic schema 2;
+native artifacts use semantic schema 3. Ordinary render methods keep validating
 supplied state on every call. Helper release versions are not asset rebuild keys.
 
 For opt-in reuse, call generated `prepareState` once, then use the corresponding

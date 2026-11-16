@@ -830,41 +830,105 @@ test("flat plans preserve rendering exports without compiler identity or release
     }
 });
 
-test("flat plan loading rejects invalid rules and owns independent plan data", async () => {
+test("semantic plans hide execution tables and share their schema across targets", async () => {
+    const { source, module } = await compile("<p>{{label}}</p>");
+    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
+    assert.deepEqual(plan, {
+        format: "fast-server-js",
+        version: 2,
+        entry: [
+            ["literal", "<p>"],
+            ["binding", ["label"], true],
+            ["literal", "</p>"],
+        ],
+        fragments: {},
+        components: {},
+    });
+    const native = JSON.parse(
+        Buffer.from(
+            require("../server.js").compileServerArtifact("<p>{{label}}</p>"),
+        ).toString(),
+    );
+    assert.deepEqual(native, { ...plan, format: "fast-server-native", version: 3 });
+    assert.equal(module.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
+});
+
+test("semantic plan loading rejects invalid rules and owns independent plan data", async () => {
     const { createServerRenderer } = await import(runtime);
     const plan = {
         format: "fast-server-js",
-        version: 1,
-        strings: ["<p>", "label", "</p>"],
-        code: [18, 1, 2, 3, 0, 0, 20, 4, 1, 0, 2, 1, 1],
-        offsets: [0, 4, 6, 9, 11],
-        root: 0,
+        version: 2,
+        entry: [
+            ["literal", "<p>"],
+            ["fragment", "value"],
+            ["literal", "</p>"],
+        ],
+        fragments: { value: [["binding", ["label"], true]] },
+        components: {},
     };
-    const renderer = createServerRenderer(plan, []);
+    const renderer = createServerRenderer(plan);
     assert.equal(Object.hasOwn(renderer, "compilerId"), false);
     assert.equal(Object.hasOwn(renderer, "runtimeVersion"), false);
     assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
     for (const format of ["fast-server-plan", "fast-server-native", undefined]) {
         assert.throws(
-            () => createServerRenderer({ ...plan, format }, []),
+            () => createServerRenderer({ ...plan, format }),
             /Invalid or incompatible FAST server plan/,
         );
     }
-    plan.strings[0] = "mutated";
-    plan.code.fill(0);
-    assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
     for (const invalid of [
         { ...plan, format: "unknown-plan" },
         { ...plan, version: undefined },
-        { ...plan, version: 2 },
-        { ...plan, offsets: [0, -1] },
-        { ...plan, code: [18, 1, 26, 0], offsets: [0, 2], root: 0 },
+        { ...plan, version: 1 },
+        { ...plan, code: [18, 1] },
+        { ...plan, entry: [["fragment", "missing"]] },
+        { ...plan, entry: [["binding", [], true]] },
+        { ...plan, entry: [["binding", ["label"], 1]] },
+        { ...plan, entry: [["literal", "text", "extra"]] },
+        { ...plan, entry: [["call", 0]] },
+        {
+            ...plan,
+            entry: [["when", ["compare", "evil", ["x"], ["path", ["y"]]], "value"]],
+        },
+        { ...plan, fragments: { unused: [["unknown"]] } },
+        { ...plan, fragments: { value: [["fragment", "value"]] } },
+        {
+            ...plan,
+            fragments: { value: [["fragment", "other"]], other: [["fragment", "value"]] },
+        },
+        { ...plan, components: { bad: { shadow: "value", host: "missing", tag: "" } } },
     ]) {
         assert.throws(
-            () => createServerRenderer(invalid, []),
+            () => createServerRenderer(invalid),
             /Invalid or incompatible FAST server plan/,
         );
     }
+    plan.entry[0][1] = "mutated";
+    plan.fragments.value[0][1][0] = "different";
+    assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
+});
+
+test("semantic fragment names are opaque and sharing stays compact", async () => {
+    const { createServerRenderer } = await import(runtime);
+    const fragments = Object.create(null);
+    fragments.__proto__ = [["binding", ["label"], true]];
+    const renderer = createServerRenderer({
+        format: "fast-server-js",
+        version: 2,
+        entry: [
+            ["fragment", "__proto__"],
+            ["fragment", "__proto__"],
+        ],
+        fragments,
+        components: {},
+    });
+    assert.equal(renderer.renderEntry({ label: "<" }), "&lt;&lt;");
+    const { source } = await compile("<test-el></test-el>".repeat(1000), {
+        "test-el": "<b>{{label}}</b>",
+    });
+    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
+    assert.ok(Object.keys(plan.fragments).length < 10);
+    assert.equal(plan.entry.length, 1000);
 });
 
 test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {

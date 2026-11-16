@@ -13,12 +13,15 @@ The helper is the JavaScript target's request engine. It has no imports or compi
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-Rust lowers the shared executable IR into flat string, numeric-code and offset
-tables, with local rule IDs per entry/component. Generated ESM contains these
-state-independent plans and one helper call, not generated rendering functions.
-The helper validates all rules/references and prepares typed execution closures
-at module load, including unreachable rules and cycle detection. Mutable input
-tables are copied before activation. There is no generated-function fallback.
+Rust encodes the shared executable IR as stable semantic tagged operations,
+named fragment references and component descriptors. Generated ESM contains one
+state-independent plan and one helper call, not generated rendering functions,
+numeric opcodes, string tables or offsets. Both targets use the same semantic
+encoding; the JS helper compiles execution closures and the native loader resolves
+fragment names into its private indexed IR. Internal execution layout changes do
+not change the wire schema. The helper validates even unreachable fragments and
+detects reference cycles before activation. Captured values are independent of
+later input mutation. There is no generated-function fallback.
 Compound property literals retain per-call ownership. Published object/prepared
 APIs and their validation/snapshot ownership are unchanged.
 
@@ -46,7 +49,7 @@ imply equivalent FAST budgets in the JS target.
 
 ### Compiled access and repeat frames
 
-The flat-plan loader prepares path accessors and resolves potential lexical aliases
+The semantic-plan loader prepares path accessors and resolves potential lexical aliases
 into numeric slots. The helper caches array-index decoding at module import,
 specializes single-key root and single-alias lookups, and selects the newest
 matching alias when dotted prefixes overlap. It preserves own-property masking,
@@ -58,10 +61,11 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Flat plans preserve published object/prepared APIs. Supported artifact schemas,
+Semantic plans preserve published object/prepared APIs. Supported artifact schemas,
 not compiler fingerprints or helper-build versions, determine compatibility.
-The targets identify themselves as `fast-server-js` (plan schema 1) and
-`fast-server-native` (native schema 2); loaders reject other format names.
+The targets identify themselves as `fast-server-js` (plan schema 2) and
+`fast-server-native` (native schema 3); loaders reject earlier layouts and other
+format names. The one-time migration requires regenerating old assets and sidecars.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported
 assets. Native execution is not optimized here.
@@ -103,7 +107,7 @@ and error/request isolation are unchanged; there is no streaming API change.
 
 ## CLI
 
-`fast build` loads entry/registry files, compiles flat plans, imports their ESM,
+`fast build` loads entry/registry files, compiles semantic plans, imports their ESM,
 parses optional state JSON, executes `renderEntry` and writes complete HTML.
 It is a build tool, not a request handler, and always produces complete HTML.
 Omitted state becomes an empty object, without implicitly loading state.json.

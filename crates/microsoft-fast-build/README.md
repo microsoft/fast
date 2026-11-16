@@ -1,7 +1,7 @@
 # microsoft-fast-build
 
 Build-time Rust compiler and template tooling for FAST declarative HTML.
-One compiler-owned executable representation supports flat-plan server JavaScript
+One compiler-owned executable representation supports semantic server JavaScript
 and native Rust artifact rendering. Native requests need no JavaScript engine.
 
 ```sh
@@ -10,14 +10,15 @@ cargo add microsoft-fast-build
 
 ## Usage
 
-### Compile flat-plan server JavaScript
+### Compile semantic server JavaScript
 
 `compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
 with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
 Templates are trusted build inputs; the generated module imports the FAST-owned
 server helper rather than WASM, browser classes or a runtime template parser.
-It embeds string/instruction tables, not generated rendering functions; the
-helper validates those tables and creates execution closures at module load:
+It embeds stable tagged operations and named fragments, not numeric execution
+tables or generated rendering functions. The helper validates those operations
+and creates execution closures at module load:
 
 ```rust
 use microsoft_fast_build::{compile_server_module, Locator};
@@ -38,14 +39,16 @@ See the [server module contract](../../packages/fast-build/docs/server-modules.m
 for helper compatibility, state validation and qualification.
 
 The plan loader prepares path accessors and reusable request-local repeat frames.
-JavaScript `fast-server-js` plan schema 1 and native `fast-server-native` artifact
-schema 2 are independent of compiler
+JavaScript `fast-server-js` plan schema 2 and native `fast-server-native` artifact
+schema 3 are independent of compiler
 build identity. The compiler fingerprint and helper-build equality checks are removed.
 Published object-input and prepared-state APIs remain unchanged.
 The diagnostic `SERVER_RUNTIME_VERSION` constant and generated `runtimeVersion`
 metadata are removed; use supported schemas for compatibility.
-Regenerate artifacts using the earlier experimental `fast-server-plan` or
-`fast-server` format names before deploying the renamed loaders.
+Regenerate artifacts using earlier experimental format names or numeric layouts
+before deploying the semantic loaders. Both targets share one semantic encoding;
+the native loader resolves names into a private indexed execution representation.
+Changing that private layout does not require changing generated files or schema.
 
 ### Compile and deploy native Rust artifacts
 
@@ -79,7 +82,7 @@ loading. Errors are recoverable `NativeRenderError { code, message }`; no partia
 HTML is returned. Load validates all references/opcodes and requires a
 supported execution schema. Compiler-only updates do not
 invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-time
-rebuild into schema 2. State/execution/output limits and
+rebuild into semantic schema 3. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
 Escaped text bindings write directly into the request's bounded UTF-8 output

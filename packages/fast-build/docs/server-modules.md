@@ -1,7 +1,7 @@
-# Compiled flat-plan server modules
+# Compiled semantic server modules
 
 One Rust-owned lowering produces the executable representation for two supported
-targets: flat-plan JavaScript and native Rust compiled artifacts.
+targets: semantic-plan JavaScript and native Rust compiled artifacts.
 JavaScript is a target, not a requirement for native request execution.
 
 ## Compilation and execution
@@ -15,11 +15,85 @@ The optional helper specifier defaults to
 server-only module. Do not import `server.js` into the request dependency graph.
 It is a build-time API and loads the compiler WASM.
 
-Generated ESM embeds flat string, numeric-instruction and offset tables rather
-than rendering functions. The helper validates all rules/references and creates
+Generated ESM embeds semantic tagged operations and named fragments rather
+than rendering functions or numeric execution tables. The helper validates all rules/references and creates
 execution closures once during module loading. Requests execute those closures;
 they do not compile templates or evaluate source. The published object/prepared
 APIs and state ownership contracts below are unchanged.
+
+### Stable semantic data
+
+The JavaScript and native targets share these semantic fields:
+
+```json
+{
+    "format": "fast-server-js",
+    "version": 2,
+    "entry": [
+        ["literal", "<p>"],
+        ["binding", ["label"], true],
+        ["literal", "</p>"]
+    ],
+    "fragments": {},
+    "components": {}
+}
+```
+
+For native artifacts, only the envelope identity differs:
+`format: "fast-server-native"` and `version: 3`. JavaScript modules pass their
+plan to `createServerRenderer(plan)`; native hosts pass serialized bytes to
+`CompiledArtifact::load`.
+
+`entry` is an ordered list of operations. `fragments` maps opaque names to other
+operation lists, keeping reused bodies shared instead of recursively expanding
+them. Names are references, not execution indices; consumers must not interpret
+their spelling or order. Components map authored names to `{ shadow, host, tag }`:
+the first two name fragments, while `tag` is the opening shadow-template markup.
+Unknown envelope fields, operations and references are rejected, including in
+unreachable fragments. Loaders own any string interning, offsets, numeric
+instructions, native indices, accessors or execution closures they need.
+
+| Operation | Meaning |
+|---|---|
+| `["literal", text]` | Output literal markup/text. |
+| `["binding", path, escaped]` | Output a state path; `escaped` is a boolean controlling HTML escaping. |
+| `["fragment", name]` | Execute a shared fragment in the current context. |
+| `["when", condition, fragment]` | Execute a fragment if a condition is true, preserving hydration boundaries. |
+| `["repeat", alias, collection, diagnostic, fragment]` | Repeat a fragment with lexical alias/index scope; the diagnostic string identifies invalid collections. |
+| `["tag", descriptor]` | Render ordinary or hydrated tag attributes. |
+| `["element", descriptor]` | Render a registered component, its property overlays, host attributes, shadow and light DOM. |
+
+Paths are nonempty string-segment arrays, not JavaScript expressions.
+Conditions use `["truthy", path]`, `["not", path]`, `["&&", left, right]`,
+`["||", left, right]`, or `["compare", operator, path, operand]`.
+Operands are `["path", path]` or `["value", literal]`. Typed literals use
+`["null"]` or `["bool" | "number" | "string" | "array" | "object", value]`;
+numbers are encoded as strings, and array/object entries are typed literals.
+Compound literals remain fresh per request, not shared mutable state.
+
+Tag descriptors have `{ plain, hydrated, count, ending }`. The first two are
+attribute-operation lists, `count` is the hydration binding count, and `ending`
+is the closing tag delimiter. Attribute operations are literal text,
+`["attribute", name, path, booleanAttribute, primitiveOnly]`,
+`["conditional", condition, literalText]`, or `["quoted", name, parts]`.
+Quoted parts are literal text or `["segment", path]`.
+
+Element descriptors have `{ name, body, closing, opening, props, entry, normal,
+count, defaults, shadowTag }`. `body` names the light-DOM fragment, `opening` is a
+tag descriptor, `entry`/`normal` are host attribute-operation lists, and `count`
+preserves host hydration markers. Ordered `props` entries are
+`[camelCaseName, unchangedName, datasetKeyOrNull, operand]`; ordered `defaults`
+entries are `[attributeName, attributeOperation]`. These preserve naming,
+dataset merging, caller masking and host-default evaluation semantics. `closing`
+and `shadowTag` retain exact authored/declarative markup.
+
+Schema versions describe these semantics, **not an execution backend or its
+performance strategy**. Changing private lowering does not require regenerating
+files or changing a version. An incompatible change to a tag's meaning or fields
+still requires an explicit schema migration.
+Benchmark tooling retains its existing `flatPlan` mode and
+`flat-plan-javascript` target labels for report consumers; current compiler output
+is semantic. Earlier numeric-plan measurements do not measure this replacement.
 
 The `server-js` conversion target accepts a registry of named `<f-template>`
 files and emits one `.mjs` file, defaulting to `server.mjs`. It rejects wildcard
@@ -129,7 +203,7 @@ fresh preparation on every call as a control.
 
 ## Compatibility and migration
 
-The flat-plan replacement preserves published object-input and prepared-state
+The semantic-plan replacement preserves published object-input and prepared-state
 APIs, state acceptance and ownership. Rebuild legacy outputs once and deploy a
 helper that supports the generated plan schema.
 The upgrade guide separately describes the earlier API-breaking migration from
@@ -137,7 +211,7 @@ request-time source rendering and retired prepared compiler/program APIs.
 
 Generated code no longer exports a compiler fingerprint or compares a literal
 helper-build version on import. The helper validates the supported plan schema;
-JavaScript plans use `format: "fast-server-js"` with schema version 1.
+JavaScript plans use `format: "fast-server-js"` with semantic schema version 2.
 no runtime release metadata is emitted or exported. Native loading also uses
 explicit supported schemas rather than compiler-build identity.
 Unknown schemas fail safely. Retain supported published decoders across runtime
@@ -276,13 +350,14 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 
 ### Compatibility, errors and memory
 
-- The artifact envelope identifies `format: "fast-server-native"` and execution schema
-  version 2. Legacy schema 1 requires a one-time rebuild. It contains no compiler
+- The artifact envelope identifies `format: "fast-server-native"` and semantic schema
+  version 3. Earlier schemas require a one-time rebuild. It contains no compiler
   fingerprint or JavaScript helper-build version. Native loading accepts supported schemas and validates
   their complete operations/references. Source, manifest and lockfile changes
   do not invalidate an otherwise supported artifact.
 - Load validates every opcode, operand shape, static value, component reference,
-  body index and envelope field, including unreachable bodies. It never parses
+  fragment reference and envelope field, including unreachable bodies. It resolves
+  names to private body indices once at load time and never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
   fail; condition/static-value trees have additional 64-level schema bounds.
   Artifacts accept at most one million bodies and one million total body operations.

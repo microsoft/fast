@@ -5,8 +5,10 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits flat string/code/offset tables in ESM from this IR; `compile_server_artifact` serializes
-the same IR for the supported native Rust executor. There is one HTML/expression
+emits semantic tagged operations in ESM from this IR; `compile_server_artifact`
+serializes the same semantic format for the supported native Rust executor.
+The public wire representation is separate from private lowering/execution.
+There is one HTML/expression
 lowering pipeline, not a second native template compiler.
 The browser conversion crate remains independent.
 
@@ -15,7 +17,8 @@ The browser conversion crate remains independent.
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
-| `aot.rs` | Flat-plan server ESM emission from the shared executable IR |
+| `aot.rs` | Semantic server ESM emission from the shared executable IR |
+| `server_plan.rs` | Stable tagged wire encoding and native name-to-index decoding |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
@@ -45,8 +48,10 @@ they never invoke a renderer. Diagnostics are rebased through nested bodies and
 code escaping to authored UTF-16 coordinates and definition names.
 Compilation limits structural nesting to 128 levels. Symbolic registry references
 permit finite cyclic component definitions without recursive code expansion.
-Identical lowered bodies, including empty light DOM, share numeric references in
-both targets. Bodies are interned only after lowering, so malformed source still
+Identical lowered bodies, including empty light DOM, share private numeric references.
+The wire encoder gives fragments deterministic opaque names in traversal order,
+independent of private body numbering. It never expands shared bodies recursively:
+encoding and decoding retain graph-sized storage. Bodies are interned only after lowering, so malformed source still
 receives eager authored diagnostics.
 
 Lowering folds ordinary tags with no bindings into literal writes only when
@@ -59,13 +64,15 @@ hydration branches or an output accumulator. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The emitter locally numbers flat rules per entry/component and interns strings.
-ESM embeds only these plans and calls the helper's loader; it does not emit
-rendering functions, accessors or loops. The helper validates all records and
-references, detects cycles and prepares execution closures once. Compound
+The emitter serializes tagged operations, inline entry operations, named fragment
+bodies and component descriptors. ESM embeds this semantic data and calls the
+helper's loader; it does not expose numeric opcodes, string tables or offsets,
+or emit rendering functions, accessors or loops. The helper validates all records
+and references, detects fragment cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution and artifact schema are unchanged.
+Native execution is unchanged; its loader resolves semantic fragment names into
+private body indices once, then applies complete existing IR validation.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static
@@ -92,12 +99,14 @@ Component shadows and host defaults start without caller repeat aliases;
 light DOM retains its caller frame.
 
 This is a JavaScript backend replacement, not a native executor rewrite.
-Flat plans preserve published object/prepared APIs. Artifact schemas are
+Semantic plans preserve published object/prepared APIs. Artifact schemas are
 versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
-JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 2. Format identifiers are target-specific and strict.
+JavaScript plans use `fast-server-js` schema 2; native artifacts use
+`fast-server-native` schema 3. Format identifiers are target-specific and strict.
+Only semantic-format changes require new schema versions, not changes to
+private closure compilation, alias slots or native execution layout.
 
 ## Request execution
 
