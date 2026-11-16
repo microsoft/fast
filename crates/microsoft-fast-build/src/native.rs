@@ -6,6 +6,10 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::Write;
 use std::sync::Arc;
+mod plan;
+use plan::{
+    Attribute, Comparison, Component, Condition, Dynamic, Operand, Operation, Plan, Segment, Tag,
+};
 
 /// Attribute-to-state mapping for custom element attributes.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -106,18 +110,22 @@ pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>
 
 /// A validated, immutable, `Send + Sync` executable. Clones share owned artifact
 /// storage; requests own all transient state and output. No JavaScript is used.
+/// Generate JavaScript from authored templates with [`crate::compile_server_module`],
+/// not from a loaded native artifact.
+///
+/// ```compile_fail
+/// use microsoft_fast_build::CompiledArtifact;
+///
+/// fn emit(artifact: &CompiledArtifact) {
+///     artifact.emit_server_module("runtime.mjs");
+/// }
+/// ```
 #[derive(Clone, Debug)]
 pub struct CompiledArtifact {
-    ir: Arc<V>,
+    plan: Arc<Plan>,
 }
 
 impl CompiledArtifact {
-    /// Emit the JavaScript target from this exact validated executable IR.
-    /// This is build-time code generation, not native execution of JavaScript.
-    pub fn emit_server_module(&self, runtime_import: &str) -> String {
-        crate::aot::emit(&self.ir, runtime_import)
-    }
-
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
     /// semantic schema 1, independently of private execution layouts.
     /// Experimental layouts and unknown schemas require explicit regeneration.
@@ -137,7 +145,9 @@ impl CompiledArtifact {
         }
         let ir = crate::server_plan::decode(ir).map_err(|_| invalid())?;
         validate_artifact(&ir)?;
-        Ok(Self { ir: Arc::new(ir) })
+        Ok(Self {
+            plan: Arc::new(Plan::load(&ir)),
+        })
     }
 
     pub fn render_entry(
@@ -145,12 +155,7 @@ impl CompiledArtifact {
         state: &J,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.render(
-            self.ir["entry"].as_u64().unwrap() as usize,
-            state,
-            options,
-            true,
-        )
+        self.render(self.plan.entry, state, options, true)
     }
 
     /// Parse, fully validate and render fresh owned JSON without a snapshot copy.
@@ -160,7 +165,7 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
         let state = parse_render_state(json)?;
-        self.execute(index(&self.ir["entry"]), &state, options, true)
+        self.execute(self.plan.entry, &state, options, true)
     }
 
     /// Fresh JSON rendering with template-context root-host rules.
@@ -170,7 +175,7 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
         let state = parse_render_state(json)?;
-        self.execute(index(&self.ir["entry"]), &state, options, false)
+        self.execute(self.plan.entry, &state, options, false)
     }
 
     /// Parse and validate before resolving the named host, matching typed input.
@@ -181,7 +186,7 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
         let state = parse_render_state(json)?;
-        self.execute(index(&self.component(name)?["host"]), &state, options, true)
+        self.execute(self.component(name)?.host, &state, options, true)
     }
 
     /// Fresh JSON rendering of only the selected component's DSD.
@@ -201,12 +206,7 @@ impl CompiledArtifact {
         state: &J,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.render(
-            self.ir["entry"].as_u64().unwrap() as usize,
-            state,
-            options,
-            false,
-        )
+        self.render(self.plan.entry, state, options, false)
     }
 
     /// Render without repeating validation or copying the snapshot's root.
@@ -215,7 +215,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(index(&self.ir["entry"]), &state.values, options, true)
+        self.execute(self.plan.entry, &state.values, options, true)
     }
 
     /// Prepared-state rendering with template-context root-host rules.
@@ -224,7 +224,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(index(&self.ir["entry"]), &state.values, options, false)
+        self.execute(self.plan.entry, &state.values, options, false)
     }
 
     pub fn render_host(
@@ -235,12 +235,7 @@ impl CompiledArtifact {
     ) -> Result<String, NativeRenderError> {
         let state = normalized(state, 0, &mut 1_000_000)?;
         let component = self.component(name)?;
-        self.execute(
-            component["host"].as_u64().unwrap() as usize,
-            &state,
-            options,
-            true,
-        )
+        self.execute(component.host, &state, options, true)
     }
 
     /// Render a named host using an immutable validated snapshot.
@@ -250,12 +245,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(
-            index(&self.component(name)?["host"]),
-            &state.values,
-            options,
-            true,
-        )
+        self.execute(self.component(name)?.host, &state.values, options, true)
     }
 
     /// Return only DSD for resolved component state (no attribute overlay/host).
@@ -289,10 +279,10 @@ impl CompiledArtifact {
         if !selected(options, name) {
             return Ok(String::new());
         }
-        let mut executor = Executor::new(&self.ir, options);
-        executor.push(component["tag"].as_str().unwrap())?;
+        let mut executor = Executor::new(&self.plan, options);
+        executor.push(&component.tag)?;
         executor.body(
-            component["shadow"].as_u64().unwrap() as usize,
+            component.shadow,
             &Frame {
                 base: Some(state),
                 values: HashMap::new(),
@@ -307,9 +297,11 @@ impl CompiledArtifact {
         Ok(executor.out)
     }
 
-    fn component(&self, name: &str) -> Result<&V, NativeRenderError> {
-        self.ir["components"]
+    fn component(&self, name: &str) -> Result<&Component, NativeRenderError> {
+        self.plan
+            .names
             .get(name)
+            .map(|id| &self.plan.components[*id])
             .ok_or_else(|| error("missing-template", format!("Unknown component: {name}")))
     }
 
@@ -331,7 +323,7 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
         entry: bool,
     ) -> Result<String, NativeRenderError> {
-        let mut executor = Executor::new(&self.ir, options);
+        let mut executor = Executor::new(&self.plan, options);
         executor.body(
             id,
             &Frame {
@@ -471,78 +463,44 @@ fn selected(options: &NativeRenderOptions, name: &str) -> bool {
         .is_none_or(|names| names.iter().any(|n| n == name))
 }
 
-fn array(v: &V) -> &[V] {
-    v.as_array().unwrap()
-}
-fn string(v: &V) -> &str {
-    v.as_str().unwrap()
-}
-fn index(v: &V) -> usize {
-    v.as_u64().unwrap() as usize
-}
-
-fn decoded(v: &V) -> J {
-    match string(&v[0]) {
-        "null" => J::Null,
-        "bool" => J::Bool(v[1].as_bool().unwrap()),
-        "number" => J::Number(string(&v[1]).parse().unwrap()),
-        "string" => J::String(string(&v[1]).into()),
-        "array" => J::Array(array(&v[1]).iter().map(decoded).collect()),
-        "object" => J::Object(
-            v[1].as_object()
-                .unwrap()
-                .iter()
-                .map(|(k, v)| (k.clone(), decoded(v)))
-                .collect(),
-        ),
-        _ => unreachable!("validated value"),
-    }
-}
-
 struct Frame<'a> {
     base: Option<&'a J>,
     values: HashMap<&'a str, Cow<'a, J>>,
     parent: Option<&'a Frame<'a>>,
 }
 struct LoopFrame<'a> {
-    prefix: &'a [V],
+    prefix: &'a [String],
     item: &'a J,
     index: J,
     parent: Option<&'a LoopFrame<'a>>,
 }
 type Loops<'a> = Option<&'a LoopFrame<'a>>;
 
-fn nested<'a>(value: &'a J, path: &[V]) -> Option<Cow<'a, J>> {
+fn nested<'a>(value: &'a J, path: &[Segment]) -> Option<Cow<'a, J>> {
     let mut value = value;
     for (at, key) in path.iter().enumerate() {
-        let key = string(key);
         match value {
             J::Array(values) => {
-                if key == "length" {
+                if key.key == "length" {
                     return (at == path.len() - 1)
                         .then_some(Cow::Owned(J::Number(values.len() as f64)));
                 }
-                let digits = key.strip_prefix('+').unwrap_or(key);
-                if digits.is_empty() || !digits.bytes().all(|b| b.is_ascii_digit()) {
-                    return None;
-                }
-                value = values.get(digits.parse::<usize>().ok()?)?;
+                value = values.get(key.array_index?)?;
             }
-            J::Object(values) => value = values.get(key)?,
+            J::Object(values) => value = values.get(&key.key)?,
             _ => return None,
         }
     }
     Some(Cow::Borrowed(value))
 }
 
-fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &V) -> Option<Cow<'a, J>> {
-    let path = array(path);
+fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &[Segment]) -> Option<Cow<'a, J>> {
     while let Some(current) = loops {
-        if string(&path[0]) == "$index" {
+        if path[0].key == "$index" {
             return nested(&current.index, &path[1..]);
         }
         if current.prefix.len() <= path.len()
-            && current.prefix.iter().zip(path).all(|(a, b)| a == b)
+            && current.prefix.iter().zip(path).all(|(a, b)| a == &b.key)
         {
             return nested(current.item, &path[current.prefix.len()..]);
         }
@@ -550,13 +508,13 @@ fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &V) -> Option<Cow<'a
     }
     let mut frame = Some(root);
     while let Some(current) = frame {
-        if let Some(value) = current.values.get(string(&path[0])) {
+        if let Some(value) = current.values.get(path[0].key.as_str()) {
             return nested(value, &path[1..]);
         }
         if let Some(base) = current.base {
             let val = nested(base, path);
             if val.is_some()
-                || matches!(base, J::Object(values) if values.contains_key(string(&path[0])))
+                || matches!(base, J::Object(values) if values.contains_key(&path[0].key))
             {
                 return val;
             }
@@ -591,11 +549,10 @@ fn truthy(value: Option<&J>) -> bool {
         _ => true,
     }
 }
-fn operand<'a>(v: &V, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
-    if v[0] == "path" {
-        get(root, loops, &v[1])
-    } else {
-        Some(Cow::Owned(decoded(&v[1])))
+fn operand<'a>(v: &Operand, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
+    match v {
+        Operand::Path(path) => get(root, loops, path),
+        Operand::Value(value) => Some(Cow::Owned(value.clone())),
     }
 }
 fn numeric(v: &J) -> Option<f64> {
@@ -618,20 +575,20 @@ fn equal(a: &J, b: &J) -> bool {
         _ => false,
     }
 }
-fn condition(v: &V, root: &Frame<'_>, loops: Loops<'_>) -> bool {
-    match string(&v[0]) {
-        "||" => condition(&v[1], root, loops) | condition(&v[2], root, loops),
-        "&&" => condition(&v[1], root, loops) & condition(&v[2], root, loops),
-        "not" => !truthy(get(root, loops, &v[1]).as_deref()),
-        "truthy" => truthy(get(root, loops, &v[1]).as_deref()),
-        "compare" => {
-            let a = get(root, loops, &v[2]);
-            let b = operand(&v[3], root, loops);
-            let op = string(&v[1]);
+fn condition(v: &Condition, root: &Frame<'_>, loops: Loops<'_>) -> bool {
+    use Comparison::*;
+    match v {
+        Condition::Or(a, b) => condition(a, root, loops) | condition(b, root, loops),
+        Condition::And(a, b) => condition(a, root, loops) & condition(b, root, loops),
+        Condition::Not(path) => !truthy(get(root, loops, path).as_deref()),
+        Condition::Truthy(path) => truthy(get(root, loops, path).as_deref()),
+        Condition::Compare(op, path, value) => {
+            let a = get(root, loops, path);
+            let b = operand(value, root, loops);
             match (a, b) {
                 (Some(a), Some(b)) => {
-                    if op == "==" || op == "!=" {
-                        return equal(&a, &b) == (op == "==");
+                    if matches!(op, Equal | NotEqual) {
+                        return equal(&a, &b) == (*op == Equal);
                     }
                     let order = match (numeric(&a), numeric(&b)) {
                         (Some(a), Some(b)) => {
@@ -650,22 +607,21 @@ fn condition(v: &V, root: &Frame<'_>, loops: Loops<'_>) -> bool {
                         },
                     };
                     match op {
-                        ">" => order > 0,
-                        "<" => order < 0,
-                        ">=" => order >= 0,
+                        Greater => order > 0,
+                        Less => order < 0,
+                        GreaterEqual => order >= 0,
                         _ => order <= 0,
                     }
                 }
-                (None, None) => matches!(op, "==" | ">=" | "<="),
-                _ => op == "!=",
+                (None, None) => matches!(op, Equal | GreaterEqual | LessEqual),
+                _ => *op == NotEqual,
             }
         }
-        _ => unreachable!("validated condition"),
     }
 }
 
 struct Executor<'a> {
-    ir: &'a V,
+    plan: &'a Plan,
     options: &'a NativeRenderOptions,
     out: String,
     steps: usize,
@@ -678,9 +634,9 @@ impl Write for Executor<'_> {
 }
 
 impl<'a> Executor<'a> {
-    fn new(ir: &'a V, options: &'a NativeRenderOptions) -> Self {
+    fn new(plan: &'a Plan, options: &'a NativeRenderOptions) -> Self {
         Self {
-            ir,
+            plan,
             options,
             out: String::new(),
             steps: 0,
@@ -725,57 +681,66 @@ impl<'a> Executor<'a> {
     fn number(&mut self, n: f64) -> Result<(), NativeRenderError> {
         write!(self, "{n}").map_err(|_| error("render-limit", "Output byte limit exceeded"))
     }
-    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: Loops<'_>) -> Result<(), NativeRenderError> {
-        match string(&v[0]) {
-            "literal" => self.push(string(&v[1])),
-            "conditional" => {
-                if condition(&v[1], root, loops) {
-                    self.push(string(&v[2]))?;
+    fn attr(
+        &mut self,
+        v: &Attribute,
+        root: &Frame<'_>,
+        loops: Loops<'_>,
+    ) -> Result<(), NativeRenderError> {
+        match v {
+            Attribute::Literal(value) => self.push(value),
+            Attribute::Conditional(test, value) => {
+                if condition(test, root, loops) {
+                    self.push(value)?;
                 }
                 Ok(())
             }
-            "attribute" => {
-                let val = get(root, loops, &v[2]);
-                if v[3] == true {
+            Attribute::Bound {
+                name,
+                path,
+                boolean,
+                property,
+            } => {
+                let val = get(root, loops, path);
+                if *boolean {
                     if let Some(J::Bool(value)) = val.as_deref() {
                         if *value {
                             self.push(" ")?;
-                            self.push(string(&v[1]))?;
+                            self.push(name)?;
                         }
                         return Ok(());
                     }
                 }
                 match val.as_deref() {
                     None | Some(J::Null) => return Ok(()),
-                    Some(J::Array(_) | J::Object(_)) if v[4] == true => return Ok(()),
+                    Some(J::Array(_) | J::Object(_)) if *property => return Ok(()),
                     _ => {}
                 }
                 self.push(" ")?;
-                self.push(string(&v[1]))?;
+                self.push(name)?;
                 self.push("=\"")?;
                 match val.as_deref() {
-                    Some(J::Number(n)) if v[4] == true => self.number(*n)?,
+                    Some(J::Number(n)) if *property => self.number(*n)?,
                     value => self.value(value, true)?,
                 }
                 self.push("\"")
             }
-            "quoted" => {
+            Attribute::Quoted(name, parts) => {
                 // A missing later binding suppresses the whole attribute, even when
                 // an earlier value would exceed the output budget.
-                for part in array(&v[2]) {
-                    if part[0] != "literal" {
-                        let value = get(root, loops, &part[1]);
+                for part in parts {
+                    if let plan::Part::Segment(path) = part {
+                        let value = get(root, loops, path);
                         if matches!(value.as_deref(), None | Some(J::Null)) {
                             return Ok(());
                         }
                     }
                 }
                 self.push(" ")?;
-                self.push(string(&v[1]))?;
+                self.push(name)?;
                 self.push("=\"")?;
-                for part in array(&v[2]) {
-                    if part[0] == "literal" {
-                        let text = string(&part[1]);
+                for part in parts {
+                    if let plan::Part::Literal(text) = part {
                         let mut start = 0;
                         for (at, _) in text.match_indices('"') {
                             self.push(&text[start..at])?;
@@ -783,22 +748,21 @@ impl<'a> Executor<'a> {
                             start = at + 1;
                         }
                         self.push(&text[start..])?;
-                    } else {
-                        self.value(get(root, loops, &part[1]).as_deref(), true)?;
+                    } else if let plan::Part::Segment(path) = part {
+                        self.value(get(root, loops, path).as_deref(), true)?;
                     }
                 }
                 self.push("\"")
             }
-            _ => unreachable!("validated attribute"),
         }
     }
     fn attrs(
         &mut self,
-        values: &V,
+        values: &[Attribute],
         root: &Frame<'_>,
         loops: Loops<'_>,
     ) -> Result<(), NativeRenderError> {
-        for value in array(values) {
+        for value in values {
             self.tick()?;
             self.attr(value, root, loops)?;
         }
@@ -854,19 +818,19 @@ impl<'a> Executor<'a> {
     }
     fn tag(
         &mut self,
-        v: &V,
+        v: &Tag,
         root: &Frame<'_>,
         loops: Loops<'_>,
         scope: &mut Option<usize>,
     ) -> Result<(), NativeRenderError> {
         if scope.is_none() {
-            self.attrs(&v["plain"], root, loops)
+            self.attrs(&v.plain, root, loops)
         } else {
-            self.attrs(&v["hydrated"], root, loops)?;
-            let count = index(&v["count"]);
+            self.attrs(&v.hydrated, root, loops)?;
+            let count = v.count;
             if count > 0 {
                 let marker = self.marker(scope, count)?;
-                self.push(&format!(" {marker}{}", string(&v["ending"])))?;
+                self.push(&format!(" {marker}{}", v.ending))?;
             }
             Ok(())
         }
@@ -886,27 +850,28 @@ impl<'a> Executor<'a> {
                 "Component/body nesting exceeds 128 levels",
             ));
         }
-        for op in array(&self.ir["bodies"][id]) {
+        for op in &self.plan.bodies[id] {
             self.tick()?;
-            match string(&op[0]) {
-                "literal" => self.push(string(&op[1]))?,
-                "tag" => self.tag(&op[1], root, loops, scope)?,
-                "call" => self.body(index(&op[1]), root, loops, scope, entry, depth + 1)?,
-                "binding" | "when" | "repeat" => {
+            match op {
+                Operation::Literal(value) => self.push(value)?,
+                Operation::Tag(tag) => self.tag(tag, root, loops, scope)?,
+                Operation::Call(id) => self.body(*id, root, loops, scope, entry, depth + 1)?,
+                Operation::Dynamic(op) => {
+                    let op = op.as_ref();
                     // Repeat validation precedes opening hydration markers.
-                    let collection = if op[0] == "repeat" {
-                        get(root, loops, &op[2])
+                    let collection = if let Dynamic::Repeat { path, .. } = op {
+                        get(root, loops, path)
                     } else {
                         None
                     };
-                    let items = if op[0] == "repeat" {
+                    let items = if let Dynamic::Repeat { diagnostic, .. } = op {
                         match collection.as_deref() {
                             None => &[][..],
                             Some(J::Array(v)) => v,
                             _ => {
                                 return Err(error(
                                     "repeat-not-array",
-                                    format!("repeat binding '{}' is not an array", string(&op[3])),
+                                    format!("repeat binding '{diagnostic}' is not an array"),
                                 ))
                             }
                         }
@@ -918,31 +883,24 @@ impl<'a> Executor<'a> {
                         *index += 1;
                     }
                     self.boundary(scope, "start", binding, false)?;
-                    if op[0] == "binding" {
-                        self.value(get(root, loops, &op[1]).as_deref(), op[2] == true)?;
-                    } else if op[0] == "when" {
-                        if condition(&op[1], root, loops) {
-                            self.body(
-                                index(&op[2]),
-                                root,
-                                loops,
-                                &mut scope.map(|_| 0),
-                                false,
-                                depth + 1,
-                            )?;
+                    if let Dynamic::Binding(path, escape) = op {
+                        self.value(get(root, loops, path).as_deref(), *escape)?;
+                    } else if let Dynamic::When(test, body) = op {
+                        if condition(test, root, loops) {
+                            self.body(*body, root, loops, &mut scope.map(|_| 0), false, depth + 1)?;
                         }
-                    } else {
+                    } else if let Dynamic::Repeat { alias, body, .. } = op {
                         for (i, item) in items.iter().enumerate() {
                             self.tick()?;
                             self.boundary(scope, "start", i, true)?;
                             let child_loops = LoopFrame {
-                                prefix: array(&op[1]),
+                                prefix: alias,
                                 item,
                                 index: J::Number(i as f64),
                                 parent: loops,
                             };
                             self.body(
-                                index(&op[4]),
+                                *body,
                                 root,
                                 Some(&child_loops),
                                 &mut scope.map(|_| 0),
@@ -954,39 +912,41 @@ impl<'a> Executor<'a> {
                     }
                     self.boundary(scope, "end", binding, false)?;
                 }
-                "element" => {
-                    let el = &op[1];
-                    let name = string(&el["name"]);
+                Operation::Element(el) => {
+                    let component = &self.plan.components[el.component];
+                    let name = &component.name;
                     if !selected(self.options, name) {
-                        self.tag(&el["opening"], root, loops, scope)?;
-                        self.body(index(&el["body"]), root, loops, scope, entry, depth + 1)?;
-                        self.push(string(&el["closing"]))?;
+                        self.tag(&el.opening, root, loops, scope)?;
+                        self.body(el.body, root, loops, scope, entry, depth + 1)?;
+                        self.push(&el.closing)?;
                         continue;
                     }
-                    let props = array(&el["props"]);
+                    let props = &el.props;
                     let mut values = HashMap::new();
                     for prop in props {
                         self.tick()?;
-                        let key = string(
-                            &prop[if self.options.attribute_name_strategy
-                                == AttributeNameStrategy::CamelCase
-                            {
-                                0
-                            } else {
-                                1
-                            }],
-                        );
-                        let val = operand(&prop[3], root, loops).unwrap_or(Cow::Owned(J::Null));
-                        if prop[2].is_null() {
+                        let path = &prop.keys[if self.options.attribute_name_strategy
+                            == AttributeNameStrategy::CamelCase
+                        {
+                            0
+                        } else {
+                            1
+                        }];
+                        let key = path[0].key.as_str();
+                        let val = operand(&prop.value, root, loops).unwrap_or(Cow::Owned(J::Null));
+                        if prop.group.is_none() {
                             values.insert(key, val);
                         } else {
                             let value = values.entry(key).or_insert_with(|| {
-                                get(root, None, &serde_json::json!([key]))
+                                get(root, None, path)
                                     .unwrap_or(Cow::Owned(J::Object(HashMap::new())))
                             });
                             if matches!(value.as_ref(), J::Object(_)) {
                                 if let J::Object(group) = value.to_mut() {
-                                    group.insert(string(&prop[2]).into(), val.into_owned());
+                                    group.insert(
+                                        prop.group.as_ref().unwrap().clone(),
+                                        val.into_owned(),
+                                    );
                                 }
                             }
                         }
@@ -1002,7 +962,7 @@ impl<'a> Executor<'a> {
                     // while retaining a single bounded output allocation.
                     let shadow_start = self.out.len();
                     self.body(
-                        index(&self.ir["components"][name]["shadow"]),
+                        component.shadow,
                         child,
                         None,
                         &mut Some(0),
@@ -1011,32 +971,31 @@ impl<'a> Executor<'a> {
                     )?;
                     let shadow = self.out.split_off(shadow_start);
                     let hydration_attribute = if entry {
-                        self.attrs(&el["entry"], root, loops)?;
+                        self.attrs(&el.entry, root, loops)?;
                         None
                     } else {
-                        self.attrs(&el["normal"], root, loops)?;
-                        if scope.is_some() && el["count"] != 0 {
-                            let marker = self.marker(scope, index(&el["count"]))?;
+                        self.attrs(&el.normal, root, loops)?;
+                        if scope.is_some() && el.count != 0 {
+                            let marker = self.marker(scope, el.count)?;
                             self.push(&format!(" {marker}"))?;
                             Some(marker.split('=').next().unwrap().to_string())
                         } else {
                             None
                         }
                     };
-                    for default in array(&el["defaults"]) {
+                    for (key, value) in &el.defaults {
                         self.tick()?;
-                        if hydration_attribute.as_deref() != Some(string(&default[0])) {
-                            self.attr(&default[1], child, None)?;
+                        if hydration_attribute.as_deref() != Some(key.as_str()) {
+                            self.attr(value, child, None)?;
                         }
                     }
                     self.push(">")?;
-                    self.push(string(&el["shadowTag"]))?;
+                    self.push(&el.shadow_tag)?;
                     self.push(&shadow)?;
                     self.push("</template>")?;
-                    self.body(index(&el["body"]), root, loops, scope, false, depth + 1)?;
+                    self.body(el.body, root, loops, scope, false, depth + 1)?;
                     self.push(&format!("</{name}>"))?;
                 }
-                _ => unreachable!("validated opcode"),
             }
         }
         Ok(())

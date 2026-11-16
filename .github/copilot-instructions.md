@@ -17,6 +17,9 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 ## Packages
 
 Each package includes a DESIGN.md file, read that to gain a general understanding of the code for that package.
+Keep DESIGN.md limited to current APIs and internals, without migration history or
+migration links. Follow the documentation and shipping skills for per-publish
+guides indexed by `docs/migration.md`; root README files may link to that index.
 
 | Package | Status | Purpose |
 |---|---|---|

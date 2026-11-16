@@ -114,7 +114,7 @@ Options/syntax failures have no HTML coordinates.
 Native `ConvertError` provides `code()`, `location() -> Option<ErrorLocation>`,
 `template_name()`, and `kind()`; use `kind()` when matching source-wrapped
 validation errors. Context fields are now boxed `ErrorContext` values. See the
-[migration guide](../../packages/fast-build/docs/migration/plugin-integrations.md#structured-errors).
+[migration guidance](../../packages/fast-build/docs/migration.md).
 
 ## Error codes
 
