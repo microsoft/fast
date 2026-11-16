@@ -732,9 +732,13 @@ test("component recipes copy each borrowed dataset once per assignment run", asy
             copies,
             Number(Boolean(state.dataset)) + Number(Boolean(state.replacement)),
         );
-        assert.match(
-            html.replaceAll(/<!--.*?-->/g, ""),
-            state.replacement ? />third\/fourth<\/template>/ : />\/<\/template>/,
+        assert.ok(
+            html.endsWith(
+                (state.replacement
+                    ? "<!--fe:b-->third<!--fe:/b-->/<!--fe:b-->fourth<!--fe:/b-->"
+                    : "<!--fe:b--><!--fe:/b-->/<!--fe:b--><!--fe:/b-->") +
+                    "</template></recipe-card>",
+            ),
         );
     }
 });
@@ -768,7 +772,12 @@ test("semantic recipe operands remain fresh, including own special literal keys"
     const payload = frames.find(frame => Object.hasOwn(frame, "payload")).payload;
     assert.equal(Object.getPrototypeOf(payload), Object.prototype);
     assert.equal(Object.hasOwn(payload, "__proto__"), true);
-    assert.match(expected.replaceAll(/<!--.*?-->/g, ""), /own\/ctor\/fresh/);
+    assert.ok(
+        expected.endsWith(
+            "<!--fe:b-->own<!--fe:/b-->/<!--fe:b-->ctor<!--fe:/b-->/" +
+                "<!--fe:b-->fresh<!--fe:/b--></template></recipe-card>",
+        ),
+    );
     payload.__proto__.name = "changed";
     payload.items[0].name = "changed";
     payload.items.push("changed");
