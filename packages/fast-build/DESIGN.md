@@ -144,7 +144,7 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `build-wasm.cjs` | Builds the compiler and converter WASM wrappers |
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
-| `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts, including frozen UTF-8 workload contracts; authored-manifest changes remain incompatible |
+| `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts, including frozen UTF-8 workload contracts; authored-manifest changes preserve compatible assets |
 | `test/performance/` | Shared output-baseline tests and fresh-process flat-plan measurements |
 
 ### Benchmark phase ownership
