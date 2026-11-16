@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Mon, 16 Nov 2026 04:58:49 GMT",
+      "version": "0.19.0",
+      "tag": "@microsoft/fast-build_v0.19.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "8987d290d4542031f13d82db08fc4c237ea48f7f",
+            "comment": "Render stable semantic template plans with named operation fields and single component template references in fast-server-js and fast-server-native formats, and reuse persisted server assets until authored template inputs change."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "735ac1d8de759e8f5f97b300e656ebd02e79ef15",
+            "comment": "Write native attribute and scalar values directly into bounded request-local output while preserving exact HTML and recoverable errors."
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 14 Nov 2026 05:37:38 GMT",
       "version": "0.18.0",
       "tag": "@microsoft/fast-build_v0.18.0",
