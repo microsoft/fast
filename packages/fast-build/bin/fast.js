@@ -17,6 +17,7 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
+    "server-module",
     "templates",
     "attribute-name-strategy",
     "markers_v2",
@@ -32,7 +33,7 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "type-source-import",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite", "typed"]);
-const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
+const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "server-module"]);
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
 /** @typedef {import("../wasm/microsoft_fast_build.js").FTemplateMetadata} FTemplateMetadata */
@@ -720,7 +721,23 @@ async function runBuild(args) {
     );
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
-    const output = resolveOption(args, config, configDir, "output", "output.html");
+    const output = resolveOption(args, config, configDir, "output", "output.html") ?? "output.html";
+    const serverModule = resolveOption(args, config, configDir, "server-module");
+    if (serverModule !== undefined && serverModule === "") {
+        throw new Error("--server-module requires a nonempty output path.");
+    }
+    if (serverModule !== undefined) {
+        const resolvedModule = path.resolve(serverModule);
+        if (!resolvedModule.endsWith(".mjs")) {
+            throw new Error("--server-module requires an .mjs output path.");
+        }
+        if (
+            [resolvedModule, `${resolvedModule}.inputs.json`, `${resolvedModule}.lock`]
+                .includes(path.resolve(output))
+        ) {
+            throw new Error("HTML output must not replace the persistent server module or its sidecars.");
+        }
+    }
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
     const stateFile = resolveOption(args, config, configDir, "state");
     const stateWasProvided =
@@ -736,11 +753,12 @@ async function runBuild(args) {
         process.exit(1);
     }
 
-    // Load WASM module first — needed only for parsing and compilation.
-    const wasm = require(BUILD_WASM_MODULE);
-
     // Resolve template files
     const templatesMap = {};
+    /** @type {string[]} */
+    const sources = [];
+    /** @type {string[]} */
+    const filenames = [];
     if (!templatesArg) {
         process.stderr.write(
             "Warning: --templates was not provided. No custom element templates will be loaded.\n"
@@ -748,7 +766,20 @@ async function runBuild(args) {
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
-            const matches = resolvePattern(pattern, wasm);
+            if (serverModule !== undefined) {
+                const matches = resolveTemplateFiles(pattern);
+                if (matches.length === 0) {
+                    process.stderr.write(
+                        `Warning: No template files found for pattern "${pattern}".\n`
+                    );
+                }
+                for (const filename of matches) {
+                    sources.push(fs.readFileSync(filename, "utf8"));
+                    filenames.push(filename);
+                }
+                continue;
+            }
+            const matches = resolvePattern(pattern, require(BUILD_WASM_MODULE));
             if (matches.length === 0) {
                 process.stderr.write(
                     `Warning: No template files found for pattern "${pattern}".\n`
@@ -785,14 +816,43 @@ async function runBuild(args) {
         }
         stateContent = fs.readFileSync(stateFile, "utf8");
     }
+    if (serverModule !== undefined) {
+        const managedPaths = [serverModule, `${serverModule}.inputs.json`, `${serverModule}.lock`]
+            .map(filename => path.resolve(filename));
+        if ([entry, stateFile, ...filenames].some(
+            filename => filename !== undefined && managedPaths.includes(path.resolve(filename)),
+        )) {
+            throw new Error("Persistent server module paths must not replace authored input files.");
+        }
+    }
 
     const { pathToFileURL } = require("node:url");
-    const { compileServerModule } = require("../server.js");
-    const source = compileServerModule(
-        entryContent,
-        templatesMap,
-        pathToFileURL(require.resolve("../server-runtime.mjs")).href,
-    );
+    const { compileServerModule, writeServerModule } = require("../server.js");
+    const runtimeImport = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
+    let source;
+    if (serverModule === undefined) {
+        source = compileServerModule(entryContent, templatesMap, runtimeImport);
+    } else {
+        const result = writeServerModule(
+            serverModule,
+            {
+                entry: entryContent,
+                templateSources: sources,
+                templateSourcePolicy: "overwrite",
+            },
+            {
+                overwrite: true,
+                includeBytes: true,
+                runtimeImport,
+                onWarning({ sourceIndex, content }) {
+                    process.stderr.write(
+                        `Warning: <f-template> without a 'name' attribute in '${filenames[sourceIndex]}': ${content.trim()}\n`,
+                    );
+                },
+            },
+        );
+        source = Buffer.from(/** @type {Uint8Array} */ (result.bytes)).toString("utf8");
+    }
     const server = await import(
         `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
     );
@@ -824,6 +884,9 @@ function writeBuildUsage() {
         "                         Separate multiple patterns with commas.\n" +
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
+        '  --server-module="<path.mjs>"\n' +
+        "                         Persist compiled plans and exact-input sidecar;\n" +
+        "                         reuse before compiler loading on later builds.\n" +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
         '  --attribute-name-strategy="camelCase"\n' +

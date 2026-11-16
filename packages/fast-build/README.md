@@ -198,6 +198,7 @@ fast convert [options]
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
+| `--server-module="<path.mjs>"` | _(none)_ | Retain the compiled entry/registry and `.inputs.json` sidecar for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
@@ -241,6 +242,38 @@ Produces `output.html`:
   </body>
 </html>
 ```
+
+### Reuse preparation independently of rendering
+
+Opt into retaining one compiled entry/registry across builds:
+
+```sh
+fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-module=generated/page.mjs
+```
+
+The same module can serve builds with different state files, HTML output paths,
+marker versions and attribute-name strategies. Every build still validates state
+and renders complete HTML; no fixture or template coverage is removed.
+Without `--server-module`, builds continue compiling fresh.
+
+Keep both `page.mjs` and `page.mjs.inputs.json` in a trusted build cache. Exact
+ordered raw HTML inputs identify the output before Rust parsing; no compiler,
+package or template hashes are stored or compared. Changed authored inputs
+compile the whole selected registry and replace the managed pair, preserving
+build's later-definition-overwrites-earlier semantics and empty registries.
+Missing modules restore their exact snapshot. Missing sidecars compile fresh.
+Corrupt pairs, mixed targets and changed runtime import paths fail closed even
+though builds permit replacement of changed/unmanaged module outputs. Choose a
+new module path for deployment-path changes; do not edit a manifest to bypass them.
+CLI modules use the installed helper's absolute file URL and are local build
+assets, not portable deployment bundles.
+
+Paths from configuration are relative to the config file, including
+`"server-module": "generated/page.mjs"`; CLI paths are relative to the working
+directory. The module and sidecars must not overlap authored inputs or HTML
+output. Glob discovery still runs on hits, but parsing/duplicate/nameless-template
+diagnostics run only on misses. This is preparation reuse, not a claim of faster
+renderer throughput. See [measurement commands](./docs/server-modules.md#build-preparation-measurements).
 
 ### Performance benchmarks for contributors
 

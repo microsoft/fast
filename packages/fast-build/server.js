@@ -52,7 +52,10 @@ function hasKeys(value, keys) {
     );
 }
 
-/** @param {any} inputs */
+/**
+ * @param {any} inputs
+ * @returns {import("./server.js").ServerAssetInputs}
+ */
 function canonicalInputs(inputs) {
     const invalid = () => {
         throw assetError(
@@ -65,6 +68,8 @@ function canonicalInputs(inputs) {
     if (Object.hasOwn(inputs, "templateSources")) {
         if (
             Object.hasOwn(inputs, "templates") ||
+            (inputs.templateSourcePolicy !== undefined &&
+                inputs.templateSourcePolicy !== "overwrite") ||
             !Array.isArray(inputs.templateSources) ||
             inputs.templateSources.some(
                 /** @param {any} source */ source => typeof source !== "string",
@@ -72,11 +77,17 @@ function canonicalInputs(inputs) {
         ) {
             invalid();
         }
-        return {
+        const canonical = {
             entry: inputs.entry,
-            templateSources: [...inputs.templateSources].sort(),
+            templateSources: [...inputs.templateSources],
         };
+        if (inputs.templateSourcePolicy === "overwrite") {
+            return { ...canonical, templateSourcePolicy: "overwrite" };
+        }
+        canonical.templateSources.sort();
+        return canonical;
     }
+    if (Object.hasOwn(inputs, "templateSourcePolicy")) invalid();
     const definitions = inputs.templates === undefined ? {} : inputs.templates;
     if (!isRecord(definitions)) invalid();
     /** @type {Record<string, import("./server.js").ServerTemplateDefinition>} */
@@ -146,12 +157,20 @@ function templatesFromInputs(inputs, onWarning) {
                 continue;
             }
             if (Object.hasOwn(templates, name)) {
-                throw new Error(`Duplicate template name "${name}".`);
+                if (inputs.templateSourcePolicy !== "overwrite") {
+                    throw new Error(`Duplicate template name "${name}".`);
+                }
+                process.stderr.write(
+                    `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`,
+                );
             }
             templates[name] = definition;
         }
     }
-    if (Object.keys(templates).length === 0) {
+    if (
+        Object.keys(templates).length === 0 &&
+        inputs.templateSourcePolicy !== "overwrite"
+    ) {
         throw assetError(
             "missing-template-sources",
             "Raw templateSources require at least one named template.",
@@ -314,11 +333,14 @@ function writeServerAsset(outputPath, inputs, options, kind) {
             key =>
                 ![
                     "overwrite",
+                    "includeBytes",
                     "onWarning",
                     ...(kind === "server-js" ? ["runtimeImport"] : []),
                 ].includes(key),
         ) ||
         (options.overwrite !== undefined && typeof options.overwrite !== "boolean") ||
+        (options.includeBytes !== undefined &&
+            typeof options.includeBytes !== "boolean") ||
         (options.onWarning !== undefined && typeof options.onWarning !== "function") ||
         (kind === "server-js"
             ? options.runtimeImport !== undefined &&
@@ -384,7 +406,11 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                         { filename: outputPath, bytes: output, previous: null },
                     ]);
                 }
-                return { reused: true, manifestPath };
+                return {
+                    reused: true,
+                    manifestPath,
+                    ...(options.includeBytes ? { bytes: output } : {}),
+                };
             }
         }
         if (previousOutput && !options.overwrite) {
@@ -393,7 +419,8 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                 "Server asset already exists; explicit overwrite is required.",
             );
         }
-        // Preserve caller source order for diagnostics; only the reuse key is sorted.
+        // Strict mode sorts only the reuse key; diagnostics follow caller source order.
+        /** @type {import("./server.js").ServerAssetInputs} */
         const compileInputs =
             "templateSources" in canonical
                 ? {
@@ -401,6 +428,9 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                       templateSources: /** @type {readonly string[]} */ (
                           inputs.templateSources
                       ),
+                      ...(inputs.templateSourcePolicy === "overwrite"
+                          ? { templateSourcePolicy: "overwrite" }
+                          : {}),
                   }
                 : canonical;
         const templates = templatesFromInputs(compileInputs, options.onWarning);
@@ -437,7 +467,11 @@ function writeServerAsset(outputPath, inputs, options, kind) {
             previous: previousManifest,
         });
         replaceAssetFiles(replacements);
-        return { reused: false, manifestPath };
+        return {
+            reused: false,
+            manifestPath,
+            ...(options.includeBytes ? { bytes: output } : {}),
+        };
     } finally {
         fs.closeSync(lock);
         const current = fs.lstatSync(lockPath, { throwIfNoEntry: false });
