@@ -91,9 +91,14 @@ impl PreparedState {
 
 /// Compile ahead of time to a versioned executable artifact, not template metadata.
 pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>, RenderError> {
-    let bytes = crate::server_ir::lower(entry, locator)?
-        .to_string()
-        .into_bytes();
+    let ir = crate::server_ir::lower(entry, locator)?;
+    let bytes = crate::server_plan::encode(
+        &ir,
+        "fast-server-native",
+        crate::server_plan::NATIVE_VERSION,
+    )
+    .to_string()
+    .into_bytes();
     CompiledArtifact::load(&bytes).map_err(|error| RenderError::InvalidTemplateMetadata {
         message: error.to_string(),
     })?;
@@ -114,23 +119,24 @@ impl CompiledArtifact {
         crate::aot::emit(&self.ir, runtime_import)
     }
 
-    /// Load without HTML/expression parsing. Exact compiler/helper/version identity
-    /// is required. Deploy artifacts and their matching native library together.
+    /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
+    /// semantic schema 1, independently of private execution layouts.
+    /// Experimental layouts and unknown schemas require explicit regeneration.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
         if bytes.len() > 64 * 1024 * 1024 {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
         }
         let ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
-        if ir["format"] != "fast-server"
-            || ir["version"] != crate::server_ir::ARTIFACT_VERSION
-            || ir["runtimeVersion"] != crate::SERVER_RUNTIME_VERSION
-            || ir["compilerId"] != crate::SERVER_COMPILER_ID
+        if ir["format"] != "fast-server-native"
+            // Decoder support is explicit, not coupled to the current emitter version.
+            || !matches!(ir["version"].as_u64(), Some(1))
         {
             return Err(error(
                 "incompatible-artifact",
-                "Regenerate with the deployed FAST compiler/native library",
+                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 1",
             ));
         }
+        let ir = crate::server_plan::decode(ir).map_err(|_| invalid())?;
         validate_artifact(&ir)?;
         Ok(Self { ir: Arc::new(ir) })
     }
@@ -951,18 +957,7 @@ fn validate_artifact(ir: &V) -> Result<(), NativeRenderError> {
             && count(&v["count"])
             && v["ending"].is_string()
     }
-    if !fields(
-        ir,
-        &[
-            "format",
-            "version",
-            "compilerId",
-            "runtimeVersion",
-            "entry",
-            "bodies",
-            "components",
-        ],
-    ) {
+    if !fields(ir, &["entry", "bodies", "components"]) {
         return Err(invalid());
     }
     let bodies = ir["bodies"].as_array().ok_or_else(invalid)?;

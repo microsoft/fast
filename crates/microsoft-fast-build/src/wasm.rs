@@ -99,10 +99,7 @@ pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<
 /// Metadata for the registry-level server target exposed by the conversion CLI.
 #[wasm_bindgen]
 pub fn server_syntax_metadata() -> String {
-    format!(
-        r#"{{"syntax":"server-js","extension":".mjs","suffix":".server.mjs","runtimeVersion":{}}}"#,
-        crate::SERVER_RUNTIME_VERSION,
-    )
+    r#"{"syntax":"server-js","extension":".mjs","suffix":".server.mjs"}"#.to_string()
 }
 
 #[wasm_bindgen]
