@@ -3,9 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
 
-The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. Its Rust/WASM build-time compiler lowers one executable representation for server JavaScript (zero runtime npm dependencies) and supported native Rust artifact rendering.
-
-[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
+Compile the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element)
+to server JavaScript modules or native Rust artifacts for integration with your backend.
 
 ## Installation
 
@@ -19,28 +18,9 @@ npm install --save @microsoft/fast-build
 
 ## Compiled semantic server modules
 
-This update replaces generated rendering functions with semantic template plans.
-Published object-input and prepared-state APIs are unchanged. Legacy fingerprinted
-artifacts need a one-time migration; retain new supported assets across compiler
-upgrades using the persistent writer below. See the
-[migration guidance](./docs/migration.md).
-Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
-uses supported plan schemas instead.
-Both new semantic formats start at version 1: `fast-server-js` for JavaScript
-and `fast-server-native` for native artifacts. Experimental formats/layouts require
-regeneration as described in the upgrade guide.
-
 Compile trusted templates during the server build, then import the emitted ESM
-in the request handler. The generated module and its server-only helper have no
-WASM, browser-class, template-parser, or runtime source-evaluation dependency.
-The ESM embeds named operation objects such as `{ type: "literal", html: "<p>" }`
-and `{ type: "binding", path: ["title"], escape: true }`. Shared bodies use named
-templates, not numeric execution indices. Components reference a single complete
-shadow template; loaders derive their host wrappers without generated host templates
-or separate shadow/tag references. Authored host defaults remain explicit metadata.
-The helper validates this semantic data and creates execution
-closures once at module load, with no generated-function fallback. Internal
-execution optimizations do not change the stored schema:
+in the request handler. Generated modules import
+`@microsoft/fast-build/server-runtime.mjs` for request-time rendering:
 
 ```js
 // Build time
@@ -81,44 +61,19 @@ The registry target compiles an empty entry; call `renderHost` or `renderShadow`
 for a registered component. To generate a complete page module, pass its HTML as
 `entry` to `writeServerModule`; use `compileServerModule` for fresh in-memory compilation.
 
-Use the existing browser conversion target separately with the authored component
-class and explicit registration. Flat plans do not change browser hydration.
+Use the browser conversion target separately with the authored component
+class and explicit registration.
 State must be acyclic JSON-shaped data, with finite numbers and well-formed
 Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
 and implicit `toJSON()` conversion are rejected rather than invoked.
-Rendering is synchronous and preserves existing HTML bytes and server coercion;
-arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
+Rendering is synchronous; arrays render as `[Array]`.
 
-See [the server module contract and benchmark guide](./docs/server-modules.md)
-for selection, diagnostics, deployment compatibility, migration, and measurement
-boundaries.
+See [the server module contract](./docs/server-modules.md)
+for render options, state validation, diagnostics and deployment requirements.
 
-For contributors, the repository's `bench:server` script reports compilation,
-startup/import, first render, warm string rendering, warm render-to-UTF-8 and
-first-result UTF-8/file delivery separately. An escape-heavy Unicode workload
-covers text and attribute output.
-The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
-documents configurable warmup, optional CPU profiles and historical report
-comparison.
-Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
-requests, include output byte throughput, and record state hashes, rendering
-options and output-structure diagnostics. These qualify measurement boundaries;
-they do not change rendering or establish cross-renderer output equivalence.
-
-Native Rust applications use the shared compiled-artifact target below.
-See [migration guidance](./docs/migration.md).
-
-The semantic-plan loader prepares path/alias accessors at module import and
-reuses request-local repeat frames across iterations. Compatibility is based on
-supported plan schemas, not compiler fingerprints or helper-build versions.
-Ordinary state/rendering contracts are unchanged.
-Contributor benchmarks include deep paths and nested repeats.
 Persist both the generated asset and its `.inputs.json` sidecar in source control
 or a build cache. `writeServerModule` reuses their exact bytes when authored inputs
-are unchanged, before loading the compiler. The manifest stores exact inputs and
-an output-byte snapshot, not hashes, compiler versions or timestamps.
-`compileServerModule` remains a low-level pure compiler; repeatedly invoking it
-without retained outputs cannot guarantee stability across encoder changes.
+are unchanged. Use `compileServerModule` for in-memory compilation.
 
 For large unchanged state reused across calls, generated modules also export
 an explicit immutable snapshot path:
@@ -135,7 +90,7 @@ original input. `renderTemplatePrepared`, `renderHostPrepared` and
 `renderShadowPrepared` use the same snapshot. Handles work across artifacts
 sharing one helper instance, are not serializable, and become collectible when
 no longer referenced. Keep ordinary methods for changing request state.
-See [ownership, native equivalents and measurement](./docs/server-modules.md#prepared-state-snapshots).
+See [prepared-state ownership](./docs/server-modules.md#prepared-state-snapshots).
 
 ## Native Rust compiled artifacts
 
@@ -156,41 +111,25 @@ writeServerArtifact(
 );
 ```
 
+Retain the generated asset and its `.inputs.json` sidecar together for reuse.
+
 The `microsoft-fast-build` Rust crate loads those bytes with `CompiledArtifact::load`
-and renders request-local `JsonValue` state via `render_entry`, `render_template`,
-`render_host` or `render_shadow`. Native startup and requests need no authored
-templates, compiler WASM, JavaScript engine or HTML parser invocation.
-The build-time Rust `compile_server_artifact` produces the identical format.
-Native text/attribute values and scalars write directly into request-local bounded
-UTF-8 output; composite attributes retain whole-attribute missing/null suppression.
-Output budgets return errors without partial HTML, and no buffer capacity is
-retained between requests. This does not change the JavaScript rendering backend.
+and renders `JsonValue` state via `render_entry`, `render_template`,
+`render_host` or `render_shadow`. Rust's build-time `compile_server_artifact`
+function also produces native artifacts.
 
 Rust hosts receiving fresh JSON can use `render_entry_json`, `render_template_json`,
 `render_host_json` or `render_shadow_json` to parse and fully validate owned state
-without the typed methods' extra normalized copy. Existing typed and prepared
-methods remain compatible. Native lookups/repeats and direct child properties
-borrow request storage; results remain complete owned UTF-8 strings. See the
-[fresh JSON migration](./docs/server-modules.md#fresh-native-json-requests).
-These native-only changes do not accelerate the npm JavaScript request path.
+without the typed methods' extra normalized copy. See
+[fresh native JSON requests](./docs/server-modules.md#fresh-native-json-requests).
 
 Deploy artifacts with a native library supporting their execution schema; loading
-validates the format, schema, opcodes and references. Artifacts have immutable
-typed operations with numeric resolved targets; existing semantic schema-1 assets
-remain usable unchanged. Native artifacts are execution-only;
-generate JavaScript from authored templates using Rust `compile_server_module`
-or Node `compileServerModule` at build time instead. Node APIs are unchanged.
-Load/decode has transient memory costs; state ownership and output/resource limits
-are unchanged. No native performance
-improvement is claimed before qualification. See the
-[migration guidance](./docs/migration.md).
-
-Artifacts have immutable thread-safe ownership and reusable request-independent
-instructions. See the
+validates the format, schema, operations and references. Artifacts are immutable
+and thread-safe. Each request returns a complete owned UTF-8 string or an error
+without partial HTML. Configure output and execution budgets through
+`NativeRenderOptions`. See the
 [native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
 and [Rust usage](../../crates/microsoft-fast-build/README.md).
-Native Rust is supported now; a stable C ABI/.NET binding is deferred. This does
-not provide a C# renderer or claim working .NET interoperability.
 
 ## CLI usage
 
@@ -252,18 +191,9 @@ Produces `output.html`:
 </html>
 ```
 
-### Performance benchmarks for contributors
-
-Run `npm run bench:server -w @microsoft/fast-build` from the monorepo root.
-It measures fresh generated-module import/first render, warm CPU/wall time,
-GC, memory and generated size. The current command and measurement boundaries are in
-[server modules](./docs/server-modules.md).
-
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
-
-> **Breaking change:** Earlier versions implicitly loaded `state.json` from the current working directory when `--state` was omitted. To use a state file, pass `--state=state.json` or set `"state": "state.json"` in `fast-build.config.json`.
 
 When a binding value is not present in state:
 
@@ -275,9 +205,7 @@ Explicit `null` also omits an attribute, even in an interpolated attribute
 value. Empty strings remain present. Known HTML boolean attributes bound to
 JSON booleans use presence/absence; ordinary attributes (including ARIA)
 retain textual booleans. Use `?name` for browser-side truthy/falsy bindings.
-Author bindings resolving to absence still override template-host defaults.
-These intentional output changes are described in the
-[migration guidance](./docs/migration.md).
+Author bindings resolving to absence override template-host defaults.
 
 ### Stylesheet delivery composition
 
@@ -305,8 +233,8 @@ try {
 Use `{ kind: "external", href: "/assets/example-card.abc123.css" }` to insert
 `<link rel="stylesheet">` instead. The caller owns the URL, asset serving, and
 bundler processing. Both strategies insert exactly one element as the first child
-of the single inner `<template>`, preserving every other authored byte. Existing
-`compose_f_template_styles(templateHtml, css)` remains an inline string shorthand.
+of the single inner `<template>`, preserving every other authored byte. Use
+`compose_f_template_styles(templateHtml, css)` for an inline string shorthand.
 
 An inline `styleId` emits `data-fast-ssr-style="…"`. It is an opaque,
 caller-controlled stylesheet/version identity, not an instance ID, hash, CSP
@@ -357,11 +285,10 @@ and lengths are UTF-16 units. This is composition provenance, not a JavaScript
 source map for generated TypeScript. Mapping ceases to apply after further
 transformations unless the caller composes their maps.
 
-Unsafe CSS errors now expose `sourceKind: "css"` and locations in the separately
+Unsafe CSS errors expose `sourceKind: "css"` and locations in the separately
 supplied CSS. Stylesheet bodies are treated as literal HTML raw text throughout
 build parsing, rendering, metadata discovery, and conversion, including
-template-looking strings. See the
-[migration guidance](./docs/migration.md).
+template-looking strings.
 
 ### APIs for build-time plugins
 
@@ -390,10 +317,10 @@ const shadowRootHtml = renderShadow("my-card", componentState);
 The result is the complete DSD `<template>` fragment, with hydration markers
 and nested components, but no host, host defaults, or light DOM. Pass resolved
 component state; the API does not derive it from caller-owned host attributes.
-It accepts the existing attribute-name strategy and v2 marker options.
+It accepts attribute-name strategy and v2 marker options.
 
-Parsed records add `formatVersion: 1` and `bindings` without changing the array
-shape. Binding records expose `name` (null for compound expressions),
+`parse_f_templates` returns an array of records with `formatVersion: 1` and
+`bindings`. Binding records expose `name` (null for compound expressions),
 `expression`, syntax `kind`, lexical `paths`, and outer-to-inner repeat
 `scope` frames. `type` is null except for repeat collections (`"array"`);
 `optional` is null because required state declarations are not inferable.
@@ -420,7 +347,7 @@ interpolated attribute values, and nested directives.
 - CRLF counts as one line break but two offset units. Lone CR and LF each count
   as one line break. Input line endings are not normalized.
 - Repeat bindings locate the iterable expression, not the alias or `in` keyword,
-  matching their existing `expression` field. Nested `scope` frames are unchanged.
+  matching their `expression` field.
 
 ```js
 const [definition] = JSON.parse(parse_f_templates(templateHtml));
@@ -431,13 +358,13 @@ for (const binding of definition.bindings) {
 }
 ```
 
-Positions refer to the original, entity-encoded attribute text. No entity decoding
-is introduced. Code samples remain excluded without shifting subsequent spans.
+Positions refer to the original, entity-encoded attribute text. Code samples are
+excluded without shifting subsequent spans.
 Callers associate the input with its file name and must regenerate metadata after
 editing that input. Bindings and directives inside HTML comments remain unsupported.
 
 Compilation rejects unsupported/malformed explicit metadata versions.
-Legacy unversioned maps and string definitions remain supported. The CLI keeps
+Unversioned maps and string definitions are accepted. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
 
@@ -477,7 +404,7 @@ requires exactly one matching HTML definition with exactly one direct HTML
 `<template>` child. Discovery stays inside that child's contents. It includes
 nested ordinary `<template>` contents and `<f-when>`/`<f-repeat>` bodies once
 per authored declaration, without evaluating state. Nested `<f-template>`
-definitions and templates carrying `shadowrootmode` or legacy `shadowroot`
+definitions and templates carrying `shadowrootmode` or `shadowroot`
 are separate authored scopes and are excluded. Sibling definitions and markup
 outside the selected shadow template are excluded too.
 
@@ -494,8 +421,6 @@ matching definitions, `missing-template` for no match, and
 `missing-inner-template`/`multiple-inner-templates` for ambiguous shadow-template
 structure. Located failures identify the containing definition or second
 conflicting declaration in the original input and include `templateName`.
-This additive API does not change `parse_f_templates`, binding metadata,
-rendering, or the template format version, and is not a slot-contract manifest.
 
 #### Structured errors
 
@@ -540,8 +465,8 @@ For a missing inner template, the highlight identifies its containing
 Coordinates are absent when there is no meaningful HTML position: invalid state
 JSON, malformed metadata/options, missing template definitions or outer wrappers,
 filesystem errors, and unsafe separately supplied CSS. A known `templateName`
-can still be present without coordinates. `parse_f_templates` remains permissive:
-it does not gain strict syntax validation or new failures.
+can still be present without coordinates. `parse_f_templates` is a descriptive
+parser; use compilation for template syntax validation.
 
 A build integration can report compilation diagnostics:
 
@@ -563,9 +488,6 @@ Generated JavaScript render exports reject invalid state/options with `TypeError
 Runtime failures do not promise authored source coordinates; do not assume every
 request error has the compiler's structured fields. Native artifact loading and
 rendering return the separate `NativeRenderError` contract.
-
-See the [migration guidance](./docs/migration.md)
-when updating consumers that previously caught strings.
 
 ### Custom element templates
 
@@ -647,9 +569,6 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 ## Convert
 
 `fast convert` supports browser template conversion and linked server JavaScript.
-Browser targets use the converter WASM module in `wasm/convert/`; `server-js`
-uses the build compiler to link named definitions into one server module.
-Syntax names and output metadata come from their respective Rust/WASM compilers.
 
 ```shell
 fast convert --syntax=webui-prerelease --templates=example.html
@@ -685,13 +604,10 @@ TypeScript conversion options, and emits an empty entry with the linked componen
 registry. Use `renderHost` or `renderShadow` for those components; use
 `compileServerModule(entry, templates)` to compile a complete page entry.
 
-`webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
+`webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's declarative runtime syntax. `webui-prerelease` emits HTML for WebUI's FAST parser plugin. When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
 
-`--type-source` exists so templates that combine more than one differently-named
-`ref`/`children`/`slotted` directive (which otherwise fail to type-check once a
-real `TSource` is supplied, because `html<TSource, TParent>` infers a single
-`TSource` for the whole tagged template) can be generated already type-checked
-against a concrete element type. See
+Use `--type-source` to type-check generated templates against a concrete element
+type. See
 [`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic).
 
 ### Convert configuration file
@@ -714,10 +630,10 @@ Only `syntax`, `templates`, `output`, `overwrite`, `type-source`,
 `overwrite` and `typed`, which must be JSON booleans.
 
 For declaration-emitting consumers, use `--typed --type-source=MyElement`.
-The converter WASM's `convert_template_with_options` accepts an appended
+The converter WASM's `convert_template_with_options` accepts an
 optional `typed` boolean. `convert_stylesheet(css, "fast-v3-ts", "styles",
-true)` emits an `ElementStyles` annotation. Existing calls remain untyped;
-typed exports are tested with TypeScript `isolatedDeclarations`.
+true)` emits an `ElementStyles` annotation. Omit `typed` or pass `false` for
+untyped exports.
 
 ### Running converter fixtures locally
 
@@ -747,3 +663,7 @@ tags.
 Template syntax follows the FAST declarative HTML format. See the
 [`@microsoft/fast-element` declarative documentation](../fast-element/docs/declarative/syntax.md)
 for full documentation on bindings, conditionals, repeats, and directives.
+
+## Migration guidance
+
+See the [migration index](./docs/migration.md).
