@@ -68,6 +68,19 @@ export function compileServerModule(
     runtimeImport?: string,
 ): string;
 
+/** Complete source-only ESM deployment. Relative names never contain path separators. */
+export interface ServerAssets {
+    entry: string;
+    files: Record<string, string>;
+}
+
+/** Same schema/executor as compileServerModule, with separately named template modules. */
+export function compileServerAssets(
+    entry: string,
+    templates?: Record<string, string | ServerTemplateDefinition>,
+    runtimeImport?: string,
+): ServerAssets;
+
 /** Build-time only. Load with a native library supporting the emitted artifact schema. */
 export function compileServerArtifact(
     entry: string,
@@ -104,6 +117,22 @@ export interface ServerAssetWriteResult {
     reused: boolean;
     manifestPath: string;
 }
+
+export interface ServerAssetsWriteOptions {
+    runtimeImport?: string;
+    onWarning?: (warning: { sourceIndex: number; content: string }) => void;
+}
+
+/**
+ * Publish a complete immutable directory by one rename. Exact inputs reuse every
+ * recorded byte before loading WASM. Changed inputs/configuration require a new
+ * destination; incomplete or modified deployments are never repaired in place.
+ */
+export function writeServerAssets(
+    outputDirectory: string,
+    inputs: ServerAssetInputs,
+    options?: ServerAssetsWriteOptions,
+): ServerAssetWriteResult;
 
 /**
  * Synchronously persist server ESM and an exact authored-input/output-byte sidecar.

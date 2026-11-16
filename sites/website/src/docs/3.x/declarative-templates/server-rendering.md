@@ -58,7 +58,9 @@ const html = renderEntry({ title: "Request-specific state" });
 const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
-Generated ESM embeds flat template instruction tables, not rendering functions.
+Generated ESM embeds semantic operation objects and named templates, not rendering
+functions or numeric instruction tables. Components reference a single complete
+DSD template with optional host-default metadata.
 The server helper validates and loads them once. Published object-input and
 prepared-state methods are unchanged. Compiler fingerprints and literal
 helper-build checks are removed; supported plan/artifact schemas govern loading.
@@ -82,6 +84,22 @@ Browser template/style conversion, authored classes and explicit registration
 remain separate. See the
 [server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
 for options, state restrictions and migration details.
+
+### Optional Modular Server Assets
+
+`compileServerAssets(entry, templates, runtimeImport?)` returns semantic-name
+component plan modules, a separate entry plan, a thin `server.mjs` registry and
+dependency manifest. It uses the same semantic schema-1 executor and render exports as
+single-file output. Unrelated registry edits leave existing component bytes
+unchanged; changed host/shadow defaults can also change dependent plans.
+
+Use `writeServerAssets(newDeploymentDirectory, inputs, options?)` for complete
+directory publication. Exact authored inputs reuse an intact deployment without
+WASM across upgrades. Changed inputs require a new explicit destination; there
+is no in-place overwrite. Retain old releases for active processes and never
+mutate cached Node ESM dependency URLs. Existing supported JS/native assets and
+single-file writers need no migration. Additional module imports can increase
+cold startup cost, so this is an optional deployment choice, not a speedup claim.
 
 ## Native Rust Compiled Artifacts
 

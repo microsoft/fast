@@ -141,6 +141,97 @@ Finite cyclic registries compile without expanding component references.
 Rendering an actually unbounded recursive component tree is still an error in
 the application, not an instruction to truncate output.
 
+## Modular deployments
+
+`compileServerAssets(entry, templates, runtimeImport?)` returns `{ entry, files }`.
+`entry` is `"server.mjs"`; `files` maps relative semantic filenames to UTF-8
+source. Every component owns semantic schema-1 operation objects and named
+templates, not numeric instructions, string tables or offsets. Component names
+reference one complete DSD template with optional `host-attributes` metadata.
+The thin entry combines independently scoped, disjoint template maps and calls
+the existing `createServerRenderer` once. `server.manifest.json` version 1 describes the entry,
+runtime import, component filenames and sorted symbolic dependency names.
+Component self-references and finite registry cycles are legal. Unknown external
+custom elements remain render-time errors only when selected for DSD; they can
+remain authored light DOM when excluded. Missing imported assets and malformed
+templates fail during module import, including unreachable component plans.
+
+Semantic filenames contain no hashes, compiler identity, absolute paths or state.
+Escaping covers arbitrary registry keys; it does not validate HTML custom-element names.
+Template naming is local, so unrelated registry edits leave existing plans
+byte-identical. Changed shadow content changes that component; changed host or
+shadow-root defaults can also change callers because those recipes are compiled
+at host occurrences. The manifest describes those actual dependencies; it is
+not an incremental-compilation API. Compiling a fresh deployment still eagerly
+lowers the complete registry and diagnoses skipped/unreachable invalid templates.
+
+```js
+import { writeServerAssets } from "@microsoft/fast-build/server.js";
+
+writeServerAssets(
+    "./generated/release-1",
+    { entry: "<my-card></my-card>", templates: { "my-card": "<h2>{{title}}</h2>" } },
+);
+// Request host:
+// import { renderEntry } from "./generated/release-1/server.mjs";
+```
+
+The managed writer accepts `runtimeImport` and `onWarning`, not `overwrite`.
+It holds a cooperating-writer lock, writes/fsyncs a complete staged directory
+beside the destination, then publishes it with one directory rename. Failed
+staging or publication leaves no partial destination. `server.inputs.json`
+records exact authored inputs and every emitted file's exact bytes, not hashes
+or compiler keys. An existing directory must have exactly the recorded regular
+files, with identical bytes and configuration. Missing, changed, symlinked,
+unmanaged or unsupported manifests fail closed; they are not repaired.
+Manifest JSON must round-trip its exact UTF-8 bytes before input comparison.
+Malformed bytes cannot authorize reuse through lossy replacement characters;
+legitimate UTF-8 U+FFFD characters remain supported.
+An identical managed deployment is reused without importing WASM or parsing raw
+template sources. Changed authored inputs require a new explicit directory.
+
+This contract deliberately avoids in-place incremental publication and does not
+auto-recompile untouched assets on compiler upgrades. Publish the whole directory
+under a release URL or swap an application-owned deployment pointer atomically.
+Keep old directories available for active processes. Node caches every dependency
+URL: cache-busting only the entry does not reload its already imported plans.
+Do not apply immutable HTTP caching to mutable unversioned semantic URLs.
+Directory rename ensures process-visible publication on one filesystem; it is not
+a promise of crash-durable distributed storage or protection from noncooperating
+writers. The manifest is integrity bookkeeping for trusted deployment bytes,
+not a signature or a request-time file watcher.
+
+The existing single-file writers and semantic JS/native schema-1 decoders remain
+unchanged. Old cached modules expose the same ordinary/prepared methods as the new
+modular entry; this addition requires no new generated named exports or blanket
+recompilation. Adopt modular output only for newly compiled assets at a new
+destination. Request/default/bootstrap-state precedence and hydration are unchanged.
+This is an optional deployment layout, not a runtime speedup: it adds imports and
+does not share prepared execution closures across entries. Unlike a single-file
+plan, separate component files do not share identical shadow bodies with one
+another, so a single deployment can be larger.
+Repeated entries can reuse the same component source files, but callers using
+`compileServerAssets` must publish a complete, consistently linked release.
+
+For untimed many-definition/repeated-entry size and churn qualification:
+
+```sh
+npm run bench:assets -w @microsoft/fast-build -- --definitions=200 --entries=10
+```
+
+Add `--measure --samples=5 --iterations=100 --warmup=20` only on an isolated
+measurement runner. The script compares the baseline single-file layout with
+shared modular source, alternates fresh import/render workers, records separate
+compiler loading, compilation, import, first render, UTF-8 encoding, warm string
+rendering, process memory and managed reuse costs. `--order=modular-first` reverses
+compiler pair order for repeated fresh-process samples. Shared ESM source does
+not imply shared prepared execution closures across entries.
+
+The browser conformance command is `npm run test:assets:hydration -w
+@microsoft/fast-build`; build `@microsoft/fast-element` first and install Playwright
+Chromium. It verifies both marker formats, retained shadow/text/light-DOM node
+identity and reactive attribute updates against real modular output.
+
 ## State and byte-preserving semantics
 
 State is acyclic JSON-shaped data: null, booleans, finite numbers, well-formed
