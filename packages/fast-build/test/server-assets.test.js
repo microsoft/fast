@@ -138,7 +138,8 @@ test("build retains raw-source plans across state/options changes and restores m
         fs.writeFileSync(entry, "<my-card></my-card><p>{{title}}</p>");
         fs.writeFileSync(
             templates,
-            '<f-template name="my-card"><template><h2>{{title}}</h2></template></f-template>',
+            '<f-template name="my-card"><template><h2>{{title}}</h2></template></f-template>' +
+                '<f-template name="unused-card"><template><em>{{title}}</em></template></f-template>',
         );
         fs.writeFileSync(state, '{"title":"Cold 😀"}');
         const args = [
@@ -153,6 +154,16 @@ test("build retains raw-source plans across state/options changes and restores m
         assert.deepEqual(fs.readFileSync(output), expected);
         const manifest = `${module}.inputs.json`;
         const before = stampPair(module, manifest);
+        const plan = JSON.parse(
+            before.output.bytes.toString("utf8").match(/const plan = (.*);\n/)[1],
+        );
+        assert.deepEqual(Object.keys(plan.components).sort(), ["my-card", "unused-card"]);
+        for (const reference of Object.values(plan.components)) {
+            assert.equal(typeof reference, "string");
+            const body = plan.templates[reference];
+            assert.match(body[0].html, /^<template shadowrootmode=/);
+            assert.deepEqual(body.at(-1), { type: "literal", html: "</template>" });
+        }
         const recorded = JSON.parse(before.manifest.bytes);
         assert.deepEqual(recorded.inputs, {
             entry: fs.readFileSync(entry, "utf8"),
@@ -229,10 +240,21 @@ test("build cache preserves ordered duplicate overwrite and empty registry seman
         for (const pattern of [
             "first.html,last.html",
             "last.html,first.html",
+            "last.html,first.html,first.html",
             "missing/*.html",
         ]) {
             build(directory, [...args, `--templates=${pattern}`]);
             const expected = fs.readFileSync(path.join(directory, "output.html"));
+            const module = path.join(directory, "page.mjs");
+            if (fs.existsSync(module)) {
+                assert.throws(() =>
+                    build(
+                        directory,
+                        [...args, `--templates=${pattern}`, "--server-module=page.mjs"],
+                        true,
+                    ),
+                );
+            }
             build(directory, [
                 ...args,
                 `--templates=${pattern}`,
