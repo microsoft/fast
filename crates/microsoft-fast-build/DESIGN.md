@@ -74,7 +74,11 @@ helper's loader; it does not expose numeric opcodes, string tables or offsets,
 or emit rendering functions, accessors or loops. The helper validates all records
 and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
-are unchanged; overlay/attribute specialization is not part of this baseline.
+are unchanged. The helper prepares ordered property assignments and composite
+attribute arities from the existing compiler-owned rules. Grouped writes copy
+borrowed datasets once after inheritance or an explicit replacement, without
+request-local property triples or ownership tracking containers. Compound operands
+stay request-owned; missing/null masking, naming, escaping and hydration are unchanged.
 Native execution is unchanged; its loader resolves semantic template names into
 private body indices and derives the private host/shadow operations once, then
 applies complete existing IR validation. Reconstructed component metadata has a

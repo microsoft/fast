@@ -235,6 +235,79 @@ export function child(root, entries) {
     return { values, parent: object(root.values) ? root : null };
 }
 
+function planChild(props, strategy) {
+    // Authored assignment order fixes the first copy after each replacement at load time.
+    const owned = new Set();
+    const present = new Set();
+    const steps = props.map(prop => {
+        const key = prop[strategy];
+        const getter = prop.value;
+        if (prop.group === null) {
+            present.add(key);
+            owned.delete(key);
+            return (root, loops, values) => {
+                values[key] = getter(root, loops) ?? null;
+            };
+        }
+        const inherit = !present.has(key);
+        const copy = !owned.has(key);
+        present.add(key);
+        owned.add(key);
+        const group = prop.group;
+        const inherited = inherit ? access([key], []) : null;
+        return (root, loops, values) => {
+            const value = getter(root, loops);
+            let current = inherited ? inherited(root) : values[key];
+            if (copy && object(current)) {
+                current = Object.assign(Object.create(null), current);
+            }
+            if (inherit && current === undefined) current = Object.create(null);
+            if (object(current)) current[group] = value ?? null;
+            values[key] = current;
+        };
+    });
+    return (root, loops) => {
+        const values = Object.create(null);
+        for (const step of steps) step(root, loops, values);
+        return { values, parent: object(root.values) ? root : null };
+    };
+}
+
+function planComposite(parts) {
+    if (parts.length === 0) return () => "";
+    if (parts.length === 1) {
+        const [part] = parts;
+        return (r, l) => part(r, l) ?? null;
+    }
+    if (parts.length === 2) {
+        const [first, second] = parts;
+        return (r, l) => {
+            const a = first(r, l);
+            const b = second(r, l);
+            return a == null || b == null ? null : a + b;
+        };
+    }
+    if (parts.length === 3) {
+        const [first, second, third] = parts;
+        return (r, l) => {
+            const a = first(r, l);
+            const b = second(r, l);
+            const c = third(r, l);
+            return a == null || b == null || c == null ? null : a + b + c;
+        };
+    }
+    return (r, l) => {
+        let output = "";
+        let missing = false;
+        for (const part of parts) {
+            const value = part(r, l);
+            if (value == null) missing = true;
+            else output += value;
+        }
+        return missing ? null : output;
+    };
+}
+
 export function number(value) {
     if (value === Infinity || value === -Infinity) {
         return value < 0 ? "-inf" : "inf";
@@ -548,7 +621,11 @@ export function createServerRenderer(plan) {
             }
             case "array": {
                 const values = array(node.value).map(value => literal(value, depth + 1));
-                return () => values.map(value => value());
+                return () => {
+                    const result = [];
+                    for (const value of values) result.push(value());
+                    return result;
+                };
             }
             case "object": {
                 if (!object(node.value)) invalid();
@@ -556,8 +633,23 @@ export function createServerRenderer(plan) {
                     key,
                     literal(value, depth + 1),
                 ]);
-                return () =>
-                    Object.fromEntries(values.map(([key, value]) => [key, value()]));
+                return () => {
+                    const result = {};
+                    for (const [key, value] of values) {
+                        const item = value();
+                        if (key === "__proto__") {
+                            Object.defineProperty(result, key, {
+                                value: item,
+                                enumerable: true,
+                                configurable: true,
+                                writable: true,
+                            });
+                        } else {
+                            result[key] = item;
+                        }
+                    }
+                    return result;
+                };
             }
             default:
                 invalid();
@@ -634,7 +726,8 @@ export function createServerRenderer(plan) {
                     const value = lookup(part.path);
                     return (r, l) => segment(value(r, l));
                 });
-                return (r, l) => quoted(name, composite(parts.map(part => part(r, l))));
+                const value = planComposite(parts);
+                return (r, l) => quoted(name, value(r, l));
             }
             default:
                 invalid();
@@ -767,12 +860,12 @@ export function createServerRenderer(plan) {
             const none = string(prop.unchanged);
             const group = prop.dataset === null ? null : string(prop.dataset);
             const value = operand(prop.value);
-            return (r, l, o) => [
-                o.strategy === "camelCase" ? camel : none,
-                group,
-                value(r, l),
-            ];
+            return { camel, none, group, value };
         });
+        const camelChild = props.length ? planChild(props, "camel") : null;
+        const noneChild = props.every(prop => prop.camel === prop.none)
+            ? camelChild
+            : planChild(props, "none");
         const entryAttrs = attrs(descriptor.entry);
         const normalAttrs = attrs(descriptor.normal);
         const bindings = count(descriptor.count);
@@ -783,12 +876,8 @@ export function createServerRenderer(plan) {
             }
             const component = components.get(name);
             if (!component) missing(name);
-            const childRoot = props.length
-                ? child(
-                      r,
-                      props.map(prop => prop(r, l, o)),
-                  )
-                : r;
+            const makeChild = o.strategy === "camelCase" ? camelChild : noneChild;
+            const childRoot = makeChild ? makeChild(r, l) : r;
             const shadow = component.shadow(childRoot, null, o, scope(o), false);
             let output = "";
             let hydrationAttribute = null;

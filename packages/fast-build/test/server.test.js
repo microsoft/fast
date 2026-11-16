@@ -595,6 +595,196 @@ test("dataset overlays never mutate explicitly bound objects, including prepared
     }
 });
 
+test("loaded component recipes avoid mapped tuples, ownership sets and composite arrays", async () => {
+    const { module, source } = await compile("<recipe-parent></recipe-parent>", {
+        "recipe-parent":
+            '<recipe-card :payload=\'{"name":"literal","items":[1,{"name":"nested"}]}\' :dataset="{{dataset}}" data-x="{{label}}" data-y="{{missing}}" foo-bar="{{label}}"></recipe-card>',
+        "recipe-card": {
+            content:
+                '<p title=\'prefix-{{payload.name}}/{{dataset.x}}-suffix "quoted"\' data-one="{{payload.items.1.name}}" data-two="start-{{label}}" data-three="start-{{label}}-end" data-missing="{{dataset.y}}/tail">{{fooBar}}/{{foo-bar}}</p>',
+            hostAttributes: [
+                {
+                    name: "data-host",
+                    value: 'prefix-{{payload.name}}/{{dataset.x}}-suffix "quoted"',
+                },
+            ],
+        },
+    });
+    assert.doesNotMatch(source, /renderEntryJson|compilerId/);
+    const state = { dataset: { kept: "safe" }, label: "<&" };
+    const prepared = module.prepareState(state);
+    for (const attributeNameStrategy of ["camelCase", "none"]) {
+        for (const markersV2 of [false, true]) {
+            const options = { attributeNameStrategy, markersV2 };
+            for (const method of [
+                "renderEntry",
+                "renderTemplate",
+                "renderHost",
+                "renderShadow",
+            ]) {
+                const names =
+                    method === "renderHost" || method === "renderShadow"
+                        ? ["recipe-parent"]
+                        : [];
+                const expected = module[method](...names, state, options);
+                const map = Array.prototype.map;
+                const fromEntries = Object.fromEntries;
+                const add = Set.prototype.add;
+                const forbidden = () => {
+                    throw new Error("Per-render recipe intermediate");
+                };
+                let actual;
+                try {
+                    Array.prototype.map = forbidden;
+                    Object.fromEntries = forbidden;
+                    Set.prototype.add = forbidden;
+                    actual = module[`${method}Prepared`](...names, prepared, options);
+                } finally {
+                    Array.prototype.map = map;
+                    Object.fromEntries = fromEntries;
+                    Set.prototype.add = add;
+                }
+                assert.equal(actual, expected);
+                assert.match(
+                    actual,
+                    /title="prefix-literal\/&lt;&amp;-suffix &quot;quoted&quot;"/,
+                );
+                assert.match(
+                    actual,
+                    /data-host="prefix-literal\/&lt;&amp;-suffix &quot;quoted&quot;"/,
+                );
+                assert.match(actual, /data-one="nested"/);
+                assert.match(actual, /data-two="start-&lt;&amp;"/);
+                assert.match(actual, /data-three="start-&lt;&amp;-end"/);
+                assert.doesNotMatch(actual, /data-missing=/);
+            }
+        }
+    }
+    assert.deepEqual(state, { dataset: { kept: "safe" }, label: "<&" });
+});
+
+test("component recipes preserve grouped replacement, missing masks and special keys", async () => {
+    const { module } = await compile(
+        '<recipe-card data-first="before" :dataset="{{replacement}}" data-y="after" :value="{{missing}}" :__proto__="{{payload}}" :constructor="{{payload}}"></recipe-card><i title="{{dataset.x}}/{{dataset.kept}}"></i>',
+        {
+            "recipe-card": {
+                content:
+                    '<p title="{{dataset.x}}/{{dataset.y}}/{{dataset.kept}}" data-proto="{{__proto__.name}}" data-constructor="{{constructor.name}}" data-value="{{value}}"></p>',
+                hostAttributes: [{ name: "data-value", value: "{{value}}" }],
+            },
+        },
+    );
+    for (const replacement of [{ x: "replacement", kept: "fresh" }, null, false, []]) {
+        const state = {
+            dataset: { x: "original", kept: "parent" },
+            replacement,
+            value: "outer",
+            payload: { name: "own" },
+        };
+        const before = JSON.stringify(state);
+        const prepared = module.prepareState(state);
+        for (const attributeNameStrategy of ["camelCase", "none"]) {
+            for (const markersV2 of [false, true]) {
+                const options = { attributeNameStrategy, markersV2 };
+                const html = module.renderEntry(state, options);
+                assert.equal(module.renderEntryPrepared(prepared, options), html);
+                if (replacement && !Array.isArray(replacement)) {
+                    assert.match(html, /title="replacement\/after\/fresh"/);
+                } else {
+                    assert.doesNotMatch(
+                        html.slice(0, html.indexOf("</recipe-card>")),
+                        /title=/,
+                    );
+                }
+                assert.match(html, /data-proto="own" data-constructor="own"/);
+                assert.doesNotMatch(html, /data-value=/);
+                assert.ok(html.endsWith('<i title="original/parent"></i>'));
+                assert.equal(JSON.stringify(state), before);
+            }
+        }
+    }
+});
+
+test("component recipes copy each borrowed dataset once per assignment run", async () => {
+    const { module } = await compile(
+        '<recipe-card data-x="first" data-y="second" :dataset="{{replacement}}" data-x="third" data-y="fourth"></recipe-card>',
+        { "recipe-card": "{{dataset.x}}/{{dataset.y}}" },
+    );
+    for (const state of [
+        { dataset: { kept: "root" }, replacement: { kept: "replacement" } },
+        { replacement: { kept: "replacement" } },
+        { dataset: null, replacement: null },
+    ]) {
+        const prepared = module.prepareState(state);
+        const assign = Object.assign;
+        let copies = 0;
+        let html;
+        try {
+            Object.assign = (...args) => {
+                copies++;
+                return assign(...args);
+            };
+            html = module.renderEntryPrepared(prepared);
+        } finally {
+            Object.assign = assign;
+        }
+        assert.equal(
+            copies,
+            Number(Boolean(state.dataset)) + Number(Boolean(state.replacement)),
+        );
+        assert.ok(
+            html.endsWith(
+                (state.replacement
+                    ? "<!--fe:b-->third<!--fe:/b-->/<!--fe:b-->fourth<!--fe:/b-->"
+                    : "<!--fe:b--><!--fe:/b-->/<!--fe:b--><!--fe:/b-->") +
+                    "</template></recipe-card>",
+            ),
+        );
+    }
+});
+
+test("semantic recipe operands remain fresh, including own special literal keys", async () => {
+    const source = compileServerModule(
+        '<recipe-card :payload=\'{"__proto__":{"name":"own"},"constructor":"ctor","items":[{"name":"fresh"}]}\'></recipe-card>',
+        {
+            "recipe-card":
+                "{{payload.__proto__.name}}/{{payload.constructor}}/{{payload.items.0.name}}",
+        },
+        runtime,
+    );
+    const { createServerRenderer } = await import(runtime);
+    const module = createServerRenderer(
+        JSON.parse(source.match(/const plan = (.*);\n/)[1]),
+    );
+    const create = Object.create;
+    const frames = [];
+    let expected;
+    try {
+        Object.create = (...args) => {
+            const result = create(...args);
+            frames.push(result);
+            return result;
+        };
+        expected = module.renderEntry();
+    } finally {
+        Object.create = create;
+    }
+    const payload = frames.find(frame => Object.hasOwn(frame, "payload")).payload;
+    assert.equal(Object.getPrototypeOf(payload), Object.prototype);
+    assert.equal(Object.hasOwn(payload, "__proto__"), true);
+    assert.ok(
+        expected.endsWith(
+            "<!--fe:b-->own<!--fe:/b-->/<!--fe:b-->ctor<!--fe:/b-->/" +
+                "<!--fe:b-->fresh<!--fe:/b--></template></recipe-card>",
+        ),
+    );
+    payload.__proto__.name = "changed";
+    payload.items[0].name = "changed";
+    payload.items.push("changed");
+    assert.equal(module.renderEntry(), expected);
+    assert.equal(module.renderEntryPrepared(module.prepareState()), expected);
+});
+
 test("server module types distinguish prepared handles from ordinary state", () => {
     const ts = require("typescript");
     const directory = fs.mkdtempSync(path.join(__dirname, "server-types-"));
