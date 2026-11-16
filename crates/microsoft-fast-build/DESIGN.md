@@ -5,7 +5,7 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits semantic tagged operations in ESM from this IR; `compile_server_artifact`
+emits semantic operation objects in ESM from this IR; `compile_server_artifact`
 serializes the same semantic format for the supported native Rust executor.
 The public wire representation is separate from private lowering/execution.
 There is one HTML/expression
@@ -64,15 +64,21 @@ hydration branches or an output accumulator. Both targets use the same compacted
 IR with unchanged opcodes. Native output, depth and step limits remain enforced;
 compacted operations require fewer execution steps.
 
-The emitter serializes tagged operations, inline entry operations, named template
-bodies and component descriptors. ESM embeds this semantic data and calls the
+The emitter serializes named-field operation objects, inline entry operations and
+named template bodies. Components reference a single complete DSD template,
+with optional `host-attributes` metadata for authored defaults. Loaders derive
+host wrappers; generated host templates and separate shadow/host/tag descriptors
+are not part of the wire format. Shared content remains shared even when
+component defaults or shadow options differ. ESM embeds this semantic data and calls the
 helper's loader; it does not expose numeric opcodes, string tables or offsets,
 or emit rendering functions, accessors or loops. The helper validates all records
 and references, detects template cycles and prepares execution closures once. Compound
 property literals remain request-owned. Object validation and prepared snapshots
 are unchanged; overlay/attribute specialization is not part of this baseline.
 Native execution is unchanged; its loader resolves semantic template names into
-private body indices once, then applies complete existing IR validation.
+private body indices and derives the private host/shadow operations once, then
+applies complete existing IR validation. Reconstructed component metadata has a
+64 MiB expansion budget so shared wire definitions cannot multiply without bound.
 
 Conditions lower using the established server operator scanners; arbitrary
 JavaScript expressions are never spliced into output. The shared lowering owns static

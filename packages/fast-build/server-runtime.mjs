@@ -453,10 +453,6 @@ export function createServerRenderer(plan) {
         }
         return value;
     };
-    const record = (value, length) => {
-        if (array(value).length !== length) invalid();
-        return value;
-    };
     const string = value => {
         if (typeof value !== "string") invalid();
         return value;
@@ -474,6 +470,26 @@ export function createServerRenderer(plan) {
     if (!object(plan.templates) || !object(plan.components)) invalid();
     const templates = new Map(Object.entries(plan.templates));
     if (templates.size >= 1_000_000 || templates.has("")) invalid();
+    const hostAttributes = new Map();
+    for (const [name, reference] of Object.entries(plan.components)) {
+        if (!name) invalid();
+        string(reference);
+        if (hostAttributes.has(reference)) continue;
+        const ops = array(templates.get(reference));
+        const metadata = ops[0]?.type === "host-attributes";
+        if (metadata) fields(ops[0], ["type", "attributes"]);
+        const body = ops.slice(metadata ? 1 : 0);
+        if (
+            body.length < 2 ||
+            body[0]?.type !== "literal" ||
+            body.at(-1)?.type !== "literal" ||
+            body.at(-1).html !== "</template>"
+        ) {
+            invalid();
+        }
+        hostAttributes.set(reference, metadata ? array(ops[0].attributes) : []);
+        templates.set(reference, body);
+    }
     const aliases = [["$index"]];
     const path = value => {
         if (!array(value).length) invalid();
@@ -483,9 +499,9 @@ export function createServerRenderer(plan) {
     for (const body of [plan.entry, ...templates.values()]) {
         for (const op of array(body)) {
             if (++total > 1_000_000) invalid();
-            array(op);
-            if (op[0] === "repeat") {
-                const name = path(op[1]);
+            if (!object(op)) invalid();
+            if (op.type === "repeat") {
+                const name = path(op.alias);
                 if (!aliases.some(alias => samePath(alias, name))) aliases.push(name);
             }
         }
@@ -505,23 +521,22 @@ export function createServerRenderer(plan) {
     }
     function literal(node, depth = 0) {
         if (depth > 64) invalid();
-        array(node);
-        if (node[0] === "null") {
-            record(node, 1);
+        if (node?.type === "null") {
+            fields(node, ["type"]);
             return () => null;
         }
-        record(node, 2);
-        switch (node[0]) {
+        fields(node, ["type", "value"]);
+        switch (node.type) {
             case "bool": {
-                const value = boolean(node[1]);
+                const value = boolean(node.value);
                 return () => value;
             }
             case "string": {
-                const value = string(node[1]);
+                const value = string(node.value);
                 return () => value;
             }
             case "number": {
-                const encoded = string(node[1]);
+                const encoded = string(node.value);
                 const value =
                     encoded === "inf"
                         ? Infinity
@@ -532,12 +547,12 @@ export function createServerRenderer(plan) {
                 return () => value;
             }
             case "array": {
-                const values = array(node[1]).map(value => literal(value, depth + 1));
+                const values = array(node.value).map(value => literal(value, depth + 1));
                 return () => values.map(value => value());
             }
             case "object": {
-                if (!object(node[1])) invalid();
-                const values = Object.entries(node[1]).map(([key, value]) => [
+                if (!object(node.value)) invalid();
+                const values = Object.entries(node.value).map(([key, value]) => [
                     key,
                     literal(value, depth + 1),
                 ]);
@@ -549,69 +564,74 @@ export function createServerRenderer(plan) {
         }
     }
     function operand(node) {
-        record(node, 2);
-        if (node[0] === "path") return lookup(node[1]);
-        if (node[0] === "value") return literal(node[1]);
+        if (node?.type === "path") {
+            fields(node, ["type", "path"]);
+            return lookup(node.path);
+        }
+        if (node?.type === "value") {
+            fields(node, ["type", "value"]);
+            return literal(node.value);
+        }
         invalid();
     }
     function condition(node, depth = 0) {
         if (depth > 64) invalid();
-        array(node);
-        if (node[0] === "&&" || node[0] === "||") {
-            record(node, 3);
-            const left = condition(node[1], depth + 1);
-            const right = condition(node[2], depth + 1);
-            return node[0] === "&&"
+        if (!object(node)) invalid();
+        if (node.type === "and" || node.type === "or") {
+            fields(node, ["type", "left", "right"]);
+            const left = condition(node.left, depth + 1);
+            const right = condition(node.right, depth + 1);
+            return node.type === "and"
                 ? (r, l) => left(r, l) && right(r, l)
                 : (r, l) => left(r, l) || right(r, l);
         }
-        if (node[0] === "not" || node[0] === "truthy") {
-            record(node, 2);
-            const value = lookup(node[1]);
-            return node[0] === "not"
+        if (node.type === "not" || node.type === "truthy") {
+            fields(node, ["type", "path"]);
+            const value = lookup(node.path);
+            return node.type === "not"
                 ? (r, l) => !truthy(value(r, l))
                 : (r, l) => truthy(value(r, l));
         }
-        if (node[0] === "compare") {
-            record(node, 4);
-            const operator = string(node[1]);
+        if (node.type === "compare") {
+            fields(node, ["type", "operator", "path", "value"]);
+            const operator = string(node.operator);
             if (!["==", "!=", ">", "<", ">=", "<="].includes(operator)) invalid();
-            const left = lookup(node[2]);
-            const right = operand(node[3]);
+            const left = lookup(node.path);
+            const right = operand(node.value);
             return (r, l) => compare(left(r, l), right(r, l), operator);
         }
         invalid();
     }
     function attr(node) {
-        array(node);
-        switch (node[0]) {
+        if (!object(node)) invalid();
+        switch (node.type) {
             case "literal": {
-                record(node, 2);
-                const value = string(node[1]);
+                fields(node, ["type", "html"]);
+                const value = string(node.html);
                 return () => value;
             }
             case "attribute": {
-                record(node, 5);
-                const name = string(node[1]);
-                const value = lookup(node[2]);
-                const isBoolean = boolean(node[3]);
-                const primitive = boolean(node[4]);
+                fields(node, ["type", "name", "path", "boolean", "primitive"]);
+                const name = string(node.name);
+                const value = lookup(node.path);
+                const isBoolean = boolean(node.boolean);
+                const primitive = boolean(node.primitive);
                 return (r, l) => attribute(name, value(r, l), isBoolean, primitive);
             }
             case "conditional": {
-                record(node, 3);
-                const test = condition(node[1]);
-                const value = string(node[2]);
+                fields(node, ["type", "condition", "html"]);
+                const test = condition(node.condition);
+                const value = string(node.html);
                 return (r, l) => (test(r, l) ? value : "");
             }
             case "quoted": {
-                record(node, 3);
-                const name = string(node[1]);
-                const parts = array(node[2]).map(part => {
-                    record(part, 2);
-                    if (part[0] === "literal") return attr(part);
-                    if (part[0] !== "segment") invalid();
-                    const value = lookup(part[1]);
+                fields(node, ["type", "name", "parts"]);
+                const name = string(node.name);
+                const parts = array(node.parts).map(part => {
+                    if (part?.type === "literal") return attr(part);
+                    fields(part, ["type", "path"]);
+                    if (part.type !== "segment") invalid();
+                    const value = lookup(part.path);
                     return (r, l) => segment(value(r, l));
                 });
                 return (r, l) => quoted(name, composite(parts.map(part => part(r, l))));
@@ -621,8 +641,13 @@ export function createServerRenderer(plan) {
         }
     }
     const attrs = values => array(values).map(attr);
-    function tag(value) {
-        fields(value, ["plain", "hydrated", "count", "ending"]);
+    function tag(value, operation = false) {
+        fields(
+            value,
+            operation
+                ? ["type", "plain", "hydrated", "count", "ending"]
+                : ["plain", "hydrated", "count", "ending"],
+        );
         const plain = attrs(value.plain);
         const hydrated = attrs(value.hydrated);
         const bindings = count(value.count);
@@ -647,20 +672,25 @@ export function createServerRenderer(plan) {
         return run;
     }
     function operation(node) {
-        array(node);
-        switch (node[0]) {
+        if (!object(node)) invalid();
+        switch (node.type) {
             case "literal":
                 return attr(node);
             case "template":
-                record(node, 2);
-                return template(node[1]);
+                fields(node, ["type", "name"]);
+                return template(node.name);
+            case "component": {
+                fields(node, ["type", "name"]);
+                const name = string(node.name);
+                if (!own(plan.components, name)) invalid();
+                return (r, l, o, h, e) => components.get(name).host(r, l, o, h, e);
+            }
             case "tag":
-                record(node, 2);
-                return tag(node[1]);
+                return tag(node, true);
             case "binding": {
-                record(node, 3);
-                const value = lookup(node[1]);
-                const escaped = boolean(node[2]);
+                fields(node, ["type", "path", "escape"]);
+                const value = lookup(node.path);
+                const escaped = boolean(node.escape);
                 return (r, l, o, h) => {
                     const index = h ? h.index++ : 0;
                     const output = text(value(r, l));
@@ -669,9 +699,9 @@ export function createServerRenderer(plan) {
                 };
             }
             case "when": {
-                record(node, 3);
-                const test = condition(node[1]);
-                const body = template(node[2]);
+                fields(node, ["type", "condition", "template"]);
+                const test = condition(node.condition);
+                const body = template(node.template);
                 return (r, l, o, h) => {
                     const index = h ? h.index++ : 0;
                     const output = test(r, l)
@@ -681,12 +711,12 @@ export function createServerRenderer(plan) {
                 };
             }
             case "repeat": {
-                record(node, 5);
-                const name = path(node[1]);
+                fields(node, ["type", "alias", "collection", "diagnostic", "template"]);
+                const name = path(node.alias);
                 const slot = aliases.findIndex(alias => samePath(alias, name));
-                const value = lookup(node[2]);
-                const expression = string(node[3]);
-                const body = template(node[4]);
+                const value = lookup(node.collection);
+                const expression = string(node.diagnostic);
+                const body = template(node.template);
                 return (r, l, o, h) => {
                     const items = list(value(r, l), expression);
                     const binding = h ? h.index++ : 0;
@@ -702,83 +732,85 @@ export function createServerRenderer(plan) {
                     return h ? output + end(h, binding) : output;
                 };
             }
-            case "element": {
-                record(node, 2);
-                const element = fields(node[1], [
-                    "name",
-                    "body",
-                    "closing",
-                    "opening",
-                    "props",
-                    "entry",
-                    "normal",
-                    "count",
-                    "defaults",
-                    "shadowTag",
-                ]);
-                const name = string(element.name);
-                if (!own(plan.components, name)) invalid();
-                const light = template(element.body);
-                const closing = string(element.closing);
-                const opening = tag(element.opening);
-                const props = array(element.props).map(prop => {
-                    record(prop, 4);
-                    const camel = string(prop[0]);
-                    const none = string(prop[1]);
-                    const group = prop[2] === null ? null : string(prop[2]);
-                    const value = operand(prop[3]);
-                    return (r, l, o) => [
-                        o.strategy === "camelCase" ? camel : none,
-                        group,
-                        value(r, l),
-                    ];
-                });
-                const entryAttrs = attrs(element.entry);
-                const normalAttrs = attrs(element.normal);
-                const bindings = count(element.count);
-                const defaults = array(element.defaults).map(part => {
-                    record(part, 2);
-                    return { name: string(part[0]), run: attr(part[1]) };
-                });
-                const shadowTag = string(element.shadowTag);
-                return (r, l, o, h, e) => {
-                    if (!selected(o, name)) {
-                        return opening(r, l, o, h) + light(r, l, o, h, e) + closing;
-                    }
-                    const component = components.get(name);
-                    if (!component) missing(name);
-                    const childRoot = props.length
-                        ? child(
-                              r,
-                              props.map(prop => prop(r, l, o)),
-                          )
-                        : r;
-                    const shadow = component.shadow(childRoot, null, o, scope(o), false);
-                    let output = "";
-                    let hydrationAttribute = null;
-                    for (const part of e ? entryAttrs : normalAttrs) output += part(r, l);
-                    if (!e && bindings && h) {
-                        const hydration = marker(h, bindings);
-                        hydrationAttribute = hydration.split("=")[0];
-                        output += ` ${hydration}`;
-                    }
-                    for (const part of defaults) {
-                        if (part.name !== hydrationAttribute) {
-                            output += part.run(childRoot, null);
-                        }
-                    }
-                    output += `>${shadowTag}${shadow}</template>`;
-                    output += light(r, l, o, h, false);
-                    return `${output}</${name}>`;
-                };
-            }
+            case "element":
+                return element(node, template(node.body));
             default:
                 invalid();
         }
     }
+    function defaultAttributes(values) {
+        return array(values).map(part => {
+            fields(part, ["name", "attribute"]);
+            return { name: string(part.name), run: attr(part.attribute) };
+        });
+    }
+    function element(value, light, hostDefaults) {
+        const descriptor = fields(value, [
+            "type",
+            "name",
+            "body",
+            "closing",
+            "opening",
+            "props",
+            "entry",
+            "normal",
+            "count",
+            "defaults",
+        ]);
+        const name = string(descriptor.name);
+        if (!own(plan.components, name)) invalid();
+        const closing = string(descriptor.closing);
+        const opening = tag(descriptor.opening);
+        const props = array(descriptor.props).map(prop => {
+            fields(prop, ["camelCase", "unchanged", "dataset", "value"]);
+            const camel = string(prop.camelCase);
+            const none = string(prop.unchanged);
+            const group = prop.dataset === null ? null : string(prop.dataset);
+            const value = operand(prop.value);
+            return (r, l, o) => [
+                o.strategy === "camelCase" ? camel : none,
+                group,
+                value(r, l),
+            ];
+        });
+        const entryAttrs = attrs(descriptor.entry);
+        const normalAttrs = attrs(descriptor.normal);
+        const bindings = count(descriptor.count);
+        const defaults = hostDefaults ?? defaultAttributes(descriptor.defaults);
+        return (r, l, o, h, e) => {
+            if (!selected(o, name)) {
+                return opening(r, l, o, h) + light(r, l, o, h, e) + closing;
+            }
+            const component = components.get(name);
+            if (!component) missing(name);
+            const childRoot = props.length
+                ? child(
+                      r,
+                      props.map(prop => prop(r, l, o)),
+                  )
+                : r;
+            const shadow = component.shadow(childRoot, null, o, scope(o), false);
+            let output = "";
+            let hydrationAttribute = null;
+            for (const part of e ? entryAttrs : normalAttrs) output += part(r, l);
+            if (!e && bindings && h) {
+                const hydration = marker(h, bindings);
+                hydrationAttribute = hydration.split("=")[0];
+                output += ` ${hydration}`;
+            }
+            for (const part of defaults) {
+                if (part.name !== hydrationAttribute) {
+                    output += part.run(childRoot, null);
+                }
+            }
+            output += `>${shadow}`;
+            output += light(r, l, o, h, false);
+            return `${output}</${name}>`;
+        };
+    }
     function bodyOf(values) {
         const steps = array(values).map(operation);
-        if (steps.length === 1 && values[0][0] === "literal") return steps[0];
+        if (steps.length === 1 && values[0].type === "literal") return steps[0];
         return (r, l, o, h, e) => {
             let output = "";
             for (const step of steps) output += step(r, l, o, h, e);
@@ -786,13 +818,33 @@ export function createServerRenderer(plan) {
         };
     }
     for (const name of templates.keys()) template(name);
-    for (const [name, value] of Object.entries(plan.components)) {
-        if (!name) invalid();
-        fields(value, ["shadow", "host", "tag"]);
+    const compiledHostAttributes = new Map(
+        [...hostAttributes].map(([reference, values]) => [
+            reference,
+            defaultAttributes(values),
+        ]),
+    );
+    for (const [name, reference] of Object.entries(plan.components)) {
+        const base = [{ type: "literal", html: `<${name}` }];
+        const opening = [{ type: "literal", html: `<${name}>` }];
         components.set(name, {
-            shadow: template(value.shadow),
-            host: template(value.host),
-            tag: string(value.tag),
+            shadow: template(reference),
+            host: element(
+                {
+                    type: "element",
+                    name,
+                    body: null,
+                    closing: `</${name}>`,
+                    opening: { plain: opening, hydrated: opening, count: 0, ending: ">" },
+                    props: [],
+                    entry: base,
+                    normal: base,
+                    count: 0,
+                    defaults: hostAttributes.get(reference),
+                },
+                () => "",
+                compiledHostAttributes.get(reference),
+            ),
         });
     }
     const body = bodyOf(plan.entry);
@@ -817,11 +869,7 @@ export function createServerRenderer(plan) {
             const [r, o] = request(state, options);
             const component = components.get(name);
             if (!component) missing(name);
-            return selected(o, name)
-                ? component.tag +
-                      component.shadow(r, null, o, scope(o), false) +
-                      "</template>"
-                : "";
+            return selected(o, name) ? component.shadow(r, null, o, scope(o), false) : "";
         },
         renderEntryPrepared(state, options) {
             const [r, o] = preparedRequest(state, options);
@@ -841,11 +889,7 @@ export function createServerRenderer(plan) {
             const [r, o] = preparedRequest(state, options);
             const component = components.get(name);
             if (!component) missing(name);
-            return selected(o, name)
-                ? component.tag +
-                      component.shadow(r, null, o, scope(o), false) +
-                      "</template>"
-                : "";
+            return selected(o, name) ? component.shadow(r, null, o, scope(o), false) : "";
         },
     });
 }

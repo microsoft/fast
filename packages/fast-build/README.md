@@ -33,9 +33,12 @@ regeneration as described in the upgrade guide.
 Compile trusted templates during the server build, then import the emitted ESM
 in the request handler. The generated module and its server-only helper have no
 WASM, browser-class, template-parser, or runtime source-evaluation dependency.
-The ESM embeds tagged operations such as `["literal", "<p>"]` and
-`["binding", ["title"], true]`. Shared bodies use named templates, not numeric
-execution indices. The helper validates this semantic data and creates execution
+The ESM embeds named operation objects such as `{ type: "literal", html: "<p>" }`
+and `{ type: "binding", path: ["title"], escape: true }`. Shared bodies use named
+templates, not numeric execution indices. Components reference a single complete
+shadow template; loaders derive their host wrappers without generated host templates
+or separate shadow/tag references. Authored host defaults remain explicit metadata.
+The helper validates this semantic data and creates execution
 closures once at module load, with no generated-function fallback. Internal
 execution optimizations do not change the stored schema:
 

@@ -13,8 +13,11 @@ The helper is the JavaScript target's request engine. It has no imports or compi
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-Rust encodes the shared executable IR as stable semantic tagged operations,
-named template references and component descriptors. Generated ESM contains one
+Rust encodes the shared executable IR as stable semantic operation objects with
+named fields and template references. Components map names to complete DSD templates;
+loaders derive host wrappers and retain authored defaults through optional
+`host-attributes` metadata. No separate host/shadow/tag descriptors are emitted.
+Generated ESM contains one
 state-independent plan and one helper call, not generated rendering functions,
 numeric opcodes, string tables or offsets. Both targets use the same semantic
 encoding; the JS helper compiles execution closures and the native loader resolves
@@ -24,6 +27,9 @@ detects reference cycles before activation. Captured values are independent of
 later input mutation. There is no generated-function fallback.
 Compound property literals retain per-call ownership. Published object/prepared
 APIs and their validation/snapshot ownership are unchanged.
+Shared host-default metadata is compiled once per component template. Component
+templates with different defaults or shadow options retain shared content bodies
+instead of expanding them repeatedly.
 
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes

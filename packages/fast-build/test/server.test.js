@@ -837,9 +837,9 @@ test("semantic plans hide execution tables and share their schema across targets
         format: "fast-server-js",
         version: 1,
         entry: [
-            ["literal", "<p>"],
-            ["binding", ["label"], true],
-            ["literal", "</p>"],
+            { type: "literal", html: "<p>" },
+            { type: "binding", path: ["label"], escape: true },
+            { type: "literal", html: "</p>" },
         ],
         templates: {},
         components: {},
@@ -859,11 +859,11 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
         format: "fast-server-js",
         version: 1,
         entry: [
-            ["literal", "<p>"],
-            ["template", "value"],
-            ["literal", "</p>"],
+            { type: "literal", html: "<p>" },
+            { type: "template", name: "value" },
+            { type: "literal", html: "</p>" },
         ],
-        templates: { value: [["binding", ["label"], true]] },
+        templates: { value: [{ type: "binding", path: ["label"], escape: true }] },
         components: {},
     };
     const renderer = createServerRenderer(plan);
@@ -882,21 +882,36 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
         { ...plan, version: 0 },
         { ...plan, version: 2 },
         { ...plan, code: [18, 1] },
-        { ...plan, entry: [["template", "missing"]] },
+        { ...plan, entry: [{ type: "template", name: "missing" }] },
         { ...plan, entry: [["fragment", "value"]] },
-        { ...plan, entry: [["binding", [], true]] },
-        { ...plan, entry: [["binding", ["label"], 1]] },
-        { ...plan, entry: [["literal", "text", "extra"]] },
+        { ...plan, entry: [{ type: "binding", path: [], escape: true }] },
+        { ...plan, entry: [{ type: "binding", path: ["label"], escape: 1 }] },
+        { ...plan, entry: [{ type: "literal", html: "text", extra: true }] },
+        { ...plan, entry: [["literal", "text"]] },
         { ...plan, entry: [["call", 0]] },
         {
             ...plan,
-            entry: [["when", ["compare", "evil", ["x"], ["path", ["y"]]], "value"]],
+            entry: [
+                {
+                    type: "when",
+                    condition: {
+                        type: "compare",
+                        operator: "evil",
+                        path: ["x"],
+                        value: { type: "path", path: ["y"] },
+                    },
+                    template: "value",
+                },
+            ],
         },
-        { ...plan, templates: { unused: [["unknown"]] } },
-        { ...plan, templates: { value: [["template", "value"]] } },
+        { ...plan, templates: { unused: [{ type: "unknown" }] } },
+        { ...plan, templates: { value: [{ type: "template", name: "value" }] } },
         {
             ...plan,
-            templates: { value: [["template", "other"]], other: [["template", "value"]] },
+            templates: {
+                value: [{ type: "template", name: "other" }],
+                other: [{ type: "template", name: "value" }],
+            },
         },
         { ...plan, components: { bad: { shadow: "value", host: "missing", tag: "" } } },
     ]) {
@@ -905,21 +920,21 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
             /Invalid or incompatible FAST server plan/,
         );
     }
-    plan.entry[0][1] = "mutated";
-    plan.templates.value[0][1][0] = "different";
+    plan.entry[0].html = "mutated";
+    plan.templates.value[0].path[0] = "different";
     assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
 });
 
 test("semantic template names are opaque and sharing stays compact", async () => {
     const { createServerRenderer } = await import(runtime);
     const templates = Object.create(null);
-    templates.__proto__ = [["binding", ["label"], true]];
+    templates.__proto__ = [{ type: "binding", path: ["label"], escape: true }];
     const renderer = createServerRenderer({
         format: "fast-server-js",
         version: 1,
         entry: [
-            ["template", "__proto__"],
-            ["template", "__proto__"],
+            { type: "template", name: "__proto__" },
+            { type: "template", name: "__proto__" },
         ],
         templates,
         components: {},
@@ -931,6 +946,116 @@ test("semantic template names are opaque and sharing stays compact", async () =>
     const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
     assert.ok(Object.keys(plan.templates).length < 10);
     assert.equal(plan.entry.length, 1000);
+});
+
+test("semantic components reference complete shadow templates without host bookkeeping", async () => {
+    const definitions = { "my-card": "<p>{{label}}</p>" };
+    const { source, module } = await compile("", definitions);
+    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
+    assert.deepEqual(plan.components, { "my-card": "template0" });
+    assert.deepEqual(plan.templates, {
+        template0: [
+            {
+                type: "literal",
+                html: '<template shadowrootmode="open" shadowroot="open">',
+            },
+            { type: "literal", html: "<p>" },
+            { type: "binding", path: ["label"], escape: true },
+            { type: "literal", html: "</p>" },
+            { type: "literal", html: "</template>" },
+        ],
+    });
+    const native = JSON.parse(
+        Buffer.from(
+            require("../server.js").compileServerArtifact("", definitions),
+        ).toString(),
+    );
+    assert.deepEqual(native, { ...plan, format: "fast-server-native" });
+    const shadow =
+        '<template shadowrootmode="open" shadowroot="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
+    assert.equal(module.renderShadow("my-card", { label: "<&" }), shadow);
+    assert.equal(
+        module.renderHost("my-card", { label: "<&" }),
+        `<my-card>${shadow}</my-card>`,
+    );
+    const prepared = module.prepareState({ label: "<&" });
+    assert.equal(module.renderShadowPrepared("my-card", prepared), shadow);
+    assert.equal(
+        module.renderHostPrepared("my-card", prepared),
+        `<my-card>${shadow}</my-card>`,
+    );
+});
+
+test("component template metadata preserves host defaults and owns captured values", async () => {
+    const { createServerRenderer } = await import(runtime);
+    const body = [
+        {
+            type: "host-attributes",
+            attributes: [
+                {
+                    name: "title",
+                    attribute: {
+                        type: "attribute",
+                        name: "title",
+                        path: ["label"],
+                        boolean: false,
+                        primitive: true,
+                    },
+                },
+            ],
+        },
+        { type: "literal", html: '<template shadowrootmode="closed">' },
+        { type: "binding", path: ["label"], escape: true },
+        { type: "literal", html: "</template>" },
+    ];
+    const plan = {
+        format: "fast-server-js",
+        version: 1,
+        entry: [{ type: "component", name: "my-card" }],
+        templates: { card: body },
+        components: { "my-card": "card" },
+    };
+    const renderer = createServerRenderer(plan);
+    const shadow =
+        '<template shadowrootmode="closed"><!--fe:b-->&lt;<!--fe:/b--></template>';
+    const host = `<my-card title="&lt;">${shadow}</my-card>`;
+    assert.equal(renderer.renderEntry({ label: "<" }), host);
+    assert.equal(renderer.renderHost("my-card", { label: "<" }), host);
+    assert.equal(renderer.renderShadow("my-card", { label: "<" }), shadow);
+    assert.equal(renderer.renderHost("my-card", {}, { dsd: [] }), "<my-card></my-card>");
+    for (const invalid of [
+        { ...plan, components: { "my-card": "missing" } },
+        { ...plan, entry: [{ type: "component", name: "missing" }] },
+        { ...plan, entry: [body[0]] },
+        { ...plan, templates: { card: body.slice(0, -1) } },
+        { ...plan, templates: { card: [body[1], body[0], body[2], body[3]] } },
+        {
+            ...plan,
+            templates: { card: [{ ...body[0], unexpected: true }, ...body.slice(1)] },
+        },
+        {
+            ...plan,
+            templates: {
+                card: [
+                    {
+                        ...body[0],
+                        attributes: [{ name: "title", attribute: { type: "unknown" } }],
+                    },
+                    ...body.slice(1),
+                ],
+            },
+        },
+    ]) {
+        assert.throws(
+            () => createServerRenderer(invalid),
+            /Invalid or incompatible FAST server plan/,
+        );
+    }
+    body[0].attributes[0].attribute.path[0] = "other";
+    body[1].html = "mutated";
+    body[2].path[0] = "other";
+    plan.components["my-card"] = "missing";
+    assert.equal(renderer.renderEntry({ label: "<" }), host);
 });
 
 test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {

@@ -15,7 +15,7 @@ The optional helper specifier defaults to
 server-only module. Do not import `server.js` into the request dependency graph.
 It is a build-time API and loads the compiler WASM.
 
-Generated ESM embeds semantic tagged operations and named templates rather
+Generated ESM embeds semantic operation objects and named templates rather
 than rendering functions or numeric execution tables. The helper validates all rules/references and creates
 execution closures once during module loading. Requests execute those closures;
 they do not compile templates or evaluate source. The published object/prepared
@@ -30,9 +30,9 @@ The JavaScript and native targets share these semantic fields:
     "format": "fast-server-js",
     "version": 1,
     "entry": [
-        ["literal", "<p>"],
-        ["binding", ["label"], true],
-        ["literal", "</p>"]
+        { "type": "literal", "html": "<p>" },
+        { "type": "binding", "path": ["label"], "escape": true },
+        { "type": "literal", "html": "</p>" }
     ],
     "templates": {},
     "components": {}
@@ -47,45 +47,59 @@ plan to `createServerRenderer(plan)`; native hosts pass serialized bytes to
 `entry` is an ordered list of operations. `templates` maps opaque names to other
 operation lists, keeping reused bodies shared instead of recursively expanding
 them. Names are references, not execution indices; consumers must not interpret
-their spelling or order. Components map authored names to `{ shadow, host, tag }`:
-the first two name templates, while `tag` is the opening shadow-template markup.
+their spelling or order. Components map authored names directly to a complete
+DSD template reference, such as `{ "my-card": "template0" }`. A component template
+starts with a literal containing its opening DSD tag, has its content operations
+in the middle, and ends with a separate `"</template>"` literal. Loaders derive
+the host wrapper from the registered name instead of exposing generated host
+templates or separate `shadow`, `host` and `tag` references.
+
+An optional first `{ type: "host-attributes", attributes }` operation preserves
+authored host defaults. Its ordered entries are `{ name, attribute }` objects.
+It is metadata for deriving the host renderer, not shadow output, and is only
+accepted at the beginning of a registered component template. Templates with
+different defaults or shadow options can reference shared content bodies.
 Unknown envelope fields, operations and references are rejected, including in
 unreachable templates. Loaders own any string interning, offsets, numeric
 instructions, native indices, accessors or execution closures they need.
 
 | Operation | Meaning |
 |---|---|
-| `["literal", text]` | Output literal markup/text. |
-| `["binding", path, escaped]` | Output a state path; `escaped` is a boolean controlling HTML escaping. |
-| `["template", name]` | Execute a shared template in the current context. |
-| `["when", condition, template]` | Execute a template if a condition is true, preserving hydration boundaries. |
-| `["repeat", alias, collection, diagnostic, template]` | Repeat a template with lexical alias/index scope; the diagnostic string identifies invalid collections. |
-| `["tag", descriptor]` | Render ordinary or hydrated tag attributes. |
-| `["element", descriptor]` | Render a registered component, its property overlays, host attributes, shadow and light DOM. |
+| `{ type: "literal", html }` | Output literal markup/text. |
+| `{ type: "binding", path, escape }` | Output a state path; `escape` is a boolean controlling HTML escaping. |
+| `{ type: "template", name }` | Execute a shared template in the current context. |
+| `{ type: "component", name }` | Render a registered component's derived host wrapper and shadow content. |
+| `{ type: "when", condition, template }` | Execute a template if a condition is true, preserving hydration boundaries. |
+| `{ type: "repeat", alias, collection, diagnostic, template }` | Repeat a template with lexical alias/index scope; the diagnostic string identifies invalid collections. |
+| `{ type: "tag", plain, hydrated, count, ending }` | Render ordinary or hydrated tag attributes. |
+| `{ type: "element", ...descriptor }` | Render a component call site, its property overlays, host attributes, shadow and light DOM. |
 
 Paths are nonempty string-segment arrays, not JavaScript expressions.
-Conditions use `["truthy", path]`, `["not", path]`, `["&&", left, right]`,
-`["||", left, right]`, or `["compare", operator, path, operand]`.
-Operands are `["path", path]` or `["value", literal]`. Typed literals use
-`["null"]` or `["bool" | "number" | "string" | "array" | "object", value]`;
+Conditions use `{ type: "truthy" | "not", path }`,
+`{ type: "and" | "or", left, right }`, or
+`{ type: "compare", operator, path, value: operand }`.
+Operands are `{ type: "path", path }` or `{ type: "value", value: literal }`.
+Typed literals use `{ type: "null" }` or
+`{ type: "bool" | "number" | "string" | "array" | "object", value }`;
 numbers are encoded as strings, and array/object entries are typed literals.
 Compound literals remain fresh per request, not shared mutable state.
 
 Tag descriptors have `{ plain, hydrated, count, ending }`. The first two are
 attribute-operation lists, `count` is the hydration binding count, and `ending`
 is the closing tag delimiter. Attribute operations are literal text,
-`["attribute", name, path, booleanAttribute, primitiveOnly]`,
-`["conditional", condition, literalText]`, or `["quoted", name, parts]`.
-Quoted parts are literal text or `["segment", path]`.
+`{ type: "attribute", name, path, boolean, primitive }`,
+`{ type: "conditional", condition, html }`, or `{ type: "quoted", name, parts }`.
+Quoted parts are literal operations or `{ type: "segment", path }`.
 
 Element descriptors have `{ name, body, closing, opening, props, entry, normal,
-count, defaults, shadowTag }`. `body` names the light-DOM template, `opening` is a
+count, defaults }`. `body` names the light-DOM template, `opening` is a
 tag descriptor, `entry`/`normal` are host attribute-operation lists, and `count`
 preserves host hydration markers. Ordered `props` entries are
-`[camelCaseName, unchangedName, datasetKeyOrNull, operand]`; ordered `defaults`
-entries are `[attributeName, attributeOperation]`. These preserve naming,
-dataset merging, caller masking and host-default evaluation semantics. `closing`
-and `shadowTag` retain exact authored/declarative markup.
+`{ camelCase, unchanged, dataset, value: operand }`, with `dataset` null or a
+dataset key; ordered `defaults` entries are `{ name, attribute }`.
+These preserve naming, dataset merging, caller masking and host-default evaluation
+semantics. `closing` retains exact authored closing markup; shadow-root options
+come from the component's DSD template.
 
 Schema versions describe these semantics, **not an execution backend or its
 performance strategy**. Changing private lowering does not require regenerating
