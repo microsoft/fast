@@ -13,32 +13,35 @@ The helper is the JavaScript target's request engine. It has no imports or compi
 WASM, parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
-Rust interns identical executable bodies and factors repeated JavaScript element
-shapes into shared functions with instance-specific constant records. Different
-indexes, dataset values or inline styles do not require another executable
-function when their recipes and light DOM match. Single-use shapes remain
-directly emitted, and compound property literals retain per-call ownership.
-This is an internal compiler optimization; exported APIs, helper contract,
-artifact schema, rendering bytes and hydration behavior are unchanged. Existing
-compiler fingerprint checks still require artifacts to be regenerated on upgrade.
+Rust encodes the shared executable IR as stable semantic tagged operations,
+named fragment references and component descriptors. Generated ESM contains one
+state-independent plan and one helper call, not generated rendering functions,
+numeric opcodes, string tables or offsets. Both targets use the same semantic
+encoding; the JS helper compiles execution closures and the native loader resolves
+fragment names into its private indexed IR. Internal execution layout changes do
+not change the wire schema. The helper validates even unreachable fragments and
+detects reference cycles before activation. Captured values are independent of
+later input mutation. There is no generated-function fallback.
+Compound property literals retain per-call ownership. Published object/prepared
+APIs and their validation/snapshot ownership are unchanged.
 
 Static markup is compacted in the shared Rust lowering pipeline: adjacent literal
 writes and attribute fragments are joined, and ordinary tags become literal bytes
-only when hydration cannot change their output. Literal-only JavaScript bodies
+only when hydration cannot change their output. Literal-only plan bodies
 return constants directly. Tags with whitespace/stripping differences, markers,
 bindings, nested components or host semantics retain the required execution.
 The large-static-template benchmark covers distinct definitions with small bound
 regions; this optimization does not change the public rendering or artifact APIs.
 
 Native `CompiledArtifact` loading/rendering does not parse
-authored HTML or execute JavaScript. Version/compiler/helper metadata and all
+authored HTML or execute JavaScript. Artifact format/schema and all
 executable references/opcodes are validated on load; immutable `Send + Sync`
 ownership and request-local state/error/resource limits are documented in the
 [native contract](./docs/server-modules.md#native-rust-artifact-target).
 There is no C ABI or working .NET binding yet; those are explicitly deferred.
 
 Minor prerelease classification does not make removed APIs a drop-in upgrade.
-State acceptance/normalization, native resource defaults, artifact fingerprint
+State acceptance/normalization, native resource defaults, artifact format
 checks, borrowed request inputs, owned results/errors and thread-safe artifact
 reuse are compatibility contracts. Allocation reductions may remain internal;
 changing those guarantees requires consumer migration. Native budgets do not
@@ -46,7 +49,7 @@ imply equivalent FAST budgets in the JS target.
 
 ### Compiled access and repeat frames
 
-The Rust emitter interns path accessors and resolves potential lexical aliases
+The semantic-plan loader prepares path accessors and resolves potential lexical aliases
 into numeric slots. The helper caches array-index decoding at module import,
 specializes single-key root and single-alias lookups, and selects the newest
 matching alias when dotted prefixes overlap. It preserves own-property masking,
@@ -58,10 +61,14 @@ Internal slot storage has no application prototype; caller state is not mutated
 or retained by module accessors. Shared bodies accept the active frame.
 Component shadows/defaults reset lexical scope while light DOM retains it.
 
-Helper contract version 2 introduced these accessors/frames; version 3 adds
-prepared-state requests. Generated/native artifacts must be
-regenerated and deployed with matching helpers/libraries. Rendering APIs and
-IR opcodes/schema remain unchanged; native execution is not optimized here.
+Semantic plans preserve published object/prepared APIs. Supported artifact schemas,
+not compiler fingerprints or helper-build versions, determine compatibility.
+The targets identify themselves as `fast-server-js` (plan schema 2) and
+`fast-server-native` (native schema 3); loaders reject earlier layouts and other
+format names. The one-time migration requires regenerating old assets and sidecars.
+Generated modules and the helper do not export runtime release metadata.
+Compiler implementation changes do not force regeneration of existing supported
+assets. Native execution is not optimized here.
 The benchmark adds deep-path and three-level-repeat workloads alongside the
 unchanged existing workloads, reporting warm CPU, observed GC and memory.
 
@@ -87,7 +94,7 @@ This adds target-specific ownership wrappers, not another renderer or validator.
 
 ### Output assembly and escaping
 
-Generated JavaScript retains returned child strings and `+=` assembly.
+Loaded execution closures retain returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,
 instead of constructing a mapping for each matched character. Rendering retains
 no request-sized output buffers or scratch storage between calls.
@@ -100,7 +107,7 @@ and error/request isolation are unchanged; there is no streaming API change.
 
 ## CLI
 
-`fast build` loads entry/registry files, compiles AOT source, imports that source,
+`fast build` loads entry/registry files, compiles semantic plans, imports their ESM,
 parses optional state JSON, executes `renderEntry` and writes complete HTML.
 It is a build tool, not a request handler, and always produces complete HTML.
 Omitted state becomes an empty object, without implicitly loading state.json.
@@ -126,7 +133,7 @@ Browser conversion and CSS conversion remain in the independent converter crate.
 | `wasm/` | Generated build-time bindings and binaries |
 | `test/server.test.js` | Frozen byte contracts, state validation, syntax, deployment and hydration fixtures |
 | `test/native-artifact.test.js` | Node/WASM artifacts deployed to source-free workspace and Cargo-packaged native hosts; authored-manifest changes remain incompatible |
-| `test/performance/` | Shared output-baseline tests and fresh-process AOT measurements |
+| `test/performance/` | Shared output-baseline tests and fresh-process flat-plan measurements |
 
 ### Benchmark phase ownership
 
@@ -149,7 +156,7 @@ render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
 
-Boundary-normalized measurements identify the execution target as generated
+Boundary-normalized measurements identify the execution target as flat-plan
 JavaScript and record marker/naming options. State-only JSON serialization is
 timed once outside rendering, with byte length and SHA-256 checked against the
 parent's fixture. A separately warmed JSON-text-to-UTF-8 loop includes parsing,
@@ -379,7 +386,7 @@ retaining their original expected bytes.
 Dedicated native tests cover immutable cross-thread reuse, all render APIs,
 DSD/marker selection, recursive definitions, state and malformed-artifact failures. Vite integration builds and
 relocates generated ESM, then renders without authored inputs or compilation.
-The benchmark reports AOT import/first render, warmed CPU/wall time, process
+The benchmark reports flat-plan import/first render, warmed CPU/wall time, process
 memory/GC, source bytes and output hashes. Its unique-host workload varies static
-instance attributes to exercise shared element code. See server-modules.md for the current
+instance attributes to exercise component plans. See server-modules.md for the current
 benchmark command and measurement boundaries.

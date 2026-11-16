@@ -1,8 +1,8 @@
-# Ahead-of-time server modules
+# Compiled semantic server modules
 
 One Rust-owned lowering produces the executable representation for two supported
-targets: generated JavaScript functions and native Rust compiled artifacts.
-JavaScript AOT is a target, not a requirement for native request execution.
+targets: semantic-plan JavaScript and native Rust compiled artifacts.
+JavaScript is a target, not a requirement for native request execution.
 
 ## Compilation and execution
 
@@ -14,6 +14,86 @@ The optional helper specifier defaults to
 `@microsoft/fast-build/server-runtime.mjs`; bundlers can resolve or bundle that
 server-only module. Do not import `server.js` into the request dependency graph.
 It is a build-time API and loads the compiler WASM.
+
+Generated ESM embeds semantic tagged operations and named fragments rather
+than rendering functions or numeric execution tables. The helper validates all rules/references and creates
+execution closures once during module loading. Requests execute those closures;
+they do not compile templates or evaluate source. The published object/prepared
+APIs and state ownership contracts below are unchanged.
+
+### Stable semantic data
+
+The JavaScript and native targets share these semantic fields:
+
+```json
+{
+    "format": "fast-server-js",
+    "version": 2,
+    "entry": [
+        ["literal", "<p>"],
+        ["binding", ["label"], true],
+        ["literal", "</p>"]
+    ],
+    "fragments": {},
+    "components": {}
+}
+```
+
+For native artifacts, only the envelope identity differs:
+`format: "fast-server-native"` and `version: 3`. JavaScript modules pass their
+plan to `createServerRenderer(plan)`; native hosts pass serialized bytes to
+`CompiledArtifact::load`.
+
+`entry` is an ordered list of operations. `fragments` maps opaque names to other
+operation lists, keeping reused bodies shared instead of recursively expanding
+them. Names are references, not execution indices; consumers must not interpret
+their spelling or order. Components map authored names to `{ shadow, host, tag }`:
+the first two name fragments, while `tag` is the opening shadow-template markup.
+Unknown envelope fields, operations and references are rejected, including in
+unreachable fragments. Loaders own any string interning, offsets, numeric
+instructions, native indices, accessors or execution closures they need.
+
+| Operation | Meaning |
+|---|---|
+| `["literal", text]` | Output literal markup/text. |
+| `["binding", path, escaped]` | Output a state path; `escaped` is a boolean controlling HTML escaping. |
+| `["fragment", name]` | Execute a shared fragment in the current context. |
+| `["when", condition, fragment]` | Execute a fragment if a condition is true, preserving hydration boundaries. |
+| `["repeat", alias, collection, diagnostic, fragment]` | Repeat a fragment with lexical alias/index scope; the diagnostic string identifies invalid collections. |
+| `["tag", descriptor]` | Render ordinary or hydrated tag attributes. |
+| `["element", descriptor]` | Render a registered component, its property overlays, host attributes, shadow and light DOM. |
+
+Paths are nonempty string-segment arrays, not JavaScript expressions.
+Conditions use `["truthy", path]`, `["not", path]`, `["&&", left, right]`,
+`["||", left, right]`, or `["compare", operator, path, operand]`.
+Operands are `["path", path]` or `["value", literal]`. Typed literals use
+`["null"]` or `["bool" | "number" | "string" | "array" | "object", value]`;
+numbers are encoded as strings, and array/object entries are typed literals.
+Compound literals remain fresh per request, not shared mutable state.
+
+Tag descriptors have `{ plain, hydrated, count, ending }`. The first two are
+attribute-operation lists, `count` is the hydration binding count, and `ending`
+is the closing tag delimiter. Attribute operations are literal text,
+`["attribute", name, path, booleanAttribute, primitiveOnly]`,
+`["conditional", condition, literalText]`, or `["quoted", name, parts]`.
+Quoted parts are literal text or `["segment", path]`.
+
+Element descriptors have `{ name, body, closing, opening, props, entry, normal,
+count, defaults, shadowTag }`. `body` names the light-DOM fragment, `opening` is a
+tag descriptor, `entry`/`normal` are host attribute-operation lists, and `count`
+preserves host hydration markers. Ordered `props` entries are
+`[camelCaseName, unchangedName, datasetKeyOrNull, operand]`; ordered `defaults`
+entries are `[attributeName, attributeOperation]`. These preserve naming,
+dataset merging, caller masking and host-default evaluation semantics. `closing`
+and `shadowTag` retain exact authored/declarative markup.
+
+Schema versions describe these semantics, **not an execution backend or its
+performance strategy**. Changing private lowering does not require regenerating
+files or changing a version. An incompatible change to a tag's meaning or fields
+still requires an explicit schema migration.
+Benchmark tooling retains its existing `flatPlan` mode and
+`flat-plan-javascript` target labels for report consumers; current compiler output
+is semantic. Earlier numeric-plan measurements do not measure this replacement.
 
 The `server-js` conversion target accepts a registry of named `<f-template>`
 files and emits one `.mjs` file, defaulting to `server.mjs`. It rejects wildcard
@@ -33,7 +113,7 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `renderHost(name, state?, options?)`: renders a complete named component host.
 - `renderShadow(name, state?, options?)`: renders only its DSD template, with no
   host attributes or caller-owned light DOM synthesized.
-- `components`, `compilerId`, `runtimeVersion`: registry and compatibility metadata.
+- `components`: registered component names.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
 
@@ -123,32 +203,34 @@ fresh preparation on every call as a control.
 
 ## Compatibility and migration
 
-This minor prerelease release contains an **API-breaking migration**: public
-legacy source-rendering/prepared-program APIs are removed, harness rendering becomes asynchronous,
-and request state is restricted. Consumers must migrate and regenerate compiled
-output, not only update package versions.
+The semantic-plan replacement preserves published object-input and prepared-state
+APIs, state acceptance and ownership. Rebuild legacy outputs once and deploy a
+helper that supports the generated plan schema.
+The upgrade guide separately describes the earlier API-breaking migration from
+request-time source rendering and retired prepared compiler/program APIs.
 
-Deploy generated modules and compatible server helpers together. Generated code
-checks the helper `runtimeVersion` on import and reports a clear incompatibility.
-The compiler fingerprint is exported for build manifests; it does not require
-loading WASM during a request. Increment the helper contract version for
-incompatible compiler/helper changes and regenerate modules on upgrades to
-maintain compiler/helper compatibility.
+Generated code no longer exports a compiler fingerprint or compares a literal
+helper-build version on import. The helper validates the supported plan schema;
+JavaScript plans use `format: "fast-server-js"` with semantic schema version 2.
+no runtime release metadata is emitted or exported. Native loading also uses
+explicit supported schemas rather than compiler-build identity.
+Unknown schemas fail safely. Retain supported published decoders across runtime
+upgrades instead of invalidating unchanged assets on every compiler change.
 
-The current helper contract is version 3, adding explicit snapshot requests.
-Generated JavaScript prepares path
+Flat plans replace generated rendering functions while preserving the existing
+snapshot methods. The loader prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
 reset caller lexical scope. Ordinary state/rendering contracts and IR schema
-version 1 remain unchanged; prepared methods are additive. Regenerate both target artifacts on upgrade and deploy the compatible
-helper/native library; older generated modules fail the import-time version check.
+semantics remain unchanged. Legacy fingerprinted assets require a one-time
+migration; compiler-only updates do not invalidate the new supported formats.
 
 For a JavaScript server build:
 
-1. Move template loading/composition and `compileServerModule` into the build.
+1. Move template loading/composition and `writeServerModule` into the build.
 2. Deploy/bundle the generated ESM plus its server helper.
 3. Call `renderEntry(state)` for complete entries.
 4. Call `renderShadow(name, componentState, options)` for DSD fragments.
@@ -156,6 +238,73 @@ For a JavaScript server build:
 Rendering is synchronous and produces complete strings. The application owns
 rebuilds, module activation, asset delivery and in-flight deployment lifecycle.
 Browser classes/registration and hydration configuration are unchanged.
+
+### Generated asset stability
+
+Flat plans contain no compiler fingerprint or literal helper-build version.
+Identical inputs compile deterministically, but a pure compilation call cannot
+recover an older output after the compiler changes its encoding. Strict
+template-only stability therefore requires retaining the existing generated
+assets and their authored-input manifests, in source control or a persistent
+build cache. Unchanged authored inputs reuse those bytes rather than compiling
+again. Compiler identity, package version and timestamps are not rebuild keys.
+
+Use synchronous `writeServerModule(outputPath, inputs, options?)` for ESM or
+`writeServerArtifact(outputPath, inputs, options?)` for native bytes. Create the
+destination directory first. Both return `{ reused, manifestPath }`; the sidecar
+is `${outputPath}.inputs.json`.
+
+```js
+import { mkdir } from "node:fs/promises";
+import { writeServerModule } from "@microsoft/fast-build/server.js";
+
+await mkdir("./generated", { recursive: true });
+const result = writeServerModule(
+    "./generated/server.mjs",
+    {
+        entry: "<my-card></my-card>",
+        templates: { "my-card": "<h2>{{title}}</h2>" },
+    },
+    { overwrite: true },
+);
+```
+
+Inputs accept an `entry` string and either a `templates` registry (strings or
+`ServerTemplateDefinition` values), or `templateSources`, an array of complete
+authored `<f-template>` source strings. Registry names and raw source texts are
+sorted for comparison; duplicate source texts are retained. Exact content,
+whitespace, line endings and attribute ordering matter. Optional attribute lists
+and metadata format defaults are normalized; compiler-derived bindings and source
+locations are excluded. Paths are not authored inputs.
+
+The manifest records canonical authored inputs, asset kind, deployment
+configuration and exact base64 output bytes. It contains no hashes or checksums.
+The output snapshot costs approximately 133% of the asset's byte size, in addition
+to the input copy; sidecars are build storage, not runtime dependencies.
+
+Unchanged managed assets retain both files' bytes and timestamps without loading
+WASM or parsing templates. If only the output is missing, its retained snapshot
+restores the exact bytes. Losing both files loses the historical encoding:
+a fresh compiler cannot reconstruct arbitrary previous output.
+
+`overwrite` defaults to `false`. Unchanged managed reuse is idempotent; replacing
+an existing asset after template edits, or adopting an unmanaged destination,
+requires `overwrite: true`. JavaScript options also accept `runtimeImport`.
+Changing the runtime import or target kind at a managed destination is rejected
+even with overwrite; use a new destination or explicitly reset the retained pair.
+Malformed manifests and output bytes that differ from their stored snapshots
+also fail closed rather than silently recompiling.
+
+The `server-js` conversion CLI uses raw source inputs so reuse precedes
+compiler-dependent parsing. Existing CLI output files still require
+`--overwrite`, including cache hits; that flag permits replacement, not forced
+regeneration. Preserve sidecars when copying or caching build outputs.
+
+Writers use exclusive output-specific locks and sibling staging files, compile
+before replacement and roll back caught publication failures. Two filesystem
+renames cannot publish the asset/manifest pair atomically. An interrupted writer
+can leave a lock or mismatched pair; recover explicitly from retained known-good
+files rather than deleting evidence and silently rebuilding unchanged inputs.
 
 Native hosts use the artifact target below. See
 [the upgrade guide](./migration/aot-server-rendering.md).
@@ -201,17 +350,14 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 
 ### Compatibility, errors and memory
 
-- The artifact envelope identifies `format: "fast-server"`, `version:
-  SERVER_ARTIFACT_VERSION` (currently 1), `compilerId` and `runtimeVersion`.
-  Load requires an **exact compiler fingerprint**, format/version and helper
-  contract match. The artifact is an implementation format, not a stable ABI or
-  cross-version interchange promise. Regenerate and deploy matching native
-  library/artifacts together; package version alone is insufficient.
-  The fingerprint includes authored Rust source, build script, manifest and
-  lockfile paths/bytes. Cargo-packaged builds use the preserved `Cargo.toml.orig`
-  as the manifest input, so packaging normalization alone does not change identity.
+- The artifact envelope identifies `format: "fast-server-native"` and semantic schema
+  version 3. Earlier schemas require a one-time rebuild. It contains no compiler
+  fingerprint or JavaScript helper-build version. Native loading accepts supported schemas and validates
+  their complete operations/references. Source, manifest and lockfile changes
+  do not invalidate an otherwise supported artifact.
 - Load validates every opcode, operand shape, static value, component reference,
-  body index and envelope field, including unreachable bodies. It never parses
+  fragment reference and envelope field, including unreachable bodies. It resolves
+  names to private body indices once at load time and never parses
   HTML or expression text. Malformed JSON/deep JSON and artifacts over 64 MiB
   fail; condition/static-value trees have additional 64-level schema bounds.
   Artifacts accept at most one million bodies and one million total body operations.
@@ -256,7 +402,7 @@ separate C# implementation of HTML/expression semantics.
 ### Target resource contracts
 
 Shared rendering semantics do not guarantee that both targets accept the same
-workload. JS AOT exposes no FAST state-depth/node, body-depth, step or output
+workload. JS flat plans expose no FAST state-depth/node, body-depth, step or output
 budgets; its JavaScript host still imposes stack, string and memory limits.
 Native execution has these additional public bounds:
 
@@ -277,18 +423,17 @@ or coercion is a consumer compatibility change even if ordinary snapshots match.
 
 ### Deployment and native API evolution
 
-The exact compiler fingerprint is a fail-fast deployment contract, not just
-informational metadata. Matching package versions do not establish artifact
-compatibility. Every separately deployed build must supply artifacts matching
-its own native library; future encodings may reject older artifacts but must
-never silently reinterpret them. Do not edit identity/version fields to bypass
-validation.
+Supported execution schemas establish artifact compatibility, not compiler
+fingerprints or package versions. Libraries must retain supported published
+decoders so existing assets survive compiler-only upgrades. Unknown versions
+must fail rather than being silently reinterpreted. Do not edit schema fields
+to bypass validation.
 
 Load/validate replacement artifacts before application-owned atomic activation.
 Reject incompatible candidates without replacing the active program, and keep
 old `CompiledArtifact` clones for in-flight requests. With a native-library upgrade,
 old workers finish using their existing library/handles while new workers load
-newly generated matching artifacts. Rust handles are not transferable across
+supported artifacts, reusing unchanged assets. Rust handles are not transferable across
 processes or native-library versions.
 
 Native methods borrow `&JsonValue` and `&NativeRenderOptions` only for the call;
@@ -311,7 +456,7 @@ or introduce another renderer in C#.
 contracts, both marker formats, both naming strategies, mixed
 DSD selection, state rejection, diagnostics, cyclic graphs and every authored
 declarative fixture. Fresh-process execution disables WASM instantiation and
-JSON parsing. Normal FAST Element fixture builds use AOT output, so the existing
+JSON parsing. Normal FAST Element fixture builds use flat-plan output, so the existing
 browser suite exercises hydration and reactive updates against generated output.
 The content-binding fixture additionally pauses component registration, checks
 the browser-parsed server DOM, and verifies that hydration retains the same
@@ -328,11 +473,11 @@ and concurrent reuse. `node --test packages/fast-build/test/native-artifact.test
 deploys actual Node/WASM-compiled bytes to workspace and verified Cargo-packaged
 native examples with no JavaScript engine on their executable search path.
 It also verifies that changing the packaged authored manifest rebuilds the host
-and rejects the original artifact. Neither backend regenerates its own
+and can still load the original supported artifact. Neither backend regenerates its own
 expected-output oracle. Native performance is not claimed by the
 JavaScript measurements below.
 
-Run the AOT benchmark from the repository root after building:
+Run the flat-plan benchmark from the repository root after building:
 
 ```sh
 npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200 --output=server-results.json
@@ -350,8 +495,8 @@ text and attributes. It helps expose allocation and UTF-8 materialization costs.
 
 ### Comparable input/output boundaries
 
-Reports identify `executionTarget: "generated-javascript"`; these are synchronous
-generated-JavaScript calls, not native Rust rendering. Parent and worker records
+Reports identify `executionTarget: "flat-plan-javascript"`; these are synchronous
+loaded-plan calls, not native Rust rendering. Parent and worker records
 include `renderOptions`. Defaults remain v3 markers, `camelCase` attribute naming
 and DSD for all components. Select the other supported marker/naming contracts
 without changing renderer behavior:
@@ -433,7 +578,7 @@ npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --
 
 `--state-mode` defaults to `plain`; other values are `prepared`,
 `prepare-per-render` and `all`. Reports retain version 2 and add `stateModes`.
-Workload `modes` keys are `aot`, `aotPrepared` and `aotPreparePerRender`.
+Workload `modes` keys are `flatPlan`, `flatPlanPrepared` and `flatPlanPreparePerRender`.
 Each sample/mode uses a separate fresh child; mode order alternates by sample.
 Hashes match across modes and an untimed ordinary call verifies prepared output.
 The original input remains live for that comparison.

@@ -53,7 +53,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         let entry = "<section class=\"panel\"><h2>Static &amp; text</h2><p title='fixed'>Payload</p><br /></section>\n".repeat(count);
         let bytes = compile_server_artifact(&entry, &locator).unwrap();
         let ir: Value = serde_json::from_slice(&bytes).unwrap();
-        let body = &ir["bodies"][ir["entry"].as_u64().unwrap() as usize];
+        let body = &ir["entry"];
         assert_eq!(
             body,
             &json!([["literal", entry]]),
@@ -324,14 +324,33 @@ fn numbers_and_comparisons_match_generated_javascript() {
 }
 
 #[test]
+fn native_semantic_schema_loads_without_execution_tables_or_build_metadata() {
+    let bytes = br#"{"format":"fast-server-native","version":3,"entry":[["binding",["value"],true]],"fragments":{},"components":{}}"#;
+    let artifact = CompiledArtifact::load(bytes).unwrap();
+    let state = parse_render_state(r#"{"value":"Compatible & native"}"#).unwrap();
+    assert_eq!(
+        artifact.render_entry(&state, &Default::default()).unwrap(),
+        "Compatible &amp; native"
+    );
+    let emitted = compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap();
+    let expected: Value = serde_json::from_slice(bytes).unwrap();
+    assert_eq!(serde_json::from_slice::<Value>(&emitted).unwrap(), expected);
+}
+
+#[test]
 fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     let bytes = compile_server_artifact("{{x}}", &common::make_locator(&[])).unwrap();
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for (field, value) in [
+        ("version", json!(1)),
+        ("version", json!(2)),
         ("version", json!(99)),
-        ("runtimeVersion", json!(99)),
-        ("compilerId", json!("old")),
+        ("version", json!("3")),
+        ("version", json!(2.5)),
+        ("version", json!(null)),
         ("format", json!("metadata")),
+        ("format", json!("fast-server")),
+        ("format", json!("fast-server-js")),
     ] {
         let mut v = original.clone();
         v[field] = value;
@@ -342,21 +361,33 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
             "incompatible-artifact"
         );
     }
-    for mutate in 0..10 {
+    for mutate in 0..16 {
         let mut v = original.clone();
         match mutate {
             0 => v["entry"] = json!(999),
-            1 => v["bodies"][0][0][0] = json!("eval"),
-            2 => v["bodies"][0][0] = json!(["call", 999]),
-            3 => v["bodies"][0][0] = json!(["binding", [], true]),
+            1 => v["entry"][0][0] = json!("eval"),
+            2 => v["entry"][0] = json!(["fragment", "missing"]),
+            3 => v["entry"][0] = json!(["binding", [], true]),
             4 => {
-                v["bodies"][0][0] = json!(["when", ["compare", "evil", ["x"], ["path", ["y"]]], 0])
+                v["entry"][0] = json!([
+                    "when",
+                    ["compare", "evil", ["x"], ["path", ["y"]]],
+                    "missing"
+                ])
             }
-            5 => v["bodies"][0] = json!({}),
+            5 => v["entry"] = json!({}),
             6 => v["unexpected"] = json!(true),
             7 => v["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
-            8 => v["bodies"][0][0] = json!(["binding", ["x"], true, "extra"]),
-            _ => v["bodies"][0][0] = json!(["element", {}]),
+            8 => v["entry"][0] = json!(["binding", ["x"], true, "extra"]),
+            9 => v["entry"][0] = json!(["element", {}]),
+            10 => {
+                v["entry"][0] = json!(["repeat", ["items"], ["item"], "item in items", "missing"])
+            }
+            11 => v["entry"][0] = json!(["when", ["truthy", ["x"]], "missing"]),
+            12 => v["components"] = json!({"bad":{"shadow":0,"host":999,"tag":""}}),
+            13 => v["fragments"] = json!({"unused":[["fragment", "missing"]]}),
+            14 => v["entry"][0] = json!(["call", 0]),
+            _ => v["entry"][0] = json!(["fragment", 0]),
         }
         assert_eq!(
             CompiledArtifact::load(v.to_string().as_bytes())
@@ -375,7 +406,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     for _ in 0..70 {
         cond = json!(["&&", cond, ["truthy", ["x"]]]);
     }
-    v["bodies"][0][0] = json!(["when", cond, 0]);
+    v["entry"][0] = json!(["when", cond, "missing"]);
     assert!(CompiledArtifact::load(v.to_string().as_bytes()).is_err());
 }
 
@@ -716,11 +747,17 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for depth in [128, 129] {
         let mut ir = original.clone();
-        ir["entry"] = json!(0);
-        ir["bodies"] = json!((0..depth)
-            .map(|index| json!([["call", index + 1]]))
-            .chain(std::iter::once(json!([["literal", "ok"]])))
-            .collect::<Vec<_>>());
+        ir["entry"] = json!([["fragment", "next0"]]);
+        let mut fragments = serde_json::Map::new();
+        for index in 0..depth {
+            let body = if index + 1 == depth {
+                json!([["literal", "ok"]])
+            } else {
+                json!([["fragment", format!("next{}", index + 1)]])
+            };
+            fragments.insert(format!("next{index}"), body);
+        }
+        ir["fragments"] = json!(fragments);
         let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
         let native = artifact.render_entry(&JsonValue::Null, &Default::default());
         if depth == 128 {
@@ -751,7 +788,7 @@ fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
     let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
     let completed = active.render_entry(&state, &Default::default()).unwrap();
     let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
-    incompatible["compilerId"] = json!("another-deployment");
+    incompatible["version"] = json!(4);
     assert_eq!(
         CompiledArtifact::load(incompatible.to_string().as_bytes())
             .unwrap_err()
