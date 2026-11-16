@@ -9,11 +9,11 @@ Published `renderEntry`, `renderTemplate`, `renderHost`, `renderShadow`,
 `prepareState` and all four `render*Prepared` methods remain unchanged, as do
 `ServerState`, `PreparedServerState`, validation and snapshot ownership.
 No JSON-only request API or consumer serialization migration is required.
-Native execution is unchanged; the semantic native envelope uses schema 3.
+Native execution is unchanged; both new semantic formats start at schema 1.
 
-The format names are `fast-server-js` (JavaScript semantic schema 2) and
-`fast-server-native` (native semantic schema 3). The earlier numeric JavaScript
-schema 1, indexed native schema 2, and experimental `fast-server-plan` and
+The format names are `fast-server-js` (JavaScript semantic schema 1) and
+`fast-server-native` (native semantic schema 1). The unpublished numeric JavaScript
+and indexed native layouts, and experimental `fast-server-plan` and
 `fast-server` names are not accepted. Regenerate those
 assets before using the semantic loaders. For persistent writers, explicitly
 remove the old generated asset and its `.inputs.json` sidecar together before
@@ -58,8 +58,8 @@ whitespace, host attributes and hydration markers remain unchanged.
 ### Prepared snapshots
 
 Rebuild outputs from the earlier source renderer once and deploy a helper/library
-that supports their execution schema. Generated JavaScript uses semantic schema 2;
-native artifacts use semantic schema 3. Ordinary render methods keep validating
+that supports their execution schema. Both generated JavaScript and native
+artifacts use semantic schema 1. Ordinary render methods keep validating
 supplied state on every call. Helper release versions are not asset rebuild keys.
 
 For opt-in reuse, call generated `prepareState` once, then use the corresponding

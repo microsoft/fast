@@ -26,8 +26,8 @@ upgrades using the persistent writer below. See the
 [upgrade guide](./docs/migration/aot-server-rendering.md).
 Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
 uses supported plan schemas instead.
-JavaScript plans use `fast-server-js` schema 2; native artifacts use
-`fast-server-native` schema 3. Earlier experimental formats/layouts require
+Both new semantic formats start at version 1: `fast-server-js` for JavaScript
+and `fast-server-native` for native artifacts. Experimental formats/layouts require
 regeneration as described in the upgrade guide.
 
 Compile trusted templates during the server build, then import the emitted ESM

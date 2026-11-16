@@ -2,9 +2,9 @@
 use serde_json::{json, Map, Value};
 use std::collections::HashMap;
 
-pub(crate) const JS_VERSION: u32 = 2;
+pub(crate) const JS_VERSION: u32 = 1;
 /// Native semantic artifact schema, independent of private execution layouts.
-pub const NATIVE_VERSION: u32 = 3;
+pub const NATIVE_VERSION: u32 = 1;
 
 fn references(op: &mut Value, mut reference: impl FnMut(&mut Value)) {
     match op[0].as_str() {
@@ -155,7 +155,7 @@ mod tests {
             "components":{},
         });
         let expected = json!({
-            "format":"fast-server-native", "version":3,
+            "format":"fast-server-native", "version":1,
             "entry":[["fragment","fragment0"],["fragment","fragment0"]],
             "fragments":{"fragment0":[["literal","shared"]]}, "components":{},
         });

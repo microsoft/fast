@@ -63,8 +63,8 @@ Component shadows/defaults reset lexical scope while light DOM retains it.
 
 Semantic plans preserve published object/prepared APIs. Supported artifact schemas,
 not compiler fingerprints or helper-build versions, determine compatibility.
-The targets identify themselves as `fast-server-js` (plan schema 2) and
-`fast-server-native` (native schema 3); loaders reject earlier layouts and other
+The targets identify themselves as `fast-server-js` (plan schema 1) and
+`fast-server-native` (native schema 1); loaders reject experimental layouts and other
 format names. The one-time migration requires regenerating old assets and sidecars.
 Generated modules and the helper do not export runtime release metadata.
 Compiler implementation changes do not force regeneration of existing supported

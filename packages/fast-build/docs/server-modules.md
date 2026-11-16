@@ -28,7 +28,7 @@ The JavaScript and native targets share these semantic fields:
 ```json
 {
     "format": "fast-server-js",
-    "version": 2,
+    "version": 1,
     "entry": [
         ["literal", "<p>"],
         ["binding", ["label"], true],
@@ -40,7 +40,7 @@ The JavaScript and native targets share these semantic fields:
 ```
 
 For native artifacts, only the envelope identity differs:
-`format: "fast-server-native"` and `version: 3`. JavaScript modules pass their
+`format: "fast-server-native"`; both new formats start at `version: 1`. JavaScript modules pass their
 plan to `createServerRenderer(plan)`; native hosts pass serialized bytes to
 `CompiledArtifact::load`.
 
@@ -211,7 +211,7 @@ request-time source rendering and retired prepared compiler/program APIs.
 
 Generated code no longer exports a compiler fingerprint or compares a literal
 helper-build version on import. The helper validates the supported plan schema;
-JavaScript plans use `format: "fast-server-js"` with semantic schema version 2.
+JavaScript plans use `format: "fast-server-js"` with semantic schema version 1.
 no runtime release metadata is emitted or exported. Native loading also uses
 explicit supported schemas rather than compiler-build identity.
 Unknown schemas fail safely. Retain supported published decoders across runtime
@@ -351,7 +351,7 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 ### Compatibility, errors and memory
 
 - The artifact envelope identifies `format: "fast-server-native"` and semantic schema
-  version 3. Earlier schemas require a one-time rebuild. It contains no compiler
+  version 1. Experimental layouts require regeneration. It contains no compiler
   fingerprint or JavaScript helper-build version. Native loading accepts supported schemas and validates
   their complete operations/references. Source, manifest and lockfile changes
   do not invalidate an otherwise supported artifact.

@@ -325,7 +325,7 @@ fn numbers_and_comparisons_match_generated_javascript() {
 
 #[test]
 fn native_semantic_schema_loads_without_execution_tables_or_build_metadata() {
-    let bytes = br#"{"format":"fast-server-native","version":3,"entry":[["binding",["value"],true]],"fragments":{},"components":{}}"#;
+    let bytes = br#"{"format":"fast-server-native","version":1,"entry":[["binding",["value"],true]],"fragments":{},"components":{}}"#;
     let artifact = CompiledArtifact::load(bytes).unwrap();
     let state = parse_render_state(r#"{"value":"Compatible & native"}"#).unwrap();
     assert_eq!(
@@ -342,10 +342,11 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     let bytes = compile_server_artifact("{{x}}", &common::make_locator(&[])).unwrap();
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for (field, value) in [
-        ("version", json!(1)),
+        ("version", json!(0)),
         ("version", json!(2)),
+        ("version", json!(3)),
         ("version", json!(99)),
-        ("version", json!("3")),
+        ("version", json!("1")),
         ("version", json!(2.5)),
         ("version", json!(null)),
         ("format", json!("metadata")),
@@ -788,7 +789,7 @@ fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
     let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
     let completed = active.render_entry(&state, &Default::default()).unwrap();
     let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
-    incompatible["version"] = json!(4);
+    incompatible["version"] = json!(2);
     assert_eq!(
         CompiledArtifact::load(incompatible.to_string().as_bytes())
             .unwrap_err()

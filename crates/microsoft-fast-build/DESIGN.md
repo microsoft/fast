@@ -103,8 +103,9 @@ Semantic plans preserve published object/prepared APIs. Artifact schemas are
 versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
-JavaScript plans use `fast-server-js` schema 2; native artifacts use
-`fast-server-native` schema 3. Format identifiers are target-specific and strict.
+JavaScript plans use `fast-server-js` schema 1; native artifacts use
+`fast-server-native` schema 1. Both new semantic formats start at version 1.
+Format identifiers are target-specific and strict.
 Only semantic-format changes require new schema versions, not changes to
 private closure compilation, alias slots or native execution layout.
 

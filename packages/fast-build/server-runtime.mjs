@@ -470,7 +470,7 @@ export function createServerRenderer(plan) {
         return value;
     };
     fields(plan, ["format", "version", "entry", "fragments", "components"]);
-    if (plan.format !== "fast-server-js" || plan.version !== 2) invalid();
+    if (plan.format !== "fast-server-js" || plan.version !== 1) invalid();
     if (!object(plan.fragments) || !object(plan.components)) invalid();
     const fragments = new Map(Object.entries(plan.fragments));
     if (fragments.size >= 1_000_000 || fragments.has("")) invalid();

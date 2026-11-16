@@ -37,7 +37,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     assert.ok(bytes instanceof Uint8Array);
     const ir = JSON.parse(Buffer.from(bytes).toString("utf8"));
     assert.equal(ir.format, "fast-server-native");
-    assert.equal(ir.version, 3);
+    assert.equal(ir.version, 1);
     assert.deepEqual(Object.keys(ir).sort(), [
         "components",
         "entry",
@@ -76,7 +76,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
             });
             assert.equal(html, server.renderEntry(state));
         }
-        fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 4 }));
+        fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 2 }));
         assert.throws(
             () =>
                 execFileSync(executable, [artifact], {

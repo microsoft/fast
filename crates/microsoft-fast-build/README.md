@@ -39,8 +39,8 @@ See the [server module contract](../../packages/fast-build/docs/server-modules.m
 for helper compatibility, state validation and qualification.
 
 The plan loader prepares path accessors and reusable request-local repeat frames.
-JavaScript `fast-server-js` plan schema 2 and native `fast-server-native` artifact
-schema 3 are independent of compiler
+JavaScript `fast-server-js` plan schema 1 and native `fast-server-native` artifact
+schema 1 are independent of compiler
 build identity. The compiler fingerprint and helper-build equality checks are removed.
 Published object-input and prepared-state APIs remain unchanged.
 The diagnostic `SERVER_RUNTIME_VERSION` constant and generated `runtimeVersion`
@@ -82,7 +82,7 @@ loading. Errors are recoverable `NativeRenderError { code, message }`; no partia
 HTML is returned. Load validates all references/opcodes and requires a
 supported execution schema. Compiler-only updates do not
 invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-time
-rebuild into semantic schema 3. State/execution/output limits and
+rebuild into `fast-server-native` semantic schema 1. State/execution/output limits and
 deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 
 Escaped text bindings write directly into the request's bounded UTF-8 output

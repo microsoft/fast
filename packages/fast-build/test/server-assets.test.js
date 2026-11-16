@@ -228,7 +228,7 @@ for (const target of targets) {
             } else {
                 const artifact = JSON.parse(original.output.bytes);
                 assert.equal(artifact.format, "fast-server-native");
-                assert.equal(artifact.version, 3);
+                assert.equal(artifact.version, 1);
                 assertHashFree(artifact);
                 assert.ok(Array.isArray(artifact.entry));
                 assert.equal(typeof artifact.fragments, "object");

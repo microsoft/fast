@@ -835,7 +835,7 @@ test("semantic plans hide execution tables and share their schema across targets
     const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
     assert.deepEqual(plan, {
         format: "fast-server-js",
-        version: 2,
+        version: 1,
         entry: [
             ["literal", "<p>"],
             ["binding", ["label"], true],
@@ -849,7 +849,7 @@ test("semantic plans hide execution tables and share their schema across targets
             require("../server.js").compileServerArtifact("<p>{{label}}</p>"),
         ).toString(),
     );
-    assert.deepEqual(native, { ...plan, format: "fast-server-native", version: 3 });
+    assert.deepEqual(native, { ...plan, format: "fast-server-native" });
     assert.equal(module.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
 });
 
@@ -857,7 +857,7 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
     const { createServerRenderer } = await import(runtime);
     const plan = {
         format: "fast-server-js",
-        version: 2,
+        version: 1,
         entry: [
             ["literal", "<p>"],
             ["fragment", "value"],
@@ -879,7 +879,8 @@ test("semantic plan loading rejects invalid rules and owns independent plan data
     for (const invalid of [
         { ...plan, format: "unknown-plan" },
         { ...plan, version: undefined },
-        { ...plan, version: 1 },
+        { ...plan, version: 0 },
+        { ...plan, version: 2 },
         { ...plan, code: [18, 1] },
         { ...plan, entry: [["fragment", "missing"]] },
         { ...plan, entry: [["binding", [], true]] },
@@ -914,7 +915,7 @@ test("semantic fragment names are opaque and sharing stays compact", async () =>
     fragments.__proto__ = [["binding", ["label"], true]];
     const renderer = createServerRenderer({
         format: "fast-server-js",
-        version: 2,
+        version: 1,
         entry: [
             ["fragment", "__proto__"],
             ["fragment", "__proto__"],

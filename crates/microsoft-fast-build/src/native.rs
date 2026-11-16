@@ -120,8 +120,8 @@ impl CompiledArtifact {
     }
 
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
-    /// semantic schema 3, independently of private execution layouts.
-    /// Earlier and unknown schemas require an explicit artifact migration.
+    /// semantic schema 1, independently of private execution layouts.
+    /// Experimental layouts and unknown schemas require explicit regeneration.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
         if bytes.len() > 64 * 1024 * 1024 {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
@@ -129,11 +129,11 @@ impl CompiledArtifact {
         let ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
         if ir["format"] != "fast-server-native"
             // Decoder support is explicit, not coupled to the current emitter version.
-            || !matches!(ir["version"].as_u64(), Some(3))
+            || !matches!(ir["version"].as_u64(), Some(1))
         {
             return Err(error(
                 "incompatible-artifact",
-                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 3",
+                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 1",
             ));
         }
         let ir = crate::server_plan::decode(ir).map_err(|_| invalid())?;
