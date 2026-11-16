@@ -157,6 +157,7 @@ remain authored light DOM when excluded. Missing imported assets and malformed
 templates fail during module import, including unreachable component plans.
 
 Semantic filenames contain no hashes, compiler identity, absolute paths or state.
+Escaping covers arbitrary registry keys; it does not validate HTML custom-element names.
 Template naming is local, so unrelated registry edits leave existing plans
 byte-identical. Changed shadow content changes that component; changed host or
 shadow-root defaults can also change callers because those recipes are compiled

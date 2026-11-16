@@ -168,7 +168,12 @@ fn encode_scope(ir: &V, format: &str, version: u32, scope: Scope<'_>) -> V {
         if matches!(scope, Scope::All)
             || matches!(scope, Scope::Component(selected) if selected == name.as_str())
         {
-            definitions.push((name, c, bodies[host][0][1]["defaults"].clone()));
+            // Registry names need not parse as authored HTML host tags.
+            let defaults = bodies[host][0][1]
+                .get("defaults")
+                .cloned()
+                .unwrap_or_else(|| json!([]));
+            definitions.push((name, c, defaults));
         }
     }
     let entry = if matches!(scope, Scope::Component(_)) {

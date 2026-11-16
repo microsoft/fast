@@ -86,6 +86,7 @@ fn semantic_names_cannot_escape_the_deployment_or_collide() {
     }
     let assets = compile_server_assets("", &locator, "./runtime.mjs").unwrap();
     assert_eq!(assets.files.len(), 9);
+    compile_server_module("", &locator, "./runtime.mjs").unwrap();
     for filename in assets.files.keys() {
         assert!(!filename.contains('/'));
         assert!(!filename.contains('\\'));
