@@ -92,11 +92,21 @@ cache. Options, scopes, loops and child overlays stay request-local.
 Dataset merges clone explicitly bound borrowed objects before writing.
 
 Native `PreparedState` reuses Rust's existing normalizer and stores the owned
-result in a private `Arc`. The existing executor borrows that root using `Cow`,
-while retaining owned child overlays and all execution/output budgets.
+result in a private `Arc`. The existing executor borrows roots, resolved values,
+repeat collections/items and stack-linked lexical frames. Component overlays
+borrow direct properties and parent bases; transformed dataset objects use
+copy-on-write. All execution/output budgets and scope/masking rules remain.
 Its four prepared methods do not clone/revalidate the root. Snapshot clones
 are `Send + Sync`, artifact-independent and freed after the last owner drops.
 This adds target-specific ownership wrappers, not another renderer or validator.
+
+Four native `render_*_json` methods deserialize fresh JSON directly into owned
+`JsonValue` storage and execute it without a snapshot/root copy. Number
+normalization happens during parsing; a separate nonallocating depth/node check
+counts the final tree after duplicate-key replacement and preserves full parse
+validation/error precedence. Typed native requests retain their normalized copy.
+These changes do not alter the generated-JavaScript request path or the
+`fast-server-native` semantic schema 1 contract.
 
 ### Output assembly and escaping
 
