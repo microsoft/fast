@@ -154,18 +154,14 @@ function requestOptions(state, options) {
     ];
 }
 
-function nested(value, path, start = 0, indexes) {
+function nested(value, path, start, indexes) {
     for (let index = start; index < path.length; index++) {
         const key = path[index];
         if (Array.isArray(value)) {
             if (key === "length") {
                 return index === path.length - 1 ? value.length : undefined;
             }
-            const arrayIndex = indexes
-                ? indexes[index]
-                : /^\+?\d+$/.test(key)
-                  ? Number(key)
-                  : null;
+            const arrayIndex = indexes[index];
             if (arrayIndex === null) {
                 return undefined;
             }
@@ -250,30 +246,6 @@ export function loop(parent, slot) {
     values[slot] = value;
     values[0] = index;
     return { values, depth, value, index };
-}
-
-export function child(root, entries) {
-    const values = Object.create(null);
-    let copied;
-    for (const [key, group, value] of entries) {
-        if (group === null) {
-            values[key] = value === undefined ? null : value;
-            copied?.delete(key);
-        } else {
-            if (!own(values, key)) {
-                const inherited = getRoot(root, [key]);
-                values[key] = inherited === undefined ? Object.create(null) : inherited;
-            }
-            if (object(values[key])) {
-                if (!copied?.has(key)) {
-                    values[key] = Object.assign(Object.create(null), values[key]);
-                    (copied ??= new Set()).add(key);
-                }
-                values[key][group] = value === undefined ? null : value;
-            }
-        }
-    }
-    return { values, parent: object(root.values) ? root : null };
 }
 
 function planChild(props, strategy) {
@@ -489,12 +461,6 @@ export function attribute(name, value, boolean, primitive = false) {
         return "";
     }
     return ` ${name}="${htmlEscape(primitive && typeof value === "number" ? number(value) : text(value))}"`;
-}
-
-export function composite(parts) {
-    return parts.some(part => part === undefined || part === null)
-        ? null
-        : parts.join("");
 }
 
 export const segment = value =>

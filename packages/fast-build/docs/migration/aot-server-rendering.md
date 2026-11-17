@@ -1,5 +1,16 @@
 # Migrating from previous versions
 
+## Direct runtime helper imports
+
+The runtime no longer exports `child` or `composite`. Component assignments and
+composite attributes use loader-prepared execution recipes.
+
+Integrations that import these helpers directly should express component property
+bindings and composite attributes in templates, compile with `compileServerModule`
+and call the generated rendering methods. Supported semantic modules already use
+`createServerRenderer` and need no regeneration for this cleanup. Object, JSON and
+prepared rendering methods retain their input and output contracts.
+
 ## Opting into fresh JSON request methods
 
 Newly emitted ESM additionally exports `renderEntryJson`, `renderTemplateJson`,

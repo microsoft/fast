@@ -346,8 +346,8 @@ test("compiled access plans preserve lexical precedence, indexes and root maskin
     );
     assert.equal(helper.access(["constructor"], [])(ownNames, null), "own");
     assert.equal(helper.access(["__proto__"], [])(ownNames, null), "data");
-    const child = helper.child(root, [["item", null, null]]);
-    assert.equal(access(child, null), undefined);
+    const masked = { values: { item: null }, parent: root };
+    assert.equal(access(masked, null), undefined);
 });
 
 test("repeat frames are reused across items and omitted for empty data", async () => {
@@ -893,6 +893,10 @@ test("component recipes preserve grouped replacement, missing masks and special 
                 const options = { attributeNameStrategy, markersV2 };
                 const html = module.renderEntry(state, options);
                 assert.equal(module.renderEntryPrepared(prepared, options), html);
+                assert.equal(
+                    module.renderEntryJson(JSON.stringify(state), options),
+                    html,
+                );
                 if (replacement && !Array.isArray(replacement)) {
                     assert.match(html, /title="replacement\/after\/fresh"/);
                 } else {

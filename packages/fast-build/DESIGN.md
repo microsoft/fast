@@ -65,10 +65,11 @@ imply equivalent FAST budgets in the JS target.
 ### Compiled access and repeat frames
 
 The semantic-plan loader prepares path accessors and resolves potential lexical aliases
-into numeric slots. The helper caches array-index decoding at module import,
-specializes single-key root and single-alias lookups, and selects the newest
-matching alias when dotted prefixes overlap. It preserves own-property masking,
-nulls, array access and parent fallback without slicing paths per lookup.
+into numeric slots. The helper decodes array indexes at module import and supplies
+them to every accessor. It specializes single-key root and single-alias lookups and
+selects the newest matching alias when dotted prefixes overlap. It preserves
+own-property masking, nulls, array access and parent fallback without slicing paths
+per lookup.
 
 A nonempty repeat owns a request-local prototype-linked slot frame with alias/index cells
 reused across iterations, instead of copying loop arrays for every item.
