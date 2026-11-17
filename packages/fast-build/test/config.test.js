@@ -1073,7 +1073,7 @@ describe("template shadowroot attributes", () => {
         assert.ok(templateMatch, output);
         const templateTag = templateMatch[0];
         assert.ok(templateTag.includes(`shadowrootmode="closed"`), output);
-        assert.ok(templateTag.includes(`shadowroot="closed"`), output);
+        assert.ok(!templateTag.includes(`shadowroot=`), output);
         assert.ok(templateTag.includes("shadowrootdelegatesfocus"), output);
     });
 });

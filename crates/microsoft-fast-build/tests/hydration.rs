@@ -100,7 +100,7 @@ fn test_hydration_simple_content_binding() {
         "content binding markers: {result}"
     );
     assert!(
-        result.contains(r#"shadowroot="open""#),
+        result.contains(r#"shadowrootmode="open""#),
         "shadowroot: {result}"
     );
 }
@@ -364,7 +364,7 @@ fn test_hydration_f_when_falsy() {
     .unwrap();
 
     let shadow_start = result
-        .find(r#"shadowroot="open">"#)
+        .find(r#"shadowrootmode="open">"#)
         .expect("no shadow template");
     let shadow_end = result.find("</template>").expect("no close template");
     let shadow = &result[shadow_start..shadow_end];
@@ -690,7 +690,7 @@ fn test_hydration_nested_custom_elements() {
     .unwrap();
 
     // Both elements have their own shadow templates
-    let shadow_count = result.matches(r#"shadowroot="open""#).count();
+    let shadow_count = result.matches(r#"shadowrootmode="open""#).count();
     assert_eq!(
         shadow_count, 2,
         "both elements should have shadow templates: {result}"
@@ -917,8 +917,8 @@ fn test_hydration_bool_attr_expression_false() {
 /// Extract the first shadow template content from a rendered result string.
 fn extract_shadow(result: &str) -> &str {
     let start = result
-        .find(r#"shadowroot="open">"#)
-        .map(|i| i + r#"shadowroot="open">"#.len())
+        .find(r#"shadowrootmode="open">"#)
+        .map(|i| i + r#"shadowrootmode="open">"#.len())
         .unwrap_or(0);
     let end = result.find("</template>").unwrap_or(result.len());
     &result[start..end]

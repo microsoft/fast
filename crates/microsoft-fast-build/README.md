@@ -34,6 +34,10 @@ bodies, including unused definitions and skipped branches.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for render options, state validation and deployment requirements.
 
+Compiled Declarative Shadow DOM emits standard `shadowrootmode` and omits an
+equal-valued legacy `shadowroot` alias. Explicit conflicting aliases are preserved.
+Native browser parsing requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
+
 Generated modules also export `renderEntryJson`, `renderTemplateJson`,
 `renderHostJson` and `renderShadowJson`. Use these JavaScript methods for fresh JSON
 text, passing a required string instead of an already-parsed object. See the

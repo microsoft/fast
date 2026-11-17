@@ -38,6 +38,14 @@ The browser conversion crate remains independent.
 
 ## Emission and diagnostics
 
+`directive::build_shadowroot_template_attrs` is the single DSD output policy for
+both targets. Mode precedence stays explicit standard mode, non-empty legacy
+mode, then `"open"`; the legacy alias is omitted only when its resolved value
+equals the standard mode. Conflicting aliases and all forwarded attributes retain
+their original serialization. Both targets embed the resulting literal tags;
+loaders execute the bytes stored in supported artifacts.
+Whitespace, markers, escaping and host defaults are not reduced.
+
 Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
 The IR contains executable literal writes, prelowered attribute recipes, segmented
 paths, typed static values, condition opcodes, repeats and body/component references.
@@ -114,7 +122,7 @@ versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
 JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 1. Both new semantic formats start at version 1.
+`fast-server-native` schema 1.
 Format identifiers are target-specific and strict.
 Only semantic-format changes require new schema versions, not changes to
 private closure compilation, alias slots or native execution layout.
@@ -126,8 +134,8 @@ For this target the JavaScript helper owns complete JSON-shaped state validation
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
-synchronously return complete strings. Existing markup, whitespace, escaping and
-markers remain byte-preserved.
+synchronously return complete strings. Existing whitespace, escaping and markers
+remain byte-preserved. DSD aliases follow the serialization policy above.
 
 Generated JavaScript carries no compiler fingerprint or literal helper-build
 version check or runtime release metadata. The helper validates the plan schema,
@@ -411,8 +419,13 @@ load/render native artifacts, requiring byte-identical results before checking t
 original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
-Node tests enforce 438 distinct frozen output contracts and the shared
-performance corpus baseline.
+Node tests enforce compiled output contracts and the shared performance corpus
+baseline. `tests/static_output.rs` loads retained schema-1 artifacts and checks
+independent complete-output oracles and no-DSD controls. Loaders reject unsupported
+schemas. The package's
+`test:static-output` delivers actual JS output matching the native oracle to
+Chromium, Firefox and WebKit, verifying parser-created open/closed DSD, flags,
+hydration/node identity, updates and whitespace-sensitive content/layout.
 Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
 its unique-host workload varies indexes, dataset values and inline styles to
 exercise component plans rather than only byte-identical hosts;
