@@ -7,9 +7,11 @@ Development, peer and optional dependencies are separate.
 
 `native-host.mjs` is an opt-in local source-built Node-API facade; importing it
 does not load/download an addon or change the JavaScript backend. Callers select
-an addon path and supply JSON strings/UTF-8 Buffers. The explicit object serializer
-reuses runtime descriptor validation; native rendering uses the existing crate's
-fresh JSON path. There are no regular npm dependencies or platform packages.
+an addon path and supply unshared UTF-8 JSON Buffers. Render options are validated,
+copied and fixed at program construction; request budgets reset on every call.
+Native rendering uses the existing crate's fresh JSON path and returns owned
+Buffers without importing the JavaScript renderer or serializing objects.
+There are no regular npm dependencies or platform packages.
 See [ownership, errors and qualification](./docs/native-node-host.md).
 
 `server.js` loads compiler WASM only at build time and delegates all HTML

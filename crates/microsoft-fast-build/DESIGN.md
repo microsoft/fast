@@ -14,10 +14,12 @@ The browser conversion crate remains independent.
 
 ## Modules
 
-Optional `node.rs` is only a synchronous JSON/Buffer Node-API transport, enabled
+Optional `node.rs` is only a synchronous Buffer-only JSON Node-API transport, enabled
 by `node-host` on non-WASM targets. It calls the validated fresh JSON methods
 without serde state re-conversion or a duplicate executor. All transient state
-remains request-local; napi-rs owns output Buffer finalization. Default compiler,
+remains request-local. Each program owns its immutable constructor options;
+output/step counters reset for each request. napi-rs owns output Buffer finalization.
+Default compiler,
 native Rust and WASM targets do not activate this feature. See the
 [host contract](../../packages/fast-build/docs/native-node-host.md).
 

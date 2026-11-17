@@ -3,9 +3,10 @@
 Compile FAST declarative HTML to server JavaScript modules or native Rust
 artifacts, and analyze templates at build time.
 
-The optional `node-host` feature exposes JSON-first synchronous Node-API hosting
+The optional `node-host` feature exposes Buffer-only JSON synchronous Node-API hosting
 from this same crate. It is explicitly source-built, not a default backend or a
-prebuilt platform distribution. See the
+prebuilt platform distribution. Programs own fixed constructor options and return
+owned Buffers, with request-local budgets. See the
 [build, lifetime and qualification guide](../../packages/fast-build/docs/native-node-host.md).
 
 ```sh

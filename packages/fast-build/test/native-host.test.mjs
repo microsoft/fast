@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { Worker } from "node:worker_threads";
-import { loadNativeHost, serializeNativeState } from "../native-host.mjs";
+import { loadNativeHost } from "../native-host.mjs";
 import { createNativeHostAdapter } from "./performance/native-host-adapter.mjs";
 
 const addon = process.env.FAST_NATIVE_ADDON;
@@ -26,12 +26,13 @@ const js = await import(
     `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
 );
 const state = { label: "<&\"'😀", items: ["α", null, -0, { x: 1 }] };
-const json = serializeNativeState(state);
+const json = JSON.stringify(state);
+const input = Buffer.from(json);
 
-function render(program, context, input, options) {
+function render(program, context, input) {
     return context === "Entry" || context === "Template"
-        ? program[`render${context}Json`](input, options)
-        : program[`render${context}Json`]("test-card", input, options);
+        ? program[`render${context}Json`](input)
+        : program[`render${context}Json`]("test-card", input);
 }
 function jsRender(context, input, options) {
     return context === "Entry" || context === "Template"
@@ -53,13 +54,8 @@ test("published entrypoint and untimed boundary adapters expose the tested facad
             name: "test-card",
         });
         const expected = jsRender(context, state);
-        assert.deepEqual(
-            adapter.renderJsonBuffer(Buffer.from(json)),
-            Buffer.from(expected),
-        );
-        assert.equal(adapter.renderJsonString(json), expected);
-        assert.deepEqual(adapter.renderObjectBuffer(state), Buffer.from(expected));
-        assert.equal(adapter.renderObjectString(state), expected);
+        assert.deepEqual(adapter.renderBuffer(input), Buffer.from(expected));
+        assert.equal(adapter.renderString(input), expected);
     }
 });
 
@@ -75,7 +71,7 @@ test("source-built semantic schema 1 addon and generated JS agree across four co
             context === "Shadow"
                 ? frozenShadow
                 : `<test-card>${frozenShadow}</test-card>`;
-        assert.deepEqual(render(program, context, json), Buffer.from(frozen));
+        assert.deepEqual(render(program, context, input), Buffer.from(frozen));
         assert.equal(jsRender(context, state), frozen);
         for (const options of [
             {},
@@ -83,12 +79,10 @@ test("source-built semantic schema 1 addon and generated JS agree across four co
             { dsd: [] },
             { attributeNameStrategy: "none" },
         ]) {
-            for (const input of [json, Buffer.from(json)]) {
-                assert.deepEqual(
-                    render(program, context, input, JSON.stringify(options)),
-                    Buffer.from(jsRender(context, state, options)),
-                );
-            }
+            assert.deepEqual(
+                render(new NativeProgram(artifact, options), context, input),
+                Buffer.from(jsRender(context, state, options)),
+            );
         }
     }
 });
@@ -105,76 +99,95 @@ test("rejects full malformed JSON/UTF8/Unicode/numeric graphs with recovery", ()
         '{"unused":"\\ud800","unused":0}',
         '{"unused":NaN}',
         '{"unused":undefined}',
+        `{"unused":${"[".repeat(65)}0${"]".repeat(65)}}`,
+    ].map(value => Buffer.from(value));
+    invalid.push(
         Buffer.from([0xc0, 0xaf]),
         Buffer.from([0xed, 0xa0, 0x80]),
         Buffer.from([0xf4, 0x90, 0x80, 0x80]),
-        "\ud800",
-        `{"unused":${"[".repeat(65)}0${"]".repeat(65)}}`,
-    ];
+    );
     for (const context of contexts) {
-        for (const input of invalid) {
-            assert.throws(() => render(program, context, input), {
+        for (const invalidInput of invalid) {
+            assert.throws(() => render(program, context, invalidInput), {
                 code: "invalid-state",
             });
             assert.deepEqual(
-                render(program, context, json),
+                render(program, context, input),
                 Buffer.from(jsRender(context, state)),
             );
         }
         assert.deepEqual(
-            render(program, context, '{"label":-0}'),
-            render(program, context, '{"label":0}'),
+            render(program, context, Buffer.from('{"label":-0}')),
+            render(program, context, Buffer.from('{"label":0}')),
         );
     }
 });
 
-test("objects require explicit full-graph validation without getters/classes/toJSON", () => {
+test("configuration is copied once without invoking getters or toJSON", () => {
+    const options = { markersV2: true, dsd: ["test-card"] };
+    const expected = Buffer.from(js.renderEntry(state, options));
+    const program = new NativeProgram(artifact, options);
+    options.markersV2 = false;
+    options.dsd.length = 0;
+    assert.deepEqual(program.renderEntryJson(input), expected);
+    assert.deepEqual(
+        new NativeProgram(artifact, options).renderEntryJson(input),
+        Buffer.from(js.renderEntry(state, options)),
+    );
+
     let calls = 0;
     const getter = {
-        get unused() {
+        get markersV2() {
             calls++;
-            return 1;
+            return true;
         },
     };
-    const cyclic = {};
-    cyclic.self = cyclic;
-    const extraArray = [];
-    extraArray.x = 1;
+    const dsd = [];
+    Object.defineProperty(dsd, 0, {
+        enumerable: true,
+        get() {
+            calls++;
+            return "test-card";
+        },
+    });
     for (const invalid of [
         getter,
+        { dsd },
         new Date(),
-        new (class State {})(),
-        { unused: undefined },
-        { unused: Infinity },
-        { unused: NaN },
-        { unused: "\udfff" },
-        { "\ud800": 1 },
-        cyclic,
-        Array(2),
-        extraArray,
+        new Proxy(
+            {},
+            {
+                ownKeys() {
+                    calls++;
+                    return [];
+                },
+            },
+        ),
         {
             toJSON() {
                 calls++;
                 return {};
             },
         },
-        Object.defineProperty({}, "hidden", { value: 1 }),
+        Object.defineProperty({}, "markersV2", { value: true }),
         { [Symbol("key")]: 1 },
     ]) {
-        assert.throws(() => serializeNativeState(invalid), { code: "invalid-state" });
+        assert.throws(() => new NativeProgram(artifact, invalid), {
+            code: "invalid-options",
+        });
     }
     assert.equal(calls, 0);
-    assert.equal(serializeNativeState({ value: -0 }), '{"value":0}');
-    assert.throws(() => new NativeProgram(artifact).renderEntryJson(state), {
-        code: "invalid-state",
-    });
     const previous = Array.prototype.toJSON;
     try {
         Array.prototype.toJSON = () => {
             calls++;
             return [];
         };
-        assert.equal(serializeNativeState([1, 2]), "[1,2]");
+        const configured = new NativeProgram(artifact, { dsd: ["test-card"] });
+        assert.deepEqual(
+            configured.renderEntryJson(input),
+            Buffer.from(js.renderEntry(state)),
+        );
         assert.equal(calls, 0);
     } finally {
         if (previous === undefined) delete Array.prototype.toJSON;
@@ -182,42 +195,63 @@ test("objects require explicit full-graph validation without getters/classes/toJ
     }
 });
 
-test("budget and option failures return no partial output and preserve first error", () => {
+test("constructor options are strict and request budgets reset after every call", () => {
     const program = new NativeProgram(artifact);
+    for (const options of [
+        null,
+        [],
+        "{}",
+        { unknown: true },
+        { maxSteps: -1 },
+        { maxSteps: Number.MAX_SAFE_INTEGER + 1 },
+        { maxOutputBytes: 1.5 },
+        { markersV2: 1 },
+        { dsd: [1] },
+        { dsd: ["\ud800"] },
+        { dsd: Array(1) },
+        { dsd: Object.assign([], { extra: true }) },
+        { attributeNameStrategy: "bad" },
+    ]) {
+        assert.throws(() => new NativeProgram(artifact, options), {
+            code: "invalid-options",
+        });
+    }
     for (const context of contexts) {
         for (const options of [{ maxOutputBytes: 1 }, { maxSteps: 0 }]) {
-            assert.throws(() => render(program, context, json, JSON.stringify(options)), {
+            const limited = new NativeProgram(artifact, options);
+            assert.throws(() => render(limited, context, input), {
                 code: "render-limit",
             });
         }
-        for (const options of [
-            "{",
-            '{"unknown":true}',
-            '{"maxSteps":-1}',
-            '{"maxOutputBytes":1.5}',
-            '{"markersV2":1}',
-            '{"dsd":[1]}',
-            '{"attributeNameStrategy":"bad"}',
-            Buffer.from([0xff]),
-            "\ud800",
-            {},
+        for (const invalid of [
+            json,
+            state,
+            new Uint8Array(input),
+            new Proxy(input, {}),
         ]) {
-            assert.throws(() => render(program, context, "{", options), {
+            assert.throws(() => render(program, context, invalid), {
                 code: "invalid-state",
             });
-            assert.throws(() => render(program, context, json, options), {
-                code: "invalid-options",
-            });
         }
-        assert.deepEqual(
-            render(program, context, json),
-            Buffer.from(jsRender(context, state)),
+        const expected = Buffer.from(jsRender(context, state));
+        const bounded = new NativeProgram(artifact, { maxOutputBytes: expected.length });
+        const oversized = Buffer.from(
+            JSON.stringify({ ...state, label: "x".repeat(expected.length + 1) }),
         );
+        assert.throws(() => render(bounded, context, oversized), {
+            code: "render-limit",
+        });
+        for (let index = 0; index < 3; index++) {
+            assert.deepEqual(render(bounded, context, input), expected);
+        }
     }
-    assert.throws(() => program.renderHostJson("missing", "{"), {
+    assert.throws(() => program.renderEntryJson(input, { maxSteps: 0 }), {
+        code: "invalid-options",
+    });
+    assert.throws(() => program.renderHostJson("missing", Buffer.from("{")), {
         code: "invalid-state",
     });
-    assert.throws(() => program.renderHostJson("missing", json), {
+    assert.throws(() => program.renderHostJson("missing", input), {
         code: "missing-template",
     });
 });
@@ -296,14 +330,8 @@ test("shared backing stores are rejected before native reads, with request recov
                 assert.throws(() => render(program, context, input), {
                     code: "invalid-state",
                 });
-                assert.throws(() => render(program, context, "{", input), {
-                    code: "invalid-state",
-                });
-                assert.throws(() => render(program, context, json, input), {
-                    code: "invalid-options",
-                });
                 assert.deepEqual(
-                    render(program, context, json),
+                    render(program, context, Buffer.from(json)),
                     Buffer.from(jsRender(context, state)),
                 );
             }
@@ -338,14 +366,24 @@ test("owned output survives program collection, forced GC and independent worker
             new Worker(
                 `
         const { parentPort, workerData, threadId } = require("node:worker_threads");
+        const { registerHooks } = require("node:module");
+        registerHooks({
+            resolve(specifier, context, next) {
+                if (specifier.endsWith("/server-runtime.mjs")) {
+                    throw new Error("Native hosting must not load the JavaScript renderer.");
+                }
+                return next(specifier, context);
+            },
+        });
         (async () => {
             const { loadNativeHost } = await import(workerData.module);
             const Program = loadNativeHost(workerData.addon);
             const p = new Program(Buffer.from(workerData.artifact));
-            for (let i = 0; i < 32; i++) p.renderEntryJson(workerData.json);
+            const input = Buffer.from(workerData.json);
+            for (let i = 0; i < 32; i++) p.renderEntryJson(input);
             parentPort.postMessage({
                 threadId,
-                output: p.renderEntryJson(workerData.json).toString("base64"),
+                output: p.renderEntryJson(input).toString("base64"),
             });
         })().catch(e => { throw e; });
     `,

@@ -1,56 +1,98 @@
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { types } from "node:util";
-import { preparedRequest, prepareState } from "./server-runtime.mjs";
 
 const bufferBackingStore = Object.getOwnPropertyDescriptor(
     Object.getPrototypeOf(Uint8Array.prototype),
     "buffer",
 ).get;
 
-function sharedBuffer(value) {
-    return (
-        Buffer.isBuffer(value) &&
-        types.isSharedArrayBuffer(bufferBackingStore.call(value))
-    );
-}
-
-function jsonInput(value, code) {
+function inputBuffer(value, code) {
     if (
-        (typeof value !== "string" && !Buffer.isBuffer(value)) ||
-        (typeof value === "string" && !value.isWellFormed()) ||
-        sharedBuffer(value)
+        types.isProxy(value) ||
+        !Buffer.isBuffer(value) ||
+        types.isSharedArrayBuffer(bufferBackingStore.call(value))
     ) {
-        throw Object.assign(
-            new TypeError(
-                "Expected well-formed JSON text or an unshared strict UTF-8 Buffer.",
-            ),
-            { code },
-        );
+        throw Object.assign(new TypeError("Expected an unshared Buffer."), { code });
     }
     return value;
 }
 
-/** Explicitly validate and serialize JSON-shaped objects; never invoke getters/toJSON. */
-export function serializeNativeState(state = {}) {
-    try {
-        const snapshot = preparedRequest(prepareState(state))[0].values;
-        function encode(value) {
-            if (value === null || typeof value !== "object") {
-                return JSON.stringify(value);
-            }
-            if (Array.isArray(value)) {
-                return `[${value.map(encode).join(",")}]`;
-            }
-            return `{${Object.keys(value)
-                .map(key => `${JSON.stringify(key)}:${encode(value[key])}`)
-                .join(",")}}`;
-        }
-        return encode(snapshot);
-    } catch (error) {
-        error.code = "invalid-state";
-        throw error;
+function invalidOptions(message = "Expected a plain native render-options object.") {
+    return Object.assign(new TypeError(message), { code: "invalid-options" });
+}
+
+function optionsJson(options = {}) {
+    if (
+        options === null ||
+        typeof options !== "object" ||
+        types.isProxy(options) ||
+        ![null, Object.prototype].includes(Object.getPrototypeOf(options))
+    ) {
+        throw invalidOptions();
     }
+    const descriptors = Object.getOwnPropertyDescriptors(options);
+    const fields = [];
+    for (const name of Reflect.ownKeys(descriptors)) {
+        const descriptor = descriptors[name];
+        if (!descriptor.enumerable || !Object.hasOwn(descriptor, "value")) {
+            throw invalidOptions();
+        }
+        const value = descriptor.value;
+        let encoded;
+        switch (name) {
+            case "markersV2":
+                if (value !== undefined && typeof value !== "boolean") {
+                    throw invalidOptions();
+                }
+                break;
+            case "attributeNameStrategy":
+                if (value !== undefined && value !== "camelCase" && value !== "none") {
+                    throw invalidOptions();
+                }
+                break;
+            case "maxOutputBytes":
+            case "maxSteps":
+                if (value !== undefined && (!Number.isSafeInteger(value) || value < 0)) {
+                    throw invalidOptions();
+                }
+                break;
+            case "dsd": {
+                if (value === undefined) break;
+                if (
+                    types.isProxy(value) ||
+                    !Array.isArray(value) ||
+                    Object.getPrototypeOf(value) !== Array.prototype
+                ) {
+                    throw invalidOptions();
+                }
+                if (Reflect.ownKeys(value).length !== value.length + 1) {
+                    throw invalidOptions();
+                }
+                const names = [];
+                for (let index = 0; index < value.length; index++) {
+                    const item = Object.getOwnPropertyDescriptor(value, index);
+                    if (
+                        !item?.enumerable ||
+                        !Object.hasOwn(item, "value") ||
+                        typeof item.value !== "string" ||
+                        !item.value.isWellFormed()
+                    ) {
+                        throw invalidOptions();
+                    }
+                    names.push(JSON.stringify(item.value));
+                }
+                encoded = `[${names.join(",")}]`;
+                break;
+            }
+            default:
+                throw invalidOptions();
+        }
+        if (value !== undefined) {
+            fields.push(`${JSON.stringify(name)}:${encoded ?? JSON.stringify(value)}`);
+        }
+    }
+    return `{${fields.join(",")}}`;
 }
 
 /** Load only the caller-selected, source-built addon. No download or backend fallback. */
@@ -62,52 +104,37 @@ export function loadNativeHost(addonPath) {
     return class NativeProgram {
         #program;
 
-        constructor(artifact) {
-            if (!Buffer.isBuffer(artifact) || sharedBuffer(artifact)) {
-                throw Object.assign(
-                    new TypeError(
-                        "Expected executable artifact bytes as an unshared Buffer.",
-                    ),
-                    { code: "invalid-artifact" },
-                );
-            }
-            this.#program = new addon.NativeProgram(artifact);
+        constructor(artifact, options) {
+            this.#program = new addon.NativeProgram(
+                inputBuffer(artifact, "invalid-artifact"),
+                optionsJson(options),
+            );
         }
 
-        #render(method, state, options, name) {
-            state = jsonInput(state, "invalid-state");
-            // Let Rust validate JSON state before reporting malformed options.
-            if (
-                (typeof options === "string" && !options.isWellFormed()) ||
-                sharedBuffer(options)
-            ) {
-                options = Buffer.from([0xff]);
-            } else if (
-                options !== undefined &&
-                !Buffer.isBuffer(options) &&
-                typeof options !== "string"
-            ) {
-                options = Buffer.from([0xff]);
-            }
-            return name === undefined
-                ? this.#program[method](state, options)
-                : this.#program[method](name, state, options);
+        renderEntryJson(state, ...extra) {
+            if (extra.length) throw invalidOptions("Configure options at construction.");
+            return this.#program.renderEntryJson(inputBuffer(state, "invalid-state"));
         }
 
-        renderEntryJson(state, options) {
-            return this.#render("renderEntryJson", state, options);
+        renderTemplateJson(state, ...extra) {
+            if (extra.length) throw invalidOptions("Configure options at construction.");
+            return this.#program.renderTemplateJson(inputBuffer(state, "invalid-state"));
         }
 
-        renderTemplateJson(state, options) {
-            return this.#render("renderTemplateJson", state, options);
+        renderHostJson(name, state, ...extra) {
+            if (extra.length) throw invalidOptions("Configure options at construction.");
+            return this.#program.renderHostJson(
+                name,
+                inputBuffer(state, "invalid-state"),
+            );
         }
 
-        renderHostJson(name, state, options) {
-            return this.#render("renderHostJson", state, options, name);
-        }
-
-        renderShadowJson(name, state, options) {
-            return this.#render("renderShadowJson", state, options, name);
+        renderShadowJson(name, state, ...extra) {
+            if (extra.length) throw invalidOptions("Configure options at construction.");
+            return this.#program.renderShadowJson(
+                name,
+                inputBuffer(state, "invalid-state"),
+            );
         }
     };
 }

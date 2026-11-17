@@ -1,4 +1,4 @@
-import { loadNativeHost, serializeNativeState } from "../../native-host.mjs";
+import { loadNativeHost } from "../../native-host.mjs";
 
 /** Untimed setup; callers own warm/cold timing and the matched input/output boundary. */
 export function createNativeHostAdapter({
@@ -9,17 +9,15 @@ export function createNativeHostAdapter({
     options,
 }) {
     const Program = loadNativeHost(addonPath);
-    const program = new Program(artifact);
+    const program = new Program(artifact, options);
     const method = `render${context}Json`;
     const render = state =>
         context === "Host" || context === "Shadow"
-            ? program[method](name, state, options)
-            : program[method](state, options);
+            ? program[method](name, state)
+            : program[method](state);
     return {
         program,
-        renderJsonBuffer: render,
-        renderJsonString: state => render(state).toString("utf8"),
-        renderObjectBuffer: state => render(serializeNativeState(state)),
-        renderObjectString: state => render(serializeNativeState(state)).toString("utf8"),
+        renderBuffer: render,
+        renderString: state => render(state).toString("utf8"),
     };
 }
