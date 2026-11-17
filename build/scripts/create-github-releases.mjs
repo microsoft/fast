@@ -10,7 +10,8 @@
  *   1. Walks the root `package.json` `workspaces` globs to find every
  *      workspace's `package.json` (no `node_modules` required, so the
  *      `--check-only` mode can run before `npm ci`).
- *   2. Skips workspaces whose package.json sets `private: true`.
+ *   2. Skips private workspaces and versions reserved by a matching
+ *      `hotfix/${name}_v${version}` tag. Hotfixes never create GitHub releases.
  *   3. For each remaining workspace, looks for paired Rust crates at
  *      `crates/<crate-name>/Cargo.toml`. Most crate names are derived from
  *      the npm name by dropping the leading `@` and replacing `/` with `-`;
@@ -44,15 +45,14 @@
  */
 
 import { execFileSync } from "node:child_process";
-import {
-    appendFileSync,
-    copyFileSync,
-    existsSync,
-    mkdirSync,
-    readdirSync,
-    readFileSync,
-} from "node:fs";
+import { appendFileSync, copyFileSync, existsSync, mkdirSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
+import {
+    excludeHotfixWorkspaces,
+    gitTagExists,
+    listPairedCrates,
+    listPublishableWorkspaces,
+} from "./release-metadata.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
@@ -62,110 +62,8 @@ function run(file, args, opts = {}) {
     return execFileSync(file, args, { encoding: "utf8", ...opts });
 }
 
-function gitTagExists(tag) {
-    try {
-        execFileSync("git", ["rev-parse", "--verify", `refs/tags/${tag}`], {
-            stdio: "ignore",
-        });
-        return true;
-    } catch {
-        return false;
-    }
-}
-
-function npmNameToCrateName(npmName) {
-    return npmName.replace(/^@/, "").replace(/\//g, "-");
-}
-
-const bundledCratesByPackage = new Map([
-    ["@microsoft/fast-build", ["microsoft-fast-build", "microsoft-fast-convert"]],
-]);
-
-function npmNameToCrateNames(npmName) {
-    return bundledCratesByPackage.get(npmName) ?? [npmNameToCrateName(npmName)];
-}
-
 function shouldSkipCrates() {
     return process.env.FAST_RELEASE_SKIP_CRATES === "true";
-}
-
-function readCargoTomlVersion(cargoTomlPath) {
-    const content = readFileSync(cargoTomlPath, "utf8");
-    let inPackage = false;
-    for (const rawLine of content.split("\n")) {
-        const line = rawLine.trim();
-        if (line.startsWith("[")) {
-            inPackage = line === "[package]";
-            continue;
-        }
-        if (!inPackage) continue;
-        const m = /^version\s*=\s*"([^"]+)"/.exec(line);
-        if (m) return m[1];
-    }
-    return null;
-}
-
-function listPairedCrates(pkgName, pkgVersion) {
-    if (shouldSkipCrates()) return [];
-
-    const crates = [];
-    for (const crateName of npmNameToCrateNames(pkgName)) {
-        const cargoTomlPath = join("crates", crateName, "Cargo.toml");
-        if (!existsSync(cargoTomlPath)) continue;
-
-        const crateVersion = readCargoTomlVersion(cargoTomlPath);
-        if (crateVersion !== pkgVersion) {
-            throw new Error(
-                `Version mismatch for ${pkgName}: package.json is ${pkgVersion} ` +
-                    `but ${cargoTomlPath} is ${crateVersion}. ` +
-                    "Update one to match the other.",
-            );
-        }
-
-        crates.push({ crateName, cargoTomlPath });
-    }
-
-    return crates;
-}
-
-function listPublishableWorkspaces() {
-    const rootPkg = JSON.parse(readFileSync("package.json", "utf8"));
-    const patterns = rootPkg.workspaces || [];
-    const locations = new Set();
-
-    for (const pattern of patterns) {
-        if (pattern.endsWith("/*")) {
-            const parent = pattern.slice(0, -2);
-            if (!existsSync(parent)) continue;
-            for (const entry of readdirSync(parent, { withFileTypes: true })) {
-                if (entry.isDirectory()) {
-                    locations.add(join(parent, entry.name));
-                }
-            }
-        } else {
-            locations.add(pattern);
-        }
-    }
-
-    const workspaces = [];
-    for (const location of locations) {
-        const pkgPath = join(location, "package.json");
-        if (!existsSync(pkgPath)) continue;
-        const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-        if (pkg.private === true) continue;
-        if (!pkg.name || !pkg.version) continue;
-
-        const crates = listPairedCrates(pkg.name, pkg.version);
-
-        workspaces.push({
-            location,
-            name: pkg.name,
-            version: pkg.version,
-            crates,
-        });
-    }
-
-    return workspaces;
 }
 
 function setGitHubOutput(name, value) {
@@ -173,7 +71,12 @@ function setGitHubOutput(name, value) {
     appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`);
 }
 
-const publishable = listPublishableWorkspaces();
+const publishable = excludeHotfixWorkspaces(listPublishableWorkspaces()).map(
+    workspace => ({
+        ...workspace,
+        crates: listPairedCrates(workspace.name, workspace.version),
+    }),
+);
 if (shouldSkipCrates()) {
     console.log("Paired Rust crate assets are skipped for this release run.");
 }
