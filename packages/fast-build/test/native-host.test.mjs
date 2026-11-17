@@ -40,7 +40,7 @@ function jsRender(context, input, options) {
 }
 const contexts = ["Entry", "Template", "Host", "Shadow"];
 const frozenShadow =
-    '<template shadowrootmode="open" shadowroot="open"><h2 title="&lt;&amp;&quot;&#39;😀" data-fe="1"><!--fe:b-->&lt;&amp;&quot;&#39;😀<!--fe:/b--></h2><!--fe:b--><!--fe:r--><!--fe:b-->α<!--fe:/b-->/<!--fe:b-->0<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b--><!--fe:/b-->/<!--fe:b-->1<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->0<!--fe:/b-->/<!--fe:b-->2<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->[Object]<!--fe:/b-->/<!--fe:b-->3<!--fe:/b--><!--fe:/r--><!--fe:/b--></template>';
+    '<template shadowrootmode="open"><h2 title="&lt;&amp;&quot;&#39;😀" data-fe="1"><!--fe:b-->&lt;&amp;&quot;&#39;😀<!--fe:/b--></h2><!--fe:b--><!--fe:r--><!--fe:b-->α<!--fe:/b-->/<!--fe:b-->0<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b--><!--fe:/b-->/<!--fe:b-->1<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->0<!--fe:/b-->/<!--fe:b-->2<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->[Object]<!--fe:/b-->/<!--fe:b-->3<!--fe:/b--><!--fe:/r--><!--fe:/b--></template>';
 
 test("published entrypoint and untimed boundary adapters expose the tested facade", async () => {
     const published = await import("@microsoft/fast-build/native-host.mjs");

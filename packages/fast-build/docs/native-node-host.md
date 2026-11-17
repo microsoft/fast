@@ -11,7 +11,7 @@ platform npm package, npm runtime dependency, install script, download or fallba
 Use matching reviewed FAST sources and a Rust toolchain. From the repository root:
 
 ```sh
-CARGO_BUILD_JOBS=2 CARGO_INCREMENTAL=0 npm run build:native-host \
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build:native-host \
   -w @microsoft/fast-build -- ../../crates/microsoft-fast-build/target/r3-native-hosting
 ```
 
@@ -84,11 +84,10 @@ independent workers are correctness tests, not a heap/leak certification.
 
 ## Qualification and migration
 
-This candidate targets current main after the semantic-plan and bounded-output
-changes. It retains the native state-borrowing/fresh-JSON prerequisite originally
-introduced in `af2ccc3166484844653d93d4f0173a04cfc038df`, adapted to those merged
-changes. The host calls that single executor, including bounded attribute writes;
-it does not duplicate native execution.
+The host delegates to the shared typed native executor and its fresh-JSON APIs,
+including bounded attribute writes. It does not duplicate native execution or
+retain a separate state-borrowing implementation. Artifacts remain execution-only;
+build-time JavaScript generation compiles the authored templates directly.
 
 Earlier addon/tarball sizes and performance results predate this rebase and do
 not qualify this source revision. Rebuild and remeasure before making a shipping
@@ -116,7 +115,7 @@ candidate commit. Use a separate target for the fixture/default-feature build:
 
 ```sh
 mkdir -p crates/microsoft-fast-build/target/r3-native-fixture
-CARGO_BUILD_JOBS=2 CARGO_INCREMENTAL=0 cargo build --release --locked \
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 cargo build --release --locked \
   --manifest-path crates/microsoft-fast-build/Cargo.toml \
   --example native-host-fixture \
   --target-dir crates/microsoft-fast-build/target/r3-native-fixture \

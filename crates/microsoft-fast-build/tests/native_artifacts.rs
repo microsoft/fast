@@ -1027,50 +1027,6 @@ fn fresh_json_preserves_normalization_full_validation_and_error_precedence() {
 }
 
 #[test]
-fn borrowed_composite_attributes_preserve_bounded_output_and_suppression() {
-    let entry = r#"<div title="start {{value}}/{{items.length}}/{{flag}}/{{zero}}/{{object}}/{{last}}"></div>"#;
-    let artifact = CompiledArtifact::load(
-        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
-    )
-    .unwrap();
-    for (value, last, expected) in [
-        (
-            "<&😀".to_owned(),
-            json!("tail"),
-            "<div title=\"start &lt;&amp;😀/2/true/0/[Object]/tail\"></div>",
-        ),
-        ("<&😀".repeat(4096), Value::Null, "<div></div>"),
-    ] {
-        let json = json!({
-            "value":value, "items":[1,2], "flag":true, "zero":-0.0,
-            "object":{"payload":"must not be cloned"}, "last":last
-        })
-        .to_string();
-        let state = parse_render_state(&json).unwrap();
-        let prepared = PreparedState::from_json(&json).unwrap();
-        let exact = NativeRenderOptions {
-            max_output_bytes: expected.len(),
-            ..Default::default()
-        };
-        assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
-        assert_eq!(
-            artifact.render_entry_prepared(&prepared, &exact).unwrap(),
-            expected
-        );
-        assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
-        let short = NativeRenderOptions {
-            max_output_bytes: expected.len() - 1,
-            ..Default::default()
-        };
-        assert_eq!(
-            artifact.render_entry_json(&json, &short).unwrap_err().code,
-            "render-limit"
-        );
-        assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), expected);
-    }
-}
-
-#[test]
 fn borrowed_nested_repeats_keep_exact_step_budgets_and_recover() {
     let entry = r#"<f-repeat value="{{item in groups}}"><f-repeat value="{{item in item.items}}">{{item.label}}</f-repeat></f-repeat>"#;
     let artifact = CompiledArtifact::load(

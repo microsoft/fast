@@ -1,5 +1,5 @@
 //! Untimed source-proof fixture generation for the optional Node host tests.
-use microsoft_fast_build::{compile_server_artifact, CompiledArtifact, Locator};
+use microsoft_fast_build::{compile_server_artifact, compile_server_module, Locator};
 
 fn main() {
     let locator = Locator::from_templates(
@@ -11,13 +11,15 @@ fn main() {
         .collect(),
     );
     let artifact = compile_server_artifact("<test-card></test-card>", &locator).unwrap();
-    let program = CompiledArtifact::load(&artifact).unwrap();
+    let source =
+        compile_server_module("<test-card></test-card>", &locator, "__FAST_TEST_RUNTIME__")
+            .unwrap();
     println!(
         "{}",
         serde_json::json!({
             "crateVersion": env!("CARGO_PKG_VERSION"),
             "artifact": String::from_utf8(artifact).unwrap(),
-            "source": program.emit_server_module("__FAST_TEST_RUNTIME__"),
+            "source": source,
         })
     );
 }
