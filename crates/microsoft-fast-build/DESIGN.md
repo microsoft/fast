@@ -32,17 +32,18 @@ The browser conversion crate remains independent.
 | `code_escape.rs` | Literal code-sample preprocessing and source rebasing |
 | `binding_metadata.rs` | Descriptive bindings, scopes and UTF-16 source spans |
 | `f_template.rs` | In-memory stylesheet composition and provenance |
-| `template_slots.rs` | Standards-based authored slot discovery |
+| `template_slots.rs` | HTML-context DSD validation and authored slot discovery |
 | `error.rs` | Structured compiler/tooling diagnostics |
 | `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
 
 ## Emission and diagnostics
 
 `directive::build_shadowroot_template_attrs` is the single DSD output policy for
-both targets. Mode precedence stays explicit standard mode, non-empty legacy
-mode, then `"open"`; the legacy alias is omitted only when its resolved value
-equals the standard mode. Conflicting aliases and all forwarded attributes retain
-their original serialization. Both targets embed the resulting literal tags;
+both targets. The mode is the non-empty authored `shadowrootmode` or `"open"`.
+Compilation rejects `shadowroot` in HTML and shadow/host metadata, including
+unused definitions. Validation uses HTML parsing to exclude comments and raw text.
+Other forwarded attributes retain their original serialization.
+Both targets embed the resulting literal tags;
 loaders execute the bytes stored in supported artifacts.
 Whitespace, markers, escaping and host defaults are not reduced.
 
@@ -347,7 +348,7 @@ as a separate document-validation API.
 Selection matches decoded names case-sensitively, rejects empty/missing/duplicate
 matches, and requires one direct inner HTML template. Iterative traversal includes
 ordinary nested templates and conditional/repeated bodies once, but stops at
-nested component definitions or templates marked `shadowrootmode`/`shadowroot`.
+nested component definitions or templates marked `shadowrootmode`.
 Only HTML slot elements count. The result is sorted by original byte position,
 not DOM order, because HTML recovery can reparent nodes (for example, foster
 parenting around tables).

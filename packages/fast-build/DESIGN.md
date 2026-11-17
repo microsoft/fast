@@ -136,9 +136,11 @@ These changes do not alter the generated-JavaScript request path or the
 
 ### Output assembly and escaping
 
-The shared Rust DSD serializer omits `shadowroot` only when its resolved value
-equals `shadowrootmode`. Standard-mode resolution and explicit conflicting aliases
-are unchanged; other DSD attributes and every other output byte remain untouched.
+The shared Rust DSD serializer emits only standard `shadowrootmode`, using its
+non-empty authored value or `"open"`. Compilation rejects `shadowroot` attributes
+in authored HTML and shadow/host metadata, including unused definitions.
+HTML-context validation distinguishes attributes from comments and raw-text content.
+Other DSD attributes and every other output byte remain untouched.
 This is the sole policy for newly compiled assets, not a runtime minifier or an
 optional second rendering implementation. Loaded/persisted artifacts keep their
 literal tags and exact bytes. Browser fixtures qualify parser-created shadow roots,
@@ -301,7 +303,7 @@ Selection requires one case-sensitive decoded definition name and one direct
 HTML template child. Slots retain authored order/duplicates and one-based
 line/UTF-16-column locations at `<`. Ordinary nested templates and FAST
 conditional/repeated bodies are inspected once without state evaluation.
-Nested definitions and templates marked with `shadowrootmode` or `shadowroot`
+Nested definitions and templates marked with `shadowrootmode`
 are excluded as separate authored scopes. HTML integration points are traversed,
 but foreign-namespace slots are excluded. HTML error recovery is permitted;
 scripts never run, and `noscript` uses scripting-enabled tokenization.
@@ -325,7 +327,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 
 - The `name` attribute value becomes the element name key in the templates map.
 - The inner content of the `<template>` child element becomes the raw template string sent to the compiler.
-- Any `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata that the compiler applies to the emitted Declarative Shadow DOM `<template>`.
+- Standard `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata applied to the emitted Declarative Shadow DOM `<template>`. The exact attribute name `shadowroot` is rejected.
 - Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The compiler merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.

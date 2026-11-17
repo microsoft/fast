@@ -18,6 +18,13 @@ use crate::RenderError;
 
 const HTML_NAMESPACE: &str = "http://www.w3.org/1999/xhtml";
 
+pub(crate) fn validate_dsd_attributes(html: &str) -> Result<(), RenderError> {
+    if html.to_ascii_lowercase().contains("shadowroot") {
+        parse(html).validate_dsd_attributes(html)?;
+    }
+    Ok(())
+}
+
 /// An authored HTML slot declaration, located at its opening `<`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TemplateSlot {
@@ -48,6 +55,7 @@ pub fn extract_template_slots(
         });
     }
     let parsed = parse(html);
+    parsed.validate_dsd_attributes(html)?;
     let mut pending = vec![parsed.dom.document.clone()];
     let mut definitions = Vec::new();
     while let Some(node) = pending.pop() {
@@ -100,9 +108,7 @@ pub fn extract_template_slots(
     pending.extend(children(root));
     while let Some(node) = pending.pop() {
         if is_html_element(&node, "f-template")
-            || (is_html_element(&node, "template")
-                && (attribute(&node, "shadowrootmode").is_some()
-                    || attribute(&node, "shadowroot").is_some()))
+            || (is_html_element(&node, "template") && attribute(&node, "shadowrootmode").is_some())
         {
             continue;
         }
@@ -214,6 +220,23 @@ struct LocatedDom {
 }
 
 impl LocatedDom {
+    fn validate_dsd_attributes(&self, html: &str) -> Result<(), RenderError> {
+        let mut pending = vec![self.dom.document.clone()];
+        while let Some(node) = pending.pop() {
+            if let NodeData::Element { attrs, .. } = &node.data {
+                for attr in attrs.borrow().iter() {
+                    if let Err(error) =
+                        crate::directive::validate_dsd_attribute(attr.name.local.as_ref())
+                    {
+                        return Err(error.at(html, self.offset(&node)?));
+                    }
+                }
+            }
+            pending.extend(children(&node));
+        }
+        Ok(())
+    }
+
     fn offset(&self, node: &Handle) -> Result<usize, RenderError> {
         self.offsets
             .borrow()
@@ -244,8 +267,11 @@ impl TreeSink for LocatedDom {
     }
 
     fn create_element(&self, name: QualName, attrs: Vec<Attribute>, flags: ElementFlags) -> Handle {
-        let track = name.ns.as_ref() == HTML_NAMESPACE
-            && matches!(name.local.as_ref(), "f-template" | "template" | "slot");
+        let track = (name.ns.as_ref() == HTML_NAMESPACE
+            && matches!(name.local.as_ref(), "f-template" | "template" | "slot"))
+            || attrs.iter().any(|attr| {
+                crate::directive::validate_dsd_attribute(attr.name.local.as_ref()).is_err()
+            });
         let node = self.dom.create_element(name, attrs, flags);
         if track {
             self.offsets

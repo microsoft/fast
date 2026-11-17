@@ -82,8 +82,8 @@ State must be acyclic JSON-shaped data, with finite numbers and well-formed
 Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
 and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous; arrays render as `[Array]`.
-Compiled Declarative Shadow DOM uses standard `shadowrootmode`, omitting an
-equal-valued legacy `shadowroot` alias. Explicit conflicting aliases are preserved.
+Compiled Declarative Shadow DOM uses only standard `shadowrootmode`.
+Authored `shadowroot` attributes are rejected; use `shadowrootmode` for explicit modes.
 
 See [the server module contract](./docs/server-modules.md)
 for render options, state validation, diagnostics and deployment requirements.
@@ -561,10 +561,10 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
-The compiler resolves `shadowrootmode` from its non-empty authored value, then a
-non-empty legacy `shadowroot` value, then `"open"`. It emits the standard
-`shadowrootmode` attribute and omits a redundant same-value legacy alias. Explicit
-conflicting values remain intact, and all other `shadowroot*` attributes retain
+The compiler resolves `shadowrootmode` from its non-empty authored value, then
+`"open"`. It never synthesizes a `shadowroot` alias. Compilation rejects authored
+`shadowroot` attributes, including empty, boolean and conflicting forms, in HTML
+and shadow/host metadata. Other `shadowroot*` attributes retain
 their values and order. Whitespace, hydration markers, escaping, host defaults
 and template content are preserved. Native DSD parsing requires Chrome/Edge 111+,
 Firefox 123+ or Safari/iOS 16.4+. Upgrade guidance is in the

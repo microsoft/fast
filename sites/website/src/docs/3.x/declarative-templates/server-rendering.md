@@ -89,9 +89,9 @@ Existing HTML bytes, server coercion and hydration markers are preserved.
 ### Declarative Shadow DOM output
 
 Compiled component output uses `<template shadowrootmode="open">` by default.
-The compiler accepts authored `shadowrootmode` or legacy `shadowroot` mode values
-and omits the legacy alias when both resolve to the same value. Explicit
-conflicting aliases and other shadow-root attributes are preserved.
+Set `shadowrootmode` to select an explicit mode. Compilation rejects `shadowroot`
+attributes in authored HTML and shadow/host metadata, including unused definitions.
+Other shadow-root attributes are preserved.
 
 Native parsing of this standard markup requires Chrome/Edge 111+, Firefox 123+
 or Safari/iOS 16.4+. Hydration uses the parser-created shadow roots; assigning HTML

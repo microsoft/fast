@@ -2,6 +2,7 @@ use crate::attribute::{
     find_next_plain_html_tag, is_custom_element, read_tag_name_slice, skip_single_brace_expr,
 };
 use crate::content::html_escape;
+use crate::error::RenderError;
 use crate::locator::Locator;
 
 /// A template directive found at a given byte position.
@@ -108,7 +109,6 @@ pub(crate) fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 
 pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]) -> String {
     let mut mode: Option<Option<String>> = None;
-    let mut legacy_shadowroot: Option<Option<String>> = None;
     let mut forwarded: Vec<(String, Option<String>)> = Vec::new();
     let mut seen_forwarded: Vec<String> = Vec::new();
 
@@ -118,11 +118,6 @@ pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]
             "shadowrootmode" => {
                 if mode.is_none() {
                     mode = Some(value.clone());
-                }
-            }
-            "shadowroot" => {
-                if legacy_shadowroot.is_none() {
-                    legacy_shadowroot = Some(value.clone());
                 }
             }
             _ if normalized.starts_with("shadowroot") => {
@@ -135,29 +130,30 @@ pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]
         }
     }
 
-    let explicit_mode = explicit_shadowroot_attr_value(mode);
-    let explicit_legacy_shadowroot = explicit_shadowroot_attr_value(legacy_shadowroot);
-    let mode = explicit_mode
-        .clone()
-        .or_else(|| explicit_legacy_shadowroot.clone())
+    let mode = mode
+        .flatten()
+        .filter(|value| !value.is_empty())
         .unwrap_or_else(|| "open".to_string());
-    let legacy_shadowroot = explicit_legacy_shadowroot
-        .or(explicit_mode)
-        .unwrap_or_else(|| mode.clone());
 
     let mut out = String::new();
     append_template_attr_value(&mut out, "shadowrootmode", &mode);
-    if legacy_shadowroot != mode {
-        append_template_attr_value(&mut out, "shadowroot", &legacy_shadowroot);
-    }
     for (name, value) in forwarded {
         append_template_attr(&mut out, &name, &value);
     }
     out
 }
 
-fn explicit_shadowroot_attr_value(value: Option<Option<String>>) -> Option<String> {
-    value.flatten().filter(|value| !value.is_empty())
+pub(crate) fn validate_dsd_attribute(name: &str) -> Result<(), RenderError> {
+    if name
+        .strip_prefix('?')
+        .unwrap_or(name)
+        .eq_ignore_ascii_case("shadowroot")
+    {
+        return Err(RenderError::InvalidTemplateMetadata {
+            message: "'shadowroot' is unsupported; use 'shadowrootmode' instead".into(),
+        });
+    }
+    Ok(())
 }
 
 fn append_template_attr(out: &mut String, name: &str, value: &Option<String>) {

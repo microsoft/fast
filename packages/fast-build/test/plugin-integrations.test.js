@@ -618,7 +618,6 @@ test("slot metadata follows HTML contexts, decoded attributes, and authored scop
 <f-repeat value="{{item in items}}"><slot name="repeated"></slot></f-repeat>
 <f-template name="nested"><template><slot name="nested"></slot></template></f-template>
 <nested-card><template shadowrootmode="open"><slot name="shadow"></slot></template></nested-card>
-<template shadowroot="closed"><slot name="legacy"></slot></template>
 <SLOT NAME="&quot;&#10;&#9;&#x1f600;" name="ignored"></SLOT>
 <slot name="{{authoredName}}"></slot>
 </template></f-template>`;
@@ -636,6 +635,18 @@ test("slot metadata follows HTML contexts, decoded attributes, and authored scop
             "<slot",
         );
     }
+    const legacy = source.replace(
+        '<template shadowrootmode="open">',
+        '<template shadowroot="closed">',
+    );
+    assertDiagnostic(
+        () => wasm.extract_template_slots(legacy, "a&b"),
+        "invalid-template-metadata",
+        legacy,
+        legacy.indexOf('<template shadowroot="closed">'),
+        undefined,
+        '<template shadowroot="closed">'.length,
+    );
     assertDiagnostic(
         () => wasm.extract_template_slots(source, "A&B"),
         "missing-template",

@@ -5,7 +5,6 @@
             "content": "<style>:host{display:block}.inline{font:16px monospace;white-space:pre}</style><pre>  first\n\tsecond &amp; &lt; \n</pre><div class=\"inline\"><span>A</span> <span>B</span>\n<span>C</span></div><textarea>  first\n\tsecond &amp; &lt; \n</textarea><h2 title=\"{{label}}\">{{label}}</h2><f-when value=\"{{show}}\"><i>{{label}}</i></f-when><f-repeat value=\"{{item in items}}\"><b>{{item}}</b></f-repeat><qualified-nested :label=\"{{label}}\"></qualified-nested><slot>fallback</slot><template id=\"scope\"><span>  scoped\n text </span></template>",
             "shadowrootAttributes": [
                 { "name": "shadowrootmode", "value": "open" },
-                { "name": "shadowroot", "value": "open" },
                 { "name": "shadowrootdelegatesfocus", "value": null },
                 { "name": "shadowrootclonable", "value": "" },
                 { "name": "shadowrootserializable", "value": "" }
@@ -27,16 +26,12 @@
             "content": "<span>conflict</span>",
             "shadowrootAttributes": [
                 { "name": "shadowrootmode", "value": "closed" },
-                { "name": "shadowroot", "value": "open" },
                 { "name": "shadowrootserializable", "value": "a\"b&c" }
             ]
         },
         "qualified-legacy": {
             "content": "<span>legacy input</span>",
-            "shadowrootAttributes": [
-                { "name": "shadowrootmode", "value": "" },
-                { "name": "shadowroot", "value": "closed" }
-            ]
+            "shadowrootAttributes": [{ "name": "shadowrootmode", "value": "closed" }]
         }
     },
     "state": { "label": " first & < 😀\nlast ", "show": true, "items": ["one", "two"] }

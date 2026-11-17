@@ -44,6 +44,28 @@ async function compile(entry, templates = {}) {
     return { source, module };
 }
 
+test("compilation rejects legacy shadowroot attributes instead of falling back", () => {
+    const reject = (entry, templates = {}) =>
+        assert.throws(
+            () => compileServerModule(entry, templates, runtime),
+            error =>
+                error.code === "invalid-template-metadata" &&
+                /shadowrootmode/.test(error.message),
+        );
+    reject('<template ShAdOwRoOt="closed"></template>');
+    for (const field of ["shadowrootAttributes", "hostAttributes"]) {
+        reject("unused definitions are validated", {
+            "test-old": {
+                content: "<span>unused</span>",
+                [field]: [
+                    { name: "shadowrootmode", value: "closed" },
+                    { name: "shadowroot", value: "open" },
+                ],
+            },
+        });
+    }
+});
+
 async function parity(entry, templates, states, options = {}) {
     const { module } = await compile(entry, templates);
     for (const state of states) {

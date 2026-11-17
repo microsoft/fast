@@ -2,7 +2,8 @@
 
 ## Minor prerelease output migration
 
-New compilation omits only a redundant legacy `shadowroot` alias:
+New compilation uses only standard `shadowrootmode` and never synthesizes a
+legacy `shadowroot` alias:
 
 ```html
 <!-- Previously -->
@@ -11,10 +12,27 @@ New compilation omits only a redundant legacy `shadowroot` alias:
 <template shadowrootmode="open">
 ```
 
-Mode precedence is unchanged: non-empty `shadowrootmode`, then non-empty legacy
-`shadowroot`, then `"open"`. Legacy-only authored definitions still work.
-Explicit conflicting modes remain byte-preserved, for example
-`shadowrootmode="closed" shadowroot="open"`. Other DSD attributes, their spelling
+Compilation now rejects authored `shadowroot` attributes with
+`invalid-template-metadata`, including boolean/empty values, case variants and
+conflicting or redundant pairs. This applies to HTML and shadow/host metadata,
+including unused definitions and skipped branches. Slot discovery rejects them too.
+Comments, attribute values and script/style/textarea text containing the word or
+example markup are not treated as authored attributes.
+
+Migrate definitions explicitly so closed roots do not silently become open:
+
+```html
+<!-- Before -->
+<f-template name="my-card" shadowroot="closed">
+<!-- After -->
+<f-template name="my-card" shadowrootmode="closed">
+```
+
+In programmatic metadata, rename `{ name: "shadowroot", value: "closed" }` to
+`{ name: "shadowrootmode", value: "closed" }`. If both attributes were authored,
+remove `shadowroot` and choose the intended standard mode. Missing, boolean or empty
+`shadowrootmode` defaults to `"open"`; there is no fallback to a legacy value.
+Other DSD attributes, their spelling
 and order, host defaults, escaping, whitespace, comments, hydration markers,
 raw/preformatted text and nested template scopes are unchanged.
 
@@ -50,8 +68,7 @@ and [Firefox 123 release notes](https://www.mozilla.org/en-US/firefox/123.0/rele
 
 - Use `shadowrootmode` in output selectors and standards-aware DSD polyfills.
   Browsers/polyfills recognizing only `shadowroot` no longer receive that alias
-  in newly compiled equivalent-mode output. Upgrade those consumers, or keep
-  previously generated assets/compiler output until the application can migrate.
+  in newly compiled output. Upgrade those consumers before deploying new assets.
 - Existing supported ESM/native artifacts still render their exact old bytes.
   No schema change, loader rewrite or client package release is required.
   Supported assets use the current `fast-server-js` / `fast-server-native`
@@ -83,8 +100,9 @@ npm run test:static-output -w @microsoft/fast-build
 The browser fixture uses actual generated JS output, checks its exact native HTML
 oracle, and delivers its unmodified UTF-8 bytes through an HTTP response.
 Chromium, Firefox and WebKit independently parse both retained old output and new
-output before client registration. Checks cover open/default/legacy-input/closed
-and conflicting modes, focus/cloning/serialization flags, host defaults and
+output before client registration. Current fixture definitions use only standard
+attributes; retained assets remain unchanged literal-byte loading controls.
+Checks cover open/default/closed modes, focus/cloning/serialization flags, host defaults and
 escaped attributes, nested components, ordinary template scopes, conditional and
 repeat hydration, original element/text/repeat node identity, reactive updates,
 preformatted/textarea text, inline separators and measured layout equality.
@@ -93,13 +111,13 @@ An inert-document `innerHTML` control and renderer `dsd: []` control remain sepa
 Original `server-baseline.json`, `server-json-context-baseline.json` and benchmark
 `expected-baseline.json` are retained untouched. Their independent modern
 counterparts freeze the selected new contract; `legacy.fast`, `legacy.html` and
-`modern.html` retain explicit compatibility/browser oracles. Browser assertions,
+`modern.html` provide retained-byte/current-output browser oracles. Browser assertions,
 not regex normalization, establish the bounded semantic qualification.
 The retained-output JS/native fixtures were mechanically transcribed from the
 historical baseline's private IR to the current semantic schema; their provenance
 records both historical and current hashes. They are not represented as unchanged
-historical compiler output. The independently frozen HTML expectations remain
-unchanged, and compiler-produced current assets must match the modern oracle.
+historical compiler output. The retained HTML expectations remain unchanged; the modern oracle records
+standard-only output, and compiler-produced current assets must match it exactly.
 
 The fixture reports raw rendered UTF-16/UTF-8 sizes and gzip/Brotli sizes, excluding
 external scripts, initial state and page assembly. It verifies exact HTTP delivery
