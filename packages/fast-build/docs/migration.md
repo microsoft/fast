@@ -5,6 +5,7 @@ For current APIs and behavior, see the [server module contract](./server-modules
 
 ## Current publish
 
+- [Standard Declarative Shadow DOM output](./migration/standard-dsd-output.md)
 - [Compiled semantic server rendering](./migration/aot-server-rendering.md)
 - [Execution-only typed native artifacts](./migration/typed-native-plans.md)
 - [Plugin integrations](./migration/plugin-integrations.md)

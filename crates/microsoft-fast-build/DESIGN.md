@@ -42,8 +42,8 @@ The browser conversion crate remains independent.
 both targets. Mode precedence stays explicit standard mode, non-empty legacy
 mode, then `"open"`; the legacy alias is omitted only when its resolved value
 equals the standard mode. Conflicting aliases and all forwarded attributes retain
-their original serialization. This intentionally changes newly compiled literal
-tags without modifying native/JS loaders, supported schemas or persisted assets.
+their original serialization. Both targets embed the resulting literal tags;
+loaders execute the bytes stored in supported artifacts.
 Whitespace, markers, escaping and host defaults are not reduced.
 
 Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
@@ -122,7 +122,7 @@ versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
 JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 1. Both new semantic formats start at version 1.
+`fast-server-native` schema 1.
 Format identifiers are target-specific and strict.
 Only semantic-format changes require new schema versions, not changes to
 private closure compilation, alias slots or native execution layout.
@@ -135,8 +135,7 @@ own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
 synchronously return complete strings. Existing whitespace, escaping and markers
-remain byte-preserved. Newly compiled redundant DSD aliases follow the intentional
-standard-output migration above.
+remain byte-preserved. DSD aliases follow the serialization policy above.
 
 Generated JavaScript carries no compiler fingerprint or literal helper-build
 version check or runtime release metadata. The helper validates the plan schema,
@@ -420,13 +419,10 @@ load/render native artifacts, requiring byte-identical results before checking t
 original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
-Node tests enforce modern frozen output contracts and the shared
-performance corpus baseline; original legacy hash baselines remain retained.
-`tests/static_output.rs` loads a retained legacy artifact and checks independent
-old/new complete-output oracles and no-DSD controls. The package's
-retained-output fixtures transcribe historical private IR into the current
-semantic schema without changing the frozen HTML oracles; retired layouts are
-not accepted by the loaders. The package's
+Node tests enforce compiled output contracts and the shared performance corpus
+baseline. `tests/static_output.rs` loads retained schema-1 artifacts and checks
+independent complete-output oracles and no-DSD controls. Loaders reject unsupported
+schemas. The package's
 `test:static-output` delivers actual JS output matching the native oracle to
 Chromium, Firefox and WebKit, verifying parser-created open/closed DSD, flags,
 hydration/node identity, updates and whitespace-sensitive content/layout.

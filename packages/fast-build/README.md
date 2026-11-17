@@ -565,9 +565,10 @@ The compiler resolves `shadowrootmode` from its non-empty authored value, then a
 non-empty legacy `shadowroot` value, then `"open"`. It emits the standard
 `shadowrootmode` attribute and omits a redundant same-value legacy alias. Explicit
 conflicting values remain intact, and all other `shadowroot*` attributes retain
-their values and order. No whitespace, hydration markers, escaping, host defaults
-or template content is minified. This is an intentional new-compilation output
-change; see [migration and browser qualification](./docs/migration/standard-dsd-output.md).
+their values and order. Whitespace, hydration markers, escaping, host defaults
+and template content are preserved. Native DSD parsing requires Chrome/Edge 111+,
+Firefox 123+ or Safari/iOS 16.4+. Upgrade guidance is in the
+[migration index](./docs/migration.md).
 
 ### Attribute name strategy
 

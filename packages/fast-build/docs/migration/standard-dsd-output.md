@@ -23,6 +23,29 @@ line. There is one standard-oriented output policy, not an optional compact mode
 maintaining a second permanent serializer for an obsolete redundant alias would
 add configuration and compatibility surface for a small delivery saving.
 
+## Browser compatibility
+
+Legacy `shadowroot` was never supported across all major browser engines.
+It first shipped in Chrome 90 in 2021; Firefox and Safari implemented only
+standard `shadowrootmode`.
+
+| Browser | Standard `shadowrootmode` | Legacy `shadowroot` |
+|---|---|---|
+| Chrome | 111+ (2023) | 90–110; removed in 111 |
+| Edge | 111+ (2023) | 91–110 |
+| Firefox | 123+ (2024) | Never supported |
+| Safari, including iOS | 16.4+ (2023) | Never supported |
+
+Standard `shadowrootmode` reached all three major browser engines on
+February 20, 2024, when Firefox 123 shipped. Removing the alias drops native DSD
+support for those older Chromium versions, rather than current Firefox or Safari.
+Custom polyfills and tooling matching `[shadowroot]` must recognize
+`[shadowrootmode]`.
+
+Sources: [MDN compatibility data](https://github.com/mdn/browser-compat-data/blob/main/html/elements/template.json),
+[Chrome's implementation history](https://web.dev/articles/declarative-shadow-dom),
+and [Firefox 123 release notes](https://www.mozilla.org/en-US/firefox/123.0/releasenotes/).
+
 ## Consumers and retained assets
 
 - Use `shadowrootmode` in output selectors and standards-aware DSD polyfills.
@@ -52,8 +75,8 @@ add configuration and compatibility surface for a small delivery saving.
 From the monorepo root, build the compiler and use installed Playwright browsers:
 
 ```sh
-CARGO_BUILD_JOBS=2 wasm-pack build --target nodejs crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm --dev
-CARGO_BUILD_JOBS=2 cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml --test static_output --test custom_elements --test hydration --test native_artifacts -- --test-threads=1
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build -w @microsoft/fast-build
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml --test static_output --test custom_elements --test hydration --test native_artifacts -- --test-threads=1
 npm run test:static-output -w @microsoft/fast-build
 ```
 

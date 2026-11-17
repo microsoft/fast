@@ -664,7 +664,10 @@ test("unchanged semantic schema 1 modules retain their old exports with the upgr
         for (const markersV2 of [false, true]) {
             const state = { value: "<&" };
             const options = { markersV2 };
-            const expected = module[method](...args, state, options);
+            const expected = module[method](...args, state, options).replace(
+                '<template shadowrootmode="open">',
+                '<template shadowrootmode="open" shadowroot="open">',
+            );
             assert.equal(old[method](...args, state, options), expected);
             assert.equal(
                 old[`${method}Prepared`](...args, old.prepareState(state), options),

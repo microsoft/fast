@@ -140,13 +140,11 @@ The shared Rust DSD serializer omits `shadowroot` only when its resolved value
 equals `shadowrootmode`. Standard-mode resolution and explicit conflicting aliases
 are unchanged; other DSD attributes and every other output byte remain untouched.
 This is the sole policy for newly compiled assets, not a runtime minifier or an
-optional second rendering implementation. Already loaded/persisted artifacts keep
-their literal tags and exact bytes. The
-[migration guide](./docs/migration/standard-dsd-output.md) documents legacy consumers,
-retained frozen oracles and real three-browser qualification.
-Retained-output fixtures use the current semantic schema; historical private
-layouts were transcribed for this fixture only, not re-enabled in either loader.
-Their independent HTML oracles remain frozen.
+optional second rendering implementation. Loaded/persisted artifacts keep their
+literal tags and exact bytes. Browser fixtures qualify parser-created shadow roots,
+hydration identity and reactive updates in Chromium, Firefox and WebKit.
+Retained-output fixtures use supported semantic schemas and independent frozen
+HTML oracles. Loaders reject unsupported schemas.
 
 Loaded execution closures retain returned child strings and `+=` assembly.
 Escaping reuses an immutable module-level entity table and replacement function,
@@ -175,7 +173,7 @@ Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
 presence overrides config, including empty paths. Boolean options are validated.
 
 Optional `--server-module` scopes retained preparation to the entry plus raw
-raw registry sources, independently of request state, output location and render
+registry sources, independently of request state, output location and render
 options. The persistent writer qualifies exact input/snapshot pairs
 before loading WASM or parsing definitions. Raw source texts are sorted for
 comparison, with duplicate texts retained. Parsing diagnostics follow caller order.

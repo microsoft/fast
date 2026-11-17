@@ -1,6 +1,6 @@
 use microsoft_fast_build::{
-    compile_server_artifact, parse_render_state, AttributeNameStrategy, CompiledArtifact, Locator,
-    NativeRenderOptions,
+    compile_server_artifact, compile_server_module, parse_render_state, AttributeNameStrategy,
+    CompiledArtifact, Locator, NativeRenderOptions,
 };
 use serde_json::{json, Value};
 use std::io::Write;
@@ -105,7 +105,19 @@ fn qualified_static_output_oracles() {
         .unwrap();
         assert_eq!(output, record["html"].as_str().unwrap());
     }
-    for artifact in [&program, &retained] {
+    let source = compile_server_module(
+        input["entry"].as_str().unwrap(),
+        &locator,
+        "__FAST_TEST_RUNTIME__",
+    )
+    .unwrap();
+    let retained_source = std::fs::read_to_string(directory.join("legacy-schema1.mjs"))
+        .unwrap()
+        .replace("../../../server-runtime.mjs", "__FAST_TEST_RUNTIME__");
+    for (artifact, source, json_exports) in [
+        (&program, source, true),
+        (&retained, retained_source, false),
+    ] {
         for selected in [true, false] {
             let options = if selected {
                 NativeRenderOptions::default()
@@ -126,7 +138,8 @@ fn qualified_static_output_oracles() {
                 .unwrap()
                 .write_all(
                     json!({
-                        "source": artifact.emit_server_module("__FAST_TEST_RUNTIME__"),
+                        "source": &source,
+                        "jsonExports": json_exports,
                         "state": input["state"],
                         "options": if selected { json!({}) } else { json!({"dsd":[]}) },
                     })
@@ -141,6 +154,7 @@ fn qualified_static_output_oracles() {
                 String::from_utf8_lossy(&output.stderr)
             );
             let result: Value = serde_json::from_slice(&output.stdout).unwrap();
+            assert!(result.get("error").is_none(), "{result}");
             assert_eq!(
                 result["value"], expected,
                 "retained/new artifact JS/native parity"
