@@ -4,59 +4,7 @@ use crate::common::{
     render_with_locator, AttributeNameStrategy, RenderConfig,
 };
 use common::{empty_root, make_locator};
-use microsoft_fast_build::{compile_server_artifact, compile_server_module, Locator, RenderError};
-
-#[test]
-fn rejects_legacy_shadowroot_in_authored_tags_and_unused_metadata() {
-    let assert_rejected = |entry: &str, locator: &Locator| {
-        for error in [
-            compile_server_artifact(entry, locator).unwrap_err(),
-            compile_server_module(entry, locator, "__FAST_TEST_RUNTIME__").unwrap_err(),
-        ] {
-            assert_eq!(error.code(), "invalid-template-metadata");
-            assert!(error.to_string().contains("shadowrootmode"), "{error}");
-        }
-    };
-    let locator = make_locator(&[]);
-    for entry in [
-        r#"<template shadowroot="closed"><slot></slot></template>"#,
-        r#"<template shadowrootmode="closed" ShAdOwRoOt="open"></template>"#,
-        r#"<div ?shadowroot="{{enabled}}"></div>"#,
-        r#"<f-when value="{{false}}"><template shadowroot></template></f-when>"#,
-        r#"<f-repeat value="{{item in items}}"><template shadowroot=""></template></f-repeat>"#,
-    ] {
-        assert_rejected(entry, &locator);
-    }
-    for value in [None, Some(""), Some("open"), Some("closed")] {
-        for host in [false, true] {
-            let mut locator = make_locator(&[]);
-            let attrs = vec![("ShAdOwRoOt".into(), value.map(str::to_owned))];
-            locator.add_template_with_attrs(
-                "unused-card",
-                "<span>unused</span>",
-                if host { &[] } else { &attrs },
-                if host { &attrs } else { &[] },
-            );
-            assert_rejected("no component used", &locator);
-        }
-    }
-    let mut unused = make_locator(&[]);
-    unused.add_template(
-        "unused-card",
-        r#"<template shadowroot="closed"></template>"#,
-    );
-    assert_rejected("no component used", &unused);
-    for entry in [
-        r#"<!-- <template shadowroot="closed"></template> -->"#,
-        r#"<script>const text = '<template shadowroot="closed">';</script>"#,
-        r#"<style>div::before { content: '<template shadowroot="closed">'; }</style>"#,
-        r#"<textarea><template shadowroot="closed"></textarea>"#,
-        r#"<div title='shadowroot="closed"'></div>"#,
-    ] {
-        compile_server_artifact(entry, &locator).unwrap();
-        compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
-    }
-}
+use microsoft_fast_build::{Locator, RenderError};
 
 #[test]
 fn nested_state_overrides_preserve_nulls_dataset_siblings_and_parent_state() {

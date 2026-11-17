@@ -89,8 +89,7 @@ Existing HTML bytes, server coercion and hydration markers are preserved.
 ### Declarative Shadow DOM output
 
 Compiled component output uses `<template shadowrootmode="open">` by default.
-Set `shadowrootmode` to select an explicit mode. Compilation rejects `shadowroot`
-attributes in authored HTML and shadow/host metadata, including unused definitions.
+Set `shadowrootmode` to select an explicit mode.
 Other shadow-root attributes are preserved.
 
 Native parsing of this standard markup requires Chrome/Edge 111+, Firefox 123+

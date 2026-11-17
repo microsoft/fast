@@ -251,9 +251,6 @@ impl Lowerer<'_> {
     }
 
     fn plan(&mut self, source: &str, depth: usize) -> Result<usize, RenderError> {
-        if depth == 0 {
-            crate::template_slots::validate_dsd_attributes(source)?;
-        }
         if depth > 128 {
             return Err(RenderError::InvalidTemplateMetadata {
                 message: "server compilation exceeds 128 structural levels".into(),
@@ -430,18 +427,6 @@ impl Lowerer<'_> {
 }
 
 pub(crate) fn lower(entry: &str, locator: &Locator) -> Result<Value, RenderError> {
-    let mut names = locator.template_names().collect::<Vec<_>>();
-    names.sort_unstable();
-    for name in &names {
-        for (attribute, _) in locator
-            .get_shadowroot_attributes(name)
-            .iter()
-            .chain(locator.get_host_attributes(name))
-        {
-            crate::directive::validate_dsd_attribute(attribute)
-                .map_err(|error| error.in_template(name))?;
-        }
-    }
     let mut compiler = Lowerer {
         locator,
         bodies: Vec::new(),
@@ -450,6 +435,8 @@ pub(crate) fn lower(entry: &str, locator: &Locator) -> Result<Value, RenderError
     };
     let source = crate::code_escape::escape_code_sample_elements(entry);
     let entry_id = compiler.plan(&source, 0).map_err(|e| e.authored(entry))?;
+    let mut names = locator.template_names().collect::<Vec<_>>();
+    names.sort_unstable();
     let mut components = serde_json::Map::new();
     for name in names {
         let shadow = compiler

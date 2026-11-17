@@ -2,7 +2,7 @@
 
 ## Minor prerelease output migration
 
-New compilation uses only standard `shadowrootmode` and never synthesizes a
+New compilation selects the mode from standard `shadowrootmode` and never synthesizes a
 legacy `shadowroot` alias:
 
 ```html
@@ -12,12 +12,9 @@ legacy `shadowroot` alias:
 <template shadowrootmode="open">
 ```
 
-Compilation now rejects authored `shadowroot` attributes with
-`invalid-template-metadata`, including boolean/empty values, case variants and
-conflicting or redundant pairs. This applies to HTML and shadow/host metadata,
-including unused definitions and skipped branches. Slot discovery rejects them too.
-Comments, attribute values and script/style/textarea text containing the word or
-example markup are not treated as authored attributes.
+Only `shadowrootmode` selects the generated root's mode. Other authored attributes
+follow normal forwarding and literal-output behavior; compilation does not
+validate their presence.
 
 Migrate definitions explicitly so closed roots do not silently become open:
 

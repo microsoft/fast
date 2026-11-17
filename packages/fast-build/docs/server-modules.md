@@ -266,9 +266,8 @@ semantics are shared by all request-input methods. Compiler-only updates do not
 invalidate supported formats.
 
 The shared Rust serializer emits standard `shadowrootmode`. It resolves the mode
-from a non-empty authored standard attribute, then `"open"`. Authored `shadowroot`
-attributes are rejected in HTML and shadow/host metadata, even in unused definitions;
-there is no legacy fallback or alias emission. Other DSD attributes retain their
+from a non-empty authored standard attribute, then `"open"`. There is no legacy
+mode fallback or synthesized alias. Other DSD attributes retain their
 serialization. Native browser parsing
 requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
 Supported persisted artifacts render their stored literal bytes, including any DSD

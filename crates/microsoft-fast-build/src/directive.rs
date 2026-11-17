@@ -2,7 +2,6 @@ use crate::attribute::{
     find_next_plain_html_tag, is_custom_element, read_tag_name_slice, skip_single_brace_expr,
 };
 use crate::content::html_escape;
-use crate::error::RenderError;
 use crate::locator::Locator;
 
 /// A template directive found at a given byte position.
@@ -141,19 +140,6 @@ pub(crate) fn build_shadowroot_template_attrs(attrs: &[(String, Option<String>)]
         append_template_attr(&mut out, &name, &value);
     }
     out
-}
-
-pub(crate) fn validate_dsd_attribute(name: &str) -> Result<(), RenderError> {
-    if name
-        .strip_prefix('?')
-        .unwrap_or(name)
-        .eq_ignore_ascii_case("shadowroot")
-    {
-        return Err(RenderError::InvalidTemplateMetadata {
-            message: "'shadowroot' is unsupported; use 'shadowrootmode' instead".into(),
-        });
-    }
-    Ok(())
 }
 
 fn append_template_attr(out: &mut String, name: &str, value: &Option<String>) {

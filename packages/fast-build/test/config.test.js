@@ -1045,33 +1045,6 @@ describe("template shadowroot attributes", () => {
         fs.rmSync(dir, { recursive: true, force: true });
     });
 
-    it("rejects legacy attributes in authored publishers without writing output", () => {
-        writeFixture(dir, { entry: "<my-el></my-el>", state: "{}" });
-        fs.mkdirSync(path.join(dir, "templates"));
-        for (const attrs of [
-            'shadowroot="closed"',
-            'shadowrootmode="closed" ShAdOwRoOt="open"',
-            "shadowroot",
-        ]) {
-            fs.writeFileSync(
-                path.join(dir, "templates", "my-el.html"),
-                `<f-template name="my-el" ${attrs}><template><span>shadow</span></template></f-template>`,
-            );
-            const result = runWithStderr(
-                [
-                    "--templates=templates/*.html",
-                    "--entry=entry.html",
-                    "--state=state.json",
-                    "--output=out.html",
-                ],
-                dir,
-            );
-            assert.notEqual(result.exitCode, 0);
-            assert.match(result.stderr, /shadowroot.*unsupported.*shadowrootmode/);
-            assert.equal(fs.existsSync(path.join(dir, "out.html")), false);
-        }
-    });
-
     it("forwards f-template shadowroot attributes through the CLI", () => {
         writeFixture(dir, {
             entry: "<my-el></my-el>",

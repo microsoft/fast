@@ -32,7 +32,7 @@ The browser conversion crate remains independent.
 | `code_escape.rs` | Literal code-sample preprocessing and source rebasing |
 | `binding_metadata.rs` | Descriptive bindings, scopes and UTF-16 source spans |
 | `f_template.rs` | In-memory stylesheet composition and provenance |
-| `template_slots.rs` | HTML-context DSD validation and authored slot discovery |
+| `template_slots.rs` | Authored slot discovery |
 | `error.rs` | Structured compiler/tooling diagnostics |
 | `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
 
@@ -40,8 +40,6 @@ The browser conversion crate remains independent.
 
 `directive::build_shadowroot_template_attrs` is the single DSD output policy for
 both targets. The mode is the non-empty authored `shadowrootmode` or `"open"`.
-Compilation rejects `shadowroot` in HTML and shadow/host metadata, including
-unused definitions. Validation uses HTML parsing to exclude comments and raw text.
 Other forwarded attributes retain their original serialization.
 Both targets embed the resulting literal tags;
 loaders execute the bytes stored in supported artifacts.

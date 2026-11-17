@@ -635,18 +635,6 @@ test("slot metadata follows HTML contexts, decoded attributes, and authored scop
             "<slot",
         );
     }
-    const legacy = source.replace(
-        '<template shadowrootmode="open">',
-        '<template shadowroot="closed">',
-    );
-    assertDiagnostic(
-        () => wasm.extract_template_slots(legacy, "a&b"),
-        "invalid-template-metadata",
-        legacy,
-        legacy.indexOf('<template shadowroot="closed">'),
-        undefined,
-        '<template shadowroot="closed">'.length,
-    );
     assertDiagnostic(
         () => wasm.extract_template_slots(source, "A&B"),
         "missing-template",

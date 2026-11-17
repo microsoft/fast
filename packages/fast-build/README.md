@@ -82,8 +82,7 @@ State must be acyclic JSON-shaped data, with finite numbers and well-formed
 Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
 and implicit `toJSON()` conversion are rejected rather than invoked.
 Rendering is synchronous; arrays render as `[Array]`.
-Compiled Declarative Shadow DOM uses only standard `shadowrootmode`.
-Authored `shadowroot` attributes are rejected; use `shadowrootmode` for explicit modes.
+Compiled Declarative Shadow DOM uses standard `shadowrootmode` for explicit modes.
 
 See [the server module contract](./docs/server-modules.md)
 for render options, state validation, diagnostics and deployment requirements.
@@ -450,7 +449,7 @@ requires exactly one matching HTML definition with exactly one direct HTML
 `<template>` child. Discovery stays inside that child's contents. It includes
 nested ordinary `<template>` contents and `<f-when>`/`<f-repeat>` bodies once
 per authored declaration, without evaluating state. Nested `<f-template>`
-definitions and templates carrying `shadowrootmode` or `shadowroot`
+definitions and templates carrying `shadowrootmode`
 are separate authored scopes and are excluded. Sibling definitions and markup
 outside the selected shadow template are excluded too.
 
@@ -562,9 +561,7 @@ Template files must use the following format:
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 The compiler resolves `shadowrootmode` from its non-empty authored value, then
-`"open"`. It never synthesizes a `shadowroot` alias. Compilation rejects authored
-`shadowroot` attributes, including empty, boolean and conflicting forms, in HTML
-and shadow/host metadata. Other `shadowroot*` attributes retain
+`"open"`. It never synthesizes a `shadowroot` alias. Other `shadowroot*` attributes retain
 their values and order. Whitespace, hydration markers, escaping, host defaults
 and template content are preserved. Native DSD parsing requires Chrome/Edge 111+,
 Firefox 123+ or Safari/iOS 16.4+. Upgrade guidance is in the

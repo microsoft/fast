@@ -136,10 +136,8 @@ These changes do not alter the generated-JavaScript request path or the
 
 ### Output assembly and escaping
 
-The shared Rust DSD serializer emits only standard `shadowrootmode`, using its
-non-empty authored value or `"open"`. Compilation rejects `shadowroot` attributes
-in authored HTML and shadow/host metadata, including unused definitions.
-HTML-context validation distinguishes attributes from comments and raw-text content.
+The shared Rust DSD serializer emits standard `shadowrootmode`, using its
+non-empty authored value or `"open"`.
 Other DSD attributes and every other output byte remain untouched.
 This is the sole policy for newly compiled assets, not a runtime minifier or an
 optional second rendering implementation. Loaded/persisted artifacts keep their
@@ -327,7 +325,7 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 
 - The `name` attribute value becomes the element name key in the templates map.
 - The inner content of the `<template>` child element becomes the raw template string sent to the compiler.
-- Standard `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata applied to the emitted Declarative Shadow DOM `<template>`. The exact attribute name `shadowroot` is rejected.
+- Authored `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata applied to the emitted Declarative Shadow DOM `<template>`.
 - Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The compiler merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
 - A file may contain multiple `<f-template>` elements (each becomes a separate entry).
 - If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.

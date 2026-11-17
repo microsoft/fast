@@ -34,8 +34,8 @@ bodies, including unused definitions and skipped branches.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for render options, state validation and deployment requirements.
 
-Compiled Declarative Shadow DOM emits only standard `shadowrootmode`.
-Compilation rejects authored `shadowroot` attributes in HTML and shadow/host metadata.
+Compiled Declarative Shadow DOM selects its mode from standard `shadowrootmode`,
+defaulting to `"open"`.
 Native browser parsing requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
 
 Generated modules also export `renderEntryJson`, `renderTemplateJson`,
@@ -155,7 +155,7 @@ Only HTML slots count, including those at SVG/MathML HTML integration points.
 
 Nested ordinary templates and conditional/repeated bodies are inspected once
 per authored declaration without state evaluation. Nested component definitions
-and templates carrying `shadowrootmode` or `shadowroot` are separate
+and templates carrying `shadowrootmode` are separate
 authored scopes and are excluded, as are siblings and publisher markup outside
 the selected inner template. Declarative shadow roots are not attached.
 
