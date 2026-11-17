@@ -161,6 +161,7 @@ Use `createSSRRenderer` from the harness to build the `render()` function. It sc
 import { createSSRRenderer } from "@microsoft/fast-test-harness/ssr/render.js";
 
 const { render } = createSSRRenderer({
+    nativeAddonPath: "/absolute/deployment/path/fast-build.node",
     packageName: "@my-scope/web-components",
     tagPrefix: "my",
 });
@@ -174,6 +175,7 @@ export { render };
 import { createSSRRenderer } from "@microsoft/fast-test-harness/ssr/render.js";
 
 const { render } = createSSRRenderer({
+    nativeAddonPath: "/absolute/deployment/path/fast-build.node",
     tagPrefix: "my",
     components: [
         { name: "button", packageName: "@my-scope/button" },
@@ -271,16 +273,18 @@ before `>`.
 
 **`createSSRRenderer(options)`** scans for component build artifacts and returns
 `{ render }`, whose asynchronous `render(queryObj)` returns `Promise<RenderResult>`.
-It uses the build-time WASM parser/compiler and generated JavaScript to produce
+It uses the build-time WASM parser/compiler and the required native Node addon to produce
 declarative shadow DOM, including wrapper tags whose opening or closing `>` is
 preceded by ASCII whitespace. The server awaits rendering and also accepts
 synchronous custom renderers.
 
-Fixture compilation/rendering failures are logged and fall back to raw entry
-HTML. Check server diagnostics when a fixture unexpectedly renders client-side.
+Provide `nativeAddonPath` or `FAST_NATIVE_ADDON` for SSR. Source-build and deploy
+the addon explicitly; no binary is downloaded automatically. Missing native
+hosting and fixture compilation/rendering failures propagate.
 
 | Option | Type | Description |
 | -------- | ------ | ------------- |
+| `nativeAddonPath` | `string?` | Source-built Node addon path; defaults to `FAST_NATIVE_ADDON`. |
 | `tagPrefix` | `string` | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
@@ -301,8 +305,6 @@ HTML. Check server diagnostics when a fixture unexpectedly renders client-side.
 | `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
 
-This is an **API-breaking migration in a minor prerelease**; direct callers must
-use `await render(queryObj)`. See the [migration guide](./docs/migration/aot-fixtures.md).
-The fixture generator compiles arbitrary test HTML on demand as development
-tooling. Production servers compile during their build and import generated
-modules, or load compiled artifacts in the supported native Rust host.
+SSR fixture generation compiles dynamically authored test HTML as development
+tooling. Production SSR compiles native artifacts during the application build.
+The rendering result is asynchronous; use `await render(queryObj)`.

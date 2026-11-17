@@ -63,19 +63,19 @@ and [Firefox 123 release notes](https://www.mozilla.org/en-US/firefox/123.0/rele
 
 ## Regenerate all templates and assets
 
-Regenerate all templates and generated ESM/native artifacts with the new version.
-Deploy the regenerated assets with their matching helper/native library; do not
+Regenerate all templates and native artifacts with the new version.
+Deploy the regenerated assets with their matching native library; do not
 carry pre-upgrade generated output into this deployment.
 
 - Use `shadowrootmode` in output selectors and standards-aware DSD polyfills.
   Browsers/polyfills recognizing only `shadowroot` no longer receive that alias
   in newly compiled output. Upgrade those consumers before deploying new assets.
-- `writeServerModule` and `writeServerArtifact` intentionally reuse unchanged
+- `writeServerArtifact` intentionally reuse unchanged
   managed assets even after a compiler upgrade. For this migration, remove both
   the application-owned generated asset and its `.inputs.json`
   sidecar during a controlled clean build, then regenerate and deploy them together.
   `overwrite: true` alone does not bypass unchanged-input reuse.
-- The `fast-server-js` / `fast-server-native` semantic schema remains version 1.
+- The `fast-server-native` semantic schema remains version 1.
   No loader inspection, legacy-output adapter or compiler fingerprint is added.
   Ordinary unchanged-input caching can resume after the clean regeneration.
 - Update exact HTML snapshots only after reviewing this specific attribute change.

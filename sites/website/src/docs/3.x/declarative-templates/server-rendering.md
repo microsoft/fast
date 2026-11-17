@@ -29,19 +29,15 @@ hydration markers; the browser `Window` parses Declarative Shadow DOM, defines
 custom elements, runs `enableHydration()`, and processes reactive updates with
 browser scheduling APIs such as `requestAnimationFrame`.
 
-## Compiled Flat-Plan Server JavaScript
+## Native artifact compilation
 
-Compile templates during the server build to keep WASM and template parsing out
-of the request dependency graph:
+Compile trusted templates during the application build:
 
 ```js
-// Build time
-import { mkdir } from "node:fs/promises";
-import { writeServerModule } from "@microsoft/fast-build/server.js";
+import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
-await mkdir("./generated", { recursive: true });
-writeServerModule(
-    "./generated/server.mjs",
+writeServerArtifact(
+    "./generated/server.json",
     {
         entry: "<my-card></my-card>",
         templates: { "my-card": "<h2>{{title}}</h2>" },
@@ -50,142 +46,65 @@ writeServerModule(
 );
 ```
 
-```js
-// Request time
-import { renderEntry, renderShadow } from "./generated/server.mjs";
+`compileServerArtifact(entry, templates)` returns a fresh `Uint8Array` for
+in-memory compilation. `writeServerArtifact` creates parent directories and
+persists the artifact with its exact-input `.inputs.json` sidecar.
+Both are build-time JavaScript APIs backed by the Rust/WASM compiler.
+Do not import the compiler into the request dependency graph.
 
-const html = renderEntry({ title: "Request-specific state" });
-const dsd = renderShadow("my-card", { title: "Component state" });
+## Native Node execution
+
+Source-build the addon for the deployment's OS and architecture using the
+[hosting guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/native-node-host.md). The npm package does not contain
+prebuilt addons or automatically download or install native binaries.
+
+```js
+import { readFileSync } from "node:fs";
+import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
+
+const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
+const program = new Program(readFileSync("./generated/server.json"), {
+    maxOutputBytes: 8 * 1024 * 1024,
+    maxSteps: 1_000_000,
+});
+const bytes = program.renderEntryJson(
+    Buffer.from('{"title":"Request-specific state"}', "utf8"),
+);
+const html = bytes.toString("utf8");
 ```
 
-Generated ESM embeds semantic operation objects and named template references.
-The server helper validates and loads the plan once. Supported plan/artifact schemas
-govern loading.
-For strict template-only asset updates, use `writeServerModule` or
-`writeServerArtifact` at build time and persist the asset plus its `.inputs.json`
-manifest. Unchanged authored inputs reuse exact existing bytes without compilation.
-Low-level pure compiler calls do not provide cross-encoder persistence.
+The shared Rust executor is required for server rendering. `.node` is Node.js's
+standard native-addon extension; `.json` artifacts contain semantic template
+data, not machine code. Loading validates the supported artifact schema once.
 
-For CLI page builds, add `--server-module=generated/page.mjs` to `fast build`
-and retain that file with its `.inputs.json` sidecar. Unchanged raw
-sources skip parsing and compilation, while each build validates fresh state and
-renders complete HTML. State files, marker versions and attribute-name strategies
-are not compilation keys. Changed sources compile the full selected registry;
-missing modules restore their byte snapshot. Corruption or changed helper import
-paths fail closed. These CLI modules use a local absolute helper URL; use the
-build-time API above for portable deployment modules.
+The four synchronous methods are `renderEntryJson(state)`,
+`renderTemplateJson(state)`, `renderHostJson(name, state)` and
+`renderShadowJson(name, state)`. State must be an unshared Buffer containing
+strict UTF-8 JSON. Each result is an independently owned UTF-8 Buffer.
+Use entry-host rules for complete pages, template-context rules for root-host
+attributes, named host rendering for a complete component, and shadow rendering
+for a DSD fragment with resolved component state.
 
-An explicit `--templates` selection must contain named templates with unique names.
-Duplicate definitions and selections with no named templates are errors in both
-fresh and persistent builds. Omit the option for an entry-only build.
+Options are validated and copied at construction:
+`markersV2`, `dsd`, `attributeNameStrategy`, `maxOutputBytes` and `maxSteps`.
+Use separate program instances for different policies. Budgets reset on each
+request, including after a failure. Strings and arbitrary JavaScript objects
+are not request inputs; object validation/serialization belongs to the application.
+Every JSON field is validated, including unused values. Numbers must be finite,
+Unicode must be well formed, and negative zero is normalized.
 
-The generated module imports only the FAST server helper. Bundle that helper
-with the server or deploy it from the matching `@microsoft/fast-build` package.
-Retain supported generated assets across compiler-only upgrades.
-State must be acyclic JSON-shaped data, with finite numbers and ordinary data
-properties; getters, functions, class instances and nested `undefined` are rejected.
-Existing HTML bytes, server coercion and hydration markers are preserved.
+See the [artifact and request contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md) for wire data,
+state/resource limits, errors, persistence and measurement boundaries.
+Rust hosts load the same bytes with `CompiledArtifact::load`; see the
+[Rust usage guide](https://github.com/microsoft/fast/blob/main/crates/microsoft-fast-build/README.md).
 
 ### Declarative Shadow DOM output
 
-Compiled component output uses `<template shadowrootmode="open">` by default.
-Set `shadowrootmode` to select an explicit mode.
-Other shadow-root attributes are preserved.
-
-Native parsing of this standard markup requires Chrome/Edge 111+, Firefox 123+
-or Safari/iOS 16.4+. Hydration uses the parser-created shadow roots; assigning HTML
-through `innerHTML` does not create Declarative Shadow DOM.
-See the [migration index](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md)
-for upgrade guidance.
-
-### Fresh JSON request input
-
-Generated modules expose `renderEntryJson(json, options?)`,
-`renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
-`renderShadowJson(name, json, options?)` for input that arrives as JSON text:
-
-```js
-import { renderEntryJson } from "./generated/server-json.mjs";
-const html = renderEntryJson('{"title":"Fresh request"}');
-```
-
-Pass a required string, not an object, prepared handle or Buffer. The helper parses
-without a reviver and validates every field, including unused values. Non-finite
-overflow and lone-surrogate keys/values fail; negative zero is normalized in the
-fresh owned graph. There is no snapshot copy/freezing or arbitrary-object descriptor
-pass. The same executor preserves all output, options, coercion and hydration bytes.
-Keep object methods for already-parsed state and prepared methods for unchanged reuse.
-JSON parsing and full traversal still have costs; measure matched request boundaries.
-
-See the
-[JSON request contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
-
-For named template files, use
-`fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
-This compiles a registry with an empty entry; use `renderHost` or `renderShadow`
-for its components, or `compileServerModule` to compile page entry HTML.
-Browser template/style conversion, authored classes and explicit registration
-remain separate. See the
-[server module contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md)
-for options, state restrictions and migration details.
-
-## Native Rust Compiled Artifacts
-
-Flat-plan JavaScript is one target, not a requirement for native servers. The same
-Rust-owned executable representation can be compiled during the build with
-`compileServerArtifact` from `@microsoft/fast-build/server.js` or Rust
-`compile_server_artifact`. For cross-compiler file stability, use
-`writeServerArtifact` with retained sidecars or equivalent application-owned
-Rust persistence. Deploy bytes with a `microsoft-fast-build` native library that
-supports their schema:
-
-```rust
-use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
-
-let program = CompiledArtifact::load(&std::fs::read("generated/server.fast")?)?;
-let state = parse_render_state(r#"{"title":"Native request"}"#)?;
-let html = program.render_entry(&state, &NativeRenderOptions::default())?;
-```
-
-`render_template`, `render_host` and `render_shadow` supply the corresponding
-template-context, complete-host and resolved-state DSD-fragment APIs. Artifacts
-own immutable thread-safe instructions and can be shared across requests.
-Loading validates supported execution schemas, operations and references;
-rendering owns request-local state, counters and output. Neither loading nor
-rendering executes JavaScript or reparses authored HTML. Escaping, nested state,
-DSD selection and both hydration formats conform to the generated JS target.
-
-Native errors are recoverable, with state/recursion/step/output limits. See the
-[native deployment and memory/error contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
-Native Rust hosting is supported now; a stable C ABI and .NET bindings are
-follow-up work. This release does not provide a C# host or separate C# semantics.
-
-Loaded native artifacts are execution-only. Generate JavaScript at build time with
-Rust's `compile_server_module(entry, &locator, runtime_import)` or Node's
-`compileServerModule` from authored templates. Generate both targets during the
-build if both are needed.
-
-## Migration from request-time source rendering
-
-Generated server JavaScript and native Rust artifact rendering are supported
-targets of the shared compiler. Rebuild legacy modules/artifacts once, then retain
-supported generated assets across compiler-only upgrades.
-
-This earlier migration was an **API-breaking migration classified as a minor prerelease release**,
-not a drop-in upgrade. Migrate removed APIs, normalize request state and await
-test-harness rendering before updating consumers. Native artifacts require the
-supported native execution schema, not a compiler/library fingerprint.
-Load replacements before activation and retain old workers/handles for in-flight
-requests. Native state/execution/output limits differ from JS host limits, so
-switching targets requires workload qualification as well as markup parity.
-
-Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
-for component-state DSD fragments. Use `renderTemplate` for template-context
-root-host attribute handling. Each returns a complete synchronous string.
-`fast build` executes server JavaScript and writes complete HTML. It compiles
-fresh unless a persistent module path is configured.
-The application owns build invalidation, module/artifact loading and deployment activation.
-See the [migration guidance](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
+Compiled components use standard `<template shadowrootmode="open">` by default.
+Set a nonempty `shadowrootmode` to choose another mode. Other shadow attributes
+are preserved. Native browser parsing requires Chrome/Edge 111+, Firefox 123+ or
+Safari/iOS 16.4+. Navigation parsing creates shadow roots; `innerHTML` does not.
+See the [migration index](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
 
 ## The Rendering Contract
 
@@ -326,8 +245,8 @@ omitted attributes, so reactive updates can add them later. Use `?name` for
 client/server truthy/falsy boolean bindings; JSON booleans on known HTML boolean
 attributes also use presence on the server, while ARIA booleans stay textual.
 
-Build-time plugins can compile a server module with `compileServerModule` and
-call its generated `renderShadow(name, componentState)` export for a complete
+Build-time plugins compile a native artifact with `compileServerArtifact` and
+call `program.renderShadowJson(name, componentStateBytes)` for a complete
 DSD `<template>` with resolved component state and no synthesized host/light DOM.
 `parse_f_templates` exposes versioned binding descriptions, including lexical
 repeat scopes, authored expression spans, and explicit unknown state
@@ -448,8 +367,8 @@ The propagation is implemented by the build-time renderer in `@microsoft/fast-bu
 ## Using `@microsoft/fast-build`
 
 The `@microsoft/fast-build` package compiles declarative FAST syntax with a
-build-time Rust/WASM compiler. Generated JavaScript or native Rust artifacts
-implement the rendering contract without request-time WASM or HTML parsing.
+build-time Rust/WASM compiler. Native JSON artifacts and the required shared
+Rust executor implement rendering without request-time WASM or HTML parsing.
 
 :::note
 [`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that can render FASTElement using the `fast_v3` plugin.
@@ -463,6 +382,9 @@ npm install --save @microsoft/fast-build
 
 ### CLI Usage
 
+Set `FAST_NATIVE_ADDON` to the absolute source-built addon path, or provide
+`--native-addon`. No native binary is downloaded or provisioned automatically.
+
 The `fast build` command compiles and renders an entry HTML file with an optional
 JSON state file:
 
@@ -474,6 +396,8 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 |---|---|---|
 | `--entry` | `index.html` | Entry HTML template to render |
 | `--state` | `{}` when omitted | Optional JSON state file; no `state.json` is loaded implicitly. An explicit path must exist. |
+| `--native-addon` | `FAST_NATIVE_ADDON` | Required source-built Node addon path |
+| `--server-artifact` | _(none)_ | Persist native JSON and exact-input sidecar |
 | `--output` | `output.html` | Where to write the rendered HTML |
 | `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |
 | `--attribute-name-strategy` | `camelCase` | How to map attribute names to properties |
@@ -536,8 +460,8 @@ the default hydration markers and the opt-in `markers_v2` format; existing
 callers need no changes.
 
 `fast build` synchronously compiles and renders complete HTML as a build tool.
-Production servers compile modules or artifacts during their build rather than
-parsing templates during requests. Contributors can measure generated JavaScript
+Production servers compile native artifacts during their build rather than
+parsing templates during requests. Contributors can measure the native backend
 with the current
 [benchmark guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#qualification-and-measurements).
 

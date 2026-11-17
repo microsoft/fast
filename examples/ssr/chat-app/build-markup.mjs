@@ -11,11 +11,23 @@ const configPath = path.join(cwd, "fast-build.config.json");
 const templatesPath = path.join(cwd, "templates.html");
 const indexPath = path.join(cwd, "index.html");
 const scriptTag = '<script type="module" src="./src/main.ts"></script>';
+const nativeAddon =
+    process.env.FAST_NATIVE_ADDON ??
+    fileURLToPath(
+        new URL(
+            "../../../crates/microsoft-fast-build/target/node-host/fast-build.node",
+            import.meta.url,
+        ),
+    );
 
-execFileSync(process.execPath, [fastCli, "build", `--config=${configPath}`], {
-    cwd,
-    stdio: "inherit",
-});
+execFileSync(
+    process.execPath,
+    [fastCli, "build", `--config=${configPath}`, `--native-addon=${nativeAddon}`],
+    {
+        cwd,
+        stdio: "inherit",
+    },
+);
 
 const templates = readFileSync(templatesPath, "utf8").trim();
 const rendered = readFileSync(indexPath, "utf8");

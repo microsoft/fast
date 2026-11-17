@@ -3,8 +3,9 @@ const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
 const { test } = require("node:test");
-const { pathToFileURL } = require("node:url");
-const { compileServerArtifact, compileServerModule } = require("../server.js");
+const { compileServerArtifact } = require("../server.js");
+const { loadNativeHost } = require("../native-host.mjs");
+const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 
 let executable;
 
@@ -56,19 +57,14 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     assert.ok(Array.isArray(ir.entry));
     assert.equal(typeof ir.templates, "object");
     assert.equal(Buffer.from(bytes).includes(Buffer.from("f-when")), false);
-    const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
-    const server = await import(
-        `data:text/javascript;base64,${Buffer.from(
-            compileServerModule(entry, templates, runtime),
-        ).toString("base64")}`
-    );
+    const server = new NativeProgram(Buffer.from(bytes));
     const directory = path.relative(
         process.cwd(),
         path.join(__dirname, `.native-artifact-${process.pid}`),
     );
     fs.mkdirSync(directory);
     try {
-        const artifact = path.join(directory, "server.fast");
+        const artifact = path.join(directory, "server.json");
         fs.writeFileSync(artifact, bytes);
         for (const state of [
             {
@@ -90,7 +86,12 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
                 env: { ...process.env, PATH: "" },
                 timeout: 10_000,
             });
-            assert.equal(html, server.renderEntry(state));
+            assert.equal(
+                html,
+                server
+                    .renderEntryJson(Buffer.from(JSON.stringify(state)))
+                    .toString("utf8"),
+            );
         }
         fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 2 }));
         assert.throws(
@@ -114,7 +115,7 @@ test("native output preserves frozen UTF-8 workload contracts", async () => {
     const directory = path.join(__dirname, `.native-frozen-${process.pid}`);
     fs.mkdirSync(directory);
     try {
-        const artifact = path.join(directory, "server.fast");
+        const artifact = path.join(directory, "server.json");
         for (const record of baseline.filter(record => record.mode === "v3")) {
             const input = fixture(
                 record.case,
@@ -202,7 +203,7 @@ test("packaged Rust crates accept compatible native assets after authored-manife
     const executable = buildHost();
     const directory = fs.mkdtempSync(path.join(__dirname, ".packaged-native-"));
     try {
-        const artifact = path.join(directory, "server.fast");
+        const artifact = path.join(directory, "server.json");
         fs.writeFileSync(artifact, compileServerArtifact("<p>{{title}}</p>"));
         const html = execFileSync(executable, [artifact], {
             encoding: "utf8",

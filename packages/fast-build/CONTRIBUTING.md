@@ -1,6 +1,6 @@
 # Contributing to `@microsoft/fast-build`
 
-## Building the WASM
+## Building compiler WASM and the Node addon
 
 The `wasm/` directory is generated locally and must be built before using the package.
 
@@ -21,7 +21,7 @@ From the repository root:
 npm run build -w @microsoft/fast-build
 ```
 
-This runs `cargo build` on the Rust crate followed by `wasm-pack build --target nodejs`, writing the output to `packages/fast-build/wasm/`.
+This builds compiler/converter WASM into `packages/fast-build/wasm/` and the source-built Node addon into `crates/microsoft-fast-build/target/node-host/fast-build.node`.
 
 ### Running the Rust tests
 
@@ -33,11 +33,10 @@ npm run test:node -w @microsoft/fast-build
 ## Performance benchmarks
 
 ```sh
-npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200
+FAST_NATIVE_ADDON="$PWD/crates/microsoft-fast-build/target/node-host/fast-build.node" npm run bench:server -w @microsoft/fast-build -- --samples=3 --iterations=100 --instances=200
 ```
 
-The runner measures generated JavaScript in fresh Node processes and verifies
+The runner measures the native JSON Buffer backend in fresh Node processes and verifies
 output hashes across samples. See the
 [measurement guide](./docs/server-modules.md#qualification-and-measurements)
-for timing, memory and size boundaries. Native artifact execution is qualified
-by Rust/JavaScript conformance tests; this command does not measure native speed.
+for timing, memory and size boundaries. Frozen HTML, native Rust/Node conformance, ownership and browser hydration checks remain independent of timing.

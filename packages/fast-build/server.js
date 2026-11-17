@@ -1,23 +1,6 @@
 // @ts-check
 
 /**
- * Compile trusted declarative HTML to synchronous server ESM.
- * The returned module imports only the server runtime, not this build-time API.
- * @param {string} entry
- * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
- * @param {string} [runtimeImport]
- * @returns {string}
- */
-function compileServerModule(
-    entry,
-    templates = {},
-    runtimeImport = "@microsoft/fast-build/server-runtime.mjs",
-) {
-    const wasm = require("./wasm/microsoft_fast_build.js");
-    return wasm.compile_server_module(entry, JSON.stringify(templates), runtimeImport);
-}
-
-/**
  * Compile trusted declarative HTML to a native Rust executable artifact.
  * Deploy with a native Rust library supporting the emitted artifact schema.
  * @param {string} entry
@@ -28,8 +11,6 @@ function compileServerArtifact(entry, templates = {}) {
     const wasm = require("./wasm/microsoft_fast_build.js");
     return wasm.compile_server_artifact(entry, JSON.stringify(templates));
 }
-
-const defaultRuntimeImport = "@microsoft/fast-build/server-runtime.mjs";
 
 /** @param {string} code @param {string} message @param {boolean} [typeError] */
 function assetError(code, message, typeError = false) {
@@ -196,23 +177,9 @@ function readManifest(bytes) {
         if (!Buffer.from(bytes.toString("utf8"), "utf8").equals(bytes)) throw invalid();
         manifest = JSON.parse(bytes.toString("utf8"));
         if (
-            !hasKeys(manifest, [
-                "format",
-                "version",
-                "kind",
-                "inputs",
-                "deployment",
-                "outputBase64",
-            ]) ||
-            manifest.format !== "fast-server-asset-inputs" ||
+            !hasKeys(manifest, ["format", "version", "inputs", "outputBase64"]) ||
+            manifest.format !== "fast-server-artifact-inputs" ||
             manifest.version !== 1 ||
-            !["server-js", "server-artifact"].includes(manifest.kind) ||
-            !hasKeys(
-                manifest.deployment,
-                manifest.kind === "server-js" ? ["runtimeImport"] : [],
-            ) ||
-            (manifest.kind === "server-js" &&
-                typeof manifest.deployment.runtimeImport !== "string") ||
             typeof manifest.outputBase64 !== "string"
         ) {
             throw invalid();
@@ -299,11 +266,10 @@ function replaceAssetFiles(files) {
 /**
  * @param {string} outputPath
  * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerModuleWriteOptions} options
- * @param {"server-js" | "server-artifact"} kind
+ * @param {import("./server.js").ServerAssetWriteOptions} [options]
  * @returns {import("./server.js").ServerAssetWriteResult}
  */
-function writeServerAsset(outputPath, inputs, options, kind) {
+function writeServerArtifact(outputPath, inputs, options = {}) {
     if (typeof outputPath !== "string" || outputPath.length === 0) {
         throw assetError(
             "invalid-server-asset-inputs",
@@ -314,22 +280,12 @@ function writeServerAsset(outputPath, inputs, options, kind) {
     if (
         !isRecord(options) ||
         Object.keys(options).some(
-            key =>
-                ![
-                    "overwrite",
-                    "includeBytes",
-                    "onWarning",
-                    ...(kind === "server-js" ? ["runtimeImport"] : []),
-                ].includes(key),
+            key => !["overwrite", "includeBytes", "onWarning"].includes(key),
         ) ||
         (options.overwrite !== undefined && typeof options.overwrite !== "boolean") ||
         (options.includeBytes !== undefined &&
             typeof options.includeBytes !== "boolean") ||
-        (options.onWarning !== undefined && typeof options.onWarning !== "function") ||
-        (kind === "server-js"
-            ? options.runtimeImport !== undefined &&
-              typeof options.runtimeImport !== "string"
-            : options.runtimeImport !== undefined)
+        (options.onWarning !== undefined && typeof options.onWarning !== "function")
     ) {
         throw assetError(
             "invalid-server-asset-options",
@@ -338,10 +294,6 @@ function writeServerAsset(outputPath, inputs, options, kind) {
         );
     }
     const canonical = canonicalInputs(inputs);
-    const deployment =
-        kind === "server-js"
-            ? { runtimeImport: options.runtimeImport ?? defaultRuntimeImport }
-            : {};
     const fs = require("node:fs");
     const path = require("node:path");
     const manifestPath = `${outputPath}.inputs.json`;
@@ -369,15 +321,6 @@ function writeServerAsset(outputPath, inputs, options, kind) {
         const previousOutput = readAssetFile(outputPath, "server-asset-output-mismatch");
         if (previousManifest) {
             const { manifest, output } = readManifest(previousManifest.bytes);
-            if (
-                manifest.kind !== kind ||
-                JSON.stringify(manifest.deployment) !== JSON.stringify(deployment)
-            ) {
-                throw assetError(
-                    "server-asset-configuration-mismatch",
-                    "Server asset kind or runtime import changed; choose a new output path.",
-                );
-            }
             if (previousOutput && !previousOutput.bytes.equals(output)) {
                 throw assetError(
                     "server-asset-output-mismatch",
@@ -415,23 +358,11 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                   }
                 : canonical;
         const templates = templatesFromInputs(compileInputs, options.onWarning);
-        const output =
-            kind === "server-js"
-                ? Buffer.from(
-                      compileServerModule(
-                          canonical.entry,
-                          templates,
-                          deployment.runtimeImport,
-                      ),
-                      "utf8",
-                  )
-                : Buffer.from(compileServerArtifact(canonical.entry, templates));
+        const output = Buffer.from(compileServerArtifact(canonical.entry, templates));
         const manifest = {
-            format: "fast-server-asset-inputs",
+            format: "fast-server-artifact-inputs",
             version: 1,
-            kind,
             inputs: canonical,
-            deployment,
             outputBase64: output.toString("base64"),
         };
         const manifestBytes = Buffer.from(
@@ -462,31 +393,7 @@ function writeServerAsset(outputPath, inputs, options, kind) {
     }
 }
 
-/**
- * Persist server ESM, reusing exact previous bytes for unchanged authored inputs.
- * @param {string} outputPath
- * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerModuleWriteOptions} [options]
- * @returns {import("./server.js").ServerAssetWriteResult}
- */
-function writeServerModule(outputPath, inputs, options = {}) {
-    return writeServerAsset(outputPath, inputs, options, "server-js");
-}
-
-/**
- * Persist a native artifact, reusing exact previous bytes for unchanged inputs.
- * @param {string} outputPath
- * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerAssetWriteOptions} [options]
- * @returns {import("./server.js").ServerAssetWriteResult}
- */
-function writeServerArtifact(outputPath, inputs, options = {}) {
-    return writeServerAsset(outputPath, inputs, options, "server-artifact");
-}
-
 module.exports = {
-    compileServerModule,
     compileServerArtifact,
-    writeServerModule,
     writeServerArtifact,
 };

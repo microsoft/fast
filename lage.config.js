@@ -5,6 +5,12 @@ module.exports = {
             dependsOn: ["^build"],
             outputs: ["dist/**", "wasm/**"],
         },
+        "@microsoft/fast-build#build": {
+            dependsOn: ["^build"],
+            // The source-built addon is host-specific and outside workspace outputs.
+            cache: false,
+            outputs: ["wasm/**"],
+        },
         "@microsoft/fast-element#build": {
             dependsOn: ["@microsoft/fast-build#build"],
             outputs: ["dist/**"],

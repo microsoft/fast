@@ -69,25 +69,6 @@ fn named_metadata_error(name: &str, message: &str) -> JsValue {
     js_error("invalid-template-metadata", message, None, Some(name))
 }
 
-/// Generate synchronous server ESM at build time; request execution needs no WASM.
-#[wasm_bindgen]
-pub fn compile_server_module(
-    entry: &str,
-    templates_json: &str,
-    runtime_import: Option<String>,
-) -> Result<String, JsValue> {
-    let templates = parse_templates_map(templates_json)?;
-    let locator = Locator::from_template_definitions(templates);
-    crate::compile_server_module(
-        entry,
-        &locator,
-        runtime_import
-            .as_deref()
-            .unwrap_or("@microsoft/fast-build/server-runtime.mjs"),
-    )
-    .map_err(render_error)
-}
-
 /// Build-time only: emit the shared executable IR for a native Rust deployment.
 #[wasm_bindgen]
 pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<u8>, JsValue> {
@@ -99,7 +80,7 @@ pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<
 /// Metadata for the registry-level server target exposed by the conversion CLI.
 #[wasm_bindgen]
 pub fn server_syntax_metadata() -> String {
-    r#"{"syntax":"server-js","extension":".mjs","suffix":".server.mjs"}"#.to_string()
+    r#"{"syntax":"server-native","extension":".json","suffix":".server.json"}"#.to_string()
 }
 
 #[wasm_bindgen]
