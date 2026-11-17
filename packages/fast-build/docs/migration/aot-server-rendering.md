@@ -100,6 +100,11 @@ Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
 always compiles and executes server modules; remove `--aot`, `--stream` and `stream`
 configuration from build scripts.
 
+Earlier versions implicitly loaded `state.json` when no state path was supplied.
+Pass `--state=state.json` or set `"state": "state.json"` in
+`fast-build.config.json` to load that file explicitly. Omitting the state path uses
+an empty object (`{}`).
+
 ```js
 // Build pipeline: load/compose templates before compiling.
 import { mkdir } from "node:fs/promises";

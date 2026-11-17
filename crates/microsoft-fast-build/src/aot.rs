@@ -11,7 +11,7 @@ pub fn compile_server_module(
     Ok(emit(&ir, runtime_import))
 }
 
-pub(crate) fn emit(ir: &Value, runtime_import: &str) -> String {
+fn emit(ir: &Value, runtime_import: &str) -> String {
     let plan = crate::server_plan::encode(ir, "fast-server-js", crate::server_plan::JS_VERSION);
     format!(
         "import * as $ from {};\n\
