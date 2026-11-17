@@ -51,7 +51,7 @@ fn js_semantic_plan(plan: &Value) -> String {
     plan["format"] = json!("fast-server-js");
     format!(
         "import {{ createServerRenderer }} from \"__FAST_TEST_RUNTIME__\";\n\
-         export const {{ prepareState, renderEntry, renderTemplate, renderHost, renderShadow, renderEntryPrepared, renderTemplatePrepared, renderHostPrepared, renderShadowPrepared }} = createServerRenderer({plan});"
+         export const {{ prepareState, renderEntry, renderTemplate, renderHost, renderShadow, renderEntryJson, renderTemplateJson, renderHostJson, renderShadowJson, renderEntryPrepared, renderTemplatePrepared, renderHostPrepared, renderShadowPrepared }} = createServerRenderer({plan});"
     )
 }
 

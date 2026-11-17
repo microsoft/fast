@@ -34,6 +34,11 @@ bodies, including unused definitions and skipped branches.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for render options, state validation and deployment requirements.
 
+Generated modules also export `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` and `renderShadowJson`. Use these JavaScript methods for fresh JSON
+text, passing a required string instead of an already-parsed object. See the
+[JSON request contract](../../packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
+
 ### Compile and deploy native Rust artifacts
 
 ```rust

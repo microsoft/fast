@@ -59,9 +59,8 @@ const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
 Generated ESM embeds flat template instruction tables, not rendering functions.
-The server helper validates and loads them once. Published object-input and
-prepared-state methods are unchanged. Compiler fingerprints and literal
-helper-build checks are removed; supported plan/artifact schemas govern loading.
+The server helper validates and loads them once. Supported plan/artifact schemas
+govern loading.
 For strict template-only asset updates, use `writeServerModule` or
 `writeServerArtifact` at build time and persist the asset plus its `.inputs.json`
 manifest. Unchanged authored inputs reuse exact existing bytes without compilation.
@@ -73,6 +72,28 @@ Retain supported generated assets across compiler-only upgrades.
 State must be acyclic JSON-shaped data, with finite numbers and ordinary data
 properties; getters, functions, class instances and nested `undefined` are rejected.
 Existing HTML bytes, server coercion and hydration markers are preserved.
+
+### Fresh JSON request input
+
+Generated modules expose `renderEntryJson(json, options?)`,
+`renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
+`renderShadowJson(name, json, options?)` for input that arrives as JSON text:
+
+```js
+import { renderEntryJson } from "./generated/server-json.mjs";
+const html = renderEntryJson('{"title":"Fresh request"}');
+```
+
+Pass a required string, not an object, prepared handle or Buffer. The helper parses
+without a reviver and validates every field, including unused values. Non-finite
+overflow and lone-surrogate keys/values fail; negative zero is normalized in the
+fresh owned graph. There is no snapshot copy/freezing or arbitrary-object descriptor
+pass. The same executor preserves all output, options, coercion and hydration bytes.
+Keep object methods for already-parsed state and prepared methods for unchanged reuse.
+JSON parsing and full traversal still have costs; measure matched request boundaries.
+
+See the
+[JSON request contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
 
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.
