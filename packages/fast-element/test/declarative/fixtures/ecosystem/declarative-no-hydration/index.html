@@ -5,8 +5,8 @@
         <title>Declarative Template Without Hydration</title>
     </head>
     <body>
-        <basic-element greeting="Hi"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Hi<!--fe:/b--> World</template></basic-element>
-        <counter-element><template shadowrootmode="open" shadowroot="open"><span>Count: <!--fe:b-->0<!--fe:/b--></span></template></counter-element>
+        <basic-element greeting="Hi"><template shadowrootmode="open"><!--fe:b-->Hi<!--fe:/b--> World</template></basic-element>
+        <counter-element><template shadowrootmode="open"><span>Count: <!--fe:b-->0<!--fe:/b--></span></template></counter-element>
 <f-template name="basic-element">
     <template>{{greeting}} World</template>
 </f-template>

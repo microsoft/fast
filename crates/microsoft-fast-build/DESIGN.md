@@ -32,11 +32,18 @@ The browser conversion crate remains independent.
 | `code_escape.rs` | Literal code-sample preprocessing and source rebasing |
 | `binding_metadata.rs` | Descriptive bindings, scopes and UTF-16 source spans |
 | `f_template.rs` | In-memory stylesheet composition and provenance |
-| `template_slots.rs` | Standards-based authored slot discovery |
+| `template_slots.rs` | Authored slot discovery |
 | `error.rs` | Structured compiler/tooling diagnostics |
 | `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
 
 ## Emission and diagnostics
+
+`directive::build_shadowroot_template_attrs` is the single DSD output policy for
+both targets. The mode is the non-empty authored `shadowrootmode` or `"open"`.
+Other forwarded attributes retain their original serialization.
+Both targets embed the resulting literal tags;
+loaders execute the bytes stored in supported artifacts.
+Whitespace, markers, escaping and host defaults are not reduced.
 
 Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
 The IR contains executable literal writes, prelowered attribute recipes, segmented
@@ -114,7 +121,7 @@ versioned independently of compiler builds. Loaders validate the formats they
 support; compiler source or helper implementation changes are not artifact
 identity checks.
 JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 1. Both new semantic formats start at version 1.
+`fast-server-native` schema 1.
 Format identifiers are target-specific and strict.
 Only semantic-format changes require new schema versions, not changes to
 private closure compilation, alias slots or native execution layout.
@@ -126,8 +133,8 @@ For this target the JavaScript helper owns complete JSON-shaped state validation
 own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
-synchronously return complete strings. Existing markup, whitespace, escaping and
-markers remain byte-preserved.
+synchronously return complete strings. Existing whitespace, escaping and markers
+remain byte-preserved. DSD attributes follow the serialization policy above.
 
 Generated JavaScript carries no compiler fingerprint or literal helper-build
 version check or runtime release metadata. The helper validates the plan schema,
@@ -339,7 +346,7 @@ as a separate document-validation API.
 Selection matches decoded names case-sensitively, rejects empty/missing/duplicate
 matches, and requires one direct inner HTML template. Iterative traversal includes
 ordinary nested templates and conditional/repeated bodies once, but stops at
-nested component definitions or templates marked `shadowrootmode`/`shadowroot`.
+nested component definitions or templates marked `shadowrootmode`.
 Only HTML slot elements count. The result is sorted by original byte position,
 not DOM order, because HTML recovery can reparent nodes (for example, foster
 parenting around tables).
@@ -411,8 +418,8 @@ load/render native artifacts, requiring byte-identical results before checking t
 original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
-Node tests enforce 438 distinct frozen output contracts and the shared
-performance corpus baseline.
+Node tests enforce compiled output contracts and the shared performance corpus
+baseline. Loaders reject unsupported schemas.
 Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
 its unique-host workload varies indexes, dataset values and inline styles to
 exercise component plans rather than only byte-identical hosts;

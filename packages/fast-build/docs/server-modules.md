@@ -247,34 +247,35 @@ fresh preparation on every call as a control.
 
 ## Compatibility and migration
 
-The semantic-plan replacement preserves published object-input and prepared-state
-APIs, state acceptance and ownership. Rebuild legacy outputs once and deploy a
-helper that supports the generated plan schema.
-The upgrade guide separately describes the earlier API-breaking migration from
-request-time source rendering and retired prepared compiler/program APIs.
-
-Generated code no longer exports a compiler fingerprint or compares a literal
-helper-build version on import. The helper validates the supported plan schema;
-JavaScript plans use `format: "fast-server-js"` with semantic schema version 1.
-no runtime release metadata is emitted or exported. Native loading also uses
+The helper validates the supported plan schema; JavaScript plans use
+`format: "fast-server-js"` with semantic schema version 1. Generated code contains
+no compiler fingerprint, helper-build comparison or runtime release metadata.
+Native loading also uses
 explicit supported schemas rather than compiler-build identity.
 Unknown schemas fail safely. Retain supported published decoders across runtime
 upgrades instead of invalidating unchanged assets on every compiler change.
 
-Flat plans replace generated rendering functions while preserving the existing
-snapshot methods. The loader prepares path
+The semantic-plan loader prepares path
 accessors and numeric alias slots at module import, including array-index
 decoding. Repeats reuse request-local alias/index cells rather than copying
 loop arrays per iteration. The newest matching alias wins, including implicit
 `$index` precedence; missing nested values do not fall through to older aliases
 or parent state. Shared bodies do not capture a frame, and component shadows
 reset caller lexical scope. Ordinary state/rendering contracts and IR schema
-semantics remain unchanged. Legacy fingerprinted assets require a one-time
-migration; compiler-only updates do not invalidate the new supported formats.
+semantics are shared by all request-input methods. Compiler-only updates do not
+invalidate supported formats.
+
+The shared Rust serializer emits standard `shadowrootmode`. It resolves the mode
+from a non-empty authored standard attribute, then `"open"`. There is no legacy
+mode fallback or synthesized alias. Other DSD attributes retain their
+serialization. Native browser parsing
+requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
+Hydration markers, escaping, whitespace and host defaults remain intact.
+Upgrade instructions are listed in the [migration index](./migration.md).
 
 For a JavaScript server build:
 
-1. Move template loading/composition and `writeServerModule` into the build.
+1. Load/compose templates and call `writeServerModule` during the build.
 2. Deploy/bundle the generated ESM plus its server helper.
 3. Call `renderEntry(state)` for complete entries.
 4. Call `renderShadow(name, componentState, options)` for DSD fragments.
