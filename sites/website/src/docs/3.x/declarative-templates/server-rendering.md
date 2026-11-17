@@ -31,6 +31,18 @@ browser scheduling APIs such as `requestAnimationFrame`.
 
 ## Compiled Flat-Plan Server JavaScript
 
+For JSON-first Node requests, `@microsoft/fast-build/native-host.mjs` additionally
+offers opt-in source-built hosting in the existing Rust crate. Call
+`loadNativeHost` with an explicit local addon path and render supplied JSON strings
+or strict UTF-8 Buffers; results are owned Buffers. Use `serializeNativeState` only
+when explicitly validating and serializing object requests. It rejects classes,
+accessors and non-JSON data rather than silently invoking getters. JavaScript
+imports remain unchanged; there is no automatic backend selection or download.
+This bounded candidate is not qualified as a prebuilt all-platform distribution
+or an end-to-end performance win. See the package's
+[hosting guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/native-node-host.md)
+for source-build commands, limits, error/lifetime contracts and migration.
+
 Compile templates during the server build to keep WASM and template parsing out
 of the request dependency graph:
 

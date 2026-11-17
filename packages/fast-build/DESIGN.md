@@ -5,6 +5,13 @@ Development, peer and optional dependencies are separate.
 
 ## Build and execution ownership
 
+`native-host.mjs` is an opt-in local source-built Node-API facade; importing it
+does not load/download an addon or change the JavaScript backend. Callers select
+an addon path and supply JSON strings/UTF-8 Buffers. The explicit object serializer
+reuses runtime descriptor validation; native rendering uses the existing crate's
+fresh JSON path. There are no regular npm dependencies or platform packages.
+See [ownership, errors and qualification](./docs/native-node-host.md).
+
 `server.js` loads compiler WASM only at build time and delegates all HTML
 parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
