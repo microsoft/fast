@@ -2,6 +2,45 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Tue, 17 Nov 2026 07:11:45 GMT",
+      "version": "0.20.0",
+      "tag": "@microsoft/fast-build_v0.20.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "ca4424d55e335ad0be72aeae9b89124e39c2e120",
+            "comment": "Reuse persistent entry modules during CLI builds before parsing unchanged ordered authored sources, retaining caller-owned module bytes independently of request state and rendering options."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b068de5f8e6bad3552d95f006a03830229524c5e",
+            "comment": "Add explicit fresh JSON render methods with full-graph validation to semantic server modules while preserving object and prepared-state APIs."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "f2d14955712eef07349fc1b7fd7139ddaa33db01",
+            "comment": "Prepare component assignments and composite attributes at module load to avoid per-render intermediates while preserving existing server assets."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "02a85f5e65c6508bb98faa4c595e7d46a7bb126e",
+            "comment": "Prepare immutable typed native operations and numeric references while preserving existing artifact schemas, rendering APIs and managed asset reuse."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "82feae5a52dfedee620ae6e3e5f51e164b3af76d",
+            "comment": "Borrow native repeat and component state and add fully validated fresh JSON rendering without redundant state copies."
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 16 Nov 2026 04:58:49 GMT",
       "version": "0.19.0",
       "tag": "@microsoft/fast-build_v0.19.0",

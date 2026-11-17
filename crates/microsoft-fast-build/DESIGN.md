@@ -134,7 +134,7 @@ own-property lookup, loop frames, borrowed child overlays, comparison/display,
 escaping and fresh hydration scopes. It has no WASM, template parser, JSON serialization,
 eval or browser dependencies. Generated entry/template/host/shadow exports
 synchronously return complete strings. Existing whitespace, escaping and markers
-remain byte-preserved. DSD aliases follow the serialization policy above.
+remain byte-preserved. DSD attributes follow the serialization policy above.
 
 Generated JavaScript carries no compiler fingerprint or literal helper-build
 version check or runtime release metadata. The helper validates the plan schema,
@@ -419,12 +419,7 @@ original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
 Node tests enforce compiled output contracts and the shared performance corpus
-baseline. `tests/static_output.rs` loads retained schema-1 artifacts and checks
-independent complete-output oracles and no-DSD controls. Loaders reject unsupported
-schemas. The package's
-`test:static-output` delivers actual JS output matching the native oracle to
-Chromium, Firefox and WebKit, verifying parser-created open/closed DSD, flags,
-hydration/node identity, updates and whitespace-sensitive content/layout.
+baseline. Loaders reject unsupported schemas.
 Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
 its unique-host workload varies indexes, dataset values and inline styles to
 exercise component plans rather than only byte-identical hosts;

@@ -1,4 +1,0 @@
-import * as $ from "../../server-runtime.mjs";
-const plan = {"format":"fast-server-js","version":1,"entry":[{"type":"component","name":"test-old"}],"templates":{"old-shadow":[{"type":"literal","html":"<template shadowrootmode=\"open\" shadowroot=\"open\">"},{"type":"literal","html":"<p>"},{"type":"binding","path":["value"],"escape":true},{"type":"literal","html":"</p>"},{"type":"literal","html":"</template>"}]},"components":{"test-old":"old-shadow"}};
-const {prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components} = $.createServerRenderer(plan);
-export {prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components};

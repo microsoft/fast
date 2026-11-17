@@ -61,62 +61,42 @@ Sources: [MDN compatibility data](https://github.com/mdn/browser-compat-data/blo
 [Chrome's implementation history](https://web.dev/articles/declarative-shadow-dom),
 and [Firefox 123 release notes](https://www.mozilla.org/en-US/firefox/123.0/releasenotes/).
 
-## Consumers and retained assets
+## Regenerate all templates and assets
+
+Regenerate all templates and generated ESM/native artifacts with the new version.
+Deploy the regenerated assets with their matching helper/native library; do not
+carry pre-upgrade generated output into this deployment.
 
 - Use `shadowrootmode` in output selectors and standards-aware DSD polyfills.
   Browsers/polyfills recognizing only `shadowroot` no longer receive that alias
   in newly compiled output. Upgrade those consumers before deploying new assets.
-- Existing supported ESM/native artifacts still render their exact old bytes.
-  No schema change, loader rewrite or client package release is required.
-  Supported assets use the current `fast-server-js` / `fast-server-native`
-  semantic operation-object schema 1, with required `entry`, named `templates`,
-  component references to complete DSD templates and optional `host-attributes`.
-  This does not restore the retired indexed JS plans or version-2 private native
-  IR. Recompile those historical formats using the current compiler.
 - `writeServerModule` and `writeServerArtifact` intentionally reuse unchanged
-  managed assets even after a compiler upgrade. To explicitly migrate unchanged
-  input, remove both the application-owned generated asset and its `.inputs.json`
+  managed assets even after a compiler upgrade. For this migration, remove both
+  the application-owned generated asset and its `.inputs.json`
   sidecar during a controlled clean build, then regenerate and deploy them together.
   `overwrite: true` alone does not bypass unchanged-input reuse.
+- The `fast-server-js` / `fast-server-native` semantic schema remains version 1.
+  No loader inspection, legacy-output adapter or compiler fingerprint is added.
+  Ordinary unchanged-input caching can resume after the clean regeneration.
 - Update exact HTML snapshots only after reviewing this specific attribute change.
   Do not trim whitespace or strip markers to accommodate the migration.
 - `innerHTML` remains a no-DSD parsing path; omitting the alias does not provide a
   fallback or change client-side rendering. Use navigation parsing or a
   standards-aware DSD insertion API.
 
-## Qualification
+## Validation
 
-From the monorepo root, build the compiler and use installed Playwright browsers:
+From the monorepo root:
 
 ```sh
-CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build -w @microsoft/fast-build
-CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml --test static_output --test custom_elements --test hydration --test native_artifacts -- --test-threads=1
-npm run test:static-output -w @microsoft/fast-build
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run test
 ```
 
-The browser fixture uses actual generated JS output, checks its exact native HTML
-oracle, and delivers its unmodified UTF-8 bytes through an HTTP response.
-Chromium, Firefox and WebKit independently parse both retained old output and new
-output before client registration. Current fixture definitions use only standard
-attributes; retained assets remain unchanged literal-byte loading controls.
-Checks cover open/default/closed modes, focus/cloning/serialization flags, host defaults and
-escaped attributes, nested components, ordinary template scopes, conditional and
-repeat hydration, original element/text/repeat node identity, reactive updates,
-preformatted/textarea text, inline separators and measured layout equality.
-An inert-document `innerHTML` control and renderer `dsd: []` control remain separate.
+Commit regenerated declarative `index.html` fixtures with the compiler change.
+After committing, `npm run test:validation` must leave the worktree clean; do not
+restore stale generated files after testing.
 
-Original `server-baseline.json`, `server-json-context-baseline.json` and benchmark
-`expected-baseline.json` are retained untouched. Their independent modern
-counterparts freeze the selected new contract; `legacy.fast`, `legacy.html` and
-`modern.html` provide retained-byte/current-output browser oracles. Browser assertions,
-not regex normalization, establish the bounded semantic qualification.
-The retained-output JS/native fixtures were mechanically transcribed from the
-historical baseline's private IR to the current semantic schema; their provenance
-records both historical and current hashes. They are not represented as unchanged
-historical compiler output. The retained HTML expectations remain unchanged; the modern oracle records
-standard-only output, and compiler-produced current assets must match it exactly.
-
-The fixture reports raw rendered UTF-16/UTF-8 sizes and gzip/Brotli sizes, excluding
-external scripts, initial state and page assembly. It verifies exact HTTP delivery
-without measuring CPU or latency. This narrow saving does not explain an overall
-renderer performance gap or establish whole-corpus browser equivalence.
+The canonical server, JSON-context and benchmark output baselines describe only
+the regenerated contract. Existing Rust/Node parity and declarative browser tests
+cover the new output without a parallel retained-output compatibility matrix.

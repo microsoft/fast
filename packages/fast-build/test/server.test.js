@@ -10,11 +10,9 @@ const { compileServerModule } = require("../server.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
 
 const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
-const baseline = require("./server-modern-baseline.json");
-const contextBaseline = require("./server-json-context-modern-baseline.json");
+const baseline = require("./server-baseline.json");
+const contextBaseline = require("./server-json-context-baseline.json");
 const hash = value => createHash("sha256").update(value).digest("hex");
-
-require("./retained-schema1.test.js");
 
 test("retired renderer APIs cannot be loaded from the compiler package", () => {
     assert.throws(
@@ -637,43 +635,6 @@ test("conformance bridge preserves omitted object state across all render target
         );
         assert.equal(result.error, undefined);
         assert.equal(result.value, module[method](...(name ? [name] : [])));
-    }
-});
-
-test("unchanged semantic schema 1 modules retain their old exports with the upgraded helper", async () => {
-    const source = fs.readFileSync(
-        path.join(__dirname, "fixtures/server-schema1.txt"),
-        "utf8",
-    );
-    const old = await import(
-        `data:text/javascript;base64,${Buffer.from(
-            source.replace('"../../server-runtime.mjs"', JSON.stringify(runtime)),
-        ).toString("base64")}`
-    );
-    const { module } = await compile("<test-old></test-old>", {
-        "test-old": "<p>{{value}}</p>",
-    });
-    for (const method of [
-        "renderEntry",
-        "renderTemplate",
-        "renderHost",
-        "renderShadow",
-    ]) {
-        const args = /Host|Shadow/.test(method) ? ["test-old"] : [];
-        assert.equal(Object.hasOwn(old, `${method}Json`), false);
-        for (const markersV2 of [false, true]) {
-            const state = { value: "<&" };
-            const options = { markersV2 };
-            const expected = module[method](...args, state, options).replace(
-                '<template shadowrootmode="open">',
-                '<template shadowrootmode="open" shadowroot="open">',
-            );
-            assert.equal(old[method](...args, state, options), expected);
-            assert.equal(
-                old[`${method}Prepared`](...args, old.prepareState(state), options),
-                expected,
-            );
-        }
     }
 });
 

@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "CLI and Node.js API for server-side rendering and converting FAST declarative HTML templates.",
   "author": {
     "name": "Microsoft",
@@ -49,8 +49,7 @@
     "build": "node build-wasm.cjs",
     "test:node": "node --test test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/server.test.js test/server-assets.test.js test/native-artifact.test.js test/server-vite.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs",
     "bench:server": "node test/performance/server-renderer.mjs",
-    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js",
-    "test:static-output": "node --test --test-concurrency=1 test/static-output.test.mjs"
+    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js"
   },
   "engines": {
     "node": ">=22.18.0"

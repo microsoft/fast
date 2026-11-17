@@ -3,13 +3,9 @@
 Migration guides cover the current publish, not a permanent history of changes.
 For current APIs and behavior, see the [server module contract](./server-modules.md).
 
-## Current publish
+## Next publish
 
 - [Standard Declarative Shadow DOM output](./migration/standard-dsd-output.md)
-- [Compiled semantic server rendering](./migration/aot-server-rendering.md)
-- [Execution-only typed native artifacts](./migration/typed-native-plans.md)
-- [Plugin integrations](./migration/plugin-integrations.md)
-- [Stylesheet composition](./migration/stylesheet-composition.md)
 
 ## Release preparation
 

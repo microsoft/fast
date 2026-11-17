@@ -6,52 +6,52 @@
         <title>Nested Elements Hydration Tests</title>
     </head>
     <body>
-        <parent-element category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element category="General"><template shadowrootmode="open"><div class="list-container">
             <h2><!--fe:b-->My Items<!--fe:/b--></h2>
             <div class="items">
                 <!--fe:b--><!--fe:r-->
-                    <child-element text="Item 1" idx="0" category="General" data-fe="3"><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 1" idx="0" category="General" data-fe="3"><template shadowrootmode="open"><div class="item">
             <span class="index"><!--fe:b-->0<!--fe:/b--></span>
             <span class="text"><!--fe:b-->Item 1<!--fe:/b--></span>
-            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
+            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
         </div></template></child-element>
                 <!--fe:/r--><!--fe:r-->
-                    <child-element text="Item 2" idx="1" category="General" data-fe="3"><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 2" idx="1" category="General" data-fe="3"><template shadowrootmode="open"><div class="item">
             <span class="index"><!--fe:b-->1<!--fe:/b--></span>
             <span class="text"><!--fe:b-->Item 2<!--fe:/b--></span>
-            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
+            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
         </div></template></child-element>
                 <!--fe:/r--><!--fe:r-->
-                    <child-element text="Item 3" idx="2" category="General" data-fe="3"><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 3" idx="2" category="General" data-fe="3"><template shadowrootmode="open"><div class="item">
             <span class="index"><!--fe:b-->2<!--fe:/b--></span>
             <span class="text"><!--fe:b-->Item 3<!--fe:/b--></span>
-            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
+            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
         </div></template></child-element>
                 <!--fe:/r--><!--fe:/b-->
             </div>
         </div></template></parent-element>
-        <parent-element title="Empty List" category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element title="Empty List" category="General"><template shadowrootmode="open"><div class="list-container">
             <h2><!--fe:b-->Empty List<!--fe:/b--></h2>
             <div class="items">
                 <!--fe:b--><!--fe:/b-->
             </div>
         </div></template></parent-element>
-        <parent-element title="Single Item" category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element title="Single Item" category="General"><template shadowrootmode="open"><div class="list-container">
             <h2><!--fe:b-->Single Item<!--fe:/b--></h2>
             <div class="items">
                 <!--fe:b--><!--fe:r-->
-                    <child-element text="Only Item" idx="0" category="General" data-fe="3"><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Only Item" idx="0" category="General" data-fe="3"><template shadowrootmode="open"><div class="item">
             <span class="index"><!--fe:b-->0<!--fe:/b--></span>
             <span class="text"><!--fe:b-->Only Item<!--fe:/b--></span>
-            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
+            <grand-child-element category="General" data-fe="1"><template shadowrootmode="open"><span class="category"><!--fe:b-->General<!--fe:/b--></span></template></grand-child-element>
         </div></template></child-element>
                 <!--fe:/r--><!--fe:/b-->
             </div>
         </div></template></parent-element>
-        <test-element-repeat-event><template shadowrootmode="open" shadowroot="open"><ul>
+        <test-element-repeat-event><template shadowrootmode="open"><ul>
             <!--fe:b--><!--fe:/b-->
         </ul></template></test-element-repeat-event>
-        <test-when-in-repeat><template shadowrootmode="open" shadowroot="open"><ul>
+        <test-when-in-repeat><template shadowrootmode="open"><ul>
             <!--fe:b--><!--fe:r-->
                 <li>
                     <!--fe:b-->
@@ -66,8 +66,8 @@
                 </li>
             <!--fe:/r--><!--fe:/b-->
         </ul></template></test-when-in-repeat>
-        <parent-binding-host><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
-            <parent-bound-child appearance="full-page" data-fe="2"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->
+        <parent-binding-host><template shadowrootmode="open"><!--fe:b--><!--fe:r-->
+            <parent-bound-child appearance="full-page" data-fe="2"><template shadowrootmode="open"><!--fe:b-->
             <!--fe:b-->
                 <div class="progress"><!--fe:b-->20<!--fe:/b-->%</div>
             <!--fe:/b-->

@@ -270,8 +270,7 @@ from a non-empty authored standard attribute, then `"open"`. There is no legacy
 mode fallback or synthesized alias. Other DSD attributes retain their
 serialization. Native browser parsing
 requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
-Supported persisted artifacts render their stored literal bytes, including any DSD
-aliases. Hydration markers, escaping, whitespace and host defaults remain intact.
+Hydration markers, escaping, whitespace and host defaults remain intact.
 Upgrade instructions are listed in the [migration index](./migration.md).
 
 For a JavaScript server build:
