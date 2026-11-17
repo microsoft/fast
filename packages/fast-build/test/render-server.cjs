@@ -1,41 +1,20 @@
-const { execFileSync } = require("node:child_process");
-const { pathToFileURL } = require("node:url");
 const compiler = require("../wasm/microsoft_fast_build.js");
-const { compileServerModule } = require("../server.js");
+const { compileServerArtifact } = require("../server.js");
+const { loadNativeHost } = require("../native-host.mjs");
+const Program = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 
-// Keep pre-existing byte/diagnostic assertions on the single generated-JS engine.
 function execute(entry, templates = "{}", state, strategy, markersV2, shadow, nested) {
-    let parsed;
-    try {
-        parsed = state === undefined ? undefined : JSON.parse(state);
-    } catch (error) {
-        error.code = "invalid-state-json";
-        throw error;
-    }
-    const source = compileServerModule(
-        entry,
-        JSON.parse(templates),
-        pathToFileURL(require.resolve("../server-runtime.mjs")).href,
+    const program = new Program(
+        Buffer.from(compileServerArtifact(entry, JSON.parse(templates))),
+        { attributeNameStrategy: strategy || undefined, markersV2: markersV2 || false },
     );
-    const result = JSON.parse(
-        execFileSync(process.execPath, [require.resolve("./execute-server.mjs")], {
-            input: JSON.stringify({
-                source,
-                state: parsed,
-                options: {
-                    attributeNameStrategy: strategy || undefined,
-                    markersV2: markersV2 || false,
-                },
-                shadow,
-                template: nested,
-            }),
-            encoding: "utf8",
-        }),
-    );
-    if (result.error) {
-        throw Object.assign(new Error(result.error.message), result.error);
-    }
-    return result.value;
+    const input = Buffer.from(state ?? "{}", "utf8");
+    const result = shadow
+        ? program.renderShadowJson(shadow, input)
+        : nested
+          ? program.renderTemplateJson(input)
+          : program.renderEntryJson(input);
+    return result.toString("utf8");
 }
 
 module.exports = {

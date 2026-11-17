@@ -6,7 +6,7 @@ import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
 import { PerformanceObserver, performance } from "node:perf_hooks";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { fixture, outputStats } from "./fixtures.mjs";
 
@@ -20,14 +20,14 @@ const { values: args } = parseArgs({
         instances: { type: "string", default: "200" },
         warmup: { type: "string", default: "20" },
         "profile-directory": { type: "string" },
-        "state-mode": { type: "string", default: "plain" },
+        "native-addon": { type: "string" },
         "markers-v2": { type: "boolean", default: false },
         "attribute-name-strategy": { type: "string", default: "camelCase" },
         output: { type: "string" },
     },
 });
-const stateModes = ["plain", "prepared", "prepare-per-render", "owned-json"];
-assert.ok([...stateModes, "all"].includes(args["state-mode"]), "Invalid state mode.");
+const addonPath = args["native-addon"] ?? process.env.FAST_NATIVE_ADDON;
+assert.ok(addonPath, "Configure --native-addon or FAST_NATIVE_ADDON.");
 assert.ok(
     ["camelCase", "none"].includes(args["attribute-name-strategy"]),
     "Invalid attribute name strategy.",
@@ -36,100 +36,69 @@ const renderOptions = {
     markersV2: args["markers-v2"],
     attributeNameStrategy: args["attribute-name-strategy"],
 };
-const modeKey = mode =>
-    mode === "plain"
-        ? "flatPlan"
-        : mode === "prepared"
-          ? "flatPlanPrepared"
-          : mode === "owned-json"
-            ? "flatPlanOwnedJson"
-            : "flatPlanPreparePerRender";
-const hash = text => createHash("sha256").update(text).digest("hex");
-const integer = (name, minimum = 1) => {
+const hash = bytes => createHash("sha256").update(bytes).digest("hex");
+function integer(name, minimum = 1) {
     const value = Number(args[name]);
     assert.ok(
         Number.isSafeInteger(value) && value >= minimum,
-        `${name} must be ${minimum === 0 ? "nonnegative" : "positive"}`,
+        name + " must be " + (minimum === 0 ? "nonnegative" : "positive"),
     );
     return value;
-};
-
-if (args.worker) {
-    await worker();
-} else {
-    await main();
 }
 
+if (args.worker) await worker();
+else await main();
+
 async function worker() {
-    const workerSetupMs = performance.now();
-    assert.ok(
-        ["aot", "flat-plan"].includes(args.worker),
-        "Worker requires an AOT or flat-plan module.",
-    );
-    const readStart = performance.now();
-    const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
-    const inputReadMs = performance.now() - readStart;
-    const parseStart = performance.now();
-    const source = JSON.parse(input);
-    const inputParseMs = performance.now() - parseStart;
-    const serializeStart = performance.now();
-    const stateJson = JSON.stringify(source.state);
-    const stateSerializeMs = performance.now() - serializeStart;
+    assert.equal(args.worker, "native", "Worker requires the native Node host.");
     const iterations = integer("iterations");
     const warmupIterations = integer("warmup", 0);
+    let start = performance.now();
+    const input = await fs.readFile(path.join(args.directory, "input.json"), "utf8");
+    const inputReadMs = performance.now() - start;
+    start = performance.now();
+    const source = JSON.parse(input);
+    const inputParseMs = performance.now() - start;
+    start = performance.now();
+    const stateJson = JSON.stringify(source.state);
+    const stateSerializeMs = performance.now() - start;
+    start = performance.now();
+    const state = Buffer.from(stateJson, "utf8");
+    const stateEncodeMs = performance.now() - start;
+    start = performance.now();
+    const artifact = await fs.readFile(path.join(args.directory, "server.artifact.json"));
+    const artifactReadMs = performance.now() - start;
     const memoryBefore = process.memoryUsage();
-    const importStart = performance.now();
-    const module = await import(
-        pathToFileURL(path.join(args.directory, "server.mjs")).href
-    );
-    const moduleImportMs = performance.now() - importStart;
-    const stateMode = args["state-mode"];
-    assert.ok(stateModes.includes(stateMode), "Worker requires one state mode.");
-    let prepared;
-    let preparation;
-    if (stateMode === "prepared") {
-        globalThis.gc?.();
-        const memoryBeforePrepare = process.memoryUsage();
-        const start = performance.now();
-        prepared = module.prepareState(source.state);
-        const prepareStateMs = performance.now() - start;
-        globalThis.gc?.();
-        preparation = {
-            prepareStateMs,
-            memoryBeforePrepare,
-            memoryAfterPrepare: process.memoryUsage(),
-        };
-    }
-    const render =
-        stateMode === "plain"
-            ? () => module.renderEntry(source.state, renderOptions)
-            : stateMode === "prepared"
-              ? () => module.renderEntryPrepared(prepared, renderOptions)
-              : stateMode === "owned-json"
-                ? () => module.renderEntryJson(stateJson, renderOptions)
-                : () =>
-                      module.renderEntryPrepared(
-                          module.prepareState(source.state),
-                          renderOptions,
-                      );
-    const firstStart = performance.now();
-    const html = render();
-    const firstRenderMs = performance.now() - firstStart;
+    start = performance.now();
+    const { loadNativeHost } = require("../../native-host.mjs");
+    const Program = loadNativeHost(addonPath);
+    const addonLoadMs = performance.now() - start;
+    start = performance.now();
+    const program = new Program(artifact, renderOptions);
+    const programLoadMs = performance.now() - start;
+    const render = () => program.renderEntryJson(state);
+    start = performance.now();
+    const bytes = render();
+    const firstRenderMs = performance.now() - start;
+    assert.ok(Buffer.isBuffer(bytes));
     const memoryAfterFirst = process.memoryUsage();
-    const output = await writeOutput(html);
-    let latest = html;
-    const warmupStart = performance.now();
-    for (let index = 0; index < warmupIterations; index++) {
-        latest = render();
-    }
-    const warmupMs = performance.now() - warmupStart;
-    assert.equal(latest, html, "warmup output differs from first render");
+    start = performance.now();
+    const html = bytes.toString("utf8");
+    const outputDecodeMs = performance.now() - start;
+    start = performance.now();
+    await fs.writeFile(path.join(args.directory, "rendered.html"), bytes);
+    const outputWriteMs = performance.now() - start;
+    let latest = bytes;
+    start = performance.now();
+    for (let index = 0; index < warmupIterations; index++) latest = render();
+    const warmupMs = performance.now() - start;
+    assert.equal(hash(latest), hash(bytes));
     globalThis.gc?.();
     const memoryWarm = process.memoryUsage();
     let gcCount = 0;
     let gcMs = 0;
-    let warmStart;
-    let warmEnd;
+    let warmStart = 0;
+    let warmEnd = 0;
     const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
             if (entry.startTime >= warmStart && entry.startTime < warmEnd) {
@@ -141,116 +110,51 @@ async function worker() {
     observer.observe({ entryTypes: ["gc"] });
     const cpu = process.cpuUsage();
     warmStart = performance.now();
-    for (let index = 0; index < iterations; index++) {
-        latest = render();
-    }
+    for (let index = 0; index < iterations; index++) latest = render();
     warmEnd = performance.now();
-    const warmMs = warmEnd - warmStart;
     const cpuUsed = process.cpuUsage(cpu);
-    assert.equal(latest, html, "warm output differs from first render");
+    assert.equal(hash(latest), hash(bytes));
     await new Promise(resolve => setImmediate(resolve));
     await new Promise(resolve => setImmediate(resolve));
     observer.disconnect();
     const memoryAfterWarm = process.memoryUsage();
     globalThis.gc?.();
     const memoryRetained = process.memoryUsage();
-    const utf8Cpu = process.cpuUsage();
-    const utf8Start = performance.now();
-    let latestBytes;
-    for (let index = 0; index < iterations; index++) {
-        latestBytes = Buffer.from(render(), "utf8");
-    }
-    const warmUtf8Ms = performance.now() - utf8Start;
-    const utf8CpuUsed = process.cpuUsage(utf8Cpu);
-    assert.equal(hash(latestBytes), output.outputHash, "warm UTF-8 output differs");
-    let jsonDelivery;
-    if (stateMode !== "prepared") {
-        const renderJson = () => {
-            if (stateMode === "owned-json") {
-                return module.renderEntryJson(stateJson, renderOptions);
-            }
-            const state = JSON.parse(stateJson);
-            return stateMode === "plain"
-                ? module.renderEntry(state, renderOptions)
-                : module.renderEntryPrepared(module.prepareState(state), renderOptions);
-        };
-        const jsonWarmupStart = performance.now();
-        for (let index = 0; index < warmupIterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
-        }
-        const jsonUtf8WarmupMs = performance.now() - jsonWarmupStart;
-        if (warmupIterations > 0) {
-            assert.equal(
-                hash(latestBytes),
-                output.outputHash,
-                "JSON-to-UTF-8 warmup output differs",
-            );
-        }
-        const jsonCpu = process.cpuUsage();
-        const jsonStart = performance.now();
-        for (let index = 0; index < iterations; index++) {
-            latestBytes = Buffer.from(renderJson(), "utf8");
-        }
-        const warmJsonUtf8MsPerRender = (performance.now() - jsonStart) / iterations;
-        const jsonCpuUsed = process.cpuUsage(jsonCpu);
-        assert.equal(
-            hash(latestBytes),
-            output.outputHash,
-            "warm JSON-to-UTF-8 output differs",
-        );
-        jsonDelivery = {
-            jsonUtf8WarmupMs,
-            warmJsonUtf8MsPerRender,
-            warmJsonUtf8CpuMsPerRender:
-                (jsonCpuUsed.user + jsonCpuUsed.system) / 1000 / iterations,
-            warmJsonUtf8BytesPerSecond: throughput(warmJsonUtf8MsPerRender),
-        };
-    }
-    if (stateMode !== "plain") {
-        assert.equal(
-            module.renderEntry(source.state, renderOptions),
-            html,
-            "selected state mode output differs from ordinary output",
-        );
-    }
+    start = performance.now();
+    let latestString;
+    for (let index = 0; index < iterations; index++)
+        latestString = render().toString("utf8");
+    const warmStringMsPerRender = (performance.now() - start) / iterations;
+    assert.equal(latestString, html);
+    const warmMsPerRender = (warmEnd - warmStart) / iterations;
+    const { outputBytes: _bytes, sha256: _hash, ...structure } = outputStats(html);
     console.log(
         JSON.stringify({
-            reportVersion: 2,
-            executionTarget:
-                args.worker === "aot" ? "generated-javascript" : "flat-plan-javascript",
+            reportVersion: 3,
+            executionTarget: "native-node-host",
+            requestInput: "json-buffer",
+            requestOutput: "owned-buffer",
             renderOptions,
-            stateMode,
-            requestInput:
-                stateMode === "owned-json"
-                    ? "json-text"
-                    : stateMode === "prepared"
-                      ? "prepared-snapshot"
-                      : "object",
-            ...preparation,
-            workerSetupMs,
             inputReadMs,
             inputParseMs,
             stateSerializeMs,
-            stateJsonBytes: Buffer.byteLength(stateJson),
-            stateJsonHash: hash(stateJson),
-            moduleImportMs,
+            stateEncodeMs,
+            artifactReadMs,
+            stateJsonBytes: state.length,
+            stateJsonHash: hash(state),
+            addonLoadMs,
+            programLoadMs,
             firstRenderMs,
-            coldImportAndRenderMs: moduleImportMs + firstRenderMs,
-            coldImportToUtf8Ms:
-                moduleImportMs +
-                (preparation?.prepareStateMs ?? 0) +
-                firstRenderMs +
-                output.utf8EncodeMs,
+            coldLoadAndRenderMs: addonLoadMs + programLoadMs + firstRenderMs,
+            outputDecodeMs,
+            outputWriteMs,
             warmupMs,
             warmupIterations,
-            warmMsPerRender: warmMs / iterations,
+            warmMsPerRender,
+            warmStringMsPerRender,
             cpuMsPerRender: (cpuUsed.user + cpuUsed.system) / 1000 / iterations,
-            warmUtf8MsPerRender: warmUtf8Ms / iterations,
-            warmUtf8CpuMsPerRender:
-                (utf8CpuUsed.user + utf8CpuUsed.system) / 1000 / iterations,
-            warmStringBytesPerSecond: throughput(warmMs / iterations),
-            warmUtf8BytesPerSecond: throughput(warmUtf8Ms / iterations),
-            ...jsonDelivery,
+            warmBytesPerSecond:
+                warmMsPerRender > 0 ? (bytes.length * 1000) / warmMsPerRender : null,
             iterations,
             gcCount,
             gcMs,
@@ -259,33 +163,14 @@ async function worker() {
             memoryWarm,
             memoryAfterWarm,
             memoryRetained,
-            ...output,
+            outputBytes: bytes.length,
+            outputHash: hash(bytes),
+            outputStructure: {
+                ...structure,
+                dsdRoots: (html.match(/<template shadowrootmode=/g) ?? []).length,
+            },
         }),
     );
-
-    function throughput(ms) {
-        return ms > 0 ? (output.outputBytes * 1000) / ms : null;
-    }
-}
-
-async function writeOutput(html) {
-    const encodeStart = performance.now();
-    const bytes = Buffer.from(html, "utf8");
-    const utf8EncodeMs = performance.now() - encodeStart;
-    const writeStart = performance.now();
-    await fs.writeFile(path.join(args.directory, "rendered.html"), bytes);
-    const outputWriteMs = performance.now() - writeStart;
-    const { outputBytes: _bytes, sha256: _hash, ...structure } = outputStats(html);
-    return {
-        utf8EncodeMs,
-        outputWriteMs,
-        outputBytes: bytes.length,
-        outputHash: hash(bytes),
-        outputStructure: {
-            ...structure,
-            dsdRoots: (html.match(/<template shadowrootmode=/g) ?? []).length,
-        },
-    };
 }
 
 async function main() {
@@ -293,18 +178,16 @@ async function main() {
     const instances = integer("instances");
     const iterations = integer("iterations");
     const warmupIterations = integer("warmup", 0);
-    const modes = args["state-mode"] === "all" ? stateModes : [args["state-mode"]];
     let profileDirectory;
     if (args["profile-directory"]) {
-        const root = path.resolve(args["profile-directory"]);
-        await fs.mkdir(root, { recursive: true });
-        profileDirectory = await fs.mkdtemp(path.join(root, "fast-server-profile-"));
+        const directory = path.resolve(args["profile-directory"]);
+        await fs.mkdir(directory, { recursive: true });
+        profileDirectory = await fs.mkdtemp(path.join(directory, "fast-server-profile-"));
     }
     const compilerStart = performance.now();
-    const { compileServerModule } = require("../../server.js");
+    const { compileServerArtifact } = require("../../server.js");
     require("../../wasm/microsoft_fast_build.js");
     const compilerLoadMs = performance.now() - compilerStart;
-    const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
     const workloadStart = performance.now();
     const workloads = {
         static: {
@@ -388,21 +271,21 @@ async function main() {
         },
         largeState: fixture("large_state_overlay", instances, 1, 2000),
     };
+
     const results = {
-        reportVersion: 2,
-        executionTarget: "flat-plan-javascript",
+        reportVersion: 3,
+        executionTarget: "native-node-host",
         renderOptions,
         node: process.version,
-        platform: `${process.platform}/${process.arch}`,
+        platform: process.platform + "/" + process.arch,
         samples,
         instances,
         iterations,
         warmupIterations,
-        stateModes: modes,
         compilerLoadMs,
         workloadSetupMs: performance.now() - workloadStart,
         profileDirectory,
-        runtimeBytes: (await fs.stat(require.resolve("../../server-runtime.mjs"))).size,
+        addonBytes: (await fs.stat(addonPath)).size,
         wasmBytes: (
             await fs.stat(require.resolve("../../wasm/microsoft_fast_build_bg.wasm"))
         ).size,
@@ -411,81 +294,61 @@ async function main() {
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-server-bench-"));
     try {
         for (const [name, input] of Object.entries(workloads)) {
-            const inputStart = performance.now();
             await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
-            const inputWriteMs = performance.now() - inputStart;
-            const compileStart = performance.now();
-            const source = compileServerModule(input.entry, input.templates, runtime);
-            const compileMs = performance.now() - compileStart;
-            const writeStart = performance.now();
-            await fs.writeFile(path.join(directory, "server.mjs"), source);
-            const artifactWriteMs = performance.now() - writeStart;
-            const record = {
-                inputWriteMs,
-                compileMs,
-                artifactWriteMs,
-                generatedBytes: Buffer.byteLength(source),
-                modes: Object.fromEntries(modes.map(mode => [modeKey(mode), []])),
-            };
+            const start = performance.now();
+            const artifact = compileServerArtifact(input.entry, input.templates);
+            const compileMs = performance.now() - start;
+            await fs.writeFile(path.join(directory, "server.artifact.json"), artifact);
+            const record = { compileMs, artifactBytes: artifact.length, samples: [] };
             const expectedStateHash = hash(JSON.stringify(input.state));
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                for (const stateMode of sample % 2 ? [...modes].reverse() : modes) {
-                    const profileName = `${name}-${stateMode}-${sample + 1}.cpuprofile`;
-                    const processStart = performance.now();
-                    const response = execFileSync(
-                        process.execPath,
-                        [
-                            "--expose-gc",
-                            ...(profileDirectory
-                                ? [
-                                      "--cpu-prof",
-                                      `--cpu-prof-dir=${profileDirectory}`,
-                                      `--cpu-prof-name=${profileName}`,
-                                  ]
-                                : []),
-                            fileURLToPath(import.meta.url),
-                            "--worker=flat-plan",
-                            `--directory=${directory}`,
-                            `--iterations=${iterations}`,
-                            `--warmup=${warmupIterations}`,
-                            `--state-mode=${stateMode}`,
-                            ...(renderOptions.markersV2 ? ["--markers-v2"] : []),
-                            `--attribute-name-strategy=${renderOptions.attributeNameStrategy}`,
-                        ],
-                        {
-                            encoding: "utf8",
-                            env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
-                        },
-                    );
-                    const workerProcessMs = performance.now() - processStart;
-                    const result = { ...JSON.parse(response), workerProcessMs };
-                    assert.equal(
-                        result.stateJsonHash,
-                        expectedStateHash,
-                        `${name}/flat-plan input state differs`,
-                    );
-                    if (profileDirectory) {
-                        result.cpuProfile = path.join(profileDirectory, profileName);
-                        await fs.stat(result.cpuProfile);
-                    }
-                    expected ??= result.outputHash;
-                    assert.equal(
-                        result.outputHash,
-                        expected,
-                        `${name}/flat-plan output differs`,
-                    );
-                    record.modes[modeKey(stateMode)].push(result);
+                const profileName = name + "-" + (sample + 1) + ".cpuprofile";
+                const processStart = performance.now();
+                const response = execFileSync(
+                    process.execPath,
+                    [
+                        "--expose-gc",
+                        ...(profileDirectory
+                            ? [
+                                  "--cpu-prof",
+                                  "--cpu-prof-dir=" + profileDirectory,
+                                  "--cpu-prof-name=" + profileName,
+                              ]
+                            : []),
+                        fileURLToPath(import.meta.url),
+                        "--worker=native",
+                        "--directory=" + directory,
+                        "--iterations=" + iterations,
+                        "--warmup=" + warmupIterations,
+                        "--native-addon=" + addonPath,
+                        ...(renderOptions.markersV2 ? ["--markers-v2"] : []),
+                        "--attribute-name-strategy=" +
+                            renderOptions.attributeNameStrategy,
+                    ],
+                    {
+                        encoding: "utf8",
+                        env: { ...process.env, NODE_DISABLE_COMPILE_CACHE: "1" },
+                    },
+                );
+                const result = {
+                    ...JSON.parse(response),
+                    workerProcessMs: performance.now() - processStart,
+                };
+                assert.equal(result.stateJsonHash, expectedStateHash);
+                expected ??= result.outputHash;
+                assert.equal(result.outputHash, expected);
+                if (profileDirectory) {
+                    result.cpuProfile = path.join(profileDirectory, profileName);
+                    await fs.stat(result.cpuProfile);
                 }
+                record.samples.push(result);
             }
             results.workloads[name] = record;
         }
-        const output = `${JSON.stringify(results, null, 2)}\n`;
-        if (args.output) {
-            await fs.writeFile(args.output, output, { flag: "wx" });
-        } else {
-            process.stdout.write(output);
-        }
+        const output = JSON.stringify(results, null, 2) + "\n";
+        if (args.output) await fs.writeFile(args.output, output, { flag: "wx" });
+        else process.stdout.write(output);
     } finally {
         await fs.rm(directory, { recursive: true, force: true });
     }

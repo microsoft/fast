@@ -1,62 +1,38 @@
 const assert = require("node:assert/strict");
-const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
 const { test } = require("node:test");
-const { pathToFileURL } = require("node:url");
 const { createHash } = require("node:crypto");
-const { compileServerModule } = require("../server.js");
+const { compileServerArtifact } = require("../server.js");
 const wasm = require("../wasm/microsoft_fast_build.js");
-
-const runtime = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
 const baseline = require("./server-baseline.json");
 const contextBaseline = require("./server-json-context-baseline.json");
 const hash = value => createHash("sha256").update(value).digest("hex");
-
-test("retired renderer APIs cannot be loaded from the compiler package", () => {
-    assert.throws(
-        () => require("@microsoft/fast-build/prepared.js"),
-        error => error.code === "ERR_PACKAGE_PATH_NOT_EXPORTED",
-    );
-    for (const name of [
-        "render",
-        "render_with_templates",
-        "render_entry_with_templates",
-        "render_shadow_root",
-        "PreparedCompiler",
-        "PreparedPiece",
-        "PreparedProgram",
-        "prepared_compiler_id",
-        "validate_prepared_request",
-    ]) {
-        assert.equal(Object.hasOwn(wasm, name), false, `${name} is retired`);
-    }
-});
-
-async function compile(entry, templates = {}) {
-    const source = compileServerModule(entry, templates, runtime);
-    const module = await import(
-        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-    );
-    return { source, module };
+const { loadNativeHost } = require("../native-host.mjs");
+const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
+function renderFixture(artifact, context, state = {}, options, name, json = false) {
+    const program = new NativeProgram(artifact, options);
+    const input = Buffer.from(json ? state : JSON.stringify(state), "utf8");
+    const method = "render" + context + "Json";
+    return (
+        context === "Host" || context === "Shadow"
+            ? program[method](name, input)
+            : program[method](input)
+    ).toString("utf8");
 }
-
+async function compile(entry, templates = {}) {
+    return { module: Buffer.from(compileServerArtifact(entry, templates)) };
+}
 async function parity(entry, templates, states, options = {}) {
     const { module } = await compile(entry, templates);
     for (const state of states) {
         const key = hash(JSON.stringify([entry, templates, state, options]));
-        assert.ok(Object.hasOwn(baseline, key), "missing historical output contract");
-        assert.equal(hash(module.renderEntry(state, options)), baseline[key]);
-        assert.equal(
-            hash(module.renderEntryJson(JSON.stringify(state), options)),
-            baseline[key],
-        );
+        assert.ok(Object.hasOwn(baseline, key), "missing frozen output contract");
+        assert.equal(hash(renderFixture(module, "Entry", state, options)), baseline[key]);
     }
     return module;
 }
-
-test("AOT preserves text, attributes, scopes, child overlays and shadow metadata", async () => {
+test("Native preserves text, attributes, scopes, child overlays and shadow metadata", async () => {
     const templates = {
         "test-parent": {
             content: `<style>:host { color: red } /* {{literal}} */</style>
@@ -108,8 +84,7 @@ test("AOT preserves text, attributes, scopes, child overlays and shadow metadata
         }
     }
 });
-
-test("AOT lowers existing comparisons without JavaScript coercion changes", async () => {
+test("Native lowers existing comparisons without JavaScript coercion changes", async () => {
     const expressions = [
         "a == b",
         "a != b",
@@ -148,38 +123,7 @@ test("AOT lowers existing comparisons without JavaScript coercion changes", asyn
     const states = values.flatMap(a => values.map(b => ({ a, b })));
     await parity("<test-el></test-el>", { "test-el": body }, states);
 });
-
-test("AOT numeric comparisons preserve syntax without pathological backtracking", () => {
-    execFileSync(
-        process.execPath,
-        [
-            "--input-type=module",
-            "-e",
-            `
-                import assert from "node:assert/strict";
-                import { compare } from ${JSON.stringify(runtime)};
-                for (const [input, value] of [
-                    ["+1", 1], ["-1", -1], [".5", 0.5], ["-.5", -0.5],
-                    ["1.", 1], ["1.e2", 100], ["1.5E+2", 150],
-                    ["1e-2", 0.01], ["0001.50", 1.5], ["-0", 0],
-                ]) {
-                    assert.equal(compare(input, value, ">="), true, input);
-                    assert.equal(compare(input, value, "<="), true, input);
-                }
-                for (const input of [".", "1..0", "1e", "1e+", "0x10", " 1", "1 "]) {
-                    assert.equal(compare(input, 100, ">"), input > "100", input);
-                    assert.equal(compare(input, 100, "<"), input < "100", input);
-                }
-                const invalid = "9".repeat(100_000) + "x";
-                assert.equal(compare(invalid, "9", ">"), true);
-                assert.equal(compare("9", invalid, "<"), true);
-            `,
-        ],
-        { timeout: 2_000, stdio: "pipe" },
-    );
-});
-
-test("AOT preserves number formatting, nullish omission and boolean attributes", async () => {
+test("Native preserves number formatting, nullish omission and boolean attributes", async () => {
     const body = `<input disabled="{{value}}" title="before {{value}} after" ?hidden="{{value}}">
 {{value}}<test-child :value="{{value}}"></test-child>`;
     const templates = {
@@ -217,8 +161,7 @@ test("AOT preserves number formatting, nullish omission and boolean attributes",
         values.map(value => ({ value })),
     );
 });
-
-test("AOT compiles finite cyclic registries without expanding component graphs", async () => {
+test("Native compiles finite cyclic registries without expanding component graphs", async () => {
     await parity(
         "<cycle-a></cycle-a>",
         {
@@ -228,8 +171,7 @@ test("AOT compiles finite cyclic registries without expanding component graphs",
         [{ expand: false }],
     );
 });
-
-test("AOT retains host default precedence and exact tag spelling rules", async () => {
+test("Native retains host default precedence and exact tag spelling rules", async () => {
     const templates = {
         "test-parent": `<test-child :value="{{value}}" title="{{missing}}" ?hidden="{{value}}" />
 <test-child @click="{handle}" f-ref="{node}" data-fe="author"></test-child>
@@ -255,8 +197,7 @@ test("AOT retains host default precedence and exact tag spelling rules", async (
         );
     }
 });
-
-test("AOT preserves alias shadowing, dotted aliases and primitive root overlays", async () => {
+test("Native preserves alias shadowing, dotted aliases and primitive root overlays", async () => {
     const entry = `<test-parent title="{{0.name}}"></test-parent>`;
     const templates = {
         "test-parent": `<f-repeat value="{{item.part in items}}">{{item.part.name}}/{{$index}}
@@ -274,115 +215,36 @@ test("AOT preserves alias shadowing, dotted aliases and primitive root overlays"
         null,
     ]);
 });
-
-test("AOT host and shadow exports retain selection and request isolation", async () => {
+test("Native host and shadow exports retain selection and request isolation", async () => {
     const { module } = await compile("", { "test-el": "{{value}}" });
     for (const value of ["first", "second", ""]) {
         assert.equal(
-            module.renderHost("test-el", { value }),
+            renderFixture(module, "Host", { value }, undefined, "test-el"),
             `<test-el><template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
         );
         assert.equal(
-            module.renderShadow("test-el", { value }),
+            renderFixture(module, "Shadow", { value }, undefined, "test-el"),
             `<template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template>`,
         );
     }
-    assert.equal(module.renderShadow("test-el", {}, { dsd: [] }), "");
-    assert.equal(module.renderHost("test-el", {}, { dsd: [] }), "<test-el></test-el>");
-    assert.throws(() => module.renderHost("unknown"));
-    assert.throws(() => module.renderShadow("unknown"));
+    assert.equal(renderFixture(module, "Shadow", {}, { dsd: [] }, "test-el"), "");
+    assert.equal(
+        renderFixture(module, "Host", {}, { dsd: [] }, "test-el"),
+        "<test-el></test-el>",
+    );
+    assert.throws(() => renderFixture(module, "Host", undefined, undefined, "unknown"));
+    assert.throws(() => renderFixture(module, "Shadow", undefined, undefined, "unknown"));
     const repeated = await compile(
         '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
     );
-    assert.equal(repeated.module.renderEntry({}), "");
+    assert.equal(renderFixture(repeated.module, "Entry", {}), "");
     for (const items of [null, false, 1, "not-an-array", {}]) {
         assert.throws(
-            () => repeated.module.renderEntry({ items }),
+            () => renderFixture(repeated.module, "Entry", { items }),
             error => error.code === "repeat-not-array",
         );
     }
 });
-
-test("compiled access plans preserve lexical precedence, indexes and root masking", async () => {
-    const helper = await import(runtime);
-    const [root] = helper.request({
-        item: { part: { name: "root" } },
-        items: [{ name: "array" }],
-        $index: 7,
-    });
-    const access = helper.access(
-        ["item", "part", "name"],
-        [
-            [1, 2],
-            [2, 1],
-        ],
-    );
-    const outer = helper.loop(null, 1);
-    outer.value.value = { name: "outer" };
-    outer.index.value = 3;
-    const inner = helper.loop(outer, 2);
-    inner.value.value = { part: null };
-    inner.index.value = 4;
-    assert.equal(access(root, null), "root");
-    assert.equal(access(root, outer), "outer");
-    assert.equal(access(root, inner), undefined);
-    inner.value.value = { part: { name: "inner" } };
-    assert.equal(access(root, inner), "inner");
-    assert.equal(access(root, outer), "outer");
-    assert.equal(helper.access(["$index"], [[0, 1]])(root, inner), 4);
-    const indexAlias = helper.loop(inner, 0);
-    indexAlias.value.value = "must be masked";
-    indexAlias.index.value = 5;
-    assert.equal(helper.access(["$index"], [[0, 1]])(root, indexAlias), 5);
-    assert.equal(helper.access(["items", "+00", "name"], [])(root, inner), "array");
-    assert.equal(helper.access(["items", "length"], [])(root, inner), 1);
-    assert.equal(helper.access(["items", "length", "name"], [])(root, inner), undefined);
-    const [arrayRoot] = helper.request([{ name: "array" }]);
-    assert.equal(helper.access(["+00"], [])(arrayRoot, null), arrayRoot.values[0]);
-    assert.equal(helper.access(["length"], [])(arrayRoot, null), 1);
-    assert.equal(helper.access(["map"], [])(arrayRoot, null), undefined);
-    const [ownNames] = helper.request(
-        JSON.parse('{"constructor":"own","__proto__":"data"}'),
-    );
-    assert.equal(helper.access(["constructor"], [])(ownNames, null), "own");
-    assert.equal(helper.access(["__proto__"], [])(ownNames, null), "data");
-    const masked = { values: { item: null }, parent: root };
-    assert.equal(access(masked, null), undefined);
-});
-
-test("repeat frames are reused across items and omitted for empty data", async () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fast-loop-probe-"));
-    try {
-        const filename = path.join(directory, "helper.mjs");
-        const probe = fs
-            .readFileSync(require.resolve("../server-runtime.mjs"), "utf8")
-            .replace(
-                "export function loop(parent, slot) {",
-                "export let frames = 0;\nexport function loop(parent, slot) { frames++;",
-            );
-        fs.writeFileSync(filename, probe);
-        const probeUrl = pathToFileURL(filename).href;
-        const source = compileServerModule(
-            '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
-            {},
-            probeUrl,
-        );
-        const module = await import(
-            `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-        );
-        assert.equal(module.renderEntry({}), "");
-        assert.equal(module.renderEntry({ items: [] }), "");
-        const measured = await import(probeUrl);
-        assert.equal(measured.frames, 0);
-        assert.equal(module.renderEntry({ items: [1, 2, 3] }), "123");
-        assert.equal(measured.frames, 1);
-        assert.equal(module.renderEntry({ items: [4, 5] }), "45");
-        assert.equal(measured.frames, 2);
-    } finally {
-        fs.rmSync(directory, { recursive: true, force: true });
-    }
-});
-
 test("shared bodies and component shadows do not capture repeat scopes", async () => {
     const { module } = await compile(
         '{{item.name}}/{{$index}};<f-repeat value="{{item in items}}">{{item.name}}/{{$index}};<test-child :name="{{item.name}}">{{item.name}}/{{$index}}</test-child></f-repeat>{{item.name}}/{{$index}}',
@@ -393,447 +255,36 @@ test("shared bodies and component shadows do not capture repeat scopes", async (
         $index: 9,
         items: [{ name: "one" }, { name: "two" }],
     };
-    const plain = module.renderEntry(state);
+    const plain = renderFixture(module, "Entry", state);
     assert.equal(
         plain,
         'root/9;one/0;<test-child><template shadowrootmode="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
     );
-    assert.equal(module.renderEntry(state), plain);
+    assert.equal(renderFixture(module, "Entry", state), plain);
     assert.equal(
-        module.renderEntry(state, { dsd: [] }),
+        renderFixture(module, "Entry", state, { dsd: [] }),
         'root/9;one/0;<test-child :name="one">one/0</test-child>two/1;<test-child :name="two">two/1</test-child>root/9',
     );
     const { module: proto } = await compile(
         '<f-repeat value="{{__proto__ in items}}">{{__proto__.name}}</f-repeat>',
     );
-    assert.equal(proto.renderEntry({ items: [{ name: "safe" }] }), "safe");
+    assert.equal(renderFixture(proto, "Entry", { items: [{ name: "safe" }] }), "safe");
 });
-
-test("AOT preserves the distinct template-context root host attribute contract", async () => {
+test("Native preserves the distinct template-context root host attribute contract", async () => {
     const { module } = await compile('<test-el list="{{items}}"></test-el>', {
         "test-el": "{{list}}",
     });
     const shadow =
         '<template shadowrootmode="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
     assert.equal(
-        module.renderEntry({ items: ["one", "two"] }),
+        renderFixture(module, "Entry", { items: ["one", "two"] }),
         `<test-el>${shadow}</test-el>`,
     );
     assert.equal(
-        module.renderTemplate({ items: ["one", "two"] }),
+        renderFixture(module, "Template", { items: ["one", "two"] }),
         `<test-el list="[Array]">${shadow}</test-el>`,
     );
 });
-
-test("AOT rejects unsupported state without invoking getters or toJSON", async () => {
-    const { module } = await compile("{{value}}");
-    let invoked = false;
-    const getter = {
-        get value() {
-            invoked = true;
-            return "getter";
-        },
-    };
-    const cycle = {};
-    cycle.self = cycle;
-    class ArraySubclass extends Array {}
-    for (const state of [
-        { value: undefined },
-        { value: NaN },
-        { value: Infinity },
-        { value: 1n },
-        { value: new Date() },
-        { value: () => "" },
-        { value: Array(2) },
-        { value: new ArraySubclass(1, 2) },
-        { value: "\uD800" },
-        getter,
-        cycle,
-        {
-            toJSON() {
-                invoked = true;
-                return {};
-            },
-        },
-        Object.create({ inherited: true }),
-        { [Symbol("key")]: 1 },
-    ]) {
-        assert.throws(() => module.renderEntry(state), TypeError);
-        assert.throws(() => module.prepareState(state), TypeError);
-    }
-    assert.equal(invoked, false);
-    assert.equal(module.renderEntry({ value: "safe" }), "safe");
-    const frozen = Object.freeze({ value: -0 });
-    assert.equal(module.renderEntry(frozen), "0");
-    assert.ok(Object.is(frozen.value, -0));
-    for (const options of [
-        { dsd: [1] },
-        { markersV2: "yes" },
-        { attributeNameStrategy: "bad" },
-    ]) {
-        assert.throws(() => module.renderEntry({}, options), TypeError);
-    }
-});
-
-test("owned JSON methods preserve all contexts, options, coercion and request isolation", async () => {
-    const { module } = await compile("<test-json></test-json>", {
-        "test-json": {
-            content: `{{label}}/{{value}}/{{items}}/{{record}}/{{__proto__.label}}/{{constructor}}/{{prototype}}/{{toString}}
-<test-child :dataset="{{dataset}}" data-local="local" :value="{{value}}"></test-child>
-<f-repeat value="{{item in items}}">{{item.label}}/{{$index}}</f-repeat>`,
-            hostAttributes: [{ name: "title", value: "{{label}}" }],
-        },
-        "test-child": "{{dataset.inherited}}/{{dataset.local}}/{{value}}",
-    });
-    const json = `{"label":"<&😀","value":-0,"items":[{"label":"one"},null,{}],
-        "record":{},"dataset":{"inherited":"root"},"__proto__":{"label":"own"},
-        "constructor":"own constructor","prototype":"own prototype","toString":"own string"}`;
-    for (const markersV2 of [false, true]) {
-        for (const attributeNameStrategy of ["none", "camelCase"]) {
-            for (const dsd of [undefined, [], ["test-child"]]) {
-                const options = { markersV2, attributeNameStrategy, dsd };
-                for (const method of [
-                    "renderEntry",
-                    "renderTemplate",
-                    "renderHost",
-                    "renderShadow",
-                ]) {
-                    const args = /Host|Shadow/.test(method) ? ["test-json"] : [];
-                    const state = JSON.parse(json);
-                    const expected = module[method](...args, state, options);
-                    assert.equal(
-                        module[`${method}Json`](...args, json, options),
-                        expected,
-                    );
-                    const prepared = module.prepareState(state);
-                    assert.equal(
-                        module[`${method}Prepared`](...args, prepared, options),
-                        expected,
-                    );
-                    assert.equal(state.dataset.local, undefined);
-                    assert.ok(Object.is(state.value, -0));
-                }
-            }
-        }
-    }
-    for (const json of ["null", "true", "false", "-0", '"text"', "[]", "{}"]) {
-        assert.equal(module.renderEntryJson(json), module.renderEntry(JSON.parse(json)));
-    }
-    const missing = '{"label":null}';
-    assert.equal(
-        module.renderEntryJson(missing),
-        module.renderEntry(JSON.parse(missing)),
-    );
-    assert.throws(
-        () => module.renderEntryJson('{"items":null}'),
-        error => error.code === "repeat-not-array",
-    );
-    const first = module.renderEntryJson(json);
-    module.renderEntryJson('{"label":"other","items":[]}');
-    assert.equal(module.renderEntryJson(json), first);
-    assert.equal(Object.hasOwn(Object.prototype, "label"), false);
-});
-
-test("owned JSON validates unused fields and rejects implicit input conversion", async () => {
-    const { module } = await compile("fixed", { "test-json": "fixed" });
-    let invoked = false;
-    const input = {
-        toString() {
-            invoked = true;
-            return "{}";
-        },
-    };
-    for (const method of [
-        "renderEntryJson",
-        "renderTemplateJson",
-        "renderHostJson",
-        "renderShadowJson",
-    ]) {
-        const args = /Host|Shadow/.test(method) ? ["test-json"] : [];
-        for (const json of [
-            "1e400",
-            '{"unused":[{"overflow":-1e400}]}',
-            '"\\ud800"',
-            '{"unused":{"value":"\\udfff"}}',
-            '{"unused":{"\\ud800":null}}',
-            '{"unused":[{"nested":["\\ud800"]}]}',
-        ]) {
-            assert.throws(() => module[method](...args, json, { dsd: [] }), TypeError);
-        }
-        for (const json of ["", "{", "[1,]", "undefined"]) {
-            assert.throws(() => module[method](...args, json), SyntaxError);
-        }
-        for (const json of [undefined, null, {}, [], 1, input, Buffer.from("{}")]) {
-            assert.throws(() => module[method](...args, json), TypeError);
-        }
-        for (const options of [
-            { dsd: [1] },
-            { markersV2: "yes" },
-            { attributeNameStrategy: "bad" },
-        ]) {
-            assert.throws(() => module[method](...args, "{}", options), TypeError);
-        }
-        assert.equal(typeof module[method](...args, "{}", { dsd: [] }), "string");
-    }
-    assert.equal(invoked, false);
-    assert.throws(
-        () => module.renderHostJson("unknown", "{}"),
-        error => error.code === "missing-template",
-    );
-    assert.throws(
-        () => module.renderShadowJson("unknown", "{}"),
-        error => error.code === "missing-template",
-    );
-    assert.equal(
-        module.renderEntryJson(`{"unused":${"[".repeat(10000)}-0${"]".repeat(10000)}}`),
-        "fixed",
-    );
-    assert.throws(
-        () =>
-            module.renderEntryJson(
-                `{"unused":${"[".repeat(10000)}1e400${"]".repeat(10000)}}`,
-            ),
-        TypeError,
-    );
-});
-
-test("owned JSON normalizes its fresh graph without producing a reusable snapshot", async () => {
-    const { jsonRequest } = await import(runtime);
-    const json = '{"array":[-0,{"nested":-0}],"__proto__":{"value":-0}}';
-    const [first] = jsonRequest(json);
-    const [second] = jsonRequest(json);
-    assert.ok(Object.is(jsonRequest("-0")[0].values, 0));
-    assert.ok(Object.is(first.values.array[0], 0));
-    assert.ok(Object.is(first.values.array[1].nested, 0));
-    assert.ok(Object.is(first.values.__proto__.value, 0));
-    first.values.array[1].nested = 4;
-    assert.equal(second.values.array[1].nested, 0);
-    assert.equal(Object.hasOwn(Object.prototype, "value"), false);
-});
-
-test("conformance bridge preserves omitted object state across all render targets", async () => {
-    const { module, source } = await compile("<test-default></test-default>", {
-        "test-default": "{{value}}",
-    });
-    for (const method of [
-        "renderEntry",
-        "renderTemplate",
-        "renderHost",
-        "renderShadow",
-    ]) {
-        const name = /Host|Shadow/.test(method) ? "test-default" : undefined;
-        const result = JSON.parse(
-            execFileSync(process.execPath, [require.resolve("./execute-server.mjs")], {
-                input: JSON.stringify({
-                    source,
-                    host: method === "renderHost" ? name : undefined,
-                    shadow: method === "renderShadow" ? name : undefined,
-                    template: method === "renderTemplate",
-                }),
-                encoding: "utf8",
-            }),
-        );
-        assert.equal(result.error, undefined);
-        assert.equal(result.value, module[method](...(name ? [name] : [])));
-    }
-});
-
-test("prepared snapshots isolate nested input and work across modules and render targets", async () => {
-    const { module } = await compile(
-        '<test-el data-name="{{label}}">{{label}}</test-el>',
-        {
-            "test-el": {
-                content:
-                    '{{label}}/{{value}}/{{dataset.inherited}}<f-repeat value="{{item in items}}">{{item.name}}/{{$index}};</f-repeat><test-child :item="{{item}}"></test-child>',
-                hostAttributes: [{ name: "title", value: "{{label}}" }],
-            },
-            "test-child": "{{item.name}}/{{label}}",
-        },
-    );
-    const state = {
-        label: "before & text",
-        value: -0,
-        dataset: { inherited: "root" },
-        item: { name: "child" },
-        items: [{ name: "first" }, { name: "second" }],
-    };
-    const methods = ["renderEntry", "renderTemplate", "renderHost", "renderShadow"];
-    const snapshots = [];
-    for (const markersV2 of [false, true]) {
-        for (const attributeNameStrategy of ["none", "camelCase"]) {
-            for (const dsd of [undefined, [], ["test-el"]]) {
-                const options = { markersV2, attributeNameStrategy, dsd };
-                for (const method of methods) {
-                    const args =
-                        method === "renderHost" || method === "renderShadow"
-                            ? ["test-el"]
-                            : [];
-                    snapshots.push({
-                        method,
-                        args,
-                        options,
-                        expected: module[method](...args, state, options),
-                    });
-                }
-            }
-        }
-    }
-    const prepared = module.prepareState(state);
-    state.label = "changed";
-    state.dataset.inherited = "changed";
-    state.item.name = "changed";
-    state.items.push({ name: "third" });
-    Object.defineProperty(state.items[0], "name", {
-        get() {
-            throw new Error("getter must not be invoked");
-        },
-    });
-    for (const { method, args, options, expected } of snapshots) {
-        assert.equal(module[`${method}Prepared`](...args, prepared, options), expected);
-    }
-    assert.throws(() => module.renderEntry(state), TypeError);
-    const { module: other } = await compile("<aside>{{label}}</aside>");
-    assert.equal(other.renderEntryPrepared(prepared), "<aside>before &amp; text</aside>");
-    assert.equal(
-        other.renderEntryPrepared(other.prepareState({ label: "new" })),
-        "<aside>new</aside>",
-    );
-    assert.equal(other.renderEntryPrepared(prepared), "<aside>before &amp; text</aside>");
-});
-
-test("prepared methods reject forged or foreign handles and validate options each call", async () => {
-    const { module } = await compile("{{value}}/{{items.0}}/{{zero}}");
-    const state = { value: "kept", items: ["nested"], zero: -0 };
-    const prepared = module.prepareState(state);
-    const helper = await import(runtime);
-    const [{ values }] = helper.preparedRequest(prepared);
-    assert.throws(
-        () => Object.defineProperty(values.items, "0", { value: "changed" }),
-        TypeError,
-    );
-    assert.throws(() => Object.setPrototypeOf(values, { value: "changed" }), TypeError);
-    assert.equal(Object.is(values.zero, -0), false);
-    const foreign = await import(
-        `data:text/javascript;base64,${Buffer.from(fs.readFileSync(require.resolve("../server-runtime.mjs"))).toString("base64")}`
-    );
-    for (const fake of [
-        undefined,
-        null,
-        {},
-        state,
-        { ...prepared },
-        Object.create(Object.getPrototypeOf(prepared)),
-        new Proxy(prepared, {}),
-        foreign.prepareState(state),
-    ]) {
-        assert.throws(() => module.renderEntryPrepared(fake), TypeError);
-    }
-    assert.throws(() => module.renderEntry(prepared), TypeError);
-    for (const options of [
-        { dsd: [1] },
-        { markersV2: "yes" },
-        { attributeNameStrategy: "bad" },
-    ]) {
-        assert.throws(() => module.renderEntryPrepared(prepared, options), TypeError);
-    }
-    for (const value of [null, false, "string", 3, [-0], { value: -0 }, {}]) {
-        assert.equal(
-            module.renderEntryPrepared(module.prepareState(value)),
-            module.renderEntry(value),
-        );
-    }
-    assert.equal(module.renderEntryPrepared(prepared), "kept/nested/0");
-    assert.equal(module.renderEntryPrepared(module.prepareState()), "//");
-});
-
-test("dataset overlays never mutate explicitly bound objects, including prepared state", async () => {
-    for (const attrs of [
-        ':dataset="{{dataset}}" data-x="local" data-y="second"',
-        'data-x="overridden" :dataset="{{dataset}}" data-y="second"',
-    ]) {
-        const { module } = await compile(`<test-el ${attrs}></test-el>`, {
-            "test-el": "{{dataset.x}}/{{dataset.y}}/{{dataset.kept}}",
-        });
-        const state = { dataset: { x: "original", kept: "kept" } };
-        const plain = module.renderEntry(state);
-        assert.deepEqual(state.dataset, { x: "original", kept: "kept" });
-        assert.equal(module.renderEntryPrepared(module.prepareState(state)), plain);
-        assert.deepEqual(state.dataset, { x: "original", kept: "kept" });
-    }
-});
-
-test("loaded component recipes avoid mapped tuples, ownership sets and composite arrays", async () => {
-    const { module, source } = await compile("<recipe-parent></recipe-parent>", {
-        "recipe-parent":
-            '<recipe-card :payload=\'{"name":"literal","items":[1,{"name":"nested"}]}\' :dataset="{{dataset}}" data-x="{{label}}" data-y="{{missing}}" foo-bar="{{label}}"></recipe-card>',
-        "recipe-card": {
-            content:
-                '<p title=\'prefix-{{payload.name}}/{{dataset.x}}-suffix "quoted"\' data-one="{{payload.items.1.name}}" data-two="start-{{label}}" data-three="start-{{label}}-end" data-missing="{{dataset.y}}/tail">{{fooBar}}/{{foo-bar}}</p>',
-            hostAttributes: [
-                {
-                    name: "data-host",
-                    value: 'prefix-{{payload.name}}/{{dataset.x}}-suffix "quoted"',
-                },
-            ],
-        },
-    });
-    assert.doesNotMatch(source, /compilerId/);
-    const state = { dataset: { kept: "safe" }, label: "<&" };
-    const prepared = module.prepareState(state);
-    for (const attributeNameStrategy of ["camelCase", "none"]) {
-        for (const markersV2 of [false, true]) {
-            const options = { attributeNameStrategy, markersV2 };
-            for (const method of [
-                "renderEntry",
-                "renderTemplate",
-                "renderHost",
-                "renderShadow",
-            ]) {
-                const names =
-                    method === "renderHost" || method === "renderShadow"
-                        ? ["recipe-parent"]
-                        : [];
-                const expected = module[method](...names, state, options);
-                assert.equal(
-                    module[`${method}Json`](...names, JSON.stringify(state), options),
-                    expected,
-                );
-                const map = Array.prototype.map;
-                const fromEntries = Object.fromEntries;
-                const add = Set.prototype.add;
-                const forbidden = () => {
-                    throw new Error("Per-render recipe intermediate");
-                };
-                let actual;
-                try {
-                    Array.prototype.map = forbidden;
-                    Object.fromEntries = forbidden;
-                    Set.prototype.add = forbidden;
-                    actual = module[`${method}Prepared`](...names, prepared, options);
-                } finally {
-                    Array.prototype.map = map;
-                    Object.fromEntries = fromEntries;
-                    Set.prototype.add = add;
-                }
-                assert.equal(actual, expected);
-                assert.match(
-                    actual,
-                    /title="prefix-literal\/&lt;&amp;-suffix &quot;quoted&quot;"/,
-                );
-                assert.match(
-                    actual,
-                    /data-host="prefix-literal\/&lt;&amp;-suffix &quot;quoted&quot;"/,
-                );
-                assert.match(actual, /data-one="nested"/);
-                assert.match(actual, /data-two="start-&lt;&amp;"/);
-                assert.match(actual, /data-three="start-&lt;&amp;-end"/);
-                assert.doesNotMatch(actual, /data-missing=/);
-            }
-        }
-    }
-    assert.deepEqual(state, { dataset: { kept: "safe" }, label: "<&" });
-});
-
 test("component recipes preserve grouped replacement, missing masks and special keys", async () => {
     const { module } = await compile(
         '<recipe-card data-first="before" :dataset="{{replacement}}" data-y="after" :value="{{missing}}" :__proto__="{{payload}}" :constructor="{{payload}}"></recipe-card><i title="{{dataset.x}}/{{dataset.kept}}"></i>',
@@ -853,16 +304,10 @@ test("component recipes preserve grouped replacement, missing masks and special 
             payload: { name: "own" },
         };
         const before = JSON.stringify(state);
-        const prepared = module.prepareState(state);
         for (const attributeNameStrategy of ["camelCase", "none"]) {
             for (const markersV2 of [false, true]) {
                 const options = { attributeNameStrategy, markersV2 };
-                const html = module.renderEntry(state, options);
-                assert.equal(module.renderEntryPrepared(prepared, options), html);
-                assert.equal(
-                    module.renderEntryJson(JSON.stringify(state), options),
-                    html,
-                );
+                const html = renderFixture(module, "Entry", state, options);
                 if (replacement && !Array.isArray(replacement)) {
                     assert.match(html, /title="replacement\/after\/fresh"/);
                 } else {
@@ -879,190 +324,35 @@ test("component recipes preserve grouped replacement, missing masks and special 
         }
     }
 });
-
-test("component recipes copy each borrowed dataset once per assignment run", async () => {
-    const { module } = await compile(
-        '<recipe-card data-x="first" data-y="second" :dataset="{{replacement}}" data-x="third" data-y="fourth"></recipe-card>',
-        { "recipe-card": "{{dataset.x}}/{{dataset.y}}" },
-    );
-    for (const state of [
-        { dataset: { kept: "root" }, replacement: { kept: "replacement" } },
-        { replacement: { kept: "replacement" } },
-        { dataset: null, replacement: null },
-    ]) {
-        const prepared = module.prepareState(state);
-        const assign = Object.assign;
-        let copies = 0;
-        let html;
-        try {
-            Object.assign = (...args) => {
-                copies++;
-                return assign(...args);
-            };
-            html = module.renderEntryPrepared(prepared);
-        } finally {
-            Object.assign = assign;
-        }
-        assert.equal(
-            copies,
-            Number(Boolean(state.dataset)) + Number(Boolean(state.replacement)),
-        );
-        assert.ok(
-            html.endsWith(
-                (state.replacement
-                    ? "<!--fe:b-->third<!--fe:/b-->/<!--fe:b-->fourth<!--fe:/b-->"
-                    : "<!--fe:b--><!--fe:/b-->/<!--fe:b--><!--fe:/b-->") +
-                    "</template></recipe-card>",
-            ),
-        );
-    }
-});
-
 test("semantic recipe operands remain fresh, including own special literal keys", async () => {
-    const source = compileServerModule(
+    const source = compileServerArtifact(
         '<recipe-card :payload=\'{"__proto__":{"name":"own"},"constructor":"ctor","items":[{"name":"fresh"}]}\'></recipe-card>',
         {
             "recipe-card":
                 "{{payload.__proto__.name}}/{{payload.constructor}}/{{payload.items.0.name}}",
         },
-        runtime,
     );
-    const { createServerRenderer } = await import(runtime);
-    const module = createServerRenderer(
-        JSON.parse(source.match(/const plan = (.*);\n/)[1]),
-    );
-    const create = Object.create;
-    const frames = [];
-    let expected;
-    try {
-        Object.create = (...args) => {
-            const result = create(...args);
-            frames.push(result);
-            return result;
-        };
-        expected = module.renderEntry();
-    } finally {
-        Object.create = create;
-    }
-    const payload = frames.find(frame => Object.hasOwn(frame, "payload")).payload;
-    assert.equal(Object.getPrototypeOf(payload), Object.prototype);
-    assert.equal(Object.hasOwn(payload, "__proto__"), true);
+    const bytes = Buffer.from(source);
+    const program = new NativeProgram(bytes);
+    const expected = program.renderEntryJson(Buffer.from("{}")).toString("utf8");
     assert.ok(
         expected.endsWith(
             "<!--fe:b-->own<!--fe:/b-->/<!--fe:b-->ctor<!--fe:/b-->/" +
                 "<!--fe:b-->fresh<!--fe:/b--></template></recipe-card>",
         ),
     );
-    payload.__proto__.name = "changed";
-    payload.items[0].name = "changed";
-    payload.items.push("changed");
-    assert.equal(module.renderEntry(), expected);
-    assert.equal(module.renderEntryPrepared(module.prepareState()), expected);
+    bytes.fill(0);
+    assert.equal(
+        program
+            .renderEntryJson(Buffer.from('{"payload":{"items":["changed"]}}'))
+            .toString("utf8"),
+        expected,
+    );
 });
-
-test("server module types distinguish prepared handles from ordinary state", () => {
-    const ts = require("typescript");
-    const directory = fs.mkdtempSync(path.join(__dirname, "server-types-"));
-    try {
-        const filename = path.join(directory, "consumer.mts");
-        fs.writeFileSync(
-            filename,
-            `
-import type { ServerModule, PreparedServerState } from "../../server.js";
-declare const server: ServerModule;
-const state: PreparedServerState = server.prepareState({ value: -0 });
-const html: string = server.renderEntryPrepared(state);
-// @ts-expect-error Compatibility is schema-based, not helper release metadata.
-server.runtimeVersion;
-server.renderTemplatePrepared(state);
-server.renderHostPrepared("test-el", state);
-server.renderShadowPrepared("test-el", state, { markersV2: true });
-const jsonHtml: string = server.renderEntryJson('{"value":0}');
-server.renderTemplateJson("{}");
-server.renderHostJson("test-el", "{}");
-server.renderShadowJson("test-el", "{}", { markersV2: true });
-// @ts-expect-error JSON methods require explicit text, not arbitrary objects.
-server.renderEntryJson({});
-// @ts-expect-error JSON methods do not accept prepared handles.
-server.renderHostJson("test-el", state);
-// @ts-expect-error JSON input is required, unlike ordinary root state.
-server.renderShadowJson("test-el");
-// @ts-expect-error Ordinary data cannot bypass validation.
-server.renderEntryPrepared({});
-// @ts-expect-error A handle is not ordinary JSON-shaped state.
-server.renderEntry(state);
-// @ts-expect-error The opaque brand cannot be forged structurally.
-const fake: PreparedServerState = {};
-`,
-        );
-        const program = ts.createProgram([filename], {
-            target: ts.ScriptTarget.ESNext,
-            module: ts.ModuleKind.NodeNext,
-            moduleResolution: ts.ModuleResolutionKind.NodeNext,
-            strict: true,
-            noEmit: true,
-            types: [],
-        });
-        const diagnostics = ts.getPreEmitDiagnostics(program);
-        assert.equal(
-            diagnostics.length,
-            0,
-            ts.formatDiagnosticsWithColorAndContext(diagnostics, {
-                getCurrentDirectory: () => directory,
-                getCanonicalFileName: filename => filename,
-                getNewLine: () => "\n",
-            }),
-        );
-    } finally {
-        fs.rmSync(directory, { recursive: true, force: true });
-    }
-});
-
-test("server-js CLI links all definitions and preserves browser conversion separately", async () => {
-    const directory = fs.mkdtempSync(path.join(__dirname, "server-cli-"));
-    try {
-        const input = path.join(directory, "templates.html");
-        const output = path.join(directory, "server.mjs");
-        fs.writeFileSync(
-            input,
-            `<f-template name="test-parent"><template><test-child></test-child></template></f-template>
-<f-template name="test-child"><template>{{label}}</template></f-template>`,
-        );
-        const cli = path.resolve(__dirname, "../bin/fast.js");
-        const args = [
-            cli,
-            "convert",
-            "--syntax=server-js",
-            `--templates=${input}`,
-            `--output=${output}`,
-        ];
-        execFileSync(process.execPath, args);
-        const module = await import(pathToFileURL(output).href);
-        assert.match(module.renderHost("test-parent", { label: "linked" }), /linked/);
-        assert.throws(() => execFileSync(process.execPath, args, { stdio: "pipe" }));
-        execFileSync(process.execPath, [...args, "--overwrite"]);
-        fs.writeFileSync(
-            input,
-            '<f-template name="test-child"><template>{{label}}</template></f-template>',
-        );
-        const browser = path.join(directory, "browser.ts");
-        execFileSync(process.execPath, [
-            cli,
-            "convert",
-            "--syntax=fast-v3-ts",
-            `--templates=${input}`,
-            `--output=${browser}`,
-        ]);
-        assert.match(fs.readFileSync(browser, "utf8"), /@microsoft\/fast-element/);
-    } finally {
-        fs.rmSync(directory, { recursive: true, force: true });
-    }
-});
-
-test("AOT diagnoses invalid skipped bodies at their authored location", () => {
+test("Native diagnoses invalid skipped bodies at their authored location", () => {
     assert.throws(
         () =>
-            compileServerModule("", {
+            compileServerArtifact("", {
                 "test-el":
                     '<code>{{sample}}</code>\n<f-when value="{{false}}">{{}}</f-when>',
             }),
@@ -1073,469 +363,7 @@ test("AOT diagnoses invalid skipped bodies at their authored location", () => {
             error.column > 1,
     );
 });
-
-test("AOT executes in a fresh process with WASM and template parsing disabled", () => {
-    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "fast-server-"));
-    try {
-        const filename = path.join(directory, "server.mjs");
-        fs.writeFileSync(
-            filename,
-            compileServerModule(
-                "<test-el></test-el>",
-                {
-                    "test-el": '<f-repeat value="{{item in items}}">{{item}}</f-repeat>',
-                },
-                runtime,
-            ),
-        );
-        const script = `
-            WebAssembly.compile = WebAssembly.instantiate = () => { throw new Error("WASM used"); };
-            JSON.parse = () => { throw new Error("JSON parsing used"); };
-            const module = await import(${JSON.stringify(pathToFileURL(filename).href)});
-            const state = {items:["one","two"]};
-            const html = module.renderEntry(state);
-            if (module.renderEntryPrepared(module.prepareState(state)) !== html) {
-                throw new Error("Prepared output differs");
-            }
-            process.stdout.write(html);
-        `;
-        assert.match(
-            execFileSync(process.execPath, ["--input-type=module", "-e", script], {
-                encoding: "utf8",
-            }),
-            /one.*two/,
-        );
-        const source = fs.readFileSync(filename, "utf8");
-        assert.doesNotMatch(
-            source,
-            /\beval\b|new Function|WebAssembly|JSON\.parse|PreparedProgram/,
-        );
-        assert.equal((source.match(/\bimport\b/g) || []).length, 1);
-        assert.doesNotMatch(
-            fs.readFileSync(require.resolve("../server-runtime.mjs"), "utf8"),
-            /\bimport\b|\brequire\b|\beval\b|new Function|WebAssembly/,
-        );
-    } finally {
-        fs.rmSync(directory, { recursive: true, force: true });
-    }
-});
-
-test("stable flat plans render without helper release metadata", async () => {
-    const entry = '<stable-el :value="{{value}}">{{value}}</stable-el>';
-    const templates = { "stable-el": "<b>{{value}}</b>" };
-    const runtimeImport = "./compatible-runtime.mjs";
-    const source = compileServerModule(entry, templates, runtimeImport);
-    const { module: expected } = await compile(entry, templates);
-    const state = { value: "<&" };
-    for (const version of [undefined, 0, 4, 6, 100]) {
-        const helper = `data:text/javascript;base64,${Buffer.from(
-            `export { createServerRenderer } from ${JSON.stringify(runtime)};
-             ${version === undefined ? "" : `export const runtimeVersion = ${version};`}`,
-        ).toString("base64")}`;
-        const resolvedSource = source.replace(
-            JSON.stringify(runtimeImport),
-            JSON.stringify(helper),
-        );
-        const module = await import(
-            `data:text/javascript;base64,${Buffer.from(resolvedSource).toString("base64")}`
-        );
-        assert.equal(Object.hasOwn(module, "runtimeVersion"), false);
-        assert.equal(Object.hasOwn(module, "compilerId"), false);
-        const prepared = module.prepareState(state);
-        state.value = "mutated";
-        for (const markersV2 of [false, true]) {
-            const options = { markersV2 };
-            for (const method of [
-                "renderEntry",
-                "renderTemplate",
-                "renderHost",
-                "renderShadow",
-            ]) {
-                const args =
-                    method === "renderHost" || method === "renderShadow"
-                        ? ["stable-el"]
-                        : [];
-                assert.equal(
-                    module[method](...args, state, options),
-                    expected[method](...args, state, options),
-                );
-                assert.equal(
-                    module[`${method}Prepared`](...args, prepared, options),
-                    expected[method](...args, { value: "<&" }, options),
-                );
-            }
-        }
-        state.value = "<&";
-    }
-    const legacySource = `${source.replace(
-        JSON.stringify(runtimeImport),
-        JSON.stringify(runtime),
-    )}\nexport const runtimeVersion = $.runtimeVersion;`;
-    const legacy = await import(
-        `data:text/javascript;base64,${Buffer.from(legacySource).toString("base64")}`
-    );
-    assert.equal(legacy.runtimeVersion, undefined);
-    assert.equal(legacy.renderEntry(state), expected.renderEntry(state));
-    assert.equal(
-        legacy.renderEntryPrepared(legacy.prepareState(state)),
-        expected.renderEntry(state),
-    );
-});
-
-test("flat plans preserve rendering exports without compiler identity or release literals", async () => {
-    const { module, source } = await compile("{{value}}");
-    assert.match(source, /"format":"fast-server-js"/);
-    assert.doesNotMatch(
-        source,
-        /\bfunction\b|=>|compilerId|compiler[_-]?hash|[a-f0-9]{64}|runtimeVersion/i,
-    );
-    assert.equal(module.renderEntry({ value: "ordinary" }), "ordinary");
-    assert.equal(
-        module.renderEntryPrepared(module.prepareState({ value: "prepared" })),
-        "prepared",
-    );
-    assert.equal(Object.hasOwn(module, "runtimeVersion"), false);
-    for (const name of [
-        "renderEntryJson",
-        "renderTemplateJson",
-        "renderHostJson",
-        "renderShadowJson",
-    ]) {
-        assert.equal(typeof module[name], "function");
-    }
-});
-
-test("semantic plans hide execution tables and share their schema across targets", async () => {
-    const { source, module } = await compile("<p>{{label}}</p>");
-    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
-    assert.deepEqual(plan, {
-        format: "fast-server-js",
-        version: 1,
-        entry: [
-            { type: "literal", html: "<p>" },
-            { type: "binding", path: ["label"], escape: true },
-            { type: "literal", html: "</p>" },
-        ],
-        templates: {},
-        components: {},
-    });
-    const native = JSON.parse(
-        Buffer.from(
-            require("../server.js").compileServerArtifact("<p>{{label}}</p>"),
-        ).toString(),
-    );
-    assert.deepEqual(native, { ...plan, format: "fast-server-native" });
-    assert.equal(module.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
-});
-
-test("semantic plan loading rejects invalid rules and owns independent plan data", async () => {
-    const { createServerRenderer } = await import(runtime);
-    const plan = {
-        format: "fast-server-js",
-        version: 1,
-        entry: [
-            { type: "literal", html: "<p>" },
-            { type: "template", name: "value" },
-            { type: "literal", html: "</p>" },
-        ],
-        templates: { value: [{ type: "binding", path: ["label"], escape: true }] },
-        components: {},
-    };
-    const renderer = createServerRenderer(plan);
-    assert.equal(Object.hasOwn(renderer, "compilerId"), false);
-    assert.equal(Object.hasOwn(renderer, "runtimeVersion"), false);
-    assert.equal(renderer.renderEntry({ label: "<&" }), "<p>&lt;&amp;</p>");
-    for (const format of ["fast-server-plan", "fast-server-native", undefined]) {
-        assert.throws(
-            () => createServerRenderer({ ...plan, format }),
-            /Invalid or incompatible FAST server plan/,
-        );
-    }
-    for (const invalid of [
-        { ...plan, format: "unknown-plan" },
-        { ...plan, version: undefined },
-        { ...plan, version: 0 },
-        { ...plan, version: 2 },
-        { ...plan, code: [18, 1] },
-        { ...plan, entry: [{ type: "template", name: "missing" }] },
-        { ...plan, entry: [["fragment", "value"]] },
-        { ...plan, entry: [{ type: "binding", path: [], escape: true }] },
-        { ...plan, entry: [{ type: "binding", path: ["label"], escape: 1 }] },
-        { ...plan, entry: [{ type: "literal", html: "text", extra: true }] },
-        { ...plan, entry: [["literal", "text"]] },
-        { ...plan, entry: [["call", 0]] },
-        {
-            ...plan,
-            entry: [
-                {
-                    type: "when",
-                    condition: {
-                        type: "compare",
-                        operator: "evil",
-                        path: ["x"],
-                        value: { type: "path", path: ["y"] },
-                    },
-                    template: "value",
-                },
-            ],
-        },
-        { ...plan, templates: { unused: [{ type: "unknown" }] } },
-        { ...plan, templates: { value: [{ type: "template", name: "value" }] } },
-        {
-            ...plan,
-            templates: {
-                value: [{ type: "template", name: "other" }],
-                other: [{ type: "template", name: "value" }],
-            },
-        },
-        { ...plan, components: { bad: { shadow: "value", host: "missing", tag: "" } } },
-    ]) {
-        assert.throws(
-            () => createServerRenderer(invalid),
-            /Invalid or incompatible FAST server plan/,
-        );
-    }
-    plan.entry[0].html = "mutated";
-    plan.templates.value[0].path[0] = "different";
-    assert.equal(renderer.renderEntry({ label: "next" }), "<p>next</p>");
-});
-
-test("semantic template names are opaque and sharing stays compact", async () => {
-    const { createServerRenderer } = await import(runtime);
-    const templates = Object.create(null);
-    templates.__proto__ = [{ type: "binding", path: ["label"], escape: true }];
-    const renderer = createServerRenderer({
-        format: "fast-server-js",
-        version: 1,
-        entry: [
-            { type: "template", name: "__proto__" },
-            { type: "template", name: "__proto__" },
-        ],
-        templates,
-        components: {},
-    });
-    assert.equal(renderer.renderEntry({ label: "<" }), "&lt;&lt;");
-    const { source } = await compile("<test-el></test-el>".repeat(1000), {
-        "test-el": "<b>{{label}}</b>",
-    });
-    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
-    assert.ok(Object.keys(plan.templates).length < 10);
-    assert.equal(plan.entry.length, 1000);
-});
-
-test("semantic components reference complete shadow templates without host bookkeeping", async () => {
-    const definitions = { "my-card": "<p>{{label}}</p>" };
-    const { source, module } = await compile("", definitions);
-    const plan = JSON.parse(source.match(/const plan = (.*);\n/)[1]);
-    assert.deepEqual(plan.components, { "my-card": "template0" });
-    assert.deepEqual(plan.templates, {
-        template0: [
-            {
-                type: "literal",
-                html: '<template shadowrootmode="open">',
-            },
-            { type: "literal", html: "<p>" },
-            { type: "binding", path: ["label"], escape: true },
-            { type: "literal", html: "</p>" },
-            { type: "literal", html: "</template>" },
-        ],
-    });
-    const native = JSON.parse(
-        Buffer.from(
-            require("../server.js").compileServerArtifact("", definitions),
-        ).toString(),
-    );
-    assert.deepEqual(native, { ...plan, format: "fast-server-native" });
-    const shadow =
-        '<template shadowrootmode="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
-    assert.equal(module.renderShadow("my-card", { label: "<&" }), shadow);
-    assert.equal(
-        module.renderHost("my-card", { label: "<&" }),
-        `<my-card>${shadow}</my-card>`,
-    );
-    const prepared = module.prepareState({ label: "<&" });
-    assert.equal(module.renderShadowPrepared("my-card", prepared), shadow);
-    assert.equal(
-        module.renderHostPrepared("my-card", prepared),
-        `<my-card>${shadow}</my-card>`,
-    );
-    assert.equal(module.renderShadowJson("my-card", '{"label":"<&"}'), shadow);
-    assert.equal(
-        module.renderHostJson("my-card", '{"label":"<&"}'),
-        `<my-card>${shadow}</my-card>`,
-    );
-});
-
-test("component template metadata preserves host defaults and owns captured values", async () => {
-    const { createServerRenderer } = await import(runtime);
-    const body = [
-        {
-            type: "host-attributes",
-            attributes: [
-                {
-                    name: "title",
-                    attribute: {
-                        type: "attribute",
-                        name: "title",
-                        path: ["label"],
-                        boolean: false,
-                        primitive: true,
-                    },
-                },
-            ],
-        },
-        { type: "literal", html: '<template shadowrootmode="closed">' },
-        { type: "binding", path: ["label"], escape: true },
-        { type: "literal", html: "</template>" },
-    ];
-    const plan = {
-        format: "fast-server-js",
-        version: 1,
-        entry: [{ type: "component", name: "my-card" }],
-        templates: { card: body },
-        components: { "my-card": "card" },
-    };
-    const renderer = createServerRenderer(plan);
-    const shadow =
-        '<template shadowrootmode="closed"><!--fe:b-->&lt;<!--fe:/b--></template>';
-    const host = `<my-card title="&lt;">${shadow}</my-card>`;
-    assert.equal(renderer.renderEntry({ label: "<" }), host);
-    assert.equal(renderer.renderHost("my-card", { label: "<" }), host);
-    assert.equal(renderer.renderShadow("my-card", { label: "<" }), shadow);
-    assert.equal(renderer.renderHost("my-card", {}, { dsd: [] }), "<my-card></my-card>");
-    for (const markersV2 of [false, true]) {
-        for (const dsd of [undefined, [], ["my-card"]]) {
-            const options = { markersV2, dsd };
-            for (const method of [
-                "renderEntry",
-                "renderTemplate",
-                "renderHost",
-                "renderShadow",
-            ]) {
-                const args = /Host|Shadow/.test(method) ? ["my-card"] : [];
-                assert.equal(
-                    renderer[`${method}Json`](...args, '{"label":"<"}', options),
-                    renderer[method](...args, { label: "<" }, options),
-                );
-            }
-        }
-    }
-    for (const invalid of [
-        { ...plan, components: { "my-card": "missing" } },
-        { ...plan, entry: [{ type: "component", name: "missing" }] },
-        { ...plan, entry: [body[0]] },
-        { ...plan, templates: { card: body.slice(0, -1) } },
-        { ...plan, templates: { card: [body[1], body[0], body[2], body[3]] } },
-        {
-            ...plan,
-            templates: { card: [{ ...body[0], unexpected: true }, ...body.slice(1)] },
-        },
-        {
-            ...plan,
-            templates: {
-                card: [
-                    {
-                        ...body[0],
-                        attributes: [{ name: "title", attribute: { type: "unknown" } }],
-                    },
-                    ...body.slice(1),
-                ],
-            },
-        },
-    ]) {
-        assert.throws(
-            () => createServerRenderer(invalid),
-            /Invalid or incompatible FAST server plan/,
-        );
-    }
-    body[0].attributes[0].attribute.path[0] = "other";
-    body[1].html = "mutated";
-    body[2].path[0] = "other";
-    plan.components["my-card"] = "missing";
-    assert.equal(renderer.renderEntry({ label: "<" }), host);
-    assert.equal(renderer.renderEntryJson('{"label":"<"}'), host);
-});
-
-test("flat plans preserve frozen AOT hashes across contexts and state modes", async () => {
-    const { module } = await compile(
-        '<json-parent :payload="{{payload}}">{{label}}</json-parent>',
-        {
-            "json-parent": {
-                content:
-                    '{{label}}/{{payload.value}}<f-repeat value="{{item in payload.items}}"><json-child :item="{{item}}" data-x="{{item.name}}">{{item.name}}/{{$index}}</json-child></f-repeat>{{{raw}}}',
-                hostAttributes: [{ name: "title", value: "{{label}}" }],
-            },
-            "json-child": "{{item.name}}/{{dataset.x}}",
-        },
-    );
-    for (const json of [
-        '{"label":"< & \\uD83D\\uDE00","payload":{"value":-0,"items":[{"name":"one"},{"name":"two"}]},"raw":"<i>raw</i>"}',
-        '{"label":null,"payload":{"value":null,"items":[]}}',
-        '{"payload":{"items":[null,{},false,0]}}',
-    ]) {
-        const state = JSON.parse(json);
-        const prepared = module.prepareState(state);
-        for (const markersV2 of [false, true]) {
-            for (const attributeNameStrategy of ["none", "camelCase"]) {
-                for (const dsd of [undefined, [], ["json-child"]]) {
-                    const options = { markersV2, attributeNameStrategy, dsd };
-                    for (const method of [
-                        "renderEntry",
-                        "renderTemplate",
-                        "renderHost",
-                        "renderShadow",
-                    ]) {
-                        const args =
-                            method === "renderHost" || method === "renderShadow"
-                                ? ["json-parent"]
-                                : [];
-                        const expected =
-                            contextBaseline[JSON.stringify([json, options, method])];
-                        assert.equal(
-                            hash(module[method](...args, state, options)),
-                            expected,
-                        );
-                        assert.equal(
-                            hash(module[`${method}Json`](...args, json, options)),
-                            expected,
-                        );
-                        assert.equal(
-                            hash(module[`${method}Prepared`](...args, prepared, options)),
-                            expected,
-                        );
-                    }
-                }
-            }
-        }
-    }
-});
-
-test("flat plan source is identical across repeated and fresh-process compilations", () => {
-    const entry = "<stable-a></stable-a><stable-b></stable-b>";
-    const templates = {
-        "stable-a":
-            '<f-repeat value="{{item in items}}"><stable-b :value="{{item.name}}"></stable-b></f-repeat>',
-        "stable-b":
-            '<b>{{value}}</b><f-when value="{{show}}"><stable-a></stable-a></f-when>',
-    };
-    const expected = compileServerModule(entry, templates, runtime);
-    assert.equal(compileServerModule(entry, templates, runtime), expected);
-    const script = `
-        const { compileServerModule } = require(${JSON.stringify(path.resolve(__dirname, "../server.js"))});
-        process.stdout.write(compileServerModule(...JSON.parse(require("node:fs").readFileSync(0, "utf8"))));
-    `;
-    for (let index = 0; index < 2; index++) {
-        assert.equal(
-            execFileSync(process.execPath, ["-e", script], {
-                input: JSON.stringify([entry, templates, runtime]),
-                encoding: "utf8",
-            }),
-            expected,
-        );
-    }
-});
-
-test("AOT preserves every authored declarative fixture byte for byte", async () => {
+test("Native preserves every authored declarative fixture byte for byte", async () => {
     const root = path.resolve(__dirname, "../../fast-element/test/declarative/fixtures");
     const configs = fs
         .readdirSync(root, { recursive: true })
@@ -1564,6 +392,46 @@ test("AOT preserves every authored declarative fixture byte for byte", async () 
                 markersV2,
                 attributeNameStrategy: config["attribute-name-strategy"],
             });
+        }
+    }
+});
+test("native JSON rendering preserves frozen output in all contexts and configurations", () => {
+    const artifact = Buffer.from(
+        compileServerArtifact(
+            '<json-parent :payload="{{payload}}">{{label}}</json-parent>',
+            {
+                "json-parent": {
+                    content:
+                        '{{label}}/{{payload.value}}<f-repeat value="{{item in payload.items}}"><json-child :item="{{item}}" data-x="{{item.name}}">{{item.name}}/{{$index}}</json-child></f-repeat>{{{raw}}}',
+                    hostAttributes: [{ name: "title", value: "{{label}}" }],
+                },
+                "json-child": "{{item.name}}/{{dataset.x}}",
+            },
+        ),
+    );
+    for (const json of [
+        '{"label":"< & \\uD83D\\uDE00","payload":{"value":-0,"items":[{"name":"one"},{"name":"two"}]},"raw":"<i>raw</i>"}',
+        '{"label":null,"payload":{"value":null,"items":[]}}',
+        '{"payload":{"items":[null,{},false,0]}}',
+    ]) {
+        for (const markersV2 of [false, true]) {
+            for (const attributeNameStrategy of ["none", "camelCase"]) {
+                for (const dsd of [undefined, [], ["json-child"]]) {
+                    const options = { markersV2, attributeNameStrategy, dsd };
+                    const program = new NativeProgram(artifact, options);
+                    for (const context of ["Entry", "Template", "Host", "Shadow"]) {
+                        const name = "render" + context;
+                        const bytes =
+                            context === "Host" || context === "Shadow"
+                                ? program[name + "Json"]("json-parent", Buffer.from(json))
+                                : program[name + "Json"](Buffer.from(json));
+                        assert.equal(
+                            hash(bytes),
+                            contextBaseline[JSON.stringify([json, options, name])],
+                        );
+                    }
+                }
+            }
         }
     }
 });

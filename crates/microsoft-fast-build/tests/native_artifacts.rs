@@ -1,12 +1,10 @@
 mod common;
 
 use microsoft_fast_build::{
-    compile_server_artifact, compile_server_module, parse_render_state, AttributeNameStrategy,
-    CompiledArtifact, JsonValue, Locator, NativeRenderOptions, PreparedState,
+    compile_server_artifact, parse_render_state, AttributeNameStrategy, CompiledArtifact,
+    JsonValue, Locator, NativeRenderOptions, PreparedState,
 };
 use serde_json::{json, Value};
-use std::io::Write;
-use std::process::{Command, Stdio};
 
 fn locator() -> Locator {
     common::make_locator_with_host_attrs(&[
@@ -15,44 +13,126 @@ fn locator() -> Locator {
     ])
 }
 
-fn js(source: &str, state: &str, options: Value, target: &str, name: &str) -> Value {
-    let mut child = Command::new("node")
-        .arg(
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join("../../packages/fast-build/test/execute-server.mjs"),
-        )
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    let input = json!({
-        "source":source, "stateJson":state, "options":options,
-        "host":if target == "host" {Some(name)} else {None},
-        "shadow":if target == "shadow" {Some(name)} else {None}, "template":target == "template",
-    });
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.to_string().as_bytes())
-        .unwrap();
-    let output = child.wait_with_output().unwrap();
-    assert!(
-        output.status.success(),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    serde_json::from_slice(&output.stdout).unwrap()
+fn artifact_json(
+    entry: &str,
+    locator: &Locator,
+) -> Result<String, microsoft_fast_build::RenderError> {
+    compile_server_artifact(entry, locator).map(|bytes| String::from_utf8(bytes).unwrap())
 }
 
-fn js_semantic_plan(plan: &Value) -> String {
-    let mut plan = plan.clone();
-    plan["format"] = json!("fast-server-js");
-    format!(
-        "import {{ createServerRenderer }} from \"__FAST_TEST_RUNTIME__\";\n\
-         export const {{ prepareState, renderEntry, renderTemplate, renderHost, renderShadow, renderEntryJson, renderTemplateJson, renderHostJson, renderShadowJson, renderEntryPrepared, renderTemplatePrepared, renderHostPrepared, renderShadowPrepared }} = createServerRenderer({plan});"
+fn render_json(source: &str, state: &str, options: Value, target: &str, name: &str) -> Value {
+    let artifact = CompiledArtifact::load(source.as_bytes()).unwrap();
+    let options = NativeRenderOptions {
+        markers_v2: options["markersV2"].as_bool().unwrap_or(false),
+        dsd: options["dsd"].as_array().map(|names| {
+            names
+                .iter()
+                .map(|name| name.as_str().unwrap().to_owned())
+                .collect()
+        }),
+        attribute_name_strategy: if options["attributeNameStrategy"] == "none" {
+            AttributeNameStrategy::None
+        } else {
+            AttributeNameStrategy::CamelCase
+        },
+        ..Default::default()
+    };
+    let result = match target {
+        "host" => artifact.render_host_json(name, state, &options),
+        "shadow" => artifact.render_shadow_json(name, state, &options),
+        "template" => artifact.render_template_json(state, &options),
+        _ => artifact.render_entry_json(state, &options),
+    };
+    match result {
+        Ok(value) => json!({"value":value}),
+        Err(error) => json!({"error":{"code":error.code,"message":error.message}}),
+    }
+}
+
+fn semantic_plan(plan: &Value) -> String {
+    plan.to_string()
+}
+
+#[test]
+fn consolidated_inputs_are_build_metadata_not_runtime_template_sources() {
+    let locator = common::make_locator_with_host_attrs(&[(
+        "test-card",
+        "<b>{{title}}</b>",
+        &[("role", Some("group"))],
+    )]);
+    let bytes = compile_server_artifact("<test-card></test-card>", &locator).unwrap();
+    let mut envelope: Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(envelope["version"], 2);
+    assert_eq!(envelope["inputs"]["entry"], "<test-card></test-card>");
+    assert_eq!(
+        envelope["inputs"]["templates"]["test-card"]["content"],
+        "<b>{{title}}</b>"
+    );
+    assert_eq!(
+        envelope["inputs"]["templates"]["test-card"]["hostAttributes"],
+        json!([{"name":"role","value":"group"}])
+    );
+    let expected = CompiledArtifact::load(&bytes)
+        .unwrap()
+        .render_entry_json(r#"{"title":"Kept"}"#, &Default::default())
+        .unwrap();
+    envelope["inputs"]["entry"] = json!("{{}}");
+    envelope["inputs"]["templates"] = json!({"broken":{"content":"{{}}"}});
+    let program = CompiledArtifact::load(envelope.to_string().as_bytes()).unwrap();
+    drop((envelope, bytes, locator));
+    assert_eq!(
+        program
+            .render_entry_json(r#"{"title":"Kept"}"#, &Default::default())
+            .unwrap(),
+        expected
+    );
+}
+
+#[test]
+fn consolidated_envelopes_reject_missing_or_malformed_build_metadata() {
+    let bytes = compile_server_artifact("ok", &common::make_locator(&[])).unwrap();
+    let original: Value = serde_json::from_slice(&bytes).unwrap();
+    for inputs in [
+        json!(null),
+        json!({}),
+        json!({"entry":0,"templates":{}}),
+        json!({"entry":"","templates":[]}),
+        json!({"entry":"","templateSources":[0]}),
+        json!({"entry":"","templates":{},"state":{}}),
+    ] {
+        let mut envelope = original.clone();
+        envelope["inputs"] = inputs;
+        assert_eq!(
+            CompiledArtifact::load(envelope.to_string().as_bytes())
+                .unwrap_err()
+                .code,
+            "invalid-artifact"
+        );
+    }
+}
+
+#[test]
+fn fresh_json_preserves_binary64_values_and_decimal_output() {
+    let bytes = compile_server_artifact(
+        r#"<p title="{{value}}" data-joined="pre {{value}}">{{value}}</p>"#,
+        &common::make_locator(&[]),
     )
+    .unwrap();
+    let artifact = CompiledArtifact::load(&bytes).unwrap();
+    for value in [1e-30, 1e-300, f64::from_bits(1), f64::MAX] {
+        let json = format!(r#"{{"value":{value}}}"#);
+        let state = JsonValue::Object(
+            [("value".to_owned(), JsonValue::Number(value))]
+                .into_iter()
+                .collect(),
+        );
+        assert_eq!(
+            artifact
+                .render_entry_json(&json, &Default::default())
+                .unwrap(),
+            artifact.render_entry(&state, &Default::default()).unwrap(),
+        );
+    }
 }
 
 #[test]
@@ -62,17 +142,17 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         let entry = "<section class=\"panel\"><h2>Static &amp; text</h2><p title='fixed'>Payload</p><br /></section>\n".repeat(count);
         let bytes = compile_server_artifact(&entry, &locator).unwrap();
         let ir: Value = serde_json::from_slice(&bytes).unwrap();
-        let body = &ir["entry"];
+        let body = &ir["program"]["entry"];
         assert_eq!(
             body,
             &json!([{"type":"literal","html":entry}]),
             "invariant static tags should form one literal run"
         );
         let artifact = CompiledArtifact::load(&bytes).unwrap();
-        let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+        let source = artifact_json(&entry, &locator).unwrap();
         assert!(
-            source.len() < entry.len() * 3 / 2,
-            "static output expanded into generalized JavaScript"
+            ir["program"].to_string().len() < entry.len() * 3 / 2,
+            "static output expanded into generalized operations"
         );
         assert_eq!(
             artifact
@@ -82,7 +162,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         );
         assert_eq!(
             json!({"value":entry}),
-            js(&source, "{}", json!({}), "entry", "")
+            render_json(&source, "{}", json!({}), "entry", "")
         );
     }
 }
@@ -102,7 +182,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
     let entry = "<test-static></test-static>";
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     let state_json = r#"{"label":"<&"}"#;
     let state = parse_render_state(state_json).unwrap();
     for v2 in [false, true] {
@@ -129,7 +209,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
         );
         assert_eq!(
             json!({"value":expected}),
-            js(&source, state_json, json!({"markersV2":v2}), "entry", "")
+            render_json(&source, state_json, json!({"markersV2":v2}), "entry", "")
         );
         let deselected = NativeRenderOptions {
             dsd: Some(vec![]),
@@ -149,7 +229,7 @@ fn static_runs_preserve_hydration_whitespace_escaping_and_selection() {
 }
 
 #[test]
-fn instance_constants_do_not_duplicate_javascript_element_functions() {
+fn instance_constants_do_not_duplicate_fresh_json_element_functions() {
     let locator = common::make_locator(&[(
         "test-item",
         "<article title=\"{{index}}\">{{index}}/{{dataset.x}}</article>",
@@ -160,7 +240,7 @@ fn instance_constants_do_not_duplicate_javascript_element_functions() {
                 format!("<test-item index=\"{index}\" data-x=\"value-{index}\" style=\"--index:{index}\"></test-item>")
             })
             .collect::<String>();
-        let source = compile_server_module(&entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+        let source = artifact_json(&entry, &locator).unwrap();
         assert!(
             source.matches("function ").count() < 16,
             "instance constants duplicated executable functions for {count} hosts"
@@ -172,7 +252,7 @@ fn instance_constants_do_not_duplicate_javascript_element_functions() {
             .unwrap();
         assert_eq!(
             json!({"value":native}),
-            js(&source, "{}", json!({}), "entry", "")
+            render_json(&source, "{}", json!({}), "entry", "")
         );
         assert!(native.contains(&format!("value-{}", count - 1)));
     }
@@ -184,12 +264,7 @@ fn shared_element_shapes_preserve_overlays_light_dom_and_marker_modes() {
         ("test-parent", "<test-item index=\"first\" data-x=\"one\" foo-bar=\"camel-one\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item><test-item index=\"second\" data-x=\"two\" foo-bar=\"camel-two\" :dataset='{\"base\":\"local\"}' :item=\"{{item}}\" title=\"prefix {{title}}\">light</test-item>", &[]),
         ("test-item", "{{index}}/{{dataset.x}}/{{dataset.base}}/{{fooBar}}/{{foo-bar}}/{{item.name}}", &[("role", Some("group")), ("title", Some("default")), ("data-fe", Some("authored"))]),
     ]);
-    let source = compile_server_module(
-        "<test-parent></test-parent>",
-        &locator,
-        "__FAST_TEST_RUNTIME__",
-    )
-    .unwrap();
+    let source = artifact_json("<test-parent></test-parent>", &locator).unwrap();
     let artifact = CompiledArtifact::load(
         &compile_server_artifact("<test-parent></test-parent>", &locator).unwrap(),
     )
@@ -211,17 +286,17 @@ fn shared_element_shapes_preserve_overlays_light_dom_and_marker_modes() {
                         dsd: dsd.clone(),
                         ..Default::default()
                     };
-                    let mut js_options = json!({
+                    let mut json_options = json!({
                         "markersV2":v2,
                         "attributeNameStrategy":if strategy == AttributeNameStrategy::None {"none"} else {"camelCase"},
                     });
                     if let Some(names) = dsd {
-                        js_options["dsd"] = json!(names);
+                        json_options["dsd"] = json!(names);
                     }
                     let native = artifact.render_entry(&state, &options).unwrap();
                     assert_eq!(
                         json!({"value":native}),
-                        js(&source, state_json, js_options, "entry", ""),
+                        render_json(&source, state_json, json_options, "entry", ""),
                         "{state_json}, {options:?}"
                     );
                 }
@@ -234,7 +309,7 @@ fn shared_element_shapes_preserve_overlays_light_dom_and_marker_modes() {
 fn all_render_targets_share_state_markers_selection_and_bytes() {
     let locator = locator();
     let entry = "<f-repeat value=\"{{item in items}}\"><test-card :item=\"{{item}}\" label=\"{{label}}\" foo-bar=\"custom\">{{$index}}/{{item.name}}</test-card></f-repeat>";
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
     let state_json = r#"{"label":"& < > \" ' 😀","items":[{"name":"one"},{"name":null},false],"item":{"name":"resolved"},"dataset":{"inherited":"yes"},"fooBar":"camel","foo-bar":"dash"}"#;
@@ -257,9 +332,9 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
                     dsd: dsd.clone(),
                     ..Default::default()
                 };
-                let mut js_options = json!({"markersV2":v2, "attributeNameStrategy":if strategy == AttributeNameStrategy::None {"none"} else {"camelCase"}});
+                let mut json_options = json!({"markersV2":v2, "attributeNameStrategy":if strategy == AttributeNameStrategy::None {"none"} else {"camelCase"}});
                 if let Some(names) = dsd {
-                    js_options["dsd"] = json!(names);
+                    json_options["dsd"] = json!(names);
                 }
                 for target in ["entry", "template", "host", "shadow"] {
                     let native = match target {
@@ -285,9 +360,14 @@ fn all_render_targets_share_state_markers_selection_and_bytes() {
                     }
                     .unwrap();
                     assert_eq!(native, fresh, "fresh {target}, {options:?}");
-                    let javascript =
-                        js(&source, state_json, js_options.clone(), target, "test-card");
-                    assert_eq!(json!({"value":native}), javascript, "{target}, {options:?}");
+                    let fresh_json = render_json(
+                        &source,
+                        state_json,
+                        json_options.clone(),
+                        target,
+                        "test-card",
+                    );
+                    assert_eq!(json!({"value":native}), fresh_json, "{target}, {options:?}");
                 }
             }
         }
@@ -313,11 +393,11 @@ fn native_output_has_explicit_literal_byte_contracts() {
 }
 
 #[test]
-fn numbers_and_comparisons_match_generated_javascript() {
+fn numbers_and_comparisons_match_generated_fresh_json() {
     let locator = common::make_locator(&[]);
     let entry =
         "{{n}}<f-when value=\"{{a >= b}}\">yes</f-when><f-when value=\"{{a == b}}\">equal</f-when>";
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     let artifact =
         CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
     for state_json in [
@@ -335,7 +415,7 @@ fn numbers_and_comparisons_match_generated_javascript() {
         let native = artifact.render_entry(&state, &Default::default()).unwrap();
         assert_eq!(
             json!({"value":native}),
-            js(&source, state_json, json!({}), "entry", ""),
+            render_json(&source, state_json, json!({}), "entry", ""),
             "{state_json}"
         );
     }
@@ -352,7 +432,9 @@ fn native_semantic_schema_loads_without_execution_tables_or_build_metadata() {
     );
     let emitted = compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap();
     let expected: Value = serde_json::from_slice(bytes).unwrap();
-    assert_eq!(serde_json::from_slice::<Value>(&emitted).unwrap(), expected);
+    let envelope: Value = serde_json::from_slice(&emitted).unwrap();
+    assert_eq!(envelope["program"]["entry"], expected["entry"]);
+    assert_eq!(envelope["inputs"]["entry"], "{{value}}");
 }
 
 #[test]
@@ -363,16 +445,19 @@ fn component_templates_share_content_but_preserve_distinct_host_defaults() {
         ("two-card", &content, &[("role", Some("note"))]),
     ]);
     let bytes = compile_server_artifact("", &locator).unwrap();
-    assert!(bytes.len() < 50_000, "shared component content expanded");
     let plan: Value = serde_json::from_slice(&bytes).unwrap();
-    assert_eq!(plan["templates"].as_object().unwrap().len(), 3);
-    assert!(plan["components"]
+    assert!(
+        plan["program"].to_string().len() < 50_000,
+        "shared component content expanded"
+    );
+    assert_eq!(plan["program"]["templates"].as_object().unwrap().len(), 3);
+    assert!(plan["program"]["components"]
         .as_object()
         .unwrap()
         .values()
         .all(Value::is_string));
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    let source = compile_server_module("", &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json("", &locator).unwrap();
     let state = parse_render_state(r#"{"label":"<&"}"#).unwrap();
     let one = artifact
         .render_host("one-card", &state, &Default::default())
@@ -386,7 +471,7 @@ fn component_templates_share_content_but_preserve_distinct_host_defaults() {
     assert!(two.ends_with("<!--fe:b-->&lt;&amp;<!--fe:/b--></template></two-card>"));
     for (name, expected) in [("one-card", one), ("two-card", two)] {
         assert_eq!(
-            js(&source, r#"{"label":"<&"}"#, json!({}), "host", name),
+            render_json(&source, r#"{"label":"<&"}"#, json!({}), "host", name),
             json!({"value":expected}),
         );
     }
@@ -402,8 +487,8 @@ fn shared_component_metadata_has_a_bounded_native_expansion() {
     )]);
     let bytes = compile_server_artifact("", &locator).unwrap();
     let mut plan: Value = serde_json::from_slice(&bytes).unwrap();
-    let reference = plan["components"]["test-card"].clone();
-    plan["components"] = Value::Object(
+    let reference = plan["program"]["components"]["test-card"].clone();
+    plan["program"]["components"] = Value::Object(
         (0..100)
             .map(|index| (format!("test-card-{index}"), reference.clone()))
             .collect(),
@@ -494,7 +579,7 @@ fn typed_dispatch_preserves_exact_logical_charges_and_js_parity_in_all_contexts(
         "components":{"x-card":"card"},
     });
     let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
-    let source = js_semantic_plan(&ir);
+    let source = semantic_plan(&ir);
     let state_json = r#"{"show":true,"items":[{"x":"&"},{"x":"é"}],"value":"root"}"#;
     let state = parse_render_state(state_json).unwrap();
     let prepared = PreparedState::new(&state).unwrap();
@@ -533,7 +618,7 @@ fn typed_dispatch_preserves_exact_logical_charges_and_js_parity_in_all_contexts(
         }
         assert_eq!(ordinary(&exact).unwrap(), expected);
         assert_eq!(
-            js(&source, state_json, json!({}), target, "x-card"),
+            render_json(&source, state_json, json!({}), target, "x-card"),
             json!({"value":expected}),
         );
     }
@@ -552,7 +637,7 @@ fn typed_dispatch_preserves_exact_logical_charges_and_js_parity_in_all_contexts(
         host,
     );
     assert_eq!(
-        js(&source, state_json, json!({}), "host", "x-card"),
+        render_json(&source, state_json, json!({}), "host", "x-card"),
         json!({"value":host}),
     );
     let exact = NativeRenderOptions {
@@ -571,7 +656,7 @@ fn typed_dispatch_preserves_exact_logical_charges_and_js_parity_in_all_contexts(
         shadow
     );
     assert_eq!(
-        js(&source, state_json, json!({}), "shadow", "x-card"),
+        render_json(&source, state_json, json!({}), "shadow", "x-card"),
         json!({"value":shadow}),
     );
 }
@@ -591,9 +676,8 @@ fn prepared_numeric_path_segments_keep_object_keys_and_repeat_masking() {
         expected
     );
     assert_eq!(
-        js(
-            &compile_server_module(entry, &common::make_locator(&[]), "__FAST_TEST_RUNTIME__")
-                .unwrap(),
+        render_json(
+            &artifact_json(entry, &common::make_locator(&[])).unwrap(),
             state_json,
             json!({}),
             "entry",
@@ -669,7 +753,7 @@ fn typed_static_operands_are_isolated_across_concurrent_contexts() {
     let entry = "<test-static-data :dataset='{\"base\":\"static\",\"number\":1}' data-label=\"{{label}}\" label=\"{{label}}\"></test-static-data>";
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     drop((bytes, locator));
     std::thread::scope(|scope| {
         for i in 0..4 {
@@ -693,7 +777,7 @@ fn typed_static_operands_are_isolated_across_concurrent_contexts() {
                     assert_eq!(artifact.render_shadow_prepared("test-static-data", &prepared, &options).unwrap(), shadow);
                 }
                 assert_eq!(
-                    js(source, &state_json, json!({"markersV2":options.markers_v2}), "entry", ""),
+                    render_json(source, &state_json, json!({"markersV2":options.markers_v2}), "entry", ""),
                     json!({"value":entry}),
                 );
             });
@@ -707,7 +791,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for (field, value) in [
         ("version", json!(0)),
-        ("version", json!(2)),
+        ("version", json!(4)),
         ("version", json!(3)),
         ("version", json!(99)),
         ("version", json!("1")),
@@ -715,7 +799,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
         ("version", json!(null)),
         ("format", json!("metadata")),
         ("format", json!("fast-server")),
-        ("format", json!("fast-server-js")),
+        ("format", json!("unknown-format")),
     ] {
         let mut v = original.clone();
         v[field] = value;
@@ -729,32 +813,34 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     for mutate in 0..17 {
         let mut v = original.clone();
         match mutate {
-            0 => v["entry"] = json!(999),
-            1 => v["entry"][0]["type"] = json!("eval"),
-            2 => v["entry"][0] = json!({"type":"template","name":"missing"}),
-            3 => v["entry"][0]["path"] = json!([]),
+            0 => v["program"]["entry"] = json!(999),
+            1 => v["program"]["entry"][0]["type"] = json!("eval"),
+            2 => v["program"]["entry"][0] = json!({"type":"template","name":"missing"}),
+            3 => v["program"]["entry"][0]["path"] = json!([]),
             4 => {
-                v["entry"][0] = json!({
+                v["program"]["entry"][0] = json!({
                     "type":"when","template":"missing",
                     "condition":{"type":"compare","operator":"evil","path":["x"],"value":{"type":"path","path":["y"]}}
                 })
             }
-            5 => v["entry"] = json!({}),
+            5 => v["program"]["entry"] = json!({}),
             6 => v["unexpected"] = json!(true),
-            7 => v["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
-            8 => v["entry"][0]["unexpected"] = json!(true),
-            9 => v["entry"][0] = json!({"type":"element"}),
+            7 => v["program"]["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
+            8 => v["program"]["entry"][0]["unexpected"] = json!(true),
+            9 => v["program"]["entry"][0] = json!({"type":"element"}),
             10 => {
-                v["entry"][0] = json!({"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"missing"})
+                v["program"]["entry"][0] = json!({"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"missing"})
             }
             11 => {
-                v["entry"][0] = json!({"type":"when","condition":{"type":"truthy","path":["x"]},"template":"missing"})
+                v["program"]["entry"][0] = json!({"type":"when","condition":{"type":"truthy","path":["x"]},"template":"missing"})
             }
-            12 => v["components"] = json!({"bad":"missing"}),
-            13 => v["templates"] = json!({"unused":[{"type":"template","name":"missing"}]}),
-            14 => v["entry"][0] = json!(["call", 0]),
-            15 => v["entry"][0] = json!(["fragment", "missing"]),
-            _ => v["entry"][0] = json!({"type":"template","name":0}),
+            12 => v["program"]["components"] = json!({"bad":"missing"}),
+            13 => {
+                v["program"]["templates"] = json!({"unused":[{"type":"template","name":"missing"}]})
+            }
+            14 => v["program"]["entry"][0] = json!(["call", 0]),
+            15 => v["program"]["entry"][0] = json!(["fragment", "missing"]),
+            _ => v["program"]["entry"][0] = json!({"type":"template","name":0}),
         }
         assert_eq!(
             CompiledArtifact::load(v.to_string().as_bytes())
@@ -773,7 +859,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     for _ in 0..70 {
         cond = json!({"type":"and","left":cond,"right":{"type":"truthy","path":["x"]}});
     }
-    v["entry"][0] = json!({"type":"when","condition":cond,"template":"missing"});
+    v["program"]["entry"][0] = json!({"type":"when","condition":cond,"template":"missing"});
     assert!(CompiledArtifact::load(v.to_string().as_bytes()).is_err());
 }
 
@@ -846,15 +932,10 @@ fn finite_conditional_cycles_render_and_unbounded_cycles_fail_safely() {
     let artifact = CompiledArtifact::load(&bytes).unwrap();
     let state_json = r#"{"node":{"label":"a","next":{"label":"b","next":null}}}"#;
     let state = parse_render_state(state_json).unwrap();
-    let source = compile_server_module(
-        "<test-cycle></test-cycle>",
-        &locator,
-        "__FAST_TEST_RUNTIME__",
-    )
-    .unwrap();
+    let source = artifact_json("<test-cycle></test-cycle>", &locator).unwrap();
     assert_eq!(
         json!({"value":artifact.render_entry(&state, &Default::default()).unwrap()}),
-        js(&source, state_json, json!({}), "entry", "")
+        render_json(&source, state_json, json!({}), "entry", "")
     );
     let locator = common::make_locator(&[("test-cycle", "<test-cycle></test-cycle>")]);
     let artifact = CompiledArtifact::load(
@@ -871,12 +952,11 @@ fn finite_conditional_cycles_render_and_unbounded_cycles_fail_safely() {
 }
 
 #[test]
-fn state_depth_boundary_is_native_specific_and_includes_unused_state() {
+fn state_depth_boundary_is_includes_unused_state() {
     let artifact =
         CompiledArtifact::load(&compile_server_artifact("ok", &common::make_locator(&[])).unwrap())
             .unwrap();
-    let source =
-        compile_server_module("ok", &common::make_locator(&[]), "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json("ok", &common::make_locator(&[])).unwrap();
     for depth in [64, 65] {
         let state = (0..depth).fold(JsonValue::Number(0.0), |value, _| {
             JsonValue::Array(vec![value])
@@ -894,10 +974,12 @@ fn state_depth_boundary_is_native_specific_and_includes_unused_state() {
             assert_eq!(parsed.unwrap_err().code, "invalid-state");
             assert_eq!(prepared.unwrap_err().code, "invalid-state");
         }
-        assert_eq!(
-            js(&source, &state_json, json!({}), "entry", ""),
-            json!({"value":"ok"})
-        );
+        let result = render_json(&source, &state_json, json!({}), "entry", "");
+        if depth == 64 {
+            assert_eq!(result, json!({"value":"ok"}));
+        } else {
+            assert_eq!(result["error"]["code"], "invalid-state");
+        }
     }
 }
 
@@ -1073,7 +1155,7 @@ fn nested_repeat_payloads_preserve_aliases_overlay_masking_and_owned_results() {
     let entry = r#"<f-repeat value="{{outer in groups}}">{{outer.label}}:<f-repeat value="{{inner in outer.items}}">{{outer.label}}/{{inner.label}}/{{$index}}<borrow-leaf :item="{{inner}}" :outer="{{outer}}" :masked="{{inner.masked}}" data-note="{{inner.label}}">caller {{outer.label}}/{{inner.label}}</borrow-leaf><f-repeat value="{{outer in inner.children}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat><f-repeat value="{{outer in outer.items}}">{{outer.label}}/{{$index}}</f-repeat>{{outer.label}}</f-repeat>"#;
     let artifact =
         CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     let mut previous = None;
     for payload_bytes in [0, 1024, 131_072] {
         let payload = "é".repeat(payload_bytes / 2);
@@ -1108,13 +1190,13 @@ fn nested_repeat_payloads_preserve_aliases_overlay_masking_and_owned_results() {
                     artifact.render_entry_prepared(&prepared, &options).unwrap(),
                     html
                 );
-                let mut js_options = json!({"markersV2":v2});
+                let mut json_options = json!({"markersV2":v2});
                 if let Some(names) = dsd {
-                    js_options["dsd"] = json!(names);
+                    json_options["dsd"] = json!(names);
                 }
                 assert_eq!(
                     json!({"value":html}),
-                    js(&source, &state_json, js_options, "entry", "")
+                    render_json(&source, &state_json, json_options, "entry", "")
                 );
                 assert!(!html.contains("must-not-leak"));
                 let exact = NativeRenderOptions {
@@ -1277,9 +1359,8 @@ fn step_and_utf8_output_budgets_accept_exact_limits_and_reset_after_errors() {
         assert_eq!(artifact.render_entry(&state, &exact).unwrap(), "é");
     }
     assert_eq!(
-        js(
-            &compile_server_module("é", &common::make_locator(&[]), "__FAST_TEST_RUNTIME__")
-                .unwrap(),
+        render_json(
+            &artifact_json("é", &common::make_locator(&[])).unwrap(),
             "null",
             json!({}),
             "entry",
@@ -1295,12 +1376,7 @@ fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
         &compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap(),
     )
     .unwrap();
-    let source = compile_server_module(
-        "{{value}}",
-        &common::make_locator(&[]),
-        "__FAST_TEST_RUNTIME__",
-    )
-    .unwrap();
+    let source = artifact_json("{{value}}", &common::make_locator(&[])).unwrap();
     for (value, expected) in [
         ("", ""),
         ("unchanged é😀尾", "unchanged é😀尾"),
@@ -1317,7 +1393,7 @@ fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
         let held = artifact.render_entry(&state, &exact).unwrap();
         assert_eq!(held, expected);
         assert_eq!(
-            js(&source, &state_json, json!({}), "entry", ""),
+            render_json(&source, &state_json, json!({}), "entry", ""),
             json!({"value":expected})
         );
         if !expected.is_empty() {
@@ -1342,13 +1418,12 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
         &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
     )
     .unwrap();
-    let source =
-        compile_server_module(entry, &common::make_locator(&[]), "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &common::make_locator(&[])).unwrap();
     let state_json = r#"{"value":"é😀&<>\"'/","tail":"尾","flag":true,"url":3.5,"scalar":false}"#;
     let state = parse_render_state(state_json).unwrap();
     let expected = r#"<i title="pre &quot;&amp;/é😀&amp;&lt;&gt;&quot;&#39;//尾" data-value="é😀&amp;&lt;&gt;&quot;&#39;/" hidden></i><a href="3.5">false</a>"#;
     assert_eq!(
-        js(&source, state_json, json!({}), "entry", ""),
+        render_json(&source, state_json, json!({}), "entry", ""),
         json!({"value":expected})
     );
     let exact = NativeRenderOptions {
@@ -1445,7 +1520,7 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
         );
         assert_eq!(
             json!({"value":artifact.render_entry(&state, &Default::default()).unwrap()}),
-            js(&source, &state_json, json!({}), "entry", "")
+            render_json(&source, &state_json, json!({}), "entry", "")
         );
     }
     assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
@@ -1501,7 +1576,7 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let entry = "<test-outer title=\"{{large}}\"></test-outer>";
     let artifact =
         CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
-    let source = compile_server_module(entry, &locator, "__FAST_TEST_RUNTIME__").unwrap();
+    let source = artifact_json(entry, &locator).unwrap();
     let invalid_json = json!({"large":"&".repeat(100_000),"items":false}).to_string();
     let invalid = parse_render_state(&invalid_json).unwrap();
     let options = NativeRenderOptions {
@@ -1518,7 +1593,7 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
         failed
     );
     assert_eq!(
-        js(&source, &invalid_json, json!({}), "entry", "")["error"]["code"],
+        render_json(&source, &invalid_json, json!({}), "entry", "")["error"]["code"],
         "repeat-not-array"
     );
     let prefix_limit = NativeRenderOptions {
@@ -1544,7 +1619,7 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let held = artifact.render_entry(&valid, &Default::default()).unwrap();
     assert_eq!(
         json!({"value":held}),
-        js(&source, valid_json, json!({}), "entry", "")
+        render_json(&source, valid_json, json!({}), "entry", "")
     );
     let exact = NativeRenderOptions {
         max_output_bytes: held.len(),
@@ -1572,7 +1647,7 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for depth in [128, 129] {
         let mut ir = original.clone();
-        ir["entry"] = json!([{"type":"template","name":"next0"}]);
+        ir["program"]["entry"] = json!([{"type":"template","name":"next0"}]);
         let mut templates = serde_json::Map::new();
         for index in 0..depth {
             let body = if index + 1 == depth {
@@ -1582,7 +1657,7 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
             };
             templates.insert(format!("next{index}"), body);
         }
-        ir["templates"] = json!(templates);
+        ir["program"]["templates"] = json!(templates);
         let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
         let native = artifact.render_entry(&JsonValue::Null, &Default::default());
         if depth == 128 {
@@ -1590,10 +1665,12 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
         } else {
             assert_eq!(native.unwrap_err().code, "render-limit");
         }
-        assert_eq!(
-            js(&js_semantic_plan(&ir), "null", json!({}), "entry", "",),
-            json!({"value":"ok"})
-        );
+        let result = render_json(&semantic_plan(&ir), "null", json!({}), "entry", "");
+        if depth == 128 {
+            assert_eq!(result, json!({"value":"ok"}));
+        } else {
+            assert_eq!(result["error"]["code"], "render-limit");
+        }
     }
 }
 
@@ -1607,7 +1684,7 @@ fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
     let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
     let completed = active.render_entry(&state, &Default::default()).unwrap();
     let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
-    incompatible["version"] = json!(2);
+    incompatible["version"] = json!(99);
     assert_eq!(
         CompiledArtifact::load(incompatible.to_string().as_bytes())
             .unwrap_err()
