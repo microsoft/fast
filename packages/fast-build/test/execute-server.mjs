@@ -27,7 +27,10 @@ try {
         throw new Error("Prepared output differs from ordinary output");
     }
     const json = input.stateJson ?? JSON.stringify(state === undefined ? {} : state);
-    if (server[`${method}Json`](...args, json, input.options) !== value) {
+    if (
+        input.jsonExports !== false &&
+        server[`${method}Json`](...args, json, input.options) !== value
+    ) {
         throw new Error("Owned JSON output differs from ordinary output");
     }
     process.stdout.write(JSON.stringify({ value }));

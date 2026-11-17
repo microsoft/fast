@@ -49,7 +49,8 @@
     "build": "node build-wasm.cjs",
     "test:node": "node --test test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/server.test.js test/server-assets.test.js test/native-artifact.test.js test/server-vite.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs",
     "bench:server": "node test/performance/server-renderer.mjs",
-    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js"
+    "test:fixtures:convert": "node --test test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js",
+    "test:static-output": "node --test --test-concurrency=1 test/static-output.test.mjs"
   },
   "engines": {
     "node": ">=22.18.0"
