@@ -80,10 +80,13 @@ test("native benchmark isolates loading, rendering and optional string decoding"
         ].join("\n"),
     );
     for (const warmup of [0, 2]) {
+        const profiles = path.join(directory, "profiles");
+        if (warmup) await fs.mkdir(profiles);
         const result = JSON.parse(
             execFileSync(
                 process.execPath,
                 [
+                    "--expose-gc",
                     "--require",
                     preload,
                     benchmark,
@@ -92,8 +95,15 @@ test("native benchmark isolates loading, rendering and optional string decoding"
                     "--native-addon=mock",
                     "--iterations=3",
                     "--warmup=" + warmup,
+                    ...(warmup
+                        ? [
+                              "--profile-directory=" + profiles,
+                              "--profile-phase=all",
+                              "--profile-duration-ms=3",
+                          ]
+                        : []),
                 ],
-                { encoding: "utf8" },
+                { encoding: "utf8", stdio: "pipe" },
             ),
         );
         assert.equal(result.programLoadMs, 37);
@@ -104,21 +114,125 @@ test("native benchmark isolates loading, rendering and optional string decoding"
         assert.equal(result.warmMsPerRender, 7);
         assert.equal(result.warmStringMsPerRender, 12);
         assert.equal(result.outputBytes, Buffer.byteLength(text));
+        assert.deepEqual(
+            result.profiles.map(profile => profile.phase),
+            warmup ? ["load", "buffer", "string", "decode"] : [],
+        );
+        for (const profile of result.profiles) {
+            assert.equal(profile.instrumented, true);
+            assert.equal(profile.outputHash, result.outputHash);
+            assert.ok(profile.iterations > 0);
+            const cpu = JSON.parse(await fs.readFile(profile.cpuProfile, "utf8"));
+            assert.ok(cpu.nodes.length > 0);
+            assert.ok(cpu.endTime >= cpu.startTime);
+        }
         assert.equal(
             await fs.readFile(path.join(directory, "rendered.html"), "utf8"),
             text,
         );
     }
+    if (["darwin", "linux"].includes(process.platform)) {
+        const profiles = path.join(directory, "missing-native-profiler");
+        await fs.mkdir(profiles);
+        assert.throws(
+            () =>
+                execFileSync(
+                    process.execPath,
+                    [
+                        "--expose-gc",
+                        "--require",
+                        preload,
+                        benchmark,
+                        "--worker=native",
+                        "--directory=" + directory,
+                        "--native-addon=mock",
+                        "--iterations=1",
+                        "--warmup=0",
+                        "--profile-directory=" + profiles,
+                        "--profile-phase=buffer",
+                        "--profile-duration-ms=3",
+                        "--native-profiler=" +
+                            (process.platform === "darwin" ? "sample" : "perf"),
+                    ],
+                    {
+                        encoding: "utf8",
+                        stdio: "pipe",
+                        env: { ...process.env, PATH: "" },
+                    },
+                ),
+            error => /ENOENT/.test(error.stderr),
+            "Missing native profilers must fail, not silently produce a V8-only report",
+        );
+    }
 });
 
 test("native benchmark rejects invalid measurement controls", () => {
-    for (const argument of ["--iterations=0", "--warmup=-1", "--worker=unknown"]) {
+    for (const argument of [
+        "--iterations=0",
+        "--warmup=-1",
+        "--worker=unknown",
+        "--profile-phase=unknown",
+        "--profile-duration-ms=0",
+        "--profile-duration-ms=60001",
+        "--native-profiler=unknown",
+        "--native-profiler=sample",
+    ]) {
         assert.throws(() =>
             execFileSync(
                 process.execPath,
                 [benchmark, "--worker=native", "--directory=unused", argument],
                 { stdio: "pipe" },
             ),
+        );
+    }
+});
+
+test("native profiling selects workloads and retains verified phase profiles", async t => {
+    const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-native-profiles-"));
+    t.after(() => fs.rm(directory, { recursive: true, force: true }));
+    const output = path.join(directory, "report.json");
+    execFileSync(
+        process.execPath,
+        [
+            benchmark,
+            "--native-addon=" + process.env.FAST_NATIVE_ADDON,
+            "--workloads=static,largeStaticTemplates",
+            "--samples=1",
+            "--instances=2",
+            "--iterations=2",
+            "--warmup=1",
+            "--profile-directory=" + directory,
+            "--profile-phase=all",
+            "--profile-duration-ms=3",
+            "--output=" + output,
+        ],
+        { encoding: "utf8", timeout: 60_000 },
+    );
+    const report = JSON.parse(await fs.readFile(output, "utf8"));
+    assert.deepEqual(Object.keys(report.workloads), ["static", "largeStaticTemplates"]);
+    assert.equal(report.profiling.phase, "all");
+    assert.match(report.addonSha256, /^[a-f0-9]{64}$/);
+    for (const workload of Object.values(report.workloads)) {
+        assert.match(workload.artifactSha256, /^[a-f0-9]{64}$/);
+        const [sample] = workload.samples;
+        assert.deepEqual(
+            sample.profiles.map(profile => profile.phase),
+            ["load", "buffer", "string", "decode"],
+        );
+        for (const profile of sample.profiles) {
+            assert.equal(profile.outputHash, sample.outputHash);
+            const cpu = JSON.parse(await fs.readFile(profile.cpuProfile, "utf8"));
+            assert.ok(cpu.nodes.length > 0);
+        }
+    }
+    for (const workloads of ["unknown", "static,static", ""]) {
+        assert.throws(
+            () =>
+                execFileSync(process.execPath, [benchmark, "--workloads=" + workloads], {
+                    encoding: "utf8",
+                    stdio: "pipe",
+                }),
+            error => /Unknown or duplicate workloads/.test(error.stderr),
         );
     }
 });

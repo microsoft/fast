@@ -118,7 +118,22 @@ owned Buffer output. String-delivery samples include decoding inside each timed
 request. Output verification and file writing are outside render timers.
 Reports include CPU, observed warm-loop GC, memory and source artifact sizes.
 Child compile caches are disabled; optional CPU profiles persist outside temporary
-inputs. These are measurements, not assumed universal performance guarantees.
+inputs. `--workloads` selects exact workload names without changing their definitions.
+Reports identify the source checkout, addon hash and per-workload artifact hashes;
+checkout identity alone is not proof of how an external addon was built.
+
+`profile:server` runs additional instrumented diagnostic passes after ordinary
+measurements, with separate load, Buffer, string and fixed-buffer decode profiles.
+V8 Inspector captures each phase independently. Optional macOS `sample` or Linux
+`perf` subprocesses sample only the current worker PID and must exit successfully;
+missing tools and permission failures propagate rather than silently falling back.
+Load diagnostics repeat file reads and program construction, with explicit GC every
+16 constructions to bound unreported native class allocations. They are not cold
+filesystem-cache measurements. Phase reports include CPU, process memory, output
+hashes and paths to retained profiles. Process RSS includes allocator-held pages,
+and native samplers can include setup/tail activity. These are diagnostics, not
+assumed universal performance guarantees; the [profiling guide](./docs/native-profiling.md)
+defines their interpretation.
 
 ## Template loading — `parseFTemplates`
 
