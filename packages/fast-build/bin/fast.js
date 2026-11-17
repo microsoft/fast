@@ -350,38 +350,7 @@ function parseFTemplates(html, filePath, wasm) {
 }
 
 /**
- * Resolve all HTML files matching a glob pattern.
- * Parses `<f-template name="...">` elements from each matched file and
- * returns one entry per template. A single file may yield multiple entries.
- * Warns (but does not error) if the base directory does not exist.
- * @param {string} pattern
- * @param {object} wasm - the loaded WASM module
- * @returns {(FTemplateMetadata & { name: string })[]}
- */
-function resolvePattern(pattern, wasm) {
-    const baseDir = staticPrefixDir(pattern);
-    if (!fs.existsSync(baseDir)) {
-        return [];
-    }
-    const allFiles = [];
-    walkHtmlFiles(baseDir, allFiles);
-    const results = [];
-    for (const file of allFiles) {
-        if (globMatch(pattern, file)) {
-            const html = fs.readFileSync(file, "utf8");
-            const templates = parseFTemplates(html, file, wasm);
-            results.push(...templates);
-        }
-    }
-    return results;
-}
-
-/**
- * Resolve all `.html` files matching a glob pattern, with no `<f-template>`
- * parsing — used by `fast convert --templates` to find whole files to
- * convert (as opposed to `fast build --templates`, which extracts individual
- * `<f-template>` elements from each matched file).
- * Warns (but does not error) if the base directory does not exist.
+ * Resolve all `.html` files matching a glob pattern without loading a parser.
  * @param {string} pattern
  * @returns {string[]}
  */
@@ -726,15 +695,15 @@ async function runBuild(args) {
     if (serverModule !== undefined && serverModule === "") {
         throw new Error("--server-module requires a nonempty output path.");
     }
+    const managedPaths = serverModule === undefined
+        ? []
+        : [serverModule, `${serverModule}.inputs.json`, `${serverModule}.lock`]
+            .map(filename => path.resolve(filename));
     if (serverModule !== undefined) {
-        const resolvedModule = path.resolve(serverModule);
-        if (!resolvedModule.endsWith(".mjs")) {
+        if (!managedPaths[0].endsWith(".mjs")) {
             throw new Error("--server-module requires an .mjs output path.");
         }
-        if (
-            [resolvedModule, `${resolvedModule}.inputs.json`, `${resolvedModule}.lock`]
-                .includes(path.resolve(output))
-        ) {
+        if (managedPaths.includes(path.resolve(output))) {
             throw new Error("HTML output must not replace the persistent server module or its sidecars.");
         }
     }
@@ -766,26 +735,24 @@ async function runBuild(args) {
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
-            if (serverModule !== undefined) {
-                const matches = resolveTemplateFiles(pattern);
-                if (matches.length === 0) {
-                    process.stderr.write(
-                        `Warning: No template files found for pattern "${pattern}".\n`
-                    );
-                }
-                for (const filename of matches) {
-                    sources.push(fs.readFileSync(filename, "utf8"));
+            const wasm = serverModule === undefined ? require(BUILD_WASM_MODULE) : null;
+            const matches = resolveTemplateFiles(pattern);
+            const definitions = [];
+            for (const filename of matches) {
+                const source = fs.readFileSync(filename, "utf8");
+                if (serverModule !== undefined) {
+                    sources.push(source);
                     filenames.push(filename);
+                } else {
+                    definitions.push(...parseFTemplates(source, filename, wasm));
                 }
-                continue;
             }
-            const matches = resolvePattern(pattern, require(BUILD_WASM_MODULE));
-            if (matches.length === 0) {
+            if ((serverModule === undefined ? definitions : matches).length === 0) {
                 process.stderr.write(
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, ...definition } of matches) {
+            for (const { name, ...definition } of definitions) {
                 if (name in templatesMap) {
                     process.stderr.write(
                         `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
@@ -817,8 +784,6 @@ async function runBuild(args) {
         stateContent = fs.readFileSync(stateFile, "utf8");
     }
     if (serverModule !== undefined) {
-        const managedPaths = [serverModule, `${serverModule}.inputs.json`, `${serverModule}.lock`]
-            .map(filename => path.resolve(filename));
         if ([entry, stateFile, ...filenames].some(
             filename => filename !== undefined && managedPaths.includes(path.resolve(filename)),
         )) {

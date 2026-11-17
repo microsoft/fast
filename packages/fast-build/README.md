@@ -212,7 +212,6 @@ Produces `output.html`:
 Retain a compiled entry and template registry across builds:
 
 ```sh
-mkdir -p generated
 fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-module=generated/page.mjs
 ```
 

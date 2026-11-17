@@ -166,8 +166,8 @@ switching targets requires workload qualification as well as markup parity.
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
-`fast build` always executes server JavaScript; remove `--aot`. Without an
-explicit persistent module path, it continues compiling fresh.
+`fast build` executes server JavaScript and writes complete HTML. It compiles
+fresh unless a persistent module path is configured.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [migration guidance](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
 

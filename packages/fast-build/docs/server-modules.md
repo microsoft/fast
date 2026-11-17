@@ -297,8 +297,8 @@ Raw-source writers default to rejecting duplicate names/empty registries and
 canonicalizing source order. Explicit `templateSourcePolicy: "overwrite"`
 preserves ordered sources and multiplicity, permits empty registries, and makes
 later definitions replace earlier definitions with a warning. `fast build
---server-module=generated/page.mjs` selects this policy to retain its existing
-registry semantics. State and render options never enter this input manifest.
+--server-module=generated/page.mjs` selects this policy for its registry.
+State and render options never enter this input manifest.
 Keep the module and sidecar together; corruption and deployment changes fail
 closed rather than silently compiling over an incompatible pair.
 
@@ -353,15 +353,13 @@ the measured exact build, keeping its sidecar. Never count this build-time reuse
 as a warm request-renderer gain.
 
 Use synchronous `writeServerModule(outputPath, inputs, options?)` for ESM or
-`writeServerArtifact(outputPath, inputs, options?)` for native bytes. Create the
-destination directory first. Both return `{ reused, manifestPath }`; the sidecar
+`writeServerArtifact(outputPath, inputs, options?)` for native bytes. Writers create
+parent directories as needed. Both return `{ reused, manifestPath }`; the sidecar
 is `${outputPath}.inputs.json`.
 
 ```js
-import { mkdir } from "node:fs/promises";
 import { writeServerModule } from "@microsoft/fast-build/server.js";
 
-await mkdir("./generated", { recursive: true });
 const result = writeServerModule(
     "./generated/server.mjs",
     {
@@ -397,7 +395,7 @@ requires `overwrite: true`. JavaScript options also accept `runtimeImport`.
 Set `includeBytes: true` to receive owned `result.bytes` captured under the
 writer's lock, on misses, hits and snapshot restoration. Render/import these bytes
 instead of reopening a shared output path after another build can replace it.
-Without this option, the result retains its existing `reused`/`manifestPath` shape.
+By default, results contain only `reused` and `manifestPath`.
 Changing the runtime import or target kind at a managed destination is rejected
 even with overwrite; use a new destination or explicitly reset the retained pair.
 Malformed manifests and output bytes that differ from their stored snapshots

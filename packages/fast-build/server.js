@@ -422,15 +422,12 @@ function writeServerAsset(outputPath, inputs, options, kind) {
         // Strict mode sorts only the reuse key; diagnostics follow caller source order.
         /** @type {import("./server.js").ServerAssetInputs} */
         const compileInputs =
-            "templateSources" in canonical
+            canonical.templateSources !== undefined
                 ? {
-                      entry: canonical.entry,
+                      ...canonical,
                       templateSources: /** @type {readonly string[]} */ (
                           inputs.templateSources
                       ),
-                      ...(inputs.templateSourcePolicy === "overwrite"
-                          ? { templateSourcePolicy: "overwrite" }
-                          : {}),
                   }
                 : canonical;
         const templates = templatesFromInputs(compileInputs, options.onWarning);
