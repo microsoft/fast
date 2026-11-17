@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Reuse persistent entry modules during CLI builds before parsing unchanged ordered authored sources, retaining caller-owned module bytes independently of request state and rendering options.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

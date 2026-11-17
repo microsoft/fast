@@ -2,5 +2,5 @@
     "entry": "entry.html",
     "state": "state.json",
     "output": "index.html",
-    "templates": "templates.html"
+    "templates": "server-templates.html"
 }
