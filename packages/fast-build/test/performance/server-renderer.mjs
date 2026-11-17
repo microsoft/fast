@@ -9,6 +9,7 @@ import { PerformanceObserver, performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { fixture, outputStats } from "./fixtures.mjs";
+import { profileNativeRendering, profilePhases } from "./native-profile.mjs";
 
 const require = createRequire(import.meta.url);
 const { values: args } = parseArgs({
@@ -20,6 +21,11 @@ const { values: args } = parseArgs({
         instances: { type: "string", default: "200" },
         warmup: { type: "string", default: "20" },
         "profile-directory": { type: "string" },
+        "profile-name": { type: "string", default: "native" },
+        "profile-phase": { type: "string", default: "buffer" },
+        "profile-duration-ms": { type: "string", default: "1000" },
+        "native-profiler": { type: "string", default: "none" },
+        workloads: { type: "string" },
         "native-addon": { type: "string" },
         "markers-v2": { type: "boolean", default: false },
         "attribute-name-strategy": { type: "string", default: "camelCase" },
@@ -45,6 +51,30 @@ function integer(name, minimum = 1) {
     );
     return value;
 }
+assert.ok(
+    ["all", ...profilePhases].includes(args["profile-phase"]),
+    "Invalid profile phase; use all, load, buffer, string or decode.",
+);
+assert.ok(
+    ["none", "sample", "perf"].includes(args["native-profiler"]),
+    "Invalid native profiler; use none, sample or perf.",
+);
+assert.ok(
+    integer("profile-duration-ms") <= 60_000,
+    "Profile duration must not exceed 60000 ms.",
+);
+assert.ok(
+    args["native-profiler"] === "none" || args["profile-directory"],
+    "Native sampling requires --profile-directory.",
+);
+assert.ok(
+    args["native-profiler"] !== "sample" || process.platform === "darwin",
+    "The sample profiler requires macOS.",
+);
+assert.ok(
+    args["native-profiler"] !== "perf" || process.platform === "linux",
+    "The perf profiler requires Linux.",
+);
 
 if (args.worker) await worker();
 else await main();
@@ -128,6 +158,21 @@ async function worker() {
     assert.equal(latestString, html);
     const warmMsPerRender = (warmEnd - warmStart) / iterations;
     const { outputBytes: _bytes, sha256: _hash, ...structure } = outputStats(html);
+    const profiles = args["profile-directory"]
+        ? await profileNativeRendering({
+              directory: args["profile-directory"],
+              name: args["profile-name"],
+              phase: args["profile-phase"],
+              durationMs: integer("profile-duration-ms"),
+              nativeProfiler: args["native-profiler"],
+              Program,
+              artifactPath: path.join(args.directory, "server.artifact.json"),
+              renderOptions,
+              program,
+              state,
+              bytes,
+          })
+        : [];
     console.log(
         JSON.stringify({
             reportVersion: 3,
@@ -165,6 +210,7 @@ async function worker() {
             memoryRetained,
             outputBytes: bytes.length,
             outputHash: hash(bytes),
+            profiles,
             outputStructure: {
                 ...structure,
                 dsdRoots: (html.match(/<template shadowrootmode=/g) ?? []).length,
@@ -184,10 +230,6 @@ async function main() {
         await fs.mkdir(directory, { recursive: true });
         profileDirectory = await fs.mkdtemp(path.join(directory, "fast-server-profile-"));
     }
-    const compilerStart = performance.now();
-    const { compileServerArtifact } = require("../../server.js");
-    require("../../wasm/microsoft_fast_build.js");
-    const compilerLoadMs = performance.now() - compilerStart;
     const workloadStart = performance.now();
     const workloads = {
         static: {
@@ -271,6 +313,35 @@ async function main() {
         },
         largeState: fixture("large_state_overlay", instances, 1, 2000),
     };
+    const selected = args.workloads?.split(",") ?? Object.keys(workloads);
+    assert.ok(
+        selected.length > 0 &&
+            selected.every(name => Object.hasOwn(workloads, name)) &&
+            new Set(selected).size === selected.length,
+        "Unknown or duplicate workloads. Available: " + Object.keys(workloads).join(","),
+    );
+    const workloadSetupMs = performance.now() - workloadStart;
+    const compilerStart = performance.now();
+    const { compileServerArtifact } = require("../../server.js");
+    require("../../wasm/microsoft_fast_build.js");
+    const compilerLoadMs = performance.now() - compilerStart;
+    const root = fileURLToPath(new URL("../../../../", import.meta.url));
+    let source;
+    try {
+        source = {
+            commit: execFileSync("git", ["rev-parse", "HEAD"], {
+                cwd: root,
+                encoding: "utf8",
+            }).trim(),
+            dirty:
+                execFileSync("git", ["status", "--porcelain"], {
+                    cwd: root,
+                    encoding: "utf8",
+                }).length > 0,
+        };
+    } catch {
+        source = { commit: null, dirty: null };
+    }
 
     const results = {
         reportVersion: 3,
@@ -278,13 +349,26 @@ async function main() {
         renderOptions,
         node: process.version,
         platform: process.platform + "/" + process.arch,
+        cpu: os.cpus()[0]?.model,
+        source,
+        addonPath: path.resolve(addonPath),
+        addonSha256: hash(await fs.readFile(addonPath)),
         samples,
         instances,
         iterations,
         warmupIterations,
         compilerLoadMs,
-        workloadSetupMs: performance.now() - workloadStart,
+        workloadSetupMs,
         profileDirectory,
+        profiling: profileDirectory
+            ? {
+                  phase: args["profile-phase"],
+                  durationMs: integer("profile-duration-ms"),
+                  nativeProfiler: args["native-profiler"],
+                  qualification:
+                      "Instrumented diagnostic passes run after ordinary measurements; their elapsed times are not benchmark comparisons. V8 CPU profiles do not resolve Rust stacks. Native samplers may include startup/tail activity. No exclusive-host or speedup claim.",
+              }
+            : null,
         addonBytes: (await fs.stat(addonPath)).size,
         wasmBytes: (
             await fs.stat(require.resolve("../../wasm/microsoft_fast_build_bg.wasm"))
@@ -293,30 +377,38 @@ async function main() {
     };
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-server-bench-"));
     try {
-        for (const [name, input] of Object.entries(workloads)) {
+        for (const name of selected) {
+            const input = workloads[name];
             await fs.writeFile(path.join(directory, "input.json"), JSON.stringify(input));
             const start = performance.now();
             const artifact = compileServerArtifact(input.entry, input.templates);
             const compileMs = performance.now() - start;
             await fs.writeFile(path.join(directory, "server.artifact.json"), artifact);
-            const record = { compileMs, artifactBytes: artifact.length, samples: [] };
+            const record = {
+                compileMs,
+                artifactBytes: artifact.length,
+                artifactSha256: hash(artifact),
+                samples: [],
+            };
             const expectedStateHash = hash(JSON.stringify(input.state));
             let expected;
             for (let sample = 0; sample < samples; sample++) {
-                const profileName = name + "-" + (sample + 1) + ".cpuprofile";
+                const profileName = name + "-" + (sample + 1);
                 const processStart = performance.now();
                 const response = execFileSync(
                     process.execPath,
                     [
                         "--expose-gc",
+                        fileURLToPath(import.meta.url),
                         ...(profileDirectory
                             ? [
-                                  "--cpu-prof",
-                                  "--cpu-prof-dir=" + profileDirectory,
-                                  "--cpu-prof-name=" + profileName,
+                                  "--profile-directory=" + profileDirectory,
+                                  "--profile-name=" + profileName,
+                                  "--profile-phase=" + args["profile-phase"],
+                                  "--profile-duration-ms=" + args["profile-duration-ms"],
+                                  "--native-profiler=" + args["native-profiler"],
                               ]
                             : []),
-                        fileURLToPath(import.meta.url),
                         "--worker=native",
                         "--directory=" + directory,
                         "--iterations=" + iterations,
@@ -339,8 +431,13 @@ async function main() {
                 expected ??= result.outputHash;
                 assert.equal(result.outputHash, expected);
                 if (profileDirectory) {
-                    result.cpuProfile = path.join(profileDirectory, profileName);
-                    await fs.stat(result.cpuProfile);
+                    if (result.profiles.length === 1) {
+                        result.cpuProfile = result.profiles[0].cpuProfile;
+                    }
+                    for (const profile of result.profiles) {
+                        assert.equal(profile.outputHash, result.outputHash);
+                        await fs.stat(profile.cpuProfile);
+                    }
                 }
                 record.samples.push(result);
             }
