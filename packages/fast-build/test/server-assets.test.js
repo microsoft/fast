@@ -51,12 +51,16 @@ test("old managed semantic schema 1 export lists are reused unchanged; JSON adop
         unchanged(result.manifestPath, before.manifest);
         const old = await import(pathToFileURL(output).href);
         assert.equal(Object.hasOwn(old, "renderEntryJson"), false);
+        assert.equal(
+            old.renderEntry({ value: "<&" }),
+            '<test-old><template shadowrootmode="open" shadowroot="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template></test-old>',
+        );
         const next = path.join(directory, "server-json.mjs");
         assert.equal(writeServerModule(next, source, configuration).reused, false);
         const current = await import(pathToFileURL(next).href);
         assert.equal(
             current.renderEntryJson('{"value":"<&"}'),
-            old.renderEntry({ value: "<&" }),
+            '<test-old><template shadowrootmode="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template></test-old>',
         );
         unchanged(output, before.output);
         unchanged(result.manifestPath, before.manifest);

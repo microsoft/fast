@@ -16,7 +16,7 @@ const runtime = pathToFileURL(require.resolve("../../server-runtime.mjs")).href;
 const baseline = JSON.parse(
     readFileSync(
         new URL(
-            "../../../../crates/microsoft-fast-build/benches/fixtures/expected-baseline.json",
+            "../../../../crates/microsoft-fast-build/benches/fixtures/expected-modern-baseline.json",
             import.meta.url,
         ),
         "utf8",

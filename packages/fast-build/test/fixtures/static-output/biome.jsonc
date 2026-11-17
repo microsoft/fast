@@ -1,0 +1,17 @@
+{
+    "root": false,
+    "extends": ["../../../../../biome.jsonc"],
+    "overrides": [
+        {
+            // Freeze the semantic-schema fixture and its recorded hash.
+            "includes": ["legacy-schema1.mjs"],
+            "formatter": { "enabled": false },
+            "assist": { "enabled": false }
+        },
+        {
+            // Preserve emitted whitespace and hydration markers in the byte oracles.
+            "includes": ["legacy.html", "modern.html"],
+            "formatter": { "enabled": false }
+        }
+    ]
+}

@@ -58,8 +58,8 @@ const html = renderEntry({ title: "Request-specific state" });
 const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
-Generated ESM embeds flat template instruction tables, not rendering functions.
-The server helper validates and loads them once. Supported plan/artifact schemas
+Generated ESM embeds semantic operation objects and named template references.
+The server helper validates and loads the plan once. Supported plan/artifact schemas
 govern loading.
 For strict template-only asset updates, use `writeServerModule` or
 `writeServerArtifact` at build time and persist the asset plus its `.inputs.json`
@@ -85,6 +85,18 @@ Retain supported generated assets across compiler-only upgrades.
 State must be acyclic JSON-shaped data, with finite numbers and ordinary data
 properties; getters, functions, class instances and nested `undefined` are rejected.
 Existing HTML bytes, server coercion and hydration markers are preserved.
+
+### Declarative Shadow DOM output
+
+Compiled component output uses `<template shadowrootmode="open">` by default.
+Set `shadowrootmode` to select an explicit mode.
+Other shadow-root attributes are preserved.
+
+Native parsing of this standard markup requires Chrome/Edge 111+, Firefox 123+
+or Safari/iOS 16.4+. Hydration uses the parser-created shadow roots; assigning HTML
+through `innerHTML` does not create Declarative Shadow DOM.
+See the [migration index](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md)
+for upgrade guidance.
 
 ### Fresh JSON request input
 

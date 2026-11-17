@@ -59,7 +59,7 @@ test("Vite SSR emits relocatable AOT code with transformed inputs and no compile
     const server = await import(pathToFileURL(filename).href);
     assert.equal(
         server.renderEntry({ title: "<&" }),
-        '<demo-card role="article"><template shadowrootmode="open" shadowroot="open"><h2>Vite transformed <!--fe:b-->&lt;&amp;<!--fe:/b--></h2></template></demo-card>',
+        '<demo-card role="article"><template shadowrootmode="open"><h2>Vite transformed <!--fe:b-->&lt;&amp;<!--fe:/b--></h2></template></demo-card>',
     );
     assert.match(server.renderEntry({ title: "second" }), /second/);
 });
