@@ -162,6 +162,7 @@ fast convert [options]
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
+| `--server-module="<path.mjs>"` | _(none)_ | Retain the compiled entry/registry and `.inputs.json` sidecar for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
@@ -205,6 +206,30 @@ Produces `output.html`:
   </body>
 </html>
 ```
+
+### Reuse preparation independently of rendering
+
+Retain a compiled entry and template registry across builds:
+
+```sh
+fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-module=generated/page.mjs
+```
+
+Every build validates current state and writes complete HTML. State, HTML output
+paths and render options can vary while the same authored templates reuse their
+compiled module.
+Without `--server-module`, builds continue compiling fresh.
+
+Keep `page.mjs` and `page.mjs.inputs.json` together in a trusted local build cache.
+Changed authored inputs compile the selected registry and replace the managed
+pair. Corrupt pairs and changed runtime import locations fail closed. These modules
+reference the installed helper by absolute file URL.
+
+Set `"server-module": "generated/page.mjs"` in `fast-build.config.json` to configure
+the same option. Config paths are relative to the config file; CLI paths are
+relative to the working directory. Managed paths must be separate from authored
+inputs and HTML output. See the [server module contract](./docs/server-modules.md)
+for cache identity, diagnostics and file ownership.
 
 ### Missing or omitted state
 

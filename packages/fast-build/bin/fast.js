@@ -17,6 +17,7 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
+    "server-module",
     "templates",
     "attribute-name-strategy",
     "markers_v2",
@@ -32,7 +33,7 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "type-source-import",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite", "typed"]);
-const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
+const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "server-module"]);
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
 /** @typedef {import("../wasm/microsoft_fast_build.js").FTemplateMetadata} FTemplateMetadata */
@@ -349,38 +350,7 @@ function parseFTemplates(html, filePath, wasm) {
 }
 
 /**
- * Resolve all HTML files matching a glob pattern.
- * Parses `<f-template name="...">` elements from each matched file and
- * returns one entry per template. A single file may yield multiple entries.
- * Warns (but does not error) if the base directory does not exist.
- * @param {string} pattern
- * @param {object} wasm - the loaded WASM module
- * @returns {(FTemplateMetadata & { name: string })[]}
- */
-function resolvePattern(pattern, wasm) {
-    const baseDir = staticPrefixDir(pattern);
-    if (!fs.existsSync(baseDir)) {
-        return [];
-    }
-    const allFiles = [];
-    walkHtmlFiles(baseDir, allFiles);
-    const results = [];
-    for (const file of allFiles) {
-        if (globMatch(pattern, file)) {
-            const html = fs.readFileSync(file, "utf8");
-            const templates = parseFTemplates(html, file, wasm);
-            results.push(...templates);
-        }
-    }
-    return results;
-}
-
-/**
- * Resolve all `.html` files matching a glob pattern, with no `<f-template>`
- * parsing — used by `fast convert --templates` to find whole files to
- * convert (as opposed to `fast build --templates`, which extracts individual
- * `<f-template>` elements from each matched file).
- * Warns (but does not error) if the base directory does not exist.
+ * Resolve all `.html` files matching a glob pattern without loading a parser.
  * @param {string} pattern
  * @returns {string[]}
  */
@@ -720,7 +690,23 @@ async function runBuild(args) {
     );
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
-    const output = resolveOption(args, config, configDir, "output", "output.html");
+    const output = resolveOption(args, config, configDir, "output", "output.html") ?? "output.html";
+    const serverModule = resolveOption(args, config, configDir, "server-module");
+    if (serverModule !== undefined && serverModule === "") {
+        throw new Error("--server-module requires a nonempty output path.");
+    }
+    const managedPaths = serverModule === undefined
+        ? []
+        : [serverModule, `${serverModule}.inputs.json`, `${serverModule}.lock`]
+            .map(filename => path.resolve(filename));
+    if (serverModule !== undefined) {
+        if (!managedPaths[0].endsWith(".mjs")) {
+            throw new Error("--server-module requires an .mjs output path.");
+        }
+        if (managedPaths.includes(path.resolve(output))) {
+            throw new Error("HTML output must not replace the persistent server module or its sidecars.");
+        }
+    }
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
     const stateFile = resolveOption(args, config, configDir, "state");
     const stateWasProvided =
@@ -736,11 +722,12 @@ async function runBuild(args) {
         process.exit(1);
     }
 
-    // Load WASM module first — needed only for parsing and compilation.
-    const wasm = require(BUILD_WASM_MODULE);
-
     // Resolve template files
     const templatesMap = {};
+    /** @type {string[]} */
+    const sources = [];
+    /** @type {string[]} */
+    const filenames = [];
     if (!templatesArg) {
         process.stderr.write(
             "Warning: --templates was not provided. No custom element templates will be loaded.\n"
@@ -748,13 +735,24 @@ async function runBuild(args) {
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
-            const matches = resolvePattern(pattern, wasm);
-            if (matches.length === 0) {
+            const wasm = serverModule === undefined ? require(BUILD_WASM_MODULE) : null;
+            const matches = resolveTemplateFiles(pattern);
+            const definitions = [];
+            for (const filename of matches) {
+                const source = fs.readFileSync(filename, "utf8");
+                if (serverModule !== undefined) {
+                    sources.push(source);
+                    filenames.push(filename);
+                } else {
+                    definitions.push(...parseFTemplates(source, filename, wasm));
+                }
+            }
+            if ((serverModule === undefined ? definitions : matches).length === 0) {
                 process.stderr.write(
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, ...definition } of matches) {
+            for (const { name, ...definition } of definitions) {
                 if (name in templatesMap) {
                     process.stderr.write(
                         `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
@@ -785,14 +783,41 @@ async function runBuild(args) {
         }
         stateContent = fs.readFileSync(stateFile, "utf8");
     }
+    if (serverModule !== undefined) {
+        if ([entry, stateFile, ...filenames].some(
+            filename => filename !== undefined && managedPaths.includes(path.resolve(filename)),
+        )) {
+            throw new Error("Persistent server module paths must not replace authored input files.");
+        }
+    }
 
     const { pathToFileURL } = require("node:url");
-    const { compileServerModule } = require("../server.js");
-    const source = compileServerModule(
-        entryContent,
-        templatesMap,
-        pathToFileURL(require.resolve("../server-runtime.mjs")).href,
-    );
+    const { compileServerModule, writeServerModule } = require("../server.js");
+    const runtimeImport = pathToFileURL(require.resolve("../server-runtime.mjs")).href;
+    let source;
+    if (serverModule === undefined) {
+        source = compileServerModule(entryContent, templatesMap, runtimeImport);
+    } else {
+        const result = writeServerModule(
+            serverModule,
+            {
+                entry: entryContent,
+                templateSources: sources,
+                templateSourcePolicy: "overwrite",
+            },
+            {
+                overwrite: true,
+                includeBytes: true,
+                runtimeImport,
+                onWarning({ sourceIndex, content }) {
+                    process.stderr.write(
+                        `Warning: <f-template> without a 'name' attribute in '${filenames[sourceIndex]}': ${content.trim()}\n`,
+                    );
+                },
+            },
+        );
+        source = Buffer.from(/** @type {Uint8Array} */ (result.bytes)).toString("utf8");
+    }
     const server = await import(
         `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
     );
@@ -824,6 +849,9 @@ function writeBuildUsage() {
         "                         Separate multiple patterns with commas.\n" +
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
+        '  --server-module="<path.mjs>"\n' +
+        "                         Persist compiled plans and exact-input sidecar;\n" +
+        "                         reuse before compiler loading on later builds.\n" +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
         '  --attribute-name-strategy="camelCase"\n' +

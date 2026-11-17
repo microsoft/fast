@@ -151,6 +151,327 @@ function withoutCompiler(target, output, source, configuration = options(target)
     return JSON.parse(result);
 }
 
+function build(directory, args, compilerDisabled = false) {
+    return execFileSync(
+        process.execPath,
+        compilerDisabled
+            ? [
+                  "-e",
+                  `${disableCompiler}
+                  const request = JSON.parse(process.argv[1]);
+                  process.argv = [process.execPath, request.cliPath, "build", ...request.args];
+                  require(request.cliPath);`,
+                  JSON.stringify({ cliPath, args }),
+              ]
+            : [cliPath, "build", ...args],
+        { cwd: directory, encoding: "utf8", timeout: 10_000 },
+    );
+}
+
+test("build retains raw-source plans across state/options changes and restores missing outputs without a compiler", async () => {
+    await inDirectory(directory => {
+        const entry = path.join(directory, "entry.html");
+        const templates = path.join(directory, "templates.html");
+        const state = path.join(directory, "state.json");
+        const output = path.join(directory, "output.html");
+        const module = path.join(directory, "page.mjs");
+        fs.writeFileSync(entry, "<my-card></my-card><p>{{title}}</p>");
+        fs.writeFileSync(
+            templates,
+            '<f-template name="my-card"><template><h2>{{title}}</h2></template></f-template>' +
+                '<f-template name="unused-card"><template><em>{{title}}</em></template></f-template>',
+        );
+        fs.writeFileSync(state, '{"title":"Cold 😀"}');
+        const args = [
+            "--entry=entry.html",
+            "--templates=templates.html",
+            "--state=state.json",
+            "--output=output.html",
+        ];
+        build(directory, args);
+        const expected = fs.readFileSync(output);
+        build(directory, [...args, "--server-module=page.mjs"]);
+        assert.deepEqual(fs.readFileSync(output), expected);
+        const manifest = `${module}.inputs.json`;
+        const before = stampPair(module, manifest);
+        const plan = JSON.parse(
+            before.output.bytes.toString("utf8").match(/const plan = (.*);\n/)[1],
+        );
+        assert.deepEqual(Object.keys(plan.components).sort(), ["my-card", "unused-card"]);
+        for (const reference of Object.values(plan.components)) {
+            assert.equal(typeof reference, "string");
+            const body = plan.templates[reference];
+            assert.match(body[0].html, /^<template shadowrootmode=/);
+            assert.deepEqual(body.at(-1), { type: "literal", html: "</template>" });
+        }
+        const recorded = JSON.parse(before.manifest.bytes);
+        assert.deepEqual(recorded.inputs, {
+            entry: fs.readFileSync(entry, "utf8"),
+            templateSources: [fs.readFileSync(templates, "utf8")],
+            templateSourcePolicy: "overwrite",
+        });
+        assert.equal(recorded.inputs.state, undefined);
+        fs.writeFileSync(state, '{"title":"Fresh & next"}');
+        build(directory, [...args, "--markers_v2", "--attribute-name-strategy=none"]);
+        const changedExpected = fs.readFileSync(output);
+        fs.unlinkSync(output);
+        build(
+            directory,
+            [
+                ...args,
+                "--server-module=page.mjs",
+                "--markers_v2",
+                "--attribute-name-strategy=none",
+            ],
+            true,
+        );
+        assert.deepEqual(fs.readFileSync(output), changedExpected);
+        unchanged(module, before.output);
+        unchanged(manifest, before.manifest);
+        fs.unlinkSync(module);
+        build(directory, [...args, "--server-module=page.mjs"], true);
+        assert.deepEqual(fs.readFileSync(module), before.output.bytes);
+        unchanged(manifest, before.manifest);
+        fs.writeFileSync(
+            templates,
+            '<f-template name="my-card"><template><strong>{{title}}</strong></template></f-template>',
+        );
+        assert.throws(() =>
+            build(directory, [...args, "--server-module=page.mjs"], true),
+        );
+        assert.deepEqual(fs.readFileSync(module), before.output.bytes);
+        build(directory, args);
+        const fallbackExpected = fs.readFileSync(output);
+        build(directory, [...args, "--server-module=page.mjs"]);
+        assert.deepEqual(fs.readFileSync(output), fallbackExpected);
+        assert.notDeepEqual(fs.readFileSync(manifest), before.manifest.bytes);
+        build(directory, [...args, "--server-module=page.mjs"], true);
+        fs.appendFileSync(entry, "<footer>{{title}}</footer>");
+        build(directory, [...args, "--server-module=page.mjs"]);
+        build(directory, args);
+        const entryExpected = fs.readFileSync(output);
+        build(directory, [...args, "--server-module=page.mjs"], true);
+        assert.deepEqual(fs.readFileSync(output), entryExpected);
+        const retained = fs.readFileSync(module);
+        fs.unlinkSync(manifest);
+        assert.throws(() =>
+            build(directory, [...args, "--server-module=page.mjs"], true),
+        );
+        assert.deepEqual(fs.readFileSync(module), retained);
+        build(directory, [...args, "--server-module=page.mjs"]);
+        assert.deepEqual(fs.readFileSync(output), entryExpected);
+        build(directory, [...args, "--server-module=page.mjs"], true);
+    });
+});
+
+test("build cache preserves ordered duplicate overwrite and empty registry semantics", async () => {
+    await inDirectory(directory => {
+        fs.writeFileSync(path.join(directory, "entry.html"), "<my-card></my-card>");
+        for (const [file, content] of [
+            ["first.html", "<p>first</p>"],
+            ["last.html", "<b>last</b>"],
+        ]) {
+            fs.writeFileSync(
+                path.join(directory, file),
+                `<f-template name="my-card"><template>${content}</template></f-template>`,
+            );
+        }
+        const args = ["--entry=entry.html", "--output=output.html"];
+        for (const pattern of [
+            "first.html,last.html",
+            "last.html,first.html",
+            "last.html,first.html,first.html",
+            "missing/*.html",
+        ]) {
+            build(directory, [...args, `--templates=${pattern}`]);
+            const expected = fs.readFileSync(path.join(directory, "output.html"));
+            const module = path.join(directory, "page.mjs");
+            if (fs.existsSync(module)) {
+                assert.throws(() =>
+                    build(
+                        directory,
+                        [...args, `--templates=${pattern}`, "--server-module=page.mjs"],
+                        true,
+                    ),
+                );
+            }
+            build(directory, [
+                ...args,
+                `--templates=${pattern}`,
+                "--server-module=page.mjs",
+            ]);
+            assert.deepEqual(
+                fs.readFileSync(path.join(directory, "output.html")),
+                expected,
+            );
+            build(
+                directory,
+                [...args, `--templates=${pattern}`, "--server-module=page.mjs"],
+                true,
+            );
+        }
+        fs.writeFileSync(path.join(directory, "entry.html"), "<p>empty registry</p>");
+        build(directory, [...args, "--server-module=page.mjs"]);
+        build(directory, [...args, "--server-module=page.mjs"], true);
+        assert.equal(
+            fs.readFileSync(path.join(directory, "output.html"), "utf8"),
+            "<p>empty registry</p>",
+        );
+    });
+});
+
+test("build cache fails closed for corrupt pairs, runtime changes and mixed targets without replacing HTML", async () => {
+    await inDirectory(directory => {
+        fs.writeFileSync(path.join(directory, "entry.html"), "<p>{{title}}</p>");
+        const args = [
+            "--entry=entry.html",
+            "--output=output.html",
+            "--server-module=page.mjs",
+        ];
+        const module = path.join(directory, "page.mjs");
+        const manifest = `${module}.inputs.json`;
+        build(directory, args);
+        const originalModule = fs.readFileSync(module);
+        const originalManifest = fs.readFileSync(manifest);
+        const sentinel = "Do not replace on failure";
+        fs.writeFileSync(path.join(directory, "output.html"), sentinel);
+        for (const mutate of [
+            () => fs.writeFileSync(manifest, "{broken"),
+            () => fs.appendFileSync(module, "\n// changed"),
+            () => {
+                const metadata = JSON.parse(originalManifest);
+                metadata.deployment.runtimeImport = "file:///different-runtime.mjs";
+                fs.writeFileSync(manifest, JSON.stringify(metadata));
+            },
+            () => {
+                const metadata = JSON.parse(originalManifest);
+                metadata.kind = "server-artifact";
+                metadata.deployment = {};
+                fs.writeFileSync(manifest, JSON.stringify(metadata));
+            },
+        ]) {
+            mutate();
+            assert.throws(() => build(directory, args));
+            assert.equal(
+                fs.readFileSync(path.join(directory, "output.html"), "utf8"),
+                sentinel,
+            );
+            fs.writeFileSync(module, originalModule);
+            fs.writeFileSync(manifest, originalManifest);
+        }
+        build(directory, args, true);
+    });
+});
+
+test("persistent build config resolves module paths and still validates every request and authored body", async () => {
+    await inDirectory(directory => {
+        const configDirectory = path.join(directory, "config");
+        fs.mkdirSync(configDirectory);
+        fs.writeFileSync(path.join(configDirectory, "entry.html"), "<p>{{title}}</p>");
+        fs.writeFileSync(path.join(configDirectory, "state.json"), '{"title":"Valid"}');
+        fs.writeFileSync(
+            path.join(configDirectory, "build.json"),
+            JSON.stringify({
+                entry: "entry.html",
+                state: "state.json",
+                output: "output.html",
+                "server-module": "page.mjs",
+                templates: "templates.html",
+            }),
+        );
+        fs.writeFileSync(
+            path.join(configDirectory, "templates.html"),
+            '<f-template name="unused-card"><template><p>unused</p></template></f-template>',
+        );
+        const args = ["--config=config/build.json"];
+        build(directory, args);
+        const module = path.join(configDirectory, "page.mjs");
+        const previous = stampPair(module, `${module}.inputs.json`);
+        fs.writeFileSync(path.join(configDirectory, "state.json"), '{"bad":1e999}');
+        assert.throws(() => build(directory, args, true));
+        unchanged(module, previous.output);
+        unchanged(`${module}.inputs.json`, previous.manifest);
+        fs.writeFileSync(
+            path.join(configDirectory, "state.json"),
+            '{"title":"Recovered"}',
+        );
+        build(directory, args, true);
+        assert.match(
+            fs.readFileSync(path.join(configDirectory, "output.html"), "utf8"),
+            /Recovered/,
+        );
+        fs.writeFileSync(
+            path.join(configDirectory, "templates.html"),
+            '<f-template name="unused-card"><template><f-when value="{{false}}">{{}}</f-when></template></f-template>',
+        );
+        assert.throws(() => build(directory, args));
+        unchanged(module, previous.output);
+        unchanged(`${module}.inputs.json`, previous.manifest);
+        assert.throws(() => build(directory, [...args, "--server-module="]));
+        assert.throws(() => build(directory, [...args, "--server-module=wrong.js"]));
+        assert.throws(() => build(directory, [...args, "--output=config/page.mjs"]));
+        assert.throws(() => build(directory, [...args, "--entry=config/page.mjs"]));
+        unchanged(module, previous.output);
+    });
+});
+
+test("build renders the writer-owned snapshot if another writer replaces the path after publication", async () => {
+    await inDirectory(directory => {
+        fs.writeFileSync(path.join(directory, "entry.html"), "<p>{{title}}</p>");
+        fs.writeFileSync(path.join(directory, "state.json"), '{"title":"Own snapshot"}');
+        const args = [
+            "--entry=entry.html",
+            "--state=state.json",
+            "--output=output.html",
+            "--server-module=page.mjs",
+        ];
+        execFileSync(
+            process.execPath,
+            [
+                "-e",
+                `const request = JSON.parse(process.argv[1]);
+            const fs = require("node:fs");
+            const writer = require(request.serverPath);
+            const write = writer.writeServerModule;
+            writer.writeServerModule = function(...args) {
+                const result = write(...args);
+                fs.writeFileSync(args[0],
+                    "export function renderEntry() { return 'Another build'; }");
+                return result;
+            };
+            process.argv = [process.execPath, request.cliPath, "build", ...request.args];
+            require(request.cliPath);`,
+                JSON.stringify({ cliPath, serverPath, args }),
+            ],
+            { cwd: directory },
+        );
+        assert.match(
+            fs.readFileSync(path.join(directory, "output.html"), "utf8"),
+            /Own snapshot/,
+        );
+        assert.throws(() => build(directory, args));
+    });
+});
+
+test("writer output snapshots are owned on both fresh writes and exact reuse", async () => {
+    await inDirectory(directory => {
+        for (const target of targets) {
+            const output = path.join(directory, `snapshot.${target.ext}`);
+            const configuration = options(target, { includeBytes: true });
+            const cold = target.write(output, inputs, configuration);
+            assert.equal(cold.reused, false);
+            assert.deepEqual(Buffer.from(cold.bytes), fs.readFileSync(output));
+            cold.bytes.fill(0);
+            const expected = fs.readFileSync(output);
+            const hit = target.write(output, inputs, configuration);
+            assert.equal(hit.reused, true);
+            assert.deepEqual(Buffer.from(hit.bytes), expected);
+            hit.bytes.fill(0);
+            assert.deepEqual(fs.readFileSync(output), expected);
+        }
+    });
+});
+
 function withRenameFailure(target, output, source, failRollback = false) {
     execFileSync(
         process.execPath,

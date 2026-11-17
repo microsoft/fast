@@ -66,6 +66,15 @@ For strict template-only asset updates, use `writeServerModule` or
 manifest. Unchanged authored inputs reuse exact existing bytes without compilation.
 Low-level pure compiler calls do not provide cross-encoder persistence.
 
+For CLI page builds, add `--server-module=generated/page.mjs` to `fast build`
+and retain that file with its `.inputs.json` sidecar. Unchanged ordered raw
+sources skip parsing and compilation, while each build validates fresh state and
+renders complete HTML. State files, marker versions and attribute-name strategies
+are not compilation keys. Changed sources compile the full selected registry;
+missing modules restore their byte snapshot. Corruption or changed helper import
+paths fail closed. These CLI modules use a local absolute helper URL; use the
+build-time API above for portable deployment modules.
+
 The generated module imports only the FAST server helper. Bundle that helper
 with the server or deploy it from the matching `@microsoft/fast-build` package.
 Retain supported generated assets across compiler-only upgrades.
@@ -157,7 +166,8 @@ switching targets requires workload qualification as well as markup parity.
 Use `renderEntry` for entries, `renderHost` for named hosts and `renderShadow`
 for component-state DSD fragments. Use `renderTemplate` for template-context
 root-host attribute handling. Each returns a complete synchronous string.
-`fast build` always compiles and executes server JavaScript; remove `--aot`.
+`fast build` executes server JavaScript and writes complete HTML. It compiles
+fresh unless a persistent module path is configured.
 The application owns build invalidation, module/artifact loading and deployment activation.
 See the [migration guidance](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/migration.md).
 

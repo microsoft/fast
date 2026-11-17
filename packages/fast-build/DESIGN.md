@@ -155,12 +155,36 @@ there is no streaming API or JavaScript output-assembly change.
 
 ## CLI
 
-`fast build` loads entry/registry files, compiles semantic plans, imports their ESM,
+`fast build` loads entry/registry files, obtains a semantic server module, imports its ESM,
 parses optional state JSON, executes `renderEntry` and writes complete HTML.
 It is a build tool, not a request handler, and always produces complete HTML.
 Omitted state becomes an empty object, without implicitly loading state.json.
 Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
 presence overrides config, including empty paths. Boolean options are validated.
+
+Optional `--server-module` scopes retained preparation to the entry plus ordered
+raw registry sources, independently of request state, output location and render
+options. The persistent writer qualifies exact input/snapshot pairs
+before loading WASM or parsing definitions. CLI build uses explicit
+`templateSourcePolicy: "overwrite"`: source order/multiplicity are canonical inputs,
+later duplicate names overwrite earlier ones, and empty registries are permitted.
+The strict conversion/writer default sorts sources and rejects duplicates and
+empty registries. Both build modes share file discovery; uncached builds parse
+immediately, while cached builds pass raw sources to the writer. Misses compile
+the complete selected registry.
+
+Every build validates current state, renders complete HTML and replaces the HTML output.
+The CLI requests owned writer result bytes (`includeBytes: true`), captured while
+the output lock is held; it never reopens the module after unlocking. A different
+build replacing the path cannot substitute its module into the current render.
+Changed authored inputs authorize replacement of the managed module pair;
+missing modules restore stored bytes and missing manifests compile fresh.
+Corruption, mixed targets and deployment changes remain fail-closed.
+Module, sidecar and lock paths are resolved once and checked against authored
+inputs and HTML output.
+Glob discovery/file reads occur on hits; parser diagnostics occur only on misses.
+CLI modules record the installed helper's absolute import URL. Authored inputs
+and deployment configuration determine reuse of the recorded module bytes.
 
 `fast convert --syntax=server-js` links all named template inputs into one ESM
 module. It rejects duplicate names, empty registries, wildcard output paths and
