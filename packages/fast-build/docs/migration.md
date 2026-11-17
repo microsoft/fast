@@ -3,12 +3,10 @@
 Migration guides cover the current publish, not a permanent history of changes.
 For current APIs and behavior, see the [server module contract](./server-modules.md).
 
-## Current publish
+## 0.20.0
 
-- [Compiled semantic server rendering](./migration/aot-server-rendering.md)
+- [Server modules and CLI](./migration/aot-server-rendering.md)
 - [Execution-only typed native artifacts](./migration/typed-native-plans.md)
-- [Plugin integrations](./migration/plugin-integrations.md)
-- [Stylesheet composition](./migration/stylesheet-composition.md)
 
 ## Release preparation
 

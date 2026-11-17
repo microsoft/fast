@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add explicit fresh JSON render methods with full-graph validation to semantic server modules while preserving object and prepared-state APIs.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
