@@ -158,10 +158,11 @@ test("changed inputs require overwrite and compilation failures preserve the old
         );
         unchanged(output, before);
         fs.chmodSync(output, 0o600);
+        const mode = fs.statSync(output).mode & 0o777;
         assert.deepEqual(writeServerArtifact(output, changed, { overwrite: true }), {
             reused: false,
         });
-        assert.equal(fs.statSync(output).mode & 0o777, 0o600);
+        assert.equal(fs.statSync(output).mode & 0o777, mode);
         assert.equal(
             render(fs.readFileSync(output), { title: "Next" }),
             "<strong>Next</strong>",
