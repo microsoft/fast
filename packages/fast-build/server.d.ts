@@ -26,7 +26,7 @@ export type ServerAssetInputs =
       };
 
 export interface ServerAssetWriteOptions {
-    /** Existing changed or unmanaged output requires explicit permission to replace. */
+    /** Changing existing authored inputs requires explicit permission to replace. */
     overwrite?: boolean;
     /** Return owned output bytes captured under the writer lock, without reopening the path. */
     includeBytes?: boolean;
@@ -35,14 +35,13 @@ export interface ServerAssetWriteOptions {
 }
 
 export interface ServerAssetWriteResult {
-    /** Includes exact-byte restoration when an unchanged managed output is missing. */
+    /** True when embedded authored inputs match and existing bytes are reused. */
     reused: boolean;
-    manifestPath: string;
     /** Present only with includeBytes; independent of subsequent output-file changes. */
     bytes?: Uint8Array;
 }
 
-/** Persist native bytes and an exact authored-input/output-byte sidecar. */
+/** Atomically persist one native artifact containing authored inputs and compiled operations. */
 export function writeServerArtifact(
     outputPath: string,
     inputs: ServerAssetInputs,

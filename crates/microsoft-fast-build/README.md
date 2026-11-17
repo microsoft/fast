@@ -79,9 +79,14 @@ preparation allocates a retained copy.
 See [prepared-state ownership](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
-For persisted asset reuse, use the npm package's `writeServerArtifact` and retain
-its asset plus authored-input manifest, or implement application-owned persistence
-around Rust compilation.
+The compiler emits one `server.artifact.json` envelope with format
+`fast-server-native`, schema 2, authored `inputs` and an executable `program`.
+Loading discards the build metadata before preparing runtime operations; request
+state is supplied separately. Published schema-1 programs remain loadable.
+For persisted asset reuse, use the npm package's `writeServerArtifact`, or implement
+application-owned persistence around Rust compilation. Matching embedded inputs
+skip compilation; deleting the artifact requires recompilation. The build cache
+does not independently verify a valid edited program against its authored source.
 
 ## Template tooling
 

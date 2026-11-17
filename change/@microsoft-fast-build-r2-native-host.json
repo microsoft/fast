@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "Require native server rendering with source-built Node hosting, compiled JSON artifacts, and Buffer-only requests with constructor-fixed options.",
+  "comment": "Require native server rendering with source-built Node hosting, single-file JSON artifacts containing authored inputs and compiled plans, and Buffer-only requests with constructor-fixed options.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

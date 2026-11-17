@@ -46,17 +46,13 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     assert.ok(bytes instanceof Uint8Array);
     const ir = JSON.parse(Buffer.from(bytes).toString("utf8"));
     assert.equal(ir.format, "fast-server-native");
-    assert.equal(ir.version, 1);
-    assert.deepEqual(Object.keys(ir).sort(), [
-        "components",
-        "entry",
-        "format",
-        "templates",
-        "version",
-    ]);
-    assert.ok(Array.isArray(ir.entry));
-    assert.equal(typeof ir.templates, "object");
-    assert.equal(Buffer.from(bytes).includes(Buffer.from("f-when")), false);
+    assert.equal(ir.version, 2);
+    assert.deepEqual(Object.keys(ir).sort(), ["format", "inputs", "program", "version"]);
+    assert.ok(Array.isArray(ir.program.entry));
+    assert.equal(typeof ir.program.templates, "object");
+    assert.equal(JSON.stringify(ir.program).includes("f-when"), false);
+    assert.equal(ir.inputs.entry, entry);
+    assert.equal(ir.inputs.templates["native-card"].content, templates["native-card"]);
     const server = new NativeProgram(Buffer.from(bytes));
     const directory = path.relative(
         process.cwd(),
@@ -64,7 +60,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
     );
     fs.mkdirSync(directory);
     try {
-        const artifact = path.join(directory, "server.json");
+        const artifact = path.join(directory, "server.artifact.json");
         fs.writeFileSync(artifact, bytes);
         for (const state of [
             {
@@ -93,7 +89,7 @@ test("Node-compiled executable artifacts deploy to a source-free native Rust hos
                     .toString("utf8"),
             );
         }
-        fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 2 }));
+        fs.writeFileSync(artifact, JSON.stringify({ ...ir, version: 99 }));
         assert.throws(
             () =>
                 execFileSync(executable, [artifact], {
@@ -115,7 +111,7 @@ test("native output preserves frozen UTF-8 workload contracts", async () => {
     const directory = path.join(__dirname, `.native-frozen-${process.pid}`);
     fs.mkdirSync(directory);
     try {
-        const artifact = path.join(directory, "server.json");
+        const artifact = path.join(directory, "server.artifact.json");
         for (const record of baseline.filter(record => record.mode === "v3")) {
             const input = fixture(
                 record.case,
@@ -203,7 +199,7 @@ test("packaged Rust crates accept compatible native assets after authored-manife
     const executable = buildHost();
     const directory = fs.mkdtempSync(path.join(__dirname, ".packaged-native-"));
     try {
-        const artifact = path.join(directory, "server.json");
+        const artifact = path.join(directory, "server.artifact.json");
         fs.writeFileSync(artifact, compileServerArtifact("<p>{{title}}</p>"));
         const html = execFileSync(executable, [artifact], {
             encoding: "utf8",

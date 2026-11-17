@@ -54,6 +54,64 @@ fn semantic_plan(plan: &Value) -> String {
 }
 
 #[test]
+fn consolidated_inputs_are_build_metadata_not_runtime_template_sources() {
+    let locator = common::make_locator_with_host_attrs(&[(
+        "test-card",
+        "<b>{{title}}</b>",
+        &[("role", Some("group"))],
+    )]);
+    let bytes = compile_server_artifact("<test-card></test-card>", &locator).unwrap();
+    let mut envelope: Value = serde_json::from_slice(&bytes).unwrap();
+    assert_eq!(envelope["version"], 2);
+    assert_eq!(envelope["inputs"]["entry"], "<test-card></test-card>");
+    assert_eq!(
+        envelope["inputs"]["templates"]["test-card"]["content"],
+        "<b>{{title}}</b>"
+    );
+    assert_eq!(
+        envelope["inputs"]["templates"]["test-card"]["hostAttributes"],
+        json!([{"name":"role","value":"group"}])
+    );
+    let expected = CompiledArtifact::load(&bytes)
+        .unwrap()
+        .render_entry_json(r#"{"title":"Kept"}"#, &Default::default())
+        .unwrap();
+    envelope["inputs"]["entry"] = json!("{{}}");
+    envelope["inputs"]["templates"] = json!({"broken":{"content":"{{}}"}});
+    let program = CompiledArtifact::load(envelope.to_string().as_bytes()).unwrap();
+    drop((envelope, bytes, locator));
+    assert_eq!(
+        program
+            .render_entry_json(r#"{"title":"Kept"}"#, &Default::default())
+            .unwrap(),
+        expected
+    );
+}
+
+#[test]
+fn consolidated_envelopes_reject_missing_or_malformed_build_metadata() {
+    let bytes = compile_server_artifact("ok", &common::make_locator(&[])).unwrap();
+    let original: Value = serde_json::from_slice(&bytes).unwrap();
+    for inputs in [
+        json!(null),
+        json!({}),
+        json!({"entry":0,"templates":{}}),
+        json!({"entry":"","templates":[]}),
+        json!({"entry":"","templateSources":[0]}),
+        json!({"entry":"","templates":{},"state":{}}),
+    ] {
+        let mut envelope = original.clone();
+        envelope["inputs"] = inputs;
+        assert_eq!(
+            CompiledArtifact::load(envelope.to_string().as_bytes())
+                .unwrap_err()
+                .code,
+            "invalid-artifact"
+        );
+    }
+}
+
+#[test]
 fn fresh_json_preserves_binary64_values_and_decimal_output() {
     let bytes = compile_server_artifact(
         r#"<p title="{{value}}" data-joined="pre {{value}}">{{value}}</p>"#,
@@ -84,7 +142,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         let entry = "<section class=\"panel\"><h2>Static &amp; text</h2><p title='fixed'>Payload</p><br /></section>\n".repeat(count);
         let bytes = compile_server_artifact(&entry, &locator).unwrap();
         let ir: Value = serde_json::from_slice(&bytes).unwrap();
-        let body = &ir["entry"];
+        let body = &ir["program"]["entry"];
         assert_eq!(
             body,
             &json!([{"type":"literal","html":entry}]),
@@ -93,7 +151,7 @@ fn static_markup_does_not_expand_into_per_tag_rendering_code() {
         let artifact = CompiledArtifact::load(&bytes).unwrap();
         let source = artifact_json(&entry, &locator).unwrap();
         assert!(
-            source.len() < entry.len() * 3 / 2,
+            ir["program"].to_string().len() < entry.len() * 3 / 2,
             "static output expanded into generalized operations"
         );
         assert_eq!(
@@ -374,7 +432,9 @@ fn native_semantic_schema_loads_without_execution_tables_or_build_metadata() {
     );
     let emitted = compile_server_artifact("{{value}}", &common::make_locator(&[])).unwrap();
     let expected: Value = serde_json::from_slice(bytes).unwrap();
-    assert_eq!(serde_json::from_slice::<Value>(&emitted).unwrap(), expected);
+    let envelope: Value = serde_json::from_slice(&emitted).unwrap();
+    assert_eq!(envelope["program"]["entry"], expected["entry"]);
+    assert_eq!(envelope["inputs"]["entry"], "{{value}}");
 }
 
 #[test]
@@ -385,10 +445,13 @@ fn component_templates_share_content_but_preserve_distinct_host_defaults() {
         ("two-card", &content, &[("role", Some("note"))]),
     ]);
     let bytes = compile_server_artifact("", &locator).unwrap();
-    assert!(bytes.len() < 50_000, "shared component content expanded");
     let plan: Value = serde_json::from_slice(&bytes).unwrap();
-    assert_eq!(plan["templates"].as_object().unwrap().len(), 3);
-    assert!(plan["components"]
+    assert!(
+        plan["program"].to_string().len() < 50_000,
+        "shared component content expanded"
+    );
+    assert_eq!(plan["program"]["templates"].as_object().unwrap().len(), 3);
+    assert!(plan["program"]["components"]
         .as_object()
         .unwrap()
         .values()
@@ -424,8 +487,8 @@ fn shared_component_metadata_has_a_bounded_native_expansion() {
     )]);
     let bytes = compile_server_artifact("", &locator).unwrap();
     let mut plan: Value = serde_json::from_slice(&bytes).unwrap();
-    let reference = plan["components"]["test-card"].clone();
-    plan["components"] = Value::Object(
+    let reference = plan["program"]["components"]["test-card"].clone();
+    plan["program"]["components"] = Value::Object(
         (0..100)
             .map(|index| (format!("test-card-{index}"), reference.clone()))
             .collect(),
@@ -728,7 +791,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for (field, value) in [
         ("version", json!(0)),
-        ("version", json!(2)),
+        ("version", json!(4)),
         ("version", json!(3)),
         ("version", json!(99)),
         ("version", json!("1")),
@@ -750,32 +813,34 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     for mutate in 0..17 {
         let mut v = original.clone();
         match mutate {
-            0 => v["entry"] = json!(999),
-            1 => v["entry"][0]["type"] = json!("eval"),
-            2 => v["entry"][0] = json!({"type":"template","name":"missing"}),
-            3 => v["entry"][0]["path"] = json!([]),
+            0 => v["program"]["entry"] = json!(999),
+            1 => v["program"]["entry"][0]["type"] = json!("eval"),
+            2 => v["program"]["entry"][0] = json!({"type":"template","name":"missing"}),
+            3 => v["program"]["entry"][0]["path"] = json!([]),
             4 => {
-                v["entry"][0] = json!({
+                v["program"]["entry"][0] = json!({
                     "type":"when","template":"missing",
                     "condition":{"type":"compare","operator":"evil","path":["x"],"value":{"type":"path","path":["y"]}}
                 })
             }
-            5 => v["entry"] = json!({}),
+            5 => v["program"]["entry"] = json!({}),
             6 => v["unexpected"] = json!(true),
-            7 => v["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
-            8 => v["entry"][0]["unexpected"] = json!(true),
-            9 => v["entry"][0] = json!({"type":"element"}),
+            7 => v["program"]["components"] = json!({"bad":{"shadow":999,"host":0,"tag":""}}),
+            8 => v["program"]["entry"][0]["unexpected"] = json!(true),
+            9 => v["program"]["entry"][0] = json!({"type":"element"}),
             10 => {
-                v["entry"][0] = json!({"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"missing"})
+                v["program"]["entry"][0] = json!({"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"missing"})
             }
             11 => {
-                v["entry"][0] = json!({"type":"when","condition":{"type":"truthy","path":["x"]},"template":"missing"})
+                v["program"]["entry"][0] = json!({"type":"when","condition":{"type":"truthy","path":["x"]},"template":"missing"})
             }
-            12 => v["components"] = json!({"bad":"missing"}),
-            13 => v["templates"] = json!({"unused":[{"type":"template","name":"missing"}]}),
-            14 => v["entry"][0] = json!(["call", 0]),
-            15 => v["entry"][0] = json!(["fragment", "missing"]),
-            _ => v["entry"][0] = json!({"type":"template","name":0}),
+            12 => v["program"]["components"] = json!({"bad":"missing"}),
+            13 => {
+                v["program"]["templates"] = json!({"unused":[{"type":"template","name":"missing"}]})
+            }
+            14 => v["program"]["entry"][0] = json!(["call", 0]),
+            15 => v["program"]["entry"][0] = json!(["fragment", "missing"]),
+            _ => v["program"]["entry"][0] = json!({"type":"template","name":0}),
         }
         assert_eq!(
             CompiledArtifact::load(v.to_string().as_bytes())
@@ -794,7 +859,7 @@ fn load_rejects_incompatible_malformed_and_deep_artifacts_without_panics() {
     for _ in 0..70 {
         cond = json!({"type":"and","left":cond,"right":{"type":"truthy","path":["x"]}});
     }
-    v["entry"][0] = json!({"type":"when","condition":cond,"template":"missing"});
+    v["program"]["entry"][0] = json!({"type":"when","condition":cond,"template":"missing"});
     assert!(CompiledArtifact::load(v.to_string().as_bytes()).is_err());
 }
 
@@ -1582,7 +1647,7 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
     let original: Value = serde_json::from_slice(&bytes).unwrap();
     for depth in [128, 129] {
         let mut ir = original.clone();
-        ir["entry"] = json!([{"type":"template","name":"next0"}]);
+        ir["program"]["entry"] = json!([{"type":"template","name":"next0"}]);
         let mut templates = serde_json::Map::new();
         for index in 0..depth {
             let body = if index + 1 == depth {
@@ -1592,7 +1657,7 @@ fn native_body_depth_accepts_128_nested_calls_but_not_129() {
             };
             templates.insert(format!("next{index}"), body);
         }
-        ir["templates"] = json!(templates);
+        ir["program"]["templates"] = json!(templates);
         let artifact = CompiledArtifact::load(ir.to_string().as_bytes()).unwrap();
         let native = artifact.render_entry(&JsonValue::Null, &Default::default());
         if depth == 128 {
@@ -1619,7 +1684,7 @@ fn deployment_activation_preserves_in_flight_handles_and_owned_results() {
     let state = parse_render_state(r#"{"value":"request"}"#).unwrap();
     let completed = active.render_entry(&state, &Default::default()).unwrap();
     let mut incompatible: Value = serde_json::from_slice(&new).unwrap();
-    incompatible["version"] = json!(2);
+    incompatible["version"] = json!(99);
     assert_eq!(
         CompiledArtifact::load(incompatible.to_string().as_bytes())
             .unwrap_err()

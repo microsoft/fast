@@ -37,7 +37,7 @@ Compile trusted templates during the application build:
 import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
 writeServerArtifact(
-    "./generated/server.json",
+    "./generated/server.artifact.json",
     {
         entry: "<my-card></my-card>",
         templates: { "my-card": "<h2>{{title}}</h2>" },
@@ -48,7 +48,7 @@ writeServerArtifact(
 
 `compileServerArtifact(entry, templates)` returns a fresh `Uint8Array` for
 in-memory compilation. `writeServerArtifact` creates parent directories and
-persists the artifact with its exact-input `.inputs.json` sidecar.
+persists authored `inputs` and the compiled `program` together in one artifact.
 Both are build-time JavaScript APIs backed by the Rust/WASM compiler.
 Do not import the compiler into the request dependency graph.
 
@@ -63,7 +63,7 @@ import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
 const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
-const program = new Program(readFileSync("./generated/server.json"), {
+const program = new Program(readFileSync("./generated/server.artifact.json"), {
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
 });
@@ -397,7 +397,7 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 | `--entry` | `index.html` | Entry HTML template to render |
 | `--state` | `{}` when omitted | Optional JSON state file; no `state.json` is loaded implicitly. An explicit path must exist. |
 | `--native-addon` | `FAST_NATIVE_ADDON` | Required source-built Node addon path |
-| `--server-artifact` | _(none)_ | Persist native JSON and exact-input sidecar |
+| `--server-artifact` | _(none)_ | Persist authored inputs and compiled native plans in one JSON artifact |
 | `--output` | `output.html` | Where to write the rendered HTML |
 | `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |
 | `--attribute-name-strategy` | `camelCase` | How to map attribute names to properties |

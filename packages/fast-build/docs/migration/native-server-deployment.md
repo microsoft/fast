@@ -7,10 +7,13 @@ template artifact with the new compiler version.
 1. Source-build the Node addon for each deployment OS/architecture from matching
    reviewed FAST sources. Provision it explicitly; the npm package neither ships
    platform binaries nor downloads them during installation.
-2. Clean the application-owned generated artifacts and their `.inputs.json`
-   sidecars in the build output. Generate `server.json` with `writeServerArtifact`
-   or `compileServerArtifact`; registry-only CLI conversion uses `server-native`.
-   Overwrite permission alone does not force regeneration of unchanged inputs.
+2. Clean the application-owned generated artifacts in the build output. Generate
+   `server.artifact.json` with `writeServerArtifact` or `compileServerArtifact`;
+   registry-only CLI conversion uses `server-native`. The compiler emits schema 2,
+   consolidating authored `inputs` and compiled `program` in one file. No sidecar or
+   Base64 snapshot is needed. Missing artifacts recompile; valid edited programs are
+   not independently compared against their authored source. Overwrite permission
+   alone does not force regeneration of matching embedded inputs.
 3. Configure an explicit addon path through `loadNativeHost`, CLI `--native-addon`
    or `FAST_NATIVE_ADDON`. Construct each program with artifact bytes and fixed
    marker/naming/DSD/output/step policies.

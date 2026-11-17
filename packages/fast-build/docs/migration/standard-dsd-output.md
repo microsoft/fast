@@ -72,8 +72,7 @@ carry pre-upgrade generated output into this deployment.
   in newly compiled output. Upgrade those consumers before deploying new assets.
 - `writeServerArtifact` intentionally reuse unchanged
   managed assets even after a compiler upgrade. For this migration, remove both
-  the application-owned generated asset and its `.inputs.json`
-  sidecar during a controlled clean build, then regenerate and deploy them together.
+  the application-owned generated artifact during a controlled clean build, then regenerate and deploy them together.
   `overwrite: true` alone does not bypass unchanged-input reuse.
 - The `fast-server-native` semantic schema remains version 1.
   No loader inspection, legacy-output adapter or compiler fingerprint is added.

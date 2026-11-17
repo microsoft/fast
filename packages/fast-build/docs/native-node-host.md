@@ -29,7 +29,7 @@ import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
 const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
-const program = new Program(readFileSync("./generated/server.json"), {
+const program = new Program(readFileSync("./generated/server.artifact.json"), {
     markersV2: true,
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
@@ -59,11 +59,13 @@ instances when requests require different policies.
 
 ## Errors, limits and lifetimes
 
-`fast-server-native` semantic schema 1 artifacts remain independent of compiler
-fingerprints. The wire format uses named operation objects, a required `entry`,
+`fast-server-native` semantic schemas 1 and 2 remain independent of compiler
+fingerprints. The compiled `program` uses named operation objects, a required `entry`,
 named `templates` and component-name references to complete DSD templates, with
 optional `host-attributes` metadata. The native loader retains its private indexed
-execution layout; only semantic schema 1 artifacts are accepted.
+execution layout. The compiler emits schema 2 with authored `inputs` and a compiled
+`program`. Loading discards build metadata before preparing runtime operations;
+request methods do not retain or examine it. Schema-1 programs remain accepted.
 Malformed/unsupported artifacts are rejected, with no compilation fallback.
 State validates fully even when unused; native nesting/node limits remain 64 and
 1,000,000. Default request budgets are 64 MiB output and 1,000,000 steps.
@@ -92,7 +94,7 @@ independent workers are correctness tests, not a heap/leak certification.
 
 The host delegates to the shared typed native executor and its fresh-JSON APIs,
 including bounded attribute writes. It does not duplicate native execution or
-retain a separate state-borrowing implementation. Artifacts remain execution-only;
+retain a separate state-borrowing implementation. Runtime loading is execution-only;
 build-time JavaScript APIs compile authored templates into native artifacts.
 
 The npm package contains the facade, types and source-build script,

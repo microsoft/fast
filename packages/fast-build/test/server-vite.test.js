@@ -39,10 +39,10 @@ test("Vite emits relocatable native artifact data with transformed inputs", asyn
                     });
                     this.emitFile({
                         type: "asset",
-                        fileName: "server.json",
+                        fileName: "server.artifact.json",
                         source: bytes,
                     });
-                    return "export const artifact = 'server.json';";
+                    return "export const artifact = 'server.artifact.json';";
                 },
             },
         ],
@@ -59,7 +59,7 @@ test("Vite emits relocatable native artifact data with transformed inputs", asyn
     const relocated = path.join(directory, "relocated");
     await fs.rename(path.join(directory, "output"), relocated);
     await fs.rm(input);
-    const filename = path.join(relocated, "server.json");
+    const filename = path.join(relocated, "server.artifact.json");
     const source = await fs.readFile(filename, "utf8");
     assert.doesNotMatch(source, /WebAssembly|__BUILD_LABEL__/);
     assert.equal(source.includes(directory), false);

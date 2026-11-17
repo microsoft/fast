@@ -5,7 +5,7 @@
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body. `compile_server_artifact` serializes UTF-8 JSON
-`fast-server-native` semantic schema 1 and validates it through the native loader.
+`fast-server-native` semantic schema 2 and validates it through the native loader.
 The wire representation is separate from private lowering and execution.
 One compiler and one Rust executor serve native Rust and Node hosts.
 
@@ -90,7 +90,11 @@ Load peak memory includes both transient JSON and the prepared plan. Retained
 memory includes vectors/boxes, prepared paths, static values and the component-name
 lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
 no dispatch speedup or memory saving is assumed. Supported `fast-server-native`
-semantic schema-1 assets load with no compiler-build key.
+semantic schemas 1 and 2 load with no compiler-build key. Schema 2 contains
+canonical authored `inputs` plus a compiled `program`. Loading validates the build
+metadata shape, discards it before program decoding and retains only execution data.
+Build metadata increases artifact/read/parse size and peak loading memory, not
+request-time dispatch. Schema 1 uses the same program decoder.
 
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,

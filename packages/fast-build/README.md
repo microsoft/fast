@@ -24,7 +24,7 @@ Compile trusted templates during the application build:
 import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
 writeServerArtifact(
-    "./generated/server.json",
+    "./generated/server.artifact.json",
     {
         entry: "<my-card></my-card>",
         templates: { "my-card": "<h2>{{title}}</h2>" },
@@ -35,7 +35,7 @@ writeServerArtifact(
 
 `compileServerArtifact(entry, templates)` returns a fresh `Uint8Array` for
 in-memory compilation. `writeServerArtifact` creates parent directories and
-persists the artifact with its exact-input `.inputs.json` sidecar.
+persists authored `inputs` and the compiled `program` together in one artifact.
 Both are build-time JavaScript APIs backed by the Rust/WASM compiler.
 Do not import the compiler into the request dependency graph.
 
@@ -50,7 +50,7 @@ import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
 const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
-const program = new Program(readFileSync("./generated/server.json"), {
+const program = new Program(readFileSync("./generated/server.artifact.json"), {
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
 });
@@ -102,7 +102,7 @@ fast convert [options]
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--native-addon="<path.node>"` | `FAST_NATIVE_ADDON` | Required source-built Node addon path. |
-| `--server-artifact="<path.json>"` | _(none)_ | Retain the compiled entry/registry and `.inputs.json` sidecar for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
+| `--server-artifact="<path.json>"` | _(none)_ | Retain authored inputs and the compiled entry/registry together for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
@@ -152,7 +152,7 @@ Produces `output.html`:
 Retain a compiled entry and template registry across builds:
 
 ```sh
-fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-artifact=generated/page.json
+fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-artifact=generated/page.artifact.json
 ```
 
 Every build validates current state and writes complete HTML. State, HTML output
@@ -164,14 +164,16 @@ An explicit `--templates` selection must contain at least one named template.
 Duplicate names, including overlapping patterns selecting a definition twice,
 are errors. Omit `--templates` for entry-only builds.
 
-Keep `page.json` and `page.json.inputs.json` together in a trusted local build cache.
-Changed authored inputs compile the selected registry and replace the managed
-pair. Corrupt manifests, snapshots and unsupported deployment fields fail closed.
+Keep `page.artifact.json` in a trusted local build cache. Matching embedded inputs
+reuse its bytes without compiler loading. Changed inputs compile a replacement and
+publish it with one atomic rename. Missing artifacts recompile. Malformed envelopes
+and unsupported versions fail closed; valid edited programs are not independently
+checked against their inputs. Clean invalid files explicitly before rebuilding.
 
-Set `"server-artifact": "generated/page.json"` in `fast-build.config.json` to configure
+Set `"server-artifact": "generated/page.artifact.json"` in `fast-build.config.json` to configure
 the same option. Config paths are relative to the config file; CLI paths are
 relative to the working directory. Managed paths must be separate from authored
-inputs and HTML output. See the [native artifact contract](./docs/server-artifacts.md)
+inputs and HTML output. See the [native artifact contract](./docs/server-modules.md)
 for cache identity, diagnostics and file ownership.
 
 ### Missing or omitted state
@@ -562,7 +564,7 @@ fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template
 fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
 fast convert --syntax=fast-v3-ts --templates=example.html \
     --type-source=MyElement --type-source-import=./my-element.js
-fast convert --syntax=server-native --templates="./components/**/*.html" --output="./generated/server.json"
+fast convert --syntax=server-native --templates="./components/**/*.html" --output="./generated/server.artifact.json"
 ```
 
 ### Convert options
@@ -571,7 +573,7 @@ fast convert --syntax=server-native --templates="./components/**/*.html" --outpu
 |---|---|---|
 | `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, `fast-v3-ts`, or `server-native` |
 | `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates. An exact single file path is also accepted. Browser targets convert each file; `server-native` collects named `<f-template>` definitions into one registry. |
-| `--output="<path>"` | Browser: next to source; server: `server.json` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-native` writes one `.json` artifact, defaults to the current directory, and rejects `*` in the output path. |
+| `--output="<path>"` | Browser: next to source; server: `server.artifact.json` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-native` writes one `.json` artifact, defaults to the current directory, and rejects `*` in the output path. |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
 | `--typed[=true/false]` | `false` | Only for `fast-v3-ts`. Add an explicit `ElementViewTemplate<TSource>` export annotation and type-only import. Explicit false overrides configured true. |
 | `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |

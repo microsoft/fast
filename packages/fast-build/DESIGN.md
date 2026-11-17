@@ -8,7 +8,7 @@ Development, peer and optional dependencies are separate.
 `server.js` exposes build-time `compileServerArtifact` and
 `writeServerArtifact`. Compiler WASM delegates HTML parsing, metadata validation,
 expression lowering and artifact serialization to Rust. The resulting UTF-8 JSON
-is `fast-server-native` semantic schema 1, normally persisted as `server.json`.
+is `fast-server-native` semantic schema 2, normally persisted as `server.artifact.json`.
 It contains literal writes, named templates, typed operands and symbolic component
 references, not source to evaluate. There is one compiler and one native executor.
 
@@ -66,18 +66,19 @@ prepared calls borrow a validated `Arc` snapshot. Node uses the fresh JSON bound
 
 ## Persistent artifact writer
 
-`writeServerArtifact` snapshots exact canonical authored inputs and exact output
-bytes in an adjacent `.inputs.json` manifest. It contains no compiler hash.
-Raw source texts are sorted with duplicate texts retained; definitions are parsed
-only on misses. Structured metadata excludes derived binding/source-location data.
-Unchanged pairs retain bytes and timestamps without loading WASM. A missing
-artifact restores its retained snapshot. Edited inputs require overwrite permission;
-corruption and unsupported manifest fields fail closed.
+`writeServerArtifact` persists one envelope containing canonical `inputs` and a
+compiled `program`, without a compiler hash or encoded output copy. Raw source
+texts are sorted with duplicate texts retained; definitions are parsed only on
+misses. Structured metadata excludes derived binding/source-location data.
+Unchanged embedded inputs retain artifact bytes/timestamps without loading WASM.
+Missing artifacts recompile. Changed inputs require overwrite permission; malformed
+envelopes and unsupported versions fail closed. Input comparison is not an
+independent check that a valid program was generated from those inputs.
 
-Exclusive output locks and sibling staging files protect publication. Caught
-failures restore prior files; two renames are not a crash-atomic transaction.
-`includeBytes` returns an owned snapshot captured under the lock so callers never
-reopen an artifact after another writer can replace it.
+Exclusive output locks and flushed sibling staging files protect publication
+through one atomic rename. Failure before publication leaves the previous artifact
+untouched. `includeBytes` returns owned bytes captured under the lock so callers
+never reopen a path after another writer can replace it.
 
 ## CLI
 
@@ -89,11 +90,11 @@ fail. Config paths are relative to the config file and CLI paths to CWD.
 
 `--server-artifact=generated/page.json` retains entry/registry preparation
 independently of state, HTML output and rendering options. Managed artifact,
-manifest and lock paths must not overwrite authored input or output HTML.
+and lock paths must not overwrite authored input or output HTML.
 Each build renders the writer-owned snapshot, not a reopened shared path.
 
 `fast convert --syntax=server-native` compiles a named registry into one JSON
-artifact, defaulting to `server.json`. Its entry is empty; consumers select a
+artifact, defaulting to `server.artifact.json`. Its entry is empty; consumers select a
 named host or shadow. Empty/duplicate registries, wildcard output paths and
 browser TypeScript options fail. Browser conversion remains in the independent
 converter crate.

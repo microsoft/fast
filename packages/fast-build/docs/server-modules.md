@@ -13,7 +13,7 @@ Definitions accept strings or `ServerTemplateDefinition` metadata with content,
 host/shadow attributes and optional format version 1.
 
 `fast convert --syntax=server-native --templates="components/**/*.html"`
-links a named registry into `server.json`, with an empty entry. Call named host
+links a named registry into `server.artifact.json`, with an empty entry. Call named host
 or shadow methods for that registry; compile entry HTML for complete pages.
 Duplicate names, empty registries, wildcard output paths and browser TypeScript
 conversion options are rejected.
@@ -45,25 +45,38 @@ See the [complete host/deployment contract](./native-node-host.md).
 
 ### Stable semantic data
 
-Artifacts contain these semantic fields:
+The emitter writes consolidated schema 2:
 
 ```json
 {
     "format": "fast-server-native",
-    "version": 1,
-    "entry": [
-        { "type": "literal", "html": "<p>" },
-        { "type": "binding", "path": ["label"], "escape": true },
-        { "type": "literal", "html": "</p>" }
-    ],
-    "templates": {},
-    "components": {}
+    "version": 2,
+    "inputs": {
+        "entry": "<p>{{label}}</p>",
+        "templates": {}
+    },
+    "program": {
+        "entry": [
+            { "type": "literal", "html": "<p>" },
+            { "type": "binding", "path": ["label"], "escape": true },
+            { "type": "literal", "html": "</p>" }
+        ],
+        "templates": {},
+        "components": {}
+    }
 }
 ```
 
+The format name stays `fast-server-native`; the version identifies the envelope.
+Published schema-1 programs remain loadable. Schema 2 embeds canonical build inputs
+as `{ entry, templates }` or `{ entry, templateSources }`. The runtime validates
+their envelope shape but never compiles them, and discards them before decoding
+`program`. Authored source therefore ships with the artifact and increases loading
+I/O, JSON parsing and peak memory, not request-time work.
+
 Native hosts load serialized bytes through `CompiledArtifact::load` or the Node facade.
 
-`entry` is an ordered list of operations. `templates` maps opaque names to other
+`program.entry` is an ordered list of operations. `templates` maps opaque names to other
 operation lists, keeping reused bodies shared instead of recursively expanding
 them. Names are references, not execution indices; consumers must not interpret
 their spelling or order. Components map authored names directly to a complete
@@ -128,26 +141,27 @@ Canonical registry names/source texts are sorted; duplicate source texts remain
 significant. Exact whitespace, line endings and ordered attributes matter.
 Derived binding/source-location data and file paths are not compilation keys.
 
-The `.inputs.json` sidecar identifies `fast-server-artifact-inputs` version 1 and
-retains canonical authored inputs and exact base64 output bytes, without a compiler hash.
-Persist artifact and sidecar together; the sidecar is build storage, not a runtime
-dependency. An unchanged pair retains bytes/timestamps without compiler loading.
-A missing artifact restores its exact snapshot; a missing sidecar compiles fresh.
+One `fast-server-native` schema-2 file stores `inputs` and `program`. There is
+no sidecar or Base64 output snapshot. Matching embedded inputs retain exact existing
+bytes/timestamps without compiler loading. A missing artifact must be recompiled.
 
-Overwrite permission is required for changed or unmanaged output. Corrupt pairs,
-unsupported versions and unknown fields fail closed. `includeBytes: true`
-returns owned bytes captured while the output lock is held, including on hits and
-restoration. Render those bytes rather than reopening a concurrently replaceable path.
+Changed inputs require overwrite permission. Malformed envelopes and unsupported
+versions fail closed, even with overwrite permission; clean invalid files explicitly.
+The native loader validates executable operations before use. Build reuse does not
+recompile or independently prove that a valid edited program matches its inputs.
+Treat the complete artifact as trusted build output, not an integrity certificate.
+`includeBytes: true` returns owned bytes captured while the output lock is held,
+including on hits. Render those bytes rather than reopening a replaceable path.
 
-Exclusive locks and sibling staging protect normal publication and roll back
-caught failures. Two renames are not crash-atomic; interrupted locks/mismatched
-pairs need explicit recovery from known-good inputs. `--overwrite` grants
-replacement permission; it does not force regeneration of unchanged inputs.
+Exclusive locks and flushed sibling staging publish through a single atomic rename.
+Caught staging/rename failures leave the old file untouched and remove owned temporary
+files. A stale lock after process interruption requires application-owned recovery.
+`--overwrite` grants replacement permission; it does not force regeneration.
 
-`fast build --server-artifact=generated/page.json` uses that writer and renders
+`fast build --server-artifact=generated/page.artifact.json` uses that writer and renders
 fresh original state-file bytes on every invocation. It requires `--native-addon`,
 configured `native-addon`, or `FAST_NATIVE_ADDON`. State, output paths and render
-options do not change compilation identity. Artifact/sidecar/lock paths cannot
+options do not change compilation identity. Artifact/lock paths cannot
 replace authored files or output HTML. Omitted state is `{}`.
 
 ## Native Rust artifact target
@@ -162,7 +176,7 @@ evaluate code.
 use microsoft_fast_build::{CompiledArtifact, NativeRenderOptions, parse_render_state};
 
 // Server startup: compiled bytes, not authored templates.
-let program = CompiledArtifact::load(&std::fs::read("generated/server.json")?)?;
+let program = CompiledArtifact::load(&std::fs::read("generated/server.artifact.json")?)?;
 // Each request:
 let state = parse_render_state(r#"{"title":"Native request"}"#)?;
 let html = program.render_entry(&state, &NativeRenderOptions::default())?;
@@ -182,9 +196,9 @@ provide Unicode, own-key and dense-array guarantees without JavaScript objects.
 ### Compatibility, errors and memory
 
 - The artifact envelope identifies `format: "fast-server-native"` and semantic schema
-  version 1. Experimental layouts require regeneration. It contains no compiler
+  version 2. Published schema-1 programs also remain supported. It contains no compiler
   fingerprint or backend build identifier. Native loading accepts supported schemas and validates
-  their complete operations/references. Source, manifest and lockfile changes
+  their complete operations/references. Source and lockfile changes
   do not invalidate an otherwise supported artifact.
 - Load validates every opcode, operand shape, static value, component reference,
   template reference and envelope field, including unreachable bodies. It resolves

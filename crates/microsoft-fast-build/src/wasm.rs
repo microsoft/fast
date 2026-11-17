@@ -80,7 +80,7 @@ pub fn compile_server_artifact(entry: &str, templates_json: &str) -> Result<Vec<
 /// Metadata for the registry-level server target exposed by the conversion CLI.
 #[wasm_bindgen]
 pub fn server_syntax_metadata() -> String {
-    r#"{"syntax":"server-native","extension":".json","suffix":".server.json"}"#.to_string()
+    r#"{"syntax":"server-native","extension":".json","suffix":".server.artifact.json"}"#.to_string()
 }
 
 #[wasm_bindgen]

@@ -66,7 +66,7 @@ async function worker() {
     const state = Buffer.from(stateJson, "utf8");
     const stateEncodeMs = performance.now() - start;
     start = performance.now();
-    const artifact = await fs.readFile(path.join(args.directory, "server.json"));
+    const artifact = await fs.readFile(path.join(args.directory, "server.artifact.json"));
     const artifactReadMs = performance.now() - start;
     const memoryBefore = process.memoryUsage();
     start = performance.now();
@@ -298,7 +298,7 @@ async function main() {
             const start = performance.now();
             const artifact = compileServerArtifact(input.entry, input.templates);
             const compileMs = performance.now() - start;
-            await fs.writeFile(path.join(directory, "server.json"), artifact);
+            await fs.writeFile(path.join(directory, "server.artifact.json"), artifact);
             const record = { compileMs, artifactBytes: artifact.length, samples: [] };
             const expectedStateHash = hash(JSON.stringify(input.state));
             let expected;

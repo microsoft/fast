@@ -3,7 +3,7 @@ use serde_json::{json, Map, Value as V};
 use std::collections::HashMap;
 
 /// Native semantic artifact schema, independent of private execution layouts.
-pub const NATIVE_VERSION: u32 = 1;
+pub const NATIVE_VERSION: u32 = 2;
 
 fn encode_value(v: &V) -> V {
     let kind = v[0].as_str().unwrap();
@@ -130,7 +130,7 @@ impl Encoder {
     }
 }
 
-pub(crate) fn encode(ir: &V, format: &str, version: u32) -> V {
+pub(crate) fn encode(ir: &V) -> V {
     let bodies = ir["bodies"].as_array().unwrap();
     let mut encoder = Encoder {
         ids: HashMap::new(),
@@ -200,7 +200,7 @@ pub(crate) fn encode(ir: &V, format: &str, version: u32) -> V {
         templates.insert(format!("template{index}"), json!(value));
         index += 1;
     }
-    json!({"format":format,"version":version,"entry":entry,"templates":templates,"components":components})
+    json!({"entry":entry,"templates":templates,"components":components})
 }
 
 fn fields(v: &V, names: &[&str]) -> Result<(), ()> {
@@ -410,10 +410,7 @@ impl Decoder<'_> {
 }
 
 pub(crate) fn decode(plan: V) -> Result<V, ()> {
-    fields(
-        &plan,
-        &["format", "version", "entry", "templates", "components"],
-    )?;
+    fields(&plan, &["entry", "templates", "components"])?;
     let templates = plan["templates"].as_object().ok_or(())?;
     if templates.len() >= 1_000_000 || templates.keys().any(String::is_empty) {
         return Err(());
@@ -526,26 +523,12 @@ mod tests {
         let first = json!({"entry":0,"bodies":[[["call",1],["call",1]],[["literal","shared"]]],"components":{}});
         let reordered = json!({"entry":1,"bodies":[[["literal","shared"]],[["call",0],["call",0]]],"components":{}});
         let expected = json!({
-            "format":"fast-server-native","version":1,
             "entry":[{"type":"template","name":"template0"},{"type":"template","name":"template0"}],
             "templates":{"template0":[{"type":"literal","html":"shared"}]},"components":{},
         });
-        assert_eq!(
-            encode(&first, "fast-server-native", NATIVE_VERSION),
-            expected
-        );
-        assert_eq!(
-            encode(&reordered, "fast-server-native", NATIVE_VERSION),
-            expected
-        );
-        assert_eq!(
-            encode(
-                &decode(expected.clone()).unwrap(),
-                "fast-server-native",
-                NATIVE_VERSION
-            ),
-            expected
-        );
+        assert_eq!(encode(&first), expected);
+        assert_eq!(encode(&reordered), expected);
+        assert_eq!(encode(&decode(expected.clone()).unwrap()), expected);
     }
 
     #[test]
@@ -554,11 +537,7 @@ mod tests {
         for id in 0..50 {
             bodies.push(json!([["call", id], ["call", id]]));
         }
-        let plan = encode(
-            &json!({"entry":50,"bodies":bodies,"components":{}}),
-            "fast-server-native",
-            NATIVE_VERSION,
-        );
+        let plan = encode(&json!({"entry":50,"bodies":bodies,"components":{}}));
         assert_eq!(plan["templates"].as_object().unwrap().len(), 50);
         assert!(plan.to_string().len() < 10_000);
     }

@@ -78,13 +78,15 @@ test("published entrypoint and untimed boundary adapters expose the tested facad
     }
 });
 
-test("semantic schema 1 Node hosting preserves frozen bytes in all four contexts", () => {
+test("consolidated semantic schema 2 hosting preserves frozen bytes in all four contexts", () => {
     const program = new NativeProgram(artifact);
     const plan = JSON.parse(fixture.artifact);
     assert.equal(plan.format, "fast-server-native");
-    assert.equal(plan.version, 1);
-    assert.ok(Array.isArray(plan.entry));
-    assert.ok(Array.isArray(plan.templates[plan.components["test-card"]]));
+    assert.equal(plan.version, 2);
+    assert.ok(Array.isArray(plan.program.entry));
+    assert.ok(
+        Array.isArray(plan.program.templates[plan.program.components["test-card"]]),
+    );
     for (const context of contexts) {
         const frozen =
             context === "Shadow"
@@ -280,22 +282,21 @@ test("artifact rejection is explicit and caller bytes are not retained", () => {
     for (const malformed of [
         "{}",
         "{",
-        JSON.stringify({ ...JSON.parse(fixture.artifact), version: 2 }),
+        JSON.stringify({ ...JSON.parse(fixture.artifact), version: 99 }),
     ]) {
         assert.throws(() => new NativeProgram(Buffer.from(malformed)));
     }
-    const unsupported = { ...JSON.parse(fixture.artifact), version: 2 };
+    const unsupported = { ...JSON.parse(fixture.artifact), version: 99 };
     assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(unsupported))), {
         code: "incompatible-artifact",
     });
-    const { entry: _entry, ...missingEntry } = JSON.parse(fixture.artifact);
+    const missingEntry = JSON.parse(fixture.artifact);
+    delete missingEntry.program.entry;
     assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(missingEntry))), {
         code: "invalid-artifact",
     });
-    const brokenReference = {
-        ...JSON.parse(fixture.artifact),
-        entry: [{ type: "template", name: "missing-template" }],
-    };
+    const brokenReference = JSON.parse(fixture.artifact);
+    brokenReference.program.entry = [{ type: "template", name: "missing-template" }];
     assert.throws(() => new NativeProgram(Buffer.from(JSON.stringify(brokenReference))), {
         code: "invalid-artifact",
     });

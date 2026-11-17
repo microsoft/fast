@@ -604,7 +604,7 @@ async function runConvert(args) {
         if (typed || typeSource || typeSourceImport) {
             throw new Error("server-native emits artifact data; TypeScript conversion options do not apply.");
         }
-        const output = outputArg || "server.json";
+        const output = outputArg || "server.artifact.json";
         const metadata = { "server-native": { extension: ".json" } };
         if (output.includes("*")) {
             throw new Error("server-native requires one output artifact for the complete template registry.");
@@ -701,14 +701,14 @@ async function runBuild(args) {
     }
     const managedPaths = serverArtifact === undefined
         ? []
-        : [serverArtifact, `${serverArtifact}.inputs.json`, `${serverArtifact}.lock`]
+        : [serverArtifact, `${serverArtifact}.lock`]
             .map(filename => path.resolve(filename));
     if (serverArtifact !== undefined) {
         if (!managedPaths[0].endsWith(".json")) {
             throw new Error("--server-artifact requires a .json output path.");
         }
         if (managedPaths.includes(path.resolve(output))) {
-            throw new Error("HTML output must not replace the persistent server artifact or its sidecars.");
+            throw new Error("HTML output must not replace the persistent server artifact or its lock.");
         }
     }
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
@@ -858,7 +858,7 @@ function writeBuildUsage() {
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
         '  --server-artifact="<path.json>"\n' +
-        "                         Persist compiled plans and exact-input sidecar;\n" +
+        "                         Persist authored inputs and compiled plans together;\n" +
         "                         reuse before compiler loading on later builds.\n" +
         '  --native-addon="<path.node>" Native addon path; alternatively set FAST_NATIVE_ADDON.\n' +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
@@ -894,7 +894,7 @@ function writeConvertUsage() {
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
         "                         server-native compiles the complete registry into\n" +
-        "                         one server.json artifact (or --output), without\n" +
+        "                         one server.artifact.json (or --output), without\n" +
         "                         importing browser classes at request time.\n" +
         '  --templates="<glob>"   Required. Glob pattern(s) for FAST declarative\n' +
         "                         .html files to convert in one pass. Separate\n" +

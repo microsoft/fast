@@ -48,7 +48,7 @@ test("native benchmark isolates loading, rendering and optional string decoding"
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-native-bench-test-"));
     t.after(() => fs.rm(directory, { recursive: true, force: true }));
     const text = "<b>caf\u00e9 \u{1f600}</b>";
-    await fs.writeFile(path.join(directory, "server.json"), text);
+    await fs.writeFile(path.join(directory, "server.artifact.json"), text);
     await fs.writeFile(
         path.join(directory, "input.json"),
         JSON.stringify({ state: { text } }),

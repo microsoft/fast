@@ -1,7 +1,7 @@
 //! Immutable native execution of compiler artifacts; never parses template HTML.
 use crate::{content::write_html_escaped, JsonValue as J, Locator, RenderError};
 use serde::de::{Deserialize, Deserializer, MapAccess, SeqAccess, Visitor};
-use serde_json::Value as V;
+use serde_json::{json, Value as V};
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::Write;
@@ -95,11 +95,32 @@ impl PreparedState {
 /// Compile ahead of time to a versioned executable artifact, not template metadata.
 pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>, RenderError> {
     let ir = crate::server_ir::lower(entry, locator)?;
-    let bytes = crate::server_plan::encode(
-        &ir,
-        "fast-server-native",
-        crate::server_plan::NATIVE_VERSION,
-    )
+    let templates: serde_json::Map<String, V> = locator
+        .template_names()
+        .map(|name| {
+            let attributes = |values: &[(String, Option<String>)]| -> Vec<V> {
+                values
+                    .iter()
+                    .map(|(name, value)| json!({"name":name,"value":value}))
+                    .collect()
+            };
+            (
+                name.to_owned(),
+                json!({
+                    "content":locator.authored_template(name).unwrap(),
+                    "shadowrootAttributes":attributes(locator.get_shadowroot_attributes(name)),
+                    "hostAttributes":attributes(locator.get_host_attributes(name)),
+                    "formatVersion":1,
+                }),
+            )
+        })
+        .collect();
+    let bytes = json!({
+        "format":"fast-server-native",
+        "version":crate::server_plan::NATIVE_VERSION,
+        "inputs":{"entry":entry,"templates":templates},
+        "program":crate::server_plan::encode(&ir),
+    })
     .to_string()
     .into_bytes();
     CompiledArtifact::load(&bytes).map_err(|error| RenderError::InvalidTemplateMetadata {
@@ -119,27 +140,56 @@ pub struct CompiledArtifact {
 
 impl CompiledArtifact {
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
-    /// semantic schema 1, independently of private execution layouts.
-    /// Experimental layouts and unknown schemas require explicit regeneration.
+    /// semantic schemas 1 and 2, independently of private execution layouts.
+    /// Schema 2 embeds build inputs, which are discarded before plan decoding.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
         if bytes.len() > 64 * 1024 * 1024 {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
         }
-        let ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
+        let mut ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
         if ir["format"] != "fast-server-native"
             // Decoder support is explicit, not coupled to the current emitter version.
-            || !matches!(ir["version"].as_u64(), Some(1))
+            || !matches!(ir["version"].as_u64(), Some(1 | 2))
         {
             return Err(error(
                 "incompatible-artifact",
-                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 1",
+                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schemas 1 and 2",
             ));
         }
-        let ir = crate::server_plan::decode(ir).map_err(|_| invalid())?;
+        let program = if ir["version"] == 2 {
+            let envelope = ir.as_object().ok_or_else(invalid)?;
+            if envelope.len() != 4
+                || !envelope.contains_key("program")
+                || !Self::valid_artifact_inputs(&ir["inputs"])
+            {
+                return Err(invalid());
+            }
+            ir["program"].take()
+        } else {
+            let plan = ir.as_object_mut().ok_or_else(invalid)?;
+            plan.remove("format");
+            plan.remove("version");
+            std::mem::take(&mut ir)
+        };
+        drop(ir);
+        let ir = crate::server_plan::decode(program).map_err(|_| invalid())?;
         validate_artifact(&ir)?;
         Ok(Self {
             plan: Arc::new(Plan::load(&ir)),
         })
+    }
+
+    fn valid_artifact_inputs(inputs: &V) -> bool {
+        let Some(inputs) = inputs.as_object() else {
+            return false;
+        };
+        inputs.len() == 2
+            && inputs.get("entry").is_some_and(V::is_string)
+            && (inputs.get("templates").is_some_and(V::is_object)
+                || inputs
+                    .get("templateSources")
+                    .and_then(V::as_array)
+                    .is_some_and(|sources| sources.iter().all(V::is_string)))
     }
 
     pub fn render_entry(
