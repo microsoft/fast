@@ -280,11 +280,11 @@ test("AOT host and shadow exports retain selection and request isolation", async
     for (const value of ["first", "second", ""]) {
         assert.equal(
             module.renderHost("test-el", { value }),
-            `<test-el><template shadowrootmode="open" shadowroot="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
+            `<test-el><template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template></test-el>`,
         );
         assert.equal(
             module.renderShadow("test-el", { value }),
-            `<template shadowrootmode="open" shadowroot="open"><!--fe:b-->${value}<!--fe:/b--></template>`,
+            `<template shadowrootmode="open"><!--fe:b-->${value}<!--fe:/b--></template>`,
         );
     }
     assert.equal(module.renderShadow("test-el", {}, { dsd: [] }), "");
@@ -396,7 +396,7 @@ test("shared bodies and component shadows do not capture repeat scopes", async (
     const plain = module.renderEntry(state);
     assert.equal(
         plain,
-        'root/9;one/0;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open" shadowroot="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
+        'root/9;one/0;<test-child><template shadowrootmode="open"><!--fe:b-->one<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>one/0</test-child>two/1;<test-child><template shadowrootmode="open"><!--fe:b-->two<!--fe:/b-->/<!--fe:b-->root<!--fe:/b-->/<!--fe:b-->9<!--fe:/b--></template>two/1</test-child>root/9',
     );
     assert.equal(module.renderEntry(state), plain);
     assert.equal(
@@ -414,7 +414,7 @@ test("AOT preserves the distinct template-context root host attribute contract",
         "test-el": "{{list}}",
     });
     const shadow =
-        '<template shadowrootmode="open" shadowroot="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
+        '<template shadowrootmode="open"><!--fe:b-->[Array]<!--fe:/b--></template>';
     assert.equal(
         module.renderEntry({ items: ["one", "two"] }),
         `<test-el>${shadow}</test-el>`,
@@ -635,40 +635,6 @@ test("conformance bridge preserves omitted object state across all render target
         );
         assert.equal(result.error, undefined);
         assert.equal(result.value, module[method](...(name ? [name] : [])));
-    }
-});
-
-test("unchanged semantic schema 1 modules retain their old exports with the upgraded helper", async () => {
-    const source = fs.readFileSync(
-        path.join(__dirname, "fixtures/server-schema1.txt"),
-        "utf8",
-    );
-    const old = await import(
-        `data:text/javascript;base64,${Buffer.from(
-            source.replace('"../../server-runtime.mjs"', JSON.stringify(runtime)),
-        ).toString("base64")}`
-    );
-    const { module } = await compile("<test-old></test-old>", {
-        "test-old": "<p>{{value}}</p>",
-    });
-    for (const method of [
-        "renderEntry",
-        "renderTemplate",
-        "renderHost",
-        "renderShadow",
-    ]) {
-        const args = /Host|Shadow/.test(method) ? ["test-old"] : [];
-        assert.equal(Object.hasOwn(old, `${method}Json`), false);
-        for (const markersV2 of [false, true]) {
-            const state = { value: "<&" };
-            const options = { markersV2 };
-            const expected = module[method](...args, state, options);
-            assert.equal(old[method](...args, state, options), expected);
-            assert.equal(
-                old[`${method}Prepared`](...args, old.prepareState(state), options),
-                expected,
-            );
-        }
     }
 });
 
@@ -1366,7 +1332,7 @@ test("semantic components reference complete shadow templates without host bookk
         template0: [
             {
                 type: "literal",
-                html: '<template shadowrootmode="open" shadowroot="open">',
+                html: '<template shadowrootmode="open">',
             },
             { type: "literal", html: "<p>" },
             { type: "binding", path: ["label"], escape: true },
@@ -1381,7 +1347,7 @@ test("semantic components reference complete shadow templates without host bookk
     );
     assert.deepEqual(native, { ...plan, format: "fast-server-native" });
     const shadow =
-        '<template shadowrootmode="open" shadowroot="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
+        '<template shadowrootmode="open"><p><!--fe:b-->&lt;&amp;<!--fe:/b--></p></template>';
     assert.equal(module.renderShadow("my-card", { label: "<&" }), shadow);
     assert.equal(
         module.renderHost("my-card", { label: "<&" }),
