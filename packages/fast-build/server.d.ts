@@ -85,18 +85,12 @@ export type ServerAssetInputs =
           entry: string;
           templates?: Record<string, string | ServerTemplateDefinition>;
           templateSources?: never;
-          templateSourcePolicy?: never;
       }
     | {
           entry: string;
+          /** Raw sources must contain at least one named template with unique names. */
           templateSources: readonly string[];
           templates?: never;
-          /**
-           * Preserve CLI build semantics: source order matters, later duplicate
-           * definitions overwrite earlier ones, and an empty registry is allowed.
-           * Omitted rejects duplicates/empty registries and canonicalizes source order.
-           */
-          templateSourcePolicy?: "overwrite";
       };
 
 export interface ServerAssetWriteOptions {

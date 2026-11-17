@@ -68,8 +68,6 @@ function canonicalInputs(inputs) {
     if (Object.hasOwn(inputs, "templateSources")) {
         if (
             Object.hasOwn(inputs, "templates") ||
-            (inputs.templateSourcePolicy !== undefined &&
-                inputs.templateSourcePolicy !== "overwrite") ||
             !Array.isArray(inputs.templateSources) ||
             inputs.templateSources.some(
                 /** @param {any} source */ source => typeof source !== "string",
@@ -77,17 +75,11 @@ function canonicalInputs(inputs) {
         ) {
             invalid();
         }
-        const canonical = {
+        return {
             entry: inputs.entry,
-            templateSources: [...inputs.templateSources],
+            templateSources: [...inputs.templateSources].sort(),
         };
-        if (inputs.templateSourcePolicy === "overwrite") {
-            return { ...canonical, templateSourcePolicy: "overwrite" };
-        }
-        canonical.templateSources.sort();
-        return canonical;
     }
-    if (Object.hasOwn(inputs, "templateSourcePolicy")) invalid();
     const definitions = inputs.templates === undefined ? {} : inputs.templates;
     if (!isRecord(definitions)) invalid();
     /** @type {Record<string, import("./server.js").ServerTemplateDefinition>} */
@@ -157,20 +149,12 @@ function templatesFromInputs(inputs, onWarning) {
                 continue;
             }
             if (Object.hasOwn(templates, name)) {
-                if (inputs.templateSourcePolicy !== "overwrite") {
-                    throw new Error(`Duplicate template name "${name}".`);
-                }
-                process.stderr.write(
-                    `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`,
-                );
+                throw new Error(`Duplicate template name "${name}".`);
             }
             templates[name] = definition;
         }
     }
-    if (
-        Object.keys(templates).length === 0 &&
-        inputs.templateSourcePolicy !== "overwrite"
-    ) {
+    if (Object.keys(templates).length === 0) {
         throw assetError(
             "missing-template-sources",
             "Raw templateSources require at least one named template.",

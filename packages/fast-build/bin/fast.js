@@ -690,6 +690,9 @@ async function runBuild(args) {
     );
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
+    if (templatesArg !== undefined && templatesArg.trim() === "") {
+        throw new Error("--templates requires at least one named template.");
+    }
     const output = resolveOption(args, config, configDir, "output", "output.html") ?? "output.html";
     const serverModule = resolveOption(args, config, configDir, "server-module");
     if (serverModule !== undefined && serverModule === "") {
@@ -723,17 +726,17 @@ async function runBuild(args) {
     }
 
     // Resolve template files
-    const templatesMap = {};
+    const templatesMap = Object.create(null);
     /** @type {string[]} */
     const sources = [];
     /** @type {string[]} */
     const filenames = [];
-    if (!templatesArg) {
+    if (templatesArg === undefined) {
         process.stderr.write(
             "Warning: --templates was not provided. No custom element templates will be loaded.\n"
         );
     } else {
-        const patterns = templatesArg.split(",").map((p) => p.trim());
+        const patterns = templatesArg.split(",").map((p) => p.trim()).filter(Boolean);
         for (const pattern of patterns) {
             const wasm = serverModule === undefined ? require(BUILD_WASM_MODULE) : null;
             const matches = resolveTemplateFiles(pattern);
@@ -753,13 +756,17 @@ async function runBuild(args) {
                 );
             }
             for (const { name, ...definition } of definitions) {
-                if (name in templatesMap) {
-                    process.stderr.write(
-                        `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
-                    );
+                if (Object.hasOwn(templatesMap, name)) {
+                    throw new Error(`Duplicate template name "${name}".`);
                 }
                 templatesMap[name] = definition;
             }
+        }
+        if (
+            templatesArg !== undefined &&
+            (serverModule === undefined ? Object.keys(templatesMap).length : sources.length) === 0
+        ) {
+            throw new Error("--templates requires at least one named template.");
         }
     }
 
@@ -800,11 +807,9 @@ async function runBuild(args) {
     } else {
         const result = writeServerModule(
             serverModule,
-            {
-                entry: entryContent,
-                templateSources: sources,
-                templateSourcePolicy: "overwrite",
-            },
+            templatesArg === undefined
+                ? { entry: entryContent, templates: templatesMap }
+                : { entry: entryContent, templateSources: sources },
             {
                 overwrite: true,
                 includeBytes: true,
@@ -847,6 +852,7 @@ function writeBuildUsage() {
         "Options:\n" +
         '  --templates="<glob>"   Glob pattern(s) for custom element template HTML files.\n' +
         "                         Separate multiple patterns with commas.\n" +
+        "                         Requires named templates with unique names.\n" +
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
         '  --server-module="<path.mjs>"\n' +

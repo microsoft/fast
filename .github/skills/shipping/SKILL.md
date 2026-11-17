@@ -156,7 +156,7 @@ When prompted, select the appropriate change type:
 The Beachball config ([`beachball.config.js`](../../../beachball.config.js)) ignores these paths — changes limited to them do not need change files:
 
 - `.github/` — CI configs, templates, skills
-- Test files (`src/e2e/`, `src/tests/`, `src/fixtures/`)
+- Test files (`src/e2e/`, `src/tests/`, `src/fixtures/`, `test/declarative/fixtures/`)
 - `package-lock.json`
 - `.vscode/`, `.prettierrc`
 

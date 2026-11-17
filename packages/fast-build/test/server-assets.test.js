@@ -208,7 +208,6 @@ test("build retains raw-source plans across state/options changes and restores m
         assert.deepEqual(recorded.inputs, {
             entry: fs.readFileSync(entry, "utf8"),
             templateSources: [fs.readFileSync(templates, "utf8")],
-            templateSourcePolicy: "overwrite",
         });
         assert.equal(recorded.inputs.state, undefined);
         fs.writeFileSync(state, '{"title":"Fresh & next"}');
@@ -264,7 +263,7 @@ test("build retains raw-source plans across state/options changes and restores m
     });
 });
 
-test("build cache preserves ordered duplicate overwrite and empty registry semantics", async () => {
+test("build rejects duplicate names and empty explicit registries without replacing outputs", async () => {
     await inDirectory(directory => {
         fs.writeFileSync(path.join(directory, "entry.html"), "<my-card></my-card>");
         for (const [file, content] of [
@@ -276,41 +275,81 @@ test("build cache preserves ordered duplicate overwrite and empty registry seman
                 `<f-template name="my-card"><template>${content}</template></f-template>`,
             );
         }
+        fs.writeFileSync(path.join(directory, "empty.html"), "");
+        fs.writeFileSync(
+            path.join(directory, "nameless.html"),
+            "<f-template><template>Skipped</template></f-template>",
+        );
         const args = ["--entry=entry.html", "--output=output.html"];
-        for (const pattern of [
-            "first.html,last.html",
-            "last.html,first.html",
-            "last.html,first.html,first.html",
-            "missing/*.html",
+        const output = path.join(directory, "output.html");
+        const module = path.join(directory, "page.mjs");
+        build(directory, [...args, "--templates=first.html", "--server-module=page.mjs"]);
+        const before = stampPair(module, `${module}.inputs.json`);
+        const html = snapshot(output);
+        for (const [pattern, message] of [
+            ["first.html,last.html", /Duplicate template name/],
+            ["last.html,first.html", /Duplicate template name/],
+            ["first.html,first.html", /Duplicate template name/],
+            ["", /at least one named template/],
+            ["missing/*.html", /at least one named template/],
+            ["empty.html", /at least one named template/],
+            ["nameless.html", /at least one named template/],
         ]) {
-            build(directory, [...args, `--templates=${pattern}`]);
-            const expected = fs.readFileSync(path.join(directory, "output.html"));
-            const module = path.join(directory, "page.mjs");
-            if (fs.existsSync(module)) {
-                assert.throws(() =>
-                    build(
-                        directory,
-                        [...args, `--templates=${pattern}`, "--server-module=page.mjs"],
-                        true,
-                    ),
+            for (const persistent of [[], ["--server-module=page.mjs"]]) {
+                assert.throws(
+                    () =>
+                        build(directory, [
+                            ...args,
+                            `--templates=${pattern}`,
+                            ...persistent,
+                        ]),
+                    error => message.test(error.stderr.toString()),
                 );
+                unchanged(output, html);
+                unchanged(module, before.output);
+                unchanged(`${module}.inputs.json`, before.manifest);
             }
-            build(directory, [
-                ...args,
-                `--templates=${pattern}`,
-                "--server-module=page.mjs",
-            ]);
-            assert.deepEqual(
-                fs.readFileSync(path.join(directory, "output.html")),
-                expected,
-            );
-            build(
-                directory,
-                [...args, `--templates=${pattern}`, "--server-module=page.mjs"],
-                true,
+        }
+    });
+});
+
+test("build cache reuses strict raw sources across registry order changes", async () => {
+    await inDirectory(directory => {
+        fs.writeFileSync(
+            path.join(directory, "entry.html"),
+            "<first-card></first-card><last-card></last-card>",
+        );
+        for (const name of ["first", "last"]) {
+            fs.writeFileSync(
+                path.join(directory, `${name}.html`),
+                `<f-template name="${name}-card"><template>${name}</template></f-template>`,
             );
         }
+        const args = ["--entry=entry.html", "--output=output.html"];
+        build(directory, [
+            ...args,
+            "--templates=first.html,last.html",
+            "--server-module=page.mjs",
+        ]);
+        const module = path.join(directory, "page.mjs");
+        const before = stampPair(module, `${module}.inputs.json`);
+        const expected = fs.readFileSync(path.join(directory, "output.html"));
+        build(
+            directory,
+            [...args, "--templates=last.html,first.html", "--server-module=page.mjs"],
+            true,
+        );
+        assert.deepEqual(fs.readFileSync(path.join(directory, "output.html")), expected);
+        unchanged(module, before.output);
+        unchanged(`${module}.inputs.json`, before.manifest);
+    });
+});
+
+test("build allows omitted templates and reuses entry-only modules without a compiler", async () => {
+    await inDirectory(directory => {
         fs.writeFileSync(path.join(directory, "entry.html"), "<p>empty registry</p>");
+        const args = ["--entry=entry.html", "--output=output.html"];
+        build(directory, args);
         build(directory, [...args, "--server-module=page.mjs"]);
         build(directory, [...args, "--server-module=page.mjs"], true);
         assert.equal(

@@ -67,13 +67,17 @@ manifest. Unchanged authored inputs reuse exact existing bytes without compilati
 Low-level pure compiler calls do not provide cross-encoder persistence.
 
 For CLI page builds, add `--server-module=generated/page.mjs` to `fast build`
-and retain that file with its `.inputs.json` sidecar. Unchanged ordered raw
+and retain that file with its `.inputs.json` sidecar. Unchanged raw
 sources skip parsing and compilation, while each build validates fresh state and
 renders complete HTML. State files, marker versions and attribute-name strategies
 are not compilation keys. Changed sources compile the full selected registry;
 missing modules restore their byte snapshot. Corruption or changed helper import
 paths fail closed. These CLI modules use a local absolute helper URL; use the
 build-time API above for portable deployment modules.
+
+An explicit `--templates` selection must contain named templates with unique names.
+Duplicate definitions and selections with no named templates are errors in both
+fresh and persistent builds. Omit the option for an entry-only build.
 
 The generated module imports only the FAST server helper. Bundle that helper
 with the server or deploy it from the matching `@microsoft/fast-build` package.

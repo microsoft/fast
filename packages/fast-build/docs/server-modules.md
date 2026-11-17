@@ -293,12 +293,11 @@ assets and their authored-input manifests, in source control or a persistent
 build cache. Unchanged authored inputs reuse those bytes rather than compiling
 again. Compiler identity, package version and timestamps are not rebuild keys.
 
-Raw-source writers default to rejecting duplicate names/empty registries and
-canonicalizing source order. Explicit `templateSourcePolicy: "overwrite"`
-preserves ordered sources and multiplicity, permits empty registries, and makes
-later definitions replace earlier definitions with a warning. `fast build
---server-module=generated/page.mjs` selects this policy for its registry.
-State and render options never enter this input manifest.
+Raw-source writers reject duplicate names and empty registries, and canonicalize
+source order. Both fresh and persistent CLI builds apply the same validation to
+explicit `--templates` selections, including overlapping patterns. Omit
+`--templates` for an entry-only build; its persistent input is an empty structured
+`templates` registry. State and render options never enter this input manifest.
 Keep the module and sidecar together; corruption and deployment changes fail
 closed rather than silently compiling over an incompatible pair.
 
@@ -326,7 +325,7 @@ node packages/fast-build/bin/fast.js build --entry=index.html --templates="compo
 /usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/exact/output.html --server-module=.build-preparation/exact/page.mjs
 
 # Fallback: valid retained pair with different authored inputs and the same runtime.
-node -e 'const {pathToFileURL}=require("node:url"); require("./packages/fast-build/server.js").writeServerModule(".build-preparation/fallback/page.mjs", {entry:"<p>fallback source</p>",templateSources:[],templateSourcePolicy:"overwrite"}, {overwrite:true,runtimeImport:pathToFileURL(require.resolve("./packages/fast-build/server-runtime.mjs")).href});'
+node -e 'const {pathToFileURL}=require("node:url"); require("./packages/fast-build/server.js").writeServerModule(".build-preparation/fallback/page.mjs", {entry:"<p>fallback source</p>",templates:{}}, {overwrite:true,runtimeImport:pathToFileURL(require.resolve("./packages/fast-build/server-runtime.mjs")).href});'
 /usr/bin/time -l node packages/fast-build/bin/fast.js build --entry=index.html --templates="components/**/*.html" --state=state.json --output=.build-preparation/fallback/output.html --server-module=.build-preparation/fallback/page.mjs
 
 # Restoration: seed outside timing, then remove only the managed module.
@@ -372,8 +371,8 @@ const result = writeServerModule(
 
 Inputs accept an `entry` string and either a `templates` registry (strings or
 `ServerTemplateDefinition` values), or `templateSources`, an array of complete
-authored `<f-template>` source strings. Registry names and strict-policy raw source
-texts are sorted for comparison; overwrite-policy sources retain their order.
+authored `<f-template>` source strings. Registry names and raw source texts are
+sorted for comparison.
 Duplicate source texts are retained. Exact content,
 whitespace, line endings and attribute ordering matter. Optional attribute lists
 and metadata format defaults are normalized; compiler-derived bindings and source

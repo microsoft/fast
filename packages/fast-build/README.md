@@ -220,6 +220,10 @@ paths and render options can vary while the same authored templates reuse their
 compiled module.
 Without `--server-module`, builds continue compiling fresh.
 
+An explicit `--templates` selection must contain at least one named template.
+Duplicate names, including overlapping patterns selecting a definition twice,
+are errors. Omit `--templates` for entry-only builds.
+
 Keep `page.mjs` and `page.mjs.inputs.json` together in a trusted local build cache.
 Changed authored inputs compile the selected registry and replace the managed
 pair. Corrupt pairs and changed runtime import locations fail closed. These modules

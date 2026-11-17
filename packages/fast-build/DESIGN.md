@@ -162,14 +162,15 @@ Omitted state becomes an empty object, without implicitly loading state.json.
 Config paths are relative to the config file, CLI paths to CWD. Explicit CLI
 presence overrides config, including empty paths. Boolean options are validated.
 
-Optional `--server-module` scopes retained preparation to the entry plus ordered
+Optional `--server-module` scopes retained preparation to the entry plus raw
 raw registry sources, independently of request state, output location and render
 options. The persistent writer qualifies exact input/snapshot pairs
-before loading WASM or parsing definitions. CLI build uses explicit
-`templateSourcePolicy: "overwrite"`: source order/multiplicity are canonical inputs,
-later duplicate names overwrite earlier ones, and empty registries are permitted.
-The strict conversion/writer default sorts sources and rejects duplicates and
-empty registries. Both build modes share file discovery; uncached builds parse
+before loading WASM or parsing definitions. Raw source texts are sorted for
+comparison, with duplicate texts retained. Parsing diagnostics follow caller order.
+Explicit `--templates` selections require at least one named template and reject
+duplicate names, matching raw-source writer/converter validation. Entry-only builds
+omit `--templates` and persist an empty structured registry.
+Both build modes share file discovery; uncached builds parse
 immediately, while cached builds pass raw sources to the writer. Misses compile
 the complete selected registry.
 
