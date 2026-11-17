@@ -8,6 +8,12 @@ to server JavaScript modules or native Rust artifacts for integration with your 
 
 ## Installation
 
+For an explicitly selected Buffer-only JSON native Node backend, see the
+[source-built hosting guide](./docs/native-node-host.md). It uses this package and
+the existing build crate; no prebuilt all-platform qualification or measured
+end-to-end win is claimed. Options are fixed at program construction; requests
+return owned UTF-8 Buffers. JavaScript remains the default explicit alternative.
+
 ### From NPM
 
 To install the latest `@microsoft/fast-build` package using `npm`:

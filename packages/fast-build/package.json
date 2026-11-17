@@ -17,6 +17,10 @@
     "url": "https://github.com/microsoft/fast/issues/new/choose"
   },
   "exports": {
+    "./native-host.mjs": {
+      "types": "./native-host.d.ts",
+      "default": "./native-host.mjs"
+    },
     "./server.js": {
       "types": "./server.d.ts",
       "default": "./server.js"
@@ -31,6 +35,9 @@
     "fast": "bin/fast.js"
   },
   "files": [
+    "native-host.mjs",
+    "native-host.d.ts",
+    "build-native-host.mjs",
     "server.js",
     "server.d.ts",
     "server-runtime.mjs",
@@ -46,6 +53,8 @@
     "wasm/convert/microsoft_fast_convert_bg.wasm.d.ts"
   ],
   "scripts": {
+    "build:native-host": "node build-native-host.mjs",
+    "test:native-host": "node --expose-gc --test test/native-host.test.mjs",
     "build": "node build-wasm.cjs",
     "test:node": "node --test test/config.test.js test/plugin-integrations.test.js test/stylesheet-composition.test.js test/server.test.js test/server-assets.test.js test/native-artifact.test.js test/server-vite.test.js test/fixtures/convert/convert-fixtures.test.js test/fixtures/convert/type-source.test.js test/performance/performance.test.mjs",
     "bench:server": "node test/performance/server-renderer.mjs",
