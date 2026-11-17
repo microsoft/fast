@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Borrow native repeat and component state and add fully validated fresh JSON rendering without redundant state copies.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
