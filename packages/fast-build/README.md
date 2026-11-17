@@ -50,6 +50,21 @@ const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 Use generated `renderTemplate` for template-context root-host attribute handling,
 or `renderEntry` for entry-host rules.
 
+For fresh JSON text, use `renderEntryJson(json, options?)`,
+`renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
+`renderShadowJson(name, json, options?)`:
+
+```js
+import { renderEntryJson } from "./generated/server.mjs";
+
+const html = renderEntryJson('{"title":"Request-specific state"}');
+```
+
+Pass a required JSON string. Every field is validated, including unused values;
+numbers must be finite and keys/strings must contain well-formed Unicode.
+Use object methods for already-parsed state and prepared methods for snapshot reuse.
+See the [JSON request contract](./docs/server-modules.md#owned-fresh-json-requests).
+
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:
 

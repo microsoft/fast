@@ -16,8 +16,8 @@ fn emit(ir: &Value, runtime_import: &str) -> String {
     format!(
         "import * as $ from {};\n\
          const plan = {plan};\n\
-         const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(plan);\n\
-         export {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}};\n",
+         const {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryJson,renderTemplateJson,renderHostJson,renderShadowJson,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}} = $.createServerRenderer(plan);\n\
+         export {{prepareState,renderEntry,renderTemplate,renderHost,renderShadow,renderEntryJson,renderTemplateJson,renderHostJson,renderShadowJson,renderEntryPrepared,renderTemplatePrepared,renderHostPrepared,renderShadowPrepared,components}};\n",
         serde_json::to_string(runtime_import).unwrap(),
     )
 }

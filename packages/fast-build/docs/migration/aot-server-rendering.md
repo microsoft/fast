@@ -1,5 +1,37 @@
 # Migrating from previous versions
 
+## Direct runtime helper imports
+
+The runtime no longer exports `child` or `composite`. Component assignments and
+composite attributes use loader-prepared execution recipes.
+
+Integrations that import these helpers directly should express component property
+bindings and composite attributes in templates, compile with `compileServerModule`
+and call the generated rendering methods. Supported semantic modules already use
+`createServerRenderer` and need no regeneration for this cleanup. Object, JSON and
+prepared rendering methods retain their input and output contracts.
+
+## Opting into fresh JSON request methods
+
+Newly emitted ESM additionally exports `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` and `renderShadowJson`. Pass required JSON text instead of an
+already-parsed object; there is no implicit object serialization or byte decoding.
+The helper owns parsing and lighter **full-graph** validation, including unused
+finite-number/Unicode checks and negative-zero normalization. Rendering, coercion,
+ownership of ordinary/prepared inputs and hydration bytes remain unchanged.
+
+Supported `fast-server-js` and `fast-server-native` semantic schema 1 assets remain
+usable unchanged. Retain their decoders and exact managed bytes; do not add
+compiler/version rebuild keys. Older ESM export lists lack the new JSON names,
+even after upgrading the helper. `writeServerModule` continues reusing those assets
+when templates are unchanged. To opt in, explicitly emit and activate a new
+destination (with its own sidecar), such as `server-json.mjs`, using the updated
+compiler. The additive `ServerModule` declaration describes newly emitted modules,
+not historical cached export lists. Object/prepared callers and native hosts need
+no API or output changes. Earlier numeric layouts still require the separate
+semantic migration below.
+See [the JSON contract](../server-modules.md#owned-fresh-json-requests).
+
 ## Generated rendering functions or numeric plans to semantic plans
 
 Rebuild legacy JavaScript modules/native artifacts once. The generated module

@@ -41,6 +41,11 @@ export interface ServerModule {
         state?: ServerState,
         options?: ServerRenderOptions,
     ): string;
+    /** Parse and fully validate fresh JSON without copying or retaining its graph. */
+    renderEntryJson(json: string, options?: ServerRenderOptions): string;
+    renderTemplateJson(json: string, options?: ServerRenderOptions): string;
+    renderHostJson(name: string, json: string, options?: ServerRenderOptions): string;
+    renderShadowJson(name: string, json: string, options?: ServerRenderOptions): string;
     renderEntryPrepared(
         state: PreparedServerState,
         options?: ServerRenderOptions,

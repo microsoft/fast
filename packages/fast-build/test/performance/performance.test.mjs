@@ -40,6 +40,14 @@ for (const record of baseline) {
             ...expected
         } = record;
         assert.deepEqual(outputStats(html), expected);
+        assert.deepEqual(
+            outputStats(
+                server.renderEntryJson(JSON.stringify(input.state), {
+                    markersV2: record.mode === "v2",
+                }),
+            ),
+            expected,
+        );
     });
 }
 
@@ -152,9 +160,10 @@ Object.defineProperty(performance, "now", { value: () => globalThis.benchmarkClo
 export function prepareState(state) { globalThis.benchmarkClock += 13; return state; }
 export function renderEntryPrepared(state) { globalThis.benchmarkClock += 7; return state.text; }
 export function renderEntry(state) { return state.text; }
+export function renderEntryJson(json) { globalThis.benchmarkClock += 5; return JSON.parse(json).text; }
 `,
         );
-        for (const mode of ["plain", "prepared", "prepare-per-render"]) {
+        for (const mode of ["plain", "prepared", "prepare-per-render", "owned-json"]) {
             const result = JSON.parse(
                 execFileSync(
                     process.execPath,
@@ -171,6 +180,16 @@ export function renderEntry(state) { return state.text; }
                 ),
             );
             const reused = mode === "prepared";
+            if (mode === "owned-json") {
+                assert.equal(result.requestInput, "json-text");
+                assert.equal(result.prepareStateMs, undefined);
+                assert.equal(result.coldImportAndRenderMs, 42);
+                assert.equal(result.coldImportToUtf8Ms, 42);
+                assert.equal(result.warmMsPerRender, 5);
+                assert.equal(result.warmUtf8MsPerRender, 5);
+                assert.equal(result.warmJsonUtf8MsPerRender, 5);
+                continue;
+            }
             if (mode === "plain") {
                 assert.equal(result.warmMsPerRender, 0);
                 assert.equal(result.warmStringBytesPerSecond, null);
@@ -308,6 +327,7 @@ test("benchmark reports build and delivery phases and creates optional CPU profi
                 "flatPlan",
                 "flatPlanPrepared",
                 "flatPlanPreparePerRender",
+                "flatPlanOwnedJson",
             ]);
             for (const sample of Object.values(record.modes).flat()) {
                 assert.equal(sample.outputHash, first.outputHash);
