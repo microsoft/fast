@@ -2,17 +2,38 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+import { isDeepStrictEqual } from "node:util";
 import { Worker } from "node:worker_threads";
 import { loadNativeHost } from "../native-host.mjs";
 import { createNativeHostAdapter } from "./performance/native-host-adapter.mjs";
 
 const addon = process.env.FAST_NATIVE_ADDON;
 const fixtureExecutable = process.env.FAST_NATIVE_FIXTURE;
-assert.ok(
-    addon && fixtureExecutable,
-    "Set Cargo-emitted FAST_NATIVE_ADDON and FAST_NATIVE_FIXTURE",
+assert.ok(addon, "Configure FAST_NATIVE_ADDON with the source-built Node addon.");
+const fixture = JSON.parse(
+    fixtureExecutable
+        ? execFileSync(fixtureExecutable, { encoding: "utf8" })
+        : execFileSync(
+              "cargo",
+              [
+                  "run",
+                  "--offline",
+                  "--locked",
+                  "--quiet",
+                  "--manifest-path",
+                  fileURLToPath(
+                      new URL(
+                          "../../../crates/microsoft-fast-build/Cargo.toml",
+                          import.meta.url,
+                      ),
+                  ),
+                  "--example",
+                  "native-host-fixture",
+              ],
+              { encoding: "utf8", timeout: 120_000 },
+          ),
 );
-const fixture = JSON.parse(execFileSync(fixtureExecutable, { encoding: "utf8" }));
 assert.equal(
     fixture.crateVersion,
     JSON.parse(readFileSync(new URL("../package.json", import.meta.url))).version,
@@ -20,11 +41,6 @@ assert.equal(
 );
 const artifact = Buffer.from(fixture.artifact);
 const NativeProgram = loadNativeHost(addon);
-const runtime = new URL("../server-runtime.mjs", import.meta.url).href;
-const source = fixture.source.replace("__FAST_TEST_RUNTIME__", runtime);
-const js = await import(
-    `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-);
 const state = { label: "<&\"'😀", items: ["α", null, -0, { x: 1 }] };
 const json = JSON.stringify(state);
 const input = Buffer.from(json);
@@ -34,10 +50,13 @@ function render(program, context, input) {
         ? program[`render${context}Json`](input)
         : program[`render${context}Json`]("test-card", input);
 }
-function jsRender(context, input, options) {
-    return context === "Entry" || context === "Template"
-        ? js[`render${context}`](input, options)
-        : js[`render${context}`]("test-card", input, options);
+function expectedRender(context, input, options = {}) {
+    assert.deepEqual(input, state);
+    const output = fixture.outputs.find(record =>
+        isDeepStrictEqual(record.options, options),
+    );
+    assert.ok(output, "matching native Rust fixture options");
+    return output.values[context];
 }
 const contexts = ["Entry", "Template", "Host", "Shadow"];
 const frozenShadow =
@@ -53,13 +72,13 @@ test("published entrypoint and untimed boundary adapters expose the tested facad
             context,
             name: "test-card",
         });
-        const expected = jsRender(context, state);
+        const expected = expectedRender(context, state);
         assert.deepEqual(adapter.renderBuffer(input), Buffer.from(expected));
         assert.equal(adapter.renderString(input), expected);
     }
 });
 
-test("source-built semantic schema 1 addon and generated JS agree across four contexts", () => {
+test("semantic schema 1 Node hosting preserves frozen bytes in all four contexts", () => {
     const program = new NativeProgram(artifact);
     const plan = JSON.parse(fixture.artifact);
     assert.equal(plan.format, "fast-server-native");
@@ -72,7 +91,7 @@ test("source-built semantic schema 1 addon and generated JS agree across four co
                 ? frozenShadow
                 : `<test-card>${frozenShadow}</test-card>`;
         assert.deepEqual(render(program, context, input), Buffer.from(frozen));
-        assert.equal(jsRender(context, state), frozen);
+        assert.equal(expectedRender(context, state), frozen);
         for (const options of [
             {},
             { markersV2: true },
@@ -81,7 +100,7 @@ test("source-built semantic schema 1 addon and generated JS agree across four co
         ]) {
             assert.deepEqual(
                 render(new NativeProgram(artifact, options), context, input),
-                Buffer.from(jsRender(context, state, options)),
+                Buffer.from(expectedRender(context, state, options)),
             );
         }
     }
@@ -113,7 +132,7 @@ test("rejects full malformed JSON/UTF8/Unicode/numeric graphs with recovery", ()
             });
             assert.deepEqual(
                 render(program, context, input),
-                Buffer.from(jsRender(context, state)),
+                Buffer.from(expectedRender(context, state)),
             );
         }
         assert.deepEqual(
@@ -125,14 +144,14 @@ test("rejects full malformed JSON/UTF8/Unicode/numeric graphs with recovery", ()
 
 test("configuration is copied once without invoking getters or toJSON", () => {
     const options = { markersV2: true, dsd: ["test-card"] };
-    const expected = Buffer.from(js.renderEntry(state, options));
+    const expected = Buffer.from(expectedRender("Entry", state, options));
     const program = new NativeProgram(artifact, options);
     options.markersV2 = false;
     options.dsd.length = 0;
     assert.deepEqual(program.renderEntryJson(input), expected);
     assert.deepEqual(
         new NativeProgram(artifact, options).renderEntryJson(input),
-        Buffer.from(js.renderEntry(state, options)),
+        Buffer.from(expectedRender("Entry", state, options)),
     );
 
     let calls = 0;
@@ -186,7 +205,7 @@ test("configuration is copied once without invoking getters or toJSON", () => {
         const configured = new NativeProgram(artifact, { dsd: ["test-card"] });
         assert.deepEqual(
             configured.renderEntryJson(input),
-            Buffer.from(js.renderEntry(state)),
+            Buffer.from(expectedRender("Entry", state)),
         );
         assert.equal(calls, 0);
     } finally {
@@ -233,7 +252,7 @@ test("constructor options are strict and request budgets reset after every call"
                 code: "invalid-state",
             });
         }
-        const expected = Buffer.from(jsRender(context, state));
+        const expected = Buffer.from(expectedRender(context, state));
         const bounded = new NativeProgram(artifact, { maxOutputBytes: expected.length });
         const oversized = Buffer.from(
             JSON.stringify({ ...state, label: "x".repeat(expected.length + 1) }),
@@ -286,7 +305,7 @@ test("artifact rejection is explicit and caller bytes are not retained", () => {
     const input = Buffer.from(json);
     const output = program.renderEntryJson(input);
     input.fill(0);
-    assert.deepEqual(output, Buffer.from(js.renderEntry(state)));
+    assert.deepEqual(output, Buffer.from(expectedRender("Entry", state)));
 });
 
 test("shared backing stores are rejected before native reads, with request recovery", async () => {
@@ -332,7 +351,7 @@ test("shared backing stores are rejected before native reads, with request recov
                 });
                 assert.deepEqual(
                     render(program, context, Buffer.from(json)),
-                    Buffer.from(jsRender(context, state)),
+                    Buffer.from(expectedRender(context, state)),
                 );
             }
         }
@@ -350,7 +369,7 @@ test("shared backing stores are rejected before native reads, with request recov
 
 test("owned output survives program collection, forced GC and independent workers", async t => {
     assert.equal(typeof global.gc, "function");
-    const expected = Buffer.from(js.renderEntry(state));
+    const expected = Buffer.from(expectedRender("Entry", state));
     const retained = [];
     for (let index = 0; index < 64; index++) {
         retained.push(
@@ -369,8 +388,8 @@ test("owned output survives program collection, forced GC and independent worker
         const { registerHooks } = require("node:module");
         registerHooks({
             resolve(specifier, context, next) {
-                if (specifier.endsWith("/server-runtime.mjs")) {
-                    throw new Error("Native hosting must not load the JavaScript renderer.");
+                if (specifier.includes("/wasm/") || specifier.endsWith("/server.js")) {
+                    throw new Error("Native request execution must not load the compiler.");
                 }
                 return next(specifier, context);
             },

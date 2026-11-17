@@ -110,16 +110,8 @@ pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>
 
 /// A validated, immutable, `Send + Sync` executable. Clones share owned artifact
 /// storage; requests own all transient state and output. No JavaScript is used.
-/// Generate JavaScript from authored templates with [`crate::compile_server_module`],
-/// not from a loaded native artifact.
-///
-/// ```compile_fail
-/// use microsoft_fast_build::CompiledArtifact;
-///
-/// fn emit(artifact: &CompiledArtifact) {
-///     artifact.emit_server_module("runtime.mjs");
-/// }
-/// ```
+/// Compile authored templates with [`crate::compile_server_artifact`] and deploy
+/// the resulting JSON data independently of this shared execution engine.
 #[derive(Clone, Debug)]
 pub struct CompiledArtifact {
     plan: Arc<Plan>,

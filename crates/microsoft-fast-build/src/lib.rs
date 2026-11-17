@@ -1,10 +1,8 @@
 //! Build-time compiler and template tooling for FAST declarative HTML.
 //!
-//! Generate server ESM with [`compile_server_module`], or compile a native
-//! executable with [`compile_server_artifact`] and load it with [`CompiledArtifact`].
-//! Both targets consume the same compiler-owned executable representation.
+//! Compile native artifacts with [`compile_server_artifact`] and load them with
+//! [`CompiledArtifact`]. Node hosting uses the same native executor.
 
-mod aot;
 mod attribute;
 mod attribute_lookup;
 mod binding_metadata;
@@ -26,7 +24,6 @@ mod template_slots;
 #[cfg(target_arch = "wasm32")]
 mod wasm;
 
-pub use aot::compile_server_module;
 pub use binding_metadata::{BindingMetadata, BindingScope, SourcePosition, SourceSpan};
 pub use error::{ErrorContext, ErrorLocation, RenderError};
 pub use f_template::{

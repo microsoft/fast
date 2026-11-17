@@ -97,6 +97,9 @@ function optionsJson(options = {}) {
 
 /** Load only the caller-selected, source-built addon. No download or backend fallback. */
 export function loadNativeHost(addonPath) {
+    if (typeof addonPath !== "string" || addonPath.length === 0) {
+        throw new TypeError("Native rendering requires an explicit addon path.");
+    }
     const addon = createRequire(import.meta.url)(resolve(addonPath));
     if (typeof addon.NativeProgram !== "function") {
         throw new TypeError("Expected a FAST node-host addon.");

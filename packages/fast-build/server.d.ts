@@ -5,74 +5,6 @@ export interface ServerTemplateDefinition {
     formatVersion?: 1;
 }
 
-export type ServerState =
-    | null
-    | boolean
-    | number
-    | string
-    | ServerState[]
-    | { [key: string]: ServerState };
-
-export interface ServerRenderOptions {
-    attributeNameStrategy?: "camelCase" | "none";
-    markersV2?: boolean;
-    /** Omitted renders all registered components; [] renders no shadow roots. */
-    dsd?: readonly string[];
-}
-
-declare const preparedStateBrand: unique symbol;
-
-/** Opaque immutable snapshot owned by the generated module's runtime instance. */
-export interface PreparedServerState {
-    readonly [preparedStateBrand]: true;
-}
-
-/** Exports of a generated server ESM module. */
-export interface ServerModule {
-    readonly components: readonly string[];
-    /** Copy, validate and normalize once. Dropping the handle allows collection. */
-    prepareState(state?: ServerState): PreparedServerState;
-    renderEntry(state?: ServerState, options?: ServerRenderOptions): string;
-    /** Preserve template-context root host attributes rather than entry-host rules. */
-    renderTemplate(state?: ServerState, options?: ServerRenderOptions): string;
-    renderHost(name: string, state?: ServerState, options?: ServerRenderOptions): string;
-    renderShadow(
-        name: string,
-        state?: ServerState,
-        options?: ServerRenderOptions,
-    ): string;
-    /** Parse and fully validate fresh JSON without copying or retaining its graph. */
-    renderEntryJson(json: string, options?: ServerRenderOptions): string;
-    renderTemplateJson(json: string, options?: ServerRenderOptions): string;
-    renderHostJson(name: string, json: string, options?: ServerRenderOptions): string;
-    renderShadowJson(name: string, json: string, options?: ServerRenderOptions): string;
-    renderEntryPrepared(
-        state: PreparedServerState,
-        options?: ServerRenderOptions,
-    ): string;
-    renderTemplatePrepared(
-        state: PreparedServerState,
-        options?: ServerRenderOptions,
-    ): string;
-    renderHostPrepared(
-        name: string,
-        state: PreparedServerState,
-        options?: ServerRenderOptions,
-    ): string;
-    renderShadowPrepared(
-        name: string,
-        state: PreparedServerState,
-        options?: ServerRenderOptions,
-    ): string;
-}
-
-/** Build-time only. State-independent output; generation eagerly validates all bodies. */
-export function compileServerModule(
-    entry: string,
-    templates?: Record<string, string | ServerTemplateDefinition>,
-    runtimeImport?: string,
-): string;
-
 /** Build-time only. Load with a native library supporting the emitted artifact schema. */
 export function compileServerArtifact(
     entry: string,
@@ -102,11 +34,6 @@ export interface ServerAssetWriteOptions {
     onWarning?: (warning: { sourceIndex: number; content: string }) => void;
 }
 
-export interface ServerModuleWriteOptions extends ServerAssetWriteOptions {
-    /** Persisted deployment configuration; cannot change for a managed asset. */
-    runtimeImport?: string;
-}
-
 export interface ServerAssetWriteResult {
     /** Includes exact-byte restoration when an unchanged managed output is missing. */
     reused: boolean;
@@ -115,18 +42,7 @@ export interface ServerAssetWriteResult {
     bytes?: Uint8Array;
 }
 
-/**
- * Synchronously persist server ESM and an exact authored-input/output-byte sidecar.
- * Unchanged managed output is reused before loading the compiler. Corruption and
- * deployment changes fail closed even when overwrite is enabled.
- */
-export function writeServerModule(
-    outputPath: string,
-    inputs: ServerAssetInputs,
-    options?: ServerModuleWriteOptions,
-): ServerAssetWriteResult;
-
-/** Native counterpart of writeServerModule; no runtime import configuration. */
+/** Persist native bytes and an exact authored-input/output-byte sidecar. */
 export function writeServerArtifact(
     outputPath: string,
     inputs: ServerAssetInputs,

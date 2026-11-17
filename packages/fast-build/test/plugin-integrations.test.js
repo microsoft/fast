@@ -226,14 +226,14 @@ test("validation diagnostics locate wrappers and publisher attributes in authore
 });
 
 test("non-HTML diagnostics have codes without invented source coordinates", () => {
-    assertDiagnostic(() => wasm.render("{{title}}", "{"), "invalid-state-json");
+    assertDiagnostic(() => wasm.render("{{title}}", "{"), "invalid-state");
     assertDiagnostic(
         () => wasm.render_with_templates("", "[]"),
         "invalid-template-metadata",
     );
     assert.throws(
         () => wasm.render_with_templates("", "{}", "{}", "invalid"),
-        /attributeNameStrategy/,
+        /render-options/,
     );
     assertDiagnostic(
         () => convert.convert_template("<template></template>", "invalid"),
@@ -253,9 +253,6 @@ test("non-HTML diagnostics have codes without invented source coordinates", () =
     assertDiagnostic(
         () => wasm.render_shadow_root("missing-card", "{}"),
         "missing-template",
-        undefined,
-        undefined,
-        "missing-card",
     );
     assertDiagnostic(
         () => wasm.compose_f_template_styles("<template></template>", ""),

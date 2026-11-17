@@ -1,10 +1,10 @@
-# Explicit source-built native Node hosting
+# Source-built native Node hosting
 
-This opt-in backend is not an end-to-end shipping recommendation. Generated
-JavaScript remains the explicit alternative; no backend changes automatically.
-The optional `node-host` Cargo feature lives in `microsoft-fast-build`, with the
-facade in the existing `@microsoft/fast-build` package. There is no binding crate,
-platform npm package, npm runtime dependency, install script, download or fallback.
+Node server rendering requires the shared Rust executor through the
+`@microsoft/fast-build/native-host.mjs` facade. The `node-host` Cargo feature
+adds its synchronous Node-API transport to the existing crate. Applications
+explicitly source-build and configure an addon path; no platform npm package,
+automatic install/download or backend fallback is provided.
 
 ## Build and load
 
@@ -29,7 +29,7 @@ import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
 const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
-const program = new Program(readFileSync("./generated/server.fast"), {
+const program = new Program(readFileSync("./generated/server.json"), {
     markersV2: true,
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
@@ -42,10 +42,10 @@ const html = bytes.toString("utf8"); // Explicit string-consumer conversion.
 `renderEntryJson(state)`, `renderTemplateJson(state)`,
 `renderHostJson(name, state)` and `renderShadowJson(name, state)` synchronously
 accept unshared Buffers containing strict UTF-8 JSON and return owned UTF-8 Buffers.
-Strings, objects, prepared-state handles and per-request options are not accepted.
+Strings, objects and per-request options are not accepted.
 Rust directly parses and validates the complete JSON request, including unused
 values, without a serde value-tree re-conversion, hashing or snapshot copy.
-The facade does not import the JavaScript renderer.
+The request dependency graph contains no compiler or WASM.
 
 The optional `NativeHostOptions` constructor argument is a plain configuration
 object with `markersV2?: boolean`, `dsd?: readonly string[]`,
@@ -68,8 +68,7 @@ Malformed/unsupported artifacts are rejected, with no compilation fallback.
 State validates fully even when unused; native nesting/node limits remain 64 and
 1,000,000. Default request budgets are 64 MiB output and 1,000,000 steps.
 Counters reset on every render, including after errors; they are not lifetime
-allowances shared by the program. These native budgets are not promised by the JS
-alternative. Invalid options fail construction with `invalid-options`.
+allowances shared by the program. Invalid options fail construction with `invalid-options`.
 Request state errors precede missing-template lookup; budget errors return
 `render-limit` with no partial Buffer. Errors retain native `code` values and
 subsequent valid requests recover.
@@ -94,7 +93,7 @@ independent workers are correctness tests, not a heap/leak certification.
 The host delegates to the shared typed native executor and its fresh-JSON APIs,
 including bounded attribute writes. It does not duplicate native execution or
 retain a separate state-borrowing implementation. Artifacts remain execution-only;
-build-time JavaScript generation compiles the authored templates directly.
+build-time JavaScript APIs compile authored templates into native artifacts.
 
 The npm package contains the facade, types and source-build script,
 not `.node` binaries or crate sources.
@@ -102,22 +101,19 @@ Node-API 8 is requested and the package requires Node >=22.18.0. Only the curren
 macOS arm64/Node installation is locally exercised; Windows, Linux glibc/musl, other
 architectures, other Node versions and universal/prebuilt packaging are not
 qualified. No all-platform tarball size or prebuilt ABI coverage claim is made.
-Default Cargo builds, WASM exports and default npm build do not enable the feature.
+Default Rust/WASM builds do not enable the transport feature; the repository npm build also builds the required local Node addon.
 No automatic prebuilt distribution is introduced.
 
-Keep JavaScript imports for JavaScript requests; explicitly source-build and
-select `loadNativeHost` for UTF-8 JSON requests. Object validation/serialization is
+Source-build and configure `loadNativeHost` for UTF-8 JSON requests. Object validation/serialization is
 an application-owned boundary, not part of this API. Do not silently substitute
 `JSON.stringify` for descriptor-safe validation of arbitrary objects.
 
-Compare against the current JavaScript `renderEntryJson` API with matching inputs
-and outputs. Buffer-input JavaScript measurements include decoding; Buffer-output
-JavaScript measurements include encoding. Native measurements include NAPI,
-request parsing/validation and owned output, plus input encoding or output decoding
-when the application requires strings. Report constructor/load and first-request
-costs separately from warm rendering. Include memory and error recovery in
-deployment qualification. Native inner-loop speedups alone do not establish an
-end-to-end win.
+Measure application-matched input/output boundaries. Native measurements include
+NAPI, request parsing/validation and owned output, plus input encoding or output
+decoding when the application requires strings. Report constructor/load and first
+request separately from warm rendering. Include memory, concurrency and error
+recovery; inner-loop speed alone does not establish an end-to-end win.
+Use the [measurement guide](./server-modules.md#qualification-and-measurements).
 
 ### Source and worker proof for validation
 
@@ -137,13 +133,12 @@ CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 cargo build --release --locked \
 Select `FAST_NATIVE_FIXTURE` from the `compiler-artifact` record's `executable`
 for `native-host-fixture`, not an old path guessed from the target layout.
 Set `FAST_NATIVE_ADDON` to the freshly copied `native-hosting/fast-build.node`.
-Both variables must be absolute paths when running
+Configured paths must be absolute when running
 `npm run test:native-host -w @microsoft/fast-build` from the root.
 Keep both Cargo JSON logs, exact source commit, feature/target settings and
 SHA-256 hashes of the emitted library, copied addon and fixture executable.
-The fixture emits its crate version, native semantic artifact and matching JS
-module at test startup; tests reject a mismatched package/crate version.
-The frozen expected output must match both targets in all four render contexts.
+The fixture emits its crate version, native semantic artifact and Rust-rendered context outputs at test startup; tests reject a mismatched package/crate version.
+Node and Rust outputs must also match independent frozen bytes in all four contexts.
 
 Worker proof requires four distinct worker thread IDs, each independently loading
 the selected addon/facade and constructing its own program. Each worker renders

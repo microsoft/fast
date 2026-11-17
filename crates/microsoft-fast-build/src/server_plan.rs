@@ -1,8 +1,7 @@
-//! Stable semantic wire data, separate from either target's execution layout.
+//! Stable semantic wire data, separate from the native execution layout.
 use serde_json::{json, Map, Value as V};
 use std::collections::HashMap;
 
-pub(crate) const JS_VERSION: u32 = 1;
 /// Native semantic artifact schema, independent of private execution layouts.
 pub const NATIVE_VERSION: u32 = 1;
 

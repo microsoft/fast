@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import type { ServerModule, ServerState } from "@microsoft/fast-build/server.js";
+import type { NativeProgram } from "@microsoft/fast-build/native-host.mjs";
 import {
     BENCH_TREE_CONFIG,
     buildTree,
@@ -18,10 +18,15 @@ const base = buildId ? `/${buildId}/` : "/";
 // Load the WASM module for SSR rendering at build time.
 const require = createRequire(import.meta.url);
 const wasm = require("@microsoft/fast-build/wasm/microsoft_fast_build.js");
-const { compileServerModule } = require("@microsoft/fast-build/server.js");
-const runtime = pathToFileURL(
-    require.resolve("@microsoft/fast-build/server-runtime.mjs"),
-).href;
+const { compileServerArtifact } = require("@microsoft/fast-build/server.js");
+const { loadNativeHost } = require("@microsoft/fast-build/native-host.mjs");
+const Program = loadNativeHost(
+    process.env.FAST_NATIVE_ADDON ??
+        resolve(
+            __dirname,
+            "../../crates/microsoft-fast-build/target/node-host/fast-build.node",
+        ),
+);
 
 /**
  * Parse `<f-template>` elements from an HTML string using the WASM module.
@@ -38,8 +43,8 @@ function parseTemplates(html: string): Record<string, string> {
 }
 
 interface ScenarioCache {
-    state: ServerState;
-    server: ServerModule;
+    state: Buffer;
+    server: NativeProgram;
     /** Pre-rendered HTML for scenarios with static state. */
     cachedHtml?: string;
 }
@@ -51,16 +56,13 @@ async function loadScenario(name: string): Promise<ScenarioCache> {
 
     const scenarioDir = resolve(benchmarksDir, name);
     const entry = readFileSync(resolve(scenarioDir, "hydration/entry.html"), "utf8");
-    const state = JSON.parse(
-        readFileSync(resolve(scenarioDir, "hydration/state.json"), "utf8"),
-    );
+    const state = readFileSync(resolve(scenarioDir, "hydration/state.json"));
     const templateHtml = readFileSync(resolve(scenarioDir, "template.html"), "utf8");
     const templates = parseTemplates(templateHtml);
 
-    const source = compileServerModule(entry, templates, runtime);
-    const server = await import(
-        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-    );
+    const server = new Program(Buffer.from(compileServerArtifact(entry, templates)), {
+        attributeNameStrategy: "none",
+    });
     const cache: ScenarioCache = { state, server };
     scenarioCaches[name] = cache;
     return cache;
@@ -81,9 +83,7 @@ await Promise.all(
 function renderCached(name: string): string {
     const cache = scenarioCaches[name];
     if (!cache.cachedHtml) {
-        cache.cachedHtml = cache.server.renderEntry(cache.state, {
-            attributeNameStrategy: "none",
-        });
+        cache.cachedHtml = cache.server.renderEntryJson(cache.state).toString("utf8");
     }
     return cache.cachedHtml;
 }
@@ -94,10 +94,11 @@ const scenarioRenders: Record<string, (index: number) => string> = {
     "attr-reflect"(index: number): string {
         const cache = scenarioCaches["attr-reflect"];
         const count = `${index + 1}`;
-        return cache.server.renderEntry(
-            { label: `item-${count}`, count },
-            { attributeNameStrategy: "none" },
-        );
+        return cache.server
+            .renderEntryJson(
+                Buffer.from(JSON.stringify({ label: `item-${count}`, count })),
+            )
+            .toString("utf8");
     },
     basic: () => renderCached("basic"),
     "bind-event": () => renderCached("bind-event"),

@@ -1,13 +1,10 @@
 #![allow(dead_code)]
 use super::configuration::*;
 use microsoft_fast_build::{
-    compile_server_artifact, compile_server_module, CompiledArtifact, JsonValue, Locator,
-    NativeRenderOptions, RenderError,
+    compile_server_artifact, CompiledArtifact, JsonValue, Locator, NativeRenderOptions, RenderError,
 };
 use serde_json::{json, Value};
 use std::collections::HashMap;
-use std::io::Write;
-use std::process::{Command, Stdio};
 
 fn value(input: &JsonValue) -> Value {
     match input {
@@ -51,7 +48,6 @@ fn execute(
     entry: bool,
     shadow: Option<&str>,
 ) -> Result<String, RenderError> {
-    let source = compile_server_module(template, locator, "__FAST_TEST_RUNTIME__")?;
     let config = config.cloned().unwrap_or_default();
     let native_options = NativeRenderOptions {
         markers_v2: config.markers_v2,
@@ -87,64 +83,18 @@ fn execute(
         fresh_result, native_result,
         "fresh JSON/native typed conformance"
     );
-    let dsd = match config.dsd_selection {
-        DsdSelection::All => Value::Null,
-        DsdSelection::Only(names) => json!(names),
-    };
-    let mut options = json!({
-        "attributeNameStrategy": if config.attribute_name_strategy == AttributeNameStrategy::None { "none" } else { "camelCase" },
-        "markersV2": config.markers_v2,
-    });
-    if !dsd.is_null() {
-        options["dsd"] = dsd;
-    }
-    let request = json!({ "source": source, "state": value(root), "options": options, "shadow": shadow, "template": !entry });
-    let mut child = Command::new("node")
-        .arg(
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join("../../packages/fast-build/test/execute-server.mjs"),
-        )
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .expect("Node is required for generated-JS rendering assertions");
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(request.to_string().as_bytes())
-        .unwrap();
-    let output = child.wait_with_output().unwrap();
-    assert!(
-        output.status.success(),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    let result: Value = serde_json::from_slice(&output.stdout).unwrap();
-    if let Some(error) = result.get("error") {
-        assert_eq!(
-            native_result.as_ref().unwrap_err().code,
-            error["code"].as_str().unwrap(),
-            "native/JS failure contract"
-        );
-        if error["code"] == "repeat-not-array" {
-            return Err(RenderError::NotAnArray {
-                binding: error["message"].as_str().unwrap_or("").to_string(),
+    native_result.map_err(|error| {
+        if error.code == "repeat-not-array" {
+            RenderError::NotAnArray {
+                binding: error.message,
                 context: template.to_string().into(),
-            });
+            }
+        } else {
+            RenderError::InvalidTemplateMetadata {
+                message: error.message,
+            }
         }
-        return Err(RenderError::InvalidTemplateMetadata {
-            message: error["message"].as_str().unwrap_or("").to_string(),
-        });
-    }
-    let result = result["value"].as_str().unwrap().to_string();
-    assert_eq!(
-        native_result.expect("native execution must match successful JS"),
-        result,
-        "loaded native artifact and generated JS must preserve identical bytes"
-    );
-    Ok(result)
+    })
 }
 
 pub fn render(
