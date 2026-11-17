@@ -88,6 +88,47 @@ export function request(state = {}, options = {}) {
     return requestOptions(validate(state), options);
 }
 
+function normalizeJson(value, pending) {
+    if (typeof value === "number") {
+        if (!Number.isFinite(value)) {
+            throw new TypeError("SSR state must contain finite numbers.");
+        }
+        return value === 0 ? 0 : value;
+    }
+    if (typeof value === "string" && !value.isWellFormed()) {
+        throw new TypeError("SSR strings must contain well-formed Unicode.");
+    }
+    if (value !== null && typeof value === "object") pending.push(value);
+    return value;
+}
+
+export function jsonRequest(json, options = {}) {
+    if (typeof json !== "string") {
+        throw new TypeError("SSR JSON input must be a string.");
+    }
+    // Only this boundary owns parsed data; live objects still use the full validator.
+    const pending = [];
+    const state = normalizeJson(JSON.parse(json), pending);
+    while (pending.length) {
+        const value = pending.pop();
+        if (Array.isArray(value)) {
+            for (let index = 0; index < value.length; index++) {
+                value[index] = normalizeJson(value[index], pending);
+            }
+        } else {
+            for (const key of Object.keys(value)) {
+                if (!key.isWellFormed()) {
+                    throw new TypeError(
+                        "SSR property names must contain well-formed Unicode.",
+                    );
+                }
+                value[key] = normalizeJson(value[key], pending);
+            }
+        }
+    }
+    return requestOptions(state, options);
+}
+
 function requestOptions(state, options) {
     const strategy = options.attributeNameStrategy ?? "camelCase";
     if (strategy !== "camelCase" && strategy !== "none") {
@@ -113,18 +154,14 @@ function requestOptions(state, options) {
     ];
 }
 
-function nested(value, path, start = 0, indexes) {
+function nested(value, path, start, indexes) {
     for (let index = start; index < path.length; index++) {
         const key = path[index];
         if (Array.isArray(value)) {
             if (key === "length") {
                 return index === path.length - 1 ? value.length : undefined;
             }
-            const arrayIndex = indexes
-                ? indexes[index]
-                : /^\+?\d+$/.test(key)
-                  ? Number(key)
-                  : null;
+            const arrayIndex = indexes[index];
             if (arrayIndex === null) {
                 return undefined;
             }
@@ -209,30 +246,6 @@ export function loop(parent, slot) {
     values[slot] = value;
     values[0] = index;
     return { values, depth, value, index };
-}
-
-export function child(root, entries) {
-    const values = Object.create(null);
-    let copied;
-    for (const [key, group, value] of entries) {
-        if (group === null) {
-            values[key] = value === undefined ? null : value;
-            copied?.delete(key);
-        } else {
-            if (!own(values, key)) {
-                const inherited = getRoot(root, [key]);
-                values[key] = inherited === undefined ? Object.create(null) : inherited;
-            }
-            if (object(values[key])) {
-                if (!copied?.has(key)) {
-                    values[key] = Object.assign(Object.create(null), values[key]);
-                    (copied ??= new Set()).add(key);
-                }
-                values[key][group] = value === undefined ? null : value;
-            }
-        }
-    }
-    return { values, parent: object(root.values) ? root : null };
 }
 
 function planChild(props, strategy) {
@@ -448,12 +461,6 @@ export function attribute(name, value, boolean, primitive = false) {
         return "";
     }
     return ` ${name}="${htmlEscape(primitive && typeof value === "number" ? number(value) : text(value))}"`;
-}
-
-export function composite(parts) {
-    return parts.some(part => part === undefined || part === null)
-        ? null
-        : parts.join("");
 }
 
 export const segment = value =>
@@ -937,48 +944,37 @@ export function createServerRenderer(plan) {
         });
     }
     const body = bodyOf(plan.entry);
+    function renderMethods(read, suffix = "") {
+        return {
+            [`renderEntry${suffix}`](state, options) {
+                const [r, o] = read(state, options);
+                return body(r, null, o, null, true);
+            },
+            [`renderTemplate${suffix}`](state, options) {
+                const [r, o] = read(state, options);
+                return body(r, null, o, null, false);
+            },
+            [`renderHost${suffix}`](name, state, options) {
+                const [r, o] = read(state, options);
+                const component = components.get(name);
+                if (!component) missing(name);
+                return component.host(r, null, o, null, true);
+            },
+            [`renderShadow${suffix}`](name, state, options) {
+                const [r, o] = read(state, options);
+                const component = components.get(name);
+                if (!component) missing(name);
+                return selected(o, name)
+                    ? component.shadow(r, null, o, scope(o), false)
+                    : "";
+            },
+        };
+    }
     return Object.freeze({
         components: Object.freeze([...components.keys()]),
         prepareState,
-        renderEntry(state, options) {
-            const [r, o] = request(state, options);
-            return body(r, null, o, null, true);
-        },
-        renderTemplate(state, options) {
-            const [r, o] = request(state, options);
-            return body(r, null, o, null, false);
-        },
-        renderHost(name, state, options) {
-            const [r, o] = request(state, options);
-            const component = components.get(name);
-            if (!component) missing(name);
-            return component.host(r, null, o, null, true);
-        },
-        renderShadow(name, state, options) {
-            const [r, o] = request(state, options);
-            const component = components.get(name);
-            if (!component) missing(name);
-            return selected(o, name) ? component.shadow(r, null, o, scope(o), false) : "";
-        },
-        renderEntryPrepared(state, options) {
-            const [r, o] = preparedRequest(state, options);
-            return body(r, null, o, null, true);
-        },
-        renderTemplatePrepared(state, options) {
-            const [r, o] = preparedRequest(state, options);
-            return body(r, null, o, null, false);
-        },
-        renderHostPrepared(name, state, options) {
-            const [r, o] = preparedRequest(state, options);
-            const component = components.get(name);
-            if (!component) missing(name);
-            return component.host(r, null, o, null, true);
-        },
-        renderShadowPrepared(name, state, options) {
-            const [r, o] = preparedRequest(state, options);
-            const component = components.get(name);
-            if (!component) missing(name);
-            return selected(o, name) ? component.shadow(r, null, o, scope(o), false) : "";
-        },
+        ...renderMethods(request),
+        ...renderMethods(jsonRequest, "Json"),
+        ...renderMethods(preparedRequest, "Prepared"),
     });
 }

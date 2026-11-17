@@ -10,7 +10,7 @@ parsing/lowering to Rust. `compileServerModule` returns ESM importing
 `server-runtime.mjs`; `compileServerArtifact` returns bytes for the supported
 native Rust executor. Both use the same compiler-owned executable IR.
 The helper is the JavaScript target's request engine. It has no imports or compiler,
-WASM, parser, browser, serialization or source-evaluation dependency.
+WASM, template-parser, browser, serialization or source-evaluation dependency.
 See [the full module/state contract](./docs/server-modules.md).
 
 Rust encodes the shared executable IR as stable semantic operation objects with
@@ -65,10 +65,11 @@ imply equivalent FAST budgets in the JS target.
 ### Compiled access and repeat frames
 
 The semantic-plan loader prepares path accessors and resolves potential lexical aliases
-into numeric slots. The helper caches array-index decoding at module import,
-specializes single-key root and single-alias lookups, and selects the newest
-matching alias when dotted prefixes overlap. It preserves own-property masking,
-nulls, array access and parent fallback without slicing paths per lookup.
+into numeric slots. The helper decodes array indexes at module import and supplies
+them to every accessor. It specializes single-key root and single-alias lookups and
+selects the newest matching alias when dotted prefixes overlap. It preserves
+own-property masking, nulls, array access and parent fallback without slicing paths
+per lookup.
 
 A nonempty repeat owns a request-local prototype-linked slot frame with alias/index cells
 reused across iterations, instead of copying loop arrays for every item.
@@ -91,6 +92,17 @@ generation uses `compile_server_module` with authored templates and a
 locator. Native plans retain no reconstruction code or emission-only numeric
 spellings. Benchmarks cover deep paths, three-level repeats and core workloads,
 reporting warm CPU, observed GC and memory.
+
+### Fresh JSON request ownership
+
+The four explicit `render*Json` exports parse required JSON strings without a reviver
+inside the helper. One iterative full-graph traversal checks finite numbers and Unicode
+keys/values, normalizing negative zero in the owned graph. Parsing already establishes
+plain acyclic containers, dense arrays and own data properties; the arbitrary-object
+validator and snapshot copier are not called. Pending containers cost up to graph width
+in request-local memory; deep unused graphs do not recurse through the JavaScript stack.
+All three input boundaries feed the same four target wrappers and semantic execution closures.
+Options, scopes and overlays stay fresh; parsed state is neither frozen nor retained.
 
 ### Prepared-state ownership
 
@@ -191,6 +203,13 @@ mode order. It reports preparation time and before/after-GC memory outside
 render timing; only reused snapshots skip per-call validation. Default mode is
 still `plain`. Compare preparation plus rendering and retained memory, not
 prepared throughput alone.
+
+`owned-json` is an additional input mode for the same semantic executor, not another
+renderer. It passes fresh JSON text into `renderEntryJson` for first/warm/UTF-8
+loops; these timers and GC/memory include owned parsing/full traversal. Input-boundary
+labels prevent conflating these with object-only calls. The separate JSON-to-UTF-8
+loop compares against ordinary external parsing/full validation on identical bytes.
+Snapshot modes remain independent controls. No speedup is assumed without measurement.
 
 Boundary-normalized measurements identify the execution target as flat-plan
 JavaScript and record marker/naming options. State-only JSON serialization is

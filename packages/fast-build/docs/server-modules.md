@@ -127,6 +127,9 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
 - `renderHost(name, state?, options?)`: renders a complete named component host.
 - `renderShadow(name, state?, options?)`: renders only its DSD template, with no
   host attributes or caller-owned light DOM synthesized.
+- `renderEntryJson(json, options?)`, `renderTemplateJson(json, options?)`,
+  `renderHostJson(name, json, options?)`, `renderShadowJson(name, json, options?)`:
+  generated modules accept explicit fresh JSON strings in the same contexts.
 - `components`: registered component names.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
@@ -168,6 +171,33 @@ Generation eagerly visits directive and light-DOM bodies, including skipped
 branches and empty repeats, and rejects malformed syntax with existing error
 codes, UTF-16 line/column/length and template names. Runtime repeat values must
 still be arrays (or missing); a present non-array produces `repeat-not-array`.
+
+## Owned fresh JSON requests
+
+When input already arrives as JSON text, select a `Json`-suffixed method rather than
+parsing externally and passing an object:
+
+```js
+import { renderEntryJson } from "./generated/server-json.mjs";
+const html = renderEntryJson('{"title":"Fresh request"}');
+```
+
+Each method requires a string; omission, objects, parser callbacks, Buffers and other
+byte input are rejected with `TypeError`, without implicit `toString`/`toJSON` conversion.
+Parsing uses no reviver. The helper owns the fresh graph and iteratively visits every
+value, including unused fields, checking finite numbers and well-formed Unicode keys
+and strings. It normalizes negative zero in place. JSON parsing already establishes
+plain acyclic objects, dense arrays and own data properties, so this boundary skips
+the arbitrary-object descriptor/prototype checks and snapshot copy/freezing.
+The graph is not retained between calls; pending containers use request-local memory.
+Invalid JSON produces `SyntaxError`; unsupported numbers/Unicode produce `TypeError`.
+Native depth/node budgets remain a separate native-host contract.
+
+The same loaded semantic-plan executor handles all input modes. Output, options,
+coercion, host defaults, child overlays and hydration scopes are unchanged.
+Use ordinary methods for already-parsed objects and prepared methods for snapshot
+reuse. Owned parsing and full traversal still cost CPU and memory; compare matched
+JSON-to-UTF-8 boundaries, not JSON input with an object-only or reused-snapshot call.
 
 ## Prepared-state snapshots
 
