@@ -88,6 +88,7 @@ export type ServerAssetInputs =
       }
     | {
           entry: string;
+          /** Raw sources must contain at least one named template with unique names. */
           templateSources: readonly string[];
           templates?: never;
       };
@@ -95,6 +96,8 @@ export type ServerAssetInputs =
 export interface ServerAssetWriteOptions {
     /** Existing changed or unmanaged output requires explicit permission to replace. */
     overwrite?: boolean;
+    /** Return owned output bytes captured under the writer lock, without reopening the path. */
+    includeBytes?: boolean;
     /** Nameless-template diagnostics, emitted only when raw sources are parsed. */
     onWarning?: (warning: { sourceIndex: number; content: string }) => void;
 }
@@ -108,6 +111,8 @@ export interface ServerAssetWriteResult {
     /** Includes exact-byte restoration when an unchanged managed output is missing. */
     reused: boolean;
     manifestPath: string;
+    /** Present only with includeBytes; independent of subsequent output-file changes. */
+    bytes?: Uint8Array;
 }
 
 /**

@@ -1,5 +1,31 @@
 # Migrating from previous versions
 
+## Strict CLI template registries
+
+`fast build` rejects duplicate template names and explicit `--templates` selections
+that contain no named templates. This applies to fresh and persistent builds.
+
+Replace ordered overrides with one selected definition per name:
+
+```sh
+# Before: both files define my-card; the later definition wins.
+fast build --entry=index.html --templates="default.html,custom.html"
+
+# After: select the desired definition.
+fast build --entry=index.html --templates="custom.html"
+```
+
+Remove `--templates` or the `templates` configuration entry when intentionally
+rendering an entry without component definitions. Empty values, unmatched
+selections and files containing only nameless
+templates now error instead of rendering with an empty registry.
+
+The draft `templateSourcePolicy: "overwrite"` option is removed. Reset both the
+managed module and its `.inputs.json` sidecar before rebuilding retained pairs
+created by earlier CLI-cache drafts. Existing strict writer/converter pairs remain
+reusable. Raw-source order is canonicalized; repeated sources still count as
+duplicate definitions rather than silently deduplicating.
+
 ## Direct runtime helper imports
 
 The runtime no longer exports `child` or `composite`. Component assignments and
@@ -80,6 +106,11 @@ loading or raw-template parsing. The sidecar contains an exact output-byte copy,
 not a fingerprint. This increases build-storage size, not runtime dependencies.
 Pure `compileServerModule`/`compileServerArtifact` calls remain available, but
 cannot reuse historical encodings without persisted assets.
+To opt into retained preparation, add `--server-module=generated/page.mjs`
+(or the `server-module` config key) and
+cache both that file and its `.inputs.json` sidecar. Request state and render
+options are not preparation inputs.
+The plan/helper execution schema and rendered bytes do not change.
 The earlier source-rendering migration below is separate.
 
 ## Request-time source rendering to compiled server targets
@@ -129,7 +160,8 @@ Compile authored inputs at build time, then select the matching render context:
 Use `renderEntry` for entry-host attribute handling and `renderTemplate`
 for template-context root-host attributes. Both render complete synchronous HTML.
 Use `ServerTemplateDefinition` for build-time metadata types. `fast build`
-always compiles and executes server modules; remove `--aot`, `--stream` and `stream`
+always executes server modules (compiling fresh unless persistence is selected);
+remove `--aot`, `--stream` and `stream`
 configuration from build scripts.
 
 Earlier versions implicitly loaded `state.json` when no state path was supplied.

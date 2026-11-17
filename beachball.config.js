@@ -128,6 +128,7 @@ module.exports = {
         "src/e2e/",
         "src/tests/",
         "src/fixtures/**",
+        "**/test/declarative/fixtures/**",
         // This one is especially important (otherwise dependabot would be blocked by change file requirements)
         "package-lock.json",
     ],

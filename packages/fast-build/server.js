@@ -52,7 +52,10 @@ function hasKeys(value, keys) {
     );
 }
 
-/** @param {any} inputs */
+/**
+ * @param {any} inputs
+ * @returns {import("./server.js").ServerAssetInputs}
+ */
 function canonicalInputs(inputs) {
     const invalid = () => {
         throw assetError(
@@ -314,11 +317,14 @@ function writeServerAsset(outputPath, inputs, options, kind) {
             key =>
                 ![
                     "overwrite",
+                    "includeBytes",
                     "onWarning",
                     ...(kind === "server-js" ? ["runtimeImport"] : []),
                 ].includes(key),
         ) ||
         (options.overwrite !== undefined && typeof options.overwrite !== "boolean") ||
+        (options.includeBytes !== undefined &&
+            typeof options.includeBytes !== "boolean") ||
         (options.onWarning !== undefined && typeof options.onWarning !== "function") ||
         (kind === "server-js"
             ? options.runtimeImport !== undefined &&
@@ -384,7 +390,11 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                         { filename: outputPath, bytes: output, previous: null },
                     ]);
                 }
-                return { reused: true, manifestPath };
+                return {
+                    reused: true,
+                    manifestPath,
+                    ...(options.includeBytes ? { bytes: output } : {}),
+                };
             }
         }
         if (previousOutput && !options.overwrite) {
@@ -393,11 +403,12 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                 "Server asset already exists; explicit overwrite is required.",
             );
         }
-        // Preserve caller source order for diagnostics; only the reuse key is sorted.
+        // Strict mode sorts only the reuse key; diagnostics follow caller source order.
+        /** @type {import("./server.js").ServerAssetInputs} */
         const compileInputs =
-            "templateSources" in canonical
+            canonical.templateSources !== undefined
                 ? {
-                      entry: canonical.entry,
+                      ...canonical,
                       templateSources: /** @type {readonly string[]} */ (
                           inputs.templateSources
                       ),
@@ -437,7 +448,11 @@ function writeServerAsset(outputPath, inputs, options, kind) {
             previous: previousManifest,
         });
         replaceAssetFiles(replacements);
-        return { reused: false, manifestPath };
+        return {
+            reused: false,
+            manifestPath,
+            ...(options.includeBytes ? { bytes: output } : {}),
+        };
     } finally {
         fs.closeSync(lock);
         const current = fs.lstatSync(lockPath, { throwIfNoEntry: false });
