@@ -23,6 +23,6 @@ a post-render regular-expression pass.
 This is development tooling for dynamically authored fixtures. Production SSR
 should compile during the build and import generated modules, or load compiled
 artifacts in the supported native Rust host, as described in
-the [fast-build migration](../../../fast-build/docs/migration/aot-server-rendering.md).
+the [server module contract](../../../fast-build/docs/server-modules.md).
 The harness itself continues to use generated JavaScript; native Rust support
 does not add a C ABI or working .NET binding.

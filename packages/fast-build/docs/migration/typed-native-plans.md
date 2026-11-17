@@ -44,9 +44,8 @@ The native loader and renderer do not retain a conversion fallback.
 - No new generated named exports are introduced by this change. Do not rewrite
   cached modules to obtain exports added by other changes; newly compiled output
   at an explicitly selected destination is required when old modules lack them.
-- Unsupported older schemas still fail explicitly. Earlier source-renderer
-  migrations in [the historical guide](./aot-server-rendering.md) are separate
-  and are not instructions to regenerate supported semantic schema-1 assets.
+- Unsupported older schemas still fail explicitly; this does not require
+  regenerating supported semantic schema-1 assets.
 
 ## Load, memory and dispatch qualification
 
@@ -61,7 +60,7 @@ includes typed vectors/boxes, path strings/index metadata, shared component name
 and decoded static values. Original numeric-spelling metadata and JavaScript
 emission are not properties of retained native storage.
 
-This candidate composes with the borrowed-state executor: ordinary typed input
+This release includes the borrowed-state executor: ordinary typed input
 still validates/copies, fresh JSON parses directly into owned validated state, and
 prepared input borrows its snapshot. Lookups, repeat items and direct child
 properties borrow request storage; dataset merges remain copy-on-write. Composite
