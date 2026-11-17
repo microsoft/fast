@@ -27,7 +27,7 @@ export interface PreparedServerState {
     readonly [preparedStateBrand]: true;
 }
 
-/** Exports of newly generated ESM; older persisted modules may lack additive exports. */
+/** Exports of a generated server ESM module. */
 export interface ServerModule {
     readonly components: readonly string[];
     /** Copy, validate and normalize once. Dropping the handle allows collection. */

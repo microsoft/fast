@@ -59,9 +59,8 @@ const dsd = renderShadow("my-card", { title: "Component state" });
 ```
 
 Generated ESM embeds flat template instruction tables, not rendering functions.
-The server helper validates and loads them once. Published object-input and
-prepared-state methods are unchanged. Compiler fingerprints and literal
-helper-build checks are removed; supported plan/artifact schemas govern loading.
+The server helper validates and loads them once. Supported plan/artifact schemas
+govern loading.
 For strict template-only asset updates, use `writeServerModule` or
 `writeServerArtifact` at build time and persist the asset plus its `.inputs.json`
 manifest. Unchanged authored inputs reuse exact existing bytes without compilation.
@@ -76,7 +75,7 @@ Existing HTML bytes, server coercion and hydration markers are preserved.
 
 ### Fresh JSON request input
 
-Newly emitted modules expose `renderEntryJson(json, options?)`,
+Generated modules expose `renderEntryJson(json, options?)`,
 `renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
 `renderShadowJson(name, json, options?)` for input that arrives as JSON text:
 
@@ -93,11 +92,8 @@ pass. The same executor preserves all output, options, coercion and hydration by
 Keep object methods for already-parsed state and prepared methods for unchanged reuse.
 JSON parsing and full traversal still have costs; measure matched request boundaries.
 
-Previously managed semantic schema 1 modules remain usable unchanged but retain their original
-export lists without the new JSON names. To opt in, explicitly emit/activate a new
-destination and retain its own sidecar; do not rewrite unchanged managed assets on
-dependency upgrades. Native semantic schema 1 assets require no change. See
-[JSON ownership and adoption](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
+See the
+[JSON request contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
 
 For named template files, use
 `fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"`.

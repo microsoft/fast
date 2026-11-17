@@ -50,20 +50,20 @@ const dsd = renderShadow("my-card", { title: "Only the shadow template" });
 Use generated `renderTemplate` for template-context root-host attribute handling,
 or `renderEntry` for entry-host rules.
 
-For fresh JSON text, newly emitted modules also expose `renderEntryJson(json, options?)`,
+For fresh JSON text, use `renderEntryJson(json, options?)`,
 `renderTemplateJson(json, options?)`, `renderHostJson(name, json, options?)` and
-`renderShadowJson(name, json, options?)`. They parse a required string without a reviver
-and validate the complete request-owned graph, including unused fields, finite numbers
-and well-formed Unicode keys/values. Negative zero is normalized in place; there is no
-snapshot copy, freezing, arbitrary-object descriptor pass or retained request graph.
-Output, lookup/coercion, options and hydration bytes match the corresponding object APIs.
-Use object methods for already-parsed state and prepared methods for snapshot reuse.
+`renderShadowJson(name, json, options?)`:
 
-Existing managed semantic schema 1 modules remain usable unchanged, but their old export lists
-do not acquire JSON method names merely by upgrading the helper. To opt in, explicitly
-compile to a new destination; unchanged managed assets and sidecars are never rewritten
-to add exports. Native semantic schema 1 artifacts remain supported without regeneration.
-See [JSON ownership and adoption](./docs/server-modules.md#owned-fresh-json-requests).
+```js
+import { renderEntryJson } from "./generated/server.mjs";
+
+const html = renderEntryJson('{"title":"Request-specific state"}');
+```
+
+Pass a required JSON string. Every field is validated, including unused values;
+numbers must be finite and keys/strings must contain well-formed Unicode.
+Use object methods for already-parsed state and prepared methods for snapshot reuse.
+See the [JSON request contract](./docs/server-modules.md#owned-fresh-json-requests).
 
 For named `<f-template>` files, the conversion CLI links the whole matched
 registry into one module:

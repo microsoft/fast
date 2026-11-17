@@ -34,13 +34,10 @@ bodies, including unused definitions and skipped branches.
 See the [server module contract](../../packages/fast-build/docs/server-modules.md)
 for render options, state validation and deployment requirements.
 
-New ESM emission also exports `renderEntryJson`, `renderTemplateJson`,
-`renderHostJson` and `renderShadowJson`. These required-string input methods
-reuse the same helper executor after owned parsing and lighter full-graph validation.
-They are JavaScript request APIs, not new Rust/native render methods.
-Existing managed JavaScript and native semantic schema 1 assets remain loadable unchanged;
-old ESM export lists lack the JSON names. Opt in at a new explicit output destination,
-without rewriting unchanged managed assets or adding compiler-version keys.
+Generated modules also export `renderEntryJson`, `renderTemplateJson`,
+`renderHostJson` and `renderShadowJson`. Use these JavaScript methods for fresh JSON
+text, passing a required string instead of an already-parsed object. See the
+[JSON request contract](../../packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
 
 ### Compile and deploy native Rust artifacts
 

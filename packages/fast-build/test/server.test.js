@@ -811,7 +811,7 @@ test("loaded component recipes avoid mapped tuples, ownership sets and composite
             ],
         },
     });
-    assert.doesNotMatch(source, /renderEntryJson|compilerId/);
+    assert.doesNotMatch(source, /compilerId/);
     const state = { dataset: { kept: "safe" }, label: "<&" };
     const prepared = module.prepareState(state);
     for (const attributeNameStrategy of ["camelCase", "none"]) {
@@ -828,6 +828,10 @@ test("loaded component recipes avoid mapped tuples, ownership sets and composite
                         ? ["recipe-parent"]
                         : [];
                 const expected = module[method](...names, state, options);
+                assert.equal(
+                    module[`${method}Json`](...names, JSON.stringify(state), options),
+                    expected,
+                );
                 const map = Array.prototype.map;
                 const fromEntries = Object.fromEntries;
                 const add = Set.prototype.add;

@@ -102,12 +102,6 @@ validator and snapshot copier are not called. Pending containers cost up to grap
 in request-local memory; deep unused graphs do not recurse through the JavaScript stack.
 All three input boundaries feed the same four target wrappers and semantic execution closures.
 Options, scopes and overlays stay fresh; parsed state is neither frozen nor retained.
-Object-input validation and prepared-state ownership remain unchanged.
-
-JavaScript and native semantic schema 1 decoders remain supported. New compiler emission
-adds export names, not operations or compiler keys. Persisted old modules keep their original
-exports and exact bytes; adopting JSON names requires an explicit new output destination,
-not invalidating template-only reuse on a dependency update.
 
 ### Prepared-state ownership
 

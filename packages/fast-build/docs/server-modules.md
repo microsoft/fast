@@ -129,7 +129,7 @@ Generated exports are described by `ServerModule` in `server.d.ts`:
   host attributes or caller-owned light DOM synthesized.
 - `renderEntryJson(json, options?)`, `renderTemplateJson(json, options?)`,
   `renderHostJson(name, json, options?)`, `renderShadowJson(name, json, options?)`:
-  newly emitted modules accept explicit fresh JSON strings in the same contexts.
+  generated modules accept explicit fresh JSON strings in the same contexts.
 - `components`: registered component names.
 - `prepareState(state?)` and `renderEntryPrepared`, `renderTemplatePrepared`,
   `renderHostPrepared`, `renderShadowPrepared`: explicit immutable snapshot reuse.
@@ -198,13 +198,6 @@ coercion, host defaults, child overlays and hydration scopes are unchanged.
 Use ordinary methods for already-parsed objects and prepared methods for snapshot
 reuse. Owned parsing and full traversal still cost CPU and memory; compare matched
 JSON-to-UTF-8 boundaries, not JSON input with an object-only or reused-snapshot call.
-
-Supported semantic schema 1 modules retain their exact bytes and original export
-lists on helper upgrades. Upgrading the helper alone cannot add named JSON exports
-to old ESM. `writeServerModule` continues reusing unchanged managed assets. To adopt
-these exports, explicitly emit and activate a new destination with its own sidecar,
-using the updated compiler. `ServerModule` describes newly emitted modules, not
-historical cached export lists. Native semantic schema 1 artifacts are unchanged.
 
 ## Prepared-state snapshots
 
