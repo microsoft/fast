@@ -85,6 +85,16 @@ state/resource limits, errors, persistence and measurement boundaries.
 Rust hosts load the same bytes with `CompiledArtifact::load`; see the
 [Rust usage guide](../../crates/microsoft-fast-build/README.md).
 
+## Profiling native rendering
+
+From a repository checkout, `npm run profile:server -w @microsoft/fast-build`
+adds focused artifact-load, Buffer-rendering, string-delivery and output-decoding
+profiles to the native benchmark. Select workloads and explicitly configure the
+source-built addon. Native stack sampling is optional and separate from V8 CPU
+profiles; neither is a performance-improvement claim.
+See the [native profiling guide](./docs/native-profiling.md) for commands, boundaries
+and platform requirements.
+
 ## CLI usage
 
 Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with an optional JSON state file, or `convert` to convert a FAST declarative HTML template to another supported syntax:
