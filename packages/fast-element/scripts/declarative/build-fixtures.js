@@ -25,7 +25,13 @@ for (const fixtureName of fixtures) {
     // Step 1: render shadow DOM via fast-build CLI using config file
     execFileSync(
         process.execPath,
-        [fastBin, "build", `--config=${configFile}`, ...passthroughArgs],
+        [
+            fastBin,
+            "build",
+            `--config=${configFile}`,
+            `--native-addon=${resolve(__dirname, "../../../../crates/microsoft-fast-build/target/node-host/fast-build.node")}`,
+            ...passthroughArgs,
+        ],
         { stdio: "inherit" },
     );
 

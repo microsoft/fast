@@ -8,7 +8,6 @@ const path = require("node:path");
 
 const FAST_BIN = path.resolve(__dirname, "../bin/fast.js");
 const WASM = require("./render-server.cjs");
-const WASM_MODULE = path.resolve(__dirname, "../wasm/microsoft_fast_build.js");
 const CONVERT_WASM_MODULE = path.resolve(
     __dirname,
     "../wasm/convert/microsoft_fast_convert.js",
@@ -59,20 +58,6 @@ function runFastWithStderr(args, cwd, nodeArgs = [], env = process.env) {
     }
 }
 
-function writeWasmStub(dir) {
-    const record = path.join(dir, "wasm-calls.json");
-
-    return {
-        preload: WASM_STUB,
-        record,
-        env: {
-            ...process.env,
-            FAST_BUILD_WASM_STUB_MODULE: WASM_MODULE,
-            FAST_BUILD_WASM_STUB_RECORD: record,
-        },
-    };
-}
-
 function writeConvertWasmStub(dir) {
     const record = path.join(dir, "convert-wasm-calls.json");
 
@@ -85,14 +70,6 @@ function writeConvertWasmStub(dir) {
             FAST_BUILD_WASM_STUB_RECORD: record,
         },
     };
-}
-
-function runWithStubbedWasm(args, cwd) {
-    const { preload, record, env } = writeWasmStub(cwd);
-    const stdout = runNode(args, cwd, ["--require", preload], env);
-    const calls = JSON.parse(fs.readFileSync(record, "utf8"));
-
-    return { stdout, calls };
 }
 
 function runConvertWithStubbedWasm(args, cwd) {
@@ -878,11 +855,9 @@ describe("config file loading", () => {
             '<f-template name="my-el"><template>{{text}}</template></f-template>',
         );
 
-        const { calls } = runWithStubbedWasm([], dir);
-        const renderCall = calls.find(call => call.name === "renderEntry");
-
-        assert.ok(renderCall);
-        assert.equal(renderCall.markersV2, true);
+        fs.writeFileSync(path.join(dir, "entry.html"), "<my-el></my-el>");
+        run([], dir);
+        assert.match(fs.readFileSync(path.join(dir, "out.html"), "utf8"), /<!--fe-b\$\$/);
     });
 
     it("lets the valueless --markers_v2 option override config", () => {
@@ -900,11 +875,9 @@ describe("config file loading", () => {
             '<f-template name="my-el"><template>{{text}}</template></f-template>',
         );
 
-        const { calls } = runWithStubbedWasm(["--markers_v2"], dir);
-        const renderCall = calls.find(call => call.name === "renderEntry");
-
-        assert.ok(renderCall);
-        assert.equal(renderCall.markersV2, true);
+        fs.writeFileSync(path.join(dir, "entry.html"), "<my-el></my-el>");
+        run(["--markers_v2"], dir);
+        assert.match(fs.readFileSync(path.join(dir, "out.html"), "utf8"), /<!--fe-b\$\$/);
     });
 });
 
@@ -928,12 +901,12 @@ describe("config validation", () => {
         assert.ok(result.stderr.includes('Unknown key "badkey"'));
     });
 
-    it("rejects retired stream and AOT qualification flags instead of ignoring them", () => {
+    it("rejects unknown build options instead of ignoring them", () => {
         writeFixture(dir, {});
-        for (const flag of ["--stream", "--stream=false", "--aot", "--aot=false"]) {
+        for (const flag of ["--unknown", "--unknown=value"]) {
             const result = runWithStderr([flag], dir);
             assert.equal(result.exitCode, 1);
-            assert.match(result.stderr, /has been retired/);
+            assert.match(result.stderr, /Unknown build option/);
         }
         assert.equal(fs.existsSync(path.join(dir, "output.html")), false);
     });

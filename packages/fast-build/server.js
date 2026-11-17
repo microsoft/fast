@@ -1,23 +1,6 @@
 // @ts-check
 
 /**
- * Compile trusted declarative HTML to synchronous server ESM.
- * The returned module imports only the server runtime, not this build-time API.
- * @param {string} entry
- * @param {Record<string, string | import("./server.js").ServerTemplateDefinition>} [templates]
- * @param {string} [runtimeImport]
- * @returns {string}
- */
-function compileServerModule(
-    entry,
-    templates = {},
-    runtimeImport = "@microsoft/fast-build/server-runtime.mjs",
-) {
-    const wasm = require("./wasm/microsoft_fast_build.js");
-    return wasm.compile_server_module(entry, JSON.stringify(templates), runtimeImport);
-}
-
-/**
  * Compile trusted declarative HTML to a native Rust executable artifact.
  * Deploy with a native Rust library supporting the emitted artifact schema.
  * @param {string} entry
@@ -28,8 +11,6 @@ function compileServerArtifact(entry, templates = {}) {
     const wasm = require("./wasm/microsoft_fast_build.js");
     return wasm.compile_server_artifact(entry, JSON.stringify(templates));
 }
-
-const defaultRuntimeImport = "@microsoft/fast-build/server-runtime.mjs";
 
 /** @param {string} code @param {string} message @param {boolean} [typeError] */
 function assetError(code, message, typeError = false) {
@@ -185,125 +166,67 @@ function readAssetFile(filename, code) {
 }
 
 /** @param {Buffer} bytes */
-function readManifest(bytes) {
+function readArtifact(bytes) {
     const invalid = () =>
         assetError(
-            "invalid-server-asset-manifest",
-            "Invalid or unsupported server asset input manifest.",
+            "invalid-server-artifact",
+            "Invalid or unsupported consolidated server artifact.",
         );
-    let manifest;
     try {
         if (!Buffer.from(bytes.toString("utf8"), "utf8").equals(bytes)) throw invalid();
-        manifest = JSON.parse(bytes.toString("utf8"));
+        const artifact = JSON.parse(bytes.toString("utf8"));
         if (
-            !hasKeys(manifest, [
-                "format",
-                "version",
-                "kind",
-                "inputs",
-                "deployment",
-                "outputBase64",
-            ]) ||
-            manifest.format !== "fast-server-asset-inputs" ||
-            manifest.version !== 1 ||
-            !["server-js", "server-artifact"].includes(manifest.kind) ||
-            !hasKeys(
-                manifest.deployment,
-                manifest.kind === "server-js" ? ["runtimeImport"] : [],
-            ) ||
-            (manifest.kind === "server-js" &&
-                typeof manifest.deployment.runtimeImport !== "string") ||
-            typeof manifest.outputBase64 !== "string"
+            !hasKeys(artifact, ["format", "version", "inputs", "program"]) ||
+            artifact.format !== "fast-server-native" ||
+            artifact.version !== 2 ||
+            !hasKeys(artifact.program, ["entry", "templates", "components"]) ||
+            !Array.isArray(artifact.program.entry) ||
+            !isRecord(artifact.program.templates) ||
+            !isRecord(artifact.program.components) ||
+            !(
+                hasKeys(artifact.inputs, ["entry", "templates"]) ||
+                hasKeys(artifact.inputs, ["entry", "templateSources"])
+            )
         ) {
             throw invalid();
         }
-        const inputs = canonicalInputs(manifest.inputs);
-        if (JSON.stringify(inputs) !== JSON.stringify(manifest.inputs)) throw invalid();
-        const output = Buffer.from(manifest.outputBase64, "base64");
-        if (output.toString("base64") !== manifest.outputBase64) throw invalid();
-        return { manifest, output };
+        return canonicalInputs(artifact.inputs);
     } catch {
         throw invalid();
     }
 }
 
 /**
- * Stage both new bytes and rollback snapshots before replacing either file.
- * The manifest is committed last; interrupted pairs cannot qualify for reuse.
- * @param {{filename: string, bytes: Buffer, previous: AssetFile | null}[]} files
+ * Publish a fully flushed sibling through one atomic rename.
+ * @param {string} filename
+ * @param {Buffer} bytes
+ * @param {AssetFile | null} previous
  */
-function replaceAssetFiles(files) {
+function replaceArtifact(filename, bytes, previous) {
     const fs = require("node:fs");
     const { randomUUID } = require("node:crypto");
-    const staged = new Set();
-    /** @param {string} filename @param {Buffer} bytes @param {number} mode */
-    const stage = (filename, bytes, mode) => {
-        const staging = `${filename}.${process.pid}.${randomUUID()}.stage`;
-        const fd = fs.openSync(staging, "wx", mode);
-        staged.add(staging);
+    const staging = `${filename}.${process.pid}.${randomUUID()}.stage`;
+    const fd = fs.openSync(staging, "wx", previous?.mode ?? 0o666);
+    try {
         try {
             fs.writeFileSync(fd, bytes);
             fs.fsyncSync(fd);
         } finally {
             fs.closeSync(fd);
         }
-        return staging;
-    };
-    let committing = false;
-    /** @type {{filename: string, next: string, rollback: string | null}[]} */
-    const replacements = [];
-    try {
-        for (const file of files) {
-            replacements.push({
-                filename: file.filename,
-                next: stage(file.filename, file.bytes, file.previous?.mode ?? 0o666),
-                rollback: file.previous
-                    ? stage(file.filename, file.previous.bytes, file.previous.mode)
-                    : null,
-            });
-        }
-        committing = true;
-        for (const replacement of replacements) {
-            fs.renameSync(replacement.next, replacement.filename);
-            staged.delete(replacement.next);
-        }
-    } catch (error) {
-        /** @type {unknown[]} */
-        const errors = [error];
-        if (committing) {
-            for (const replacement of [...replacements].reverse()) {
-                try {
-                    if (replacement.rollback) {
-                        fs.renameSync(replacement.rollback, replacement.filename);
-                        staged.delete(replacement.rollback);
-                    } else {
-                        fs.rmSync(replacement.filename, { force: true });
-                    }
-                } catch (rollbackError) {
-                    errors.push(rollbackError);
-                }
-            }
-        }
-        if (errors.length > 1) {
-            throw Object.assign(
-                new AggregateError(errors, "Server asset write and rollback failed."),
-                { code: "server-asset-write-failed" },
-            );
-        }
-        throw error;
+        fs.renameSync(staging, filename);
     } finally {
-        for (const filename of staged) fs.rmSync(filename, { force: true });
+        fs.rmSync(staging, { force: true });
     }
 }
 
 /**
  * @param {string} outputPath
  * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerModuleWriteOptions} options
- * @param {"server-js" | "server-artifact"} kind
+ * @param {import("./server.js").ServerAssetWriteOptions} [options]
  * @returns {import("./server.js").ServerAssetWriteResult}
  */
-function writeServerAsset(outputPath, inputs, options, kind) {
+function writeServerArtifact(outputPath, inputs, options = {}) {
     if (typeof outputPath !== "string" || outputPath.length === 0) {
         throw assetError(
             "invalid-server-asset-inputs",
@@ -314,22 +237,12 @@ function writeServerAsset(outputPath, inputs, options, kind) {
     if (
         !isRecord(options) ||
         Object.keys(options).some(
-            key =>
-                ![
-                    "overwrite",
-                    "includeBytes",
-                    "onWarning",
-                    ...(kind === "server-js" ? ["runtimeImport"] : []),
-                ].includes(key),
+            key => !["overwrite", "includeBytes", "onWarning"].includes(key),
         ) ||
         (options.overwrite !== undefined && typeof options.overwrite !== "boolean") ||
         (options.includeBytes !== undefined &&
             typeof options.includeBytes !== "boolean") ||
-        (options.onWarning !== undefined && typeof options.onWarning !== "function") ||
-        (kind === "server-js"
-            ? options.runtimeImport !== undefined &&
-              typeof options.runtimeImport !== "string"
-            : options.runtimeImport !== undefined)
+        (options.onWarning !== undefined && typeof options.onWarning !== "function")
     ) {
         throw assetError(
             "invalid-server-asset-options",
@@ -338,13 +251,8 @@ function writeServerAsset(outputPath, inputs, options, kind) {
         );
     }
     const canonical = canonicalInputs(inputs);
-    const deployment =
-        kind === "server-js"
-            ? { runtimeImport: options.runtimeImport ?? defaultRuntimeImport }
-            : {};
     const fs = require("node:fs");
     const path = require("node:path");
-    const manifestPath = `${outputPath}.inputs.json`;
     const lockPath = `${outputPath}.lock`;
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     let lock;
@@ -362,38 +270,13 @@ function writeServerAsset(outputPath, inputs, options, kind) {
     const lockStat = fs.fstatSync(lock);
     try {
         fs.writeFileSync(lock, `${process.pid}\n`);
-        const previousManifest = readAssetFile(
-            manifestPath,
-            "invalid-server-asset-manifest",
-        );
-        const previousOutput = readAssetFile(outputPath, "server-asset-output-mismatch");
-        if (previousManifest) {
-            const { manifest, output } = readManifest(previousManifest.bytes);
-            if (
-                manifest.kind !== kind ||
-                JSON.stringify(manifest.deployment) !== JSON.stringify(deployment)
-            ) {
-                throw assetError(
-                    "server-asset-configuration-mismatch",
-                    "Server asset kind or runtime import changed; choose a new output path.",
-                );
-            }
-            if (previousOutput && !previousOutput.bytes.equals(output)) {
-                throw assetError(
-                    "server-asset-output-mismatch",
-                    "Server asset bytes differ from the recorded output snapshot.",
-                );
-            }
-            if (JSON.stringify(manifest.inputs) === JSON.stringify(canonical)) {
-                if (!previousOutput) {
-                    replaceAssetFiles([
-                        { filename: outputPath, bytes: output, previous: null },
-                    ]);
-                }
+        const previousOutput = readAssetFile(outputPath, "invalid-server-artifact");
+        if (previousOutput) {
+            const previousInputs = readArtifact(previousOutput.bytes);
+            if (JSON.stringify(previousInputs) === JSON.stringify(canonical)) {
                 return {
                     reused: true,
-                    manifestPath,
-                    ...(options.includeBytes ? { bytes: output } : {}),
+                    ...(options.includeBytes ? { bytes: previousOutput.bytes } : {}),
                 };
             }
         }
@@ -415,42 +298,16 @@ function writeServerAsset(outputPath, inputs, options, kind) {
                   }
                 : canonical;
         const templates = templatesFromInputs(compileInputs, options.onWarning);
-        const output =
-            kind === "server-js"
-                ? Buffer.from(
-                      compileServerModule(
-                          canonical.entry,
-                          templates,
-                          deployment.runtimeImport,
-                      ),
-                      "utf8",
-                  )
-                : Buffer.from(compileServerArtifact(canonical.entry, templates));
-        const manifest = {
-            format: "fast-server-asset-inputs",
-            version: 1,
-            kind,
-            inputs: canonical,
-            deployment,
-            outputBase64: output.toString("base64"),
-        };
-        const manifestBytes = Buffer.from(
-            `${JSON.stringify(manifest, null, 4)}\n`,
-            "utf8",
+        const artifact = JSON.parse(
+            Buffer.from(compileServerArtifact(canonical.entry, templates)).toString(
+                "utf8",
+            ),
         );
-        const replacements = [
-            { filename: outputPath, bytes: output, previous: previousOutput },
-        ];
-        if (previousOutput?.bytes.equals(output)) replacements.length = 0;
-        replacements.push({
-            filename: manifestPath,
-            bytes: manifestBytes,
-            previous: previousManifest,
-        });
-        replaceAssetFiles(replacements);
+        artifact.inputs = canonical;
+        const output = Buffer.from(JSON.stringify(artifact), "utf8");
+        replaceArtifact(outputPath, output, previousOutput);
         return {
             reused: false,
-            manifestPath,
             ...(options.includeBytes ? { bytes: output } : {}),
         };
     } finally {
@@ -462,31 +319,7 @@ function writeServerAsset(outputPath, inputs, options, kind) {
     }
 }
 
-/**
- * Persist server ESM, reusing exact previous bytes for unchanged authored inputs.
- * @param {string} outputPath
- * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerModuleWriteOptions} [options]
- * @returns {import("./server.js").ServerAssetWriteResult}
- */
-function writeServerModule(outputPath, inputs, options = {}) {
-    return writeServerAsset(outputPath, inputs, options, "server-js");
-}
-
-/**
- * Persist a native artifact, reusing exact previous bytes for unchanged inputs.
- * @param {string} outputPath
- * @param {import("./server.js").ServerAssetInputs} inputs
- * @param {import("./server.js").ServerAssetWriteOptions} [options]
- * @returns {import("./server.js").ServerAssetWriteResult}
- */
-function writeServerArtifact(outputPath, inputs, options = {}) {
-    return writeServerAsset(outputPath, inputs, options, "server-artifact");
-}
-
 module.exports = {
-    compileServerModule,
     compileServerArtifact,
-    writeServerModule,
     writeServerArtifact,
 };

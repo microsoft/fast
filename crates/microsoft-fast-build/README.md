@@ -1,47 +1,17 @@
 # microsoft-fast-build
 
-Compile FAST declarative HTML to server JavaScript modules or native Rust
-artifacts, and analyze templates at build time.
+Compile FAST declarative HTML to native JSON artifacts, execute them in Rust or
+Node.js, and analyze templates at build time.
 
 ```sh
 cargo add microsoft-fast-build
 ```
 
+Node hosting uses the same executor through the source-built `node-host`
+transport feature. Applications configure the addon explicitly; see the
+[Node deployment guide](../../packages/fast-build/docs/native-node-host.md).
+
 ## Usage
-
-### Compile semantic server JavaScript
-
-`compile_server_module(entry, &locator, runtime_import)` emits an ESM module
-with synchronous `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
-Compile trusted templates during the application build. Generated modules import
-`@microsoft/fast-build/server-runtime.mjs` for request-time rendering:
-
-```rust
-use microsoft_fast_build::{compile_server_module, Locator};
-
-let mut locator = Locator::from_templates(Default::default());
-locator.add_template("my-card", "<h2>{{title}}</h2>");
-let source = compile_server_module(
-    "<my-card></my-card>",
-    &locator,
-    "@microsoft/fast-build/server-runtime.mjs",
-)?;
-```
-
-Write `source` as a server `.mjs` build artifact. Requests pass JSON-shaped state
-directly to the generated module's exports. Compilation validates all template
-bodies, including unused definitions and skipped branches.
-See the [server module contract](../../packages/fast-build/docs/server-modules.md)
-for render options, state validation and deployment requirements.
-
-Compiled Declarative Shadow DOM selects its mode from standard `shadowrootmode`,
-defaulting to `"open"`.
-Native browser parsing requires Chrome/Edge 111+, Firefox 123+ or Safari/iOS 16.4+.
-
-Generated modules also export `renderEntryJson`, `renderTemplateJson`,
-`renderHostJson` and `renderShadowJson`. Use these JavaScript methods for fresh JSON
-text, passing a required string instead of an already-parsed object. See the
-[JSON request contract](../../packages/fast-build/docs/server-modules.md#owned-fresh-json-requests).
 
 ### Compile and deploy native Rust artifacts
 
@@ -109,9 +79,14 @@ preparation allocates a retained copy.
 See [prepared-state ownership](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
-For persisted asset reuse, use the npm package's `writeServerArtifact` and retain
-its asset plus authored-input manifest, or implement application-owned persistence
-around Rust compilation.
+The compiler emits one `server.artifact.json` envelope with format
+`fast-server-native`, schema 2, authored `inputs` and an executable `program`.
+Loading discards the build metadata before preparing runtime operations; request
+state is supplied separately. Published schema-1 programs remain loadable.
+For persisted asset reuse, use the npm package's `writeServerArtifact`, or implement
+application-owned persistence around Rust compilation. Matching embedded inputs
+skip compilation; deleting the artifact requires recompilation. The build cache
+does not independently verify a valid edited program against its authored source.
 
 ## Template tooling
 
@@ -181,8 +156,7 @@ Artifact loading and native request execution return `NativeRenderError` with
 ## Contributing
 
 From the monorepo root, run `cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml`.
-Node.js is required for cross-backend assertions: tests execute real generated
-modules alongside loaded native artifacts and retain the original expected bytes.
+Rust tests compare typed, prepared and fresh-JSON native execution with frozen expected bytes. Node package tests exercise the actual addon, ownership and deployment.
 
 ## Migration guidance
 
