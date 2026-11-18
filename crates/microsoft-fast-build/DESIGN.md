@@ -21,9 +21,9 @@ builds the required local Node addon. Deployment remains explicit and source-bui
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
-| `server_plan.rs` | Stable tagged wire encoding and native name-to-index decoding |
+| `server_plan.rs` | Stable tagged wire encoding |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
-| `native/plan.rs` | Execution-only typed native operations, numeric reference resolution and decoded operands |
+| `native/plan.rs` | Validated wire-to-execution decoding, numeric reference resolution and typed native operations |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
 | `expression.rs` | Operator scanning for compile-time condition lowering |
@@ -69,15 +69,18 @@ private execution-layout changes.
 
 `CompiledArtifact::load` parses the artifact envelope, not authored HTML. It
 requires a supported format/schema,
-then validates every opcode, operand shape, static value, component reference and
-body index, including unreachable bodies. Unknown fields/opcodes and invalid
-references fail. JSON nesting is bounded by the deserializer; schema validation
-also bounds condition/static-value nesting. The compiler checks emitted native
-artifacts through this loader before returning them.
+then decodes semantic wire fields directly into typed execution operations while
+validating every opcode, operand shape, static value, component reference and
+body index, including unreachable bodies. It does not reconstruct an intermediate
+JSON IR or traverse that graph in a separate validation pass. Unknown fields/opcodes
+and invalid references fail. JSON nesting is bounded by the deserializer; semantic
+decoding also bounds condition/static-value nesting, derived bodies/operations and
+metadata expansion. The compiler checks emitted native artifacts through this
+loader before returning them.
 
-After complete eager validation, `native/plan.rs` walks body references iteratively
-from the entry and every publicly selectable component host/shadow root. It
-prepares immutable enums only for reachable bodies and compacts their numeric
+After complete eager decoding and validation, `native/plan.rs` walks typed body
+references iteratively from the entry and every publicly selectable component
+host/shadow root. It retains only reachable bodies and compacts their numeric
 indices. Calls, conditional/repeat bodies and element light DOM retain their
 references regardless of request state or DSD selection. Complete component DSD
 templates are retained only when executable references reach them; otherwise the
@@ -98,8 +101,8 @@ than retaining a per-element copy.
 The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
 operands borrow immutable artifact storage during evaluation. Loaded native
 artifacts are execution-only.
-Native plans retain neither IR-reconstruction code nor emission-only static numeric spellings.
-Load peak memory includes both transient JSON and the prepared plan. Retained
+Native plans retain no emission-only static numeric spellings.
+Load peak memory includes transient wire JSON and typed bodies before pruning. Retained
 memory includes vectors/boxes, prepared paths, static values and the component-name
 lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
 no dispatch speedup or memory saving is assumed. Supported `fast-server-native`
