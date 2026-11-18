@@ -174,7 +174,9 @@ Errors discard the private partial buffer rather than exposing truncated HTML.
 Hydration markers append literal spans and stack-formatted integer fields directly
 to bounded output without allocating a temporary string for each marker.
 Checked whole-marker length preflight precedes its spans, preserving the existing
-output-limit boundary and error order. Numeric scratch has a fixed stack bound
+output-limit boundary and error order. The output buffer reserves the checked
+total before span emission so its capacity growth matches one bulk append.
+Numeric scratch has a fixed stack bound
 independent of marker count and is never retained between requests.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first

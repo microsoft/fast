@@ -750,12 +750,13 @@ impl<'a> Executor<'a> {
         // writing its first span, including the surrounding space/tag ending.
         let length = parts
             .iter()
-            .try_fold(0usize, |length, part| length.checked_add(part.len()));
-        if length.is_none_or(|length| {
-            length > self.options.max_output_bytes.saturating_sub(self.out.len())
-        }) {
-            return Err(error("render-limit", "Output byte limit exceeded"));
-        }
+            .try_fold(0usize, |length, part| length.checked_add(part.len()))
+            .filter(|length| {
+                *length <= self.options.max_output_bytes.saturating_sub(self.out.len())
+            })
+            .ok_or_else(|| error("render-limit", "Output byte limit exceeded"))?;
+        // Match a single push_str's output-buffer growth without a marker String.
+        self.out.reserve(length);
         for part in parts {
             self.push(part)?;
         }
@@ -1141,6 +1142,106 @@ mod tests {
         }
         for value in values {
             assert_eq!(Decimal::new(value).as_str(), value.to_string());
+        }
+    }
+
+    #[test]
+    fn marker_appends_preserve_bulk_push_capacity_and_failed_preflight_storage() {
+        let artifact = marker_artifact();
+        for v2 in [false, true] {
+            let compare = |expected: &str,
+                           append: &dyn Fn(&mut Executor<'_>) -> Result<(), NativeRenderError>| {
+                for capacity in [0usize, 1, 7, 8, 15, 16, 31, 32, 63, 64, 127, 128, 255, 256] {
+                    for prefix_length in [
+                        0,
+                        capacity / 2,
+                        capacity.saturating_sub(1),
+                        capacity,
+                    ] {
+                        let prefix = "x".repeat(prefix_length);
+                        let options = NativeRenderOptions {
+                            markers_v2: v2,
+                            max_output_bytes: prefix.len() + expected.len(),
+                            ..Default::default()
+                        };
+                        let make_executor = |options| {
+                            let mut executor = Executor::new(&artifact.plan, options);
+                            executor.out = String::with_capacity(capacity);
+                            executor.push(&prefix).unwrap();
+                            executor
+                        };
+                        let mut bulk = make_executor(&options);
+                        let mut spans = make_executor(&options);
+                        bulk.push(expected).unwrap();
+                        append(&mut spans).unwrap();
+                        assert_eq!(spans.out, bulk.out);
+                        assert_eq!(spans.out.len(), bulk.out.len());
+                        assert_eq!(
+                            spans.out.capacity(),
+                            bulk.out.capacity(),
+                            "v2={v2}, marker={expected}, capacity={capacity}, prefix={prefix_length}"
+                        );
+
+                        let short = NativeRenderOptions {
+                            max_output_bytes: options.max_output_bytes - 1,
+                            ..options.clone()
+                        };
+                        let mut failed = make_executor(&short);
+                        let before = (failed.out.len(), failed.out.capacity());
+                        assert_eq!(
+                            append(&mut failed).unwrap_err().message,
+                            "Output byte limit exceeded"
+                        );
+                        assert_eq!((failed.out.len(), failed.out.capacity()), before);
+                        assert_eq!(failed.out, prefix);
+                    }
+                }
+            };
+            for (index, count) in [
+                (0, 1),
+                (9, 1),
+                (10, 9),
+                (99, 10),
+                (100, 100),
+                (usize::MAX - 1, 1),
+                (0, usize::MAX),
+            ] {
+                let attribute = if !v2 {
+                    format!("data-fe=\"{count}\"")
+                } else if count == 1 {
+                    format!("data-fe-b-{index}")
+                } else {
+                    format!("data-fe-c-{index}-{count}")
+                };
+                for ending in ["", ">", " />"] {
+                    compare(&format!(" {attribute}{ending}"), &|executor| {
+                        executor.marker(&mut Some(index), count, ending).map(|_| ())
+                    });
+                }
+            }
+            for repeat in [false, true] {
+                for kind in ["start", "end"] {
+                    for index in [0, 9, 10, 99, 100, usize::MAX] {
+                        let marker = if v2 {
+                            if repeat {
+                                format!("<!--fe-repeat$${kind}$${index}$$fe-repeat-->")
+                            } else {
+                                format!("<!--fe-b$${kind}$${index}$$fast-build$$fe-b-->")
+                            }
+                        } else {
+                            match (repeat, kind) {
+                                (true, "start") => "<!--fe:r-->".to_owned(),
+                                (true, _) => "<!--fe:/r-->".to_owned(),
+                                (false, "start") => "<!--fe:b-->".to_owned(),
+                                _ => "<!--fe:/b-->".to_owned(),
+                            }
+                        };
+                        compare(&marker, &|executor| {
+                            executor.boundary(&Some(0), kind, index, repeat)
+                        });
+                    }
+                }
+            }
         }
     }
 
