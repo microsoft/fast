@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Add reproducible nested-shadow benchmarks and resource-ordering regression coverage.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

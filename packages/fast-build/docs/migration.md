@@ -3,10 +3,9 @@
 Migration guides cover the current publish, not a permanent history of changes.
 For current APIs and behavior, see the [native artifact contract](./server-modules.md).
 
-## Next publish
+## 0.21.0
 
 - [Native server deployment](./migration/native-server-deployment.md)
-
 - [Standard Declarative Shadow DOM output](./migration/standard-dsd-output.md)
 
 ## Release preparation

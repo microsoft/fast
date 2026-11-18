@@ -70,12 +70,14 @@ carry pre-upgrade generated output into this deployment.
 - Use `shadowrootmode` in output selectors and standards-aware DSD polyfills.
   Browsers/polyfills recognizing only `shadowroot` no longer receive that alias
   in newly compiled output. Upgrade those consumers before deploying new assets.
-- `writeServerArtifact` intentionally reuse unchanged
-  managed assets even after a compiler upgrade. For this migration, remove both
-  the application-owned generated artifact during a controlled clean build, then regenerate and deploy them together.
+- `writeServerArtifact` intentionally reuses unchanged
+  managed artifacts even after a compiler upgrade. For this migration, remove
+  the application-owned generated artifact during a controlled clean build, then
+  regenerate it and deploy it with the matching native library.
   `overwrite: true` alone does not bypass unchanged-input reuse.
-- The `fast-server-native` semantic schema remains version 1.
-  No loader inspection, legacy-output adapter or compiler fingerprint is added.
+- The compiler emits `fast-server-native` semantic schema 2; supported schema 1
+  artifacts still load. This output change adds no separate schema revision,
+  loader inspection, legacy-output adapter or compiler fingerprint.
   Ordinary unchanged-input caching can resume after the clean regeneration.
 - Update exact HTML snapshots only after reviewing this specific attribute change.
   Do not trim whitespace or strip markers to accommodate the migration.
