@@ -53,6 +53,320 @@ fn semantic_plan(plan: &Value) -> String {
     plan.to_string()
 }
 
+fn semantic_artifact(program: &Value, schema: u64) -> Vec<u8> {
+    let envelope = if schema == 1 {
+        let mut envelope = program.clone();
+        envelope["format"] = json!("fast-server-native");
+        envelope["version"] = json!(1);
+        envelope
+    } else {
+        json!({
+            "format":"fast-server-native", "version":2,
+            "inputs":{"entry":"","templateSources":[]}, "program":program,
+        })
+    };
+    serde_json::to_vec(&envelope).unwrap()
+}
+
+#[test]
+fn semantic_decoder_compatibility_preserves_static_scalar_spellings() {
+    let bytes = compile_server_artifact(
+        r#"<value-card :value="{{source}}"></value-card>"#,
+        &common::make_locator(&[("value-card", "{{value}}")]),
+    )
+    .unwrap();
+    let envelope: Value = serde_json::from_slice(&bytes).unwrap();
+    let original = &envelope["program"];
+    let mut cases = vec![
+        (json!({"type":"null"}), ""),
+        (json!({"type":"bool","value":false}), "false"),
+        (json!({"type":"bool","value":true}), "true"),
+        (json!({"type":"string","value":"<&"}), "&lt;&amp;"),
+        (json!({"type":"array","value":[]}), "[Array]"),
+        (
+            json!({"type":"object","value":{"":{"type":"array","value":[
+                {"type":"null"}, {"type":"number","value":"NaN"}
+            ]}}}),
+            "[Object]",
+        ),
+    ];
+    for (spelling, expected) in [
+        ("+01", "1"),
+        (".5", "0.5"),
+        ("1.", "1"),
+        ("1E+3", "1000"),
+        ("-0", "0"),
+        ("NaN", "NaN"),
+        ("inf", "inf"),
+        ("+Infinity", "inf"),
+        ("-inf", "-inf"),
+        ("1e999", "inf"),
+    ] {
+        cases.push((json!({"type":"number","value":spelling}), expected));
+    }
+    for (value, expected) in cases {
+        for schema in [1, 2] {
+            let mut program = original.clone();
+            let element = program["templates"]
+                .as_object_mut()
+                .unwrap()
+                .values_mut()
+                .flat_map(|body| body.as_array_mut().unwrap())
+                .find(|operation| operation["type"] == "element")
+                .unwrap();
+            element["props"][0]["value"] = json!({"type":"value","value":value});
+            let artifact = CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+            assert_eq!(
+                artifact
+                    .render_entry_json("{}", &Default::default())
+                    .unwrap(),
+                format!("<value-card><template shadowrootmode=\"open\"><!--fe:b-->{expected}<!--fe:/b--></template></value-card>"),
+                "schema {schema}, value {value}",
+            );
+        }
+    }
+}
+
+#[test]
+fn semantic_decoder_compatibility_preserves_segmented_aliases_and_nested_conditions() {
+    let program = json!({
+        "entry":[{"type":"repeat","alias":["","item"],"collection":["items"],
+            "diagnostic":"","template":"row"}],
+        "templates":{
+            "row":[
+                {"type":"binding","path":["","item","","+01"],"escape":true},
+                {"type":"literal","html":"/"},
+                {"type":"binding","path":["","item","keys","+01"],"escape":true},
+                {"type":"when","template":"yes","condition":{
+                    "type":"and","left":{"type":"not","path":["skip"]},
+                    "right":{"type":"or",
+                        "left":{"type":"compare","operator":">=",
+                            "path":["","item","n"],"value":{"type":"path","path":["threshold"]}},
+                        "right":{"type":"truthy","path":["fallback"]}}
+                }}
+            ],
+            "yes":[{"type":"literal","html":"!"}]
+        },
+        "components":{}
+    });
+    for schema in [1, 2] {
+        let artifact = CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+        let state = r#"{"items":[{"":["zero","<&"],"keys":{"+01":"key","01":"wrong"},"n":2}],"threshold":2}"#;
+        assert_eq!(
+            artifact
+                .render_entry_json(state, &Default::default())
+                .unwrap(),
+            "&lt;&amp;/key!",
+        );
+        assert_eq!(
+            artifact
+                .render_entry_json(r#"{"items":false}"#, &Default::default())
+                .unwrap_err()
+                .code,
+            "repeat-not-array",
+        );
+        assert_eq!(
+            artifact
+                .render_template_json(state, &Default::default())
+                .unwrap(),
+            "&lt;&amp;/key!",
+        );
+    }
+}
+
+#[test]
+fn semantic_decoder_compatibility_validates_unused_nested_fields_and_scalar_types() {
+    let original = json!({
+        "entry":[{"type":"literal","html":"ok"}],
+        "templates":{"empty":[],"unused":[
+            {"type":"repeat","alias":[""],"collection":[""],"diagnostic":"","template":"empty"},
+            {"type":"when","template":"empty","condition":{
+                "type":"or","left":{"type":"not","path":[""]},
+                "right":{"type":"compare","operator":"==","path":[""],
+                    "value":{"type":"value","value":{"type":"object","value":{
+                        "unused":{"type":"array","value":[{"type":"null"}]}
+                    }}}}
+            }},
+            {"type":"tag","plain":[{"type":"quoted","name":"","parts":[
+                {"type":"literal","html":""},{"type":"segment","path":[""]}
+            ]}],"hydrated":[{"type":"conditional","html":"",
+                "condition":{"type":"truthy","path":[""]}}],
+                "count":1_000_000,"ending":""}
+        ]},
+        "components":{}
+    });
+    for schema in [1, 2] {
+        let artifact = CompiledArtifact::load(&semantic_artifact(&original, schema)).unwrap();
+        assert_eq!(
+            artifact
+                .render_entry_json("{}", &Default::default())
+                .unwrap(),
+            "ok",
+        );
+        for (pointer, value) in [
+            ("/templates/unused/0/alias", json!([])),
+            ("/templates/unused/0/alias/0", json!(false)),
+            ("/templates/unused/0/collection", json!([])),
+            ("/templates/unused/1/condition/right/operator", json!("===")),
+            (
+                "/templates/unused/1/condition/right/value",
+                json!({"type":"path","path":[""],"extra":null}),
+            ),
+            (
+                "/templates/unused/1/condition/right/value/value/value/unused/value/0",
+                json!({"type":"null","value":null}),
+            ),
+            (
+                "/templates/unused/1/condition/right/value/value/value/unused/value/0",
+                json!({"type":"number","value":1}),
+            ),
+            (
+                "/templates/unused/2/plain/0/parts/1",
+                json!({"type":"segment","path":[""],"extra":null}),
+            ),
+            ("/templates/unused/2/plain/0/parts/1/path", json!([])),
+            ("/templates/unused/2/hydrated/0/condition/path/0", json!(0)),
+            ("/templates/unused/2/count", json!(1_000_001)),
+            ("/templates/unused/2/count", json!(1.0)),
+            ("/templates/unused/2/count", json!(-1)),
+        ] {
+            let mut program = original.clone();
+            *program.pointer_mut(pointer).unwrap() = value;
+            assert_eq!(
+                CompiledArtifact::load(&semantic_artifact(&program, schema))
+                    .unwrap_err()
+                    .code,
+                "invalid-artifact",
+                "schema {schema}, {pointer}: {program}",
+            );
+        }
+    }
+}
+
+#[test]
+fn semantic_decoder_compatibility_keeps_shared_full_templates_and_public_component_roots() {
+    for header in [false, true] {
+        for tag in ["", "<template shadowrootmode='closed' data-value='&amp;'>"] {
+            let mut dsd = vec![
+                json!({"type":"literal","html":tag}),
+                json!({"type":"template","name":"content"}),
+                json!({"type":"literal","html":"</template>"}),
+            ];
+            if header {
+                dsd.insert(
+                    0,
+                    json!({"type":"host-attributes","attributes":[
+                        {"name":"role","attribute":{"type":"literal","html":" role='group'"}}
+                    ]}),
+                );
+            }
+            let program = json!({
+                "entry":[{"type":"template","name":"dsd"},{"type":"component","name":"a-card"}],
+                "templates":{"dsd":dsd,"content":[{"type":"literal","html":"inside"}]},
+                "components":{"a-card":"dsd","b-card":"dsd"}
+            });
+            let shadow = format!("{tag}inside</template>");
+            let default = if header { " role='group'" } else { "" };
+            for schema in [1, 2] {
+                let artifact =
+                    CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+                for name in ["a-card", "b-card"] {
+                    assert_eq!(
+                        artifact
+                            .render_host_json(name, "{}", &Default::default())
+                            .unwrap(),
+                        format!("<{name}{default}>{shadow}</{name}>"),
+                    );
+                    assert_eq!(
+                        artifact
+                            .render_shadow_json(name, "{}", &Default::default())
+                            .unwrap(),
+                        shadow,
+                    );
+                }
+                assert_eq!(
+                    artifact
+                        .render_entry_json("{}", &Default::default())
+                        .unwrap(),
+                    format!("{shadow}<a-card{default}>{shadow}</a-card>"),
+                );
+                let deselected = NativeRenderOptions {
+                    dsd: Some(vec![]),
+                    ..Default::default()
+                };
+                assert_eq!(
+                    artifact.render_entry_json("{}", &deselected).unwrap(),
+                    format!("{shadow}<a-card></a-card>"),
+                );
+                assert_eq!(
+                    artifact
+                        .render_shadow_json("b-card", "{}", &deselected)
+                        .unwrap(),
+                    "",
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn semantic_decoder_compatibility_bounds_derived_metadata_not_only_input_bytes() {
+    const LIMIT: usize = 64 * 1024 * 1024;
+    let mut program = json!({
+        "entry":[],
+        "templates":{"dsd":[
+            {"type":"literal","html":""},{"type":"literal","html":"</template>"}
+        ]},
+        "components":{}
+    });
+    let template_bytes = serde_json::to_vec(&program["templates"]["dsd"])
+        .unwrap()
+        .len();
+    // The FAST metadata budget charges the full template once and each derived host.
+    let (name, tag_bytes) = (4..=6)
+        .find_map(|name_bytes| {
+            let overhead = template_bytes + 2 + name_bytes * 5 + 512;
+            ((LIMIT - overhead) % 3 == 0).then(|| ("a".repeat(name_bytes), (LIMIT - overhead) / 3))
+        })
+        .unwrap();
+    for (extra, valid) in [(0, true), (2, false)] {
+        let component = if valid {
+            name.clone()
+        } else {
+            // Two tag bytes cost six budget bytes; one fewer name byte refunds five.
+            name[..name.len() - 1].to_owned()
+        };
+        program["components"] =
+            Value::Object([(component.clone(), json!("dsd"))].into_iter().collect());
+        program["templates"]["dsd"][0]["html"] = json!("x".repeat(tag_bytes + extra));
+        let bytes = semantic_artifact(&program, 2);
+        assert!(bytes.len() < LIMIT / 2);
+        let loaded = CompiledArtifact::load(&bytes);
+        if valid {
+            let artifact = loaded.unwrap();
+            let short = NativeRenderOptions {
+                max_output_bytes: 1,
+                ..Default::default()
+            };
+            assert_eq!(
+                artifact
+                    .render_shadow_json(&component, "{}", &short)
+                    .unwrap_err()
+                    .code,
+                "render-limit",
+            );
+            assert_eq!(
+                artifact
+                    .render_entry_json("{}", &Default::default())
+                    .unwrap(),
+                "",
+            );
+        } else {
+            assert_eq!(loaded.unwrap_err().code, "invalid-artifact");
+        }
+    }
+}
+
 #[test]
 fn consolidated_inputs_are_build_metadata_not_runtime_template_sources() {
     let locator = common::make_locator_with_host_attrs(&[(

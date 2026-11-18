@@ -35,11 +35,13 @@ See the [host contract](./docs/native-node-host.md).
 The stable wire schema is independent of private execution layout and compiler
 fingerprints. Components refer to complete DSD templates; optional host-default
 metadata derives host wrappers without duplicating shared content. Loading
-eagerly validates even unreachable operations, resolves names to private body and
-component indices, decodes operands and paths, and drops the transient JSON graph.
+validates wire fields as it decodes them directly into typed execution operations,
+resolves names to private body and component indices, and decodes operands and
+paths. Even unreachable operations are validated. No intermediate JSON IR or
+separate IR-validation traversal is constructed; the transient wire JSON is dropped.
 Artifact storage is immutable and Rust `Send + Sync`.
-After complete validation, preparation retains only bodies reachable from the
-entry and every public component host/shadow root, including skipped control-flow
+After complete decoding and validation, preparation retains only bodies reachable
+from the entry and every public component host/shadow root, including skipped control-flow
 branches and directly referenced complete DSD templates. Private indices are
 compacted without changing execution budgets or wire names.
 

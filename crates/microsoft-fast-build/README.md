@@ -46,7 +46,9 @@ overlays copy only where ownership is required.
 Each ordinary call validates, normalizes and copies state and returns an owned
 UTF-8 `String`. Errors are recoverable `NativeRenderError { code, message }`;
 failed calls return no partial HTML. Loading validates the artifact format, schema,
-operations and references, including unreachable data. Preparation retains only
+operations and references directly while decoding the wire into typed native
+operations, without reconstructing an intermediate JSON IR. Unreachable data is
+still fully validated. Preparation retains only
 bodies reachable from entry and public host/shadow APIs; unused component DSD
 wrappers do not duplicate their shadow contents in the prepared plan.
 See the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target)
