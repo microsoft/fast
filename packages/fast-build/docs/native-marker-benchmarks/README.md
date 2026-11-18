@@ -2,6 +2,14 @@
 
 Measurements cover complete rendering and controls at the recorded revisions. They are not a universal performance guarantee.
 
+**Historical measurement snapshot:** This branch was subsequently rebased onto
+`4b8ec1689f3a279f12bbdf9b1528d9d639f145dd`. The results below still compare the
+original revisions, not the rebased code. Upstream changes added direct typed
+artifact decoding (#7843) and a shadow-output benchmark (#7844) after these
+measurements; that new benchmark is not included in the 217 selectors. The
+benchmark campaign was not rerun after rebasing, and the recorded hashes and
+measurements remain unchanged.
+
 - Baseline: `4ad07a7e4dfc0447f566959b38ebd09ecfb112b3`; measured revision: `a551799691006b77f78dbd6be716621d1ab36999`.
 - Baseline includes change #7842; related existing native optimization is #7841.
 - All **217 selectors** are retained, plus **864 timing-phase**, **675 native-allocation**, and **480 process-memory** metric rows.
@@ -70,7 +78,7 @@ Windows process CPU observations are coarse and variable. Some short-loop values
 
 The browser suite covers all 16 client-rendering/hydration scenarios and all 18 hydration CPU workload/browser combinations. Browser-build output byte equality is checked separately. When client assets and prerendered pages are byte-identical, browser shifts are scheduling/tracing/timer controls—not evidence that native marker assembly changed client execution. All browser regressions remain in the 217-row appendix and all nine browser metrics remain in the phase CSV/JSON.
 
-## Complete suite inventory and blockers
+## Complete suite inventory and blockers at the measured revisions
 
 | Suite | Coverage/settings |
 | --- | --- |
