@@ -33,7 +33,7 @@
 import { globSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, relative } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import type { ServerTemplateDefinition } from "@microsoft/fast-build/server.js";
 
 export interface ComponentRegistration {
@@ -55,6 +55,9 @@ export interface SSRRendererOptions {
      * Tag name prefix for custom elements (e.g., "fluent", "contoso").
      */
     tagPrefix: string;
+
+    /** Source-built Node addon path; defaults to FAST_NATIVE_ADDON. */
+    nativeAddonPath?: string;
 
     /**
      * The npm package name used to resolve component build artifacts
@@ -282,7 +285,7 @@ export function buildState(queryObj: Record<string, string>): Record<string, unk
 
 /**
  * Create an SSR fixture generator. Each authored fixture is compiled to server
- * JavaScript before execution; this development tool is not a production server.
+ * native artifact data before execution; this development tool is not a production server.
  *
  * Supports two modes:
  * - **`packageName`**: Scans a monolithic package's dist directory for
@@ -300,6 +303,11 @@ export function createSSRRenderer(options: SSRRendererOptions): {
             "createSSRRenderer: 'components' and 'packageName' are mutually exclusive. " +
                 "Provide one or the other, not both.",
         );
+    }
+
+    const addonPath = options.nativeAddonPath ?? process.env.FAST_NATIVE_ADDON;
+    if (!addonPath) {
+        throw new Error("SSR rendering requires nativeAddonPath or FAST_NATIVE_ADDON.");
     }
 
     const wasm = loadWasm();
@@ -385,10 +393,9 @@ export function createSSRRenderer(options: SSRRendererOptions): {
         }
     }
     const require = createRequire(import.meta.url);
-    const { compileServerModule } = require("@microsoft/fast-build/server.js");
-    const runtime = pathToFileURL(
-        require.resolve("@microsoft/fast-build/server-runtime.mjs"),
-    ).href;
+    const { compileServerArtifact } = require("@microsoft/fast-build/server.js");
+    const { loadNativeHost } = require("@microsoft/fast-build/native-host.mjs");
+    const Program = loadNativeHost(addonPath);
 
     // Concatenate all f-templates (with styles) for client hydration.
     const allFTemplates = [...fTemplatesByName.values()].join("\n");
@@ -412,25 +419,16 @@ export function createSSRRenderer(options: SSRRendererOptions): {
 
             let fixture = "";
             if (entryHtml) {
-                try {
-                    const source = compileServerModule(
-                        `<html><body>${entryHtml}</body></html>`,
-                        templatesMap,
-                        runtime,
-                    );
-                    const server = await import(
-                        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-                    );
-                    const rendered: string = server.renderEntry(state);
-
-                    // Extract body content from the rendered document.
-                    const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-                    fixture = bodyMatch?.[1] ?? entryHtml;
-                } catch (e) {
-                    // Fall back to the raw entry HTML if rendering fails.
-                    console.error("SSR fixture compilation/render failed:", e);
-                    fixture = entryHtml;
-                }
+                const artifact = compileServerArtifact(
+                    `<html><body>${entryHtml}</body></html>`,
+                    templatesMap,
+                );
+                const server = new Program(Buffer.from(artifact));
+                const rendered = server
+                    .renderEntryJson(Buffer.from(JSON.stringify(state), "utf8"))
+                    .toString("utf8");
+                const bodyMatch = rendered.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                fixture = bodyMatch?.[1] ?? entryHtml;
             }
 
             return { template: allFTemplates, fixture, preloadLinks };

@@ -226,14 +226,14 @@ test("validation diagnostics locate wrappers and publisher attributes in authore
 });
 
 test("non-HTML diagnostics have codes without invented source coordinates", () => {
-    assertDiagnostic(() => wasm.render("{{title}}", "{"), "invalid-state-json");
+    assertDiagnostic(() => wasm.render("{{title}}", "{"), "invalid-state");
     assertDiagnostic(
         () => wasm.render_with_templates("", "[]"),
         "invalid-template-metadata",
     );
     assert.throws(
         () => wasm.render_with_templates("", "{}", "{}", "invalid"),
-        /attributeNameStrategy/,
+        /render-options/,
     );
     assertDiagnostic(
         () => convert.convert_template("<template></template>", "invalid"),
@@ -253,9 +253,6 @@ test("non-HTML diagnostics have codes without invented source coordinates", () =
     assertDiagnostic(
         () => wasm.render_shadow_root("missing-card", "{}"),
         "missing-template",
-        undefined,
-        undefined,
-        "missing-card",
     );
     assertDiagnostic(
         () => wasm.compose_f_template_styles("<template></template>", ""),
@@ -355,7 +352,7 @@ test("shadow-only rendering returns the exact DSD fragment without a host or lig
         assert.equal(whole, `<test-card>${fragment}<b>light</b></test-card>`);
         assert.match(
             fragment,
-            /^<template shadowrootmode="open" shadowroot="open" shadowrootdelegatesfocus>/,
+            /^<template shadowrootmode="open" shadowrootdelegatesfocus>/,
         );
         assert.throws(
             () => wasm.render_shadow_root("missing-card", templates),
@@ -618,7 +615,6 @@ test("slot metadata follows HTML contexts, decoded attributes, and authored scop
 <f-repeat value="{{item in items}}"><slot name="repeated"></slot></f-repeat>
 <f-template name="nested"><template><slot name="nested"></slot></template></f-template>
 <nested-card><template shadowrootmode="open"><slot name="shadow"></slot></template></nested-card>
-<template shadowroot="closed"><slot name="legacy"></slot></template>
 <SLOT NAME="&quot;&#10;&#9;&#x1f600;" name="ignored"></SLOT>
 <slot name="{{authoredName}}"></slot>
 </template></f-template>`;

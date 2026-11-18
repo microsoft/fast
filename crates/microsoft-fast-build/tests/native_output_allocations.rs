@@ -62,6 +62,52 @@ fn render_peak(artifact: &CompiledArtifact, state: &PreparedState) -> (String, u
     (output.unwrap(), peak)
 }
 
+fn load_retained(bytes: &[u8]) -> (CompiledArtifact, usize) {
+    ALLOCATIONS.with(|stats| stats.set((true, 0, 0)));
+    let artifact = CompiledArtifact::load(bytes);
+    let live = ALLOCATIONS.with(|stats| {
+        let (_, live, _) = stats.replace((false, 0, 0));
+        live
+    });
+    (artifact.unwrap(), live)
+}
+
+#[test]
+fn unused_templates_do_not_increase_retained_native_plan_storage() {
+    let source = |unused: usize| {
+        let templates = (0..unused)
+            .map(|index| {
+                (
+                    format!("unused-{index}"),
+                    serde_json::json!([{"type":"literal","html":"unused"}]),
+                )
+            })
+            .collect::<serde_json::Map<_, _>>();
+        serde_json::to_vec(&serde_json::json!({
+            "format":"fast-server-native","version":1,
+            "entry":[{"type":"literal","html":"retained"}],
+            "templates":templates,"components":{}
+        }))
+        .unwrap()
+    };
+    let single_source = source(0);
+    let many_source = source(2000);
+    let (single, single_retained) = load_retained(&single_source);
+    let (many, many_retained) = load_retained(&many_source);
+    assert!(
+        many_retained <= single_retained,
+        "unused FAST templates increased retained plan storage: single={single_retained}, many={many_retained}"
+    );
+    assert_eq!(
+        single.render_entry_json("{}", &Default::default()).unwrap(),
+        "retained"
+    );
+    assert_eq!(
+        many.render_entry_json("{}", &Default::default()).unwrap(),
+        "retained"
+    );
+}
+
 #[test]
 fn suppressed_composites_do_not_accumulate_cloned_container_graphs() {
     let payload = JsonValue::Array(

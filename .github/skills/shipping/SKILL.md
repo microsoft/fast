@@ -29,8 +29,9 @@ Read these documents for additional context when needed:
 
 Read these documents, they are located at the root of the specific package or crate, e.g. `packages/<package>/<file>.md` and relate to the package/crates they are located in. When making changes in the package/crate afterwards update these files if necessary.
 
-- `DESIGN.md` - Explains the code patterns.
+- `DESIGN.md` - Documents current APIs, architecture and internals.
 - `README.md` - Explains how a developer/agent would use this package/crate.
+- `docs/migration.md` - Stable index of migration guides for the current publish; root docs may link here.
 
 # Commit and PR title conventions
 
@@ -155,7 +156,7 @@ When prompted, select the appropriate change type:
 The Beachball config ([`beachball.config.js`](../../../beachball.config.js)) ignores these paths — changes limited to them do not need change files:
 
 - `.github/` — CI configs, templates, skills
-- Test files (`src/e2e/`, `src/tests/`, `src/fixtures/`)
+- Test files (`src/e2e/`, `src/tests/`, `src/fixtures/`, `test/declarative/fixtures/`)
 - `package-lock.json`
 - `.vscode/`, `.prettierrc`
 
@@ -184,6 +185,9 @@ When introducing breaking changes:
 
 1. Select `major` as the change type when running `npm run change`.
 2. Document the migration strategy in `packages/<package>/docs/migration/<migration-name>.md`.
+3. List the guide in the package's stable `docs/migration.md` index. Root docs and
+   other durable documentation link to that index.
+4. Keep DESIGN.md focused on current APIs and internals.
 
 Format for a migration document:
 
@@ -198,9 +202,24 @@ Format for a migration document:
 
 If the breaking change is significant or requires multiple PRs, open a [discussion](https://github.com/microsoft/fast/discussions) first.
 
+## Per-publish cleanup
+
+Scope migration guidance to the current publish.
+During release preparation, review and delete guides from previous publishes and
+remove their entries from `docs/migration.md`. Retain guides for the publish being
+prepared. Keep the index even when no guides remain, with an explicit no-migrations
+message, so root-document links stay valid. Related npm/Rust targets may share an
+index.
+
+Perform this cleanup during release preparation, following the
+[publishing workflow](../../../CONTRIBUTING.md#publishing).
+
 # Documentation
 
 After any changes ensure that the documentation is up to date, this includes the files DESIGN.md and README.md files for any packages/crates that have been modified. If your changes update or add to the public API, update the sites/website/src/docs/ files. Only update the latest version, these are denoted by major versions in their folder names inside the docs folder, 1.x, 2.x, etc., find the latest version of the docs and modify them if necessary.
+
+Follow the [documentation skill](../documentation/SKILL.md) for current-only DESIGN
+documents and per-publish migration guidance.
 
 When adding or modifying exported APIs, run the website prebuild script to regenerate API documentation from the api-extractor output:
 

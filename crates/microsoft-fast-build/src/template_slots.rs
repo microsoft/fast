@@ -100,9 +100,7 @@ pub fn extract_template_slots(
     pending.extend(children(root));
     while let Some(node) = pending.pop() {
         if is_html_element(&node, "f-template")
-            || (is_html_element(&node, "template")
-                && (attribute(&node, "shadowrootmode").is_some()
-                    || attribute(&node, "shadowroot").is_some()))
+            || (is_html_element(&node, "template") && attribute(&node, "shadowrootmode").is_some())
         {
             continue;
         }

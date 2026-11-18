@@ -4,22 +4,26 @@
 
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
-eagerly lowers every body to a compiler-owned executable IR. `compile_server_module`
-emits semantic operation objects in ESM from this IR; `compile_server_artifact`
-serializes the same semantic format for the supported native Rust executor.
-The public wire representation is separate from private lowering/execution.
-There is one HTML/expression
-lowering pipeline, not a second native template compiler.
-The browser conversion crate remains independent.
+eagerly lowers every body. `compile_server_artifact` serializes UTF-8 JSON
+`fast-server-native` semantic schema 2 and validates it through the native loader.
+The wire representation is separate from private lowering and execution.
+One compiler and one Rust executor serve native Rust and Node hosts.
+
+`node.rs` is the synchronous Buffer-only JSON Node-API transport, enabled by
+`node-host` on non-WASM targets. It delegates to fresh JSON methods without
+re-converting state or duplicating execution. Programs own fixed constructor
+options; counters reset per request and napi-rs owns output Buffer finalization.
+Rust-only/WASM builds do not enable the feature. The npm repository build also
+builds the required local Node addon. Deployment remains explicit and source-built.
 
 ## Modules
 
 | Module | Responsibility |
 |---|---|
 | `server_ir.rs` | Shared lowering: executable bodies, resolved attributes, paths, condition opcodes and symbolic component references |
-| `aot.rs` | Semantic server ESM emission from the shared executable IR |
-| `server_plan.rs` | Stable tagged wire encoding and native name-to-index decoding |
+| `server_plan.rs` | Stable tagged wire encoding |
 | `native.rs` | Validated immutable artifact loading, native request execution, typed options and errors |
+| `native/plan.rs` | Validated wire-to-execution decoding, numeric reference resolution and typed native operations |
 | `plan.rs` | Structural cursor, source ranges, parsed tags/conditions/repeats |
 | `directive.rs` | Forward event scanner, repeat grammar, static DSD serialization |
 | `expression.rs` | Operator scanning for compile-time condition lowering |
@@ -31,149 +35,129 @@ The browser conversion crate remains independent.
 | `code_escape.rs` | Literal code-sample preprocessing and source rebasing |
 | `binding_metadata.rs` | Descriptive bindings, scopes and UTF-16 source spans |
 | `f_template.rs` | In-memory stylesheet composition and provenance |
-| `template_slots.rs` | Standards-based authored slot discovery |
+| `template_slots.rs` | Authored slot discovery |
 | `error.rs` | Structured compiler/tooling diagnostics |
 | `wasm.rs` | Compiler, parsing, composition, escaping and slot tooling exports |
 
-## Emission and diagnostics
+## Lowering and emission
 
-Definitions and light-DOM/directive bodies compile eagerly, even in skipped branches.
-The IR contains executable literal writes, prelowered attribute recipes, segmented
-paths, typed static values, condition opcodes, repeats and body/component references.
-It contains no source ranges, authored body strings or runtime expression grammar.
-Literal markup is output data, never reparsed. Repeat expression text is diagnostic
-only.
-Deferred scanner instructions reconstruct source errors directly during lowering;
-they never invoke a renderer. Diagnostics are rebased through nested bodies and
-code escaping to authored UTF-16 coordinates and definition names.
-Compilation limits structural nesting to 128 levels. Symbolic registry references
-permit finite cyclic component definitions without recursive code expansion.
-Identical lowered bodies, including empty light DOM, share private numeric references.
-The wire encoder gives templates deterministic opaque names in traversal order,
-independent of private body numbering. It never expands shared bodies recursively:
-encoding and decoding retain graph-sized storage. Bodies are interned only after lowering, so malformed source still
-receives eager authored diagnostics.
+Definitions and all nested bodies compile eagerly, including unused definitions
+and skipped branches. Errors retain authored UTF-16 locations and definition
+names through nested lowering and code-sample preprocessing.
+Structural nesting is limited to 128. Symbolic registry references permit finite
+conditional cycles without recursive code expansion. Shared lowered bodies are
+interned and encoded once with opaque deterministic names.
+Lowering consumes structural cursor instructions directly. The locator owns its
+private definitions directly and caches each definition's DSD markup in place.
 
-Lowering folds ordinary tags with no bindings into literal writes only when
-their plain and hydrated bytes are identical. Adjacent literal writes and static
-attribute fragments are coalesced in place before interning. Whitespace or
-client-attribute differences retain the tag operation; binding counts, nested
-components, host defaults and DSD selection remain executable boundaries.
-The JavaScript plan loader returns literal-only and empty bodies directly, without
-hydration branches or an output accumulator. Both targets use the same compacted
-IR with unchanged opcodes. Native output, depth and step limits remain enforced;
-compacted operations require fewer execution steps.
+The wire contains literal writes, segmented paths, typed values, conditions,
+repeats and template/component references. Literal markup is output data, never
+reparsed; repeat expression text is diagnostic-only.
+Adjacent invariant tags/literals coalesce only when hydrated output is identical.
+Dynamic attributes, whitespace differences, host semantics and marker counts
+retain executable operations.
 
-The emitter serializes named-field operation objects, inline entry operations and
-named template bodies. Components reference a single complete DSD template,
-with optional `host-attributes` metadata for authored defaults. Loaders derive
-host wrappers; generated host templates and separate shadow/host/tag descriptors
-are not part of the wire format. Shared content remains shared even when
-component defaults or shadow options differ. ESM embeds this semantic data and calls the
-helper's loader; it does not expose numeric opcodes, string tables or offsets,
-or emit rendering functions, accessors or loops. The helper validates all records
-and references, detects template cycles and prepares execution closures once. Compound
-property literals remain request-owned. Object validation and prepared snapshots
-are unchanged; overlay/attribute specialization is not part of this baseline.
-Native execution is unchanged; its loader resolves semantic template names into
-private body indices and derives the private host/shadow operations once, then
-applies complete existing IR validation. Reconstructed component metadata has a
-64 MiB expansion budget so shared wire definitions cannot multiply without bound.
-
-Conditions lower using the established server operator scanners; arbitrary
-JavaScript expressions are never spliced into output. The shared lowering owns static
-attributes, naming rules, body structure, literal CSS/markup and hydration binding
-counts. State paths become segment arrays. The plan loader prepares repeat
-closures; the native executor iterates the same body references.
-
-### Compiled JavaScript access plans
-
-The plan loader prepares path accessors at module load. Matching repeat
-alias prefixes are resolved to numeric slots; slot zero is reserved for
-`$index`. The helper prepares array-index decoding once at module import.
-Single-key root access and single-candidate lexical access use specialized
-functions; multiple matching prefixes select the newest active binding, not
-the longest prefix. Missing/null nested values still mask parent fallback.
-
-Each nonempty repeat invocation owns one frame with internal prototype-linked slot
-storage and mutable alias/index cells reused across its iterations. This
-replaces per-iteration loop-array copying. Only compiler-owned frame cells
-change; caller state and module-level accessor metadata remain independent.
-Shared bodies receive the active frame rather than capturing a lexical context,
-so interning does not multiply functions for different repeat scopes.
-Component shadows and host defaults start without caller repeat aliases;
-light DOM retains its caller frame.
-
-This is a JavaScript backend replacement, not a native executor rewrite.
-Semantic plans preserve published object/prepared APIs. Artifact schemas are
-versioned independently of compiler builds. Loaders validate the formats they
-support; compiler source or helper implementation changes are not artifact
-identity checks.
-JavaScript plans use `fast-server-js` schema 1; native artifacts use
-`fast-server-native` schema 1. Both new semantic formats start at version 1.
-Format identifiers are target-specific and strict.
-Only semantic-format changes require new schema versions, not changes to
-private closure compilation, alias slots or native execution layout.
-
-## Request execution
-
-Generated modules import only `@microsoft/fast-build/server-runtime.mjs`.
-For this target the JavaScript helper owns complete JSON-shaped state validation,
-own-property lookup, loop frames, borrowed child overlays, comparison/display,
-escaping and fresh hydration scopes. It has no WASM, parser, JSON serialization,
-eval or browser dependencies. Generated entry/template/host/shadow exports
-synchronously return complete strings. Existing markup, whitespace, escaping and
-markers remain byte-preserved.
-
-Generated JavaScript carries no compiler fingerprint or literal helper-build
-version check or runtime release metadata. The helper validates the plan schema,
-not a helper release number. Native artifacts likewise identify a
-supported execution schema, not compiler source, manifest or lockfile bytes.
-Applications own watching, rebuilds, module activation and in-flight deployment
-lifecycle; ordinary calls retain no request state.
-
-### Prepared-state snapshots
-
-Generated modules export `prepareState` and four `render*Prepared` counterparts.
-The helper reuses its validator with copy/freeze enabled: every container is
-copied, negative zero is normalized, and the complete copy is recursively frozen.
-A private `WeakMap` associates an opaque frozen handle with the snapshot.
-Prepared requests check map membership, reject forged/foreign handles, and reuse
-the same generated bodies with fresh options, overlays, loops and marker scopes.
-Handles can cross artifacts sharing one helper instance, not helper instances or
-processes. Dropping handles allows garbage collection; there is no native external
-memory or explicit disposal API. Ordinary methods still validate on every call.
-Dataset overlays copy borrowed objects before merging, including explicit
-`:dataset` property bindings, so neither caller data nor snapshots are mutated.
+Components reference a complete DSD template with optional ordered host-default
+metadata. The native loader derives host wrappers and resolves symbolic names
+into private indices. Metadata expansion is bounded to 64 MiB.
+The shared DSD serializer uses nonempty authored `shadowrootmode`, defaulting
+to `"open"`; other attributes retain their original serialization.
+Only semantic wire changes require a schema revision, not compiler builds or
+private execution-layout changes.
 
 ### Native artifact execution
 
 `CompiledArtifact::load` parses the artifact envelope, not authored HTML. It
 requires a supported format/schema,
-then validates every opcode, operand shape, static value, component reference and
-body index, including unreachable bodies. Unknown fields/opcodes and invalid
-references fail. JSON nesting is bounded by the deserializer; schema validation
-also bounds condition/static-value nesting. The compiler checks emitted native
-artifacts through this loader before returning them.
+then decodes semantic wire fields directly into typed execution operations while
+validating every opcode, operand shape, static value, component reference and
+body index, including unreachable bodies. It does not reconstruct an intermediate
+JSON IR or traverse that graph in a separate validation pass. Unknown fields/opcodes
+and invalid references fail. JSON nesting is bounded by the deserializer; semantic
+decoding also bounds condition/static-value nesting, derived bodies/operations and
+metadata expansion. The compiler checks emitted native artifacts through this
+loader before returning them.
+
+After complete eager decoding and validation, `native/plan.rs` walks typed body
+references iteratively from the entry and every publicly selectable component
+host/shadow root. It retains only reachable bodies and compacts their numeric
+indices. Calls, conditional/repeat bodies and element light DOM retain their
+references regardless of request state or DSD selection. Complete component DSD
+templates are retained only when executable references reach them; otherwise the
+derived shadow interiors suffice. Malformed unreachable data still fails full
+validation before pruning.
+
+Prepared operations, attributes, conditions and operands use immutable enums.
+Body references remain numeric;
+symbolic element references resolve once to component vector indices. Public
+named-host/shadow calls use a lookup map whose names share `Arc<str>` storage with
+the component table. Paths retain their exact object keys plus predecoded optional
+array indices; repeat aliases remain prepared string prefixes for the existing
+request-local loop machinery. Request-time dispatch does not inspect JSON fields
+or decode static values. Large enum variants are boxed to avoid inflating literal
+and body records. Elements reuse their resolved component's DSD opening tag rather
+than retaining a per-element copy.
+
+The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
+operands borrow immutable artifact storage during evaluation. Loaded native
+artifacts are execution-only.
+Native plans retain no emission-only static numeric spellings.
+Load peak memory includes transient wire JSON and typed bodies before pruning. Retained
+memory includes vectors/boxes, prepared paths, static values and the component-name
+lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
+no dispatch speedup or memory saving is assumed. Supported `fast-server-native`
+semantic schemas 1 and 2 load with no compiler-build key. Schema 2 contains
+canonical authored `inputs` plus a compiled `program`. Loading validates the build
+metadata shape, discards it before program decoding and retains only execution data.
+Build metadata increases artifact/read/parse size and peak loading memory, not
+request-time dispatch. Schema 1 uses the same program decoder.
 
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,
 DSD selection and hydration counters never enter the artifact. Typed `JsonValue`
 input is validated/normalized and copied per ordinary request; this is not a zero-copy
 memory claim. Parent overlays retain own-property masking, nulls and dataset
-siblings. Comparison, display and marker semantics match the generated target.
+siblings. Comparison, decimal number display and hydration-marker semantics preserve frozen output contracts.
 All four APIs return owned complete strings or recoverable `NativeRenderError`.
 No JavaScript engine or HTML/expression parsing is involved in loading/rendering.
 
 `PreparedState::new` uses that same normalizer once; `from_json` reuses the bounded
 JSON parser. Private `Arc<JsonValue>` storage owns the immutable result and is
 `Send + Sync`, cloneable and artifact-independent. Four `render_*_prepared`
-methods borrow its root through the existing executor's `Cow` frame; child
-overlays remain owned. Normal calls still normalize/copy before execution.
-Lookups and overlays can still allocate. State depth/node checks happen during
+methods borrow its root through the existing executor. Normal calls still
+normalize/copy before execution. State depth/node checks happen during
 preparation; body depth, step and output budgets reset and apply on every render.
 Dropping the last snapshot clone frees it; no serialization or cross-version
 handle interchange is provided.
+
+Native lookups return `Cow<JsonValue>`: existing values borrow request storage;
+synthetic array lengths need owned values, while static operands borrow artifact storage.
+String display borrows strings. Repeats borrow collections/items and link
+stack-local alias/index frames to their enclosing frame, reusing the artifact's
+alias path without copying names or outer loop payloads. Recursive scopes are
+bounded by the existing body-depth limit; no reference escapes execution.
+Component frames borrow their parent base and direct property operands, with a
+small request-local override map. Own-null properties, including missing bound
+operands, mask parent fallback.
+Override names borrow immutable artifact metadata rather than copying per host.
+Dataset transformations use copy-on-write for the merged object only; they never
+mutate borrowed request values. Shadows/defaults reset loop scope; caller light
+DOM keeps its original scope. Artifact storage is not changed by this mechanism.
+
+Logical conditions short-circuit pure operand evaluation. Complete state/artifact
+validation still precedes execution, and skipped condition operands do not alter
+execution-step accounting or body evaluation/error ordering.
+
+Four `render_*_json` methods parse fresh owned request state and pass it directly
+to that same executor. A serde visitor builds `JsonValue` directly, normalizing
+finite binary64 numbers with exact round trips and normalizing negative zero, without an intermediate `serde_json::Value`,
+map conversion, normalized clone or `Arc` snapshot. A nonallocating traversal
+then checks depth/value budgets on the final retained tree. Counting during
+parsing would reject overwritten duplicate-key subtrees that the existing parser
+accepts; complete parsing also preserves parse-error precedence, including invalid
+unused/overwritten Unicode and numbers. Typed-input copying and prepared snapshot
+ownership remain unchanged. JSON input and results/errors are independently
+owned; no request-key hashing/cache, unsafe code or retained scope arena is used.
 
 Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
 Text and attribute bindings append unchanged spans and exact entity spellings
@@ -181,14 +165,19 @@ directly to the executor's bounded output string, without display/escaped string
 Finite numbers format through its fallible `fmt::Write` implementation; boolean,
 null and container display values use fixed strings. Composite attributes resolve
 their binding values first so a later missing/null value suppresses the entire
-attribute before any output-budget check. Authored composite literals only replace
+attribute before any output-budget check. This preflight retains no operand vector;
+the output pass resolves immutable borrowed values again without cloning payloads.
+Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
-Lookups still clone values, and composite attributes retain a request-local list
-of scalar values until that attribute is written. Array/object operands immediately
-drop their cloned contents and retain only empty container display tags, avoiding
-accumulation of whole state graphs when a later operand suppresses the attribute.
+Hydration markers append literal spans and stack-formatted integer fields directly
+to bounded output without allocating a temporary string for each marker.
+Checked whole-marker length preflight precedes its spans, preserving the existing
+output-limit boundary and error order. The output buffer reserves the checked
+total before span emission so its capacity growth matches one bulk append.
+Numeric scratch has a fixed stack bound
+independent of marker count and is never retained between requests.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is
@@ -197,22 +186,19 @@ retained between calls.
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
 64 MiB output limits. Finite conditional component cycles are supported through
-symbolic references; unbounded request expansion returns `render-limit`, not
+resolved numeric references; unbounded request expansion returns `render-limit`, not
 stack overflow or truncated success. Failed requests cannot mutate later calls.
 See the [deployment/error contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
 Artifacts are trusted build/deployment inputs, not executable-source sandboxes.
-Compiler-only upgrades do not require rebuilding supported artifacts.
-Future loaders must retain supported published schema decoders to preserve
-unchanged assets; unsupported formats fail rather than being reinterpreted.
+Compiler build identity does not invalidate supported artifacts. Loading uses
+explicitly supported schema decoders; unsupported formats fail rather than being
+reinterpreted.
 
-Minor prerelease release metadata does not waive API migration. Future native
-allocation optimizations must preserve borrowed request inputs, independently
-owned complete output/errors, artifact `Send + Sync`, request isolation and
-rendering semantics, or explicitly introduce a consumer migration. Limits and
-state normalization/rejection are also public contracts; JS has no equivalent
-FAST budgets. Load replacements before application-owned activation and retain
-old handles/workers for in-flight requests rather than reinterpreting artifacts
-from another compiler/library build.
+Native API contracts include borrowed request inputs, independently owned complete
+output/errors, artifact `Send + Sync`, request isolation and rendering semantics.
+Limits and state normalization/rejection are also public contracts. Load replacements before application-owned activation and
+retain old handles/workers for in-flight requests rather than reinterpreting
+artifacts from another compiler/library build.
 
 Native Rust is supported now. A stable C ABI, .NET bindings, cross-language memory
 ownership and C# hosting are deferred; this change supplies none of those APIs.
@@ -220,10 +206,9 @@ There is no independent C# implementation of rendering semantics.
 
 ## Plugin integration boundaries
 
-Generated `renderShadow` returns just the DSD `<template>` for a
-named definition and resolved component state. Entry, host and fragment
-exports share generated shadow functions and fresh hydration scopes. The fragment API does
-not create host attributes or light DOM; nested hosts still follow normal rules.
+Rust `render_shadow_json` and Node `renderShadowJson` render just the DSD
+template for resolved component state. Host/light-DOM ownership stays with callers.
+All contexts share native operations and request-local hydration scopes.
 
 `binding_metadata.rs` reuses render-event discovery, tag attributes, directive
 body extraction, repeat parsing, and code escaping to describe bindings.
@@ -285,7 +270,7 @@ as a separate document-validation API.
 Selection matches decoded names case-sensitively, rejects empty/missing/duplicate
 matches, and requires one direct inner HTML template. Iterative traversal includes
 ordinary nested templates and conditional/repeated bodies once, but stops at
-nested component definitions or templates marked `shadowrootmode`/`shadowroot`.
+nested component definitions or templates marked `shadowrootmode`.
 Only HTML slot elements count. The result is sorted by original byte position,
 not DOM order, because HTML recovery can reparent nodes (for example, foster
 parenting around tables).
@@ -352,15 +337,21 @@ The resulting string is valid `<f-template>` source: it can be written to a file
 
 ## Coverage and performance
 
-Existing Rust rendering assertions compile and execute generated JavaScript and
-load/render native artifacts, requiring byte-identical results before checking the
+Existing Rust rendering assertions compare typed, prepared and fresh-JSON
+native requests, requiring byte-identical results before checking the
 original literal assertions. Dedicated `native_artifacts.rs` tests qualify all
 render targets, both marker formats, DSD selection, state/ownership/errors,
 recursive graphs and malformed artifacts. These adapters are test-only.
-Node tests enforce 438 distinct frozen output contracts and the shared
-performance corpus baseline.
-Browser fixtures hydrate flat-plan output. `bench:server` measures loaded plans;
+Node tests enforce compiled output contracts and the shared performance corpus
+baseline. Loaders reject unsupported schemas.
+Browser fixtures hydrate native output. `bench:server` measures the Node native host;
 its unique-host workload varies indexes, dataset values and inline styles to
-exercise component plans rather than only byte-identical hosts;
-its CPU, memory and size measurement boundaries are documented in the package's
+exercise component plans rather than only byte-identical hosts.
+Its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.
+
+The `native-shadow-benchmark` example separately measures complete owned Rust
+results through fresh-JSON and prepared-state boundaries. Its PowerShell runners
+compare isolated source snapshots, alternate execution order and keep allocation
+diagnostics separate from latency samples. Allocation requests are not copied-byte
+or process-RSS measurements.

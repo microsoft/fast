@@ -17,6 +17,18 @@
     },
     "overrides": [
         {
+            // Generated from authored entry.html fixtures.
+            "includes": ["**/test/declarative/fixtures/**/index.html"],
+            "linter": {
+                "enabled": false
+            },
+            "html": {
+                "formatter": {
+                    "enabled": false
+                }
+            }
+        },
+        {
             "includes": ["**/test/declarative/fixtures/**/*.html"],
             "html": {
                 "formatter": {

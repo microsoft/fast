@@ -73,7 +73,7 @@ flowchart TD
 | `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
 | `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Exports `definitionAsyncResolver`, `shadowOptionsToAttributes`, and the `ShadowOptionsResolver` type for resolving per-component shadow DOM options. Static wrapper stripping and style-marker injection recognize browser-valid `<template>` tags with ASCII whitespace before `>` in opening and closing tags. |
 | `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files. Shares the shadow-options resolution pipeline with `generate-templates.ts`. |
-| `src/ssr/render.ts` | `createSSRRenderer` factory — scans component artifacts, compiles fixture JavaScript with build-time WASM and executes the generated module asynchronously |
+| `src/ssr/render.ts` | `createSSRRenderer` factory — scans component artifacts, compiles native fixture artifacts with build-time WASM and executes them through the explicitly configured Node addon |
 | `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
@@ -255,7 +255,7 @@ When `debug` is enabled, the server also writes fixtures to `temp/ssr-<testId>.h
 
 ## SSR Rendering
 
-The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns `{ render }` compatible with the server's `entry-server.ts` contract. The asynchronous render function compiles fixture JavaScript with build-time WASM and executes the generated module. This supports dynamically authored development fixtures; production servers compile during their build.
+The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans for component build artifacts (f-templates, stylesheets) and returns `{ render }` compatible with the server's `entry-server.ts` contract. The asynchronous render function compiles native fixture artifacts with build-time WASM and executes them through the explicitly configured Node addon. This supports dynamically authored development fixtures; production servers compile during their build.
 
 ### createSSRRenderer
 
@@ -265,6 +265,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 | Option | Type | Default | Description |
 | -------- | ------ | --------- | ------------- |
+| `nativeAddonPath` | `string?` | `FAST_NATIVE_ADDON` | Required source-built addon location; no automatic provisioning. |
 | `tagPrefix` | `string` | — | Tag name prefix for custom elements (e.g., `"fluent"`, `"contoso"`) |
 | `packageName` | `string?` | — | Monolithic package name — scans subdirectories for component artifacts. Mutually exclusive with `components`. |
 | `components` | `ComponentRegistration[]?` | — | Explicit list of per-component packages. Mutually exclusive with `packageName`. |
@@ -283,7 +284,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 3. Collects f-template and stylesheet artifacts for all components.
 4. Injects stylesheet `<link>` tags into f-templates (replaces `{{styles}}` placeholder or strips the marker when styles URL is empty).
 5. Parses f-templates into the compiler's templates map (`tagName → inner template content`), including wrappers with ASCII whitespace before `>` in opening and closing tags.
-6. Resolves the server compiler API and runtime helper.
+6. Resolves the native artifact compiler and loads the configured Node addon.
 7. Concatenates all styled f-templates for client hydration.
 8. Builds theme/component stylesheet preload links.
 
@@ -291,12 +292,12 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 
 1. Builds entry HTML from `queryObj` — either raw HTML (`queryObj.html`) or a constructed element (`queryObj.tagName`, `queryObj.attributes`, `queryObj.innerHTML`). Attributes with `false`, `null`, or `undefined` values are omitted; other values are HTML-escaped.
 2. Builds JSON-shaped state from attributes (including hyphen-stripped variants for camelCase bindings).
-3. Compiles the fixture with `compileServerModule`, imports the generated module, and calls its `renderEntry(state)` to produce HTML with declarative shadow DOM.
+3. Compiles the fixture with `compileServerArtifact`, constructs a native program, and calls `renderEntryJson` with UTF-8 JSON state bytes; the owned result is decoded to HTML.
 4. Extracts `<body>` content from the rendered document.
 5. Returns `{ template, fixture, preloadLinks }`.
 
-Compilation/rendering failures are logged and fall back to raw entry HTML.
-Initialization still throws when the required compiler package is unavailable.
+Initialization requires `nativeAddonPath` or `FAST_NATIVE_ADDON` and the compiler package.
+Compilation/rendering failures propagate; raw entry HTML is not a backend fallback.
 
 **Host and shadow root attributes:** When parsing f-templates, the WASM `parse_f_templates` output may include `hostAttributes` from the inner `<template>` wrapper and `shadowrootAttributes` (e.g. `shadowrootdelegatesfocus`). If host attributes or non-default shadow root attributes are present, the `templatesMap` entry uses the object form `{ content, shadowrootAttributes, hostAttributes }`. The compiler applies host defaults to the custom element without overriding explicit instance attributes, and propagates shadow root attributes onto the emitted `<template shadowroot...>` element. Tags with no host attributes and only the default `shadowrootmode` use the bare string form.
 

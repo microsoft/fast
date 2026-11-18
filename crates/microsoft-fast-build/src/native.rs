@@ -1,10 +1,15 @@
 //! Immutable native execution of compiler artifacts; never parses template HTML.
 use crate::{content::write_html_escaped, JsonValue as J, Locator, RenderError};
-use serde_json::Value as V;
+use serde::de::{Deserialize, Deserializer, MapAccess, SeqAccess, Visitor};
+use serde_json::{json, Value as V};
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::Write;
 use std::sync::Arc;
+mod plan;
+use plan::{
+    Attribute, Comparison, Component, Condition, Dynamic, Operand, Operation, Plan, Segment, Tag,
+};
 
 /// Attribute-to-state mapping for custom element attributes.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -90,11 +95,32 @@ impl PreparedState {
 /// Compile ahead of time to a versioned executable artifact, not template metadata.
 pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>, RenderError> {
     let ir = crate::server_ir::lower(entry, locator)?;
-    let bytes = crate::server_plan::encode(
-        &ir,
-        "fast-server-native",
-        crate::server_plan::NATIVE_VERSION,
-    )
+    let templates: serde_json::Map<String, V> = locator
+        .template_names()
+        .map(|name| {
+            let attributes = |values: &[(String, Option<String>)]| -> Vec<V> {
+                values
+                    .iter()
+                    .map(|(name, value)| json!({"name":name,"value":value}))
+                    .collect()
+            };
+            (
+                name.to_owned(),
+                json!({
+                    "content":locator.authored_template(name).unwrap(),
+                    "shadowrootAttributes":attributes(locator.get_shadowroot_attributes(name)),
+                    "hostAttributes":attributes(locator.get_host_attributes(name)),
+                    "formatVersion":1,
+                }),
+            )
+        })
+        .collect();
+    let bytes = json!({
+        "format":"fast-server-native",
+        "version":crate::server_plan::NATIVE_VERSION,
+        "inputs":{"entry":entry,"templates":templates},
+        "program":crate::server_plan::encode(&ir),
+    })
     .to_string()
     .into_bytes();
     CompiledArtifact::load(&bytes).map_err(|error| RenderError::InvalidTemplateMetadata {
@@ -105,38 +131,63 @@ pub fn compile_server_artifact(entry: &str, locator: &Locator) -> Result<Vec<u8>
 
 /// A validated, immutable, `Send + Sync` executable. Clones share owned artifact
 /// storage; requests own all transient state and output. No JavaScript is used.
+/// Compile authored templates with [`crate::compile_server_artifact`] and deploy
+/// the resulting JSON data independently of this shared execution engine.
 #[derive(Clone, Debug)]
 pub struct CompiledArtifact {
-    ir: Arc<V>,
+    plan: Arc<Plan>,
 }
 
 impl CompiledArtifact {
-    /// Emit the JavaScript target from this exact validated executable IR.
-    /// This is build-time code generation, not native execution of JavaScript.
-    pub fn emit_server_module(&self, runtime_import: &str) -> String {
-        crate::aot::emit(&self.ir, runtime_import)
-    }
-
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
-    /// semantic schema 1, independently of private execution layouts.
-    /// Experimental layouts and unknown schemas require explicit regeneration.
+    /// semantic schemas 1 and 2, independently of private execution layouts.
+    /// Schema 2 embeds build inputs, which are discarded before plan decoding.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
         if bytes.len() > 64 * 1024 * 1024 {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
         }
-        let ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
+        let mut ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
         if ir["format"] != "fast-server-native"
             // Decoder support is explicit, not coupled to the current emitter version.
-            || !matches!(ir["version"].as_u64(), Some(1))
+            || !matches!(ir["version"].as_u64(), Some(1 | 2))
         {
             return Err(error(
                 "incompatible-artifact",
-                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schema 1",
+                "Unsupported FAST server artifact format/schema; native loader supports fast-server-native schemas 1 and 2",
             ));
         }
-        let ir = crate::server_plan::decode(ir).map_err(|_| invalid())?;
-        validate_artifact(&ir)?;
-        Ok(Self { ir: Arc::new(ir) })
+        let program = if ir["version"] == 2 {
+            let envelope = ir.as_object().ok_or_else(invalid)?;
+            if envelope.len() != 4
+                || !envelope.contains_key("program")
+                || !Self::valid_artifact_inputs(&ir["inputs"])
+            {
+                return Err(invalid());
+            }
+            ir["program"].take()
+        } else {
+            let plan = ir.as_object_mut().ok_or_else(invalid)?;
+            plan.remove("format");
+            plan.remove("version");
+            std::mem::take(&mut ir)
+        };
+        drop(ir);
+        Ok(Self {
+            plan: Arc::new(Plan::load(&program).map_err(|_| invalid())?),
+        })
+    }
+
+    fn valid_artifact_inputs(inputs: &V) -> bool {
+        let Some(inputs) = inputs.as_object() else {
+            return false;
+        };
+        inputs.len() == 2
+            && inputs.get("entry").is_some_and(V::is_string)
+            && (inputs.get("templates").is_some_and(V::is_object)
+                || inputs
+                    .get("templateSources")
+                    .and_then(V::as_array)
+                    .is_some_and(|sources| sources.iter().all(V::is_string)))
     }
 
     pub fn render_entry(
@@ -144,12 +195,49 @@ impl CompiledArtifact {
         state: &J,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.render(
-            self.ir["entry"].as_u64().unwrap() as usize,
-            state,
-            options,
-            true,
-        )
+        self.render(self.plan.entry, state, options, true)
+    }
+
+    /// Parse, fully validate and render fresh owned JSON without a snapshot copy.
+    pub fn render_entry_json(
+        &self,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(self.plan.entry, &state, options, true)
+    }
+
+    /// Fresh JSON rendering with template-context root-host rules.
+    pub fn render_template_json(
+        &self,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(self.plan.entry, &state, options, false)
+    }
+
+    /// Parse and validate before resolving the named host, matching typed input.
+    pub fn render_host_json(
+        &self,
+        name: &str,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute(self.component(name)?.host, &state, options, true)
+    }
+
+    /// Fresh JSON rendering of only the selected component's DSD.
+    pub fn render_shadow_json(
+        &self,
+        name: &str,
+        json: &str,
+        options: &NativeRenderOptions,
+    ) -> Result<String, NativeRenderError> {
+        let state = parse_render_state(json)?;
+        self.execute_shadow(name, &state, options)
     }
 
     /// Root template mode preserves the non-entry host attribute contract.
@@ -158,12 +246,7 @@ impl CompiledArtifact {
         state: &J,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.render(
-            self.ir["entry"].as_u64().unwrap() as usize,
-            state,
-            options,
-            false,
-        )
+        self.render(self.plan.entry, state, options, false)
     }
 
     /// Render without repeating validation or copying the snapshot's root.
@@ -172,7 +255,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(index(&self.ir["entry"]), &state.values, options, true)
+        self.execute(self.plan.entry, &state.values, options, true)
     }
 
     /// Prepared-state rendering with template-context root-host rules.
@@ -181,7 +264,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(index(&self.ir["entry"]), &state.values, options, false)
+        self.execute(self.plan.entry, &state.values, options, false)
     }
 
     pub fn render_host(
@@ -192,12 +275,7 @@ impl CompiledArtifact {
     ) -> Result<String, NativeRenderError> {
         let state = normalized(state, 0, &mut 1_000_000)?;
         let component = self.component(name)?;
-        self.execute(
-            component["host"].as_u64().unwrap() as usize,
-            &state,
-            options,
-            true,
-        )
+        self.execute(component.host, &state, options, true)
     }
 
     /// Render a named host using an immutable validated snapshot.
@@ -207,12 +285,7 @@ impl CompiledArtifact {
         state: &PreparedState,
         options: &NativeRenderOptions,
     ) -> Result<String, NativeRenderError> {
-        self.execute(
-            index(&self.component(name)?["host"]),
-            &state.values,
-            options,
-            true,
-        )
+        self.execute(self.component(name)?.host, &state.values, options, true)
     }
 
     /// Return only DSD for resolved component state (no attribute overlay/host).
@@ -246,15 +319,16 @@ impl CompiledArtifact {
         if !selected(options, name) {
             return Ok(String::new());
         }
-        let mut executor = Executor::new(&self.ir, options);
-        executor.push(component["tag"].as_str().unwrap())?;
+        let mut executor = Executor::new(&self.plan, options);
+        executor.push(&component.tag)?;
         executor.body(
-            component["shadow"].as_u64().unwrap() as usize,
+            component.shadow,
             &Frame {
-                values: Cow::Borrowed(state),
+                base: Some(state),
+                values: HashMap::new(),
                 parent: None,
             },
-            &[],
+            None,
             &mut Some(0),
             false,
             0,
@@ -263,9 +337,11 @@ impl CompiledArtifact {
         Ok(executor.out)
     }
 
-    fn component(&self, name: &str) -> Result<&V, NativeRenderError> {
-        self.ir["components"]
+    fn component(&self, name: &str) -> Result<&Component, NativeRenderError> {
+        self.plan
+            .names
             .get(name)
+            .map(|id| &self.plan.components[*id])
             .ok_or_else(|| error("missing-template", format!("Unknown component: {name}")))
     }
 
@@ -287,14 +363,15 @@ impl CompiledArtifact {
         options: &NativeRenderOptions,
         entry: bool,
     ) -> Result<String, NativeRenderError> {
-        let mut executor = Executor::new(&self.ir, options);
+        let mut executor = Executor::new(&self.plan, options);
         executor.body(
             id,
             &Frame {
-                values: Cow::Borrowed(state),
+                base: Some(state),
+                values: HashMap::new(),
                 parent: None,
             },
-            &[],
+            None,
             &mut None,
             entry,
             0,
@@ -305,18 +382,94 @@ impl CompiledArtifact {
 
 /// Parse request JSON with finite numbers and a bounded nesting depth.
 pub fn parse_render_state(json: &str) -> Result<J, NativeRenderError> {
-    let value: V = serde_json::from_str(json).map_err(|e| error("invalid-state", e.to_string()))?;
-    fn convert(v: V) -> J {
-        match v {
-            V::Null => J::Null,
-            V::Bool(v) => J::Bool(v),
-            V::Number(v) => J::Number(v.as_f64().unwrap()),
-            V::String(v) => J::String(v),
-            V::Array(v) => J::Array(v.into_iter().map(convert).collect()),
-            V::Object(v) => J::Object(v.into_iter().map(|(k, v)| (k, convert(v))).collect()),
+    let state: RequestValue =
+        serde_json::from_str(json).map_err(|e| error("invalid-state", e.to_string()))?;
+    // Count retained values after duplicate-key replacement. Parse errors, including
+    // invalid unused/overwritten Unicode and numbers, still precede budget errors.
+    fn validate(v: &J, depth: usize, remaining: &mut usize) -> Result<(), NativeRenderError> {
+        if depth > 64 || *remaining == 0 {
+            return Err(error("invalid-state", "State exceeds nesting/node limits"));
         }
+        *remaining -= 1;
+        match v {
+            J::Array(values) => {
+                for value in values {
+                    validate(value, depth + 1, remaining)?;
+                }
+            }
+            J::Object(values) => {
+                for value in values.values() {
+                    validate(value, depth + 1, remaining)?;
+                }
+            }
+            _ => {}
+        }
+        Ok(())
     }
-    normalized(&convert(value), 0, &mut 1_000_000)
+    validate(&state.0, 0, &mut 1_000_000)?;
+    Ok(state.0)
+}
+
+// Deserialize directly into request storage, without an intermediate serde value
+// tree, map conversion, string/key copies or a second normalized snapshot.
+struct RequestValue(J);
+
+impl<'de> Deserialize<'de> for RequestValue {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct RequestVisitor;
+        impl<'de> Visitor<'de> for RequestVisitor {
+            type Value = RequestValue;
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("JSON state")
+            }
+            fn visit_unit<E: serde::de::Error>(self) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::Null))
+            }
+            fn visit_bool<E: serde::de::Error>(self, value: bool) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::Bool(value)))
+            }
+            fn visit_i64<E: serde::de::Error>(self, value: i64) -> Result<Self::Value, E> {
+                self.visit_f64(value as f64)
+            }
+            fn visit_u64<E: serde::de::Error>(self, value: u64) -> Result<Self::Value, E> {
+                self.visit_f64(value as f64)
+            }
+            fn visit_f64<E: serde::de::Error>(self, value: f64) -> Result<Self::Value, E> {
+                if !value.is_finite() {
+                    return Err(E::custom("State numbers must be finite"));
+                }
+                Ok(RequestValue(J::Number(if value == 0.0 {
+                    0.0
+                } else {
+                    value
+                })))
+            }
+            fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::String(value.into())))
+            }
+            fn visit_string<E: serde::de::Error>(self, value: String) -> Result<Self::Value, E> {
+                Ok(RequestValue(J::String(value)))
+            }
+            fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+                let mut values = Vec::new();
+                while let Some(RequestValue(value)) = seq.next_element()? {
+                    values.push(value);
+                }
+                Ok(RequestValue(J::Array(values)))
+            }
+            fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<Self::Value, A::Error> {
+                let mut values = HashMap::new();
+                while let Some((key, RequestValue(value))) =
+                    map.next_entry::<String, RequestValue>()?
+                {
+                    values.insert(key, value);
+                }
+                Ok(RequestValue(J::Object(values)))
+            }
+        }
+        deserializer.deserialize_any(RequestVisitor)
+    }
 }
 
 fn normalized(state: &J, depth: usize, remaining: &mut usize) -> Result<J, NativeRenderError> {
@@ -350,94 +503,79 @@ fn selected(options: &NativeRenderOptions, name: &str) -> bool {
         .is_none_or(|names| names.iter().any(|n| n == name))
 }
 
-fn array(v: &V) -> &[V] {
-    v.as_array().unwrap()
-}
-fn string(v: &V) -> &str {
-    v.as_str().unwrap()
-}
-fn index(v: &V) -> usize {
-    v.as_u64().unwrap() as usize
-}
-
-fn decoded(v: &V) -> J {
-    match string(&v[0]) {
-        "null" => J::Null,
-        "bool" => J::Bool(v[1].as_bool().unwrap()),
-        "number" => J::Number(string(&v[1]).parse().unwrap()),
-        "string" => J::String(string(&v[1]).into()),
-        "array" => J::Array(array(&v[1]).iter().map(decoded).collect()),
-        "object" => J::Object(
-            v[1].as_object()
-                .unwrap()
-                .iter()
-                .map(|(k, v)| (k.clone(), decoded(v)))
-                .collect(),
-        ),
-        _ => unreachable!("validated value"),
-    }
-}
-
 struct Frame<'a> {
-    values: Cow<'a, J>,
+    base: Option<&'a J>,
+    values: HashMap<&'a str, Cow<'a, J>>,
     parent: Option<&'a Frame<'a>>,
 }
-type Loops = [(Vec<String>, J)];
+struct LoopFrame<'a> {
+    prefix: &'a [String],
+    item: &'a J,
+    index: J,
+    parent: Option<&'a LoopFrame<'a>>,
+}
+type Loops<'a> = Option<&'a LoopFrame<'a>>;
 
-fn nested(value: &J, path: &[V]) -> Option<J> {
+fn nested<'a>(value: &'a J, path: &[Segment]) -> Option<Cow<'a, J>> {
     let mut value = value;
     for (at, key) in path.iter().enumerate() {
-        let key = string(key);
         match value {
             J::Array(values) => {
-                if key == "length" {
-                    return (at == path.len() - 1).then_some(J::Number(values.len() as f64));
+                if key.key == "length" {
+                    return (at == path.len() - 1)
+                        .then_some(Cow::Owned(J::Number(values.len() as f64)));
                 }
-                let digits = key.strip_prefix('+').unwrap_or(key);
-                if digits.is_empty() || !digits.bytes().all(|b| b.is_ascii_digit()) {
-                    return None;
-                }
-                value = values.get(digits.parse::<usize>().ok()?)?;
+                value = values.get(key.array_index?)?;
             }
-            J::Object(values) => value = values.get(key)?,
+            J::Object(values) => value = values.get(&key.key)?,
             _ => return None,
         }
     }
-    Some(value.clone())
+    Some(Cow::Borrowed(value))
 }
 
-fn get(root: &Frame<'_>, loops: &Loops, path: &V) -> Option<J> {
-    let path = array(path);
-    for (prefix, value) in loops.iter().rev() {
-        if prefix.len() <= path.len() && prefix.iter().zip(path).all(|(a, b)| a == string(b)) {
-            return nested(value, &path[prefix.len()..]);
+fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &[Segment]) -> Option<Cow<'a, J>> {
+    while let Some(current) = loops {
+        if path[0].key == "$index" {
+            return nested(&current.index, &path[1..]);
         }
+        if current.prefix.len() <= path.len()
+            && current.prefix.iter().zip(path).all(|(a, b)| a == &b.key)
+        {
+            return nested(current.item, &path[current.prefix.len()..]);
+        }
+        loops = current.parent;
     }
     let mut frame = Some(root);
     while let Some(current) = frame {
-        let val = nested(&current.values, path);
-        if val.is_some()
-            || matches!(current.values.as_ref(), J::Object(values) if values.contains_key(string(&path[0])))
-        {
-            return val;
+        if let Some(value) = current.values.get(path[0].key.as_str()) {
+            return nested(value, &path[1..]);
+        }
+        if let Some(base) = current.base {
+            let val = nested(base, path);
+            if val.is_some()
+                || matches!(base, J::Object(values) if values.contains_key(&path[0].key))
+            {
+                return val;
+            }
         }
         frame = current.parent;
     }
     None
 }
 
-fn text(value: Option<&J>) -> String {
+fn text(value: Option<&J>) -> Cow<'_, str> {
     match value {
-        None | Some(J::Null) => String::new(),
-        Some(J::Bool(v)) => v.to_string(),
+        None | Some(J::Null) => "".into(),
+        Some(J::Bool(v)) => v.to_string().into(),
         Some(J::Number(v)) => {
             if *v == 0.0 {
                 "0".into()
             } else {
-                v.to_string()
+                v.to_string().into()
             }
         }
-        Some(J::String(v)) => v.clone(),
+        Some(J::String(v)) => Cow::Borrowed(v),
         Some(J::Array(_)) => "[Array]".into(),
         Some(J::Object(_)) => "[Object]".into(),
     }
@@ -451,11 +589,10 @@ fn truthy(value: Option<&J>) -> bool {
         _ => true,
     }
 }
-fn operand(v: &V, root: &Frame<'_>, loops: &Loops) -> Option<J> {
-    if v[0] == "path" {
-        get(root, loops, &v[1])
-    } else {
-        Some(decoded(&v[1]))
+fn operand<'a>(v: &'a Operand, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
+    match v {
+        Operand::Path(path) => get(root, loops, path),
+        Operand::Value(value) => Some(Cow::Borrowed(value)),
     }
 }
 fn numeric(v: &J) -> Option<f64> {
@@ -478,20 +615,20 @@ fn equal(a: &J, b: &J) -> bool {
         _ => false,
     }
 }
-fn condition(v: &V, root: &Frame<'_>, loops: &Loops) -> bool {
-    match string(&v[0]) {
-        "||" => condition(&v[1], root, loops) | condition(&v[2], root, loops),
-        "&&" => condition(&v[1], root, loops) & condition(&v[2], root, loops),
-        "not" => !truthy(get(root, loops, &v[1]).as_ref()),
-        "truthy" => truthy(get(root, loops, &v[1]).as_ref()),
-        "compare" => {
-            let a = get(root, loops, &v[2]);
-            let b = operand(&v[3], root, loops);
-            let op = string(&v[1]);
+fn condition(v: &Condition, root: &Frame<'_>, loops: Loops<'_>) -> bool {
+    use Comparison::*;
+    match v {
+        Condition::Or(a, b) => condition(a, root, loops) || condition(b, root, loops),
+        Condition::And(a, b) => condition(a, root, loops) && condition(b, root, loops),
+        Condition::Not(path) => !truthy(get(root, loops, path).as_deref()),
+        Condition::Truthy(path) => truthy(get(root, loops, path).as_deref()),
+        Condition::Compare(op, path, value) => {
+            let a = get(root, loops, path);
+            let b = operand(value, root, loops);
             match (a, b) {
                 (Some(a), Some(b)) => {
-                    if op == "==" || op == "!=" {
-                        return equal(&a, &b) == (op == "==");
+                    if matches!(op, Equal | NotEqual) {
+                        return equal(&a, &b) == (*op == Equal);
                     }
                     let order = match (numeric(&a), numeric(&b)) {
                         (Some(a), Some(b)) => {
@@ -510,22 +647,77 @@ fn condition(v: &V, root: &Frame<'_>, loops: &Loops) -> bool {
                         },
                     };
                     match op {
-                        ">" => order > 0,
-                        "<" => order < 0,
-                        ">=" => order >= 0,
+                        Greater => order > 0,
+                        Less => order < 0,
+                        GreaterEqual => order >= 0,
                         _ => order <= 0,
                     }
                 }
-                (None, None) => matches!(op, "==" | ">=" | "<="),
-                _ => op == "!=",
+                (None, None) => matches!(op, Equal | GreaterEqual | LessEqual),
+                _ => *op == NotEqual,
             }
         }
-        _ => unreachable!("validated condition"),
+    }
+}
+
+struct Decimal {
+    bytes: [u8; usize::MAX.ilog10() as usize + 1],
+    start: usize,
+}
+
+impl Decimal {
+    fn new(mut value: usize) -> Self {
+        let mut decimal = Self {
+            bytes: [0; usize::MAX.ilog10() as usize + 1],
+            start: usize::MAX.ilog10() as usize + 1,
+        };
+        loop {
+            decimal.start -= 1;
+            decimal.bytes[decimal.start] = b'0' + (value % 10) as u8;
+            value /= 10;
+            if value == 0 {
+                return decimal;
+            }
+        }
+    }
+
+    fn as_str(&self) -> &str {
+        std::str::from_utf8(&self.bytes[self.start..]).expect("decimal digits are UTF-8")
+    }
+}
+
+enum HydrationMarker {
+    Legacy(Decimal),
+    Binding(Decimal),
+    Composite(Decimal, Decimal),
+}
+
+impl HydrationMarker {
+    fn parts(&self) -> [&str; 4] {
+        match self {
+            Self::Legacy(count) => ["data-fe=\"", count.as_str(), "\"", ""],
+            Self::Binding(index) => ["data-fe-b-", index.as_str(), "", ""],
+            Self::Composite(index, count) => ["data-fe-c-", index.as_str(), "-", count.as_str()],
+        }
+    }
+
+    fn matches_name(&self, name: &str) -> bool {
+        if matches!(self, Self::Legacy(_)) {
+            return name == "data-fe";
+        }
+        let mut remaining = name;
+        for part in self.parts() {
+            let Some(rest) = remaining.strip_prefix(part) else {
+                return false;
+            };
+            remaining = rest;
+        }
+        remaining.is_empty()
     }
 }
 
 struct Executor<'a> {
-    ir: &'a V,
+    plan: &'a Plan,
     options: &'a NativeRenderOptions,
     out: String,
     steps: usize,
@@ -538,9 +730,9 @@ impl Write for Executor<'_> {
 }
 
 impl<'a> Executor<'a> {
-    fn new(ir: &'a V, options: &'a NativeRenderOptions) -> Self {
+    fn new(plan: &'a Plan, options: &'a NativeRenderOptions) -> Self {
         Self {
-            ir,
+            plan,
             options,
             out: String::new(),
             steps: 0,
@@ -551,6 +743,23 @@ impl<'a> Executor<'a> {
             return Err(error("render-limit", "Output byte limit exceeded"));
         }
         self.out.push_str(text);
+        Ok(())
+    }
+    fn push_parts(&mut self, parts: &[&str]) -> Result<(), NativeRenderError> {
+        // Keep each formerly atomic marker append within the budget before
+        // writing its first span, including the surrounding space/tag ending.
+        let length = parts
+            .iter()
+            .try_fold(0usize, |length, part| length.checked_add(part.len()))
+            .filter(|length| {
+                *length <= self.options.max_output_bytes.saturating_sub(self.out.len())
+            })
+            .ok_or_else(|| error("render-limit", "Output byte limit exceeded"))?;
+        // Match a single push_str's output-buffer growth without a marker String.
+        self.out.reserve(length);
+        for part in parts {
+            self.push(part)?;
+        }
         Ok(())
     }
     fn tick(&mut self) -> Result<(), NativeRenderError> {
@@ -585,63 +794,66 @@ impl<'a> Executor<'a> {
     fn number(&mut self, n: f64) -> Result<(), NativeRenderError> {
         write!(self, "{n}").map_err(|_| error("render-limit", "Output byte limit exceeded"))
     }
-    fn attr(&mut self, v: &V, root: &Frame<'_>, loops: &Loops) -> Result<(), NativeRenderError> {
-        match string(&v[0]) {
-            "literal" => self.push(string(&v[1])),
-            "conditional" => {
-                if condition(&v[1], root, loops) {
-                    self.push(string(&v[2]))?;
+    fn attr(
+        &mut self,
+        v: &Attribute,
+        root: &Frame<'_>,
+        loops: Loops<'_>,
+    ) -> Result<(), NativeRenderError> {
+        match v {
+            Attribute::Literal(value) => self.push(value),
+            Attribute::Conditional(test, value) => {
+                if condition(test, root, loops) {
+                    self.push(value)?;
                 }
                 Ok(())
             }
-            "attribute" => {
-                let val = get(root, loops, &v[2]);
-                if v[3] == true {
-                    if let Some(J::Bool(value)) = val {
-                        if value {
+            Attribute::Bound {
+                name,
+                path,
+                boolean,
+                property,
+            } => {
+                let val = get(root, loops, path);
+                if *boolean {
+                    if let Some(J::Bool(value)) = val.as_deref() {
+                        if *value {
                             self.push(" ")?;
-                            self.push(string(&v[1]))?;
+                            self.push(name)?;
                         }
                         return Ok(());
                     }
                 }
-                match val.as_ref() {
+                match val.as_deref() {
                     None | Some(J::Null) => return Ok(()),
-                    Some(J::Array(_) | J::Object(_)) if v[4] == true => return Ok(()),
+                    Some(J::Array(_) | J::Object(_)) if *property => return Ok(()),
                     _ => {}
                 }
                 self.push(" ")?;
-                self.push(string(&v[1]))?;
+                self.push(name)?;
                 self.push("=\"")?;
-                match val.as_ref() {
-                    Some(J::Number(n)) if v[4] == true => self.number(*n)?,
+                match val.as_deref() {
+                    Some(J::Number(n)) if *property => self.number(*n)?,
                     value => self.value(value, true)?,
                 }
                 self.push("\"")
             }
-            "quoted" => {
+            Attribute::Quoted(name, parts) => {
                 // A missing later binding suppresses the whole attribute, even when
                 // an earlier value would exceed the output budget.
-                let mut values = Vec::new();
-                for part in array(&v[2]) {
-                    if part[0] != "literal" {
-                        match get(root, loops, &part[1]) {
-                            None | Some(J::Null) => return Ok(()),
-                            // Display only needs the container tag. Drop cloned contents
-                            // before resolving the next operand.
-                            Some(J::Array(_)) => values.push(J::Array(Vec::new())),
-                            Some(J::Object(_)) => values.push(J::Object(HashMap::new())),
-                            Some(value) => values.push(value),
+                for part in parts {
+                    if let plan::Part::Segment(path) = part {
+                        let value = get(root, loops, path);
+                        if matches!(value.as_deref(), None | Some(J::Null)) {
+                            return Ok(());
                         }
                     }
                 }
                 self.push(" ")?;
-                self.push(string(&v[1]))?;
+                self.push(name)?;
                 self.push("=\"")?;
-                let mut values = values.iter();
-                for part in array(&v[2]) {
-                    if part[0] == "literal" {
-                        let text = string(&part[1]);
+                for part in parts {
+                    if let plan::Part::Literal(text) = part {
                         let mut start = 0;
                         for (at, _) in text.match_indices('"') {
                             self.push(&text[start..at])?;
@@ -649,22 +861,21 @@ impl<'a> Executor<'a> {
                             start = at + 1;
                         }
                         self.push(&text[start..])?;
-                    } else {
-                        self.value(values.next(), true)?;
+                    } else if let plan::Part::Segment(path) = part {
+                        self.value(get(root, loops, path).as_deref(), true)?;
                     }
                 }
                 self.push("\"")
             }
-            _ => unreachable!("validated attribute"),
         }
     }
     fn attrs(
         &mut self,
-        values: &V,
+        values: &[Attribute],
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
     ) -> Result<(), NativeRenderError> {
-        for value in array(values) {
+        for value in values {
             self.tick()?;
             self.attr(value, root, loops)?;
         }
@@ -674,7 +885,8 @@ impl<'a> Executor<'a> {
         &mut self,
         scope: &mut Option<usize>,
         count: usize,
-    ) -> Result<String, NativeRenderError> {
+        ending: &str,
+    ) -> Result<HydrationMarker, NativeRenderError> {
         let at = scope.as_mut().unwrap();
         let index = *at;
         *at = at
@@ -682,13 +894,15 @@ impl<'a> Executor<'a> {
             .ok_or_else(|| error("render-limit", "Hydration index overflow"))?;
         let marker = if self.options.markers_v2 {
             if count == 1 {
-                format!("data-fe-b-{index}")
+                HydrationMarker::Binding(Decimal::new(index))
             } else {
-                format!("data-fe-c-{index}-{count}")
+                HydrationMarker::Composite(Decimal::new(index), Decimal::new(count))
             }
         } else {
-            format!("data-fe=\"{count}\"")
+            HydrationMarker::Legacy(Decimal::new(count))
         };
+        let [a, b, c, d] = marker.parts();
+        self.push_parts(&[" ", a, b, c, d, ending])?;
         Ok(marker)
     }
     fn boundary(
@@ -701,38 +915,37 @@ impl<'a> Executor<'a> {
         if scope.is_none() {
             return Ok(());
         }
-        let text = if self.options.markers_v2 {
-            if repeat {
-                format!("<!--fe-repeat$${kind}$${index}$$fe-repeat-->")
+        if self.options.markers_v2 {
+            let index = Decimal::new(index);
+            let (prefix, suffix) = if repeat {
+                ("<!--fe-repeat$$", "$$fe-repeat-->")
             } else {
-                format!("<!--fe-b$${kind}$${index}$$fast-build$$fe-b-->")
-            }
+                ("<!--fe-b$$", "$$fast-build$$fe-b-->")
+            };
+            self.push_parts(&[prefix, kind, "$$", index.as_str(), suffix])
         } else {
-            match (repeat, kind) {
+            self.push(match (repeat, kind) {
                 (true, "start") => "<!--fe:r-->",
                 (true, _) => "<!--fe:/r-->",
                 (false, "start") => "<!--fe:b-->",
                 _ => "<!--fe:/b-->",
-            }
-            .into()
-        };
-        self.push(&text)
+            })
+        }
     }
     fn tag(
         &mut self,
-        v: &V,
+        v: &Tag,
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
         scope: &mut Option<usize>,
     ) -> Result<(), NativeRenderError> {
         if scope.is_none() {
-            self.attrs(&v["plain"], root, loops)
+            self.attrs(&v.plain, root, loops)
         } else {
-            self.attrs(&v["hydrated"], root, loops)?;
-            let count = index(&v["count"]);
+            self.attrs(&v.hydrated, root, loops)?;
+            let count = v.count;
             if count > 0 {
-                let marker = self.marker(scope, count)?;
-                self.push(&format!(" {marker}{}", string(&v["ending"])))?;
+                self.marker(scope, count, &v.ending)?;
             }
             Ok(())
         }
@@ -741,7 +954,7 @@ impl<'a> Executor<'a> {
         &mut self,
         id: usize,
         root: &Frame<'_>,
-        loops: &Loops,
+        loops: Loops<'_>,
         scope: &mut Option<usize>,
         entry: bool,
         depth: usize,
@@ -752,60 +965,59 @@ impl<'a> Executor<'a> {
                 "Component/body nesting exceeds 128 levels",
             ));
         }
-        for op in array(&self.ir["bodies"][id]) {
+        for op in &self.plan.bodies[id] {
             self.tick()?;
-            match string(&op[0]) {
-                "literal" => self.push(string(&op[1]))?,
-                "tag" => self.tag(&op[1], root, loops, scope)?,
-                "call" => self.body(index(&op[1]), root, loops, scope, entry, depth + 1)?,
-                "binding" | "when" | "repeat" => {
+            match op {
+                Operation::Literal(value) => self.push(value)?,
+                Operation::Tag(tag) => self.tag(tag, root, loops, scope)?,
+                Operation::Call(id) => self.body(*id, root, loops, scope, entry, depth + 1)?,
+                Operation::Dynamic(op) => {
+                    let op = op.as_ref();
                     // Repeat validation precedes opening hydration markers.
-                    let items = if op[0] == "repeat" {
-                        match get(root, loops, &op[2]) {
-                            None => Vec::new(),
+                    let collection = if let Dynamic::Repeat { path, .. } = op {
+                        get(root, loops, path)
+                    } else {
+                        None
+                    };
+                    let items = if let Dynamic::Repeat { diagnostic, .. } = op {
+                        match collection.as_deref() {
+                            None => &[][..],
                             Some(J::Array(v)) => v,
                             _ => {
                                 return Err(error(
                                     "repeat-not-array",
-                                    format!("repeat binding '{}' is not an array", string(&op[3])),
+                                    format!("repeat binding '{diagnostic}' is not an array"),
                                 ))
                             }
                         }
                     } else {
-                        Vec::new()
+                        &[][..]
                     };
                     let binding = scope.unwrap_or(0);
                     if let Some(index) = scope {
                         *index += 1;
                     }
                     self.boundary(scope, "start", binding, false)?;
-                    if op[0] == "binding" {
-                        self.value(get(root, loops, &op[1]).as_ref(), op[2] == true)?;
-                    } else if op[0] == "when" {
-                        if condition(&op[1], root, loops) {
-                            self.body(
-                                index(&op[2]),
-                                root,
-                                loops,
-                                &mut scope.map(|_| 0),
-                                false,
-                                depth + 1,
-                            )?;
+                    if let Dynamic::Binding(path, escape) = op {
+                        self.value(get(root, loops, path).as_deref(), *escape)?;
+                    } else if let Dynamic::When(test, body) = op {
+                        if condition(test, root, loops) {
+                            self.body(*body, root, loops, &mut scope.map(|_| 0), false, depth + 1)?;
                         }
-                    } else {
-                        for (i, item) in items.into_iter().enumerate() {
+                    } else if let Dynamic::Repeat { alias, body, .. } = op {
+                        for (i, item) in items.iter().enumerate() {
                             self.tick()?;
                             self.boundary(scope, "start", i, true)?;
-                            let mut child_loops = loops.to_vec();
-                            child_loops.push((
-                                array(&op[1]).iter().map(|v| string(v).into()).collect(),
+                            let child_loops = LoopFrame {
+                                prefix: alias,
                                 item,
-                            ));
-                            child_loops.push((vec!["$index".into()], J::Number(i as f64)));
+                                index: J::Number(i as f64),
+                                parent: loops,
+                            };
                             self.body(
-                                index(&op[4]),
+                                *body,
                                 root,
-                                &child_loops,
+                                Some(&child_loops),
                                 &mut scope.map(|_| 0),
                                 false,
                                 depth + 1,
@@ -815,285 +1027,360 @@ impl<'a> Executor<'a> {
                     }
                     self.boundary(scope, "end", binding, false)?;
                 }
-                "element" => {
-                    let el = &op[1];
-                    let name = string(&el["name"]);
+                Operation::Element(el) => {
+                    let component = &self.plan.components[el.component];
+                    let name = &component.name;
                     if !selected(self.options, name) {
-                        self.tag(&el["opening"], root, loops, scope)?;
-                        self.body(index(&el["body"]), root, loops, scope, entry, depth + 1)?;
-                        self.push(string(&el["closing"]))?;
+                        self.tag(&el.opening, root, loops, scope)?;
+                        self.body(el.body, root, loops, scope, entry, depth + 1)?;
+                        self.push(&el.closing)?;
                         continue;
                     }
-                    let props = array(&el["props"]);
+                    let props = &el.props;
                     let mut values = HashMap::new();
                     for prop in props {
                         self.tick()?;
-                        let key = string(
-                            &prop[if self.options.attribute_name_strategy
-                                == AttributeNameStrategy::CamelCase
-                            {
-                                0
-                            } else {
-                                1
-                            }],
-                        );
-                        let val = operand(&prop[3], root, loops).unwrap_or(J::Null);
-                        if prop[2].is_null() {
-                            values.insert(key.into(), val);
+                        let path = &prop.keys[if self.options.attribute_name_strategy
+                            == AttributeNameStrategy::CamelCase
+                        {
+                            0
                         } else {
-                            let value = values.entry(key.to_string()).or_insert_with(|| {
-                                get(root, &[], &serde_json::json!([key]))
-                                    .unwrap_or(J::Object(HashMap::new()))
+                            1
+                        }];
+                        let key = path[0].key.as_str();
+                        let val = operand(&prop.value, root, loops).unwrap_or(Cow::Owned(J::Null));
+                        if prop.group.is_none() {
+                            values.insert(key, val);
+                        } else {
+                            let value = values.entry(key).or_insert_with(|| {
+                                get(root, None, path)
+                                    .unwrap_or(Cow::Owned(J::Object(HashMap::new())))
                             });
-                            if let J::Object(group) = value {
-                                group.insert(string(&prop[2]).into(), val);
+                            if matches!(value.as_ref(), J::Object(_)) {
+                                if let J::Object(group) = value.to_mut() {
+                                    group.insert(
+                                        prop.group.as_ref().unwrap().clone(),
+                                        val.into_owned(),
+                                    );
+                                }
                             }
                         }
                     }
                     let child = Frame {
-                        values: Cow::Owned(J::Object(values)),
-                        parent: matches!(root.values.as_ref(), J::Object(_)).then_some(root),
+                        base: None,
+                        values,
+                        parent: (root.base.is_none() || matches!(root.base, Some(J::Object(_))))
+                            .then_some(root),
                     };
                     let child = if props.is_empty() { root } else { &child };
                     // JS computes shadow before host attributes. Keep error ordering
                     // while retaining a single bounded output allocation.
                     let shadow_start = self.out.len();
                     self.body(
-                        index(&self.ir["components"][name]["shadow"]),
+                        component.shadow,
                         child,
-                        &[],
+                        None,
                         &mut Some(0),
                         false,
                         depth + 1,
                     )?;
                     let shadow = self.out.split_off(shadow_start);
                     let hydration_attribute = if entry {
-                        self.attrs(&el["entry"], root, loops)?;
+                        self.attrs(&el.entry, root, loops)?;
                         None
                     } else {
-                        self.attrs(&el["normal"], root, loops)?;
-                        if scope.is_some() && el["count"] != 0 {
-                            let marker = self.marker(scope, index(&el["count"]))?;
-                            self.push(&format!(" {marker}"))?;
-                            Some(marker.split('=').next().unwrap().to_string())
+                        self.attrs(&el.normal, root, loops)?;
+                        if scope.is_some() && el.count != 0 {
+                            Some(self.marker(scope, el.count, "")?)
                         } else {
                             None
                         }
                     };
-                    for default in array(&el["defaults"]) {
+                    for (key, value) in &el.defaults {
                         self.tick()?;
-                        if hydration_attribute.as_deref() != Some(string(&default[0])) {
-                            self.attr(&default[1], child, &[])?;
+                        if !hydration_attribute
+                            .as_ref()
+                            .is_some_and(|marker| marker.matches_name(key))
+                        {
+                            self.attr(value, child, None)?;
                         }
                     }
                     self.push(">")?;
-                    self.push(string(&el["shadowTag"]))?;
+                    self.push(&component.tag)?;
                     self.push(&shadow)?;
                     self.push("</template>")?;
-                    self.body(index(&el["body"]), root, loops, scope, false, depth + 1)?;
+                    self.body(el.body, root, loops, scope, false, depth + 1)?;
                     self.push(&format!("</{name}>"))?;
                 }
-                _ => unreachable!("validated opcode"),
             }
         }
         Ok(())
     }
 }
 
-fn validate_artifact(ir: &V) -> Result<(), NativeRenderError> {
-    fn fields(v: &V, names: &[&str]) -> bool {
-        v.as_object().is_some_and(|obj| {
-            obj.len() == names.len() && names.iter().all(|n| obj.contains_key(*n))
-        })
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn marker_artifact() -> CompiledArtifact {
+        CompiledArtifact::load(
+            &compile_server_artifact("", &Locator::from_templates(HashMap::new())).unwrap(),
+        )
+        .unwrap()
     }
-    fn path(v: &V) -> bool {
-        v.as_array()
-            .is_some_and(|a| !a.is_empty() && a.iter().all(V::is_string))
-    }
-    fn shape(v: &V, len: usize) -> bool {
-        v.as_array().is_some_and(|a| a.len() == len)
-    }
-    fn val(v: &V, depth: usize) -> bool {
-        if depth > 64 {
-            return false;
-        }
-        match v[0].as_str() {
-            Some("null") => shape(v, 1),
-            Some("bool") => shape(v, 2) && v[1].is_boolean(),
-            Some("number") => {
-                shape(v, 2) && v[1].as_str().is_some_and(|s| s.parse::<f64>().is_ok())
-            }
-            Some("string") => shape(v, 2) && v[1].is_string(),
-            Some("array") => {
-                shape(v, 2)
-                    && v[1]
-                        .as_array()
-                        .is_some_and(|a| a.iter().all(|v| val(v, depth + 1)))
-            }
-            Some("object") => {
-                shape(v, 2)
-                    && v[1]
-                        .as_object()
-                        .is_some_and(|a| a.values().all(|v| val(v, depth + 1)))
-            }
-            _ => false,
-        }
-    }
-    fn operand(v: &V) -> bool {
-        shape(v, 2)
-            && match v[0].as_str() {
-                Some("path") => path(&v[1]),
-                Some("value") => val(&v[1], 0),
-                _ => false,
-            }
-    }
-    fn cond(v: &V, depth: usize) -> bool {
-        if depth > 64 {
-            return false;
-        }
-        match v[0].as_str() {
-            Some("||" | "&&") => shape(v, 3) && cond(&v[1], depth + 1) && cond(&v[2], depth + 1),
-            Some("not" | "truthy") => shape(v, 2) && path(&v[1]),
-            Some("compare") => {
-                shape(v, 4)
-                    && matches!(v[1].as_str(), Some("==" | "!=" | ">=" | "<=" | ">" | "<"))
-                    && path(&v[2])
-                    && operand(&v[3])
-            }
-            _ => false,
-        }
-    }
-    fn attr(v: &V) -> bool {
-        match v[0].as_str() {
-            Some("literal") => shape(v, 2) && v[1].is_string(),
-            Some("conditional") => shape(v, 3) && cond(&v[1], 0) && v[2].is_string(),
-            Some("attribute") => {
-                shape(v, 5)
-                    && v[1].is_string()
-                    && path(&v[2])
-                    && v[3].is_boolean()
-                    && v[4].is_boolean()
-            }
-            Some("quoted") => {
-                shape(v, 3)
-                    && v[1].is_string()
-                    && v[2].as_array().is_some_and(|parts| {
-                        parts.iter().all(|p| {
-                            shape(p, 2)
-                                && match p[0].as_str() {
-                                    Some("literal") => p[1].is_string(),
-                                    Some("segment") => path(&p[1]),
-                                    _ => false,
-                                }
-                        })
-                    })
-            }
-            _ => false,
-        }
-    }
-    fn attrs(v: &V) -> bool {
-        v.as_array().is_some_and(|a| a.iter().all(attr))
-    }
-    fn count(v: &V) -> bool {
-        v.as_u64().is_some_and(|v| v <= 1_000_000)
-    }
-    fn tag(v: &V) -> bool {
-        fields(v, &["plain", "hydrated", "count", "ending"])
-            && attrs(&v["plain"])
-            && attrs(&v["hydrated"])
-            && count(&v["count"])
-            && v["ending"].is_string()
-    }
-    if !fields(ir, &["entry", "bodies", "components"]) {
-        return Err(invalid());
-    }
-    let bodies = ir["bodies"].as_array().ok_or_else(invalid)?;
-    if bodies.is_empty() || bodies.len() > 1_000_000 {
-        return Err(invalid());
-    }
-    let reference = |v: &V| v.as_u64().is_some_and(|i| i < bodies.len() as u64);
-    if !reference(&ir["entry"]) {
-        return Err(invalid());
-    }
-    let components = ir["components"].as_object().ok_or_else(invalid)?;
-    for (name, c) in components {
-        if name.is_empty()
-            || !fields(c, &["shadow", "host", "tag"])
-            || !reference(&c["shadow"])
-            || !reference(&c["host"])
-            || !c["tag"].is_string()
-        {
-            return Err(invalid());
-        }
-    }
-    let mut total = 0usize;
-    for body in bodies {
-        for op in body.as_array().ok_or_else(invalid)? {
-            total += 1;
-            if total > 1_000_000 {
-                return Err(invalid());
-            }
-            let valid = match op[0].as_str() {
-                Some("literal") => shape(op, 2) && op[1].is_string(),
-                Some("tag") => shape(op, 2) && tag(&op[1]),
-                Some("call") => shape(op, 2) && reference(&op[1]),
-                Some("binding") => shape(op, 3) && path(&op[1]) && op[2].is_boolean(),
-                Some("when") => shape(op, 3) && cond(&op[1], 0) && reference(&op[2]),
-                Some("repeat") => {
-                    shape(op, 5)
-                        && path(&op[1])
-                        && path(&op[2])
-                        && op[3].is_string()
-                        && reference(&op[4])
-                }
-                Some("element") => {
-                    let el = &op[1];
-                    shape(op, 2)
-                        && fields(
-                            el,
-                            &[
-                                "name",
-                                "body",
-                                "closing",
-                                "opening",
-                                "props",
-                                "entry",
-                                "normal",
-                                "count",
-                                "defaults",
-                                "shadowTag",
-                            ],
-                        )
-                        && el["name"]
-                            .as_str()
-                            .is_some_and(|n| components.contains_key(n))
-                        && reference(&el["body"])
-                        && el["closing"].is_string()
-                        && tag(&el["opening"])
-                        && attrs(&el["entry"])
-                        && attrs(&el["normal"])
-                        && count(&el["count"])
-                        && el["shadowTag"].is_string()
-                        && el["props"].as_array().is_some_and(|a| {
-                            a.iter().all(|p| {
-                                shape(p, 4)
-                                    && p[0].is_string()
-                                    && p[1].is_string()
-                                    && (p[2].is_null() || p[2].is_string())
-                                    && operand(&p[3])
-                            })
-                        })
-                        && el["defaults"].as_array().is_some_and(|a| {
-                            a.iter()
-                                .all(|p| shape(p, 2) && p[0].is_string() && attr(&p[1]))
-                        })
-                }
-                _ => false,
+
+    #[test]
+    fn marker_decimal_covers_usize_and_width_boundaries() {
+        let mut values = vec![0, 1, usize::MAX - 1, usize::MAX];
+        let mut power = 10usize;
+        loop {
+            values.extend([power - 1, power, power + 1]);
+            let Some(next) = power.checked_mul(10) else {
+                break;
             };
-            if !valid {
-                return Err(invalid());
+            power = next;
+        }
+        for value in values {
+            assert_eq!(Decimal::new(value).as_str(), value.to_string());
+        }
+    }
+
+    #[test]
+    fn marker_appends_preserve_bulk_push_capacity_and_failed_preflight_storage() {
+        let artifact = marker_artifact();
+        for v2 in [false, true] {
+            let compare = |expected: &str,
+                           append: &dyn Fn(&mut Executor<'_>) -> Result<(), NativeRenderError>| {
+                for capacity in [0usize, 1, 7, 8, 15, 16, 31, 32, 63, 64, 127, 128, 255, 256] {
+                    for prefix_length in [
+                        0,
+                        capacity / 2,
+                        capacity.saturating_sub(1),
+                        capacity,
+                    ] {
+                        let prefix = "x".repeat(prefix_length);
+                        let options = NativeRenderOptions {
+                            markers_v2: v2,
+                            max_output_bytes: prefix.len() + expected.len(),
+                            ..Default::default()
+                        };
+                        let make_executor = |options| {
+                            let mut executor = Executor::new(&artifact.plan, options);
+                            executor.out = String::with_capacity(capacity);
+                            executor.push(&prefix).unwrap();
+                            executor
+                        };
+                        let mut bulk = make_executor(&options);
+                        let mut spans = make_executor(&options);
+                        bulk.push(expected).unwrap();
+                        append(&mut spans).unwrap();
+                        assert_eq!(spans.out, bulk.out);
+                        assert_eq!(spans.out.len(), bulk.out.len());
+                        assert_eq!(
+                            spans.out.capacity(),
+                            bulk.out.capacity(),
+                            "v2={v2}, marker={expected}, capacity={capacity}, prefix={prefix_length}"
+                        );
+
+                        let short = NativeRenderOptions {
+                            max_output_bytes: options.max_output_bytes - 1,
+                            ..options.clone()
+                        };
+                        let mut failed = make_executor(&short);
+                        let before = (failed.out.len(), failed.out.capacity());
+                        assert_eq!(
+                            append(&mut failed).unwrap_err().message,
+                            "Output byte limit exceeded"
+                        );
+                        assert_eq!((failed.out.len(), failed.out.capacity()), before);
+                        assert_eq!(failed.out, prefix);
+                    }
+                }
+            };
+            for (index, count) in [
+                (0, 1),
+                (9, 1),
+                (10, 9),
+                (99, 10),
+                (100, 100),
+                (usize::MAX - 1, 1),
+                (0, usize::MAX),
+            ] {
+                let attribute = if !v2 {
+                    format!("data-fe=\"{count}\"")
+                } else if count == 1 {
+                    format!("data-fe-b-{index}")
+                } else {
+                    format!("data-fe-c-{index}-{count}")
+                };
+                for ending in ["", ">", " />"] {
+                    compare(&format!(" {attribute}{ending}"), &|executor| {
+                        executor.marker(&mut Some(index), count, ending).map(|_| ())
+                    });
+                }
+            }
+            for repeat in [false, true] {
+                for kind in ["start", "end"] {
+                    for index in [0, 9, 10, 99, 100, usize::MAX] {
+                        let marker = if v2 {
+                            if repeat {
+                                format!("<!--fe-repeat$${kind}$${index}$$fe-repeat-->")
+                            } else {
+                                format!("<!--fe-b$${kind}$${index}$$fast-build$$fe-b-->")
+                            }
+                        } else {
+                            match (repeat, kind) {
+                                (true, "start") => "<!--fe:r-->".to_owned(),
+                                (true, _) => "<!--fe:/r-->".to_owned(),
+                                (false, "start") => "<!--fe:b-->".to_owned(),
+                                _ => "<!--fe:/b-->".to_owned(),
+                            }
+                        };
+                        compare(&marker, &|executor| {
+                            executor.boundary(&Some(0), kind, index, repeat)
+                        });
+                    }
+                }
             }
         }
     }
-    Ok(())
+
+    #[test]
+    fn markers_preflight_complete_appends_and_keep_index_overflow_precedence() {
+        let artifact = marker_artifact();
+        for v2 in [false, true] {
+            for (index, count) in [
+                (0, 1),
+                (9, 1),
+                (10, 9),
+                (99, 10),
+                (100, 100),
+                (usize::MAX - 1, 1),
+                (0, usize::MAX),
+            ] {
+                let name = if !v2 {
+                    "data-fe".to_owned()
+                } else if count == 1 {
+                    format!("data-fe-b-{index}")
+                } else {
+                    format!("data-fe-c-{index}-{count}")
+                };
+                let attribute = if v2 {
+                    name.clone()
+                } else {
+                    format!("{name}=\"{count}\"")
+                };
+                for ending in ["", ">", " />"] {
+                    let expected = format!("é {attribute}{ending}");
+                    for max_output_bytes in 2..=expected.len() + 1 {
+                        let options = NativeRenderOptions {
+                            markers_v2: v2,
+                            max_output_bytes,
+                            ..Default::default()
+                        };
+                        let mut executor = Executor::new(&artifact.plan, &options);
+                        executor.push("é").unwrap();
+                        let mut scope = Some(index);
+                        let result = executor.marker(&mut scope, count, ending);
+                        assert_eq!(scope, Some(index + count));
+                        assert_eq!(executor.steps, 0);
+                        if max_output_bytes < expected.len() {
+                            let failed = result.err().unwrap();
+                            assert_eq!(failed.code, "render-limit");
+                            assert_eq!(failed.message, "Output byte limit exceeded");
+                            assert_eq!(executor.out, "é");
+                        } else {
+                            let marker = result.unwrap();
+                            assert_eq!(executor.out, expected);
+                            assert!(marker.matches_name(&name));
+                            assert!(!marker.matches_name(&format!("{name}0")));
+                            assert!(!marker.matches_name(&format!("{name}=")));
+                            assert!(!marker.matches_name(""));
+                        }
+                    }
+                }
+            }
+            let options = NativeRenderOptions {
+                markers_v2: v2,
+                max_output_bytes: 0,
+                ..Default::default()
+            };
+            let mut executor = Executor::new(&artifact.plan, &options);
+            let mut scope = Some(usize::MAX);
+            assert_eq!(
+                executor.marker(&mut scope, 1, ">").err().unwrap().message,
+                "Hydration index overflow"
+            );
+            assert_eq!(scope, Some(usize::MAX));
+            assert!(executor.out.is_empty());
+        }
+    }
+
+    #[test]
+    fn boundaries_keep_exact_bytes_and_atomic_limits_without_steps() {
+        let artifact = marker_artifact();
+        for v2 in [false, true] {
+            for repeat in [false, true] {
+                for kind in ["start", "end"] {
+                    for index in [0, 9, 10, 99, 100, usize::MAX] {
+                        let marker = if v2 {
+                            if repeat {
+                                format!("<!--fe-repeat$${kind}$${index}$$fe-repeat-->")
+                            } else {
+                                format!("<!--fe-b$${kind}$${index}$$fast-build$$fe-b-->")
+                            }
+                        } else {
+                            match (repeat, kind) {
+                                (true, "start") => "<!--fe:r-->".to_owned(),
+                                (true, _) => "<!--fe:/r-->".to_owned(),
+                                (false, "start") => "<!--fe:b-->".to_owned(),
+                                _ => "<!--fe:/b-->".to_owned(),
+                            }
+                        };
+                        for max_output_bytes in 0..=marker.len() + 1 {
+                            let options = NativeRenderOptions {
+                                markers_v2: v2,
+                                max_output_bytes,
+                                ..Default::default()
+                            };
+                            let mut executor = Executor::new(&artifact.plan, &options);
+                            executor.boundary(&None, kind, index, repeat).unwrap();
+                            assert!(executor.out.is_empty());
+                            let result = executor.boundary(&Some(0), kind, index, repeat);
+                            if max_output_bytes < marker.len() {
+                                assert_eq!(
+                                    result.unwrap_err().message,
+                                    "Output byte limit exceeded"
+                                );
+                                assert!(executor.out.is_empty());
+                            } else {
+                                result.unwrap();
+                                assert_eq!(executor.out, marker);
+                            }
+                            assert_eq!(executor.steps, 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn static_operands_borrow_artifact_storage() {
+        let value = Operand::Value(J::Object(HashMap::from([(
+            "items".into(),
+            J::Array(vec![J::String("retained literal".repeat(100))]),
+        )])));
+        let root = Frame {
+            base: None,
+            values: HashMap::new(),
+            parent: None,
+        };
+        let resolved = operand(&value, &root, None).unwrap();
+        let Operand::Value(expected) = &value else {
+            unreachable!()
+        };
+        assert!(matches!(resolved, Cow::Borrowed(_)));
+        assert!(std::ptr::eq(resolved.as_ref(), expected));
+    }
 }

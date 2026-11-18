@@ -2,6 +2,106 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Wed, 18 Nov 2026 06:21:31 GMT",
+      "version": "0.21.0",
+      "tag": "@microsoft/fast-build_v0.21.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "9efeb3986dccc21ed6279e493264d67902c8eaf3",
+            "comment": "Avoid temporary hydration-marker strings during bounded native rendering without changing HTML or error behavior."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "e78c78c9212597c038b3878ba98e7eb306676c5b",
+            "comment": "Decode native artifacts directly into validated typed execution plans."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "264d3824a2edb6be2d0ffe2722b5db90a9a4591a",
+            "comment": "Avoid redundant native condition evaluation and static operand copies, and share component shadow tags."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4ad07a7e4dfc0447f566959b38ebd09ecfb112b3",
+            "comment": "Avoid preparing unreachable native artifact bodies and remove redundant compiler collections and ownership wrappers."
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4b8ec1689f3a279f12bbdf9b1528d9d639f145dd",
+            "comment": "Add reproducible nested-shadow benchmarks and resource-ordering regression coverage."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "0a3d28429597cdc082824aab699fe048709e1069",
+            "comment": "Add focused native rendering profiles and optional native stack sampling."
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "057f002cabdfcbdb30ac1c0b9326fc659f1bf892",
+            "comment": "Require native server rendering with source-built Node hosting, single-file JSON artifacts containing authored inputs and compiled plans, and Buffer-only requests with constructor-fixed options."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "d6f6c60252a437737a83c53ecd210927df887808",
+            "comment": "Omit redundant legacy shadowroot aliases in newly compiled standard DSD output while preserving all other markup and retained artifact bytes."
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Nov 2026 07:11:45 GMT",
+      "version": "0.20.0",
+      "tag": "@microsoft/fast-build_v0.20.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "ca4424d55e335ad0be72aeae9b89124e39c2e120",
+            "comment": "Reuse persistent entry modules during CLI builds before parsing unchanged ordered authored sources, retaining caller-owned module bytes independently of request state and rendering options."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b068de5f8e6bad3552d95f006a03830229524c5e",
+            "comment": "Add explicit fresh JSON render methods with full-graph validation to semantic server modules while preserving object and prepared-state APIs."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "f2d14955712eef07349fc1b7fd7139ddaa33db01",
+            "comment": "Prepare component assignments and composite attributes at module load to avoid per-render intermediates while preserving existing server assets."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "02a85f5e65c6508bb98faa4c595e7d46a7bb126e",
+            "comment": "Prepare immutable typed native operations and numeric references while preserving existing artifact schemas, rendering APIs and managed asset reuse."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "82feae5a52dfedee620ae6e3e5f51e164b3af76d",
+            "comment": "Borrow native repeat and component state and add fully validated fresh JSON rendering without redundant state copies."
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 16 Nov 2026 04:58:49 GMT",
       "version": "0.19.0",
       "tag": "@microsoft/fast-build_v0.19.0",

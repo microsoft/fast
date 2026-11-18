@@ -1,0 +1,218 @@
+id,suite,workload,selector,metric,baselineMs,candidateMs,percentTimeChange,samples,iterations
+candidate-reserved-001,native-node-rendering,static-components,default,warmMs,0.0817779999999999,0.0786890000000001,-3.7772995182075886,5,100
+candidate-reserved-002,native-node-rendering,large-static-templates,default,warmMs,1.240938,1.1508369999999999,-7.260717296109897,5,100
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,warmMs,0.34124500000000013,0.25574600000000003,-25.055019121159305,5,100
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,warmMs,0.155874,0.11697400000000002,-24.956054248944646,5,100
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,warmMs,0.14743499999999998,0.12370099999999994,-16.097941465730692,5,100
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,warmMs,0.704819,0.530342,-24.754866142938823,5,100
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,warmMs,2.6249529999999996,2.6113310000000003,-0.5189426248774498,5,100
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,warmMs,0.08273299999999992,0.08194299999999999,-0.9548789479408848,5,100
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,warmMs,2.228995,2.1478680000000003,-3.6396223410101625,5,100
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,warmMs,1.0357759999999998,0.8058839999999999,-22.195146440929303,5,100
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,warmMs,0.512555,0.3682419999999999,-28.155612568407307,5,100
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,warmMs,3.010865,2.808231,-6.73009251494171,5,100
+candidate-reserved-013,native-node-rendering,static-components,v2,warmMs,0.08120900000000006,0.077894,-4.082059870211497,5,100
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,warmMs,1.225299,1.148493,-6.26834756251331,5,100
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,warmMs,0.41575499999999993,0.27380099999999996,-34.143666341956205,5,100
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,warmMs,0.210094,0.14861399999999989,-29.263091758927008,5,100
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,warmMs,0.18096199999999996,0.13893,-23.226975829179587,5,100
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,warmMs,0.757188,0.557981,-26.308789891017824,5,100
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,warmMs,2.628824,2.60536,-0.8925664099232122,5,100
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,warmMs,0.08323599999999999,0.08146699999999996,-2.1252823297612022,5,100
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,warmMs,2.205562,2.0893829999999998,-5.267546321527128,5,100
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,warmMs,1.2539369999999999,0.8890799999999999,-29.09691635225693,5,100
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,warmMs,0.574554,0.432183,-24.77939410394846,5,100
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,warmMs,3.0226800000000003,2.8145890000000002,-6.884321198406718,5,100
+candidate-reserved-025,native-rust-full-render,url-binding-sibling-components/count-0,disabled; fresh-json,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-026,native-rust-full-render,url-binding-sibling-components/count-0,disabled; typed,warmMs,0.0004,0.0004,0,5,100
+candidate-reserved-027,native-rust-full-render,url-binding-sibling-components/count-0,disabled; prepared,warmMs,0,0.0001,,5,100
+candidate-reserved-028,native-rust-full-render,url-binding-sibling-components/count-0,default; fresh-json,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-029,native-rust-full-render,url-binding-sibling-components/count-0,default; typed,warmMs,0.0004,0.0004,0,5,100
+candidate-reserved-030,native-rust-full-render,url-binding-sibling-components/count-0,default; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-031,native-rust-full-render,url-binding-sibling-components/count-0,v2; fresh-json,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-032,native-rust-full-render,url-binding-sibling-components/count-0,v2; typed,warmMs,0.0004,0.0004,0,5,100
+candidate-reserved-033,native-rust-full-render,url-binding-sibling-components/count-0,v2; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-034,native-rust-full-render,url-binding-sibling-components/count-200,disabled; fresh-json,warmMs,0.0106,0.0105,-0.9433962264150941,5,100
+candidate-reserved-035,native-rust-full-render,url-binding-sibling-components/count-200,disabled; typed,warmMs,0.0105,0.0103,-1.904761904761909,5,100
+candidate-reserved-036,native-rust-full-render,url-binding-sibling-components/count-200,disabled; prepared,warmMs,0.0099,0.0097,-2.020202020202022,5,100
+candidate-reserved-037,native-rust-full-render,url-binding-sibling-components/count-200,default; fresh-json,warmMs,0.31025,0.18985,-38.80741337630944,5,100
+candidate-reserved-038,native-rust-full-render,url-binding-sibling-components/count-200,default; typed,warmMs,0.3106,0.19045,-38.68319381841596,5,100
+candidate-reserved-039,native-rust-full-render,url-binding-sibling-components/count-200,default; prepared,warmMs,0.3111,0.19225,-38.20315011250401,5,100
+candidate-reserved-040,native-rust-full-render,url-binding-sibling-components/count-200,v2; fresh-json,warmMs,0.3358,0.20585,-38.6986301369863,5,100
+candidate-reserved-041,native-rust-full-render,url-binding-sibling-components/count-200,v2; typed,warmMs,0.3366,0.20475,-39.17112299465241,5,100
+candidate-reserved-042,native-rust-full-render,url-binding-sibling-components/count-200,v2; prepared,warmMs,0.3339,0.20295,-39.21832884097035,5,100
+candidate-reserved-043,native-rust-full-render,repeated-custom-elements/count-0,disabled; fresh-json,warmMs,0.0009,0.0009,0,5,100
+candidate-reserved-044,native-rust-full-render,repeated-custom-elements/count-0,disabled; typed,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-045,native-rust-full-render,repeated-custom-elements/count-0,disabled; prepared,warmMs,0.0002,0.0002,0,5,100
+candidate-reserved-046,native-rust-full-render,repeated-custom-elements/count-0,default; fresh-json,warmMs,0.0016,0.0015,-6.25,5,100
+candidate-reserved-047,native-rust-full-render,repeated-custom-elements/count-0,default; typed,warmMs,0.0013,0.0013,0,5,100
+candidate-reserved-048,native-rust-full-render,repeated-custom-elements/count-0,default; prepared,warmMs,0.0008,0.0008,0,5,100
+candidate-reserved-049,native-rust-full-render,repeated-custom-elements/count-0,v2; fresh-json,warmMs,0.0015,0.0014,-6.666666666666665,5,100
+candidate-reserved-050,native-rust-full-render,repeated-custom-elements/count-0,v2; typed,warmMs,0.0012,0.001,-16.666666666666664,5,100
+candidate-reserved-051,native-rust-full-render,repeated-custom-elements/count-0,v2; prepared,warmMs,0.0008,0.0006,-25.00000000000001,5,100
+candidate-reserved-052,native-rust-full-render,repeated-custom-elements/count-200,disabled; fresh-json,warmMs,0.32815,0.3288,0.1980801462745596,5,100
+candidate-reserved-053,native-rust-full-render,repeated-custom-elements/count-200,disabled; typed,warmMs,0.34875,0.3417,-2.0215053763440904,5,100
+candidate-reserved-054,native-rust-full-render,repeated-custom-elements/count-200,disabled; prepared,warmMs,0.0002,0.0002,0,5,100
+candidate-reserved-055,native-rust-full-render,repeated-custom-elements/count-200,default; fresh-json,warmMs,0.9963,0.79235,-20.47074174445448,5,100
+candidate-reserved-056,native-rust-full-render,repeated-custom-elements/count-200,default; typed,warmMs,0.99685,0.7429,-25.475247028138636,5,100
+candidate-reserved-057,native-rust-full-render,repeated-custom-elements/count-200,default; prepared,warmMs,0.64355,0.4446,-30.914458861005357,5,100
+candidate-reserved-058,native-rust-full-render,repeated-custom-elements/count-200,v2; fresh-json,warmMs,1.10785,0.8406,-24.123301891050232,5,100
+candidate-reserved-059,native-rust-full-render,repeated-custom-elements/count-200,v2; typed,warmMs,1.21085,0.83365,-31.151670314242065,5,100
+candidate-reserved-060,native-rust-full-render,repeated-custom-elements/count-200,v2; prepared,warmMs,0.75875,0.5549,-26.86655683690281,5,100
+candidate-reserved-061,native-rust-full-render,plain-element-bindings/count-0,disabled; fresh-json,warmMs,0.0008,0.0008,0,5,100
+candidate-reserved-062,native-rust-full-render,plain-element-bindings/count-0,disabled; typed,warmMs,0.0006,0.0006,0,5,100
+candidate-reserved-063,native-rust-full-render,plain-element-bindings/count-0,disabled; prepared,warmMs,0.0002,0.0002,0,5,100
+candidate-reserved-064,native-rust-full-render,plain-element-bindings/count-0,default; fresh-json,warmMs,0.0014,0.0013,-7.142857142857151,5,100
+candidate-reserved-065,native-rust-full-render,plain-element-bindings/count-0,default; typed,warmMs,0.0011,0.0011,0,5,100
+candidate-reserved-066,native-rust-full-render,plain-element-bindings/count-0,default; prepared,warmMs,0.0008,0.0007,-12.5,5,100
+candidate-reserved-067,native-rust-full-render,plain-element-bindings/count-0,v2; fresh-json,warmMs,0.0014,0.0012,-14.28571428571429,5,100
+candidate-reserved-068,native-rust-full-render,plain-element-bindings/count-0,v2; typed,warmMs,0.0012,0.001,-16.666666666666664,5,100
+candidate-reserved-069,native-rust-full-render,plain-element-bindings/count-0,v2; prepared,warmMs,0.0007,0.0006,-14.28571428571429,5,100
+candidate-reserved-070,native-rust-full-render,plain-element-bindings/count-200,disabled; fresh-json,warmMs,0.32885,0.3316,0.8362475292686744,5,100
+candidate-reserved-071,native-rust-full-render,plain-element-bindings/count-200,disabled; typed,warmMs,0.35025,0.3444,-1.6702355460385454,5,100
+candidate-reserved-072,native-rust-full-render,plain-element-bindings/count-200,disabled; prepared,warmMs,0.0002,0.0002,0,5,100
+candidate-reserved-073,native-rust-full-render,plain-element-bindings/count-200,default; fresh-json,warmMs,0.6052,0.4765,-21.26569729015202,5,100
+candidate-reserved-074,native-rust-full-render,plain-element-bindings/count-200,default; typed,warmMs,0.61855,0.4837,-21.800986177350257,5,100
+candidate-reserved-075,native-rust-full-render,plain-element-bindings/count-200,default; prepared,warmMs,0.2585,0.1289,-50.135396518375245,5,100
+candidate-reserved-076,native-rust-full-render,plain-element-bindings/count-200,v2; fresh-json,warmMs,0.66465,0.49215,-25.95350936583164,5,100
+candidate-reserved-077,native-rust-full-render,plain-element-bindings/count-200,v2; typed,warmMs,0.6791,0.50245,-26.012369312325145,5,100
+candidate-reserved-078,native-rust-full-render,plain-element-bindings/count-200,v2; prepared,warmMs,0.30835,0.1536,-50.186476406680725,5,100
+candidate-reserved-079,native-rust-full-render,many-component-definitions/count-0,disabled; fresh-json,warmMs,0.0005,0.0005,0,5,100
+candidate-reserved-080,native-rust-full-render,many-component-definitions/count-0,disabled; typed,warmMs,0.0003,0.0003,0,5,100
+candidate-reserved-081,native-rust-full-render,many-component-definitions/count-0,disabled; prepared,warmMs,0,0.0001,,5,100
+candidate-reserved-082,native-rust-full-render,many-component-definitions/count-0,default; fresh-json,warmMs,0.0005,0.0005,0,5,100
+candidate-reserved-083,native-rust-full-render,many-component-definitions/count-0,default; typed,warmMs,0.0003,0.0003,0,5,100
+candidate-reserved-084,native-rust-full-render,many-component-definitions/count-0,default; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-085,native-rust-full-render,many-component-definitions/count-0,v2; fresh-json,warmMs,0.0005,0.0005,0,5,100
+candidate-reserved-086,native-rust-full-render,many-component-definitions/count-0,v2; typed,warmMs,0.0003,0.0003,0,5,100
+candidate-reserved-087,native-rust-full-render,many-component-definitions/count-0,v2; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-088,native-rust-full-render,many-component-definitions/count-200,disabled; fresh-json,warmMs,0.0089,0.0089,0,5,100
+candidate-reserved-089,native-rust-full-render,many-component-definitions/count-200,disabled; typed,warmMs,0.0086,0.0086,0,5,100
+candidate-reserved-090,native-rust-full-render,many-component-definitions/count-200,disabled; prepared,warmMs,0.0084,0.0083,-1.1904761904761862,5,100
+candidate-reserved-091,native-rust-full-render,many-component-definitions/count-200,default; fresh-json,warmMs,0.18595,0.12605,-32.2129604732455,5,100
+candidate-reserved-092,native-rust-full-render,many-component-definitions/count-200,default; typed,warmMs,0.1869,0.1255,-32.85179240235421,5,100
+candidate-reserved-093,native-rust-full-render,many-component-definitions/count-200,default; prepared,warmMs,0.18615,0.1251,-32.796132151490745,5,100
+candidate-reserved-094,native-rust-full-render,many-component-definitions/count-200,v2; fresh-json,warmMs,0.21125,0.134,-36.568047337278095,5,100
+candidate-reserved-095,native-rust-full-render,many-component-definitions/count-200,v2; typed,warmMs,0.21155,0.1333,-36.98889151500827,5,100
+candidate-reserved-096,native-rust-full-render,many-component-definitions/count-200,v2; prepared,warmMs,0.21055,0.13315,-36.76086440275469,5,100
+candidate-reserved-097,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; fresh-json,warmMs,2.33955,2.3364,-0.13464127716869,5,100
+candidate-reserved-098,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; typed,warmMs,2.44735,2.37725,-2.8643226346865003,5,100
+candidate-reserved-099,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-100,native-rust-full-render,large-root-state-with-overlay/count-0,default; fresh-json,warmMs,2.30285,2.1597,-6.21621034804698,5,100
+candidate-reserved-101,native-rust-full-render,large-root-state-with-overlay/count-0,default; typed,warmMs,2.4039,2.24105,-6.774408253255137,5,100
+candidate-reserved-102,native-rust-full-render,large-root-state-with-overlay/count-0,default; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-103,native-rust-full-render,large-root-state-with-overlay/count-0,v2; fresh-json,warmMs,2.3389,2.0971,-10.338193167728416,5,100
+candidate-reserved-104,native-rust-full-render,large-root-state-with-overlay/count-0,v2; typed,warmMs,1.92395,1.8419,-4.264663842615446,5,100
+candidate-reserved-105,native-rust-full-render,large-root-state-with-overlay/count-0,v2; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-106,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; fresh-json,warmMs,1.7633,1.7264,-2.092667158169348,5,100
+candidate-reserved-107,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; typed,warmMs,1.7938,1.7534,-2.252202029211725,5,100
+candidate-reserved-108,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; prepared,warmMs,0.0084,0.0083,-1.1904761904761862,5,100
+candidate-reserved-109,native-rust-full-render,large-root-state-with-overlay/count-200,default; fresh-json,warmMs,1.84755,1.83365,-0.7523477037157278,5,100
+candidate-reserved-110,native-rust-full-render,large-root-state-with-overlay/count-200,default; typed,warmMs,1.9631,1.88725,-3.863786867709229,5,100
+candidate-reserved-111,native-rust-full-render,large-root-state-with-overlay/count-200,default; prepared,warmMs,0.11475,0.1002,-12.679738562091513,5,100
+candidate-reserved-112,native-rust-full-render,large-root-state-with-overlay/count-200,v2; fresh-json,warmMs,1.9105,1.7952,-6.035069353572375,5,100
+candidate-reserved-113,native-rust-full-render,large-root-state-with-overlay/count-200,v2; typed,warmMs,1.922,1.87745,-2.317898022892817,5,100
+candidate-reserved-114,native-rust-full-render,large-root-state-with-overlay/count-200,v2; prepared,warmMs,0.1409,0.1088,-22.782114975159693,5,100
+candidate-reserved-115,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; fresh-json,warmMs,1.66455,1.67665,0.7269231924544206,5,100
+candidate-reserved-116,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; typed,warmMs,1.74735,1.73985,-0.42922139239419677,5,100
+candidate-reserved-117,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-118,native-rust-full-render,large-root-state-without-overlay/count-0,default; fresh-json,warmMs,1.64785,1.65945,0.7039475680432172,5,100
+candidate-reserved-119,native-rust-full-render,large-root-state-without-overlay/count-0,default; typed,warmMs,1.748,1.73695,-0.6321510297482846,5,100
+candidate-reserved-120,native-rust-full-render,large-root-state-without-overlay/count-0,default; prepared,warmMs,0.0001,0,-100,5,100
+candidate-reserved-121,native-rust-full-render,large-root-state-without-overlay/count-0,v2; fresh-json,warmMs,1.65865,1.6716,0.7807554336357825,5,100
+candidate-reserved-122,native-rust-full-render,large-root-state-without-overlay/count-0,v2; typed,warmMs,1.7557,1.7588,0.1765677507546748,5,100
+candidate-reserved-123,native-rust-full-render,large-root-state-without-overlay/count-0,v2; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-124,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; fresh-json,warmMs,1.68025,1.68585,0.3332837375390696,5,100
+candidate-reserved-125,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; typed,warmMs,1.77325,1.74835,-1.4042013252502428,5,100
+candidate-reserved-126,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; prepared,warmMs,0.0074,0.0074,0,5,100
+candidate-reserved-127,native-rust-full-render,large-root-state-without-overlay/count-200,default; fresh-json,warmMs,1.79565,1.7508,-2.4977027817224995,5,100
+candidate-reserved-128,native-rust-full-render,large-root-state-without-overlay/count-200,default; typed,warmMs,1.9062,1.83915,-3.51746931067044,5,100
+candidate-reserved-129,native-rust-full-render,large-root-state-without-overlay/count-200,default; prepared,warmMs,0.0993,0.086,-13.393756294058413,5,100
+candidate-reserved-130,native-rust-full-render,large-root-state-without-overlay/count-200,v2; fresh-json,warmMs,1.80465,1.77345,-1.7288670933422012,5,100
+candidate-reserved-131,native-rust-full-render,large-root-state-without-overlay/count-200,v2; typed,warmMs,1.92225,1.8553,-3.4828976459877814,5,100
+candidate-reserved-132,native-rust-full-render,large-root-state-without-overlay/count-200,v2; prepared,warmMs,0.1227,0.0972,-20.78239608801956,5,100
+candidate-reserved-133,native-rust-full-render,empty-entry,disabled; fresh-json,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-134,native-rust-full-render,empty-entry,disabled; typed,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-135,native-rust-full-render,empty-entry,disabled; prepared,warmMs,0.0001,0,-100,5,100
+candidate-reserved-136,native-rust-full-render,empty-entry,default; fresh-json,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-137,native-rust-full-render,empty-entry,default; typed,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-138,native-rust-full-render,empty-entry,default; prepared,warmMs,0.0001,0,-100,5,100
+candidate-reserved-139,native-rust-full-render,empty-entry,v2; fresh-json,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-140,native-rust-full-render,empty-entry,v2; typed,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-141,native-rust-full-render,empty-entry,v2; prepared,warmMs,0.0001,0.0001,0,5,100
+candidate-reserved-142,native-rust-full-render,empty-conditional-and-repeat,disabled; fresh-json,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-143,native-rust-full-render,empty-conditional-and-repeat,disabled; typed,warmMs,0.0007,0.0007,0,5,100
+candidate-reserved-144,native-rust-full-render,empty-conditional-and-repeat,disabled; prepared,warmMs,0.0002,0.0002,0,5,100
+candidate-reserved-145,native-rust-full-render,empty-conditional-and-repeat,default; fresh-json,warmMs,0.0015,0.0013,-13.333333333333341,5,100
+candidate-reserved-146,native-rust-full-render,empty-conditional-and-repeat,default; typed,warmMs,0.0014,0.0012,-14.28571428571429,5,100
+candidate-reserved-147,native-rust-full-render,empty-conditional-and-repeat,default; prepared,warmMs,0.0009,0.0007,-22.22222222222222,5,100
+candidate-reserved-148,native-rust-full-render,empty-conditional-and-repeat,v2; fresh-json,warmMs,0.0016,0.0014,-12.5,5,100
+candidate-reserved-149,native-rust-full-render,empty-conditional-and-repeat,v2; typed,warmMs,0.0016,0.0013,-18.75000000000001,5,100
+candidate-reserved-150,native-rust-full-render,empty-conditional-and-repeat,v2; prepared,warmMs,0.0011,0.0008,-27.27272727272727,5,100
+candidate-reserved-151,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; fresh-json,warmMs,0.0091,0.009,-1.098901098901106,5,100
+candidate-reserved-152,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; typed,warmMs,0.0091,0.009,-1.098901098901106,5,100
+candidate-reserved-153,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; prepared,warmMs,0.0073,0.0073,0,5,100
+candidate-reserved-154,native-rust-full-render,adjacent-bindings-and-nested-components,default; fresh-json,warmMs,0.89875,0.47925,-46.675938803894304,5,100
+candidate-reserved-155,native-rust-full-render,adjacent-bindings-and-nested-components,default; typed,warmMs,0.9011,0.4771,-47.05360115414493,5,100
+candidate-reserved-156,native-rust-full-render,adjacent-bindings-and-nested-components,default; prepared,warmMs,0.89805,0.47495,-47.11318968877012,5,100
+candidate-reserved-157,native-rust-full-render,adjacent-bindings-and-nested-components,v2; fresh-json,warmMs,1.207,0.61645,-48.927091963545976,5,100
+candidate-reserved-158,native-rust-full-render,adjacent-bindings-and-nested-components,v2; typed,warmMs,1.2053,0.61935,-48.61445283331951,5,100
+candidate-reserved-159,native-rust-full-render,adjacent-bindings-and-nested-components,v2; prepared,warmMs,1.19835,0.6198,-48.27888346476406,5,100
+candidate-reserved-160,native-rust-state-boundaries,repeated-condition-lookups,default; fresh-json; payload=0,warmMs,0.0309,0.0309,0,5,100
+candidate-reserved-161,native-rust-state-boundaries,repeated-condition-lookups,default; fresh-json; payload=1024,warmMs,0.0315,0.0312,-0.9523809523809601,5,100
+candidate-reserved-162,native-rust-state-boundaries,repeated-condition-lookups,default; typed; payload=0,warmMs,0.0307,0.0308,0.32573289902280145,5,100
+candidate-reserved-163,native-rust-state-boundaries,repeated-condition-lookups,default; typed; payload=1024,warmMs,0.0308,0.0312,1.298701298701288,5,100
+candidate-reserved-164,native-rust-state-boundaries,repeated-condition-lookups,default; prepared; payload=0,warmMs,0.03,0.0298,-0.6666666666666599,5,100
+candidate-reserved-165,native-rust-state-boundaries,repeated-condition-lookups,default; prepared; payload=1024,warmMs,0.0303,0.0297,-1.980198019801982,5,100
+candidate-reserved-166,native-rust-state-boundaries,nested-repeat-bindings,default; fresh-json; payload=0,warmMs,0.8944,0.8841,-1.151610017889082,5,100
+candidate-reserved-167,native-rust-state-boundaries,nested-repeat-bindings,default; fresh-json; payload=1024,warmMs,1.4695,1.4661,-0.23137121469888333,5,100
+candidate-reserved-168,native-rust-state-boundaries,nested-repeat-bindings,default; typed; payload=0,warmMs,0.9277,0.8892,-4.1500485070604665,5,100
+candidate-reserved-169,native-rust-state-boundaries,nested-repeat-bindings,default; typed; payload=1024,warmMs,1.3795,1.3417,-2.740123233055458,5,100
+candidate-reserved-170,native-rust-state-boundaries,nested-repeat-bindings,default; prepared; payload=0,warmMs,0.1953,0.1854,-5.0691244239631335,5,100
+candidate-reserved-171,native-rust-state-boundaries,nested-repeat-bindings,default; prepared; payload=1024,warmMs,0.2036,0.1863,-8.497053045186643,5,100
+candidate-reserved-172,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; fresh-json; payload=0,warmMs,0.8521,0.8105,-4.882056096702259,5,100
+candidate-reserved-173,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; fresh-json; payload=1024,warmMs,1.4758,1.4092,-4.512806613362241,5,100
+candidate-reserved-174,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; typed; payload=0,warmMs,0.8518,0.8355,-1.913594740549418,5,100
+candidate-reserved-175,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; typed; payload=1024,warmMs,1.3517,1.284,-5.008507804986307,5,100
+candidate-reserved-176,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; prepared; payload=0,warmMs,0.1515,0.1479,-2.3762376237623672,5,100
+candidate-reserved-177,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; prepared; payload=1024,warmMs,0.1507,0.1486,-1.3934970139349634,5,100
+candidate-reserved-178,native-rust-state-boundaries,nested-component-property-overlay,default; fresh-json; payload=0,warmMs,1.4436,1.3017,-9.82959268495428,5,100
+candidate-reserved-179,native-rust-state-boundaries,nested-component-property-overlay,default; fresh-json; payload=1024,warmMs,2.0296,1.8863,-7.060504532912882,5,100
+candidate-reserved-180,native-rust-state-boundaries,nested-component-property-overlay,default; typed; payload=0,warmMs,1.4695,1.2832,-12.677781558353185,5,100
+candidate-reserved-181,native-rust-state-boundaries,nested-component-property-overlay,default; typed; payload=1024,warmMs,1.9105,1.7637,-7.683852394661084,5,100
+candidate-reserved-182,native-rust-state-boundaries,nested-component-property-overlay,default; prepared; payload=0,warmMs,0.6865,0.6188,-9.86161689730517,5,100
+candidate-reserved-183,native-rust-state-boundaries,nested-component-property-overlay,default; prepared; payload=1024,warmMs,0.6864,0.5575,-18.779137529137536,5,100
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,traceTotalMs,2.888,2.874,-0.4847645429362779,10,
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,traceTotalMs,465.142,445.971,-4.121537078999527,10,
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,traceTotalMs,18.525,19.473999999999997,5.12280701754384,10,
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,traceTotalMs,226.378,216.43900000000002,-4.390444301124652,10,
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,traceTotalMs,29.674999999999997,31.17,5.037910699241799,10,
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,traceTotalMs,203.212,197.417,-2.8517016711611443,10,
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,traceTotalMs,21.328,21.561,1.0924606151538008,10,
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,traceTotalMs,230.675,214.288,-7.10393410642679,10,
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,traceTotalMs,84.29799999999999,83.28999999999999,-1.1957579064746482,10,
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,traceTotalMs,308.499,293.549,-4.846044881831069,10,
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,traceTotalMs,19.197,18.791,-2.1149137886127933,10,
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,traceTotalMs,219.61499999999998,213.904,-2.6004598957266034,10,
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,traceTotalMs,31.177999999999997,31.138,-0.12829559304636806,10,
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,traceTotalMs,30.936,29.159,-5.744116886475304,10,
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,traceTotalMs,19.766,20.29,2.651016897703129,10,
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,traceTotalMs,220.455,211.872,-3.8933115601823443,10,
+candidate-reserved-200,browser-hydration-cpu,custom-element-hydration,chromium,warmMs,55.64999985694885,49.800000071525574,-10.512129021493266,10,
+candidate-reserved-201,browser-hydration-cpu,dom-binding-target-traversal,chromium,warmMs,5,5,0,10,
+candidate-reserved-202,browser-hydration-cpu,native-marker-discovery,chromium,warmMs,6.849999904632568,6.949999928474426,1.459854382979331,10,
+candidate-reserved-203,browser-hydration-cpu,nested-repeat-marker-pairing,chromium,warmMs,10.100000023841858,10.300000071525574,1.9801984872435563,10,
+candidate-reserved-204,browser-hydration-cpu,adjacent-repeat-marker-pairing,chromium,warmMs,7.900000095367432,7.699999928474426,-2.5316476516283326,10,
+candidate-reserved-205,browser-hydration-cpu,combined-nested-hydration,chromium,warmMs,357.5,349.60000002384186,-2.2097902031211536,10,
+candidate-reserved-206,browser-hydration-cpu,custom-element-hydration,firefox,warmMs,101,97,-3.960396039603964,10,
+candidate-reserved-207,browser-hydration-cpu,dom-binding-target-traversal,firefox,warmMs,5,5,0,10,
+candidate-reserved-208,browser-hydration-cpu,native-marker-discovery,firefox,warmMs,9.5,9,-5.263157894736848,10,
+candidate-reserved-209,browser-hydration-cpu,nested-repeat-marker-pairing,firefox,warmMs,46,44,-4.347826086956519,10,
+candidate-reserved-210,browser-hydration-cpu,adjacent-repeat-marker-pairing,firefox,warmMs,48.5,48.5,0,10,
+candidate-reserved-211,browser-hydration-cpu,combined-nested-hydration,firefox,warmMs,1058,1036,-2.07939508506616,10,
+candidate-reserved-212,browser-hydration-cpu,custom-element-hydration,webkit,warmMs,55.500000000000014,59.999999999999986,8.108108108108048,10,
+candidate-reserved-213,browser-hydration-cpu,dom-binding-target-traversal,webkit,warmMs,6.999999999999986,6,-14.285714285714112,10,
+candidate-reserved-214,browser-hydration-cpu,native-marker-discovery,webkit,warmMs,11,11.499999999999986,4.545454545454408,10,
+candidate-reserved-215,browser-hydration-cpu,nested-repeat-marker-pairing,webkit,warmMs,12,12,0,10,
+candidate-reserved-216,browser-hydration-cpu,adjacent-repeat-marker-pairing,webkit,warmMs,9.499999999999986,10,5.263157894736992,10,
+candidate-reserved-217,browser-hydration-cpu,combined-nested-hydration,webkit,warmMs,468.5,454,-3.094983991462108,10,

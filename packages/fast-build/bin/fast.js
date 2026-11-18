@@ -12,11 +12,13 @@ const CONVERT_WASM_MODULE = path.join(
 );
 const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
 const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
-const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "stream", "overwrite", "typed", "aot"]);
+const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "overwrite", "typed"]);
 const BUILD_ALLOWED_CONFIG_KEYS = new Set([
     "entry",
     "state",
     "output",
+    "server-artifact",
+    "native-addon",
     "templates",
     "attribute-name-strategy",
     "markers_v2",
@@ -32,7 +34,7 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
     "type-source-import",
 ]);
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite", "typed"]);
-const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
+const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "server-artifact", "native-addon"]);
 
 /** @typedef {Record<string, string | boolean>} FastConfig */
 /** @typedef {import("../wasm/microsoft_fast_build.js").FTemplateMetadata} FTemplateMetadata */
@@ -40,7 +42,7 @@ const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates"]);
 
 /**
  * Parse CLI arguments of the form --key="value", --key=value, or supported
- * valueless flags like --stream.
+ * valueless flags like --markers_v2.
  * @param {string[]} argv
  * @returns {Record<string, string>}
  */
@@ -54,8 +56,8 @@ function parseArgs(argv) {
         }
 
         const flag = arg.match(/^--([^=]+)$/s);
-        if (flag && VALUELESS_CLI_FLAGS.has(flag[1])) {
-            args[flag[1]] = "true";
+        if (flag) {
+            args[flag[1]] = VALUELESS_CLI_FLAGS.has(flag[1]) ? "true" : "";
         }
     }
     return args;
@@ -349,38 +351,7 @@ function parseFTemplates(html, filePath, wasm) {
 }
 
 /**
- * Resolve all HTML files matching a glob pattern.
- * Parses `<f-template name="...">` elements from each matched file and
- * returns one entry per template. A single file may yield multiple entries.
- * Warns (but does not error) if the base directory does not exist.
- * @param {string} pattern
- * @param {object} wasm - the loaded WASM module
- * @returns {(FTemplateMetadata & { name: string })[]}
- */
-function resolvePattern(pattern, wasm) {
-    const baseDir = staticPrefixDir(pattern);
-    if (!fs.existsSync(baseDir)) {
-        return [];
-    }
-    const allFiles = [];
-    walkHtmlFiles(baseDir, allFiles);
-    const results = [];
-    for (const file of allFiles) {
-        if (globMatch(pattern, file)) {
-            const html = fs.readFileSync(file, "utf8");
-            const templates = parseFTemplates(html, file, wasm);
-            results.push(...templates);
-        }
-    }
-    return results;
-}
-
-/**
- * Resolve all `.html` files matching a glob pattern, with no `<f-template>`
- * parsing — used by `fast convert --templates` to find whole files to
- * convert (as opposed to `fast build --templates`, which extracts individual
- * `<f-template>` elements from each matched file).
- * Warns (but does not error) if the base directory does not exist.
+ * Resolve all `.html` files matching a glob pattern without loading a parser.
  * @param {string} pattern
  * @returns {string[]}
  */
@@ -626,17 +597,17 @@ async function runConvert(args) {
     const typeSource = resolveOption(args, config, configDir, "type-source");
     const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
     const typed = resolveBooleanOption(args, config, "typed");
-    if (syntax === "server-js") {
+    if (syntax === "server-native") {
         if (!templatesArg) {
             throw new Error("Missing required --templates.");
         }
         if (typed || typeSource || typeSourceImport) {
-            throw new Error("server-js emits JavaScript; TypeScript conversion options do not apply.");
+            throw new Error("server-native emits artifact data; TypeScript conversion options do not apply.");
         }
-        const output = outputArg || "server.mjs";
-        const metadata = { "server-js": { extension: ".mjs" } };
+        const output = outputArg || "server.artifact.json";
+        const metadata = { "server-native": { extension: ".json" } };
         if (output.includes("*")) {
-            throw new Error("server-js requires one output module for the complete template registry.");
+            throw new Error("server-native requires one output artifact for the complete template registry.");
         }
         validateConvertOutput(output, syntax, overwrite, metadata);
         const sources = [];
@@ -647,9 +618,9 @@ async function runConvert(args) {
                 filenames.push(filename);
             }
         }
-        const { writeServerModule } = require("../server.js");
+        const { writeServerArtifact } = require("../server.js");
         try {
-            writeServerModule(
+            writeServerArtifact(
                 output,
                 { entry: "", templateSources: sources },
                 {
@@ -663,7 +634,7 @@ async function runConvert(args) {
             );
         } catch (error) {
             if (error.code === "missing-template-sources") {
-                throw new Error("server-js requires at least one named template.");
+                throw new Error("server-native requires at least one named template.");
             }
             throw error;
         }
@@ -707,9 +678,9 @@ async function runConvert(args) {
 }
 
 async function runBuild(args) {
-    for (const flag of ["aot", "stream"]) {
-        if (Object.hasOwn(args, flag)) {
-            throw new Error(`--${flag} has been retired. Builds always use AOT and write a complete HTML file.`);
+    for (const name of Object.keys(args)) {
+        if (name !== "config" && !BUILD_ALLOWED_CONFIG_KEYS.has(name)) {
+            throw new Error(`Unknown build option --${name}.`);
         }
     }
     const { config, configDir } = loadConfig(
@@ -720,7 +691,26 @@ async function runBuild(args) {
     );
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
-    const output = resolveOption(args, config, configDir, "output", "output.html");
+    if (templatesArg !== undefined && templatesArg.trim() === "") {
+        throw new Error("--templates requires at least one named template.");
+    }
+    const output = resolveOption(args, config, configDir, "output", "output.html") ?? "output.html";
+    const serverArtifact = resolveOption(args, config, configDir, "server-artifact");
+    if (serverArtifact !== undefined && serverArtifact === "") {
+        throw new Error("--server-artifact requires a nonempty output path.");
+    }
+    const managedPaths = serverArtifact === undefined
+        ? []
+        : [serverArtifact, `${serverArtifact}.lock`]
+            .map(filename => path.resolve(filename));
+    if (serverArtifact !== undefined) {
+        if (!managedPaths[0].endsWith(".json")) {
+            throw new Error("--server-artifact requires a .json output path.");
+        }
+        if (managedPaths.includes(path.resolve(output))) {
+            throw new Error("HTML output must not replace the persistent server artifact or its lock.");
+        }
+    }
     const entry = resolveOption(args, config, configDir, "entry", "index.html");
     const stateFile = resolveOption(args, config, configDir, "state");
     const stateWasProvided =
@@ -736,32 +726,48 @@ async function runBuild(args) {
         process.exit(1);
     }
 
-    // Load WASM module first — needed only for parsing and compilation.
-    const wasm = require(BUILD_WASM_MODULE);
-
     // Resolve template files
-    const templatesMap = {};
-    if (!templatesArg) {
+    const templatesMap = Object.create(null);
+    /** @type {string[]} */
+    const sources = [];
+    /** @type {string[]} */
+    const filenames = [];
+    if (templatesArg === undefined) {
         process.stderr.write(
             "Warning: --templates was not provided. No custom element templates will be loaded.\n"
         );
     } else {
-        const patterns = templatesArg.split(",").map((p) => p.trim());
+        const patterns = templatesArg.split(",").map((p) => p.trim()).filter(Boolean);
         for (const pattern of patterns) {
-            const matches = resolvePattern(pattern, wasm);
-            if (matches.length === 0) {
+            const wasm = serverArtifact === undefined ? require(BUILD_WASM_MODULE) : null;
+            const matches = resolveTemplateFiles(pattern);
+            const definitions = [];
+            for (const filename of matches) {
+                const source = fs.readFileSync(filename, "utf8");
+                if (serverArtifact !== undefined) {
+                    sources.push(source);
+                    filenames.push(filename);
+                } else {
+                    definitions.push(...parseFTemplates(source, filename, wasm));
+                }
+            }
+            if ((serverArtifact === undefined ? definitions : matches).length === 0) {
                 process.stderr.write(
                     `Warning: No template files found for pattern "${pattern}".\n`
                 );
             }
-            for (const { name, ...definition } of matches) {
-                if (name in templatesMap) {
-                    process.stderr.write(
-                        `Warning: Duplicate template name "${name}" — later file overwrites earlier.\n`
-                    );
+            for (const { name, ...definition } of definitions) {
+                if (Object.hasOwn(templatesMap, name)) {
+                    throw new Error(`Duplicate template name "${name}".`);
                 }
                 templatesMap[name] = definition;
             }
+        }
+        if (
+            templatesArg !== undefined &&
+            (serverArtifact === undefined ? Object.keys(templatesMap).length : sources.length) === 0
+        ) {
+            throw new Error("--templates requires at least one named template.");
         }
     }
 
@@ -772,8 +778,8 @@ async function runBuild(args) {
     }
     const entryContent = fs.readFileSync(entry, "utf8");
 
-    // Read state only when explicitly provided; omitted state is handled by the generated module as `{}`.
-    let stateContent;
+    // Keep the original bytes so native validation sees every supplied JSON value.
+    let stateContent = Buffer.from("{}");
     if (stateWasProvided) {
         if (stateFile === undefined || stateFile === "" || !fs.existsSync(stateFile)) {
             const stateFileLabel =
@@ -783,23 +789,49 @@ async function runBuild(args) {
             process.stderr.write(`Error: State file ${stateFileLabel} not found.\n`);
             process.exit(1);
         }
-        stateContent = fs.readFileSync(stateFile, "utf8");
+        stateContent = fs.readFileSync(stateFile);
+    }
+    if (serverArtifact !== undefined) {
+        if ([entry, stateFile, ...filenames].some(
+            filename => filename !== undefined && managedPaths.includes(path.resolve(filename)),
+        )) {
+            throw new Error("Persistent server artifact paths must not replace authored input files.");
+        }
     }
 
-    const { pathToFileURL } = require("node:url");
-    const { compileServerModule } = require("../server.js");
-    const source = compileServerModule(
-        entryContent,
-        templatesMap,
-        pathToFileURL(require.resolve("../server-runtime.mjs")).href,
-    );
-    const server = await import(
-        `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
-    );
-    const rendered = server.renderEntry(
-        stateContent === undefined ? undefined : JSON.parse(stateContent),
+    const addonPath = resolveOption(args, config, configDir, "native-addon") || process.env.FAST_NATIVE_ADDON;
+    if (!addonPath) {
+        throw new Error("Native rendering requires --native-addon or FAST_NATIVE_ADDON.");
+    }
+    const { loadNativeHost } = require("../native-host.mjs");
+    const Program = loadNativeHost(addonPath);
+    const { compileServerArtifact, writeServerArtifact } = require("../server.js");
+    let artifact;
+    if (serverArtifact === undefined) {
+        artifact = Buffer.from(compileServerArtifact(entryContent, templatesMap));
+    } else {
+        const result = writeServerArtifact(
+            serverArtifact,
+            templatesArg === undefined
+                ? { entry: entryContent, templates: templatesMap }
+                : { entry: entryContent, templateSources: sources },
+            {
+                overwrite: true,
+                includeBytes: true,
+                onWarning({ sourceIndex, content }) {
+                    process.stderr.write(
+                        `Warning: <f-template> without a 'name' attribute in '${filenames[sourceIndex]}': ${content.trim()}\n`,
+                    );
+                },
+            },
+        );
+        artifact = Buffer.from(/** @type {Uint8Array} */ (result.bytes));
+    }
+    const server = new Program(
+        artifact,
         { attributeNameStrategy: attributeNameStrategy || undefined, markersV2 },
     );
+    const rendered = server.renderEntryJson(stateContent);
 
     // Write output
     fs.writeFileSync(output, rendered, "utf8");
@@ -822,8 +854,13 @@ function writeBuildUsage() {
         "Options:\n" +
         '  --templates="<glob>"   Glob pattern(s) for custom element template HTML files.\n' +
         "                         Separate multiple patterns with commas.\n" +
+        "                         Requires named templates with unique names.\n" +
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
+        '  --server-artifact="<path.json>"\n' +
+        "                         Persist authored inputs and compiled plans together;\n" +
+        "                         reuse before compiler loading on later builds.\n" +
+        '  --native-addon="<path.node>" Native addon path; alternatively set FAST_NATIVE_ADDON.\n' +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
         '  --attribute-name-strategy="camelCase"\n' +
@@ -856,8 +893,8 @@ function writeConvertUsage() {
         "Options:\n" +
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
-        "                         server-js compiles the complete registry into\n" +
-        "                         one server.mjs module (or --output), without\n" +
+        "                         server-native compiles the complete registry into\n" +
+        "                         one server.artifact.json (or --output), without\n" +
         "                         importing browser classes at request time.\n" +
         '  --templates="<glob>"   Required. Glob pattern(s) for FAST declarative\n' +
         "                         .html files to convert in one pass. Separate\n" +

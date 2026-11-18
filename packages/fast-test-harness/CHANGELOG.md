@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Thu, 12 Nov 2026 07:56:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 18 Nov 2026 06:21:31 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.7.0
+
+Wed, 18 Nov 2026 06:21:31 GMT
+
+### Minor changes
+
+- Require an explicitly configured source-built native addon for SSR fixtures and propagate compilation and rendering failures. (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.21.0
 
 ## 0.6.0
 

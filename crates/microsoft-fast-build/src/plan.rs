@@ -9,11 +9,6 @@ use crate::error::{template_context, RenderError};
 use crate::locator::Locator;
 
 #[derive(Debug)]
-pub(crate) struct RenderPlan {
-    pub(crate) instructions: Vec<Instruction>,
-}
-
-#[derive(Debug)]
 pub(crate) enum Instruction {
     Literal(Range<usize>),
     Tag(Tag),
@@ -67,7 +62,6 @@ impl Tag {
 
 #[derive(Debug)]
 pub(crate) struct When {
-    pub(crate) at: usize,
     pub(crate) expression: String,
     pub(crate) body: Body,
     pub(crate) after: usize,
@@ -78,7 +72,6 @@ impl When {
         let (range, after) = directive_body(source, at, "f-when")?;
         let expression = directive_expression(source, at, "f-when")?;
         Ok(Self {
-            at,
             expression,
             body: Body::new(range),
             after,
@@ -88,7 +81,6 @@ impl When {
 
 #[derive(Debug)]
 pub(crate) struct Repeat {
-    pub(crate) at: usize,
     pub(crate) variable: String,
     pub(crate) collection: String,
     pub(crate) body: Body,
@@ -105,7 +97,6 @@ impl Repeat {
                 context: template_context(source, at),
             })?;
         Ok(Self {
-            at,
             variable,
             collection,
             body: Body::new(range),
@@ -118,13 +109,11 @@ impl Repeat {
 pub(crate) struct Element {
     pub(crate) at: usize,
     pub(crate) name: String,
-    pub(crate) tag_end: usize,
     pub(crate) base: String,
     pub(crate) attrs: Vec<(String, Option<String>)>,
     pub(crate) binding_count: usize,
     pub(crate) children: Option<Body>,
     pub(crate) opening: Tag,
-    pub(crate) unclosed_children: Option<Body>,
     pub(crate) after: usize,
 }
 
@@ -155,23 +144,13 @@ impl Element {
         Ok(Self {
             at,
             name,
-            tag_end,
             base,
             attrs,
             binding_count: double + single,
             opening: Tag::parse(source, at..tag_end),
-            unclosed_children: content.is_none().then(|| Body::new(tag_end..after)),
             children: content.map(|(range, _)| Body::new(range)),
             after,
         })
-    }
-}
-
-impl RenderPlan {
-    pub(crate) fn compile(source: &str, locator: Option<&Locator>) -> Self {
-        Self {
-            instructions: InstructionCursor::new(source, locator).collect(),
-        }
     }
 }
 

@@ -1,12 +1,42 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import { load } from "cheerio";
 import {
     buildEntryHtml,
     buildState,
-    createSSRRenderer,
+    createSSRRenderer as createRenderer,
     renderTemplate,
 } from "@microsoft/fast-test-harness/ssr/render.js";
+
+function createSSRRenderer(options: Parameters<typeof createRenderer>[0]) {
+    return createRenderer({
+        nativeAddonPath: fileURLToPath(
+            new URL(
+                "../../../../crates/microsoft-fast-build/target/node-host/fast-build.node",
+                import.meta.url,
+            ),
+        ),
+        ...options,
+    });
+}
+
+test("SSR requires explicit native hosting configuration", () => {
+    assert.throws(
+        () => createRenderer({ tagPrefix: "test", nativeAddonPath: "" }),
+        /nativeAddonPath or FAST_NATIVE_ADDON/,
+    );
+});
+
+test("SSR compilation failures propagate and a later valid fixture recovers", async () => {
+    const { render } = createSSRRenderer({ tagPrefix: "test", components: [] });
+    await assert.rejects(
+        render({ html: "<p>{{}}</p>" }),
+        (error: Error & { code?: string }) => error.code === "empty-binding",
+    );
+    const result = await render({ html: "<p>Recovered</p>" });
+    assert.equal(result.fixture, "<p>Recovered</p>");
+});
 
 test.describe("renderTemplate", () => {
     test("should replace {{styles}} with a link tag", () => {

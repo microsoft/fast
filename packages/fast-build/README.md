@@ -3,151 +3,28 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
 
-The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element) for integration with existing backends. Its Rust/WASM build-time compiler lowers one executable representation for server JavaScript (zero runtime npm dependencies) and supported native Rust artifact rendering.
-
-[`@microsoft/webui`](https://github.com/microsoft/webui) is a highly performant backend alternative that renders FASTElement using the `fast_v3` plugin.
+Compile FAST declarative HTML into native JSON artifacts and execute them with
+the shared Rust renderer in Node.js or Rust.
 
 ## Installation
 
-### From NPM
-
-To install the latest `@microsoft/fast-build` package using `npm`:
-
-```shell
+```sh
 npm install --save @microsoft/fast-build
 ```
 
-## Compiled semantic server modules
+Node rendering and CLI page builds require an explicitly configured source-built
+addon. Set `FAST_NATIVE_ADDON` to its absolute path or pass `--native-addon`
+to the CLI. Artifact compilation and browser conversion use build-time WASM.
 
-This update replaces generated rendering functions with semantic template plans.
-Published object-input and prepared-state APIs are unchanged. Legacy fingerprinted
-artifacts need a one-time migration; retain new supported assets across compiler
-upgrades using the persistent writer below. See the
-[upgrade guide](./docs/migration/aot-server-rendering.md).
-Runtime release metadata (`runtimeVersion`) is no longer exported; compatibility
-uses supported plan schemas instead.
-Both new semantic formats start at version 1: `fast-server-js` for JavaScript
-and `fast-server-native` for native artifacts. Experimental formats/layouts require
-regeneration as described in the upgrade guide.
+## Native artifact compilation
 
-Compile trusted templates during the server build, then import the emitted ESM
-in the request handler. The generated module and its server-only helper have no
-WASM, browser-class, template-parser, or runtime source-evaluation dependency.
-The ESM embeds named operation objects such as `{ type: "literal", html: "<p>" }`
-and `{ type: "binding", path: ["title"], escape: true }`. Shared bodies use named
-templates, not numeric execution indices. Components reference a single complete
-shadow template; loaders derive their host wrappers without generated host templates
-or separate shadow/tag references. Authored host defaults remain explicit metadata.
-The helper validates this semantic data and creates execution
-closures once at module load, with no generated-function fallback. Internal
-execution optimizations do not change the stored schema:
+Compile trusted templates during the application build:
 
 ```js
-// Build time
-import { mkdir } from "node:fs/promises";
-import { writeServerModule } from "@microsoft/fast-build/server.js";
-
-await mkdir("./generated", { recursive: true });
-writeServerModule(
-    "./generated/server.mjs",
-    {
-        entry: "<my-card></my-card>",
-        templates: { "my-card": "<h2>{{title}}</h2>" },
-    },
-    { overwrite: true },
-);
-```
-
-```js
-// Request time
-import { renderEntry, renderHost, renderShadow } from "./generated/server.mjs";
-
-const html = renderEntry({ title: "Request-specific state" });
-const host = renderHost("my-card", { title: "A complete host" });
-const dsd = renderShadow("my-card", { title: "Only the shadow template" });
-```
-
-Use generated `renderTemplate` for template-context root-host attribute handling,
-or `renderEntry` for entry-host rules.
-
-For named `<f-template>` files, the conversion CLI links the whole matched
-registry into one module:
-
-```sh
-fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
-```
-
-The registry target compiles an empty entry; call `renderHost` or `renderShadow`
-for a registered component. To generate a complete page module, pass its HTML as
-`entry` to `writeServerModule`; use `compileServerModule` for fresh in-memory compilation.
-
-Use the existing browser conversion target separately with the authored component
-class and explicit registration. Flat plans do not change browser hydration.
-State must be acyclic JSON-shaped data, with finite numbers and well-formed
-Unicode. Getters, class instances, functions, `undefined` values, sparse arrays,
-and implicit `toJSON()` conversion are rejected rather than invoked.
-Rendering is synchronous and preserves existing HTML bytes and server coercion;
-arrays still render as `[Array]`, not JavaScript's comma-separated conversion.
-
-See [the server module contract and benchmark guide](./docs/server-modules.md)
-for selection, diagnostics, deployment compatibility, migration, and measurement
-boundaries.
-
-For contributors, the repository's `bench:server` script reports compilation,
-startup/import, first render, warm string rendering, warm render-to-UTF-8 and
-first-result UTF-8/file delivery separately. An escape-heavy Unicode workload
-covers text and attribute output.
-The [benchmark guide](./docs/server-modules.md#qualification-and-measurements)
-documents configurable warmup, optional CPU profiles and historical report
-comparison.
-Reports also separate JSON-text-to-UTF-8 requests from already-parsed-object
-requests, include output byte throughput, and record state hashes, rendering
-options and output-structure diagnostics. These qualify measurement boundaries;
-they do not change rendering or establish cross-renderer output equivalence.
-
-Native Rust applications use the shared compiled-artifact target below.
-See [migration](./docs/migration/aot-server-rendering.md).
-
-The semantic-plan loader prepares path/alias accessors at module import and
-reuses request-local repeat frames across iterations. Compatibility is based on
-supported plan schemas, not compiler fingerprints or helper-build versions.
-Ordinary state/rendering contracts are unchanged.
-Contributor benchmarks include deep paths and nested repeats.
-Persist both the generated asset and its `.inputs.json` sidecar in source control
-or a build cache. `writeServerModule` reuses their exact bytes when authored inputs
-are unchanged, before loading the compiler. The manifest stores exact inputs and
-an output-byte snapshot, not hashes, compiler versions or timestamps.
-`compileServerModule` remains a low-level pure compiler; repeatedly invoking it
-without retained outputs cannot guarantee stability across encoder changes.
-
-For large unchanged state reused across calls, generated modules also export
-an explicit immutable snapshot path:
-
-```js
-import { prepareState, renderEntryPrepared } from "./generated/server.mjs";
-
-const snapshot = prepareState({ title: "Shared immutable state" });
-const html = renderEntryPrepared(snapshot);
-```
-
-Preparation validates, normalizes and copies without freezing or retaining the
-original input. `renderTemplatePrepared`, `renderHostPrepared` and
-`renderShadowPrepared` use the same snapshot. Handles work across artifacts
-sharing one helper instance, are not serializable, and become collectible when
-no longer referenced. Keep ordinary methods for changing request state.
-See [ownership, native equivalents and measurement](./docs/server-modules.md#prepared-state-snapshots).
-
-## Native Rust compiled artifacts
-
-Write stable native assets at build time with `writeServerArtifact` from `server.js`:
-
-```js
-import { mkdir } from "node:fs/promises";
 import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
-await mkdir("./generated", { recursive: true });
 writeServerArtifact(
-    "./generated/server.fast",
+    "./generated/server.artifact.json",
     {
         entry: "<my-card></my-card>",
         templates: { "my-card": "<h2>{{title}}</h2>" },
@@ -156,23 +33,81 @@ writeServerArtifact(
 );
 ```
 
-The `microsoft-fast-build` Rust crate loads those bytes with `CompiledArtifact::load`
-and renders request-local `JsonValue` state via `render_entry`, `render_template`,
-`render_host` or `render_shadow`. Native startup and requests need no authored
-templates, compiler WASM, JavaScript engine or HTML parser invocation.
-The build-time Rust `compile_server_artifact` produces the identical format.
-Native text/attribute values and scalars write directly into request-local bounded
-UTF-8 output; composite attributes retain whole-attribute missing/null suppression.
-Output budgets return errors without partial HTML, and no buffer capacity is
-retained between requests. This does not change the JavaScript rendering backend.
+`compileServerArtifact(entry, templates)` returns a fresh `Uint8Array` for
+in-memory compilation. `writeServerArtifact` creates parent directories and
+persists authored `inputs` and the compiled `program` together in one artifact.
+Both are build-time JavaScript APIs backed by the Rust/WASM compiler.
+Do not import the compiler into the request dependency graph.
 
-Deploy artifacts with a native library supporting their execution schema; loading
-validates the format, schema, opcodes and references. Artifacts have immutable
-thread-safe ownership and reusable request-independent instructions. See the
-[native API/deployment/error contract](./docs/server-modules.md#native-rust-artifact-target)
-and [Rust usage](../../crates/microsoft-fast-build/README.md).
-Native Rust is supported now; a stable C ABI/.NET binding is deferred. This does
-not provide a C# renderer or claim working .NET interoperability.
+## Native Node execution
+
+Source-build the addon for the deployment's OS and architecture using the
+[hosting guide](./docs/native-node-host.md). The npm package does not contain
+prebuilt addons or automatically download or install native binaries.
+
+```js
+import { readFileSync } from "node:fs";
+import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
+
+const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
+const program = new Program(readFileSync("./generated/server.artifact.json"), {
+    maxOutputBytes: 8 * 1024 * 1024,
+    maxSteps: 1_000_000,
+});
+const bytes = program.renderEntryJson(
+    Buffer.from('{"title":"Request-specific state"}', "utf8"),
+);
+const html = bytes.toString("utf8");
+```
+
+The shared Rust executor is required for server rendering. `.node` is Node.js's
+standard native-addon extension; `.json` artifacts contain semantic template
+data, not machine code. Loading validates the supported artifact schema once,
+decoding wire operations directly into the typed native execution plan without
+an intermediate JSON IR. Unreachable data is still validated before being discarded.
+
+The four synchronous methods are `renderEntryJson(state)`,
+`renderTemplateJson(state)`, `renderHostJson(name, state)` and
+`renderShadowJson(name, state)`. State must be an unshared Buffer containing
+strict UTF-8 JSON. Each result is an independently owned UTF-8 Buffer.
+Use entry-host rules for complete pages, template-context rules for root-host
+attributes, named host rendering for a complete component, and shadow rendering
+for a DSD fragment with resolved component state.
+
+Options are validated and copied at construction:
+`markersV2`, `dsd`, `attributeNameStrategy`, `maxOutputBytes` and `maxSteps`.
+Use separate program instances for different policies. Budgets reset on each
+request, including after a failure. Strings and arbitrary JavaScript objects
+are not request inputs; object validation/serialization belongs to the application.
+Every JSON field is validated, including unused values. Numbers must be finite,
+Unicode must be well formed, and negative zero is normalized.
+
+Hydration marker assembly uses bounded direct writes and stack-sized numeric
+scratch, avoiding per-marker temporary strings while preserving marker bytes,
+whole-marker output-limit checks and recoverable errors.
+
+See the [artifact and request contract](./docs/server-modules.md) for wire data,
+state/resource limits, errors, persistence and measurement boundaries.
+Rust hosts load the same bytes with `CompiledArtifact::load`; see the
+[Rust usage guide](../../crates/microsoft-fast-build/README.md).
+
+## Profiling native rendering
+
+From a repository checkout, `npm run profile:server -w @microsoft/fast-build`
+adds focused artifact-load, Buffer-rendering, string-delivery and output-decoding
+profiles to the native benchmark. Select workloads and explicitly configure the
+source-built addon. Native stack sampling is optional and separate from V8 CPU
+profiles; neither is a performance-improvement claim.
+See the [native profiling guide](./docs/native-profiling.md) for commands, boundaries
+and platform requirements.
+
+The [shadow-output experiment](./docs/shadow-output-experiment.md) records a
+rejected arena/range prototype and its reproducible Rust benchmark. Deeply nested
+output improved, but sibling and small-page regressions ruled out adoption.
+
+The [native marker benchmark report](./docs/native-marker-benchmarks/README.md)
+records all 217 measured selectors, percentage timing changes, allocation and
+memory results, and environment limitations for the marker-assembly optimization.
 
 ## CLI usage
 
@@ -190,6 +125,8 @@ fast convert [options]
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
+| `--native-addon="<path.node>"` | `FAST_NATIVE_ADDON` | Required source-built Node addon path. |
+| `--server-artifact="<path.json>"` | _(none)_ | Retain authored inputs and the compiled entry/registry together for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
@@ -234,18 +171,38 @@ Produces `output.html`:
 </html>
 ```
 
-### Performance benchmarks for contributors
+### Reuse preparation independently of rendering
 
-Run `npm run bench:server -w @microsoft/fast-build` from the monorepo root.
-It measures fresh generated-module import/first render, warm CPU/wall time,
-GC, memory and generated size. The current command and measurement boundaries are in
-[server modules](./docs/server-modules.md).
+Retain a compiled entry and template registry across builds:
+
+```sh
+fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-artifact=generated/page.artifact.json
+```
+
+Every build validates current state and writes complete HTML. State, HTML output
+paths and render options can vary while the same authored templates reuse their
+compiled artifact.
+Without `--server-artifact`, builds continue compiling fresh.
+
+An explicit `--templates` selection must contain at least one named template.
+Duplicate names, including overlapping patterns selecting a definition twice,
+are errors. Omit `--templates` for entry-only builds.
+
+Keep `page.artifact.json` in a trusted local build cache. Matching embedded inputs
+reuse its bytes without compiler loading. Changed inputs compile a replacement and
+publish it with one atomic rename. Missing artifacts recompile. Malformed envelopes
+and unsupported versions fail closed; valid edited programs are not independently
+checked against their inputs. Clean invalid files explicitly before rebuilding.
+
+Set `"server-artifact": "generated/page.artifact.json"` in `fast-build.config.json` to configure
+the same option. Config paths are relative to the config file; CLI paths are
+relative to the working directory. Managed paths must be separate from authored
+inputs and HTML output. See the [native artifact contract](./docs/server-modules.md)
+for cache identity, diagnostics and file ownership.
 
 ### Missing or omitted state
 
 State is optional. When `--state` is omitted and no `state` path is provided by config, `fast build` does not look for `state.json`; rendering uses an empty object (`{}`). An explicit `--state` path, or a `state` path from config, must exist or the command exits with an error.
-
-> **Breaking change:** Earlier versions implicitly loaded `state.json` from the current working directory when `--state` was omitted. To use a state file, pass `--state=state.json` or set `"state": "state.json"` in `fast-build.config.json`.
 
 When a binding value is not present in state:
 
@@ -257,9 +214,7 @@ Explicit `null` also omits an attribute, even in an interpolated attribute
 value. Empty strings remain present. Known HTML boolean attributes bound to
 JSON booleans use presence/absence; ordinary attributes (including ARIA)
 retain textual booleans. Use `?name` for browser-side truthy/falsy bindings.
-Author bindings resolving to absence still override template-host defaults.
-These intentional output changes are described in the
-[plugin migration guide](./docs/migration/plugin-integrations.md).
+Author bindings resolving to absence override template-host defaults.
 
 ### Stylesheet delivery composition
 
@@ -287,8 +242,8 @@ try {
 Use `{ kind: "external", href: "/assets/example-card.abc123.css" }` to insert
 `<link rel="stylesheet">` instead. The caller owns the URL, asset serving, and
 bundler processing. Both strategies insert exactly one element as the first child
-of the single inner `<template>`, preserving every other authored byte. Existing
-`compose_f_template_styles(templateHtml, css)` remains an inline string shorthand.
+of the single inner `<template>`, preserving every other authored byte. Use
+`compose_f_template_styles(templateHtml, css)` for an inline string shorthand.
 
 An inline `styleId` emits `data-fast-ssr-style="…"`. It is an opaque,
 caller-controlled stylesheet/version identity, not an instance ID, hash, CSP
@@ -339,43 +294,37 @@ and lengths are UTF-16 units. This is composition provenance, not a JavaScript
 source map for generated TypeScript. Mapping ceases to apply after further
 transformations unless the caller composes their maps.
 
-Unsafe CSS errors now expose `sourceKind: "css"` and locations in the separately
+Unsafe CSS errors expose `sourceKind: "css"` and locations in the separately
 supplied CSS. Stylesheet bodies are treated as literal HTML raw text throughout
 build parsing, rendering, metadata discovery, and conversion, including
-template-looking strings. See the
-[migration notes](./docs/migration/stylesheet-composition.md).
+template-looking strings.
 
 ### APIs for build-time plugins
 
-Parse/compile at build time; import fragment rendering from the generated module:
+Parse definitions and compile the complete registry during the build:
 
 ```js
-import {
-    parse_f_templates,
-} from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
-import { compileServerModule } from "@microsoft/fast-build/server.js";
+import { parse_f_templates } from "@microsoft/fast-build/wasm/microsoft_fast_build.js";
+import { writeServerArtifact } from "@microsoft/fast-build/server.js";
 
 const definitions = JSON.parse(parse_f_templates(templateHtml));
 const templates = Object.fromEntries(
     definitions.filter(definition => definition.name !== null)
         .map(definition => [definition.name, definition]),
 );
-const source = compileServerModule("", templates);
-// Write source to generated/server.mjs during the build.
+writeServerArtifact("./generated/components.json", { entry: "", templates }, {
+    overwrite: true,
+});
 ```
 
-```js
-import { renderShadow } from "./generated/server.mjs";
-const shadowRootHtml = renderShadow("my-card", componentState);
-```
+Load the artifact through `loadNativeHost` with an explicit addon path.
+`program.renderShadowJson("my-card", componentStateBytes)` returns the complete
+DSD fragment, with hydration markers and nested components but without a
+synthesized host or caller-owned light DOM. Pass resolved component JSON bytes.
+Configure naming and marker policy when constructing the program.
 
-The result is the complete DSD `<template>` fragment, with hydration markers
-and nested components, but no host, host defaults, or light DOM. Pass resolved
-component state; the API does not derive it from caller-owned host attributes.
-It accepts the existing attribute-name strategy and v2 marker options.
-
-Parsed records add `formatVersion: 1` and `bindings` without changing the array
-shape. Binding records expose `name` (null for compound expressions),
+`parse_f_templates` returns an array of records with `formatVersion: 1` and
+`bindings`. Binding records expose `name` (null for compound expressions),
 `expression`, syntax `kind`, lexical `paths`, and outer-to-inner repeat
 `scope` frames. `type` is null except for repeat collections (`"array"`);
 `optional` is null because required state declarations are not inferable.
@@ -402,7 +351,7 @@ interpolated attribute values, and nested directives.
 - CRLF counts as one line break but two offset units. Lone CR and LF each count
   as one line break. Input line endings are not normalized.
 - Repeat bindings locate the iterable expression, not the alias or `in` keyword,
-  matching their existing `expression` field. Nested `scope` frames are unchanged.
+  matching their `expression` field.
 
 ```js
 const [definition] = JSON.parse(parse_f_templates(templateHtml));
@@ -413,13 +362,13 @@ for (const binding of definition.bindings) {
 }
 ```
 
-Positions refer to the original, entity-encoded attribute text. No entity decoding
-is introduced. Code samples remain excluded without shifting subsequent spans.
+Positions refer to the original, entity-encoded attribute text. Code samples are
+excluded without shifting subsequent spans.
 Callers associate the input with its file name and must regenerate metadata after
 editing that input. Bindings and directives inside HTML comments remain unsupported.
 
 Compilation rejects unsupported/malformed explicit metadata versions.
-Legacy unversioned maps and string definitions remain supported. The CLI keeps
+Unversioned maps and string definitions are accepted. The CLI keeps
 version/binding fields when assembling a map; persisted metadata should do the
 same instead of discarding them.
 
@@ -459,7 +408,7 @@ requires exactly one matching HTML definition with exactly one direct HTML
 `<template>` child. Discovery stays inside that child's contents. It includes
 nested ordinary `<template>` contents and `<f-when>`/`<f-repeat>` bodies once
 per authored declaration, without evaluating state. Nested `<f-template>`
-definitions and templates carrying `shadowrootmode` or legacy `shadowroot`
+definitions and templates carrying `shadowrootmode`
 are separate authored scopes and are excluded. Sibling definitions and markup
 outside the selected shadow template are excluded too.
 
@@ -476,8 +425,6 @@ matching definitions, `missing-template` for no match, and
 `missing-inner-template`/`multiple-inner-templates` for ambiguous shadow-template
 structure. Located failures identify the containing definition or second
 conflicting declaration in the original input and include `templateName`.
-This additive API does not change `parse_f_templates`, binding metadata,
-rendering, or the template format version, and is not a slot-contract manifest.
 
 #### Structured errors
 
@@ -522,16 +469,16 @@ For a missing inner template, the highlight identifies its containing
 Coordinates are absent when there is no meaningful HTML position: invalid state
 JSON, malformed metadata/options, missing template definitions or outer wrappers,
 filesystem errors, and unsafe separately supplied CSS. A known `templateName`
-can still be present without coordinates. `parse_f_templates` remains permissive:
-it does not gain strict syntax validation or new failures.
+can still be present without coordinates. `parse_f_templates` is a descriptive
+parser; use compilation for template syntax validation.
 
 A build integration can report compilation diagnostics:
 
 ```js
-import { compileServerModule } from "@microsoft/fast-build/server.js";
+import { compileServerArtifact } from "@microsoft/fast-build/server.js";
 
 try {
-    compileServerModule(html, templates);
+    compileServerArtifact(html, templates);
 } catch (error) {
     if (!(error instanceof Error)) throw error;
     const location = error.line === undefined
@@ -541,13 +488,8 @@ try {
 }
 ```
 
-Generated JavaScript render exports reject invalid state/options with `TypeError`.
-Runtime failures do not promise authored source coordinates; do not assume every
-request error has the compiler's structured fields. Native artifact loading and
-rendering return the separate `NativeRenderError` contract.
-
-See the [migration guide](./docs/migration/plugin-integrations.md#structured-errors)
-when updating consumers that previously caught strings.
+Native loading and rendering fail with native `code` and `message` fields.
+Runtime errors do not promise compiler source coordinates or partial HTML.
 
 ### Custom element templates
 
@@ -575,7 +517,12 @@ Template files must use the following format:
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
-Any `shadowroot*` attributes on `<f-template>` are forwarded to the rendered Declarative Shadow DOM `<template>`. The CLI normalizes `shadowrootmode` and legacy `shadowroot` for compatibility: when neither has a non-empty value, it emits `shadowrootmode="open" shadowroot="open"`; when exactly one has a non-empty value, that value is mirrored to the other; when both have explicit non-empty values, both are preserved as authored, even if they conflict.
+The compiler resolves `shadowrootmode` from its non-empty authored value, then
+`"open"`. It never synthesizes a `shadowroot` alias. Other `shadowroot*` attributes retain
+their values and order. Whitespace, hydration markers, escaping, host defaults
+and template content are preserved. Native DSD parsing requires Chrome/Edge 111+,
+Firefox 123+ or Safari/iOS 16.4+. Upgrade guidance is in the
+[migration index](./docs/migration.md).
 
 ### Attribute name strategy
 
@@ -624,14 +571,16 @@ fast build --config=configs/my-build.json
 
 **Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
 
-All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`, and `markers_v2`. Unknown keys produce an error. Values must be strings except `markers_v2`, which must be a JSON boolean (`true` or `false`). If `state` is omitted, rendering uses `{}`; if `state` is present, the referenced file must exist. CLI arguments always override config values.
+All keys are optional. Allowed keys are `entry`, `state`, `output`, `templates`,
+`native-addon`, `server-artifact`, `attribute-name-strategy`, and `markers_v2`.
+Native rendering requires `native-addon` or `FAST_NATIVE_ADDON`. Unknown keys
+produce an error. Values must be strings except the JSON boolean `markers_v2`.
+Omitted state uses `{}`; an explicitly supplied state file must exist.
+CLI arguments override config values.
 
 ## Convert
 
 `fast convert` supports browser template conversion and linked server JavaScript.
-Browser targets use the converter WASM module in `wasm/convert/`; `server-js`
-uses the build compiler to link named definitions into one server module.
-Syntax names and output metadata come from their respective Rust/WASM compilers.
 
 ```shell
 fast convert --syntax=webui-prerelease --templates=example.html
@@ -639,16 +588,16 @@ fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template
 fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
 fast convert --syntax=fast-v3-ts --templates=example.html \
     --type-source=MyElement --type-source-import=./my-element.js
-fast convert --syntax=server-js --templates="./components/**/*.html" --output="./generated/server.mjs"
+fast convert --syntax=server-native --templates="./components/**/*.html" --output="./generated/server.artifact.json"
 ```
 
 ### Convert options
 
 | Option | Default | Description |
 |---|---|---|
-| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, `fast-v3-ts`, or `server-js` |
-| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates. An exact single file path is also accepted. Browser targets convert each file; `server-js` collects named `<f-template>` definitions into one registry. |
-| `--output="<path>"` | Browser: next to source; server: `server.mjs` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-js` writes one `.mjs` module, defaults to the current directory, and rejects `*` in the output path. |
+| `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, `fast-v3-ts`, or `server-native` |
+| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates. An exact single file path is also accepted. Browser targets convert each file; `server-native` collects named `<f-template>` definitions into one registry. |
+| `--output="<path>"` | Browser: next to source; server: `server.artifact.json` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-native` writes one `.json` artifact, defaults to the current directory, and rejects `*` in the output path. |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
 | `--typed[=true/false]` | `false` | Only for `fast-v3-ts`. Add an explicit `ElementViewTemplate<TSource>` export annotation and type-only import. Explicit false overrides configured true. |
 | `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
@@ -657,23 +606,20 @@ fast convert --syntax=server-js --templates="./components/**/*.html" --output=".
 
 Only matched `.html` files are converted; non-`.html` files and directories are
 never matched. Output extensions are `.html` for the WebUI targets, `.ts` for
-`fast-v3-ts`, and `.mjs` for `server-js`. Missing output parent directories are
+`fast-v3-ts`, and `.json` for `server-native`. Missing output parent directories are
 created, and replacing an existing file requires `--overwrite` or
 `"overwrite": true`. Browser targets warn about unmatched patterns; an invocation
 with no matches completes without writing files.
 
-`server-js` requires at least one named definition, rejects duplicate names and
+`server-native` requires at least one named definition, rejects duplicate names and
 TypeScript conversion options, and emits an empty entry with the linked component
 registry. Use `renderHost` or `renderShadow` for those components; use
-`compileServerModule(entry, templates)` to compile a complete page entry.
+`compileServerArtifact(entry, templates)` to compile a complete page entry.
 
-`webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's own declarative runtime syntax (`webui-prerelease` remains unchanged — it emits HTML for WebUI's separate FAST parser plugin instead). When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
+`webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's declarative runtime syntax. `webui-prerelease` emits HTML for WebUI's FAST parser plugin. When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
 
-`--type-source` exists so templates that combine more than one differently-named
-`ref`/`children`/`slotted` directive (which otherwise fail to type-check once a
-real `TSource` is supplied, because `html<TSource, TParent>` infers a single
-`TSource` for the whole tagged template) can be generated already type-checked
-against a concrete element type. See
+Use `--type-source` to type-check generated templates against a concrete element
+type. See
 [`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic).
 
 ### Convert configuration file
@@ -696,10 +642,10 @@ Only `syntax`, `templates`, `output`, `overwrite`, `type-source`,
 `overwrite` and `typed`, which must be JSON booleans.
 
 For declaration-emitting consumers, use `--typed --type-source=MyElement`.
-The converter WASM's `convert_template_with_options` accepts an appended
+The converter WASM's `convert_template_with_options` accepts an
 optional `typed` boolean. `convert_stylesheet(css, "fast-v3-ts", "styles",
-true)` emits an `ElementStyles` annotation. Existing calls remain untyped;
-typed exports are tested with TypeScript `isolatedDeclarations`.
+true)` emits an `ElementStyles` annotation. Omit `typed` or pass `false` for
+untyped exports.
 
 ### Running converter fixtures locally
 
@@ -729,3 +675,7 @@ tags.
 Template syntax follows the FAST declarative HTML format. See the
 [`@microsoft/fast-element` declarative documentation](../fast-element/docs/declarative/syntax.md)
 for full documentation on bindings, conditionals, repeats, and directives.
+
+## Migration guidance
+
+See the [migration index](./docs/migration.md).

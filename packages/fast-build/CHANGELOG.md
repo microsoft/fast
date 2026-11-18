@@ -1,8 +1,36 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Mon, 16 Nov 2026 04:58:49 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 18 Nov 2026 06:21:31 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.21.0
+
+Wed, 18 Nov 2026 06:21:31 GMT
+
+### Minor changes
+
+- Require native server rendering with source-built Node hosting, single-file JSON artifacts containing authored inputs and compiled plans, and Buffer-only requests with constructor-fixed options. (7559015+janechu@users.noreply.github.com)
+- Omit redundant legacy shadowroot aliases in newly compiled standard DSD output while preserving all other markup and retained artifact bytes. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Avoid temporary hydration-marker strings during bounded native rendering without changing HTML or error behavior. (7559015+janechu@users.noreply.github.com)
+- Decode native artifacts directly into validated typed execution plans. (7559015+janechu@users.noreply.github.com)
+- Avoid redundant native condition evaluation and static operand copies, and share component shadow tags. (7559015+janechu@users.noreply.github.com)
+- Avoid preparing unreachable native artifact bodies and remove redundant compiler collections and ownership wrappers. (7559015+janechu@users.noreply.github.com)
+
+## 0.20.0
+
+Tue, 17 Nov 2026 07:11:45 GMT
+
+### Minor changes
+
+- Reuse persistent entry modules during CLI builds before parsing unchanged ordered authored sources, retaining caller-owned module bytes independently of request state and rendering options. (7559015+janechu@users.noreply.github.com)
+- Add explicit fresh JSON render methods with full-graph validation to semantic server modules while preserving object and prepared-state APIs. (7559015+janechu@users.noreply.github.com)
+- Prepare component assignments and composite attributes at module load to avoid per-render intermediates while preserving existing server assets. (7559015+janechu@users.noreply.github.com)
+- Prepare immutable typed native operations and numeric references while preserving existing artifact schemas, rendering APIs and managed asset reuse. (7559015+janechu@users.noreply.github.com)
+- Borrow native repeat and component state and add fully validated fresh JSON rendering without redundant state copies. (7559015+janechu@users.noreply.github.com)
 
 ## 0.19.0
 

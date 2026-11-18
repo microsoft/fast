@@ -1,28 +1,12 @@
-# Migrating from previous versions
+# Native fixture deployment
 
-## AOT fixture generation
+SSR fixtures require a source-built FAST Node addon for the deployment platform.
+Build it from matching reviewed FAST sources and configure `nativeAddonPath`
+in `createSSRRenderer` or set the absolute `FAST_NATIVE_ADDON` environment path.
+See the [source-build guide](../../../fast-build/docs/native-node-host.md).
 
-This is an **API-breaking migration in a minor prerelease release**, not a
-drop-in dependency update. Migrate direct callers before upgrading.
-
-`createSSRRenderer(options)` still returns `{ render }`, but `render(query)`
-now returns `Promise<RenderResult>` instead of `RenderResult`:
-
-```ts
-const { render } = createSSRRenderer(options);
-const result = await render(query);
-```
-
-The harness server already awaits fixture rendering; entry-server modules can
-continue re-exporting `render`. Direct callers must await it.
-Fixture generation compiles authored HTML to JavaScript and then imports and
-executes that module. The build-time Rust/WASM parser/compiler remains required.
-It no longer invokes request-time WASM rendering or injects shadow roots with
-a post-render regular-expression pass.
-
-This is development tooling for dynamically authored fixtures. Production SSR
-should compile during the build and import generated modules, or load compiled
-artifacts in the supported native Rust host, as described in
-the [fast-build migration](../../../fast-build/docs/migration/aot-server-rendering.md).
-The harness itself continues to use generated JavaScript; native Rust support
-does not add a C ABI or working .NET binding.
+Keep the build-time compiler package installed. Fixture rendering compiles dynamic
+test HTML to native artifacts and passes JSON Buffers to the shared Rust executor.
+Await `render(query)`; setup, compilation and execution failures propagate.
+Qualify state depth/node and execution/output budgets with your fixture workload.
+No native binary is downloaded automatically.

@@ -1,57 +1,17 @@
 # microsoft-fast-build
 
-Build-time Rust compiler and template tooling for FAST declarative HTML.
-One compiler-owned executable representation supports semantic server JavaScript
-and native Rust artifact rendering. Native requests need no JavaScript engine.
+Compile FAST declarative HTML to native JSON artifacts, execute them in Rust or
+Node.js, and analyze templates at build time.
 
 ```sh
 cargo add microsoft-fast-build
 ```
 
+Node hosting uses the same executor through the source-built `node-host`
+transport feature. Applications configure the addon explicitly; see the
+[Node deployment guide](../../packages/fast-build/docs/native-node-host.md).
+
 ## Usage
-
-### Compile semantic server JavaScript
-
-`compile_server_module(entry, &locator, runtime_import)` emits synchronous ESM
-with `renderEntry`, `renderTemplate`, `renderHost` and `renderShadow` exports.
-Templates are trusted build inputs; the generated module imports the FAST-owned
-server helper rather than WASM, browser classes or a runtime template parser.
-It embeds stable operation objects with named fields and named templates, not numeric execution
-tables or generated rendering functions. The helper validates those operations
-and creates execution closures at module load:
-
-```rust
-use microsoft_fast_build::{compile_server_module, Locator};
-
-let mut locator = Locator::from_templates(Default::default());
-locator.add_template("my-card", "<h2>{{title}}</h2>");
-let source = compile_server_module(
-    "<my-card></my-card>",
-    &locator,
-    "@microsoft/fast-build/server-runtime.mjs",
-)?;
-```
-
-Write `source` as a server `.mjs` build artifact. Requests pass JSON-shaped state
-directly to the generated module's exports. Existing server markup/coercion is preserved;
-generation eagerly diagnoses malformed skipped bodies.
-See the [server module contract](../../packages/fast-build/docs/server-modules.md)
-for helper compatibility, state validation and qualification.
-
-The plan loader prepares path accessors and reusable request-local repeat frames.
-JavaScript `fast-server-js` plan schema 1 and native `fast-server-native` artifact
-schema 1 are independent of compiler
-build identity. The compiler fingerprint and helper-build equality checks are removed.
-Published object-input and prepared-state APIs remain unchanged.
-The diagnostic `SERVER_RUNTIME_VERSION` constant and generated `runtimeVersion`
-metadata are removed; use supported schemas for compatibility.
-Regenerate artifacts using earlier experimental format names or numeric layouts
-before deploying the semantic loaders. Both targets share one semantic encoding;
-the native loader resolves names into a private indexed execution representation.
-Components reference a single complete DSD template. Loaders derive host wrappers;
-authored host defaults use optional `host-attributes` metadata, not generated host
-templates or separate shadow/tag references.
-Changing that private layout does not require changing generated files or schema.
 
 ### Compile and deploy native Rust artifacts
 
@@ -73,26 +33,47 @@ let state = parse_render_state(r#"{"title":"Request-specific state"}"#)?;
 let html = program.render_entry(&state, &NativeRenderOptions::default())?;
 ```
 
-`render_template`, `render_host` and `render_shadow` preserve the corresponding
-generated-module APIs. `render_shadow` accepts resolved component state and emits
-only DSD. `CompiledArtifact::emit_server_module(runtime_import)` can emit the JS
-target from the exact loaded IR as a build-time operation.
+Use `render_entry` for entry-host rules and `render_template` for template-context
+root-host attributes. `render_host` renders a complete named host;
+`render_shadow` accepts resolved component state and emits its DSD fragment.
+Configure hydration markers, attribute naming, DSD selection and resource budgets
+through `NativeRenderOptions`.
 
 Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
-threads; each ordinary call validates/copies state and owns its counters, overlays and
-returned `String`. Input bytes and the build-time locator may be dropped after
-loading. Errors are recoverable `NativeRenderError { code, message }`; no partial
-HTML is returned. Load validates all references/opcodes and requires a
-supported execution schema. Compiler-only updates do not
-invalidate supported artifacts. Legacy fingerprinted v1 artifacts need a one-time
-rebuild into `fast-server-native` semantic schema 1. State/execution/output limits and
-deployment trust are specified in the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target).
+threads. Input bytes and the build-time locator may be dropped after loading.
+Static operands borrow immutable artifact storage during rendering; dataset
+overlays copy only where ownership is required.
+Each ordinary call validates, normalizes and copies state and returns an owned
+UTF-8 `String`. Errors are recoverable `NativeRenderError { code, message }`;
+failed calls return no partial HTML.
 
-Text and attribute values write directly into the request's bounded UTF-8 output
-buffer, including escaped spans and scalar formatting. Composite attributes check
-for missing/null bindings before writing, preserving whole-attribute suppression.
-Results remain complete owned strings, not a streaming API; failed calls return
-no partial HTML. Buffers are request-local, with no retained capacity hints.
+Hydration marker assembly uses bounded direct writes and stack-sized numeric
+scratch rather than per-marker temporary strings. Complete-marker output checks
+preserve the configured byte limits and recoverable error behavior.
+
+Loading validates the artifact format, schema,
+operations and references directly while decoding the wire into typed native
+operations, without reconstructing an intermediate JSON IR. Unreachable data is
+still fully validated. Preparation retains only
+bodies reachable from entry and public host/shadow APIs; unused component DSD
+wrappers do not duplicate their shadow contents in the prepared plan.
+See the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target)
+for state limits, execution budgets and deployment requirements.
+
+For fresh JSON requests, use `render_entry_json(json, options)` instead of
+`parse_render_state(json)` followed by `render_entry(&state, options)`. It builds
+owned validated state directly and renders without a second normalized copy:
+
+```rust
+let html = program.render_entry_json(
+    r#"{"title":"Request-specific state"}"#,
+    &NativeRenderOptions::default(),
+)?;
+```
+
+`render_template_json`, `render_host_json` and `render_shadow_json` follow the
+same naming/argument order as their typed counterparts. JSON is parsed and fully
+validated on each call.
 
 For unchanged state reused across calls, validate and copy once:
 
@@ -106,18 +87,19 @@ let html = program.render_entry_prepared(&snapshot, &NativeRenderOptions::defaul
 `PreparedState::new(&state)` copies typed input instead. All four render methods
 have `_prepared` counterparts. Snapshots are artifact-independent, `Send + Sync`
 and cheaply cloneable; dropping the final clone releases their owned memory.
-Execution limits still reset per call. Keep ordinary methods for mutable
-request-specific state; preparation allocates a retained copy and is not free.
-See [prepared ownership and measurement](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
+Execution limits reset per call. Use ordinary methods for changing request state;
+preparation allocates a retained copy.
+See [prepared-state ownership](../../packages/fast-build/docs/server-modules.md#prepared-state-snapshots).
 
 The Node build-time `compileServerArtifact` API emits the same artifact bytes.
-For strict template-only file updates, use the npm package's `writeServerArtifact`
-and retain its asset plus authored-input manifest, or implement equivalent
-application-owned persistence around Rust compilation. Pure compilation does not
-recover an older encoding after the compiler changes.
-No request-time WASM rendering, stable C ABI or working .NET bindings are provided.
-.NET/C ABI hosting is a follow-up, not a separate C# semantic implementation.
-
+The compiler emits one `server.artifact.json` envelope with format
+`fast-server-native`, schema 2, authored `inputs` and an executable `program`.
+Loading discards the build metadata before preparing runtime operations; request
+state is supplied separately. Published schema-1 programs remain loadable.
+For persisted asset reuse, use the npm package's `writeServerArtifact`, or implement
+application-owned persistence around Rust compilation. Matching embedded inputs
+skip compilation; deleting the artifact requires recompilation. The build cache
+does not independently verify a valid edited program against its authored source.
 
 ## Template tooling
 
@@ -155,15 +137,13 @@ original-file coordinates.
 
 Selection requires a nonempty, case-sensitive decoded definition name, exactly
 one matching HTML `<f-template>`, and exactly one direct HTML `<template>` child.
-The HTML tree builder supplies namespace handling, entity decoding, raw-text
-contexts, and normal HTML error recovery without executing scripts. Scripting
-is enabled for parsing `noscript` as raw text. Comments, escaped markup, and
-slot-like text in attributes, scripts, styles, or RCDATA are not declarations.
+Comments, escaped markup, and slot-like text in attributes, scripts, styles, or
+RCDATA are not declarations.
 Only HTML slots count, including those at SVG/MathML HTML integration points.
 
 Nested ordinary templates and conditional/repeated bodies are inspected once
 per authored declaration without state evaluation. Nested component definitions
-and templates carrying `shadowrootmode` or legacy `shadowroot` are separate
+and templates carrying `shadowrootmode` are separate
 authored scopes and are excluded, as are siblings and publisher markup outside
 the selected inner template. Declarative shadow roots are not attached.
 
@@ -171,22 +151,7 @@ A valid component with no slots returns an empty vector. Failures use
 `invalid-template-metadata` (empty selector/duplicate matching definitions),
 `missing-template`, `missing-inner-template`, or `multiple-inner-templates`.
 Located failures include the selected name and authored definition/second
-conflicting opening tag. Rendering, `parse_f_templates`, binding metadata, and
-format version 1 remain unchanged.
-
-
-## Compatibility and migration
-
-This update preserves published rendering APIs and removes compiler fingerprint
-metadata. Legacy artifacts require a one-time format migration. JavaScript hosts compile
-ESM and invoke its render exports. Native hosts compile artifacts and use
-`CompiledArtifact` with `NativeRenderOptions` (including typed `AttributeNameStrategy`).
-Use `renderTemplate`/`render_template` for template-context root-host attributes.
-Native rendering does not require JavaScript.
-Rendered markup and hydration markers are unchanged.
-See [migration](../../packages/fast-build/docs/migration/aot-server-rendering.md).
-The guide also describes the earlier breaking migration from request-time source
-rendering; that is separate from this backend replacement.
+conflicting opening tag.
 
 ## Error handling
 
@@ -204,5 +169,13 @@ Artifact loading and native request execution return `NativeRenderError` with
 ## Contributing
 
 From the monorepo root, run `cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml`.
-Node.js is required for cross-backend assertions: tests execute real generated
-modules alongside loaded native artifacts and retain the original expected bytes.
+Rust tests compare typed, prepared and fresh-JSON native execution with frozen expected bytes. Node package tests exercise the actual addon, ownership and deployment.
+
+The `native-shadow-benchmark` example measures complete owned output through fresh
+JSON and prepared-state boundaries, with separate timing and allocator passes.
+See the [shadow-output experiment](../../packages/fast-build/docs/shadow-output-experiment.md)
+for isolated-source comparison commands, measurements and limitations.
+
+## Migration guidance
+
+See the [migration index](../../packages/fast-build/docs/migration.md).

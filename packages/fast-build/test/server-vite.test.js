@@ -3,10 +3,11 @@ const { randomUUID } = require("node:crypto");
 const fs = require("node:fs/promises");
 const path = require("node:path");
 const { test } = require("node:test");
-const { pathToFileURL } = require("node:url");
-const { compileServerModule } = require("../server.js");
+const { compileServerArtifact } = require("../server.js");
+const { loadNativeHost } = require("../native-host.mjs");
+const NativeProgram = loadNativeHost(process.env.FAST_NATIVE_ADDON);
 
-test("Vite SSR emits relocatable AOT code with transformed inputs and no compiler", async t => {
+test("Vite emits relocatable native artifact data with transformed inputs", async t => {
     const { build } = await import("vite");
     const directory = path.join(__dirname, `server-vite-${randomUUID()}`);
     await fs.mkdir(directory);
@@ -19,7 +20,7 @@ test("Vite SSR emits relocatable AOT code with transformed inputs and no compile
         logLevel: "silent",
         plugins: [
             {
-                name: "fixture:server-js",
+                name: "fixture:server-native",
                 resolveId(id) {
                     if (id === "virtual:server") return "\0virtual:server";
                 },
@@ -30,36 +31,45 @@ test("Vite SSR emits relocatable AOT code with transformed inputs and no compile
                         "__BUILD_LABEL__",
                         "Vite transformed",
                     );
-                    return compileServerModule("<demo-card></demo-card>", {
+                    const bytes = compileServerArtifact("<demo-card></demo-card>", {
                         "demo-card": {
                             content,
                             hostAttributes: [{ name: "role", value: "article" }],
                         },
                     });
+                    this.emitFile({
+                        type: "asset",
+                        fileName: "server.artifact.json",
+                        source: bytes,
+                    });
+                    return "export const artifact = 'server.artifact.json';";
                 },
             },
         ],
         build: {
             ssr: true,
+            emitAssets: true,
             outDir: path.join(directory, "output"),
             rollupOptions: {
                 input: "virtual:server",
-                external: ["@microsoft/fast-build/server-runtime.mjs"],
-                output: { entryFileNames: "server.mjs" },
+                output: { entryFileNames: "assets.mjs" },
             },
         },
     });
     const relocated = path.join(directory, "relocated");
     await fs.rename(path.join(directory, "output"), relocated);
     await fs.rm(input);
-    const filename = path.join(relocated, "server.mjs");
+    const filename = path.join(relocated, "server.artifact.json");
     const source = await fs.readFile(filename, "utf8");
-    assert.doesNotMatch(source, /compileServerModule|WebAssembly|__BUILD_LABEL__/);
+    assert.doesNotMatch(source, /WebAssembly|__BUILD_LABEL__/);
     assert.equal(source.includes(directory), false);
-    const server = await import(pathToFileURL(filename).href);
+    const server = new NativeProgram(Buffer.from(source, "utf8"));
     assert.equal(
-        server.renderEntry({ title: "<&" }),
-        '<demo-card role="article"><template shadowrootmode="open" shadowroot="open"><h2>Vite transformed <!--fe:b-->&lt;&amp;<!--fe:/b--></h2></template></demo-card>',
+        server.renderEntryJson(Buffer.from('{"title":"<&"}')).toString("utf8"),
+        '<demo-card role="article"><template shadowrootmode="open"><h2>Vite transformed <!--fe:b-->&lt;&amp;<!--fe:/b--></h2></template></demo-card>',
     );
-    assert.match(server.renderEntry({ title: "second" }), /second/);
+    assert.match(
+        server.renderEntryJson(Buffer.from('{"title":"second"}')).toString("utf8"),
+        /second/,
+    );
 });

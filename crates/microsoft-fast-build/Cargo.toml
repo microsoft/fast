@@ -1,8 +1,8 @@
 [package]
 name = "microsoft-fast-build"
-version = "0.19.0"
+version = "0.21.0"
 edition = "2021"
-description = "FAST declarative HTML compiler with ahead-of-time JavaScript and native Rust artifact rendering."
+description = "FAST declarative HTML compiler and native artifact renderer for Rust and Node.js."
 license = "MIT"
 readme = "README.md"
 homepage = "https://www.fast.design/"
@@ -19,7 +19,18 @@ crate-type = ["cdylib", "rlib"]
 html5ever = "0.29"
 html5gum = { version = "0.8.4", default-features = false, features = ["tree-builder"] }
 markup5ever_rcdom = "0.5.0-unofficial"
-serde_json = "1"
+serde = "1"
+serde_json = { version = "1", features = ["float_roundtrip"] }
+
+[features]
+node-host = ["dep:napi", "dep:napi-derive", "dep:napi-build", "serde/derive"]
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+napi = { version = "3", default-features = false, features = ["napi8"], optional = true }
+napi-derive = { version = "3", optional = true }
+
+[build-dependencies]
+napi-build = { version = "2", optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
