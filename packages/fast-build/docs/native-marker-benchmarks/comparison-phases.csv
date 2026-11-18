@@ -1,0 +1,865 @@
+id,suite,workload,selector,phase,baselineMs,candidateMs,absoluteChangeMs,percentTimeChange
+candidate-reserved-001,native-node-rendering,static-components,default,warmMs,0.0817779999999999,0.0786890000000001,-0.0030889999999998002,-3.7772995182075886
+candidate-reserved-001,native-node-rendering,static-components,default,cpuMs,0,0,0,
+candidate-reserved-001,native-node-rendering,static-components,default,stringMs,0.09826799999999991,0.08731000000000008,-0.010957999999999829,-11.151137705051328
+candidate-reserved-001,native-node-rendering,static-components,default,firstRenderMs,0.11629999999999541,0.11810000000001253,0.0018000000000171212,1.5477214101609515
+candidate-reserved-001,native-node-rendering,static-components,default,coldLoadAndRenderMs,6.544099999999993,6.746999999999993,0.20289999999999964,3.1005027429287457
+candidate-reserved-001,native-node-rendering,static-components,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-001,native-node-rendering,static-components,default,compileMs,18.079200000000014,18.63069999999999,0.5514999999999759,3.0504668348155572
+candidate-reserved-001,native-node-rendering,static-components,default,addonLoadMs,5.8641000000000005,5.960000000000001,0.09590000000000032,1.6353745672822884
+candidate-reserved-001,native-node-rendering,static-components,default,programLoadMs,0.5636999999999972,0.6199000000000012,0.056200000000004025,9.969842114600723
+candidate-reserved-001,native-node-rendering,static-components,default,artifactReadMs,1.5471000000000004,1.4891000000000005,-0.05799999999999983,-3.748949647727995
+candidate-reserved-001,native-node-rendering,static-components,default,outputDecodeMs,0.00910000000000366,0.008300000000005525,-0.0007999999999981355,-8.791208791184769
+candidate-reserved-001,native-node-rendering,static-components,default,inputReadMs,2.8027999999999977,2.2860000000000014,-0.5167999999999964,-18.43870415298975
+candidate-reserved-001,native-node-rendering,static-components,default,inputParseMs,0.012000000000000455,0.010000000000005116,-0.001999999999995339,-16.666666666627194
+candidate-reserved-001,native-node-rendering,static-components,default,stateSerializeMs,0.0024999999999977263,0.002400000000001512,-0.00009999999999621423,-3.9999999998522107
+candidate-reserved-001,native-node-rendering,static-components,default,stateEncodeMs,0.012300000000003308,0.00999999999999801,-0.002300000000005298,-18.699186991907958
+candidate-reserved-001,native-node-rendering,static-components,default,warmupMs,1.8512000000000057,1.6831999999999994,-0.16800000000000637,-9.075194468453207
+candidate-reserved-001,native-node-rendering,static-components,default,gcMs,0,0,0,
+candidate-reserved-002,native-node-rendering,large-static-templates,default,warmMs,1.240938,1.1508369999999999,-0.09010100000000021,-7.260717296109897
+candidate-reserved-002,native-node-rendering,large-static-templates,default,cpuMs,1.25,1.09,-0.15999999999999992,-12.79999999999999
+candidate-reserved-002,native-node-rendering,large-static-templates,default,stringMs,1.6965640000000002,1.5345340000000005,-0.16202999999999967,-9.550479675390944
+candidate-reserved-002,native-node-rendering,large-static-templates,default,firstRenderMs,1.5759000000000043,1.468199999999996,-0.10770000000000834,-6.834189986674788
+candidate-reserved-002,native-node-rendering,large-static-templates,default,coldLoadAndRenderMs,26.758700000000005,24.046299999999988,-2.7124000000000166,-10.136516347954183
+candidate-reserved-002,native-node-rendering,large-static-templates,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-002,native-node-rendering,large-static-templates,default,compileMs,91.5308,81.74300000000005,-9.787799999999947,-10.693449636624997
+candidate-reserved-002,native-node-rendering,large-static-templates,default,addonLoadMs,6.283500000000004,5.594300000000004,-0.6891999999999996,-10.968409326012562
+candidate-reserved-002,native-node-rendering,large-static-templates,default,programLoadMs,19.075999999999993,16.8155,-2.2604999999999933,-11.849968546865142
+candidate-reserved-002,native-node-rendering,large-static-templates,default,artifactReadMs,3.60329999999999,3.3500999999999976,-0.25319999999999254,-7.02689201565213
+candidate-reserved-002,native-node-rendering,large-static-templates,default,outputDecodeMs,0.47039999999999793,0.41399999999998727,-0.056400000000010664,-11.989795918369662
+candidate-reserved-002,native-node-rendering,large-static-templates,default,inputReadMs,4.616399999999999,4.309999999999995,-0.30640000000000356,-6.6372064812408755
+candidate-reserved-002,native-node-rendering,large-static-templates,default,inputParseMs,3.0618999999999943,3.0009999999999906,-0.06090000000000373,-1.9889611025834864
+candidate-reserved-002,native-node-rendering,large-static-templates,default,stateSerializeMs,0.004900000000006344,0.005099999999998772,0.00019999999999242846,4.0816326529014235
+candidate-reserved-002,native-node-rendering,large-static-templates,default,stateEncodeMs,0.0146000000000015,0.013199999999997658,-0.0014000000000038426,-9.58904109591574
+candidate-reserved-002,native-node-rendering,large-static-templates,default,warmupMs,25.808999999999997,23.8848,-1.924199999999999,-7.4555387655468985
+candidate-reserved-002,native-node-rendering,large-static-templates,default,gcMs,3.196500539779663,3.2370996475219727,0.04059910774230957,1.270111086704473
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,warmMs,0.34124500000000013,0.25574600000000003,-0.0854990000000001,-25.055019121159305
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,cpuMs,0.32,0.16,-0.16,-50
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,stringMs,0.36242499999999994,0.265411,-0.09701399999999993,-26.768020969855822
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,firstRenderMs,0.42799999999999727,0.338799999999992,-0.08920000000000528,-20.841121495328462
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,coldLoadAndRenderMs,15.340399999999988,15.78049999999999,0.44010000000000105,2.8688952048186556
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,compileMs,21.789299999999912,21.12039999999979,-0.6689000000001215,-3.069855387736753
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,addonLoadMs,5.940499999999993,5.5381,-0.402399999999993,-6.7738405858091655
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,programLoadMs,8.834900000000005,9.242299999999986,0.40739999999998133,4.611257626005738
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,artifactReadMs,1.606500000000004,1.5833999999999975,-0.02310000000000656,-1.4379084967324318
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,outputDecodeMs,0.013600000000010937,0.01290000000000191,-0.0007000000000090267,-5.147058823591644
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,inputReadMs,2.6263999999999967,2.4542,-0.17219999999999658,-6.556503198294116
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,inputParseMs,0.02949999999999875,0.030799999999999272,0.001300000000000523,4.4067796610189
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,stateSerializeMs,0.00269999999999726,0.00269999999999726,0,0
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,stateEncodeMs,0.010800000000003251,0.009900000000001796,-0.0009000000000014552,-8.333333333344296
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,warmupMs,6.849599999999995,5.111500000000007,-1.7380999999999887,-25.375204391497164
+candidate-reserved-003,native-node-rendering,unique-component-hosts,default,gcMs,0,0,0,
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,warmMs,0.155874,0.11697400000000002,-0.03889999999999999,-24.956054248944646
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,cpuMs,0.16,0,-0.16,-100
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,stringMs,0.16233599999999995,0.12250500000000003,-0.03983099999999992,-24.5361472501478
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,firstRenderMs,0.19239999999999213,0.15409999999999968,-0.03829999999999245,-19.9064449064418
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,coldLoadAndRenderMs,7.680300000000003,6.393299999999996,-1.2870000000000061,-16.757157923518683
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,compileMs,2.0155000000004293,2.0145000000002256,-0.0010000000002037268,-0.04961548003986627
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,addonLoadMs,6.883700000000005,5.515799999999999,-1.367900000000006,-19.87158069061704
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,programLoadMs,0.6403000000000105,0.6860999999999962,0.04579999999998563,7.152897079491627
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,artifactReadMs,1.6955999999999989,1.4716999999999985,-0.22390000000000043,-13.204765274829
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,outputDecodeMs,0.010000000000005116,0.00740000000000407,-0.002600000000001046,-25.999999999997158
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,inputReadMs,2.772999999999996,2.3274000000000044,-0.4455999999999918,-16.069239091236653
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,inputParseMs,0.029500000000005855,0.02750000000000341,-0.0020000000000024443,-6.779661016956096
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,stateSerializeMs,0.02759999999999252,0.026899999999997704,-0.0006999999999948159,-2.5362318840398745
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,stateEncodeMs,0.021399999999999864,0.02030000000000598,-0.0010999999999938836,-5.140186915859301
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,warmupMs,3.2147999999999968,2.323299999999989,-0.8915000000000077,-27.73111857658357
+candidate-reserved-004,native-node-rendering,short-circuit-conditions,default,gcMs,0,0,0,
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,warmMs,0.14743499999999998,0.12370099999999994,-0.023734000000000047,-16.097941465730692
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,cpuMs,0.15,0.16,0.010000000000000009,6.666666666666665
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,stringMs,0.14715500000000006,0.131995,-0.015160000000000062,-10.30206245115698
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,firstRenderMs,0.22849999999999682,0.205600000000004,-0.022899999999992815,-10.021881838071389
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,coldLoadAndRenderMs,11.923100000000005,11.70920000000001,-0.21389999999999532,-1.7939965277486203
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,compileMs,49.02300000000014,48.97999999999956,-0.0430000000005748,-0.08771393019719742
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,addonLoadMs,5.856099999999998,5.6922,-0.16389999999999816,-2.7987910042519437
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,programLoadMs,5.881,5.980199999999996,0.09919999999999618,1.6867879612310288
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,artifactReadMs,3.5486999999999966,3.264400000000009,-0.28429999999998756,-8.011384450643554
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,outputDecodeMs,0.011399999999994748,0.010699999999999932,-0.0006999999999948159,-6.140350877150336
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,inputReadMs,6.176799999999993,5.241400000000006,-0.9353999999999871,-15.143763761170636
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,inputParseMs,5.194200000000002,5.017699999999991,-0.17650000000001143,-3.398020869431506
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,stateSerializeMs,0.004200000000011528,0.0036000000000058208,-0.0006000000000057071,-14.285714285810958
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,stateEncodeMs,0.016899999999992588,0.013799999999989154,-0.0031000000000034333,-18.343195266300548
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,warmupMs,3.0430000000000064,2.4553000000000083,-0.5876999999999981,-19.313177785080416
+candidate-reserved-005,native-node-rendering,literal-component-properties,default,gcMs,0,0,0,
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,warmMs,0.704819,0.530342,-0.174477,-24.754866142938823
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,cpuMs,0.63,0.62,-0.010000000000000009,-1.5873015873015928
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,stringMs,0.73661,0.565686,-0.17092399999999996,-23.204137874859143
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,firstRenderMs,0.9328000000000003,0.8475999999999999,-0.08520000000000039,-9.133790737564363
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,coldLoadAndRenderMs,6.921499999999995,6.611999999999988,-0.309500000000007,-4.471574080762942
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,compileMs,0.6670000000003711,0.6093000000000757,-0.057700000000295404,-8.650674662708147
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,addonLoadMs,5.598399999999998,5.2198999999999955,-0.3785000000000025,-6.760860245784562
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,programLoadMs,0.4200000000000017,0.46590000000000487,0.04590000000000316,10.92857142857213
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,artifactReadMs,1.4679999999999964,1.4421000000000035,-0.02589999999999293,-1.7643051771112361
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,outputDecodeMs,0.047100000000000364,0.039699999999996294,-0.00740000000000407,-15.711252653936336
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,inputReadMs,2.6683999999999983,2.2329000000000008,-0.43549999999999756,-16.320641582970985
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,inputParseMs,0.12050000000000693,0.1110000000000042,-0.009500000000002728,-7.883817427387707
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,stateSerializeMs,0.046999999999997044,0.039699999999996294,-0.00730000000000075,-15.531914893619591
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,stateEncodeMs,0.02240000000000464,0.019700000000000273,-0.0027000000000043656,-12.053571428588416
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,warmupMs,16.54169999999999,12.434899999999999,-4.106799999999993,-24.82695248976825
+candidate-reserved-006,native-node-rendering,plain-element-bindings,default,gcMs,0,0,0,
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,warmMs,2.6249529999999996,2.6113310000000003,-0.013621999999999357,-0.5189426248774498
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,cpuMs,2.66,2.66,0,0
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,stringMs,4.135332,4.026369,-0.10896300000000014,-2.63492749796147
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,firstRenderMs,2.798000000000002,2.872399999999999,0.07439999999999714,2.6590421729805858
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,coldLoadAndRenderMs,9.755199999999988,8.892200000000003,-0.8629999999999853,-8.84656388387718
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,compileMs,0.24510000000009313,0.26530000000002474,0.020199999999931606,8.241534067696431
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,addonLoadMs,6.619599999999991,5.6083,-1.0112999999999914,-15.277358148528508
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,programLoadMs,0.3713999999999942,0.3453000000000088,-0.026099999999985357,-7.027463651046251
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,artifactReadMs,1.7815999999999974,1.5905000000000058,-0.1910999999999916,-10.72631342613336
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,outputDecodeMs,1.343999999999994,1.3259999999999934,-0.018000000000000682,-1.3392857142857761
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,inputReadMs,3.599100000000007,3.0660000000000025,-0.5331000000000046,-14.812036342419033
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,inputParseMs,0.4304000000000059,0.44299999999999784,0.012599999999991951,2.9275092936783764
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,stateSerializeMs,0.9539999999999935,0.856899999999996,-0.09709999999999752,-10.178197064989325
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,stateEncodeMs,0.43559999999999377,0.36419999999999675,-0.07139999999999702,-16.391184573002306
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,warmupMs,50.428700000000006,50.3022,-0.12650000000000716,-0.2508492187980438
+candidate-reserved-007,native-node-rendering,escaped-text-and-attribute-bindings,default,gcMs,2.1094002723693848,2.0385000705718994,-0.07090020179748535,-3.3611544819725836
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,warmMs,0.08273299999999992,0.08194299999999999,-0.0007899999999999296,-0.9548789479408848
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,cpuMs,0.16,0.16,0,0
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,stringMs,0.09212800000000002,0.08385999999999996,-0.008268000000000053,-8.974470302188319
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,firstRenderMs,0.17010000000000502,0.17010000000000502,0,0
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,coldLoadAndRenderMs,9.095700000000008,9.383900000000011,0.28820000000000334,3.168530184592755
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,compileMs,3.9879999999993743,4.660100000000966,0.672100000001592,16.853059177575158
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,addonLoadMs,5.785799999999995,5.408999999999992,-0.3768000000000029,-6.512496111168775
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,programLoadMs,3.063299999999998,3.066500000000005,0.003200000000006753,0.10446250775328902
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,artifactReadMs,1.6026000000000025,1.4256000000000029,-0.1769999999999996,-11.044552602021673
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,outputDecodeMs,0.008800000000007913,0.008099999999998886,-0.0007000000000090267,-7.954545454640883
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,inputReadMs,2.6323000000000008,2.2573000000000008,-0.375,-14.246096569539946
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,inputParseMs,0.021100000000004115,0.019199999999997885,-0.00190000000000623,-9.004739336520661
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,stateSerializeMs,0.0037999999999982492,0.0035999999999987153,-0.00019999999999953388,-5.263157894727
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,stateEncodeMs,0.010599999999996612,0.00999999999999801,-0.0005999999999986017,-5.6603773584791846
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,warmupMs,1.6636999999999915,1.6133999999999986,-0.050299999999992906,-3.0233816192819063
+candidate-reserved-008,native-node-rendering,deep-state-lookups,default,gcMs,0,0,0,
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,warmMs,2.228995,2.1478680000000003,-0.0811269999999995,-3.6396223410101625
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,cpuMs,2.19,2.04,-0.1499999999999999,-6.849315068493144
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,stringMs,1.8726169999999995,1.8235209999999995,-0.04909600000000003,-2.6217854478518543
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,firstRenderMs,2.5219999999999914,2.597200000000001,0.07520000000000948,2.9817605075340925
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,coldLoadAndRenderMs,8.311299999999996,8.203900000000004,-0.10739999999999128,-1.2922166207451458
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,compileMs,0.2513999999991938,0.2570000000014261,0.005600000002232264,2.2275258561059053
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,addonLoadMs,5.4669000000000025,5.263399999999997,-0.20350000000000534,-3.722402092593702
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,programLoadMs,0.3389000000000095,0.3481000000000023,0.00919999999999277,2.7146650929455562
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,artifactReadMs,1.5600999999999985,1.394600000000004,-0.16549999999999443,-10.608294340106061
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,outputDecodeMs,0.01469999999999061,0.01300000000000523,-0.0016999999999853799,-11.564625850248067
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,inputReadMs,2.711100000000002,2.2346000000000004,-0.4765000000000015,-17.575891704474245
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,inputParseMs,0.33509999999999707,0.3120000000000047,-0.02309999999999235,-6.893464637419444
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,stateSerializeMs,0.10149999999999437,0.10640000000000072,0.004900000000006344,4.827586206903067
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,stateEncodeMs,0.03119999999999834,0.02970000000000539,-0.0014999999999929514,-4.807692307669975
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,warmupMs,48.0098,47.744699999999995,-0.2651000000000039,-0.5521789301351054
+candidate-reserved-009,native-node-rendering,three-level-nested-repeats,default,gcMs,0,0,0,
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,warmMs,1.0357759999999998,0.8058839999999999,-0.22989199999999987,-22.195146440929303
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,cpuMs,1.08,0.78,-0.30000000000000004,-27.77777777777778
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,stringMs,1.1957260000000003,0.8654840000000001,-0.33024200000000015,-27.618534681022243
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,firstRenderMs,1.3588000000000022,1.191599999999994,-0.16720000000000823,-12.304974977922278
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,coldLoadAndRenderMs,7.9084,7.232200000000006,-0.6761999999999944,-8.55040210409178
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,compileMs,0.8842000000004191,0.6813999999994849,-0.20280000000093423,-22.935987333277332
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,addonLoadMs,5.931899999999999,5.435900000000004,-0.4959999999999951,-8.361570491747926
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,programLoadMs,0.5645999999999987,0.597999999999999,0.03340000000000032,5.915692525681959
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,artifactReadMs,1.9799000000000007,1.4444000000000017,-0.535499999999999,-27.04682054649219
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,outputDecodeMs,0.07729999999999393,0.07509999999999195,-0.002200000000001978,-2.846054333767334
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,inputReadMs,3.7734999999999985,2.3130000000000024,-1.4604999999999961,-38.70412084271887
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,inputParseMs,0.12229999999999563,0.11240000000000094,-0.00989999999999469,-8.09484873262064
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,stateSerializeMs,0.04540000000000077,0.046100000000002694,0.0007000000000019213,1.5418502202685147
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,stateEncodeMs,0.024799999999999045,0.019800000000003593,-0.0049999999999954525,-20.161290322563087
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,warmupMs,23.373599999999996,18.307199999999995,-5.066400000000002,-21.67573672861691
+candidate-reserved-010,native-node-rendering,repeated-custom-elements,default,gcMs,0,0,0,
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,warmMs,0.512555,0.3682419999999999,-0.14431300000000008,-28.155612568407307
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,cpuMs,0.48,0.47,-0.010000000000000009,-2.083333333333337
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,stringMs,0.542816,0.425314,-0.11750199999999994,-21.646745858633487
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,firstRenderMs,0.5760999999999967,0.4189000000000078,-0.1571999999999889,-27.28692935254119
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,coldLoadAndRenderMs,6.90570000000001,6.597100000000005,-0.30860000000000554,-4.468772173711644
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,compileMs,1.2397999999993772,1.248700000000099,0.008900000000721775,0.7178577190455115
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,addonLoadMs,5.617000000000004,5.256700000000002,-0.3603000000000023,-6.414456115364109
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,programLoadMs,0.8474000000000075,0.7956999999999965,-0.05170000000001096,-6.101014869012333
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,artifactReadMs,1.7251000000000047,1.5544000000000011,-0.17070000000000363,-9.89507854617142
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,outputDecodeMs,0.013700000000000045,0.011600000000001387,-0.0020999999999986585,-15.328467153274827
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,inputReadMs,2.848799999999997,2.259900000000002,-0.5888999999999953,-20.67186183656262
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,inputParseMs,0.014499999999998181,0.012299999999996203,-0.002200000000001978,-15.172413793118999
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,stateSerializeMs,0.0030000000000001137,0.00280000000000058,-0.00019999999999953388,-6.666666666650878
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,stateEncodeMs,0.012199999999999989,0.010300000000000864,-0.0018999999999991246,-15.573770491796113
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,warmupMs,10.478400000000008,7.300299999999993,-3.178100000000015,-30.33001221560555
+candidate-reserved-011,native-node-rendering,nested-component-tree,default,gcMs,0,0,0,
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,warmMs,3.010865,2.808231,-0.20263399999999976,-6.73009251494171
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,cpuMs,2.96,2.81,-0.1499999999999999,-5.067567567567566
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,stringMs,3.008222000000001,2.828187,-0.18003500000000106,-5.9847644223066325
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,firstRenderMs,3.0922000000000054,2.9938000000000073,-0.09839999999999804,-3.1822003751373784
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,coldLoadAndRenderMs,16.081699999999998,14.928100000000008,-1.1535999999999902,-7.173370974461591
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,compilerLoadMs,11.054500000000004,9.031500000000001,-2.0230000000000032,-18.30023972138045
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,compileMs,11.180700000000797,11.132100000002538,-0.04859999999825959,-0.43467761408727545
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,addonLoadMs,5.714799999999997,5.5077,-0.20709999999999695,-3.623923846853727
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,programLoadMs,6.174899999999994,6.59190000000001,0.4170000000000158,6.7531457999322475
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,artifactReadMs,1.8517999999999972,1.6196999999999946,-0.23210000000000264,-12.533750945026622
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,outputDecodeMs,0.012399999999999523,0.009499999999988518,-0.002900000000011005,-23.3870967742832
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,inputReadMs,2.7638000000000034,2.3560000000000016,-0.4078000000000017,-14.755047398509348
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,inputParseMs,0.8340999999999994,0.7819000000000074,-0.05219999999999203,-6.258242416975435
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,stateSerializeMs,0.6384000000000043,0.6004000000000005,-0.03800000000000381,-5.9523809523815085
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,stateEncodeMs,0.0251000000000019,0.023500000000005627,-0.001599999999996271,-6.374501992016535
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,warmupMs,57.59750000000001,55.68899999999999,-1.9085000000000178,-3.31351187117499
+candidate-reserved-012,native-node-rendering,large-root-state-overlay,default,gcMs,0,0,0,
+candidate-reserved-013,native-node-rendering,static-components,v2,warmMs,0.08120900000000006,0.077894,-0.003315000000000054,-4.082059870211497
+candidate-reserved-013,native-node-rendering,static-components,v2,cpuMs,0.16,0.16,0,0
+candidate-reserved-013,native-node-rendering,static-components,v2,stringMs,0.08777699999999995,0.08436099999999996,-0.0034159999999999885,-3.8916800528612128
+candidate-reserved-013,native-node-rendering,static-components,v2,firstRenderMs,0.11939999999999884,0.1255999999999915,0.006199999999992656,5.192629815739291
+candidate-reserved-013,native-node-rendering,static-components,v2,coldLoadAndRenderMs,6.170100000000005,6.837299999999999,0.667199999999994,10.813439004229974
+candidate-reserved-013,native-node-rendering,static-components,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-013,native-node-rendering,static-components,v2,compileMs,19.043799999999976,17.565300000000008,-1.4784999999999684,-7.763681618164286
+candidate-reserved-013,native-node-rendering,static-components,v2,addonLoadMs,5.437700000000007,5.944000000000003,0.506299999999996,9.310921897125546
+candidate-reserved-013,native-node-rendering,static-components,v2,programLoadMs,0.6150999999999982,0.6724999999999994,0.05740000000000123,9.331815964883994
+candidate-reserved-013,native-node-rendering,static-components,v2,artifactReadMs,1.4808000000000021,1.4113000000000042,-0.0694999999999979,-4.6934089681251905
+candidate-reserved-013,native-node-rendering,static-components,v2,outputDecodeMs,0.009600000000006048,0.010199999999997544,0.0005999999999914962,6.249999999907474
+candidate-reserved-013,native-node-rendering,static-components,v2,inputReadMs,2.5929,2.2105000000000032,-0.38239999999999696,-14.747965598364644
+candidate-reserved-013,native-node-rendering,static-components,v2,inputParseMs,0.010399999999997078,0.011099999999999,0.0007000000000019213,6.7307692307895906
+candidate-reserved-013,native-node-rendering,static-components,v2,stateSerializeMs,0.002300000000005298,0.0022999999999981924,-7.105427357601002e-15,-3.0893065883219606e-10
+candidate-reserved-013,native-node-rendering,static-components,v2,stateEncodeMs,0.010699999999999932,0.010400000000004184,-0.0002999999999957481,-2.803738317717286
+candidate-reserved-013,native-node-rendering,static-components,v2,warmupMs,1.692700000000002,1.5396000000000072,-0.1530999999999949,-9.044721450936066
+candidate-reserved-013,native-node-rendering,static-components,v2,gcMs,0,0,0,
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,warmMs,1.225299,1.148493,-0.07680599999999993,-6.26834756251331
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,cpuMs,1.26,1.25,-0.010000000000000009,-0.7936507936507908
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,stringMs,1.806846,1.6762239999999997,-0.13062200000000024,-7.229282407023085
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,firstRenderMs,1.5137,1.5194000000000045,0.005700000000004479,0.3765607451941877
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,coldLoadAndRenderMs,26.100499999999997,23.992900000000006,-2.107599999999991,-8.074941093082478
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,compileMs,81.82690000000002,78.4108,-3.4161000000000286,-4.1747884864268725
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,addonLoadMs,6.119799999999998,5.648199999999989,-0.47160000000000935,-7.7061341873919
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,programLoadMs,18.401899999999998,16.8369,-1.5649999999999977,-8.504556594699453
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,artifactReadMs,3.7283000000000044,3.3240000000000123,-0.4042999999999921,-10.844084435265177
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,outputDecodeMs,0.4298000000000002,0.45659999999999457,0.026799999999994384,6.23545835272088
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,inputReadMs,4.831400000000002,4.1402,-0.691200000000002,-14.306412220060471
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,inputParseMs,3.0123999999999995,2.8987999999999943,-0.11360000000000525,-3.771079537910149
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,stateSerializeMs,0.005700000000004479,0.004800000000003024,-0.0009000000000014552,-15.789473684223642
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,stateEncodeMs,0.01480000000000814,0.012599999999991951,-0.002200000000016189,-14.864864864966076
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,warmupMs,26.067499999999995,24.71310000000001,-1.354399999999984,-5.1957418241104225
+candidate-reserved-014,native-node-rendering,large-static-templates,v2,gcMs,3.0815999507904053,2.9659998416900635,-0.1156001091003418,-3.751301627282655
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,warmMs,0.41575499999999993,0.27380099999999996,-0.14195399999999997,-34.143666341956205
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,cpuMs,0.47,0.31,-0.15999999999999998,-34.042553191489354
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,stringMs,0.4315010000000001,0.295916,-0.13558500000000007,-31.421711653043683
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,firstRenderMs,0.5531999999999897,0.39860000000000184,-0.15459999999998786,-27.94649313087324
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,coldLoadAndRenderMs,15.02040000000001,14.74760000000002,-0.2727999999999895,-1.816196639237233
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,compileMs,21.993999999999687,21.24519999999984,-0.7487999999998465,-3.4045648813306184
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,addonLoadMs,5.502700000000004,5.437199999999997,-0.06550000000000722,-1.19032474966847
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,programLoadMs,9.019800000000004,8.848500000000001,-0.17130000000000223,-1.8991551919111505
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,artifactReadMs,1.6510999999999996,1.4596000000000018,-0.19149999999999778,-11.598328387135714
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,outputDecodeMs,0.013999999999995794,0.01269999999999527,-0.001300000000000523,-9.285714285720815
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,inputReadMs,2.6626000000000047,2.157200000000003,-0.5054000000000016,-18.981446706227022
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,inputParseMs,0.032399999999995543,0.028700000000000614,-0.0036999999999949296,-11.41975308640567
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,stateSerializeMs,0.0024000000000086175,0.0022999999999981924,-0.00010000000001042508,-4.1666666670860835
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,stateEncodeMs,0.010499999999993292,0.009799999999998477,-0.0006999999999948159,-6.666666666621557
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,warmupMs,8.3767,5.685299999999998,-2.6914000000000016,-32.12959757422376
+candidate-reserved-015,native-node-rendering,unique-component-hosts,v2,gcMs,0,0,0,
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,warmMs,0.210094,0.14861399999999989,-0.06148000000000012,-29.263091758927008
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,cpuMs,0.16,0.16,0,0
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,stringMs,0.22555399999999992,0.15626999999999996,-0.06928399999999996,-30.71725617812142
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,firstRenderMs,0.2597999999999985,0.20059999999999434,-0.05920000000000414,-22.786759045421277
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,coldLoadAndRenderMs,6.623900000000006,6.378399999999999,-0.24550000000000693,-3.7062757589940487
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,compileMs,2.0002000000004045,2.0280000000002474,0.02779999999984284,1.38986101389047
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,addonLoadMs,5.721000000000004,5.453900000000004,-0.2670999999999992,-4.668764202062558
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,programLoadMs,0.6203999999999894,0.7062000000000097,0.0858000000000203,13.829787234046066
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,artifactReadMs,1.655699999999996,1.5386999999999986,-0.11699999999999733,-7.066497553904549
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,outputDecodeMs,0.010100000000008436,0.008600000000001273,-0.0015000000000071623,-14.851485148573362
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,inputReadMs,2.646799999999999,2.2714,-0.37539999999999907,-14.183164576091855
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,inputParseMs,0.026200000000002888,0.027300000000003877,0.001100000000000989,4.198473282446069
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,stateSerializeMs,0.026799999999994384,0.025400000000004752,-0.0013999999999896318,-5.223880596977337
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,stateEncodeMs,0.020700000000005048,0.019599999999996953,-0.0011000000000080945,-5.314009661873554
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,warmupMs,4.415999999999997,2.9695000000000107,-1.4464999999999861,-32.75588768115914
+candidate-reserved-016,native-node-rendering,short-circuit-conditions,v2,gcMs,0,0,0,
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,warmMs,0.18096199999999996,0.13893,-0.04203199999999996,-23.226975829179587
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,cpuMs,0.16,0.16,0,0
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,stringMs,0.18559399999999981,0.15373999999999996,-0.031853999999999855,-17.163270364343617
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,firstRenderMs,0.26139999999999475,0.22279999999999234,-0.03860000000000241,-14.76664116296985
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,coldLoadAndRenderMs,11.910299999999992,11.6781,-0.23219999999999175,-1.9495730586130633
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,compileMs,48.664200000000164,48.95769999999993,0.29349999999976717,0.6031127605093056
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,addonLoadMs,5.808300000000003,5.573700000000002,-0.23460000000000036,-4.039047569856935
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,programLoadMs,5.813500000000005,5.939999999999998,0.12649999999999295,2.1759697256384714
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,artifactReadMs,3.633099999999999,3.120100000000008,-0.512999999999991,-14.120172855137248
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,outputDecodeMs,0.013099999999994338,0.01099999999999568,-0.0020999999999986585,-16.030534351141725
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,inputReadMs,5.455600000000004,4.9986999999999995,-0.4569000000000045,-8.37488085636785
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,inputParseMs,5.1780999999999935,5.136300000000006,-0.04179999999998785,-0.8072459010059263
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,stateSerializeMs,0.003999999999990678,0.00359999999999161,-0.00039999999999906777,-9.999999999999998
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,stateEncodeMs,0.015899999999987813,0.01279999999999859,-0.0030999999999892225,-19.49685534585911
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,warmupMs,3.5370999999999952,2.8308999999999997,-0.7061999999999955,-19.96550846738844
+candidate-reserved-017,native-node-rendering,literal-component-properties,v2,gcMs,0,0,0,
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,warmMs,0.757188,0.557981,-0.19920700000000002,-26.308789891017824
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,cpuMs,0.79,0.62,-0.17000000000000004,-21.518987341772156
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,stringMs,0.8115950000000001,0.6046169999999997,-0.20697800000000033,-25.50262138135404
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,firstRenderMs,1.049500000000009,0.9258000000000095,-0.12369999999999948,-11.786565030966978
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,coldLoadAndRenderMs,7.250900000000016,6.830300000000008,-0.4206000000000074,-5.8006592285096525
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,compileMs,0.6114999999999782,0.5815999999995256,-0.029900000000452565,-4.889615699174755
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,addonLoadMs,5.773300000000006,5.469700000000003,-0.303600000000003,-5.258690870039706
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,programLoadMs,0.4462999999999937,0.4269999999999925,-0.019300000000001205,-4.324445440287139
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,artifactReadMs,1.646099999999997,1.5880999999999972,-0.05799999999999983,-3.5234797399914863
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,outputDecodeMs,0.05310000000000059,0.05210000000001003,-0.000999999999990564,-1.8832391713569763
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,inputReadMs,2.634299999999996,2.3495999999999952,-0.28470000000000084,-10.807425122423464
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,inputParseMs,0.11189999999999856,0.11659999999999826,0.004699999999999704,4.200178731009618
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,stateSerializeMs,0.04049999999999443,0.04549999999998988,0.0049999999999954525,12.345679012336142
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,stateEncodeMs,0.02169999999999561,0.021299999999996544,-0.00039999999999906777,-1.8433179723463033
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,warmupMs,18.513800000000003,13.873200000000011,-4.640599999999992,-25.065626721688638
+candidate-reserved-018,native-node-rendering,plain-element-bindings,v2,gcMs,0,0,0,
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,warmMs,2.628824,2.60536,-0.023463999999999707,-0.8925664099232122
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,cpuMs,2.96,2.5,-0.45999999999999996,-15.540540540540537
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,stringMs,4.095746,3.9850600000000003,-0.11068599999999984,-2.7024625062198604
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,firstRenderMs,2.9236999999999966,2.924199999999999,0.0005000000000023874,0.01710161781312003
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,coldLoadAndRenderMs,9.068100000000001,9.1537,0.08559999999999945,0.9439684167576345
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,compileMs,0.2620999999999185,0.23700000000008004,-0.025099999999838474,-9.576497519971872
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,addonLoadMs,5.95389999999999,5.851700000000001,-0.10219999999998919,-1.7165219435998136
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,programLoadMs,0.36179999999998813,0.36889999999999645,0.007100000000008322,1.9624101713677566
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,artifactReadMs,1.745900000000006,1.612099999999998,-0.1338000000000079,-7.663669167764908
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,outputDecodeMs,1.3552999999999997,1.2983000000000118,-0.05699999999998795,-4.205710912712169
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,inputReadMs,3.4711,2.845100000000002,-0.6259999999999977,-18.03462879202552
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,inputParseMs,0.45870000000000033,0.3877000000000095,-0.07099999999999085,-15.47852626989117
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,stateSerializeMs,0.878300000000003,0.7966000000000051,-0.08169999999999789,-9.30206079927105
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,stateEncodeMs,0.38290000000000646,0.3780000000000001,-0.004900000000006344,-1.2797074954312482
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,warmupMs,52.20599999999999,49.59830000000001,-2.60769999999998,-4.995019729532968
+candidate-reserved-019,native-node-rendering,escaped-text-and-attribute-bindings,v2,gcMs,2.160399913787842,2.045499801635742,-0.11490011215209961,-5.318464948031066
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,warmMs,0.08323599999999999,0.08146699999999996,-0.0017690000000000344,-2.1252823297612022
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,cpuMs,0,0,0,
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,stringMs,0.08596000000000004,0.08306700000000006,-0.002892999999999979,-3.3655188459748464
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,firstRenderMs,0.17319999999999425,0.1629999999999967,-0.010199999999997544,-5.889145496534576
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,coldLoadAndRenderMs,9.423700000000004,8.598700000000008,-0.8249999999999957,-8.754523170304607
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,compileMs,4.030700000001161,3.84729999999945,-0.1834000000017113,-4.550078150238379
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,addonLoadMs,5.932399999999994,5.433800000000005,-0.49859999999998905,-8.404692873036035
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,programLoadMs,3.0720000000000027,2.963700000000003,-0.10829999999999984,-3.525390624999991
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,artifactReadMs,1.729699999999994,1.5315000000000012,-0.19819999999999283,-11.458634445279149
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,outputDecodeMs,0.008899999999997021,0.007099999999994111,-0.0018000000000029104,-20.224719101163068
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,inputReadMs,2.6195999999999984,2.2867999999999995,-0.3327999999999989,-12.70422965338216
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,inputParseMs,0.022800000000003706,0.020400000000002194,-0.002400000000001512,-10.526315789478602
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,stateSerializeMs,0.003700000000002035,0.0038000000000053547,0.00010000000000331966,2.702702702790938
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,stateEncodeMs,0.01110000000001321,0.010199999999997544,-0.000900000000015666,-8.108108108239598
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,warmupMs,1.783200000000008,1.627299999999991,-0.1559000000000168,-8.742709735308217
+candidate-reserved-020,native-node-rendering,deep-state-lookups,v2,gcMs,0,0,0,
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,warmMs,2.205562,2.0893829999999998,-0.11617900000000025,-5.267546321527128
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,cpuMs,2.18,2.19,0.009999999999999787,0.4587155963302614
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,stringMs,1.8768870000000004,1.8250319999999993,-0.051855000000001095,-2.7628194984568144
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,firstRenderMs,2.5622000000000043,2.621300000000005,0.05910000000000082,2.306611505737277
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,coldLoadAndRenderMs,8.730199999999996,8.296800000000005,-0.4333999999999918,-4.964376532038117
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,compileMs,0.3289999999997235,0.26040000000102737,-0.06859999999869615,-20.851063829408446
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,addonLoadMs,5.690300000000001,5.352699999999999,-0.3376000000000019,-5.932903361861442
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,programLoadMs,0.366100000000003,0.33559999999999945,-0.030500000000003524,-8.331057088228155
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,artifactReadMs,1.570999999999998,1.483000000000004,-0.08799999999999386,-5.601527689369446
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,outputDecodeMs,0.017899999999997362,0.015600000000006276,-0.002299999999991087,-12.849162011125282
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,inputReadMs,2.587200000000003,2.330299999999994,-0.2569000000000088,-9.929653679654004
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,inputParseMs,0.3265999999999991,0.3223999999999947,-0.004200000000004422,-1.2859767299462477
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,stateSerializeMs,0.09709999999999752,0.105700000000013,0.008600000000015484,8.856848609696911
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,stateEncodeMs,0.031399999999997874,0.028800000000003934,-0.0025999999999939405,-8.280254777051322
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,warmupMs,49.0013,47.3314,-1.6698999999999984,-3.407868770828526
+candidate-reserved-021,native-node-rendering,three-level-nested-repeats,v2,gcMs,0,0,0,
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,warmMs,1.2539369999999999,0.8890799999999999,-0.364857,-29.09691635225693
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,cpuMs,1.25,0.93,-0.31999999999999995,-25.6
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,stringMs,1.327366,0.9699349999999999,-0.35743100000000017,-26.92784055038325
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,firstRenderMs,1.6062000000000012,1.2615000000000123,-0.3446999999999889,-21.460590212924213
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,coldLoadAndRenderMs,7.983199999999989,7.255100000000013,-0.7280999999999764,-9.120402845976272
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,compileMs,0.9781999999977415,0.6952000000001135,-0.28299999999762804,-28.93068902047449
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,addonLoadMs,5.7764999999999915,5.380400000000009,-0.3960999999999828,-6.857093395654523
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,programLoadMs,0.5869,0.5726000000000084,-0.014299999999991542,-2.4365309251987655
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,artifactReadMs,1.6615000000000038,1.4514000000000067,-0.21009999999999707,-12.645200120372957
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,outputDecodeMs,0.16219999999999857,0.098700000000008,-0.06349999999999056,-39.14919852033978
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,inputReadMs,2.697400000000002,2.2065999999999946,-0.49080000000000723,-18.1952991769855
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,inputParseMs,0.12489999999999668,0.11080000000001178,-0.014099999999984902,-11.289031224968193
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,stateSerializeMs,0.04549999999999699,0.04229999999999734,-0.0031999999999996476,-7.032967032966719
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,stateEncodeMs,0.021399999999999864,0.020799999999994156,-0.0006000000000057071,-2.8037383177836994
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,warmupMs,26.81909999999999,20.03460000000001,-6.78449999999998,-25.297269483315933
+candidate-reserved-022,native-node-rendering,repeated-custom-elements,v2,gcMs,0,0,0,
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,warmMs,0.574554,0.432183,-0.14237100000000003,-24.77939410394846
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,cpuMs,0.63,0.47,-0.16000000000000003,-25.396825396825406
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,stringMs,0.583682,0.44893499999999986,-0.13474700000000017,-23.085687069328877
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,firstRenderMs,0.6353000000000009,0.5131999999999977,-0.1221000000000032,-19.219266488273735
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,coldLoadAndRenderMs,7.3659999999999854,6.785299999999992,-0.5806999999999931,-7.88351887048594
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,compileMs,1.2446000000018103,1.1949000000022352,-0.049699999999575084,-3.993250843604601
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,addonLoadMs,5.8827,5.3226999999999975,-0.5600000000000023,-9.5194383531372
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,programLoadMs,0.8126999999999924,0.8399000000000001,0.027200000000007662,3.3468684631485113
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,artifactReadMs,1.6692000000000036,1.458200000000005,-0.21099999999999852,-12.640786005271876
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,outputDecodeMs,0.016199999999997772,0.013199999999997658,-0.0030000000000001137,-18.518518518521766
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,inputReadMs,2.988499999999995,2.269200000000005,-0.7192999999999898,-24.068930901789898
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,inputParseMs,0.01279999999999859,0.012199999999992883,-0.0006000000000057071,-4.687500000045109
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,stateSerializeMs,0.003199999999992542,0.0027999999999934744,-0.00039999999999906777,-12.5
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,stateEncodeMs,0.011299999999991428,0.010800000000003251,-0.0004999999999881766,-4.424778760960669
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,warmupMs,10.984700000000004,8.609099999999998,-2.3756000000000057,-21.626444054002427
+candidate-reserved-023,native-node-rendering,nested-component-tree,v2,gcMs,0,0,0,
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,warmMs,3.0226800000000003,2.8145890000000002,-0.20809100000000003,-6.884321198406718
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,cpuMs,3.12,2.81,-0.31000000000000005,-9.935897435897434
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,stringMs,2.967802,2.766689000000001,-0.201112999999999,-6.776496545254673
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,firstRenderMs,3.165699999999987,3.0065000000000026,-0.15919999999998424,-5.028903560033637
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,coldLoadAndRenderMs,16.761300000000006,15.0796,-1.6817000000000064,-10.03323131260705
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,compilerLoadMs,8.737400000000001,8.208600000000004,-0.5287999999999968,-6.052143658296483
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,compileMs,11.60859999999957,12.89429999999993,1.2857000000003609,11.075409610120168
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,addonLoadMs,5.821600000000004,5.479799999999997,-0.3418000000000063,-5.871238147588398
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,programLoadMs,6.2228000000000065,6.394300000000001,0.17149999999999466,2.7559940862633248
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,artifactReadMs,1.6178000000000026,1.5378999999999934,-0.07990000000000919,-4.9388057856353695
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,outputDecodeMs,0.013399999999990087,0.011600000000001387,-0.0017999999999886995,-13.432835820821133
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,inputReadMs,2.7958,2.362499999999997,-0.4333000000000027,-15.498247371056683
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,inputParseMs,0.834699999999998,0.8142999999999958,-0.020400000000002194,-2.4439918533607607
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,stateSerializeMs,0.5696999999999974,0.5725999999999942,0.002899999999996794,0.5090398455321665
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,stateEncodeMs,0.024300000000003763,0.02360000000000184,-0.0007000000000019213,-2.8806584362214505
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,warmupMs,59.283399999999986,55.488,-3.7953999999999866,-6.402129432522408
+candidate-reserved-024,native-node-rendering,large-root-state-overlay,v2,gcMs,0,0,0,
+candidate-reserved-025,native-rust-full-render,url-binding-sibling-components/count-0,disabled; fresh-json,warmMs,0.0007,0.0007,0,0
+candidate-reserved-025,native-rust-full-render,url-binding-sibling-components/count-0,disabled; fresh-json,firstRenderMs,0.0049,0.0048,-0.00010000000000000026,-2.0408163265306145
+candidate-reserved-026,native-rust-full-render,url-binding-sibling-components/count-0,disabled; typed,warmMs,0.0004,0.0004,0,0
+candidate-reserved-026,native-rust-full-render,url-binding-sibling-components/count-0,disabled; typed,firstRenderMs,0.0008,0.0008,0,0
+candidate-reserved-027,native-rust-full-render,url-binding-sibling-components/count-0,disabled; prepared,warmMs,0,0.0001,0.0001,
+candidate-reserved-027,native-rust-full-render,url-binding-sibling-components/count-0,disabled; prepared,firstRenderMs,0,0.0001,0.0001,
+candidate-reserved-028,native-rust-full-render,url-binding-sibling-components/count-0,default; fresh-json,warmMs,0.0007,0.0007,0,0
+candidate-reserved-028,native-rust-full-render,url-binding-sibling-components/count-0,default; fresh-json,firstRenderMs,0.0009,0.0008,-0.00009999999999999994,-11.111111111111105
+candidate-reserved-029,native-rust-full-render,url-binding-sibling-components/count-0,default; typed,warmMs,0.0004,0.0004,0,0
+candidate-reserved-029,native-rust-full-render,url-binding-sibling-components/count-0,default; typed,firstRenderMs,0.0005,0.0005,0,0
+candidate-reserved-030,native-rust-full-render,url-binding-sibling-components/count-0,default; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-030,native-rust-full-render,url-binding-sibling-components/count-0,default; prepared,firstRenderMs,0,0.0001,0.0001,
+candidate-reserved-031,native-rust-full-render,url-binding-sibling-components/count-0,v2; fresh-json,warmMs,0.0007,0.0007,0,0
+candidate-reserved-031,native-rust-full-render,url-binding-sibling-components/count-0,v2; fresh-json,firstRenderMs,0.0009,0.0008,-0.00009999999999999994,-11.111111111111105
+candidate-reserved-032,native-rust-full-render,url-binding-sibling-components/count-0,v2; typed,warmMs,0.0004,0.0004,0,0
+candidate-reserved-032,native-rust-full-render,url-binding-sibling-components/count-0,v2; typed,firstRenderMs,0.0006,0.0005,-0.00009999999999999994,-16.666666666666664
+candidate-reserved-033,native-rust-full-render,url-binding-sibling-components/count-0,v2; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-033,native-rust-full-render,url-binding-sibling-components/count-0,v2; prepared,firstRenderMs,0,0.0001,0.0001,
+candidate-reserved-034,native-rust-full-render,url-binding-sibling-components/count-200,disabled; fresh-json,warmMs,0.0106,0.0105,-0.0000999999999999994,-0.9433962264150941
+candidate-reserved-034,native-rust-full-render,url-binding-sibling-components/count-200,disabled; fresh-json,firstRenderMs,0.0444,0.041,-0.0034000000000000002,-7.657657657657657
+candidate-reserved-035,native-rust-full-render,url-binding-sibling-components/count-200,disabled; typed,warmMs,0.0105,0.0103,-0.00020000000000000052,-1.904761904761909
+candidate-reserved-035,native-rust-full-render,url-binding-sibling-components/count-200,disabled; typed,firstRenderMs,0.019,0.0124,-0.0066,-34.73684210526316
+candidate-reserved-036,native-rust-full-render,url-binding-sibling-components/count-200,disabled; prepared,warmMs,0.0099,0.0097,-0.00020000000000000052,-2.020202020202022
+candidate-reserved-036,native-rust-full-render,url-binding-sibling-components/count-200,disabled; prepared,firstRenderMs,0.0109,0.0106,-0.0002999999999999999,-2.752293577981646
+candidate-reserved-037,native-rust-full-render,url-binding-sibling-components/count-200,default; fresh-json,warmMs,0.31025,0.18985,-0.12040000000000003,-38.80741337630944
+candidate-reserved-037,native-rust-full-render,url-binding-sibling-components/count-200,default; fresh-json,firstRenderMs,0.4751,0.2853,-0.18980000000000002,-39.94948431909072
+candidate-reserved-038,native-rust-full-render,url-binding-sibling-components/count-200,default; typed,warmMs,0.3106,0.19045,-0.12014999999999998,-38.68319381841596
+candidate-reserved-038,native-rust-full-render,url-binding-sibling-components/count-200,default; typed,firstRenderMs,0.3148,0.2012,-0.11360000000000003,-36.086404066073705
+candidate-reserved-039,native-rust-full-render,url-binding-sibling-components/count-200,default; prepared,warmMs,0.3111,0.19225,-0.11884999999999998,-38.20315011250401
+candidate-reserved-039,native-rust-full-render,url-binding-sibling-components/count-200,default; prepared,firstRenderMs,0.3134,0.2085,-0.10490000000000002,-33.47160178685387
+candidate-reserved-040,native-rust-full-render,url-binding-sibling-components/count-200,v2; fresh-json,warmMs,0.3358,0.20585,-0.12994999999999998,-38.6986301369863
+candidate-reserved-040,native-rust-full-render,url-binding-sibling-components/count-200,v2; fresh-json,firstRenderMs,0.4002,0.2628,-0.13740000000000002,-34.3328335832084
+candidate-reserved-041,native-rust-full-render,url-binding-sibling-components/count-200,v2; typed,warmMs,0.3366,0.20475,-0.13185000000000002,-39.17112299465241
+candidate-reserved-041,native-rust-full-render,url-binding-sibling-components/count-200,v2; typed,firstRenderMs,0.3432,0.2129,-0.1303,-37.96620046620046
+candidate-reserved-042,native-rust-full-render,url-binding-sibling-components/count-200,v2; prepared,warmMs,0.3339,0.20295,-0.13094999999999998,-39.21832884097035
+candidate-reserved-042,native-rust-full-render,url-binding-sibling-components/count-200,v2; prepared,firstRenderMs,0.3458,0.2113,-0.1345,-38.89531521110469
+candidate-reserved-043,native-rust-full-render,repeated-custom-elements/count-0,disabled; fresh-json,warmMs,0.0009,0.0009,0,0
+candidate-reserved-043,native-rust-full-render,repeated-custom-elements/count-0,disabled; fresh-json,firstRenderMs,0.0017,0.0017,0,0
+candidate-reserved-044,native-rust-full-render,repeated-custom-elements/count-0,disabled; typed,warmMs,0.0007,0.0007,0,0
+candidate-reserved-044,native-rust-full-render,repeated-custom-elements/count-0,disabled; typed,firstRenderMs,0.0014,0.0014,0,0
+candidate-reserved-045,native-rust-full-render,repeated-custom-elements/count-0,disabled; prepared,warmMs,0.0002,0.0002,0,0
+candidate-reserved-045,native-rust-full-render,repeated-custom-elements/count-0,disabled; prepared,firstRenderMs,0.0003,0.0003,0,0
+candidate-reserved-046,native-rust-full-render,repeated-custom-elements/count-0,default; fresh-json,warmMs,0.0016,0.0015,-0.00010000000000000005,-6.25
+candidate-reserved-046,native-rust-full-render,repeated-custom-elements/count-0,default; fresh-json,firstRenderMs,0.0029,0.0029,0,0
+candidate-reserved-047,native-rust-full-render,repeated-custom-elements/count-0,default; typed,warmMs,0.0013,0.0013,0,0
+candidate-reserved-047,native-rust-full-render,repeated-custom-elements/count-0,default; typed,firstRenderMs,0.0015,0.0015,0,0
+candidate-reserved-048,native-rust-full-render,repeated-custom-elements/count-0,default; prepared,warmMs,0.0008,0.0008,0,0
+candidate-reserved-048,native-rust-full-render,repeated-custom-elements/count-0,default; prepared,firstRenderMs,0.001,0.001,0,0
+candidate-reserved-049,native-rust-full-render,repeated-custom-elements/count-0,v2; fresh-json,warmMs,0.0015,0.0014,-0.00010000000000000005,-6.666666666666665
+candidate-reserved-049,native-rust-full-render,repeated-custom-elements/count-0,v2; fresh-json,firstRenderMs,0.0023,0.0022,-0.00009999999999999983,-4.347826086956519
+candidate-reserved-050,native-rust-full-render,repeated-custom-elements/count-0,v2; typed,warmMs,0.0012,0.001,-0.00019999999999999987,-16.666666666666664
+candidate-reserved-050,native-rust-full-render,repeated-custom-elements/count-0,v2; typed,firstRenderMs,0.0013,0.0013,0,0
+candidate-reserved-051,native-rust-full-render,repeated-custom-elements/count-0,v2; prepared,warmMs,0.0008,0.0006,-0.0002000000000000001,-25.00000000000001
+candidate-reserved-051,native-rust-full-render,repeated-custom-elements/count-0,v2; prepared,firstRenderMs,0.0009,0.0008,-0.00009999999999999994,-11.111111111111105
+candidate-reserved-052,native-rust-full-render,repeated-custom-elements/count-200,disabled; fresh-json,warmMs,0.32815,0.3288,0.0006499999999999839,0.1980801462745596
+candidate-reserved-052,native-rust-full-render,repeated-custom-elements/count-200,disabled; fresh-json,firstRenderMs,0.5177,0.5089,-0.00880000000000003,-1.6998261541433357
+candidate-reserved-053,native-rust-full-render,repeated-custom-elements/count-200,disabled; typed,warmMs,0.34875,0.3417,-0.007050000000000001,-2.0215053763440904
+candidate-reserved-053,native-rust-full-render,repeated-custom-elements/count-200,disabled; typed,firstRenderMs,0.4843,0.4031,-0.0812,-16.766467065868262
+candidate-reserved-054,native-rust-full-render,repeated-custom-elements/count-200,disabled; prepared,warmMs,0.0002,0.0002,0,0
+candidate-reserved-054,native-rust-full-render,repeated-custom-elements/count-200,disabled; prepared,firstRenderMs,0.0004,0.0003,-0.00010000000000000005,-25.00000000000001
+candidate-reserved-055,native-rust-full-render,repeated-custom-elements/count-200,default; fresh-json,warmMs,0.9963,0.79235,-0.20394999999999996,-20.47074174445448
+candidate-reserved-055,native-rust-full-render,repeated-custom-elements/count-200,default; fresh-json,firstRenderMs,1.1054,0.9368,-0.16859999999999997,-15.252397322236288
+candidate-reserved-056,native-rust-full-render,repeated-custom-elements/count-200,default; typed,warmMs,0.99685,0.7429,-0.25395,-25.475247028138636
+candidate-reserved-056,native-rust-full-render,repeated-custom-elements/count-200,default; typed,firstRenderMs,1.1087,0.8787,-0.22999999999999998,-20.745016686209073
+candidate-reserved-057,native-rust-full-render,repeated-custom-elements/count-200,default; prepared,warmMs,0.64355,0.4446,-0.19894999999999996,-30.914458861005357
+candidate-reserved-057,native-rust-full-render,repeated-custom-elements/count-200,default; prepared,firstRenderMs,0.654,0.5469,-0.10709999999999997,-16.37614678899082
+candidate-reserved-058,native-rust-full-render,repeated-custom-elements/count-200,v2; fresh-json,warmMs,1.10785,0.8406,-0.26725,-24.123301891050232
+candidate-reserved-058,native-rust-full-render,repeated-custom-elements/count-200,v2; fresh-json,firstRenderMs,1.3537,0.9164,-0.4372999999999999,-32.30405555145157
+candidate-reserved-059,native-rust-full-render,repeated-custom-elements/count-200,v2; typed,warmMs,1.21085,0.83365,-0.3772,-31.151670314242065
+candidate-reserved-059,native-rust-full-render,repeated-custom-elements/count-200,v2; typed,firstRenderMs,1.3868,1.1116,-0.2752000000000001,-19.8442457456014
+candidate-reserved-060,native-rust-full-render,repeated-custom-elements/count-200,v2; prepared,warmMs,0.75875,0.5549,-0.2038500000000001,-26.86655683690281
+candidate-reserved-060,native-rust-full-render,repeated-custom-elements/count-200,v2; prepared,firstRenderMs,0.9858,0.679,-0.30679999999999996,-31.12193142625278
+candidate-reserved-061,native-rust-full-render,plain-element-bindings/count-0,disabled; fresh-json,warmMs,0.0008,0.0008,0,0
+candidate-reserved-061,native-rust-full-render,plain-element-bindings/count-0,disabled; fresh-json,firstRenderMs,0.0016,0.0015,-0.00010000000000000005,-6.25
+candidate-reserved-062,native-rust-full-render,plain-element-bindings/count-0,disabled; typed,warmMs,0.0006,0.0006,0,0
+candidate-reserved-062,native-rust-full-render,plain-element-bindings/count-0,disabled; typed,firstRenderMs,0.0013,0.0013,0,0
+candidate-reserved-063,native-rust-full-render,plain-element-bindings/count-0,disabled; prepared,warmMs,0.0002,0.0002,0,0
+candidate-reserved-063,native-rust-full-render,plain-element-bindings/count-0,disabled; prepared,firstRenderMs,0.0003,0.0002,-0.00009999999999999996,-33.33333333333333
+candidate-reserved-064,native-rust-full-render,plain-element-bindings/count-0,default; fresh-json,warmMs,0.0014,0.0013,-0.00010000000000000005,-7.142857142857151
+candidate-reserved-064,native-rust-full-render,plain-element-bindings/count-0,default; fresh-json,firstRenderMs,0.0026,0.0024,-0.0002000000000000001,-7.692307692307699
+candidate-reserved-065,native-rust-full-render,plain-element-bindings/count-0,default; typed,warmMs,0.0011,0.0011,0,0
+candidate-reserved-065,native-rust-full-render,plain-element-bindings/count-0,default; typed,firstRenderMs,0.0013,0.0012,-0.00010000000000000005,-7.692307692307699
+candidate-reserved-066,native-rust-full-render,plain-element-bindings/count-0,default; prepared,warmMs,0.0008,0.0007,-0.00010000000000000005,-12.5
+candidate-reserved-066,native-rust-full-render,plain-element-bindings/count-0,default; prepared,firstRenderMs,0.0009,0.0008,-0.00009999999999999994,-11.111111111111105
+candidate-reserved-067,native-rust-full-render,plain-element-bindings/count-0,v2; fresh-json,warmMs,0.0014,0.0012,-0.0002000000000000001,-14.28571428571429
+candidate-reserved-067,native-rust-full-render,plain-element-bindings/count-0,v2; fresh-json,firstRenderMs,0.0026,0.002,-0.0005999999999999998,-23.076923076923073
+candidate-reserved-068,native-rust-full-render,plain-element-bindings/count-0,v2; typed,warmMs,0.0012,0.001,-0.00019999999999999987,-16.666666666666664
+candidate-reserved-068,native-rust-full-render,plain-element-bindings/count-0,v2; typed,firstRenderMs,0.0014,0.0012,-0.0002000000000000001,-14.28571428571429
+candidate-reserved-069,native-rust-full-render,plain-element-bindings/count-0,v2; prepared,warmMs,0.0007,0.0006,-0.00010000000000000005,-14.28571428571429
+candidate-reserved-069,native-rust-full-render,plain-element-bindings/count-0,v2; prepared,firstRenderMs,0.0009,0.0007,-0.00019999999999999998,-22.22222222222222
+candidate-reserved-070,native-rust-full-render,plain-element-bindings/count-200,disabled; fresh-json,warmMs,0.32885,0.3316,0.00275000000000003,0.8362475292686744
+candidate-reserved-070,native-rust-full-render,plain-element-bindings/count-200,disabled; fresh-json,firstRenderMs,0.5351,0.4971,-0.038000000000000034,-7.101476359558967
+candidate-reserved-071,native-rust-full-render,plain-element-bindings/count-200,disabled; typed,warmMs,0.35025,0.3444,-0.005850000000000022,-1.6702355460385454
+candidate-reserved-071,native-rust-full-render,plain-element-bindings/count-200,disabled; typed,firstRenderMs,0.4679,0.4796,0.011700000000000044,2.5005343022013404
+candidate-reserved-072,native-rust-full-render,plain-element-bindings/count-200,disabled; prepared,warmMs,0.0002,0.0002,0,0
+candidate-reserved-072,native-rust-full-render,plain-element-bindings/count-200,disabled; prepared,firstRenderMs,0.0004,0.0004,0,0
+candidate-reserved-073,native-rust-full-render,plain-element-bindings/count-200,default; fresh-json,warmMs,0.6052,0.4765,-0.12869999999999998,-21.26569729015202
+candidate-reserved-073,native-rust-full-render,plain-element-bindings/count-200,default; fresh-json,firstRenderMs,0.7003,0.5237,-0.17659999999999998,-25.21776381550763
+candidate-reserved-074,native-rust-full-render,plain-element-bindings/count-200,default; typed,warmMs,0.61855,0.4837,-0.13485000000000003,-21.800986177350257
+candidate-reserved-074,native-rust-full-render,plain-element-bindings/count-200,default; typed,firstRenderMs,0.7619,0.6266,-0.13529999999999998,-17.758235988974924
+candidate-reserved-075,native-rust-full-render,plain-element-bindings/count-200,default; prepared,warmMs,0.2585,0.1289,-0.12960000000000002,-50.135396518375245
+candidate-reserved-075,native-rust-full-render,plain-element-bindings/count-200,default; prepared,firstRenderMs,0.3537,0.221,-0.1327,-37.51767034209782
+candidate-reserved-076,native-rust-full-render,plain-element-bindings/count-200,v2; fresh-json,warmMs,0.66465,0.49215,-0.1725,-25.95350936583164
+candidate-reserved-076,native-rust-full-render,plain-element-bindings/count-200,v2; fresh-json,firstRenderMs,0.7836,0.5447,-0.2389,-30.487493619193472
+candidate-reserved-077,native-rust-full-render,plain-element-bindings/count-200,v2; typed,warmMs,0.6791,0.50245,-0.17665000000000008,-26.012369312325145
+candidate-reserved-077,native-rust-full-render,plain-element-bindings/count-200,v2; typed,firstRenderMs,0.816,0.6187,-0.19729999999999992,-24.178921568627445
+candidate-reserved-078,native-rust-full-render,plain-element-bindings/count-200,v2; prepared,warmMs,0.30835,0.1536,-0.15475000000000003,-50.186476406680725
+candidate-reserved-078,native-rust-full-render,plain-element-bindings/count-200,v2; prepared,firstRenderMs,0.4018,0.2241,-0.1777,-44.22598307615729
+candidate-reserved-079,native-rust-full-render,many-component-definitions/count-0,disabled; fresh-json,warmMs,0.0005,0.0005,0,0
+candidate-reserved-079,native-rust-full-render,many-component-definitions/count-0,disabled; fresh-json,firstRenderMs,0.0011,0.0009,-0.0002000000000000001,-18.181818181818187
+candidate-reserved-080,native-rust-full-render,many-component-definitions/count-0,disabled; typed,warmMs,0.0003,0.0003,0,0
+candidate-reserved-080,native-rust-full-render,many-component-definitions/count-0,disabled; typed,firstRenderMs,0.0007,0.0006,-0.00010000000000000005,-14.28571428571429
+candidate-reserved-081,native-rust-full-render,many-component-definitions/count-0,disabled; prepared,warmMs,0,0.0001,0.0001,
+candidate-reserved-081,native-rust-full-render,many-component-definitions/count-0,disabled; prepared,firstRenderMs,0,0.0001,0.0001,
+candidate-reserved-082,native-rust-full-render,many-component-definitions/count-0,default; fresh-json,warmMs,0.0005,0.0005,0,0
+candidate-reserved-082,native-rust-full-render,many-component-definitions/count-0,default; fresh-json,firstRenderMs,0.0007,0.0006,-0.00010000000000000005,-14.28571428571429
+candidate-reserved-083,native-rust-full-render,many-component-definitions/count-0,default; typed,warmMs,0.0003,0.0003,0,0
+candidate-reserved-083,native-rust-full-render,many-component-definitions/count-0,default; typed,firstRenderMs,0.0003,0.0003,0,0
+candidate-reserved-084,native-rust-full-render,many-component-definitions/count-0,default; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-084,native-rust-full-render,many-component-definitions/count-0,default; prepared,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-085,native-rust-full-render,many-component-definitions/count-0,v2; fresh-json,warmMs,0.0005,0.0005,0,0
+candidate-reserved-085,native-rust-full-render,many-component-definitions/count-0,v2; fresh-json,firstRenderMs,0.0006,0.0006,0,0
+candidate-reserved-086,native-rust-full-render,many-component-definitions/count-0,v2; typed,warmMs,0.0003,0.0003,0,0
+candidate-reserved-086,native-rust-full-render,many-component-definitions/count-0,v2; typed,firstRenderMs,0.0003,0.0003,0,0
+candidate-reserved-087,native-rust-full-render,many-component-definitions/count-0,v2; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-087,native-rust-full-render,many-component-definitions/count-0,v2; prepared,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-088,native-rust-full-render,many-component-definitions/count-200,disabled; fresh-json,warmMs,0.0089,0.0089,0,0
+candidate-reserved-088,native-rust-full-render,many-component-definitions/count-200,disabled; fresh-json,firstRenderMs,0.0243,0.0176,-0.006699999999999998,-27.572016460905346
+candidate-reserved-089,native-rust-full-render,many-component-definitions/count-200,disabled; typed,warmMs,0.0086,0.0086,0,0
+candidate-reserved-089,native-rust-full-render,many-component-definitions/count-200,disabled; typed,firstRenderMs,0.0096,0.0095,-0.0000999999999999994,-1.041666666666663
+candidate-reserved-090,native-rust-full-render,many-component-definitions/count-200,disabled; prepared,warmMs,0.0084,0.0083,-0.0000999999999999994,-1.1904761904761862
+candidate-reserved-090,native-rust-full-render,many-component-definitions/count-200,disabled; prepared,firstRenderMs,0.0093,0.01,0.000700000000000001,7.526881720430123
+candidate-reserved-091,native-rust-full-render,many-component-definitions/count-200,default; fresh-json,warmMs,0.18595,0.12605,-0.05990000000000001,-32.2129604732455
+candidate-reserved-091,native-rust-full-render,many-component-definitions/count-200,default; fresh-json,firstRenderMs,0.2949,0.2826,-0.012299999999999978,-4.170905391658186
+candidate-reserved-092,native-rust-full-render,many-component-definitions/count-200,default; typed,warmMs,0.1869,0.1255,-0.06140000000000001,-32.85179240235421
+candidate-reserved-092,native-rust-full-render,many-component-definitions/count-200,default; typed,firstRenderMs,0.1929,0.1296,-0.0633,-32.8149300155521
+candidate-reserved-093,native-rust-full-render,many-component-definitions/count-200,default; prepared,warmMs,0.18615,0.1251,-0.06105000000000002,-32.796132151490745
+candidate-reserved-093,native-rust-full-render,many-component-definitions/count-200,default; prepared,firstRenderMs,0.1899,0.1312,-0.0587,-30.911005792522385
+candidate-reserved-094,native-rust-full-render,many-component-definitions/count-200,v2; fresh-json,warmMs,0.21125,0.134,-0.07724999999999999,-36.568047337278095
+candidate-reserved-094,native-rust-full-render,many-component-definitions/count-200,v2; fresh-json,firstRenderMs,0.2302,0.1505,-0.0797,-34.622067767158995
+candidate-reserved-095,native-rust-full-render,many-component-definitions/count-200,v2; typed,warmMs,0.21155,0.1333,-0.07824999999999999,-36.98889151500827
+candidate-reserved-095,native-rust-full-render,many-component-definitions/count-200,v2; typed,firstRenderMs,0.2121,0.1393,-0.0728,-34.32343234323433
+candidate-reserved-096,native-rust-full-render,many-component-definitions/count-200,v2; prepared,warmMs,0.21055,0.13315,-0.0774,-36.76086440275469
+candidate-reserved-096,native-rust-full-render,many-component-definitions/count-200,v2; prepared,firstRenderMs,0.2139,0.135,-0.0789,-36.88639551192146
+candidate-reserved-097,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; fresh-json,warmMs,2.33955,2.3364,-0.003150000000000208,-0.13464127716869
+candidate-reserved-097,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; fresh-json,firstRenderMs,2.5289,2.5581,0.029199999999999893,1.1546522203329523
+candidate-reserved-098,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; typed,warmMs,2.44735,2.37725,-0.07010000000000005,-2.8643226346865003
+candidate-reserved-098,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; typed,firstRenderMs,3.0816,2.9894,-0.09220000000000006,-2.991952232606443
+candidate-reserved-099,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-099,native-rust-full-render,large-root-state-with-overlay/count-0,disabled; prepared,firstRenderMs,0.0002,0.0001,-0.0001,-50
+candidate-reserved-100,native-rust-full-render,large-root-state-with-overlay/count-0,default; fresh-json,warmMs,2.30285,2.1597,-0.1431499999999999,-6.21621034804698
+candidate-reserved-100,native-rust-full-render,large-root-state-with-overlay/count-0,default; fresh-json,firstRenderMs,2.4268,2.3256,-0.10119999999999996,-4.170100543926159
+candidate-reserved-101,native-rust-full-render,large-root-state-with-overlay/count-0,default; typed,warmMs,2.4039,2.24105,-0.16285000000000016,-6.774408253255137
+candidate-reserved-101,native-rust-full-render,large-root-state-with-overlay/count-0,default; typed,firstRenderMs,3.0902,2.6357,-0.4544999999999999,-14.707785903824988
+candidate-reserved-102,native-rust-full-render,large-root-state-with-overlay/count-0,default; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-102,native-rust-full-render,large-root-state-with-overlay/count-0,default; prepared,firstRenderMs,0.0002,0.0001,-0.0001,-50
+candidate-reserved-103,native-rust-full-render,large-root-state-with-overlay/count-0,v2; fresh-json,warmMs,2.3389,2.0971,-0.24180000000000001,-10.338193167728416
+candidate-reserved-103,native-rust-full-render,large-root-state-with-overlay/count-0,v2; fresh-json,firstRenderMs,2.4523,2.0582,-0.39410000000000034,-16.070627574114106
+candidate-reserved-104,native-rust-full-render,large-root-state-with-overlay/count-0,v2; typed,warmMs,1.92395,1.8419,-0.08204999999999996,-4.264663842615446
+candidate-reserved-104,native-rust-full-render,large-root-state-with-overlay/count-0,v2; typed,firstRenderMs,2.8861,2.8737,-0.012399999999999967,-0.42964554242749253
+candidate-reserved-105,native-rust-full-render,large-root-state-with-overlay/count-0,v2; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-105,native-rust-full-render,large-root-state-with-overlay/count-0,v2; prepared,firstRenderMs,0.0002,0.0003,0.00009999999999999996,49.99999999999998
+candidate-reserved-106,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; fresh-json,warmMs,1.7633,1.7264,-0.036900000000000155,-2.092667158169348
+candidate-reserved-106,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; fresh-json,firstRenderMs,2.4248,2.5123,0.08750000000000036,3.6085450346420522
+candidate-reserved-107,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; typed,warmMs,1.7938,1.7534,-0.04039999999999999,-2.252202029211725
+candidate-reserved-107,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; typed,firstRenderMs,2.7814,2.4489,-0.3325,-11.954411447472502
+candidate-reserved-108,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; prepared,warmMs,0.0084,0.0083,-0.0000999999999999994,-1.1904761904761862
+candidate-reserved-108,native-rust-full-render,large-root-state-with-overlay/count-200,disabled; prepared,firstRenderMs,0.0158,0.0156,-0.00020000000000000226,-1.2658227848101444
+candidate-reserved-109,native-rust-full-render,large-root-state-with-overlay/count-200,default; fresh-json,warmMs,1.84755,1.83365,-0.013900000000000023,-0.7523477037157278
+candidate-reserved-109,native-rust-full-render,large-root-state-with-overlay/count-200,default; fresh-json,firstRenderMs,1.8968,2.1366,0.2398,12.642345002108812
+candidate-reserved-110,native-rust-full-render,large-root-state-with-overlay/count-200,default; typed,warmMs,1.9631,1.88725,-0.07584999999999997,-3.863786867709229
+candidate-reserved-110,native-rust-full-render,large-root-state-with-overlay/count-200,default; typed,firstRenderMs,3.3329,2.8855,-0.4474,-13.423745086861294
+candidate-reserved-111,native-rust-full-render,large-root-state-with-overlay/count-200,default; prepared,warmMs,0.11475,0.1002,-0.014550000000000007,-12.679738562091513
+candidate-reserved-111,native-rust-full-render,large-root-state-with-overlay/count-200,default; prepared,firstRenderMs,0.1395,0.1131,-0.026400000000000007,-18.924731182795707
+candidate-reserved-112,native-rust-full-render,large-root-state-with-overlay/count-200,v2; fresh-json,warmMs,1.9105,1.7952,-0.11530000000000018,-6.035069353572375
+candidate-reserved-112,native-rust-full-render,large-root-state-with-overlay/count-200,v2; fresh-json,firstRenderMs,2.0105,2.0431,0.03259999999999996,1.6214871922407337
+candidate-reserved-113,native-rust-full-render,large-root-state-with-overlay/count-200,v2; typed,warmMs,1.922,1.87745,-0.04454999999999987,-2.317898022892817
+candidate-reserved-113,native-rust-full-render,large-root-state-with-overlay/count-200,v2; typed,firstRenderMs,2.6751,2.5725,-0.10260000000000025,-3.8353706403499
+candidate-reserved-114,native-rust-full-render,large-root-state-with-overlay/count-200,v2; prepared,warmMs,0.1409,0.1088,-0.032100000000000004,-22.782114975159693
+candidate-reserved-114,native-rust-full-render,large-root-state-with-overlay/count-200,v2; prepared,firstRenderMs,0.1554,0.1201,-0.03530000000000001,-22.71557271557272
+candidate-reserved-115,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; fresh-json,warmMs,1.66455,1.67665,0.0121,0.7269231924544206
+candidate-reserved-115,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; fresh-json,firstRenderMs,2.6983,2.3313,-0.367,-13.601156283585958
+candidate-reserved-116,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; typed,warmMs,1.74735,1.73985,-0.007500000000000062,-0.42922139239419677
+candidate-reserved-116,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; typed,firstRenderMs,2.461,2.4397,-0.021299999999999653,-0.8655018285249727
+candidate-reserved-117,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-117,native-rust-full-render,large-root-state-without-overlay/count-0,disabled; prepared,firstRenderMs,0.0002,0.0001,-0.0001,-50
+candidate-reserved-118,native-rust-full-render,large-root-state-without-overlay/count-0,default; fresh-json,warmMs,1.64785,1.65945,0.011600000000000055,0.7039475680432172
+candidate-reserved-118,native-rust-full-render,large-root-state-without-overlay/count-0,default; fresh-json,firstRenderMs,1.7545,1.6848,-0.06969999999999987,-3.9726417782844026
+candidate-reserved-119,native-rust-full-render,large-root-state-without-overlay/count-0,default; typed,warmMs,1.748,1.73695,-0.011050000000000004,-0.6321510297482846
+candidate-reserved-119,native-rust-full-render,large-root-state-without-overlay/count-0,default; typed,firstRenderMs,2.4324,2.5006,0.06820000000000004,2.803815161979939
+candidate-reserved-120,native-rust-full-render,large-root-state-without-overlay/count-0,default; prepared,warmMs,0.0001,0,-0.0001,-100
+candidate-reserved-120,native-rust-full-render,large-root-state-without-overlay/count-0,default; prepared,firstRenderMs,0.0002,0.0002,0,0
+candidate-reserved-121,native-rust-full-render,large-root-state-without-overlay/count-0,v2; fresh-json,warmMs,1.65865,1.6716,0.012950000000000017,0.7807554336357825
+candidate-reserved-121,native-rust-full-render,large-root-state-without-overlay/count-0,v2; fresh-json,firstRenderMs,2.3338,1.7611,-0.5727,-24.539377838717968
+candidate-reserved-122,native-rust-full-render,large-root-state-without-overlay/count-0,v2; typed,warmMs,1.7557,1.7588,0.0030999999999998806,0.1765677507546748
+candidate-reserved-122,native-rust-full-render,large-root-state-without-overlay/count-0,v2; typed,firstRenderMs,2.4506,2.4702,0.019600000000000062,0.7998041296009228
+candidate-reserved-123,native-rust-full-render,large-root-state-without-overlay/count-0,v2; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-123,native-rust-full-render,large-root-state-without-overlay/count-0,v2; prepared,firstRenderMs,0.0002,0.0001,-0.0001,-50
+candidate-reserved-124,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; fresh-json,warmMs,1.68025,1.68585,0.005600000000000049,0.3332837375390696
+candidate-reserved-124,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; fresh-json,firstRenderMs,2.6598,2.5216,-0.13820000000000032,-5.195879389427793
+candidate-reserved-125,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; typed,warmMs,1.77325,1.74835,-0.024899999999999922,-1.4042013252502428
+candidate-reserved-125,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; typed,firstRenderMs,2.49,2.323,-0.16700000000000026,-6.706827309236962
+candidate-reserved-126,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; prepared,warmMs,0.0074,0.0074,0,0
+candidate-reserved-126,native-rust-full-render,large-root-state-without-overlay/count-200,disabled; prepared,firstRenderMs,0.0094,0.0089,-0.0005000000000000004,-5.319148936170215
+candidate-reserved-127,native-rust-full-render,large-root-state-without-overlay/count-200,default; fresh-json,warmMs,1.79565,1.7508,-0.044850000000000056,-2.4977027817224995
+candidate-reserved-127,native-rust-full-render,large-root-state-without-overlay/count-200,default; fresh-json,firstRenderMs,1.821,1.774,-0.04699999999999993,-2.5809994508511735
+candidate-reserved-128,native-rust-full-render,large-root-state-without-overlay/count-200,default; typed,warmMs,1.9062,1.83915,-0.06704999999999983,-3.51746931067044
+candidate-reserved-128,native-rust-full-render,large-root-state-without-overlay/count-200,default; typed,firstRenderMs,2.5916,2.5423,-0.04930000000000012,-1.9022997376138329
+candidate-reserved-129,native-rust-full-render,large-root-state-without-overlay/count-200,default; prepared,warmMs,0.0993,0.086,-0.013300000000000006,-13.393756294058413
+candidate-reserved-129,native-rust-full-render,large-root-state-without-overlay/count-200,default; prepared,firstRenderMs,0.1058,0.0887,-0.017100000000000004,-16.162570888468807
+candidate-reserved-130,native-rust-full-render,large-root-state-without-overlay/count-200,v2; fresh-json,warmMs,1.80465,1.77345,-0.031200000000000117,-1.7288670933422012
+candidate-reserved-130,native-rust-full-render,large-root-state-without-overlay/count-200,v2; fresh-json,firstRenderMs,2.1082,1.7955,-0.3127,-14.832558580779809
+candidate-reserved-131,native-rust-full-render,large-root-state-without-overlay/count-200,v2; typed,warmMs,1.92225,1.8553,-0.06695000000000007,-3.4828976459877814
+candidate-reserved-131,native-rust-full-render,large-root-state-without-overlay/count-200,v2; typed,firstRenderMs,2.683,2.5672,-0.11579999999999968,-4.31606410734251
+candidate-reserved-132,native-rust-full-render,large-root-state-without-overlay/count-200,v2; prepared,warmMs,0.1227,0.0972,-0.02550000000000001,-20.78239608801956
+candidate-reserved-132,native-rust-full-render,large-root-state-without-overlay/count-200,v2; prepared,firstRenderMs,0.1275,0.1016,-0.025900000000000006,-20.313725490196088
+candidate-reserved-133,native-rust-full-render,empty-entry,disabled; fresh-json,warmMs,0.0001,0.0001,0,0
+candidate-reserved-133,native-rust-full-render,empty-entry,disabled; fresh-json,firstRenderMs,0.0003,0.0003,0,0
+candidate-reserved-134,native-rust-full-render,empty-entry,disabled; typed,warmMs,0.0001,0.0001,0,0
+candidate-reserved-134,native-rust-full-render,empty-entry,disabled; typed,firstRenderMs,0.0004,0.0003,-0.00010000000000000005,-25.00000000000001
+candidate-reserved-135,native-rust-full-render,empty-entry,disabled; prepared,warmMs,0.0001,0,-0.0001,-100
+candidate-reserved-135,native-rust-full-render,empty-entry,disabled; prepared,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-136,native-rust-full-render,empty-entry,default; fresh-json,warmMs,0.0001,0.0001,0,0
+candidate-reserved-136,native-rust-full-render,empty-entry,default; fresh-json,firstRenderMs,0.0002,0.0001,-0.0001,-50
+candidate-reserved-137,native-rust-full-render,empty-entry,default; typed,warmMs,0.0001,0.0001,0,0
+candidate-reserved-137,native-rust-full-render,empty-entry,default; typed,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-138,native-rust-full-render,empty-entry,default; prepared,warmMs,0.0001,0,-0.0001,-100
+candidate-reserved-138,native-rust-full-render,empty-entry,default; prepared,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-139,native-rust-full-render,empty-entry,v2; fresh-json,warmMs,0.0001,0.0001,0,0
+candidate-reserved-139,native-rust-full-render,empty-entry,v2; fresh-json,firstRenderMs,0.0002,0.0002,0,0
+candidate-reserved-140,native-rust-full-render,empty-entry,v2; typed,warmMs,0.0001,0.0001,0,0
+candidate-reserved-140,native-rust-full-render,empty-entry,v2; typed,firstRenderMs,0.0001,0.0001,0,0
+candidate-reserved-141,native-rust-full-render,empty-entry,v2; prepared,warmMs,0.0001,0.0001,0,0
+candidate-reserved-141,native-rust-full-render,empty-entry,v2; prepared,firstRenderMs,0.0001,0,-0.0001,-100
+candidate-reserved-142,native-rust-full-render,empty-conditional-and-repeat,disabled; fresh-json,warmMs,0.0007,0.0007,0,0
+candidate-reserved-142,native-rust-full-render,empty-conditional-and-repeat,disabled; fresh-json,firstRenderMs,0.0017,0.0014,-0.0002999999999999999,-17.647058823529406
+candidate-reserved-143,native-rust-full-render,empty-conditional-and-repeat,disabled; typed,warmMs,0.0007,0.0007,0,0
+candidate-reserved-143,native-rust-full-render,empty-conditional-and-repeat,disabled; typed,firstRenderMs,0.0013,0.0011,-0.00019999999999999987,-15.384615384615374
+candidate-reserved-144,native-rust-full-render,empty-conditional-and-repeat,disabled; prepared,warmMs,0.0002,0.0002,0,0
+candidate-reserved-144,native-rust-full-render,empty-conditional-and-repeat,disabled; prepared,firstRenderMs,0.0003,0.0002,-0.00009999999999999996,-33.33333333333333
+candidate-reserved-145,native-rust-full-render,empty-conditional-and-repeat,default; fresh-json,warmMs,0.0015,0.0013,-0.0002000000000000001,-13.333333333333341
+candidate-reserved-145,native-rust-full-render,empty-conditional-and-repeat,default; fresh-json,firstRenderMs,0.0032,0.0027,-0.0005,-15.625
+candidate-reserved-146,native-rust-full-render,empty-conditional-and-repeat,default; typed,warmMs,0.0014,0.0012,-0.0002000000000000001,-14.28571428571429
+candidate-reserved-146,native-rust-full-render,empty-conditional-and-repeat,default; typed,firstRenderMs,0.0017,0.0014,-0.0002999999999999999,-17.647058823529406
+candidate-reserved-147,native-rust-full-render,empty-conditional-and-repeat,default; prepared,warmMs,0.0009,0.0007,-0.00019999999999999998,-22.22222222222222
+candidate-reserved-147,native-rust-full-render,empty-conditional-and-repeat,default; prepared,firstRenderMs,0.0011,0.0009,-0.0002000000000000001,-18.181818181818187
+candidate-reserved-148,native-rust-full-render,empty-conditional-and-repeat,v2; fresh-json,warmMs,0.0016,0.0014,-0.0002000000000000001,-12.5
+candidate-reserved-148,native-rust-full-render,empty-conditional-and-repeat,v2; fresh-json,firstRenderMs,0.003,0.0025,-0.0005,-16.666666666666664
+candidate-reserved-149,native-rust-full-render,empty-conditional-and-repeat,v2; typed,warmMs,0.0016,0.0013,-0.00030000000000000014,-18.75000000000001
+candidate-reserved-149,native-rust-full-render,empty-conditional-and-repeat,v2; typed,firstRenderMs,0.002,0.0018,-0.0002000000000000001,-10.000000000000009
+candidate-reserved-150,native-rust-full-render,empty-conditional-and-repeat,v2; prepared,warmMs,0.0011,0.0008,-0.00030000000000000003,-27.27272727272727
+candidate-reserved-150,native-rust-full-render,empty-conditional-and-repeat,v2; prepared,firstRenderMs,0.0013,0.0009,-0.00039999999999999996,-30.76923076923077
+candidate-reserved-151,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; fresh-json,warmMs,0.0091,0.009,-0.00010000000000000113,-1.098901098901106
+candidate-reserved-151,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; fresh-json,firstRenderMs,0.0126,0.0124,-0.00020000000000000052,-1.5873015873015928
+candidate-reserved-152,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; typed,warmMs,0.0091,0.009,-0.00010000000000000113,-1.098901098901106
+candidate-reserved-152,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; typed,firstRenderMs,0.01,0.0098,-0.00020000000000000052,-2.0000000000000018
+candidate-reserved-153,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; prepared,warmMs,0.0073,0.0073,0,0
+candidate-reserved-153,native-rust-full-render,adjacent-bindings-and-nested-components,disabled; prepared,firstRenderMs,0.0075,0.0075,0,0
+candidate-reserved-154,native-rust-full-render,adjacent-bindings-and-nested-components,default; fresh-json,warmMs,0.89875,0.47925,-0.41950000000000004,-46.675938803894304
+candidate-reserved-154,native-rust-full-render,adjacent-bindings-and-nested-components,default; fresh-json,firstRenderMs,1.0499,0.6034,-0.4465,-42.527859796171064
+candidate-reserved-155,native-rust-full-render,adjacent-bindings-and-nested-components,default; typed,warmMs,0.9011,0.4771,-0.424,-47.05360115414493
+candidate-reserved-155,native-rust-full-render,adjacent-bindings-and-nested-components,default; typed,firstRenderMs,0.9154,0.4806,-0.43479999999999996,-47.49836137207778
+candidate-reserved-156,native-rust-full-render,adjacent-bindings-and-nested-components,default; prepared,warmMs,0.89805,0.47495,-0.42310000000000003,-47.11318968877012
+candidate-reserved-156,native-rust-full-render,adjacent-bindings-and-nested-components,default; prepared,firstRenderMs,0.9017,0.5096,-0.3920999999999999,-43.48452922257956
+candidate-reserved-157,native-rust-full-render,adjacent-bindings-and-nested-components,v2; fresh-json,warmMs,1.207,0.61645,-0.59055,-48.927091963545976
+candidate-reserved-157,native-rust-full-render,adjacent-bindings-and-nested-components,v2; fresh-json,firstRenderMs,1.3521,0.7771,-0.5750000000000001,-42.52644035204497
+candidate-reserved-158,native-rust-full-render,adjacent-bindings-and-nested-components,v2; typed,warmMs,1.2053,0.61935,-0.5859500000000001,-48.61445283331951
+candidate-reserved-158,native-rust-full-render,adjacent-bindings-and-nested-components,v2; typed,firstRenderMs,1.2182,0.6217,-0.5964999999999999,-48.96568707929732
+candidate-reserved-159,native-rust-full-render,adjacent-bindings-and-nested-components,v2; prepared,warmMs,1.19835,0.6198,-0.57855,-48.27888346476406
+candidate-reserved-159,native-rust-full-render,adjacent-bindings-and-nested-components,v2; prepared,firstRenderMs,1.2068,0.6162,-0.5906000000000001,-48.93934371892609
+candidate-reserved-160,native-rust-state-boundaries,repeated-condition-lookups,default; fresh-json; payload=0,warmMs,0.0309,0.0309,0,0
+candidate-reserved-161,native-rust-state-boundaries,repeated-condition-lookups,default; fresh-json; payload=1024,warmMs,0.0315,0.0312,-0.00030000000000000165,-0.9523809523809601
+candidate-reserved-162,native-rust-state-boundaries,repeated-condition-lookups,default; typed; payload=0,warmMs,0.0307,0.0308,0.0000999999999999994,0.32573289902280145
+candidate-reserved-163,native-rust-state-boundaries,repeated-condition-lookups,default; typed; payload=1024,warmMs,0.0308,0.0312,0.0003999999999999976,1.298701298701288
+candidate-reserved-164,native-rust-state-boundaries,repeated-condition-lookups,default; prepared; payload=0,warmMs,0.03,0.0298,-0.0001999999999999988,-0.6666666666666599
+candidate-reserved-165,native-rust-state-boundaries,repeated-condition-lookups,default; prepared; payload=1024,warmMs,0.0303,0.0297,-0.0005999999999999998,-1.980198019801982
+candidate-reserved-166,native-rust-state-boundaries,nested-repeat-bindings,default; fresh-json; payload=0,warmMs,0.8944,0.8841,-0.010299999999999976,-1.151610017889082
+candidate-reserved-167,native-rust-state-boundaries,nested-repeat-bindings,default; fresh-json; payload=1024,warmMs,1.4695,1.4661,-0.0034000000000000696,-0.23137121469888333
+candidate-reserved-168,native-rust-state-boundaries,nested-repeat-bindings,default; typed; payload=0,warmMs,0.9277,0.8892,-0.03849999999999998,-4.1500485070604665
+candidate-reserved-169,native-rust-state-boundaries,nested-repeat-bindings,default; typed; payload=1024,warmMs,1.3795,1.3417,-0.037800000000000056,-2.740123233055458
+candidate-reserved-170,native-rust-state-boundaries,nested-repeat-bindings,default; prepared; payload=0,warmMs,0.1953,0.1854,-0.009899999999999992,-5.0691244239631335
+candidate-reserved-171,native-rust-state-boundaries,nested-repeat-bindings,default; prepared; payload=1024,warmMs,0.2036,0.1863,-0.01730000000000001,-8.497053045186643
+candidate-reserved-172,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; fresh-json; payload=0,warmMs,0.8521,0.8105,-0.04159999999999997,-4.882056096702259
+candidate-reserved-173,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; fresh-json; payload=1024,warmMs,1.4758,1.4092,-0.06659999999999999,-4.512806613362241
+candidate-reserved-174,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; typed; payload=0,warmMs,0.8518,0.8355,-0.01629999999999998,-1.913594740549418
+candidate-reserved-175,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; typed; payload=1024,warmMs,1.3517,1.284,-0.06769999999999987,-5.008507804986307
+candidate-reserved-176,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; prepared; payload=0,warmMs,0.1515,0.1479,-0.003599999999999992,-2.3762376237623672
+candidate-reserved-177,native-rust-state-boundaries,nested-repeat-alias-shadowing,default; prepared; payload=1024,warmMs,0.1507,0.1486,-0.0020999999999999908,-1.3934970139349634
+candidate-reserved-178,native-rust-state-boundaries,nested-component-property-overlay,default; fresh-json; payload=0,warmMs,1.4436,1.3017,-0.14189999999999992,-9.82959268495428
+candidate-reserved-179,native-rust-state-boundaries,nested-component-property-overlay,default; fresh-json; payload=1024,warmMs,2.0296,1.8863,-0.14329999999999976,-7.060504532912882
+candidate-reserved-180,native-rust-state-boundaries,nested-component-property-overlay,default; typed; payload=0,warmMs,1.4695,1.2832,-0.18630000000000013,-12.677781558353185
+candidate-reserved-181,native-rust-state-boundaries,nested-component-property-overlay,default; typed; payload=1024,warmMs,1.9105,1.7637,-0.14680000000000004,-7.683852394661084
+candidate-reserved-182,native-rust-state-boundaries,nested-component-property-overlay,default; prepared; payload=0,warmMs,0.6865,0.6188,-0.06769999999999998,-9.86161689730517
+candidate-reserved-183,native-rust-state-boundaries,nested-component-property-overlay,default; prepared; payload=1024,warmMs,0.6864,0.5575,-0.12890000000000001,-18.779137529137536
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,traceTotalMs,2.888,2.874,-0.01399999999999979,-0.4847645429362779
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,userMeasureMs,2.888,2.874,-0.01399999999999979,-0.4847645429362779
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,scriptingMs,2.888,2.874,-0.01399999999999979,-0.4847645429362779
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,layoutMs,0,0,0,
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,styleRecalcMs,0,0,0,
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,paintMs,0,0,0,
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,fcpMs,839.959,835.18,-4.778999999999996,-0.5689563419166932
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,lcpMs,839.959,835.18,-4.778999999999996,-0.5689563419166932
+candidate-reserved-184,browser-rendering-scenarios,combined-features/client-rendering,,dclMs,286.731,280.435,-6.295999999999992,-2.195786294471125
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,traceTotalMs,465.142,445.971,-19.170999999999992,-4.121537078999527
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,userMeasureMs,509.398,489.296,-20.102000000000032,-3.9462267225234604
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,scriptingMs,284.927,275.124,-9.802999999999997,-3.4405303814661337
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,layoutMs,105.26,95.32,-9.940000000000012,-9.443283298498962
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,styleRecalcMs,41.573,36.85,-4.722999999999999,-11.360738941139681
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,paintMs,41.471,39.386,-2.0849999999999937,-5.02760965493958
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,fcpMs,98.273,97.738,-0.5349999999999966,-0.5444018194214029
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,lcpMs,98.273,97.738,-0.5349999999999966,-0.5444018194214029
+candidate-reserved-185,browser-rendering-scenarios,combined-features/hydration,,dclMs,813.664,812.493,-1.1709999999999354,-0.14391689935894236
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,traceTotalMs,18.525,19.473999999999997,0.9489999999999981,5.12280701754384
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,userMeasureMs,3.064,3.044,-0.020000000000000018,-0.652741514360311
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,scriptingMs,3.064,3.044,-0.020000000000000018,-0.652741514360311
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,layoutMs,10.112,10.758,0.645999999999999,6.3884493670886
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,styleRecalcMs,5.294,5.379,0.08499999999999996,1.6055912353607926
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,paintMs,0,0,0,
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,fcpMs,100.88,98.715,-2.164999999999992,-2.1461141950832596
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,lcpMs,100.88,98.715,-2.164999999999992,-2.1461141950832596
+candidate-reserved-186,browser-rendering-scenarios,attribute-reflection/client-rendering,,dclMs,54.909,53.821,-1.088000000000001,-1.9814602342056897
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,traceTotalMs,226.378,216.43900000000002,-9.938999999999965,-4.390444301124652
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,userMeasureMs,240.703,230.769,-9.933999999999997,-4.12707776803779
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,scriptingMs,46.489,45.843,-0.6459999999999937,-1.389576028737971
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,layoutMs,102.282,95.06,-7.221999999999994,-7.0608709254805335
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,styleRecalcMs,39.363,37.468,-1.894999999999996,-4.81416558697253
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,paintMs,39.694,38.954,-0.740000000000002,-1.8642616012495616
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,fcpMs,99.728,99.456,-0.27199999999999136,-0.2727418578533536
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,lcpMs,99.728,99.456,-0.27199999999999136,-0.2727418578533536
+candidate-reserved-187,browser-rendering-scenarios,attribute-reflection/hydration,,dclMs,569.082,568.643,-0.43899999999996453,-0.07714178273078298
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,traceTotalMs,29.674999999999997,31.17,1.4950000000000045,5.037910699241799
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,userMeasureMs,13.077,13.501,0.4239999999999995,3.242333868624292
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,scriptingMs,13.077,13.501,0.4239999999999995,3.242333868624292
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,layoutMs,7.773,10.4,2.6270000000000007,33.79647497748619
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,styleRecalcMs,4.415,4.234,-0.18100000000000005,-4.099660249150627
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,paintMs,3.912,3.956,0.04400000000000004,1.1247443762781195
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,fcpMs,84.98,81.692,-3.288000000000011,-3.869145681336794
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,lcpMs,84.98,81.692,-3.288000000000011,-3.869145681336794
+candidate-reserved-188,browser-rendering-scenarios,basic-components/client-rendering,,dclMs,54.132,52.338,-1.793999999999997,-3.3141210374639685
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,traceTotalMs,203.212,197.417,-5.7949999999999875,-2.8517016711611443
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,userMeasureMs,212.736,206.401,-6.3349999999999795,-2.9778692839951826
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,scriptingMs,25.702,25.451,-0.2510000000000012,-0.976577698233605
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,layoutMs,100.804,94.873,-5.930999999999997,-5.883695091464625
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,styleRecalcMs,39.566,38.611,-0.9550000000000054,-2.413688520446866
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,paintMs,40.104,38.722,-1.381999999999998,-3.4460402952323888
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,fcpMs,103.455,102.326,-1.1290000000000049,-1.0912957324440642
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,lcpMs,103.455,102.326,-1.1290000000000049,-1.0912957324440642
+candidate-reserved-189,browser-rendering-scenarios,basic-components/hydration,,dclMs,553.099,542.638,-10.461000000000013,-1.8913431411013204
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,traceTotalMs,21.328,21.561,0.23300000000000054,1.0924606151538008
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,userMeasureMs,2.909,2.878,-0.030999999999999694,-1.0656583018219257
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,scriptingMs,2.909,2.878,-0.030999999999999694,-1.0656583018219257
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,layoutMs,12.853,13.663,0.8100000000000005,6.302030654321955
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,styleRecalcMs,5.292,5.145,-0.14700000000000024,-2.777777777777779
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,paintMs,0,0,0,
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,fcpMs,97.222,94.833,-2.388999999999996,-2.4572627594577345
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,lcpMs,97.222,94.833,-2.388999999999996,-2.4572627594577345
+candidate-reserved-190,browser-rendering-scenarios,event-bindings/client-rendering,,dclMs,52.782,51.847,-0.9349999999999952,-1.7714372323898164
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,traceTotalMs,230.675,214.288,-16.387,-7.10393410642679
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,userMeasureMs,239.115,222.345,-16.77000000000001,-7.013361771532534
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,scriptingMs,44.611,43.426,-1.1849999999999952,-2.65629553249197
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,layoutMs,105.785,95.626,-10.158999999999992,-9.603440941532348
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,styleRecalcMs,41.465,36.478,-4.987000000000002,-12.02701073194261
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,paintMs,39.995,37.811,-2.1839999999999975,-5.460682585323163
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,fcpMs,95.455,99.708,4.253,4.4555025928447956
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,lcpMs,95.455,99.708,4.253,4.4555025928447956
+candidate-reserved-191,browser-rendering-scenarios,event-bindings/hydration,,dclMs,560.632,556.232,-4.399999999999977,-0.7848285506357078
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,traceTotalMs,84.29799999999999,83.28999999999999,-1.0079999999999956,-1.1957579064746482
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,userMeasureMs,47.393,45.22,-2.173000000000002,-4.585065305002855
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,scriptingMs,40.348,38.838,-1.509999999999998,-3.742440765341526
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,layoutMs,34.925,35.123,0.1980000000000004,0.5669291338582738
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,styleRecalcMs,9.276,9.498,0.22199999999999953,2.3932729624838167
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,paintMs,0,0,0,
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,fcpMs,152.38,158.032,5.652000000000015,3.7091481821761585
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,lcpMs,152.38,158.032,5.652000000000015,3.7091481821761585
+candidate-reserved-192,browser-rendering-scenarios,property-bindings/client-rendering,,dclMs,70.844,67.819,-3.0249999999999915,-4.26994523177685
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,traceTotalMs,308.499,293.549,-14.950000000000045,-4.846044881831069
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,userMeasureMs,315.398,299.64,-15.758000000000038,-4.996226989391195
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,scriptingMs,67.303,65.53,-1.7729999999999961,-2.6343550807541916
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,layoutMs,146.158,139.379,-6.778999999999996,-4.638131337319884
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,styleRecalcMs,40.887,38.14,-2.747,-6.718516888008407
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,paintMs,52.833,51.141,-1.6920000000000002,-3.2025438646300586
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,fcpMs,101.785,97.122,-4.662999999999997,-4.581225131404432
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,lcpMs,101.785,97.122,-4.662999999999997,-4.581225131404432
+candidate-reserved-193,browser-rendering-scenarios,property-bindings/hydration,,dclMs,576.81,566.757,-10.052999999999997,-1.7428616008737685
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,traceTotalMs,19.197,18.791,-0.4059999999999988,-2.1149137886127933
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,userMeasureMs,3.586,3.541,-0.04499999999999993,-1.2548800892359102
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,scriptingMs,3.586,3.541,-0.04499999999999993,-1.2548800892359102
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,layoutMs,7.91,8.31,0.40000000000000036,5.056890012642223
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,styleRecalcMs,7.399,7.292,-0.1070000000000002,-1.446141370455467
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,paintMs,0,0,0,
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,fcpMs,113.852,99.144,-14.707999999999998,-12.918525805431614
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,lcpMs,113.852,99.144,-14.707999999999998,-12.918525805431614
+candidate-reserved-194,browser-rendering-scenarios,element-references-and-slots/client-rendering,,dclMs,56.787,55.916,-0.8710000000000022,-1.5338017504006207
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,traceTotalMs,219.61499999999998,213.904,-5.710999999999984,-2.6004598957266034
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,userMeasureMs,229.324,223.709,-5.615000000000009,-2.4485008110795237
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,scriptingMs,34.843,33.196,-1.6470000000000056,-4.726917888815563
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,layoutMs,104.457,101.071,-3.3859999999999957,-3.2415252209042955
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,styleRecalcMs,40.38,37.386,-2.9939999999999998,-7.414561664190189
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,paintMs,40.808,39.303,-1.5050000000000026,-3.6880023524799133
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,fcpMs,102.044,98.254,-3.789999999999992,-3.714084120575434
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,lcpMs,102.044,98.254,-3.789999999999992,-3.714084120575434
+candidate-reserved-195,browser-rendering-scenarios,element-references-and-slots/hydration,,dclMs,561.011,555.25,-5.760999999999967,-1.0268960858164977
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,traceTotalMs,31.177999999999997,31.138,-0.039999999999995595,-0.12829559304636806
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,userMeasureMs,0.599,0.602,0.0030000000000000027,0.5008347245408995
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,scriptingMs,0.599,0.602,0.0030000000000000027,0.5008347245408995
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,layoutMs,22.716,22.6,-0.11599999999999966,-0.5106532840288724
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,styleRecalcMs,7.928,7.911,-0.017000000000000348,-0.21442986881937687
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,paintMs,0,0,0,
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,fcpMs,89.454,88.938,-0.5159999999999911,-0.5768327855657507
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,lcpMs,89.454,88.938,-0.5159999999999911,-0.5768327855657507
+candidate-reserved-196,browser-rendering-scenarios,repeat-directives/client-rendering,,dclMs,37.92,37.921,0.0009999999999976694,0.0026371308016859274
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,traceTotalMs,30.936,29.159,-1.777000000000001,-5.744116886475304
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,userMeasureMs,33.89,32.221,-1.669000000000004,-4.924756565358523
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,scriptingMs,21.95,21.972,0.022000000000002018,0.10022779043281638
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,layoutMs,2.166,1.4,-0.766,-35.36472760849493
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,styleRecalcMs,0.843,0.475,-0.368,-43.65361803084223
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,paintMs,5.501,4.696,-0.8050000000000006,-14.633702963097628
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,fcpMs,99.897,96.355,-3.5420000000000016,-3.545652021582235
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,lcpMs,99.897,96.355,-3.5420000000000016,-3.545652021582235
+candidate-reserved-197,browser-rendering-scenarios,repeat-directives/hydration,,dclMs,119.871,122.369,2.4980000000000047,2.083906866548202
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,traceTotalMs,19.766,20.29,0.5240000000000009,2.651016897703129
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,userMeasureMs,2.894,2.831,-0.06300000000000017,-2.176917760884589
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,scriptingMs,2.894,2.831,-0.06300000000000017,-2.176917760884589
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,layoutMs,11.46,11.892,0.4319999999999986,3.7696335078533982
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,styleRecalcMs,4.656,4.684,0.02800000000000047,0.6013745704467555
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,paintMs,2.238,1.506,-0.732,-32.707774798927616
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,fcpMs,86.122,84.609,-1.5130000000000052,-1.7568101065929764
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,lcpMs,86.122,84.609,-1.5130000000000052,-1.7568101065929764
+candidate-reserved-198,browser-rendering-scenarios,conditional-directives/client-rendering,,dclMs,53.305,52.261,-1.043999999999997,-1.958540474627135
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,traceTotalMs,220.455,211.872,-8.582999999999998,-3.8933115601823443
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,userMeasureMs,231.238,222.288,-8.949999999999989,-3.8704711163390026
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,scriptingMs,40.88,38.642,-2.2379999999999995,-5.474559686888448
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,layoutMs,101.506,96.839,-4.667000000000002,-4.597757768013711
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,styleRecalcMs,39.278,36.975,-2.3029999999999973,-5.8633331636030235
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,paintMs,39.97,39.052,-0.9179999999999993,-2.2967225419064263
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,fcpMs,100.701,98.848,-1.8529999999999944,-1.8401008927418694
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,lcpMs,100.701,98.848,-1.8529999999999944,-1.8401008927418694
+candidate-reserved-199,browser-rendering-scenarios,conditional-directives/hydration,,dclMs,566.626,560.22,-6.405999999999949,-1.1305517219470929
+candidate-reserved-200,browser-hydration-cpu,custom-element-hydration,chromium,warmMs,55.64999985694885,49.800000071525574,-5.849999785423279,-10.512129021493266
+candidate-reserved-201,browser-hydration-cpu,dom-binding-target-traversal,chromium,warmMs,5,5,0,0
+candidate-reserved-202,browser-hydration-cpu,native-marker-discovery,chromium,warmMs,6.849999904632568,6.949999928474426,0.10000002384185791,1.459854382979331
+candidate-reserved-203,browser-hydration-cpu,nested-repeat-marker-pairing,chromium,warmMs,10.100000023841858,10.300000071525574,0.20000004768371582,1.9801984872435563
+candidate-reserved-204,browser-hydration-cpu,adjacent-repeat-marker-pairing,chromium,warmMs,7.900000095367432,7.699999928474426,-0.20000016689300537,-2.5316476516283326
+candidate-reserved-205,browser-hydration-cpu,combined-nested-hydration,chromium,warmMs,357.5,349.60000002384186,-7.899999976158142,-2.2097902031211536
+candidate-reserved-206,browser-hydration-cpu,custom-element-hydration,firefox,warmMs,101,97,-4,-3.960396039603964
+candidate-reserved-207,browser-hydration-cpu,dom-binding-target-traversal,firefox,warmMs,5,5,0,0
+candidate-reserved-208,browser-hydration-cpu,native-marker-discovery,firefox,warmMs,9.5,9,-0.5,-5.263157894736848
+candidate-reserved-209,browser-hydration-cpu,nested-repeat-marker-pairing,firefox,warmMs,46,44,-2,-4.347826086956519
+candidate-reserved-210,browser-hydration-cpu,adjacent-repeat-marker-pairing,firefox,warmMs,48.5,48.5,0,0
+candidate-reserved-211,browser-hydration-cpu,combined-nested-hydration,firefox,warmMs,1058,1036,-22,-2.07939508506616
+candidate-reserved-212,browser-hydration-cpu,custom-element-hydration,webkit,warmMs,55.500000000000014,59.999999999999986,4.499999999999972,8.108108108108048
+candidate-reserved-213,browser-hydration-cpu,dom-binding-target-traversal,webkit,warmMs,6.999999999999986,6,-0.9999999999999858,-14.285714285714112
+candidate-reserved-214,browser-hydration-cpu,native-marker-discovery,webkit,warmMs,11,11.499999999999986,0.4999999999999858,4.545454545454408
+candidate-reserved-215,browser-hydration-cpu,nested-repeat-marker-pairing,webkit,warmMs,12,12,0,0
+candidate-reserved-216,browser-hydration-cpu,adjacent-repeat-marker-pairing,webkit,warmMs,9.499999999999986,10,0.5000000000000142,5.263157894736992
+candidate-reserved-217,browser-hydration-cpu,combined-nested-hydration,webkit,warmMs,468.5,454,-14.5,-3.094983991462108

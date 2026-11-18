@@ -105,6 +105,10 @@ The [shadow-output experiment](./docs/shadow-output-experiment.md) records a
 rejected arena/range prototype and its reproducible Rust benchmark. Deeply nested
 output improved, but sibling and small-page regressions ruled out adoption.
 
+The [native marker benchmark report](./docs/native-marker-benchmarks/README.md)
+records all 217 measured selectors, percentage timing changes, allocation and
+memory results, and environment limitations for the marker-assembly optimization.
+
 ## CLI usage
 
 Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with an optional JSON state file, or `convert` to convert a FAST declarative HTML template to another supported syntax:
