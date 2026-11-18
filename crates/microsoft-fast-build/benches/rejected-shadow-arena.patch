@@ -1,0 +1,96 @@
+diff --git a/crates/microsoft-fast-build/src/native.rs b/crates/microsoft-fast-build/src/native.rs
+--- a/crates/microsoft-fast-build/src/native.rs
++++ b/crates/microsoft-fast-build/src/native.rs
+@@ -339 +339 @@
+-        Ok(executor.out)
++        Ok(executor.out.finish())
+@@ -381 +381 @@
+-        Ok(executor.out)
++        Ok(executor.out.finish())
+@@ -664,0 +665,39 @@
++#[derive(Default)]
++struct Output {
++    text: String,
++    // Only host boundaries split ranges, not individual writes or escaped spans.
++    // Host execution is step/output bounded; unfinished hosts are depth bounded.
++    ranges: Vec<std::ops::Range<usize>>,
++    start: usize,
++    len: usize,
++    reordered: bool,
++}
++
++impl Output {
++    fn flush(&mut self) {
++        if self.start != self.text.len() {
++            self.ranges.push(self.start..self.text.len());
++            self.start = self.text.len();
++        }
++    }
++
++    fn shadow(&mut self) -> usize {
++        self.flush();
++        let slot = self.ranges.len();
++        self.ranges.push(0..0);
++        slot
++    }
++
++    fn finish(mut self) -> String {
++        if !self.reordered {
++            return self.text;
++        }
++        self.flush();
++        let mut result = String::with_capacity(self.len);
++        for range in self.ranges {
++            result.push_str(&self.text[range]);
++        }
++        result
++    }
++}
++
+@@ -668 +707 @@
+-    out: String,
++    out: Output,
+@@ -683 +722 @@
+-            out: String::new(),
++            out: Output::default(),
+@@ -688 +727,7 @@
+-        if text.len() > self.options.max_output_bytes.saturating_sub(self.out.len()) {
++        self.check_output(text.len())?;
++        self.out.text.push_str(text);
++        self.out.len += text.len();
++        Ok(())
++    }
++    fn check_output(&self, len: usize) -> Result<(), NativeRenderError> {
++        if len > self.options.max_output_bytes.saturating_sub(self.out.len) {
+@@ -691 +735,0 @@
+-        self.out.push_str(text);
+@@ -1003,3 +1047,5 @@
+-                    // JS computes shadow before host attributes. Keep error ordering
+-                    // while retaining a single bounded output allocation.
+-                    let shadow_start = self.out.len();
++                    // Reserve the host's output position, but evaluate its shadow first.
++                    // Only range metadata moves; descendant bytes stay in the arena.
++                    let slot =
++                        (!self.plan.bodies[component.shadow].is_empty()).then(|| self.out.shadow());
++                    let shadow_start = self.out.len;
+@@ -1014 +1060,10 @@
+-                    let shadow = self.out.split_off(shadow_start);
++                    let shadow_len = self.out.len - shadow_start;
++                    if shadow_len == 0 && slot.is_some() {
++                        self.out.ranges.pop();
++                    } else if shadow_len != 0 {
++                        self.out.flush();
++                        // Keep the staging writer's budget/error order: host attributes
++                        // are checked without the shadow, then it is charged once below.
++                        self.out.len -= shadow_len;
++                    }
++                    let host_start = self.out.text.len();
+@@ -1036 +1091,7 @@
+-                    self.push(&shadow)?;
++                    if shadow_len != 0 {
++                        self.out.ranges[slot.unwrap()] = host_start..self.out.text.len();
++                        self.out.start = self.out.text.len();
++                        self.out.reordered = true;
++                        self.check_output(shadow_len)?;
++                        self.out.len += shadow_len;
++                    }
