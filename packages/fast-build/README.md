@@ -62,7 +62,9 @@ const html = bytes.toString("utf8");
 
 The shared Rust executor is required for server rendering. `.node` is Node.js's
 standard native-addon extension; `.json` artifacts contain semantic template
-data, not machine code. Loading validates the supported artifact schema once.
+data, not machine code. Loading validates the supported artifact schema once,
+decoding wire operations directly into the typed native execution plan without
+an intermediate JSON IR. Unreachable data is still validated before being discarded.
 
 The four synchronous methods are `renderEntryJson(state)`,
 `renderTemplateJson(state)`, `renderHostJson(name, state)` and

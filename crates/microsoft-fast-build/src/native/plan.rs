@@ -1,35 +1,72 @@
-//! Typed private execution of decoded semantic artifacts.
-//! JSON instructions exist only during loading.
+//! Validated direct decoding of semantic FAST artifacts into execution-only data.
 use super::{J, V};
 use std::collections::HashMap;
 use std::sync::Arc;
 
-fn array(v: &V) -> &[V] {
-    v.as_array().unwrap()
-}
-fn string(v: &V) -> &str {
-    v.as_str().unwrap()
-}
-fn index(v: &V) -> usize {
-    v.as_u64().unwrap() as usize
+type Result<T> = std::result::Result<T, ()>;
+const LIMIT: usize = 1_000_000;
+
+fn fields(v: &V, names: &[&str]) -> Result<()> {
+    let obj = v.as_object().ok_or(())?;
+    if obj.len() != names.len() || names.iter().any(|name| !obj.contains_key(*name)) {
+        return Err(());
+    }
+    Ok(())
 }
 
-fn decoded(v: &V) -> J {
-    match string(&v[0]) {
-        "null" => J::Null,
-        "bool" => J::Bool(v[1].as_bool().unwrap()),
-        "number" => J::Number(string(&v[1]).parse().unwrap()),
-        "string" => J::String(string(&v[1]).into()),
-        "array" => J::Array(array(&v[1]).iter().map(decoded).collect()),
-        "object" => J::Object(
-            v[1].as_object()
-                .unwrap()
-                .iter()
-                .map(|(k, v)| (k.clone(), decoded(v)))
-                .collect(),
-        ),
-        _ => unreachable!("validated value"),
+fn array(v: &V) -> Result<&[V]> {
+    v.as_array().map(Vec::as_slice).ok_or(())
+}
+
+fn string(v: &V) -> Result<&str> {
+    v.as_str().ok_or(())
+}
+
+fn literal(v: &V) -> Result<&str> {
+    fields(v, &["type", "html"])?;
+    if v["type"] != "literal" {
+        return Err(());
     }
+    string(&v["html"])
+}
+
+fn count(v: &V) -> Result<usize> {
+    v.as_u64()
+        .filter(|n| *n <= LIMIT as u64)
+        .map(|n| n as usize)
+        .ok_or(())
+}
+
+fn decoded(v: &V, depth: usize) -> Result<J> {
+    if depth > 64 {
+        return Err(());
+    }
+    let kind = string(&v["type"])?;
+    if kind == "null" {
+        fields(v, &["type"])?;
+        return Ok(J::Null);
+    }
+    fields(v, &["type", "value"])?;
+    Ok(match kind {
+        "bool" => J::Bool(v["value"].as_bool().ok_or(())?),
+        "number" => J::Number(string(&v["value"])?.parse().map_err(|_| ())?),
+        "string" => J::String(string(&v["value"])?.into()),
+        "array" => J::Array(
+            array(&v["value"])?
+                .iter()
+                .map(|v| decoded(v, depth + 1))
+                .collect::<Result<_>>()?,
+        ),
+        "object" => J::Object(
+            v["value"]
+                .as_object()
+                .ok_or(())?
+                .iter()
+                .map(|(k, v)| Ok((k.clone(), decoded(v, depth + 1)?)))
+                .collect::<Result<_>>()?,
+        ),
+        _ => return Err(()),
+    })
 }
 
 #[derive(Debug)]
@@ -40,8 +77,20 @@ pub(super) struct Segment {
 
 pub(super) type Path = Vec<Segment>;
 
-pub(super) fn path(v: &V) -> Path {
-    array(v).iter().map(|v| segment(string(v))).collect()
+fn strings(v: &V) -> Result<Vec<String>> {
+    let values = array(v)?;
+    if values.is_empty() {
+        return Err(());
+    }
+    values.iter().map(|v| Ok(string(v)?.into())).collect()
+}
+
+fn path(v: &V) -> Result<Path> {
+    let values = array(v)?;
+    if values.is_empty() {
+        return Err(());
+    }
+    values.iter().map(|v| Ok(segment(string(v)?))).collect()
 }
 
 fn segment(key: &str) -> Segment {
@@ -62,12 +111,18 @@ pub(super) enum Operand {
 }
 
 impl Operand {
-    fn load(v: &V) -> Self {
-        if v[0] == "path" {
-            Self::Path(path(&v[1]))
-        } else {
-            Self::Value(decoded(&v[1]))
-        }
+    fn load(v: &V) -> Result<Self> {
+        Ok(match string(&v["type"])? {
+            "path" => {
+                fields(v, &["type", "path"])?;
+                Self::Path(path(&v["path"])?)
+            }
+            "value" => {
+                fields(v, &["type", "value"])?;
+                Self::Value(decoded(&v["value"], 0)?)
+            }
+            _ => return Err(()),
+        })
     }
 }
 
@@ -82,16 +137,16 @@ pub(super) enum Comparison {
 }
 
 impl Comparison {
-    fn load(v: &V) -> Self {
-        match string(v) {
+    fn load(v: &V) -> Result<Self> {
+        Ok(match string(v)? {
             "==" => Self::Equal,
             "!=" => Self::NotEqual,
             ">" => Self::Greater,
             "<" => Self::Less,
             ">=" => Self::GreaterEqual,
             "<=" => Self::LessEqual,
-            _ => unreachable!("validated comparison"),
-        }
+            _ => return Err(()),
+        })
     }
 }
 
@@ -105,19 +160,40 @@ pub(super) enum Condition {
 }
 
 impl Condition {
-    fn load(v: &V) -> Self {
-        match string(&v[0]) {
-            "||" => Self::Or(Box::new(Self::load(&v[1])), Box::new(Self::load(&v[2]))),
-            "&&" => Self::And(Box::new(Self::load(&v[1])), Box::new(Self::load(&v[2]))),
-            "not" => Self::Not(path(&v[1])),
-            "truthy" => Self::Truthy(path(&v[1])),
-            "compare" => Self::Compare(
-                Comparison::load(&v[1]),
-                path(&v[2]),
-                Box::new(Operand::load(&v[3])),
-            ),
-            _ => unreachable!("validated condition"),
+    fn load(v: &V, depth: usize) -> Result<Self> {
+        if depth > 64 {
+            return Err(());
         }
+        Ok(match string(&v["type"])? {
+            "or" | "and" => {
+                fields(v, &["type", "left", "right"])?;
+                let left = Box::new(Self::load(&v["left"], depth + 1)?);
+                let right = Box::new(Self::load(&v["right"], depth + 1)?);
+                if v["type"] == "or" {
+                    Self::Or(left, right)
+                } else {
+                    Self::And(left, right)
+                }
+            }
+            "not" | "truthy" => {
+                fields(v, &["type", "path"])?;
+                let path = path(&v["path"])?;
+                if v["type"] == "not" {
+                    Self::Not(path)
+                } else {
+                    Self::Truthy(path)
+                }
+            }
+            "compare" => {
+                fields(v, &["type", "operator", "path", "value"])?;
+                Self::Compare(
+                    Comparison::load(&v["operator"])?,
+                    path(&v["path"])?,
+                    Box::new(Operand::load(&v["value"])?),
+                )
+            }
+            _ => return Err(()),
+        })
     }
 }
 
@@ -141,38 +217,67 @@ pub(super) enum Attribute {
 }
 
 impl Attribute {
-    fn load(v: &V) -> Self {
-        match string(&v[0]) {
-            "literal" => Self::Literal(string(&v[1]).into()),
+    fn load(v: &V) -> Result<Self> {
+        Ok(match string(&v["type"])? {
+            "literal" => Self::Literal(literal(v)?.into()),
             "conditional" => {
-                Self::Conditional(Box::new(Condition::load(&v[1])), string(&v[2]).into())
+                fields(v, &["type", "condition", "html"])?;
+                Self::Conditional(
+                    Box::new(Condition::load(&v["condition"], 0)?),
+                    string(&v["html"])?.into(),
+                )
             }
-            "attribute" => Self::Bound {
-                name: string(&v[1]).into(),
-                path: path(&v[2]),
-                boolean: v[3].as_bool().unwrap(),
-                property: v[4].as_bool().unwrap(),
-            },
-            "quoted" => Self::Quoted(
-                string(&v[1]).into(),
-                array(&v[2])
-                    .iter()
-                    .map(|p| {
-                        if p[0] == "literal" {
-                            Part::Literal(string(&p[1]).into())
-                        } else {
-                            Part::Segment(path(&p[1]))
-                        }
-                    })
-                    .collect(),
-            ),
-            _ => unreachable!("validated attribute"),
-        }
+            "attribute" => {
+                fields(v, &["type", "name", "path", "boolean", "primitive"])?;
+                Self::Bound {
+                    name: string(&v["name"])?.into(),
+                    path: path(&v["path"])?,
+                    boolean: v["boolean"].as_bool().ok_or(())?,
+                    property: v["primitive"].as_bool().ok_or(())?,
+                }
+            }
+            "quoted" => {
+                fields(v, &["type", "name", "parts"])?;
+                Self::Quoted(
+                    string(&v["name"])?.into(),
+                    array(&v["parts"])?
+                        .iter()
+                        .map(|p| {
+                            Ok(match string(&p["type"])? {
+                                "literal" => {
+                                    fields(p, &["type", "html"])?;
+                                    Part::Literal(string(&p["html"])?.into())
+                                }
+                                "segment" => {
+                                    fields(p, &["type", "path"])?;
+                                    Part::Segment(path(&p["path"])?)
+                                }
+                                _ => return Err(()),
+                            })
+                        })
+                        .collect::<Result<_>>()?,
+                )
+            }
+            _ => return Err(()),
+        })
     }
 }
 
-fn attrs(v: &V) -> Vec<Attribute> {
-    array(v).iter().map(Attribute::load).collect()
+fn attrs(v: &V) -> Result<Vec<Attribute>> {
+    array(v)?.iter().map(Attribute::load).collect()
+}
+
+fn defaults(v: &V) -> Result<Vec<(String, Attribute)>> {
+    array(v)?
+        .iter()
+        .map(|v| {
+            fields(v, &["name", "attribute"])?;
+            Ok((
+                string(&v["name"])?.into(),
+                Attribute::load(&v["attribute"])?,
+            ))
+        })
+        .collect()
 }
 
 #[derive(Debug)]
@@ -184,13 +289,21 @@ pub(super) struct Tag {
 }
 
 impl Tag {
-    fn load(v: &V) -> Self {
-        Self {
-            plain: attrs(&v["plain"]),
-            hydrated: attrs(&v["hydrated"]),
-            count: index(&v["count"]),
-            ending: string(&v["ending"]).into(),
-        }
+    fn load(v: &V, operation: bool) -> Result<Self> {
+        fields(
+            v,
+            if operation {
+                &["type", "plain", "hydrated", "count", "ending"]
+            } else {
+                &["plain", "hydrated", "count", "ending"]
+            },
+        )?;
+        Ok(Self {
+            plain: attrs(&v["plain"])?,
+            hydrated: attrs(&v["hydrated"])?,
+            count: count(&v["count"])?,
+            ending: string(&v["ending"])?.into(),
+        })
     }
 }
 
@@ -235,6 +348,20 @@ pub(super) enum Operation {
     Element(Box<Element>),
 }
 
+impl Operation {
+    fn target(&mut self) -> Option<&mut usize> {
+        match self {
+            Self::Call(body) => Some(body),
+            Self::Element(element) => Some(&mut element.body),
+            Self::Dynamic(dynamic) => match dynamic.as_mut() {
+                Dynamic::When(_, body) | Dynamic::Repeat { body, .. } => Some(body),
+                _ => None,
+            },
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub(super) struct Component {
     pub name: Arc<str>,
@@ -251,30 +378,391 @@ pub(super) struct Plan {
     pub names: HashMap<Arc<str>, usize>,
 }
 
+struct Loader<'a> {
+    ids: HashMap<&'a str, usize>,
+    names: HashMap<Arc<str>, usize>,
+    components: Vec<Component>,
+    operations: usize,
+}
+
+impl Loader<'_> {
+    fn reference(&self, v: &V) -> Result<usize> {
+        self.ids.get(string(v)?).copied().ok_or(())
+    }
+
+    fn component(&self, v: &V) -> Result<usize> {
+        self.names.get(string(v)?).copied().ok_or(())
+    }
+
+    fn body(&mut self, ops: &[V]) -> Result<Vec<Operation>> {
+        self.operations = self.operations.checked_add(ops.len()).ok_or(())?;
+        if self.operations > LIMIT {
+            return Err(());
+        }
+        ops.iter()
+            .map(|v| {
+                Ok(match string(&v["type"])? {
+                    "literal" => Operation::Literal(literal(v)?.into()),
+                    "template" => {
+                        fields(v, &["type", "name"])?;
+                        Operation::Call(self.reference(&v["name"])?)
+                    }
+                    "component" => {
+                        fields(v, &["type", "name"])?;
+                        Operation::Call(self.components[self.component(&v["name"])?].host)
+                    }
+                    "binding" => {
+                        fields(v, &["type", "path", "escape"])?;
+                        Operation::Dynamic(Box::new(Dynamic::Binding(
+                            path(&v["path"])?,
+                            v["escape"].as_bool().ok_or(())?,
+                        )))
+                    }
+                    "when" => {
+                        fields(v, &["type", "condition", "template"])?;
+                        Operation::Dynamic(Box::new(Dynamic::When(
+                            Box::new(Condition::load(&v["condition"], 0)?),
+                            self.reference(&v["template"])?,
+                        )))
+                    }
+                    "repeat" => {
+                        fields(
+                            v,
+                            &["type", "alias", "collection", "diagnostic", "template"],
+                        )?;
+                        Operation::Dynamic(Box::new(Dynamic::Repeat {
+                            alias: strings(&v["alias"])?,
+                            path: path(&v["collection"])?,
+                            diagnostic: string(&v["diagnostic"])?.into(),
+                            body: self.reference(&v["template"])?,
+                        }))
+                    }
+                    "tag" => Operation::Tag(Box::new(Tag::load(v, true)?)),
+                    "element" => {
+                        fields(
+                            v,
+                            &[
+                                "type", "name", "body", "closing", "opening", "props", "entry",
+                                "normal", "count", "defaults",
+                            ],
+                        )?;
+                        Operation::Element(Box::new(Element {
+                            component: self.component(&v["name"])?,
+                            body: self.reference(&v["body"])?,
+                            closing: string(&v["closing"])?.into(),
+                            opening: Tag::load(&v["opening"], false)?,
+                            props: array(&v["props"])?
+                                .iter()
+                                .map(|p| {
+                                    fields(p, &["camelCase", "unchanged", "dataset", "value"])?;
+                                    Ok(Property {
+                                        keys: [
+                                            vec![segment(string(&p["camelCase"])?)],
+                                            vec![segment(string(&p["unchanged"])?)],
+                                        ],
+                                        group: if p["dataset"].is_null() {
+                                            None
+                                        } else {
+                                            Some(string(&p["dataset"])?.into())
+                                        },
+                                        value: Operand::load(&p["value"])?,
+                                    })
+                                })
+                                .collect::<Result<_>>()?,
+                            entry: attrs(&v["entry"])?,
+                            normal: attrs(&v["normal"])?,
+                            count: count(&v["count"])?,
+                            defaults: defaults(&v["defaults"])?,
+                        }))
+                    }
+                    _ => return Err(()),
+                })
+            })
+            .collect()
+    }
+}
+
+// Preserve the historical metadata-expansion accounting without constructing IR.
+// Only already validated host defaults enter this serialization-size calculation.
+struct Bytes(usize);
+
+impl std::io::Write for Bytes {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        self.0 = self
+            .0
+            .checked_add(bytes.len())
+            .ok_or_else(|| std::io::Error::other("FAST metadata size overflow"))?;
+        Ok(bytes.len())
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        Ok(())
+    }
+}
+
+fn json_bytes(v: &(impl serde::Serialize + ?Sized)) -> Result<usize> {
+    let mut bytes = Bytes(0);
+    serde_json::to_writer(&mut bytes, v).map_err(|_| ())?;
+    Ok(bytes.0)
+}
+
+fn sequence_bytes(lengths: impl IntoIterator<Item = Result<usize>>) -> Result<usize> {
+    let mut size = 2usize;
+    let mut first = true;
+    for length in lengths {
+        size = size
+            .checked_add(length?)
+            .and_then(|n| n.checked_add(usize::from(!first)))
+            .ok_or(())?;
+        first = false;
+    }
+    Ok(size)
+}
+
+fn value_bytes(v: &V) -> Result<usize> {
+    let kind = string(&v["type"])?;
+    let value = match kind {
+        "null" => return sequence_bytes([json_bytes(&v["type"])]),
+        "array" => sequence_bytes(array(&v["value"])?.iter().map(value_bytes))?,
+        "object" => sequence_bytes(v["value"].as_object().ok_or(())?.iter().map(|(key, v)| {
+            json_bytes(key)?
+                .checked_add(1)
+                .and_then(|n| n.checked_add(value_bytes(v).ok()?))
+                .ok_or(())
+        }))?,
+        _ => json_bytes(&v["value"])?,
+    };
+    sequence_bytes([json_bytes(&v["type"]), Ok(value)])
+}
+
+fn operand_bytes(v: &V) -> Result<usize> {
+    if v["type"] == "path" {
+        sequence_bytes([Ok(6), json_bytes(&v["path"])])
+    } else {
+        sequence_bytes([Ok(7), value_bytes(&v["value"])])
+    }
+}
+
+fn condition_bytes(v: &V) -> Result<usize> {
+    match string(&v["type"])? {
+        "and" | "or" => sequence_bytes([
+            Ok(4),
+            condition_bytes(&v["left"]),
+            condition_bytes(&v["right"]),
+        ]),
+        "compare" => sequence_bytes([
+            Ok(9),
+            json_bytes(&v["operator"]),
+            json_bytes(&v["path"]),
+            operand_bytes(&v["value"]),
+        ]),
+        _ => sequence_bytes([json_bytes(&v["type"]), json_bytes(&v["path"])]),
+    }
+}
+
+fn attribute_bytes(v: &V) -> Result<usize> {
+    match string(&v["type"])? {
+        "literal" => sequence_bytes([Ok(9), json_bytes(&v["html"])]),
+        "attribute" => sequence_bytes([
+            Ok(11),
+            json_bytes(&v["name"]),
+            json_bytes(&v["path"]),
+            json_bytes(&v["boolean"]),
+            json_bytes(&v["primitive"]),
+        ]),
+        "conditional" => sequence_bytes([
+            Ok(13),
+            condition_bytes(&v["condition"]),
+            json_bytes(&v["html"]),
+        ]),
+        "quoted" => sequence_bytes([
+            Ok(8),
+            json_bytes(&v["name"]),
+            sequence_bytes(array(&v["parts"])?.iter().map(|p| {
+                if p["type"] == "literal" {
+                    attribute_bytes(p)
+                } else {
+                    sequence_bytes([Ok(9), json_bytes(&p["path"])])
+                }
+            })),
+        ]),
+        _ => Err(()),
+    }
+}
+
+fn defaults_bytes(v: Option<&V>) -> Result<usize> {
+    match v {
+        None => Ok(2),
+        Some(v) => {
+            sequence_bytes(array(v)?.iter().map(|v| {
+                sequence_bytes([json_bytes(&v["name"]), attribute_bytes(&v["attribute"])])
+            }))
+        }
+    }
+}
+
+struct Root<'a> {
+    shadow: usize,
+    tag: &'a str,
+    defaults: Option<&'a V>,
+    defaults_bytes: usize,
+    interior: &'a [V],
+}
+
 impl Plan {
-    /// Called only after eager validation of the entire wire graph.
-    pub fn load(ir: &V) -> Self {
-        let source = array(&ir["bodies"]);
-        let mut remap = vec![usize::MAX; source.len()];
-        let mut pending = vec![index(&ir["entry"])];
-        for component in ir["components"].as_object().unwrap().values() {
-            pending.extend([index(&component["host"]), index(&component["shadow"])]);
+    pub fn load(wire: &V) -> Result<Self> {
+        fields(wire, &["entry", "templates", "components"])?;
+        let templates = wire["templates"].as_object().ok_or(())?;
+        if templates.len() >= LIMIT || templates.keys().any(String::is_empty) {
+            return Err(());
+        }
+        let registry = wire["components"].as_object().ok_or(())?;
+        let mut loader = Loader {
+            ids: templates
+                .keys()
+                .enumerate()
+                .map(|(id, name)| (name.as_str(), id))
+                .collect(),
+            names: HashMap::new(),
+            components: Vec::new(),
+            operations: 0,
+        };
+        let entry = templates.len();
+        let mut bodies: Vec<Vec<Operation>> = (0..=entry).map(|_| Vec::new()).collect();
+        let empty = bodies.len();
+        if !registry.is_empty() {
+            bodies.push(Vec::new());
+        }
+        let mut roots: HashMap<&str, Root<'_>> = HashMap::new();
+        let mut derived_bytes = 0usize;
+        for (name, reference) in registry {
+            if name.is_empty() {
+                return Err(());
+            }
+            loader.reference(reference)?;
+            let reference = string(reference)?;
+            if !roots.contains_key(reference) {
+                let all_ops = array(&templates[reference])?;
+                let (host_defaults, ops) = if all_ops
+                    .first()
+                    .is_some_and(|v| v["type"] == "host-attributes")
+                {
+                    fields(&all_ops[0], &["type", "attributes"])?;
+                    // Validate defaults even when all component hosts are unused.
+                    defaults(&all_ops[0]["attributes"])?;
+                    (Some(&all_ops[0]["attributes"]), &all_ops[1..])
+                } else {
+                    (None, all_ops)
+                };
+                if ops.len() < 2 {
+                    return Err(());
+                }
+                let tag = literal(&ops[0])?;
+                if literal(ops.last().ok_or(())?)? != "</template>" {
+                    return Err(());
+                }
+                let shadow = bodies.len();
+                bodies.push(Vec::new());
+                derived_bytes = derived_bytes
+                    .checked_add(json_bytes(&templates[reference])?)
+                    .ok_or(())?;
+                roots.insert(
+                    reference,
+                    Root {
+                        shadow,
+                        tag,
+                        defaults: host_defaults,
+                        defaults_bytes: defaults_bytes(host_defaults)?,
+                        interior: &ops[1..ops.len() - 1],
+                    },
+                );
+            }
+            let root = &roots[reference];
+            derived_bytes = derived_bytes
+                .checked_add(root.defaults_bytes)
+                .and_then(|n| n.checked_add(root.tag.len().checked_mul(2)?))
+                .and_then(|n| n.checked_add(name.len().checked_mul(5)?))
+                .and_then(|n| n.checked_add(512))
+                .ok_or(())?;
+            if derived_bytes > 64 * 1024 * 1024 {
+                return Err(());
+            }
+            let host = bodies.len();
+            let component = loader.components.len();
+            let base = format!("<{name}");
+            let opening = format!("{base}>");
+            let host_defaults = match root.defaults {
+                Some(v) => defaults(v)?,
+                None => Vec::new(),
+            };
+            bodies.push(vec![Operation::Element(Box::new(Element {
+                component,
+                body: empty,
+                closing: format!("</{name}>"),
+                opening: Tag {
+                    plain: vec![Attribute::Literal(opening.clone())],
+                    hydrated: vec![Attribute::Literal(opening)],
+                    count: 0,
+                    ending: ">".into(),
+                },
+                props: Vec::new(),
+                entry: vec![Attribute::Literal(base.clone())],
+                normal: vec![Attribute::Literal(base)],
+                count: 0,
+                defaults: host_defaults,
+            }))]);
+            let name: Arc<str> = Arc::from(name.as_str());
+            loader.names.insert(name.clone(), component);
+            loader.components.push(Component {
+                name,
+                shadow: root.shadow,
+                host,
+                tag: root.tag.into(),
+            });
+        }
+        if bodies.len() > LIMIT {
+            return Err(());
+        }
+        loader.operations = registry.len();
+        for (name, ops) in templates {
+            let ops = array(ops)?;
+            let ops = if roots.contains_key(name.as_str())
+                && ops.first().is_some_and(|v| v["type"] == "host-attributes")
+            {
+                &ops[1..]
+            } else {
+                ops
+            };
+            bodies[loader.ids[name.as_str()]] = loader.body(ops)?;
+        }
+        for root in roots.values() {
+            bodies[root.shadow] = loader.body(root.interior)?;
+        }
+        bodies[entry] = loader.body(array(&wire["entry"])?)?;
+        Ok(Self {
+            entry,
+            bodies,
+            components: loader.components,
+            names: loader.names,
+        }
+        .compact())
+    }
+
+    /// Validate every body before following references and dropping unreachable data.
+    fn compact(mut self) -> Self {
+        let mut remap = vec![usize::MAX; self.bodies.len()];
+        let mut pending = vec![self.entry];
+        for component in &self.components {
+            pending.extend([component.host, component.shadow]);
         }
         while let Some(body) = pending.pop() {
             if remap[body] != usize::MAX {
                 continue;
             }
             remap[body] = 0;
-            for operation in array(&source[body]) {
-                let target = match string(&operation[0]) {
-                    "call" => Some(index(&operation[1])),
-                    "when" => Some(index(&operation[2])),
-                    "repeat" => Some(index(&operation[4])),
-                    "element" => Some(index(&operation[1]["body"])),
-                    _ => None,
-                };
-                if let Some(target) = target {
-                    pending.push(target);
+            for operation in &mut self.bodies[body] {
+                if let Some(target) = operation.target() {
+                    pending.push(*target);
                 }
             }
         }
@@ -285,86 +773,28 @@ impl Plan {
                 next += 1;
             }
         }
-        let reference = |value: &V| remap[index(value)];
-        let components: Vec<_> = ir["components"]
-            .as_object()
-            .unwrap()
-            .iter()
-            .map(|(name, c)| Component {
-                name: Arc::from(name.as_str()),
-                shadow: reference(&c["shadow"]),
-                host: reference(&c["host"]),
-                tag: string(&c["tag"]).into(),
-            })
-            .collect();
-        let names: HashMap<_, _> = components
-            .iter()
-            .enumerate()
-            .map(|(id, c)| (c.name.clone(), id))
-            .collect();
-        let bodies = source
-            .iter()
-            .enumerate()
-            .filter(|(id, _)| remap[*id] != usize::MAX)
-            .map(|(_, body)| {
-                array(body)
-                    .iter()
-                    .map(|op| match string(&op[0]) {
-                        "literal" => Operation::Literal(string(&op[1]).into()),
-                        "tag" => Operation::Tag(Box::new(Tag::load(&op[1]))),
-                        "call" => Operation::Call(reference(&op[1])),
-                        "binding" => Operation::Dynamic(Box::new(Dynamic::Binding(
-                            path(&op[1]),
-                            op[2].as_bool().unwrap(),
-                        ))),
-                        "when" => Operation::Dynamic(Box::new(Dynamic::When(
-                            Box::new(Condition::load(&op[1])),
-                            reference(&op[2]),
-                        ))),
-                        "repeat" => Operation::Dynamic(Box::new(Dynamic::Repeat {
-                            alias: array(&op[1]).iter().map(|v| string(v).into()).collect(),
-                            path: path(&op[2]),
-                            diagnostic: string(&op[3]).into(),
-                            body: reference(&op[4]),
-                        })),
-                        "element" => {
-                            let el = &op[1];
-                            Operation::Element(Box::new(Element {
-                                component: names[string(&el["name"])],
-                                body: reference(&el["body"]),
-                                closing: string(&el["closing"]).into(),
-                                opening: Tag::load(&el["opening"]),
-                                props: array(&el["props"])
-                                    .iter()
-                                    .map(|p| Property {
-                                        keys: [
-                                            vec![segment(string(&p[0]))],
-                                            vec![segment(string(&p[1]))],
-                                        ],
-                                        group: p[2].as_str().map(String::from),
-                                        value: Operand::load(&p[3]),
-                                    })
-                                    .collect(),
-                                entry: attrs(&el["entry"]),
-                                normal: attrs(&el["normal"]),
-                                count: index(&el["count"]),
-                                defaults: array(&el["defaults"])
-                                    .iter()
-                                    .map(|p| (string(&p[0]).into(), Attribute::load(&p[1])))
-                                    .collect(),
-                            }))
-                        }
-                        _ => unreachable!("validated operation"),
-                    })
-                    .collect()
-            })
-            .collect();
-        Self {
-            entry: reference(&ir["entry"]),
-            bodies,
-            components,
-            names,
+        self.entry = remap[self.entry];
+        for component in &mut self.components {
+            component.host = remap[component.host];
+            component.shadow = remap[component.shadow];
         }
+        self.bodies = self
+            .bodies
+            .into_iter()
+            .enumerate()
+            .filter_map(|(id, mut body)| {
+                if remap[id] == usize::MAX {
+                    return None;
+                }
+                for operation in &mut body {
+                    if let Some(target) = operation.target() {
+                        *target = remap[*target];
+                    }
+                }
+                Some(body)
+            })
+            .collect();
+        self
     }
 }
 
@@ -372,6 +802,76 @@ impl Plan {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn operation_budget_includes_preceding_and_derived_bodies() {
+        let mut loader = Loader {
+            ids: HashMap::new(),
+            names: HashMap::new(),
+            components: Vec::new(),
+            operations: LIMIT - 3,
+        };
+        let interior = [json!({"type":"literal","html":"shadow"})];
+        loader.body(&interior).unwrap();
+        let complete = [
+            json!({"type":"literal","html":"<template>"}),
+            json!({"type":"literal","html":"</template>"}),
+        ];
+        loader.body(&complete).unwrap();
+        loader.body(&[]).unwrap();
+        assert!(loader.body(&interior).is_err());
+    }
+
+    #[test]
+    fn host_default_expansion_counts_original_encoded_bytes() {
+        let attributes = json!([
+            ["literal", " role=\"list\"\n🦀"],
+            ["attribute", "title", ["items", "+01"], false, true],
+            [
+                "quoted", "class",
+                [["literal", "prefix\""], ["segment", ["items", "length"]]]
+            ],
+            [
+                "conditional",
+                [
+                    "||", ["not", [""]],
+                    ["&&", ["truthy", ["y"]], ["compare", ">=", ["n"], ["path", ["other"]]]]
+                ],
+                " selected"
+            ],
+            [
+                "conditional",
+                ["compare", "!=", ["value"], ["value", ["object", {
+                    "escaped\nkey\"":["array",[
+                        ["number","01.00"],["bool",true],["bool",false],["null"],
+                        ["string","<&"],["object",{"n":["number","-0"]}],
+                    ]],
+                    "z":["number","Infinity"],
+                }]]],
+                " checked"
+            ],
+        ]);
+        let expected: V = attributes
+            .as_array()
+            .unwrap()
+            .iter()
+            .enumerate()
+            .map(|(index, attribute)| json!([format!("attribute{index}"), attribute]))
+            .collect();
+        let ir = json!({
+            "entry":0,
+            "bodies":[[],[["element",{"defaults":expected}]],[]],
+            "components":{"test-card":{"host":1,"shadow":2,"tag":"<template>"}},
+        });
+        let wire = crate::server_plan::encode(&ir);
+        let attributes = &wire["templates"]["template0"][0]["attributes"];
+        defaults(attributes).unwrap();
+        assert_eq!(
+            defaults_bytes(Some(attributes)).unwrap(),
+            serde_json::to_vec(&expected).unwrap().len(),
+        );
+        Plan::load(&wire).unwrap();
+    }
 
     #[test]
     fn preparation_keeps_public_roots_without_unreferenced_dsd_copies() {
@@ -395,10 +895,7 @@ mod tests {
                     .unwrap()
                     .push(json!({"type":"template","name":"dsd"}));
             }
-            let ir = crate::server_plan::decode(wire.clone()).unwrap();
-            super::super::validate_artifact(&ir).unwrap();
-            let prepared = Plan::load(&ir);
-            drop(ir);
+            let prepared = Plan::load(&wire).unwrap();
             assert_eq!(
                 prepared.bodies.len(),
                 if directly_referenced { 6 } else { 5 }
@@ -456,21 +953,18 @@ mod tests {
 
     #[test]
     fn preparation_follows_skipped_control_flow_and_cycles_without_recursion() {
-        let ir = json!({
-            "entry":5,
-            "bodies":[
-                [["literal","unused"]],
-                [["call",2]],
-                [["when",["truthy",["again"]],1]],
-                [["repeat",["item"],["items"],"item in items",1]],
-                [["call",3]],
-                [["when",["truthy",["enabled"]],4]],
-                [["call",6]],
-            ],
+        let wire = json!({
+            "entry":[{"type":"when","condition":{"type":"truthy","path":["enabled"]},"template":"d"}],
+            "templates":{
+                "a":[{"type":"template","name":"b"}],
+                "b":[{"type":"when","condition":{"type":"truthy","path":["again"]},"template":"a"}],
+                "c":[{"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"a"}],
+                "d":[{"type":"template","name":"c"}],
+                "unused":[{"type":"template","name":"unused"}],
+            },
             "components":{},
         });
-        super::super::validate_artifact(&ir).unwrap();
-        let prepared = Plan::load(&ir);
+        let prepared = Plan::load(&wire).unwrap();
         assert_eq!(prepared.bodies.len(), 5);
         assert_eq!(prepared.entry, 4);
         assert!(matches!(prepared.bodies[0][0], Operation::Call(1)));
@@ -486,71 +980,55 @@ mod tests {
     #[test]
     fn prepared_plan_owns_decoded_values_and_resolves_numeric_targets() {
         let attributes = json!([
-            ["literal", "fixed"],
-            [
-                "conditional",
-                [
-                    "||",
-                    ["not", ["x"]],
-                    [
-                        "&&",
-                        ["truthy", ["y"]],
-                        ["compare", ">=", ["n"], ["path", ["other"]]]
-                    ]
-                ],
-                " selected"
-            ],
-            ["attribute", "title", ["items", "+01"], false, true],
-            [
-                "quoted",
-                "class",
-                [["literal", "prefix"], ["segment", ["items", "length"]]]
-            ],
+            {"type":"literal","html":"fixed"},
+            {"type":"conditional","condition":{
+                "type":"or","left":{"type":"not","path":["x"]},
+                "right":{"type":"and","left":{"type":"truthy","path":["y"]},
+                    "right":{"type":"compare","operator":">=","path":["n"],"value":{"type":"path","path":["other"]}}},
+            },"html":" selected"},
+            {"type":"attribute","name":"title","path":["items","+01"],"boolean":false,"primitive":true},
+            {"type":"quoted","name":"class","parts":[{"type":"literal","html":"prefix"},{"type":"segment","path":["items","length"]}]},
         ]);
         let tag = json!({
             "plain":attributes,"hydrated":attributes,"count":2,"ending":">",
         });
-        let value = json!(["object", {
-            "z":["number","Infinity"],
-            "a":["array",[
-                ["number","01.00"],["bool",true],["null"],["string","<&"],
-                ["object",{"n":["number","-0"]}],
-            ]],
-        }]);
-        let ir = json!({
-            "entry":1,
-            "bodies":[
-                [["literal","ok"],["tag",tag]],
-                [
-                    ["call",0],["binding",["items","000"],true],
-                    ["when",["compare","!=",["value"],["value",value]],0],
-                    ["repeat",["item"],["items"],"item in items",0],
-                    ["element",{
-                        "name":"z-card","body":0,"closing":"</z-card>",
-                        "opening":tag,"entry":attributes,"normal":attributes,
-                        "props":[["fooBar","foo-bar","nested",["value",value]]],
-                        "count":2,"defaults":[["role",["literal"," role=\"group\""]]],
-                    }],
-                ],
+        let value = json!({"type":"object","value":{
+            "z":{"type":"number","value":"Infinity"},
+            "a":{"type":"array","value":[
+                {"type":"number","value":"01.00"},{"type":"bool","value":true},
+                {"type":"null"},{"type":"string","value":"<&"},
+                {"type":"object","value":{"n":{"type":"number","value":"-0"}}},
+            ]},
+        }});
+        let wire = json!({
+            "entry":[
+                {"type":"template","name":"body"},
+                {"type":"binding","path":["items","000"],"escape":true},
+                {"type":"when","condition":{"type":"compare","operator":"!=","path":["value"],"value":{"type":"value","value":value}},"template":"body"},
+                {"type":"repeat","alias":["item"],"collection":["items"],"diagnostic":"item in items","template":"body"},
+                {"type":"element","name":"z-card","body":"body","closing":"</z-card>",
+                    "opening":tag,"entry":attributes,"normal":attributes,
+                    "props":[{"camelCase":"fooBar","unchanged":"foo-bar","dataset":"nested","value":{"type":"value","value":value}}],
+                    "count":2,"defaults":[{"name":"role","attribute":{"type":"literal","html":" role=\"group\""}}]},
             ],
-            "components":{
-                "a-card":{"host":0,"shadow":1,"tag":"<template>"},
-                "z-card":{"host":1,"shadow":0,"tag":"<template>"},
+            "templates":{
+                "body":[{"type":"literal","html":"ok"}],
+                "dsd":[{"type":"literal","html":"<template>"},{"type":"literal","html":"</template>"}],
             },
+            "components":{"a-card":"dsd","z-card":"dsd"},
         });
-        super::super::validate_artifact(&ir).unwrap();
-        let prepared = Plan::load(&ir);
-        drop(ir);
-        let Operation::Element(element) = &prepared.bodies[1][4] else {
+        let prepared = Plan::load(&wire).unwrap();
+        drop(wire);
+        let Operation::Element(element) = &prepared.bodies[prepared.entry][4] else {
             panic!("element was not decoded");
         };
         assert_eq!(element.component, prepared.names["z-card"]);
-        assert_eq!(prepared.components[element.component].shadow, 0);
+        assert!(prepared.bodies[prepared.components[element.component].shadow].is_empty());
         assert!(Arc::ptr_eq(
             &prepared.components[element.component].name,
             prepared.names.get_key_value("z-card").unwrap().0,
         ));
-        let Operation::Dynamic(op) = &prepared.bodies[1][1] else {
+        let Operation::Dynamic(op) = &prepared.bodies[prepared.entry][1] else {
             panic!("binding was not decoded");
         };
         let Dynamic::Binding(path, _) = op.as_ref() else {
