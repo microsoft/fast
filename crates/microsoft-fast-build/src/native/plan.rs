@@ -6,6 +6,11 @@ use std::sync::Arc;
 type Result<T> = std::result::Result<T, ()>;
 const LIMIT: usize = 1_000_000;
 
+fn collect<T>(values: impl Iterator<Item = Result<T>>) -> Result<Vec<T>> {
+    // Validate before trimming so malformed nested data cannot trigger eager reservation.
+    values.collect::<Result<Box<[_]>>>().map(Vec::from)
+}
+
 fn fields(v: &V, names: &[&str]) -> Result<()> {
     let obj = v.as_object().ok_or(())?;
     if obj.len() != names.len() || names.iter().any(|name| !obj.contains_key(*name)) {
@@ -51,12 +56,9 @@ fn decoded(v: &V, depth: usize) -> Result<J> {
         "bool" => J::Bool(v["value"].as_bool().ok_or(())?),
         "number" => J::Number(string(&v["value"])?.parse().map_err(|_| ())?),
         "string" => J::String(string(&v["value"])?.into()),
-        "array" => J::Array(
-            array(&v["value"])?
-                .iter()
-                .map(|v| decoded(v, depth + 1))
-                .collect::<Result<_>>()?,
-        ),
+        "array" => J::Array(collect(
+            array(&v["value"])?.iter().map(|v| decoded(v, depth + 1)),
+        )?),
         "object" => J::Object(
             v["value"]
                 .as_object()
@@ -82,7 +84,7 @@ fn strings(v: &V) -> Result<Vec<String>> {
     if values.is_empty() {
         return Err(());
     }
-    values.iter().map(|v| Ok(string(v)?.into())).collect()
+    collect(values.iter().map(|v| Ok(string(v)?.into())))
 }
 
 fn path(v: &V) -> Result<Path> {
@@ -90,7 +92,7 @@ fn path(v: &V) -> Result<Path> {
     if values.is_empty() {
         return Err(());
     }
-    values.iter().map(|v| Ok(segment(string(v)?))).collect()
+    collect(values.iter().map(|v| Ok(segment(string(v)?))))
 }
 
 fn segment(key: &str) -> Segment {
@@ -240,22 +242,19 @@ impl Attribute {
                 fields(v, &["type", "name", "parts"])?;
                 Self::Quoted(
                     string(&v["name"])?.into(),
-                    array(&v["parts"])?
-                        .iter()
-                        .map(|p| {
-                            Ok(match string(&p["type"])? {
-                                "literal" => {
-                                    fields(p, &["type", "html"])?;
-                                    Part::Literal(string(&p["html"])?.into())
-                                }
-                                "segment" => {
-                                    fields(p, &["type", "path"])?;
-                                    Part::Segment(path(&p["path"])?)
-                                }
-                                _ => return Err(()),
-                            })
+                    collect(array(&v["parts"])?.iter().map(|p| {
+                        Ok(match string(&p["type"])? {
+                            "literal" => {
+                                fields(p, &["type", "html"])?;
+                                Part::Literal(string(&p["html"])?.into())
+                            }
+                            "segment" => {
+                                fields(p, &["type", "path"])?;
+                                Part::Segment(path(&p["path"])?)
+                            }
+                            _ => return Err(()),
                         })
-                        .collect::<Result<_>>()?,
+                    }))?,
                 )
             }
             _ => return Err(()),
@@ -264,20 +263,17 @@ impl Attribute {
 }
 
 fn attrs(v: &V) -> Result<Vec<Attribute>> {
-    array(v)?.iter().map(Attribute::load).collect()
+    collect(array(v)?.iter().map(Attribute::load))
 }
 
 fn defaults(v: &V) -> Result<Vec<(String, Attribute)>> {
-    array(v)?
-        .iter()
-        .map(|v| {
-            fields(v, &["name", "attribute"])?;
-            Ok((
-                string(&v["name"])?.into(),
-                Attribute::load(&v["attribute"])?,
-            ))
-        })
-        .collect()
+    collect(array(v)?.iter().map(|v| {
+        fields(v, &["name", "attribute"])?;
+        Ok((
+            string(&v["name"])?.into(),
+            Attribute::load(&v["attribute"])?,
+        ))
+    }))
 }
 
 #[derive(Debug)]
@@ -399,86 +395,81 @@ impl Loader<'_> {
         if self.operations > LIMIT {
             return Err(());
         }
-        ops.iter()
-            .map(|v| {
-                Ok(match string(&v["type"])? {
-                    "literal" => Operation::Literal(literal(v)?.into()),
-                    "template" => {
-                        fields(v, &["type", "name"])?;
-                        Operation::Call(self.reference(&v["name"])?)
-                    }
-                    "component" => {
-                        fields(v, &["type", "name"])?;
-                        Operation::Call(self.components[self.component(&v["name"])?].host)
-                    }
-                    "binding" => {
-                        fields(v, &["type", "path", "escape"])?;
-                        Operation::Dynamic(Box::new(Dynamic::Binding(
-                            path(&v["path"])?,
-                            v["escape"].as_bool().ok_or(())?,
-                        )))
-                    }
-                    "when" => {
-                        fields(v, &["type", "condition", "template"])?;
-                        Operation::Dynamic(Box::new(Dynamic::When(
-                            Box::new(Condition::load(&v["condition"], 0)?),
-                            self.reference(&v["template"])?,
-                        )))
-                    }
-                    "repeat" => {
-                        fields(
-                            v,
-                            &["type", "alias", "collection", "diagnostic", "template"],
-                        )?;
-                        Operation::Dynamic(Box::new(Dynamic::Repeat {
-                            alias: strings(&v["alias"])?,
-                            path: path(&v["collection"])?,
-                            diagnostic: string(&v["diagnostic"])?.into(),
-                            body: self.reference(&v["template"])?,
-                        }))
-                    }
-                    "tag" => Operation::Tag(Box::new(Tag::load(v, true)?)),
-                    "element" => {
-                        fields(
-                            v,
-                            &[
-                                "type", "name", "body", "closing", "opening", "props", "entry",
-                                "normal", "count", "defaults",
-                            ],
-                        )?;
-                        Operation::Element(Box::new(Element {
-                            component: self.component(&v["name"])?,
-                            body: self.reference(&v["body"])?,
-                            closing: string(&v["closing"])?.into(),
-                            opening: Tag::load(&v["opening"], false)?,
-                            props: array(&v["props"])?
-                                .iter()
-                                .map(|p| {
-                                    fields(p, &["camelCase", "unchanged", "dataset", "value"])?;
-                                    Ok(Property {
-                                        keys: [
-                                            vec![segment(string(&p["camelCase"])?)],
-                                            vec![segment(string(&p["unchanged"])?)],
-                                        ],
-                                        group: if p["dataset"].is_null() {
-                                            None
-                                        } else {
-                                            Some(string(&p["dataset"])?.into())
-                                        },
-                                        value: Operand::load(&p["value"])?,
-                                    })
-                                })
-                                .collect::<Result<_>>()?,
-                            entry: attrs(&v["entry"])?,
-                            normal: attrs(&v["normal"])?,
-                            count: count(&v["count"])?,
-                            defaults: defaults(&v["defaults"])?,
-                        }))
-                    }
-                    _ => return Err(()),
-                })
+        collect(ops.iter().map(|v| {
+            Ok(match string(&v["type"])? {
+                "literal" => Operation::Literal(literal(v)?.into()),
+                "template" => {
+                    fields(v, &["type", "name"])?;
+                    Operation::Call(self.reference(&v["name"])?)
+                }
+                "component" => {
+                    fields(v, &["type", "name"])?;
+                    Operation::Call(self.components[self.component(&v["name"])?].host)
+                }
+                "binding" => {
+                    fields(v, &["type", "path", "escape"])?;
+                    Operation::Dynamic(Box::new(Dynamic::Binding(
+                        path(&v["path"])?,
+                        v["escape"].as_bool().ok_or(())?,
+                    )))
+                }
+                "when" => {
+                    fields(v, &["type", "condition", "template"])?;
+                    Operation::Dynamic(Box::new(Dynamic::When(
+                        Box::new(Condition::load(&v["condition"], 0)?),
+                        self.reference(&v["template"])?,
+                    )))
+                }
+                "repeat" => {
+                    fields(
+                        v,
+                        &["type", "alias", "collection", "diagnostic", "template"],
+                    )?;
+                    Operation::Dynamic(Box::new(Dynamic::Repeat {
+                        alias: strings(&v["alias"])?,
+                        path: path(&v["collection"])?,
+                        diagnostic: string(&v["diagnostic"])?.into(),
+                        body: self.reference(&v["template"])?,
+                    }))
+                }
+                "tag" => Operation::Tag(Box::new(Tag::load(v, true)?)),
+                "element" => {
+                    fields(
+                        v,
+                        &[
+                            "type", "name", "body", "closing", "opening", "props", "entry",
+                            "normal", "count", "defaults",
+                        ],
+                    )?;
+                    Operation::Element(Box::new(Element {
+                        component: self.component(&v["name"])?,
+                        body: self.reference(&v["body"])?,
+                        closing: string(&v["closing"])?.into(),
+                        opening: Tag::load(&v["opening"], false)?,
+                        props: collect(array(&v["props"])?.iter().map(|p| {
+                            fields(p, &["camelCase", "unchanged", "dataset", "value"])?;
+                            Ok(Property {
+                                keys: [
+                                    vec![segment(string(&p["camelCase"])?)],
+                                    vec![segment(string(&p["unchanged"])?)],
+                                ],
+                                group: if p["dataset"].is_null() {
+                                    None
+                                } else {
+                                    Some(string(&p["dataset"])?.into())
+                                },
+                                value: Operand::load(&p["value"])?,
+                            })
+                        }))?,
+                        entry: attrs(&v["entry"])?,
+                        normal: attrs(&v["normal"])?,
+                        count: count(&v["count"])?,
+                        defaults: defaults(&v["defaults"])?,
+                    }))
+                }
+                _ => return Err(()),
             })
-            .collect()
+        }))
     }
 }
 
@@ -689,8 +680,8 @@ impl Plan {
             }
             let host = bodies.len();
             let component = loader.components.len();
-            let base = format!("<{name}");
-            let opening = format!("{base}>");
+            let base = format!("<{name}").into_boxed_str().into_string();
+            let opening = format!("{base}>").into_boxed_str().into_string();
             let host_defaults = match root.defaults {
                 Some(v) => defaults(v)?,
                 None => Vec::new(),
@@ -698,7 +689,7 @@ impl Plan {
             bodies.push(vec![Operation::Element(Box::new(Element {
                 component,
                 body: empty,
-                closing: format!("</{name}>"),
+                closing: format!("</{name}>").into_boxed_str().into_string(),
                 opening: Tag {
                     plain: vec![Attribute::Literal(opening.clone())],
                     hydrated: vec![Attribute::Literal(opening)],
@@ -778,22 +769,20 @@ impl Plan {
             component.host = remap[component.host];
             component.shadow = remap[component.shadow];
         }
-        self.bodies = self
-            .bodies
-            .into_iter()
-            .enumerate()
-            .filter_map(|(id, mut body)| {
-                if remap[id] == usize::MAX {
-                    return None;
+        let mut bodies = Vec::with_capacity(next);
+        for (id, mut body) in self.bodies.into_iter().enumerate() {
+            if remap[id] == usize::MAX {
+                continue;
+            }
+            for operation in &mut body {
+                if let Some(target) = operation.target() {
+                    *target = remap[*target];
                 }
-                for operation in &mut body {
-                    if let Some(target) = operation.target() {
-                        *target = remap[*target];
-                    }
-                }
-                Some(body)
-            })
-            .collect();
+            }
+            bodies.push(body);
+        }
+        self.bodies = bodies;
+        self.components = self.components.into_boxed_slice().into_vec();
         self
     }
 }
@@ -802,6 +791,26 @@ impl Plan {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    fn tightly_sized<T>(values: &Vec<T>) {
+        assert_eq!(values.capacity(), values.len());
+    }
+
+    #[test]
+    fn preparation_discards_unreachable_body_capacity() {
+        let templates: serde_json::Map<_, _> = (0..17)
+            .map(|index| (format!("unused{index}"), json!([])))
+            .collect();
+        let prepared = Plan::load(&json!({
+            "entry":[{"type":"literal","html":"retained"}],
+            "templates":templates,"components":{},
+        }))
+        .unwrap();
+        assert_eq!(prepared.bodies.len(), 1);
+        tightly_sized(&prepared.bodies);
+        tightly_sized(&prepared.bodies[prepared.entry]);
+        tightly_sized(&prepared.components);
+    }
 
     #[test]
     fn operation_budget_includes_preceding_and_derived_bodies() {
@@ -1019,9 +1028,47 @@ mod tests {
         });
         let prepared = Plan::load(&wire).unwrap();
         drop(wire);
+        tightly_sized(&prepared.bodies);
+        tightly_sized(&prepared.components);
+        for body in &prepared.bodies {
+            tightly_sized(body);
+        }
+        for component in &prepared.components {
+            let Operation::Element(host) = &prepared.bodies[component.host][0] else {
+                panic!("host was not decoded");
+            };
+            assert_eq!(host.closing.capacity(), host.closing.len());
+            for attributes in [
+                &host.opening.plain,
+                &host.opening.hydrated,
+                &host.entry,
+                &host.normal,
+            ] {
+                for attribute in attributes {
+                    let Attribute::Literal(value) = attribute else {
+                        panic!("host literal was not decoded");
+                    };
+                    assert_eq!(value.capacity(), value.len());
+                }
+            }
+        }
         let Operation::Element(element) = &prepared.bodies[prepared.entry][4] else {
             panic!("element was not decoded");
         };
+        tightly_sized(&element.props);
+        tightly_sized(&element.defaults);
+        let Attribute::Quoted(_, parts) = &element.entry[3] else {
+            panic!("quoted attribute was not decoded");
+        };
+        tightly_sized(parts);
+        let Operation::Dynamic(repeat) = &prepared.bodies[prepared.entry][3] else {
+            panic!("repeat was not decoded");
+        };
+        let Dynamic::Repeat { alias, path, .. } = repeat.as_ref() else {
+            panic!("repeat was not decoded");
+        };
+        tightly_sized(alias);
+        tightly_sized(path);
         assert_eq!(element.component, prepared.names["z-card"]);
         assert!(prepared.bodies[prepared.components[element.component].shadow].is_empty());
         assert!(Arc::ptr_eq(
@@ -1034,6 +1081,7 @@ mod tests {
         let Dynamic::Binding(path, _) = op.as_ref() else {
             panic!("binding was not decoded");
         };
+        tightly_sized(path);
         assert_eq!(path[1].array_index, Some(0));
         let Operand::Value(value) = &element.props[0].value else {
             panic!("static operand was not decoded");
@@ -1044,6 +1092,7 @@ mod tests {
         let J::Array(values) = &object["a"] else {
             panic!("static array")
         };
+        tightly_sized(values);
         assert!(matches!(values[0], J::Number(n) if n == 1.0));
         assert!(matches!(values[1], J::Bool(true)));
         assert!(matches!(values[2], J::Null));
