@@ -336,6 +336,12 @@ Node tests enforce compiled output contracts and the shared performance corpus
 baseline. Loaders reject unsupported schemas.
 Browser fixtures hydrate native output. `bench:server` measures the Node native host;
 its unique-host workload varies indexes, dataset values and inline styles to
-exercise component plans rather than only byte-identical hosts;
-its CPU, memory and size measurement boundaries are documented in the package's
+exercise component plans rather than only byte-identical hosts.
+Its CPU, memory and size measurement boundaries are documented in the package's
 server-modules.md.
+
+The `native-shadow-benchmark` example separately measures complete owned Rust
+results through fresh-JSON and prepared-state boundaries. Its PowerShell runners
+compare isolated source snapshots, alternate execution order and keep allocation
+diagnostics separate from latency samples. Allocation requests are not copied-byte
+or process-RSS measurements.

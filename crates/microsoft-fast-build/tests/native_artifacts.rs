@@ -1627,6 +1627,7 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let source = artifact_json(entry, &locator).unwrap();
     let invalid_json = json!({"large":"&".repeat(100_000),"items":false}).to_string();
     let invalid = parse_render_state(&invalid_json).unwrap();
+    let prepared = PreparedState::from_json(&invalid_json).unwrap();
     let options = NativeRenderOptions {
         // Shadow prefixes fit, but either host attribute does not.
         max_output_bytes: 16,
@@ -1634,6 +1635,12 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     };
     let failed = artifact.render_entry(&invalid, &options).unwrap_err();
     assert_eq!(failed.code, "repeat-not-array");
+    assert_eq!(
+        artifact
+            .render_entry_prepared(&prepared, &options)
+            .unwrap_err(),
+        failed
+    );
     assert_eq!(
         artifact
             .render_entry_json(&invalid_json, &options)
@@ -1687,6 +1694,120 @@ fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
         artifact.render_entry_json(valid_json, &exact).unwrap(),
         held
     );
+}
+
+#[test]
+fn nested_shadow_output_keeps_order_escaping_and_construction_limits() {
+    let locator = common::make_locator(&[
+        ("test-outer", "A<test-inner>light</test-inner>Z"),
+        (
+            "test-inner",
+            "{{value}}<f-repeat value=\"{{item in items}}\">{{item}}</f-repeat>",
+        ),
+    ]);
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("é<test-outer>tail</test-outer>尾", &locator).unwrap(),
+    )
+    .unwrap();
+    let json = r#"{"value":"&é","items":[]}"#;
+    let state = parse_render_state(json).unwrap();
+    let prepared = PreparedState::from_json(json).unwrap();
+    let expected = concat!(
+        "é<test-outer><template shadowrootmode=\"open\">A",
+        "<test-inner><template shadowrootmode=\"open\">",
+        "<!--fe:b-->&amp;é<!--fe:/b--><!--fe:b--><!--fe:/b-->",
+        "</template>light</test-inner>Z</template>tail</test-outer>尾",
+    );
+    let exact = NativeRenderOptions {
+        max_output_bytes: expected.len(),
+        ..Default::default()
+    };
+    let held = artifact.render_entry_prepared(&prepared, &exact).unwrap();
+    assert_eq!(held, expected);
+    for mode in 0..3 {
+        let render = |json: &str, options: &NativeRenderOptions| match mode {
+            0 => artifact.render_entry(&parse_render_state(json).unwrap(), options),
+            1 => artifact.render_entry_prepared(&PreparedState::from_json(json).unwrap(), options),
+            _ => artifact.render_entry_json(json, options),
+        };
+        assert_eq!(render(json, &exact).unwrap(), expected);
+        for max_output_bytes in [0, 15, 20, expected.len() - 1] {
+            let short = NativeRenderOptions {
+                max_output_bytes,
+                ..exact.clone()
+            };
+            assert_eq!(render(json, &short).unwrap_err().code, "render-limit");
+        }
+        // Escaped expansion exhausts the nested shadow before its invalid repeat.
+        let invalid = json!({"value":"&".repeat(100),"items":false}).to_string();
+        let short = NativeRenderOptions {
+            max_output_bytes: 20,
+            ..exact.clone()
+        };
+        let error = render(&invalid, &short).unwrap_err();
+        assert_eq!(error.code, "render-limit");
+        assert_eq!(error.message, "Output byte limit exceeded");
+        assert_eq!(
+            render(&invalid, &Default::default()).unwrap_err().code,
+            "repeat-not-array"
+        );
+        assert_eq!(render(json, &exact).unwrap(), expected);
+    }
+    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), held);
+    assert_eq!(held, expected);
+}
+
+#[test]
+fn nested_shadow_depth_is_bounded_before_assembly_and_recovers() {
+    for depth in [32, 129] {
+        let templates = (0..depth)
+            .map(|index| {
+                (
+                    format!("test-level-{index}"),
+                    if index + 1 == depth {
+                        "é".to_owned()
+                    } else {
+                        format!("<test-level-{}></test-level-{}>", index + 1, index + 1)
+                    },
+                )
+            })
+            .collect();
+        let artifact = CompiledArtifact::load(
+            &compile_server_artifact(
+                "<test-level-0></test-level-0>",
+                &Locator::from_templates(templates),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        let prepared = PreparedState::from_json("{}").unwrap();
+        let expected = (0..depth).rev().fold("é".to_owned(), |body, index| {
+            format!("<test-level-{index}><template shadowrootmode=\"open\">{body}</template></test-level-{index}>")
+        });
+        for result in [
+            artifact.render_entry(&JsonValue::Null, &Default::default()),
+            artifact.render_entry_prepared(&prepared, &Default::default()),
+            artifact.render_entry_json("{}", &Default::default()),
+        ] {
+            if depth == 32 {
+                assert_eq!(result.unwrap(), expected);
+            } else {
+                let error = result.unwrap_err();
+                assert_eq!(error.code, "render-limit");
+                assert_eq!(error.message, "Component/body nesting exceeds 128 levels");
+            }
+        }
+        assert_eq!(
+            artifact
+                .render_shadow_json(
+                    &format!("test-level-{}", depth - 1),
+                    "{}",
+                    &Default::default(),
+                )
+                .unwrap(),
+            "<template shadowrootmode=\"open\">é</template>",
+        );
+    }
 }
 
 #[test]

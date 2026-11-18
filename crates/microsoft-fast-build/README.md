@@ -163,6 +163,11 @@ Artifact loading and native request execution return `NativeRenderError` with
 From the monorepo root, run `cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml`.
 Rust tests compare typed, prepared and fresh-JSON native execution with frozen expected bytes. Node package tests exercise the actual addon, ownership and deployment.
 
+The `native-shadow-benchmark` example measures complete owned output through fresh
+JSON and prepared-state boundaries, with separate timing and allocator passes.
+See the [shadow-output experiment](../../packages/fast-build/docs/shadow-output-experiment.md)
+for isolated-source comparison commands, measurements and limitations.
+
 ## Migration guidance
 
 See the [migration index](../../packages/fast-build/docs/migration.md).

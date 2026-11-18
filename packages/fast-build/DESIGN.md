@@ -129,6 +129,11 @@ inputs. `--workloads` selects exact workload names without changing their defini
 Reports identify the source checkout, addon hash and per-workload artifact hashes;
 checkout identity alone is not proof of how an external addon was built.
 
+The crate's shadow-output microbenchmark complements these Node measurements with
+fresh-JSON and prepared-state complete-owned-String boundaries. Isolated source
+comparisons alternate execution order and separate allocator diagnostics from
+timing; requested live heap bytes do not measure RSS or bytes copied.
+
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.
 V8 Inspector captures each phase independently. Optional macOS `sample` or Linux
