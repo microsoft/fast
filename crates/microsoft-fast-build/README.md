@@ -46,7 +46,10 @@ overlays copy only where ownership is required.
 Each ordinary call validates, normalizes and copies state and returns an owned
 UTF-8 `String`. Errors are recoverable `NativeRenderError { code, message }`;
 failed calls return no partial HTML. Loading validates the artifact format, schema,
-operations and references. See the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target)
+operations and references, including unreachable data. Preparation retains only
+bodies reachable from entry and public host/shadow APIs; unused component DSD
+wrappers do not duplicate their shadow contents in the prepared plan.
+See the [native contract](../../packages/fast-build/docs/server-modules.md#native-rust-artifact-target)
 for state limits, execution budgets and deployment requirements.
 
 For fresh JSON requests, use `render_entry_json(json, options)` instead of

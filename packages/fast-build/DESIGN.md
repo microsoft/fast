@@ -38,6 +38,10 @@ metadata derives host wrappers without duplicating shared content. Loading
 eagerly validates even unreachable operations, resolves names to private body and
 component indices, decodes operands and paths, and drops the transient JSON graph.
 Artifact storage is immutable and Rust `Send + Sync`.
+After complete validation, preparation retains only bodies reachable from the
+entry and every public component host/shadow root, including skipped control-flow
+branches and directly referenced complete DSD templates. Private indices are
+compacted without changing execution budgets or wire names.
 
 Static lowering coalesces adjacent literal writes and invariant tags only when
 hydration cannot change their bytes. Dynamic attributes, host defaults, DSD
