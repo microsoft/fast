@@ -266,6 +266,36 @@ async function main() {
             },
             state: {},
         },
+        shortCircuitConditions: {
+            entry: "<bench-conditions></bench-conditions>".repeat(instances),
+            templates: {
+                "bench-conditions":
+                    '<f-when value="{{ready || payload.first == payload.second}}">Ready</f-when><f-when value="{{blocked && payload.first == payload.second}}">Blocked</f-when>',
+            },
+            state: {
+                ready: true,
+                blocked: false,
+                payload: {
+                    first: "x".repeat(8192) + "a",
+                    second: "x".repeat(8192) + "b",
+                },
+            },
+        },
+        literalProperties: {
+            entry: (
+                "<bench-literal :payload='" +
+                JSON.stringify({
+                    label: "Static & borrowed",
+                    rows: Array.from({ length: 64 }, (_, index) => ({
+                        label: `Unused ${index}`,
+                        padding: "x".repeat(256),
+                    })),
+                }) +
+                "'></bench-literal>"
+            ).repeat(instances),
+            templates: { "bench-literal": "<p>{{payload.label}}</p>" },
+            state: {},
+        },
         bindings: fixture("plain_bound_elements", instances),
         escapedBindings: {
             entry: '<f-repeat value="{{item in items}}"><p title="{{item}}">{{item}}</p></f-repeat>',

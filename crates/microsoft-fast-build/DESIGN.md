@@ -81,10 +81,12 @@ the component table. Paths retain their exact object keys plus predecoded option
 array indices; repeat aliases remain prepared string prefixes for the existing
 request-local loop machinery. Request-time dispatch does not inspect JSON fields
 or decode static values. Large enum variants are boxed to avoid inflating literal
-and body records.
+and body records. Elements reuse their resolved component's DSD opening tag rather
+than retaining a per-element copy.
 
 The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
-operands are cloned per evaluation. Loaded native artifacts are execution-only.
+operands borrow immutable artifact storage during evaluation. Loaded native
+artifacts are execution-only.
 Native plans retain neither IR-reconstruction code nor emission-only static numeric spellings.
 Load peak memory includes both transient JSON and the prepared plan. Retained
 memory includes vectors/boxes, prepared paths, static values and the component-name
@@ -115,7 +117,7 @@ Dropping the last snapshot clone frees it; no serialization or cross-version
 handle interchange is provided.
 
 Native lookups return `Cow<JsonValue>`: existing values borrow request storage;
-only synthetic array lengths and decoded artifact literals need owned values.
+synthetic array lengths need owned values, while static operands borrow artifact storage.
 String display borrows strings. Repeats borrow collections/items and link
 stack-local alias/index frames to their enclosing frame, reusing the artifact's
 alias path without copying names or outer loop payloads. Recursive scopes are
@@ -127,6 +129,10 @@ Override names borrow immutable artifact metadata rather than copying per host.
 Dataset transformations use copy-on-write for the merged object only; they never
 mutate borrowed request values. Shadows/defaults reset loop scope; caller light
 DOM keeps its original scope. Artifact storage is not changed by this mechanism.
+
+Logical conditions short-circuit pure operand evaluation. Complete state/artifact
+validation still precedes execution, and skipped condition operands do not alter
+execution-step accounting or body evaluation/error ordering.
 
 Four `render_*_json` methods parse fresh owned request state and pass it directly
 to that same executor. A serde visitor builds `JsonValue` directly, normalizing

@@ -97,7 +97,11 @@ itself prove that the selected addon was built from those sources.
 
 Start with `static` and `largeStaticTemplates` for literal-output, loading and
 string-delivery costs; add `escapedBindings`, `bindings` or `largeState` for state
-and escaping work. `--workloads` accepts comma-separated exact names; unknown,
+and escaping work. `shortCircuitConditions` is a synthetic shortcut-friendly case
+with long equal-prefix string comparisons on skipped branches. `literalProperties`
+is a synthetic static-object-property case whose large unused subtree exposes
+literal-copy costs. Neither is representative of all applications.
+`--workloads` accepts comma-separated exact names; unknown,
 empty or duplicate names fail. Omitting it selects the existing full workload set.
 `--markers-v2` and `--attribute-name-strategy` apply consistently to all phases.
 

@@ -196,7 +196,7 @@ test("native profiling selects workloads and retains verified phase profiles", a
         [
             benchmark,
             "--native-addon=" + process.env.FAST_NATIVE_ADDON,
-            "--workloads=static,largeStaticTemplates",
+            "--workloads=static,largeStaticTemplates,shortCircuitConditions,literalProperties",
             "--samples=1",
             "--instances=2",
             "--iterations=2",
@@ -209,7 +209,12 @@ test("native profiling selects workloads and retains verified phase profiles", a
         { encoding: "utf8", timeout: 60_000 },
     );
     const report = JSON.parse(await fs.readFile(output, "utf8"));
-    assert.deepEqual(Object.keys(report.workloads), ["static", "largeStaticTemplates"]);
+    assert.deepEqual(Object.keys(report.workloads), [
+        "static",
+        "largeStaticTemplates",
+        "shortCircuitConditions",
+        "literalProperties",
+    ]);
     assert.equal(report.profiling.phase, "all");
     assert.match(report.addonSha256, /^[a-f0-9]{64}$/);
     for (const workload of Object.values(report.workloads)) {

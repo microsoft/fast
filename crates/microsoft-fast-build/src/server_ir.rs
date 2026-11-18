@@ -420,8 +420,7 @@ impl Lowerer<'_> {
         Ok(json!(["element", {
             "name":el.name, "body":body, "closing":&source[children.range.end..el.after],
             "opening":tag(source, &el.opening), "props":props, "entry":entry, "normal":normal,
-            "count":el.binding_count, "defaults":defaults,
-            "shadowTag":format!("<template{}>", self.locator.shadowroot_markup(&el.name))
+            "count":el.binding_count, "defaults":defaults
         }]))
     }
 }
