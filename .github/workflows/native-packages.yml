@@ -1,0 +1,104 @@
+name: Build and qualify FAST native packages
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, "releases/*", "features/*"]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: darwin-arm64, os: macos-14, triple: aarch64-apple-darwin }
+          - { target: darwin-x64, os: macos-15-intel, triple: x86_64-apple-darwin }
+          - { target: linux-x64-gnu, os: ubuntu-22.04, triple: x86_64-unknown-linux-gnu }
+          - { target: win32-x64-msvc, os: windows-2022, triple: x86_64-pc-windows-msvc }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.18.0
+      - name: Build locked native library and exact package tarball
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+          TRIPLE: ${{ matrix.triple }}
+        run: |
+          rustup target add "$TRIPLE"
+          node packages/fast-build/build-native-host.mjs --package "$TARGET" --target "$TRIPLE"
+          node build/scripts/pack-native-package.mjs "$TARGET"
+          VERSION=$(node -p "require('./packages/fast-build/package.json').version")
+          echo "FAST_NATIVE_PACKAGE_TARBALL=publish_artifacts_native/microsoft-fast-build-$TARGET-$VERSION.tgz" >> "$GITHUB_ENV"
+      - name: Qualify minimum Node with packed consumer install
+        run: node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Qualify Node 24 with the same binary and tarball
+        run: node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+      - name: Qualify current LTS with the same binary and tarball
+        run: node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-${{ matrix.target }}
+          path: publish_artifacts_native/
+          if-no-files-found: error
+
+  musl:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Build and qualify on real Alpine 3.22 with minimum Node
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work node:22.18.0-alpine3.22 sh -ec '
+            apk add --no-cache build-base curl git libstdc++
+            git config --global --add safe.directory /work
+            curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable --profile minimal
+            export PATH="$HOME/.cargo/bin:$PATH"
+            node packages/fast-build/build-native-host.mjs --package linux-x64-musl --target x86_64-unknown-linux-musl
+            node build/scripts/pack-native-package.mjs linux-x64-musl
+            VERSION=$(node -p "require(\"./packages/fast-build/package.json\").version")
+            export FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-musl-$VERSION.tgz"
+            node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+          '
+      - name: Qualify Node 24 with the same musl binary and tarball
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work node:24-alpine3.22 sh -ec '
+            apk add --no-cache git libstdc++
+            git config --global --add safe.directory /work
+            VERSION=$(node -p "require(\"./packages/fast-build/package.json\").version")
+            export FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-musl-$VERSION.tgz"
+            node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+          '
+      - name: Qualify current LTS with the same musl binary and tarball
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work node:26-alpine sh -ec '
+            apk add --no-cache git libstdc++
+            git config --global --add safe.directory /work
+            VERSION=$(node -p "require(\"./packages/fast-build/package.json\").version")
+            export FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-musl-$VERSION.tgz"
+            node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+          '
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-linux-x64-musl
+          path: publish_artifacts_native/
+          if-no-files-found: error

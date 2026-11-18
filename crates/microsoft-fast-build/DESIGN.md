@@ -14,7 +14,10 @@ One compiler and one Rust executor serve native Rust and Node hosts.
 re-converting state or duplicating execution. Programs own fixed constructor
 options; counters reset per request and napi-rs owns output Buffer finalization.
 Rust-only/WASM builds do not enable the feature. The npm repository build also
-builds the required local Node addon. Deployment remains explicit and source-built.
+builds the local Node addon. The npm facade resolves exact-version optional
+platform packages by default, with explicit addon paths for custom provisioning.
+Distribution and source-build details live in the
+[Node hosting guide](../../packages/fast-build/docs/native-node-host.md).
 
 ## Modules
 

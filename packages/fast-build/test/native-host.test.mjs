@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { isDeepStrictEqual } from "node:util";
@@ -61,6 +62,15 @@ function expectedRender(context, input, options = {}) {
 const contexts = ["Entry", "Template", "Host", "Shadow"];
 const frozenShadow =
     '<template shadowrootmode="open"><h2 title="&lt;&amp;&quot;&#39;😀" data-fe="1"><!--fe:b-->&lt;&amp;&quot;&#39;😀<!--fe:/b--></h2><!--fe:b--><!--fe:r--><!--fe:b-->α<!--fe:/b-->/<!--fe:b-->0<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b--><!--fe:/b-->/<!--fe:b-->1<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->0<!--fe:/b-->/<!--fe:b-->2<!--fe:/b--><!--fe:/r--><!--fe:r--><!--fe:b-->[Object]<!--fe:/b-->/<!--fe:b-->3<!--fe:/b--><!--fe:/r--><!--fe:/b--></template>';
+
+test("native addon identifies its compiler release and Node/artifact API", () => {
+    assert.deepEqual(createRequire(import.meta.url)(addon).nativeHostInfo(), {
+        version: fixture.crateVersion,
+        napiVersion: 8,
+        artifactFormat: "fast-server-native",
+        artifactSchemas: [1, 2],
+    });
+});
 
 test("published entrypoint and untimed boundary adapters expose the tested facade", async () => {
     const published = await import("@microsoft/fast-build/native-host.mjs");
@@ -278,7 +288,14 @@ test("constructor options are strict and request budgets reset after every call"
 });
 
 test("artifact rejection is explicit and caller bytes are not retained", () => {
-    assert.throws(() => loadNativeHost(`${addon}.missing`), { code: "MODULE_NOT_FOUND" });
+    assert.throws(
+        () => loadNativeHost(`${addon}.missing`),
+        error => {
+            assert.equal(error.code, "native-load-failed");
+            assert.equal(error.cause.code, "MODULE_NOT_FOUND");
+            return true;
+        },
+    );
     for (const malformed of [
         "{}",
         "{",

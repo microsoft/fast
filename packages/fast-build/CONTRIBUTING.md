@@ -3,6 +3,8 @@
 ## Building compiler WASM and the Node addon
 
 The `wasm/` directory is generated locally and must be built before using the package.
+These contributor prerequisites are not required for ordinary npm consumers on
+supported prebuilt targets; see the [native hosting guide](./docs/native-node-host.md).
 
 ### Prerequisites
 
