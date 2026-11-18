@@ -82,6 +82,10 @@ are not request inputs; object validation/serialization belongs to the applicati
 Every JSON field is validated, including unused values. Numbers must be finite,
 Unicode must be well formed, and negative zero is normalized.
 
+Hydration marker assembly uses bounded direct writes and stack-sized numeric
+scratch, avoiding per-marker temporary strings while preserving marker bytes,
+whole-marker output-limit checks and recoverable errors.
+
 See the [artifact and request contract](./docs/server-modules.md) for wire data,
 state/resource limits, errors, persistence and measurement boundaries.
 Rust hosts load the same bytes with `CompiledArtifact::load`; see the

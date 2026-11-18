@@ -60,6 +60,9 @@ accounting. Elements reuse their resolved component's DSD opening tag.
 Escaping writes spans directly to bounded output. Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
+Hydration markers likewise append literals and stack-formatted indices directly.
+Whole-marker byte-budget preflight preserves failure boundaries without a
+per-marker temporary string or retained request scratch.
 
 Native state is limited to depth 64 and one million values. Execution permits
 128 nested body calls, with default one-million-step and 64 MiB output budgets.
