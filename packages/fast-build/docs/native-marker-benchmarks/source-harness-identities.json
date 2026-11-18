@@ -1,0 +1,28 @@
+{
+    "baseline": {
+        "commit": "4ad07a7e4dfc0447f566959b38ebd09ecfb112b3",
+        "repositoryTree": "6b91822df9aa67e1c7b6dcae2755a8b7e97e52fc",
+        "rendererSourceTree": "6f773ac1996d24cd25a8e834120e617e21e62058",
+        "rendererManifestBlob": "445caf9e52eaf74cab303f1b1cd2cf1dccec9694",
+        "rendererLockBlob": "39978698fdb042dc6cbf5702eb0554a63dc3a735"
+    },
+    "candidate": {
+        "commit": "a551799691006b77f78dbd6be716621d1ab36999",
+        "repositoryTree": "9cc0ec6ec950b216a593fb1f4b64164f82d39a36",
+        "rendererSourceTree": "3837cc6e8410d40236badcb865e6520a044072d7",
+        "rendererManifestBlob": "445caf9e52eaf74cab303f1b1cd2cf1dccec9694",
+        "rendererLockBlob": "39978698fdb042dc6cbf5702eb0554a63dc3a735"
+    },
+    "harnessSourceSha256": "F04B1B17843A96F696FFF4F5856027B6157D6D6746C88654AC1333D5AC6F2D24",
+    "inputSha256": "BBB51936883EAED2CB93A5136E37E4FD5D2D401E66BF4F363DEEE1F523E11055",
+    "harnessLockSha256": "6DD4C6636C77FC9ED1C36C4C3130E5F5BBE7114068CA44C13229E9AC76A03C3F",
+    "measurementBinaries": {
+        "baselineAddonSha256": "927d781e25d329a636c08bda28569373d743975003fbddda0492443ea1691a64",
+        "candidateAddonSha256": "a3793c8c4c69db27ff10aa4b1f866bc6886e8433b0a038d283d8f89309796e81",
+        "baselineProbeSha256": "caa2cece409789451beeca276fb58040dbafa049c0ba48bdf17283ba5073767b",
+        "candidateProbeSha256": "cd3c2ba2535cd6e161ad4b340e70b803767037cea89b780914b6fa32afdd7a01",
+        "baselineAllocationProbeSha256": "e81ea09ee29ae1554771ec74aac151e3efead3d2a122520ffe55b69d7cd249ea",
+        "candidateAllocationProbeSha256": "29b8204549fdd94f9ebc649e3a688514fbb0beb17c4ac89aec7d80dd9c21a5f3"
+    },
+    "qualification": "Same harness source/input/lock hashes; renderer-linked executables differ by measured revision. CSV metrics match the finalized source-identified records; repeated identity columns are stored once here."
+}

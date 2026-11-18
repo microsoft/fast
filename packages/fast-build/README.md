@@ -82,6 +82,10 @@ are not request inputs; object validation/serialization belongs to the applicati
 Every JSON field is validated, including unused values. Numbers must be finite,
 Unicode must be well formed, and negative zero is normalized.
 
+Hydration marker assembly uses bounded direct writes and stack-sized numeric
+scratch, avoiding per-marker temporary strings while preserving marker bytes,
+whole-marker output-limit checks and recoverable errors.
+
 See the [artifact and request contract](./docs/server-modules.md) for wire data,
 state/resource limits, errors, persistence and measurement boundaries.
 Rust hosts load the same bytes with `CompiledArtifact::load`; see the
@@ -100,6 +104,10 @@ and platform requirements.
 The [shadow-output experiment](./docs/shadow-output-experiment.md) records a
 rejected arena/range prototype and its reproducible Rust benchmark. Deeply nested
 output improved, but sibling and small-page regressions ruled out adoption.
+
+The [native marker benchmark report](./docs/native-marker-benchmarks/README.md)
+records all 217 measured selectors, percentage timing changes, allocation and
+memory results, and environment limitations for the marker-assembly optimization.
 
 ## CLI usage
 

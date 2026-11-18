@@ -171,6 +171,13 @@ Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
 Errors discard the private partial buffer rather than exposing truncated HTML.
+Hydration markers append literal spans and stack-formatted integer fields directly
+to bounded output without allocating a temporary string for each marker.
+Checked whole-marker length preflight precedes its spans, preserving the existing
+output-limit boundary and error order. The output buffer reserves the checked
+total before span emission so its capacity growth matches one bulk append.
+Numeric scratch has a fixed stack bound
+independent of marker count and is never retained between requests.
 Component shadows still render
 before host attributes and use the existing split/append assembly, preserving first
 error order. No output buffer, capacity hint or request-sized scratch storage is
