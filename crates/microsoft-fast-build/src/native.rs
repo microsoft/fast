@@ -591,10 +591,10 @@ fn truthy(value: Option<&J>) -> bool {
         _ => true,
     }
 }
-fn operand<'a>(v: &Operand, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
+fn operand<'a>(v: &'a Operand, root: &'a Frame<'a>, loops: Loops<'a>) -> Option<Cow<'a, J>> {
     match v {
         Operand::Path(path) => get(root, loops, path),
-        Operand::Value(value) => Some(Cow::Owned(value.clone())),
+        Operand::Value(value) => Some(Cow::Borrowed(value)),
     }
 }
 fn numeric(v: &J) -> Option<f64> {
@@ -620,8 +620,8 @@ fn equal(a: &J, b: &J) -> bool {
 fn condition(v: &Condition, root: &Frame<'_>, loops: Loops<'_>) -> bool {
     use Comparison::*;
     match v {
-        Condition::Or(a, b) => condition(a, root, loops) | condition(b, root, loops),
-        Condition::And(a, b) => condition(a, root, loops) & condition(b, root, loops),
+        Condition::Or(a, b) => condition(a, root, loops) || condition(b, root, loops),
+        Condition::And(a, b) => condition(a, root, loops) && condition(b, root, loops),
         Condition::Not(path) => !truthy(get(root, loops, path).as_deref()),
         Condition::Truthy(path) => truthy(get(root, loops, path).as_deref()),
         Condition::Compare(op, path, value) => {
@@ -1032,7 +1032,7 @@ impl<'a> Executor<'a> {
                         }
                     }
                     self.push(">")?;
-                    self.push(&el.shadow_tag)?;
+                    self.push(&component.tag)?;
                     self.push(&shadow)?;
                     self.push("</template>")?;
                     self.body(el.body, root, loops, scope, false, depth + 1)?;
@@ -1196,16 +1196,8 @@ fn validate_artifact(ir: &V) -> Result<(), NativeRenderError> {
                         && fields(
                             el,
                             &[
-                                "name",
-                                "body",
-                                "closing",
-                                "opening",
-                                "props",
-                                "entry",
-                                "normal",
-                                "count",
-                                "defaults",
-                                "shadowTag",
+                                "name", "body", "closing", "opening", "props", "entry", "normal",
+                                "count", "defaults",
                             ],
                         )
                         && el["name"]
@@ -1217,7 +1209,6 @@ fn validate_artifact(ir: &V) -> Result<(), NativeRenderError> {
                         && attrs(&el["entry"])
                         && attrs(&el["normal"])
                         && count(&el["count"])
-                        && el["shadowTag"].is_string()
                         && el["props"].as_array().is_some_and(|a| {
                             a.iter().all(|p| {
                                 shape(p, 4)
@@ -1240,4 +1231,28 @@ fn validate_artifact(ir: &V) -> Result<(), NativeRenderError> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn static_operands_borrow_artifact_storage() {
+        let value = Operand::Value(J::Object(HashMap::from([(
+            "items".into(),
+            J::Array(vec![J::String("retained literal".repeat(100))]),
+        )])));
+        let root = Frame {
+            base: None,
+            values: HashMap::new(),
+            parent: None,
+        };
+        let resolved = operand(&value, &root, None).unwrap();
+        let Operand::Value(expected) = &value else {
+            unreachable!()
+        };
+        assert!(matches!(resolved, Cow::Borrowed(_)));
+        assert!(std::ptr::eq(resolved.as_ref(), expected));
+    }
 }

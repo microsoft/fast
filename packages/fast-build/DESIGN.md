@@ -48,8 +48,11 @@ DSD serializer selects nonempty authored `shadowrootmode`, defaulting to
 Request paths preserve lexical alias precedence, own-null masking, array lookup,
 dataset replacement and parent fallback. Shadows/defaults reset repeat scope;
 caller light DOM retains it. Borrowed native operands and copy-on-write dataset
-overlays avoid cloning input graphs. Escaping writes spans directly to bounded
-output. Finite JSON numbers preserve binary64 round trips and decimal output
+overlays avoid cloning input graphs and immutable artifact literals. Conditions
+short-circuit after complete state/artifact validation, without changing step
+accounting. Elements reuse their resolved component's DSD opening tag.
+Escaping writes spans directly to bounded output. Finite JSON numbers preserve
+binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
 
 Native state is limited to depth 64 and one million values. Execution permits

@@ -212,7 +212,6 @@ pub(super) struct Element {
     pub normal: Vec<Attribute>,
     pub count: usize,
     pub defaults: Vec<(String, Attribute)>,
-    pub shadow_tag: String,
 }
 
 #[derive(Debug)]
@@ -319,7 +318,6 @@ impl Plan {
                                     .iter()
                                     .map(|p| (string(&p[0]).into(), Attribute::load(&p[1])))
                                     .collect(),
-                                shadow_tag: string(&el["shadowTag"]).into(),
                             }))
                         }
                         _ => unreachable!("validated operation"),
@@ -388,7 +386,6 @@ mod tests {
                         "opening":tag,"entry":attributes,"normal":attributes,
                         "props":[["fooBar","foo-bar","nested",["value",value]]],
                         "count":2,"defaults":[["role",["literal"," role=\"group\""]]],
-                        "shadowTag":"<template>",
                     }],
                 ],
             ],

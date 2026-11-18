@@ -391,7 +391,7 @@ impl Decoder<'_> {
                 "tag" => Ok(json!(["tag",decode_tag(v,true)?])),
                 "element" => {
                     fields(v, &["type","name","body","closing","opening","props","entry","normal","count","defaults"])?;
-                    let c = self.components.get(v["name"].as_str().ok_or(())?).ok_or(())?;
+                    self.components.get(v["name"].as_str().ok_or(())?).ok_or(())?;
                     Ok(json!(["element",{
                         "name":v["name"],"body":self.reference(&v["body"])?,"closing":v["closing"],
                         "opening":decode_tag(&v["opening"],false)?,
@@ -400,7 +400,7 @@ impl Decoder<'_> {
                             Ok(json!([p["camelCase"],p["unchanged"],p["dataset"],decode_operand(&p["value"])?]))
                         })?,
                         "entry":map(&v["entry"],decode_attribute)?,"normal":map(&v["normal"],decode_attribute)?,
-                        "count":v["count"],"defaults":decode_defaults(&v["defaults"])?,"shadowTag":c["tag"],
+                        "count":v["count"],"defaults":decode_defaults(&v["defaults"])?,
                     }]))
                 }
                 _ => Err(()),
@@ -490,7 +490,7 @@ pub(crate) fn decode(plan: V) -> Result<V, ()> {
         let opening = json!({"plain":[["literal",format!("{base}>")]],"hydrated":[["literal",format!("{base}>")]],"count":0,"ending":">"});
         bodies.push(json!([["element",{
             "name":name,"body":empty,"closing":format!("</{name}>"),"opening":opening,"props":[],
-            "entry":[["literal",base]],"normal":[["literal",base]],"count":0,"defaults":defaults,"shadowTag":tag,
+            "entry":[["literal",base]],"normal":[["literal",base]],"count":0,"defaults":defaults,
         }]]));
         decoder
             .components

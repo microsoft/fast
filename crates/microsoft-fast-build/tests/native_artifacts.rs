@@ -747,10 +747,10 @@ fn typed_element_dispatch_keeps_shadow_before_host_failure_precedence() {
 fn typed_static_operands_are_isolated_across_concurrent_contexts() {
     let locator = common::make_locator_with_host_attrs(&[(
         "test-static-data",
-        "{{dataset.base}}/{{dataset.label}}/{{label}}",
+        "<b title=\"{{dataset.items.0.name}}\">{{dataset.base}}/{{dataset.label}}/{{label}}</b>",
         &[("title", Some("{{label}}"))],
     )]);
-    let entry = "<test-static-data :dataset='{\"base\":\"static\",\"number\":1}' data-label=\"{{label}}\" label=\"{{label}}\"></test-static-data>";
+    let entry = "<test-static-data :dataset='{\"base\":\"static\",\"number\":1,\"items\":[{\"name\":\"nested\"}]}' data-label=\"{{label}}\" label=\"{{label}}\"></test-static-data>";
     let bytes = compile_server_artifact(entry, &locator).unwrap();
     let artifact = CompiledArtifact::load(&bytes).unwrap();
     let source = artifact_json(entry, &locator).unwrap();
@@ -765,6 +765,7 @@ fn typed_static_operands_are_isolated_across_concurrent_contexts() {
                 let prepared = PreparedState::new(&state).unwrap();
                 let options = NativeRenderOptions { markers_v2:i%2 == 0, ..Default::default() };
                 let entry = artifact.render_entry(&state, &options).unwrap();
+                assert!(entry.contains("title=\"nested\""));
                 let template = artifact.render_template(&state, &options).unwrap();
                 let host = artifact.render_host("test-static-data", &state, &options).unwrap();
                 let shadow = artifact.render_shadow("test-static-data", &state, &options).unwrap();
@@ -783,6 +784,53 @@ fn typed_static_operands_are_isolated_across_concurrent_contexts() {
             });
         }
     });
+}
+
+#[test]
+fn logical_shortcuts_preserve_budgets_and_complete_state_validation() {
+    let bytes = compile_server_artifact(
+        r#"<f-when value="{{enabled || missing.value}}">Y</f-when><f-when value="{{blocked && missing.value}}">N</f-when>"#,
+        &common::make_locator(&[]),
+    )
+    .unwrap();
+    let artifact = CompiledArtifact::load(&bytes).unwrap();
+    let json = r#"{"enabled":true,"blocked":false}"#;
+    let state = parse_render_state(json).unwrap();
+    let prepared = PreparedState::new(&state).unwrap();
+    let exact = NativeRenderOptions {
+        max_steps: 3,
+        max_output_bytes: 1,
+        ..Default::default()
+    };
+    for options in [
+        NativeRenderOptions {
+            max_steps: 2,
+            ..exact.clone()
+        },
+        exact,
+    ] {
+        for result in [
+            artifact.render_entry(&state, &options),
+            artifact.render_entry_prepared(&prepared, &options),
+            artifact.render_entry_json(json, &options),
+        ] {
+            if options.max_steps == 2 {
+                assert_eq!(result.unwrap_err().code, "render-limit");
+            } else {
+                assert_eq!(result.unwrap(), "Y");
+            }
+        }
+    }
+    assert_eq!(
+        artifact
+            .render_entry_json(
+                r#"{"enabled":true,"blocked":false,"unused":1e9999}"#,
+                &Default::default(),
+            )
+            .unwrap_err()
+            .code,
+        "invalid-state"
+    );
 }
 
 #[test]

@@ -41,6 +41,8 @@ through `NativeRenderOptions`.
 
 Artifacts own immutable `Send + Sync` storage and can be cloned/shared across
 threads. Input bytes and the build-time locator may be dropped after loading.
+Static operands borrow immutable artifact storage during rendering; dataset
+overlays copy only where ownership is required.
 Each ordinary call validates, normalizes and copies state and returns an owned
 UTF-8 `String`. Errors are recoverable `NativeRenderError { code, message }`;
 failed calls return no partial HTML. Loading validates the artifact format, schema,
