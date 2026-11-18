@@ -3,7 +3,7 @@ use crate::code_escape::escape_code_sample_elements;
 use crate::error::RenderError;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::{Arc, OnceLock};
+use std::sync::OnceLock;
 
 /// A parsed definition with versioned, descriptive binding metadata.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -48,20 +48,8 @@ impl TemplateDefinition {
     }
 }
 
-impl Clone for TemplateDefinition {
-    fn clone(&self) -> Self {
-        Self {
-            content: self.content.clone(),
-            original_content: self.original_content.clone(),
-            shadowroot_attributes: self.shadowroot_attributes.clone(),
-            host_attributes: self.host_attributes.clone(),
-            shadowroot_markup: OnceLock::new(),
-        }
-    }
-}
-
 pub struct Locator {
-    templates: HashMap<String, Arc<TemplateDefinition>>,
+    templates: HashMap<String, TemplateDefinition>,
 }
 
 impl Locator {
@@ -162,11 +150,11 @@ impl Locator {
             );
             templates.insert(
                 element,
-                Arc::new(TemplateDefinition::new(
+                TemplateDefinition::new(
                     &template.content,
                     template.shadowroot_attributes,
                     template.host_attributes,
-                )),
+                ),
             );
         }
 
@@ -186,7 +174,7 @@ impl Locator {
             .map(|(name, content)| {
                 (
                     name,
-                    Arc::new(TemplateDefinition::new(&content, Vec::new(), Vec::new())),
+                    TemplateDefinition::new(&content, Vec::new(), Vec::new()),
                 )
             })
             .collect();
@@ -215,11 +203,7 @@ impl Locator {
                 |(name, (content, shadowroot_attributes, host_attributes))| {
                     (
                         name,
-                        Arc::new(TemplateDefinition::new(
-                            &content,
-                            shadowroot_attributes,
-                            host_attributes,
-                        )),
+                        TemplateDefinition::new(&content, shadowroot_attributes, host_attributes),
                     )
                 },
             )
@@ -238,7 +222,7 @@ impl Locator {
     pub fn add_template(&mut self, element_name: &str, content: &str) {
         self.templates.insert(
             element_name.to_string(),
-            Arc::new(TemplateDefinition::new(content, Vec::new(), Vec::new())),
+            TemplateDefinition::new(content, Vec::new(), Vec::new()),
         );
     }
 
@@ -262,11 +246,11 @@ impl Locator {
     ) {
         self.templates.insert(
             element_name.to_string(),
-            Arc::new(TemplateDefinition::new(
+            TemplateDefinition::new(
                 content,
                 collect_shadowroot_attributes(shadowroot_attrs),
                 host_attrs.to_vec(),
-            )),
+            ),
         );
     }
 
