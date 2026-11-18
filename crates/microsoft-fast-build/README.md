@@ -45,7 +45,13 @@ Static operands borrow immutable artifact storage during rendering; dataset
 overlays copy only where ownership is required.
 Each ordinary call validates, normalizes and copies state and returns an owned
 UTF-8 `String`. Errors are recoverable `NativeRenderError { code, message }`;
-failed calls return no partial HTML. Loading validates the artifact format, schema,
+failed calls return no partial HTML.
+
+Hydration marker assembly uses bounded direct writes and stack-sized numeric
+scratch rather than per-marker temporary strings. Complete-marker output checks
+preserve the configured byte limits and recoverable error behavior.
+
+Loading validates the artifact format, schema,
 operations and references directly while decoding the wire into typed native
 operations, without reconstructing an intermediate JSON IR. Unreachable data is
 still fully validated. Preparation retains only
