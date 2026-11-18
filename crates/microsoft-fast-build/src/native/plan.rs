@@ -255,14 +255,46 @@ pub(super) struct Plan {
 impl Plan {
     /// Called only after eager validation of the entire wire graph.
     pub fn load(ir: &V) -> Self {
+        let source = array(&ir["bodies"]);
+        let mut remap = vec![usize::MAX; source.len()];
+        let mut pending = vec![index(&ir["entry"])];
+        for component in ir["components"].as_object().unwrap().values() {
+            pending.extend([index(&component["host"]), index(&component["shadow"])]);
+        }
+        while let Some(body) = pending.pop() {
+            if remap[body] != usize::MAX {
+                continue;
+            }
+            remap[body] = 0;
+            for operation in array(&source[body]) {
+                let target = match string(&operation[0]) {
+                    "call" => Some(index(&operation[1])),
+                    "when" => Some(index(&operation[2])),
+                    "repeat" => Some(index(&operation[4])),
+                    "element" => Some(index(&operation[1]["body"])),
+                    _ => None,
+                };
+                if let Some(target) = target {
+                    pending.push(target);
+                }
+            }
+        }
+        let mut next = 0;
+        for target in &mut remap {
+            if *target != usize::MAX {
+                *target = next;
+                next += 1;
+            }
+        }
+        let reference = |value: &V| remap[index(value)];
         let components: Vec<_> = ir["components"]
             .as_object()
             .unwrap()
             .iter()
             .map(|(name, c)| Component {
                 name: Arc::from(name.as_str()),
-                shadow: index(&c["shadow"]),
-                host: index(&c["host"]),
+                shadow: reference(&c["shadow"]),
+                host: reference(&c["host"]),
                 tag: string(&c["tag"]).into(),
             })
             .collect();
@@ -271,34 +303,36 @@ impl Plan {
             .enumerate()
             .map(|(id, c)| (c.name.clone(), id))
             .collect();
-        let bodies = array(&ir["bodies"])
+        let bodies = source
             .iter()
-            .map(|body| {
+            .enumerate()
+            .filter(|(id, _)| remap[*id] != usize::MAX)
+            .map(|(_, body)| {
                 array(body)
                     .iter()
                     .map(|op| match string(&op[0]) {
                         "literal" => Operation::Literal(string(&op[1]).into()),
                         "tag" => Operation::Tag(Box::new(Tag::load(&op[1]))),
-                        "call" => Operation::Call(index(&op[1])),
+                        "call" => Operation::Call(reference(&op[1])),
                         "binding" => Operation::Dynamic(Box::new(Dynamic::Binding(
                             path(&op[1]),
                             op[2].as_bool().unwrap(),
                         ))),
                         "when" => Operation::Dynamic(Box::new(Dynamic::When(
                             Box::new(Condition::load(&op[1])),
-                            index(&op[2]),
+                            reference(&op[2]),
                         ))),
                         "repeat" => Operation::Dynamic(Box::new(Dynamic::Repeat {
                             alias: array(&op[1]).iter().map(|v| string(v).into()).collect(),
                             path: path(&op[2]),
                             diagnostic: string(&op[3]).into(),
-                            body: index(&op[4]),
+                            body: reference(&op[4]),
                         })),
                         "element" => {
                             let el = &op[1];
                             Operation::Element(Box::new(Element {
                                 component: names[string(&el["name"])],
-                                body: index(&el["body"]),
+                                body: reference(&el["body"]),
                                 closing: string(&el["closing"]).into(),
                                 opening: Tag::load(&el["opening"]),
                                 props: array(&el["props"])
@@ -328,7 +362,7 @@ impl Plan {
             })
             .collect();
         Self {
-            entry: index(&ir["entry"]),
+            entry: reference(&ir["entry"]),
             bodies,
             components,
             names,
@@ -340,6 +374,116 @@ impl Plan {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn preparation_keeps_public_roots_without_unreferenced_dsd_copies() {
+        let content = "static body".repeat(8192);
+        let mut wire = json!({
+            "entry":[{"type":"component","name":"test-card"}],
+            "templates":{
+                "dsd":[
+                    {"type":"literal","html":"<template shadowrootmode=\"open\">"},
+                    {"type":"literal","html":content},
+                    {"type":"literal","html":"</template>"},
+                ],
+                "unused":[{"type":"literal","html":"not executable"}],
+            },
+            "components":{"test-card":"dsd","other-card":"dsd"},
+        });
+        for directly_referenced in [false, true] {
+            if directly_referenced {
+                wire["entry"]
+                    .as_array_mut()
+                    .unwrap()
+                    .push(json!({"type":"template","name":"dsd"}));
+            }
+            let ir = crate::server_plan::decode(wire.clone()).unwrap();
+            super::super::validate_artifact(&ir).unwrap();
+            let prepared = Plan::load(&ir);
+            drop(ir);
+            assert_eq!(
+                prepared.bodies.len(),
+                if directly_referenced { 6 } else { 5 }
+            );
+            let component = &prepared.components[prepared.names["test-card"]];
+            let other = &prepared.components[prepared.names["other-card"]];
+            assert_eq!(component.shadow, other.shadow);
+            assert!(matches!(
+                &prepared.bodies[component.shadow][0],
+                Operation::Literal(value) if value == &content
+            ));
+            for component in &prepared.components {
+                let Operation::Element(element) = &prepared.bodies[component.host][0] else {
+                    panic!("public host was not retained");
+                };
+                assert!(prepared.bodies[element.body].is_empty());
+                assert_eq!(element.component, prepared.names[component.name.as_ref()]);
+            }
+            if directly_referenced {
+                let Operation::Call(body) = &prepared.bodies[prepared.entry][1] else {
+                    panic!("explicit DSD reference was not retained");
+                };
+                assert!(matches!(
+                    &prepared.bodies[*body][1],
+                    Operation::Literal(value) if value == &content
+                ));
+            }
+            let artifact = super::super::CompiledArtifact {
+                plan: Arc::new(prepared),
+            };
+            let state = J::Object(HashMap::new());
+            let shadow = format!("<template shadowrootmode=\"open\">{content}</template>");
+            let mut expected = format!("<test-card>{shadow}</test-card>");
+            if directly_referenced {
+                expected.push_str(&shadow);
+            }
+            assert_eq!(
+                artifact.render_entry(&state, &Default::default()).unwrap(),
+                expected,
+            );
+            assert_eq!(
+                artifact
+                    .render_host("other-card", &state, &Default::default())
+                    .unwrap(),
+                format!("<other-card>{shadow}</other-card>"),
+            );
+            assert_eq!(
+                artifact
+                    .render_shadow("other-card", &state, &Default::default())
+                    .unwrap(),
+                shadow,
+            );
+        }
+    }
+
+    #[test]
+    fn preparation_follows_skipped_control_flow_and_cycles_without_recursion() {
+        let ir = json!({
+            "entry":5,
+            "bodies":[
+                [["literal","unused"]],
+                [["call",2]],
+                [["when",["truthy",["again"]],1]],
+                [["repeat",["item"],["items"],"item in items",1]],
+                [["call",3]],
+                [["when",["truthy",["enabled"]],4]],
+                [["call",6]],
+            ],
+            "components":{},
+        });
+        super::super::validate_artifact(&ir).unwrap();
+        let prepared = Plan::load(&ir);
+        assert_eq!(prepared.bodies.len(), 5);
+        assert_eq!(prepared.entry, 4);
+        assert!(matches!(prepared.bodies[0][0], Operation::Call(1)));
+        let Operation::Dynamic(operation) = &prepared.bodies[2][0] else {
+            panic!("repeat was not retained");
+        };
+        assert!(matches!(
+            operation.as_ref(),
+            Dynamic::Repeat { body: 0, .. }
+        ));
+    }
 
     #[test]
     fn prepared_plan_owns_decoded_values_and_resolves_numeric_targets() {

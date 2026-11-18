@@ -9,11 +9,6 @@ use crate::error::{template_context, RenderError};
 use crate::locator::Locator;
 
 #[derive(Debug)]
-pub(crate) struct RenderPlan {
-    pub(crate) instructions: Vec<Instruction>,
-}
-
-#[derive(Debug)]
 pub(crate) enum Instruction {
     Literal(Range<usize>),
     Tag(Tag),
@@ -156,14 +151,6 @@ impl Element {
             children: content.map(|(range, _)| Body::new(range)),
             after,
         })
-    }
-}
-
-impl RenderPlan {
-    pub(crate) fn compile(source: &str, locator: Option<&Locator>) -> Self {
-        Self {
-            instructions: InstructionCursor::new(source, locator).collect(),
-        }
     }
 }
 
