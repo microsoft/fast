@@ -106,13 +106,13 @@ the 42.99% median improvement. Small differences should not be overinterpreted.
 The wide prepared regression remains clear: baseline process medians ranged
 174.4-325.3 microseconds versus candidate 407.6-471.5.
 
-## Reproduction
+## Running further comparisons
 
-The unapplied [rejected prototype patch](../../../crates/microsoft-fast-build/benches/rejected-shadow-arena.patch)
-is an experiment artifact, not part of the production executor.
-Create two isolated checkouts of the baseline commit, then copy the benchmark
-example into their existing `examples` directories. Apply the patch **only**
-to the candidate checkout. Do not patch the active development tree.
+The benchmark and historical results are retained; the rejected prototype is
+not included. Reproducing its exact measurements requires the original candidate
+source separately. To evaluate another implementation, create two isolated
+checkouts and apply its changes only to the candidate checkout. The runner copies
+the current benchmark example into both checkouts before building.
 
 From the current repository root in PowerShell, with Git, Rust and MSVC build
 tools available:
@@ -122,9 +122,7 @@ $baseline = "C:\bench\fast-shadow-baseline"
 $candidate = "C:\bench\fast-shadow-candidate"
 git worktree add --detach $baseline 4ad07a7e4dfc0447f566959b38ebd09ecfb112b3
 git worktree add --detach $candidate 4ad07a7e4dfc0447f566959b38ebd09ecfb112b3
-$patch = (Resolve-Path .\crates\microsoft-fast-build\benches\rejected-shadow-arena.patch).Path
-git -C $candidate apply --check --unidiff-zero --ignore-space-change $patch
-git -C $candidate apply --unidiff-zero --ignore-space-change $patch
+# Apply the implementation under evaluation in $candidate before comparing.
 .\crates\microsoft-fast-build\benches\run-shadow-comparison.ps1 `
     -BaselineRoot $baseline -CandidateRoot $candidate `
     -OutputDirectory "C:\bench\shadow-results" -Iterations 300 -Rounds 5
