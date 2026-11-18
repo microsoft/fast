@@ -9,7 +9,7 @@ use crate::content::html_escape;
 use crate::directive::Directive;
 use crate::error::{template_context, RenderError};
 use crate::expression::{find_binary_op, find_comparison_op};
-use crate::plan::{Body, Element, Instruction, RenderPlan, Repeat, Tag, When};
+use crate::plan::{Body, Element, Instruction, InstructionCursor, Repeat, Tag, When};
 use crate::Locator;
 use serde_json::{json, Value};
 use std::collections::hash_map::DefaultHasher;
@@ -258,7 +258,7 @@ impl Lowerer<'_> {
             .at(source, 0));
         }
         let mut ops = Vec::new();
-        for instruction in RenderPlan::compile(source, Some(self.locator)).instructions {
+        for instruction in InstructionCursor::new(source, Some(self.locator)) {
             let op = match instruction {
                 Instruction::Literal(range) => literal(&source[range]),
                 Instruction::Tag(t) => {

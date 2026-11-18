@@ -47,6 +47,8 @@ names through nested lowering and code-sample preprocessing.
 Structural nesting is limited to 128. Symbolic registry references permit finite
 conditional cycles without recursive code expansion. Shared lowered bodies are
 interned and encoded once with opaque deterministic names.
+Lowering consumes structural cursor instructions directly. The locator owns its
+private definitions directly and caches each definition's DSD markup in place.
 
 The wire contains literal writes, segmented paths, typed values, conditions,
 repeats and template/component references. Literal markup is output data, never
@@ -73,8 +75,17 @@ references fail. JSON nesting is bounded by the deserializer; schema validation
 also bounds condition/static-value nesting. The compiler checks emitted native
 artifacts through this loader before returning them.
 
-After complete eager validation, `native/plan.rs` prepares immutable enums for
-operations, attributes, conditions and operands. Body references remain numeric;
+After complete eager validation, `native/plan.rs` walks body references iteratively
+from the entry and every publicly selectable component host/shadow root. It
+prepares immutable enums only for reachable bodies and compacts their numeric
+indices. Calls, conditional/repeat bodies and element light DOM retain their
+references regardless of request state or DSD selection. Complete component DSD
+templates are retained only when executable references reach them; otherwise the
+derived shadow interiors suffice. Malformed unreachable data still fails full
+validation before pruning.
+
+Prepared operations, attributes, conditions and operands use immutable enums.
+Body references remain numeric;
 symbolic element references resolve once to component vector indices. Public
 named-host/shadow calls use a lookup map whose names share `Arc<str>` storage with
 the component table. Paths retain their exact object keys plus predecoded optional
