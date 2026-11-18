@@ -32,8 +32,15 @@ jobs:
       name: Detect publishable workspaces without a release tag
       run: node build/scripts/create-github-releases.mjs --check-only
 
-  release:
+  native:
     needs: detect
+    if: needs.detect.outputs.hasMissingReleases == 'true'
+    uses: ./.github/workflows/native-packages.yml
+    permissions:
+      contents: read
+
+  release:
+    needs: [detect, native]
     if: needs.detect.outputs.hasMissingReleases == 'true'
     runs-on: ubuntu-latest
 
@@ -71,6 +78,18 @@ jobs:
 
     - name: Build workspaces
       run: npm run build
+
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        pattern: native-*
+        merge-multiple: true
+        path: publish_artifacts_native/
+
+    - name: Qualify packed native packages with the freshly built compiler and CLI
+      run: |
+        VERSION=$(node -p "require('./packages/fast-build/package.json').version")
+        FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-gnu-$VERSION.tgz" \
+          node --test packages/fast-build/test/native-package.test.mjs
 
     - name: Pack and create GitHub releases
       run: node build/scripts/create-github-releases.mjs

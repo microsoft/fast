@@ -1,8 +1,9 @@
 # Native server artifacts
 
 The build-time compiler produces UTF-8 JSON template data for the required shared
-Rust executor. Node applications source-build and explicitly select a Node-API
-addon; Rust applications load the same artifact bytes directly.
+Rust executor. Node applications automatically load an installed platform Node-API
+addon or explicitly select a custom addon; Rust applications load the same
+artifact bytes directly.
 
 ## Compilation and execution
 
@@ -20,9 +21,9 @@ conversion options are rejected.
 
 ## Node request contract
 
-Load `loadNativeHost(addonPath)` from `@microsoft/fast-build/native-host.mjs`
-with an explicit source-built addon path. Construct a program with an artifact
-Buffer and optional `NativeHostOptions`.
+Call `loadNativeHost()` from `@microsoft/fast-build/native-host.mjs` to resolve the
+installed platform package. Pass `loadNativeHost(addonPath)` for an explicit custom
+addon. Construct a program with an artifact Buffer and optional `NativeHostOptions`.
 Use `renderEntryJson(state)`, `renderTemplateJson(state)`,
 `renderHostJson(name, state)` or `renderShadowJson(name, state)`.
 All accept required unshared UTF-8 JSON Buffers and return independently owned
@@ -159,8 +160,9 @@ files. A stale lock after process interruption requires application-owned recove
 `--overwrite` grants replacement permission; it does not force regeneration.
 
 `fast build --server-artifact=generated/page.artifact.json` uses that writer and renders
-fresh original state-file bytes on every invocation. It requires `--native-addon`,
-configured `native-addon`, or `FAST_NATIVE_ADDON`. State, output paths and render
+fresh original state-file bytes on every invocation. It automatically resolves the
+platform package unless `--native-addon`, configured `native-addon`, or
+`FAST_NATIVE_ADDON` overrides it. State, output paths and render
 options do not change compilation identity. Artifact/lock paths cannot
 replace authored files or output HTML. Omitted state is `{}`.
 

@@ -118,6 +118,15 @@ const pipeline = readFileSync(pipelinePath, "utf8");
 const publishable = listPublishableWorkspaces();
 const downloadBlocks = getStepBlocks(pipeline, "- task: DownloadGitHubRelease@0");
 const failures = validateUniquePrefixes(publishable);
+if (
+    !pipeline.includes("- job: NativeDeploy") ||
+    !pipeline.includes("in(dependencies.NativeDeploy.result, 'Succeeded', 'Skipped')") ||
+    !pipeline.includes("artifactName: fast-native-release-inputs")
+) {
+    failures.push(
+        "Native tarballs must pass the governed NativeDeploy release job before Deploy.",
+    );
+}
 
 for (const { name, outputPrefix } of publishable) {
     const needsVariable = `${outputPrefix}NeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.${outputPrefix}NeedsDeployment'] ]`;

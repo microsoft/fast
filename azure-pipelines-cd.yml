@@ -99,6 +99,9 @@ extends:
           - output: pipelineArtifact
             targetPath: $(Build.ArtifactStagingDirectory)/fast-release-inputs
             artifactName: fast-release-inputs
+          - output: pipelineArtifact
+            targetPath: $(Build.ArtifactStagingDirectory)/fast-native-release-inputs
+            artifactName: fast-native-release-inputs
         steps:
           - checkout: none
 
@@ -147,10 +150,28 @@ extends:
               ROOT="$(Build.ArtifactStagingDirectory)/fast-release-inputs"
               rm -rf "$ROOT"
               mkdir -p "$ROOT/publish_artifacts_meta"
+              NATIVE="$(Build.ArtifactStagingDirectory)/fast-native-release-inputs"
+              rm -rf "$NATIVE"
+              mkdir -p "$NATIVE/publish_artifacts_npm"
 
               if find "$(System.ArtifactsDirectory)" -name "*.tgz" -print -quit | grep -q .; then
                 mkdir -p "$ROOT/publish_artifacts_npm"
                 find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} "$ROOT/publish_artifacts_npm/" \;
+                NATIVE="$(Build.ArtifactStagingDirectory)/fast-native-release-inputs"
+                mkdir -p "$NATIVE/publish_artifacts_npm"
+                for target in darwin-arm64 darwin-x64 linux-x64-gnu linux-x64-musl win32-x64-msvc; do
+                  for package in "$ROOT"/publish_artifacts_npm/microsoft-fast-build-"$target"-*.tgz; do
+                    [ -f "$package" ] || continue
+                    mv "$package" "$NATIVE/publish_artifacts_npm/"
+                  done
+                done
+              fi
+              if [ "$(fastBuildNeedsDeployment)" = "true" ]; then
+                count=$(find "$NATIVE/publish_artifacts_npm" -maxdepth 1 -name '*.tgz' | wc -l)
+                if [ "$count" -ne 5 ]; then
+                  echo "FAST Build requires all five native package tarballs; found $count."
+                  exit 1
+                fi
               fi
 
               if find "$(System.ArtifactsDirectory)" -name "*.crate" -print -quit | grep -q .; then
@@ -200,11 +221,36 @@ extends:
               echo "Publishing npm artifacts with dist-tag: $(npm_config_tag)"
               printf '\ntag=%s\n' "$(npm_config_tag)" > "$ROOT/.npmrc"
               printf '%s\n' "$(npm_config_tag)" > "$ROOT/publish_artifacts_meta/npm-dist-tag.txt"
+              NATIVE="$(Build.ArtifactStagingDirectory)/fast-native-release-inputs"
+              mkdir -p "$NATIVE"
+              cp "$ROOT/.npmrc" "$NATIVE/.npmrc"
             displayName: "Configure npm publish dist-tag"
+
+      - job: NativeDeploy
+        displayName: Publish native packages before their parent
+        dependsOn: PrepareReleaseInputs
+        condition: and(succeeded(), eq(variables['fastBuildNeedsDeployment'], 'true'))
+        templateContext:
+          type: releaseJob
+          isProduction: true
+          inputs:
+          - input: pipelineArtifact
+            artifactName: fast-native-release-inputs
+            targetPath: $(System.DefaultWorkingDirectory)
+        steps:
+          - checkout: none
+          - task: UseNode@1
+            inputs:
+              version: "24.x"
+            displayName: "Install Node.js"
+          - template: FAST.Release.PipelineTemplate.yml@fastPipelines
 
       - job: Deploy
         displayName: Publish packages
-        dependsOn: PrepareReleaseInputs
+        dependsOn:
+        - PrepareReleaseInputs
+        - NativeDeploy
+        condition: and(not(canceled()), eq(dependencies.PrepareReleaseInputs.result, 'Succeeded'), in(dependencies.NativeDeploy.result, 'Succeeded', 'Skipped'), or(ne(variables['fastBuildNeedsDeployment'], 'true'), eq(dependencies.NativeDeploy.result, 'Succeeded')))
         templateContext:
           type: releaseJob
           isProduction: true

@@ -1,6 +1,196 @@
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { types } from "node:util";
+
+const require = createRequire(import.meta.url);
+const nodeApi = 8;
+// Literal package references also let server deployment tracers retain native assets.
+const packages = {
+    "darwin-arm64": {
+        manifest: () => require("@microsoft/fast-build-darwin-arm64/package.json"),
+        metadata: () => require("@microsoft/fast-build-darwin-arm64/native-build.json"),
+        load: () => require("@microsoft/fast-build-darwin-arm64"),
+    },
+    "darwin-x64": {
+        manifest: () => require("@microsoft/fast-build-darwin-x64/package.json"),
+        metadata: () => require("@microsoft/fast-build-darwin-x64/native-build.json"),
+        load: () => require("@microsoft/fast-build-darwin-x64"),
+    },
+    "linux-x64-gnu": {
+        manifest: () => require("@microsoft/fast-build-linux-x64-gnu/package.json"),
+        metadata: () => require("@microsoft/fast-build-linux-x64-gnu/native-build.json"),
+        load: () => require("@microsoft/fast-build-linux-x64-gnu"),
+    },
+    "linux-x64-musl": {
+        manifest: () => require("@microsoft/fast-build-linux-x64-musl/package.json"),
+        metadata: () => require("@microsoft/fast-build-linux-x64-musl/native-build.json"),
+        load: () => require("@microsoft/fast-build-linux-x64-musl"),
+    },
+    "win32-x64-msvc": {
+        manifest: () => require("@microsoft/fast-build-win32-x64-msvc/package.json"),
+        metadata: () => require("@microsoft/fast-build-win32-x64-msvc/native-build.json"),
+        load: () => require("@microsoft/fast-build-win32-x64-msvc"),
+    },
+};
+
+function failure(code, message, cause) {
+    return Object.assign(new Error(message, { cause }), { code });
+}
+
+function unsupported(detail) {
+    return failure(
+        "unsupported-platform",
+        `No prebuilt FAST Build native host for ${process.platform}/${process.arch}${detail}. Use a supported deployment target or explicitly provision a matching source-built addon and pass its path to loadNativeHost().`,
+    );
+}
+
+function hostTarget() {
+    const { platform, arch } = process;
+    if (platform === "darwin" && (arch === "arm64" || arch === "x64")) {
+        return `darwin-${arch}`;
+    }
+    if (platform === "win32" && arch === "x64") return "win32-x64-msvc";
+    if (platform === "linux" && arch === "x64") {
+        let report;
+        try {
+            report = process.report.getReport();
+        } catch {
+            // Restricted hosts may disable diagnostic reports; inspect the running image.
+        }
+        if (report?.header?.glibcVersionRuntime) return "linux-x64-gnu";
+        if (report?.sharedObjects?.some(name => /(?:ld-musl-|libc\.musl-)/.test(name))) {
+            return "linux-x64-musl";
+        }
+        let mappings = "";
+        try {
+            mappings = readFileSync("/proc/self/maps", "utf8");
+        } catch {
+            // Do not guess a libc when neither source can identify the running process.
+        }
+        if (/(?:ld-musl-|libc\.musl-)/.test(mappings)) return "linux-x64-musl";
+        if (
+            /\/(?:libc(?:-[\d.]+)?\.so\.6|ld-linux-x86-64\.so\.2)(?:\s|$)/m.test(mappings)
+        ) {
+            return "linux-x64-gnu";
+        }
+        throw unsupported(" (unable to identify glibc or musl)");
+    }
+    throw unsupported("");
+}
+
+function loadPackagedAddon() {
+    const target = hostTarget();
+    const selected = packages[target];
+    const name = `@microsoft/fast-build-${target}`;
+    const version = require("./package.json").version;
+    const repair = `Reinstall @microsoft/fast-build@${version} with optional dependencies enabled for the deployment target; include ${name}@${version} in server deployment output.`;
+    let manifest;
+    try {
+        manifest = selected.manifest();
+    } catch (cause) {
+        throw failure(
+            cause.code === "MODULE_NOT_FOUND"
+                ? "native-package-missing"
+                : "native-incompatible",
+            `Cannot resolve ${name}@${version}. ${repair}`,
+            cause,
+        );
+    }
+    let metadata;
+    try {
+        metadata = selected.metadata();
+    } catch (cause) {
+        throw failure(
+            "native-incompatible",
+            `Invalid ${name} build metadata. ${repair}`,
+            cause,
+        );
+    }
+    if (
+        !manifest ||
+        !metadata ||
+        typeof manifest !== "object" ||
+        typeof metadata !== "object"
+    ) {
+        throw failure(
+            "native-incompatible",
+            `Invalid ${name} package metadata. ${repair}`,
+        );
+    }
+    if (manifest.version !== version || metadata.version !== version) {
+        throw failure(
+            "native-version-mismatch",
+            `Expected ${name}@${version}, found package ${manifest.version} / binary metadata ${metadata.version}. ${repair}`,
+        );
+    }
+    if (
+        manifest.name !== name ||
+        manifest.fastBuild?.target !== target ||
+        metadata.packageName !== name ||
+        metadata.target !== target
+    ) {
+        throw failure(
+            "native-incompatible",
+            `Incorrect native package identity for ${name}. ${repair}`,
+        );
+    }
+    if (
+        manifest.fastBuild?.nodeApi !== nodeApi ||
+        metadata.napi !== nodeApi ||
+        !(Number(process.versions.napi) >= nodeApi)
+    ) {
+        throw failure(
+            "native-api-mismatch",
+            `${name} requires Node-API ${nodeApi}; this Node provides ${process.versions.napi ?? "none"}. Use a supported Node version and matching native package. ${repair}`,
+        );
+    }
+    let addon;
+    try {
+        addon = selected.load();
+    } catch (cause) {
+        throw failure(
+            "native-load-failed",
+            `Could not load ${name}. Check the deployment OS, architecture, libc and shared libraries. ${repair}`,
+            cause,
+        );
+    }
+    let info;
+    try {
+        info = addon.nativeHostInfo();
+    } catch (cause) {
+        throw failure(
+            "native-api-mismatch",
+            `Missing FAST native host identity in ${name}. ${repair}`,
+            cause,
+        );
+    }
+    if (info?.version !== version) {
+        throw failure(
+            "native-version-mismatch",
+            `Expected native host ${version}, found ${info?.version}. ${repair}`,
+        );
+    }
+    if (
+        info.napiVersion !== nodeApi ||
+        info.artifactFormat !== "fast-server-native" ||
+        !Array.isArray(info.artifactSchemas) ||
+        !info.artifactSchemas.includes(2) ||
+        (typeof addon.NativeProgram === "function" &&
+            [
+                "renderEntryJson",
+                "renderTemplateJson",
+                "renderHostJson",
+                "renderShadowJson",
+            ].some(name => typeof addon.NativeProgram.prototype?.[name] !== "function"))
+    ) {
+        throw failure(
+            "native-api-mismatch",
+            `Incompatible FAST native host API in ${name}. ${repair}`,
+        );
+    }
+    return addon;
+}
 
 const bufferBackingStore = Object.getOwnPropertyDescriptor(
     Object.getPrototypeOf(Uint8Array.prototype),
@@ -95,14 +285,33 @@ function optionsJson(options = {}) {
     return `{${fields.join(",")}}`;
 }
 
-/** Load only the caller-selected, source-built addon. No download or backend fallback. */
+/** Load the installed host package, or an explicit addon. Never download or build. */
 export function loadNativeHost(addonPath) {
-    if (typeof addonPath !== "string" || addonPath.length === 0) {
-        throw new TypeError("Native rendering requires an explicit addon path.");
+    if (
+        addonPath !== undefined &&
+        (typeof addonPath !== "string" || addonPath.length === 0)
+    ) {
+        throw new TypeError("Expected a nonempty native addon path, or no argument.");
     }
-    const addon = createRequire(import.meta.url)(resolve(addonPath));
-    if (typeof addon.NativeProgram !== "function") {
-        throw new TypeError("Expected a FAST node-host addon.");
+    let addon;
+    if (addonPath === undefined) {
+        addon = loadPackagedAddon();
+    } else {
+        try {
+            addon = require(resolve(addonPath));
+        } catch (cause) {
+            throw failure(
+                "native-load-failed",
+                `Could not load FAST native addon at "${resolve(addonPath)}". Check that the addon exists and matches this Node host.`,
+                cause,
+            );
+        }
+    }
+    if (typeof addon?.NativeProgram !== "function") {
+        throw failure(
+            "native-incompatible",
+            "Expected a FAST node-host addon exporting NativeProgram. Reinstall the matching native package or provision a compatible source-built addon.",
+        );
     }
     return class NativeProgram {
         #program;

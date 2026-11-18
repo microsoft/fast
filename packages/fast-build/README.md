@@ -12,9 +12,10 @@ the shared Rust renderer in Node.js or Rust.
 npm install --save @microsoft/fast-build
 ```
 
-Node rendering and CLI page builds require an explicitly configured source-built
-addon. Set `FAST_NATIVE_ADDON` to its absolute path or pass `--native-addon`
-to the CLI. Artifact compilation and browser conversion use build-time WASM.
+Requires Node >=22.18.0. On supported targets, npm installs the matching prebuilt
+native renderer as an exact-version optional dependency. Ordinary Node rendering
+and CLI page builds need no Rust installation, source checkout or addon path.
+Artifact compilation and browser conversion use build-time WASM.
 
 ## Native artifact compilation
 
@@ -41,15 +42,16 @@ Do not import the compiler into the request dependency graph.
 
 ## Native Node execution
 
-Source-build the addon for the deployment's OS and architecture using the
-[hosting guide](./docs/native-node-host.md). The npm package does not contain
-prebuilt addons or automatically download or install native binaries.
+`loadNativeHost()` resolves the installed platform package through Node package
+resolution, independently of the working directory. See the
+[hosting guide](./docs/native-node-host.md) for the supported platform/libc matrix,
+deployment tracing, troubleshooting and explicit source provisioning.
 
 ```js
 import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
-const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
+const Program = loadNativeHost();
 const program = new Program(readFileSync("./generated/server.artifact.json"), {
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
@@ -65,6 +67,13 @@ standard native-addon extension; `.json` artifacts contain semantic template
 data, not machine code. Loading validates the supported artifact schema once,
 decoding wire operations directly into the typed native execution plan without
 an intermediate JSON IR. Unreachable data is still validated before being discarded.
+
+Custom provisioning remains available with
+`loadNativeHost("/absolute/deployment/path/fast-build.node")`. The CLI accepts
+`--native-addon`, configured `native-addon`, or `FAST_NATIVE_ADDON` overrides.
+Loading never downloads a binary, invokes Cargo or falls back to JavaScript/WASM.
+Keep the selected optional package and its `.node` file in server deployments;
+this is not a browser or native-addon-free edge runtime.
 
 The four synchronous methods are `renderEntryJson(state)`,
 `renderTemplateJson(state)`, `renderHostJson(name, state)` and
@@ -125,7 +134,7 @@ fast convert [options]
 | `--entry="<path>"` | `index.html` | Entry HTML template to render |
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
-| `--native-addon="<path.node>"` | `FAST_NATIVE_ADDON` | Required source-built Node addon path. |
+| `--native-addon="<path.node>"` | `FAST_NATIVE_ADDON`, then platform package | Optional custom Node addon path; overrides automatic package resolution. |
 | `--server-artifact="<path.json>"` | _(none)_ | Retain authored inputs and the compiled entry/registry together for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
@@ -317,7 +326,7 @@ writeServerArtifact("./generated/components.json", { entry: "", templates }, {
 });
 ```
 
-Load the artifact through `loadNativeHost` with an explicit addon path.
+Load the artifact through `loadNativeHost()` or pass an explicit custom addon path.
 `program.renderShadowJson("my-card", componentStateBytes)` returns the complete
 DSD fragment, with hydration markers and nested components but without a
 synthesized host or caller-owned light DOM. Pass resolved component JSON bytes.
@@ -573,7 +582,8 @@ fast build --config=configs/my-build.json
 
 All keys are optional. Allowed keys are `entry`, `state`, `output`, `templates`,
 `native-addon`, `server-artifact`, `attribute-name-strategy`, and `markers_v2`.
-Native rendering requires `native-addon` or `FAST_NATIVE_ADDON`. Unknown keys
+Native rendering resolves the platform package unless `native-addon` or
+`FAST_NATIVE_ADDON` selects a custom addon. Unknown keys
 produce an error. Values must be strings except the JSON boolean `markers_v2`.
 Omitted state uses `{}`; an explicitly supplied state file must exist.
 CLI arguments override config values.

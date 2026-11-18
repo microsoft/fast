@@ -39,6 +39,7 @@
     "test:diff:error": "echo \"Untracked files exist, try running npm run build to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
     "test:validation": "npm run test:diff",
+    "test:native-release": "node --test build/scripts/native-packages.test.mjs",
     "test": "lage test:node test:playwright --verbose --concurrency 1",
     "test:chromium": "lage test:node test:chromium --verbose --concurrency 1",
     "test:e2e": "lage build --to @microsoft/fast-element && npm run test:e2e -w @microsoft/fast-examples-e2e",
@@ -68,6 +69,13 @@
     "rollup": "4.59.0",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "7.3.7"
+  },
+  "optionalDependencies": {
+    "@microsoft/fast-build-darwin-arm64": "file:packages/fast-build/native/darwin-arm64",
+    "@microsoft/fast-build-darwin-x64": "file:packages/fast-build/native/darwin-x64",
+    "@microsoft/fast-build-linux-x64-gnu": "file:packages/fast-build/native/linux-x64-gnu",
+    "@microsoft/fast-build-linux-x64-musl": "file:packages/fast-build/native/linux-x64-musl",
+    "@microsoft/fast-build-win32-x64-msvc": "file:packages/fast-build/native/win32-x64-msvc"
   },
   "overrides": {
     "@microsoft/api-documenter": {

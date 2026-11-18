@@ -51,8 +51,16 @@ import {
     mkdirSync,
     readdirSync,
     readFileSync,
+    writeFileSync,
 } from "node:fs";
 import { basename, join, resolve } from "node:path";
+import {
+    nativeTargets,
+    nodeApiVersion,
+    sourceRevision,
+    validateNativeArtifact,
+    validateNativeVersions,
+} from "./native-packages.mjs";
 
 const NPM_DIR = "publish_artifacts_npm";
 const CRATES_DIR = "publish_artifacts_crates";
@@ -154,6 +162,7 @@ function listPublishableWorkspaces() {
         const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
         if (pkg.private === true) continue;
         if (!pkg.name || !pkg.version) continue;
+        if (pkg.name === "@microsoft/fast-build") validateNativeVersions();
 
         const crates = listPairedCrates(pkg.name, pkg.version);
 
@@ -229,6 +238,41 @@ for (const { name, version, location, crates } of missing) {
     const assets = [];
 
     try {
+        if (name === "@microsoft/fast-build") {
+            validateNativeVersions();
+            const revision = sourceRevision();
+            writeFileSync(
+                join(location, "native-build.json"),
+                `${JSON.stringify(
+                    {
+                        packageName: name,
+                        version,
+                        sourceRevision: revision,
+                        napi: nodeApiVersion(),
+                    },
+                    null,
+                    2,
+                )}\n`,
+            );
+            // These are the exact tarballs built and qualified by this workflow's
+            // platform jobs, not native binaries repacked on the release host.
+            for (const target of Object.keys(nativeTargets)) {
+                const filename = `microsoft-fast-build-${target}-${version}.tgz`;
+                const tarball = join("publish_artifacts_native", filename);
+                const identityPath = join("publish_artifacts_native", `${target}.json`);
+                const identity = JSON.parse(readFileSync(identityPath, "utf8"));
+                if (!existsSync(tarball))
+                    throw new Error(`Missing native tarball ${tarball}.`);
+                validateNativeArtifact(
+                    identity,
+                    readFileSync(tarball),
+                    target,
+                    version,
+                    revision,
+                );
+                assets.push(tarball);
+            }
+        }
         console.log(`\nPacking ${name}@${version} from ${location}...`);
         const packJson = run("npm", [
             "pack",
