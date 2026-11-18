@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Avoid redundant native condition evaluation and static operand copies, and share component shadow tags.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

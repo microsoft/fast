@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Tue, 17 Nov 2026 07:11:45 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 18 Nov 2026 06:21:31 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.21.0
+
+Wed, 18 Nov 2026 06:21:31 GMT
+
+### Minor changes
+
+- Require native server rendering with source-built Node hosting, single-file JSON artifacts containing authored inputs and compiled plans, and Buffer-only requests with constructor-fixed options. (7559015+janechu@users.noreply.github.com)
+- Omit redundant legacy shadowroot aliases in newly compiled standard DSD output while preserving all other markup and retained artifact bytes. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Avoid temporary hydration-marker strings during bounded native rendering without changing HTML or error behavior. (7559015+janechu@users.noreply.github.com)
+- Decode native artifacts directly into validated typed execution plans. (7559015+janechu@users.noreply.github.com)
+- Avoid redundant native condition evaluation and static operand copies, and share component shadow tags. (7559015+janechu@users.noreply.github.com)
+- Avoid preparing unreachable native artifact bodies and remove redundant compiler collections and ownership wrappers. (7559015+janechu@users.noreply.github.com)
 
 ## 0.20.0
 
