@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { load } from "cheerio";
 import {
     buildEntryHtml,
     buildState,
@@ -141,6 +142,62 @@ test.describe("buildState", () => {
 });
 
 test.describe("createSSRRenderer", () => {
+    for (const { name, options, tagName, delegatesFocus } of [
+        {
+            name: "per-component package with default shadow attributes",
+            options: {
+                tagPrefix: "test",
+                components: [
+                    { name: "widget", packageName: "@microsoft/fast-test-harness" },
+                ],
+            },
+            tagName: "test-widget",
+            delegatesFocus: false,
+        },
+        {
+            name: "monolithic package with extra shadow attributes",
+            options: {
+                tagPrefix: "test",
+                packageName: "@microsoft/fast-test-harness",
+                distDir: "test/src/test-widget",
+            },
+            tagName: "test-input",
+            delegatesFocus: true,
+        },
+    ]) {
+        test(`should preserve template host attributes for a ${name}`, async () => {
+            const { render } = createSSRRenderer(options);
+            const result = await render({ tagName });
+            const $ = load(result.fixture, null, false);
+            const host = $(tagName);
+            const shadow = host.children("template");
+
+            assert.equal(host.attr("focusgroup"), "toolbar");
+            assert.equal(host.attr("role"), "group");
+            assert.equal(host.attr("data-host-flag"), "");
+            assert.equal(shadow.attr("shadowrootmode"), "open");
+            assert.equal(shadow.is("[shadowrootdelegatesfocus]"), delegatesFocus);
+            assert.equal(shadow.attr("focusgroup"), undefined);
+            assert.equal(shadow.attr("role"), undefined);
+            assert.equal(shadow.attr("data-host-flag"), undefined);
+        });
+
+        test(`should preserve explicit instance attributes for a ${name}`, async () => {
+            const { render } = createSSRRenderer(options);
+            const result = await render({
+                tagName,
+                attributes: JSON.stringify({ focusgroup: "menubar", role: "toolbar" }),
+            });
+            const $ = load(result.fixture, null, false);
+            const host = $(tagName);
+
+            assert.equal(host.attr("focusgroup"), "menubar");
+            assert.equal(host.attr("role"), "toolbar");
+            assert.equal(host.attr("data-host-flag"), "");
+            assert.equal(host.children("template").attr("shadowrootmode"), "open");
+        });
+    }
+
     test("should return a render function when @microsoft/fast-build is installed", () => {
         const renderer = createSSRRenderer({
             tagPrefix: "test",

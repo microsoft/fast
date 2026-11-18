@@ -298,7 +298,7 @@ The `src/ssr/render.ts` module exports `createSSRRenderer`, a factory that scans
 Compilation/rendering failures are logged and fall back to raw entry HTML.
 Initialization still throws when the required compiler package is unavailable.
 
-**Shadow root attributes:** When parsing f-templates, the WASM `parse_f_templates` output may include `shadowrootAttributes` (e.g. `shadowrootdelegatesfocus`) sourced from the template generation step. If any non-default attributes are present beyond `shadowrootmode`, the `templatesMap` entry for that tag uses the object form `{ content, shadowrootAttributes }` so the renderer can propagate them onto the emitted `<template shadowroot...>` element. Tags with only the default `shadowrootmode` use the bare string form.
+**Host and shadow root attributes:** When parsing f-templates, the WASM `parse_f_templates` output may include `hostAttributes` from the inner `<template>` wrapper and `shadowrootAttributes` (e.g. `shadowrootdelegatesfocus`). If host attributes or non-default shadow root attributes are present, the `templatesMap` entry uses the object form `{ content, shadowrootAttributes, hostAttributes }`. The compiler applies host defaults to the custom element without overriding explicit instance attributes, and propagates shadow root attributes onto the emitted `<template shadowroot...>` element. Tags with no host attributes and only the default `shadowrootmode` use the bare string form.
 
 ---
 
