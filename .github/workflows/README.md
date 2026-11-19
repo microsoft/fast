@@ -39,6 +39,49 @@ successfully published releases.
 
 ### Adding a publishable package
 
+#### FAST Build native bundle
+
+`native-packages.yml` builds six native packages from the same checkout as
+the parent release: macOS arm64/x64, Windows arm64/x64 MSVC and Linux arm64/x64
+glibc. Linux binaries use an Ubuntu 22.04 build baseline, with an explicit
+glibc 2.35 symbol-version ceiling. ARM64 Linux tarballs are qualified on an
+ARM64 runner rather than tested through an x64 process.
+Every exact tarball and binary is qualified on Node 22.18.0, Node 24 and Node 26, including
+an isolated packed-package consumer. The release job additionally runs the packed
+test with freshly built compiler WASM, exercising compilation and the CLI.
+
+Platform manifests live under `packages/fast-build/native/`. They are deliberately
+not npm workspaces: npm rejects unsupported-platform workspaces even when reached
+through optional dependencies. Root optional `file:` dependencies permit clean
+local installs without querying unpublished native package versions. The published
+parent uses exact-version optional dependencies; each native manifest specifies
+`os`, `cpu`, and, on Linux, `libc`. The Beachball parent postbump hook synchronizes
+all native versions and exact pins in manifests and the npm lockfile.
+
+`build-native-host.mjs --package <target> --target <rust-triple>` stages the binary
+and generated identity metadata. `build/scripts/pack-native-package.mjs <target>`
+packs it and records the tarball checksum, source revision, target, version and
+Cargo-derived Node-API requirement. Nothing downloads or compiles at install time.
+Binary outputs, generated metadata and tarballs are ignored by git.
+
+`cd-github-releases.yml` downloads only its own run's qualified native artifacts.
+The release helper verifies their checksums and revision before attaching all six
+actual tarballs to the parent `@microsoft/fast-build_v<version>` release, alongside
+the parent tarball and paired crates. Native packages have no separate release
+tags or deployment markers.
+
+Azure still downloads assets through the `fast` service connection and preserves
+1ES SDL and governed release inputs. `PrepareReleaseInputs` separates native
+tarballs into `fast-native-release-inputs`, requiring all six for a FAST Build
+release. `NativeDeploy` invokes the existing approved
+`FAST.Release.PipelineTemplate.yml@fastPipelines` with that artifact. Only its exact
+`Succeeded` result permits `Deploy` to publish the parent and other packages using
+the same template; `Skipped` is accepted only when no FAST Build release is due.
+No npm credentials are added to GitHub. Deployment markers remain conditional on
+the final publish job's exact `Succeeded` result. If parent publication fails after
+native publication, retry must tolerate native versions already present in npm,
+as with any partially published bundled release.
+
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
 
 The `npm run checkchange` command runs `build/scripts/check-publish-pipeline.mjs` to verify that every non-private workspace has matching Azure CD variables and a conditional `DownloadGitHubRelease@0` task. This guardrail runs in PR validation and fails when a new publishable package is added without updating the publish pipeline.

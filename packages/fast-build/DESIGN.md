@@ -12,11 +12,17 @@ is `fast-server-native` semantic schema 2, normally persisted as `server.artifac
 It contains literal writes, named templates, typed operands and symbolic component
 references, not source to evaluate. There is one compiler and one native executor.
 
-`native-host.mjs` loads only the caller-selected source-built Node-API addon.
+`native-host.mjs` resolves an installed platform Node-API addon by default;
+an optional caller-supplied path selects a custom addon.
 The required Node execution backend delegates to the crate's fresh-JSON methods;
 it has no compiler/WASM, browser or template-parser request dependency.
-The npm package includes the facade, types and source-build script, not platform
-binaries or crate sources. It performs no automatic download or install.
+The parent npm package includes the facade, types and source-build script, not
+crate sources. Exact-version optional dependencies provide platform binaries.
+The six targets cover macOS and Windows x64/arm64, plus Linux glibc x64/arm64.
+Resolution distinguishes OS, architecture and Linux libc, validates package/build
+identity, and uses Node package resolution rather than the working directory.
+Unsupported hosts, missing packages and incompatible addons fail closed.
+Loading performs no network download, Cargo invocation or backend fallback.
 The repository package build builds WASM and the local addon. Rust-only/WASM
 compilation does not enable the `node-host` Cargo transport feature.
 
@@ -95,8 +101,9 @@ never reopen a path after another writer can replace it.
 
 ## CLI
 
-`fast build` requires `--native-addon`, configured `native-addon`, or
-`FAST_NATIVE_ADDON`. It compiles or reuses a native artifact, passes original
+`fast build` uses automatic platform-package resolution unless `--native-addon`,
+configured `native-addon`, or `FAST_NATIVE_ADDON` selects a custom addon.
+It compiles or reuses a native artifact, passes original
 state-file bytes to native validation, renders complete HTML and writes the result.
 Omitted state becomes UTF-8 `{}`; supplied state must exist. Unknown build options
 fail. Config paths are relative to the config file and CLI paths to CWD.
@@ -117,7 +124,7 @@ converter crate.
 | File | Role |
 |---|---|
 | `server.js` / `server.d.ts` | Native artifact compilation, persistence and build-time types |
-| `native-host.mjs` / `native-host.d.ts` | Explicit Node addon loading and Buffer-only request boundary |
+| `native-host.mjs` / `native-host.d.ts` | Platform-package/custom Node addon loading and Buffer-only request boundary |
 | `build-native-host.mjs` | Source-build, Cargo receipt selection and standard `.node` addon copy |
 | `bin/fast.js` | CLI/configuration, glob scanning and file I/O |
 | `build-wasm.cjs` / `wasm/` | Build-time compiler/converter bindings |

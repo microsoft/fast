@@ -54,15 +54,16 @@ Do not import the compiler into the request dependency graph.
 
 ## Native Node execution
 
-Source-build the addon for the deployment's OS and architecture using the
-[hosting guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/native-node-host.md). The npm package does not contain
-prebuilt addons or automatically download or install native binaries.
+Install `@microsoft/fast-build` on the deployment target with optional dependencies
+enabled. On supported targets, npm supplies the exact-version prebuilt renderer;
+ordinary consumers need no Rust installation, source checkout or addon path.
+Requires Node >=22.18.0 and a native-addon-capable Node runtime.
 
 ```js
 import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
-const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
+const Program = loadNativeHost();
 const program = new Program(readFileSync("./generated/server.artifact.json"), {
     maxOutputBytes: 8 * 1024 * 1024,
     maxSteps: 1_000_000,
@@ -76,6 +77,25 @@ const html = bytes.toString("utf8");
 The shared Rust executor is required for server rendering. `.node` is Node.js's
 standard native-addon extension; `.json` artifacts contain semantic template
 data, not machine code. Loading validates the supported artifact schema once.
+
+Prebuilt packages cover macOS arm64/x64, Linux arm64/x64 glibc
+(Ubuntu 22.04/glibc 2.35 build baseline), and Windows arm64/x64 MSVC.
+Linux musl is not included in the prebuilt matrix.
+Other targets are not qualified by this matrix. The addon uses Node-API 8;
+release qualification exercises Node 22.18.0, Node 24 and Node 26.
+See the [hosting guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/native-node-host.md)
+for exact package names, errors and explicit source provisioning from a matching
+reviewed revision. Existing `loadNativeHost("/absolute/path/fast-build.node")`
+overrides remain available. No runtime download, Cargo invocation or JavaScript/WASM
+execution fallback occurs.
+
+Retain the selected optional package, its metadata and `.node` file in server
+bundles/deployment traces and preserve package resolution from the facade.
+Install target dependencies rather than copying another platform's `node_modules`.
+If the optional package is missing, reinstall for the target with optional
+dependencies enabled (`npm ci --include=optional`) and inspect lockfile/platform
+settings. Native execution is not available in browsers or native-addon-free edge
+runtimes.
 
 The four synchronous methods are `renderEntryJson(state)`,
 `renderTemplateJson(state)`, `renderHostJson(name, state)` and
@@ -382,8 +402,9 @@ npm install --save @microsoft/fast-build
 
 ### CLI Usage
 
-Set `FAST_NATIVE_ADDON` to the absolute source-built addon path, or provide
-`--native-addon`. No native binary is downloaded or provisioned automatically.
+The CLI automatically resolves the installed platform package. For custom
+provisioning, set `FAST_NATIVE_ADDON`, configure `native-addon`, or provide
+`--native-addon`. Loading does not download or compile a missing binary.
 
 The `fast build` command compiles and renders an entry HTML file with an optional
 JSON state file:
@@ -396,7 +417,7 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 |---|---|---|
 | `--entry` | `index.html` | Entry HTML template to render |
 | `--state` | `{}` when omitted | Optional JSON state file; no `state.json` is loaded implicitly. An explicit path must exist. |
-| `--native-addon` | `FAST_NATIVE_ADDON` | Required source-built Node addon path |
+| `--native-addon` | `FAST_NATIVE_ADDON`, then platform package | Optional custom Node addon path |
 | `--server-artifact` | _(none)_ | Persist authored inputs and compiled native plans in one JSON artifact |
 | `--output` | `output.html` | Where to write the rendered HTML |
 | `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |

@@ -1,0 +1,116 @@
+name: Build and qualify FAST native packages
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, "releases/*", "features/*"]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: darwin-arm64, os: macos-15, arch: arm64, triple: aarch64-apple-darwin }
+          - { target: darwin-x64, os: macos-15-intel, arch: x64, triple: x86_64-apple-darwin }
+          - { target: linux-arm64-gnu, os: ubuntu-22.04, arch: x64, triple: aarch64-unknown-linux-gnu }
+          - { target: linux-x64-gnu, os: ubuntu-22.04, arch: x64, triple: x86_64-unknown-linux-gnu }
+          - { target: win32-arm64-msvc, os: windows-11-arm, arch: arm64, triple: aarch64-pc-windows-msvc }
+          - { target: win32-x64-msvc, os: windows-2022, arch: x64, triple: x86_64-pc-windows-msvc }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.18.0
+          architecture: ${{ matrix.arch }}
+      - name: Install Ubuntu 22.04 ARM64 cross linker
+        if: matrix.target == 'linux-arm64-gnu'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu libc6-dev-arm64-cross
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
+      - name: Build locked native library and exact package tarball
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+          TRIPLE: ${{ matrix.triple }}
+        run: |
+          rustup target add "$TRIPLE"
+          node packages/fast-build/build-native-host.mjs --package "$TARGET" --target "$TRIPLE"
+          if [[ "$TARGET" == linux-* ]]; then
+            node build/scripts/check-native-glibc.mjs "packages/fast-build/native/$TARGET/fast-build.node"
+          fi
+          node build/scripts/pack-native-package.mjs "$TARGET"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: unqualified-native-${{ matrix.target }}
+          path: publish_artifacts_native/
+          if-no-files-found: error
+
+  qualify:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: darwin-arm64, os: macos-15, arch: arm64, platform: darwin }
+          - { target: darwin-x64, os: macos-15-intel, arch: x64, platform: darwin }
+          - { target: linux-arm64-gnu, os: ubuntu-24.04-arm, arch: arm64, platform: linux }
+          - { target: linux-x64-gnu, os: ubuntu-22.04, arch: x64, platform: linux }
+          - { target: win32-arm64-msvc, os: windows-11-arm, arch: arm64, platform: win32 }
+          - { target: win32-x64-msvc, os: windows-2022, arch: x64, platform: win32 }
+    runs-on: ${{ matrix.os }}
+    env:
+      EXPECTED_ARCH: ${{ matrix.arch }}
+      EXPECTED_PLATFORM: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: unqualified-native-${{ matrix.target }}
+          path: publish_artifacts_native/
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.18.0
+          architecture: ${{ matrix.arch }}
+      - name: Select the built target tarball
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          VERSION=$(node -p "require('./packages/fast-build/package.json').version")
+          echo "FAST_NATIVE_PACKAGE_TARBALL=publish_artifacts_native/microsoft-fast-build-$TARGET-$VERSION.tgz" >> "$GITHUB_ENV"
+      - name: Qualify minimum Node with packed consumer install
+        run: |
+          node -e "if (process.arch !== process.env.EXPECTED_ARCH || process.platform !== process.env.EXPECTED_PLATFORM) throw new Error('Qualification must run on the actual target architecture')"
+          node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          architecture: ${{ matrix.arch }}
+      - name: Qualify Node 24 with the same binary and tarball
+        run: |
+          node -e "if (process.arch !== process.env.EXPECTED_ARCH || process.platform !== process.env.EXPECTED_PLATFORM) throw new Error('Qualification must run on the actual target architecture')"
+          node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          architecture: ${{ matrix.arch }}
+      - name: Qualify Node 26 with the same binary and tarball
+        run: |
+          node -e "if (process.arch !== process.env.EXPECTED_ARCH || process.platform !== process.env.EXPECTED_PLATFORM) throw new Error('Qualification must run on the actual target architecture')"
+          node --test packages/fast-build/test/native-loader.test.mjs packages/fast-build/test/native-package.test.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-${{ matrix.target }}
+          path: publish_artifacts_native/
+          if-no-files-found: error
