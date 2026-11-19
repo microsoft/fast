@@ -41,9 +41,11 @@ successfully published releases.
 
 #### FAST Build native bundle
 
-`native-packages.yml` builds the five native packages from the same checkout as
-the parent release. macOS arm64/x64, Windows x64 MSVC and Ubuntu 22.04 x64 glibc
-use native runners; x64 musl builds and runs inside real Alpine 3.22 containers.
+`native-packages.yml` builds six native packages from the same checkout as
+the parent release: macOS arm64/x64, Windows arm64/x64 MSVC and Linux arm64/x64
+glibc. Linux binaries use an Ubuntu 22.04 build baseline, with an explicit
+glibc 2.35 symbol-version ceiling. ARM64 Linux tarballs are qualified on an
+ARM64 runner rather than tested through an x64 process.
 Every exact tarball and binary is qualified on Node 22.18.0, Node 24 and Node 26, including
 an isolated packed-package consumer. The release job additionally runs the packed
 test with freshly built compiler WASM, exercising compilation and the CLI.
@@ -63,14 +65,14 @@ Cargo-derived Node-API requirement. Nothing downloads or compiles at install tim
 Binary outputs, generated metadata and tarballs are ignored by git.
 
 `cd-github-releases.yml` downloads only its own run's qualified native artifacts.
-The release helper verifies their checksums and revision before attaching all five
+The release helper verifies their checksums and revision before attaching all six
 actual tarballs to the parent `@microsoft/fast-build_v<version>` release, alongside
 the parent tarball and paired crates. Native packages have no separate release
 tags or deployment markers.
 
 Azure still downloads assets through the `fast` service connection and preserves
 1ES SDL and governed release inputs. `PrepareReleaseInputs` separates native
-tarballs into `fast-native-release-inputs`, requiring all five for a FAST Build
+tarballs into `fast-native-release-inputs`, requiring all six for a FAST Build
 release. `NativeDeploy` invokes the existing approved
 `FAST.Release.PipelineTemplate.yml@fastPipelines` with that artifact. Only its exact
 `Succeeded` result permits `Deploy` to publish the parent and other packages using

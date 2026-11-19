@@ -56,11 +56,12 @@ the Node-API level does not broaden the package's Node engine requirement.
 | macOS arm64 | `@microsoft/fast-build-darwin-arm64` | macOS arm64 |
 | macOS x64 | `@microsoft/fast-build-darwin-x64` | macOS x64 |
 | Linux x64 glibc | `@microsoft/fast-build-linux-x64-gnu` | Ubuntu 22.04, glibc 2.35 |
-| Linux x64 musl | `@microsoft/fast-build-linux-x64-musl` | Alpine 3.22 |
+| Linux arm64 glibc | `@microsoft/fast-build-linux-arm64-gnu` | Ubuntu 22.04 build, glibc 2.35; ARM64 execution |
 | Windows x64 | `@microsoft/fast-build-win32-x64-msvc` | Windows MSVC |
+| Windows arm64 | `@microsoft/fast-build-win32-arm64-msvc` | Windows ARM64 MSVC |
 
 This is the prebuilt matrix, not a promise of universal native compatibility.
-Linux arm64, Windows arm64, other architectures/libcs and older Linux baselines
+Linux musl, other architectures/libcs and older Linux baselines
 are not qualified by these packages. An explicit source build may be possible,
 but requires independent qualification for that target.
 
@@ -73,7 +74,7 @@ version/API contract. Semantic artifact schema compatibility is separate from
 package release identity; it is not a compiler fingerprint or source-hash gate.
 
 - **`unsupported-platform`:** use a supported Node host or explicitly provision
-  and qualify a custom addon. Do not select a glibc binary for musl or vice versa.
+  and qualify a custom addon. Prebuilt Linux packages require glibc, not musl.
 - **`native-package-missing`:** reinstall dependencies for the actual deployment
   target with optional dependencies enabled, for example `npm ci --include=optional`.
   Check package-manager omit/platform settings and that the lockfile includes the

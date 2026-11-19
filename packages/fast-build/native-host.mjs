@@ -17,15 +17,22 @@ const packages = {
         metadata: () => require("@microsoft/fast-build-darwin-x64/native-build.json"),
         load: () => require("@microsoft/fast-build-darwin-x64"),
     },
+    "linux-arm64-gnu": {
+        manifest: () => require("@microsoft/fast-build-linux-arm64-gnu/package.json"),
+        metadata: () =>
+            require("@microsoft/fast-build-linux-arm64-gnu/native-build.json"),
+        load: () => require("@microsoft/fast-build-linux-arm64-gnu"),
+    },
     "linux-x64-gnu": {
         manifest: () => require("@microsoft/fast-build-linux-x64-gnu/package.json"),
         metadata: () => require("@microsoft/fast-build-linux-x64-gnu/native-build.json"),
         load: () => require("@microsoft/fast-build-linux-x64-gnu"),
     },
-    "linux-x64-musl": {
-        manifest: () => require("@microsoft/fast-build-linux-x64-musl/package.json"),
-        metadata: () => require("@microsoft/fast-build-linux-x64-musl/native-build.json"),
-        load: () => require("@microsoft/fast-build-linux-x64-musl"),
+    "win32-arm64-msvc": {
+        manifest: () => require("@microsoft/fast-build-win32-arm64-msvc/package.json"),
+        metadata: () =>
+            require("@microsoft/fast-build-win32-arm64-msvc/native-build.json"),
+        load: () => require("@microsoft/fast-build-win32-arm64-msvc"),
     },
     "win32-x64-msvc": {
         manifest: () => require("@microsoft/fast-build-win32-x64-msvc/package.json"),
@@ -50,17 +57,19 @@ function hostTarget() {
     if (platform === "darwin" && (arch === "arm64" || arch === "x64")) {
         return `darwin-${arch}`;
     }
-    if (platform === "win32" && arch === "x64") return "win32-x64-msvc";
-    if (platform === "linux" && arch === "x64") {
+    if (platform === "win32" && (arch === "arm64" || arch === "x64")) {
+        return `win32-${arch}-msvc`;
+    }
+    if (platform === "linux" && (arch === "arm64" || arch === "x64")) {
         let report;
         try {
             report = process.report.getReport();
         } catch {
             // Restricted hosts may disable diagnostic reports; inspect the running image.
         }
-        if (report?.header?.glibcVersionRuntime) return "linux-x64-gnu";
+        if (report?.header?.glibcVersionRuntime) return `linux-${arch}-gnu`;
         if (report?.sharedObjects?.some(name => /(?:ld-musl-|libc\.musl-)/.test(name))) {
-            return "linux-x64-musl";
+            throw unsupported(" (musl libc is unsupported)");
         }
         let mappings = "";
         try {
@@ -68,13 +77,17 @@ function hostTarget() {
         } catch {
             // Do not guess a libc when neither source can identify the running process.
         }
-        if (/(?:ld-musl-|libc\.musl-)/.test(mappings)) return "linux-x64-musl";
-        if (
-            /\/(?:libc(?:-[\d.]+)?\.so\.6|ld-linux-x86-64\.so\.2)(?:\s|$)/m.test(mappings)
-        ) {
-            return "linux-x64-gnu";
+        if (/(?:ld-musl-|libc\.musl-)/.test(mappings)) {
+            throw unsupported(" (musl libc is unsupported)");
         }
-        throw unsupported(" (unable to identify glibc or musl)");
+        if (
+            /\/(?:libc(?:-[\d.]+)?\.so\.6|ld-linux-x86-64\.so\.2|ld-linux-aarch64\.so\.1)(?:\s|$)/m.test(
+                mappings,
+            )
+        ) {
+            return `linux-${arch}-gnu`;
+        }
+        throw unsupported(" (unable to identify glibc)");
     }
     throw unsupported("");
 }

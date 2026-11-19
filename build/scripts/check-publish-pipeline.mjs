@@ -11,6 +11,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { validateNativePipelines, validateNativeVersions } from "./native-packages.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const pipelinePath = join(repoRoot, "azure-pipelines-cd.yml");
@@ -118,6 +119,15 @@ const pipeline = readFileSync(pipelinePath, "utf8");
 const publishable = listPublishableWorkspaces();
 const downloadBlocks = getStepBlocks(pipeline, "- task: DownloadGitHubRelease@0");
 const failures = validateUniquePrefixes(publishable);
+try {
+    validateNativeVersions();
+    validateNativePipelines(
+        pipeline,
+        readFileSync(join(repoRoot, ".github/workflows/native-packages.yml"), "utf8"),
+    );
+} catch (error) {
+    failures.push(error.message);
+}
 if (
     !pipeline.includes("- job: NativeDeploy") ||
     !pipeline.includes("in(dependencies.NativeDeploy.result, 'Succeeded', 'Skipped')") ||

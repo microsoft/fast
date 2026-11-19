@@ -122,44 +122,81 @@ test("selects only the exact host OS/architecture/libc package", () => {
     for (const host of [
         { platform: "darwin", arch: "arm64", target: "darwin-arm64" },
         { platform: "darwin", arch: "x64", target: "darwin-x64" },
+        { platform: "win32", arch: "arm64", target: "win32-arm64-msvc" },
         { platform: "win32", arch: "x64", target: "win32-x64-msvc" },
+        {
+            platform: "linux",
+            arch: "arm64",
+            target: "linux-arm64-gnu",
+            report: { header: { glibcVersionRuntime: "2.35" } },
+        },
         {
             platform: "linux",
             arch: "x64",
             target: "linux-x64-gnu",
             report: { header: { glibcVersionRuntime: "2.35" } },
         },
-        {
-            platform: "linux",
-            arch: "x64",
-            target: "linux-x64-musl",
-            report: { sharedObjects: ["/lib/ld-musl-x86_64.so.1"] },
-        },
-        {
-            platform: "linux",
-            arch: "x64",
-            target: "linux-x64-musl",
-            reportError: true,
-            maps: "/lib/ld-musl-x86_64.so.1\n",
-        },
-        {
-            platform: "linux",
-            arch: "x64",
-            target: "linux-x64-gnu",
-            reportError: true,
-            maps: "/usr/lib/x86_64-linux-gnu/libc.so.6\n",
-        },
     ]) {
         const result = probe(host);
         assert.equal(result.ok, true, JSON.stringify(result));
-        assert.ok(result.requests.length >= 3);
-        assert.ok(
-            result.requests.every(
-                name =>
-                    name === `@microsoft/fast-build-${host.target}` ||
-                    name.startsWith(`@microsoft/fast-build-${host.target}/`),
-            ),
+        assert.deepEqual(
+            [...new Set(result.requests)].sort(),
+            [
+                `@microsoft/fast-build-${host.target}`,
+                `@microsoft/fast-build-${host.target}/native-build.json`,
+                `@microsoft/fast-build-${host.target}/package.json`,
+            ].sort(),
         );
+    }
+});
+
+test("identifies Linux glibc from process mappings when reports are unavailable or inconclusive", () => {
+    for (const [arch, loader, directory] of [
+        ["arm64", "ld-linux-aarch64.so.1", "aarch64-linux-gnu"],
+        ["x64", "ld-linux-x86-64.so.2", "x86_64-linux-gnu"],
+    ]) {
+        for (const reportError of [false, true]) {
+            for (const library of [
+                `/lib/${loader}`,
+                `/usr/lib/${directory}/libc.so.6`,
+                `/usr/lib/${directory}/libc-2.35.so.6`,
+            ]) {
+                const target = `linux-${arch}-gnu`;
+                const result = probe({
+                    platform: "linux",
+                    arch,
+                    target,
+                    reportError,
+                    maps: `70000000-70001000 r-xp 00000000 00:01 123 ${library}\n`,
+                });
+                assert.equal(result.ok, true, JSON.stringify(result));
+                assert.ok(result.requests.includes(`@microsoft/fast-build-${target}`));
+            }
+        }
+    }
+});
+
+test("musl Linux hosts fail with explicit source-build guidance on both architectures", () => {
+    for (const [arch, libcArch] of [
+        ["arm64", "aarch64"],
+        ["x64", "x86_64"],
+    ]) {
+        for (const library of [
+            `/lib/ld-musl-${libcArch}.so.1`,
+            `/lib/libc.musl-${libcArch}.so.1`,
+        ]) {
+            for (const detection of [
+                { report: { sharedObjects: [library] } },
+                { reportError: true, maps: `${library}\n` },
+            ]) {
+                const result = probe({ platform: "linux", arch, ...detection });
+                assert.equal(result.code, "unsupported-platform");
+                assert.match(result.message, /musl/);
+                assert.match(result.message, /source-built addon/);
+                assert.match(result.message, /pass its path to loadNativeHost\(\)/);
+                assert.deepEqual(result.requests, []);
+            }
+        }
     }
 });
 
@@ -167,8 +204,12 @@ test("unsupported hosts and unknown libc fail without attempting package resolut
     for (const host of [
         { platform: "linux", arch: "arm64" },
         { platform: "freebsd" },
-        { platform: "win32", arch: "arm64" },
         { platform: "linux", arch: "x64" },
+        { platform: "linux", arch: "ia32" },
+        { platform: "darwin", arch: "ia32" },
+        { platform: "win32", arch: "ia32" },
+        { platform: "linux", arch: "arm64", reportError: true },
+        { platform: "linux", arch: "x64", reportError: true },
     ]) {
         const result = probe(host);
         assert.equal(result.code, "unsupported-platform");
@@ -194,7 +235,7 @@ test("rejects mismatched package, binary and API identity before returning a con
         [{ manifest: { version: "0.0.0" } }, "native-version-mismatch"],
         [{ metadata: { version: "0.0.0" } }, "native-version-mismatch"],
         [{ manifest: { name: "@other/native" } }, "native-incompatible"],
-        [{ metadata: { target: "linux-x64-musl" } }, "native-incompatible"],
+        [{ metadata: { target: "linux-x64-gnu" } }, "native-incompatible"],
         [{ metadata: { napi: 9 } }, "native-api-mismatch"],
         [{ napi: "7" }, "native-api-mismatch"],
         [{ napi: "" }, "native-api-mismatch"],

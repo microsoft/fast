@@ -73,8 +73,9 @@
   "optionalDependencies": {
     "@microsoft/fast-build-darwin-arm64": "file:packages/fast-build/native/darwin-arm64",
     "@microsoft/fast-build-darwin-x64": "file:packages/fast-build/native/darwin-x64",
+    "@microsoft/fast-build-linux-arm64-gnu": "file:packages/fast-build/native/linux-arm64-gnu",
     "@microsoft/fast-build-linux-x64-gnu": "file:packages/fast-build/native/linux-x64-gnu",
-    "@microsoft/fast-build-linux-x64-musl": "file:packages/fast-build/native/linux-x64-musl",
+    "@microsoft/fast-build-win32-arm64-msvc": "file:packages/fast-build/native/win32-arm64-msvc",
     "@microsoft/fast-build-win32-x64-msvc": "file:packages/fast-build/native/win32-x64-msvc"
   },
   "overrides": {

@@ -16,8 +16,9 @@ const packageTarget = option("--package");
 const rustTargets = {
     "darwin-arm64": "aarch64-apple-darwin",
     "darwin-x64": "x86_64-apple-darwin",
+    "linux-arm64-gnu": "aarch64-unknown-linux-gnu",
     "linux-x64-gnu": "x86_64-unknown-linux-gnu",
-    "linux-x64-musl": "x86_64-unknown-linux-musl",
+    "win32-arm64-msvc": "aarch64-pc-windows-msvc",
     "win32-x64-msvc": "x86_64-pc-windows-msvc",
 };
 if (packageTarget && !Object.hasOwn(rustTargets, packageTarget)) {
@@ -47,6 +48,18 @@ const packageJson = packageDir
     : undefined;
 if (packageJson && packageJson.fastBuild?.target !== packageTarget) {
     throw new Error("Unsupported native package target.");
+}
+if (packageJson) {
+    const parent = JSON.parse(
+        readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+    );
+    if (
+        packageJson.name !== `@microsoft/fast-build-${packageTarget}` ||
+        packageJson.version !== parent.version ||
+        parent.optionalDependencies?.[packageJson.name] !== parent.version
+    ) {
+        throw new Error("Native package version must exactly match the parent package.");
+    }
 }
 const revision = execFileSync("git", ["rev-parse", "HEAD"], {
     cwd: fileURLToPath(new URL("../../", import.meta.url)),
@@ -79,11 +92,6 @@ const output = existingAddon
               env: {
                   ...process.env,
                   FAST_BUILD_SOURCE_REVISION: revision,
-                  ...(rustTarget?.includes("musl")
-                      ? {
-                            RUSTFLAGS: `${process.env.RUSTFLAGS ?? ""} -C target-feature=-crt-static`,
-                        }
-                      : {}),
               },
           },
       );

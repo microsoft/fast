@@ -159,7 +159,7 @@ extends:
                 find "$(System.ArtifactsDirectory)" -name "*.tgz" -exec cp {} "$ROOT/publish_artifacts_npm/" \;
                 NATIVE="$(Build.ArtifactStagingDirectory)/fast-native-release-inputs"
                 mkdir -p "$NATIVE/publish_artifacts_npm"
-                for target in darwin-arm64 darwin-x64 linux-x64-gnu linux-x64-musl win32-x64-msvc; do
+                for target in darwin-arm64 darwin-x64 linux-arm64-gnu linux-x64-gnu win32-arm64-msvc win32-x64-msvc; do
                   for package in "$ROOT"/publish_artifacts_npm/microsoft-fast-build-"$target"-*.tgz; do
                     [ -f "$package" ] || continue
                     mv "$package" "$NATIVE/publish_artifacts_npm/"
@@ -168,8 +168,8 @@ extends:
               fi
               if [ "$(fastBuildNeedsDeployment)" = "true" ]; then
                 count=$(find "$NATIVE/publish_artifacts_npm" -maxdepth 1 -name '*.tgz' | wc -l)
-                if [ "$count" -ne 5 ]; then
-                  echo "FAST Build requires all five native package tarballs; found $count."
+                if [ "$count" -ne 6 ]; then
+                  echo "FAST Build requires all six native package tarballs; found $count."
                   exit 1
                 fi
               fi

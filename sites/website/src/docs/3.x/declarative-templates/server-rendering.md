@@ -78,10 +78,11 @@ The shared Rust executor is required for server rendering. `.node` is Node.js's
 standard native-addon extension; `.json` artifacts contain semantic template
 data, not machine code. Loading validates the supported artifact schema once.
 
-Prebuilt packages cover macOS arm64/x64, Linux x64 glibc (Ubuntu 22.04/glibc 2.35
-baseline), Linux x64 musl (Alpine 3.22 baseline), and Windows x64 MSVC.
+Prebuilt packages cover macOS arm64/x64, Linux arm64/x64 glibc
+(Ubuntu 22.04/glibc 2.35 build baseline), and Windows arm64/x64 MSVC.
+Linux musl is not included in the prebuilt matrix.
 Other targets are not qualified by this matrix. The addon uses Node-API 8;
-release qualification exercises Node 22.18.0 and Node 24.
+release qualification exercises Node 22.18.0, Node 24 and Node 26.
 See the [hosting guide](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/native-node-host.md)
 for exact package names, errors and explicit source provisioning from a matching
 reviewed revision. Existing `loadNativeHost("/absolute/path/fast-build.node")`

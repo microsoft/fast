@@ -133,11 +133,7 @@ test("packed compiler/native packages render and relocate with no source build o
             );
             let target = `${process.platform}-${process.arch}`;
             if (process.platform === "win32") target += "-msvc";
-            if (process.platform === "linux") {
-                target += process.report.getReport().header.glibcVersionRuntime
-                    ? "-gnu"
-                    : "-musl";
-            }
+            if (process.platform === "linux") target += "-gnu";
             const nativeSource = join(source, "native", target);
             const stagedNative = join(staging, "native");
             mkdirSync(stagedNative);
