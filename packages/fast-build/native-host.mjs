@@ -17,27 +17,25 @@ const packages = {
         metadata: () => require("@microsoft/fast-build-darwin-x64/native-build.json"),
         load: () => require("@microsoft/fast-build-darwin-x64"),
     },
-    "linux-arm64-gnu": {
-        manifest: () => require("@microsoft/fast-build-linux-arm64-gnu/package.json"),
-        metadata: () =>
-            require("@microsoft/fast-build-linux-arm64-gnu/native-build.json"),
-        load: () => require("@microsoft/fast-build-linux-arm64-gnu"),
+    "linux-arm64": {
+        manifest: () => require("@microsoft/fast-build-linux-arm64/package.json"),
+        metadata: () => require("@microsoft/fast-build-linux-arm64/native-build.json"),
+        load: () => require("@microsoft/fast-build-linux-arm64"),
     },
-    "linux-x64-gnu": {
-        manifest: () => require("@microsoft/fast-build-linux-x64-gnu/package.json"),
-        metadata: () => require("@microsoft/fast-build-linux-x64-gnu/native-build.json"),
-        load: () => require("@microsoft/fast-build-linux-x64-gnu"),
+    "linux-x64": {
+        manifest: () => require("@microsoft/fast-build-linux-x64/package.json"),
+        metadata: () => require("@microsoft/fast-build-linux-x64/native-build.json"),
+        load: () => require("@microsoft/fast-build-linux-x64"),
     },
-    "win32-arm64-msvc": {
-        manifest: () => require("@microsoft/fast-build-win32-arm64-msvc/package.json"),
-        metadata: () =>
-            require("@microsoft/fast-build-win32-arm64-msvc/native-build.json"),
-        load: () => require("@microsoft/fast-build-win32-arm64-msvc"),
+    "win32-arm64": {
+        manifest: () => require("@microsoft/fast-build-win32-arm64/package.json"),
+        metadata: () => require("@microsoft/fast-build-win32-arm64/native-build.json"),
+        load: () => require("@microsoft/fast-build-win32-arm64"),
     },
-    "win32-x64-msvc": {
-        manifest: () => require("@microsoft/fast-build-win32-x64-msvc/package.json"),
-        metadata: () => require("@microsoft/fast-build-win32-x64-msvc/native-build.json"),
-        load: () => require("@microsoft/fast-build-win32-x64-msvc"),
+    "win32-x64": {
+        manifest: () => require("@microsoft/fast-build-win32-x64/package.json"),
+        metadata: () => require("@microsoft/fast-build-win32-x64/native-build.json"),
+        load: () => require("@microsoft/fast-build-win32-x64"),
     },
 };
 
@@ -58,7 +56,7 @@ function hostTarget() {
         return `darwin-${arch}`;
     }
     if (platform === "win32" && (arch === "arm64" || arch === "x64")) {
-        return `win32-${arch}-msvc`;
+        return `win32-${arch}`;
     }
     if (platform === "linux" && (arch === "arm64" || arch === "x64")) {
         let report;
@@ -67,7 +65,7 @@ function hostTarget() {
         } catch {
             // Restricted hosts may disable diagnostic reports; inspect the running image.
         }
-        if (report?.header?.glibcVersionRuntime) return `linux-${arch}-gnu`;
+        if (report?.header?.glibcVersionRuntime) return `linux-${arch}`;
         if (report?.sharedObjects?.some(name => /(?:ld-musl-|libc\.musl-)/.test(name))) {
             throw unsupported(" (musl libc is unsupported)");
         }
@@ -85,7 +83,7 @@ function hostTarget() {
                 mappings,
             )
         ) {
-            return `linux-${arch}-gnu`;
+            return `linux-${arch}`;
         }
         throw unsupported(" (unable to identify glibc)");
     }

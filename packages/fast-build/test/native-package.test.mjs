@@ -131,9 +131,7 @@ test("packed compiler/native packages render and relocate with no source build o
                 info.version,
                 JSON.parse(readFileSync(join(source, "package.json"))).version,
             );
-            let target = `${process.platform}-${process.arch}`;
-            if (process.platform === "win32") target += "-msvc";
-            if (process.platform === "linux") target += "-gnu";
+            const target = `${process.platform}-${process.arch}`;
             const nativeSource = join(source, "native", target);
             const stagedNative = join(staging, "native");
             mkdirSync(stagedNative);

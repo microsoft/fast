@@ -7,20 +7,20 @@ export const repoRoot = fileURLToPath(new URL("../../", import.meta.url));
 export const nativeTargets = Object.freeze({
     "darwin-arm64": { os: "darwin", cpu: "arm64", triple: "aarch64-apple-darwin" },
     "darwin-x64": { os: "darwin", cpu: "x64", triple: "x86_64-apple-darwin" },
-    "linux-arm64-gnu": {
+    "linux-arm64": {
         os: "linux",
         cpu: "arm64",
         libc: "glibc",
         triple: "aarch64-unknown-linux-gnu",
     },
-    "linux-x64-gnu": {
+    "linux-x64": {
         os: "linux",
         cpu: "x64",
         libc: "glibc",
         triple: "x86_64-unknown-linux-gnu",
     },
-    "win32-arm64-msvc": { os: "win32", cpu: "arm64", triple: "aarch64-pc-windows-msvc" },
-    "win32-x64-msvc": { os: "win32", cpu: "x64", triple: "x86_64-pc-windows-msvc" },
+    "win32-arm64": { os: "win32", cpu: "arm64", triple: "aarch64-pc-windows-msvc" },
+    "win32-x64": { os: "win32", cpu: "x64", triple: "x86_64-pc-windows-msvc" },
 });
 
 export function readJson(path) {

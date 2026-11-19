@@ -88,7 +88,7 @@ jobs:
     - name: Qualify packed native packages with the freshly built compiler and CLI
       run: |
         VERSION=$(node -p "require('./packages/fast-build/package.json').version")
-        FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-gnu-$VERSION.tgz" \
+        FAST_NATIVE_PACKAGE_TARBALL="publish_artifacts_native/microsoft-fast-build-linux-x64-$VERSION.tgz" \
           node --test packages/fast-build/test/native-package.test.mjs
 
     - name: Pack and create GitHub releases

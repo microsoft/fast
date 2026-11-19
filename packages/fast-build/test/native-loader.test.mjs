@@ -136,18 +136,18 @@ test("selects only the exact host OS/architecture/libc package", () => {
     for (const host of [
         { platform: "darwin", arch: "arm64", target: "darwin-arm64" },
         { platform: "darwin", arch: "x64", target: "darwin-x64" },
-        { platform: "win32", arch: "arm64", target: "win32-arm64-msvc" },
-        { platform: "win32", arch: "x64", target: "win32-x64-msvc" },
+        { platform: "win32", arch: "arm64", target: "win32-arm64" },
+        { platform: "win32", arch: "x64", target: "win32-x64" },
         {
             platform: "linux",
             arch: "arm64",
-            target: "linux-arm64-gnu",
+            target: "linux-arm64",
             report: { header: { glibcVersionRuntime: "2.35" } },
         },
         {
             platform: "linux",
             arch: "x64",
-            target: "linux-x64-gnu",
+            target: "linux-x64",
             report: { header: { glibcVersionRuntime: "2.35" } },
         },
     ]) {
@@ -175,7 +175,7 @@ test("identifies Linux glibc from process mappings when reports are unavailable 
                 `/usr/lib/${directory}/libc.so.6`,
                 `/usr/lib/${directory}/libc-2.35.so.6`,
             ]) {
-                const target = `linux-${arch}-gnu`;
+                const target = `linux-${arch}`;
                 const result = probe({
                     platform: "linux",
                     arch,
@@ -249,7 +249,7 @@ test("rejects mismatched package, binary and API identity before returning a con
         [{ manifest: { version: "0.0.0" } }, "native-version-mismatch"],
         [{ metadata: { version: "0.0.0" } }, "native-version-mismatch"],
         [{ manifest: { name: "@other/native" } }, "native-incompatible"],
-        [{ metadata: { target: "linux-x64-gnu" } }, "native-incompatible"],
+        [{ metadata: { target: "linux-x64" } }, "native-incompatible"],
         [{ metadata: { napi: 9 } }, "native-api-mismatch"],
         [{ napi: "7" }, "native-api-mismatch"],
         [{ napi: "" }, "native-api-mismatch"],

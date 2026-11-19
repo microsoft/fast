@@ -1,14 +1,14 @@
 {
-  "name": "@microsoft/fast-build-linux-arm64-gnu",
+  "name": "@microsoft/fast-build-linux-arm64",
   "version": "0.21.0",
   "description": "FAST Build native renderer for Linux arm64 glibc (Ubuntu 22.04 baseline).",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/microsoft/fast.git", "directory": "packages/fast-build/native/linux-arm64-gnu" },
+  "repository": { "type": "git", "url": "git+https://github.com/microsoft/fast.git", "directory": "packages/fast-build/native/linux-arm64" },
   "main": "fast-build.node",
   "files": ["fast-build.node", "native-build.json"],
   "os": ["linux"],
   "cpu": ["arm64"],
   "libc": ["glibc"],
   "engines": { "node": ">=22.18.0" },
-  "fastBuild": { "target": "linux-arm64-gnu", "nodeApi": 8 }
+  "fastBuild": { "target": "linux-arm64", "nodeApi": 8 }
 }

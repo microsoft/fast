@@ -23,10 +23,10 @@ test("the six native packages, root local pins and lockfile stay in sync", () =>
     assert.deepEqual(Object.keys(nativeTargets), [
         "darwin-arm64",
         "darwin-x64",
-        "linux-arm64-gnu",
-        "linux-x64-gnu",
-        "win32-arm64-msvc",
-        "win32-x64-msvc",
+        "linux-arm64",
+        "linux-x64",
+        "win32-arm64",
+        "win32-x64",
     ]);
     const parent = validateNativeVersions();
     const lock = JSON.parse(
@@ -198,21 +198,21 @@ test("Linux symbol qualification rejects requirements newer than GLIBC_2.35", ()
 test("release verification rejects replaced tarballs and mismatched native provenance", () => {
     const tarball = Buffer.from("qualified archive");
     const identity = {
-        packageName: "@microsoft/fast-build-linux-arm64-gnu",
+        packageName: "@microsoft/fast-build-linux-arm64",
         version: "0.22.0",
-        target: "linux-arm64-gnu",
+        target: "linux-arm64",
         sourceRevision: "reviewed",
         napi: 8,
         sha256: createHash("sha256").update(tarball).digest("hex"),
     };
     const verify = (metadata, bytes = tarball) =>
-        validateNativeArtifact(metadata, bytes, "linux-arm64-gnu", "0.22.0", "reviewed");
+        validateNativeArtifact(metadata, bytes, "linux-arm64", "0.22.0", "reviewed");
     assert.doesNotThrow(() => verify(identity));
     assert.throws(() => verify(identity, Buffer.from("replacement")), /reviewed release/);
     for (const [field, value] of [
         ["version", "0.21.0"],
         ["sourceRevision", "unreviewed"],
-        ["target", "linux-x64-gnu"],
+        ["target", "linux-x64"],
         ["packageName", "@other/binary"],
         ["napi", 9],
     ]) {
@@ -225,10 +225,10 @@ test("Beachball bump synchronizes native manifests, exact pins, lockfile and Rus
     const targets = [
         "darwin-arm64",
         "darwin-x64",
-        "linux-arm64-gnu",
-        "linux-x64-gnu",
-        "win32-arm64-msvc",
-        "win32-x64-msvc",
+        "linux-arm64",
+        "linux-x64",
+        "win32-arm64",
+        "win32-x64",
     ];
     const dependencies = Object.fromEntries(
         targets.map(target => [`@microsoft/fast-build-${target}`, "^0.21.0"]),

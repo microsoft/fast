@@ -67,10 +67,10 @@
   "optionalDependencies": {
     "@microsoft/fast-build-darwin-arm64": "0.21.0",
     "@microsoft/fast-build-darwin-x64": "0.21.0",
-    "@microsoft/fast-build-linux-arm64-gnu": "0.21.0",
-    "@microsoft/fast-build-linux-x64-gnu": "0.21.0",
-    "@microsoft/fast-build-win32-arm64-msvc": "0.21.0",
-    "@microsoft/fast-build-win32-x64-msvc": "0.21.0"
+    "@microsoft/fast-build-linux-arm64": "0.21.0",
+    "@microsoft/fast-build-linux-x64": "0.21.0",
+    "@microsoft/fast-build-win32-arm64": "0.21.0",
+    "@microsoft/fast-build-win32-x64": "0.21.0"
   },
   "beachball": {
     "disallowedChangeTypes": [

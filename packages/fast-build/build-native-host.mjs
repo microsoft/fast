@@ -17,10 +17,10 @@ const packageTarget = option("--package");
 const rustTargets = {
     "darwin-arm64": "aarch64-apple-darwin",
     "darwin-x64": "x86_64-apple-darwin",
-    "linux-arm64-gnu": "aarch64-unknown-linux-gnu",
-    "linux-x64-gnu": "x86_64-unknown-linux-gnu",
-    "win32-arm64-msvc": "aarch64-pc-windows-msvc",
-    "win32-x64-msvc": "x86_64-pc-windows-msvc",
+    "linux-arm64": "aarch64-unknown-linux-gnu",
+    "linux-x64": "x86_64-unknown-linux-gnu",
+    "win32-arm64": "aarch64-pc-windows-msvc",
+    "win32-x64": "x86_64-pc-windows-msvc",
 };
 if (packageTarget && !Object.hasOwn(rustTargets, packageTarget)) {
     throw new Error(`Unsupported native package target: ${packageTarget}`);

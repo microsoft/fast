@@ -19,6 +19,7 @@ it has no compiler/WASM, browser or template-parser request dependency.
 The parent npm package includes the facade, types and source-build script, not
 crate sources. Exact-version optional dependencies provide platform binaries.
 The six targets cover macOS and Windows x64/arm64, plus Linux glibc x64/arm64.
+Native package names use `@microsoft/fast-build-<platform>-<architecture>`.
 Resolution distinguishes OS, architecture and Linux libc, validates package/build
 identity, and uses Node package resolution rather than the working directory.
 Unsupported hosts, missing packages and incompatible addons fail closed.

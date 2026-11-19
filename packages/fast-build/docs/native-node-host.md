@@ -73,10 +73,13 @@ the Node-API level does not broaden the package's Node engine requirement.
 |---|---|---|
 | macOS arm64 | `@microsoft/fast-build-darwin-arm64` | macOS arm64 |
 | macOS x64 | `@microsoft/fast-build-darwin-x64` | macOS x64 |
-| Linux x64 glibc | `@microsoft/fast-build-linux-x64-gnu` | Ubuntu 22.04, glibc 2.35 |
-| Linux arm64 glibc | `@microsoft/fast-build-linux-arm64-gnu` | Ubuntu 22.04 build, glibc 2.35; ARM64 execution |
-| Windows x64 | `@microsoft/fast-build-win32-x64-msvc` | Windows MSVC |
-| Windows arm64 | `@microsoft/fast-build-win32-arm64-msvc` | Windows ARM64 MSVC |
+| Linux x64 glibc | `@microsoft/fast-build-linux-x64` | Ubuntu 22.04, glibc 2.35 |
+| Linux arm64 glibc | `@microsoft/fast-build-linux-arm64` | Ubuntu 22.04 build, glibc 2.35; ARM64 execution |
+| Windows x64 | `@microsoft/fast-build-win32-x64` | Windows MSVC |
+| Windows arm64 | `@microsoft/fast-build-win32-arm64` | Windows ARM64 MSVC |
+
+Package names use the OS and architecture only. Linux still requires glibc and
+Windows uses the MSVC ABI; the Rust target triples retain their ABI suffixes.
 
 This is the prebuilt matrix, not a promise of universal native compatibility.
 Linux musl, other architectures/libcs and older Linux baselines
@@ -124,10 +127,10 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
-const addon = require.resolve("@microsoft/fast-build-linux-x64-gnu");
+const addon = require.resolve("@microsoft/fast-build-linux-x64");
 console.log(readFileSync(join(dirname(addon), "native-build.json"), "utf8"));
 JS
-npm view '@microsoft/fast-build-linux-x64-gnu@<installed-version>' dist.attestations
+npm view '@microsoft/fast-build-linux-x64@<installed-version>' dist.attestations
 ```
 
 Select your actual target package and exact installed version. Verify provenance
