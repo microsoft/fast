@@ -3,10 +3,11 @@
 Migration guides cover the current publish, not a permanent history of changes.
 For current APIs and behavior, see the [native artifact contract](./server-modules.md).
 
-## 0.21.0
+## 0.22.0
 
-- [Native server deployment](./migration/native-server-deployment.md)
-- [Standard Declarative Shadow DOM output](./migration/standard-dsd-output.md)
+No migrations are required for this publish. Supported Node.js hosts can use
+prebuilt native packages with optional dependencies enabled; see the
+[native hosting guide](./native-node-host.md).
 
 ## Release preparation
 

@@ -4,6 +4,24 @@ use napi::{bindgen_prelude::Buffer, Error, Result};
 use napi_derive::napi;
 use serde::Deserialize;
 
+#[napi(object)]
+pub struct NativeHostInfo {
+    pub version: String,
+    pub napi_version: u32,
+    pub artifact_format: String,
+    pub artifact_schemas: Vec<u32>,
+}
+
+#[napi]
+pub fn native_host_info() -> NativeHostInfo {
+    NativeHostInfo {
+        version: env!("CARGO_PKG_VERSION").to_owned(),
+        napi_version: 8,
+        artifact_format: "fast-server-native".to_owned(),
+        artifact_schemas: vec![1, 2],
+    }
+}
+
 fn error(error: NativeRenderError) -> Error<String> {
     Error::new(error.code.to_owned(), error.message)
 }

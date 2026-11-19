@@ -1,0 +1,29 @@
+{
+  "name": "@microsoft/fast-build-darwin-x64",
+  "version": "0.22.0",
+  "description": "FAST Build native renderer for macOS x64.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/fast.git",
+    "directory": "packages/fast-build/native/darwin-x64"
+  },
+  "main": "fast-build.node",
+  "files": [
+    "fast-build.node",
+    "native-build.json"
+  ],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "fastBuild": {
+    "target": "darwin-x64",
+    "nodeApi": 8
+  }
+}
