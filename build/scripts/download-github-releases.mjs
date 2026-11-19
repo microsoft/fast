@@ -37,6 +37,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { validateNativeVersions } from "./native-packages.mjs";
 
 const CHECK_ONLY = process.argv.includes("--check-only");
 if (!CHECK_ONLY) {
@@ -144,6 +145,7 @@ function listPublishableWorkspaces() {
         if (!existsSync(pkgPath)) continue;
         const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
         if (pkg.private === true) continue;
+        if (pkg.name === "@microsoft/fast-build") validateNativeVersions();
         if (!pkg.name || !pkg.version) continue;
 
         validatePairedCrates(pkg.name, pkg.version);

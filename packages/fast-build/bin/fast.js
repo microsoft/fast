@@ -800,9 +800,6 @@ async function runBuild(args) {
     }
 
     const addonPath = resolveOption(args, config, configDir, "native-addon") || process.env.FAST_NATIVE_ADDON;
-    if (!addonPath) {
-        throw new Error("Native rendering requires --native-addon or FAST_NATIVE_ADDON.");
-    }
     const { loadNativeHost } = require("../native-host.mjs");
     const Program = loadNativeHost(addonPath);
     const { compileServerArtifact, writeServerArtifact } = require("../server.js");
@@ -860,7 +857,7 @@ function writeBuildUsage() {
         '  --server-artifact="<path.json>"\n' +
         "                         Persist authored inputs and compiled plans together;\n" +
         "                         reuse before compiler loading on later builds.\n" +
-        '  --native-addon="<path.node>" Native addon path; alternatively set FAST_NATIVE_ADDON.\n' +
+        '  --native-addon="<path.node>" Override the installed native host; alternatively set FAST_NATIVE_ADDON.\n' +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
         '  --attribute-name-strategy="camelCase"\n' +

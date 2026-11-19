@@ -7,8 +7,10 @@ Node.js, and analyze templates at build time.
 cargo add microsoft-fast-build
 ```
 
-Node hosting uses the same executor through the source-built `node-host`
-transport feature. Applications configure the addon explicitly; see the
+Node hosting uses the same executor through the `node-host` transport feature.
+The npm package resolves prebuilt platform packages on supported targets, with no
+Rust installation required. Explicit source provisioning remains available for
+custom deployments; see the
 [Node deployment guide](../../packages/fast-build/docs/native-node-host.md).
 
 ## Usage

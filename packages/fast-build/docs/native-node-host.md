@@ -1,34 +1,27 @@
-# Source-built native Node hosting
+# Native Node hosting
 
 Node server rendering requires the shared Rust executor through the
 `@microsoft/fast-build/native-host.mjs` facade. The `node-host` Cargo feature
-adds its synchronous Node-API transport to the existing crate. Applications
-explicitly source-build and configure an addon path; no platform npm package,
-automatic install/download or backend fallback is provided.
+adds its synchronous Node-API transport to the existing crate. On supported targets,
+ordinary npm installation supplies a prebuilt addon and requires no Rust toolchain,
+FAST source checkout or path configuration.
 
-## Build and load
-
-Use matching reviewed FAST sources and a Rust toolchain. From the repository root:
+## Install and load
 
 ```sh
-CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build:native-host \
-  -w @microsoft/fast-build -- ../../crates/microsoft-fast-build/target/native-hosting
+npm install --save @microsoft/fast-build
 ```
 
-The argument is a dedicated target directory, relative to the npm workspace.
-Keep it separate from compiler/WASM, crate packaging and other feature targets.
-The script uses `--release --locked --features node-host --lib`, selects the
-actual library filename from Cargo JSON, copies it to `fast-build.node`, and
-retains `cargo-artifacts.json` as source/build evidence. It never assumes a
-platform library name. Source acquisition is an explicit deployment concern:
-the npm tarball contains the facade/build script, not the crate or prebuilt addons.
-Install the compiler package normally for build-time artifact generation.
+The parent package declares exact-version optional dependencies on platform
+packages. Keep optional dependencies enabled; npm's OS/CPU/libc constraints select
+the target package. `loadNativeHost()` resolves it relative to the installed facade
+through Node package resolution, not relative to the process working directory.
 
 ```js
 import { readFileSync } from "node:fs";
 import { loadNativeHost } from "@microsoft/fast-build/native-host.mjs";
 
-const Program = loadNativeHost("/absolute/deployment/path/fast-build.node");
+const Program = loadNativeHost();
 const program = new Program(readFileSync("./generated/server.artifact.json"), {
     markersV2: true,
     maxOutputBytes: 8 * 1024 * 1024,
@@ -38,6 +31,129 @@ const state = Buffer.from('{"title":"hello"}', "utf8");
 const bytes = program.renderEntryJson(state);
 const html = bytes.toString("utf8"); // Explicit string-consumer conversion.
 ```
+
+For custom provisioning, the existing explicit form remains:
+`loadNativeHost("/absolute/deployment/path/fast-build.node")`.
+The CLI uses automatic loading when no override is given. CLI `--native-addon`
+overrides configured `native-addon`, with `FAST_NATIVE_ADDON` as the environment
+override when neither is configured. The loader itself does not read that variable.
+An explicit path bypasses automatic platform selection and optional-package
+metadata checks; it does not turn an incompatible artifact into a supported one.
+
+Neither loading nor package installation invokes Cargo or downloads an addon
+outside npm's normal package acquisition. Loading never contacts the network or
+silently switches to JavaScript/WASM execution. Compiler-only imports from
+`server.js` remain independent of native loading.
+
+### Post-release installation smoke check
+
+After the release and its native packages are available on npm, use a new empty
+directory on a supported deployment target:
+
+```sh
+npm init -y
+npm install --include=optional @microsoft/fast-build@<published-version>
+node --input-type=module -e "import { loadNativeHost } from '@microsoft/fast-build/native-host.mjs'; loadNativeHost();"
+```
+
+Replace `<published-version>` with the release being verified. Install only the
+parent package, without an explicit native-package dependency or addon path.
+Successful loading verifies that npm acquired the target's optional package.
+The existing offline packed-package tests separately qualify loading, rendering
+and relocation; they intentionally install the selected native tarball directly
+and do not claim to test registry acquisition.
+
+### Supported prebuilt targets
+
+Requires Node >=22.18.0. Release qualification exercises Node 22.18.0, Node 24 and Node 26.
+The addon requests Node-API 8, as configured by the crate's `napi8` Cargo feature;
+the Node-API level does not broaden the package's Node engine requirement.
+
+| Target | Optional npm package | Build/test baseline |
+|---|---|---|
+| macOS arm64 | `@microsoft/fast-build-darwin-arm64` | macOS arm64 |
+| macOS x64 | `@microsoft/fast-build-darwin-x64` | macOS x64 |
+| Linux x64 glibc | `@microsoft/fast-build-linux-x64-gnu` | Ubuntu 22.04, glibc 2.35 |
+| Linux arm64 glibc | `@microsoft/fast-build-linux-arm64-gnu` | Ubuntu 22.04 build, glibc 2.35; ARM64 execution |
+| Windows x64 | `@microsoft/fast-build-win32-x64-msvc` | Windows MSVC |
+| Windows arm64 | `@microsoft/fast-build-win32-arm64-msvc` | Windows ARM64 MSVC |
+
+This is the prebuilt matrix, not a promise of universal native compatibility.
+Linux musl, other architectures/libcs and older Linux baselines
+are not qualified by these packages. An explicit source build may be possible,
+but requires independent qualification for that target.
+
+### Package identity and troubleshooting
+
+Each native package contains `fast-build.node` and `native-build.json`, recording
+its package name, version, target, Node-API level and source revision.
+Automatic loading checks package/build identity and the native host's reported
+version/API contract. Semantic artifact schema compatibility is separate from
+package release identity; it is not a compiler fingerprint or source-hash gate.
+
+- **`unsupported-platform`:** use a supported Node host or explicitly provision
+  and qualify a custom addon. Prebuilt Linux packages require glibc, not musl.
+- **`native-package-missing`:** reinstall dependencies for the actual deployment
+  target with optional dependencies enabled, for example `npm ci --include=optional`.
+  Check package-manager omit/platform settings and that the lockfile includes the
+  target's exact-version optional package. Do not copy macOS `node_modules` to Linux.
+- **`native-version-mismatch` / `native-incompatible`:** deploy the parent and
+  selected native package at the same exact version. Remove stale deployment output
+  and reinstall from the intended lockfile rather than substituting another
+  release's binary.
+- **`native-api-mismatch`:** use the supported Node version and a native package
+  with the expected Node-API and artifact-host contract.
+- **`native-load-failed`:** retain the error cause and verify Node version, CPU,
+  libc baseline, system loader dependencies and whether deployment tooling retained
+  the `.node` file. No download or source-build fallback repairs these failures.
+
+### Explicit source provisioning
+
+Use this route for unsupported targets, custom toolchains or policies requiring
+internally reviewed binaries. The npm packages do not contain the Rust crate
+sources. Obtain a reviewed FAST source checkout separately.
+
+Inspect the selected package's `native-build.json` source revision and npm release
+provenance to identify the matching repository commit. For example, from the
+consumer installation:
+
+```sh
+node --input-type=module <<'JS'
+import { createRequire } from "node:module";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+
+const require = createRequire(import.meta.url);
+const addon = require.resolve("@microsoft/fast-build-linux-x64-gnu");
+console.log(readFileSync(join(dirname(addon), "native-build.json"), "utf8"));
+JS
+npm view '@microsoft/fast-build-linux-x64-gnu@<installed-version>' dist.attestations
+```
+
+Select your actual target package and exact installed version. Verify provenance
+against the reviewed release tag/revision; do not assume the current `main` branch
+or a same-numbered unrelated checkout matches the package.
+Check out that reviewed revision before installing repository prerequisites.
+From the matching FAST repository root:
+
+```sh
+git checkout --detach "<reviewed-release-tag-or-source-revision>"
+CARGO_BUILD_JOBS=1 CARGO_INCREMENTAL=0 npm run build:native-host \
+  -w @microsoft/fast-build -- ../../crates/microsoft-fast-build/target/native-hosting
+```
+
+Provision Rust/Cargo and the target's linker/native build tools explicitly.
+The argument is a dedicated target directory, relative to the npm workspace.
+Keep it separate from compiler/WASM, crate packaging and other feature targets.
+The helper uses `cargo build --release --locked --features node-host --lib`,
+selects the actual library filename from Cargo JSON, copies it to `fast-build.node`,
+and retains `cargo-artifacts.json` as build evidence.
+The locked dependency graph and reviewed revision make the build repeatable;
+record the Rust toolchain, target, linker and binary hashes as well rather than
+assuming byte-for-byte reproducibility across environments.
+Deploy that addon explicitly with matching compiler/runtime dependencies.
+
+## Request contract
 
 `renderEntryJson(state)`, `renderTemplateJson(state)`,
 `renderHostJson(name, state)` and `renderShadowJson(name, state)` synchronously
@@ -97,17 +213,21 @@ including bounded attribute writes. It does not duplicate native execution or
 retain a separate state-borrowing implementation. Runtime loading is execution-only;
 build-time JavaScript APIs compile authored templates into native artifacts.
 
-The npm package contains the facade, types and source-build script,
-not `.node` binaries or crate sources.
-Node-API 8 is requested and the package requires Node >=22.18.0. Only the current
-macOS arm64/Node installation is locally exercised; Windows, Linux glibc/musl, other
-architectures, other Node versions and universal/prebuilt packaging are not
-qualified. No all-platform tarball size or prebuilt ABI coverage claim is made.
-Default Rust/WASM builds do not enable the transport feature; the repository npm build also builds the required local Node addon.
-No automatic prebuilt distribution is introduced.
+The parent npm package contains the facade, types and source-build script;
+the selected optional package contains the native binary, not crate sources.
+Install dependencies on the deployment target. Server bundlers and deployment
+tracers must retain the selected optional package, its metadata and `.node` file,
+and preserve Node package resolution from the facade. Externalizing the native
+package is often appropriate; copying a renamed `.node` file alone does not
+preserve the automatic-loading package contract. Verify the final packed/bundled
+server deployment, not just a source checkout.
+This requires a native-addon-capable Node runtime, not a browser or native-addon-free
+edge runtime.
 
-Source-build and configure `loadNativeHost` for UTF-8 JSON requests. Object validation/serialization is
-an application-owned boundary, not part of this API. Do not silently substitute
+Default Rust/WASM builds do not enable the transport feature; the repository npm
+build also builds the local Node addon for development.
+Object validation/serialization is an application-owned boundary, not part of this
+API. Do not silently substitute
 `JSON.stringify` for descriptor-safe validation of arbitrary objects.
 
 Measure application-matched input/output boundaries. Native measurements include
@@ -147,4 +267,5 @@ the selected addon/facade and constructing its own program. Each worker renders
 32 requests and sends exactly one final matching output before a successful exit.
 An exit without that proof message is a failure, not a pass. Retained Buffers must
 remain correct across program collection, repeated GC and worker completion.
-These checks do not certify absence of leaks or qualify other platforms.
+These checks do not certify absence of leaks or independently extend the supported
+platform matrix.
