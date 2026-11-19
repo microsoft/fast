@@ -16,9 +16,12 @@ export interface NativeProgram {
     renderShadowJson(name: string, state: Buffer): Buffer;
 }
 
-/** Explicit local addon path. Artifact Buffers must not be backed by SharedArrayBuffer. */
+/**
+ * Load the exact-version installed native package for this host, or an explicit local
+ * addon path. Never downloads or builds. Artifact Buffers must not use SharedArrayBuffer.
+ */
 export function loadNativeHost(
-    addonPath: string,
+    addonPath?: string,
 ): new (
     artifact: Buffer,
     options?: NativeHostOptions,

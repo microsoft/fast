@@ -76,13 +76,44 @@ function rewriteCargoVersion(content, crateName, newVersion, { manifest }) {
 /**
  * Beachball `postbump` hook: when an npm package with paired Rust
  * crates is bumped, rewrite each crate's `Cargo.toml` (and matching entry
- * in `Cargo.lock`, if present) so the crate version stays in lock-step
- * with the npm version.
+ * in `Cargo.lock`, if present). FAST Build's native package manifests,
+ * exact optional pins and npm lock entries also stay in lock-step.
  *
  * Beachball commits any modified files in the same bump commit, so the
  * Cargo updates land in the same PR as the package.json bump.
  */
 function syncPairedCrateVersion(packagePath, name, version) {
+    if (name === "@microsoft/fast-build") {
+        const parentPath = join(__dirname, "packages/fast-build/package.json");
+        const parent = JSON.parse(readFileSync(parentPath, "utf8"));
+        for (const nativeName of Object.keys(parent.optionalDependencies ?? {})) {
+            if (!nativeName.startsWith("@microsoft/fast-build-")) continue;
+            parent.optionalDependencies[nativeName] = version;
+            const target = nativeName.replace("@microsoft/fast-build-", "");
+            const nativePath = join(
+                __dirname,
+                "packages/fast-build/native",
+                target,
+                "package.json",
+            );
+            const native = JSON.parse(readFileSync(nativePath, "utf8"));
+            native.version = version;
+            writeFileSync(nativePath, `${JSON.stringify(native, null, 2)}\n`);
+        }
+        writeFileSync(parentPath, `${JSON.stringify(parent, null, 2)}\n`);
+        // Beachball updates the npm lock before postbump. Preserve exact pins there too.
+        const lockPath = join(__dirname, "package-lock.json");
+        const lock = JSON.parse(readFileSync(lockPath, "utf8"));
+        const entry = lock.packages?.["packages/fast-build"];
+        if (entry) {
+            entry.optionalDependencies = { ...parent.optionalDependencies };
+            for (const target of Object.keys(parent.optionalDependencies)) {
+                const location = `packages/fast-build/native/${target.replace("@microsoft/fast-build-", "")}`;
+                if (lock.packages[location]) lock.packages[location].version = version;
+            }
+            writeFileSync(lockPath, `${JSON.stringify(lock, null, 2)}\n`);
+        }
+    }
     for (const crateName of npmNameToCrateNames(name)) {
         const cargoTomlPath = join(__dirname, "crates", crateName, "Cargo.toml");
         if (!existsSync(cargoTomlPath)) continue;

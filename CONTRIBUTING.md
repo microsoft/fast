@@ -160,6 +160,13 @@ Example of how to format a migration document:
 
 Releases are produced from a dedicated **bump pull request** authored by a maintainer (not by CI). Once the bump PR lands on `main`, the [`cd-github-releases.yml`](.github/workflows/cd-github-releases.yml) workflow attaches the freshly-packed tarballs to a GitHub release per package, and the nightly Azure pipeline ([`azure-pipelines-cd.yml`](azure-pipelines-cd.yml)) downloads those assets and publishes them to npm and crates.io. The detailed CD design is documented in [`.github/workflows/README.md`](.github/workflows/README.md).
 
+FAST Build bundles its six qualified native platform tarballs on the parent
+release. Beachball synchronizes their versions and the parent's exact optional
+dependency pins. Azure publishes native packages first through the same governed
+release template, then publishes the parent and its paired crates; no publishing
+credentials are used by GitHub Actions. See the workflow documentation's
+[native bundle details](.github/workflows/README.md#fast-build-native-bundle).
+
 This section covers the maintainer workflow for opening the bump PR.
 
 #### 1. Prerequisites
