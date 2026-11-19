@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -121,20 +122,45 @@ if (packageDir) {
     if (!napi || napi !== packageJson.fastBuild.nodeApi) {
         throw new Error("Package Node-API requirement does not match Cargo.toml.");
     }
-    writeFileSync(
-        resolve(packageDir, "native-build.json"),
-        `${JSON.stringify(
-            {
-                packageName: packageJson.name,
-                version: packageJson.version,
-                target: packageTarget,
-                sourceRevision: revision,
-                napi,
-            },
-            null,
-            2,
-        )}\n`,
+    const identity = {
+        packageName: packageJson.name,
+        version: packageJson.version,
+        target: packageTarget,
+        sourceRevision: revision,
+        napi,
+    };
+    const identityPath = resolve(packageDir, "native-build.json");
+    writeFileSync(identityPath, `${JSON.stringify(identity, null, 2)}\n`);
+    const destination = fileURLToPath(
+        new URL("../../publish_artifacts_native/", import.meta.url),
     );
+    mkdirSync(destination, { recursive: true });
+    const result = execFileSync(
+        process.platform === "win32" ? "npm.cmd" : "npm",
+        [
+            "pack",
+            packageDir,
+            "--json",
+            "--ignore-scripts",
+            "--pack-destination",
+            destination,
+        ],
+        { encoding: "utf8", shell: process.platform === "win32" },
+    );
+    const packed = JSON.parse(result)[0];
+    for (const required of ["fast-build.node", "native-build.json"]) {
+        if (!packed.files.some(file => file.path === required)) {
+            throw new Error(`Native tarball is missing ${required}.`);
+        }
+    }
+    const tarball = resolve(destination, packed.filename);
+    identity.sha256 = createHash("sha256").update(readFileSync(tarball)).digest("hex");
+    writeFileSync(
+        resolve(destination, `${packageTarget}.json`),
+        `${JSON.stringify(identity, null, 2)}\n`,
+    );
+    copyFileSync(identityPath, resolve(destination, `${packageTarget}.build.json`));
+    console.log(tarball);
 }
 writeFileSync(
     resolve(targetDir, "cargo-artifacts.json"),

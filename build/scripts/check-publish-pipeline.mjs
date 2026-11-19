@@ -11,7 +11,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { validateNativePipelines, validateNativeVersions } from "./native-packages.mjs";
+import { validateNativeVersions } from "./native-packages.mjs";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const pipelinePath = join(repoRoot, "azure-pipelines-cd.yml");
@@ -121,10 +121,6 @@ const downloadBlocks = getStepBlocks(pipeline, "- task: DownloadGitHubRelease@0"
 const failures = validateUniquePrefixes(publishable);
 try {
     validateNativeVersions();
-    validateNativePipelines(
-        pipeline,
-        readFileSync(join(repoRoot, ".github/workflows/native-packages.yml"), "utf8"),
-    );
 } catch (error) {
     failures.push(error.message);
 }

@@ -59,8 +59,8 @@ parent uses exact-version optional dependencies; each native manifest specifies
 all native versions and exact pins in manifests and the npm lockfile.
 
 `build-native-host.mjs --package <target> --target <rust-triple>` stages the binary
-and generated identity metadata. `build/scripts/pack-native-package.mjs <target>`
-packs it and records the tarball checksum, source revision, target, version and
+and generated identity metadata, then packs the native package and records the
+tarball checksum, source revision, target, version and
 Cargo-derived Node-API requirement. Nothing downloads or compiles at install time.
 Binary outputs, generated metadata and tarballs are ignored by git.
 
@@ -81,6 +81,11 @@ No npm credentials are added to GitHub. Deployment markers remain conditional on
 the final publish job's exact `Succeeded` result. If parent publication fails after
 native publication, retry must tolerate native versions already present in npm,
 as with any partially published bundled release.
+
+After publishing, run the [parent-only installation smoke check](../../packages/fast-build/docs/native-node-host.md#post-release-installation-smoke-check)
+on supported deployment targets. Packed qualification tests deliberately install
+the selected native tarball directly; this additional check verifies npm's normal
+optional-dependency acquisition from the published parent without a fixture registry.
 
 `cd-github-releases.yml` discovers publishable workspaces automatically from the root `package.json` `workspaces` list, but `azure-pipelines-cd.yml` must be updated because Azure Pipelines cannot create `DownloadGitHubRelease@0` tasks dynamically from the runtime detection output.
 

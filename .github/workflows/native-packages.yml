@@ -47,9 +47,14 @@ jobs:
           rustup target add "$TRIPLE"
           node packages/fast-build/build-native-host.mjs --package "$TARGET" --target "$TRIPLE"
           if [[ "$TARGET" == linux-* ]]; then
-            node build/scripts/check-native-glibc.mjs "packages/fast-build/native/$TARGET/fast-build.node"
+            node --input-type=module <<'NODE'
+          import { execFileSync } from "node:child_process";
+          import { validateGlibcVersions } from "./build/scripts/native-packages.mjs";
+          const addon = `packages/fast-build/native/${process.env.TARGET}/fast-build.node`;
+          validateGlibcVersions(execFileSync("readelf", ["--version-info", addon], { encoding: "utf8" }));
+          console.log(`${addon}: all required GLIBC symbol versions are <= 2.35.`);
+          NODE
           fi
-          node build/scripts/pack-native-package.mjs "$TARGET"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: unqualified-native-${{ matrix.target }}

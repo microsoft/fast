@@ -45,6 +45,24 @@ outside npm's normal package acquisition. Loading never contacts the network or
 silently switches to JavaScript/WASM execution. Compiler-only imports from
 `server.js` remain independent of native loading.
 
+### Post-release installation smoke check
+
+After the release and its native packages are available on npm, use a new empty
+directory on a supported deployment target:
+
+```sh
+npm init -y
+npm install --include=optional @microsoft/fast-build@<published-version>
+node --input-type=module -e "import { loadNativeHost } from '@microsoft/fast-build/native-host.mjs'; loadNativeHost();"
+```
+
+Replace `<published-version>` with the release being verified. Install only the
+parent package, without an explicit native-package dependency or addon path.
+Successful loading verifies that npm acquired the target's optional package.
+The existing offline packed-package tests separately qualify loading, rendering
+and relocation; they intentionally install the selected native tarball directly
+and do not claim to test registry acquisition.
+
 ### Supported prebuilt targets
 
 Requires Node >=22.18.0. Release qualification exercises Node 22.18.0, Node 24 and Node 26.

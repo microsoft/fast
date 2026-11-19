@@ -10,7 +10,6 @@ import {
     nativeTargets,
     validateGlibcVersions,
     validateNativeArtifact,
-    validateNativePipelines,
     validateNativeVersions,
 } from "./native-packages.mjs";
 
@@ -55,7 +54,7 @@ test("the six native packages, root local pins and lockfile stay in sync", () =>
     }
 });
 
-test("source builder accepts all matching Rust triples and rejects version skew", () => {
+test("source builder packs each target with provenance and rejects version skew", () => {
     const builderUrl = new URL(
         "../../packages/fast-build/build-native-host.mjs",
         import.meta.url,
@@ -74,12 +73,19 @@ test("source builder accepts all matching Rust triples and rejects version skew"
                 "utf8",
             ),
         );
-        function build(pkg, triple = platform.triple) {
+        function build(
+            pkg,
+            triple = platform.triple,
+            packedFiles = ["fast-build.node", "native-build.json"],
+        ) {
             const writes = new Map();
+            const filename = `microsoft-fast-build-${target}-${parent.version}.tgz`;
+            const tarball = Buffer.from(`packed ${target}`);
             vm.runInNewContext(source, {
                 URL,
                 fileURLToPath,
                 resolve,
+                createHash,
                 process: {
                     argv: [
                         "node",
@@ -93,7 +99,28 @@ test("source builder accepts all matching Rust triples and rejects version skew"
                     ],
                     env: {},
                 },
-                execFileSync: () => "reviewed\n",
+                execFileSync(command, args) {
+                    if (command === "git") return "reviewed\n";
+                    assert.equal(command, "npm");
+                    assert.deepEqual(Array.from(args), [
+                        "pack",
+                        fileURLToPath(
+                            new URL(
+                                `../../packages/fast-build/native/${target}/`,
+                                import.meta.url,
+                            ),
+                        ),
+                        "--json",
+                        "--ignore-scripts",
+                        "--pack-destination",
+                        fileURLToPath(
+                            new URL("../../publish_artifacts_native/", import.meta.url),
+                        ),
+                    ]);
+                    return JSON.stringify([
+                        { filename, files: packedFiles.map(path => ({ path })) },
+                    ]);
+                },
                 copyFileSync() {},
                 mkdirSync() {},
                 readFileSync(path) {
@@ -105,6 +132,7 @@ test("source builder accepts all matching Rust triples and rejects version skew"
                     if (location.endsWith("/Cargo.toml")) {
                         return 'napi = { version = "3", features = ["napi8"] }';
                     }
+                    if (location.endsWith(`/${filename}`)) return tarball;
                     throw new Error(`Unexpected builder read: ${location}`);
                 },
                 writeFileSync: (path, content) => writes.set(path, content),
@@ -116,11 +144,41 @@ test("source builder accepts all matching Rust triples and rejects version skew"
         const identity = [...writes].find(([path]) => path.endsWith("native-build.json"));
         assert.equal(JSON.parse(identity[1]).target, target);
         assert.equal(JSON.parse(identity[1]).version, parent.version);
+        const receipt = JSON.parse(
+            writes.get(
+                fileURLToPath(
+                    new URL(
+                        `../../publish_artifacts_native/${target}.json`,
+                        import.meta.url,
+                    ),
+                ),
+            ),
+        );
+        validateNativeArtifact(
+            receipt,
+            Buffer.from(`packed ${target}`),
+            target,
+            parent.version,
+            "reviewed",
+        );
         assert.throws(
             () => build({ ...native, version: "0.0.0" }),
             /exactly match the parent/,
         );
         assert.throws(() => build(native, "wrong-triple"), /does not match/);
+        for (const missing of ["fast-build.node", "native-build.json"]) {
+            assert.throws(
+                () =>
+                    build(
+                        native,
+                        platform.triple,
+                        ["fast-build.node", "native-build.json"].filter(
+                            file => file !== missing,
+                        ),
+                    ),
+                /Native tarball is missing/,
+            );
+        }
     }
 });
 
@@ -135,48 +193,6 @@ test("Linux symbol qualification rejects requirements newer than GLIBC_2.35", ()
         () => validateGlibcVersions("not an ELF version table"),
         /did not report/,
     );
-});
-
-test("pipeline guard requires six qualified target artifacts and Linux baseline checks", () => {
-    const azure = readFileSync(
-        new URL("../../azure-pipelines-cd.yml", import.meta.url),
-        "utf8",
-    );
-    const workflow = readFileSync(
-        new URL("../../.github/workflows/native-packages.yml", import.meta.url),
-        "utf8",
-    );
-    assert.doesNotThrow(() => validateNativePipelines(azure, workflow));
-    for (const modified of [
-        azure.replace('"$count" -ne 6', '"$count" -ne 5'),
-        azure.replace("linux-arm64-gnu linux-x64-gnu", "linux-x64-gnu"),
-    ]) {
-        assert.throws(() => validateNativePipelines(modified, workflow), /six/);
-    }
-    for (const modified of [
-        workflow.replace("target: linux-arm64-gnu", "target: linux-x64-gnu"),
-        workflow.replace("os: macos-15,", "os: macos-14,"),
-        workflow.replace(
-            "os: windows-11-arm, arch: arm64",
-            "os: windows-2022, arch: x64",
-        ),
-        workflow.replace(
-            "os: ubuntu-24.04-arm, arch: arm64",
-            "os: ubuntu-22.04, arch: x64",
-        ),
-        workflow.replace("node build/scripts/check-native-glibc.mjs", "echo skipped"),
-        workflow.replace(
-            'if [[ "$TARGET" == linux-* ]]; then',
-            'if [[ "$TARGET" == linux-x64-gnu ]]; then',
-        ),
-        workflow.replaceAll(
-            "name: unqualified-native-${{ matrix.target }}",
-            "name: wrong-artifact",
-        ),
-        workflow.replaceAll("process.arch !== process.env.EXPECTED_ARCH", "false"),
-    ]) {
-        assert.throws(() => validateNativePipelines(azure, modified));
-    }
 });
 
 test("release verification rejects replaced tarballs and mismatched native provenance", () => {

@@ -45,26 +45,39 @@ function probe(options = {}) {
             ...config.metadata,
         }),
     );
-    const info = {
-        version,
-        napiVersion: 8,
-        artifactFormat: "fast-server-native",
-        artifactSchemas: [1, 2],
-        ...config.info,
-    };
+    writeFileSync(
+        join(root, "addon.json"),
+        JSON.stringify({
+            info: {
+                version,
+                napiVersion: 8,
+                artifactFormat: "fast-server-native",
+                artifactSchemas: [1, 2],
+                ...config.info,
+            },
+            ...config.addon,
+        }),
+    );
     writeFileSync(
         join(root, "addon.cjs"),
-        config.addon ??
-            `
+        `
+        const config = require("./addon.json");
+        if (config.loadError) {
+            throw Object.assign(new Error(config.loadError.message), {
+                code: config.loadError.code,
+            });
+        }
         module.exports = {
-            NativeProgram: class NativeProgram {
+            NativeProgram: config.missingMethods ? class {} : class NativeProgram {
                 renderEntryJson() {}
                 renderTemplateJson() {}
                 renderHostJson() {}
                 renderShadowJson() {}
             },
-            nativeHostInfo: () => (${JSON.stringify(info)}),
+            nativeHostInfo: () => config.info,
         };
+        if (config.missingInfo) delete module.exports.nativeHostInfo;
+        if (config.missingProgram) delete module.exports.NativeProgram;
     `,
     );
     return JSON.parse(
@@ -77,7 +90,7 @@ function probe(options = {}) {
         import fs from "node:fs";
         import { registerHooks, syncBuiltinESMExports } from "node:module";
         import { pathToFileURL } from "node:url";
-        const config = ${JSON.stringify(config)};
+        const { config, root, loader } = JSON.parse(process.argv[1]);
         Object.defineProperty(process, "platform", { value: config.platform });
         Object.defineProperty(process, "arch", { value: config.arch });
         if (config.napi !== undefined) {
@@ -101,17 +114,18 @@ function probe(options = {}) {
                 }
                 const file = specifier.endsWith("/package.json") ? "package.json"
                     : specifier.endsWith("/native-build.json") ? "native-build.json" : "addon.cjs";
-                return { url: pathToFileURL(${JSON.stringify(root)} + "/" + file).href, shortCircuit: true };
+                return { url: pathToFileURL(root + "/" + file).href, shortCircuit: true };
             },
         });
         try {
-            const { loadNativeHost } = await import(${JSON.stringify(loader)});
-            const Program = loadNativeHost(config.explicit ? ${JSON.stringify(join(root, "addon.cjs"))} : undefined);
+            const { loadNativeHost } = await import(loader);
+            const Program = loadNativeHost(config.explicit ? root + "/addon.cjs" : undefined);
             console.log(JSON.stringify({ ok: typeof Program === "function", requests }));
         } catch (error) {
             console.log(JSON.stringify({ code: error.code, message: error.message, cause: error.cause?.message, requests }));
         }
     `,
+                JSON.stringify({ config, root, loader }),
             ],
             { encoding: "utf8", cwd: resolve(directory), timeout: 10_000 },
         ),
@@ -243,39 +257,46 @@ test("rejects mismatched package, binary and API identity before returning a con
         [{ info: { artifactFormat: "other" } }, "native-api-mismatch"],
         [{ info: { artifactSchemas: [1] } }, "native-api-mismatch"],
         [{ info: { napiVersion: 9 } }, "native-api-mismatch"],
-        [
-            {
-                addon: `module.exports = {
-                    NativeProgram: class {},
-                    nativeHostInfo: () => (${JSON.stringify({
-                        version,
-                        napiVersion: 8,
-                        artifactFormat: "fast-server-native",
-                        artifactSchemas: [2],
-                    })}),
-                };`,
-            },
-            "native-api-mismatch",
-        ],
-        [
-            { addon: "module.exports = { NativeProgram: class {} };" },
-            "native-api-mismatch",
-        ],
-        [
-            {
-                addon: `module.exports = { nativeHostInfo: () => (${JSON.stringify({ version, napiVersion: 8, artifactFormat: "fast-server-native", artifactSchemas: [2] })}) };`,
-            },
-            "native-incompatible",
-        ],
+        [{ addon: { missingMethods: true } }, "native-api-mismatch"],
+        [{ addon: { missingMethods: true, missingInfo: true } }, "native-api-mismatch"],
+        [{ addon: { missingProgram: true } }, "native-incompatible"],
     ]) {
         const result = probe(options);
         assert.equal(result.code, code, JSON.stringify(result));
     }
 });
 
+test("code-like configuration stays data in the driver and addon", () => {
+    for (const value of [
+        '"); process.exit(91); //',
+        "</script><script>process.exit(91)</script>",
+        "'`\\\n\r\t\0\u2028\u2029${process.exit(91)}",
+    ]) {
+        for (const options of [
+            { platform: value },
+            { manifest: { version: value } },
+            { info: { version: value } },
+            { addon: { loadError: { message: value, code: "ERR_DLOPEN_FAILED" } } },
+        ]) {
+            const result = probe(options);
+            assert.equal(
+                result.code,
+                options.platform
+                    ? "unsupported-platform"
+                    : options.addon
+                      ? "native-load-failed"
+                      : "native-version-mismatch",
+            );
+            assert.ok((result.cause ?? result.message).includes(value));
+        }
+    }
+});
+
 test("native loading failures retain their cause and never try another package", () => {
     const result = probe({
-        addon: 'throw Object.assign(new Error("invalid ELF header"), {code:"ERR_DLOPEN_FAILED"});',
+        addon: {
+            loadError: { message: "invalid ELF header", code: "ERR_DLOPEN_FAILED" },
+        },
     });
     assert.equal(result.code, "native-load-failed");
     assert.equal(result.cause, "invalid ELF header");
@@ -295,7 +316,7 @@ test("explicit paths bypass unsupported host detection and packaged identity req
         platform: "freebsd",
         explicit: true,
         missing: true,
-        addon: "module.exports = { NativeProgram: class {} };",
+        addon: { missingMethods: true, missingInfo: true },
     });
     assert.equal(result.ok, true);
     assert.deepEqual(result.requests, []);
