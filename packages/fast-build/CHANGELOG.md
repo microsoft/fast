@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Wed, 18 Nov 2026 06:21:31 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 19 Nov 2026 03:56:48 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.22.0
+
+Thu, 19 Nov 2026 03:56:48 GMT
+
+### Minor changes
+
+- Supply prebuilt native renderers with automatic platform loading and explicit source-build overrides. (7559015+janechu@users.noreply.github.com)
 
 ## 0.21.0
 

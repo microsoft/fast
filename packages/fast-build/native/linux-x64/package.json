@@ -1,14 +1,32 @@
 {
   "name": "@microsoft/fast-build-linux-x64",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "FAST Build native renderer for Linux x64 glibc (Ubuntu 22.04 baseline).",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/microsoft/fast.git", "directory": "packages/fast-build/native/linux-x64" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microsoft/fast.git",
+    "directory": "packages/fast-build/native/linux-x64"
+  },
   "main": "fast-build.node",
-  "files": ["fast-build.node", "native-build.json"],
-  "os": ["linux"],
-  "cpu": ["x64"],
-  "libc": ["glibc"],
-  "engines": { "node": ">=22.18.0" },
-  "fastBuild": { "target": "linux-x64", "nodeApi": 8 }
+  "files": [
+    "fast-build.node",
+    "native-build.json"
+  ],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "fastBuild": {
+    "target": "linux-x64",
+    "nodeApi": 8
+  }
 }
