@@ -98,8 +98,8 @@ the component table. Paths retain their exact object keys plus predecoded option
 array indices; repeat aliases remain prepared string prefixes for the existing
 request-local loop machinery. Request-time dispatch does not inspect JSON fields
 or decode static values. Large enum variants are boxed to avoid inflating literal
-and body records. Elements reuse their resolved component's DSD opening tag rather
-than retaining a per-element copy.
+and body records. Elements reuse their resolved component's DSD opening and
+canonical closing tags rather than formatting a closing tag per rendered host.
 
 The parsed JSON graph is dropped after preparation. Decoded static `JsonValue`
 operands borrow immutable artifact storage during evaluation. Loaded native
@@ -139,9 +139,10 @@ String display borrows strings. Repeats borrow collections/items and link
 stack-local alias/index frames to their enclosing frame, reusing the artifact's
 alias path without copying names or outer loop payloads. Recursive scopes are
 bounded by the existing body-depth limit; no reference escapes execution.
-Component frames borrow their parent base and direct property operands, with a
-small request-local override map. Own-null properties, including missing bound
-operands, mask parent fallback.
+Component frames borrow their parent base and direct property operands. Up to four
+property overrides use fixed inline storage; larger scopes use a lazily allocated
+request-local map. Repeated names replace earlier values in either representation.
+Own-null properties, including missing bound operands, mask parent fallback.
 Override names borrow immutable artifact metadata rather than copying per host.
 Dataset transformations use copy-on-write for the merged object only; they never
 mutate borrowed request values. Shadows/defaults reset loop scope; caller light
@@ -358,3 +359,7 @@ results through fresh-JSON and prepared-state boundaries. Its PowerShell runners
 compare isolated source snapshots, alternate execution order and keep allocation
 diagnostics separate from latency samples. Allocation requests are not copied-byte
 or process-RSS measurements.
+Component-repeat workloads vary row count, property count and inline-style size.
+The `-markers-v2` workload suffix selects the second hydration marker format.
+Process-loop CPU includes verification and output destruction; render-call wall
+time excludes them.

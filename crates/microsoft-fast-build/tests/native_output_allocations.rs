@@ -10,12 +10,16 @@ struct RequestAllocator;
 
 thread_local! {
     static ALLOCATIONS: Cell<(bool, usize, usize)> = const { Cell::new((false, 0, 0)) };
+    static ALLOCATION_CALLS: Cell<usize> = const { Cell::new(0) };
 }
 
 fn record(allocated: usize, freed: usize) {
     let _ = ALLOCATIONS.try_with(|stats| {
         let (active, live, peak) = stats.get();
         if active {
+            if allocated != 0 {
+                ALLOCATION_CALLS.with(|calls| calls.set(calls.get() + 1));
+            }
             let live = live.saturating_sub(freed) + allocated;
             stats.set((true, live, peak.max(live)));
         }
@@ -47,6 +51,44 @@ unsafe impl GlobalAlloc for RequestAllocator {
 
 #[global_allocator]
 static ALLOCATOR: RequestAllocator = RequestAllocator;
+
+#[test]
+fn small_component_property_scopes_do_not_allocate_per_sibling() {
+    let locator = Locator::from_templates(HashMap::from([(
+        "scope-row".into(),
+        "<span>{{a}}/{{b}}/{{c}}/{{d}}</span>".into(),
+    )]));
+    let state = PreparedState::from_json(
+        &serde_json::json!({
+            "a":"a", "b":"b", "c":"c", "d":"d",
+            "rows":vec![true; 256],
+        })
+        .to_string(),
+    )
+    .unwrap();
+    let render = |attributes: &str| {
+        let artifact = CompiledArtifact::load(
+            &compile_server_artifact(
+                &format!("<f-repeat value=\"{{{{row in rows}}}}\"><scope-row{attributes}></scope-row></f-repeat>"),
+                &locator,
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        ALLOCATION_CALLS.with(|calls| calls.set(0));
+        ALLOCATIONS.with(|stats| stats.set((true, 0, 0)));
+        let result = artifact.render_entry_prepared(&state, &Default::default());
+        ALLOCATIONS.with(|stats| stats.set((false, 0, 0)));
+        let calls = ALLOCATION_CALLS.with(Cell::get);
+        (result.unwrap(), calls)
+    };
+    let (_, plain_calls) = render("");
+    let (_, bound_calls) = render(r#" :a="{{a}}" :b="{{b}}" :c="{{c}}" :d="{{d}}""#);
+    assert!(
+        bound_calls <= plain_calls + 4,
+        "small property scopes allocated per sibling: plain={plain_calls}, bound={bound_calls}"
+    );
+}
 
 fn render_peak(artifact: &CompiledArtifact, state: &PreparedState) -> (String, usize) {
     let options = NativeRenderOptions {
