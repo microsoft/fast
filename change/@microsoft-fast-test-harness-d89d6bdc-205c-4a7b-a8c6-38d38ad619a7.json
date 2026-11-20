@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Preserve template host attributes in server-rendered test fixtures.",
+  "packageName": "@microsoft/fast-test-harness",
+  "email": "paulmardling@microsoft.com",
+  "dependentChangeType": "none"
+}

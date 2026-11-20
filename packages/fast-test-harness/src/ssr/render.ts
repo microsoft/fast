@@ -34,6 +34,7 @@ import { globSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { ServerTemplateDefinition } from "@microsoft/fast-build/server.js";
 
 export interface ComponentRegistration {
     /**
@@ -363,37 +364,30 @@ export function createSSRRenderer(options: SSRRendererOptions): {
 
     // Inject styles into f-templates, then parse into the WASM
     // templates map (tag-name → inner template content).
-    const templatesMap: Record<
-        string,
-        | string
-        | {
-              content: string;
-              shadowrootAttributes: Array<{ name: string; value: string | null }>;
-          }
-    > = {};
+    const templatesMap: Record<string, string | ServerTemplateDefinition> = {};
     for (const [name, fTemplate] of fTemplatesByName) {
         const styled = renderTemplate(fTemplate, styleUrlsByName.get(name) ?? "");
         fTemplatesByName.set(name, styled);
 
-        const parsed: Array<{
-            name: string | null;
-            content: string;
-            shadowrootAttributes?: Array<{ name: string; value: string | null }>;
-        }> = JSON.parse(wasm.parse_f_templates(styled));
-        const entry = parsed.find((t: any) => t.name !== null);
+        const parsed: Array<ServerTemplateDefinition & { name: string | null }> =
+            JSON.parse(wasm.parse_f_templates(styled));
+        const entry = parsed.find(t => t.name !== null);
         if (entry) {
             const tagName = `${tagPrefix}-${name}`;
             const attrs = entry.shadowrootAttributes ?? [];
-            // Use the object format when there are extra shadowroot attributes
-            // beyond the default shadowrootmode, so the compiler can
-            // propagate them (e.g. shadowrootdelegatesfocus) onto the DSD
-            // <template> element.
+            const hostAttrs = entry.hostAttributes ?? [];
+            // The string format cannot carry host defaults or extra DSD attributes.
             const hasExtraAttrs = attrs.some(
                 a => a.name !== "shadowrootmode" && a.name !== "shadowroot",
             );
-            templatesMap[tagName] = hasExtraAttrs
-                ? { content: entry.content, shadowrootAttributes: attrs }
-                : entry.content;
+            templatesMap[tagName] =
+                hasExtraAttrs || hostAttrs.length > 0
+                    ? {
+                          content: entry.content,
+                          shadowrootAttributes: attrs,
+                          hostAttributes: hostAttrs,
+                      }
+                    : entry.content;
         } else {
             console.warn(`No named template found for ${tagPrefix}-${name}`);
         }
