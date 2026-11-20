@@ -61,7 +61,9 @@ DSD serializer selects nonempty authored `shadowrootmode`, defaulting to
 Request paths preserve lexical alias precedence, own-null masking, array lookup,
 dataset replacement and parent fallback. Shadows/defaults reset repeat scope;
 caller light DOM retains it. Borrowed native operands and copy-on-write dataset
-overlays avoid cloning input graphs and immutable artifact literals. Conditions
+overlays avoid cloning input graphs and immutable artifact literals.
+Object-root resolution probes the first key once; a present key masks fallback
+even when a later segment is missing or null. Conditions
 short-circuit after complete state/artifact validation, without changing step
 accounting. Elements reuse their resolved component's DSD opening and canonical
 closing tags.
@@ -162,6 +164,9 @@ The `compositeStyles` workload measures repeated nested-path bindings in inline
 styles; corresponding Rust cases cover one, four and five bindings. See the
 [operand-reuse benchmark](./docs/composite-attribute-benchmark.md) for measured
 comparisons.
+The `optionalBindings` workload exercises absent optional root keys; corresponding
+Rust cases also cover missing descendants, null roots and present values. See the
+[root-lookup benchmark](./docs/native-root-lookup-benchmark.md) for comparisons.
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

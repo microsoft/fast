@@ -135,6 +135,9 @@ handle interchange is provided.
 
 Native lookups return `Cow<JsonValue>`: existing values borrow request storage;
 synthetic array lengths need owned values, while static operands borrow artifact storage.
+Object-root lookup probes the first key once, then traverses its value. A present
+root key masks parent fallback even when a descendant is missing or null;
+only absent root keys continue to enclosing frames.
 String display borrows strings. Repeats borrow collections/items and link
 stack-local alias/index frames to their enclosing frame, reusing the artifact's
 alias path without copying names or outer loop payloads. Recursive scopes are
@@ -365,6 +368,8 @@ or process-RSS measurements.
 Component-repeat workloads vary row count, property count and inline-style size.
 Composite-style workloads exercise nested paths with one, four and five bindings,
 including the fixed operand-reuse boundary.
+Optional-binding workloads distinguish absent root keys, missing descendants,
+null roots and present values.
 The `-markers-v2` workload suffix selects the second hydration marker format.
 Process-loop CPU includes verification and output destruction; render-call wall
 time excludes them.

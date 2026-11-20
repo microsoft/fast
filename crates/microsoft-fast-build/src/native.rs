@@ -599,11 +599,17 @@ fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &[Segment]) -> Optio
             return nested(value, &path[1..]);
         }
         if let Some(base) = current.base {
-            let val = nested(base, path);
-            if val.is_some()
-                || matches!(base, J::Object(values) if values.contains_key(&path[0].key))
-            {
-                return val;
+            match base {
+                J::Object(values) => {
+                    if let Some(value) = values.get(&path[0].key) {
+                        return nested(value, &path[1..]);
+                    }
+                }
+                _ => {
+                    if let Some(value) = nested(base, path) {
+                        return Some(value);
+                    }
+                }
             }
         }
         frame = current.parent;
@@ -1180,6 +1186,74 @@ impl<'a> Executor<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn root_lookup_preserves_masking_fallback_and_alias_precedence() {
+        let parent = parse_render_state(
+            r#"{"profile":{"name":"parent"},"missing":{"name":"fallback"},"items":[{"name":"parent"}]}"#,
+        )
+        .unwrap();
+        let parent = Frame {
+            base: Some(&parent),
+            values: ScopeValues::new(0),
+            parent: None,
+        };
+        let path = |keys: &[&str]| {
+            keys.iter()
+                .map(|key| Segment {
+                    key: (*key).into(),
+                    array_index: key.parse().ok(),
+                })
+                .collect::<Vec<_>>()
+        };
+        for profile in ["null", "{}"] {
+            let state =
+                parse_render_state(&format!(r#"{{"profile":{profile},"items":[]}}"#)).unwrap();
+            let mut child = Frame {
+                base: Some(&state),
+                values: ScopeValues::new(1),
+                parent: Some(&parent),
+            };
+            assert!(get(&child, None, &path(&["profile", "name"])).is_none());
+            assert!(get(&child, None, &path(&["items", "0", "name"])).is_none());
+            assert_eq!(
+                get(&child, None, &path(&["items", "length"])).as_deref(),
+                Some(&J::Number(0.0))
+            );
+            assert_eq!(
+                get(&child, None, &path(&["missing", "name"])).as_deref(),
+                Some(&J::String("fallback".into()))
+            );
+            child.values.insert("missing", Cow::Owned(J::Null));
+            assert!(get(&child, None, &path(&["missing", "name"])).is_none());
+            let item = parse_render_state(r#"{"name":"loop"}"#).unwrap();
+            let prefix = vec!["missing".into()];
+            let loops = LoopFrame {
+                prefix: &prefix,
+                item: &item,
+                index: J::Number(0.0),
+                parent: None,
+            };
+            assert_eq!(
+                get(&child, Some(&loops), &path(&["missing", "name"])).as_deref(),
+                Some(&J::String("loop".into()))
+            );
+        }
+        let state = parse_render_state(r#"[{"name":"array"}]"#).unwrap();
+        let array = Frame {
+            base: Some(&state),
+            values: ScopeValues::new(0),
+            parent: Some(&parent),
+        };
+        assert_eq!(
+            get(&array, None, &path(&["0", "name"])).as_deref(),
+            Some(&J::String("array".into()))
+        );
+        assert_eq!(
+            get(&array, None, &path(&["length"])).as_deref(),
+            Some(&J::Number(1.0))
+        );
+    }
 
     fn marker_artifact() -> CompiledArtifact {
         CompiledArtifact::load(
