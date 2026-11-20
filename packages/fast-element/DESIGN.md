@@ -257,6 +257,52 @@ logging, telemetry, or a devtools panel.
 
 `FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by subclass `define()` calls and registered globally via `fastElementRegistry`. Consumers that need focused access to definition lookup can import `fastElementRegistry` from `@microsoft/fast-element/registry.js`; `fastElementRegistry.whenRegistered(tagName)` resolves with the matching definition once that tag name is registered. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. The subclass static `define()` method returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition.
 
+#### Initialization ordering and connection guards
+
+With an already-resolved template, the ordinary connection path is synchronous:
+restore captured public pre-upgrade properties, connect registered host
+behaviors, bind the view (or rebind on
+reconnection), then mark the controller connected. Constructor defaults are not
+necessarily the values supplied before upgrade. Deriving state before
+`super.connectedCallback()` can therefore use defaults before replay; deriving
+it after `super` is too late for the initial bind.
+
+For synchronous pre-bind preparation, register a `HostBehavior` with
+`$fastController.addBehavior()` in the constructor after `super()`. Its
+`connectedCallback` sees restored properties and can derive reactive state before
+binding. It runs again on reconnect: keep derivation repeatable, preserve supplied
+values when applying defaults, and separately control effects such as storage
+writes or telemetry. DOM lookups and ordinary post-bind work belong after
+`super.connectedCallback()` on that already-resolved synchronous-template path.
+If template resolution is pending, the callback returning does not establish
+view readiness: wait for template availability and confirm controller
+`isConnected`, observing its transition as needed before view-dependent work.
+This ordering adds no awaited lifecycle hook, readiness promise, or hydration
+deferral.
+
+`ConnectionGuard`, exported from the root and
+`@microsoft/fast-element/connection-guard.js`, is an opt-in application helper.
+Construct it with a `HostController` after `super()`; it registers an internal
+host behavior to track connection episodes. `capture(): () => boolean` returns
+a predicate that is true only while that captured episode is fully
+controller-connected. A pre-bind behavior capture can become valid after
+binding only if the guard's own connected behavior has already run: construct
+the guard before registering preparation behaviors that capture it. A
+capture made before the guard's connected behavior runs never revives.
+A disconnected capture never revives, and disconnect/reconnect permanently
+invalidates older captures. Checking only current `isConnected`
+cannot distinguish an old request from work started in the new episode.
+
+Start ordinary asynchronous work after `super.connectedCallback()`, capture
+before awaiting, and check the predicate immediately before mutating state or
+DOM. Always delegate disconnection to `super.disconnectedCallback()`. The helper
+guards completion; it does not abort requests or unsubscribe listeners, and it
+does not delay binding or alter style ownership.
+Neither the guard nor connection or hydration status establishes
+application-specific content or transport readiness. Bound shadow DOM does not
+prove that streamed or projected light DOM has finished arriving; applications
+must track that separately.
+
 #### Extensions
 
 The subclass static `define()` method and `FASTElementDefinition.define()` accept an optional array of **extension callbacks** (`FASTElementExtension`). Each extension is a function that receives the resolved `FASTElementDefinition` and is invoked **before** the element is registered with the platform via `customElements.define()`. The subclass static `define()` method also invokes extensions before any template resolver function is asked to produce a concrete `ElementViewTemplate`, so plugins can attach state that affects template resolution without leaving non-template values on `definition.template`.

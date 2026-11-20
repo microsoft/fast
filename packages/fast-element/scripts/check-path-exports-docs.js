@@ -27,6 +27,7 @@ const exportDescriptions = {
     "./attribute-map.js": "Schema-driven attribute map extension.",
     "./binding.js": "Binding directives and binding helpers.",
     "./children.js": "children directive.",
+    "./connection-guard.js": "Opt-in connection-generation guard for asynchronous work.",
     "./context.js": "Path-only context protocol APIs.",
     "./css.js": "CSS template tag APIs.",
     "./debug.js": "Debug message helpers.",
