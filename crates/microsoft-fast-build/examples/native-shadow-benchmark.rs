@@ -180,11 +180,15 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
     }
     let style_properties = match case {
         "composite-styles-one-1000" => Some(1),
-        "composite-styles-1000" => Some(4),
+        "composite-styles-1000"
+        | "composite-styles-row-1000"
+        | "composite-styles-alias-fallback-1000" => Some(4),
         "composite-styles-five-1000" => Some(5),
         _ => None,
     };
     if let Some(properties) = style_properties {
+        let row_scoped = case == "composite-styles-row-1000";
+        let source = if row_scoped { "row" } else { "theme" };
         let bindings = [
             ("color", "primary"),
             ("background", "background"),
@@ -194,14 +198,14 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
         ];
         let style = bindings[..properties]
             .iter()
-            .map(|(name, key)| format!("{name}:{{{{theme.palette.{key}}}}};"))
+            .map(|(name, key)| format!("{name}:{{{{{source}.palette.{key}}}}};"))
             .collect::<String>();
         let mut locator = Locator::from_templates(Default::default());
         locator.add_template(
             "style-root",
-            &format!("<f-repeat value=\"{{{{row in rows}}}}\"><i style=\"{style}\">{{{{theme.label}}}}</i></f-repeat>"),
+            &format!("<f-repeat value=\"{{{{row in rows}}}}\"><i style=\"{style}\">{{{{{source}.label}}}}</i></f-repeat>"),
         );
-        let state = json!({
+        let mut state = json!({
             "rows": vec![true; 1000],
             "theme": {
                 "label": "card",
@@ -210,12 +214,28 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
                     "outline": "purple", "shadow": "none",
                 },
             },
-        })
-        .to_string();
-        return Ok((
-            compile_server_artifact("<style-root></style-root>", &locator)?,
-            state,
-        ));
+        });
+        if row_scoped {
+            state["rows"] = json!(vec![state["theme"].clone(); 1000]);
+        }
+        let mut artifact = compile_server_artifact("<style-root></style-root>", &locator)?;
+        if case == "composite-styles-alias-fallback-1000" {
+            state["rows"] = json!(vec!["royalblue"; 1000]);
+            let mut wire: serde_json::Value = serde_json::from_slice(&artifact)?;
+            for body in wire["program"]["templates"]
+                .as_object_mut()
+                .unwrap()
+                .values_mut()
+            {
+                for operation in body.as_array_mut().unwrap() {
+                    if operation["type"] == "repeat" && operation["alias"] == json!(["row"]) {
+                        operation["alias"] = json!(["theme", "palette", "primary"]);
+                    }
+                }
+            }
+            artifact = serde_json::to_vec(&wire)?;
+        }
+        return Ok((artifact, state.to_string()));
     }
     let repeat = match case {
         "repeat-components-10" => Some((10, 4, 0, false)),

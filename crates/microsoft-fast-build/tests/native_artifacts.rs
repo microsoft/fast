@@ -175,6 +175,164 @@ fn semantic_decoder_compatibility_preserves_segmented_aliases_and_nested_conditi
 }
 
 #[test]
+fn composite_prefixes_preserve_segmented_alias_precedence_and_late_suppression() {
+    let attributes = json!([
+        {"type":"literal","html":"<i"},
+        {"type":"quoted","name":"title","parts":[
+            {"type":"segment","path":["palette","primary","label"]},
+            {"type":"literal","html":"/"},
+            {"type":"segment","path":["palette","background","label"]},
+        ]},
+        {"type":"literal","html":"></i>"},
+    ]);
+    let tag = json!({
+        "type":"tag", "plain":attributes, "hydrated":attributes,
+        "count":0, "ending":"",
+    });
+    for (alias, nested) in [
+        (vec!["palette"], false),
+        (vec!["palette", "primary"], false),
+        (vec!["palette", "primary"], true),
+    ] {
+        let mut program = json!({
+            "entry":[{"type":"repeat","alias":alias,"collection":["items"],
+                "diagnostic":"","template":"row"}],
+            "templates":{"row":[tag]},
+            "components":{},
+        });
+        if nested {
+            program["templates"]["nested"] = program["templates"]["row"].clone();
+            program["templates"]["row"] = json!([{
+                "type":"repeat","alias":["other"],"collection":["inner"],
+                "diagnostic":"","template":"nested",
+            }]);
+        }
+        let short_alias = alias.len() == 1;
+        let item = if short_alias {
+            json!({"primary":{"label":"loop<&😀"},"background":{"label":"loopB"}})
+        } else {
+            json!({"label":"loop<&😀"})
+        };
+        let state = json!({
+            "items":[item], "inner":[true],
+            "palette":{"primary":{"label":"rootA"},"background":{"label":"rootB"}},
+        });
+        let last = if short_alias { "loopB" } else { "rootB" };
+        let expected = format!("<i title=\"loop&lt;&amp;😀/{last}\"></i>");
+        for schema in [1, 2] {
+            let artifact = CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+            let exact = NativeRenderOptions {
+                max_output_bytes: expected.len(),
+                ..Default::default()
+            };
+            let json = state.to_string();
+            let prepared = PreparedState::from_json(&json).unwrap();
+            let held = artifact.render_entry_json(&json, &exact).unwrap();
+            assert_eq!(held, expected);
+            assert_eq!(
+                artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+                expected
+            );
+            let short = NativeRenderOptions {
+                max_output_bytes: expected.len() - 1,
+                ..exact.clone()
+            };
+            assert_eq!(
+                artifact.render_entry_json(&json, &short).unwrap_err().code,
+                "render-limit"
+            );
+            for explicit_null in [false, true] {
+                let mut missing = state.clone();
+                let background = if short_alias {
+                    missing["items"][0]["primary"]["label"] = json!("&".repeat(4096));
+                    missing["items"][0].as_object_mut().unwrap()
+                } else {
+                    missing["items"][0]["label"] = json!("&".repeat(4096));
+                    missing["palette"].as_object_mut().unwrap()
+                };
+                if explicit_null {
+                    background.insert("background".into(), json!(null));
+                } else {
+                    background.remove("background");
+                }
+                let suppressed = NativeRenderOptions {
+                    max_output_bytes: 7,
+                    ..Default::default()
+                };
+                let missing = missing.to_string();
+                assert_eq!(
+                    artifact.render_entry_json(&missing, &suppressed).unwrap(),
+                    "<i></i>"
+                );
+                assert_eq!(
+                    artifact
+                        .render_entry_prepared(
+                            &PreparedState::from_json(&missing).unwrap(),
+                            &suppressed,
+                        )
+                        .unwrap(),
+                    "<i></i>"
+                );
+            }
+            assert_eq!(artifact.render_entry_json(&json, &exact).unwrap(), held);
+        }
+    }
+}
+
+#[test]
+fn composite_prefixes_keep_owned_lengths_and_long_alias_fallback() {
+    let entry = "<i title=\"{{values.length}}/{{values.length}}/{{values.length}}/{{values.length}}/{{values.length}}\"></i>";
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
+    )
+    .unwrap();
+    let json = r#"{"values":[null,true]}"#;
+    let prepared = PreparedState::from_json(json).unwrap();
+    let expected = "<i title=\"2/2/2/2/2\"></i>";
+    assert_eq!(
+        artifact
+            .render_entry_json(json, &Default::default())
+            .unwrap(),
+        expected
+    );
+    assert_eq!(
+        artifact
+            .render_entry_prepared(&prepared, &Default::default())
+            .unwrap(),
+        expected
+    );
+
+    let path = vec!["alias"; 256];
+    let attributes = json!([
+        {"type":"literal","html":"<i"},
+        {"type":"quoted","name":"title","parts":[
+            {"type":"segment","path":path},
+            {"type":"literal","html":"/"},
+            {"type":"segment","path":path},
+        ]},
+        {"type":"literal","html":"></i>"},
+    ]);
+    let program = json!({
+        "entry":[{"type":"repeat","alias":path,"collection":["items"],
+            "diagnostic":"","template":"row"}],
+        "templates":{"row":[{
+            "type":"tag","plain":attributes,"hydrated":attributes,
+            "count":0,"ending":"",
+        }]},
+        "components":{},
+    });
+    for schema in [1, 2] {
+        let artifact = CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+        assert_eq!(
+            artifact
+                .render_entry_json(r#"{"items":["loop"]}"#, &Default::default())
+                .unwrap(),
+            "<i title=\"loop/loop\"></i>"
+        );
+    }
+}
+
+#[test]
 fn semantic_decoder_compatibility_validates_unused_nested_fields_and_scalar_types() {
     let original = json!({
         "entry":[{"type":"literal","html":"ok"}],

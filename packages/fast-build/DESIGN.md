@@ -77,6 +77,9 @@ Composite attributes preflight every binding before writing output. Their first
 four resolved operands are reused from bounded stack storage; further operands
 are resolved again. This preserves late-null suppression and exact output limits
 without cloning input graphs or retaining request scratch.
+Validated plans also prepare a common-prefix length for composite bindings.
+Execution borrows that prefix once per attribute; overlapping longer aliases
+retain full-path resolution to preserve lexical precedence.
 Hydration markers likewise append literals and stack-formatted indices directly.
 Whole-marker byte-budget preflight preserves failure boundaries without a
 per-marker temporary string or retained request scratch. Reserving the checked
@@ -164,6 +167,8 @@ The `compositeStyles` workload measures repeated nested-path bindings in inline
 styles; corresponding Rust cases cover one, four and five bindings. See the
 [operand-reuse benchmark](./docs/composite-attribute-benchmark.md) for measured
 comparisons.
+The [prefix-lookup benchmark](./docs/native-prefix-lookup-benchmark.md) qualifies
+shared-prefix reuse, row-scoped bindings and overlapping-alias fallback.
 The `optionalBindings` workload exercises absent optional root keys; corresponding
 Rust cases also cover missing descendants, null roots and present values. See the
 [root-lookup benchmark](./docs/native-root-lookup-benchmark.md) for comparisons.
