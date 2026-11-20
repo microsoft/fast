@@ -325,7 +325,7 @@ impl CompiledArtifact {
             component.shadow,
             &Frame {
                 base: Some(state),
-                values: HashMap::new(),
+                values: ScopeValues::new(0),
                 parent: None,
             },
             None,
@@ -368,7 +368,7 @@ impl CompiledArtifact {
             id,
             &Frame {
                 base: Some(state),
-                values: HashMap::new(),
+                values: ScopeValues::new(0),
                 parent: None,
             },
             None,
@@ -503,9 +503,56 @@ fn selected(options: &NativeRenderOptions, name: &str) -> bool {
         .is_none_or(|names| names.iter().any(|n| n == name))
 }
 
+enum ScopeValues<'a> {
+    Inline([Option<(&'a str, Cow<'a, J>)>; 4]),
+    Map(HashMap<&'a str, Cow<'a, J>>),
+}
+
+impl<'a> ScopeValues<'a> {
+    fn new(properties: usize) -> Self {
+        if properties <= 4 {
+            Self::Inline(std::array::from_fn(|_| None))
+        } else {
+            Self::Map(HashMap::new())
+        }
+    }
+
+    fn get(&self, key: &str) -> Option<&Cow<'a, J>> {
+        match self {
+            Self::Inline(entries) => entries
+                .iter()
+                .flatten()
+                .find(|(name, _)| *name == key)
+                .map(|(_, value)| value),
+            Self::Map(values) => values.get(key),
+        }
+    }
+
+    fn get_or_insert_with(
+        &mut self,
+        key: &'a str,
+        initialize: impl FnOnce() -> Cow<'a, J>,
+    ) -> &mut Cow<'a, J> {
+        match self {
+            Self::Inline(entries) => {
+                let index = entries
+                    .iter()
+                    .position(|entry| entry.as_ref().is_none_or(|(name, _)| *name == key))
+                    .expect("inline scope covers the component's property count");
+                &mut entries[index].get_or_insert_with(|| (key, initialize())).1
+            }
+            Self::Map(values) => values.entry(key).or_insert_with(initialize),
+        }
+    }
+
+    fn insert(&mut self, key: &'a str, value: Cow<'a, J>) {
+        *self.get_or_insert_with(key, || Cow::Owned(J::Null)) = value;
+    }
+}
+
 struct Frame<'a> {
     base: Option<&'a J>,
-    values: HashMap<&'a str, Cow<'a, J>>,
+    values: ScopeValues<'a>,
     parent: Option<&'a Frame<'a>>,
 }
 struct LoopFrame<'a> {
@@ -1037,7 +1084,7 @@ impl<'a> Executor<'a> {
                         continue;
                     }
                     let props = &el.props;
-                    let mut values = HashMap::new();
+                    let mut values = ScopeValues::new(props.len());
                     for prop in props {
                         self.tick()?;
                         let path = &prop.keys[if self.options.attribute_name_strategy
@@ -1052,7 +1099,7 @@ impl<'a> Executor<'a> {
                         if prop.group.is_none() {
                             values.insert(key, val);
                         } else {
-                            let value = values.entry(key).or_insert_with(|| {
+                            let value = values.get_or_insert_with(key, || {
                                 get(root, None, path)
                                     .unwrap_or(Cow::Owned(J::Object(HashMap::new())))
                             });
@@ -1110,7 +1157,7 @@ impl<'a> Executor<'a> {
                     self.push(&shadow)?;
                     self.push("</template>")?;
                     self.body(el.body, root, loops, scope, false, depth + 1)?;
-                    self.push(&format!("</{name}>"))?;
+                    self.push(&component.closing)?;
                 }
             }
         }
@@ -1373,7 +1420,7 @@ mod tests {
         )])));
         let root = Frame {
             base: None,
-            values: HashMap::new(),
+            values: ScopeValues::new(0),
             parent: None,
         };
         let resolved = operand(&value, &root, None).unwrap();

@@ -63,7 +63,11 @@ dataset replacement and parent fallback. Shadows/defaults reset repeat scope;
 caller light DOM retains it. Borrowed native operands and copy-on-write dataset
 overlays avoid cloning input graphs and immutable artifact literals. Conditions
 short-circuit after complete state/artifact validation, without changing step
-accounting. Elements reuse their resolved component's DSD opening tag.
+accounting. Elements reuse their resolved component's DSD opening and canonical
+closing tags.
+Component scopes keep up to four property overrides inline; larger scopes use a
+request-local map. Both borrow names and values where possible and release their
+storage before returning.
 Escaping writes spans directly to bounded output. Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
@@ -147,6 +151,9 @@ The crate's shadow-output microbenchmark complements these Node measurements wit
 fresh-JSON and prepared-state complete-owned-String boundaries. Isolated source
 comparisons alternate execution order and separate allocator diagnostics from
 timing; requested live heap bytes do not measure RSS or bytes copied.
+Its component-repeat cases vary row count, property count and inline-style size;
+the Node `componentRepeats` workload exercises the same wide-component shape
+through owned Buffer and string delivery.
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

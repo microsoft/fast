@@ -126,12 +126,90 @@ fn cpu_ns() -> Option<u64> {
     })
 }
 
-#[cfg(not(windows))]
+#[cfg(any(target_os = "macos", target_os = "linux"))]
+fn cpu_ns() -> Option<u64> {
+    #[repr(C)]
+    struct Timespec {
+        seconds: std::ffi::c_long,
+        nanoseconds: std::ffi::c_long,
+    }
+    extern "C" {
+        fn clock_gettime(clock: i32, time: *mut Timespec) -> i32;
+    }
+    let mut time = Timespec {
+        seconds: 0,
+        nanoseconds: 0,
+    };
+    let clock = if cfg!(target_os = "macos") { 12 } else { 2 };
+    (unsafe { clock_gettime(clock, &mut time) } == 0)
+        .then(|| time.seconds as u64 * 1_000_000_000 + time.nanoseconds as u64)
+}
+
+#[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
 fn cpu_ns() -> Option<u64> {
     None
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    let repeat = match case {
+        "repeat-components-10" => Some((10, 4, 0, false)),
+        "repeat-components-100" => Some((100, 4, 0, false)),
+        "repeat-components-1000" => Some((1000, 4, 0, false)),
+        "repeat-components-10000" => Some((10000, 4, 0, false)),
+        "repeat-plain-10000" => Some((10000, 4, 0, true)),
+        "repeat-components-no-props" => Some((1000, 0, 0, false)),
+        "repeat-components-one-prop" => Some((1000, 1, 0, false)),
+        "repeat-components-many-props" => Some((1000, 12, 0, false)),
+        "repeat-components-large-styles" => Some((1000, 4, 4096, false)),
+        _ => None,
+    };
+    if let Some((count, properties, style_bytes, plain)) = repeat {
+        let body = format!(
+            "<style>:host {{ display: block; }}{}</style><article data-id=\"{{{{id}}}}\" ?data-active=\"{{{{active}}}}\"><a href=\"{{{{url}}}}\">{{{{label}}}}</a><slot></slot></article>",
+            " ".repeat(style_bytes),
+        );
+        let mut attributes = String::new();
+        for index in 0..properties {
+            let name = match index {
+                0 => "id".to_owned(),
+                1 => "label".to_owned(),
+                2 => "url".to_owned(),
+                3 => "?active".to_owned(),
+                _ => format!(":extra{index}"),
+            };
+            let value = match index {
+                0 => "row.id".to_owned(),
+                1 => "row.label".to_owned(),
+                2 => "row.url".to_owned(),
+                3 => "row.active".to_owned(),
+                _ => "row.detail".to_owned(),
+            };
+            attributes.push_str(&format!(" {name}=\"{{{{{value}}}}}\""));
+        }
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template("repeat-card", &body);
+        let row = if plain {
+            "<article data-id=\"{{row.id}}\" ?data-active=\"{{row.active}}\"><a href=\"{{row.url}}\">{{row.label}}</a>{{row.detail}}</article>".to_owned()
+        } else {
+            format!("<repeat-card{attributes}>{{{{row.detail}}}}</repeat-card>")
+        };
+        locator.add_template(
+            "repeat-root",
+            &format!("<f-repeat value=\"{{{{row in rows}}}}\">{row}</f-repeat>"),
+        );
+        let state = json!({
+            "id": 0, "label": "Root", "url": "#root", "active": true,
+            "rows": (0..count).map(|id| json!({
+                "id": id, "label": format!("Row {id}"), "url": format!("#row-{id}"),
+                "active": id % 2 == 0, "detail": format!("Detail {id}"),
+            })).collect::<Vec<_>>(),
+        })
+        .to_string();
+        return Ok((
+            compile_server_artifact("<repeat-root></repeat-root>", &locator)?,
+            state,
+        ));
+    }
     let mut locator = Locator::from_templates(Default::default());
     let state = json!({
         "label": "<&\"'😀 café",
@@ -206,7 +284,7 @@ fn hash(bytes: &[u8]) -> String {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().skip(1).collect();
     if args.len() != 5 {
-        return Err("Usage: native-shadow-benchmark <deep-nested|wide-siblings|mixed-light-shadow|mostly-static|binding-heavy|empty-shadows|small-page> <fresh-json|prepared> <timing|memory> <iterations> <owned-output-file>".into());
+        return Err("Usage: native-shadow-benchmark <workload[-markers-v2]> <fresh-json|prepared> <timing|memory> <iterations> <owned-output-file>".into());
     }
     let iterations: usize = args[3].parse()?;
     if iterations == 0
@@ -215,7 +293,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     {
         return Err("Invalid boundary, pass, or iteration count".into());
     }
-    let (artifact_bytes, state_json) = fixture(&args[0])?;
+    let markers_v2 = args[0].ends_with("-markers-v2");
+    let case = args[0].strip_suffix("-markers-v2").unwrap_or(&args[0]);
+    let (artifact_bytes, state_json) = fixture(case)?;
     begin_memory();
     let artifact_result = CompiledArtifact::load(&artifact_bytes);
     let artifact_memory = end_memory();
@@ -224,7 +304,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let prepared_result = PreparedState::from_json(&state_json);
     let prepared_memory = end_memory();
     let prepared = prepared_result?;
-    let options = NativeRenderOptions::default();
+    let options = NativeRenderOptions {
+        markers_v2,
+        ..Default::default()
+    };
     let render = || {
         if args[1] == "fresh-json" {
             artifact.render_entry_json(black_box(&state_json), black_box(&options))
