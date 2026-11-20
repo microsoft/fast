@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Parse nested query parameters and bracketed arrays without calling Map methods on plain objects.",
+  "packageName": "@microsoft/fast-router",
+  "email": "vansh.nagar.dev@gmail.com",
+  "dependentChangeType": "none"
+}
