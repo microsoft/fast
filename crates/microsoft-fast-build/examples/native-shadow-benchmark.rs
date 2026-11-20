@@ -151,6 +151,33 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(kind) = case
+        .strip_prefix("optional-bindings-")
+        .and_then(|name| name.strip_suffix("-1000"))
+    {
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template(
+            "optional-root",
+            "<f-repeat value=\"{{row in rows}}\"><a href=\"{{optional.url}}\" title=\"link {{optional.title}} end\" ?hidden=\"{{optional.hidden}}\">{{optional.description}}/{{optional.detail}}/{{optional.caption}}</a></f-repeat>",
+        );
+        let mut state = json!({"rows":vec![true; 1000]});
+        match kind {
+            "missing" => {}
+            "nested" => state["optional"] = json!({}),
+            "null" => state["optional"] = json!(null),
+            "present" => {
+                state["optional"] = json!({
+                    "url": "#card", "title": "card", "hidden": false,
+                    "description": "description", "detail": "detail", "caption": "caption",
+                });
+            }
+            _ => return Err("Unknown workload".into()),
+        }
+        return Ok((
+            compile_server_artifact("<optional-root></optional-root>", &locator)?,
+            state.to_string(),
+        ));
+    }
     let style_properties = match case {
         "composite-styles-one-1000" => Some(1),
         "composite-styles-1000" => Some(4),
