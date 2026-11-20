@@ -1931,34 +1931,78 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
 
 #[test]
 fn bounded_composite_attributes_keep_borrowed_and_synthetic_repeat_values() {
-    let entry = r#"<f-repeat value="{{group in groups}}"><i title="{{group.values.length}}/{{group.label}}/{{group.values}}">{{group.values.length}}</i></f-repeat>"#;
-    let artifact = CompiledArtifact::load(
-        &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
-    )
-    .unwrap();
-    let json = r#"{"groups":[{"values":[null,true],"label":"<&😀"}]}"#;
-    let state = parse_render_state(json).unwrap();
-    let prepared = PreparedState::from_json(json).unwrap();
-    let expected = r#"<i title="2/&lt;&amp;😀/[Array]">2</i>"#;
-    let exact = NativeRenderOptions {
-        max_output_bytes: expected.len(),
-        ..Default::default()
-    };
-    assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
-    assert_eq!(
-        artifact.render_entry_prepared(&prepared, &exact).unwrap(),
-        expected
-    );
-    assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
-    let short = NativeRenderOptions {
-        max_output_bytes: expected.len() - 1,
-        ..exact.clone()
-    };
-    assert_eq!(
-        artifact.render_entry_json(json, &short).unwrap_err().code,
-        "render-limit"
-    );
-    assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
+    for bindings in [4, 5] {
+        let tail = if bindings == 5 { "/{{group.more}}" } else { "" };
+        let entry = format!(
+            r#"<f-repeat value="{{{{group in groups}}}}"><i title="{{{{group.values.length}}}}/{{{{group.label}}}}/{{{{group.values}}}}/{{{{group.enabled}}}}{tail}">{{{{group.values.length}}}}</i></f-repeat>"#
+        );
+        let artifact = CompiledArtifact::load(
+            &compile_server_artifact(&entry, &common::make_locator(&[])).unwrap(),
+        )
+        .unwrap();
+        let json =
+            r#"{"groups":[{"values":[null,true],"label":"<&😀","enabled":true,"more":"tail"}]}"#;
+        let state = parse_render_state(json).unwrap();
+        let prepared = PreparedState::from_json(json).unwrap();
+        let suffix = if bindings == 5 { "/tail" } else { "" };
+        let expected = format!(r#"<i title="2/&lt;&amp;😀/[Array]/true{suffix}">2</i>"#);
+        let exact = NativeRenderOptions {
+            max_output_bytes: expected.len(),
+            ..Default::default()
+        };
+        let held = artifact.render_entry(&state, &exact).unwrap();
+        assert_eq!(held, expected);
+        assert_eq!(
+            artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+            expected
+        );
+        assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
+        let short = NativeRenderOptions {
+            max_output_bytes: expected.len() - 1,
+            ..exact.clone()
+        };
+        assert_eq!(
+            artifact.render_entry_json(json, &short).unwrap_err().code,
+            "render-limit"
+        );
+        for explicit_null in [false, true] {
+            let mut absent = json!({
+                "groups": [{
+                    "values": [null, true],
+                    "label": "&".repeat(4096),
+                    "enabled": true,
+                    "more": "tail",
+                }],
+            });
+            let key = if bindings == 5 { "more" } else { "enabled" };
+            let group = absent["groups"][0].as_object_mut().unwrap();
+            if explicit_null {
+                group.insert(key.into(), json!(null));
+            } else {
+                group.remove(key);
+            }
+            let absent_json = absent.to_string();
+            let absent_prepared = PreparedState::from_json(&absent_json).unwrap();
+            let suppressed = NativeRenderOptions {
+                max_output_bytes: 8,
+                ..Default::default()
+            };
+            assert_eq!(
+                artifact
+                    .render_entry_json(&absent_json, &suppressed)
+                    .unwrap(),
+                "<i>2</i>"
+            );
+            assert_eq!(
+                artifact
+                    .render_entry_prepared(&absent_prepared, &suppressed)
+                    .unwrap(),
+                "<i>2</i>"
+            );
+        }
+        assert_eq!(artifact.render_entry_json(json, &exact).unwrap(), expected);
+        assert_eq!(held, expected);
+    }
 }
 
 #[test]

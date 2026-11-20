@@ -886,6 +886,8 @@ impl<'a> Executor<'a> {
                 self.push("\"")
             }
             Attribute::Quoted(name, parts) => {
+                let mut resolved: [Option<Cow<'_, J>>; 4] = std::array::from_fn(|_| None);
+                let mut binding = 0;
                 // A missing later binding suppresses the whole attribute, even when
                 // an earlier value would exceed the output budget.
                 for part in parts {
@@ -894,11 +896,16 @@ impl<'a> Executor<'a> {
                         if matches!(value.as_deref(), None | Some(J::Null)) {
                             return Ok(());
                         }
+                        if let Some(slot) = resolved.get_mut(binding) {
+                            *slot = value;
+                        }
+                        binding += 1;
                     }
                 }
                 self.push(" ")?;
                 self.push(name)?;
                 self.push("=\"")?;
+                let mut binding = 0;
                 for part in parts {
                     if let plan::Part::Literal(text) = part {
                         let mut start = 0;
@@ -909,7 +916,12 @@ impl<'a> Executor<'a> {
                         }
                         self.push(&text[start..])?;
                     } else if let plan::Part::Segment(path) = part {
-                        self.value(get(root, loops, path).as_deref(), true)?;
+                        if let Some(value) = resolved.get(binding) {
+                            self.value(value.as_deref(), true)?;
+                        } else {
+                            self.value(get(root, loops, path).as_deref(), true)?;
+                        }
+                        binding += 1;
                     }
                 }
                 self.push("\"")
