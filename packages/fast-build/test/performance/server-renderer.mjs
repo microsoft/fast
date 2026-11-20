@@ -331,6 +331,19 @@ async function main() {
             },
         },
         repeated: fixture("repeat_custom_elements", instances),
+        optionalBindings: {
+            entry: "<optional-root></optional-root>",
+            templates: {
+                "optional-root":
+                    '<f-repeat value="{{row in rows}}"><a href="{{optional.url}}" ' +
+                    'title="link {{optional.title}} end" ?hidden="{{optional.hidden}}">' +
+                    "{{optional.description}}/{{optional.detail}}/" +
+                    "{{optional.caption}}</a></f-repeat>",
+            },
+            state: {
+                rows: Array.from({ length: instances }, () => true),
+            },
+        },
         compositeStyles: {
             entry: "<style-root></style-root>",
             templates: {
