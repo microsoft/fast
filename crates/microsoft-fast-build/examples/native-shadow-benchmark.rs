@@ -151,6 +151,45 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    let style_properties = match case {
+        "composite-styles-one-1000" => Some(1),
+        "composite-styles-1000" => Some(4),
+        "composite-styles-five-1000" => Some(5),
+        _ => None,
+    };
+    if let Some(properties) = style_properties {
+        let bindings = [
+            ("color", "primary"),
+            ("background", "background"),
+            ("border-color", "border"),
+            ("outline-color", "outline"),
+            ("box-shadow", "shadow"),
+        ];
+        let style = bindings[..properties]
+            .iter()
+            .map(|(name, key)| format!("{name}:{{{{theme.palette.{key}}}}};"))
+            .collect::<String>();
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template(
+            "style-root",
+            &format!("<f-repeat value=\"{{{{row in rows}}}}\"><i style=\"{style}\">{{{{theme.label}}}}</i></f-repeat>"),
+        );
+        let state = json!({
+            "rows": vec![true; 1000],
+            "theme": {
+                "label": "card",
+                "palette": {
+                    "primary": "royalblue", "background": "white", "border": "gray",
+                    "outline": "purple", "shadow": "none",
+                },
+            },
+        })
+        .to_string();
+        return Ok((
+            compile_server_artifact("<style-root></style-root>", &locator)?,
+            state,
+        ));
+    }
     let repeat = match case {
         "repeat-components-10" => Some((10, 4, 0, false)),
         "repeat-components-100" => Some((100, 4, 0, false)),

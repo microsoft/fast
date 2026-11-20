@@ -169,8 +169,11 @@ directly to the executor's bounded output string, without display/escaped string
 Finite numbers format through its fallible `fmt::Write` implementation; boolean,
 null and container display values use fixed strings. Composite attributes resolve
 their binding values first so a later missing/null value suppresses the entire
-attribute before any output-budget check. This preflight retains no operand vector;
-the output pass resolves immutable borrowed values again without cloning payloads.
+attribute before any output-budget check. Up to four resolved operands stay in
+fixed stack storage for the output pass.
+Further operands are resolved again without cloning payloads. Cached values borrow
+immutable request storage or own small synthetic array lengths; none persist after
+the attribute call.
 Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
@@ -360,6 +363,8 @@ compare isolated source snapshots, alternate execution order and keep allocation
 diagnostics separate from latency samples. Allocation requests are not copied-byte
 or process-RSS measurements.
 Component-repeat workloads vary row count, property count and inline-style size.
+Composite-style workloads exercise nested paths with one, four and five bindings,
+including the fixed operand-reuse boundary.
 The `-markers-v2` workload suffix selects the second hydration marker format.
 Process-loop CPU includes verification and output destruction; render-call wall
 time excludes them.

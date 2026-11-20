@@ -331,6 +331,31 @@ async function main() {
             },
         },
         repeated: fixture("repeat_custom_elements", instances),
+        compositeStyles: {
+            entry: "<style-root></style-root>",
+            templates: {
+                "style-root":
+                    '<f-repeat value="{{row in rows}}">' +
+                    '<i style="color:{{theme.palette.primary}};' +
+                    "background:{{theme.palette.background}};" +
+                    "border-color:{{theme.palette.border}};" +
+                    'outline-color:{{theme.palette.outline}};">' +
+                    "{{theme.label}}</i></f-repeat>",
+            },
+            state: {
+                rows: Array.from({ length: instances }, () => true),
+                theme: {
+                    label: "card",
+                    palette: {
+                        primary: "royalblue",
+                        background: "white",
+                        border: "gray",
+                        outline: "purple",
+                        shadow: "none",
+                    },
+                },
+            },
+        },
         componentRepeats: {
             entry: "<repeat-root></repeat-root>",
             templates: {
