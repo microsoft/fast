@@ -617,6 +617,19 @@ fn get<'a>(root: &'a Frame<'a>, mut loops: Loops<'a>, path: &[Segment]) -> Optio
     None
 }
 
+fn prefix_reusable(mut loops: Loops<'_>, prefix: &[Segment]) -> bool {
+    // A longer alias can select different data for paths sharing a shorter prefix.
+    while let Some(current) = loops {
+        if current.prefix.len() > prefix.len()
+            && current.prefix.iter().zip(prefix).all(|(a, b)| a == &b.key)
+        {
+            return false;
+        }
+        loops = current.parent;
+    }
+    true
+}
+
 fn text(value: Option<&J>) -> Cow<'_, str> {
     match value {
         None | Some(J::Null) => "".into(),
@@ -891,14 +904,41 @@ impl<'a> Executor<'a> {
                 }
                 self.push("\"")
             }
-            Attribute::Quoted(name, parts) => {
+            Attribute::Quoted(name, parts, prefix) => {
+                let mut width = usize::from(*prefix);
+                let common = if width == 0 {
+                    None
+                } else {
+                    let path = parts
+                        .iter()
+                        .find_map(|part| match part {
+                            plan::Part::Segment(path) => Some(path),
+                            _ => None,
+                        })
+                        .unwrap();
+                    if prefix_reusable(loops, &path[..width]) {
+                        get(root, loops, &path[..width])
+                    } else {
+                        width = 0;
+                        None
+                    }
+                };
+                let resolve = |path: &[Segment]| {
+                    if width == 0 {
+                        get(root, loops, path)
+                    } else {
+                        common
+                            .as_ref()
+                            .and_then(|value| nested(value, &path[width..]))
+                    }
+                };
                 let mut resolved: [Option<Cow<'_, J>>; 4] = std::array::from_fn(|_| None);
                 let mut binding = 0;
                 // A missing later binding suppresses the whole attribute, even when
                 // an earlier value would exceed the output budget.
                 for part in parts {
                     if let plan::Part::Segment(path) = part {
-                        let value = get(root, loops, path);
+                        let value = resolve(path);
                         if matches!(value.as_deref(), None | Some(J::Null)) {
                             return Ok(());
                         }
@@ -925,7 +965,7 @@ impl<'a> Executor<'a> {
                         if let Some(value) = resolved.get(binding) {
                             self.value(value.as_deref(), true)?;
                         } else {
-                            self.value(get(root, loops, path).as_deref(), true)?;
+                            self.value(resolve(path).as_deref(), true)?;
                         }
                         binding += 1;
                     }

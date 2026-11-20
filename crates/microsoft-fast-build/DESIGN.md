@@ -177,6 +177,11 @@ fixed stack storage for the output pass.
 Further operands are resolved again without cloning payloads. Cached values borrow
 immutable request storage or own small synthetic array lengths; none persist after
 the attribute call.
+Loading derives a byte-sized common-prefix length after validating every quoted
+part. Execution resolves that prefix once and borrows its value for the segment
+lookups in the current attribute. Longer overlapping loop aliases disable prefix
+reuse because they can select different data for individual paths. Prefixes that
+exceed the metadata's byte range retain independent resolution.
 Authored composite literals only replace
 quotes, preserving their existing entities; dynamic parts use full HTML escaping.
 Each span uses the existing output-byte check; escaping adds no execution steps.
@@ -368,6 +373,7 @@ or process-RSS measurements.
 Component-repeat workloads vary row count, property count and inline-style size.
 Composite-style workloads exercise nested paths with one, four and five bindings,
 including the fixed operand-reuse boundary.
+Row-scoped and overlapping-alias variants qualify prefix reuse and its fallback.
 Optional-binding workloads distinguish absent root keys, missing descendants,
 null roots and present values.
 The `-markers-v2` workload suffix selects the second hydration marker format.
