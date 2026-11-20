@@ -205,6 +205,31 @@ pub(super) enum Part {
     Segment(Path),
 }
 
+fn common_prefix(parts: &[Part]) -> u8 {
+    let mut paths = parts.iter().filter_map(|part| match part {
+        Part::Segment(path) => Some(path),
+        _ => None,
+    });
+    let Some(first) = paths.next() else {
+        return 0;
+    };
+    let Some(second) = paths.next() else {
+        return 0;
+    };
+    let mut width = first.len();
+    for path in std::iter::once(second).chain(paths) {
+        width = first[..width]
+            .iter()
+            .zip(path)
+            .take_while(|(a, b)| a.key == b.key)
+            .count();
+        if width == 0 {
+            return 0;
+        }
+    }
+    u8::try_from(width).unwrap_or(0)
+}
+
 #[derive(Debug)]
 pub(super) enum Attribute {
     Literal(String),
@@ -215,7 +240,7 @@ pub(super) enum Attribute {
         boolean: bool,
         property: bool,
     },
-    Quoted(String, Vec<Part>),
+    Quoted(String, Vec<Part>, u8),
 }
 
 impl Attribute {
@@ -240,22 +265,22 @@ impl Attribute {
             }
             "quoted" => {
                 fields(v, &["type", "name", "parts"])?;
-                Self::Quoted(
-                    string(&v["name"])?.into(),
-                    collect(array(&v["parts"])?.iter().map(|p| {
-                        Ok(match string(&p["type"])? {
-                            "literal" => {
-                                fields(p, &["type", "html"])?;
-                                Part::Literal(string(&p["html"])?.into())
-                            }
-                            "segment" => {
-                                fields(p, &["type", "path"])?;
-                                Part::Segment(path(&p["path"])?)
-                            }
-                            _ => return Err(()),
-                        })
-                    }))?,
-                )
+                let name = string(&v["name"])?.into();
+                let parts = collect(array(&v["parts"])?.iter().map(|p| {
+                    Ok(match string(&p["type"])? {
+                        "literal" => {
+                            fields(p, &["type", "html"])?;
+                            Part::Literal(string(&p["html"])?.into())
+                        }
+                        "segment" => {
+                            fields(p, &["type", "path"])?;
+                            Part::Segment(path(&p["path"])?)
+                        }
+                        _ => return Err(()),
+                    })
+                }))?;
+                let prefix = common_prefix(&parts);
+                Self::Quoted(name, parts, prefix)
             }
             _ => return Err(()),
         })
@@ -1059,7 +1084,7 @@ mod tests {
         };
         tightly_sized(&element.props);
         tightly_sized(&element.defaults);
-        let Attribute::Quoted(_, parts) = &element.entry[3] else {
+        let Attribute::Quoted(_, parts, _) = &element.entry[3] else {
             panic!("quoted attribute was not decoded");
         };
         tightly_sized(parts);
