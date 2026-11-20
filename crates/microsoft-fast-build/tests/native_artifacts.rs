@@ -1509,6 +1509,46 @@ fn borrowed_nested_repeats_keep_exact_step_budgets_and_recover() {
 }
 
 #[test]
+fn inline_and_spilled_component_scopes_preserve_masking_and_dataset_overlays() {
+    let locator = common::make_locator(&[(
+        "scope-card",
+        "{{label}}/{{masked.value}}/{{dataset.base}}/{{dataset.note}}/{{dataset.keep}}",
+    )]);
+    for spare_properties in [0, 1] {
+        let spare = r#" :spare="unused""#.repeat(spare_properties);
+        let entry = format!(
+            r#"<scope-card :masked="{{{{missing}}}}" :dataset='{{"base":"local"}}' data-note="{{{{label}}}}" :label="{{{{label}}}}"{spare}></scope-card>"#
+        );
+        let artifact =
+            CompiledArtifact::load(&compile_server_artifact(&entry, &locator).unwrap()).unwrap();
+        for label in ["large".repeat(8192), "small".into()] {
+            let state_json = json!({
+                "label":label,
+                "masked":{"value":"must-not-leak"},
+                "dataset":{"keep":"must-not-leak"},
+            })
+            .to_string();
+            let state = PreparedState::from_json(&state_json).unwrap();
+            let expected = format!(
+                "<scope-card data-note=\"{label}\"><template shadowrootmode=\"open\"><!--fe:b-->{label}<!--fe:/b-->/<!--fe:b--><!--fe:/b-->/<!--fe:b-->local<!--fe:/b-->/<!--fe:b-->{label}<!--fe:/b-->/<!--fe:b--><!--fe:/b--></template></scope-card>"
+            );
+            assert_eq!(
+                artifact
+                    .render_entry_json(&state_json, &Default::default())
+                    .unwrap(),
+                expected
+            );
+            assert_eq!(
+                artifact
+                    .render_entry_prepared(&state, &Default::default())
+                    .unwrap(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
 fn nested_repeat_payloads_preserve_aliases_overlay_masking_and_owned_results() {
     let locator = common::make_locator(&[(
         "borrow-leaf",

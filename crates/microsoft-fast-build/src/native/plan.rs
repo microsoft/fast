@@ -361,6 +361,7 @@ impl Operation {
 #[derive(Debug)]
 pub(super) struct Component {
     pub name: Arc<str>,
+    pub closing: String,
     pub shadow: usize,
     pub host: usize,
     pub tag: String,
@@ -705,6 +706,7 @@ impl Plan {
             let name: Arc<str> = Arc::from(name.as_str());
             loader.names.insert(name.clone(), component);
             loader.components.push(Component {
+                closing: format!("</{name}>"),
                 name,
                 shadow: root.shadow,
                 host,

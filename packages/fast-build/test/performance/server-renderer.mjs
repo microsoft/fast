@@ -331,6 +331,29 @@ async function main() {
             },
         },
         repeated: fixture("repeat_custom_elements", instances),
+        componentRepeats: {
+            entry: "<repeat-root></repeat-root>",
+            templates: {
+                "repeat-card":
+                    "<style>:host { display: block; }</style>" +
+                    '<article data-id="{{id}}" ?data-active="{{active}}">' +
+                    '<a href="{{url}}">{{label}}</a><slot></slot></article>',
+                "repeat-root":
+                    '<f-repeat value="{{row in rows}}">' +
+                    '<repeat-card id="{{row.id}}" label="{{row.label}}" ' +
+                    'url="{{row.url}}" ?active="{{row.active}}">' +
+                    "{{row.detail}}</repeat-card></f-repeat>",
+            },
+            state: {
+                rows: Array.from({ length: instances }, (_, id) => ({
+                    id,
+                    label: `Row ${id}`,
+                    url: `#row-${id}`,
+                    active: id % 2 === 0,
+                    detail: `Detail ${id}`,
+                })),
+            },
+        },
         nested: {
             entry: "<bench-root></bench-root>".repeat(instances),
             templates: {
