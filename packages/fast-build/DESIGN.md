@@ -71,6 +71,10 @@ storage before returning.
 Escaping writes spans directly to bounded output. Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
+Composite attributes preflight every binding before writing output. Their first
+four resolved operands are reused from bounded stack storage; further operands
+are resolved again. This preserves late-null suppression and exact output limits
+without cloning input graphs or retaining request scratch.
 Hydration markers likewise append literals and stack-formatted indices directly.
 Whole-marker byte-budget preflight preserves failure boundaries without a
 per-marker temporary string or retained request scratch. Reserving the checked
@@ -154,6 +158,10 @@ timing; requested live heap bytes do not measure RSS or bytes copied.
 Its component-repeat cases vary row count, property count and inline-style size;
 the Node `componentRepeats` workload exercises the same wide-component shape
 through owned Buffer and string delivery.
+The `compositeStyles` workload measures repeated nested-path bindings in inline
+styles; corresponding Rust cases cover one, four and five bindings. See the
+[operand-reuse benchmark](./docs/composite-attribute-benchmark.md) for measured
+comparisons.
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.
