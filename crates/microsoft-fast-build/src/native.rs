@@ -505,7 +505,7 @@ fn selected(options: &NativeRenderOptions, name: &str) -> bool {
 
 enum ScopeValues<'a> {
     Inline([Option<(&'a str, Cow<'a, J>)>; 4]),
-    Map(HashMap<&'a str, Cow<'a, J>>),
+    Map(HashMap<&'a str, Cow<'a, J>>, usize),
 }
 
 impl<'a> ScopeValues<'a> {
@@ -513,7 +513,7 @@ impl<'a> ScopeValues<'a> {
         if properties <= 4 {
             Self::Inline(std::array::from_fn(|_| None))
         } else {
-            Self::Map(HashMap::new())
+            Self::Map(HashMap::new(), properties.min(16))
         }
     }
 
@@ -524,7 +524,7 @@ impl<'a> ScopeValues<'a> {
                 .flatten()
                 .find(|(name, _)| *name == key)
                 .map(|(_, value)| value),
-            Self::Map(values) => values.get(key),
+            Self::Map(values, _) => values.get(key),
         }
     }
 
@@ -541,7 +541,12 @@ impl<'a> ScopeValues<'a> {
                     .expect("inline scope covers the component's property count");
                 &mut entries[index].get_or_insert_with(|| (key, initialize())).1
             }
-            Self::Map(values) => values.entry(key).or_insert_with(initialize),
+            Self::Map(values, capacity) => {
+                if values.is_empty() {
+                    values.reserve(*capacity);
+                }
+                values.entry(key).or_insert_with(initialize)
+            }
         }
     }
 
@@ -1142,16 +1147,17 @@ impl<'a> Executor<'a> {
                         continue;
                     }
                     let props = &el.props;
-                    let mut values = ScopeValues::new(props.len());
+                    let strategy = if self.options.attribute_name_strategy
+                        == AttributeNameStrategy::CamelCase
+                    {
+                        0
+                    } else {
+                        1
+                    };
+                    let mut values = ScopeValues::new(usize::from(el.property_roots[strategy]));
                     for prop in props {
                         self.tick()?;
-                        let path = &prop.keys[if self.options.attribute_name_strategy
-                            == AttributeNameStrategy::CamelCase
-                        {
-                            0
-                        } else {
-                            1
-                        }];
+                        let path = &prop.keys[strategy];
                         let key = path[0].key.as_str();
                         let val = operand(&prop.value, root, loops).unwrap_or(Cow::Owned(J::Null));
                         if prop.group.is_none() {

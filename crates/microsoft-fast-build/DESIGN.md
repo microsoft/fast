@@ -145,6 +145,11 @@ bounded by the existing body-depth limit; no reference escapes execution.
 Component frames borrow their parent base and direct property operands. Up to four
 property overrides use fixed inline storage; larger scopes use a lazily allocated
 request-local map. Repeated names replace earlier values in either representation.
+Validated elements prepare distinct property-root counts independently for both
+name strategies, using bounded stack storage. Counts saturate at 16. Grouped
+dataset fields and colliding names count once, so up to four roots remain inline
+regardless of the number of authored properties. Larger scopes reserve the bounded
+count only on first insertion; further distinct roots grow the map normally.
 Own-null properties, including missing bound operands, mask parent fallback.
 Override names borrow immutable artifact metadata rather than copying per host.
 Dataset transformations use copy-on-write for the merged object only; they never
