@@ -8,7 +8,7 @@ import path from "node:path";
 import { PerformanceObserver, performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { fixture, outputStats } from "./fixtures.mjs";
+import { componentScopeFixture, fixture, outputStats } from "./fixtures.mjs";
 import { profileNativeRendering, profilePhases } from "./native-profile.mjs";
 
 const require = createRequire(import.meta.url);
@@ -392,6 +392,17 @@ async function main() {
                 })),
             },
         },
+        componentScope0: componentScopeFixture(instances, 0),
+        componentScope4: componentScopeFixture(instances, 4),
+        componentScope5: componentScopeFixture(instances, 5),
+        componentScope8: componentScopeFixture(instances, 8),
+        componentScope12: componentScopeFixture(instances, 12),
+        componentScope16: componentScopeFixture(instances, 16),
+        componentScope17: componentScopeFixture(instances, 17),
+        componentScope32: componentScopeFixture(instances, 32),
+        componentDataset5: componentScopeFixture(instances, 5, true),
+        componentDataset12: componentScopeFixture(instances, 12, true),
+        componentDataset32: componentScopeFixture(instances, 32, true),
         nested: {
             entry: "<bench-root></bench-root>".repeat(instances),
             templates: {

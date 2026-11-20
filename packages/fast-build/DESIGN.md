@@ -70,6 +70,9 @@ closing tags.
 Component scopes keep up to four property overrides inline; larger scopes use a
 request-local map. Both borrow names and values where possible and release their
 storage before returning.
+Prepared counts distinguish property roots for each name strategy, including
+grouped datasets and name collisions. Counts are capped at 16 and larger scopes
+reserve that bounded hint lazily, avoiding repeated early map growth.
 Escaping writes spans directly to bounded output. Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
@@ -172,6 +175,9 @@ shared-prefix reuse, row-scoped bindings and overlapping-alias fallback.
 The `optionalBindings` workload exercises absent optional root keys; corresponding
 Rust cases also cover missing descendants, null roots and present values. See the
 [root-lookup benchmark](./docs/native-root-lookup-benchmark.md) for comparisons.
+The `componentScope*` and `componentDataset*` workloads exercise inline roots,
+bounded map sizing and grouped fields; the
+[scope-sizing benchmark](./docs/native-scope-sizing-benchmark.md) records comparisons.
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

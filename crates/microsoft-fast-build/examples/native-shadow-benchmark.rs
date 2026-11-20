@@ -151,6 +151,12 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    let (case, scope_rows) = match case.strip_suffix("-props-10000") {
+        Some(prefix) if prefix.starts_with("repeat-components-") => {
+            (case.strip_suffix("-10000").unwrap(), 10000)
+        }
+        _ => (case, 1000),
+    };
     if let Some(kind) = case
         .strip_prefix("optional-bindings-")
         .and_then(|name| name.strip_suffix("-1000"))
@@ -237,6 +243,38 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
         }
         return Ok((artifact, state.to_string()));
     }
+    let dataset_properties = match case {
+        "repeat-dataset-five-props" => Some(5),
+        "repeat-dataset-many-props" => Some(12),
+        "repeat-dataset-thirty-two-props" => Some(32),
+        _ => None,
+    };
+    if let Some(properties) = dataset_properties {
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template(
+            "dataset-card",
+            &format!(
+                "<article>{{{{dataset.item0}}}}/{{{{dataset.item{}}}}}</article>",
+                properties - 1
+            ),
+        );
+        let attributes = (0..properties)
+            .map(|index| format!(" data-item{index}=\"{{{{row.detail}}}}\""))
+            .collect::<String>();
+        locator.add_template(
+            "dataset-root",
+            &format!("<f-repeat value=\"{{{{row in rows}}}}\"><dataset-card{attributes}></dataset-card></f-repeat>"),
+        );
+        let state = json!({
+            "rows": (0..1000).map(|id| json!({
+                "detail": format!("Detail {id}"),
+            })).collect::<Vec<_>>(),
+        });
+        return Ok((
+            compile_server_artifact("<dataset-root></dataset-root>", &locator)?,
+            state.to_string(),
+        ));
+    }
     let repeat = match case {
         "repeat-components-10" => Some((10, 4, 0, false)),
         "repeat-components-100" => Some((100, 4, 0, false)),
@@ -246,10 +284,25 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
         "repeat-components-no-props" => Some((1000, 0, 0, false)),
         "repeat-components-one-prop" => Some((1000, 1, 0, false)),
         "repeat-components-many-props" => Some((1000, 12, 0, false)),
+        "repeat-components-five-props" => Some((scope_rows, 5, 0, false)),
+        "repeat-components-twelve-props" => Some((scope_rows, 12, 0, false)),
+        "repeat-components-eight-props" => Some((scope_rows, 8, 0, false)),
+        "repeat-components-sixteen-props" => Some((scope_rows, 16, 0, false)),
+        "repeat-components-seventeen-props" => Some((scope_rows, 17, 0, false)),
+        "repeat-components-thirty-two-props" => Some((scope_rows, 32, 0, false)),
         "repeat-components-large-styles" => Some((1000, 4, 4096, false)),
         _ => None,
     };
     if let Some((count, properties, style_bytes, plain)) = repeat {
+        let sized_scope = matches!(
+            case,
+            "repeat-components-five-props"
+                | "repeat-components-eight-props"
+                | "repeat-components-twelve-props"
+                | "repeat-components-sixteen-props"
+                | "repeat-components-seventeen-props"
+                | "repeat-components-thirty-two-props"
+        );
         let body = format!(
             "<style>:host {{ display: block; }}{}</style><article data-id=\"{{{{id}}}}\" ?data-active=\"{{{{active}}}}\"><a href=\"{{{{url}}}}\">{{{{label}}}}</a><slot></slot></article>",
             " ".repeat(style_bytes),
@@ -260,7 +313,7 @@ fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> 
                 0 => "id".to_owned(),
                 1 => "label".to_owned(),
                 2 => "url".to_owned(),
-                3 => "?active".to_owned(),
+                3 => if sized_scope { ":active" } else { "?active" }.to_owned(),
                 _ => format!(":extra{index}"),
             };
             let value = match index {
