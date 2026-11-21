@@ -335,6 +335,22 @@ pub(super) struct Property {
     pub value: Operand,
 }
 
+fn property_roots(properties: &[Property], strategy: usize) -> u8 {
+    let mut roots = [None; 16];
+    let mut count = 0;
+    for property in properties {
+        let key = property.keys[strategy][0].key.as_str();
+        if !roots[..count].contains(&Some(key)) {
+            roots[count] = Some(key);
+            count += 1;
+            if count == roots.len() {
+                break;
+            }
+        }
+    }
+    count as u8
+}
+
 #[derive(Debug)]
 pub(super) struct Element {
     pub component: usize,
@@ -342,6 +358,7 @@ pub(super) struct Element {
     pub closing: String,
     pub opening: Tag,
     pub props: Vec<Property>,
+    pub property_roots: [u8; 2],
     pub entry: Vec<Attribute>,
     pub normal: Vec<Attribute>,
     pub count: usize,
@@ -467,7 +484,7 @@ impl Loader<'_> {
                             "normal", "count", "defaults",
                         ],
                     )?;
-                    Operation::Element(Box::new(Element {
+                    let mut element = Element {
                         component: self.component(&v["name"])?,
                         body: self.reference(&v["body"])?,
                         closing: string(&v["closing"])?.into(),
@@ -487,11 +504,15 @@ impl Loader<'_> {
                                 value: Operand::load(&p["value"])?,
                             })
                         }))?,
+                        property_roots: [0; 2],
                         entry: attrs(&v["entry"])?,
                         normal: attrs(&v["normal"])?,
                         count: count(&v["count"])?,
                         defaults: defaults(&v["defaults"])?,
-                    }))
+                    };
+                    element.property_roots =
+                        std::array::from_fn(|strategy| property_roots(&element.props, strategy));
+                    Operation::Element(Box::new(element))
                 }
                 _ => return Err(()),
             })
@@ -723,6 +744,7 @@ impl Plan {
                     ending: ">".into(),
                 },
                 props: Vec::new(),
+                property_roots: [0; 2],
                 entry: vec![Attribute::Literal(base.clone())],
                 normal: vec![Attribute::Literal(base)],
                 count: 0,

@@ -1672,8 +1672,10 @@ fn inline_and_spilled_component_scopes_preserve_masking_and_dataset_overlays() {
         "scope-card",
         "{{label}}/{{masked.value}}/{{dataset.base}}/{{dataset.note}}/{{dataset.keep}}",
     )]);
-    for spare_properties in [0, 1] {
-        let spare = r#" :spare="unused""#.repeat(spare_properties);
+    for spare_properties in [0, 1, 2, 13, 30] {
+        let spare = (0..spare_properties)
+            .map(|index| format!(r#" :spare{index}="unused""#))
+            .collect::<String>();
         let entry = format!(
             r#"<scope-card :masked="{{{{missing}}}}" :dataset='{{"base":"local"}}' data-note="{{{{label}}}}" :label="{{{{label}}}}"{spare}></scope-card>"#
         );
@@ -1700,6 +1702,110 @@ fn inline_and_spilled_component_scopes_preserve_masking_and_dataset_overlays() {
                 artifact
                     .render_entry_prepared(&state, &Default::default())
                     .unwrap(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn property_root_sizing_preserves_strategy_collisions_and_missing_overrides() {
+    let locator = common::make_locator(&[(
+        "sizing-card",
+        "{{shared}}|{{left}}|{{right}}|{{c.value}}|{{d}}|{{e}}",
+    )]);
+    let mut wire: serde_json::Value = serde_json::from_slice(
+        &compile_server_artifact(
+            r#"<sizing-card :a="first" :b="second" :c="{{missing}}" :d="fourth" :e="fifth"></sizing-card>"#,
+            &locator,
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let element = wire["program"]["templates"]
+        .as_object_mut()
+        .unwrap()
+        .values_mut()
+        .flat_map(|body| body.as_array_mut().unwrap())
+        .find(|operation| operation["type"] == "element" && operation["name"] == "sizing-card")
+        .unwrap();
+    for property in element["props"].as_array_mut().unwrap() {
+        match property["unchanged"].as_str().unwrap() {
+            "a" => {
+                property["camelCase"] = json!("shared");
+                property["unchanged"] = json!("left");
+            }
+            "b" => {
+                property["camelCase"] = json!("shared");
+                property["unchanged"] = json!("right");
+            }
+            _ => {}
+        }
+    }
+    let state = r#"{"shared":"parent","left":"parent-left","right":"parent-right","c":{"value":"must-not-leak"}}"#;
+    let prepared = PreparedState::from_json(state).unwrap();
+    for schema in [1, 2] {
+        let artifact =
+            CompiledArtifact::load(&semantic_artifact(&wire["program"], schema)).unwrap();
+        for (strategy, bindings) in [
+            (
+                AttributeNameStrategy::CamelCase,
+                [
+                    "second",
+                    "parent-left",
+                    "parent-right",
+                    "",
+                    "fourth",
+                    "fifth",
+                ],
+            ),
+            (
+                AttributeNameStrategy::None,
+                ["parent", "first", "second", "", "fourth", "fifth"],
+            ),
+        ] {
+            let shadow = bindings
+                .iter()
+                .map(|value| format!("<!--fe:b-->{value}<!--fe:/b-->"))
+                .collect::<Vec<_>>()
+                .join("|");
+            let expected = format!(
+                "<sizing-card><template shadowrootmode=\"open\">{shadow}</template></sizing-card>"
+            );
+            let options = NativeRenderOptions {
+                attribute_name_strategy: strategy,
+                max_output_bytes: expected.len(),
+                ..Default::default()
+            };
+            assert_eq!(
+                artifact.render_entry_json(state, &options).unwrap(),
+                expected
+            );
+            assert_eq!(
+                artifact.render_entry_prepared(&prepared, &options).unwrap(),
+                expected
+            );
+            let short = NativeRenderOptions {
+                max_output_bytes: expected.len() - 1,
+                ..options.clone()
+            };
+            assert_eq!(
+                artifact.render_entry_json(state, &short).unwrap_err().code,
+                "render-limit"
+            );
+            let short_steps = NativeRenderOptions {
+                max_steps: 1,
+                ..options.clone()
+            };
+            assert_eq!(
+                artifact
+                    .render_entry_json(state, &short_steps)
+                    .unwrap_err()
+                    .code,
+                "render-limit"
+            );
+            assert_eq!(
+                artifact.render_entry_json(state, &options).unwrap(),
                 expected
             );
         }

@@ -85,6 +85,61 @@ export function fixture(caseName, count, payload = 1, rootKeys = 0) {
     return { entry, templates, state };
 }
 
+export function componentScopeFixture(count, properties, grouped = false) {
+    if (grouped) {
+        const attributes = Array.from(
+            { length: properties },
+            (_, index) => ` data-item${index}="{{row.detail}}"`,
+        ).join("");
+        return {
+            entry: "<dataset-root></dataset-root>",
+            templates: {
+                "dataset-card": `<article>{{dataset.item0}}/{{dataset.item${properties - 1}}}</article>`,
+                "dataset-root":
+                    '<f-repeat value="{{row in rows}}">' +
+                    `<dataset-card${attributes}></dataset-card></f-repeat>`,
+            },
+            state: {
+                rows: Array.from({ length: count }, (_, id) => ({
+                    detail: `Detail ${id}`,
+                })),
+            },
+        };
+    }
+    const names = ["id", "label", "url", ":active"];
+    const values = ["row.id", "row.label", "row.url", "row.active"];
+    const attributes = Array.from(
+        { length: properties },
+        (_, index) =>
+            ` ${names[index] ?? `:extra${index}`}="{{${values[index] ?? "row.detail"}}}"`,
+    ).join("");
+    return {
+        entry: "<repeat-root></repeat-root>",
+        templates: {
+            "repeat-card":
+                "<style>:host { display: block; }</style>" +
+                '<article data-id="{{id}}" ?data-active="{{active}}">' +
+                '<a href="{{url}}">{{label}}</a><slot></slot></article>',
+            "repeat-root":
+                '<f-repeat value="{{row in rows}}">' +
+                `<repeat-card${attributes}>{{row.detail}}</repeat-card></f-repeat>`,
+        },
+        state: {
+            id: 0,
+            label: "Root",
+            url: "#root",
+            active: true,
+            rows: Array.from({ length: count }, (_, id) => ({
+                id,
+                label: `Row ${id}`,
+                url: `#row-${id}`,
+                active: id % 2 === 0,
+                detail: `Detail ${id}`,
+            })),
+        },
+    };
+}
+
 export function outputStats(html) {
     return {
         outputBytes: Buffer.byteLength(html),
