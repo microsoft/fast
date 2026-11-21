@@ -1,6 +1,7 @@
 import { enableDebug } from "../src/debug.js";
 
 export { createNativeHydrationWorkload } from "./hydration-workload.js";
+export { createObserverMapArrayWorkload } from "./observer-map-array-workload.js";
 
 enableDebug();
 
