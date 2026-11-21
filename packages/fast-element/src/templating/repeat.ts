@@ -238,9 +238,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             const unsortedItems = sortedItems.slice().sort((a, b) => a - b);
 
             for (let j = 0, jj = sortedItems.length; j < jj; ++j) {
-                const sortedIndex: number = sortedItems.find(
-                    value => sortedItems[j] === unsortedItems[value],
-                ) as number;
+                const sortedIndex = unsortedItems.indexOf(sortedItems[j]);
 
                 if (sortedIndex !== j) {
                     const removedItems = unsortedItems.splice(sortedIndex, 1);

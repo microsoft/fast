@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix repeat view order when sorting arrays with ten or more items",
+  "packageName": "@microsoft/fast-element",
+  "email": "lhi25wy@163.com",
+  "dependentChangeType": "none"
+}
