@@ -151,6 +151,13 @@ dataset fields and colliding names count once, so up to four roots remain inline
 regardless of the number of authored properties. Larger scopes reserve the bounded
 count only on first insertion; further distinct roots grow the map normally.
 Own-null properties, including missing bound operands, mask parent fallback.
+Elements also prepare a byte-sized common-prefix length for their path operands;
+static operands do not participate. Execution resolves a reusable prefix once
+against the incoming frame and uses its borrowed value for each property suffix.
+All enclosing loop aliases are checked: longer overlapping aliases and prefixes
+outside the byte range retain independent full-path resolution. Any owned
+synthetic prefix value lives through the child frame's shadow/default rendering.
+Property step charges and own-null overrides remain unchanged.
 Override names borrow immutable artifact metadata rather than copying per host.
 Dataset transformations use copy-on-write for the merged object only; they never
 mutate borrowed request values. Shadows/defaults reset loop scope; caller light
@@ -379,6 +386,8 @@ Component-repeat workloads vary row count, property count and inline-style size.
 Composite-style workloads exercise nested paths with one, four and five bindings,
 including the fixed operand-reuse boundary.
 Row-scoped and overlapping-alias variants qualify prefix reuse and its fallback.
+Property-prefix workloads exercise four and twelve forwarded properties from
+global or row-local palettes, overlapping aliases and 10,000-component scaling.
 Optional-binding workloads distinguish absent root keys, missing descendants,
 null roots and present values.
 The `-markers-v2` workload suffix selects the second hydration marker format.
