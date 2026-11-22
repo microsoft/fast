@@ -1154,12 +1154,36 @@ impl<'a> Executor<'a> {
                     } else {
                         1
                     };
+                    let mut width = usize::from(el.operand_prefix);
+                    let common = if width == 0 {
+                        None
+                    } else {
+                        let path = props
+                            .iter()
+                            .find_map(|prop| match &prop.value {
+                                Operand::Path(path) => Some(path),
+                                _ => None,
+                            })
+                            .unwrap();
+                        if prefix_reusable(loops, &path[..width]) {
+                            get(root, loops, &path[..width])
+                        } else {
+                            width = 0;
+                            None
+                        }
+                    };
                     let mut values = ScopeValues::new(usize::from(el.property_roots[strategy]));
                     for prop in props {
                         self.tick()?;
                         let path = &prop.keys[strategy];
                         let key = path[0].key.as_str();
-                        let val = operand(&prop.value, root, loops).unwrap_or(Cow::Owned(J::Null));
+                        let val = match &prop.value {
+                            Operand::Path(path) if width != 0 => common
+                                .as_ref()
+                                .and_then(|value| nested(value, &path[width..])),
+                            _ => operand(&prop.value, root, loops),
+                        }
+                        .unwrap_or(Cow::Owned(J::Null));
                         if prop.group.is_none() {
                             values.insert(key, val);
                         } else {

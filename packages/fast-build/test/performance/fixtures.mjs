@@ -140,6 +140,43 @@ export function componentScopeFixture(count, properties, grouped = false) {
     };
 }
 
+export function componentPropertyPrefixFixture(count, properties, source = "global") {
+    const rowScoped = source === "row";
+    const prefix = rowScoped ? "row" : "theme";
+    const alias = source === "alias-fallback" ? "theme.palette.color0" : "row";
+    const attributes = Array.from(
+        { length: properties },
+        (_, index) => ` :color${index}="{{${prefix}.palette.color${index}}}"`,
+    ).join("");
+    const body = Array.from(
+        { length: properties },
+        (_, index) => `{{color${index}}}`,
+    ).join("/");
+    const theme = {
+        palette: Object.fromEntries(
+            Array.from({ length: properties }, (_, index) => [
+                `color${index}`,
+                `Color ${index}`,
+            ]),
+        ),
+    };
+    return {
+        entry: "<prefix-root></prefix-root>",
+        templates: {
+            "prefix-card": `<article>${body}</article>`,
+            "prefix-root":
+                `<f-repeat value="{{${alias} in rows}}">` +
+                `<prefix-card${attributes}></prefix-card></f-repeat>`,
+        },
+        state: {
+            rows: Array.from({ length: count }, () =>
+                rowScoped ? theme : source === "alias-fallback" ? "Alias color" : true,
+            ),
+            theme,
+        },
+    };
+}
+
 export function outputStats(html) {
     return {
         outputBytes: Buffer.byteLength(html),

@@ -8,7 +8,12 @@ import path from "node:path";
 import { PerformanceObserver, performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { componentScopeFixture, fixture, outputStats } from "./fixtures.mjs";
+import {
+    componentPropertyPrefixFixture,
+    componentScopeFixture,
+    fixture,
+    outputStats,
+} from "./fixtures.mjs";
 import { profileNativeRendering, profilePhases } from "./native-profile.mjs";
 
 const require = createRequire(import.meta.url);
@@ -403,6 +408,20 @@ async function main() {
         componentDataset5: componentScopeFixture(instances, 5, true),
         componentDataset12: componentScopeFixture(instances, 12, true),
         componentDataset32: componentScopeFixture(instances, 32, true),
+        propertyPrefixGlobal4: componentPropertyPrefixFixture(instances, 4),
+        propertyPrefixGlobal12: componentPropertyPrefixFixture(instances, 12),
+        propertyPrefixRow4: componentPropertyPrefixFixture(instances, 4, "row"),
+        propertyPrefixRow12: componentPropertyPrefixFixture(instances, 12, "row"),
+        propertyPrefixAliasFallback4: componentPropertyPrefixFixture(
+            instances,
+            4,
+            "alias-fallback",
+        ),
+        propertyPrefixAliasFallback12: componentPropertyPrefixFixture(
+            instances,
+            12,
+            "alias-fallback",
+        ),
         nested: {
             entry: "<bench-root></bench-root>".repeat(instances),
             templates: {

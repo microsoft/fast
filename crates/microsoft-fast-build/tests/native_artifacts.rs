@@ -333,6 +333,208 @@ fn composite_prefixes_keep_owned_lengths_and_long_alias_fallback() {
 }
 
 #[test]
+fn property_prefixes_preserve_alias_precedence_static_values_and_null_masking() {
+    let locator = common::make_locator(&[(
+        "prefix-card",
+        "{{first}}/{{second}}/{{literal}}/{{nullable.value}}",
+    )]);
+    let original: serde_json::Value = serde_json::from_slice(
+        &compile_server_artifact(
+            r#"<f-repeat value="{{row in rows}}"><prefix-card :first="{{palette.primary.label}}" :literal="static" :second="{{palette.background.label}}" :nullable="{{palette.optional}}"></prefix-card></f-repeat>"#,
+            &locator,
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    for (alias, nested) in [
+        (vec!["palette"], false),
+        (vec!["palette", "primary"], false),
+        (vec!["palette", "primary"], true),
+        (vec!["alias"; 256], false),
+    ] {
+        let mut program = original["program"].clone();
+        let rewrite = |body: &mut serde_json::Value| {
+            for operation in body.as_array_mut().unwrap() {
+                if operation["type"] == "repeat" {
+                    operation["alias"] = json!(alias);
+                }
+                if alias.len() > 255 && operation["type"] == "element" {
+                    for property in operation["props"].as_array_mut().unwrap() {
+                        if property["value"]["type"] == "path" {
+                            let suffix =
+                                property["value"]["path"].as_array().unwrap()[1..].to_vec();
+                            let mut path = json!(alias).as_array().unwrap().clone();
+                            path.extend(suffix);
+                            property["value"]["path"] = json!(path);
+                        }
+                    }
+                }
+            }
+        };
+        rewrite(&mut program["entry"]);
+        for body in program["templates"].as_object_mut().unwrap().values_mut() {
+            rewrite(body);
+        }
+        if nested {
+            let body = program["templates"]
+                .as_object_mut()
+                .unwrap()
+                .values_mut()
+                .find(|body| {
+                    body.as_array().unwrap().iter().any(|operation| {
+                        operation["type"] == "element" && operation["name"] == "prefix-card"
+                    })
+                })
+                .unwrap();
+            let child = body.clone();
+            *body = json!([{
+                "type":"repeat","alias":["other"],"collection":["inner"],
+                "diagnostic":"","template":"prefix-nested",
+            }]);
+            program["templates"]["prefix-nested"] = child;
+        }
+        let palette_alias = alias.len() != 2;
+        let item = if palette_alias {
+            json!({
+                "primary":{"label":"loop<&😀"},
+                "background":{"label":"loopB"},
+                "optional":null,
+            })
+        } else {
+            json!({"label":"loop<&😀"})
+        };
+        let state = json!({
+            "rows":[item], "inner":[true],
+            "palette":{
+                "primary":{"label":"rootA"},
+                "background":{"label":"rootB"},
+                "optional":null,
+            },
+            "nullable":{"value":"must-not-leak"},
+        })
+        .to_string();
+        let second = if palette_alias { "loopB" } else { "rootB" };
+        let shadow = ["loop&lt;&amp;😀", second, "static", ""]
+            .iter()
+            .map(|value| format!("<!--fe:b-->{value}<!--fe:/b-->"))
+            .collect::<Vec<_>>()
+            .join("/");
+        let expected = format!(
+            "<prefix-card><template shadowrootmode=\"open\">{shadow}</template></prefix-card>"
+        );
+        let prepared = PreparedState::from_json(&state).unwrap();
+        for schema in [1, 2] {
+            let artifact = CompiledArtifact::load(&semantic_artifact(&program, schema)).unwrap();
+            let exact = NativeRenderOptions {
+                max_output_bytes: expected.len(),
+                ..Default::default()
+            };
+            assert_eq!(
+                artifact.render_entry_json(&state, &exact).unwrap(),
+                expected
+            );
+            assert_eq!(
+                artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+                expected
+            );
+            let short = NativeRenderOptions {
+                max_output_bytes: expected.len() - 1,
+                ..exact.clone()
+            };
+            assert_eq!(
+                artifact.render_entry_json(&state, &short).unwrap_err().code,
+                "render-limit"
+            );
+            assert_eq!(
+                artifact.render_entry_json(&state, &exact).unwrap(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn missing_property_prefixes_preserve_static_values_and_own_null_overrides() {
+    let locator = common::make_locator(&[(
+        "prefix-card",
+        "{{first}}/{{second}}/{{literal}}/{{nullable.value}}",
+    )]);
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact(
+            r#"<prefix-card :first="{{palette.primary.label}}" :literal="static" :second="{{palette.background.label}}" :nullable="{{palette.optional}}"></prefix-card>"#,
+            &locator,
+        )
+        .unwrap(),
+    )
+    .unwrap();
+    let state = r#"{"first":"must-not-leak","second":"must-not-leak","nullable":{"value":"must-not-leak"}}"#;
+    let expected = "<prefix-card><template shadowrootmode=\"open\"><!--fe:b--><!--fe:/b-->/<!--fe:b--><!--fe:/b-->/<!--fe:b-->static<!--fe:/b-->/<!--fe:b--><!--fe:/b--></template></prefix-card>";
+    assert_eq!(
+        artifact
+            .render_entry_json(state, &Default::default())
+            .unwrap(),
+        expected
+    );
+    assert_eq!(
+        artifact
+            .render_entry_prepared(
+                &PreparedState::from_json(state).unwrap(),
+                &Default::default()
+            )
+            .unwrap(),
+        expected
+    );
+}
+
+#[test]
+fn property_prefixes_keep_owned_lengths_alive_through_spilled_scopes() {
+    let locator =
+        common::make_locator(&[("length-card", "{{one}}/{{two}}/{{three}}/{{four}}/{{five}}")]);
+    let entry = r#"<length-card :one="{{values.length}}" :two="{{values.length}}" :three="{{values.length}}" :four="{{values.length}}" :five="{{values.length}}"></length-card>"#;
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact(entry, &locator).unwrap()).unwrap();
+    let mut held = None;
+    for count in [2, 0, 1000] {
+        let state = json!({"values":vec![true; count]}).to_string();
+        let prepared = PreparedState::from_json(&state).unwrap();
+        let value = format!("<!--fe:b-->{count}<!--fe:/b-->");
+        let expected = format!(
+            "<length-card><template shadowrootmode=\"open\">{}</template></length-card>",
+            vec![value; 5].join("/")
+        );
+        let exact = NativeRenderOptions {
+            max_output_bytes: expected.len(),
+            ..Default::default()
+        };
+        let output = artifact.render_entry_json(&state, &exact).unwrap();
+        assert_eq!(output, expected);
+        assert_eq!(
+            artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+            expected
+        );
+        if count == 2 {
+            held = Some(output);
+        }
+        let short_steps = NativeRenderOptions {
+            max_steps: 1,
+            ..exact.clone()
+        };
+        assert_eq!(
+            artifact
+                .render_entry_json(&state, &short_steps)
+                .unwrap_err()
+                .code,
+            "render-limit"
+        );
+        assert_eq!(
+            artifact.render_entry_json(&state, &exact).unwrap(),
+            expected
+        );
+    }
+    assert_eq!(held.unwrap().matches(">2<").count(), 5);
+}
+
+#[test]
 fn semantic_decoder_compatibility_validates_unused_nested_fields_and_scalar_types() {
     let original = json!({
         "entry":[{"type":"literal","html":"ok"}],

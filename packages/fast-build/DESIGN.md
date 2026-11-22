@@ -73,6 +73,13 @@ storage before returning.
 Prepared counts distinguish property roots for each name strategy, including
 grouped datasets and name collisions. Counts are capped at 16 and larger scopes
 reserve that bounded hint lazily, avoiding repeated early map growth.
+Validated elements prepare common prefixes across their path-valued properties,
+excluding static values. Reusable prefixes resolve once against incoming state;
+suffixes borrow the resolved value through shadow/default rendering. All enclosing
+loop aliases participate in the overlap guard, and overlong prefixes retain
+independent lookup. Missing operands still insert own-null overrides, property
+step charges stay unchanged, and dataset target initialization retains its
+independent incoming-state lookup.
 Escaping writes spans directly to bounded output. Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
@@ -178,6 +185,11 @@ Rust cases also cover missing descendants, null roots and present values. See th
 The `componentScope*` and `componentDataset*` workloads exercise inline roots,
 bounded map sizing and grouped fields; the
 [scope-sizing benchmark](./docs/native-scope-sizing-benchmark.md) records comparisons.
+The `propertyPrefixGlobal*`, `propertyPrefixRow*` and
+`propertyPrefixAliasFallback*` workloads qualify shared component-property
+prefixes at inline and map-backed scope sizes; the
+[property-prefix benchmark](./docs/native-property-prefix-benchmark.md) records
+four-boundary comparisons and scaling.
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

@@ -151,6 +151,52 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(case) = case.strip_prefix("property-prefix-") {
+        let (case, count) = match case.strip_suffix("-10000") {
+            Some(case) => (case, 10000),
+            None => (case.strip_suffix("-1000").ok_or("Unknown workload")?, 1000),
+        };
+        let (source, properties) = case.rsplit_once('-').ok_or("Unknown workload")?;
+        let properties: usize = properties.parse()?;
+        if !matches!(source, "global" | "row" | "alias-fallback") || !matches!(properties, 4 | 12) {
+            return Err("Unknown workload".into());
+        }
+        let row_scoped = source == "row";
+        let prefix = if row_scoped { "row" } else { "theme" };
+        let alias = if source == "alias-fallback" {
+            "theme.palette.color0"
+        } else {
+            "row"
+        };
+        let attributes = (0..properties)
+            .map(|index| format!(" :color{index}=\"{{{{{prefix}.palette.color{index}}}}}\""))
+            .collect::<String>();
+        let body = (0..properties)
+            .map(|index| format!("{{{{color{index}}}}}"))
+            .collect::<Vec<_>>()
+            .join("/");
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template("prefix-card", &format!("<article>{body}</article>"));
+        locator.add_template(
+            "prefix-root",
+            &format!("<f-repeat value=\"{{{{{alias} in rows}}}}\"><prefix-card{attributes}></prefix-card></f-repeat>"),
+        );
+        let palette: serde_json::Map<String, serde_json::Value> = (0..properties)
+            .map(|index| (format!("color{index}"), json!(format!("Color {index}"))))
+            .collect();
+        let theme = json!({"palette":palette});
+        let rows = if row_scoped {
+            vec![theme.clone(); count]
+        } else if source == "alias-fallback" {
+            vec![json!("Alias color"); count]
+        } else {
+            vec![json!(true); count]
+        };
+        return Ok((
+            compile_server_artifact("<prefix-root></prefix-root>", &locator)?,
+            json!({"rows":rows,"theme":theme}).to_string(),
+        ));
+    }
     let (case, scope_rows) = match case.strip_suffix("-props-10000") {
         Some(prefix) if prefix.starts_with("repeat-components-") => {
             (case.strip_suffix("-10000").unwrap(), 10000)
