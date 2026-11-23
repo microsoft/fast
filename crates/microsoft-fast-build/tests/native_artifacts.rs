@@ -1756,6 +1756,50 @@ fn state_value_limit_counts_the_root_and_is_request_local() {
 }
 
 #[test]
+fn state_shape_fallback_keeps_nested_and_escaped_duplicate_replacement() {
+    let artifact =
+        CompiledArtifact::load(&compile_server_artifact("ok", &common::make_locator(&[])).unwrap())
+            .unwrap();
+    let deep = format!("{}null{}", "[".repeat(65), "]".repeat(65));
+    for json in [
+        format!(r#"{{"unused":[{{"a":{deep},"\u0061":null}}]}}"#),
+        format!(r#"{{"unused":{{"child":[{{"a":{deep},"\u0061":null}}]}}}}"#),
+    ] {
+        let prepared = PreparedState::from_json(&json).unwrap();
+        assert_eq!(
+            artifact
+                .render_entry_json(&json, &Default::default())
+                .unwrap(),
+            "ok"
+        );
+        assert_eq!(
+            artifact
+                .render_entry_prepared(&prepared, &Default::default())
+                .unwrap(),
+            "ok"
+        );
+    }
+    let retained = format!(r#"{{"unused":[{{"a":null,"\u0061":{deep}}}]}}"#);
+    assert_eq!(
+        artifact
+            .render_entry_json(&retained, &Default::default())
+            .unwrap_err()
+            .code,
+        "invalid-state"
+    );
+    assert_eq!(
+        PreparedState::from_json(&retained).unwrap_err().code,
+        "invalid-state"
+    );
+    assert_eq!(
+        artifact
+            .render_entry_json("{}", &Default::default())
+            .unwrap(),
+        "ok"
+    );
+}
+
+#[test]
 fn fresh_json_preserves_normalization_full_validation_and_error_precedence() {
     let artifact = CompiledArtifact::load(
         &compile_server_artifact("{{zero}}/{{label}}", &common::make_locator(&[])).unwrap(),

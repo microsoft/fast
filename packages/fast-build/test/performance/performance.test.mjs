@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -8,7 +9,7 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { loadNativeHost } from "../../native-host.mjs";
-import { fixture, outputStats } from "./fixtures.mjs";
+import { fixture, outputStats, stateValidationFixture } from "./fixtures.mjs";
 
 const require = createRequire(import.meta.url);
 const { compileServerArtifact } = require("../../server.js");
@@ -44,6 +45,32 @@ for (const record of baseline) {
     });
 }
 const benchmark = fileURLToPath(new URL("./server-renderer.mjs", import.meta.url));
+test("native benchmark preserves raw duplicate-key state and its identity", async t => {
+    const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-state-bench-test-"));
+    t.after(() => fs.rm(directory, { recursive: true, force: true }));
+    const output = path.join(directory, "report.json");
+    execFileSync(
+        process.execPath,
+        [
+            benchmark,
+            "--native-addon=" + process.env.FAST_NATIVE_ADDON,
+            "--instances=3",
+            "--workloads=stateValidationDuplicate",
+            "--samples=1",
+            "--iterations=1",
+            "--warmup=0",
+            "--output=" + output,
+        ],
+        { encoding: "utf8", stdio: "pipe" },
+    );
+    const report = JSON.parse(await fs.readFile(output, "utf8"));
+    const input = stateValidationFixture(3, "duplicate");
+    const hash = value => createHash("sha256").update(value).digest("hex");
+    const stateHash = report.workloads.stateValidationDuplicate.samples[0].stateJsonHash;
+    assert.equal(stateHash, hash(input.stateJson));
+    assert.notEqual(stateHash, hash(JSON.stringify(input.state)));
+});
+
 test("native benchmark isolates loading, rendering and optional string decoding", async t => {
     const directory = await fs.mkdtemp(path.join(os.tmpdir(), "fast-native-bench-test-"));
     t.after(() => fs.rm(directory, { recursive: true, force: true }));
