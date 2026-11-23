@@ -384,8 +384,8 @@ impl CompiledArtifact {
 pub fn parse_render_state(json: &str) -> Result<J, NativeRenderError> {
     let state: RequestValue =
         serde_json::from_str(json).map_err(|e| error("invalid-state", e.to_string()))?;
-    // Count retained values after duplicate-key replacement. Parse errors, including
-    // invalid unused/overwritten Unicode and numbers, still precede budget errors.
+    // Duplicate replacement can invalidate the shape counted during parsing.
+    // Validate the retained tree in that case, always after complete JSON parsing.
     fn validate(v: &J, depth: usize, remaining: &mut usize) -> Result<(), NativeRenderError> {
         if depth > 64 || *remaining == 0 {
             return Err(error("invalid-state", "State exceeds nesting/node limits"));
@@ -406,13 +406,40 @@ pub fn parse_render_state(json: &str) -> Result<J, NativeRenderError> {
         }
         Ok(())
     }
-    validate(&state.0, 0, &mut 1_000_000)?;
+    if state.1.duplicates {
+        validate(&state.0, 0, &mut 1_000_000)?;
+    } else if state.1.depth > 64 || state.1.nodes > 1_000_000 {
+        return Err(error("invalid-state", "State exceeds nesting/node limits"));
+    }
     Ok(state.0)
 }
 
 // Deserialize directly into request storage, without an intermediate serde value
 // tree, map conversion, string/key copies or a second normalized snapshot.
-struct RequestValue(J);
+struct StateStats {
+    nodes: u32,
+    depth: u8,
+    duplicates: bool,
+}
+
+impl StateStats {
+    fn leaf() -> Self {
+        Self {
+            nodes: 1,
+            depth: 0,
+            duplicates: false,
+        }
+    }
+
+    fn add_child(&mut self, child: Self) {
+        // Only crossing the limits matters; duplicate-key requests discard these counts.
+        self.nodes = (self.nodes + child.nodes).min(1_000_001);
+        self.depth = self.depth.max(child.depth + 1).min(65);
+        self.duplicates |= child.duplicates;
+    }
+}
+
+struct RequestValue(J, StateStats);
 
 impl<'de> Deserialize<'de> for RequestValue {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
@@ -424,10 +451,10 @@ impl<'de> Deserialize<'de> for RequestValue {
                 formatter.write_str("JSON state")
             }
             fn visit_unit<E: serde::de::Error>(self) -> Result<Self::Value, E> {
-                Ok(RequestValue(J::Null))
+                Ok(RequestValue(J::Null, StateStats::leaf()))
             }
             fn visit_bool<E: serde::de::Error>(self, value: bool) -> Result<Self::Value, E> {
-                Ok(RequestValue(J::Bool(value)))
+                Ok(RequestValue(J::Bool(value), StateStats::leaf()))
             }
             fn visit_i64<E: serde::de::Error>(self, value: i64) -> Result<Self::Value, E> {
                 self.visit_f64(value as f64)
@@ -439,33 +466,36 @@ impl<'de> Deserialize<'de> for RequestValue {
                 if !value.is_finite() {
                     return Err(E::custom("State numbers must be finite"));
                 }
-                Ok(RequestValue(J::Number(if value == 0.0 {
-                    0.0
-                } else {
-                    value
-                })))
+                Ok(RequestValue(
+                    J::Number(if value == 0.0 { 0.0 } else { value }),
+                    StateStats::leaf(),
+                ))
             }
             fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
-                Ok(RequestValue(J::String(value.into())))
+                Ok(RequestValue(J::String(value.into()), StateStats::leaf()))
             }
             fn visit_string<E: serde::de::Error>(self, value: String) -> Result<Self::Value, E> {
-                Ok(RequestValue(J::String(value)))
+                Ok(RequestValue(J::String(value), StateStats::leaf()))
             }
             fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
                 let mut values = Vec::new();
-                while let Some(RequestValue(value)) = seq.next_element()? {
+                let mut stats = StateStats::leaf();
+                while let Some(RequestValue(value, child)) = seq.next_element()? {
+                    stats.add_child(child);
                     values.push(value);
                 }
-                Ok(RequestValue(J::Array(values)))
+                Ok(RequestValue(J::Array(values), stats))
             }
             fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<Self::Value, A::Error> {
                 let mut values = HashMap::new();
-                while let Some((key, RequestValue(value))) =
+                let mut stats = StateStats::leaf();
+                while let Some((key, RequestValue(value, child))) =
                     map.next_entry::<String, RequestValue>()?
                 {
-                    values.insert(key, value);
+                    stats.add_child(child);
+                    stats.duplicates |= values.insert(key, value).is_some();
                 }
-                Ok(RequestValue(J::Object(values)))
+                Ok(RequestValue(J::Object(values), stats))
             }
         }
         deserializer.deserialize_any(RequestVisitor)

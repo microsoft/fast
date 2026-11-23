@@ -33,6 +33,11 @@ Constructor options are validated without invoking accessors and copied once.
 The immutable program retains decoded native operations and fixed render policy.
 Each request directly parses owned JSON state, validates the complete graph,
 executes with fresh scopes/budgets, and returns independently owned UTF-8 bytes.
+Unique-key JSON requests accumulate bounded depth/value counts on the active
+parser stack and check them after complete parsing instead of traversing again.
+Any duplicate decoded key selects final retained-tree validation, preserving
+replacement semantics and parse-error precedence. No shape metadata persists in
+the request graph or prepared snapshots.
 napi-rs transfers output ownership and handles finalization; no handwritten unsafe
 buffer transfer or shared request scratch is used.
 See the [host contract](./docs/native-node-host.md).
@@ -190,6 +195,9 @@ The `propertyPrefixGlobal*`, `propertyPrefixRow*` and
 prefixes at inline and map-backed scope sizes; the
 [property-prefix benchmark](./docs/native-property-prefix-benchmark.md) records
 four-boundary comparisons and scaling.
+The `stateValidation*` workloads qualify unique-key parsing and decoded
+duplicate-key fallback for nested, wide and scalar state; see the
+[state-validation benchmark](./docs/native-state-validation-benchmark.md).
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

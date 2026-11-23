@@ -13,6 +13,7 @@ import {
     componentScopeFixture,
     fixture,
     outputStats,
+    stateValidationFixture,
 } from "./fixtures.mjs";
 import { profileNativeRendering, profilePhases } from "./native-profile.mjs";
 
@@ -95,7 +96,7 @@ async function worker() {
     const source = JSON.parse(input);
     const inputParseMs = performance.now() - start;
     start = performance.now();
-    const stateJson = JSON.stringify(source.state);
+    const stateJson = source.stateJson ?? JSON.stringify(source.state);
     const stateSerializeMs = performance.now() - start;
     start = performance.now();
     const state = Buffer.from(stateJson, "utf8");
@@ -408,6 +409,10 @@ async function main() {
         componentDataset5: componentScopeFixture(instances, 5, true),
         componentDataset12: componentScopeFixture(instances, 12, true),
         componentDataset32: componentScopeFixture(instances, 32, true),
+        stateValidationNested: stateValidationFixture(instances),
+        stateValidationWide: stateValidationFixture(instances, "wide"),
+        stateValidationScalars: stateValidationFixture(instances, "scalars"),
+        stateValidationDuplicate: stateValidationFixture(instances, "duplicate"),
         propertyPrefixGlobal4: componentPropertyPrefixFixture(instances, 4),
         propertyPrefixGlobal12: componentPropertyPrefixFixture(instances, 12),
         propertyPrefixRow4: componentPropertyPrefixFixture(instances, 4, "row"),
@@ -511,7 +516,9 @@ async function main() {
                 artifactSha256: hash(artifact),
                 samples: [],
             };
-            const expectedStateHash = hash(JSON.stringify(input.state));
+            const expectedStateHash = hash(
+                input.stateJson ?? JSON.stringify(input.state),
+            );
             let expected;
             for (let sample = 0; sample < samples; sample++) {
                 const profileName = name + "-" + (sample + 1);
