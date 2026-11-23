@@ -177,6 +177,47 @@ export function componentPropertyPrefixFixture(count, properties, source = "glob
     };
 }
 
+export function stateValidationFixture(count, shape = "nested") {
+    let unused;
+    switch (shape) {
+        case "nested":
+        case "duplicate":
+            unused = Array.from({ length: count }, (_, id) => ({
+                id,
+                label: `Row ${id}`,
+                detail: {
+                    active: id % 2 === 0,
+                    url: `#row-${id}`,
+                    extra: { text: "value", rank: id },
+                },
+                tags: ["alpha", "beta", "gamma"],
+            }));
+            break;
+        case "wide":
+            unused = Object.fromEntries(
+                Array.from({ length: count }, (_, id) => [`key${id}`, [id, true, null]]),
+            );
+            break;
+        case "scalars":
+            unused = Array.from({ length: count }, (_, id) => id);
+            break;
+        default:
+            throw new Error(`Unknown state shape: ${shape}`);
+    }
+    const state = { label: "<&\"'cafe", unused };
+    return {
+        entry: "<state-root></state-root>",
+        templates: { "state-root": "<p>{{label}}</p>" },
+        state,
+        ...(shape === "duplicate"
+            ? {
+                  stateJson:
+                      '{"\\u006cabel":"discarded",' + JSON.stringify(state).slice(1),
+              }
+            : {}),
+    };
+}
+
 export function outputStats(html) {
     return {
         outputBytes: Buffer.byteLength(html),

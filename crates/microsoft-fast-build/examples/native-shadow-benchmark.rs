@@ -151,6 +151,37 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(case) = case.strip_prefix("state-validation-") {
+        let (shape, count) = case.rsplit_once('-').ok_or("Unknown workload")?;
+        let count: usize = count.parse()?;
+        let unused = match shape {
+            "nested" | "duplicate" => json!((0..count)
+                .map(|id| json!({
+                    "id":id,"label":format!("Row {id}"),
+                    "detail":{"active":id % 2 == 0,"url":format!("#row-{id}"),
+                        "extra":{"text":"value","rank":id}},
+                    "tags":["alpha","beta","gamma"],
+                }))
+                .collect::<Vec<_>>()),
+            "wide" => serde_json::Value::Object(
+                (0..count)
+                    .map(|id| (format!("key{id}"), json!([id, true, null])))
+                    .collect(),
+            ),
+            "scalars" => json!((0..count).collect::<Vec<_>>()),
+            _ => return Err("Unknown workload".into()),
+        };
+        let mut state = json!({"label":"<&\"'cafe","unused":unused}).to_string();
+        if shape == "duplicate" {
+            state = format!(r#"{{"\u006cabel":"discarded",{}"#, &state[1..]);
+        }
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template("state-root", "<p>{{label}}</p>");
+        return Ok((
+            compile_server_artifact("<state-root></state-root>", &locator)?,
+            state,
+        ));
+    }
     if let Some(case) = case.strip_prefix("property-prefix-") {
         let (case, count) = match case.strip_suffix("-10000") {
             Some(case) => (case, 10000),

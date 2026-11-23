@@ -170,11 +170,15 @@ execution-step accounting or body evaluation/error ordering.
 Four `render_*_json` methods parse fresh owned request state and pass it directly
 to that same executor. A serde visitor builds `JsonValue` directly, normalizing
 finite binary64 numbers with exact round trips and normalizing negative zero, without an intermediate `serde_json::Value`,
-map conversion, normalized clone or `Arc` snapshot. A nonallocating traversal
-then checks depth/value budgets on the final retained tree. Counting during
-parsing would reject overwritten duplicate-key subtrees that the existing parser
-accepts; complete parsing also preserves parse-error precedence, including invalid
-unused/overwritten Unicode and numbers. Typed-input copying and prepared snapshot
+map conversion, normalized clone or `Arc` snapshot. Active visitors accumulate
+fixed-size depth/value metadata, saturating just beyond the state limits.
+Unique-key requests check that aggregate only after complete parsing, avoiding a
+second tree traversal. Any decoded duplicate key, including in a nested object,
+uses the nonallocating final-tree validator instead. Replacement is detected from
+the existing map insertion result without another key probe. This preserves
+retained-tree budgets for overwritten subtrees and parse-error precedence,
+including invalid unused/overwritten Unicode and numbers. Shape metadata is not
+retained in request values or snapshots. Typed-input copying and prepared snapshot
 ownership remain unchanged. JSON input and results/errors are independently
 owned; no request-key hashing/cache, unsafe code or retained scope arena is used.
 
@@ -390,6 +394,8 @@ Property-prefix workloads exercise four and twelve forwarded properties from
 global or row-local palettes, overlapping aliases and 10,000-component scaling.
 Optional-binding workloads distinguish absent root keys, missing descendants,
 null roots and present values.
+State-validation workloads render a small header while qualifying full parsing
+of nested, wide and scalar payloads, with a decoded duplicate-key fallback.
 The `-markers-v2` workload suffix selects the second hydration marker format.
 Process-loop CPU includes verification and output destruction; render-call wall
 time excludes them.
