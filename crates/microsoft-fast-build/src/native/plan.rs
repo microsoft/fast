@@ -205,11 +205,7 @@ pub(super) enum Part {
     Segment(Path),
 }
 
-fn common_prefix(parts: &[Part]) -> u8 {
-    let mut paths = parts.iter().filter_map(|part| match part {
-        Part::Segment(path) => Some(path),
-        _ => None,
-    });
+fn common_prefix<'a>(mut paths: impl Iterator<Item = &'a [Segment]>) -> u8 {
     let Some(first) = paths.next() else {
         return 0;
     };
@@ -279,7 +275,10 @@ impl Attribute {
                         _ => return Err(()),
                     })
                 }))?;
-                let prefix = common_prefix(&parts);
+                let prefix = common_prefix(parts.iter().filter_map(|part| match part {
+                    Part::Segment(path) => Some(path.as_slice()),
+                    _ => None,
+                }));
                 Self::Quoted(name, parts, prefix)
             }
             _ => return Err(()),
@@ -359,6 +358,7 @@ pub(super) struct Element {
     pub opening: Tag,
     pub props: Vec<Property>,
     pub property_roots: [u8; 2],
+    pub operand_prefix: u8,
     pub entry: Vec<Attribute>,
     pub normal: Vec<Attribute>,
     pub count: usize,
@@ -505,6 +505,7 @@ impl Loader<'_> {
                             })
                         }))?,
                         property_roots: [0; 2],
+                        operand_prefix: 0,
                         entry: attrs(&v["entry"])?,
                         normal: attrs(&v["normal"])?,
                         count: count(&v["count"])?,
@@ -512,6 +513,13 @@ impl Loader<'_> {
                     };
                     element.property_roots =
                         std::array::from_fn(|strategy| property_roots(&element.props, strategy));
+                    element.operand_prefix =
+                        common_prefix(element.props.iter().filter_map(|property| {
+                            match &property.value {
+                                Operand::Path(path) => Some(path.as_slice()),
+                                _ => None,
+                            }
+                        }));
                     Operation::Element(Box::new(element))
                 }
                 _ => return Err(()),
@@ -745,6 +753,7 @@ impl Plan {
                 },
                 props: Vec::new(),
                 property_roots: [0; 2],
+                operand_prefix: 0,
                 entry: vec![Attribute::Literal(base.clone())],
                 normal: vec![Attribute::Literal(base)],
                 count: 0,
