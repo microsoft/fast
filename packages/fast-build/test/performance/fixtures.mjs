@@ -218,6 +218,45 @@ export function stateValidationFixture(count, shape = "nested") {
     };
 }
 
+export function nestedShadowFixture(shape) {
+    const depth = shape === "deep" ? 32 : shape === "binding" ? 16 : 12;
+    const content =
+        shape === "binding"
+            ? '<a href="{{url}}" title="prefix {{label}} suffix">{{label}}</a>'.repeat(96)
+            : `<section>${"s".repeat(shape === "static" ? 8192 : 2048)}</section>`;
+    const templates = { "bench-light": "<i>{{label}}</i>" };
+    for (let index = depth - 1; index >= 0; index--) {
+        const child =
+            index + 1 === depth
+                ? "<b>leaf {{label}}</b>"
+                : `<bench-node-${index + 1}></bench-node-${index + 1}>`;
+        templates[`bench-node-${index}`] = content + child;
+    }
+    return {
+        entry: "<main><bench-node-0></bench-node-0></main>",
+        templates,
+        state: { label: "<&\"'😀 café", url: "https://example.test/?a=1&b=2" },
+    };
+}
+
+export function shadowOpeningFixture(count, shape) {
+    const padding = shape === "short" ? 8 : 1024;
+    const shadow = shape === "empty" ? "" : shape === "tiny" ? "é" : "s".repeat(8192);
+    return {
+        entry: "<opening-root></opening-root>",
+        templates: {
+            "opening-leaf": shadow,
+            "opening-root":
+                '<f-repeat value="{{row in rows}}">' +
+                '<opening-leaf title="{{padding}}">light</opening-leaf></f-repeat>',
+        },
+        state: {
+            rows: Array.from({ length: count }, () => true),
+            padding: `${"a".repeat(padding)}é&`,
+        },
+    };
+}
+
 export function outputStats(html) {
     return {
         outputBytes: Buffer.byteLength(html),
