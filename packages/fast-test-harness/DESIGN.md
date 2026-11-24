@@ -79,6 +79,7 @@ flowchart TD
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
 | `playwright.config.mjs` | Shared Playwright configuration (browsers, web server, test matching) |
 | `vite.config.mjs` | Shared Vite configuration (port, resolve conditions, build settings) |
+| `source-generation.mjs` | Opt-in Vite plugin that converts authored HTML/CSS to owned TypeScript modules and synchronizes source changes with page/module/fixture invalidation |
 | `public/styles.css` | Base CSS reset served as a Vite public asset |
 
 ---
@@ -334,6 +335,33 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 | `build.minify` | `false` |
 | `build.sourcemap` | `true` |
 
+The named `createHarnessConfig(options)` export merges ordinary Vite settings with
+these defaults. Its optional `sourceGeneration` setting accepts `root`, `outDir`,
+and optional `templates`/`stylesheets` glob patterns. Paths resolve from the config
+file's directory, or Vite's root for inline configurations. Omission or `false`
+keeps source generation disabled. The compiled-template extraction utilities and
+their CLI commands remain available, with deprecated APIs.
+
+The source-generation plugin lazily loads FAST Build's conversion WASM and emits
+typed `fast-v3-ts` template and stylesheet modules before Vite resolves imports.
+It preserves relative paths and writes only files bearing its ownership header.
+Conversions and ownership checks complete before output replacement; individual
+files are replaced through same-directory temporary files and rename. Cleanup
+only removes owned outputs with no remaining source, including across restarts.
+Nested output paths cannot traverse directory symlinks.
+
+The Vite watcher serializes generation after HTML/CSS changes and source
+TypeScript edits. Unchanged outputs are not rewritten. Source changes invalidate
+Vite's module graph, clear cached CSR shells and SSR fixtures, and trigger a page
+reload. Requests and source module loads await the latest generation; conversion
+failures reject stale module loads while leaving Vite's reload client available
+for recovery. Vite transpiles source TypeScript without a separate build process.
+The server retains SSR fixture request inputs in this mode and regenerates an
+invalidated fixture when its URL is visited again. A source revision guards
+asynchronous shell and fixture generation against repopulating caches with an
+outdated result. Synchronization is reattached after Vite configuration restarts.
+SSR rendering continues to consume the configured renderer's authored artifacts.
+
 ---
 
 ## Exports
@@ -345,7 +373,7 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
 | `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceGenerationOptions` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
 
 The SSR fixture generator returns `Promise<RenderResult>`; call `await render(queryObj)`.

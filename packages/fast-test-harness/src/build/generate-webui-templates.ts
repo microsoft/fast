@@ -252,6 +252,7 @@ export interface GenerateWebuiTemplatesOptions {
  * are preserved.
  *
  * Exported for unit testing.
+ * @deprecated Author declarative HTML instead of extracting compiled templates.
  */
 export function fTemplateToWebui(
     fTemplateHtml: string,
@@ -309,6 +310,9 @@ export function fTemplateToWebui(
     return inner;
 }
 
+/**
+ * @deprecated Author declarative HTML instead of extracting compiled templates.
+ */
 export async function generateWebuiTemplates(
     options: GenerateWebuiTemplatesOptions = {},
 ): Promise<void> {
