@@ -54,27 +54,56 @@ async function ensureParent(root, file) {
 }
 
 export function sourceGenerationPlugin(options) {
-    if (
-        !options ||
-        typeof options.root !== "string" ||
-        !options.root ||
-        typeof options.outDir !== "string" ||
-        !options.outDir
-    ) {
-        throw new Error("sourceGeneration requires root and outDir paths.");
+    const definitions = Array.isArray(options) ? options : [options];
+    if (!definitions.length) {
+        throw new Error("sourceGeneration requires at least one root/outDir mapping.");
     }
-    const patterns = [
-        ...(options.templates === false ? [] : [options.templates ?? "**/*.html"]),
-        ...(options.stylesheets === false ? [] : [options.stylesheets ?? "**/*.css"]),
-    ].flat();
-    if (patterns.some(pattern => typeof pattern !== "string" || !pattern)) {
-        throw new Error("Source generation patterns must be nonempty strings.");
-    }
-    let root;
-    let outDir;
+    const inputs = definitions.map(options => {
+        if (
+            !options ||
+            typeof options.root !== "string" ||
+            !options.root ||
+            typeof options.outDir !== "string" ||
+            !options.outDir
+        ) {
+            throw new Error("sourceGeneration requires root and outDir paths.");
+        }
+        const patterns = [
+            ...(options.templates === false ? [] : [options.templates ?? "**/*.html"]),
+            ...(options.stylesheets === false ? [] : [options.stylesheets ?? "**/*.css"]),
+        ].flat();
+        if (patterns.some(pattern => typeof pattern !== "string" || !pattern)) {
+            throw new Error("Source generation patterns must be nonempty strings.");
+        }
+        const templateTypes = options.templateTypes ?? {};
+        if (
+            typeof templateTypes !== "object" ||
+            Array.isArray(templateTypes) ||
+            Object.entries(templateTypes).some(
+                ([name, type]) =>
+                    isAbsolute(name) ||
+                    name.includes("\\") ||
+                    name
+                        .split("/")
+                        .some(part => !part || part === "." || part === "..") ||
+                    !name.endsWith(".html") ||
+                    !type ||
+                    typeof type.typeSource !== "string" ||
+                    !type.typeSource ||
+                    (type.typeSourceImport !== undefined &&
+                        (typeof type.typeSourceImport !== "string" ||
+                            !type.typeSourceImport)),
+            )
+        ) {
+            throw new Error(
+                "templateTypes must map root-relative HTML paths to typeSource and optional typeSourceImport strings.",
+            );
+        }
+        return { ...options, patterns, templateTypes };
+    });
+    let mappings;
     let sourceRoots;
     let outputRoots;
-    let header;
     let converter;
     let config;
     let server;
@@ -84,79 +113,91 @@ export function sourceGenerationPlugin(options) {
     async function generate() {
         const outputs = new Map();
         const warnings = [];
-        for await (const name of glob(patterns, {
-            cwd: root,
-            exclude: [
-                "**/node_modules/**",
-                "**/.git/**",
-                ...(contains(root, outDir)
-                    ? [`${relative(root, outDir).split(sep).join("/")}/**`]
-                    : []),
-            ],
-        })) {
-            const input = resolve(root, name);
-            if (contains(outDir, input) || !(await lstat(input)).isFile()) {
-                continue;
-            }
-            if (!contains(root, input) || !contains(root, await realpath(input))) {
-                throw new Error(`Source generation input escapes root: ${input}`);
-            }
-            const extension = extname(input);
-            if (extension !== ".html" && extension !== ".css") {
-                throw new Error(`Expected an HTML or CSS source: ${input}`);
-            }
-            const sourceName = relative(root, input).split(sep).join("/");
-            const suffix = extension === ".html" ? ".template.ts" : ".styles.ts";
-            const output = resolve(
-                outDir,
-                sourceName.slice(0, -extension.length) + suffix,
-            );
-            if (outputs.has(output)) {
-                throw new Error(`Multiple sources generate the same output: ${output}`);
-            }
-            let converted;
-            try {
-                const source = await readFile(input, "utf8");
-                if (extension === ".html") {
-                    const result = converter.convert_template_with_options(
-                        source,
-                        "fast-v3-ts",
-                        undefined,
-                        undefined,
-                        true,
-                    );
-                    try {
-                        converted = result.output;
-                        warnings.push(
-                            ...result.warnings.map(warning => `${input}: ${warning}`),
-                        );
-                    } finally {
-                        result.free();
-                    }
-                } else {
-                    converted = converter.convert_stylesheet(
-                        source,
-                        "fast-v3-ts",
-                        "styles",
-                        true,
+        for (const { root, outDir, header, patterns, templateTypes } of mappings) {
+            for await (const name of glob(patterns, {
+                cwd: root,
+                exclude: [
+                    "**/node_modules/**",
+                    "**/.git/**",
+                    ...mappings
+                        .filter(mapping => contains(root, mapping.outDir))
+                        .map(
+                            mapping =>
+                                `${relative(root, mapping.outDir).split(sep).join("/")}/**`,
+                        ),
+                ],
+            })) {
+                const input = resolve(root, name);
+                if (
+                    outputRoots.some(directory => contains(directory, input)) ||
+                    !(await lstat(input)).isFile()
+                ) {
+                    continue;
+                }
+                if (!contains(root, input) || !contains(root, await realpath(input))) {
+                    throw new Error(`Source generation input escapes root: ${input}`);
+                }
+                const extension = extname(input);
+                if (extension !== ".html" && extension !== ".css") {
+                    throw new Error(`Expected an HTML or CSS source: ${input}`);
+                }
+                const sourceName = relative(root, input).split(sep).join("/");
+                const suffix = extension === ".html" ? ".template.ts" : ".styles.ts";
+                const output = resolve(
+                    outDir,
+                    sourceName.slice(0, -extension.length) + suffix,
+                );
+                if (outputs.has(output)) {
+                    throw new Error(
+                        `Multiple sources generate the same output: ${output}`,
                     );
                 }
-            } catch (error) {
-                throw new Error(`Source generation failed for ${input}: ${error}`, {
-                    cause: error,
+                let converted;
+                try {
+                    const source = await readFile(input, "utf8");
+                    if (extension === ".html") {
+                        const type = templateTypes[sourceName];
+                        const result = converter.convert_template_with_options(
+                            source,
+                            "fast-v3-ts",
+                            type?.typeSource,
+                            type?.typeSourceImport,
+                            true,
+                        );
+                        try {
+                            converted = result.output;
+                            warnings.push(
+                                ...result.warnings.map(warning => `${input}: ${warning}`),
+                            );
+                        } finally {
+                            result.free();
+                        }
+                    } else {
+                        converted = converter.convert_stylesheet(
+                            source,
+                            "fast-v3-ts",
+                            "styles",
+                            true,
+                        );
+                    }
+                } catch (error) {
+                    throw new Error(`Source generation failed for ${input}: ${error}`, {
+                        cause: error,
+                    });
+                }
+                outputs.set(output, {
+                    outDir,
+                    header,
+                    content: `${header}// Source: ${JSON.stringify(sourceName)}\n${converted}`,
                 });
             }
-            outputs.set(
-                output,
-                `${header}// Source: ${JSON.stringify(sourceName)}\n${converted}`,
-            );
         }
         // Validate the entire batch before replacing any existing generated files.
-        for (const output of outputs.keys()) {
+        for (const [output, { outDir, header }] of outputs) {
             await ensureParent(outDir, output);
             await readOutput(output, header);
         }
-        for (const [output, content] of outputs) {
+        for (const [output, { content, header }] of outputs) {
             if ((await readOutput(output, header)) === content) {
                 continue;
             }
@@ -173,18 +214,20 @@ export function sourceGenerationPlugin(options) {
                 });
             }
         }
-        for await (const name of glob("**/*.ts", { cwd: outDir })) {
-            const output = resolve(outDir, name);
-            if (outputs.has(output)) {
-                continue;
-            }
-            // Unowned files may coexist in the output tree and are never removed.
-            if (
-                (await lstat(output)).isFile() &&
-                contains(outDir, await realpath(output)) &&
-                (await readFile(output, "utf8")).startsWith(header)
-            ) {
-                await unlink(output);
+        for (const { outDir, header } of mappings) {
+            for await (const name of glob("**/*.ts", { cwd: outDir })) {
+                const output = resolve(outDir, name);
+                if (outputs.has(output)) {
+                    continue;
+                }
+                // Unowned files may coexist in the output tree and are never removed.
+                if (
+                    (await lstat(output)).isFile() &&
+                    contains(outDir, await realpath(output)) &&
+                    (await readFile(output, "utf8")).startsWith(header)
+                ) {
+                    await unlink(output);
+                }
             }
         }
         for (const warning of warnings) {
@@ -275,22 +318,40 @@ export function sourceGenerationPlugin(options) {
                 throw new Error("Configure sourceGeneration only once.");
             }
             const base = config.configFile ? dirname(config.configFile) : config.root;
-            const source = resolve(base, options.root);
-            root = await realpath(source);
-            sourceRoots = [source, root];
-            const destination = resolve(base, options.outDir);
-            if (contains(destination, root)) {
-                throw new Error("Source generation outDir must not contain root.");
+            mappings = [];
+            sourceRoots = [];
+            outputRoots = [];
+            for (const options of inputs) {
+                const source = resolve(base, options.root);
+                const root = await realpath(source);
+                sourceRoots.push(source, root);
+                mappings.push({ ...options, root });
             }
-            await mkdir(destination, { recursive: true });
-            outDir = await realpath(destination);
-            outputRoots = [destination, outDir];
-            if (contains(outDir, root)) {
-                throw new Error("Source generation outDir must not contain root.");
+            for (const mapping of mappings) {
+                const destination = resolve(base, mapping.outDir);
+                if (sourceRoots.some(root => contains(destination, root))) {
+                    throw new Error("Source generation outDir must not contain root.");
+                }
+                await mkdir(destination, { recursive: true });
+                const outDir = await realpath(destination);
+                if (sourceRoots.some(root => contains(outDir, root))) {
+                    throw new Error("Source generation outDir must not contain root.");
+                }
+                if (
+                    outputRoots.some(
+                        root => contains(root, outDir) || contains(outDir, root),
+                    )
+                ) {
+                    throw new Error(
+                        "Source generation output directories must not overlap.",
+                    );
+                }
+                outputRoots.push(destination, outDir);
+                mapping.outDir = outDir;
+                mapping.header = `// @generated by @microsoft/fast-test-harness (${JSON.stringify(
+                    relative(outDir, mapping.root).split(sep).join("/"),
+                )}). DO NOT EDIT.\n`;
             }
-            header = `// @generated by @microsoft/fast-test-harness (${JSON.stringify(
-                relative(outDir, root).split(sep).join("/"),
-            )}). DO NOT EDIT.\n`;
             try {
                 converter = createRequire(import.meta.url)(
                     "@microsoft/fast-build/wasm/convert/microsoft_fast_convert.js",
@@ -305,7 +366,7 @@ export function sourceGenerationPlugin(options) {
         },
         async configureServer(vite) {
             server = vite;
-            server.watcher.add(root);
+            server.watcher.add(mappings.map(mapping => mapping.root));
             server.watcher.on("all", onChange);
             await enqueue();
         },

@@ -74,9 +74,62 @@ unowned files and only cleans its own stale output. Conversion errors identify t
 source and recover when corrected. Conversion uses FAST Build's `fast-v3-ts` WASM
 converter, not the native SSR addon.
 
-SSR still requires the renderer's configured HTML/CSS inputs and native hosting.
-This option does not extract a separate build-artifact tree. Inline styles use the
-test page's base URL, as handwritten FAST tagged templates do.
+## Preserve template binding checks
+
+Map root-relative HTML paths to element types when you want your normal TypeScript
+check to validate generated bindings:
+
+```js
+sourceGeneration: {
+    root: "../src",
+    outDir: "../generated",
+    templateTypes: {
+        "button.html": {
+            typeSource: "MyButton",
+            typeSourceImport: "../src/button.js",
+        },
+    },
+}
+```
+
+Keys use forward slashes. `typeSource` is an identifier or dotted type name.
+`typeSourceImport` is optional and emits an `import type`; relative imports resolve
+from the **generated module**. The output uses `html<MyButton>` and
+`ElementViewTemplate<MyButton>`. Include generated modules in your TypeScript
+check. Without a mapping, the template source type defaults to `any`; Vite itself
+does not type-check.
+
+## Generate for multiple packages
+
+`sourceGeneration` also accepts a nonempty array. Keep generated files within each
+package's compiler root while sharing one harness server:
+
+```js
+export default createHarnessConfig({
+    sourceGeneration: [
+        { root: "../packages/button/src", outDir: "../packages/button/src/generated" },
+        { root: "../packages/card/src", outDir: "../packages/card/src/generated" },
+    ],
+});
+```
+
+Each mapping has independent globs and type mappings. Output directories must not
+overlap, including through nesting or symlinks, and must not contain any source
+root. Output inside a source root is supported and excluded from generation.
+Conversions and ownership checks finish across all mappings before files are
+replaced.
+
+## Use authored sources for SSR
+
+SSR still requires native hosting and an `entry-server.ts`. With
+`createSSRRenderer`, use explicit `components` registrations and point component
+package exports `./template.html` and `./styles.css` at the authored files.
+Register SSR client components with `declarativeTemplate()`. This path supports
+native rendering, hydration, and HTML/CSS edits without a consumer `dist` tree.
+Monolithic `packageName` discovery still uses its configured `distDir` and
+`*.template.html` naming convention; source generation does not build that tree.
+Inline generated styles use the test page's base URL, as handwritten FAST tagged
+templates do.
 
 See the [package README](https://github.com/microsoft/fast/tree/main/packages/fast-test-harness)
 for fixture APIs, component registration examples, SSR setup, and server options.

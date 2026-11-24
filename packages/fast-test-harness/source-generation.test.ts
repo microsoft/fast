@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
 import {
     mkdir,
     mkdtemp,
@@ -9,6 +10,7 @@ import {
     symlink,
     writeFile,
 } from "node:fs/promises";
+import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
@@ -18,13 +20,18 @@ import { startServer } from "./server.mjs";
 import defaultConfig, { createHarnessConfig } from "./vite.config.mjs";
 
 const configModule = new URL("./vite.config.mjs", import.meta.url).href;
+const nodeModules = fileURLToPath(new URL("../../node_modules/", import.meta.url));
+const harnessRoot = fileURLToPath(new URL(".", import.meta.url));
 const elementRoot = dirname(
     fileURLToPath(import.meta.resolve("@microsoft/fast-element/package.json")),
 );
 const template = (text: string) =>
     `<f-template name="source-widget"><template><p>${text} {{message}}</p></template></f-template>`;
 
-async function workspace(t: any) {
+async function workspace(
+    t: any,
+    sourceGeneration = '{ root: "./src", outDir: "./generated" }',
+) {
     const root = await mkdtemp(join(await realpath(tmpdir()), "fast-harness-sources-"));
     await mkdir(join(root, "src"));
     let server: Awaited<ReturnType<typeof startServer>> | undefined;
@@ -65,7 +72,7 @@ async function workspace(t: any) {
             join(root, "vite.config.mjs"),
             `import { createHarnessConfig } from ${JSON.stringify(configModule)};
             export default createHarnessConfig({
-                sourceGeneration: { root: "./src", outDir: "./generated" },
+                sourceGeneration: ${sourceGeneration},
                 resolve: { alias: ${JSON.stringify(
                     Object.fromEntries(
                         ["html.js", "css.js", "fast-element.js"].map(name => [
@@ -78,16 +85,17 @@ async function workspace(t: any) {
                 )} },
                 server: {
                     watch: { useFsEvents: false, usePolling: false },
-                    fs: { allow: ${JSON.stringify([root, elementRoot])} }
+                    fs: { allow: ${JSON.stringify([root, elementRoot, harnessRoot])} }
                 }
             });`,
         ),
     ]);
     return {
         root,
-        async start() {
+        async start(options = {}) {
             server = await startServer(root, root, join(root, "vite.config.mjs"), {
                 port: 0,
+                ...options,
             });
             return `http://localhost:${server.port}`;
         },
@@ -237,6 +245,155 @@ test("source recovery catches repairs completed before the error page connects",
     await expect(page.locator("source-widget p")).toHaveText("Recovered TS A");
 });
 
+test("authored package exports render and hydrate through native SSR without dist", {
+    timeout: 60_000,
+}, async t => {
+    const app = await workspace(t);
+    const packageName = `fast-harness-source-${randomUUID()}`;
+    const packageLink = join(nodeModules, packageName);
+    await symlink(app.root, packageLink, "junction");
+    t.after(() => rm(packageLink, { force: true }));
+    await symlink(nodeModules, join(app.root, "node_modules"), "junction");
+    await Promise.all([
+        writeFile(
+            join(app.root, "package.json"),
+            JSON.stringify({
+                name: packageName,
+                type: "module",
+                exports: {
+                    "./template.html": "./src/widget.html",
+                    "./styles.css": "./src/widget.css",
+                },
+            }),
+        ),
+        writeFile(
+            join(app.root, "src/widget.html"),
+            '<f-template name="source-widget" shadowrootmode="open"><template><p>HTML A {{label}}</p></template></f-template>',
+        ),
+        writeFile(
+            join(app.root, "src/element.ts"),
+            `import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+            import { attr } from "@microsoft/fast-element/attr.js";
+            export class SourceWidget extends FASTElement { @attr label = ""; }`,
+        ),
+        writeFile(
+            join(app.root, "src/entry-server.ts"),
+            `import { createSSRRenderer } from "@microsoft/fast-test-harness/ssr/render.js";
+            export const { render } = createSSRRenderer({
+                tagPrefix: "source",
+                components: [{ name: "widget", packageName: ${JSON.stringify(packageName)} }],
+                nativeAddonPath: ${JSON.stringify(
+                    fileURLToPath(
+                        new URL(
+                            "../../crates/microsoft-fast-build/target/node-host/fast-build.node",
+                            import.meta.url,
+                        ),
+                    ),
+                )}
+            });`,
+        ),
+        writeFile(
+            join(app.root, "src/entry-client.ts"),
+            `import { enableHydration } from "@microsoft/fast-element/hydration.js";
+            import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+            import { SourceWidget } from "./element.js";
+            const hydration = enableHydration();
+            await SourceWidget.define({ name: "source-widget", template: declarativeTemplate() });
+            await hydration.whenHydrated();
+            window.sourceHydrated = true;`,
+        ),
+        writeFile(
+            join(app.root, "ssr.html"),
+            '<!doctype html><html><head><!--stylespreload--></head><body><!--fixture--><!--templates--><script type="module" src="/src/entry-client.ts"></script></body></html>',
+        ),
+    ]);
+    await assert.rejects(stat(join(app.root, "dist")));
+    await assert.rejects(stat(join(app.root, "generated")));
+    const origin = await app.start();
+    const result = await fetch(`${origin}/generate-fixture`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            testId: "native-source",
+            tagName: "source-widget",
+            attributes: JSON.stringify({ label: "Server" }),
+        }),
+    });
+    assert.equal(result.status, 200, await result.clone().text());
+    const { url } = await result.json();
+    const html = await (await fetch(origin + url)).text();
+    assert.match(html, /<template shadowrootmode="open"/);
+    assert.match(html, /HTML A/);
+    assert.match(html, /Server/);
+    assert.match(html, /widget\.css/);
+    const browser = await chromium.launch();
+    t.after(() => browser.close());
+    const page = await browser.newPage();
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    let resumeClient = () => {};
+    const clientGate = new Promise<void>(resolve => {
+        resumeClient = resolve;
+    });
+    await page.route("**/src/entry-client.ts", async route => {
+        await clientGate;
+        await route.continue();
+    });
+    const text = page.locator("source-widget p");
+    try {
+        await page.goto(origin + url, { waitUntil: "commit" });
+        await expect(text).toHaveText("HTML A Server");
+        await page.evaluate(() => {
+            (window as any).serverNode = document
+                .querySelector("source-widget")!
+                .shadowRoot!.querySelector("p");
+        });
+    } finally {
+        resumeClient();
+    }
+    const hydrated = () => page.evaluate(() => (window as any).sourceHydrated === true);
+    await expect.poll(hydrated).toBe(true);
+    assert.equal(
+        await page.evaluate(
+            () =>
+                (window as any).serverNode ===
+                document.querySelector("source-widget")!.shadowRoot!.querySelector("p"),
+        ),
+        true,
+    );
+    await page.locator("source-widget").evaluate(el => {
+        (el as any).label = "Client";
+    });
+    await expect(text).toHaveText("HTML A Client");
+    await writeFile(
+        join(app.root, "src/widget.html"),
+        '<f-template name="source-widget" shadowrootmode="open"><template><p>HTML B {{label}}</p></template></f-template>',
+    );
+    await expect(text).toHaveText("HTML B Server");
+    await expect.poll(hydrated).toBe(true);
+    assert.match(await (await fetch(origin + url)).text(), /HTML B/);
+    const color = () =>
+        page
+            .locator("source-widget")
+            .evaluate(el => getComputedStyle(el).getPropertyValue("--test-color").trim())
+            .catch(() => "");
+    await expect.poll(color).toBe("red");
+    await writeFile(join(app.root, "src/widget.css"), ":host { --test-color: blue; }");
+    await expect.poll(color).toBe("blue");
+    await expect.poll(hydrated).toBe(true);
+    assert.equal(page.url(), origin + url);
+    assert.deepEqual(errors, []);
+    await assert.rejects(stat(join(app.root, "dist")));
+    assert.match(
+        await readFile(join(app.root, "generated/widget.template.ts"), "utf8"),
+        /HTML B/,
+    );
+    assert.match(
+        await readFile(join(app.root, "generated/widget.styles.ts"), "utf8"),
+        /blue/,
+    );
+});
+
 test("nested sources are watched and only owned stale outputs are removed", async t => {
     const app = await workspace(t);
     await app.start();
@@ -319,4 +476,211 @@ test("source globs can select templates and disable stylesheet generation", asyn
     );
     await assert.rejects(stat(join(app.root, "generated/shell.template.ts")));
     await assert.rejects(stat(join(app.root, "generated/widget.styles.ts")));
+});
+
+test("per-template source types preserve binding checks in generated TypeScript", async t => {
+    const sourceGeneration = {
+        root: "./src",
+        outDir: "./generated",
+        templateTypes: {
+            "widget.html": {
+                typeSource: "SourceWidget",
+                typeSourceImport: "../src/model.js",
+            },
+            "other.html": {
+                typeSource: "OtherWidget",
+                typeSourceImport: "../src/model.js",
+            },
+        },
+    };
+    const app = await workspace(t, JSON.stringify(sourceGeneration));
+    await mkdir(join(app.root, "node_modules/@microsoft"), { recursive: true });
+    await symlink(
+        elementRoot,
+        join(app.root, "node_modules/@microsoft/fast-element"),
+        "junction",
+    );
+    await symlink(
+        harnessRoot,
+        join(app.root, "node_modules/@microsoft/fast-test-harness"),
+        "junction",
+    );
+    await writeFile(
+        join(app.root, "config.ts"),
+        `import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
+        createHarnessConfig({ sourceGeneration: ${JSON.stringify(sourceGeneration)} });
+        createHarnessConfig({ sourceGeneration: [${JSON.stringify(sourceGeneration)}] });`,
+    );
+    await writeFile(
+        join(app.root, "src/model.ts"),
+        'export class SourceWidget { message = ""; } export class OtherWidget { label = ""; }',
+    );
+    await writeFile(
+        join(app.root, "src/other.html"),
+        '<f-template name="other-widget"><template><p>{{label}}</p></template></f-template>',
+    );
+    await app.start();
+    const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript");
+    const diagnostics = () =>
+        ts.getPreEmitDiagnostics(
+            ts.createProgram({
+                rootNames: [
+                    join(app.root, "config.ts"),
+                    join(app.root, "generated/widget.template.ts"),
+                    join(app.root, "generated/other.template.ts"),
+                ],
+                options: {
+                    noEmit: true,
+                    strict: true,
+                    skipLibCheck: true,
+                    types: [],
+                    target: ts.ScriptTarget.ES2022,
+                    module: ts.ModuleKind.NodeNext,
+                    moduleResolution: ts.ModuleResolutionKind.NodeNext,
+                },
+            }),
+        );
+    assert.deepEqual(
+        diagnostics().map(d => ts.flattenDiagnosticMessageText(d.messageText, "\n")),
+        [],
+    );
+    await writeFile(join(app.root, "src/widget.html"), template("{{misspelled}}"));
+    await expect
+        .poll(() => readFile(join(app.root, "generated/widget.template.ts"), "utf8"))
+        .toContain("misspelled");
+    const errors = diagnostics();
+    assert.equal(errors.length, 1);
+    assert.equal(errors[0].code, 2339);
+    assert.match(
+        ts.flattenDiagnosticMessageText(errors[0].messageText, "\n"),
+        /misspelled.*SourceWidget/,
+    );
+});
+
+test("multiple source mappings generate and watch independent package routes", {
+    timeout: 60_000,
+}, async t => {
+    const app = await workspace(
+        t,
+        JSON.stringify([
+            { root: "./src", outDir: "./src/generated" },
+            { root: "./other/src", outDir: "./other/src/generated" },
+        ]),
+    );
+    const other = join(app.root, "other");
+    await mkdir(join(other, "src"), { recursive: true });
+    const main = (await readFile(join(app.root, "src/main.ts"), "utf8")).replaceAll(
+        "../generated/",
+        "./generated/",
+    );
+    await Promise.all([
+        writeFile(join(app.root, "src/main.ts"), main),
+        writeFile(
+            join(other, "index.html"),
+            '<!doctype html><other-widget></other-widget><script type="module" src="/src/main.ts"></script>',
+        ),
+        writeFile(
+            join(other, "src/main.ts"),
+            main
+                .replaceAll("SourceWidget", "OtherWidget")
+                .replaceAll("source-widget", "other-widget"),
+        ),
+        writeFile(join(other, "src/widget.html"), template("Other A")),
+        writeFile(join(other, "src/widget.css"), ":host { --test-color: green; }"),
+        writeFile(join(other, "src/state.ts"), 'export const message = "Other TS A";'),
+    ]);
+    const origin = await app.start({
+        routes: [
+            { base: "/one/", root: app.root },
+            { base: "/two/", root: other },
+        ],
+    });
+    const browser = await chromium.launch();
+    t.after(() => browser.close());
+    const first = await browser.newPage();
+    const second = await browser.newPage();
+    await first.goto(`${origin}/one/`);
+    await second.goto(`${origin}/two/`);
+    await expect(first.locator("source-widget p")).toHaveText("HTML A TS A");
+    await expect(second.locator("other-widget p")).toHaveText("Other A Other TS A");
+    await writeFile(join(other, "src/widget.html"), template("Other B"));
+    await expect(second.locator("other-widget p")).toHaveText("Other B Other TS A");
+    await writeFile(join(app.root, "src/widget.html"), template("First B"));
+    await expect(first.locator("source-widget p")).toHaveText("First B TS A");
+    await writeFile(join(other, "src/state.ts"), 'export const message = "Other TS B";');
+    await expect(second.locator("other-widget p")).toHaveText("Other B Other TS B");
+    await writeFile(join(other, "src/widget.css"), ":host { --test-color: blue; }");
+    await expect
+        .poll(() =>
+            second
+                .locator("other-widget")
+                .evaluate(el =>
+                    getComputedStyle(el).getPropertyValue("--test-color").trim(),
+                )
+                .catch(() => ""),
+        )
+        .toBe("blue");
+    await app.stop();
+    await rm(join(other, "src/widget.html"));
+    await app.start();
+    await assert.rejects(stat(join(other, "src/generated/widget.template.ts")));
+    assert.match(
+        await readFile(join(app.root, "src/generated/widget.template.ts"), "utf8"),
+        /First B/,
+    );
+});
+
+test("multiple mappings reject output overlap and preflight all conversions", async t => {
+    const app = await workspace(t);
+    await mkdir(join(app.root, "other/src"), { recursive: true });
+    await writeFile(join(app.root, "other/src/widget.html"), "<broken>");
+    const config = join(app.root, "vite.config.mjs");
+    const original = await readFile(config, "utf8");
+    const configure = async (second: { root: string; outDir: string }) =>
+        writeFile(
+            config,
+            original.replace(
+                '{ root: "./src", outDir: "./generated" }',
+                JSON.stringify([{ root: "./src", outDir: "./generated" }, second]),
+            ),
+        );
+    for (const outDir of ["./generated", "./generated/nested", "./other"]) {
+        await configure({ root: "./other/src", outDir });
+        await assert.rejects(app.start(), /overlap|outDir must not contain root/);
+        await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
+    }
+    await symlink(
+        join(app.root, "generated"),
+        join(app.root, "generated-alias"),
+        "junction",
+    );
+    await configure({ root: "./other/src", outDir: "./generated-alias" });
+    await assert.rejects(app.start(), /overlap/);
+    await configure({ root: "./other/src", outDir: "./other/generated" });
+    await assert.rejects(app.start(), /Source generation failed/);
+    await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
+});
+
+test("source mappings and template type mappings reject invalid configuration", () => {
+    assert.throws(
+        () => createHarnessConfig({ sourceGeneration: [] }),
+        /at least one root\/outDir mapping/,
+    );
+    for (const templateTypes of [
+        [],
+        { "../widget.html": { typeSource: "SourceWidget" } },
+        { "widget.html": { typeSourceImport: "../src/model.js" } },
+    ]) {
+        assert.throws(
+            () =>
+                createHarnessConfig({
+                    sourceGeneration: {
+                        root: "./src",
+                        outDir: "./generated",
+                        templateTypes,
+                    },
+                }),
+            /templateTypes must map root-relative HTML paths/,
+        );
+    }
 });

@@ -1,4 +1,11 @@
 declare module "@microsoft/fast-test-harness/vite.config.mjs" {
+    export interface SourceTemplateType {
+        /** Element class or dotted type name used for template binding checks. */
+        typeSource: string;
+        /** Optional module specifier, relative to the generated module or a package. */
+        typeSourceImport?: string;
+    }
+
     export interface SourceGenerationOptions {
         /** HTML/CSS source directory, relative to the Vite config file. */
         root: string;
@@ -8,10 +15,12 @@ declare module "@microsoft/fast-test-harness/vite.config.mjs" {
         templates?: string | string[] | false;
         /** CSS glob(s) relative to root. Defaults to all CSS files. */
         stylesheets?: string | string[] | false;
+        /** Source types keyed by root-relative HTML paths using forward slashes. */
+        templateTypes?: Record<string, SourceTemplateType>;
     }
 
     export type HarnessConfig = import("vite").UserConfig & {
-        sourceGeneration?: SourceGenerationOptions | false;
+        sourceGeneration?: SourceGenerationOptions | SourceGenerationOptions[] | false;
     };
 
     /** Preserve the harness defaults and optionally enable automatic source generation. */

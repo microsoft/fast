@@ -120,10 +120,75 @@ Generated styles are inline FAST styles; asset URLs must resolve from the test
 page, as with handwritten FAST tagged templates. This conversion uses WASM and
 does not require the native SSR addon.
 
-SSR still needs a configured `entry-server.ts` and the renderer's existing HTML,
-CSS, and native-addon inputs. When using `createSSRRenderer`, expose the authored
-HTML/CSS through its configured component package exports; source generation does
-not extract or rebuild a separate `dist` tree for that renderer.
+### Template binding types
+
+Optionally associate each HTML input with its element type:
+
+```js
+sourceGeneration: {
+    root: "../src",
+    outDir: "../generated",
+    templateTypes: {
+        "button/button.html": {
+            typeSource: "MyButton",
+            typeSourceImport: "../../src/button/button.js",
+        },
+    },
+}
+```
+
+Keys are HTML paths relative to `root`, using forward slashes. `typeSource` is a
+TypeScript identifier or dotted name. The optional `typeSourceImport` emits an
+`import type`; relative specifiers resolve from the **generated template module**,
+not the config file or HTML source. Package specifiers are also supported.
+
+The generated module uses `html<MyButton>` and `ElementViewTemplate<MyButton>`,
+so your normal TypeScript check can catch misspelled binding properties. Include
+the generated files in that check. Unmapped templates keep the existing `any`
+source type; no types are inferred and Vite still does not type-check.
+
+### Multiple packages
+
+Use a nonempty array to generate modules within each package's TypeScript root
+while serving all packages with one harness:
+
+```js
+export default createHarnessConfig({
+    sourceGeneration: [
+        { root: "../packages/button/src", outDir: "../packages/button/src/generated" },
+        { root: "../packages/card/src", outDir: "../packages/card/src/generated" },
+    ],
+});
+```
+
+Each mapping supports its own globs and `templateTypes`. Output directories must
+be disjoint: duplicate, nested, and symlink-aliased output trees are rejected.
+No output directory may contain any mapping's source root. An output directory
+inside a source root is supported and excluded from generation/watch feedback.
+All mappings share one generation queue; conversion and ownership checks across
+the complete batch finish before any generated file is replaced.
+
+### Authored-source SSR
+
+SSR still needs a configured `entry-server.ts` and native addon. For
+`createSSRRenderer` without a consumer `dist` tree, use explicit `components`
+registrations and expose authored files through each component package's exports:
+
+```json
+{
+    "exports": {
+        "./template.html": "./src/button/button.html",
+        "./styles.css": "./src/button/button.css"
+    }
+}
+```
+
+Use `declarativeTemplate()` for SSR client registration, as in the SSR setup below.
+The renderer reads those authored exports for declarative shadow DOM and
+hydration; HTML/CSS edits refresh the fixture without a separate build.
+The monolithic `packageName` mode still discovers `*.template.html` files under
+its configured `distDir` (default `dist/esm`). Source generation does not change
+that discovery rule or extract a separate build-artifact tree.
 
 Omit `sourceGeneration`, or set it to `false`, to keep the default workflow.
 
