@@ -151,6 +151,28 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(case) = case.strip_prefix("shadow-opening-") {
+        let (shape, count) = case.rsplit_once('-').ok_or("Unknown workload")?;
+        let count: usize = count.parse()?;
+        let (padding, shadow) = match shape {
+            "short" => (8, "s".repeat(8192)),
+            "wide" => (1024, "s".repeat(8192)),
+            "tiny" => (1024, "é".into()),
+            "empty" => (1024, String::new()),
+            _ => return Err("Unknown workload".into()),
+        };
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template("opening-leaf", &shadow);
+        locator.add_template(
+            "opening-root",
+            "<f-repeat value=\"{{row in rows}}\"><opening-leaf title=\"{{padding}}\">light</opening-leaf></f-repeat>",
+        );
+        return Ok((
+            compile_server_artifact("<opening-root></opening-root>", &locator)?,
+            json!({"rows":vec![true; count],"padding":format!("{}é&","a".repeat(padding))})
+                .to_string(),
+        ));
+    }
     if let Some(case) = case.strip_prefix("state-validation-") {
         let (shape, count) = case.rsplit_once('-').ok_or("Unknown workload")?;
         let count: usize = count.parse()?;

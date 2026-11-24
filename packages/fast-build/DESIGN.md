@@ -101,6 +101,13 @@ per-marker temporary string or retained request scratch. Reserving the checked
 total before span emission gives the output buffer bulk-append capacity growth.
 Those preflighted spans append directly to the reserved buffer; other output
 writes retain their individual budget checks.
+Component shadows are evaluated before host attributes. Shadows of at most 4 KiB
+retain a bounded split/append path; larger shadows are reordered with the
+host/DSD opening in the same UTF-8 output String. Temporary budget accounting
+charges the pending shadow at its original append point, preserving error order
+and byte limits. Reordering moves the smaller span, using 256-byte stack scratch
+or a temporary heap copy for larger spans; empty shadows require no move.
+No output capacity or scratch storage persists between requests.
 
 Native state is limited to depth 64 and one million values. Execution permits
 128 nested body calls, with default one-million-step and 64 MiB output budgets.
@@ -191,6 +198,9 @@ Rust cases also cover missing descendants, null roots and present values. See th
 [root-lookup benchmark](./docs/native-root-lookup-benchmark.md) for comparisons.
 The [marker-append benchmark](./docs/native-marker-append-benchmark.md) qualifies
 whole-marker preflight with direct span appends across both marker formats.
+The `deepShadows`, `staticShadows` and `bindingShadows` workloads match the Rust
+nested-shadow fixtures. `shadowOpening*` varies the smaller-side stack/heap path
+and empty shadows; see the [assembly benchmark](./docs/native-shadow-assembly-benchmark.md).
 The `componentScope*` and `componentDataset*` workloads exercise inline roots,
 bounded map sizing and grouped fields; the
 [scope-sizing benchmark](./docs/native-scope-sizing-benchmark.md) records comparisons.

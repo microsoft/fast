@@ -2666,6 +2666,80 @@ fn nested_shadow_output_keeps_order_escaping_and_construction_limits() {
 }
 
 #[test]
+fn shadow_assembly_keeps_short_and_large_host_openings_with_both_marker_modes() {
+    for shadow_length in [0, 16, 4095, 4096, 4097, 8192] {
+        let shadow = format!(
+            "{}{}",
+            "影".repeat(shadow_length / 3),
+            "s".repeat(shadow_length % 3)
+        );
+        let locator = common::make_locator(&[
+            (
+                "order-root",
+                "begin<order-leaf title=\"{{label}}\">light</order-leaf>end",
+            ),
+            ("order-leaf", &shadow),
+        ]);
+        let artifact = CompiledArtifact::load(
+            &compile_server_artifact(
+                "前<order-root title=\"{{label}}\">tail</order-root>後",
+                &locator,
+            )
+            .unwrap(),
+        )
+        .unwrap();
+        for label_length in [0, 256, 1024] {
+            let label = format!("{}&\"", "é".repeat(label_length));
+            let escaped = format!("{}&amp;&quot;", "é".repeat(label_length));
+            let state_json = json!({"label":label}).to_string();
+            let state = parse_render_state(&state_json).unwrap();
+            let prepared = PreparedState::from_json(&state_json).unwrap();
+            for markers_v2 in [false, true] {
+                let marker = if markers_v2 {
+                    "data-fe-b-0"
+                } else {
+                    "data-fe=\"1\""
+                };
+                let expected = format!(
+                    "前<order-root title=\"{escaped}\"><template shadowrootmode=\"open\">begin\
+                     <order-leaf title=\"{escaped}\" {marker}><template shadowrootmode=\"open\">\
+                     {shadow}</template>light</order-leaf>end</template>tail</order-root>後"
+                );
+                let exact = NativeRenderOptions {
+                    markers_v2,
+                    max_output_bytes: expected.len(),
+                    ..Default::default()
+                };
+                assert_eq!(artifact.render_entry(&state, &exact).unwrap(), expected);
+                assert_eq!(
+                    artifact.render_entry_prepared(&prepared, &exact).unwrap(),
+                    expected
+                );
+                assert_eq!(
+                    artifact.render_entry_json(&state_json, &exact).unwrap(),
+                    expected
+                );
+                let short = NativeRenderOptions {
+                    max_output_bytes: expected.len() - 1,
+                    ..exact.clone()
+                };
+                assert_eq!(
+                    artifact
+                        .render_entry_json(&state_json, &short)
+                        .unwrap_err()
+                        .code,
+                    "render-limit"
+                );
+                assert_eq!(
+                    artifact.render_entry_json(&state_json, &exact).unwrap(),
+                    expected
+                );
+            }
+        }
+    }
+}
+
+#[test]
 fn nested_shadow_depth_is_bounded_before_assembly_and_recovers() {
     for depth in [32, 129] {
         let templates = (0..depth)

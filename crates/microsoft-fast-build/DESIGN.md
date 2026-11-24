@@ -211,10 +211,19 @@ After that checked reservation, marker spans append directly without repeating
 the output-budget check for each span. Ordinary output writes remain checked.
 Numeric scratch has a fixed stack bound
 independent of marker count and is never retained between requests.
-Component shadows still render
-before host attributes and use the existing split/append assembly, preserving first
-error order. No output buffer, capacity hint or request-sized scratch storage is
-retained between calls.
+Component shadows render before host attributes to preserve first-error order.
+Shadows of at most 4 KiB retain the split/append path, bounding its temporary copy
+while avoiding reordering overhead for short components. Larger shadows stay in
+the output String, with the host/DSD opening appended after them.
+A request-local physical ceiling temporarily excludes the pending shadow
+from host-opening budget charges; the combined length is checked at the original
+shadow-append point and the ordinary ceiling is restored before later output.
+Safe String operations reorder the two spans by moving the smaller side.
+Moves of at most 256 bytes use fixed stack scratch; larger moves copy only the
+smaller span to temporary owned storage. Empty shadows require no move.
+The output remains a UTF-8 String throughout, without a whole-output conversion.
+No output buffer, capacity hint or request-sized scratch storage is retained
+between calls.
 
 State is limited to 64 nesting levels and one million values. Execution has a
 hard 128-body-call depth bound, with configurable default one-million-step and
