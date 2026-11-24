@@ -32,6 +32,166 @@ test/
     └── entry-server.ts     # SSR: exports render() for fixture generation
 ```
 
+## Automatic HTML/CSS source generation (opt-in)
+
+The existing TypeScript-first workflow remains the default. Extracting HTML/CSS
+from compiled templates with `generateFTemplates`, `generateStylesheets`,
+`generateWebuiTemplates`, or their CLI commands is deprecated but still supported.
+
+To author HTML/CSS instead, install the optional converter peer:
+
+```shell
+npm install --save-dev @microsoft/fast-build
+```
+
+Configure the harness's Vite config, and continue starting the harness normally:
+
+```js
+// test/vite.config.mjs
+import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
+
+export default createHarnessConfig({
+    sourceGeneration: {
+        root: "../src",
+        outDir: "../generated",
+        templates: "**/*.html",
+        stylesheets: "**/*.css",
+    },
+});
+```
+
+Pass `--config test/vite.config.mjs` if the config is not discovered automatically.
+Paths are relative to the Vite config file, not the shell's working directory.
+Without a config file, programmatically created Vite configurations resolve paths
+relative to Vite's root. Both `root` and `outDir` are required; `outDir` must not
+contain `root`. Each glob option accepts a string, string array, or `false` to
+disable that input type. Defaults include all HTML and CSS under `root`, excluding
+`node_modules`, `.git`, and the generated-output directory.
+
+For example, `src/button/button.html`:
+
+```html
+<f-template name="my-button">
+    <template><button>{{label}}</button></template>
+</f-template>
+```
+
+and `src/button/button.css`:
+
+```css
+:host { display: inline-block; }
+```
+
+produce `generated/button/button.template.ts` and
+`generated/button/button.styles.ts`, exporting `template` and `styles`.
+Register the component using those modules:
+
+```ts
+// src/button/button.ts
+import { FASTElement } from "@microsoft/fast-element/fast-element.js";
+import { template } from "../../generated/button/button.template.js";
+import { styles } from "../../generated/button/button.styles.js";
+
+export class MyButton extends FASTElement {
+    label = "Click me";
+}
+
+await MyButton.define({ name: "my-button", template, styles });
+```
+
+Import your source definition modules from the test entry point, rather than a
+previously compiled copy. The harness generates TypeScript before serving modules,
+including on a clean checkout, then watches HTML/CSS additions, edits, and deletions.
+Vite transpiles TypeScript edits automatically. Pages reload, SSR entry modules
+are invalidated, and previously requested SSR fixtures regenerate on navigation;
+no separate generation or compilation script
+is needed while the harness runs. Vite does not perform TypeScript type checking.
+
+The generated directory can be gitignored. Relative subdirectories are preserved;
+each `.html` suffix becomes `.template.ts`, and `.css` becomes `.styles.ts`.
+Generated modules have explicit FAST types and ownership headers. The harness
+refuses to overwrite unowned files and only deletes its own stale generated files.
+Conversion errors identify the source file, block stale modules, and recover when
+the source is corrected.
+
+Conversion uses FAST Build's `fast-v3-ts` syntax: each HTML input must contain
+exactly one supported `<f-template>` definition, not an arbitrary HTML document.
+Generated styles are inline FAST styles; asset URLs must resolve from the test
+page, as with handwritten FAST tagged templates. This conversion uses WASM and
+does not require the native SSR addon.
+
+### Template binding types
+
+Optionally associate each HTML input with its element type:
+
+```js
+sourceGeneration: {
+    root: "../src",
+    outDir: "../generated",
+    templateTypes: {
+        "button/button.html": {
+            typeSource: "MyButton",
+            typeSourceImport: "../../src/button/button.js",
+        },
+    },
+}
+```
+
+Keys are HTML paths relative to `root`, using forward slashes. `typeSource` is a
+TypeScript identifier or dotted name. The optional `typeSourceImport` emits an
+`import type`; relative specifiers resolve from the **generated template module**,
+not the config file or HTML source. Package specifiers are also supported.
+
+The generated module uses `html<MyButton>` and `ElementViewTemplate<MyButton>`,
+so your normal TypeScript check can catch misspelled binding properties. Include
+the generated files in that check. Unmapped templates keep the existing `any`
+source type; no types are inferred and Vite still does not type-check.
+
+### Multiple packages
+
+Use a nonempty array to generate modules within each package's TypeScript root
+while serving all packages with one harness:
+
+```js
+export default createHarnessConfig({
+    sourceGeneration: [
+        { root: "../packages/button/src", outDir: "../packages/button/src/generated" },
+        { root: "../packages/card/src", outDir: "../packages/card/src/generated" },
+    ],
+});
+```
+
+Each mapping supports its own globs and `templateTypes`. Output directories must
+be disjoint: duplicate, nested, and symlink-aliased output trees are rejected.
+No output directory may contain any mapping's source root. An output directory
+inside a source root is supported and excluded from generation/watch feedback.
+All mappings share one generation queue; conversion and ownership checks across
+the complete batch finish before any generated file is replaced.
+
+### Authored-source SSR
+
+SSR still needs a configured `entry-server.ts` and native addon. For
+`createSSRRenderer` without a consumer `dist` tree, use explicit `components`
+registrations and expose authored files through each component package's exports:
+
+```json
+{
+    "exports": {
+        "./template.html": "./src/button/button.html",
+        "./styles.css": "./src/button/button.css"
+    }
+}
+```
+
+Use `declarativeTemplate()` for SSR client registration, as in the SSR setup below.
+The renderer reads those authored exports for declarative shadow DOM and
+hydration; HTML/CSS edits refresh the fixture without a separate build.
+The monolithic `packageName` mode still discovers `*.template.html` files under
+its configured `distDir` (default `dist/esm`). Source generation does not change
+that discovery rule or extract a separate build-artifact tree.
+
+Omit `sourceGeneration`, or set it to `false`, to keep the default workflow.
+
 ## Writing tests
 
 Import `test` and `expect` from the harness. Configure the component tag name with `test.use()`, then call `fastPage.setTemplate()` in each test to render it.
@@ -242,9 +402,9 @@ fast-test-harness [command] [options]
 
 Commands:
   serve                    Start the test harness dev server (default)
-  generate-templates       Generate <f-template> HTML files from compiled templates
-  generate-stylesheets     Generate CSS files from compiled ElementStyles
-  generate-webui-templates Generate WebUI-compatible DSD templates
+  generate-templates       Extract compiled templates (deprecated)
+  generate-stylesheets     Extract compiled ElementStyles (deprecated)
+  generate-webui-templates Extract compiled DSD templates (deprecated)
 
 Serve options:
   -p, --port <number>    Server port (default: 3278)
@@ -302,7 +462,7 @@ hosting and fixture compilation/rendering failures propagate.
 | `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceGenerationOptions` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
 
 SSR fixture generation compiles dynamically authored test HTML as development
