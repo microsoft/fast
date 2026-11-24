@@ -85,7 +85,11 @@ loop aliases participate in the overlap guard, and overlong prefixes retain
 independent lookup. Missing operands still insert own-null overrides, property
 step charges stay unchanged, and dataset target initialization retains its
 independent incoming-state lookup.
-Escaping writes spans directly to bounded output. Finite JSON numbers preserve
+Escaping writes spans directly to bounded output. Inputs of at least 64 bytes
+skip escape-free prefix words with a portable filter, then retain scalar matching
+from the first possible match. UTF-8 span and sink-error boundaries are unchanged;
+short inputs retain scalar scanning, without scratch allocations.
+Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.
 Composite attributes preflight every binding before writing output. Their first
@@ -212,6 +216,9 @@ four-boundary comparisons and scaling.
 The `stateValidation*` workloads qualify unique-key parsing and decoded
 duplicate-key fallback for nested, wide and scalar state; see the
 [state-validation benchmark](./docs/native-state-validation-benchmark.md).
+The `escapePrefix*` workloads vary long escape-free ASCII/Unicode prefixes,
+late escapes, early/dense escapes and conservative-filter fallback; see the
+[escape-prefix benchmark](./docs/native-escape-prefix-benchmark.md).
 
 `profile:server` runs additional instrumented diagnostic passes after ordinary
 measurements, with separate load, Buffer, string and fixed-buffer decode profiles.

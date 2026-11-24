@@ -11,6 +11,7 @@ import { parseArgs } from "node:util";
 import {
     componentPropertyPrefixFixture,
     componentScopeFixture,
+    escapePrefixFixture,
     fixture,
     nestedShadowFixture,
     outputStats,
@@ -315,6 +316,12 @@ async function main() {
                 ),
             },
         },
+        escapePrefixAscii: escapePrefixFixture(instances, "ascii"),
+        escapePrefixUnicode: escapePrefixFixture(instances, "unicode"),
+        escapePrefixSparse: escapePrefixFixture(instances, "sparse"),
+        escapePrefixEarly: escapePrefixFixture(instances, "early"),
+        escapePrefixDense: escapePrefixFixture(instances, "dense"),
+        escapePrefixHash: escapePrefixFixture(instances, "hash"),
         deepPaths: {
             entry: "<p>{{profile.name}}/{{profile.items.+00.title}}/{{profile.items.length}}</p>".repeat(
                 instances,
