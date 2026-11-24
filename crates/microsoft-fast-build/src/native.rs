@@ -859,7 +859,7 @@ impl<'a> Executor<'a> {
         // Match a single push_str's output-buffer growth without a marker String.
         self.out.reserve(length);
         for part in parts {
-            self.push(part)?;
+            self.out.push_str(part);
         }
         Ok(())
     }
