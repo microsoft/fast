@@ -18,7 +18,25 @@ pub(crate) fn write_html_escaped<E>(
     mut write: impl FnMut(&str) -> Result<(), E>,
 ) -> Result<(), E> {
     let mut start = 0;
-    for (index, byte) in s.bytes().enumerate() {
+    let mut skipped = 0;
+    if s.len() >= 64 {
+        const LOW: u64 = 0x0101_0101_0101_0101;
+        const HIGH: u64 = 0x8080_8080_8080_8080;
+        for chunk in s.as_bytes().chunks_exact(8) {
+            let word = u64::from_ne_bytes(chunk.try_into().unwrap());
+            // These supersets cover quotes/ampersand and angle brackets.
+            // A '#' may stop the scan early; scalar matching remains authoritative.
+            let quotes = (word | LOW * 0x05) ^ (LOW * 0x27);
+            let angles = (word | LOW * 0x02) ^ (LOW * 0x3e);
+            if ((quotes.wrapping_sub(LOW) & !quotes) | (angles.wrapping_sub(LOW) & !angles)) & HIGH
+                != 0
+            {
+                break;
+            }
+            skipped += 8;
+        }
+    }
+    for (index, byte) in s.bytes().enumerate().skip(skipped) {
         let entity = match byte {
             b'&' => "&amp;",
             b'<' => "&lt;",
@@ -57,5 +75,51 @@ mod tests {
         });
         assert_eq!(result, Err("full"));
         assert_eq!(spans, ["é", "&amp;"]);
+    }
+
+    #[test]
+    fn long_escape_prefixes_preserve_ascii_and_utf8_boundaries() {
+        for filler in ["a", "é", "😀"] {
+            for offset in 0..81 {
+                let prefix = filler.repeat(offset);
+                for byte in 0..=127u8 {
+                    let ch = char::from(byte);
+                    let replacement = match ch {
+                        '&' => "&amp;".to_owned(),
+                        '<' => "&lt;".to_owned(),
+                        '>' => "&gt;".to_owned(),
+                        '"' => "&quot;".to_owned(),
+                        '\'' => "&#39;".to_owned(),
+                        _ => ch.to_string(),
+                    };
+                    let text = format!("{prefix}{ch}é😀{}", "z".repeat(96));
+                    assert_eq!(
+                        html_escape(&text),
+                        format!("{prefix}{replacement}é😀{}", "z".repeat(96)),
+                        "filler={filler}, offset={offset}, byte={byte}",
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn long_prefix_escaping_preserves_fallible_span_order() {
+        let prefix = format!("{}é😀", "a".repeat(69));
+        let text = format!("{prefix}&<tail");
+        for fail_at in 0..4 {
+            let mut spans = Vec::new();
+            let result = write_html_escaped(&text, |span| {
+                spans.push(span.to_owned());
+                if spans.len() == fail_at + 1 {
+                    Err("full")
+                } else {
+                    Ok(())
+                }
+            });
+            let expected = [prefix.as_str(), "&amp;", "&lt;", "tail"];
+            assert_eq!(spans, expected[..=fail_at]);
+            assert_eq!(result, Err("full"));
+        }
     }
 }

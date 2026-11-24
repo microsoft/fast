@@ -183,6 +183,10 @@ ownership remain unchanged. JSON input and results/errors are independently
 owned; no request-key hashing/cache, unsafe code or retained scope arena is used.
 
 Escaping shares a fallible UTF-8 span writer with the infallible string helpers.
+For inputs of at least 64 bytes, a portable eight-byte filter skips an initial
+escape-free prefix. Possible matches, including harmless `#` false positives,
+return to scalar matching for the remaining input. Only actual ASCII matches
+split UTF-8 spans; sink call order and failure boundaries remain unchanged.
 Text and attribute bindings append unchanged spans and exact entity spellings
 directly to the executor's bounded output string, without display/escaped strings.
 Finite numbers format through its fallible `fmt::Write` implementation; boolean,
