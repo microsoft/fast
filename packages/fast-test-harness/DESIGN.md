@@ -355,7 +355,9 @@ TypeScript edits. Unchanged outputs are not rewritten. Source changes invalidate
 Vite's module graph, clear cached CSR shells and SSR fixtures, and trigger a page
 reload. Requests and source module loads await the latest generation; conversion
 failures reject stale module loads while leaving Vite's reload client available
-for recovery. Vite transpiles source TypeScript without a separate build process.
+for recovery. Error pages report their source revision over Vite's WebSocket after
+connecting, so repairs completed during navigation still trigger a reload.
+Vite transpiles source TypeScript without a separate build process.
 The server retains SSR fixture request inputs in this mode and regenerates an
 invalidated fixture when its URL is visited again. A source revision guards
 asynchronous shell and fixture generation against repopulating caches with an

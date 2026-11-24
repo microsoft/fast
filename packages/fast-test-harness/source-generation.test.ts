@@ -175,6 +175,46 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
     await expect(ssrPage.locator("b")).toHaveText("TS C");
 });
 
+test("source recovery catches repairs completed before the error page connects", {
+    timeout: 30_000,
+}, async t => {
+    const app = await workspace(t);
+    const origin = await app.start();
+    await writeFile(join(app.root, "src/widget.html"), "<broken>");
+    await expect.poll(async () => (await fetch(origin)).status).toBe(500);
+    const browser = await chromium.launch();
+    t.after(() => browser.close());
+    const page = await browser.newPage();
+    let resumeClient = () => {};
+    const clientGate = new Promise<void>(resolve => {
+        resumeClient = resolve;
+    });
+    await page.route("**/@vite/client", async route => {
+        await clientGate;
+        await route.continue();
+    });
+    try {
+        const clientRequest = page.waitForRequest("**/@vite/client");
+        const response = await page.goto(origin, { waitUntil: "commit" });
+        assert.equal(response?.status(), 500);
+        await clientRequest;
+        await writeFile(join(app.root, "src/widget.html"), template("Recovered"));
+        await expect
+            .poll(
+                async () =>
+                    (await fetch(origin, { headers: { Accept: "text/html" } })).status,
+            )
+            .toBe(200);
+        await expect
+            .poll(() => readFile(join(app.root, "generated/widget.template.ts"), "utf8"))
+            .toContain("Recovered");
+    } finally {
+        resumeClient();
+        await page.unrouteAll({ behavior: "wait" });
+    }
+    await expect(page.locator("source-widget p")).toHaveText("Recovered TS A");
+});
+
 test("nested sources are watched and only owned stale outputs are removed", async t => {
     const app = await workspace(t);
     await app.start();

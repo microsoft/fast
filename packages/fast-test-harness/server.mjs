@@ -7,6 +7,8 @@ import {
     sourceGenerationPluginName,
 } from "./source-generation.mjs";
 
+const sourceRecoveryEvent = "fast-test-harness:recover-sources";
+
 const MIME_TYPES = {
     ".html": "text/html",
     ".js": "application/javascript",
@@ -283,6 +285,21 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
                         invalidateSources();
                     }
                     server.watcher.on(sourceGenerationEvent, invalidateSources);
+                    if (sourceGeneration) {
+                        server.ws.on(sourceRecoveryEvent, async (data, client) => {
+                            try {
+                                await sourceGeneration?.ready();
+                                if (
+                                    typeof data?.revision === "number" &&
+                                    data.revision !== sourceRevision
+                                ) {
+                                    client.send({ type: "full-reload" });
+                                }
+                            } catch {
+                                // The next successful generation broadcasts a reload.
+                            }
+                        });
+                    }
                 },
             },
             {
@@ -408,28 +425,32 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
         }
     }
 
-    async function sendErrorPage(req, res, error) {
+    async function sendErrorPage(req, res, error, revision) {
         if (sourceGeneration && req.headers.accept?.includes("text/html")) {
             const $ = load("<!doctype html><html><body><pre></pre></body></html>");
             $("pre").text(error.message);
-            htmlResponse(
-                res,
-                500,
-                await vite
-                    .transformIndexHtml(req.url || "/", $.html())
-                    .catch(() => $.html()),
-            );
+            const html = await vite
+                .transformIndexHtml(req.url || "/", $.html())
+                .catch(() => $.html());
+            // Inject after transformation so source-module gating cannot block recovery.
+            const recovery = `<script type="module">
+                import { createHotContext } from ${JSON.stringify(`${vite.config.base}@vite/client`)};
+                const hot = createHotContext("/@fast-test-harness/source-recovery");
+                hot.send(${JSON.stringify(sourceRecoveryEvent)}, { revision: ${revision} });
+            </script>`;
+            htmlResponse(res, 500, html.replace("</body>", `${recovery}</body>`));
         } else {
             res.writeHead(500).end("Internal Server Error");
         }
     }
 
     const server = createHttpServer(async (req, res) => {
+        const revision = sourceRevision;
         try {
             await sourceGeneration?.ready();
         } catch (error) {
             if (req.headers.accept?.includes("text/html")) {
-                await sendErrorPage(req, res, error);
+                await sendErrorPage(req, res, error, revision);
             } else {
                 // Keep Vite's error overlay and reload client alive during recovery.
                 vite.middlewares(req, res, () => {
@@ -491,7 +512,7 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
                     const request = fixtureRequests.get(pathname);
                     await generateFixture(request.route, request.body);
                 } catch (error) {
-                    await sendErrorPage(req, res, error);
+                    await sendErrorPage(req, res, error, revision);
                     return;
                 }
             }
@@ -513,7 +534,7 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
             } catch (e) {
                 vite?.ssrFixStacktrace?.(e);
                 console.log(e.stack);
-                await sendErrorPage(req, res, e);
+                await sendErrorPage(req, res, e, revision);
                 return;
             }
         }
@@ -555,7 +576,7 @@ export async function startServer(cwd = process.cwd(), root, configFile, options
             } catch (e) {
                 vite?.ssrFixStacktrace?.(e);
                 console.log(e.stack);
-                await sendErrorPage(req, res, e);
+                await sendErrorPage(req, res, e, revision);
             }
         });
     });
