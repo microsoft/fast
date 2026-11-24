@@ -218,6 +218,44 @@ export function stateValidationFixture(count, shape = "nested") {
     };
 }
 
+export function escapePrefixFixture(count, shape, length = 1024) {
+    let unit;
+    switch (shape) {
+        case "ascii":
+        case "sparse":
+        case "early":
+        case "hash":
+            unit = "Plain 123 text. ";
+            break;
+        case "unicode":
+            unit = "caf\u00e9 \u{1f600} ";
+            break;
+        case "dense":
+            unit = "\u00e9&<>\"'";
+            break;
+        default:
+            throw new Error(`Unknown escape shape: ${shape}`);
+    }
+    const bytes = Buffer.byteLength(unit);
+    let label = unit.repeat(Math.floor(length / bytes)) + "x".repeat(length % bytes);
+    if (shape === "sparse") {
+        label += "&\u00e9<>'\"";
+    } else if (shape === "early") {
+        label = "&<>'\"" + label;
+    } else if (shape === "hash") {
+        label = "#" + label;
+    }
+    return {
+        entry: "<escape-root></escape-root>",
+        templates: {
+            "escape-root":
+                '<f-repeat value="{{row in rows}}">' +
+                '<p title="{{label}}">{{label}}</p></f-repeat>',
+        },
+        state: { rows: Array.from({ length: count }, () => true), label },
+    };
+}
+
 export function nestedShadowFixture(shape) {
     const depth = shape === "deep" ? 32 : shape === "binding" ? 16 : 12;
     const content =

@@ -151,6 +151,37 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(case) = case.strip_prefix("escaped-value-") {
+        let parts = case.split('-').collect::<Vec<_>>();
+        let [shape, length, count] = parts.as_slice() else {
+            return Err("Unknown workload".into());
+        };
+        let length: usize = length.parse()?;
+        let count: usize = count.parse()?;
+        let unit = match *shape {
+            "ascii" | "sparse" | "early" | "hash" => "Plain 123 text. ",
+            "unicode" => "café 😀 ",
+            "dense" => "é&<>\"'",
+            _ => return Err("Unknown workload".into()),
+        };
+        let mut label = unit.repeat(length / unit.len());
+        label.push_str(&"x".repeat(length % unit.len()));
+        match *shape {
+            "sparse" => label.push_str("&é<>'\""),
+            "early" => label.insert_str(0, "&<>'\""),
+            "hash" => label.insert(0, '#'),
+            _ => {}
+        }
+        let mut locator = Locator::from_templates(Default::default());
+        locator.add_template(
+            "escape-root",
+            "<f-repeat value=\"{{row in rows}}\"><p title=\"{{label}}\">{{label}}</p></f-repeat>",
+        );
+        return Ok((
+            compile_server_artifact("<escape-root></escape-root>", &locator)?,
+            json!({"rows":vec![true; count],"label":label}).to_string(),
+        ));
+    }
     if let Some(case) = case.strip_prefix("shadow-opening-") {
         let (shape, count) = case.rsplit_once('-').ok_or("Unknown workload")?;
         let count: usize = count.parse()?;

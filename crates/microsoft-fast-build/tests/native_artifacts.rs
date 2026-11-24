@@ -2516,6 +2516,57 @@ fn bounded_composite_attributes_keep_borrowed_and_synthetic_repeat_values() {
 }
 
 #[test]
+fn long_escape_prefixes_keep_exact_output_budgets_and_recovery() {
+    let locator = common::make_locator(&[("escape-root", "<p title=\"{{label}}\">{{label}}</p>")]);
+    let artifact = CompiledArtifact::load(
+        &compile_server_artifact("<escape-root></escape-root>", &locator).unwrap(),
+    )
+    .unwrap();
+    for padding in [0, 7, 52, 53, 54, 63, 64, 65, 257] {
+        let prefix = "x".repeat(padding);
+        let state = json!({"label":format!("{prefix}é😀&<>'\"")}).to_string();
+        let escaped = format!("{prefix}é😀&amp;&lt;&gt;&#39;&quot;");
+        let prepared = PreparedState::from_json(&state).unwrap();
+        for markers_v2 in [false, true] {
+            let (marker, start, end) = if markers_v2 {
+                (
+                    "data-fe-b-0",
+                    "<!--fe-b$$start$$1$$fast-build$$fe-b-->",
+                    "<!--fe-b$$end$$1$$fast-build$$fe-b-->",
+                )
+            } else {
+                ("data-fe=\"1\"", "<!--fe:b-->", "<!--fe:/b-->")
+            };
+            let expected = format!(
+                "<escape-root><template shadowrootmode=\"open\"><p title=\"{escaped}\" {marker}>{start}{escaped}{end}</p></template></escape-root>"
+            );
+            let exact = NativeRenderOptions {
+                markers_v2,
+                max_output_bytes: expected.len(),
+                ..Default::default()
+            };
+            for mode in 0..3 {
+                let render = |options: &NativeRenderOptions| match mode {
+                    0 => artifact.render_entry(&parse_render_state(&state).unwrap(), options),
+                    1 => artifact.render_entry_prepared(&prepared, options),
+                    _ => artifact.render_entry_json(&state, options),
+                };
+                let held = render(&exact).unwrap();
+                assert_eq!(held, expected);
+                for max_output_bytes in [0, padding, expected.len() - 1] {
+                    let short = NativeRenderOptions {
+                        max_output_bytes,
+                        ..exact.clone()
+                    };
+                    assert_eq!(render(&short).unwrap_err().code, "render-limit");
+                }
+                assert_eq!(render(&exact).unwrap(), held);
+            }
+        }
+    }
+}
+
+#[test]
 fn nested_shadow_errors_precede_host_attribute_budgets_and_recover() {
     let locator = common::make_locator_with_host_attrs(&[
         (
