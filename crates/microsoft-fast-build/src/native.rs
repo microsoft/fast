@@ -821,6 +821,7 @@ struct Executor<'a> {
     plan: &'a Plan,
     options: &'a NativeRenderOptions,
     out: String,
+    output_limit: usize,
     steps: usize,
 }
 
@@ -836,11 +837,15 @@ impl<'a> Executor<'a> {
             plan,
             options,
             out: String::new(),
+            output_limit: options.max_output_bytes,
             steps: 0,
         }
     }
+    fn remaining_bytes(&self) -> usize {
+        self.output_limit.saturating_sub(self.out.len())
+    }
     fn push(&mut self, text: &str) -> Result<(), NativeRenderError> {
-        if text.len() > self.options.max_output_bytes.saturating_sub(self.out.len()) {
+        if text.len() > self.remaining_bytes() {
             return Err(error("render-limit", "Output byte limit exceeded"));
         }
         self.out.push_str(text);
@@ -852,14 +857,48 @@ impl<'a> Executor<'a> {
         let length = parts
             .iter()
             .try_fold(0usize, |length, part| length.checked_add(part.len()))
-            .filter(|length| {
-                *length <= self.options.max_output_bytes.saturating_sub(self.out.len())
-            })
+            .filter(|length| *length <= self.remaining_bytes())
             .ok_or_else(|| error("render-limit", "Output byte limit exceeded"))?;
         // Match a single push_str's output-buffer growth without a marker String.
         self.out.reserve(length);
         for part in parts {
             self.out.push_str(part);
+        }
+        Ok(())
+    }
+    fn complete_shadow(
+        &mut self,
+        shadow_start: usize,
+        shadow_end: usize,
+    ) -> Result<(), NativeRenderError> {
+        if self.out.len() > self.options.max_output_bytes {
+            return Err(error("render-limit", "Output byte limit exceeded"));
+        }
+        self.output_limit = self.options.max_output_bytes;
+        if shadow_start == shadow_end {
+            return Ok(());
+        }
+        let shadow_length = shadow_end - shadow_start;
+        let opening_length = self.out.len() - shadow_end;
+        let (moved, destination) = if opening_length <= shadow_length {
+            (shadow_end..self.out.len(), shadow_start)
+        } else {
+            (shadow_start..shadow_end, self.out.len() - shadow_length)
+        };
+        let length = moved.len();
+        // Move the smaller side; short spans use bounded scratch instead of a heap copy.
+        if length <= 256 {
+            let mut scratch = [0; 256];
+            scratch[..length].copy_from_slice(self.out[moved.clone()].as_bytes());
+            self.out.replace_range(moved, "");
+            self.out.insert_str(
+                destination,
+                std::str::from_utf8(&scratch[..length]).expect("output consists of UTF-8 spans"),
+            );
+        } else {
+            let scratch = self.out[moved.clone()].to_owned();
+            self.out.replace_range(moved, "");
+            self.out.insert_str(destination, &scratch);
         }
         Ok(())
     }
@@ -1238,8 +1277,7 @@ impl<'a> Executor<'a> {
                             .then_some(root),
                     };
                     let child = if props.is_empty() { root } else { &child };
-                    // JS computes shadow before host attributes. Keep error ordering
-                    // while retaining a single bounded output allocation.
+                    // Render shadow first for error ordering, then reorder the opening.
                     let shadow_start = self.out.len();
                     self.body(
                         component.shadow,
@@ -1249,7 +1287,17 @@ impl<'a> Executor<'a> {
                         false,
                         depth + 1,
                     )?;
-                    let shadow = self.out.split_off(shadow_start);
+                    let shadow_end = self.out.len();
+                    let shadow_length = shadow_end - shadow_start;
+                    // Copying small shadows is cheaper than reordering their host opening.
+                    let shadow = if shadow_length <= 4096 {
+                        Some(self.out.split_off(shadow_start))
+                    } else {
+                        // Charge the pending shadow at its original append point.
+                        self.output_limit =
+                            self.options.max_output_bytes.saturating_add(shadow_length);
+                        None
+                    };
                     let hydration_attribute = if entry {
                         self.attrs(&el.entry, root, loops)?;
                         None
@@ -1272,7 +1320,11 @@ impl<'a> Executor<'a> {
                     }
                     self.push(">")?;
                     self.push(&component.tag)?;
-                    self.push(&shadow)?;
+                    if let Some(shadow) = shadow {
+                        self.push(&shadow)?;
+                    } else {
+                        self.complete_shadow(shadow_start, shadow_end)?;
+                    }
                     self.push("</template>")?;
                     self.body(el.body, root, loops, scope, false, depth + 1)?;
                     self.push(&component.closing)?;
@@ -1360,6 +1412,48 @@ mod tests {
             &compile_server_artifact("", &Locator::from_templates(HashMap::new())).unwrap(),
         )
         .unwrap()
+    }
+
+    #[test]
+    fn shadow_assembly_preserves_utf8_order_and_deferred_byte_limits() {
+        let artifact = marker_artifact();
+        let text = |length| format!("{}{}", "é".repeat(length / 2), "x".repeat(length % 2));
+        for shadow_length in [0, 1, 255, 256, 257, 1024] {
+            for opening_length in [1, 255, 256, 257, 512] {
+                let shadow = text(shadow_length);
+                let opening = text(opening_length);
+                let prefix = "尾:";
+                let expected = format!("{prefix}{opening}{shadow}");
+                for max_output_bytes in [expected.len() - 1, expected.len(), usize::MAX] {
+                    let options = NativeRenderOptions {
+                        max_output_bytes,
+                        ..Default::default()
+                    };
+                    let mut executor = Executor::new(&artifact.plan, &options);
+                    executor.push(prefix).unwrap();
+                    let start = executor.out.len();
+                    executor.push(&shadow).unwrap();
+                    let end = executor.out.len();
+                    executor.output_limit = max_output_bytes.saturating_add(shadow_length);
+                    let result = executor
+                        .push(&opening)
+                        .and_then(|_| executor.complete_shadow(start, end));
+                    if max_output_bytes < expected.len() {
+                        assert_eq!(result.unwrap_err().message, "Output byte limit exceeded");
+                    } else {
+                        result.unwrap();
+                        assert_eq!(executor.out, expected);
+                        assert_eq!(executor.output_limit, max_output_bytes);
+                        if max_output_bytes == expected.len() {
+                            assert_eq!(
+                                executor.push("!").unwrap_err().message,
+                                "Output byte limit exceeded"
+                            );
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #[test]

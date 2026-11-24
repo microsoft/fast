@@ -12,7 +12,9 @@ import {
     componentPropertyPrefixFixture,
     componentScopeFixture,
     fixture,
+    nestedShadowFixture,
     outputStats,
+    shadowOpeningFixture,
     stateValidationFixture,
 } from "./fixtures.mjs";
 import { profileNativeRendering, profilePhases } from "./native-profile.mjs";
@@ -413,6 +415,13 @@ async function main() {
         stateValidationWide: stateValidationFixture(instances, "wide"),
         stateValidationScalars: stateValidationFixture(instances, "scalars"),
         stateValidationDuplicate: stateValidationFixture(instances, "duplicate"),
+        deepShadows: nestedShadowFixture("deep"),
+        staticShadows: nestedShadowFixture("static"),
+        bindingShadows: nestedShadowFixture("binding"),
+        shadowOpeningShort: shadowOpeningFixture(instances, "short"),
+        shadowOpeningWide: shadowOpeningFixture(instances, "wide"),
+        shadowOpeningTiny: shadowOpeningFixture(instances, "tiny"),
+        shadowOpeningEmpty: shadowOpeningFixture(instances, "empty"),
         propertyPrefixGlobal4: componentPropertyPrefixFixture(instances, 4),
         propertyPrefixGlobal12: componentPropertyPrefixFixture(instances, 12),
         propertyPrefixRow4: componentPropertyPrefixFixture(instances, 4, "row"),
