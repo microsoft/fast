@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Avoid redundant output-budget checks when appending preflighted hydration markers.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
