@@ -351,8 +351,10 @@ only removes owned outputs with no remaining source, including across restarts.
 Nested output paths cannot traverse directory symlinks.
 
 The Vite watcher serializes generation after HTML/CSS changes and source
-TypeScript edits. Unchanged outputs are not rewritten. Source changes invalidate
-Vite's module graph, clear cached CSR shells and SSR fixtures, and trigger a page
+TypeScript edits. Source mode defaults to write-stability watching so rapid edits
+are coalesced rather than dropped by backend change throttling; explicit Vite
+watch settings are retained. Unchanged outputs are not rewritten. Source changes
+invalidate Vite's module graph, clear cached CSR shells and SSR fixtures, and trigger a page
 reload. Requests and source module loads await the latest generation; conversion
 failures reject stale module loads while leaving Vite's reload client available
 for recovery. Error pages report their source revision over Vite's WebSocket after

@@ -249,6 +249,21 @@ export function sourceGenerationPlugin(options) {
     return {
         name: sourceGenerationPluginName,
         api: { ready },
+        config(userConfig) {
+            if (userConfig.server?.watch === null) {
+                return;
+            }
+            return {
+                server: {
+                    watch: {
+                        awaitWriteFinish: userConfig.server?.watch?.awaitWriteFinish ?? {
+                            stabilityThreshold: 50,
+                            pollInterval: 10,
+                        },
+                    },
+                },
+            };
+        },
         async configResolved(resolved) {
             config = resolved;
             closed = false;

@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, stat, symlink, writeFile } from "node:fs/promises";
+import {
+    mkdir,
+    mkdtemp,
+    readFile,
+    realpath,
+    rm,
+    stat,
+    symlink,
+    writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
@@ -16,7 +25,7 @@ const template = (text: string) =>
     `<f-template name="source-widget"><template><p>${text} {{message}}</p></template></f-template>`;
 
 async function workspace(t: any) {
-    const root = await mkdtemp(join(tmpdir(), "fast-harness-sources-"));
+    const root = await mkdtemp(join(await realpath(tmpdir()), "fast-harness-sources-"));
     await mkdir(join(root, "src"));
     let server: Awaited<ReturnType<typeof startServer>> | undefined;
     t.after(async () => {
@@ -67,7 +76,10 @@ async function workspace(t: any) {
                         ]),
                     ),
                 )} },
-                server: { fs: { allow: ${JSON.stringify([root, elementRoot])} } }
+                server: {
+                    watch: { useFsEvents: false, usePolling: false },
+                    fs: { allow: ${JSON.stringify([root, elementRoot])} }
+                }
             });`,
         ),
     ]);
@@ -136,7 +148,7 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
     await writeFile(join(app.root, "src/widget.html"), template("HTML B"));
     await expect(text).toHaveText("HTML B TS A");
     assert.match(await renderSSR(), /HTML B/);
-    await expect.poll(() => ssrPage.content()).toContain("HTML B");
+    await expect.poll(() => ssrPage.content().catch(() => "")).toContain("HTML B");
     await writeFile(join(app.root, "src/widget.css"), ":host { --test-color: blue; }");
     await expect.poll(color).toBe("blue");
     assert.match(await renderSSR(), /--test-color: blue/);
@@ -152,11 +164,21 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
     assert.equal((await stat(generated)).mtimeMs, before);
     const held = await readFile(generated, "utf8");
     await writeFile(join(app.root, "src/widget.html"), "<broken>");
-    await expect.poll(async () => (await fetch(origin)).status).toBe(500);
+    await expect
+        .poll(async () => (await fetch(origin)).status, { intervals: [1] })
+        .toBe(500);
     assert.equal(await readFile(generated, "utf8"), held);
     await writeFile(join(app.root, "src/widget.html"), template("Recovered"));
-    await expect(text).toHaveText("Recovered TS B");
-    await expect.poll(() => ssrPage.content()).toContain("Recovered");
+    try {
+        await expect(text).toHaveText("Recovered TS B");
+    } catch (error) {
+        t.diagnostic(`Generated template: ${await readFile(generated, "utf8")}`);
+        t.diagnostic(
+            `Recovery page: ${await page.content().catch(error => error.message)}`,
+        );
+        throw error;
+    }
+    await expect.poll(() => ssrPage.content().catch(() => "")).toContain("Recovered");
     assert.equal((await fetch(origin, { headers: { Accept: "text/html" } })).status, 200);
     const config = join(app.root, "vite.config.mjs");
     await writeFile(
@@ -166,7 +188,7 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
             'plugins: [{ name: "restart-proof", transformIndexHtml: html => html + "<!--restarted-->" }], sourceGeneration:',
         ),
     );
-    await expect.poll(() => page.content()).toContain("<!--restarted-->");
+    await expect.poll(() => page.content().catch(() => "")).toContain("<!--restarted-->");
     await writeFile(
         join(app.root, "src/state.ts"),
         'export const message: string = "TS C";',
