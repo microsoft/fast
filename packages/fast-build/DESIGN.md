@@ -99,6 +99,8 @@ Hydration markers likewise append literals and stack-formatted indices directly.
 Whole-marker byte-budget preflight preserves failure boundaries without a
 per-marker temporary string or retained request scratch. Reserving the checked
 total before span emission gives the output buffer bulk-append capacity growth.
+Those preflighted spans append directly to the reserved buffer; other output
+writes retain their individual budget checks.
 
 Native state is limited to depth 64 and one million values. Execution permits
 128 nested body calls, with default one-million-step and 64 MiB output budgets.
@@ -187,6 +189,8 @@ shared-prefix reuse, row-scoped bindings and overlapping-alias fallback.
 The `optionalBindings` workload exercises absent optional root keys; corresponding
 Rust cases also cover missing descendants, null roots and present values. See the
 [root-lookup benchmark](./docs/native-root-lookup-benchmark.md) for comparisons.
+The [marker-append benchmark](./docs/native-marker-append-benchmark.md) qualifies
+whole-marker preflight with direct span appends across both marker formats.
 The `componentScope*` and `componentDataset*` workloads exercise inline roots,
 bounded map sizing and grouped fields; the
 [scope-sizing benchmark](./docs/native-scope-sizing-benchmark.md) records comparisons.
