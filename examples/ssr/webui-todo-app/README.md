@@ -63,9 +63,8 @@ system-preference themes via the same `data-theme` attribute — see
 example deliberately keeps the SSR surface area minimal and demonstrates only
 token consumption.)
 
-For the shared package overview, the token catalog, and authoring rules, see
-[`../../design-system/README.md`](../../design-system/README.md) and
-[`../../design-system/DESIGN.md`](../../design-system/DESIGN.md).
+For setup and the token catalog, see
+[`../../design-system/README.md`](../../design-system/README.md).
 
 ## Architecture
 

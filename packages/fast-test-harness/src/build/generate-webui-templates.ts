@@ -11,12 +11,7 @@
  * - Shadow options (e.g. `shadowrootdelegatesfocus`) propagated from the
  *   companion `*.definition-async.js` module
  *
- * Usage as a module:
- * ```ts
- * import { generateWebuiTemplates } from "@microsoft/fast-test-harness/build/generate-webui-templates.js";
- *
- * await generateWebuiTemplates({ cwd: process.cwd(), tagPrefix: "contoso" });
- * ```
+ * @deprecated Author HTML and configure components in createHarnessConfig.
  */
 
 import { glob, mkdir, writeFile } from "node:fs/promises";
@@ -191,6 +186,7 @@ function convertFastDirectivesToWebui(html: string): string {
     return result;
 }
 
+/** @deprecated Configure authored HTML through the components array. */
 export interface GenerateWebuiTemplatesOptions {
     /**
      * Root directory of the package. Defaults to `process.cwd()`.

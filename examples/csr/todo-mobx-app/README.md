@@ -100,7 +100,6 @@ examples/csr/todo-mobx-app/
 ├── tsconfig.json
 ├── vite.config.ts
 ├── README.md                      # this file
-├── DESIGN.md                      # why the autorun pattern, lifecycle details
 └── src/
     ├── design-system.d.ts         # module shim for the tokens stylesheet import
     ├── exports.ts                 # barrel for tooling
@@ -112,8 +111,6 @@ examples/csr/todo-mobx-app/
     ├── todo-app.{ts,template.ts,styles.ts}
     └── todo-form.{ts,template.ts,styles.ts}
 ```
-
-See [DESIGN.md](./DESIGN.md) for an explanation of why this pattern is sufficient.
 
 ## License
 

@@ -2,6 +2,10 @@
 
 ## Compilation pipeline
 
+Node tools locate authored files with the
+[shared component-source contract](../../packages/fast-build/docs/component-sources/DESIGN.md).
+Filesystem discovery and output paths stay outside this crate's string/locator APIs.
+
 Trusted authored HTML and a finite named `Locator` registry are build inputs.
 `server_ir::lower` preprocesses code samples, scans structural instructions and
 eagerly lowers every body. `compile_server_artifact` serializes UTF-8 JSON

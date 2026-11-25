@@ -29,8 +29,11 @@ Read these documents for additional context when needed:
 
 Read these documents, they are located at the root of the specific package or crate, e.g. `packages/<package>/<file>.md` and relate to the package/crates they are located in. When making changes in the package/crate afterwards update these files if necessary.
 
-- `DESIGN.md` - Documents current APIs, architecture and internals.
-- `README.md` - Explains how a developer/agent would use this package/crate.
+- `DESIGN.md` - Helps contributors understand current APIs, architecture, code
+  flow and internals.
+- `README.md` - Explains installation, configuration and public API usage for
+  consumers of the published package/crate. Do not expose or link to DESIGN.md
+  here; follow the documentation skill's audience guidance.
 - `docs/migration.md` - Stable index of migration guides for the current publish; root docs may link here.
 
 # Commit and PR title conventions
