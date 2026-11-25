@@ -114,10 +114,15 @@ memory includes vectors/boxes, prepared paths, static values and the component-n
 lookup, not raw-plus-typed instruction graphs. These tradeoffs require measurement;
 no dispatch speedup or memory saving is assumed. Supported `fast-server-native`
 semantic schemas 1 and 2 load with no compiler-build key. Schema 2 contains
-canonical authored `inputs` plus a compiled `program`. Loading validates the build
-metadata shape, discards it before program decoding and retains only execution data.
-Build metadata increases artifact/read/parse size and peak loading memory, not
-request-time dispatch. Schema 1 uses the same program decoder.
+canonical authored `inputs` plus a compiled `program`. `native/envelope.rs` validates
+the metadata with a streaming Serde visitor, retaining only its shape result rather
+than owned strings, keys or containers. All values are still decoded, including
+unused and overwritten fields: JSON syntax, Unicode, numeric ranges and nesting
+limits are checked before format/schema validation. Decoded duplicate keys keep
+last-value semantics. The program still uses transient wire JSON and the same typed
+plan decoder. Build metadata increases artifact/read/parse size, and escaped strings
+may grow the deserializer's temporary scratch buffer; it does not enter retained
+execution data or request-time dispatch. Schema 1 uses the same program decoder.
 
 Artifacts are immutable owned `Arc` storage (`Send + Sync`), independent of input
 bytes and compiler/locator lifetime. Request-local native frames, repeat aliases,

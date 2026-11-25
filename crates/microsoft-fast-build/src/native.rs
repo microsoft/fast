@@ -6,6 +6,7 @@ use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::Write;
 use std::sync::Arc;
+mod envelope;
 mod plan;
 use plan::{
     Attribute, Comparison, Component, Condition, Dynamic, Operand, Operation, Plan, Segment, Tag,
@@ -141,12 +142,12 @@ pub struct CompiledArtifact {
 impl CompiledArtifact {
     /// Load without HTML/expression parsing. Supports the hash-free `fast-server-native`
     /// semantic schemas 1 and 2, independently of private execution layouts.
-    /// Schema 2 embeds build inputs, which are discarded before plan decoding.
+    /// Schema 2 build inputs are fully validated without retaining a value tree.
     pub fn load(bytes: &[u8]) -> Result<Self, NativeRenderError> {
         if bytes.len() > 64 * 1024 * 1024 {
             return Err(error("invalid-artifact", "Artifact exceeds 64 MiB"));
         }
-        let mut ir: V = serde_json::from_slice(bytes).map_err(|_| invalid())?;
+        let envelope::Envelope(mut ir) = serde_json::from_slice(bytes).map_err(|_| invalid())?;
         if ir["format"] != "fast-server-native"
             // Decoder support is explicit, not coupled to the current emitter version.
             || !matches!(ir["version"].as_u64(), Some(1 | 2))
@@ -158,10 +159,7 @@ impl CompiledArtifact {
         }
         let program = if ir["version"] == 2 {
             let envelope = ir.as_object().ok_or_else(invalid)?;
-            if envelope.len() != 4
-                || !envelope.contains_key("program")
-                || !Self::valid_artifact_inputs(&ir["inputs"])
-            {
+            if envelope.len() != 4 || !envelope.contains_key("program") || ir["inputs"] != true {
                 return Err(invalid());
             }
             ir["program"].take()
@@ -175,19 +173,6 @@ impl CompiledArtifact {
         Ok(Self {
             plan: Arc::new(Plan::load(&program).map_err(|_| invalid())?),
         })
-    }
-
-    fn valid_artifact_inputs(inputs: &V) -> bool {
-        let Some(inputs) = inputs.as_object() else {
-            return false;
-        };
-        inputs.len() == 2
-            && inputs.get("entry").is_some_and(V::is_string)
-            && (inputs.get("templates").is_some_and(V::is_object)
-                || inputs
-                    .get("templateSources")
-                    .and_then(V::as_array)
-                    .is_some_and(|sources| sources.iter().all(V::is_string)))
     }
 
     pub fn render_entry(

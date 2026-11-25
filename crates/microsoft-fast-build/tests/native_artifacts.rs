@@ -786,6 +786,124 @@ fn consolidated_envelopes_reject_missing_or_malformed_build_metadata() {
 }
 
 #[test]
+fn discarded_metadata_preserves_decoded_keys_and_last_duplicate_values() {
+    let bytes = compile_server_artifact("kept", &common::make_locator(&[])).unwrap();
+    let original: Value = serde_json::from_slice(&bytes).unwrap();
+    let program = &original["program"];
+    for (fields, valid) in [
+        (r#""inputs":{"entry":"","templates":{}}"#, true),
+        (
+            r#""inputs":{"entry":"\u0061","templateSources":["","a\nb"]}"#,
+            true,
+        ),
+        (r#""inputs":{},"inputs":{"entry":"","templates":{}}"#, true),
+        (r#""inputs":{"entry":"","templates":{}},"inputs":{}"#, false),
+        (r#""inputs":{"entry":0,"entry":"","templates":{}}"#, true),
+        (r#""inputs":{"entry":"","entry":0,"templates":{}}"#, false),
+        (
+            r#""inputs":{"entry":"","templates":[],"templates":{"nested":[null,true,1,1.5,{"a":"b"}]}}"#,
+            true,
+        ),
+        (
+            r#""inputs":{"entry":"","templates":{},"templates":[]}"#,
+            false,
+        ),
+        (
+            r#""inputs":{"entry":"","templateSources":[0],"templateSources":[]}"#,
+            true,
+        ),
+        (
+            r#""inputs":{"entry":"","templateSources":[],"templateSources":[0]}"#,
+            false,
+        ),
+        (r#""inputs":{"\u0065ntry":"","templa\u0074es":{}}"#, true),
+        (
+            r#""inputs":{"entry":"","templates":{},"templateSources":[]}"#,
+            false,
+        ),
+        (
+            r#""inputs":{"entry":"","templates":{},"unknown":0,"unknown":1}"#,
+            false,
+        ),
+    ] {
+        let json = format!(
+            r#"{{{fields},"program":{program},"version":2,"format":"fast-server-native"}}"#
+        );
+        let result = CompiledArtifact::load(json.as_bytes());
+        assert_eq!(result.is_ok(), valid, "{json}");
+        if valid {
+            assert_eq!(
+                result
+                    .unwrap()
+                    .render_entry_json("{}", &Default::default())
+                    .unwrap(),
+                "kept",
+            );
+        } else {
+            assert_eq!(result.unwrap_err().code, "invalid-artifact");
+        }
+    }
+}
+
+#[test]
+fn discarded_metadata_still_fully_validates_unused_and_overwritten_json() {
+    let bytes = compile_server_artifact("kept", &common::make_locator(&[])).unwrap();
+    let original: Value = serde_json::from_slice(&bytes).unwrap();
+    let nested = format!("{}0{}", "[".repeat(130), "]".repeat(130));
+    for invalid in [
+        r#""\uD800""#,
+        r#""\uDC00""#,
+        r#"{"\uD800":null}"#,
+        "1e9999",
+        "[1,]",
+        &nested,
+    ] {
+        for fields in [
+            format!(r#""inputs":{{"entry":"","templates":{{"unused":{invalid}}}}}"#),
+            format!(r#""inputs":{invalid},"inputs":{{"entry":"","templates":{{}}}}"#),
+            format!(r#""inputs":{{"entry":{invalid},"entry":"","templates":{{}}}}"#),
+            format!(r#""inputs":{{"entry":"","templates":{{"unused":{invalid},"unused":0}}}}"#),
+        ] {
+            for version in [2, 99] {
+                let json = format!(
+                    r#"{{"format":"fast-server-native","version":{version},{fields},"program":{}}}"#,
+                    original["program"],
+                );
+                assert!(serde_json::from_str::<Value>(&json).is_err());
+                assert_eq!(
+                    CompiledArtifact::load(json.as_bytes()).unwrap_err().code,
+                    "invalid-artifact",
+                    "{json}",
+                );
+            }
+        }
+    }
+    for root in ["null", "true", "42", "1.5", r#""text""#, "[]", "[{}]"] {
+        assert_eq!(
+            CompiledArtifact::load(root.as_bytes()).unwrap_err().code,
+            "incompatible-artifact",
+            "{root}",
+        );
+    }
+    let mut schema1: Value = original["program"].clone();
+    schema1["format"] = json!("fast-server-native");
+    schema1["version"] = json!(1);
+    schema1["inputs"] = json!({"entry":"","templates":{}});
+    assert_eq!(
+        CompiledArtifact::load(&serde_json::to_vec(&schema1).unwrap())
+            .unwrap_err()
+            .code,
+        "invalid-artifact",
+    );
+    let mut trailing = bytes;
+    trailing.extend_from_slice(b" true");
+    assert_eq!(
+        CompiledArtifact::load(&trailing).unwrap_err().code,
+        "invalid-artifact",
+    );
+}
+
+#[test]
 fn fresh_json_preserves_binary64_values_and_decimal_output() {
     let bytes = compile_server_artifact(
         r#"<p title="{{value}}" data-joined="pre {{value}}">{{value}}</p>"#,

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Reduce native artifact loading allocations by validating build metadata without retaining its value tree.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
