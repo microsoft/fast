@@ -5,6 +5,11 @@ Development, peer and optional dependencies are separate.
 
 ## Build and execution ownership
 
+Node source integrations use the exported resolver and
+[canonical component-source contract](./docs/component-sources/DESIGN.md).
+Build and Convert consume the same explicit `components` array as Test Harness;
+operation-specific requirements do not create another discovery schema.
+
 `server.js` exposes build-time `compileServerArtifact` and
 `writeServerArtifact`. Compiler WASM delegates HTML parsing, metadata validation,
 expression lowering and artifact serialization to Rust. The resulting UTF-8 JSON
@@ -168,7 +173,7 @@ converter crate.
 | `server.js` / `server.d.ts` | Native artifact compilation, persistence and build-time types |
 | `native-host.mjs` / `native-host.d.ts` | Platform-package/custom Node addon loading and Buffer-only request boundary |
 | `build-native-host.mjs` | Source-build, Cargo receipt selection and standard `.node` addon copy |
-| `bin/fast.js` | CLI/configuration, glob scanning and file I/O |
+| `bin/fast.js` | CLI/configuration, explicit component adapters and file I/O |
 | `build-wasm.cjs` / `wasm/` | Build-time compiler/converter bindings |
 | `test/` | Frozen HTML, CLI/cache, native ownership, worker and deployment contracts |
 | `test/performance/` | Fresh-process native execution measurements and output checks |
@@ -285,7 +290,8 @@ and retain its file association. The API cannot infer original coordinates from
 already-transformed input. See the package README for the complete discovery
 and failure contract.
 
-Template HTML files are scanned for `<f-template>` elements. Each `<f-template>` with a `name` attribute contributes one entry to the templates map:
+The CLI loads only declared component HTML files and uses Rust metadata to
+verify that each contains exactly one definition matching its `tagName`:
 
 ```html
 <f-template name="my-button">
@@ -299,59 +305,24 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 - The inner content of the `<template>` child element becomes the raw template string sent to the compiler.
 - Authored `shadowroot`-prefixed attributes on `<f-template>` become `shadowrootAttributes` metadata applied to the emitted Declarative Shadow DOM `<template>`.
 - Any attributes declared on the inner `<template>` element become `hostAttributes` metadata (parallel to `shadowrootAttributes`). The compiler merges these onto the rendered host element opening tag, with author host attributes winning on conflicts. See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DESIGN.md) for the full propagation rules (client-only attrs are skipped, `{{expr}}` / `?name="{{expr}}"` are resolved against the element's child state, etc.).
-- A file may contain multiple `<f-template>` elements (each becomes a separate entry).
-- If an `<f-template>` has no `name` attribute, a warning is printed to stderr and it is skipped.
 - The Rust parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 ### Helpers
 
 | Function | Role |
 |----------|------|
-| `parseFTemplates(html, filePath, wasm)` | Calls `wasm.parse_f_templates(html)` and emits warnings for nameless templates. Returns `{name, content, shadowrootAttributes, hostAttributes}` entries. |
+| `readComponentTemplate(component)` | Calls `wasm.parse_f_templates` and validates the explicit identity while retaining authored source and complete definition metadata. |
 
 The `<f-template>` parsing logic lives exclusively in the Rust crate (`locator::parse_f_templates`) and is exposed via the `wasm.parse_f_templates` WASM export. The JS layer only handles warnings and file I/O; it contains no duplicate parsing logic.
 
 ---
 
-## Glob pattern scanning
-
-Glob patterns support:
-
-| Syntax | Meaning |
-|--------|---------|
-| `*` | Any characters within one path segment |
-| `**` | Zero or more path segments |
-| `?` | Any single character within a segment |
-| exact path | A literal file path with no wildcards — matches exactly that file |
-
-The scanner works in three steps:
-
-1. **`staticPrefixDir(pattern)`** — extracts the longest static directory prefix before the first wildcard. For exact paths (no wildcards), returns the parent directory.
-2. **`walkHtmlFiles(dir)`** — recursively collects all `.html` files under the prefix directory.
-3. **`globMatch(pattern, filePath)`** — filters the collected files to those matching the full pattern.
-
-This means exact file paths like `"./components/my-button.html"` are fully supported alongside glob patterns.
-
----
-
 ## Browser converter output rules
 
-The opt-in `typed` CLI/config boolean is passed as the appended optional WASM
-argument. It annotates template/style exports with FAST types for
-`isolatedDeclarations`; default conversion is unchanged and unsupported target
-syntaxes fail. Explicit CLI false overrides configured true.
-
-`fast convert` accepts a required target `syntax` and a required `templates`
-source: a comma-separated glob pattern list (an exact single file path is also
-accepted, since it is just a pattern with no wildcard). The converter WASM
-module is loaded once and every matched file is converted in the same process,
-whether `templates` resolves to one file or many. `templates` is resolved with
-`resolveTemplateFiles`, which reuses the same
-`staticPrefixDir`/`walkHtmlFiles`/`globMatch` primitives as `fast build`'s
-`resolvePattern`, but returns whole matched file paths without any
-`<f-template>` parsing, since convert operates on entire files. Only `.html`
-files are ever matched — non-`.html` files and directories are silently
-excluded by `walkHtmlFiles`, not rejected with a validation error.
+`fast convert` accepts target `syntax` and explicit `components`. The resolver
+validates paths and derives output filenames from tag names. TypeScript output
+imports the configured class with a derived type-only module specifier and
+annotates template/style exports with FAST types.
 
 | Syntax | Output extension | Default suffix |
 |--------|------------------|----------------|
@@ -359,45 +330,34 @@ excluded by `walkHtmlFiles`, not rejected with a validation error.
 | `webui-framework-prerelease` | `.html` | `.webui-framework.html` |
 | `fast-v3-ts` | `.ts` | `.template.ts` |
 
-When `output` is omitted, the CLI writes next to each input template using the
-default suffix. When `output` is provided, every `*` is replaced with each
-input's basename without its `.html` extension, so the same `--output`
-pattern can target a batch of files. CLI-provided `templates`/`output` paths
-use normal current-working-directory resolution; config-provided paths are
-resolved relative to the config file before the default suffix or `*`
-replacement is applied.
+Rust's metadata supplies HTML target suffixes. TypeScript generation also
+converts configured CSS into `<tagName>.styles.ts`. Native registry conversion
+instead writes one artifact and treats generation fields as metadata.
 
 Before conversion, the CLI validates that:
 
 - The selected syntax is supported.
-- `templates` is provided.
+- At least one component is provided.
 - The output extension matches the selected syntax.
 - The output path is not a directory.
 - An existing output file is only replaced when `--overwrite` is present or
   config contains `"overwrite": true`.
 
-The output parent directory is created automatically (`mkdir -p` semantics) if
-it does not exist; only an existing non-directory at that path is rejected. A
-glob pattern that matches zero files produces a warning (not an error) naming
-the pattern. If every pattern has zero matches, browser conversion completes
-without writing any files. The server registry target instead rejects an empty
-registry.
+The output parent directory is created automatically. Canonical path checks
+repeat after creation to detect newly materialized aliases. Conversion and
+overwrite checks finish across the entire batch before publication through
+sibling temporary files and renames. Symlink/non-regular outputs are rejected;
+stale outputs are not removed.
 
 The converter WASM exposes `convert_template(template: string, syntax: string)`
 and `convert_template_with_options(template: string, syntax: string,
 typeSource?: string, typeSourceImport?: string, typed?: boolean)`. Both return
 a `ConvertResult` with `output: string` and `warnings: string[]` getters.
-`convert_syntax_metadata(): string` supplies target metadata. The CLI always calls
-`convert_template_with_options`, passing through `--type-source` /
-`--type-source-import` (or their config equivalents) as `typeSource` /
-`typeSourceImport`, which are `undefined` when not provided. Rust owns FAST
-declarative syntax validation, conversion semantics, accepted syntax names, output
-extensions, default suffixes, and `type-source`/`type-source-import` validation
-(only valid for `fast-v3-ts`; `type-source-import` requires `type-source`). The
-JavaScript layer reads syntax metadata from WASM and only handles CLI/config
-merging, path rules, file discovery, and file I/O — it does not duplicate that
-validation, so converter errors surface through the WASM call and the
-top-level `main().catch()` handler.
+`convert_syntax_metadata(): string` supplies target metadata. Component conversion
+passes `className`, the derived import, and explicit typing to
+`convert_template_with_options`; conversion results are freed after copying output
+and warnings. Rust owns syntax validation and conversion. Node owns configuration,
+source association, resolution, and publication, never a duplicate HTML parser.
 
 ---
 
@@ -411,15 +371,13 @@ config discovery. The fixture configs write generated output to
 converted `.html` and `.ts` outputs are not checked in. The
 `test:fixtures:convert` package script runs the fixture-only validation, and
 `test:node` includes it so CI validates both `webui-prerelease` and
-`fast-v3-ts` through the real `fast convert` CLI, including a `--templates`
-batch conversion against the real converter WASM. CLI-level coverage of
+`fast-v3-ts` through the real `fast convert` CLI. CLI-level coverage of
 `webui-framework-prerelease` (including its strip-with-warning behavior for
 `f-slotted`/`f-children`) lives in `test/config.test.js` rather than the shared
 fixture, since it exercises a stricter grammar than `supported.html` is written
 against.
 
-`test/fixtures/convert/type-source.test.js` covers `--type-source` /
-`--type-source-import` against `supported.html`, which combines multiple
+Companion TypeScript checking covers `supported.html`, which combines multiple
 differently-named `f-ref`/`f-children`/`f-slotted` directives — the exact shape
 that broke standalone type-checking once a real `TSource` is supplied (see
 [`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic)).
@@ -428,7 +386,7 @@ generated `.template.ts` output against it with the TypeScript compiler API
 (`typescript.createProgram` / `getPreEmitDiagnostics`), asserting zero
 diagnostics, plus a negative case asserting a mismatched directive property name
 does fail to type-check. This test uses its own `test/.fixture-output-type-source/`
-directory — separate from `test/.fixture-output/` — because Node's test runner
+directory, separate from `test/.fixture-output/`, because Node's test runner
 runs test files concurrently and `convert-fixtures.test.js` clears the shared
 `.fixture-output/` directory between its own tests.
 

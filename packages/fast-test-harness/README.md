@@ -34,11 +34,7 @@ test/
 
 ## Automatic HTML/CSS source generation (opt-in)
 
-The existing TypeScript-first workflow remains the default. Extracting HTML/CSS
-from compiled templates with `generateFTemplates`, `generateStylesheets`,
-`generateWebuiTemplates`, or their CLI commands is deprecated but still supported.
-
-To author HTML/CSS instead, install the optional converter peer:
+Author HTML/CSS and install the optional converter peer:
 
 ```shell
 npm install --save-dev @microsoft/fast-build
@@ -73,6 +69,9 @@ class export, and `generated` output directory. `stylesheet`
 is optional. No glob patterns or class discovery are used; unlisted HTML/CSS
 files are ignored. All input paths are relative to the config file, not to
 `generated`. Output directories must not contain any configured input file.
+Build, Convert, and the harness use the same
+[component-source contract](../fast-build/docs/component-sources/DESIGN.md) and
+exported Node resolver. The optional peer is loaded only when generation is enabled.
 
 For example, `src/button/button.html`:
 
@@ -439,9 +438,6 @@ fast-test-harness [command] [options]
 
 Commands:
   serve                    Start the test harness dev server (default)
-  generate-templates       Extract compiled templates (deprecated)
-  generate-stylesheets     Extract compiled ElementStyles (deprecated)
-  generate-webui-templates Extract compiled DSD templates (deprecated)
 
 Serve options:
   -p, --port <number>    Server port (default: 3278)
@@ -454,10 +450,6 @@ Serve options:
 ```
 
 CLI flags take precedence over environment variables.
-
-`generate-templates` preserves browser-valid `<template>` wrappers and strips
-static wrappers even when the opening or closing tag includes ASCII whitespace
-before `>`.
 
 | Environment variable | Default | Description |
 | -------------------- | ------- | ----------- |
@@ -493,7 +485,7 @@ hosting and fixture compilation/rendering failures propagate.
 | Specifier | Contents |
 | ----------- | ---------- |
 | `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `toHaveCustomState`, `installDomShim`, `createSSRRenderer` |
-| `@microsoft/fast-test-harness/build/*.js` | `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
+| `@microsoft/fast-test-harness/build/dom-shim.js` | `installDomShim` |
 | `@microsoft/fast-test-harness/fixtures/*.js` | `CSRFixture`, `SSRFixture`, `toHaveCustomState`, extended `test` and `expect` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `renderTemplate`, `buildEntryHtml`, `buildState` |
 | `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |

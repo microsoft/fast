@@ -409,8 +409,14 @@ provisioning, set `FAST_NATIVE_ADDON`, configure `native-addon`, or provide
 The `fast build` command compiles and renders an entry HTML file with an optional
 JSON state file:
 
+Declare exact sources in a `components` array. The same records can be used by
+FAST Build, Convert, and Test Harness; SSR requires only `tagName` and `template`
+and does not generate client modules. See the
+[shared component-source contract](https://github.com/microsoft/fast/blob/main/packages/fast-build/docs/component-sources/DESIGN.md)
+for file resolution, CSS/type metadata, generated outputs, and integration boundaries.
+
 ```shell
-fast build --entry=index.html --state=state.json --output=output.html --templates="./components/**/*.html"
+fast build --config=fast-build.config.json
 ```
 
 | Option | Default | Description |
@@ -420,7 +426,6 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 | `--native-addon` | `FAST_NATIVE_ADDON`, then platform package | Optional custom Node addon path |
 | `--server-artifact` | _(none)_ | Persist authored inputs and compiled native plans in one JSON artifact |
 | `--output` | `output.html` | Where to write the rendered HTML |
-| `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |
 | `--attribute-name-strategy` | `camelCase` | How to map attribute names to properties |
 | `--markers_v2[=true/false]` | `false` | Emit indexed FAST Element 2.x markers instead of default data-free markers |
 | `--config` | `fast-build.config.json` | Path to a configuration file |
@@ -467,7 +472,7 @@ fast build \
     --entry=entry.html \
     --state=state.json \
     --output=index.html \
-    --templates=templates.html
+    --config=fast-build.config.json
 ```
 
 The output (`index.html`) contains the fully resolved HTML with Declarative Shadow DOM and hydration markers.
@@ -495,7 +500,12 @@ Instead of passing every option on the command line, create a `fast-build.config
     "entry": "entry.html",
     "state": "state.json",
     "output": "index.html",
-    "templates": "./components/**/*.html"
+    "components": [
+        {
+            "tagName": "greeting-card",
+            "template": "./templates.html"
+        }
+    ]
 }
 ```
 
@@ -511,7 +521,7 @@ The `--attribute-name-strategy` option controls how HTML attribute names on cust
 | `none` | Dashes preserved | `foo-bar` → `{{foo-bar}}` |
 
 ```shell
-fast build --attribute-name-strategy=none --templates="./components/**/*.html"
+fast build --attribute-name-strategy=none --config=fast-build.config.json
 ```
 
 :::important

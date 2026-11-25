@@ -19,7 +19,9 @@ Artifact compilation and browser conversion use build-time WASM.
 
 ## Native artifact compilation
 
-Compile trusted templates during the application build:
+Compile trusted templates during the application build. Source-based integrations
+use the shared [component-source contract](./docs/component-sources/DESIGN.md);
+the following lower-level API accepts already loaded strings:
 
 ```js
 import { writeServerArtifact } from "@microsoft/fast-build/server.js";
@@ -135,8 +137,7 @@ fast convert [options]
 | `--state="<path>"` | `{}` when omitted | JSON file containing the template state. If omitted, no state file is loaded and rendering uses an empty state object. If `--state` is provided, the file must exist. |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--native-addon="<path.node>"` | `FAST_NATIVE_ADDON`, then platform package | Optional custom Node addon path; overrides automatic package resolution. |
-| `--server-artifact="<path.json>"` | _(none)_ | Retain authored inputs and the compiled entry/registry together for later builds. Exact authored-source hits skip compiler loading and parsing; state and rendering options remain fresh. |
-| `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
+| `--server-artifact="<path.json>"` | _(none)_ | Retain authored inputs and the compiled entry/registry together for later builds. Matching inputs reuse compiled plans; state and rendering options remain fresh. |
 | `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--markers_v2[=true/false]` | `false` | Emit FAST Element 2.x indexed hydration markers instead of the default FAST Element 3.x data-free markers. |
 | `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
@@ -185,7 +186,7 @@ Produces `output.html`:
 Retain a compiled entry and template registry across builds:
 
 ```sh
-fast build --entry=index.html --templates="./components/**/*.html" --state=state.json --output=output.html --server-artifact=generated/page.artifact.json
+fast build --config=fast-build.config.json --server-artifact=generated/page.artifact.json
 ```
 
 Every build validates current state and writes complete HTML. State, HTML output
@@ -193,12 +194,11 @@ paths and render options can vary while the same authored templates reuse their
 compiled artifact.
 Without `--server-artifact`, builds continue compiling fresh.
 
-An explicit `--templates` selection must contain at least one named template.
-Duplicate names, including overlapping patterns selecting a definition twice,
-are errors. Omit `--templates` for entry-only builds.
+List each component in `components`. Duplicate tag names are errors. Omit
+`components`, or use `[]`, for entry-only builds.
 
 Keep `page.artifact.json` in a trusted local build cache. Matching embedded inputs
-reuse its bytes without compiler loading. Changed inputs compile a replacement and
+reuse its compiled bytes. Changed inputs compile a replacement and
 publish it with one atomic rename. Missing artifacts recompile. Malformed envelopes
 and unsupported versions fail closed; valid edited programs are not independently
 checked against their inputs. Clean invalid files explicitly before rebuilding.
@@ -502,17 +502,15 @@ Runtime errors do not promise compiler source coordinates or partial HTML.
 
 ### Custom element templates
 
-Pass a glob pattern (or comma-separated list of patterns) to `--templates` to expand custom elements into [Declarative Shadow DOM](https://developer.chrome.com/docs/css-ui/declarative-shadow-dom):
+List exact component sources in the configuration file to expand custom elements
+into [Declarative Shadow DOM](https://developer.chrome.com/docs/css-ui/declarative-shadow-dom):
 
 ```shell
-fast build \
-  --templates="./components/**/*.html" \
-  --entry=index.html \
-  --state=state.json \
-  --output=output.html
+fast build --config=fast-build.config.json
 ```
 
-Each matched `.html` file is scanned for `<f-template>` elements. The `name` attribute of each `<f-template>` determines the custom element name. A single file may contain multiple templates.
+Each listed HTML file must contain exactly one `<f-template>` definition whose
+`name` matches the configured `tagName`. Unlisted files are ignored.
 
 Template files must use the following format:
 
@@ -524,7 +522,8 @@ Template files must use the following format:
 </f-template>
 ```
 
-If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file. The parser follows browser tag boundaries for the `<f-template>` and inner `<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
+The Rust parser follows browser tag boundaries for the `<f-template>` and inner
+`<template>` wrappers, including ASCII whitespace before `>` in opening and closing tags.
 
 The compiler resolves `shadowrootmode` from its non-empty authored value, then
 `"open"`. It never synthesizes a `shadowroot` alias. Other `shadowroot*` attributes retain
@@ -549,7 +548,7 @@ The `camelCase` strategy only affects "plain" custom element attributes. It does
 
 ```shell
 fast build \
-  --templates="./components/**/*.html" \
+  --config=fast-build.config.json \
   --attribute-name-strategy=camelCase \
   --entry=index.html \
   --state=state.json \
@@ -565,7 +564,12 @@ Instead of passing every option on the command line, you can place a `fast-build
     "entry": "index.html",
     "state": "state.json",
     "output": "output.html",
-    "templates": "./components/**/*.html",
+    "components": [
+        {
+            "tagName": "my-button",
+            "template": "./src/button/button.html"
+        }
+    ],
     "markers_v2": true
 }
 ```
@@ -578,27 +582,28 @@ fast build --config=configs/my-build.json
 
 **Precedence:** CLI arguments always override config file values. For example, `--output=other.html` will override the `output` value in the config file.
 
-**Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
+**Path resolution:** Config paths, including component inputs, resolve relative
+to the config file's directory, not the working directory. CLI paths use the
+working directory.
 
-All keys are optional. Allowed keys are `entry`, `state`, `output`, `templates`,
+All keys are optional. Keys are `entry`, `state`, `output`, `components`,
 `native-addon`, `server-artifact`, `attribute-name-strategy`, and `markers_v2`.
 Native rendering resolves the platform package unless `native-addon` or
 `FAST_NATIVE_ADDON` selects a custom addon. Unknown keys
-produce an error. Values must be strings except the JSON boolean `markers_v2`.
+produce an error. `components` is an array and `markers_v2` is a JSON boolean;
+other values are strings.
 Omitted state uses `{}`; an explicitly supplied state file must exist.
 CLI arguments override config values.
 
 ## Convert
 
-`fast convert` supports browser template conversion and linked server JavaScript.
+`fast convert` generates browser modules or native artifacts from the same
+explicit component records used by Build and Test Harness.
 
 ```shell
-fast convert --syntax=webui-prerelease --templates=example.html
-fast convert --syntax=fast-v3-ts --templates=example.html --output=../*.template.ts
-fast convert --syntax=fast-v3-ts --templates="src/**/*.html" --output=generated/*.template.ts
-fast convert --syntax=fast-v3-ts --templates=example.html \
-    --type-source=MyElement --type-source-import=./my-element.js
-fast convert --syntax=server-native --templates="./components/**/*.html" --output="./generated/server.artifact.json"
+fast convert --config=fast-convert.config.json
+fast convert --config=fast-convert.config.json --overwrite
+fast convert --config=fast-convert.config.json --syntax=server-native --output=./generated/server.artifact.json
 ```
 
 ### Convert options
@@ -606,56 +611,64 @@ fast convert --syntax=server-native --templates="./components/**/*.html" --outpu
 | Option | Default | Description |
 |---|---|---|
 | `--syntax="<syntax>"` | _(required)_ | Target syntax: `webui-prerelease`, `webui-framework-prerelease`, `fast-v3-ts`, or `server-native` |
-| `--templates="<glob>"` | _(required)_ | Comma-separated glob pattern(s) matching `.html` templates. An exact single file path is also accepted. Browser targets convert each file; `server-native` collects named `<f-template>` definitions into one registry. |
-| `--output="<path>"` | Browser: next to source; server: `server.artifact.json` | Browser targets default to `*.webui.html`, `*.webui-framework.html`, or `*.template.ts`, replacing `*` with each input basename. `server-native` writes one `.json` artifact, defaults to the current directory, and rejects `*` in the output path. |
+| `--output="<path.json>"` | `server.artifact.json` | Native registry artifact path. Browser conversion uses each component's `generated` directory. |
 | `--overwrite` | `false` | Allow replacing an existing output file. CLI presence always means `true`. |
-| `--typed[=true/false]` | `false` | Only for `fast-v3-ts`. Add an explicit `ElementViewTemplate<TSource>` export annotation and type-only import. Explicit false overrides configured true. |
-| `--type-source="<Name>"` | _(none)_ | Only valid with `--syntax=fast-v3-ts`. Emits `export const template = html<Name>\`…\`;` instead of the untyped `html` call. Must be a dotted TypeScript identifier (e.g. `MyElement` or `Namespace.MyElement`). |
-| `--type-source-import="<module>"` | _(none)_ | Requires `--type-source`. Also emits `import type { <Name> } from "<module>";` alongside the helper imports. |
 | `--config="<path>"` | `fast-convert.config.json` | Path to a JSON configuration file. If omitted, `fast-convert.config.json` in the current directory is used when present. CLI arguments take precedence over config values. |
 
-Only matched `.html` files are converted; non-`.html` files and directories are
-never matched. Output extensions are `.html` for the WebUI targets, `.ts` for
-`fast-v3-ts`, and `.json` for `server-native`. Missing output parent directories are
-created, and replacing an existing file requires `--overwrite` or
-`"overwrite": true`. Browser targets warn about unmatched patterns; an invocation
-with no matches completes without writing files.
+Only listed inputs are converted. Each HTML input must contain one definition
+matching its `tagName`. Outputs use the tag name, not the input basename:
+`<tagName>.template.ts` and optional `<tagName>.styles.ts` for `fast-v3-ts`,
+or `<tagName>.webui.html` / `<tagName>.webui-framework.html` for HTML targets.
+Missing output directories are created. Replacing files requires `--overwrite`
+or `"overwrite": true`. Conversion and overwrite checks finish across the
+whole batch before files are replaced; stale outputs are not removed.
 
 `server-native` requires at least one named definition, rejects duplicate names and
-TypeScript conversion options, and emits an empty entry with the linked component
-registry. Use `renderHost` or `renderShadow` for those components; use
+TypeScript conversion flags, and emits an empty entry with the linked component
+registry. `generated`, `clientModule`, and `className` remain unused metadata.
+Use `renderHostJson` or `renderShadowJson` for those components; use
 `compileServerArtifact(entry, templates)` to compile a complete page entry.
 
 `webui-framework-prerelease` converts FAST's declarative syntax into the Microsoft WebUI Framework's declarative runtime syntax. `webui-prerelease` emits HTML for WebUI's FAST parser plugin. When `webui-framework-prerelease` strips an unsupported `f-slotted`/`f-children` directive, the CLI prints `Warning: <message>` to stderr for each stripped directive without failing the command.
 
-Use `--type-source` to type-check generated templates against a concrete element
-type. See
-[`microsoft-fast-convert` DESIGN.md](../../crates/microsoft-fast-convert/DESIGN.md#explicit-tsource-generic).
+For TypeScript generation, `clientModule` and `className` produce type-only
+imports and explicit FAST export types. Normal TypeScript checking verifies
+the named class and binding properties. Client code is not evaluated.
 
 ### Convert configuration file
 
-`fast-convert.config.json` follows the same precedence and path-resolution rules as `fast-build.config.json`: CLI arguments override config values, and `templates`/`output` paths from config are resolved relative to the config file directory.
+`fast-convert.config.json` follows the same precedence and config-relative path
+rules as `fast-build.config.json`:
 
 ```json
 {
     "syntax": "fast-v3-ts",
-    "templates": "src/**/*.html",
-    "output": "generated/*.template.ts",
-    "overwrite": false,
-    "type-source": "MyElement",
-    "type-source-import": "./my-element.js"
+    "components": [
+        {
+            "tagName": "m-fast-card",
+            "template": "./src/components/card/card.html",
+            "stylesheet": "./src/components/card/card.css",
+            "clientModule": "./src/components/card/card.ts",
+            "className": "FastCard",
+            "generated": "./src/components/card/generated/"
+        }
+    ],
+    "overwrite": false
 }
 ```
 
-Only `syntax`, `templates`, `output`, `overwrite`, `type-source`,
-`type-source-import`, and `typed` are allowed. Values must be strings except
-`overwrite` and `typed`, which must be JSON booleans.
+Configuration keys are `syntax`, `components`, `output`, and `overwrite`.
+`components` is an array, `overwrite` is a boolean, and other values are strings.
+TypeScript generation requires the class/module/output fields; HTML targets
+require only `tagName`, `template`, and `generated`; native artifacts require
+only `tagName` and `template`. `stylesheet` is optional and converted separately
+only for TypeScript generation. SSR preserves authored stylesheet markup.
 
-For declaration-emitting consumers, use `--typed --type-source=MyElement`.
-The converter WASM's `convert_template_with_options` accepts an
-optional `typed` boolean. `convert_stylesheet(css, "fast-v3-ts", "styles",
-true)` emits an `ElementStyles` annotation. Omit `typed` or pass `false` for
-untyped exports.
+Build uses the same `components` array but never generates client modules.
+Additional Node integrations import `validateComponentSources` and
+`resolveComponentSources` from `@microsoft/fast-build/component-sources.js`.
+See the [canonical contract](./docs/component-sources/DESIGN.md) for base
+directories, symlinks, collisions, output names, and operation boundaries.
 
 ### Running converter fixtures locally
 
@@ -670,9 +683,8 @@ The fixture tests run `fast convert` from fixture directories that contain
 `fast-convert.config.json`, so they verify the same default config discovery used
 by `fast build`. Generated fixture output is written under
 `packages/fast-build/test/.fixture-output/` and removed by the tests.
-`test/fixtures/convert/type-source.test.js` additionally type-checks
-`--type-source` output with the TypeScript compiler API against a companion
-element type, using a separate `test/.fixture-output-type-source/` directory.
+Companion type-checking tests verify generated binding types with the TypeScript
+compiler API.
 
 ## Template syntax
 
