@@ -147,6 +147,10 @@ function defineObservableProperty(
                 return source[field];
             },
             setValue(source: any, value: any): void {
+                if (value === source[field]) {
+                    return;
+                }
+
                 const oldValue = source[field];
                 const newValue = assignObservables(
                     schema,
