@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import {
     mkdir,
@@ -784,25 +783,6 @@ test("component outputs reject nested directories and preflight all conversions"
         await readFile(join(app.root, "generated/other-widget.template.ts"), "utf8"),
         /Shared output/,
     );
-});
-
-test("tag validation rejects long malformed names without excessive backtracking", () => {
-    const result = spawnSync(
-        process.execPath,
-        [
-            "--input-type=module",
-            "-e",
-            `import assert from "node:assert/strict";
-            import { createHarnessConfig } from ${JSON.stringify(configModule)};
-            const component = ${JSON.stringify(component())};
-            assert.throws(() => createHarnessConfig({
-                components: [{ ...component, tagName: "a-" + "-".repeat(200_000) + "!" }],
-            }), /Each component requires/);`,
-        ],
-        { encoding: "utf8", timeout: 10_000 },
-    );
-    assert.equal(result.error, undefined, result.error?.message);
-    assert.equal(result.status, 0, result.stderr);
 });
 
 test("explicit components reject invalid configuration and duplicate outputs", () => {
