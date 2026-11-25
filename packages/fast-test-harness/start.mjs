@@ -26,9 +26,13 @@ function showHelp() {
 
 Commands:
   serve                    Start the test harness dev server (default)
-  generate-templates       Generate <f-template> HTML files from compiled templates
-  generate-stylesheets     Generate CSS files from compiled ElementStyles
-  generate-webui-templates Generate WebUI-compatible DSD templates from compiled templates
+  generate-templates       Extract compiled templates (deprecated)
+  generate-stylesheets     Extract compiled ElementStyles (deprecated)
+  generate-webui-templates Extract compiled DSD templates (deprecated)
+
+The existing compiled-template workflow remains the default. Opt into automatic
+HTML/CSS-to-TypeScript conversion with createHarnessConfig({ components: [...] })
+in your Vite config.
 
 Run fast-test-harness <command> --help for command-specific options.
 
