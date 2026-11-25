@@ -564,7 +564,7 @@ test("per-template source types preserve binding checks in generated TypeScript"
             tagName: "other-widget",
             template: "./src/other.html",
             className: "OtherWidget",
-            clientModule: "./src/other-model.mts",
+            clientModule: "./src/other-model.ts",
             generated: "./src/generated/",
         },
     ];
@@ -608,7 +608,7 @@ test("per-template source types preserve binding checks in generated TypeScript"
         'export class SourceWidget { message = ""; }',
     );
     await writeFile(
-        join(app.root, "src/other-model.mts"),
+        join(app.root, "src/other-model.ts"),
         'export class OtherWidget { label = ""; }',
     );
     await writeFile(
@@ -622,7 +622,7 @@ test("per-template source types preserve binding checks in generated TypeScript"
     );
     assert.match(
         await readFile(join(app.root, "src/generated/other-widget.template.ts"), "utf8"),
-        /import type \{ OtherWidget \} from "\.\.\/other-model\.mjs"/,
+        /import type \{ OtherWidget \} from "\.\.\/other-model\.js"/,
     );
     const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript");
     const diagnostics = () =>

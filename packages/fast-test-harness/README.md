@@ -64,7 +64,7 @@ Pass `--config test/vite.config.mjs` if the config is not discovered automatical
 Paths are relative to the Vite config file, not the shell's working directory.
 Without a config file, programmatically created Vite configurations resolve paths
 relative to Vite's root. `components` is always an array, including for one component.
-Each component identifies its tag name, exact HTML input, client module, named
+Each component identifies its tag name, exact HTML input, `.ts` client module, named
 class export, and `generated` output directory. `stylesheet`
 is optional. No glob patterns or class discovery are used; unlisted HTML/CSS
 files are ignored. All input paths are relative to the config file, not to

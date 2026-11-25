@@ -40,7 +40,7 @@ function validateComponentSources(components, operation) {
                     !component.stylesheet.endsWith(".css"))) ||
             (component.clientModule !== undefined &&
                 (typeof component.clientModule !== "string" ||
-                    !/\.(?:[cm]?[jt]s|[jt]sx)$/.test(component.clientModule))) ||
+                    !component.clientModule.endsWith(".ts"))) ||
             (component.className !== undefined &&
                 (typeof component.className !== "string" ||
                     !/^[A-Za-z_$][\w$]*$/.test(component.className))) ||
@@ -55,6 +55,7 @@ function validateComponentSources(components, operation) {
                 "Each component requires a custom-element tagName and template HTML path; " +
                     "TypeScript generation also requires clientModule, named className, and generated directory. " +
                     "HTML conversion requires a generated directory. " +
+                    "clientModule must be a .ts path when provided. " +
                     "stylesheet must be a CSS path when provided.",
             );
         }
@@ -221,12 +222,7 @@ async function resolveComponentSources(components, options) {
                     `Cannot derive a relative type import for "${component.tagName}" across filesystem roots.`,
                 );
             }
-            specifier = specifier
-                .split(path.sep)
-                .join("/")
-                .replace(/\.mts$/, ".mjs")
-                .replace(/\.cts$/, ".cjs")
-                .replace(/\.tsx?$/, ".js");
+            specifier = specifier.split(path.sep).join("/").replace(/\.ts$/, ".js");
             component.typeSourceImport =
                 specifier.startsWith("./") || specifier.startsWith("../")
                     ? specifier

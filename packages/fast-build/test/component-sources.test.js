@@ -86,33 +86,45 @@ test("validation is operation-specific and preserves harness tag/output identiti
     );
 });
 
+test("client modules must be .ts files in every operation", () => {
+    for (const operation of ["ssr", "typescript", "html"]) {
+        const component = {
+            tagName: "my-card",
+            template: "card.html",
+            clientModule: "card.ts",
+            className: "MyCard",
+            generated: "generated",
+        };
+        validateComponentSources([component], operation);
+        for (const extension of ["tsx", "mts", "cts", "js", "jsx", "mjs", "cjs"]) {
+            assert.throws(
+                () =>
+                    validateComponentSources(
+                        [{ ...component, clientModule: `card.${extension}` }],
+                        operation,
+                    ),
+                /clientModule must be a \.ts path/,
+            );
+        }
+    }
+});
+
 test("resolution uses the config base, derives emitted imports, and never creates outputs", async t => {
     const { directory, component } = fixture(t);
-    for (const [extension, emitted] of [
-        ["mts", "mjs"],
-        ["cts", "cjs"],
-        ["tsx", "js"],
-        ["ts", "js"],
-    ]) {
-        fs.writeFileSync(
-            path.join(directory, `src/card.${extension}`),
-            "export class MyCard {}",
-        );
-        const resolved = await resolveComponentSources(
-            [{ ...component, clientModule: `src/card.${extension}` }],
-            { baseDir: directory, operation: "typescript" },
-        );
-        assert.equal(resolved.components[0].typeSourceImport, `../card.${emitted}`);
-        assert.equal(
-            resolved.components[0].templateOutput,
-            path.join(directory, "src/generated/my-card.template.ts"),
-        );
-        assert.equal(
-            resolved.components[0].stylesheetOutput,
-            path.join(directory, "src/generated/my-card.styles.ts"),
-        );
-        assert.ok(resolved.inputFiles.includes(path.join(directory, "src/card.html")));
-    }
+    const resolved = await resolveComponentSources([component], {
+        baseDir: directory,
+        operation: "typescript",
+    });
+    assert.equal(resolved.components[0].typeSourceImport, "../card.js");
+    assert.equal(
+        resolved.components[0].templateOutput,
+        path.join(directory, "src/generated/my-card.template.ts"),
+    );
+    assert.equal(
+        resolved.components[0].stylesheetOutput,
+        path.join(directory, "src/generated/my-card.styles.ts"),
+    );
+    assert.ok(resolved.inputFiles.includes(path.join(directory, "src/card.html")));
     assert.equal(fs.existsSync(path.join(directory, component.generated)), false);
     await assert.rejects(
         resolveComponentSources([component], { operation: "typescript", baseDir: "." }),
@@ -213,7 +225,7 @@ test("component conversion generates real typed HTML/CSS modules and ignores unl
     assert.notEqual(refused.status, 0);
     assert.match(refused.stderr, /Use --overwrite/);
     const ts = require("typescript");
-    const consumer = path.join(directory, "consumer.mts");
+    const consumer = path.join(directory, "consumer.ts");
     fs.writeFileSync(
         consumer,
         `import { resolveComponentSources, type ComponentSource } from "@microsoft/fast-build/component-sources.js";

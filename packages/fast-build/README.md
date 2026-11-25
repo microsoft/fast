@@ -689,11 +689,12 @@ for (const component of sources.components) {
 ```
 
 `baseDir` must be the absolute directory owning the configuration. All supplied
-inputs must exist as regular files. Resolved records contain canonical absolute
+inputs must exist as regular files; `clientModule` must name a `.ts` file.
+Resolved records contain canonical absolute
 input paths, planned `templateOutput` and optional `stylesheetOutput` paths,
 and a derived `typeSourceImport` for TypeScript generation. Import specifiers
-use forward slashes and rewrite `.ts`/`.tsx` to `.js`, `.mts` to `.mjs`, and
-`.cts` to `.cjs`; imports across filesystem roots are rejected.
+use forward slashes and rewrite `.ts` to `.js`; imports across filesystem roots
+are rejected.
 
 Use `operation: "ssr"` for source resolution without client outputs. For HTML
 conversion, use `operation: "html"` and supply the selected target's HTML

@@ -2,6 +2,7 @@ export interface ComponentSource {
     tagName: string;
     template: string;
     stylesheet?: string;
+    /** Exact .ts file containing the named class export. */
     clientModule?: string;
     className?: string;
     generated?: string;

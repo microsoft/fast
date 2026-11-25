@@ -26,7 +26,7 @@ Its dependency-free implementation and declarations are exported from
 
 `tagName` is a lowercase custom-element identifier containing a hyphen.
 `template` names one exact `.html` file; `stylesheet`, when supplied, names one
-exact `.css` file. `clientModule` names a JavaScript/TypeScript module and
+exact `.css` file. `clientModule` names one exact `.ts` file and
 `className` names its class export. No glob expansion, implicit directory scan,
 class inspection, or runtime registration occurs.
 
@@ -87,7 +87,7 @@ distinct non-overlapping directories. Unlisted files are never discovered.
 Resolved generation records include `templateOutput`, optional
 `stylesheetOutput`, and, for TypeScript, `typeSourceImport`.
 Type imports are relative to the generated directory, use forward slashes, and
-rewrite `.ts`/`.tsx` to `.js`, `.mts` to `.mjs`, and `.cts` to `.cjs`.
+rewrite `.ts` to `.js`.
 Cross-filesystem-root imports are rejected. Modules are never evaluated; normal
 TypeScript checking verifies the named export and binding properties.
 
