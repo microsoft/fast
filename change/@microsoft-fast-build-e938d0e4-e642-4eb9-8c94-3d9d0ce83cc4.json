@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Size native component scopes using bounded distinct property-root counts.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

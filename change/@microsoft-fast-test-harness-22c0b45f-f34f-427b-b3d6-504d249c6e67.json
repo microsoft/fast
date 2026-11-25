@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "Reuse shared component-source resolution and document authored component configuration exclusively.",
+  "type": "none",
+  "comment": "Prepare release metadata and current-publish migration documentation.",
   "packageName": "@microsoft/fast-test-harness",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

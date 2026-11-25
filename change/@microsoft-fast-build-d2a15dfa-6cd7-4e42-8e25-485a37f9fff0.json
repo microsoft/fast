@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "comment": "Reduce per-component allocations during native server rendering.",
+  "type": "none",
+  "comment": "Prepare release metadata and current-publish migration documentation.",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

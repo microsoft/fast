@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-test-harness
 
-<!-- This log was last generated on Wed, 18 Nov 2026 06:21:31 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 25 Nov 2026 06:23:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.8.0
+
+Wed, 25 Nov 2026 06:23:44 GMT
+
+### Minor changes
+
+- Add opt-in automatic HTML/CSS-to-TypeScript generation from explicit components with per-component generated directories and class-based binding types, and deprecate compiled-template extraction without changing the default workflow. (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.23.0
+
+### Patches
+
+- Reuse shared component-source resolution and document authored component configuration exclusively. (7559015+janechu@users.noreply.github.com)
 
 ## 0.7.0
 

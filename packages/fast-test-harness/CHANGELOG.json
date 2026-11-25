@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-test-harness",
   "entries": [
     {
+      "date": "Wed, 25 Nov 2026 06:23:44 GMT",
+      "version": "0.8.0",
+      "tag": "@microsoft/fast-test-harness_v0.8.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "3656d25651f91f7148315115310659f626bb0ef9",
+            "comment": "Reuse shared component-source resolution and document authored component configuration exclusively."
+          }
+        ],
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-test-harness",
+            "commit": "710a1d5ba49a5d654a9bfaea0f5ef563a0e92830",
+            "comment": "Add opt-in automatic HTML/CSS-to-TypeScript generation from explicit components with per-component generated directories and class-based binding types, and deprecate compiled-template extraction without changing the default workflow."
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-test-harness",
+            "comment": "Bump @microsoft/fast-build to v0.23.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Nov 2026 06:21:31 GMT",
       "version": "0.7.0",
       "tag": "@microsoft/fast-test-harness_v0.7.0",
