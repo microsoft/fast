@@ -28,10 +28,7 @@ const elementRoot = dirname(
 const template = (text: string) =>
     `<f-template name="source-widget"><template><p>${text} {{message}}</p></template></f-template>`;
 
-async function workspace(
-    t: any,
-    sourceGeneration = '{ root: "./src", outDir: "./generated" }',
-) {
+async function workspace(t: any, sources = '[{ root: "./src", outDir: "./generated" }]') {
     const root = await mkdtemp(join(await realpath(tmpdir()), "fast-harness-sources-"));
     await mkdir(join(root, "src"));
     let server: Awaited<ReturnType<typeof startServer>> | undefined;
@@ -72,7 +69,7 @@ async function workspace(
             join(root, "vite.config.mjs"),
             `import { createHarnessConfig } from ${JSON.stringify(configModule)};
             export default createHarnessConfig({
-                sourceGeneration: ${sourceGeneration},
+                sources: ${sources},
                 resolve: { alias: ${JSON.stringify(
                     Object.fromEntries(
                         ["html.js", "css.js", "fast-element.js"].map(name => [
@@ -109,10 +106,18 @@ async function workspace(
 test("legacy configuration stays the default", () => {
     const config = createHarnessConfig();
     assert.deepEqual(config, defaultConfig);
-    assert.equal(
-        createHarnessConfig({ sourceGeneration: false }).plugins?.length ?? 0,
-        0,
-    );
+    assert.deepEqual(createHarnessConfig({ sources: [] }), defaultConfig);
+});
+
+test("sources configuration requires an array", () => {
+    for (const sources of [
+        { root: "./src", outDir: "./generated" },
+        false,
+        null,
+        "src",
+    ]) {
+        assert.throws(() => createHarnessConfig({ sources }), /sources must be an array/);
+    }
 });
 
 test("source mode generates on a clean checkout and watches HTML, CSS and TypeScript", {
@@ -192,8 +197,8 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
     await writeFile(
         config,
         (await readFile(config, "utf8")).replace(
-            "sourceGeneration:",
-            'plugins: [{ name: "restart-proof", transformIndexHtml: html => html + "<!--restarted-->" }], sourceGeneration:',
+            "sources:",
+            'plugins: [{ name: "restart-proof", transformIndexHtml: html => html + "<!--restarted-->" }], sources:',
         ),
     );
     await expect.poll(() => page.content().catch(() => "")).toContain("<!--restarted-->");
@@ -479,7 +484,7 @@ test("source globs can select templates and disable stylesheet generation", asyn
 });
 
 test("per-template source types preserve binding checks in generated TypeScript", async t => {
-    const sourceGeneration = {
+    const source = {
         root: "./src",
         outDir: "./generated",
         templateTypes: {
@@ -493,7 +498,7 @@ test("per-template source types preserve binding checks in generated TypeScript"
             },
         },
     };
-    const app = await workspace(t, JSON.stringify(sourceGeneration));
+    const app = await workspace(t, JSON.stringify([source]));
     await mkdir(join(app.root, "node_modules/@microsoft"), { recursive: true });
     await symlink(
         elementRoot,
@@ -508,8 +513,16 @@ test("per-template source types preserve binding checks in generated TypeScript"
     await writeFile(
         join(app.root, "config.ts"),
         `import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
-        createHarnessConfig({ sourceGeneration: ${JSON.stringify(sourceGeneration)} });
-        createHarnessConfig({ sourceGeneration: [${JSON.stringify(sourceGeneration)}] });`,
+        import type { SourceOptions } from "@microsoft/fast-test-harness/vite.config.mjs";
+        const source: SourceOptions = ${JSON.stringify(source)};
+        createHarnessConfig({ sources: [source] });
+        createHarnessConfig({ sources: [] });
+        // @ts-expect-error Sources must be an array, even for one mapping.
+        createHarnessConfig({ sources: source });
+        // @ts-expect-error An empty array, not false, disables generation.
+        createHarnessConfig({ sources: false });
+        // @ts-expect-error The unpublished configuration name has been replaced.
+        createHarnessConfig({ sourceGeneration: [source] });`,
     );
     await writeFile(
         join(app.root, "src/model.ts"),
@@ -640,7 +653,7 @@ test("multiple mappings reject output overlap and preflight all conversions", as
         writeFile(
             config,
             original.replace(
-                '{ root: "./src", outDir: "./generated" }',
+                '[{ root: "./src", outDir: "./generated" }]',
                 JSON.stringify([{ root: "./src", outDir: "./generated" }, second]),
             ),
         );
@@ -663,8 +676,8 @@ test("multiple mappings reject output overlap and preflight all conversions", as
 
 test("source mappings and template type mappings reject invalid configuration", () => {
     assert.throws(
-        () => createHarnessConfig({ sourceGeneration: [] }),
-        /at least one root\/outDir mapping/,
+        () => createHarnessConfig({ sources: [{}] }),
+        /Each sources mapping requires root and outDir paths/,
     );
     for (const templateTypes of [
         [],
@@ -674,11 +687,13 @@ test("source mappings and template type mappings reject invalid configuration", 
         assert.throws(
             () =>
                 createHarnessConfig({
-                    sourceGeneration: {
-                        root: "./src",
-                        outDir: "./generated",
-                        templateTypes,
-                    },
+                    sources: [
+                        {
+                            root: "./src",
+                            outDir: "./generated",
+                            templateTypes,
+                        },
+                    ],
                 }),
             /templateTypes must map root-relative HTML paths/,
         );

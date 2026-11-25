@@ -39,12 +39,15 @@ const config = defineConfig({
  * Extend the harness defaults, optionally generating TypeScript from HTML and CSS.
  */
 export function createHarnessConfig(options = {}) {
-    const { sourceGeneration, ...viteOptions } = options;
+    const { sources, ...viteOptions } = options;
+    if (sources !== undefined && !Array.isArray(sources)) {
+        throw new Error("sources must be an array of root/outDir mappings.");
+    }
     return mergeConfig(
         config,
-        sourceGeneration
+        sources?.length
             ? mergeConfig(viteOptions, {
-                  plugins: [sourceGenerationPlugin(sourceGeneration)],
+                  plugins: [sourceGenerationPlugin(sources)],
               })
             : viteOptions,
     );

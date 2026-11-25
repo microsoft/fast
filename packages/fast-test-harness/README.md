@@ -51,19 +51,22 @@ Configure the harness's Vite config, and continue starting the harness normally:
 import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
 
 export default createHarnessConfig({
-    sourceGeneration: {
-        root: "../src",
-        outDir: "../generated",
-        templates: "**/*.html",
-        stylesheets: "**/*.css",
-    },
+    sources: [
+        {
+            root: "../src",
+            outDir: "../generated",
+            templates: "**/*.html",
+            stylesheets: "**/*.css",
+        },
+    ],
 });
 ```
 
 Pass `--config test/vite.config.mjs` if the config is not discovered automatically.
 Paths are relative to the Vite config file, not the shell's working directory.
 Without a config file, programmatically created Vite configurations resolve paths
-relative to Vite's root. Both `root` and `outDir` are required; `outDir` must not
+relative to Vite's root. `sources` is always an array, including for one mapping.
+Both `root` and `outDir` are required in each mapping; `outDir` must not
 contain `root`. Each glob option accepts a string, string array, or `false` to
 disable that input type. Defaults include all HTML and CSS under `root`, excluding
 `node_modules`, `.git`, and the generated-output directory.
@@ -125,16 +128,18 @@ does not require the native SSR addon.
 Optionally associate each HTML input with its element type:
 
 ```js
-sourceGeneration: {
-    root: "../src",
-    outDir: "../generated",
-    templateTypes: {
-        "button/button.html": {
-            typeSource: "MyButton",
-            typeSourceImport: "../../src/button/button.js",
+sources: [
+    {
+        root: "../src",
+        outDir: "../generated",
+        templateTypes: {
+            "button/button.html": {
+                typeSource: "MyButton",
+                typeSourceImport: "../../src/button/button.js",
+            },
         },
     },
-}
+]
 ```
 
 Keys are HTML paths relative to `root`, using forward slashes. `typeSource` is a
@@ -149,12 +154,12 @@ source type; no types are inferred and Vite still does not type-check.
 
 ### Multiple packages
 
-Use a nonempty array to generate modules within each package's TypeScript root
+Add a mapping for each package to generate modules within its TypeScript root
 while serving all packages with one harness:
 
 ```js
 export default createHarnessConfig({
-    sourceGeneration: [
+    sources: [
         { root: "../packages/button/src", outDir: "../packages/button/src/generated" },
         { root: "../packages/card/src", outDir: "../packages/card/src/generated" },
     ],
@@ -190,7 +195,8 @@ The monolithic `packageName` mode still discovers `*.template.html` files under
 its configured `distDir` (default `dist/esm`). Source generation does not change
 that discovery rule or extract a separate build-artifact tree.
 
-Omit `sourceGeneration`, or set it to `false`, to keep the default workflow.
+Omit `sources`, or set it to `[]`, to keep the default workflow. Non-array values,
+including a single mapping object or `false`, are rejected.
 
 ## Writing tests
 
@@ -462,7 +468,7 @@ hosting and fixture compilation/rendering failures propagate.
 | `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceGenerationOptions` |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceOptions`, `SourceTemplateType` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
 
 SSR fixture generation compiles dynamically authored test HTML as development

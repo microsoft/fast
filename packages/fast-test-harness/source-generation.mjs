@@ -54,11 +54,7 @@ async function ensureParent(root, file) {
 }
 
 export function sourceGenerationPlugin(options) {
-    const definitions = Array.isArray(options) ? options : [options];
-    if (!definitions.length) {
-        throw new Error("sourceGeneration requires at least one root/outDir mapping.");
-    }
-    const inputs = definitions.map(options => {
+    const inputs = options.map(options => {
         if (
             !options ||
             typeof options.root !== "string" ||
@@ -66,7 +62,7 @@ export function sourceGenerationPlugin(options) {
             typeof options.outDir !== "string" ||
             !options.outDir
         ) {
-            throw new Error("sourceGeneration requires root and outDir paths.");
+            throw new Error("Each sources mapping requires root and outDir paths.");
         }
         const patterns = [
             ...(options.templates === false ? [] : [options.templates ?? "**/*.html"]),
@@ -315,7 +311,7 @@ export function sourceGenerationPlugin(options) {
                 config.plugins.filter(p => p.name === sourceGenerationPluginName).length >
                 1
             ) {
-                throw new Error("Configure sourceGeneration only once.");
+                throw new Error("Configure sources only once.");
             }
             const base = config.configFile ? dirname(config.configFile) : config.root;
             mappings = [];
@@ -358,7 +354,7 @@ export function sourceGenerationPlugin(options) {
                 );
             } catch (error) {
                 throw new Error(
-                    `sourceGeneration requires @microsoft/fast-build and its conversion WASM: ${error.message}`,
+                    `Configuring sources requires @microsoft/fast-build and its conversion WASM: ${error.message}`,
                     { cause: error },
                 );
             }

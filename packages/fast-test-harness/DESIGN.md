@@ -336,15 +336,16 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 | `build.sourcemap` | `true` |
 
 The named `createHarnessConfig(options)` export merges ordinary Vite settings with
-these defaults. Its optional `sourceGeneration` setting accepts one mapping or a
-nonempty array of mappings, each with `root`, `outDir`, optional
+these defaults. Its optional `sources` setting accepts only an array of mappings,
+each with `root`, `outDir`, optional
 `templates`/`stylesheets` glob patterns, and optional `templateTypes`. Paths resolve
 from the config file's directory, or Vite's root for inline configurations.
 `templateTypes` maps root-relative, forward-slash HTML paths to `typeSource` and an
 optional `typeSourceImport`, passed through to the converter. Imports resolve from
 the generated module; mapped templates use an explicit source generic for normal
 TypeScript binding checks. Unmapped templates retain the default `any` source.
-Omission or `false` keeps source generation disabled. The compiled-template
+Omission or an empty array keeps source generation disabled without installing
+the source-generation plugin. Non-array values are rejected. The compiled-template
 extraction utilities and their CLI commands remain available, with deprecated APIs.
 
 The source-generation plugin lazily loads FAST Build's conversion WASM and emits
@@ -392,7 +393,7 @@ HTML/CSS edits using those authored exports.
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
 | `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceGenerationOptions`, `SourceTemplateType` |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceOptions`, `SourceTemplateType` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
 
 The SSR fixture generator returns `Promise<RenderResult>`; call `await render(queryObj)`.

@@ -6,7 +6,7 @@ declare module "@microsoft/fast-test-harness/vite.config.mjs" {
         typeSourceImport?: string;
     }
 
-    export interface SourceGenerationOptions {
+    export interface SourceOptions {
         /** HTML/CSS source directory, relative to the Vite config file. */
         root: string;
         /** Dedicated generated-output directory, relative to the Vite config file. */
@@ -20,7 +20,8 @@ declare module "@microsoft/fast-test-harness/vite.config.mjs" {
     }
 
     export type HarnessConfig = import("vite").UserConfig & {
-        sourceGeneration?: SourceGenerationOptions | SourceGenerationOptions[] | false;
+        /** HTML/CSS source mappings. Omit or pass an empty array to disable generation. */
+        sources?: SourceOptions[];
     };
 
     /** Preserve the harness defaults and optionally enable automatic source generation. */
