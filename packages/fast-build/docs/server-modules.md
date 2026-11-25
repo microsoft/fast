@@ -13,11 +13,16 @@ artifact bytes directly.
 Definitions accept strings or `ServerTemplateDefinition` metadata with content,
 host/shadow attributes and optional format version 1.
 
-`fast convert --syntax=server-native --templates="components/**/*.html"`
+`fast convert --syntax=server-native --config=fast-convert.config.json`
 links a named registry into `server.artifact.json`, with an empty entry. Call named host
 or shadow methods for that registry; compile entry HTML for complete pages.
 Duplicate names, empty registries, wildcard output paths and browser TypeScript
 conversion options are rejected.
+
+Configure exact component records in `components`; see the
+[shared source contract](./component-sources/DESIGN.md). Registry conversion
+requires only `tagName` and `template`; other generation metadata does not start
+client conversion or change stylesheet delivery.
 
 ## Node request contract
 
