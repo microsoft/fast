@@ -53,6 +53,91 @@ For simplicity, examples throughout the documentation will assume the library ha
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
 
+## Initialization and connection-scoped work
+
+FAST restores captured public pre-upgrade properties before connecting host
+behaviors and binding the view. To derive reactive state for the first bind,
+register a `HostBehavior` through `$fastController.addBehavior()` in the
+constructor after `super()`. Its `connectedCallback` runs after property replay
+and before initial bind or reconnect rebind. Code before
+`super.connectedCallback()` may still see constructor defaults; code after it
+is too late to prepare the first bind. Keep reconnect preparation repeatable,
+do not overwrite supplied values with defaults, and control storage or telemetry
+effects separately.
+
+Put DOM lookups after `super.connectedCallback()` on the ordinary
+already-resolved synchronous-template path. If template resolution is pending,
+the callback returning does not establish view readiness: wait for template
+availability and confirm `$fastController.isConnected`, observing its transition
+as needed before view-dependent work. FAST does not await asynchronous lifecycle
+overrides or provide an async pre-bind hook.
+
+Use the opt-in `ConnectionGuard` to prevent asynchronous completions from an old
+connection from updating a reconnected element:
+
+```ts
+import { ConnectionGuard, FASTElement, observable } from "@microsoft/fast-element";
+
+export class StatusElement extends FASTElement {
+    @observable message = "";
+    private readonly connection: ConnectionGuard;
+
+    constructor() {
+        super();
+        this.connection = new ConnectionGuard(this.$fastController);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        void this.loadStatus(this.connection.capture());
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+
+    private async loadStatus(isCurrent: () => boolean) {
+        try {
+            const response = await fetch("/status");
+            if (!response.ok) {
+                throw new Error("Unable to load status");
+            }
+            const message = await response.text();
+            if (isCurrent()) {
+                this.message = message;
+            }
+        } catch {
+            if (isCurrent()) {
+                this.message = "Unable to load status";
+            }
+        }
+    }
+}
+```
+
+The focused import is also available:
+`import { ConnectionGuard } from "@microsoft/fast-element/connection-guard.js"`.
+Constructing the guard registers an internal host behavior. Each `capture()`
+predicate is true only while its connection episode is fully
+controller-connected. A capture made while disconnected never becomes valid;
+a capture in a pre-bind behavior can become valid once binding completes only
+if the guard's own connected behavior has already run. Construct the guard
+before registering any preparation behaviors that capture it; ordinary async
+work should capture after `super.connectedCallback()` as shown above.
+Capturing before the guard's connected behavior runs produces a predicate that
+never becomes valid.
+Disconnect/reconnect invalidates old predicates permanently. This guards
+mutations, not request cancellation or event unsubscription: manage those
+resources separately.
+
+Neither `ConnectionGuard` nor connection or hydration status proves
+application-specific content or transport readiness. Bound shadow DOM does not
+mean streamed or projected light DOM has finished arriving; track that readiness
+separately.
+
+See the [lifecycle guide](https://www.fast.design/docs/3.x/getting-started/fast-element/#lifecycle-callbacks)
+for pre-bind preparation examples.
+
 ## Slot fallback
 
 A false `when()` without an else template, or an empty content binding, does not

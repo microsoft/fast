@@ -8,7 +8,7 @@ are not used. Importing both shares a single metadata implementation.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 79.65 KB | 24.15 KB | 21.47 KB |
+| CDN Rollup Bundle | 79.95 KB | 24.23 KB | 21.51 KB |
 | FASTElement (@microsoft/fast-element/fast-element.js) | 25.77 KB | 8.14 KB | 7.33 KB |
 | Updates (@microsoft/fast-element/updates.js) | 473 B | 335 B | 290 B |
 | Observable (@microsoft/fast-element/observable.js) | 6.75 KB | 2.51 KB | 2.23 KB |

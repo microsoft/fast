@@ -191,8 +191,99 @@ export class MyElement extends FASTElement {
 ```
 
 :::note
-Overriding `connectedCallback` can affect the timing of when your template is bound and when behaviors run, so it's generally recommended to call `super.connectedCallback()` at the beginning of your override. Conversely, for `disconnectedCallback` and `attributeChangedCallback`, it's usually best to call the super method at the end of your override to ensure that your custom logic runs while the element is still in a consistent state.
+Call `super.connectedCallback()` before ordinary post-bind work. Always call `super.disconnectedCallback()` to tear down FAST's connection, and delegate attribute changes to `super.attributeChangedCallback()`. Lifecycle callbacks are synchronous; FAST does not await an asynchronous override.
 :::
+
+### Preparing State Before Binding
+
+During connection, FAST restores public observable properties captured as own properties before upgrade, connects registered host behaviors, binds the view, and then marks the controller connected. Reconnection runs host behaviors before rebinding the view.
+
+This means deriving state before `super.connectedCallback()` can read constructor defaults rather than the captured values supplied before upgrade. Deriving it after `super` is too late for the first bind. If initial bindings need derived state, register a `HostBehavior` in the constructor after `super()`:
+
+```ts
+import { FASTElement, html, observable } from "@microsoft/fast-element";
+import type { HostBehavior } from "@microsoft/fast-element";
+
+export class LabelElement extends FASTElement {
+  @observable label?: string;
+  @observable displayLabel = "";
+
+  constructor() {
+    super();
+    const preparation: HostBehavior<LabelElement> = {
+      connectedCallback(controller) {
+        controller.source.displayLabel = controller.source.label ?? "Untitled";
+      },
+    };
+    this.$fastController.addBehavior(preparation);
+  }
+}
+
+LabelElement.define({
+  name: "label-element",
+  template: html<LabelElement>`<span>${x => x.displayLabel}</span>`,
+});
+```
+
+The behavior sees the restored `label` and derives a fallback without overwriting the supplied property (including an explicit empty string). It also runs on reconnect. Keep preparation repeatable, and distinguish it from one-time effects: do not blindly repeat storage writes or telemetry on every connection.
+
+DOM lookups belong after `super.connectedCallback()` on the ordinary already-resolved synchronous-template path. If template resolution is pending, the callback returning does not establish view readiness: wait for template availability and confirm `$fastController.isConnected`, observing its transition as needed before view-dependent work. Pre-bind preparation is synchronous model work, not an awaited readiness hook; it does not defer rendering or hydration.
+
+### Guarding Asynchronous Completions
+
+Checking `$fastController.isConnected` when a request completes is not enough: the element may have disconnected and reconnected while the request was pending. Use the opt-in `ConnectionGuard` to capture the connection episode that started the work:
+
+```ts
+import { FASTElement, observable } from "@microsoft/fast-element";
+import { ConnectionGuard } from "@microsoft/fast-element/connection-guard.js";
+
+export class StatusElement extends FASTElement {
+  @observable message = "";
+  private readonly connection: ConnectionGuard;
+
+  constructor() {
+    super();
+    this.connection = new ConnectionGuard(this.$fastController);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    void this.loadStatus(this.connection.capture());
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+  }
+
+  private async loadStatus(isCurrent: () => boolean) {
+    try {
+      const response = await fetch("/status");
+      if (!response.ok) {
+        throw new Error("Unable to load status");
+      }
+      const message = await response.text();
+      if (isCurrent()) {
+        this.message = message;
+      }
+    } catch {
+      if (isCurrent()) {
+        this.message = "Unable to load status";
+      }
+    }
+  }
+}
+```
+
+`ConnectionGuard` is also exported from `@microsoft/fast-element`. Its constructor accepts a `HostController` and registers an internal host behavior. `capture()` returns a `() => boolean` predicate that is true only while the captured connection episode remains fully controller-connected:
+
+- Capturing while disconnected produces a predicate that never becomes valid.
+- Capturing in a pre-bind host behavior can become valid after binding completes only if the guard's own connected behavior has already run; it is false during preparation. Construct the guard before registering preparation behaviors that capture it.
+- Capturing before the guard's connected behavior runs produces a predicate that never becomes valid.
+- Disconnecting invalidates that episode's predicates permanently, even if the element later reconnects.
+
+For ordinary asynchronous work, capture after `super.connectedCallback()` and before starting the work, as shown above. Check immediately before each state or DOM mutation, including error handling. The predicate is only a guard: it does not cancel a request, unsubscribe event listeners, or order multiple requests within the same episode. Manage cancellation and subscription cleanup separately. No asynchronous lifecycle or hydration delay is introduced.
+
+Neither `ConnectionGuard` nor connection or hydration status establishes application-specific content or transport readiness. Bound shadow DOM does not prove that streamed or projected light DOM has finished arriving. Track that readiness separately in your application.
 
 ## Defining the Element
 
@@ -256,7 +347,7 @@ In addition to the features described above, `FASTElement` provides a number of 
 
 Every `FASTElement` instance exposes a `$fastController` property that references the internal `ElementController` driving the element's lifecycle and reactivity. Most components do not need to access it directly, but one member is commonly used inside `*Changed` callbacks: `isConnected`.
 
-The `isConnected` property on the controller reports `true` after FAST has connected the element, which happens during `super.connectedCallback()`. It is distinct from the platform's `Node.isConnected`, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already `true`, but FAST has not yet bound the template or wired up the reactivity system. Reading from `this.elementInternals` or dispatching events during that window can produce inconsistent results.
+The `isConnected` property on the controller reports `true` after FAST has connected the element, which happens during `super.connectedCallback()` on the ordinary already-resolved synchronous-template path. It is distinct from the platform's `Node.isConnected`, which reports only whether the element is attached to a document. During the parse-time window when attributes are being assigned to a freshly upgraded element, the platform property is already `true`, but FAST has not yet bound the template or wired up the reactivity system. Reading from `this.elementInternals` or dispatching events during that window can produce inconsistent results.
 
 For this reason, `*Changed` callbacks that touch the DOM typically guard against running before the controller has connected:
 

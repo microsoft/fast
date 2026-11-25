@@ -9,6 +9,7 @@ export {
     AttributeDefinition,
     attr,
 } from "../src/components/attributes.js";
+export { ConnectionGuard } from "../src/components/connection-guard.js";
 export {
     AdoptedStyleSheetsStrategy,
     ElementController,
