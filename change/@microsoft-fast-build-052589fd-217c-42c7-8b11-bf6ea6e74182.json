@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Reuse resolved composite attribute bindings during native server rendering.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

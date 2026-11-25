@@ -3,7 +3,7 @@
 Migration guides cover the current publish, not a permanent history of changes.
 For current APIs and behavior, see the [native artifact contract](./server-modules.md).
 
-## 0.22.0
+## 0.23.0
 
 No migrations are required for this publish. Supported Node.js hosts can use
 prebuilt native packages with optional dependencies enabled; see the

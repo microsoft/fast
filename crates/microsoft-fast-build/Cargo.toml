@@ -1,6 +1,6 @@
 [package]
 name = "microsoft-fast-build"
-version = "0.22.0"
+version = "0.23.0"
 edition = "2021"
 description = "FAST declarative HTML compiler and native artifact renderer for Rust and Node.js."
 license = "MIT"

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Avoid repeated large shadow allocations during native component assembly.",
-  "packageName": "@microsoft/fast-build",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
