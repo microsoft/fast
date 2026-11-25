@@ -115,6 +115,40 @@ fn load_retained(bytes: &[u8]) -> (CompiledArtifact, usize) {
 }
 
 #[test]
+fn discarded_build_metadata_does_not_allocate_an_owned_value_tree() {
+    let bytes = compile_server_artifact("kept", &Locator::from_templates(HashMap::new())).unwrap();
+    let original: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    let mut expanded = original.clone();
+    expanded["inputs"]["templates"] = serde_json::json!({
+        "unused": (0..4096)
+            .map(|index| serde_json::json!({"key": format!("unused-{index}")}))
+            .collect::<Vec<_>>(),
+    });
+    let expanded = serde_json::to_vec(&expanded).unwrap();
+    let calls = |bytes: &[u8]| {
+        ALLOCATION_CALLS.with(|calls| calls.set(0));
+        ALLOCATIONS.with(|stats| stats.set((true, 0, 0)));
+        let result = CompiledArtifact::load(bytes);
+        ALLOCATIONS.with(|stats| stats.set((false, 0, 0)));
+        let calls = ALLOCATION_CALLS.with(Cell::get);
+        assert_eq!(
+            result
+                .unwrap()
+                .render_entry_json("{}", &Default::default())
+                .unwrap(),
+            "kept",
+        );
+        calls
+    };
+    let original_calls = calls(&bytes);
+    let expanded_calls = calls(&expanded);
+    assert!(
+        expanded_calls <= original_calls + 4,
+        "discarded metadata allocated per value: original={original_calls}, expanded={expanded_calls}",
+    );
+}
+
+#[test]
 fn unused_templates_do_not_increase_retained_native_plan_storage() {
     let source = |unused: usize| {
         let templates = (0..unused)

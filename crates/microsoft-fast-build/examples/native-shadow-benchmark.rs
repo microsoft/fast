@@ -151,6 +151,36 @@ fn cpu_ns() -> Option<u64> {
 }
 
 fn fixture(case: &str) -> Result<(Vec<u8>, String), Box<dyn std::error::Error>> {
+    if let Some(shape) = case.strip_prefix("metadata-") {
+        let locator = Locator::from_templates(Default::default());
+        let bytes = compile_server_artifact("<p>{{label}}</p>", &locator)?;
+        let mut envelope: serde_json::Value = serde_json::from_slice(&bytes)?;
+        let source = if shape == "escaped" {
+            "<p title=\"line\nvalue\">café 😀</p>".repeat(32)
+        } else {
+            "<p>authored template source</p>".repeat(32)
+        };
+        envelope["inputs"] = match shape {
+            "entry" => json!({"entry":source.repeat(1024),"templates":{}}),
+            "sources" => json!({"entry":"","templateSources":vec![source; 1024]}),
+            "plain" | "escaped" | "nested" => {
+                let templates = (0..1024).map(|index| {
+                    let value = if shape == "nested" {
+                        json!({"content":source,"hostAttributes":[{"name":"role","value":"group"}]})
+                    } else {
+                        json!(source)
+                    };
+                    (format!("unused-{index}"), value)
+                }).collect::<serde_json::Map<_, _>>();
+                json!({"entry":"","templates":templates})
+            }
+            _ => return Err("Unknown metadata workload".into()),
+        };
+        return Ok((
+            serde_json::to_vec(&envelope)?,
+            json!({"label":"<&\"'😀 café"}).to_string(),
+        ));
+    }
     if let Some(case) = case.strip_prefix("escaped-value-") {
         let parts = case.split('-').collect::<Vec<_>>();
         let [shape, length, count] = parts.as_slice() else {
@@ -550,14 +580,75 @@ fn hash(bytes: &[u8]) -> String {
     format!("{value:016x}")
 }
 
+fn load_pass(
+    args: &[String],
+    bytes: &[u8],
+    state: &str,
+    options: &NativeRenderOptions,
+    expected: &str,
+    iterations: usize,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let verify = |artifact: &CompiledArtifact| {
+        assert_eq!(
+            artifact.render_entry_json(state, options).unwrap(),
+            expected
+        );
+    };
+    for _ in 0..20 {
+        verify(&CompiledArtifact::load(black_box(bytes))?);
+    }
+    let mut samples = Vec::new();
+    let mut memory = Vec::new();
+    for _ in 0..iterations {
+        if args[2] == "memory" {
+            begin_memory();
+            let result = CompiledArtifact::load(black_box(bytes));
+            let live_with_artifact = LIVE.load(Relaxed);
+            ACTIVE.store(false, Relaxed);
+            let artifact = result?;
+            verify(&artifact);
+            ACTIVE.store(true, Relaxed);
+            drop(artifact);
+            let sample = end_memory();
+            assert_eq!(sample["retainedRequestedBytes"], 0);
+            memory.push(json!({
+                "request": sample,
+                "liveWithOwnedArtifactRequestedBytes": live_with_artifact,
+            }));
+        } else {
+            let start = Instant::now();
+            let result = black_box(CompiledArtifact::load(black_box(bytes)));
+            let elapsed = start.elapsed().as_nanos();
+            let artifact = result?;
+            verify(&artifact);
+            samples.push(elapsed);
+        }
+    }
+    samples.sort_unstable();
+    println!(
+        "{}",
+        json!({
+            "version":1, "case":args[0], "boundary":"load", "pass":args[2],
+            "iterations":iterations, "warmupCalls":20, "artifactBytes":bytes.len(),
+            "stateBytes":state.len(), "outputBytes":expected.len(),
+            "artifactFnv1a64":hash(bytes), "stateFnv1a64":hash(state.as_bytes()),
+            "outputFnv1a64":hash(expected.as_bytes()),
+            "medianLoadNs":samples.get(samples.len() / 2),
+            "memorySamples":memory, "copiedBytes":null,
+            "result":"independently owned immutable CompiledArtifact",
+        })
+    );
+    Ok(())
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().skip(1).collect();
     if args.len() != 5 {
-        return Err("Usage: native-shadow-benchmark <workload[-markers-v2]> <fresh-json|prepared> <timing|memory> <iterations> <owned-output-file>".into());
+        return Err("Usage: native-shadow-benchmark <workload[-markers-v2]> <load|fresh-json|prepared> <timing|memory> <iterations> <owned-output-file>".into());
     }
     let iterations: usize = args[3].parse()?;
     if iterations == 0
-        || !matches!(args[1].as_str(), "fresh-json" | "prepared")
+        || !matches!(args[1].as_str(), "load" | "fresh-json" | "prepared")
         || !matches!(args[2].as_str(), "timing" | "memory")
     {
         return Err("Invalid boundary, pass, or iteration count".into());
@@ -591,6 +682,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         expected
     );
     std::fs::write(&args[4], expected.as_bytes())?;
+    if args[1] == "load" {
+        return load_pass(
+            &args,
+            &artifact_bytes,
+            &state_json,
+            &options,
+            &expected,
+            iterations,
+        );
+    }
     for _ in 0..20 {
         assert_eq!(black_box(render()?), expected);
     }

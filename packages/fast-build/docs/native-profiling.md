@@ -112,3 +112,35 @@ regressions as well as improvements. These diagnostics are not HTTP throughput,
 cold OS-cache, retained-native-allocation or leak measurements. Process RSS
 includes shared mappings and allocator-held pages, and shared machines can have
 unrelated workloads; no exclusive-hardware or speedup claim follows from a profile.
+
+## Isolate in-memory artifact loading
+
+The Rust diagnostic example also accepts a `load` boundary:
+
+```sh
+cargo run --release --locked \
+  --manifest-path crates/microsoft-fast-build/Cargo.toml \
+  --example native-shadow-benchmark -- \
+  metadata-nested load timing 2000 /tmp/fast-load-output.html
+
+cargo run --release --locked \
+  --manifest-path crates/microsoft-fast-build/Cargo.toml \
+  --example native-shadow-benchmark -- \
+  metadata-nested load memory 3 /tmp/fast-load-memory-output.html
+```
+
+`load` times only `CompiledArtifact::load` from an already resident byte slice.
+Compilation, file I/O, addon loading, result destruction and byte-exact rendering
+checks are outside each call timer. Each process warms 20 loads. Timing runs keep
+allocation tracking disabled; separate memory runs record allocation calls,
+requested bytes, peak live heap, live owned-plan storage and retention after drop.
+Existing `fresh-json` and `prepared` boundaries measure rendering separately.
+
+The `metadata-entry`, `metadata-plain`, `metadata-escaped`, `metadata-nested` and
+`metadata-sources` fixtures deliberately enlarge discarded build inputs while
+keeping the executable program small. They isolate metadata cost, not application
+throughput. Use existing small, wide, deep, mostly-static and binding-heavy cases
+as execution-plan controls. Build both revisions with the identical example,
+toolchain and release settings, alternate process order and compare artifact,
+state and complete output identities. See the
+[metadata-load experiment](./native-metadata-load-benchmark.md) for measured scope.

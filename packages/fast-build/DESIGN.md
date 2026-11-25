@@ -56,6 +56,10 @@ validates wire fields as it decodes them directly into typed execution operation
 resolves names to private body and component indices, and decodes operands and
 paths. Even unreachable operations are validated. No intermediate JSON IR or
 separate IR-validation traversal is constructed; the transient wire JSON is dropped.
+Schema-2 build inputs are fully parsed by a validation-only visitor without retaining
+their value tree. This preserves metadata shape checks, decoded duplicate-key
+semantics, complete JSON validation and error precedence while avoiding allocations
+for source strings and containers that execution does not use.
 Artifact storage is immutable and Rust `Send + Sync`.
 After complete decoding and validation, preparation retains only bodies reachable
 from the entry and every public component host/shadow root, including skipped control-flow
