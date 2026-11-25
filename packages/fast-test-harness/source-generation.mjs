@@ -44,7 +44,8 @@ export function sourceGenerationPlugin(options) {
         if (
             !component ||
             typeof component.tagName !== "string" ||
-            !/^[a-z][a-z0-9._-]*-[a-z0-9._-]*$/.test(component.tagName) ||
+            !/^[a-z][a-z0-9._-]*$/.test(component.tagName) ||
+            !component.tagName.includes("-") ||
             typeof component.template !== "string" ||
             !component.template.endsWith(".html") ||
             (component.stylesheet !== undefined &&
