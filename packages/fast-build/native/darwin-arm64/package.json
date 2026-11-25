@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build-darwin-arm64",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "FAST Build native renderer for macOS arm64.",
   "license": "MIT",
   "repository": {

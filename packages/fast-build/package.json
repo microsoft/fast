@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "CLI and Node.js API for server-side rendering and converting FAST declarative HTML templates.",
   "author": {
     "name": "Microsoft",
@@ -72,12 +72,12 @@
     "node": ">=22.18.0"
   },
   "optionalDependencies": {
-    "@microsoft/fast-build-darwin-arm64": "0.22.0",
-    "@microsoft/fast-build-darwin-x64": "0.22.0",
-    "@microsoft/fast-build-linux-arm64": "0.22.0",
-    "@microsoft/fast-build-linux-x64": "0.22.0",
-    "@microsoft/fast-build-win32-arm64": "0.22.0",
-    "@microsoft/fast-build-win32-x64": "0.22.0"
+    "@microsoft/fast-build-darwin-arm64": "0.23.0",
+    "@microsoft/fast-build-darwin-x64": "0.23.0",
+    "@microsoft/fast-build-linux-arm64": "0.23.0",
+    "@microsoft/fast-build-linux-x64": "0.23.0",
+    "@microsoft/fast-build-win32-arm64": "0.23.0",
+    "@microsoft/fast-build-win32-x64": "0.23.0"
   },
   "beachball": {
     "disallowedChangeTypes": [

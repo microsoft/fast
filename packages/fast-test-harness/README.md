@@ -498,3 +498,7 @@ hosting and fixture compilation/rendering failures propagate.
 SSR fixture generation compiles dynamically authored test HTML as development
 tooling. Production SSR compiles native artifacts during the application build.
 The rendering result is asynchronous; use `await render(queryObj)`.
+
+## Migration guidance
+
+See the [migration index](./docs/migration.md) for the current publish.

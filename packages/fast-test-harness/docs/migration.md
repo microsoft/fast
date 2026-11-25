@@ -1,0 +1,17 @@
+# Migration guidance
+
+Migration guides cover the current publish, not a permanent history of changes.
+
+## 0.8.0
+
+No migrations are required for this publish. HTML/CSS source generation is
+opt-in; see the [usage guide](../README.md) for configuration and SSR hosting
+requirements.
+
+## Release preparation
+
+Review and delete guides belonging to previous publishes and remove their entries
+above. Retain guidance for the publish being prepared. Keep this index even when
+empty, noting that there are no migrations for the current publish, so links from
+root documents remain valid. Cleanup is a release-preparation step, not automated
+by the publishing pipeline.

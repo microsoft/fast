@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build-win32-x64",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "description": "FAST Build native renderer for Windows x64 MSVC.",
   "license": "MIT",
   "repository": {

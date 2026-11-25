@@ -2,6 +2,83 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Wed, 25 Nov 2026 06:23:44 GMT",
+      "version": "0.23.0",
+      "tag": "@microsoft/fast-build_v0.23.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "3656d25651f91f7148315115310659f626bb0ef9",
+            "comment": "Add shared component-source resolution and explicit component configuration for build and conversion."
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "09ec1bc4390d7077cb10775f2988c881afbb9e78",
+            "comment": "Accelerate long escape-free text and attribute values during native rendering."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "76405ed045911e5cda11bbb80bbf12d771efea86",
+            "comment": "Avoid repeated large shadow allocations during native component assembly."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "05a31f8b355a3f7e899397d6bda522706f6d055b",
+            "comment": "Avoid redundant output-budget checks when appending preflighted hydration markers."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "f12f520c2b4908b61237e047d596fa9fcc127c93",
+            "comment": "Avoid a redundant validation traversal for unique-key native JSON state."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "2e2d21e5d9c6bd71a6920ef8d50c831413e7acf5",
+            "comment": "Reuse shared component property prefixes during native rendering."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "d6ee4695c8fb50830ca4f00c9d027ec71476e7d1",
+            "comment": "Size native component scopes using bounded distinct property-root counts."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "7c8ba1dd0d3e10a9c1aef1e4a87e3086807a8d47",
+            "comment": "Reuse shared path prefixes when rendering native composite attributes."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "33a157210925e9b2a70747ed408f95d2b759caa3",
+            "comment": "Avoid duplicate object-root lookups when resolving native render bindings."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4c2d5007958161c950d8562596f43b5761c32bc7",
+            "comment": "Reuse resolved composite attribute bindings during native server rendering."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "0bbb7f04048f70926aa3cf978265fc634c50a539",
+            "comment": "Reduce per-component allocations during native server rendering."
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Nov 2026 03:56:48 GMT",
       "version": "0.22.0",
       "tag": "@microsoft/fast-build_v0.22.0",

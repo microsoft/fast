@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Thu, 19 Nov 2026 03:56:48 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 25 Nov 2026 06:23:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.23.0
+
+Wed, 25 Nov 2026 06:23:44 GMT
+
+### Minor changes
+
+- Add shared component-source resolution and explicit component configuration for build and conversion. (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Accelerate long escape-free text and attribute values during native rendering. (7559015+janechu@users.noreply.github.com)
+- Avoid repeated large shadow allocations during native component assembly. (7559015+janechu@users.noreply.github.com)
+- Avoid redundant output-budget checks when appending preflighted hydration markers. (7559015+janechu@users.noreply.github.com)
+- Avoid a redundant validation traversal for unique-key native JSON state. (7559015+janechu@users.noreply.github.com)
+- Reuse shared component property prefixes during native rendering. (7559015+janechu@users.noreply.github.com)
+- Size native component scopes using bounded distinct property-root counts. (7559015+janechu@users.noreply.github.com)
+- Reuse shared path prefixes when rendering native composite attributes. (7559015+janechu@users.noreply.github.com)
+- Avoid duplicate object-root lookups when resolving native render bindings. (7559015+janechu@users.noreply.github.com)
+- Reuse resolved composite attribute bindings during native server rendering. (7559015+janechu@users.noreply.github.com)
+- Reduce per-component allocations during native server rendering. (7559015+janechu@users.noreply.github.com)
 
 ## 0.22.0
 
