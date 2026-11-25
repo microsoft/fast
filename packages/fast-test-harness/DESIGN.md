@@ -79,6 +79,7 @@ flowchart TD
 | `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
 | `playwright.config.mjs` | Shared Playwright configuration (browsers, web server, test matching) |
 | `vite.config.mjs` | Shared Vite configuration (port, resolve conditions, build settings) |
+| `source-generation.mjs` | Opt-in Vite plugin that converts authored HTML/CSS to owned TypeScript modules and synchronizes source changes with page/module/fixture invalidation |
 | `public/styles.css` | Base CSS reset served as a Vite public asset |
 
 ---
@@ -334,6 +335,53 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 | `build.minify` | `false` |
 | `build.sourcemap` | `true` |
 
+The named `createHarnessConfig(options)` export merges ordinary Vite settings with
+these defaults. Its optional `sources` setting accepts only an array of mappings,
+each with `root`, `outDir`, optional
+`templates`/`stylesheets` glob patterns, and optional `templateTypes`. Paths resolve
+from the config file's directory, or Vite's root for inline configurations.
+`templateTypes` maps root-relative, forward-slash HTML paths to `typeSource` and an
+optional `typeSourceImport`, passed through to the converter. Imports resolve from
+the generated module; mapped templates use an explicit source generic for normal
+TypeScript binding checks. Unmapped templates retain the default `any` source.
+Omission or an empty array keeps source generation disabled without installing
+the source-generation plugin. Non-array values are rejected. The compiled-template
+extraction utilities and their CLI commands remain available, with deprecated APIs.
+
+The source-generation plugin lazily loads FAST Build's conversion WASM and emits
+typed `fast-v3-ts` template and stylesheet modules before Vite resolves imports.
+All mappings share one plugin, converter, generation queue, and readiness gate.
+Canonical output trees must be disjoint, including nested and symlink-aliased
+paths, and no output may contain any source root. Outputs inside source roots are
+excluded from conversion and source-change handling.
+The plugin preserves relative paths and writes only files bearing the mapping's
+ownership header. Conversions and ownership checks across all mappings complete
+before output replacement; individual files are replaced through same-directory
+temporary files and rename. Cleanup only removes owned outputs with no remaining
+source within each mapping, including across restarts. Nested output paths cannot
+traverse directory symlinks.
+
+The Vite watcher serializes generation after HTML/CSS changes and source
+TypeScript edits. Source mode defaults to write-stability watching so rapid edits
+are coalesced rather than dropped by backend change throttling; explicit Vite
+watch settings are retained. Unchanged outputs are not rewritten. Source changes
+invalidate Vite's module graph, clear cached CSR shells and SSR fixtures, and trigger a page
+reload. Requests and source module loads await the latest generation; conversion
+failures reject stale module loads while leaving Vite's reload client available
+for recovery. Error pages report their source revision over Vite's WebSocket after
+connecting, so repairs completed during navigation still trigger a reload.
+Vite transpiles source TypeScript without a separate build process.
+The server retains SSR fixture request inputs in this mode and regenerates an
+invalidated fixture when its URL is visited again. A source revision guards
+asynchronous shell and fixture generation against repopulating caches with an
+outdated result. Synchronization is reattached after Vite configuration restarts.
+SSR rendering continues to consume the configured renderer's authored artifacts.
+Explicit `components` registrations can resolve authored HTML/CSS package exports
+without a consumer `dist` tree; monolithic auto-discovery retains its configured
+`distDir` and filename conventions. Source-generation integration tests exercise
+native fixture rendering, DSD hydration with DOM identity preserved, and live
+HTML/CSS edits using those authored exports.
+
 ---
 
 ## Exports
@@ -345,7 +393,7 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
 | `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Shared Vite configuration |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceOptions`, `SourceTemplateType` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |
 
 The SSR fixture generator returns `Promise<RenderResult>`; call `await render(queryObj)`.
