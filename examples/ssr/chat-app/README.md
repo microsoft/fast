@@ -15,9 +15,8 @@ in [`entry.html`](./entry.html), so the FAST build step carries that attribute
 into the generated `index.html`. The example does not implement a runtime
 theme toggle.
 
-For the shared package overview, the token catalog, and authoring rules, see
-[`../../design-system/README.md`](../../design-system/README.md) and
-[`../../design-system/DESIGN.md`](../../design-system/DESIGN.md).
+For setup and the token catalog, see
+[`../../design-system/README.md`](../../design-system/README.md).
 
 ## What it demonstrates
 
@@ -65,5 +64,3 @@ The build first regenerates `index.html` from `entry.html`, `state.json`, and `t
 - `public/styles.css` — token-based shared stylesheet for the page shell and component shadow roots
 - `src/` — runtime classes, canned conversation data, and hydration bootstrap
 - `index.html` — generated pre-rendered page used by Vite
-
-See [DESIGN.md](./DESIGN.md) for architecture details, design-system notes, and the canned conversation data.

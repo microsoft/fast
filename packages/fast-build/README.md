@@ -20,7 +20,7 @@ Artifact compilation and browser conversion use build-time WASM.
 ## Native artifact compilation
 
 Compile trusted templates during the application build. Source-based integrations
-use the shared [component-source contract](./docs/component-sources/DESIGN.md);
+use the [component configuration](#configuration-file);
 the following lower-level API accepts already loaded strings:
 
 ```js
@@ -665,10 +665,48 @@ only `tagName` and `template`. `stylesheet` is optional and converted separately
 only for TypeScript generation. SSR preserves authored stylesheet markup.
 
 Build uses the same `components` array but never generates client modules.
-Additional Node integrations import `validateComponentSources` and
-`resolveComponentSources` from `@microsoft/fast-build/component-sources.js`.
-See the [canonical contract](./docs/component-sources/DESIGN.md) for base
-directories, symlinks, collisions, output names, and operation boundaries.
+
+### Resolving component sources in Node
+
+Use the exported resolver to load explicit component paths and plan outputs
+without evaluating client modules or writing files:
+
+```js
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { resolveComponentSources } from "@microsoft/fast-build/component-sources.js";
+
+const configUrl = new URL("./fast-convert.config.json", import.meta.url);
+const config = JSON.parse(readFileSync(configUrl, "utf8"));
+const sources = await resolveComponentSources(config.components, {
+    baseDir: fileURLToPath(new URL(".", configUrl)),
+    operation: "typescript",
+});
+
+for (const component of sources.components) {
+    console.log(component.template, component.templateOutput);
+}
+```
+
+`baseDir` must be the absolute directory owning the configuration. All supplied
+inputs must exist as regular files. Resolved records contain canonical absolute
+input paths, planned `templateOutput` and optional `stylesheetOutput` paths,
+and a derived `typeSourceImport` for TypeScript generation. Import specifiers
+use forward slashes and rewrite `.ts`/`.tsx` to `.js`, `.mts` to `.mjs`, and
+`.cts` to `.cjs`; imports across filesystem roots are rejected.
+
+Use `operation: "ssr"` for source resolution without client outputs. For HTML
+conversion, use `operation: "html"` and supply the selected target's HTML
+suffix as `templateSuffix`. Generation directories may be shared, including
+symlink aliases, but duplicate outputs, nested output directories, and
+directories containing inputs are rejected.
+
+`sources.inputFiles` and `sources.generatedDirectories` include lexical and
+canonical aliases for watching and input protection. The resolver does not
+create directories, convert sources, publish outputs, or start a watcher.
+If your integration creates output directories, resolve again before writing
+to check newly created aliases. `validateComponentSources(components, operation)`
+is also exported for synchronous shape validation without filesystem access.
 
 ### Running converter fixtures locally
 

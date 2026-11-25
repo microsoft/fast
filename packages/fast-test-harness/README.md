@@ -69,9 +69,10 @@ class export, and `generated` output directory. `stylesheet`
 is optional. No glob patterns or class discovery are used; unlisted HTML/CSS
 files are ignored. All input paths are relative to the config file, not to
 `generated`. Output directories must not contain any configured input file.
-Build, Convert, and the harness use the same
-[component-source contract](../fast-build/docs/component-sources/DESIGN.md) and
-exported Node resolver. The optional peer is loaded only when generation is enabled.
+Build, Convert, and the harness use the same component configuration and exported
+Node resolver. The optional peer is loaded only when generation is enabled.
+For Build/Convert usage and programmatic resolution, see the
+[FAST Build README](../fast-build/README.md#convert-configuration-file).
 
 For example, `src/button/button.html`:
 

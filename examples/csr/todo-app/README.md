@@ -21,13 +21,12 @@ The app uses the **light** theme. `<html data-theme="light">` is set
 statically in [`index.html`](./index.html); the app does not implement a
 theme toggle. (The shared design-system package supports dark and
 system-preference themes via the same `data-theme` attribute — see
-[`examples/design-system/README.md`](../design-system/README.md) — but this
+[`examples/design-system/README.md`](../../design-system/README.md) — but this
 example deliberately keeps the surface area minimal and demonstrates only
 token consumption.)
 
-For the shared package overview, the token catalog, and authoring rules,
-see [`examples/design-system/README.md`](../design-system/README.md) and
-[`examples/design-system/DESIGN.md`](../design-system/DESIGN.md).
+For setup and the token catalog, see
+[`examples/design-system/README.md`](../../design-system/README.md).
 
 ## Token usage
 

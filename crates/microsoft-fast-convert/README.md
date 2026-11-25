@@ -3,7 +3,7 @@
 `microsoft-fast-convert` converts one FAST declarative HTML template string into another supported syntax. It is written in Rust and exposes both a Rust API and a `wasm-bindgen` API for Node tooling.
 
 For source files, use the `components` configuration and exported Node resolver
-described by the [shared contract](../../packages/fast-build/docs/component-sources/DESIGN.md).
+described in the [FAST Build usage guide](../../packages/fast-build/README.md#convert-configuration-file).
 The Rust APIs below operate on already loaded strings.
 
 ## Supported targets

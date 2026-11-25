@@ -5,6 +5,25 @@ description: Add documentation for contributors and developers.
 
 Documentation exists in 3 forms, code comments, design/architectural documentation that is made up of markdown files describing code flow and core concepts (such as DESIGN.md), and the documentation website.
 
+## Audience and purpose
+
+`DESIGN.md` is for contributors understanding and changing the code. Describe
+current APIs in their implementation context, architecture, code flow, invariants,
+constraints, and the reasoning behind implementation choices.
+
+`README.md` is for consumers using the published package or crate it describes.
+Cover installation, prerequisites, configuration, supported public APIs, and
+working usage examples. For private example projects, cover setup and running
+the example. Keep implementation explanations and contributor guidance in
+`DESIGN.md`, not in the README.
+
+Do not link to or expose `DESIGN.md` files from README files, including in file
+trees or reference lists. A README must provide enough usage information itself
+or link to consumer-facing guides/API references under `docs/`. Contributor
+instructions, skills, and other design documents may reference `DESIGN.md`.
+Before adding a documentation link, check that its destination serves the
+document's intended audience.
+
 Design/architectural documentation such as DESIGN.md should always describe the
 current APIs, architecture and internals. Do not include migration instructions,
 removed-API history, before/after upgrade examples or links to migration guides in
@@ -33,6 +52,6 @@ the current publish, so root-document links remain valid. Cleanup is a documente
 release-preparation step, not an automatic publishing action.
 
 Keep detailed markdown documentation in the package/crate's docs folder.
-DESIGN.md and root README.md files remain architectural and usage entry points.
+Keep contributor architecture in DESIGN.md and published-package usage in README.md.
 
 Any documentation created for the website should be written with the developer implementing the package in mind, it is not intended for other audiences.
