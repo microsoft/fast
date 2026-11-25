@@ -27,11 +27,23 @@ const elementRoot = dirname(
 );
 const template = (text: string) =>
     `<f-template name="source-widget"><template><p>${text} {{message}}</p></template></f-template>`;
+const component = (
+    directory = "./src",
+    tagName = "source-widget",
+    className = "SourceWidget",
+) => ({
+    tagName,
+    template: `${directory}/widget.html`,
+    stylesheet: `${directory}/widget.css`,
+    clientModule: `${directory}/main.ts`,
+    className,
+});
+const sourceOptions = {
+    outDir: "./generated",
+    components: [component()],
+};
 
-async function workspace(
-    t: any,
-    sources = '[{ srcDir: "./src", outDir: "./generated" }]',
-) {
+async function workspace(t: any, sources = JSON.stringify([sourceOptions])) {
     const root = await mkdtemp(join(await realpath(tmpdir()), "fast-harness-sources-"));
     await mkdir(join(root, "src"));
     let server: Awaited<ReturnType<typeof startServer>> | undefined;
@@ -48,10 +60,10 @@ async function workspace(
         writeFile(
             join(root, "src/main.ts"),
             `import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-            import { template } from "../generated/widget.template.js";
-            import { styles } from "../generated/widget.styles.js";
+            import { template } from "../generated/source-widget.template.js";
+            import { styles } from "../generated/source-widget.styles.js";
             import { message } from "./state.js";
-            class SourceWidget extends FASTElement { message = message; }
+            export class SourceWidget extends FASTElement { message = message; }
             await SourceWidget.define({name:"source-widget", template, styles});`,
         ),
         writeFile(
@@ -113,12 +125,7 @@ test("legacy configuration stays the default", () => {
 });
 
 test("sources configuration requires an array", () => {
-    for (const sources of [
-        { srcDir: "./src", outDir: "./generated" },
-        false,
-        null,
-        "src",
-    ]) {
+    for (const sources of [sourceOptions, false, null, "src"]) {
         assert.throws(() => createHarnessConfig({ sources }), /sources must be an array/);
     }
 });
@@ -168,7 +175,7 @@ test("source mode generates on a clean checkout and watches HTML, CSS and TypeSc
     await writeFile(join(app.root, "src/widget.css"), ":host { --test-color: blue; }");
     await expect.poll(color).toBe("blue");
     assert.match(await renderSSR(), /--test-color: blue/);
-    const generated = join(app.root, "generated/widget.template.ts");
+    const generated = join(app.root, "generated/source-widget.template.ts");
     const before = (await stat(generated)).mtimeMs;
     await writeFile(
         join(app.root, "src/state.ts"),
@@ -219,7 +226,12 @@ test("source recovery catches repairs completed before the error page connects",
     const app = await workspace(t);
     const origin = await app.start();
     await writeFile(join(app.root, "src/widget.html"), "<broken>");
-    await expect.poll(async () => (await fetch(origin)).status).toBe(500);
+    await expect
+        .poll(
+            async () =>
+                (await fetch(origin, { headers: { Accept: "text/html" } })).status,
+        )
+        .toBe(500);
     const browser = await chromium.launch();
     t.after(() => browser.close());
     const page = await browser.newPage();
@@ -244,7 +256,9 @@ test("source recovery catches repairs completed before the error page connects",
             )
             .toBe(200);
         await expect
-            .poll(() => readFile(join(app.root, "generated/widget.template.ts"), "utf8"))
+            .poll(() =>
+                readFile(join(app.root, "generated/source-widget.template.ts"), "utf8"),
+            )
             .toContain("Recovered");
     } finally {
         resumeClient();
@@ -256,7 +270,15 @@ test("source recovery catches repairs completed before the error page connects",
 test("authored package exports render and hydrate through native SSR without dist", {
     timeout: 60_000,
 }, async t => {
-    const app = await workspace(t);
+    const app = await workspace(
+        t,
+        JSON.stringify([
+            {
+                ...sourceOptions,
+                components: [{ ...component(), clientModule: "./src/element.ts" }],
+            },
+        ]),
+    );
     const packageName = `fast-harness-source-${randomUUID()}`;
     const packageLink = join(nodeModules, packageName);
     await symlink(app.root, packageLink, "junction");
@@ -393,50 +415,86 @@ test("authored package exports render and hydrate through native SSR without dis
     assert.deepEqual(errors, []);
     await assert.rejects(stat(join(app.root, "dist")));
     assert.match(
-        await readFile(join(app.root, "generated/widget.template.ts"), "utf8"),
+        await readFile(join(app.root, "generated/source-widget.template.ts"), "utf8"),
         /HTML B/,
     );
     assert.match(
-        await readFile(join(app.root, "generated/widget.styles.ts"), "utf8"),
+        await readFile(join(app.root, "generated/source-widget.styles.ts"), "utf8"),
         /blue/,
     );
 });
 
-test("nested sources are watched and only owned stale outputs are removed", async t => {
-    const app = await workspace(t);
-    await app.start();
+test("explicit nested sources are watched, unlisted files ignored, and stale owned outputs removed", async t => {
+    const nested = {
+        ...component(),
+        tagName: "nested-widget",
+        template: "./src/nested/widget.html",
+        stylesheet: "./src/nested/widget.css",
+    };
+    const app = await workspace(
+        t,
+        JSON.stringify([
+            {
+                ...sourceOptions,
+                components: [component(), nested],
+            },
+        ]),
+    );
     await mkdir(join(app.root, "src/nested"));
     await writeFile(join(app.root, "src/nested/widget.html"), template("Nested"));
     await writeFile(join(app.root, "src/nested/widget.css"), ":host { color: green; }");
-    const output = join(app.root, "generated/nested");
+    await writeFile(join(app.root, "src/unlisted.html"), "<broken>");
+    const origin = await app.start();
+    const output = join(app.root, "generated");
+    await assert.rejects(stat(join(output, "unlisted.template.ts")));
+    await writeFile(join(app.root, "src/nested/widget.html"), template("Nested edit"));
     await expect
-        .poll(() => readFile(join(output, "widget.template.ts"), "utf8").catch(() => ""))
-        .toContain("Nested");
+        .poll(() =>
+            readFile(join(output, "nested-widget.template.ts"), "utf8").catch(() => ""),
+        )
+        .toContain("Nested edit");
     await expect
-        .poll(() => readFile(join(output, "widget.styles.ts"), "utf8").catch(() => ""))
+        .poll(() =>
+            readFile(join(output, "nested-widget.styles.ts"), "utf8").catch(() => ""),
+        )
         .toContain("color: green");
     const handwritten = join(output, "handwritten.ts");
     await writeFile(handwritten, "export const keep = true;\n");
     await rm(join(app.root, "src/nested/widget.css"));
+    await expect.poll(async () => (await fetch(origin)).status).toBe(500);
+    await writeFile(join(app.root, "src/nested/widget.css"), ":host { color: blue; }");
+    await expect
+        .poll(
+            async () =>
+                (await fetch(origin, { headers: { Accept: "text/html" } })).status,
+        )
+        .toBe(200);
+    await app.stop();
+    const config = join(app.root, "vite.config.mjs");
+    await writeFile(
+        config,
+        (await readFile(config, "utf8")).replace(
+            JSON.stringify([{ ...sourceOptions, components: [component(), nested] }]),
+            JSON.stringify([sourceOptions]),
+        ),
+    );
+    await app.start();
     await expect
         .poll(() =>
-            stat(join(output, "widget.styles.ts")).then(
+            stat(join(output, "nested-widget.styles.ts")).then(
                 () => true,
                 () => false,
             ),
         )
         .toBe(false);
-    await app.stop();
-    await rm(join(app.root, "src/nested/widget.html"));
-    await app.start();
-    await assert.rejects(stat(join(output, "widget.template.ts")));
+    await assert.rejects(stat(join(output, "nested-widget.template.ts")));
     assert.equal(await readFile(handwritten, "utf8"), "export const keep = true;\n");
 });
 
 test("source generation never overwrites handwritten TypeScript", async t => {
     const app = await workspace(t);
     await mkdir(join(app.root, "generated"));
-    const output = join(app.root, "generated/widget.template.ts");
+    const output = join(app.root, "generated/source-widget.template.ts");
     await writeFile(output, "export const handwritten = true;\n");
     await assert.rejects(app.start(), /Refusing to overwrite/);
     assert.equal(await readFile(output, "utf8"), "export const handwritten = true;\n");
@@ -446,60 +504,62 @@ test("source generation rejects directory overlap and symlink output traversal",
     const app = await workspace(t);
     const config = join(app.root, "vite.config.mjs");
     const original = await readFile(config, "utf8");
-    await writeFile(config, original.replace('outDir: "./generated"', 'outDir: "."'));
-    await assert.rejects(app.start(), /outDir must not contain srcDir/);
+    await writeFile(config, original.replace('"outDir":"./generated"', '"outDir":"."'));
+    await assert.rejects(app.start(), /outDir must not contain component inputs/);
     await writeFile(config, original);
-    await mkdir(join(app.root, "src/nested"));
-    await writeFile(join(app.root, "src/nested/widget.html"), template("Nested"));
     await mkdir(join(app.root, "outside"));
     await mkdir(join(app.root, "generated"));
+    const target = join(app.root, "outside/handwritten.ts");
+    await writeFile(target, "export const keep = true;");
     await symlink(
         join(app.root, "outside"),
-        join(app.root, "generated/nested"),
+        join(app.root, "generated/source-widget.template.ts"),
         "junction",
     );
-    await assert.rejects(app.start(), /cannot use a symbolic link/);
-    await assert.rejects(stat(join(app.root, "outside/widget.template.ts")));
-    await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
+    await assert.rejects(app.start(), /Refusing to overwrite/);
+    assert.equal(await readFile(target, "utf8"), "export const keep = true;");
+    await assert.rejects(stat(join(app.root, "generated/source-widget.styles.ts")));
 });
 
-test("source globs can select templates and disable stylesheet generation", async t => {
-    const app = await workspace(t);
+test("components without a stylesheet generate only a typed template", async t => {
+    const { stylesheet, ...withoutStyles } = component();
+    const app = await workspace(
+        t,
+        JSON.stringify([
+            {
+                ...sourceOptions,
+                components: [withoutStyles],
+            },
+        ]),
+    );
     await writeFile(
         join(app.root, "src/shell.html"),
         "<!doctype html><title>Shell</title>",
     );
-    const config = join(app.root, "vite.config.mjs");
-    await writeFile(
-        config,
-        (await readFile(config, "utf8")).replace(
-            'srcDir: "./src", outDir:',
-            'srcDir: "./src", templates: ["widget.html"], stylesheets: false, outDir:',
-        ),
-    );
     await app.start();
     assert.match(
-        await readFile(join(app.root, "generated/widget.template.ts"), "utf8"),
-        /export const template/,
+        await readFile(join(app.root, "generated/source-widget.template.ts"), "utf8"),
+        /html<SourceWidget>/,
     );
     await assert.rejects(stat(join(app.root, "generated/shell.template.ts")));
-    await assert.rejects(stat(join(app.root, "generated/widget.styles.ts")));
+    await assert.rejects(stat(join(app.root, "generated/source-widget.styles.ts")));
 });
 
 test("per-template source types preserve binding checks in generated TypeScript", async t => {
     const source = {
-        srcDir: "./src",
         outDir: "./generated",
-        templateTypes: {
-            "widget.html": {
-                typeSource: "SourceWidget",
-                typeSourceImport: "../src/model.js",
+        components: [
+            {
+                ...component(),
+                clientModule: "./src/model.ts",
             },
-            "other.html": {
-                typeSource: "OtherWidget",
-                typeSourceImport: "../src/model.js",
+            {
+                tagName: "other-widget",
+                template: "./src/other.html",
+                className: "OtherWidget",
+                clientModule: "./src/other-model.mts",
             },
-        },
+        ],
     };
     const app = await workspace(t, JSON.stringify([source]));
     await mkdir(join(app.root, "node_modules/@microsoft"), { recursive: true });
@@ -516,8 +576,9 @@ test("per-template source types preserve binding checks in generated TypeScript"
     await writeFile(
         join(app.root, "config.ts"),
         `import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
-        import type { SourceOptions } from "@microsoft/fast-test-harness/vite.config.mjs";
+        import type { SourceComponent, SourceOptions } from "@microsoft/fast-test-harness/vite.config.mjs";
         const source: SourceOptions = ${JSON.stringify(source)};
+        const component: SourceComponent = source.components[0];
         createHarnessConfig({ sources: [source] });
         createHarnessConfig({ sources: [] });
         // @ts-expect-error Sources must be an array, even for one mapping.
@@ -526,26 +587,44 @@ test("per-template source types preserve binding checks in generated TypeScript"
         createHarnessConfig({ sources: false });
         // @ts-expect-error The unpublished configuration name has been replaced.
         createHarnessConfig({ sourceGeneration: [source] });
-        // @ts-expect-error Source mappings use srcDir, not Vite's root option.
-        createHarnessConfig({ sources: [{ root: "./src", outDir: "./generated" }] });`,
+        // @ts-expect-error Source mappings require explicit components.
+        createHarnessConfig({ sources: [{ srcDir: "./src", outDir: "./generated" }] });
+        // @ts-expect-error Component inputs are always an array.
+        createHarnessConfig({ sources: [{ outDir: "./generated", components: component }] });
+        // @ts-expect-error A component must identify the exported class.
+        const incomplete: SourceComponent = { tagName: "my-widget", template: "./widget.html", clientModule: "./widget.ts" };
+        // @ts-expect-error Glob settings are not component configuration.
+        createHarnessConfig({ sources: [{ ...source, templates: "**/*.html" }] });`,
     );
     await writeFile(
         join(app.root, "src/model.ts"),
-        'export class SourceWidget { message = ""; } export class OtherWidget { label = ""; }',
+        'export class SourceWidget { message = ""; }',
+    );
+    await writeFile(
+        join(app.root, "src/other-model.mts"),
+        'export class OtherWidget { label = ""; }',
     );
     await writeFile(
         join(app.root, "src/other.html"),
         '<f-template name="other-widget"><template><p>{{label}}</p></template></f-template>',
     );
     await app.start();
+    assert.match(
+        await readFile(join(app.root, "generated/source-widget.template.ts"), "utf8"),
+        /import type \{ SourceWidget \} from "\.\.\/src\/model\.js"/,
+    );
+    assert.match(
+        await readFile(join(app.root, "generated/other-widget.template.ts"), "utf8"),
+        /import type \{ OtherWidget \} from "\.\.\/src\/other-model\.mjs"/,
+    );
     const ts: typeof import("typescript") = createRequire(import.meta.url)("typescript");
     const diagnostics = () =>
         ts.getPreEmitDiagnostics(
             ts.createProgram({
                 rootNames: [
                     join(app.root, "config.ts"),
-                    join(app.root, "generated/widget.template.ts"),
-                    join(app.root, "generated/other.template.ts"),
+                    join(app.root, "generated/source-widget.template.ts"),
+                    join(app.root, "generated/other-widget.template.ts"),
                 ],
                 options: {
                     noEmit: true,
@@ -564,7 +643,9 @@ test("per-template source types preserve binding checks in generated TypeScript"
     );
     await writeFile(join(app.root, "src/widget.html"), template("{{misspelled}}"));
     await expect
-        .poll(() => readFile(join(app.root, "generated/widget.template.ts"), "utf8"))
+        .poll(() =>
+            readFile(join(app.root, "generated/source-widget.template.ts"), "utf8"),
+        )
         .toContain("misspelled");
     const errors = diagnostics();
     assert.equal(errors.length, 1);
@@ -581,8 +662,11 @@ test("multiple source mappings generate and watch independent package routes", {
     const app = await workspace(
         t,
         JSON.stringify([
-            { srcDir: "./src", outDir: "./src/generated" },
-            { srcDir: "./other/src", outDir: "./other/src/generated" },
+            { outDir: "./src/generated", components: [component()] },
+            {
+                outDir: "./other/src/generated",
+                components: [component("./other/src", "other-widget", "OtherWidget")],
+            },
         ]),
     );
     const other = join(app.root, "other");
@@ -639,11 +723,18 @@ test("multiple source mappings generate and watch independent package routes", {
         )
         .toBe("blue");
     await app.stop();
-    await rm(join(other, "src/widget.html"));
+    const config = join(app.root, "vite.config.mjs");
+    await writeFile(
+        config,
+        (await readFile(config, "utf8")).replace(
+            JSON.stringify([component("./other/src", "other-widget", "OtherWidget")]),
+            "[]",
+        ),
+    );
     await app.start();
-    await assert.rejects(stat(join(other, "src/generated/widget.template.ts")));
+    await assert.rejects(stat(join(other, "src/generated/other-widget.template.ts")));
     assert.match(
-        await readFile(join(app.root, "src/generated/widget.template.ts"), "utf8"),
+        await readFile(join(app.root, "src/generated/source-widget.template.ts"), "utf8"),
         /First B/,
     );
 });
@@ -652,57 +743,89 @@ test("multiple mappings reject output overlap and preflight all conversions", as
     const app = await workspace(t);
     await mkdir(join(app.root, "other/src"), { recursive: true });
     await writeFile(join(app.root, "other/src/widget.html"), "<broken>");
+    await writeFile(join(app.root, "other/src/widget.css"), ":host {}");
+    await writeFile(join(app.root, "other/src/main.ts"), "export class OtherWidget {}");
     const config = join(app.root, "vite.config.mjs");
     const original = await readFile(config, "utf8");
-    const configure = async (second: { srcDir: string; outDir: string }) =>
+    const configure = async (outDir: string) =>
         writeFile(
             config,
             original.replace(
-                '[{ srcDir: "./src", outDir: "./generated" }]',
-                JSON.stringify([{ srcDir: "./src", outDir: "./generated" }, second]),
+                JSON.stringify([sourceOptions]),
+                JSON.stringify([
+                    sourceOptions,
+                    {
+                        outDir,
+                        components: [
+                            component("./other/src", "other-widget", "OtherWidget"),
+                        ],
+                    },
+                ]),
             ),
         );
     for (const outDir of ["./generated", "./generated/nested", "./other"]) {
-        await configure({ srcDir: "./other/src", outDir });
-        await assert.rejects(app.start(), /overlap|outDir must not contain srcDir/);
-        await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
+        await configure(outDir);
+        await assert.rejects(
+            app.start(),
+            /overlap|outDir must not contain component inputs/,
+        );
+        await assert.rejects(stat(join(app.root, "generated/source-widget.template.ts")));
     }
     await symlink(
         join(app.root, "generated"),
         join(app.root, "generated-alias"),
         "junction",
     );
-    await configure({ srcDir: "./other/src", outDir: "./generated-alias" });
+    await configure("./generated-alias");
     await assert.rejects(app.start(), /overlap/);
-    await configure({ srcDir: "./other/src", outDir: "./other/generated" });
+    await configure("./other/generated");
     await assert.rejects(app.start(), /Source generation failed/);
-    await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
+    await assert.rejects(stat(join(app.root, "generated/source-widget.template.ts")));
 });
 
-test("source mappings and template type mappings reject invalid configuration", () => {
+test("source mappings and explicit components reject invalid configuration", () => {
     for (const source of [{}, { root: "./src", outDir: "./generated" }]) {
         assert.throws(
             () => createHarnessConfig({ sources: [source] }),
-            /Each sources mapping requires srcDir and outDir paths/,
+            /Each sources mapping requires outDir and a components array/,
         );
     }
-    for (const templateTypes of [
-        [],
-        { "../widget.html": { typeSource: "SourceWidget" } },
-        { "widget.html": { typeSourceImport: "../src/model.js" } },
+    for (const invalid of [
+        null,
+        {},
+        { ...component(), tagName: "../widget" },
+        { ...component(), template: "./src/widget.ts" },
+        { ...component(), stylesheet: false },
+        { ...component(), clientModule: "./src/model.html" },
+        { ...component(), className: "../Widget" },
     ]) {
         assert.throws(
             () =>
                 createHarnessConfig({
                     sources: [
                         {
-                            srcDir: "./src",
                             outDir: "./generated",
-                            templateTypes,
+                            components: [invalid],
                         },
                     ],
                 }),
-            /templateTypes must map srcDir-relative HTML paths/,
+            /Each component requires/,
+        );
+    }
+    assert.throws(
+        () =>
+            createHarnessConfig({
+                sources: [{ ...sourceOptions, components: [component(), component()] }],
+            }),
+        /Duplicate component tagName/,
+    );
+    for (const key of ["srcDir", "root", "templates", "stylesheets", "templateTypes"]) {
+        assert.throws(
+            () =>
+                createHarnessConfig({
+                    sources: [{ ...sourceOptions, [key]: "**/*" }],
+                }),
+            /accept explicit components/,
         );
     }
 });

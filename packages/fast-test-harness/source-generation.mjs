@@ -10,7 +10,7 @@ import {
     writeFile,
 } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { dirname, extname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 
 export const sourceGenerationPluginName = "fast-test-harness:source-generation";
 export const sourceGenerationEvent = "fast-test-harness:source-change";
@@ -38,70 +38,60 @@ async function readOutput(file, header) {
     }
 }
 
-async function ensureParent(root, file) {
-    let directory = root;
-    for (const segment of relative(root, dirname(file)).split(sep).filter(Boolean)) {
-        directory = join(directory, segment);
-        await mkdir(directory).catch(error => {
-            if (error.code !== "EEXIST") {
-                throw error;
-            }
-        });
-        if (!(await lstat(directory)).isDirectory()) {
-            throw new Error(`Generated output cannot use a symbolic link: ${directory}`);
-        }
-    }
-}
-
 export function sourceGenerationPlugin(options) {
     const inputs = options.map(options => {
         if (
             !options ||
-            typeof options.srcDir !== "string" ||
-            !options.srcDir ||
             typeof options.outDir !== "string" ||
-            !options.outDir
+            !options.outDir ||
+            !Array.isArray(options.components)
         ) {
-            throw new Error("Each sources mapping requires srcDir and outDir paths.");
+            throw new Error(
+                "Each sources mapping requires outDir and a components array.",
+            );
         }
-        const patterns = [
-            ...(options.templates === false ? [] : [options.templates ?? "**/*.html"]),
-            ...(options.stylesheets === false ? [] : [options.stylesheets ?? "**/*.css"]),
-        ].flat();
-        if (patterns.some(pattern => typeof pattern !== "string" || !pattern)) {
-            throw new Error("Source generation patterns must be nonempty strings.");
-        }
-        const templateTypes = options.templateTypes ?? {};
         if (
-            typeof templateTypes !== "object" ||
-            Array.isArray(templateTypes) ||
-            Object.entries(templateTypes).some(
-                ([name, type]) =>
-                    isAbsolute(name) ||
-                    name.includes("\\") ||
-                    name
-                        .split("/")
-                        .some(part => !part || part === "." || part === "..") ||
-                    !name.endsWith(".html") ||
-                    !type ||
-                    typeof type.typeSource !== "string" ||
-                    !type.typeSource ||
-                    (type.typeSourceImport !== undefined &&
-                        (typeof type.typeSourceImport !== "string" ||
-                            !type.typeSourceImport)),
+            ["srcDir", "root", "templates", "stylesheets", "templateTypes"].some(name =>
+                Object.hasOwn(options, name),
             )
         ) {
             throw new Error(
-                "templateTypes must map srcDir-relative HTML paths to typeSource and optional typeSourceImport strings.",
+                "Source mappings accept explicit components instead of source directories, globs, or templateTypes.",
             );
         }
-        return { ...options, patterns, templateTypes };
+        const tags = new Set();
+        for (const component of options.components) {
+            if (
+                !component ||
+                typeof component.tagName !== "string" ||
+                !/^[a-z][a-z0-9._-]*-[a-z0-9._-]*$/.test(component.tagName) ||
+                typeof component.template !== "string" ||
+                !component.template.endsWith(".html") ||
+                (component.stylesheet !== undefined &&
+                    (typeof component.stylesheet !== "string" ||
+                        !component.stylesheet.endsWith(".css"))) ||
+                typeof component.clientModule !== "string" ||
+                !/\.(?:[cm]?[jt]s|[jt]sx)$/.test(component.clientModule) ||
+                typeof component.className !== "string" ||
+                !/^[A-Za-z_$][\w$]*$/.test(component.className)
+            ) {
+                throw new Error(
+                    "Each component requires a custom-element tagName, template HTML path, clientModule path, and named className; stylesheet must be a CSS path when provided.",
+                );
+            }
+            if (tags.has(component.tagName)) {
+                throw new Error(`Duplicate component tagName: ${component.tagName}`);
+            }
+            tags.add(component.tagName);
+        }
+        return options;
     });
     let mappings;
-    let sourceRoots;
+    let sourceFiles;
     let outputRoots;
     let converter;
     let config;
+    let base;
     let server;
     let closed = false;
     let pending = Promise.resolve();
@@ -109,94 +99,84 @@ export function sourceGenerationPlugin(options) {
     async function generate() {
         const outputs = new Map();
         const warnings = [];
-        for (const {
-            srcDir: root,
-            outDir,
-            header,
-            patterns,
-            templateTypes,
-        } of mappings) {
-            for await (const name of glob(patterns, {
-                cwd: root,
-                exclude: [
-                    "**/node_modules/**",
-                    "**/.git/**",
-                    ...mappings
-                        .filter(mapping => contains(root, mapping.outDir))
-                        .map(
-                            mapping =>
-                                `${relative(root, mapping.outDir).split(sep).join("/")}/**`,
-                        ),
-                ],
-            })) {
-                const input = resolve(root, name);
-                if (
-                    outputRoots.some(directory => contains(directory, input)) ||
-                    !(await lstat(input)).isFile()
-                ) {
-                    continue;
-                }
-                if (!contains(root, input) || !contains(root, await realpath(input))) {
-                    throw new Error(`Source generation input escapes srcDir: ${input}`);
-                }
-                const extension = extname(input);
-                if (extension !== ".html" && extension !== ".css") {
-                    throw new Error(`Expected an HTML or CSS source: ${input}`);
-                }
-                const sourceName = relative(root, input).split(sep).join("/");
-                const suffix = extension === ".html" ? ".template.ts" : ".styles.ts";
-                const output = resolve(
-                    outDir,
-                    sourceName.slice(0, -extension.length) + suffix,
-                );
-                if (outputs.has(output)) {
-                    throw new Error(
-                        `Multiple sources generate the same output: ${output}`,
-                    );
-                }
-                let converted;
-                try {
-                    const source = await readFile(input, "utf8");
-                    if (extension === ".html") {
-                        const type = templateTypes[sourceName];
-                        const result = converter.convert_template_with_options(
-                            source,
-                            "fast-v3-ts",
-                            type?.typeSource,
-                            type?.typeSourceImport,
-                            true,
-                        );
-                        try {
-                            converted = result.output;
-                            warnings.push(
-                                ...result.warnings.map(warning => `${input}: ${warning}`),
-                            );
-                        } finally {
-                            result.free();
-                        }
-                    } else {
-                        converted = converter.convert_stylesheet(
-                            source,
-                            "fast-v3-ts",
-                            "styles",
-                            true,
+        for (const { components, outDir, header } of mappings) {
+            for (const component of components) {
+                const { tagName, template, stylesheet, clientModule, className } =
+                    component;
+                for (const input of [template, stylesheet, clientModule].filter(
+                    Boolean,
+                )) {
+                    if (!(await lstat(input)).isFile()) {
+                        throw new Error(
+                            `Expected a regular component source file: ${input}`,
                         );
                     }
-                } catch (error) {
-                    throw new Error(`Source generation failed for ${input}: ${error}`, {
-                        cause: error,
+                }
+                for (const [input, suffix] of [
+                    [template, ".template.ts"],
+                    ...(stylesheet ? [[stylesheet, ".styles.ts"]] : []),
+                ]) {
+                    const output = resolve(outDir, tagName + suffix);
+                    if (outputs.has(output)) {
+                        throw new Error(
+                            `Multiple sources generate the same output: ${output}`,
+                        );
+                    }
+                    let converted;
+                    try {
+                        const source = await readFile(input, "utf8");
+                        if (suffix === ".template.ts") {
+                            let typeImport = relative(outDir, clientModule)
+                                .split(sep)
+                                .join("/")
+                                .replace(/\.mts$/, ".mjs")
+                                .replace(/\.cts$/, ".cjs")
+                                .replace(/\.tsx?$/, ".js");
+                            if (!typeImport.startsWith(".")) {
+                                typeImport = `./${typeImport}`;
+                            }
+                            const result = converter.convert_template_with_options(
+                                source,
+                                "fast-v3-ts",
+                                className,
+                                typeImport,
+                                true,
+                            );
+                            try {
+                                converted = result.output;
+                                warnings.push(
+                                    ...result.warnings.map(
+                                        warning => `${input}: ${warning}`,
+                                    ),
+                                );
+                            } finally {
+                                result.free();
+                            }
+                        } else {
+                            converted = converter.convert_stylesheet(
+                                source,
+                                "fast-v3-ts",
+                                "styles",
+                                true,
+                            );
+                        }
+                    } catch (error) {
+                        throw new Error(
+                            `Source generation failed for ${input}: ${error}`,
+                            {
+                                cause: error,
+                            },
+                        );
+                    }
+                    outputs.set(output, {
+                        header,
+                        content: `${header}// Source: ${JSON.stringify(relative(base, input).split(sep).join("/"))}\n${converted}`,
                     });
                 }
-                outputs.set(output, {
-                    outDir,
-                    header,
-                    content: `${header}// Source: ${JSON.stringify(sourceName)}\n${converted}`,
-                });
             }
         }
         // Validate the entire batch before replacing any existing generated files.
-        for (const [output, { outDir, header }] of outputs) {
-            await ensureParent(outDir, output);
+        for (const [output, { header }] of outputs) {
             await readOutput(output, header);
         }
         for (const [output, { content, header }] of outputs) {
@@ -241,9 +221,7 @@ export function sourceGenerationPlugin(options) {
         return (
             !outputRoots.some(directory => contains(directory, file)) &&
             !file.split(sep).some(part => part === "node_modules" || part === ".git") &&
-            (/\.[cm]?tsx?$/.test(file) ||
-                (sourceRoots.some(directory => contains(directory, file)) &&
-                    /\.(html|css)$/.test(file)))
+            (/\.[cm]?tsx?$/.test(file) || sourceFiles.has(file))
         );
     }
 
@@ -319,25 +297,41 @@ export function sourceGenerationPlugin(options) {
             ) {
                 throw new Error("Configure sources only once.");
             }
-            const base = config.configFile ? dirname(config.configFile) : config.root;
+            base = config.configFile ? dirname(config.configFile) : config.root;
             mappings = [];
-            sourceRoots = [];
+            sourceFiles = new Set();
             outputRoots = [];
             for (const options of inputs) {
-                const source = resolve(base, options.srcDir);
-                const srcDir = await realpath(source);
-                sourceRoots.push(source, srcDir);
-                mappings.push({ ...options, srcDir });
+                const components = [];
+                for (const component of options.components) {
+                    const resolved = { ...component };
+                    for (const name of ["template", "stylesheet", "clientModule"]) {
+                        if (component[name] === undefined) {
+                            continue;
+                        }
+                        const input = resolve(base, component[name]);
+                        const canonical = await realpath(input);
+                        sourceFiles.add(input);
+                        sourceFiles.add(canonical);
+                        resolved[name] = canonical;
+                    }
+                    components.push(resolved);
+                }
+                mappings.push({ ...options, components });
             }
             for (const mapping of mappings) {
                 const destination = resolve(base, mapping.outDir);
-                if (sourceRoots.some(root => contains(destination, root))) {
-                    throw new Error("Source generation outDir must not contain srcDir.");
+                if ([...sourceFiles].some(file => contains(destination, file))) {
+                    throw new Error(
+                        "Source generation outDir must not contain component inputs.",
+                    );
                 }
                 await mkdir(destination, { recursive: true });
                 const outDir = await realpath(destination);
-                if (sourceRoots.some(root => contains(outDir, root))) {
-                    throw new Error("Source generation outDir must not contain srcDir.");
+                if ([...sourceFiles].some(file => contains(outDir, file))) {
+                    throw new Error(
+                        "Source generation outDir must not contain component inputs.",
+                    );
                 }
                 if (
                     outputRoots.some(
@@ -351,7 +345,7 @@ export function sourceGenerationPlugin(options) {
                 outputRoots.push(destination, outDir);
                 mapping.outDir = outDir;
                 mapping.header = `// @generated by @microsoft/fast-test-harness (${JSON.stringify(
-                    relative(outDir, mapping.srcDir).split(sep).join("/"),
+                    relative(outDir, base).split(sep).join("/"),
                 )}). DO NOT EDIT.\n`;
             }
             try {
@@ -368,7 +362,7 @@ export function sourceGenerationPlugin(options) {
         },
         async configureServer(vite) {
             server = vite;
-            server.watcher.add(mappings.map(mapping => mapping.srcDir));
+            server.watcher.add([...sourceFiles]);
             server.watcher.on("all", onChange);
             await enqueue();
         },

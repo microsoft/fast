@@ -53,10 +53,16 @@ import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mj
 export default createHarnessConfig({
     sources: [
         {
-            srcDir: "../src",
             outDir: "../generated",
-            templates: "**/*.html",
-            stylesheets: "**/*.css",
+            components: [
+                {
+                    tagName: "my-button",
+                    template: "../src/button/button.html",
+                    stylesheet: "../src/button/button.css",
+                    clientModule: "../src/button/button.ts",
+                    className: "MyButton",
+                },
+            ],
         },
     ],
 });
@@ -66,10 +72,11 @@ Pass `--config test/vite.config.mjs` if the config is not discovered automatical
 Paths are relative to the Vite config file, not the shell's working directory.
 Without a config file, programmatically created Vite configurations resolve paths
 relative to Vite's root. `sources` is always an array, including for one mapping.
-Both `srcDir` and `outDir` are required in each mapping; `outDir` must not
-contain `srcDir`. Each glob option accepts a string, string array, or `false` to
-disable that input type. Defaults include all HTML and CSS under `srcDir`, excluding
-`node_modules`, `.git`, and the generated-output directory.
+Each mapping requires `outDir` and a `components` array. Each component identifies
+its tag name, exact HTML input, client module, and named class export. `stylesheet`
+is optional. No glob patterns or class discovery are used; unlisted HTML/CSS
+files are ignored. All input paths are relative to the config file, not to
+`outDir`. Output directories must not contain any configured input file.
 
 For example, `src/button/button.html`:
 
@@ -85,15 +92,15 @@ and `src/button/button.css`:
 :host { display: inline-block; }
 ```
 
-produce `generated/button/button.template.ts` and
-`generated/button/button.styles.ts`, exporting `template` and `styles`.
+produce `generated/my-button.template.ts` and
+`generated/my-button.styles.ts`, exporting `template` and `styles`.
 Register the component using those modules:
 
 ```ts
 // src/button/button.ts
 import { FASTElement } from "@microsoft/fast-element/fast-element.js";
-import { template } from "../../generated/button/button.template.js";
-import { styles } from "../../generated/button/button.styles.js";
+import { template } from "../../generated/my-button.template.js";
+import { styles } from "../../generated/my-button.styles.js";
 
 export class MyButton extends FASTElement {
     label = "Click me";
@@ -104,18 +111,21 @@ await MyButton.define({ name: "my-button", template, styles });
 
 Import your source definition modules from the test entry point, rather than a
 previously compiled copy. The harness generates TypeScript before serving modules,
-including on a clean checkout, then watches HTML/CSS additions, edits, and deletions.
+including on a clean checkout, then watches the configured HTML/CSS inputs.
 Vite transpiles TypeScript edits automatically. Pages reload, SSR entry modules
 are invalidated, and previously requested SSR fixtures regenerate on navigation;
 no separate generation or compilation script
 is needed while the harness runs. Vite does not perform TypeScript type checking.
 
-The generated directory can be gitignored. Relative subdirectories are preserved;
-each `.html` suffix becomes `.template.ts`, and `.css` becomes `.styles.ts`.
+The generated directory can be gitignored. Each component produces
+`<tagName>.template.ts` and, when a stylesheet is configured, `<tagName>.styles.ts`.
+Tag names must be unique within each output mapping.
 Generated modules have explicit FAST types and ownership headers. The harness
 refuses to overwrite unowned files and only deletes its own stale generated files.
 Conversion errors identify the source file, block stale modules, and recover when
-the source is corrected.
+the source is corrected. Missing configured files are errors too; remove a
+component or its optional stylesheet from the config to remove the corresponding
+owned output. Config changes restart Vite and regenerate the remaining outputs.
 
 Conversion uses FAST Build's `fast-v3-ts` syntax: each HTML input must contain
 exactly one supported `<f-template>` definition, not an arbitrary HTML document.
@@ -125,8 +135,8 @@ does not require the native SSR addon.
 
 ### Template binding types
 
-Select the HTML/CSS inputs and optionally associate each HTML input with its
-element type:
+`clientModule` and `className` identify the named class export used to type each
+generated template:
 
 ```js
 // test/vite.config.mjs
@@ -135,36 +145,35 @@ import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mj
 export default createHarnessConfig({
     sources: [
         {
-            srcDir: "../src",
             outDir: "../generated",
-            templates: ["button/**/*.html"],
-            stylesheets: ["button/**/*.css"],
-            templateTypes: {
-                "button/button.html": {
-                    typeSource: "MyButton",
-                    typeSourceImport: "../../src/button/button.js",
+            components: [
+                {
+                    tagName: "m-fast-card",
+                    template: "../src/components/card/card.html",
+                    stylesheet: "../src/components/card/card.css",
+                    clientModule: "../src/components/card/card.ts",
+                    className: "FastCard",
                 },
-            },
+            ],
         },
     ],
 });
 ```
 
-The globs are relative to `srcDir`. This example converts HTML/CSS under
-`src/button/`; `src/button/button.html` generates
-`generated/button/button.template.ts`, and `src/button/button.css` generates
-`generated/button/button.styles.ts`.
+This produces `generated/m-fast-card.template.ts` and
+`generated/m-fast-card.styles.ts`. The template imports `FastCard` using
+`import type`, with a relative specifier computed from the generated module to
+the configured client module. TypeScript extensions are rewritten for emitted
+module imports: `.ts`/`.tsx` become `.js`, `.mts` becomes `.mjs`, and `.cts`
+becomes `.cjs`.
 
-`templateTypes` keys are HTML paths relative to `srcDir`, using forward slashes.
-`typeSource` is a TypeScript identifier or dotted name. The optional
-`typeSourceImport` emits an
-`import type`; relative specifiers resolve from the **generated template module**,
-not the config file or HTML source. Package specifiers are also supported.
-
-The generated module uses `html<MyButton>` and `ElementViewTemplate<MyButton>`,
-so your normal TypeScript check can catch misspelled binding properties. Include
-the generated files in that check. Unmapped templates keep the existing `any`
-source type; no types are inferred and Vite still does not type-check.
+The generated module uses `html<FastCard>` and `ElementViewTemplate<FastCard>`,
+so your normal TypeScript check can catch misspelled binding properties and
+missing class exports. Include the generated files in that check. Vite still
+does not type-check. The type-only import does not evaluate the client module
+or register the element; keep registration in your source entry points.
+`tagName` names the outputs; the HTML must declare the intended `<f-template>`
+name, and SSR registration remains separately configured.
 
 ### Multiple packages
 
@@ -174,16 +183,37 @@ while serving all packages with one harness:
 ```js
 export default createHarnessConfig({
     sources: [
-        { srcDir: "../packages/button/src", outDir: "../packages/button/src/generated" },
-        { srcDir: "../packages/card/src", outDir: "../packages/card/src/generated" },
+        {
+            outDir: "../packages/button/src/generated",
+            components: [
+                {
+                    tagName: "my-button",
+                    template: "../packages/button/src/button.html",
+                    stylesheet: "../packages/button/src/button.css",
+                    clientModule: "../packages/button/src/button.ts",
+                    className: "MyButton",
+                },
+            ],
+        },
+        {
+            outDir: "../packages/card/src/generated",
+            components: [
+                {
+                    tagName: "my-card",
+                    template: "../packages/card/src/card.html",
+                    clientModule: "../packages/card/src/card.ts",
+                    className: "MyCard",
+                },
+            ],
+        },
     ],
 });
 ```
 
-Each mapping supports its own globs and `templateTypes`. Output directories must
+Each mapping lists its own components. Output directories must
 be disjoint: duplicate, nested, and symlink-aliased output trees are rejected.
-No output directory may contain any mapping's source root. An output directory
-inside a source root is supported and excluded from generation/watch feedback.
+No output directory may contain any mapping's input files. Outputs alongside
+source files in a dedicated subdirectory are supported and excluded from watch feedback.
 All mappings share one generation queue; conversion and ownership checks across
 the complete batch finish before any generated file is replaced.
 
@@ -482,7 +512,7 @@ hosting and fixture compilation/rendering failures propagate.
 | `@microsoft/fast-test-harness/ssr/entry-client.js` | Enables FAST Element hydration for SSR pages |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
-| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceOptions`, `SourceTemplateType` |
+| `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceOptions`, `SourceComponent` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
 
 SSR fixture generation compiles dynamically authored test HTML as development

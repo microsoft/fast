@@ -1,22 +1,22 @@
 declare module "@microsoft/fast-test-harness/vite.config.mjs" {
-    export interface SourceTemplateType {
-        /** Element class or dotted type name used for template binding checks. */
-        typeSource: string;
-        /** Optional module specifier, relative to the generated module or a package. */
-        typeSourceImport?: string;
+    export interface SourceComponent {
+        /** Custom-element name, also used to name the generated modules. */
+        tagName: string;
+        /** Exact HTML file path, relative to the Vite config file. */
+        template: string;
+        /** Optional exact CSS file path, relative to the Vite config file. */
+        stylesheet?: string;
+        /** Module exporting the element class, relative to the Vite config file. */
+        clientModule: string;
+        /** Named class export used for template binding checks. */
+        className: string;
     }
 
     export interface SourceOptions {
-        /** HTML/CSS source directory, relative to the Vite config file. */
-        srcDir: string;
         /** Dedicated generated-output directory, relative to the Vite config file. */
         outDir: string;
-        /** HTML glob(s) relative to srcDir. Defaults to all HTML files. */
-        templates?: string | string[] | false;
-        /** CSS glob(s) relative to srcDir. Defaults to all CSS files. */
-        stylesheets?: string | string[] | false;
-        /** Source types keyed by srcDir-relative HTML paths using forward slashes. */
-        templateTypes?: Record<string, SourceTemplateType>;
+        /** Explicit component inputs. No files are discovered through glob patterns. */
+        components: SourceComponent[];
     }
 
     export type HarnessConfig = import("vite").UserConfig & {

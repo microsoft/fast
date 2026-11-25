@@ -41,7 +41,7 @@ const config = defineConfig({
 export function createHarnessConfig(options = {}) {
     const { sources, ...viteOptions } = options;
     if (sources !== undefined && !Array.isArray(sources)) {
-        throw new Error("sources must be an array of srcDir/outDir mappings.");
+        throw new Error("sources must be an array of component/output mappings.");
     }
     return mergeConfig(
         config,
