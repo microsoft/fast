@@ -337,10 +337,10 @@ Compilation/rendering failures propagate; raw entry HTML is not a backend fallba
 
 The named `createHarnessConfig(options)` export merges ordinary Vite settings with
 these defaults. Its optional `sources` setting accepts only an array of mappings,
-each with `root`, `outDir`, optional
+each with `srcDir`, `outDir`, optional
 `templates`/`stylesheets` glob patterns, and optional `templateTypes`. Paths resolve
 from the config file's directory, or Vite's root for inline configurations.
-`templateTypes` maps root-relative, forward-slash HTML paths to `typeSource` and an
+`templateTypes` maps `srcDir`-relative, forward-slash HTML paths to `typeSource` and an
 optional `typeSourceImport`, passed through to the converter. Imports resolve from
 the generated module; mapped templates use an explicit source generic for normal
 TypeScript binding checks. Unmapped templates retain the default `any` source.

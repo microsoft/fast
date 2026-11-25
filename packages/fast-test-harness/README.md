@@ -53,7 +53,7 @@ import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mj
 export default createHarnessConfig({
     sources: [
         {
-            root: "../src",
+            srcDir: "../src",
             outDir: "../generated",
             templates: "**/*.html",
             stylesheets: "**/*.css",
@@ -66,9 +66,9 @@ Pass `--config test/vite.config.mjs` if the config is not discovered automatical
 Paths are relative to the Vite config file, not the shell's working directory.
 Without a config file, programmatically created Vite configurations resolve paths
 relative to Vite's root. `sources` is always an array, including for one mapping.
-Both `root` and `outDir` are required in each mapping; `outDir` must not
-contain `root`. Each glob option accepts a string, string array, or `false` to
-disable that input type. Defaults include all HTML and CSS under `root`, excluding
+Both `srcDir` and `outDir` are required in each mapping; `outDir` must not
+contain `srcDir`. Each glob option accepts a string, string array, or `false` to
+disable that input type. Defaults include all HTML and CSS under `srcDir`, excluding
 `node_modules`, `.git`, and the generated-output directory.
 
 For example, `src/button/button.html`:
@@ -125,25 +125,39 @@ does not require the native SSR addon.
 
 ### Template binding types
 
-Optionally associate each HTML input with its element type:
+Select the HTML/CSS inputs and optionally associate each HTML input with its
+element type:
 
 ```js
-sources: [
-    {
-        root: "../src",
-        outDir: "../generated",
-        templateTypes: {
-            "button/button.html": {
-                typeSource: "MyButton",
-                typeSourceImport: "../../src/button/button.js",
+// test/vite.config.mjs
+import { createHarnessConfig } from "@microsoft/fast-test-harness/vite.config.mjs";
+
+export default createHarnessConfig({
+    sources: [
+        {
+            srcDir: "../src",
+            outDir: "../generated",
+            templates: ["button/**/*.html"],
+            stylesheets: ["button/**/*.css"],
+            templateTypes: {
+                "button/button.html": {
+                    typeSource: "MyButton",
+                    typeSourceImport: "../../src/button/button.js",
+                },
             },
         },
-    },
-]
+    ],
+});
 ```
 
-Keys are HTML paths relative to `root`, using forward slashes. `typeSource` is a
-TypeScript identifier or dotted name. The optional `typeSourceImport` emits an
+The globs are relative to `srcDir`. This example converts HTML/CSS under
+`src/button/`; `src/button/button.html` generates
+`generated/button/button.template.ts`, and `src/button/button.css` generates
+`generated/button/button.styles.ts`.
+
+`templateTypes` keys are HTML paths relative to `srcDir`, using forward slashes.
+`typeSource` is a TypeScript identifier or dotted name. The optional
+`typeSourceImport` emits an
 `import type`; relative specifiers resolve from the **generated template module**,
 not the config file or HTML source. Package specifiers are also supported.
 
@@ -160,8 +174,8 @@ while serving all packages with one harness:
 ```js
 export default createHarnessConfig({
     sources: [
-        { root: "../packages/button/src", outDir: "../packages/button/src/generated" },
-        { root: "../packages/card/src", outDir: "../packages/card/src/generated" },
+        { srcDir: "../packages/button/src", outDir: "../packages/button/src/generated" },
+        { srcDir: "../packages/card/src", outDir: "../packages/card/src/generated" },
     ],
 });
 ```

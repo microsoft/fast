@@ -8,14 +8,14 @@ declare module "@microsoft/fast-test-harness/vite.config.mjs" {
 
     export interface SourceOptions {
         /** HTML/CSS source directory, relative to the Vite config file. */
-        root: string;
+        srcDir: string;
         /** Dedicated generated-output directory, relative to the Vite config file. */
         outDir: string;
-        /** HTML glob(s) relative to root. Defaults to all HTML files. */
+        /** HTML glob(s) relative to srcDir. Defaults to all HTML files. */
         templates?: string | string[] | false;
-        /** CSS glob(s) relative to root. Defaults to all CSS files. */
+        /** CSS glob(s) relative to srcDir. Defaults to all CSS files. */
         stylesheets?: string | string[] | false;
-        /** Source types keyed by root-relative HTML paths using forward slashes. */
+        /** Source types keyed by srcDir-relative HTML paths using forward slashes. */
         templateTypes?: Record<string, SourceTemplateType>;
     }
 

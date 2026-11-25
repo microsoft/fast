@@ -28,7 +28,10 @@ const elementRoot = dirname(
 const template = (text: string) =>
     `<f-template name="source-widget"><template><p>${text} {{message}}</p></template></f-template>`;
 
-async function workspace(t: any, sources = '[{ root: "./src", outDir: "./generated" }]') {
+async function workspace(
+    t: any,
+    sources = '[{ srcDir: "./src", outDir: "./generated" }]',
+) {
     const root = await mkdtemp(join(await realpath(tmpdir()), "fast-harness-sources-"));
     await mkdir(join(root, "src"));
     let server: Awaited<ReturnType<typeof startServer>> | undefined;
@@ -111,7 +114,7 @@ test("legacy configuration stays the default", () => {
 
 test("sources configuration requires an array", () => {
     for (const sources of [
-        { root: "./src", outDir: "./generated" },
+        { srcDir: "./src", outDir: "./generated" },
         false,
         null,
         "src",
@@ -444,7 +447,7 @@ test("source generation rejects directory overlap and symlink output traversal",
     const config = join(app.root, "vite.config.mjs");
     const original = await readFile(config, "utf8");
     await writeFile(config, original.replace('outDir: "./generated"', 'outDir: "."'));
-    await assert.rejects(app.start(), /outDir must not contain root/);
+    await assert.rejects(app.start(), /outDir must not contain srcDir/);
     await writeFile(config, original);
     await mkdir(join(app.root, "src/nested"));
     await writeFile(join(app.root, "src/nested/widget.html"), template("Nested"));
@@ -470,8 +473,8 @@ test("source globs can select templates and disable stylesheet generation", asyn
     await writeFile(
         config,
         (await readFile(config, "utf8")).replace(
-            'root: "./src", outDir:',
-            'root: "./src", templates: ["widget.html"], stylesheets: false, outDir:',
+            'srcDir: "./src", outDir:',
+            'srcDir: "./src", templates: ["widget.html"], stylesheets: false, outDir:',
         ),
     );
     await app.start();
@@ -485,7 +488,7 @@ test("source globs can select templates and disable stylesheet generation", asyn
 
 test("per-template source types preserve binding checks in generated TypeScript", async t => {
     const source = {
-        root: "./src",
+        srcDir: "./src",
         outDir: "./generated",
         templateTypes: {
             "widget.html": {
@@ -522,7 +525,9 @@ test("per-template source types preserve binding checks in generated TypeScript"
         // @ts-expect-error An empty array, not false, disables generation.
         createHarnessConfig({ sources: false });
         // @ts-expect-error The unpublished configuration name has been replaced.
-        createHarnessConfig({ sourceGeneration: [source] });`,
+        createHarnessConfig({ sourceGeneration: [source] });
+        // @ts-expect-error Source mappings use srcDir, not Vite's root option.
+        createHarnessConfig({ sources: [{ root: "./src", outDir: "./generated" }] });`,
     );
     await writeFile(
         join(app.root, "src/model.ts"),
@@ -576,8 +581,8 @@ test("multiple source mappings generate and watch independent package routes", {
     const app = await workspace(
         t,
         JSON.stringify([
-            { root: "./src", outDir: "./src/generated" },
-            { root: "./other/src", outDir: "./other/src/generated" },
+            { srcDir: "./src", outDir: "./src/generated" },
+            { srcDir: "./other/src", outDir: "./other/src/generated" },
         ]),
     );
     const other = join(app.root, "other");
@@ -649,17 +654,17 @@ test("multiple mappings reject output overlap and preflight all conversions", as
     await writeFile(join(app.root, "other/src/widget.html"), "<broken>");
     const config = join(app.root, "vite.config.mjs");
     const original = await readFile(config, "utf8");
-    const configure = async (second: { root: string; outDir: string }) =>
+    const configure = async (second: { srcDir: string; outDir: string }) =>
         writeFile(
             config,
             original.replace(
-                '[{ root: "./src", outDir: "./generated" }]',
-                JSON.stringify([{ root: "./src", outDir: "./generated" }, second]),
+                '[{ srcDir: "./src", outDir: "./generated" }]',
+                JSON.stringify([{ srcDir: "./src", outDir: "./generated" }, second]),
             ),
         );
     for (const outDir of ["./generated", "./generated/nested", "./other"]) {
-        await configure({ root: "./other/src", outDir });
-        await assert.rejects(app.start(), /overlap|outDir must not contain root/);
+        await configure({ srcDir: "./other/src", outDir });
+        await assert.rejects(app.start(), /overlap|outDir must not contain srcDir/);
         await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
     }
     await symlink(
@@ -667,18 +672,20 @@ test("multiple mappings reject output overlap and preflight all conversions", as
         join(app.root, "generated-alias"),
         "junction",
     );
-    await configure({ root: "./other/src", outDir: "./generated-alias" });
+    await configure({ srcDir: "./other/src", outDir: "./generated-alias" });
     await assert.rejects(app.start(), /overlap/);
-    await configure({ root: "./other/src", outDir: "./other/generated" });
+    await configure({ srcDir: "./other/src", outDir: "./other/generated" });
     await assert.rejects(app.start(), /Source generation failed/);
     await assert.rejects(stat(join(app.root, "generated/widget.template.ts")));
 });
 
 test("source mappings and template type mappings reject invalid configuration", () => {
-    assert.throws(
-        () => createHarnessConfig({ sources: [{}] }),
-        /Each sources mapping requires root and outDir paths/,
-    );
+    for (const source of [{}, { root: "./src", outDir: "./generated" }]) {
+        assert.throws(
+            () => createHarnessConfig({ sources: [source] }),
+            /Each sources mapping requires srcDir and outDir paths/,
+        );
+    }
     for (const templateTypes of [
         [],
         { "../widget.html": { typeSource: "SourceWidget" } },
@@ -689,13 +696,13 @@ test("source mappings and template type mappings reject invalid configuration", 
                 createHarnessConfig({
                     sources: [
                         {
-                            root: "./src",
+                            srcDir: "./src",
                             outDir: "./generated",
                             templateTypes,
                         },
                     ],
                 }),
-            /templateTypes must map root-relative HTML paths/,
+            /templateTypes must map srcDir-relative HTML paths/,
         );
     }
 });
