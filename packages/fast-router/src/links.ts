@@ -1,3 +1,4 @@
+import { findClosestAnchor } from "./links.utils.js";
 import { Route } from "./navigation.js";
 
 interface AnchorEventInfo {
@@ -42,7 +43,7 @@ export class DefaultLinkHandler implements LinkHandler {
             anchor: null,
         };
 
-        const target = this.findClosestAnchor(event);
+        const target = findClosestAnchor(event);
 
         if (!target || !this.targetIsThisWindow(target)) {
             return info;
@@ -70,20 +71,6 @@ export class DefaultLinkHandler implements LinkHandler {
         info.shouldHandleEvent = leftButtonClicked && !!isRelative;
 
         return info;
-    }
-
-    private findClosestAnchor(event: MouseEvent): Element {
-        const path: EventTarget[] = event.composedPath();
-
-        for (let i = 0, ii = path.length; i < ii; ++i) {
-            const current = path[i] as any;
-
-            if (current.tagName === "A") {
-                return current;
-            }
-        }
-
-        return event.target as any;
     }
 
     private targetIsThisWindow(target: Element): boolean {
