@@ -39,51 +39,25 @@ async function readOutput(file, header) {
 }
 
 export function sourceGenerationPlugin(options) {
-    const declaredOutputs = new Set();
-    const inputs = options.map(component => {
+    let resolveComponentSources;
+    try {
+        const sources = createRequire(import.meta.url)(
+            "@microsoft/fast-build/component-sources.js",
+        );
+        sources.validateComponentSources(options, "typescript");
+        resolveComponentSources = sources.resolveComponentSources;
+    } catch (error) {
         if (
-            !component ||
-            typeof component.tagName !== "string" ||
-            !/^[a-z][a-z0-9._-]*$/.test(component.tagName) ||
-            !component.tagName.includes("-") ||
-            typeof component.template !== "string" ||
-            !component.template.endsWith(".html") ||
-            (component.stylesheet !== undefined &&
-                (typeof component.stylesheet !== "string" ||
-                    !component.stylesheet.endsWith(".css"))) ||
-            typeof component.clientModule !== "string" ||
-            !/\.(?:[cm]?[jt]s|[jt]sx)$/.test(component.clientModule) ||
-            typeof component.className !== "string" ||
-            !/^[A-Za-z_$][\w$]*$/.test(component.className) ||
-            typeof component.generated !== "string" ||
-            !component.generated
+            error.code === "MODULE_NOT_FOUND" ||
+            error.code === "ERR_PACKAGE_PATH_NOT_EXPORTED"
         ) {
             throw new Error(
-                "Each component requires a custom-element tagName, template HTML path, clientModule path, named className, and generated directory; stylesheet must be a CSS path when provided.",
+                "Configuring components requires @microsoft/fast-build with its component-sources.js API. Install or update the optional converter peer.",
+                { cause: error },
             );
         }
-        if (
-            [
-                "srcDir",
-                "root",
-                "templates",
-                "stylesheets",
-                "templateTypes",
-                "outDir",
-                "components",
-            ].some(name => Object.hasOwn(component, name))
-        ) {
-            throw new Error(
-                "Components accept exact source paths and generated instead of nested mappings or glob settings.",
-            );
-        }
-        const output = JSON.stringify([component.generated, component.tagName]);
-        if (declaredOutputs.has(output)) {
-            throw new Error(`Duplicate component output: ${component.tagName}`);
-        }
-        declaredOutputs.add(output);
-        return component;
-    });
+        throw error;
+    }
     let mappings;
     let sourceFiles;
     let outputRoots;
@@ -97,10 +71,15 @@ export function sourceGenerationPlugin(options) {
     async function generate() {
         const outputs = new Map();
         const warnings = [];
-        for (const { components, outDir, header } of mappings) {
+        for (const { components, header } of mappings) {
             for (const component of components) {
-                const { tagName, template, stylesheet, clientModule, className } =
-                    component;
+                const {
+                    template,
+                    stylesheet,
+                    clientModule,
+                    className,
+                    typeSourceImport,
+                } = component;
                 for (const input of [template, stylesheet, clientModule].filter(
                     Boolean,
                 )) {
@@ -110,11 +89,10 @@ export function sourceGenerationPlugin(options) {
                         );
                     }
                 }
-                for (const [input, suffix] of [
-                    [template, ".template.ts"],
-                    ...(stylesheet ? [[stylesheet, ".styles.ts"]] : []),
+                for (const [input, output] of [
+                    [template, component.templateOutput],
+                    ...(stylesheet ? [[stylesheet, component.stylesheetOutput]] : []),
                 ]) {
-                    const output = resolve(outDir, tagName + suffix);
                     if (outputs.has(output)) {
                         throw new Error(
                             `Multiple sources generate the same output: ${output}`,
@@ -123,21 +101,12 @@ export function sourceGenerationPlugin(options) {
                     let converted;
                     try {
                         const source = await readFile(input, "utf8");
-                        if (suffix === ".template.ts") {
-                            let typeImport = relative(outDir, clientModule)
-                                .split(sep)
-                                .join("/")
-                                .replace(/\.mts$/, ".mjs")
-                                .replace(/\.cts$/, ".cjs")
-                                .replace(/\.tsx?$/, ".js");
-                            if (!typeImport.startsWith(".")) {
-                                typeImport = `./${typeImport}`;
-                            }
+                        if (input === template) {
                             const result = converter.convert_template_with_options(
                                 source,
                                 "fast-v3-ts",
                                 className,
-                                typeImport,
+                                typeSourceImport,
                                 true,
                             );
                             try {
@@ -297,51 +266,21 @@ export function sourceGenerationPlugin(options) {
             }
             base = config.configFile ? dirname(config.configFile) : config.root;
             mappings = [];
-            sourceFiles = new Set();
-            outputRoots = [];
-            const components = [];
-            for (const component of inputs) {
-                const resolved = { ...component };
-                for (const name of ["template", "stylesheet", "clientModule"]) {
-                    if (component[name] === undefined) {
-                        continue;
-                    }
-                    const input = resolve(base, component[name]);
-                    const canonical = await realpath(input);
-                    sourceFiles.add(input);
-                    sourceFiles.add(canonical);
-                    resolved[name] = canonical;
-                }
-                components.push(resolved);
+            const resolutionOptions = { baseDir: base, operation: "typescript" };
+            let resolvedSources = await resolveComponentSources(
+                options,
+                resolutionOptions,
+            );
+            for (const component of resolvedSources.components) {
+                await mkdir(component.generated, { recursive: true });
             }
-            for (const component of components) {
-                const destination = resolve(base, component.generated);
-                if ([...sourceFiles].some(file => contains(destination, file))) {
-                    throw new Error(
-                        "A generated directory must not contain component inputs.",
-                    );
-                }
-                await mkdir(destination, { recursive: true });
-                const outDir = await realpath(destination);
-                if ([...sourceFiles].some(file => contains(outDir, file))) {
-                    throw new Error(
-                        "A generated directory must not contain component inputs.",
-                    );
-                }
+            // Resolve again after creation to catch case-folded or newly aliased directories.
+            resolvedSources = await resolveComponentSources(options, resolutionOptions);
+            sourceFiles = new Set(resolvedSources.inputFiles);
+            outputRoots = resolvedSources.generatedDirectories;
+            for (const component of resolvedSources.components) {
+                const outDir = component.generated;
                 let mapping = mappings.find(mapping => mapping.outDir === outDir);
-                if (
-                    !mapping &&
-                    mappings.some(
-                        mapping =>
-                            contains(mapping.outDir, outDir) ||
-                            contains(outDir, mapping.outDir),
-                    )
-                ) {
-                    throw new Error(
-                        "Source generation output directories must not overlap.",
-                    );
-                }
-                outputRoots.push(destination, outDir);
                 if (!mapping) {
                     mapping = {
                         outDir,

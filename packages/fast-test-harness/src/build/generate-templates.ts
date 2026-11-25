@@ -6,12 +6,7 @@
  * back into human-readable f-template syntax (`f-ref`, `f-slotted`,
  * `@event`, `?bool`, `:prop`, `{{expr}}`).
  *
- * Usage as a module:
- * ```ts
- * import { generateFTemplates } from "@microsoft/fast-test-harness/build/generate-templates.js";
- *
- * await generateFTemplates({ cwd: process.cwd(), tagPrefix: "fluent" });
- * ```
+ * @deprecated Author HTML and configure components in createHarnessConfig.
  */
 
 import { glob, mkdir, writeFile } from "node:fs/promises";
@@ -51,6 +46,7 @@ function attributeDirective(name: string, value: string): string {
     return `${attributeDirectivePrefix}${name}="${wrapClientExpression(value)}"`;
 }
 
+/** @deprecated Configure authored HTML through the components array. */
 export interface GenerateFTemplatesOptions {
     /**
      * Root directory of the package. Defaults to `process.cwd()`.

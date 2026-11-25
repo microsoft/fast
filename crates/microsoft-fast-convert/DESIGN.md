@@ -4,6 +4,12 @@
 
 ## Pipeline
 
+Source-based Node integrations use the
+[shared component-source contract](../../packages/fast-build/docs/component-sources/DESIGN.md)
+and exported resolver before calling this crate's filesystem-independent string APIs.
+The Rust crate owns syntax metadata, parsing, conversion, and source diagnostics;
+configuration-relative paths, module specifiers, and output ownership belong to Node.
+
 ```text
 convert_template(template, syntax)
         │

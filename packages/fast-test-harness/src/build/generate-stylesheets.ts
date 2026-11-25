@@ -2,21 +2,7 @@
  * Style extraction — converts compiled FAST ElementStyles JS modules
  * into plain CSS files.
  *
- * Usage as a module:
- * ```ts
- * import { generateStylesheets } from "@microsoft/fast-test-harness/build/generate-stylesheets.js";
- *
- * await generateStylesheets({ cwd: process.cwd() });
- * ```
- *
- * Usage as a Lage worker:
- * ```ts
- * import { generateStylesheets } from "@microsoft/fast-test-harness/build/generate-stylesheets.js";
- *
- * export default async function init({ target }) {
- *     await generateStylesheets({ cwd: target.cwd });
- * }
- * ```
+ * @deprecated Author CSS and configure components in createHarnessConfig.
  */
 
 import { glob, mkdir, writeFile } from "node:fs/promises";
@@ -25,6 +11,7 @@ import { pathToFileURL } from "node:url";
 import { styleText } from "node:util";
 import { installDomShim } from "./dom-shim.js";
 
+/** @deprecated Configure authored CSS through the components array. */
 export interface GenerateStylesheetsOptions {
     /**
      * Root directory of the package. Defaults to `process.cwd()`.
@@ -55,17 +42,6 @@ export interface GenerateStylesheetsOptions {
      * Optional formatter function applied to extracted CSS before writing.
      * Receives the CSS string and output file path, returns formatted CSS.
      *
-     * Example with Prettier:
-     * ```ts
-     * import prettier from "prettier";
-     *
-     * await generateStylesheets({
-     *     format: async (css, filePath) => {
-     *         const options = await prettier.resolveConfig(filePath);
-     *         return prettier.format(css, { ...options, filepath: filePath });
-     *     },
-     * });
-     * ```
      */
     format?: (css: string, filePath: string) => string | Promise<string>;
 }

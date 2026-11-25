@@ -26,12 +26,8 @@ function showHelp() {
 
 Commands:
   serve                    Start the test harness dev server (default)
-  generate-templates       Extract compiled templates (deprecated)
-  generate-stylesheets     Extract compiled ElementStyles (deprecated)
-  generate-webui-templates Extract compiled DSD templates (deprecated)
-
-The existing compiled-template workflow remains the default. Opt into automatic
-HTML/CSS-to-TypeScript conversion with createHarnessConfig({ components: [...] })
+Configure automatic HTML/CSS-to-TypeScript conversion with
+createHarnessConfig({ components: [...] })
 in your Vite config.
 
 Run fast-test-harness <command> --help for command-specific options.
@@ -227,9 +223,18 @@ if (args.includes("--help") && !subcommand) showHelp();
 
 if (looksLikeSubcommand && !subcommand) {
     console.error(
-        `Unknown command: ${firstArg}\n\nAvailable commands: serve, generate-templates, generate-stylesheets, generate-webui-templates\nRun fast-test-harness --help for usage.\n`,
+        `Unknown command: ${firstArg}\n\nAvailable commands: serve\nRun fast-test-harness --help for usage.\n`,
     );
     process.exit(1);
+}
+
+if (subcommand && subcommand !== "serve") {
+    if (args.includes("--help") || args.includes("-h")) showHelp();
+    if (!args.includes("--version") && !args.includes("-v")) {
+        console.warn(
+            "Deprecated: compiled-source extraction. Configure createHarnessConfig({ components: [...] }) instead.",
+        );
+    }
 }
 
 switch (subcommand) {

@@ -6,8 +6,7 @@ for color, typography, spacing, shape, elevation, and motion. There is **no
 JavaScript or TypeScript implementation** — example apps wire themes
 themselves by toggling the `data-theme` attribute on `<html>`.
 
-This README and [`DESIGN.md`](./DESIGN.md) are the canonical guidance for both
-humans and coding agents working in the `examples/*` workspace.
+This README explains how example apps consume the shared design-system package.
 
 Token names are semantic and use-site-oriented, with the `--fast-` prefix
 and coverage tuned for FAST example apps.
@@ -164,6 +163,3 @@ at a glance:
 
 State vocabulary on interactive tokens: `rest`, `hover`, `pressed`,
 `disabled`. Optionally prefixed with `selected-` for selectable controls.
-
-See [`DESIGN.md`](./DESIGN.md) for the full naming grammar, the rationale, and
-the rules for adding new tokens.

@@ -43,7 +43,6 @@ npm run test:e2e -w @microsoft/fast-examples-e2e -- --project=ssr-webui-todo
 examples/test/
 ├── package.json
 ├── playwright.config.ts
-├── DESIGN.md                    // design notes for contributors
 ├── support/
 │   ├── fixtures.ts              // injects the per-project adapter
 │   ├── global-setup.ts
