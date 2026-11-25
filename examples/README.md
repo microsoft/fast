@@ -44,11 +44,6 @@ See:
 
 - [`examples/design-system/README.md`](./design-system/README.md) — quickstart,
   available imports, token catalog.
-- [`examples/design-system/DESIGN.md`](./design-system/DESIGN.md) — naming
-  grammar, role catalog, theme model, and rules for adding tokens (the
-  canonical authoring guide for both humans and coding agents).
-- [`examples/DESIGN.md`](./DESIGN.md) — workspace-level guidance for building
-  new example apps on top of the design system.
 
 ## Creating a new example app
 
@@ -97,7 +92,6 @@ npm start -w @microsoft/fast-webui-todo-app-example
 
 ## Useful links
 
-- [Examples design guide](./DESIGN.md)
 - [Examples design-system package](./design-system/README.md)
 - [FAST repository README](../README.md)
 - [FAST documentation](https://fast.design/docs/3.x/introduction/)

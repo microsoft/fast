@@ -4,6 +4,8 @@
 
 const fs = require("fs");
 const path = require("path");
+const { randomUUID } = require("node:crypto");
+const { resolveComponentSources } = require("../component-sources.js");
 
 const BUILD_WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
 const CONVERT_WASM_MODULE = path.join(
@@ -14,6 +16,7 @@ const BUILD_DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
 const CONVERT_DEFAULT_CONFIG_FILENAME = "fast-convert.config.json";
 const VALUELESS_CLI_FLAGS = new Set(["markers_v2", "overwrite", "typed"]);
 const BUILD_ALLOWED_CONFIG_KEYS = new Set([
+    "components",
     "entry",
     "state",
     "output",
@@ -25,6 +28,7 @@ const BUILD_ALLOWED_CONFIG_KEYS = new Set([
 ]);
 const BUILD_BOOLEAN_CONFIG_KEYS = new Set(["markers_v2"]);
 const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
+    "components",
     "typed",
     "syntax",
     "templates",
@@ -36,7 +40,9 @@ const CONVERT_ALLOWED_CONFIG_KEYS = new Set([
 const CONVERT_BOOLEAN_CONFIG_KEYS = new Set(["overwrite", "typed"]);
 const CONFIG_PATH_KEYS = new Set(["entry", "state", "output", "templates", "server-artifact", "native-addon"]);
 
-/** @typedef {Record<string, string | boolean>} FastConfig */
+/** @typedef {import("../component-sources.js").ComponentSource} ComponentSource */
+/** @typedef {import("../component-sources.js").ResolvedComponentSource} ResolvedComponentSource */
+/** @typedef {Record<string, string | boolean | ComponentSource[]>} FastConfig */
 /** @typedef {import("../wasm/microsoft_fast_build.js").FTemplateMetadata} FTemplateMetadata */
 /** @typedef {{ syntax: string, extension: string, suffix: string }} ConvertSyntaxMetadata */
 
@@ -181,6 +187,12 @@ function loadConfig(
                 `Error: Unknown key "${key}" in config file "${resolvedPath}". Allowed keys: ${[...allowedKeys].join(", ")}.\n`
             );
             process.exit(1);
+        }
+        if (key === "components") {
+            if (!Array.isArray(raw[key])) {
+                throw new Error(`Value for "components" in config file "${resolvedPath}" must be an array.`);
+            }
+            continue;
         }
         if (booleanKeys.has(key)) {
             if (typeof raw[key] !== "boolean") {
@@ -526,6 +538,7 @@ function validateConvertOutput(output, syntax, overwrite, syntaxMetadata) {
  * @param {string | undefined} typeSourceImport
  * @param {boolean} typed
  */
+/** @deprecated Use explicit components and convertComponents. */
 function runConvertBatch(
     templatesArg,
     syntax,
@@ -597,6 +610,34 @@ async function runConvert(args) {
     const typeSource = resolveOption(args, config, configDir, "type-source");
     const typeSourceImport = resolveOption(args, config, configDir, "type-source-import");
     const typed = resolveBooleanOption(args, config, "typed");
+    const components = componentConfig(args, config);
+    if (components !== undefined && syntax === "server-native") {
+        if (typed) {
+            throw new Error("server-native emits artifact data; TypeScript conversion options do not apply.");
+        }
+        const resolved = await resolveComponentSources(components, {
+            baseDir: configDir || process.cwd(), operation: "ssr",
+        });
+        if (resolved.components.length === 0) {
+            throw new Error("server-native requires at least one configured component.");
+        }
+        const templates = Object.create(null);
+        for (const component of resolved.components) {
+            templates[component.tagName] = readComponentTemplate(component).definition;
+        }
+        const output = outputArg || "server.artifact.json";
+        if (path.extname(output) !== ".json") {
+            throw new Error("server-native output must use the .json extension.");
+        }
+        if (output.includes("*")) {
+            throw new Error("server-native requires one output artifact for the complete template registry.");
+        }
+        protectComponentInputs([output, `${output}.lock`], resolved.inputFiles);
+        const { writeServerArtifact } = require("../server.js");
+        writeServerArtifact(output, { entry: "", templates }, { overwrite });
+        process.stdout.write(`Converted server registry: ${output}\n`);
+        return;
+    }
     if (syntax === "server-native") {
         if (!templatesArg) {
             throw new Error("Missing required --templates.");
@@ -658,6 +699,14 @@ async function runConvert(args) {
         );
         process.exit(1);
     }
+    if (components !== undefined) {
+        if (outputArg !== undefined) {
+            throw new Error("Component conversion uses each component's generated directory, not output.");
+        }
+        await convertComponents(components, configDir || process.cwd(), syntax,
+            overwrite, wasm, syntaxMetadata[syntax]);
+        return;
+    }
 
     if (!templatesArg) {
         process.stderr.write("Error: Missing required --templates.\n");
@@ -689,6 +738,7 @@ async function runBuild(args) {
         BUILD_ALLOWED_CONFIG_KEYS,
         BUILD_BOOLEAN_CONFIG_KEYS,
     );
+    const components = componentConfig(args, config);
 
     const templatesArg = resolveOption(args, config, configDir, "templates");
     if (templatesArg !== undefined && templatesArg.trim() === "") {
@@ -728,11 +778,20 @@ async function runBuild(args) {
 
     // Resolve template files
     const templatesMap = Object.create(null);
+    let componentInputs = [];
     /** @type {string[]} */
     const sources = [];
     /** @type {string[]} */
     const filenames = [];
-    if (templatesArg === undefined) {
+    if (components !== undefined) {
+        const resolved = await resolveComponentSources(components, {
+            baseDir: configDir || process.cwd(), operation: "ssr",
+        });
+        componentInputs = resolved.inputFiles;
+        for (const component of resolved.components) {
+            templatesMap[component.tagName] = readComponentTemplate(component).definition;
+        }
+    } else if (templatesArg === undefined) {
         process.stderr.write(
             "Warning: --templates was not provided. No custom element templates will be loaded.\n"
         );
@@ -799,6 +858,11 @@ async function runBuild(args) {
         }
     }
 
+    if (components !== undefined) {
+        const authored = [...componentInputs, entry, stateFile].filter(Boolean)
+            .flatMap(filename => [path.resolve(filename), fs.realpathSync(filename)]);
+        protectComponentInputs([output, ...managedPaths], authored);
+    }
     const addonPath = resolveOption(args, config, configDir, "native-addon") || process.env.FAST_NATIVE_ADDON;
     const { loadNativeHost } = require("../native-host.mjs");
     const Program = loadNativeHost(addonPath);
@@ -809,7 +873,7 @@ async function runBuild(args) {
     } else {
         const result = writeServerArtifact(
             serverArtifact,
-            templatesArg === undefined
+            components !== undefined || templatesArg === undefined
                 ? { entry: entryContent, templates: templatesMap }
                 : { entry: entryContent, templateSources: sources },
             {
@@ -831,8 +895,141 @@ async function runBuild(args) {
     const rendered = server.renderEntryJson(stateContent);
 
     // Write output
-    fs.writeFileSync(output, rendered, "utf8");
+    if (components !== undefined) {
+        fs.mkdirSync(path.dirname(output), { recursive: true });
+        writeComponentOutput(output, rendered);
+    } else {
+        fs.writeFileSync(output, rendered, "utf8");
+    }
     process.stdout.write(`Built: ${output}\n`);
+}
+
+/** @returns {ComponentSource[] | undefined} */
+function componentConfig(args, config) {
+    if (Object.hasOwn(args, "components")) {
+        throw new Error("Configure the components array in a JSON config file.");
+    }
+    const legacy = ["templates", "type-source", "type-source-import", "typed"]
+        .filter(key => Object.hasOwn(args, key) || Object.hasOwn(config, key));
+    if (config.components !== undefined) {
+        if (legacy.length) {
+            throw new Error("Do not combine components with deprecated template selectors or global type-source options.");
+        }
+        return /** @type {ComponentSource[]} */ (config.components);
+    }
+    if (legacy.length) {
+        process.stderr.write(`Deprecated: ${legacy.join(", ")} source configuration; use a components array instead.\n`);
+    }
+    return undefined;
+}
+
+/** @param {ResolvedComponentSource} component */
+function readComponentTemplate(component) {
+    try {
+        const source = fs.readFileSync(component.template, "utf8");
+        const wasm = require(BUILD_WASM_MODULE);
+        /** @type {FTemplateMetadata[]} */
+        const definitions = JSON.parse(wasm.parse_f_templates(source));
+        if (definitions.length !== 1 || definitions[0].name !== component.tagName) {
+            throw new Error(`Component "${component.tagName}" template "${component.template}" must contain exactly one <f-template name="${component.tagName}"> definition.`);
+        }
+        const { name, ...definition } = definitions[0];
+        return { source, definition };
+    } catch (error) {
+        throw new Error(`${component.template}: ${error.message}`, { cause: error });
+    }
+}
+
+function protectComponentInputs(outputs, inputs) {
+    const authored = new Set(inputs);
+    for (const output of outputs) {
+        if (authored.has(path.resolve(output)) ||
+            (fs.existsSync(output) && authored.has(fs.realpathSync(output)))) {
+            throw new Error(`Output paths must not replace authored component inputs: ${output}`);
+        }
+    }
+}
+
+function checkComponentOutput(output, overwrite) {
+    const info = fs.lstatSync(output, { throwIfNoEntry: false });
+    if (info && !info.isFile()) {
+        throw new Error(`Refusing to overwrite non-regular generated output: ${output}`);
+    }
+    if (info && !overwrite) {
+        throw new Error(`Output file "${output}" already exists. Use --overwrite to replace it.`);
+    }
+}
+
+function writeComponentOutput(output, content) {
+    const temporary = `${output}.${randomUUID()}.tmp`;
+    try {
+        fs.writeFileSync(temporary, content, { flag: "wx" });
+        fs.renameSync(temporary, output);
+    } finally {
+        try {
+            fs.unlinkSync(temporary);
+        } catch (error) {
+            if (error.code !== "ENOENT") throw error;
+        }
+    }
+}
+
+async function convertComponents(components, baseDir, syntax, overwrite, wasm, metadata) {
+    if (components.length === 0) {
+        throw new Error("Conversion requires at least one configured component.");
+    }
+    const typescript = metadata.extension === ".ts";
+    const options = {
+        baseDir,
+        operation: typescript ? "typescript" : "html",
+        ...(typescript ? {} : { templateSuffix: metadata.suffix }),
+    };
+    let resolved = await resolveComponentSources(components, options);
+    for (const component of resolved.components) {
+        fs.mkdirSync(component.generated, { recursive: true });
+    }
+    resolved = await resolveComponentSources(components, options);
+    const outputs = new Map();
+    const warnings = [];
+    for (const component of resolved.components) {
+        const { source } = readComponentTemplate(component);
+        try {
+            const result = wasm.convert_template_with_options(
+                source, syntax, typescript ? component.className : undefined,
+                typescript ? component.typeSourceImport : undefined,
+                typescript || undefined,
+            );
+            try {
+                outputs.set(component.templateOutput, result.output);
+                warnings.push(...result.warnings.map(warning => `${component.template}: ${warning}`));
+            } finally {
+                result.free();
+            }
+        } catch (error) {
+            throw new Error(`${component.template}: ${error.message}`, { cause: error });
+        }
+        if (component.stylesheetOutput) {
+            try {
+                outputs.set(component.stylesheetOutput, wasm.convert_stylesheet(
+                    fs.readFileSync(component.stylesheet, "utf8"), syntax, "styles", true,
+                ));
+            } catch (error) {
+                throw new Error(`${component.stylesheet}: ${error.message}`, { cause: error });
+            }
+        }
+    }
+    for (const output of outputs.keys()) {
+        checkComponentOutput(output, overwrite);
+    }
+    for (const warning of warnings) {
+        process.stderr.write(`Warning: ${warning}\n`);
+    }
+    for (const [output, content] of outputs) {
+        checkComponentOutput(output, overwrite);
+        writeComponentOutput(output, content);
+        process.stdout.write(`Converted: ${output}\n`);
+    }
+    process.stdout.write(`Converted ${resolved.components.length} component(s).\n`);
 }
 
 function writeGeneralUsage() {
@@ -848,15 +1045,14 @@ function writeGeneralUsage() {
 function writeBuildUsage() {
     process.stdout.write(
         "Usage: fast build [options]\n\n" +
+        "Component sources are configured as a components array in JSON:\n" +
+        '  { "components": [{ "tagName": "my-card", "template": "./src/card.html" }] }\n\n' +
         "Options:\n" +
-        '  --templates="<glob>"   Glob pattern(s) for custom element template HTML files.\n' +
-        "                         Separate multiple patterns with commas.\n" +
-        "                         Requires named templates with unique names.\n" +
         '  --output="output.html" Output file path (default: output.html)\n' +
         '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
         '  --server-artifact="<path.json>"\n' +
         "                         Persist authored inputs and compiled plans together;\n" +
-        "                         reuse before compiler loading on later builds.\n" +
+        "                         reuse compiled plans on later builds.\n" +
         '  --native-addon="<path.node>" Override the installed native host; alternatively set FAST_NATIVE_ADDON.\n' +
         '  --state="state.json"   State JSON file. If omitted, rendering uses\n' +
         "                         an empty state object.\n" +
@@ -881,38 +1077,21 @@ function writeConvertUsage() {
         [serverTarget.syntax]: serverTarget,
     };
     const syntaxList = convertSyntaxList(syntaxMetadata);
-    const defaultOutputs = Object.values(syntaxMetadata)
-        .map(metadata => `"*${metadata.suffix}" for ${metadata.syntax}`)
-        .join(" or\n                         ");
-
     process.stdout.write(
         "Usage: fast convert [options]\n\n" +
+        "Configure a components array in fast-convert.config.json:\n" +
+        '  { "syntax": "fast-v3-ts", "components": [{ "tagName": "my-card",\n' +
+        '    "template": "./src/card.html", "stylesheet": "./src/card.css",\n' +
+        '    "clientModule": "./src/card.ts", "className": "MyCard",\n' +
+        '    "generated": "./src/generated/" }] }\n\n' +
         "Options:\n" +
         `  --syntax="${syntaxList}"\n` +
         "                         Required target syntax.\n" +
         "                         server-native compiles the complete registry into\n" +
         "                         one server.artifact.json (or --output), without\n" +
         "                         importing browser classes at request time.\n" +
-        '  --templates="<glob>"   Required. Glob pattern(s) for FAST declarative\n' +
-        "                         .html files to convert in one pass. Separate\n" +
-        "                         multiple patterns with commas. Loads the\n" +
-        "                         converter WASM module once for the whole\n" +
-        "                         batch. A single exact path is also accepted.\n" +
-        '  --output="<path>"      Output file path. Defaults next to each source\n' +
-        `                         file as ${defaultOutputs}. Any "*" is\n` +
-        "                         replaced by the source file's basename. The\n" +
-        "                         output directory is created if missing.\n" +
+        '  --output="<path.json>" server-native artifact path (default: server.artifact.json).\n' +
         "  --overwrite           Replace an existing output file.\n" +
-        '  --type-source="<Name>" TSource type emitted as "html<Name>" in\n' +
-        "                         fast-v3-ts output. Only valid with\n" +
-        '                         --syntax="fast-v3-ts". Must be a dotted\n' +
-        '                         identifier (e.g. "MyElement" or\n' +
-        '                         "Namespace.MyElement").\n' +
-        '  --type-source-import="<module>"\n' +
-        "                         Module specifier for an `import type` statement\n" +
-        "                         for --type-source. Requires --type-source.\n" +
-        "  --typed               Annotate TypeScript exports with FAST types.\n" +
-        "                         Use --typed=false to override config.\n" +
         '  --config="<path>"      Path to a fast-convert config JSON file.\n' +
         '                         Defaults to "fast-convert.config.json" in the\n' +
         "                         current directory if it exists. File paths in\n" +

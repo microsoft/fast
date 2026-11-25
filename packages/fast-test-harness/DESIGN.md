@@ -2,6 +2,11 @@
 
 This document describes the internal architecture of the `@microsoft/fast-test-harness` package — a Playwright testing harness for FAST Element web components with CSR and SSR support.
 
+Authored-source configuration follows the
+[canonical component-source contract](../fast-build/docs/component-sources/DESIGN.md).
+The opt-in plugin uses FAST Build's synchronous validator and asynchronous resolver;
+default configurations do not load the optional peer or compiler.
+
 ---
 
 ## Table of Contents
@@ -70,13 +75,10 @@ flowchart TD
 | `src/fixtures/ssr-fixture.ts` | `SSRFixture` class — server-side rendering fixture (extends `CSRFixture`) |
 | `src/fixtures/assertions.ts` | Custom Playwright assertion `toHaveCustomState` |
 | `src/build/dom-shim.ts` | Minimal DOM shim for running FAST Element's `css` and `html` tagged templates in Node.js |
-| `src/build/generate-stylesheets.ts` | Extracts compiled FAST `ElementStyles` JS modules into plain `.css` files |
-| `src/build/generate-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into declarative `<f-template>` HTML files. Exports `definitionAsyncResolver`, `shadowOptionsToAttributes`, and the `ShadowOptionsResolver` type for resolving per-component shadow DOM options. Static wrapper stripping and style-marker injection recognize browser-valid `<template>` tags with ASCII whitespace before `>` in opening and closing tags. |
-| `src/build/generate-webui-templates.ts` | Converts compiled FAST `ViewTemplate` JS modules into WebUI-compatible declarative shadow DOM `<template>` HTML files. Shares the shadow-options resolution pipeline with `generate-templates.ts`. |
 | `src/ssr/render.ts` | `createSSRRenderer` factory — scans component artifacts, compiles native fixture artifacts with build-time WASM and executes them through the explicitly configured Node addon |
 | `src/ssr/entry-client.ts` | SSR client entrypoint that enables FAST Element hydration |
 | `server.mjs` | Node.js HTTP server with Vite middleware — serves CSR pages and handles SSR fixture generation |
-| `start.mjs` | CLI entry point (`fast-test-harness` bin) — supports subcommands (`serve`, `generate-templates`, `generate-stylesheets`, `generate-webui-templates`) and flags via `node:util` `parseArgs` |
+| `start.mjs` | CLI entry point (`fast-test-harness` bin), with Vite serving flags via `node:util` `parseArgs` |
 | `playwright.config.mjs` | Shared Playwright configuration (browsers, web server, test matching) |
 | `vite.config.mjs` | Shared Vite configuration (port, resolve conditions, build settings) |
 | `source-generation.mjs` | Opt-in Vite plugin that converts authored HTML/CSS to owned TypeScript modules and synchronizes source changes with page/module/fixture invalidation |
@@ -350,8 +352,7 @@ each generated directory.
 Generation does not evaluate client modules, register elements, or replace SSR
 renderer configuration. HTML template names remain authored in the HTML input.
 Omission or an empty array keeps source generation disabled without installing
-the source-generation plugin. Non-array values are rejected. The compiled-template
-extraction utilities and their CLI commands remain available, with deprecated APIs.
+the source-generation plugin. Non-array values are rejected.
 
 The source-generation plugin lazily loads FAST Build's conversion WASM and emits
 typed `fast-v3-ts` template and stylesheet modules before Vite resolves imports.
@@ -399,10 +400,10 @@ HTML/CSS edits using those authored exports.
 
 | Specifier | Contents |
 | ----------- | ---------- |
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, build utilities (`installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`) |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `installDomShim` |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `createSSRRenderer`, `ComponentRegistration`, `RenderResult`, `SSRRendererOptions`, `renderTemplate`, `buildEntryHtml`, `buildState`, `parseDefaultValue` |
-| `@microsoft/fast-test-harness/build/*.js` | Build utilities: `installDomShim`, `generateStylesheets`, `generateFTemplates`, `generateWebuiTemplates`, `definitionAsyncResolver`, `shadowOptionsToAttributes`, `ShadowOptionsResolver` |
+| `@microsoft/fast-test-harness/build/dom-shim.js` | `installDomShim` |
 | `@microsoft/fast-test-harness/playwright.config.mjs` | Shared Playwright configuration |
 | `@microsoft/fast-test-harness/vite.config.mjs` | Default shared Vite configuration; `createHarnessConfig`, `HarnessConfig`, `SourceComponent` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS reset) |

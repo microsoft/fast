@@ -2,6 +2,10 @@
 
 `microsoft-fast-convert` converts one FAST declarative HTML template string into another supported syntax. It is written in Rust and exposes both a Rust API and a `wasm-bindgen` API for Node tooling.
 
+For source files, use the `components` configuration and exported Node resolver
+described in the [FAST Build usage guide](../../packages/fast-build/README.md#convert-configuration-file).
+The Rust APIs below operate on already loaded strings.
+
 ## Supported targets
 
 - `webui-prerelease` — unwraps the outer `<f-template>` and emits HTML for WebUI's FAST parser plugin, converting only `<f-repeat>` to `<for>` and `<f-when>` to `<if>`. Other supported FAST attributes (`@click`, `:prop`, `?bool`, `f-ref`, `f-children`, `f-slotted`) pass through unchanged.
