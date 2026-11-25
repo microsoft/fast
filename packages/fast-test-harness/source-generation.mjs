@@ -39,52 +39,49 @@ async function readOutput(file, header) {
 }
 
 export function sourceGenerationPlugin(options) {
-    const inputs = options.map(options => {
+    const declaredOutputs = new Set();
+    const inputs = options.map(component => {
         if (
-            !options ||
-            typeof options.outDir !== "string" ||
-            !options.outDir ||
-            !Array.isArray(options.components)
+            !component ||
+            typeof component.tagName !== "string" ||
+            !/^[a-z][a-z0-9._-]*-[a-z0-9._-]*$/.test(component.tagName) ||
+            typeof component.template !== "string" ||
+            !component.template.endsWith(".html") ||
+            (component.stylesheet !== undefined &&
+                (typeof component.stylesheet !== "string" ||
+                    !component.stylesheet.endsWith(".css"))) ||
+            typeof component.clientModule !== "string" ||
+            !/\.(?:[cm]?[jt]s|[jt]sx)$/.test(component.clientModule) ||
+            typeof component.className !== "string" ||
+            !/^[A-Za-z_$][\w$]*$/.test(component.className) ||
+            typeof component.generated !== "string" ||
+            !component.generated
         ) {
             throw new Error(
-                "Each sources mapping requires outDir and a components array.",
+                "Each component requires a custom-element tagName, template HTML path, clientModule path, named className, and generated directory; stylesheet must be a CSS path when provided.",
             );
         }
         if (
-            ["srcDir", "root", "templates", "stylesheets", "templateTypes"].some(name =>
-                Object.hasOwn(options, name),
-            )
+            [
+                "srcDir",
+                "root",
+                "templates",
+                "stylesheets",
+                "templateTypes",
+                "outDir",
+                "components",
+            ].some(name => Object.hasOwn(component, name))
         ) {
             throw new Error(
-                "Source mappings accept explicit components instead of source directories, globs, or templateTypes.",
+                "Components accept exact source paths and generated instead of nested mappings or glob settings.",
             );
         }
-        const tags = new Set();
-        for (const component of options.components) {
-            if (
-                !component ||
-                typeof component.tagName !== "string" ||
-                !/^[a-z][a-z0-9._-]*-[a-z0-9._-]*$/.test(component.tagName) ||
-                typeof component.template !== "string" ||
-                !component.template.endsWith(".html") ||
-                (component.stylesheet !== undefined &&
-                    (typeof component.stylesheet !== "string" ||
-                        !component.stylesheet.endsWith(".css"))) ||
-                typeof component.clientModule !== "string" ||
-                !/\.(?:[cm]?[jt]s|[jt]sx)$/.test(component.clientModule) ||
-                typeof component.className !== "string" ||
-                !/^[A-Za-z_$][\w$]*$/.test(component.className)
-            ) {
-                throw new Error(
-                    "Each component requires a custom-element tagName, template HTML path, clientModule path, and named className; stylesheet must be a CSS path when provided.",
-                );
-            }
-            if (tags.has(component.tagName)) {
-                throw new Error(`Duplicate component tagName: ${component.tagName}`);
-            }
-            tags.add(component.tagName);
+        const output = JSON.stringify([component.generated, component.tagName]);
+        if (declaredOutputs.has(output)) {
+            throw new Error(`Duplicate component output: ${component.tagName}`);
         }
-        return options;
+        declaredOutputs.add(output);
+        return component;
     });
     let mappings;
     let sourceFiles;
@@ -295,47 +292,48 @@ export function sourceGenerationPlugin(options) {
                 config.plugins.filter(p => p.name === sourceGenerationPluginName).length >
                 1
             ) {
-                throw new Error("Configure sources only once.");
+                throw new Error("Configure components only once.");
             }
             base = config.configFile ? dirname(config.configFile) : config.root;
             mappings = [];
             sourceFiles = new Set();
             outputRoots = [];
-            for (const options of inputs) {
-                const components = [];
-                for (const component of options.components) {
-                    const resolved = { ...component };
-                    for (const name of ["template", "stylesheet", "clientModule"]) {
-                        if (component[name] === undefined) {
-                            continue;
-                        }
-                        const input = resolve(base, component[name]);
-                        const canonical = await realpath(input);
-                        sourceFiles.add(input);
-                        sourceFiles.add(canonical);
-                        resolved[name] = canonical;
+            const components = [];
+            for (const component of inputs) {
+                const resolved = { ...component };
+                for (const name of ["template", "stylesheet", "clientModule"]) {
+                    if (component[name] === undefined) {
+                        continue;
                     }
-                    components.push(resolved);
+                    const input = resolve(base, component[name]);
+                    const canonical = await realpath(input);
+                    sourceFiles.add(input);
+                    sourceFiles.add(canonical);
+                    resolved[name] = canonical;
                 }
-                mappings.push({ ...options, components });
+                components.push(resolved);
             }
-            for (const mapping of mappings) {
-                const destination = resolve(base, mapping.outDir);
+            for (const component of components) {
+                const destination = resolve(base, component.generated);
                 if ([...sourceFiles].some(file => contains(destination, file))) {
                     throw new Error(
-                        "Source generation outDir must not contain component inputs.",
+                        "A generated directory must not contain component inputs.",
                     );
                 }
                 await mkdir(destination, { recursive: true });
                 const outDir = await realpath(destination);
                 if ([...sourceFiles].some(file => contains(outDir, file))) {
                     throw new Error(
-                        "Source generation outDir must not contain component inputs.",
+                        "A generated directory must not contain component inputs.",
                     );
                 }
+                let mapping = mappings.find(mapping => mapping.outDir === outDir);
                 if (
-                    outputRoots.some(
-                        root => contains(root, outDir) || contains(outDir, root),
+                    !mapping &&
+                    mappings.some(
+                        mapping =>
+                            contains(mapping.outDir, outDir) ||
+                            contains(outDir, mapping.outDir),
                     )
                 ) {
                     throw new Error(
@@ -343,10 +341,17 @@ export function sourceGenerationPlugin(options) {
                     );
                 }
                 outputRoots.push(destination, outDir);
-                mapping.outDir = outDir;
-                mapping.header = `// @generated by @microsoft/fast-test-harness (${JSON.stringify(
-                    relative(outDir, base).split(sep).join("/"),
-                )}). DO NOT EDIT.\n`;
+                if (!mapping) {
+                    mapping = {
+                        outDir,
+                        components: [],
+                        header: `// @generated by @microsoft/fast-test-harness (${JSON.stringify(
+                            relative(outDir, base).split(sep).join("/"),
+                        )}). DO NOT EDIT.\n`,
+                    };
+                    mappings.push(mapping);
+                }
+                mapping.components.push(component);
             }
             try {
                 converter = createRequire(import.meta.url)(
@@ -354,7 +359,7 @@ export function sourceGenerationPlugin(options) {
                 );
             } catch (error) {
                 throw new Error(
-                    `Configuring sources requires @microsoft/fast-build and its conversion WASM: ${error.message}`,
+                    `Configuring components requires @microsoft/fast-build and its conversion WASM: ${error.message}`,
                     { cause: error },
                 );
             }

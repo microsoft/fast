@@ -604,7 +604,7 @@ function convertTemplateHTML(
 /**
  * Convert a ViewTemplate's html string and factories into an
  * f-template HTML string.
- * @deprecated Author declarative HTML and configure sources in createHarnessConfig.
+ * @deprecated Author declarative HTML and configure components in createHarnessConfig.
  */
 export function convertTemplate(
     viewTemplate: ViewTemplate,
@@ -666,7 +666,7 @@ export function shadowOptionsToAttributes(
 }
 
 /**
- * @deprecated Author declarative HTML and configure sources in createHarnessConfig.
+ * @deprecated Author declarative HTML and configure components in createHarnessConfig.
  */
 export async function generateFTemplates(
     options: GenerateFTemplatesOptions = {},

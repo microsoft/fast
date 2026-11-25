@@ -31,7 +31,7 @@ Commands:
   generate-webui-templates Extract compiled DSD templates (deprecated)
 
 The existing compiled-template workflow remains the default. Opt into automatic
-HTML/CSS-to-TypeScript conversion with createHarnessConfig({ sources: [...] })
+HTML/CSS-to-TypeScript conversion with createHarnessConfig({ components: [...] })
 in your Vite config.
 
 Run fast-test-harness <command> --help for command-specific options.

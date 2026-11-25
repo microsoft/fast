@@ -10,18 +10,13 @@ declare module "@microsoft/fast-test-harness/vite.config.mjs" {
         clientModule: string;
         /** Named class export used for template binding checks. */
         className: string;
-    }
-
-    export interface SourceOptions {
         /** Dedicated generated-output directory, relative to the Vite config file. */
-        outDir: string;
-        /** Explicit component inputs. No files are discovered through glob patterns. */
-        components: SourceComponent[];
+        generated: string;
     }
 
     export type HarnessConfig = import("vite").UserConfig & {
-        /** HTML/CSS source mappings. Omit or pass an empty array to disable generation. */
-        sources?: SourceOptions[];
+        /** Explicit component inputs. Omit or pass an empty array to disable generation. */
+        components?: SourceComponent[];
     };
 
     /** Preserve the harness defaults and optionally enable automatic source generation. */

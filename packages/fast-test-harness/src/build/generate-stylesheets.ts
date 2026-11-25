@@ -86,7 +86,7 @@ function flattenStyles(style: string | StyleSheet): string[] {
 }
 
 /**
- * @deprecated Author CSS and configure sources in createHarnessConfig.
+ * @deprecated Author CSS and configure components in createHarnessConfig.
  */
 export async function generateStylesheets(
     options: GenerateStylesheetsOptions = {},
