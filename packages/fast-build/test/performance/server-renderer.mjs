@@ -11,6 +11,7 @@ import { parseArgs } from "node:util";
 import {
     componentPropertyPrefixFixture,
     componentScopeFixture,
+    compositeLiteralFixture,
     escapePrefixFixture,
     fixture,
     nestedShadowFixture,
@@ -159,8 +160,12 @@ async function worker() {
     const memoryAfterWarm = process.memoryUsage();
     globalThis.gc?.();
     const memoryRetained = process.memoryUsage();
-    start = performance.now();
     let latestString;
+    for (let index = 0; index < warmupIterations; index++)
+        latestString = render().toString("utf8");
+    if (warmupIterations) assert.equal(latestString, html);
+    globalThis.gc?.();
+    start = performance.now();
     for (let index = 0; index < iterations; index++)
         latestString = render().toString("utf8");
     const warmStringMsPerRender = (performance.now() - start) / iterations;
@@ -359,6 +364,12 @@ async function main() {
                 rows: Array.from({ length: instances }, () => true),
             },
         },
+        compositeLiteralsPlain: compositeLiteralFixture(instances, "plain"),
+        compositeLiteralsQuoted: compositeLiteralFixture(instances, "quoted"),
+        compositeLiteralsEntities: compositeLiteralFixture(instances, "entities"),
+        compositeLiteralsUnicode: compositeLiteralFixture(instances, "unicode"),
+        compositeLiteralsMissing: compositeLiteralFixture(instances, "missing"),
+        compositeLiteralsEmpty: compositeLiteralFixture(instances, "empty"),
         compositeStyles: {
             entry: "<style-root></style-root>",
             templates: {

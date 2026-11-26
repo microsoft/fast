@@ -94,6 +94,10 @@ Escaping writes spans directly to bounded output. Inputs of at least 64 bytes
 skip escape-free prefix words with a portable filter, then retain scalar matching
 from the first possible match. UTF-8 span and sink-error boundaries are unchanged;
 short inputs retain scalar scanning, without scratch allocations.
+Composite-attribute literals are classified during native loading: quote-free
+literals append directly, while literals containing quotes retain span-wise quote
+replacement. Existing entities, output limits and late-binding suppression are
+unchanged, and no expanded literals or request-local caches are retained.
 Finite JSON numbers preserve
 binary64 round trips and decimal output
 spelling; negative zero normalizes to zero.

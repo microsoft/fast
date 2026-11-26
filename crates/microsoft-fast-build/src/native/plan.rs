@@ -202,6 +202,7 @@ impl Condition {
 #[derive(Debug)]
 pub(super) enum Part {
     Literal(String),
+    QuotedLiteral(String),
     Segment(Path),
 }
 
@@ -266,7 +267,12 @@ impl Attribute {
                     Ok(match string(&p["type"])? {
                         "literal" => {
                             fields(p, &["type", "html"])?;
-                            Part::Literal(string(&p["html"])?.into())
+                            let text = string(&p["html"])?;
+                            if text.contains('"') {
+                                Part::QuotedLiteral(text.into())
+                            } else {
+                                Part::Literal(text.into())
+                            }
                         }
                         "segment" => {
                             fields(p, &["type", "path"])?;

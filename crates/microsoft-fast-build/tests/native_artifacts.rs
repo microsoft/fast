@@ -2325,7 +2325,7 @@ fn escaped_bindings_preserve_bytes_and_exact_request_local_budgets() {
 
 #[test]
 fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
-    let entry = r#"<i title='pre "&amp;/{{value}}/{{tail}}' data-value="{{value}}" ?hidden="{{flag}}"></i><a href="{{url}}">{{scalar}}</a>"#;
+    let entry = r#"<i title='pre "&amp;/{{value}}/{{tail}}' class="pre é😀&amp;{{tail}}/{{flag}}" data-value="{{value}}" ?hidden="{{flag}}"></i><a href="{{url}}">{{scalar}}</a>"#;
     let artifact = CompiledArtifact::load(
         &compile_server_artifact(entry, &common::make_locator(&[])).unwrap(),
     )
@@ -2333,7 +2333,7 @@ fn bounded_attributes_preserve_entities_suppression_order_and_owned_results() {
     let source = artifact_json(entry, &common::make_locator(&[])).unwrap();
     let state_json = r#"{"value":"é😀&<>\"'/","tail":"尾","flag":true,"url":3.5,"scalar":false}"#;
     let state = parse_render_state(state_json).unwrap();
-    let expected = r#"<i title="pre &quot;&amp;/é😀&amp;&lt;&gt;&quot;&#39;//尾" data-value="é😀&amp;&lt;&gt;&quot;&#39;/" hidden></i><a href="3.5">false</a>"#;
+    let expected = r#"<i title="pre &quot;&amp;/é😀&amp;&lt;&gt;&quot;&#39;//尾" class="pre é😀&amp;尾/true" data-value="é😀&amp;&lt;&gt;&quot;&#39;/" hidden></i><a href="3.5">false</a>"#;
     assert_eq!(
         render_json(&source, state_json, json!({}), "entry", ""),
         json!({"value":expected})

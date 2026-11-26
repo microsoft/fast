@@ -85,6 +85,28 @@ export function fixture(caseName, count, payload = 1, rootKeys = 0) {
     return { entry, templates, state };
 }
 
+export function compositeLiteralFixture(count, shape) {
+    const text = {
+        plain: "prefix/",
+        missing: "prefix/",
+        quoted: 'prefix " /',
+        entities: "prefix &amp; &quot; /",
+        unicode: "prefix é😀 /",
+        empty: "",
+    }[shape];
+    if (text === undefined) throw new Error(`Unknown composite literal shape: ${shape}`);
+    const last = shape === "missing" ? "missing" : "label";
+    return {
+        entry: "<literal-root></literal-root>",
+        templates: {
+            "literal-root":
+                '<f-repeat value="{{row in rows}}">' +
+                `<i title='${text}{{label}}${text}{{label}}${text}{{${last}}}'></i></f-repeat>`,
+        },
+        state: { rows: Array.from({ length: count }, () => true), label: "item" },
+    };
+}
+
 export function componentScopeFixture(count, properties, grouped = false) {
     if (grouped) {
         const attributes = Array.from(
