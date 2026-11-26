@@ -135,12 +135,13 @@ for (const mode of ["buffer", "string"]) {
 
 test("lifecycle reads original state bytes and excludes hashing/decoding from I/O timers", async () => {
     const raw = Buffer.from('{"text":"first","text":"caf\u00e9"}');
+    const fixturePath = name => path.resolve("fixture", name);
     const files = new Map([
-        ["/fixture/program.json", Buffer.from("artifact")],
-        ["/fixture/first.json", raw],
-        ["/fixture/second.json", Buffer.from('{"text":"second"}')],
-        ["/fixture/first.html", Buffer.from("caf\u00e9")],
-        ["/fixture/second.html", Buffer.from("second")],
+        [fixturePath("program.json"), Buffer.from("artifact")],
+        [fixturePath("first.json"), raw],
+        [fixturePath("second.json"), Buffer.from('{"text":"second"}')],
+        [fixturePath("first.html"), Buffer.from("caf\u00e9")],
+        [fixturePath("second.html"), Buffer.from("second")],
     ]);
     const manifest = lifecycleManifest(
         {
@@ -151,7 +152,7 @@ test("lifecycle reads original state bytes and excludes hashing/decoding from I/
                 { state: "second.json", expected: "second.html" },
             ],
         },
-        "/fixture/manifest.json",
+        fixturePath("manifest.json"),
     );
     let clock = 0;
     const read = () =>
@@ -159,6 +160,7 @@ test("lifecycle reads original state bytes and excludes hashing/decoding from I/
             now: () => clock,
             readFile: async file => {
                 clock += 3;
+                assert.ok(files.has(file), `Unexpected fixture path: ${file}`);
                 return files.get(file);
             },
         });
@@ -171,10 +173,10 @@ test("lifecycle reads original state bytes and excludes hashing/decoding from I/
         result.identities.requests[0].state.sha256,
         hash(JSON.stringify(JSON.parse(raw.toString("utf8")))),
     );
-    files.set("/fixture/second.json", Buffer.from(raw));
+    files.set(fixturePath("second.json"), Buffer.from(raw));
     await assert.rejects(read(), /byte-distinct/);
-    files.set("/fixture/second.json", Buffer.from("{}"));
-    files.set("/fixture/first.html", Buffer.from([0xff]));
+    files.set(fixturePath("second.json"), Buffer.from("{}"));
+    files.set(fixturePath("first.html"), Buffer.from([0xff]));
     await assert.rejects(read(), /exact UTF-8/);
 });
 
